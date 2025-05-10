@@ -1,0 +1,6 @@
+*.lock
+*.env
+*.vscode
+target
+internal
+cache

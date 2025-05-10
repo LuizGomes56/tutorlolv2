@@ -1,0 +1,335 @@
+{
+    "activePlayer": {
+        "abilities": {
+            "E": {
+                "abilityLevel": 0,
+                "displayName": "Farpas Emaranhadas",
+                "id": "NeekoE",
+                "rawDescription": "GeneratedTip_Spell_NeekoE_Description",
+                "rawDisplayName": "GeneratedTip_Spell_NeekoE_DisplayName"
+            },
+            "Passive": {
+                "displayName": "Encanto Inerente",
+                "id": "NeekoPassive",
+                "rawDescription": "GeneratedTip_Passive_NeekoPassive_Description",
+                "rawDisplayName": "GeneratedTip_Passive_NeekoPassive_DisplayName"
+            },
+            "Q": {
+                "abilityLevel": 1,
+                "displayName": "Explosão Florescente",
+                "id": "NeekoQ",
+                "rawDescription": "GeneratedTip_Spell_NeekoQ_Description",
+                "rawDisplayName": "GeneratedTip_Spell_NeekoQ_DisplayName"
+            },
+            "R": {
+                "abilityLevel": 0,
+                "displayName": "Florescer Repentino",
+                "id": "NeekoR",
+                "rawDescription": "GeneratedTip_Spell_NeekoR_Description",
+                "rawDisplayName": "GeneratedTip_Spell_NeekoR_DisplayName"
+            },
+            "W": {
+                "abilityLevel": 0,
+                "displayName": "Metamorfa",
+                "id": "NeekoW",
+                "rawDescription": "GeneratedTip_Spell_NeekoW_Description",
+                "rawDisplayName": "GeneratedTip_Spell_NeekoW_DisplayName"
+            }
+        },
+        "championStats": {
+            "abilityHaste": 0.0,
+            "abilityPower": 24.0,
+            "armor": 21.0,
+            "armorPenetrationFlat": 0.0,
+            "armorPenetrationPercent": 1.0,
+            "attackDamage": 48.0,
+            "attackRange": 550.0,
+            "attackSpeed": 0.6920000314712524,
+            "bonusArmorPenetrationPercent": 1.0,
+            "bonusMagicPenetrationPercent": 1.0,
+            "critChance": 0.0,
+            "critDamage": 175.0,
+            "currentHealth": 670.0,
+            "healShieldPower": 0.0,
+            "healthRegenRate": 1.5,
+            "lifeSteal": 0.0,
+            "magicLethality": 0.0,
+            "magicPenetrationFlat": 0.0,
+            "magicPenetrationPercent": 1.0,
+            "magicResist": 30.0,
+            "maxHealth": 670.0,
+            "moveSpeed": 510.5,
+            "omnivamp": 0.0,
+            "physicalLethality": 0.0,
+            "physicalVamp": 0.0,
+            "resourceMax": 450.0,
+            "resourceRegenRate": 1.399999976158142,
+            "resourceType": "MANA",
+            "resourceValue": 450.0,
+            "spellVamp": 0.0,
+            "tenacity": 5.0
+        },
+        "currentGold": 290.76007080078127,
+        "fullRunes": {
+            "generalRunes": [
+                {
+                    "displayName": "Pressione o Ataque",
+                    "id": 8005,
+                    "rawDescription": "perk_tooltip_PressTheAttack",
+                    "rawDisplayName": "perk_displayname_PressTheAttack"
+                },
+                {
+                    "displayName": "Triunfo",
+                    "id": 9111,
+                    "rawDescription": "perk_tooltip_9111",
+                    "rawDisplayName": "perk_displayname_9111"
+                },
+                {
+                    "displayName": "Lenda: Aceleração",
+                    "id": 9105,
+                    "rawDescription": "perk_tooltip_9105",
+                    "rawDisplayName": "perk_displayname_9105"
+                },
+                {
+                    "displayName": "Até a Morte",
+                    "id": 8299,
+                    "rawDescription": "perk_tooltip_8234",
+                    "rawDisplayName": "perk_displayname_8234"
+                },
+                {
+                    "displayName": "Osso Revestido",
+                    "id": 8473,
+                    "rawDescription": "perk_tooltip_BonePlatingTooltip",
+                    "rawDisplayName": "perk_displayname_BonePlating"
+                },
+                {
+                    "displayName": "Crescimento Excessivo",
+                    "id": 8451,
+                    "rawDescription": "perk_tooltip_Overgrowth",
+                    "rawDisplayName": "perk_displayname_Overgrowth"
+                }
+            ],
+            "keystone": {
+                "displayName": "Pressione o Ataque",
+                "id": 8005,
+                "rawDescription": "perk_tooltip_PressTheAttack",
+                "rawDisplayName": "perk_displayname_PressTheAttack"
+            },
+            "primaryRuneTree": {
+                "displayName": "Precisão",
+                "id": 8000,
+                "rawDescription": "perkstyle_tooltip_7201",
+                "rawDisplayName": "perkstyle_displayname_7201"
+            },
+            "secondaryRuneTree": {
+                "displayName": "Determinação",
+                "id": 8400,
+                "rawDescription": "perkstyle_tooltip_7204",
+                "rawDisplayName": "perkstyle_displayname_7204"
+            },
+            "statRunes": [
+                {
+                    "id": 5005,
+                    "rawDescription": "perk_tooltip_StatModAttackSpeed"
+                },
+                {
+                    "id": 5008,
+                    "rawDescription": "perk_tooltip_StatModAdaptive"
+                },
+                {
+                    "id": 5001,
+                    "rawDescription": "perk_tooltip_StatModHealthScaling"
+                }
+            ]
+        },
+        "level": 1,
+        "riotId": "Giga Gnar#BRZL",
+        "riotIdGameName": "Giga Gnar",
+        "riotIdTagLine": "BRZL",
+        "summonerName": "Giga Gnar#BRZL",
+        "teamRelativeColors": true
+    },
+    "allPlayers": [
+        {
+            "championName": "Neeko",
+            "isBot": false,
+            "isDead": false,
+            "items": [
+                {
+                    "canUse": false,
+                    "consumable": false,
+                    "count": 1,
+                    "displayName": "Lacre Sombrio",
+                    "itemID": 1082,
+                    "price": 350,
+                    "rawDescription": "GeneratedTip_Item_1082_Description",
+                    "rawDisplayName": "Item_1082_Name",
+                    "slot": 0
+                },
+                {
+                    "canUse": true,
+                    "consumable": false,
+                    "count": 1,
+                    "displayName": "Sentinela Invisível",
+                    "itemID": 3340,
+                    "price": 0,
+                    "rawDescription": "GeneratedTip_Item_3340_Description",
+                    "rawDisplayName": "Item_3340_Name",
+                    "slot": 6
+                }
+            ],
+            "level": 1,
+            "position": "",
+            "rawChampionName": "game_character_displayname_Neeko",
+            "rawSkinName": "game_character_skin_displayname_Neeko_29",
+            "respawnTimer": 0.0,
+            "riotId": "Giga Gnar#BRZL",
+            "riotIdGameName": "Giga Gnar",
+            "riotIdTagLine": "BRZL",
+            "runes": {
+                "keystone": {
+                    "displayName": "Pressione o Ataque",
+                    "id": 8005,
+                    "rawDescription": "perk_tooltip_PressTheAttack",
+                    "rawDisplayName": "perk_displayname_PressTheAttack"
+                },
+                "primaryRuneTree": {
+                    "displayName": "Precisão",
+                    "id": 8000,
+                    "rawDescription": "perkstyle_tooltip_7201",
+                    "rawDisplayName": "perkstyle_displayname_7201"
+                },
+                "secondaryRuneTree": {
+                    "displayName": "Determinação",
+                    "id": 8400,
+                    "rawDescription": "perkstyle_tooltip_7204",
+                    "rawDisplayName": "perkstyle_displayname_7204"
+                }
+            },
+            "scores": {
+                "assists": 0,
+                "creepScore": 0,
+                "deaths": 0,
+                "kills": 0,
+                "wardScore": 0.0
+            },
+            "skinID": 29,
+            "skinName": "Neeko Feiticeira",
+            "summonerName": "Giga Gnar#BRZL",
+            "summonerSpells": {
+                "summonerSpellOne": {
+                    "displayName": "Flash",
+                    "rawDescription": "GeneratedTip_SummonerSpell_SummonerFlash_Description",
+                    "rawDisplayName": "GeneratedTip_SummonerSpell_SummonerFlash_DisplayName"
+                },
+                "summonerSpellTwo": {
+                    "displayName": "Incendiar",
+                    "rawDescription": "GeneratedTip_SummonerSpell_SummonerDot_Description",
+                    "rawDisplayName": "GeneratedTip_SummonerSpell_SummonerDot_DisplayName"
+                }
+            },
+            "team": "ORDER"
+        },
+        {
+            "championName": "Cho'Gath",
+            "isBot": true,
+            "isDead": false,
+            "items": [
+                {
+                    "canUse": false,
+                    "consumable": false,
+                    "count": 1,
+                    "displayName": "Escudo de Doran",
+                    "itemID": 1054,
+                    "price": 450,
+                    "rawDescription": "GeneratedTip_Item_1054_Description",
+                    "rawDisplayName": "Item_1054_Name",
+                    "slot": 0
+                },
+                {
+                    "canUse": true,
+                    "consumable": false,
+                    "count": 1,
+                    "displayName": "Sentinela Invisível",
+                    "itemID": 3340,
+                    "price": 0,
+                    "rawDescription": "GeneratedTip_Item_3340_Description",
+                    "rawDisplayName": "Item_3340_Name",
+                    "slot": 6
+                }
+            ],
+            "level": 1,
+            "position": "MIDDLE",
+            "rawChampionName": "game_character_displayname_Chogath",
+            "rawSkinName": "game_character_skin_displayname_Chogath_0",
+            "respawnTimer": 0.0,
+            "riotId": "Chogath#BOT",
+            "riotIdGameName": "Chogath",
+            "riotIdTagLine": "BOT",
+            "runes": {
+                "keystone": {
+                    "displayName": "Cometa Arcano",
+                    "id": 8229,
+                    "rawDescription": "perk_tooltip_ArcaneComet",
+                    "rawDisplayName": "perk_displayname_ArcaneComet"
+                },
+                "primaryRuneTree": {
+                    "displayName": "Feitiçaria",
+                    "id": 8200,
+                    "rawDescription": "perkstyle_tooltip_7202",
+                    "rawDisplayName": "perkstyle_displayname_7202"
+                },
+                "secondaryRuneTree": {
+                    "displayName": "Dominação",
+                    "id": 8100,
+                    "rawDescription": "perkstyle_tooltip_7200",
+                    "rawDisplayName": "perkstyle_displayname_7200"
+                }
+            },
+            "scores": {
+                "assists": 0,
+                "creepScore": 0,
+                "deaths": 0,
+                "kills": 0,
+                "wardScore": 0.0
+            },
+            "skinID": 0,
+            "skinName": "",
+            "summonerName": "Cho'Gath Bot",
+            "summonerSpells": {
+                "summonerSpellOne": {
+                    "displayName": "Flash",
+                    "rawDescription": "GeneratedTip_SummonerSpell_SummonerFlash_Description",
+                    "rawDisplayName": "GeneratedTip_SummonerSpell_SummonerFlash_DisplayName"
+                },
+                "summonerSpellTwo": {
+                    "displayName": "Teleporte",
+                    "rawDescription": "GeneratedTip_SummonerSpell_SummonerTeleport_Description",
+                    "rawDisplayName": "GeneratedTip_SummonerSpell_SummonerTeleport_DisplayName"
+                }
+            },
+            "team": "CHAOS"
+        }
+    ],
+    "events": {
+        "Events": [
+            {
+                "EventID": 0,
+                "EventName": "GameStart",
+                "EventTime": 0.024643799290060998
+            },
+            {
+                "EventID": 1,
+                "EventName": "MinionsSpawning",
+                "EventTime": 65.04185485839844
+            }
+        ]
+    },
+    "gameData": {
+        "gameMode": "PRACTICETOOL",
+        "gameTime": 168.7906036376953,
+        "mapName": "Map11",
+        "mapNumber": 11,
+        "mapTerrain": "Default"
+    }
+}
