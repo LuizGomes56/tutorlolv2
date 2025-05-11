@@ -9,7 +9,6 @@ use server::{
 
 use actix_web::{App, HttpServer, web::Data};
 use dotenvy::dotenv;
-use services::setup::setup_champion_cache;
 use sqlx::{Pool, Postgres, postgres::PgPoolOptions};
 
 pub struct AppState {
@@ -18,10 +17,6 @@ pub struct AppState {
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    // setup_champion_cache();
-
-    // return Ok(());
-
     dotenv().ok();
 
     let dsn = std::env::var("DATABASE_URL").expect("DATABASE_URL não definida no ambiente");

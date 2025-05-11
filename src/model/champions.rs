@@ -1,8 +1,10 @@
 #![allow(dead_code)]
 
-use serde::Deserialize;
+use std::collections::HashMap;
 
-#[derive(Deserialize)]
+use serde::{Deserialize, Serialize};
+
+#[derive(Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub(crate) struct StatsMap {
     pub flat: f64,
@@ -11,7 +13,7 @@ pub(crate) struct StatsMap {
     pub percent_per_level: f64,
 }
 
-#[derive(Deserialize)]
+#[derive(Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub(crate) struct Stats {
     pub health: StatsMap,
@@ -39,6 +41,7 @@ pub(crate) struct Modifiers {
 
 #[derive(Deserialize)]
 pub(crate) struct ModifierLike {
+    pub attribute: Option<String>,
     pub modifiers: Vec<Modifiers>,
 }
 
@@ -49,7 +52,7 @@ pub(crate) struct Effect {
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub(crate) struct Ability {
+pub(crate) struct CdnAbility {
     pub cooldown: Option<ModifierLike>,
     pub damage_type: Option<String>,
     pub effects: Vec<Effect>,
@@ -60,11 +63,11 @@ pub(crate) struct Ability {
 #[derive(Deserialize)]
 #[serde(rename_all = "UPPERCASE")]
 pub(crate) struct Abilities {
-    pub p: Vec<Ability>,
-    pub q: Vec<Ability>,
-    pub w: Vec<Ability>,
-    pub e: Vec<Ability>,
-    pub r: Vec<Ability>,
+    pub p: Vec<CdnAbility>,
+    pub q: Vec<CdnAbility>,
+    pub w: Vec<CdnAbility>,
+    pub e: Vec<CdnAbility>,
+    pub r: Vec<CdnAbility>,
 }
 
 #[derive(Deserialize)]
@@ -76,4 +79,22 @@ pub struct CdnChampion {
     pub stats: Stats,
     pub abilities: Abilities,
     pub positions: Vec<String>,
+}
+
+#[derive(Serialize, Deserialize, Clone)]
+pub struct Ability {
+    pub damage_type: String,
+    pub damages_in_area: bool,
+    pub minimum_damage: Vec<String>,
+    pub maximum_damage: Vec<String>,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct Champion {
+    pub name: String,
+    pub adaptative_type: String,
+    pub attack_type: String,
+    pub positions: Vec<String>,
+    pub stats: Stats,
+    pub abilities: HashMap<String, Ability>,
 }
