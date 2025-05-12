@@ -52,8 +52,8 @@ pub async fn realtime_handler(state: Data<AppState>, body: Json<RealtimeBody>) -
         }
         Err(e) => HttpResponse::NotFound().json(APIResponse {
             success: false,
-            message: "Houve uma falha ao encontrar registros no banco de dados".to_string(),
-            data: format!("\"stage\": \"First Query\", \"error\": {}", e),
+            message: "No registers were found in the database.".to_string(),
+            data: e.to_string(),
         }),
     }
 }

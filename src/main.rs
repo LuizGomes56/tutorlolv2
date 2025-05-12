@@ -9,6 +9,7 @@ use server::{
 
 use actix_web::{App, HttpServer, web::Data};
 use dotenvy::dotenv;
+use services::setup::setup_champion_cache;
 use sqlx::{Pool, Postgres, postgres::PgPoolOptions};
 
 pub struct AppState {
@@ -17,10 +18,14 @@ pub struct AppState {
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+    setup_champion_cache();
+
+    return Ok(());
+
     dotenv().ok();
 
-    let dsn = std::env::var("DATABASE_URL").expect("DATABASE_URL não definida no ambiente");
-    let port = std::env::var("PORT").expect("PORT não definida no ambiente");
+    let dsn = std::env::var("DATABASE_URL").expect("DATABASE_URL is not set in the environment");
+    let port = std::env::var("PORT").expect("PORT is not set in the environment");
 
     let host = format!("127.0.0.1:{}", port);
 
@@ -28,7 +33,7 @@ async fn main() -> std::io::Result<()> {
         .max_connections(5)
         .connect(&dsn)
         .await
-        .expect("Erro ao conectar ao banco de dados");
+        .expect("Error when trying to connect to the database");
 
     HttpServer::new(move || {
         App::new()
@@ -39,7 +44,7 @@ async fn main() -> std::io::Result<()> {
             .service(update_items)
     })
     .bind(host)
-    .expect("A porta do servidor não foi definida")
+    .expect("Some error has ocurred when starting the server")
     .run()
     .await
 }

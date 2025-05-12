@@ -1,41 +1,84 @@
 # TutorLoL v2
 
-A versão inicial feita em JavaScript, também a mais poderosa, já está a mais de 2 anos sem nenhum tipo de atualização, enquanto que a versão atual em produção, feita em TypeScript não é atualizada a 9 meses. Então, esse projeto está destinado a se tornar tão poderosa quanto a versão em JavaScript, e com mais algumas features.
+> 🔧 Projeto de reimplementação completa em **Rust**, com foco em performance, automação e concorrência.
 
-## Objetivos
+As versões anteriores do TutorLoL, em JavaScript e TypeScript (privadas), estão desatualizadas:
 
-### Update automático
+- A versão **JavaScript**, a mais poderosa até então, está há **2+ anos sem updates**.
+- A versão **TypeScript** (atualmente em produção) está parada há **9 meses**.
 
-O principal problema referente às versões já construídas é o fato de elas serem incapazes de se atualizar por completo de forma automática. No momento, é necessário ir manualmente em cada arquivo `.json`, verificando as atualizações que foram feitas nos últimos patchs, o que é um trabalho exaustivo e repetitivo, pois o jogo se atualiza a cada 2 semanas.
+Versões públicas (protótipos, com resultados pouco confiáveis):
 
-<b>Solução</b>
-- Criar um WebScrapper para a Wiki oficial do jogo e atualizar de forma automática todos os arquivos `.json`.
-- Verificação diária automática da versão do jogo, e quando uma mudança for detectada, o APP se atualizar automaticamente.
-- Uso de green threads para acelerar o tempo de atualização dos arquivos `.json`. Estimado reduzir de 1h15m (parcial) para 2 minutos (Completo)
+- [GORemakeTutorLoL](https://github.com/LuizGomes56/GORemakeTutorLoL)
+- [RSRemakeTutorLoL](https://github.com/LuizGomes56/RSRemakeTutorLoL)
 
-### Velocidade
+🎯 O objetivo desta versão é **superar ambas** — combinando a performance do Rust com automação e arquitetura moderna.
 
-As versões atuais se restringem a um tempo mínimo de 1s para cada requisição pois JavaScript não suporta multiplos threads, o que faz com que o app fique lento caso haja várias requisições simultâneas.
+- Web Assembly (Wasm) com `Yew` + `wasm-bindgen`
 
-### Aprendizado
+---
 
-- Compreender melhor uso de memória e referências (Evitar cópias desnecessárias)
-- Uso restrito de bibliotecas. As calculadoras não podem usar recursos externos. Requisições HTTP usarão AWC. RegEx não é permitido.
-- Implementar traits e métodos aos structs
-- Implementar concorrência para resolver cálculos em paralelo
-- lazy_static!, once_cell, mutexes, Arc, RwLock, e estruturas thread-safe para leitura.
+## 🚀 Objetivos Principais
 
-## Requerimentos do app
+### 📦 Atualização automática
 
-- Calcular o dano separado de cada habilidade, item, runa, trait, para cada personagem
-- Mostrar a diferença com a adição de um item
-- Permitir acumular o resultado de cada dano de forma individual
-- <span style="color:rgb(148, 237, 250)">[Opcional]</span> Incluir ganho de vida com base no roubo de vida
-- <span style="color:rgb(148, 237, 250)">[Opcional]</span> Estimar tempo de combate
-- <span style="color:rgb(148, 237, 250)">[Opcional]</span> Avaliar qual jogador está na frente.
-- <span style="color:rgb(148, 237, 250)">[Opcional]</span> Calcular DPS de forma objetiva
-- <span style="color:rgb(148, 237, 250)">[Opcional]</span> Estimar qual o melhor item para se comprar com base no momento
-- <span style="color:rgb(148, 237, 250)">[Opcional]</span> Avaliar o valor de cada item em porcentagem, baseado no contexto atual
-- <span style="color:rgb(148, 237, 250)">[Opcional]</span> Identificar a diferença que a adição de um dragão para o outro time causaria
-- <span style="color:rgb(250, 201, 148)">[NEW]</span> Tentar estimar o dano que o inimigo causaria ao próprio jogador
-- <span style="color:rgb(250, 201, 148)">[NEW]</span> Estimar quem provavelmente venceria, qual time está na ganhando/perdendo
+**Problema**: Atualizar os arquivos `.json` manualmente a cada patch (~2 semanas) é repetitivo e ineficiente.
+
+**Soluções planejadas:**
+
+- 🔁 Verificação automática da versão do jogo (diária)
+- ⚡ Atualização reativa dos `.json` ao detectar mudanças
+- 🧵 Uso de *green threads* (`tokio::spawn`) para paralelismo  
+  ⏱️ Estimativa de ganho: de **1h15m (parcial)** ⟶ **2 minutos (completo)****
+
+---
+
+### ⚡ Velocidade
+
+- JavaScript não suporta multithreading nativo. Cada requisição leva **~1 segundo**, mesmo com cache.
+- Em Rust, com `tokio`, cada cálculo poderá rodar em paralelo, com overhead mínimo.
+
+---
+
+### 🧪 Aprendizado e Técnicas
+
+- Otimização de alocação e uso de referências (`&T` vs `T`)
+- Implementação de `traits`, `impl`, métodos e padrão idiomático Rust
+- Evitar cópias desnecessárias (`clone`)
+- Concorrência real com `tokio`, `Arc`, `Mutex`, `RwLock`
+- Uso de `once_cell`, `lazy_static!`, `parking_lot`, etc.
+
+---
+
+## 📋 Requisitos do Aplicativo
+
+- ✅ Calcular o **dano individual** de cada:
+  - habilidade, item, runa, trait
+- 🔄 Mostrar a **diferença antes/depois** de aplicar um item
+- 📚 Permitir **acúmulo de dano** por fonte
+- 💡 *Recursos opcionais*:
+
+<table>
+  <tr><td>🩸</td><td>Calcular <b>ganho de vida</b> por roubo de vida</td></tr>
+  <tr><td>⏱️</td><td>Estimar <b>tempo de combate</b></td></tr>
+  <tr><td>📊</td><td>Determinar <b>quem está ganhando</b></td></tr>
+  <tr><td>💥</td><td>Calcular <b>DPS objetivo</b></td></tr>
+  <tr><td>🛍️</td><td>Sugerir <b>melhor item</b> para o momento</td></tr>
+  <tr><td>📈</td><td>Avaliar <b>valor percentual</b> de cada item</td></tr>
+  <tr><td>🐉</td><td>Identificar impacto de um <b>dragão</b> no jogo</td></tr>
+  <tr><td style="color:orange;">🆕</td><td><b>Estimar dano do inimigo</b> contra o jogador</td></tr>
+  <tr><td style="color:orange;">🆕</td><td><b>Simular lutas</b> para prever o provável vencedor</td></tr>
+</table>
+
+---
+
+## Status atual
+
+- [x] Estrutura de projeto em Rust
+- [ ] Monitoramento do meta de forma automatizada
+- [x] Sistema de cache automatizado
+- [ ] Calculo básico de itens, habilidades e runas
+- [ ] Avaliação de itens e builds
+- [ ] WASM
+
+---

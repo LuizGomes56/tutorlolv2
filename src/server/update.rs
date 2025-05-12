@@ -8,7 +8,7 @@ pub async fn setup_project() -> impl Responder {
     setup_champion_cache();
     HttpResponse::Ok().json(APIResponse {
         success: true,
-        message: "Project folders setup up successfully".to_string(),
+        message: "Project is ready".to_string(),
         data: "client updated".to_string(),
     })
 }
