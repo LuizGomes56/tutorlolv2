@@ -18,6 +18,7 @@ pub struct AppState {
     db: Pool<Postgres>,
 }
 
+#[allow(unreachable_code)]
 #[main]
 async fn main() -> Result<()> {
     setup_champion_cache();

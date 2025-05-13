@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 use crate::model::champions::{CdnChampion, Modifiers};
 use regex::Regex;
 use serde::de::DeserializeOwned;
@@ -84,8 +86,12 @@ pub fn setup_champion_cache() {
         fs::read_dir("cache/cdn/champions").expect("Unable to read directory cache/cdn/champions");
 
     for file in files {
-        let path = file.unwrap().path();
-        generate_champion_file(path.to_str().expect("Failed to convert path to string"));
+        let path_name = file.unwrap().path();
+        generate_champion_file(
+            path_name
+                .to_str()
+                .expect("Failed to convert path to string"),
+        );
     }
 }
 
@@ -104,6 +110,174 @@ fn generate_champion_file(path_name: &str) {
     let champion: Option<Champion> = match name {
         "Aatrox" => Some(aatrox::transform(result)),
         "Ahri" => Some(ahri::transform(result)),
+        "Akali" => Some(akali::transform(result)),
+        // "Akshan" => Some(akshan::transform(result)),
+        // "Alistar" => Some(alistar::transform(result)),
+        // "Ambessa" => Some(ambessa::transform(result)),
+        // "Amumu" => Some(amumu::transform(result)),
+        // "Anivia" => Some(anivia::transform(result)),
+        // "Annie" => Some(annie::transform(result)),
+        // "Aphelios" => Some(aphelios::transform(result)),
+        // "Ashe" => Some(ashe::transform(result)),
+        // "AurelionSol" => Some(aurelionsol::transform(result)),
+        // "Aurora" => Some(aurora::transform(result)),
+        // "Azir" => Some(azir::transform(result)),
+        // "Bard" => Some(bard::transform(result)),
+        // "Belveth" => Some(belveth::transform(result)),
+        // "Blitzcrank" => Some(blitzcrank::transform(result)),
+        // "Brand" => Some(brand::transform(result)),
+        // "Braum" => Some(braum::transform(result)),
+        // "Briar" => Some(briar::transform(result)),
+        // "Caitlyn" => Some(caitlyn::transform(result)),
+        // "Camille" => Some(camille::transform(result)),
+        // "Cassiopeia" => Some(cassiopeia::transform(result)),
+        // "Chogath" => Some(chogath::transform(result)),
+        // "Corki" => Some(corki::transform(result)),
+        // "Darius" => Some(darius::transform(result)),
+        // "Diana" => Some(diana::transform(result)),
+        // "Draven" => Some(draven::transform(result)),
+        // "DrMundo" => Some(drmundo::transform(result)),
+        // "Ekko" => Some(ekko::transform(result)),
+        // "Elise" => Some(elise::transform(result)),
+        // "Evelynn" => Some(evelynn::transform(result)),
+        // "Ezreal" => Some(ezreal::transform(result)),
+        // "Fiddlesticks" => Some(fiddlesticks::transform(result)),
+        // "Fiora" => Some(fiora::transform(result)),
+        // "Fizz" => Some(fizz::transform(result)),
+        // "Galio" => Some(galio::transform(result)),
+        // "Gangplank" => Some(gangplank::transform(result)),
+        // "Garen" => Some(garen::transform(result)),
+        // "Gnar" => Some(gnar::transform(result)),
+        // "Gragas" => Some(gragas::transform(result)),
+        // "Graves" => Some(graves::transform(result)),
+        // "Gwen" => Some(gwen::transform(result)),
+        // "Hecarim" => Some(hecarim::transform(result)),
+        // "Heimerdinger" => Some(heimerdinger::transform(result)),
+        // "Hwei" => Some(hwei::transform(result)),
+        // "Illaoi" => Some(illaoi::transform(result)),
+        // "Irelia" => Some(irelia::transform(result)),
+        // "Ivern" => Some(ivern::transform(result)),
+        // "Janna" => Some(janna::transform(result)),
+        // "JarvanIV" => Some(jarvaniv::transform(result)),
+        // "Jax" => Some(jax::transform(result)),
+        // "Jayce" => Some(jayce::transform(result)),
+        // "Jhin" => Some(jhin::transform(result)),
+        // "Jinx" => Some(jinx::transform(result)),
+        // "Kaisa" => Some(kaisa::transform(result)),
+        // "Kalista" => Some(kalista::transform(result)),
+        // "Karma" => Some(karma::transform(result)),
+        // "Karthus" => Some(karthus::transform(result)),
+        // "Kassadin" => Some(kassadin::transform(result)),
+        // "Katarina" => Some(katarina::transform(result)),
+        // "Kayle" => Some(kayle::transform(result)),
+        // "Kayn" => Some(kayn::transform(result)),
+        // "Kennen" => Some(kennen::transform(result)),
+        // "Khazix" => Some(khazix::transform(result)),
+        // "Kindred" => Some(kindred::transform(result)),
+        // "Kled" => Some(kled::transform(result)),
+        // "KogMaw" => Some(kogmaw::transform(result)),
+        // "KSante" => Some(ksante::transform(result)),
+        // "Leblanc" => Some(leblanc::transform(result)),
+        // "LeeSin" => Some(leesin::transform(result)),
+        // "Leona" => Some(leona::transform(result)),
+        // "Lillia" => Some(lillia::transform(result)),
+        // "Lissandra" => Some(lissandra::transform(result)),
+        // "Lucian" => Some(lucian::transform(result)),
+        // "Lulu" => Some(lulu::transform(result)),
+        // "Lux" => Some(lux::transform(result)),
+        // "Malphite" => Some(malphite::transform(result)),
+        // "Malzahar" => Some(malzahar::transform(result)),
+        // "Maokai" => Some(maokai::transform(result)),
+        // "MasterYi" => Some(masteryi::transform(result)),
+        // "Mel" => Some(mel::transform(result)),
+        // "Milio" => Some(milio::transform(result)),
+        // "MissFortune" => Some(missfortune::transform(result)),
+        // "MonkeyKing" => Some(monkeyking::transform(result)),
+        // "Mordekaiser" => Some(mordekaiser::transform(result)),
+        // "Morgana" => Some(morgana::transform(result)),
+        // "Naafiri" => Some(naafiri::transform(result)),
+        // "Nami" => Some(nami::transform(result)),
+        // "Nasus" => Some(nasus::transform(result)),
+        // "Nautilus" => Some(nautilus::transform(result)),
+        // "Neeko" => Some(neeko::transform(result)),
+        // "Nidalee" => Some(nidalee::transform(result)),
+        // "Nilah" => Some(nilah::transform(result)),
+        // "Nocturne" => Some(nocturne::transform(result)),
+        // "Nunu" => Some(nunu::transform(result)),
+        // "Olaf" => Some(olaf::transform(result)),
+        // "Orianna" => Some(orianna::transform(result)),
+        // "Ornn" => Some(ornn::transform(result)),
+        // "Pantheon" => Some(pantheon::transform(result)),
+        // "Poppy" => Some(poppy::transform(result)),
+        // "Pyke" => Some(pyke::transform(result)),
+        // "Qiyana" => Some(qiyana::transform(result)),
+        // "Quinn" => Some(quinn::transform(result)),
+        // "Rakan" => Some(rakan::transform(result)),
+        // "Rammus" => Some(rammus::transform(result)),
+        // "RekSai" => Some(reksai::transform(result)),
+        // "Rell" => Some(rell::transform(result)),
+        // "Renata" => Some(renata::transform(result)),
+        // "Renekton" => Some(renekton::transform(result)),
+        // "Rengar" => Some(rengar::transform(result)),
+        // "Riven" => Some(riven::transform(result)),
+        // "Rumble" => Some(rumble::transform(result)),
+        // "Ryze" => Some(ryze::transform(result)),
+        // "Samira" => Some(samira::transform(result)),
+        // "Sejuani" => Some(sejuani::transform(result)),
+        // "Senna" => Some(senna::transform(result)),
+        // "Seraphine" => Some(seraphine::transform(result)),
+        // "Sett" => Some(sett::transform(result)),
+        // "Shaco" => Some(shaco::transform(result)),
+        // "Shen" => Some(shen::transform(result)),
+        // "Shyvana" => Some(shyvana::transform(result)),
+        // "Singed" => Some(singed::transform(result)),
+        // "Sion" => Some(sion::transform(result)),
+        // "Sivir" => Some(sivir::transform(result)),
+        // "Skarner" => Some(skarner::transform(result)),
+        // "Smolder" => Some(smolder::transform(result)),
+        // "Sona" => Some(sona::transform(result)),
+        // "Soraka" => Some(soraka::transform(result)),
+        // "Swain" => Some(swain::transform(result)),
+        // "Sylas" => Some(sylas::transform(result)),
+        // "Syndra" => Some(syndra::transform(result)),
+        // "TahmKench" => Some(tahmkench::transform(result)),
+        // "Taliyah" => Some(taliyah::transform(result)),
+        // "Talon" => Some(talon::transform(result)),
+        // "Taric" => Some(taric::transform(result)),
+        // "Teemo" => Some(teemo::transform(result)),
+        // "Thresh" => Some(thresh::transform(result)),
+        // "Tristana" => Some(tristana::transform(result)),
+        // "Trundle" => Some(trundle::transform(result)),
+        // "Tryndamere" => Some(tryndamere::transform(result)),
+        // "TwistedFate" => Some(twistedfate::transform(result)),
+        // "Twitch" => Some(twitch::transform(result)),
+        // "Udyr" => Some(udyr::transform(result)),
+        // "Urgot" => Some(urgot::transform(result)),
+        // "Varus" => Some(varus::transform(result)),
+        // "Vayne" => Some(vayne::transform(result)),
+        // "Veigar" => Some(veigar::transform(result)),
+        // "Velkoz" => Some(velkoz::transform(result)),
+        // "Vex" => Some(vex::transform(result)),
+        // "Vi" => Some(vi::transform(result)),
+        // "Viego" => Some(viego::transform(result)),
+        // "Viktor" => Some(viktor::transform(result)),
+        // "Vladimir" => Some(vladimir::transform(result)),
+        // "Volibear" => Some(volibear::transform(result)),
+        // "Warwick" => Some(warwick::transform(result)),
+        // "Xayah" => Some(xayah::transform(result)),
+        // "Xerath" => Some(xerath::transform(result)),
+        // "XinZhao" => Some(xinzhao::transform(result)),
+        // "Yasuo" => Some(yasuo::transform(result)),
+        // "Yone" => Some(yone::transform(result)),
+        // "Yorick" => Some(yorick::transform(result)),
+        // "Yuumi" => Some(yuumi::transform(result)),
+        // "Zac" => Some(zac::transform(result)),
+        // "Zed" => Some(zed::transform(result)),
+        // "Zeri" => Some(zeri::transform(result)),
+        // "Ziggs" => Some(ziggs::transform(result)),
+        // "Zilean" => Some(zilean::transform(result)),
+        // "Zoe" => Some(zoe::transform(result)),
+        // "Zyra" => Some(zyra::transform(result)),
         _ => None,
     };
 
@@ -118,49 +292,104 @@ fn generate_champion_file(path_name: &str) {
 
 // Replaces common keys found in the API with the corresponding ones used internally
 pub(super) fn replace_keys(s: &str) -> String {
-    let mut new_str = s.to_string();
-
-    let replacement_tuples = vec![
+    let replacements = [
         ("target's maximum health", "ENEMY_MAX_HEALTH"),
         ("target's current health", "ENEMY_CURRENT_HEALTH"),
         ("target's missing health", "ENEMY_MISSING_HEALTH"),
         ("bonus ad", "BONUS_AD"),
     ];
-    for (old, new) in replacement_tuples {
-        new_str = s.replace(old, new)
-    }
-    new_str
+
+    replacements
+        .iter()
+        .fold(s.to_string(), |acc, (old, new)| acc.replace(old, new))
 }
 
-// Takes a string with the match "{number}% : {number}%" and returns the numeric values
+// Takes a string with the match "{number} : {number}" and returns the numeric values
 // Might return nothing if no values are found, or a tuple is malformed
-pub(super) fn extract_percentage_range(input: &str) -> Option<(f64, f64)> {
-    let re = Regex::new(r"(\d+(?:\.\d+)?)%\s*[:\--]?\s*(\d+(?:\.\d+)?)%").ok()?;
-
+pub(super) fn extract_range_values(input: &str) -> Option<(f64, f64)> {
+    let re = Regex::new(r"(\d+(?:\.\d+)?)(%)?\s*[:\-–]\s*(\d+(?:\.\d+)?)(%)?").ok()?;
     let caps = re.captures(input)?;
 
-    let first = caps.get(1)?.as_str().parse::<f64>().ok()? / 100.0;
-    let second = caps.get(2)?.as_str().parse::<f64>().ok()? / 100.0;
+    let first = caps.get(1)?.as_str().parse::<f64>().ok()?;
+    let second = caps.get(3)?.as_str().parse::<f64>().ok()?;
 
-    Some((first, second))
+    let first_is_percent = caps.get(2).is_some();
+    let second_is_percent = caps.get(4).is_some();
+
+    let denom1 = if first_is_percent { 100.0 } else { 1.0 };
+    let denom2 = if second_is_percent { 100.0 } else { 1.0 };
+
+    Some((first / denom1, second / denom2))
+}
+
+pub(super) fn extract_passive_bounds(
+    data: &CdnChampion,
+    indexes: (usize, usize),
+) -> (&CdnAbility, (f64, f64)) {
+    let (ability_index, effect_index) = indexes;
+
+    let passive = data
+        .abilities
+        .p
+        .get(ability_index)
+        .expect("ability_index is invalid.");
+
+    let passive_effects = passive
+        .effects
+        .get(effect_index)
+        .expect("effect_index is invalid.")
+        .description
+        .clone();
+
+    let passive_bounds = extract_range_values(&passive_effects)
+        .expect("Couldn't extract numeric values for passive.");
+
+    (passive, passive_bounds)
+}
+
+pub(super) fn extract_scaled_values(input: &str) -> String {
+    let re = Regex::new(r"\(([^)]+)\)").unwrap();
+    let mut result = Vec::new();
+    for cap in re.captures_iter(input) {
+        let content = cap[1].trim();
+        if content.to_lowercase().contains("based on level") {
+            continue;
+        }
+        let cleaned = content.trim_start_matches('+').trim();
+        let parts: Vec<&str> = cleaned.split_whitespace().collect();
+        if parts.len() >= 2 && parts[0].ends_with('%') {
+            if let Ok(percent) = parts[0].trim_end_matches('%').parse::<f64>() {
+                let decimal = percent / 100.0;
+                let rest = parts[1..].join(" ");
+                result.push(format!("({} * {})", decimal, rest));
+                continue;
+            }
+        }
+        result.push(format!("({})", cleaned));
+    }
+    for value in result.iter_mut() {
+        *value = replace_keys(value);
+    }
+    result.join(" + ")
 }
 
 // Useful for passives where scalling is linear over all 18 levels.
 // Returns the array with the values for each level adjusted
-pub(super) fn extract_as_linear_range(
+pub(super) fn assign_as_linear_range(
     bounds: (f64, f64),
     size: usize,
-    postfix: &str,
+    postfix: Option<&str>,
 ) -> Vec<String> {
     let mut result = Vec::<String>::new();
-
     let (start, end) = bounds;
-
     for i in 0..size {
         let value = start + (((end - start) * (i as f64)) / (size as f64 - 1.0));
-        result.push(format!("({} + {})", value, postfix));
+        if let Some(postfix) = postfix {
+            result.push(format!("({} + {})", value, postfix));
+            continue;
+        }
+        result.push(format!("{}", value));
     }
-
     result
 }
 
@@ -205,7 +434,7 @@ pub(super) enum IterationTarget {
     MAXIMUM,
 }
 
-type IteratorExtractor = HashMap<usize, HashMap<usize, (String, IterationTarget)>>;
+type IteratorExtractor<'a> = HashMap<usize, HashMap<usize, (String, &'a IterationTarget)>>;
 
 // Helper function to remove the decimal point if it's not needed, or expand floats.
 fn trim_f64(val: f64) -> String {
@@ -220,9 +449,18 @@ fn trim_f64(val: f64) -> String {
 // And assigns to the map the correct format that will be used internally.
 pub(super) fn get_from_pattern(
     data: &CdnAbility,
-    indexes: IteratorExtractor,
     map: &mut HashMap<String, Ability>,
+    pattern: &[(usize, usize, &str, IterationTarget)],
 ) {
+    let mut indexes: IteratorExtractor = HashMap::new();
+
+    for (effect_index, leveling_index, keyname, target_vector) in pattern.into_iter() {
+        indexes
+            .entry(*effect_index)
+            .or_insert(HashMap::new())
+            .insert(*leveling_index, (keyname.to_string(), target_vector));
+    }
+
     for (effect_index, leveling) in indexes {
         for (leveling_index, (keyname, target_vector)) in leveling {
             let mut minimum_damage = Vec::<String>::new();

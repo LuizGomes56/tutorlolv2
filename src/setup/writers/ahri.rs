@@ -1,62 +1,37 @@
-use std::collections::HashMap;
-
-use super::{Ability, CdnChampion, Champion, IterationTarget, get_from_pattern};
+use super::{Ability, CdnChampion, Champion, HashMap, IterationTarget, get_from_pattern};
 
 pub fn transform(data: CdnChampion) -> Champion {
     let mut abilities = HashMap::<String, Ability>::new();
 
     get_from_pattern(
         &data.abilities.q[0],
-        HashMap::from([(
-            0,
-            HashMap::from([
-                (0, (String::from("Q1"), IterationTarget::MINIMUM)),
-                (1, (String::from("Q_MAX"), IterationTarget::MAXIMUM)),
-            ]),
-        )]),
         &mut abilities,
+        &[
+            (0, 0, "Q1", IterationTarget::MINIMUM),
+            (0, 1, "Q_MAX", IterationTarget::MAXIMUM),
+        ],
     );
     get_from_pattern(
         &data.abilities.w[0],
-        HashMap::from([
-            (
-                1,
-                HashMap::from([
-                    (0, (String::from("W1"), IterationTarget::MINIMUM)),
-                    (1, (String::from("W2"), IterationTarget::MINIMUM)),
-                    (2, (String::from("W_MAX"), IterationTarget::MAXIMUM)),
-                ]),
-            ),
-            (
-                3,
-                HashMap::from([
-                    (0, (String::from("W1_MINION"), IterationTarget::MINIMUM)),
-                    (1, (String::from("W2_MINION"), IterationTarget::MINIMUM)),
-                ]),
-            ),
-        ]),
         &mut abilities,
+        &[
+            (1, 0, "W1", IterationTarget::MINIMUM),
+            (1, 1, "W2", IterationTarget::MINIMUM),
+            (1, 2, "W_MAX", IterationTarget::MAXIMUM),
+            (3, 0, "W1_MINION", IterationTarget::MINIMUM),
+            (3, 1, "W2_MINION", IterationTarget::MINIMUM),
+        ],
     );
     get_from_pattern(
         &data.abilities.e[0],
-        HashMap::from([(
-            0,
-            HashMap::from([(0, (String::from("E"), IterationTarget::MINIMUM))]),
-        )]),
         &mut abilities,
+        &[(0, 0, "E", IterationTarget::MINIMUM)],
     );
     get_from_pattern(
         &data.abilities.r[0],
-        HashMap::from([(
-            0,
-            HashMap::from([(0, (String::from("R_MIN"), IterationTarget::MINIMUM))]),
-        )]),
         &mut abilities,
+        &[(0, 0, "R_MIN", IterationTarget::MINIMUM)],
     );
-
-    for (key, _) in abilities.iter() {
-        println!("{}", key);
-    }
 
     abilities.insert(String::from("Q2"), abilities.get("Q1").unwrap().clone());
     abilities.insert(
