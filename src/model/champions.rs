@@ -47,6 +47,7 @@ pub(crate) struct ModifierLike {
 
 #[derive(Deserialize)]
 pub(crate) struct Effect {
+    pub description: String,
     pub leveling: Vec<ModifierLike>,
 }
 
@@ -58,6 +59,22 @@ pub(crate) struct CdnAbility {
     pub effects: Vec<Effect>,
     pub name: String,
     pub spell_effects: Option<String>,
+}
+
+impl CdnAbility {
+    pub fn format(&self, minimum_damage: Vec<String>, maximum_damage: Vec<String>) -> Ability {
+        Ability {
+            damage_type: self.damage_type.clone().unwrap_or_default(),
+            damages_in_area: self
+                .damage_type
+                .as_deref()
+                .unwrap_or_default()
+                .to_lowercase()
+                .contains("aoe"),
+            minimum_damage,
+            maximum_damage,
+        }
+    }
 }
 
 #[derive(Deserialize)]
@@ -97,4 +114,17 @@ pub struct Champion {
     pub positions: Vec<String>,
     pub stats: Stats,
     pub abilities: HashMap<String, Ability>,
+}
+
+impl CdnChampion {
+    pub fn format(self, abilities: HashMap<String, Ability>) -> Champion {
+        Champion {
+            name: self.name,
+            adaptative_type: self.adaptive_type,
+            attack_type: self.attack_type,
+            positions: self.positions,
+            stats: self.stats,
+            abilities,
+        }
+    }
 }

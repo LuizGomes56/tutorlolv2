@@ -1,5 +1,5 @@
 use super::schemas::APIResponse;
-use crate::services::setup::{setup_champion_cache, setup_folders, write_champions, write_items};
+use crate::setup::base::{setup_champion_cache, setup_folders, write_champions, write_items};
 use actix_web::{HttpResponse, Responder, get};
 
 #[get("/api/setup")]

@@ -1,23 +1,25 @@
 mod model;
 mod server;
 mod services;
+mod setup;
 
 use server::{
     games::realtime_handler,
     update::{setup_project, update_champions, update_items},
 };
 
-use actix_web::{App, HttpServer, web::Data};
+use actix_web::{App, HttpServer, main, web::Data};
 use dotenvy::dotenv;
-use services::setup::setup_champion_cache;
+use setup::base::setup_champion_cache;
 use sqlx::{Pool, Postgres, postgres::PgPoolOptions};
+use std::io::Result;
 
 pub struct AppState {
     db: Pool<Postgres>,
 }
 
-#[actix_web::main]
-async fn main() -> std::io::Result<()> {
+#[main]
+async fn main() -> Result<()> {
     setup_champion_cache();
 
     return Ok(());
