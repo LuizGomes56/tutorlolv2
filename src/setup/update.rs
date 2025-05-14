@@ -1,15 +1,26 @@
 #![allow(dead_code)]
 
 use crate::model::application::GlobalCache;
-use crate::model::champions::{CdnChampion, Modifiers};
+use crate::model::champions::CdnChampion;
+use crate::model::items::{CdnItem, Item, PartialStats};
 use regex::Regex;
 use serde::de::DeserializeOwned;
 use serde_json::Value;
-use std::collections::HashMap;
-use std::path::PathBuf;
-use std::{fs, io::Write, path::Path};
+use std::{
+    collections::HashMap,
+    fs,
+    io::Write,
+    path::{Path, PathBuf},
+};
 
 use super::*;
+
+fn extract_file_name(path: &Path) -> &str {
+    path.file_name()
+        .and_then(|os_str| os_str.to_str())
+        .map(|s| s.trim_end_matches(".json"))
+        .unwrap_or_default()
+}
 
 pub async fn load_cache() -> GlobalCache {
     let champion_files: Vec<PathBuf> = fs::read_dir("src/internal/champions")
@@ -20,26 +31,37 @@ pub async fn load_cache() -> GlobalCache {
     let champion_names =
         read_from_file::<HashMap<String, String>>("src/internal/champion_names.json");
 
-    // let item_files: Vec<PathBuf> = fs::read_dir("src/internal/items")
-    //     .expect("Failed to read items")
-    //     .map(|e| e.unwrap().path())
-    //     .collect();
+    let item_files: Vec<PathBuf> = fs::read_dir("src/internal/items")
+        .expect("Failed to read items")
+        .map(|e| e.unwrap().path())
+        .collect();
+
+    let mut items = HashMap::<String, Item>::new();
+
+    for path_name in item_files {
+        let data = read_from_file::<Item>(
+            path_name
+                .to_str()
+                .expect("Failed to convert path to string"),
+        );
+        let name = extract_file_name(&path_name);
+        items.insert(String::from(name), data);
+    }
 
     let mut champions = HashMap::with_capacity(champion_files.len());
-    for path in champion_files {
-        let data =
-            read_from_file::<Champion>(path.to_str().expect("Failed to convert path to string"));
-        let name = Path::new(path.to_str().expect("Failed to convert path to string"))
-            .file_name()
-            .and_then(|os_str| os_str.to_str())
-            .unwrap_or_default()
-            .trim_end_matches(".json");
+    for path_name in champion_files {
+        let data = read_from_file::<Champion>(
+            path_name
+                .to_str()
+                .expect("Failed to convert path to string"),
+        );
+        let name = extract_file_name(&path_name);
         champions.insert(String::from(name), data);
     }
 
     GlobalCache {
         champions,
-        items: HashMap::new(),
+        items,
         champion_names,
     }
 }
@@ -93,6 +115,9 @@ pub fn setup_folders() {
         "cache/cdn/champions",
         "cache/cdn/items",
         "internal",
+        "src/internal/items",
+        "src/internal/champions",
+        "src/internal/runes",
     ] {
         let path = Path::new(dir);
         if !path.exists() {
@@ -132,275 +157,104 @@ pub fn setup_champion_cache() {
     }
 }
 
-// Takes a string with the match "{number} : {number}" and returns the numeric values
-// Might return nothing if no values are found, or a tuple is malformed
-fn extract_range_values(input: &str) -> Option<(f64, f64)> {
-    let re = Regex::new(r"(\d+(?:\.\d+)?)(%)?\s*[:\-–]\s*(\d+(?:\.\d+)?)(%)?").ok()?;
-    let caps = re.captures(input)?;
-
-    let first = caps.get(1)?.as_str().parse::<f64>().ok()?;
-    let second = caps.get(3)?.as_str().parse::<f64>().ok()?;
-
-    let first_is_percent = caps.get(2).is_some();
-    let second_is_percent = caps.get(4).is_some();
-
-    let denom1 = if first_is_percent { 100.0 } else { 1.0 };
-    let denom2 = if second_is_percent { 100.0 } else { 1.0 };
-
-    Some((first / denom1, second / denom2))
-}
-
-// Lots of passive strings match with a pattern of (number) : (number) ... (+ Scalings)
-// This function returns the first two values it found, assuming there will always be two.
-fn extract_passive_bounds(
-    data: &CdnChampion,
-    indexes: (usize, usize),
-) -> (&CdnAbility, (f64, f64)) {
-    let (ability_index, effect_index) = indexes;
-
-    let passive = data
-        .abilities
-        .p
-        .get(ability_index)
-        .expect("ability_index is invalid.");
-
-    let passive_effects = passive
-        .effects
-        .get(effect_index)
-        .expect("effect_index is invalid.")
-        .description
-        .clone();
-
-    let passive_bounds = extract_range_values(&passive_effects)
-        .expect("Couldn't extract numeric values for passive.");
-
-    (passive, passive_bounds)
-}
-
-// Gets the tuples that are in pattern (+ Scalling) and formats the string to the internal format.
-fn extract_scaled_values(input: &str) -> String {
-    let re = Regex::new(r"\(([^)]+)\)").unwrap();
-    let mut result = Vec::new();
-    for cap in re.captures_iter(input) {
-        let content = cap[1].trim();
-        if content.to_lowercase().contains("based on level") {
+// Not meant to be used frequently. Just a quick check for every
+// patch to identify if a new damaging item was added
+pub fn identify_damaging_items() {
+    fn contains_damage_outside_template(text: &str) -> bool {
+        let re = Regex::new(r"\{\{[^}]*\}\}").unwrap();
+        let cleaned = re.replace_all(text, "");
+        cleaned.contains("damage")
+    }
+    let files = fs::read_dir("cache/cdn/items").expect("Unable to read directory cache/cdn/items");
+    let mut is_damaging = Vec::new();
+    for file in files {
+        let path_buf = file.unwrap().path();
+        let path_name = path_buf.to_str().unwrap();
+        let result = read_from_file::<CdnItem>(path_name);
+        if !result.shop.purchasable {
             continue;
         }
-        let cleaned = content.trim_start_matches('+').trim();
-        let parts: Vec<&str> = cleaned.split_whitespace().collect();
-        if parts.len() >= 2 && parts[0].ends_with('%') {
-            if let Ok(percent) = parts[0].trim_end_matches('%').parse::<f64>() {
-                let decimal = percent / 100.0;
-                let rest = parts[1..].join(" ");
-                result.push(format!("({} * {})", decimal, rest));
-                continue;
-            }
-        }
-        result.push(format!("({})", cleaned));
-    }
-    result
-        .iter()
-        .map(|value| replace_keys(value))
-        .collect::<Vec<String>>()
-        .join(" + ")
-}
-
-// Useful for passives where scalling is linear over all 18 levels.
-// Returns the array with the values for each level adjusted
-fn assign_as_linear_range(bounds: (f64, f64), size: usize, postfix: Option<&str>) -> Vec<String> {
-    let mut result = Vec::<String>::new();
-    let (start, end) = bounds;
-    for i in 0..size {
-        let value = start + (((end - start) * (i as f64)) / (size as f64 - 1.0));
-        if let Some(postfix) = postfix {
-            result.push(format!("({} + {})", value, postfix));
-            continue;
-        }
-        result.push(format!("{}", value));
-    }
-    result
-}
-
-fn remove_parenthesized_additions(input: &str) -> String {
-    let re = Regex::new(r"\(\+\s*[^)]*\)").unwrap();
-    re.replace_all(input, "").to_string()
-}
-
-// Takes the default format of the API and assigns to target_vec the correct format
-// Used internally.
-fn extract_ability(modifiers: &Vec<Modifiers>, target_vec: &mut Vec<String>) {
-    if modifiers.is_empty() {
-        return;
-    }
-    let length = modifiers[0].values.len();
-    for i in 0..length {
-        let mut parts = Vec::new();
-        for modifier in modifiers {
-            let value = modifier.values[i];
-            let raw_unit = modifier.units[i].trim();
-            let scallings = extract_scaled_values(&raw_unit);
-            let unit = remove_parenthesized_additions(&raw_unit);
-            let cleaned_string = if unit.contains('%') {
-                let parts: Vec<&str> = unit.split('%').collect();
-                let suffix = parts
-                    .get(1)
-                    .map_or("".to_string(), |s| s.trim().to_string());
-                let coef = value / 100.0;
-                if coef == 1.0 && !suffix.is_empty() {
-                    suffix
-                } else if !suffix.is_empty() {
-                    format!("({} * {})", trim_f64(coef), suffix)
-                } else {
-                    format!("{}", trim_f64(coef))
+        let mut found_match = false;
+        if !result.passives.is_empty() {
+            for passive in &result.passives {
+                if contains_damage_outside_template(&passive.effects) {
+                    found_match = true;
                 }
-            } else if unit.is_empty() {
-                trim_f64(value)
-            } else {
-                format!("{}{}", trim_f64(value), unit)
-            };
-            let formatted_string = replace_keys(&cleaned_string);
-            let final_string = if scallings.is_empty() {
-                formatted_string
-            } else {
-                format!("{} + {}", formatted_string, scallings)
-            };
-            parts.push(final_string);
-        }
-        target_vec.push(parts.join(" + "));
-    }
-}
-
-pub(super) enum IterationTarget {
-    MINIMUM,
-    MAXIMUM,
-}
-
-type IteratorExtractor<'a> = HashMap<usize, HashMap<usize, (String, &'a IterationTarget)>>;
-
-// Helper function to remove the decimal point if it's not needed, or expand floats.
-fn trim_f64(val: f64) -> String {
-    if val.fract() == 0.0 {
-        format!("{:.0}", val)
-    } else {
-        format!("{}", val)
-    }
-}
-
-// Takes a pattern of [Index on Vec<Effect>], [Index on Vec<Leveling>], [(Keyname, Max/Min)]
-// And assigns to the map the correct format that will be used internally.
-pub(super) fn get_from_pattern(
-    data: &CdnAbility,
-    map: &mut HashMap<String, Ability>,
-    pattern: &[(usize, usize, &str, IterationTarget)],
-) {
-    let mut indexes: IteratorExtractor = HashMap::new();
-
-    for (effect_index, leveling_index, keyname, target_vector) in pattern.into_iter() {
-        indexes
-            .entry(*effect_index)
-            .or_insert(HashMap::new())
-            .insert(*leveling_index, (keyname.to_string(), target_vector));
-    }
-
-    for (effect_index, leveling) in indexes {
-        for (leveling_index, (keyname, target_vector)) in leveling {
-            let mut minimum_damage = Vec::<String>::new();
-            let mut maximum_damage = Vec::<String>::new();
-
-            let effects = data
-                .effects
-                .get(effect_index)
-                .expect("Effect index passed is wrong.");
-
-            let modifiers = &effects
-                .leveling
-                .get(leveling_index)
-                .expect("Leveling index passed is wrong.")
-                .modifiers;
-
-            match target_vector {
-                IterationTarget::MINIMUM => extract_ability(modifiers, &mut minimum_damage),
-                IterationTarget::MAXIMUM => extract_ability(modifiers, &mut maximum_damage),
             }
-
-            map.insert(keyname, data.format(minimum_damage, maximum_damage));
+        }
+        if !result.active.is_empty() {
+            for active in &result.active {
+                if contains_damage_outside_template(&active.effects) {
+                    found_match = true;
+                }
+            }
+        }
+        if found_match {
+            is_damaging.push(result.id);
         }
     }
-}
-
-// Takes the reference of the description of one ability, the reference vector
-// where data will be written at, and adds the tuples of scalling found.
-fn assign_scalings(description: &String, ref_vec: &mut Vec<String>) {
-    if description.is_empty() {
-        return;
-    }
-    let scalings = extract_scaled_values(&description);
-    ref_vec.iter_mut().for_each(|dmg| {
-        *dmg = format!("{} + {}", dmg, scalings);
-    });
-}
-
-// Easier way to get passive damage when the standard format matches.
-// data -> the reference to the data passed to the caller function.
-// indexes -> the (ability_index, effect_index) of the description string to be extracted.
-// postfix -> optional hardcoded string to be added after each matching in final Vec<String>
-// scalings -> optional index where the description string can be found to get passive's scallings
-// target_vec -> determines if final ocurrence will be written in Minimum or Maximum vector
-// keyname -> name of the key to be added in the map after final Vec<String> is created
-// map -> reference to the map created internally by the caller function. (Must be created)
-pub(super) fn get_passive_damage(
-    data: &CdnChampion,
-    indexes: (usize, usize),
-    postfix: Option<&str>,
-    scalings: Option<usize>,
-    target_vec: &IterationTarget,
-    keyname: &str,
-    map: &mut HashMap<String, Ability>,
-) {
-    let mut minimum_damage = Vec::<String>::new();
-    let mut maximum_damage = Vec::<String>::new();
-
-    let (passive, passive_bounds) = extract_passive_bounds(&data, indexes);
-
-    let mut description = &String::new();
-
-    if let Some(scalings) = scalings {
-        description = &passive.effects[scalings].description;
-    }
-
-    match target_vec {
-        IterationTarget::MINIMUM => {
-            minimum_damage = assign_as_linear_range(passive_bounds, 18, postfix);
-            assign_scalings(&description, &mut minimum_damage);
-        }
-        IterationTarget::MAXIMUM => {
-            maximum_damage = assign_as_linear_range(passive_bounds, 18, postfix);
-            assign_scalings(&description, &mut minimum_damage);
-        }
-    };
-
-    map.insert(
-        String::from(keyname),
-        passive.format(minimum_damage, maximum_damage),
+    is_damaging.sort();
+    write_to_file(
+        "src/internal/damaging_items.json",
+        serde_json::to_string_pretty(&is_damaging)
+            .unwrap()
+            .as_bytes(),
     );
 }
 
-// Replaces common keys found in the API with the corresponding ones used internally
-pub(super) fn replace_keys(s: &str) -> String {
-    let replacements = [
-        ("of target's maximum health", "ENEMY_MAX_HEALTH"),
-        ("target's current health", "ENEMY_CURRENT_HEALTH"),
-        ("target's missing health", "ENEMY_MISSING_HEALTH"),
-        ("per Feast stack", "CHOGATH_STACKS"),
-        ("bonus AD", "BONUS_AD"),
-        ("bonus health", "BONUS_HEALTH"),
-    ];
+// Replaces the content found in the files to a shorter and adapted version,
+// initializes items as default, and Damaging stats must be added separately.
+pub fn initialize_items() {
+    let non_zero = |val: f64| -> Option<f64> { if val == 0.0 { None } else { Some(val) } };
 
-    replacements
-        .iter()
-        .fold(s.to_string(), |acc, (old, new)| acc.replace(old, new))
+    let files = fs::read_dir("cache/cdn/items").expect("Unable to read directory cache/cdn/items");
+    for file in files {
+        tokio::task::spawn_blocking(move || {
+            let path_buf = file.unwrap().path();
+            let path_name = path_buf.to_str().unwrap();
+            let cdn_item = read_from_file::<CdnItem>(path_name);
+
+            let stats = &cdn_item.stats;
+            let mut item_stats = PartialStats::default();
+
+            item_stats.ability_power = non_zero(stats.ability_power.flat);
+            item_stats.armor = non_zero(stats.armor.flat);
+            item_stats.attack_damage = non_zero(stats.attack_damage.flat);
+            item_stats.attack_speed = non_zero(stats.attack_speed.flat);
+            item_stats.critical_strike_chance = non_zero(stats.critical_strike_chance.flat);
+            item_stats.critical_strike_damage = non_zero(stats.critical_strike_damage.flat);
+            item_stats.health = non_zero(stats.health.flat);
+            item_stats.lifesteal = non_zero(stats.lifesteal.flat);
+            item_stats.magic_resistance = non_zero(stats.magic_resistance.flat);
+            item_stats.mana = non_zero(stats.mana.flat);
+            item_stats.movespeed = non_zero(stats.movespeed.flat);
+            item_stats.omnivamp = non_zero(stats.omnivamp.flat);
+
+            item_stats.armor_penetration_flat = non_zero(stats.armor_penetration.flat);
+            item_stats.armor_penetration_percent = non_zero(stats.armor_penetration.percent);
+
+            item_stats.magic_penetration_flat = non_zero(stats.magic_penetration.flat);
+            item_stats.magic_penetration_percent = non_zero(stats.magic_penetration.percent);
+
+            let result = Item {
+                name: cdn_item.name,
+                levelings: None,
+                damage_type: None,
+                stats: item_stats,
+                builds_from: cdn_item.builds_from,
+                ranged: None,
+                melee: None,
+            };
+
+            write_to_file(
+                format!("src/internal/items/{}.json", cdn_item.id).as_str(),
+                serde_json::to_string(&result).unwrap().as_bytes(),
+            );
+        });
+    }
 }
 
+// Uses champion display name and converts to their respective ids, saving to internal
 pub fn rewrite_champion_names() {
     let files =
         fs::read_dir("cache/cdn/champions").expect("Unable to read directory cache/cdn/champions");
@@ -409,17 +263,9 @@ pub fn rewrite_champion_names() {
 
     for file in files {
         let path_buf = file.unwrap().path();
-
         let path_name = path_buf.to_str().unwrap();
-
         let result = read_from_file::<CdnChampion>(path_name);
-
-        let name = Path::new(path_name)
-            .file_name()
-            .and_then(|os_str| os_str.to_str())
-            .unwrap_or_default()
-            .trim_end_matches(".json");
-
+        let name = extract_file_name(&path_buf);
         map.insert(result.name, name.to_string());
     }
 
@@ -434,12 +280,7 @@ pub fn rewrite_champion_names() {
 // champion, it will be skipped. Writes the resulting json to internal/{champion_name}.json
 fn generate_champion_file(path_name: &str) {
     let result = read_from_file::<CdnChampion>(path_name);
-
-    let name = Path::new(path_name)
-        .file_name()
-        .and_then(|os_str| os_str.to_str())
-        .unwrap_or_default()
-        .trim_end_matches(".json");
+    let name = extract_file_name(Path::new(path_name));
 
     let champion: Option<Champion> = match name {
         "Aatrox" => Some(aatrox::transform(result)),

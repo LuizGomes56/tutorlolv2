@@ -11,7 +11,7 @@ use server::{
 
 use actix_web::{App, HttpServer, main, web::Data};
 use dotenvy::dotenv;
-use setup::base::{load_cache, setup_champion_cache};
+use setup::update::{initialize_items, load_cache, setup_champion_cache};
 use sqlx::{Pool, Postgres, postgres::PgPoolOptions};
 use std::{io::Result, sync::Arc};
 
@@ -23,9 +23,10 @@ pub struct AppState {
 #[allow(unreachable_code)]
 #[main]
 async fn main() -> Result<()> {
-    setup_champion_cache();
+    // setup_champion_cache();
+    // initialize_items();
 
-    return Ok(());
+    // return Ok(());
 
     let cache = Arc::new(load_cache().await);
 

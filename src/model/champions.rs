@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub(crate) struct StatsMap {
+pub struct StatsMap {
     pub flat: f64,
     pub percent: f64,
     pub per_level: f64,
@@ -15,7 +15,7 @@ pub(crate) struct StatsMap {
 
 #[derive(Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub(crate) struct Stats {
+pub struct Stats {
     pub health: StatsMap,
     pub mana: StatsMap,
     pub armor: StatsMap,
@@ -34,26 +34,26 @@ pub(crate) struct Stats {
 }
 
 #[derive(Deserialize)]
-pub(crate) struct Modifiers {
+pub struct Modifiers {
     pub units: Vec<String>,
     pub values: Vec<f64>,
 }
 
 #[derive(Deserialize)]
-pub(crate) struct ModifierLike {
+pub struct ModifierLike {
     pub attribute: Option<String>,
     pub modifiers: Vec<Modifiers>,
 }
 
 #[derive(Deserialize)]
-pub(crate) struct Effect {
+pub struct Effect {
     pub description: String,
     pub leveling: Vec<ModifierLike>,
 }
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub(crate) struct CdnAbility {
+pub struct CdnAbility {
     pub cooldown: Option<ModifierLike>,
     pub damage_type: Option<String>,
     pub effects: Vec<Effect>,
@@ -79,7 +79,7 @@ impl CdnAbility {
 
 #[derive(Deserialize)]
 #[serde(rename_all = "UPPERCASE")]
-pub(crate) struct Abilities {
+pub struct Abilities {
     pub p: Vec<CdnAbility>,
     pub q: Vec<CdnAbility>,
     pub w: Vec<CdnAbility>,
