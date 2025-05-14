@@ -1,11 +1,14 @@
 use super::schemas::APIResponse;
-use crate::setup::base::{setup_champion_cache, setup_folders, write_champions, write_items};
+use crate::setup::base::{
+    rewrite_champion_names, setup_champion_cache, setup_folders, write_champions, write_items,
+};
 use actix_web::{HttpResponse, Responder, get};
 
 #[get("/api/setup")]
 pub async fn setup_project() -> impl Responder {
     setup_folders();
     setup_champion_cache();
+    rewrite_champion_names();
     HttpResponse::Ok().json(APIResponse {
         success: true,
         message: "Project is ready".to_string(),

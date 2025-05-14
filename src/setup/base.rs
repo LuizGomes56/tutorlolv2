@@ -17,6 +17,9 @@ pub async fn load_cache() -> GlobalCache {
         .map(|e| e.unwrap().path())
         .collect();
 
+    let champion_names =
+        read_from_file::<HashMap<String, String>>("src/internal/champion_names.json");
+
     // let item_files: Vec<PathBuf> = fs::read_dir("src/internal/items")
     //     .expect("Failed to read items")
     //     .map(|e| e.unwrap().path())
@@ -37,6 +40,7 @@ pub async fn load_cache() -> GlobalCache {
     GlobalCache {
         champions,
         items: HashMap::new(),
+        champion_names,
     }
 }
 
@@ -118,11 +122,13 @@ pub fn setup_champion_cache() {
 
     for file in files {
         let path_name = file.unwrap().path();
-        generate_champion_file(
-            path_name
-                .to_str()
-                .expect("Failed to convert path to string"),
-        );
+        tokio::task::spawn_blocking(move || {
+            generate_champion_file(
+                path_name
+                    .to_str()
+                    .expect("Failed to convert path to string"),
+            );
+        });
     }
 }
 
@@ -215,6 +221,11 @@ fn assign_as_linear_range(bounds: (f64, f64), size: usize, postfix: Option<&str>
     result
 }
 
+fn remove_parenthesized_additions(input: &str) -> String {
+    let re = Regex::new(r"\(\+\s*[^)]*\)").unwrap();
+    re.replace_all(input, "").to_string()
+}
+
 // Takes the default format of the API and assigns to target_vec the correct format
 // Used internally.
 fn extract_ability(modifiers: &Vec<Modifiers>, target_vec: &mut Vec<String>) {
@@ -226,8 +237,10 @@ fn extract_ability(modifiers: &Vec<Modifiers>, target_vec: &mut Vec<String>) {
         let mut parts = Vec::new();
         for modifier in modifiers {
             let value = modifier.values[i];
-            let unit = modifier.units[i].trim();
-            let formatted_string = if unit.contains('%') {
+            let raw_unit = modifier.units[i].trim();
+            let scallings = extract_scaled_values(&raw_unit);
+            let unit = remove_parenthesized_additions(&raw_unit);
+            let cleaned_string = if unit.contains('%') {
                 let parts: Vec<&str> = unit.split('%').collect();
                 let suffix = parts
                     .get(1)
@@ -245,7 +258,13 @@ fn extract_ability(modifiers: &Vec<Modifiers>, target_vec: &mut Vec<String>) {
             } else {
                 format!("{}{}", trim_f64(value), unit)
             };
-            parts.push(replace_keys(&formatted_string));
+            let formatted_string = replace_keys(&cleaned_string);
+            let final_string = if scallings.is_empty() {
+                formatted_string
+            } else {
+                format!("{} + {}", formatted_string, scallings)
+            };
+            parts.push(final_string);
         }
         target_vec.push(parts.join(" + "));
     }
@@ -369,15 +388,45 @@ pub(super) fn get_passive_damage(
 // Replaces common keys found in the API with the corresponding ones used internally
 pub(super) fn replace_keys(s: &str) -> String {
     let replacements = [
-        ("target's maximum health", "ENEMY_MAX_HEALTH"),
+        ("of target's maximum health", "ENEMY_MAX_HEALTH"),
         ("target's current health", "ENEMY_CURRENT_HEALTH"),
         ("target's missing health", "ENEMY_MISSING_HEALTH"),
+        ("per Feast stack", "CHOGATH_STACKS"),
         ("bonus AD", "BONUS_AD"),
+        ("bonus health", "BONUS_HEALTH"),
     ];
 
     replacements
         .iter()
         .fold(s.to_string(), |acc, (old, new)| acc.replace(old, new))
+}
+
+pub fn rewrite_champion_names() {
+    let files =
+        fs::read_dir("cache/cdn/champions").expect("Unable to read directory cache/cdn/champions");
+
+    let mut map = HashMap::<String, String>::new();
+
+    for file in files {
+        let path_buf = file.unwrap().path();
+
+        let path_name = path_buf.to_str().unwrap();
+
+        let result = read_from_file::<CdnChampion>(path_name);
+
+        let name = Path::new(path_name)
+            .file_name()
+            .and_then(|os_str| os_str.to_str())
+            .unwrap_or_default()
+            .trim_end_matches(".json");
+
+        map.insert(result.name, name.to_string());
+    }
+
+    write_to_file(
+        "src/internal/champion_names.json",
+        serde_json::to_string(&map).unwrap().as_bytes(),
+    );
 }
 
 // Automatically updates every champion in the game. New champions, or big updates to existing
@@ -416,7 +465,7 @@ fn generate_champion_file(path_name: &str) {
         // "Caitlyn" => Some(caitlyn::transform(result)),
         // "Camille" => Some(camille::transform(result)),
         // "Cassiopeia" => Some(cassiopeia::transform(result)),
-        // "Chogath" => Some(chogath::transform(result)),
+        "Chogath" => Some(chogath::transform(result)),
         // "Corki" => Some(corki::transform(result)),
         // "Darius" => Some(darius::transform(result)),
         // "Diana" => Some(diana::transform(result)),
@@ -484,7 +533,7 @@ fn generate_champion_file(path_name: &str) {
         // "Nami" => Some(nami::transform(result)),
         // "Nasus" => Some(nasus::transform(result)),
         // "Nautilus" => Some(nautilus::transform(result)),
-        // "Neeko" => Some(neeko::transform(result)),
+        "Neeko" => Some(neeko::transform(result)),
         // "Nidalee" => Some(nidalee::transform(result)),
         // "Nilah" => Some(nilah::transform(result)),
         // "Nocturne" => Some(nocturne::transform(result)),

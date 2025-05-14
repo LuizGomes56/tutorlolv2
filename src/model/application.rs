@@ -8,4 +8,5 @@ pub struct GlobalCache {
     pub champions: HashMap<String, Champion>,
     pub items: HashMap<String, CdnItem>,
     // pub runes: Vec<Rune>,
+    pub champion_names: HashMap<String, String>,
 }

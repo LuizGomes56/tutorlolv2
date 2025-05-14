@@ -23,11 +23,11 @@ pub struct AppState {
 #[allow(unreachable_code)]
 #[main]
 async fn main() -> Result<()> {
+    setup_champion_cache();
+
+    return Ok(());
+
     let cache = Arc::new(load_cache().await);
-
-    // setup_champion_cache();
-
-    // return Ok(());
 
     dotenv().ok();
 

@@ -2,6 +2,8 @@ use std::collections::HashMap;
 
 use serde::Serialize;
 
+use super::riot::RiotChampionStats;
+
 #[derive(Serialize)]
 pub struct Stats {
     pub ability_power: f64,
@@ -29,6 +31,19 @@ pub struct BasicStats {
     pub attack_damage: f64,
     pub magic_resist: f64,
     pub mana: f64,
+}
+
+impl BasicStats {
+    pub fn to_riot_format(&self) -> RiotChampionStats {
+        RiotChampionStats {
+            armor: self.armor,
+            max_health: self.health,
+            attack_damage: self.attack_damage,
+            magic_resist: self.magic_resist,
+            resource_max: self.mana,
+            ..Default::default()
+        }
+    }
 }
 
 #[derive(Serialize)]

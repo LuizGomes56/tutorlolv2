@@ -17,7 +17,7 @@ pub struct RiotAbilities {
     pub r: RiotAbility,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct RiotChampionStats {
     pub ability_power: f64,
