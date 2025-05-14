@@ -15,7 +15,7 @@
                 "rawDisplayName": "GeneratedTip_Passive_NeekoPassive_DisplayName"
             },
             "Q": {
-                "abilityLevel": 1,
+                "abilityLevel": 0,
                 "displayName": "Explosão Florescente",
                 "id": "NeekoQ",
                 "rawDescription": "GeneratedTip_Spell_NeekoQ_Description",
@@ -37,39 +37,39 @@
             }
         },
         "championStats": {
-            "abilityHaste": 0.0,
-            "abilityPower": 24.0,
-            "armor": 21.0,
-            "armorPenetrationFlat": 0.0,
-            "armorPenetrationPercent": 1.0,
-            "attackDamage": 48.0,
-            "attackRange": 550.0,
+            "abilityHaste": 0,
+            "abilityPower": 24,
+            "armor": 21,
+            "armorPenetrationFlat": 0,
+            "armorPenetrationPercent": 1,
+            "attackDamage": 48,
+            "attackRange": 550,
             "attackSpeed": 0.6920000314712524,
-            "bonusArmorPenetrationPercent": 1.0,
-            "bonusMagicPenetrationPercent": 1.0,
-            "critChance": 0.0,
-            "critDamage": 175.0,
-            "currentHealth": 670.0,
-            "healShieldPower": 0.0,
+            "bonusArmorPenetrationPercent": 1,
+            "bonusMagicPenetrationPercent": 1,
+            "critChance": 0,
+            "critDamage": 175,
+            "currentHealth": 670,
+            "healShieldPower": 0,
             "healthRegenRate": 1.5,
-            "lifeSteal": 0.0,
-            "magicLethality": 0.0,
-            "magicPenetrationFlat": 0.0,
-            "magicPenetrationPercent": 1.0,
-            "magicResist": 30.0,
-            "maxHealth": 670.0,
-            "moveSpeed": 510.5,
-            "omnivamp": 0.0,
-            "physicalLethality": 0.0,
-            "physicalVamp": 0.0,
-            "resourceMax": 450.0,
+            "lifeSteal": 0,
+            "magicLethality": 0,
+            "magicPenetrationFlat": 0,
+            "magicPenetrationPercent": 1,
+            "magicResist": 30,
+            "maxHealth": 670,
+            "moveSpeed": 404.45831298828125,
+            "omnivamp": 0,
+            "physicalLethality": 0,
+            "physicalVamp": 0,
+            "resourceMax": 450,
             "resourceRegenRate": 1.399999976158142,
             "resourceType": "MANA",
-            "resourceValue": 450.0,
-            "spellVamp": 0.0,
-            "tenacity": 5.0
+            "resourceValue": 450,
+            "spellVamp": 0,
+            "tenacity": 5
         },
-        "currentGold": 290.76007080078127,
+        "currentGold": 150,
         "fullRunes": {
             "generalRunes": [
                 {
@@ -165,24 +165,13 @@
                     "rawDescription": "GeneratedTip_Item_1082_Description",
                     "rawDisplayName": "Item_1082_Name",
                     "slot": 0
-                },
-                {
-                    "canUse": true,
-                    "consumable": false,
-                    "count": 1,
-                    "displayName": "Sentinela Invisível",
-                    "itemID": 3340,
-                    "price": 0,
-                    "rawDescription": "GeneratedTip_Item_3340_Description",
-                    "rawDisplayName": "Item_3340_Name",
-                    "slot": 6
                 }
             ],
             "level": 1,
             "position": "",
             "rawChampionName": "game_character_displayname_Neeko",
             "rawSkinName": "game_character_skin_displayname_Neeko_29",
-            "respawnTimer": 0.0,
+            "respawnTimer": 0,
             "riotId": "Giga Gnar#BRZL",
             "riotIdGameName": "Giga Gnar",
             "riotIdTagLine": "BRZL",
@@ -211,7 +200,7 @@
                 "creepScore": 0,
                 "deaths": 0,
                 "kills": 0,
-                "wardScore": 0.0
+                "wardScore": 0
             },
             "skinID": 29,
             "skinName": "Neeko Feiticeira",
@@ -234,35 +223,12 @@
             "championName": "Cho'Gath",
             "isBot": true,
             "isDead": false,
-            "items": [
-                {
-                    "canUse": false,
-                    "consumable": false,
-                    "count": 1,
-                    "displayName": "Escudo de Doran",
-                    "itemID": 1054,
-                    "price": 450,
-                    "rawDescription": "GeneratedTip_Item_1054_Description",
-                    "rawDisplayName": "Item_1054_Name",
-                    "slot": 0
-                },
-                {
-                    "canUse": true,
-                    "consumable": false,
-                    "count": 1,
-                    "displayName": "Sentinela Invisível",
-                    "itemID": 3340,
-                    "price": 0,
-                    "rawDescription": "GeneratedTip_Item_3340_Description",
-                    "rawDisplayName": "Item_3340_Name",
-                    "slot": 6
-                }
-            ],
+            "items": [],
             "level": 1,
             "position": "MIDDLE",
             "rawChampionName": "game_character_displayname_Chogath",
             "rawSkinName": "game_character_skin_displayname_Chogath_0",
-            "respawnTimer": 0.0,
+            "respawnTimer": 0,
             "riotId": "Chogath#BOT",
             "riotIdGameName": "Chogath",
             "riotIdTagLine": "BOT",
@@ -291,7 +257,7 @@
                 "creepScore": 0,
                 "deaths": 0,
                 "kills": 0,
-                "wardScore": 0.0
+                "wardScore": 0
             },
             "skinID": 0,
             "skinName": "",
@@ -316,18 +282,13 @@
             {
                 "EventID": 0,
                 "EventName": "GameStart",
-                "EventTime": 0.024643799290060998
-            },
-            {
-                "EventID": 1,
-                "EventName": "MinionsSpawning",
-                "EventTime": 65.04185485839844
+                "EventTime": 0.024643799290060997
             }
         ]
     },
     "gameData": {
         "gameMode": "PRACTICETOOL",
-        "gameTime": 168.7906036376953,
+        "gameTime": 35.48649597167969,
         "mapName": "Map11",
         "mapNumber": 11,
         "mapTerrain": "Default"

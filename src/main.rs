@@ -3,6 +3,7 @@ mod server;
 mod services;
 mod setup;
 
+use model::application::GlobalCache;
 use server::{
     games::realtime_handler,
     update::{setup_project, update_champions, update_items},
@@ -10,20 +11,23 @@ use server::{
 
 use actix_web::{App, HttpServer, main, web::Data};
 use dotenvy::dotenv;
-use setup::base::setup_champion_cache;
+use setup::base::{load_cache, setup_champion_cache};
 use sqlx::{Pool, Postgres, postgres::PgPoolOptions};
-use std::io::Result;
+use std::{io::Result, sync::Arc};
 
 pub struct AppState {
     db: Pool<Postgres>,
+    cache: Arc<GlobalCache>,
 }
 
 #[allow(unreachable_code)]
 #[main]
 async fn main() -> Result<()> {
-    setup_champion_cache();
+    let cache = Arc::new(load_cache().await);
 
-    return Ok(());
+    // setup_champion_cache();
+
+    // return Ok(());
 
     dotenv().ok();
 
@@ -40,7 +44,10 @@ async fn main() -> Result<()> {
 
     HttpServer::new(move || {
         App::new()
-            .app_data(Data::new(AppState { db: pool.clone() }))
+            .app_data(Data::new(AppState {
+                db: pool.clone(),
+                cache: cache.clone(),
+            }))
             .service(realtime_handler)
             .service(setup_project)
             .service(update_champions)

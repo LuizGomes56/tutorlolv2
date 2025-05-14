@@ -1,17 +1,19 @@
 use super::{
-    Ability, CdnChampion, Champion, HashMap, IterationTarget, assign_as_linear_range,
-    extract_passive_bounds, extract_range_values, get_from_pattern,
+    Ability, CdnChampion, Champion, HashMap, IterationTarget, get_from_pattern, get_passive_damage,
 };
 
 pub fn transform(data: CdnChampion) -> Champion {
     let mut abilities = HashMap::<String, Ability>::new();
 
-    let (passive, passive_bounds) = extract_passive_bounds(&data, (0, 0));
-
-    let passive_min_dmg = assign_as_linear_range(passive_bounds, 18, Some("ENEMY_MAX_HEALTH"));
-
-    abilities.insert(String::from("P"), passive.format(passive_min_dmg, vec![]));
-
+    get_passive_damage(
+        &data,
+        (0, 0),
+        Some("ENEMY_MAX_HEALTH"),
+        None,
+        &IterationTarget::MINIMUM,
+        "P",
+        &mut abilities,
+    );
     get_from_pattern(
         &data.abilities.q[0],
         &mut abilities,

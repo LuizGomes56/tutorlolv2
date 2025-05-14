@@ -1,9 +1,4 @@
-#![allow(unused_imports)]
-
-pub(self) use super::base::{
-    IterationTarget, assign_as_linear_range, extract_passive_bounds, extract_range_values,
-    extract_scaled_values, get_from_pattern, read_from_file, replace_keys,
-};
+pub(self) use super::base::{IterationTarget, get_from_pattern, get_passive_damage};
 pub(super) use crate::model::champions::{Ability, CdnAbility, CdnChampion, Champion};
 pub(super) use std::collections::HashMap;
 
