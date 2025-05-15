@@ -68,8 +68,16 @@ pub struct GameInformation {
 }
 
 #[derive(Serialize)]
+pub struct InstanceDamage {
+    pub minimum_damage: String,
+    pub maximum_damage: String,
+    pub damage_type: String,
+    pub damages_in_area: bool,
+}
+
+#[derive(Serialize)]
 pub struct Damages {
-    pub abilities: HashMap<String, f64>,
+    pub abilities: HashMap<String, InstanceDamage>,
     pub items: HashMap<String, f64>,
     pub runes: HashMap<String, f64>,
 }
@@ -92,4 +100,45 @@ pub struct Realtime {
     pub current_player: CurrentPlayer,
     pub enemies: Vec<Enemy>,
     pub game_information: GameInformation,
+}
+
+pub struct DamageMultipliers {
+    pub magic_damage: f64,
+    pub physical_damage: f64,
+    pub true_damage: f64,
+    pub all_sources: f64,
+}
+
+pub struct RealResistances {
+    pub magic_resistance: f64,
+    pub armor: f64,
+}
+
+pub struct EnemyFullStats<'a> {
+    pub current_stats: &'a BasicStats,
+    pub base_stats: &'a BasicStats,
+    pub bonus_stats: &'a BasicStats,
+    pub takes_extra_damage_from: DamageMultipliers,
+    pub real_resistances: RealResistances,
+}
+
+pub struct SelfFullStats<'a> {
+    pub current_stats: &'a Stats,
+    pub base_stats: &'a BasicStats,
+    pub bonus_stats: &'a BasicStats,
+    pub is_ranged: bool,
+    pub level: usize,
+    pub deals_extra_damage_from: DamageMultipliers,
+    pub is_physical_adaptative_type: bool,
+}
+
+pub struct FullStats<'a> {
+    pub missing_health: f64,
+    pub enemy_has_steelcaps: bool,
+    pub enemy_has_rocksolid: bool,
+    pub enemy_has_randuin: bool,
+    pub current_player: SelfFullStats<'a>,
+    pub enemy_player: EnemyFullStats<'a>,
+    pub physical_damage_multiplier: f64,
+    pub magic_damage_multiplier: f64,
 }
