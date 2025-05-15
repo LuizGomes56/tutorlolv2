@@ -4,6 +4,7 @@ use crate::model::application::GlobalCache;
 use crate::model::champions::CdnChampion;
 use crate::model::items::{CdnItem, Item, PartialStats};
 use regex::Regex;
+use scraper::{Html, Selector};
 use serde::de::DeserializeOwned;
 use serde_json::Value;
 use std::{
@@ -12,10 +13,11 @@ use std::{
     io::Write,
     path::{Path, PathBuf},
 };
+use tokio::task;
 
 use super::*;
 
-fn extract_file_name(path: &Path) -> &str {
+pub(super) fn extract_file_name(path: &Path) -> &str {
     path.file_name()
         .and_then(|os_str| os_str.to_str())
         .map(|s| s.trim_end_matches(".json"))
@@ -84,25 +86,83 @@ async fn fetch_api(path_name: &str) -> HashMap<String, Value> {
     result.clone().into_iter().collect()
 }
 
-// Recovers all champions from CDN and create a separate file for each of them.
-pub async fn write_champions() {
-    let result = fetch_api("champions.json").await;
+// Recovers all the common builds for the current patch so the app can recommend builds to the user
+// Average time to update is 2m30s. Making the outer loop a new task overloads the target website
+// causing requests to timeout.
+pub async fn get_meta_items() {
+    let client_arc = reqwest::Client::new();
 
-    for (key, value) in result {
-        let path_name = format!("cache/cdn/champions/{}.json", key);
-        let bytes = value.to_string();
-        write_to_file(&path_name, bytes.as_bytes());
+    let champion_names =
+        read_from_file::<HashMap<String, String>>("src/internal/champion_names.json");
+
+    let positions = ["top", "jungle", "mid", "adc", "support"];
+    let mut collected_results = HashMap::<String, HashMap<String, Vec<String>>>::new();
+
+    for (_, name) in champion_names {
+        let mut second_future = Vec::new();
+        for position in positions {
+            let champion_name = name.to_lowercase().clone();
+            let client = client_arc.clone();
+            second_future.push(tokio::spawn(async move {
+                let endpoint = std::env::var("META_ENDPOINT").expect("META_ENDPOINT is not set");
+                let url = format!("{}/{}/build/{}", endpoint, champion_name, position);
+
+                let res = client
+                    .get(url)
+                    .send()
+                    .await
+                    .expect("Failed to send request");
+
+                let mut result = HashMap::<String, Vec<String>>::new();
+
+                let html = res.text().await.expect("Could not read response text");
+                let document = Html::parse_document(&html);
+                let full_build = Selector::parse(".m-1q4a7cx:nth-of-type(4) > div > div img")
+                    .expect("Failed to parse nested selector");
+                let situational_build = Selector::parse(".m-s76v8c > div > div img")
+                    .expect("Failed to parse selector .m-s76v8c");
+
+                let mut items = Vec::<String>::new();
+                let mut push_items = |selector: &Selector| {
+                    for img in document.select(selector) {
+                        if let Some(alt) = img.value().attr("alt") {
+                            items.push(alt.to_string());
+                        }
+                    }
+                };
+                push_items(&full_build);
+                push_items(&situational_build);
+                result.insert(String::from(position), items);
+                result
+            }));
+        }
+
+        let mut collected_result = HashMap::new();
+        for result in second_future {
+            println!("Fetching meta items for {}", name);
+            collected_result.extend(result.await.unwrap());
+        }
+        collected_results.insert(name, collected_result);
     }
+
+    write_to_file(
+        "src/internal/meta_items.json",
+        serde_json::to_string(&collected_results)
+            .unwrap()
+            .as_bytes(),
+    );
 }
 
-// Recovers all items from CDN and create a separate file for each of them.
-pub async fn write_items() {
-    let result = fetch_api("items.json").await;
+pub async fn update_instances(instance: &str) {
+    let result = fetch_api(&format!("{}.json", instance)).await;
 
     for (key, value) in result {
-        let path_name = format!("cache/cdn/items/{}.json", key);
-        let bytes = value.to_string();
-        write_to_file(&path_name, bytes.as_bytes());
+        let folder_name = format!("cache/cdn/{}", instance);
+        task::spawn_blocking(move || {
+            let path_name = format!("{}/{}.json", folder_name, key);
+            let strval = value.to_string();
+            write_to_file(&path_name, strval.as_bytes());
+        });
     }
 }
 
@@ -129,13 +189,13 @@ pub fn setup_folders() {
 }
 
 // Helper function to write files
-fn write_to_file(path_name: &str, bytes: &[u8]) {
+pub(super) fn write_to_file(path_name: &str, bytes: &[u8]) {
     let mut file = std::fs::File::create(path_name).expect("Unable to create file");
     file.write_all(bytes).expect("Unable to write data");
 }
 
 // Helper to read from files and parse the value to a struct
-fn read_from_file<T: DeserializeOwned>(path_name: &str) -> T {
+pub(super) fn read_from_file<T: DeserializeOwned>(path_name: &str) -> T {
     let data = fs::read_to_string(path_name).expect("Unable to read file");
     serde_json::from_str(&data).expect("Failed to parse JSON")
 }
@@ -147,7 +207,7 @@ pub fn setup_champion_cache() {
 
     for file in files {
         let path_name = file.unwrap().path();
-        tokio::task::spawn_blocking(move || {
+        task::spawn_blocking(move || {
             generate_champion_file(
                 path_name
                     .to_str()
@@ -160,11 +220,11 @@ pub fn setup_champion_cache() {
 // Not meant to be used frequently. Just a quick check for every
 // patch to identify if a new damaging item was added
 pub fn identify_damaging_items() {
-    fn contains_damage_outside_template(text: &str) -> bool {
+    let contains_damage_outside_template = |text: &str| -> bool {
         let re = Regex::new(r"\{\{[^}]*\}\}").unwrap();
         let cleaned = re.replace_all(text, "");
         cleaned.contains("damage")
-    }
+    };
     let files = fs::read_dir("cache/cdn/items").expect("Unable to read directory cache/cdn/items");
     let mut is_damaging = Vec::new();
     for file in files {
@@ -209,7 +269,7 @@ pub fn initialize_items() {
 
     let files = fs::read_dir("cache/cdn/items").expect("Unable to read directory cache/cdn/items");
     for file in files {
-        tokio::task::spawn_blocking(move || {
+        task::spawn_blocking(move || {
             let path_buf = file.unwrap().path();
             let path_name = path_buf.to_str().unwrap();
             let cdn_item = read_from_file::<CdnItem>(path_name);

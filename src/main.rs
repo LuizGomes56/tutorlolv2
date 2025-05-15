@@ -6,7 +6,7 @@ mod setup;
 use model::application::GlobalCache;
 use server::{
     games::realtime_handler,
-    update::{setup_project, update_champions, update_items},
+    update::{setup_project, update_champions, update_items, update_meta_items},
 };
 
 use actix_web::{App, HttpServer, main, web::Data};
@@ -53,6 +53,7 @@ async fn main() -> Result<()> {
             .service(setup_project)
             .service(update_champions)
             .service(update_items)
+            .service(update_meta_items)
     })
     .bind(host)
     .expect("Some error has ocurred when starting the server")
