@@ -6,7 +6,11 @@ use crate::model::{
 
 // Return a massive struct object that will be sent to browser. It will have every
 // necessary field to make up tables and display the game data.
-pub async fn calculate(cache: &Arc<GlobalCache>, game: &RiotRealtime, _item: String) -> Realtime {
+pub fn calculate<'a>(
+    cache: &'a Arc<GlobalCache>,
+    game: &'a RiotRealtime,
+    _item: String,
+) -> Realtime<'a> {
     let active_player = &game.active_player;
     let all_players = &game.all_players;
 
@@ -30,16 +34,16 @@ pub async fn calculate(cache: &Arc<GlobalCache>, game: &RiotRealtime, _item: Str
     let current_player_base_stats = get_base_stats(current_player_cache, active_player_level);
 
     let current_player = CurrentPlayer {
-        team: active_player_expanded.team.to_string(),
-        position: active_player_expanded.position.to_string(),
-        champion_name: active_player_expanded.champion_name.to_string(),
+        team: &active_player_expanded.team,
+        position: &active_player_expanded.position,
+        champion_name: &active_player_expanded.champion_name,
         current_stats: get_current_stats(&active_player),
         level: active_player_level,
-        riot_id: active_player.riot_id.to_string(),
+        riot_id: &active_player.riot_id,
         damaging_abilities: current_player_cache
             .abilities
             .iter()
-            .map(|(ability_key, _)| ability_key.to_string())
+            .map(|(ability_key, _)| ability_key.clone())
             .collect(),
         damaging_items: vec![],
         damaging_runes: vec![],
@@ -71,11 +75,11 @@ pub async fn calculate(cache: &Arc<GlobalCache>, game: &RiotRealtime, _item: Str
             &enemy.items.iter().map(|x| x.item_id).collect(),
         );
         enemies.push(Enemy {
-            champion_name: enemy.champion_name.to_string(),
-            riot_id: enemy.riot_id.to_string(),
-            team: enemy.team.to_string(),
+            champion_name: &enemy.champion_name,
+            riot_id: &enemy.riot_id,
+            team: &enemy.team,
             level: enemy_level,
-            position: enemy.position.to_string(),
+            position: &enemy.position,
             damages: Damages {
                 abilities: get_abilities_damage(
                     current_player_cache,
@@ -175,7 +179,7 @@ fn get_abilities_damage(
     abilities: &RiotAbilities,
 ) -> HashMap<String, InstanceDamage> {
     let mut ability_damages = HashMap::<String, InstanceDamage>::new();
-    let default_value = String::from("0.0");
+    let default_value = "0.0";
     for (keyname, ability) in &current_player_cache.abilities {
         let first_char = keyname.chars().next().unwrap_or_default();
         let indexation = match first_char {
@@ -200,10 +204,10 @@ fn get_abilities_damage(
                 "({}) * {}",
                 replace_damage_keywords(
                     full_stats,
-                    ability
+                    &ability
                         .minimum_damage
                         .get(indexation - 1)
-                        .unwrap_or(&default_value),
+                        .unwrap_or(&String::from(default_value)),
                 ),
                 damage_multiplier
             );
@@ -214,25 +218,25 @@ fn get_abilities_damage(
                     &ability
                         .maximum_damage
                         .get(indexation - 1)
-                        .unwrap_or(&default_value),
+                        .unwrap_or(&String::from(default_value)),
                 ),
                 damage_multiplier
             );
             ability_damages.insert(
-                keyname.clone(),
+                keyname.to_string(),
                 InstanceDamage {
-                    minimum_damage: minimum_damage.clone(),
-                    maximum_damage: maximum_damage.clone(),
-                    damage_type,
+                    minimum_damage,
+                    maximum_damage,
+                    damage_type: String::from(damage_type),
                     damages_in_area,
                 },
             );
         } else {
             ability_damages.insert(
-                keyname.clone(),
+                keyname.to_string(),
                 InstanceDamage {
-                    minimum_damage: default_value.clone(),
-                    maximum_damage: default_value.clone(),
+                    minimum_damage: default_value.to_string(),
+                    maximum_damage: default_value.to_string(),
                     damage_type,
                     damages_in_area,
                 },
@@ -249,7 +253,7 @@ fn get_abilities_damage(
         String::from("A"),
         InstanceDamage {
             minimum_damage: basic_attack_damage.to_string(),
-            maximum_damage: String::from(default_value.clone()),
+            maximum_damage: default_value.to_string(),
             damage_type: String::from("PHYSICAL_DAMAGE"),
             damages_in_area: false,
         },
@@ -260,7 +264,7 @@ fn get_abilities_damage(
             minimum_damage: (basic_attack_damage
                 * (full_stats.current_player.current_stats.crit_damage / 100.0))
                 .to_string(),
-            maximum_damage: String::from(default_value),
+            maximum_damage: default_value.to_string(),
             damage_type: String::from("PHYSICAL_DAMAGE"),
             damages_in_area: false,
         },
@@ -269,9 +273,42 @@ fn get_abilities_damage(
     ability_damages
 }
 
-fn replace_damage_keywords(stats: &FullStats, target_string: &str) -> String {
+fn replace_damage_keywords(stats: &FullStats, target_str: &str) -> String {
     let replacements = [
-        ("ENEMY_MAX_HEALTH", stats.enemy_player.current_stats.health),
+        ("CHOGATH_STACKS", 1.0),
+        ("VEIGAR_STACKS", 1.0),
+        ("NASUS_STACKS", 1.0),
+        ("SMOLDER_STACKS", 1.0),
+        ("AURELION_SOL_STACKS", 1.0),
+        ("KINDRED_STACKS", 1.0),
+        ("BELVETH_STACKS", 1.0),
+        (
+            "ADAPTATIVE_DAMAGE",
+            if stats.current_player.is_physical_adaptative_type {
+                stats.physical_damage_multiplier
+            } else {
+                stats.magic_damage_multiplier
+            },
+        ),
+        ("MISSING_HEALTH", stats.missing_health),
+        ("LEVEL", stats.current_player.level as f64),
+        ("PHYSICAL_MULTIPLIER", stats.physical_damage_multiplier),
+        ("MAGIC_MULTIPLIER", stats.magic_damage_multiplier),
+        (
+            "STEELCAPS_EFFECT",
+            if stats.enemy_has_steelcaps { 0.88 } else { 1.0 },
+        ),
+        (
+            "RANDUIN_EFFECT",
+            if stats.enemy_has_randuin { 0.7 } else { 1.0 },
+        ),
+        (
+            "ROCKSOLID_EFFECT",
+            if stats.enemy_has_rocksolid { 0.8 } else { 1.0 },
+        ),
+        ("ENEMY_BONUS_HEALTH", stats.enemy_player.bonus_stats.health),
+        ("ENEMY_ARMOR", stats.enemy_player.current_stats.armor),
+        ("ENEMY_HEALTH", stats.enemy_player.current_stats.health),
         (
             "ENEMY_CURRENT_HEALTH",
             stats.enemy_player.current_stats.health,
@@ -280,16 +317,76 @@ fn replace_damage_keywords(stats: &FullStats, target_string: &str) -> String {
             "ENEMY_MISSING_HEALTH",
             stats.enemy_player.current_stats.health,
         ),
-        ("CHOGATH_STACKS", 1.0),
+        (
+            "ENEMY_MAGIC_RESIST",
+            stats.enemy_player.current_stats.magic_resist,
+        ),
+        ("BASE_HEALTH", stats.current_player.base_stats.health),
+        ("BASE_AD", stats.current_player.base_stats.attack_damage),
+        ("BASE_ARMOR", stats.current_player.base_stats.armor),
+        (
+            "BASE_MAGIC_RESIST",
+            stats.current_player.base_stats.magic_resist,
+        ),
+        ("BASE_MANA", stats.current_player.base_stats.mana),
         ("BONUS_AD", stats.current_player.bonus_stats.attack_damage),
+        ("BONUS_ARMOR", stats.current_player.bonus_stats.armor),
+        (
+            "BONUS_MAGIC_RESIST",
+            stats.current_player.bonus_stats.magic_resist,
+        ),
         ("BONUS_HEALTH", stats.current_player.bonus_stats.health),
+        ("BONUS_MANA", stats.current_player.bonus_stats.mana),
         ("AP", stats.current_player.current_stats.ability_power),
         ("AD", stats.current_player.current_stats.attack_damage),
+        (
+            "ARMOR_PENETRATION_FLAT",
+            stats.current_player.current_stats.armor_penetration_flat,
+        ),
+        (
+            "ARMOR_PENETRATION_PERCENT",
+            stats.current_player.current_stats.armor_penetration_percent,
+        ),
+        (
+            "MAGIC_PENETRATION_FLAT",
+            stats.current_player.current_stats.magic_penetration_flat,
+        ),
+        (
+            "MAGIC_PENETRATION_PERCENT",
+            stats.current_player.current_stats.magic_penetration_percent,
+        ),
+        ("MAX_MANA", stats.current_player.current_stats.max_mana),
+        (
+            "CURRENT_MANA",
+            stats.current_player.current_stats.current_mana,
+        ),
+        ("MAX_HEALTH", stats.current_player.current_stats.max_health),
+        (
+            "CURRENT_HEALTH",
+            stats.current_player.current_stats.current_health,
+        ),
+        ("ARMOR", stats.current_player.current_stats.armor),
+        (
+            "MAGIC_RESIST",
+            stats.current_player.current_stats.magic_resist,
+        ),
+        (
+            "CRIT_CHANCE",
+            stats.current_player.current_stats.crit_chance,
+        ),
+        (
+            "CRIT_DAMAGE",
+            stats.current_player.current_stats.crit_damage,
+        ),
+        (
+            "ATTACK_SPEED",
+            stats.current_player.current_stats.attack_speed,
+        ),
     ];
 
     replacements
         .iter()
-        .fold(target_string.to_string(), |acc, (old, new)| {
+        .fold(target_str.to_string(), |acc, (old, new)| {
             acc.replace(old, &new.to_string())
         })
 }

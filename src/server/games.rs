@@ -41,7 +41,7 @@ pub async fn realtime_handler(state: Data<AppState>, body: Json<RealtimeBody>) -
             let game: RiotRealtime =
                 serde_json::from_str(&val.game).expect("Failed to parse game data");
 
-            let data = calculate(&state.cache, &game, body.item.clone()).await;
+            let data = calculate(&state.cache, &game, body.item.clone());
 
             HttpResponse::Ok().json(APIResponse {
                 success: true,

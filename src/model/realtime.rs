@@ -47,15 +47,15 @@ impl BasicStats {
 }
 
 #[derive(Serialize)]
-pub struct CurrentPlayer {
+pub struct CurrentPlayer<'a> {
     pub damaging_abilities: Vec<String>,
     pub damaging_items: Vec<String>,
     pub damaging_runes: Vec<String>,
-    pub riot_id: String,
+    pub riot_id: &'a str,
     pub level: usize,
-    pub team: String,
-    pub position: String,
-    pub champion_name: String,
+    pub team: &'a str,
+    pub position: &'a str,
+    pub champion_name: &'a str,
     pub base_stats: BasicStats,
     pub bonus_stats: BasicStats,
     pub current_stats: Stats,
@@ -83,12 +83,12 @@ pub struct Damages {
 }
 
 #[derive(Serialize)]
-pub struct Enemy {
-    pub champion_name: String,
-    pub riot_id: String,
-    pub team: String,
+pub struct Enemy<'a> {
+    pub champion_name: &'a str,
+    pub riot_id: &'a str,
+    pub team: &'a str,
     pub level: usize,
-    pub position: String,
+    pub position: &'a str,
     pub damages: Damages,
     pub base_stats: BasicStats,
     pub bonus_stats: BasicStats,
@@ -96,9 +96,9 @@ pub struct Enemy {
 }
 
 #[derive(Serialize)]
-pub struct Realtime {
-    pub current_player: CurrentPlayer,
-    pub enemies: Vec<Enemy>,
+pub struct Realtime<'a> {
+    pub current_player: CurrentPlayer<'a>,
+    pub enemies: Vec<Enemy<'a>>,
     pub game_information: GameInformation,
 }
 
