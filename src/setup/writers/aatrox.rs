@@ -1,3 +1,5 @@
+// #![mark_checked]
+
 use super::{
     Ability, CdnChampion, Champion, HashMap, IterationTarget, get_from_pattern, get_passive_damage,
 };

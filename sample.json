@@ -2,7 +2,7 @@
     "activePlayer": {
         "abilities": {
             "E": {
-                "abilityLevel": 0,
+                "abilityLevel": 5,
                 "displayName": "Farpas Emaranhadas",
                 "id": "NeekoE",
                 "rawDescription": "GeneratedTip_Spell_NeekoE_Description",
@@ -15,21 +15,21 @@
                 "rawDisplayName": "GeneratedTip_Passive_NeekoPassive_DisplayName"
             },
             "Q": {
-                "abilityLevel": 0,
+                "abilityLevel": 5,
                 "displayName": "Explosão Florescente",
                 "id": "NeekoQ",
                 "rawDescription": "GeneratedTip_Spell_NeekoQ_Description",
                 "rawDisplayName": "GeneratedTip_Spell_NeekoQ_DisplayName"
             },
             "R": {
-                "abilityLevel": 0,
+                "abilityLevel": 3,
                 "displayName": "Florescer Repentino",
                 "id": "NeekoR",
                 "rawDescription": "GeneratedTip_Spell_NeekoR_Description",
                 "rawDisplayName": "GeneratedTip_Spell_NeekoR_DisplayName"
             },
             "W": {
-                "abilityLevel": 0,
+                "abilityLevel": 5,
                 "displayName": "Metamorfa",
                 "id": "NeekoW",
                 "rawDescription": "GeneratedTip_Spell_NeekoW_Description",
@@ -37,95 +37,95 @@
             }
         },
         "championStats": {
-            "abilityHaste": 0,
-            "abilityPower": 24,
-            "armor": 21,
+            "abilityHaste": 60,
+            "abilityPower": 659.1480102539062,
+            "armor": 114.87000274658203,
             "armorPenetrationFlat": 0,
             "armorPenetrationPercent": 1,
-            "attackDamage": 48,
+            "attackDamage": 124.11499786376953,
             "attackRange": 550,
-            "attackSpeed": 0.6920000314712524,
+            "attackSpeed": 1.5931501388549805,
             "bonusArmorPenetrationPercent": 1,
             "bonusMagicPenetrationPercent": 1,
             "critChance": 0,
             "critDamage": 175,
-            "currentHealth": 670,
+            "currentHealth": 3208.000244140625,
             "healShieldPower": 0,
-            "healthRegenRate": 1.5,
+            "healthRegenRate": 4.050000190734863,
             "lifeSteal": 0,
             "magicLethality": 0,
-            "magicPenetrationFlat": 0,
+            "magicPenetrationFlat": 15,
             "magicPenetrationPercent": 1,
-            "magicResist": 30,
-            "maxHealth": 670,
-            "moveSpeed": 404.45831298828125,
+            "magicResist": 54.70499801635742,
+            "maxHealth": 3208.000244140625,
+            "moveSpeed": 360.3999938964844,
             "omnivamp": 0,
             "physicalLethality": 0,
             "physicalVamp": 0,
-            "resourceMax": 450,
-            "resourceRegenRate": 1.399999976158142,
+            "resourceMax": 985.0000610351562,
+            "resourceRegenRate": 3.7800002098083496,
             "resourceType": "MANA",
-            "resourceValue": 450,
+            "resourceValue": 985.0000610351562,
             "spellVamp": 0,
             "tenacity": 5
         },
-        "currentGold": 150,
+        "currentGold": 100000,
         "fullRunes": {
             "generalRunes": [
                 {
-                    "displayName": "Pressione o Ataque",
-                    "id": 8005,
-                    "rawDescription": "perk_tooltip_PressTheAttack",
-                    "rawDisplayName": "perk_displayname_PressTheAttack"
+                    "displayName": "Cometa Arcano",
+                    "id": 8229,
+                    "rawDescription": "perk_tooltip_ArcaneComet",
+                    "rawDisplayName": "perk_displayname_ArcaneComet"
                 },
                 {
-                    "displayName": "Triunfo",
-                    "id": 9111,
-                    "rawDescription": "perk_tooltip_9111",
-                    "rawDisplayName": "perk_displayname_9111"
+                    "displayName": "Faixa de Fluxo de Mana",
+                    "id": 8226,
+                    "rawDescription": "perk_tooltip_8226",
+                    "rawDisplayName": "perk_displayname_8226"
                 },
                 {
-                    "displayName": "Lenda: Aceleração",
-                    "id": 9105,
-                    "rawDescription": "perk_tooltip_9105",
-                    "rawDisplayName": "perk_displayname_9105"
+                    "displayName": "Transcendência",
+                    "id": 8210,
+                    "rawDescription": "perk_tooltip_Transcendence",
+                    "rawDisplayName": "perk_displayname_Transcendence"
                 },
                 {
-                    "displayName": "Até a Morte",
-                    "id": 8299,
-                    "rawDescription": "perk_tooltip_8234",
-                    "rawDisplayName": "perk_displayname_8234"
+                    "displayName": "Tempestade Crescente",
+                    "id": 8236,
+                    "rawDescription": "perk_tooltip_GatheringStorm",
+                    "rawDisplayName": "perk_displayname_GatheringStorm"
                 },
                 {
-                    "displayName": "Osso Revestido",
-                    "id": 8473,
-                    "rawDescription": "perk_tooltip_BonePlatingTooltip",
-                    "rawDisplayName": "perk_displayname_BonePlating"
+                    "displayName": "Calçados Mágicos",
+                    "id": 8304,
+                    "rawDescription": "perk_tooltip_MagicalFootwear",
+                    "rawDisplayName": "perk_displayname_MagicalFootwear"
                 },
                 {
-                    "displayName": "Crescimento Excessivo",
-                    "id": 8451,
-                    "rawDescription": "perk_tooltip_Overgrowth",
-                    "rawDisplayName": "perk_displayname_Overgrowth"
+                    "displayName": "Perspicácia Cósmica",
+                    "id": 8347,
+                    "rawDescription": "perk_tooltip_CosmicInsight",
+                    "rawDisplayName": "perk_displayname_CosmicInsight"
                 }
             ],
             "keystone": {
-                "displayName": "Pressione o Ataque",
-                "id": 8005,
-                "rawDescription": "perk_tooltip_PressTheAttack",
-                "rawDisplayName": "perk_displayname_PressTheAttack"
+                "displayName": "Cometa Arcano",
+                "id": 8229,
+                "rawDescription": "perk_tooltip_ArcaneComet",
+                "rawDisplayName": "perk_displayname_ArcaneComet"
             },
             "primaryRuneTree": {
-                "displayName": "Precisão",
-                "id": 8000,
-                "rawDescription": "perkstyle_tooltip_7201",
-                "rawDisplayName": "perkstyle_displayname_7201"
+                "displayName": "Feitiçaria",
+                "id": 8200,
+                "rawDescription": "perkstyle_tooltip_7202",
+                "rawDisplayName": "perkstyle_displayname_7202"
             },
             "secondaryRuneTree": {
-                "displayName": "Determinação",
-                "id": 8400,
-                "rawDescription": "perkstyle_tooltip_7204",
-                "rawDisplayName": "perkstyle_displayname_7204"
+                "displayName": "Inspiração",
+                "id": 8300,
+                "rawDescription": "perkstyle_tooltip_7203",
+                "rawDisplayName": "perkstyle_displayname_7203"
             },
             "statRunes": [
                 {
@@ -142,7 +142,7 @@
                 }
             ]
         },
-        "level": 1,
+        "level": 18,
         "riotId": "Giga Gnar#BRZL",
         "riotIdGameName": "Giga Gnar",
         "riotIdTagLine": "BRZL",
@@ -159,15 +159,81 @@
                     "canUse": false,
                     "consumable": false,
                     "count": 1,
-                    "displayName": "Lacre Sombrio",
-                    "itemID": 1082,
-                    "price": 350,
-                    "rawDescription": "GeneratedTip_Item_1082_Description",
-                    "rawDisplayName": "Item_1082_Name",
+                    "displayName": "Dente de Na'Shor",
+                    "itemID": 3115,
+                    "price": 500,
+                    "rawDescription": "GeneratedTip_Item_3115_Description",
+                    "rawDisplayName": "Item_3115_Name",
                     "slot": 0
+                },
+                {
+                    "canUse": true,
+                    "consumable": false,
+                    "count": 1,
+                    "displayName": "Explocinturão Hextec",
+                    "itemID": 3152,
+                    "price": 300,
+                    "rawDescription": "GeneratedTip_Item_3152_Description",
+                    "rawDisplayName": "Item_3152_Name",
+                    "slot": 1
+                },
+                {
+                    "canUse": false,
+                    "consumable": false,
+                    "count": 1,
+                    "displayName": "Ápice da Tempestade",
+                    "itemID": 4646,
+                    "price": 800,
+                    "rawDescription": "GeneratedTip_Item_4646_Description",
+                    "rawDisplayName": "Item_4646_Name",
+                    "slot": 2
+                },
+                {
+                    "canUse": false,
+                    "consumable": false,
+                    "count": 1,
+                    "displayName": "Capuz da Morte de Rabadon",
+                    "itemID": 3089,
+                    "price": 1100,
+                    "rawDescription": "GeneratedTip_Item_3089_Description",
+                    "rawDisplayName": "Item_3089_Name",
+                    "slot": 3
+                },
+                {
+                    "canUse": false,
+                    "consumable": false,
+                    "count": 1,
+                    "displayName": "Criafendas",
+                    "itemID": 4633,
+                    "price": 950,
+                    "rawDescription": "GeneratedTip_Item_4633_Description",
+                    "rawDisplayName": "Item_4633_Name",
+                    "slot": 4
+                },
+                {
+                    "canUse": false,
+                    "consumable": false,
+                    "count": 1,
+                    "displayName": "Lâmina da Fúria de Guinsoo",
+                    "itemID": 3124,
+                    "price": 1025,
+                    "rawDescription": "GeneratedTip_Item_3124_Description",
+                    "rawDisplayName": "Item_3124_Name",
+                    "slot": 5
+                },
+                {
+                    "canUse": true,
+                    "consumable": false,
+                    "count": 1,
+                    "displayName": "Sentinela Invisível",
+                    "itemID": 3340,
+                    "price": 0,
+                    "rawDescription": "GeneratedTip_Item_3340_Description",
+                    "rawDisplayName": "Item_3340_Name",
+                    "slot": 6
                 }
             ],
-            "level": 1,
+            "level": 18,
             "position": "",
             "rawChampionName": "game_character_displayname_Neeko",
             "rawSkinName": "game_character_skin_displayname_Neeko_29",
@@ -177,29 +243,29 @@
             "riotIdTagLine": "BRZL",
             "runes": {
                 "keystone": {
-                    "displayName": "Pressione o Ataque",
-                    "id": 8005,
-                    "rawDescription": "perk_tooltip_PressTheAttack",
-                    "rawDisplayName": "perk_displayname_PressTheAttack"
+                    "displayName": "Cometa Arcano",
+                    "id": 8229,
+                    "rawDescription": "perk_tooltip_ArcaneComet",
+                    "rawDisplayName": "perk_displayname_ArcaneComet"
                 },
                 "primaryRuneTree": {
-                    "displayName": "Precisão",
-                    "id": 8000,
-                    "rawDescription": "perkstyle_tooltip_7201",
-                    "rawDisplayName": "perkstyle_displayname_7201"
+                    "displayName": "Feitiçaria",
+                    "id": 8200,
+                    "rawDescription": "perkstyle_tooltip_7202",
+                    "rawDisplayName": "perkstyle_displayname_7202"
                 },
                 "secondaryRuneTree": {
-                    "displayName": "Determinação",
-                    "id": 8400,
-                    "rawDescription": "perkstyle_tooltip_7204",
-                    "rawDisplayName": "perkstyle_displayname_7204"
+                    "displayName": "Inspiração",
+                    "id": 8300,
+                    "rawDescription": "perkstyle_tooltip_7203",
+                    "rawDisplayName": "perkstyle_displayname_7203"
                 }
             },
             "scores": {
                 "assists": 0,
                 "creepScore": 0,
                 "deaths": 0,
-                "kills": 0,
+                "kills": 1,
                 "wardScore": 0
             },
             "skinID": 29,
@@ -223,8 +289,31 @@
             "championName": "Cho'Gath",
             "isBot": true,
             "isDead": false,
-            "items": [],
-            "level": 1,
+            "items": [
+                {
+                    "canUse": false,
+                    "consumable": false,
+                    "count": 1,
+                    "displayName": "Escudo de Doran",
+                    "itemID": 1054,
+                    "price": 450,
+                    "rawDescription": "GeneratedTip_Item_1054_Description",
+                    "rawDisplayName": "Item_1054_Name",
+                    "slot": 0
+                },
+                {
+                    "canUse": true,
+                    "consumable": false,
+                    "count": 1,
+                    "displayName": "Sentinela Invisível",
+                    "itemID": 3340,
+                    "price": 0,
+                    "rawDescription": "GeneratedTip_Item_3340_Description",
+                    "rawDisplayName": "Item_3340_Name",
+                    "slot": 6
+                }
+            ],
+            "level": 3,
             "position": "MIDDLE",
             "rawChampionName": "game_character_displayname_Chogath",
             "rawSkinName": "game_character_skin_displayname_Chogath_0",
@@ -254,7 +343,7 @@
             },
             "scores": {
                 "assists": 0,
-                "creepScore": 0,
+                "creepScore": 10,
                 "deaths": 0,
                 "kills": 0,
                 "wardScore": 0
@@ -282,13 +371,57 @@
             {
                 "EventID": 0,
                 "EventName": "GameStart",
-                "EventTime": 0.024643799290060997
+                "EventTime": 0.0367279015481472
+            },
+            {
+                "EventID": 1,
+                "EventName": "MinionsSpawning",
+                "EventTime": 65.04891204833984
+            },
+            {
+                "Assisters": [],
+                "EventID": 2,
+                "EventName": "ChampionKill",
+                "EventTime": 295.8528747558594,
+                "KillerName": "Giga Gnar",
+                "VictimName": "Cho'Gath Bot"
+            },
+            {
+                "EventID": 3,
+                "EventName": "FirstBlood",
+                "EventTime": 295.8528747558594,
+                "Recipient": "Giga Gnar"
+            },
+            {
+                "Acer": "Giga Gnar",
+                "AcingTeam": "ORDER",
+                "EventID": 4,
+                "EventName": "Ace",
+                "EventTime": 295.8528747558594
+            },
+            {
+                "Assisters": [],
+                "DragonType": "Fire",
+                "EventID": 5,
+                "EventName": "DragonKill",
+                "EventTime": 316.916748046875,
+                "KillerName": "Giga Gnar",
+                "Stolen": "False"
+            },
+            {
+                "Assisters": [],
+                "DragonType": "Earth",
+                "EventID": 6,
+                "EventName": "DragonKill",
+                "EventTime": 333.98675537109375,
+                "KillerName": "Giga Gnar",
+                "Stolen": "False"
             }
         ]
     },
     "gameData": {
         "gameMode": "PRACTICETOOL",
-        "gameTime": 35.48649597167969,
+        "gameTime": 366.63262939453125,
         "mapName": "Map11",
         "mapNumber": 11,
         "mapTerrain": "Default"

@@ -6,7 +6,7 @@ authors = ["Luiz Gustavo Santana Dias Gomes"]
 repository = "https://github.com/LuizGomes56/tutorlolv2"
 
 [dependencies]
-actix-web = "4.10.2"
+actix-web = "4.11.0"
 reqwest = { version = "0.12.15", features = ["json", "rustls-tls"] }
 serde = { version = "1.0", features = ["derive"] }
 tokio = { version = "1.37", features = [

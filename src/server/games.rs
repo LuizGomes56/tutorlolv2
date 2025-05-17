@@ -31,7 +31,8 @@ pub async fn realtime_handler(state: Data<AppState>, body: Json<RealtimeBody>) -
         g.game_code, g.champion_name, 
         gd.game_data as game FROM games g
         JOIN game_data gd ON g.game_id = gd.game_id
-        WHERE game_code = $1",
+        WHERE game_code = $1
+        ORDER BY game_time DESC LIMIT 1",
     )
     .bind(&body.code)
     .fetch_one(&state.db)

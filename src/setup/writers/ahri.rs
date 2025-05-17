@@ -1,3 +1,5 @@
+// #![mark_checked]
+
 use super::{Ability, CdnChampion, Champion, HashMap, IterationTarget, get_from_pattern};
 
 pub fn transform(data: CdnChampion) -> Champion {

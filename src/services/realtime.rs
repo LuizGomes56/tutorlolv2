@@ -1,16 +1,20 @@
-use std::{collections::HashMap, sync::Arc};
+use std::{
+    collections::{HashMap, HashSet},
+    sync::Arc,
+};
 
 use crate::model::{
     application::GlobalCache, champions::Champion, items::Item, realtime::*, riot::*,
 };
 
-// Return a massive struct object that will be sent to browser. It will have every
-// necessary field to make up tables and display the game data.
 pub fn calculate<'a>(
     cache: &'a Arc<GlobalCache>,
     game: &'a RiotRealtime,
     _item: String,
 ) -> Realtime<'a> {
+    let game_time = game.game_data.game_time;
+    let map_number = game.game_data.map_number;
+
     let active_player = &game.active_player;
     let all_players = &game.all_players;
 
@@ -21,17 +25,41 @@ pub fn calculate<'a>(
         .find(|player| player.riot_id == active_player.riot_id)
         .expect("Couldn't find active player in all players list");
 
-    let current_player_cache = cache
-        .champions
-        .get(
-            cache
-                .champion_names
-                .get(&active_player_expanded.champion_name)
-                .unwrap(),
-        )
+    let current_champion_id = cache
+        .champion_names
+        .get(&active_player_expanded.champion_name)
         .unwrap();
 
+    let current_player_cache = cache.champions.get(current_champion_id).unwrap();
     let current_player_base_stats = get_base_stats(current_player_cache, active_player_level);
+
+    let current_player_position = if !active_player_expanded.position.is_empty() {
+        active_player_expanded.position.clone()
+    } else {
+        current_player_cache.positions.get(0).unwrap().clone()
+    };
+
+    let current_player_recommended_items = cache.meta_items.get(current_champion_id).unwrap();
+    let recommended_items_vec = match current_player_position.as_str() {
+        "TOP" => &current_player_recommended_items.top,
+        "JUNGLE" => &current_player_recommended_items.jungle,
+        "MIDDLE" => &current_player_recommended_items.mid,
+        "BOTTOM" => &current_player_recommended_items.adc,
+        "SUPPORT" => &current_player_recommended_items.support,
+        _ => &Vec::new(),
+    };
+
+    let owned_items: HashSet<usize> = active_player_expanded
+        .items
+        .iter()
+        .map(|item| item.item_id)
+        .collect();
+
+    let recommended_items: Vec<usize> = recommended_items_vec
+        .iter()
+        .filter(|item_id| !owned_items.contains(item_id))
+        .copied()
+        .collect();
 
     let current_player = CurrentPlayer {
         team: &active_player_expanded.team,
@@ -45,8 +73,9 @@ pub fn calculate<'a>(
             .iter()
             .map(|(ability_key, _)| ability_key.clone())
             .collect(),
-        damaging_items: vec![],
-        damaging_runes: vec![],
+        damaging_items: Vec::new(),
+        damaging_runes: Vec::new(),
+        recommended_items,
         bonus_stats: get_bonus_stats(&active_player.champion_stats, &current_player_base_stats),
         base_stats: current_player_base_stats,
     };
@@ -94,13 +123,12 @@ pub fn calculate<'a>(
             current_stats: enemy_current_stats,
         });
     }
-
     Realtime {
         current_player,
         enemies,
         game_information: GameInformation {
-            game_time: game.game_data.game_time,
-            map_number: game.game_data.map_number,
+            game_time,
+            map_number,
         },
     }
 }

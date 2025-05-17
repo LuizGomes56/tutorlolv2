@@ -87,6 +87,19 @@ pub struct Abilities {
     pub r: Vec<CdnAbility>,
 }
 
+impl Abilities {
+    pub fn iter(&self) -> impl Iterator<Item = (&'static str, &Vec<CdnAbility>)> {
+        [
+            ("q", &self.q),
+            ("w", &self.w),
+            ("e", &self.e),
+            ("r", &self.r),
+            ("p", &self.p),
+        ]
+        .into_iter()
+    }
+}
+
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CdnChampion {

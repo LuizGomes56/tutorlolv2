@@ -59,6 +59,7 @@ pub struct CurrentPlayer<'a> {
     pub base_stats: BasicStats,
     pub bonus_stats: BasicStats,
     pub current_stats: Stats,
+    pub recommended_items: Vec<usize>,
 }
 
 #[derive(Serialize)]
