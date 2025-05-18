@@ -189,6 +189,30 @@ fn extract_scaled_values(input: &str) -> String {
         .join(" + ")
 }
 
+fn process_scaled_string(input: &str) -> String {
+    let re = Regex::new(r"\([^\)]*\)").unwrap();
+    let paren_part = re.find(input).map(|m| m.as_str()).unwrap_or("");
+    let base = input.replace(paren_part, "").trim().to_string();
+    let scaled = extract_scaled_values(paren_part);
+    if !scaled.is_empty() {
+        format!("{} + {}", base, scaled)
+    } else {
+        base
+    }
+}
+
+pub(super) fn extract_damagelike_expr(input: &str) -> String {
+    let re = Regex::new(r"\{\{as\|([^\}]+)\}\}").unwrap();
+    let mut results = Vec::new();
+    for cap in re.captures_iter(input) {
+        let mut content = cap[1].to_string();
+        let nested = Regex::new(r"\{\{[^}]+\|([^}]+)\}\}").unwrap();
+        content = nested.replace_all(&content, "$1").to_string();
+        results.push(content);
+    }
+    process_scaled_string(&results.join(" ").replace("{{as|", ""))
+}
+
 // Useful for passives where scalling is linear over all 18 levels.
 // Returns the array with the values for each level adjusted
 fn assign_as_linear_range(bounds: (f64, f64), size: usize, postfix: Option<&str>) -> Vec<String> {

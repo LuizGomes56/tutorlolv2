@@ -73,7 +73,19 @@ pub fn calculate<'a>(
             .iter()
             .map(|(ability_key, _)| ability_key.clone())
             .collect(),
-        damaging_items: Vec::new(),
+        damaging_items: active_player_expanded
+            .items
+            .iter()
+            .filter_map(|riot_item| {
+                let item = cache.items.get(&riot_item.item_id.to_string())?;
+                let is_valid = match current_player_cache.attack_type.as_str() {
+                    "MELEE" => item.melee.is_some(),
+                    "RANGED" => item.ranged.is_some(),
+                    _ => false,
+                };
+                is_valid.then_some(riot_item.item_id)
+            })
+            .collect::<Vec<usize>>(),
         damaging_runes: Vec::new(),
         recommended_items,
         bonus_stats: get_bonus_stats(&active_player.champion_stats, &current_player_base_stats),

@@ -1,8 +1,8 @@
-pub(self) mod helpers;
-pub(self) mod prototypes;
+mod helpers;
+mod prototypes;
 pub mod update;
 mod writers;
 
-pub use prototypes::*;
+pub(self) use prototypes::*;
 pub(self) use update::{extract_file_name, read_from_file, write_to_file};
 pub(self) use writers::*;

@@ -5,7 +5,7 @@ mod server;
 mod services;
 mod setup;
 
-use model::application::GlobalCache;
+use model::{application::GlobalCache, riot::RiotRealtime};
 use server::{
     games::realtime_handler,
     update::{setup_project, update_champions, update_items, update_meta_items},
@@ -13,7 +13,11 @@ use server::{
 
 use actix_web::{App, HttpServer, main, web::Data};
 use dotenvy::dotenv;
-use setup::update::{generate_writers, initialize_items, load_cache, setup_champion_cache};
+use services::realtime::calculate;
+use setup::update::{
+    generate_writers, initialize_items, load_cache, read_from_file, setup_champion_cache,
+    write_to_file,
+};
 use sqlx::{Pool, Postgres, postgres::PgPoolOptions};
 use std::{io::Result, sync::Arc};
 
@@ -28,12 +32,26 @@ async fn main() -> Result<()> {
     // unsafe {
     //     generate_writers().await;
     // }
-    setup_champion_cache();
+    // setup_champion_cache();
     // initialize_items();
-
-    return Ok(());
+    // return Ok(());
 
     let cache = Arc::new(load_cache().await);
+
+    // let game = read_from_file::<RiotRealtime>("sample.json");
+
+    // let start_time = std::time::Instant::now();
+
+    // let data = calculate(&cache, &game, String::from("4645"));
+
+    // println!("Time elapsed: {:.2?}", start_time.elapsed());
+
+    // write_to_file(
+    //     "test.json",
+    //     serde_json::to_string_pretty(&data).unwrap().as_bytes(),
+    // );
+
+    // return Ok(());
 
     dotenv().ok();
 

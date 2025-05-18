@@ -49,8 +49,8 @@ impl BasicStats {
 #[derive(Serialize)]
 pub struct CurrentPlayer<'a> {
     pub damaging_abilities: Vec<String>,
-    pub damaging_items: Vec<String>,
-    pub damaging_runes: Vec<String>,
+    pub damaging_items: Vec<usize>,
+    pub damaging_runes: Vec<usize>,
     pub riot_id: &'a str,
     pub level: usize,
     pub team: &'a str,

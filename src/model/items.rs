@@ -62,10 +62,12 @@ pub struct Shop {
     pub purchasable: bool,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, Clone)]
 pub struct ItemDamage {
-    pub minimum_damage: Vec<String>,
-    pub maximum_damage: Vec<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub minimum_damage: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub maximum_damage: Option<String>,
 }
 
 #[derive(Deserialize, Serialize, Default)]

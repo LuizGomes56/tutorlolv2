@@ -3,7 +3,7 @@
 use crate::model::application::GlobalCache;
 use crate::model::champions::CdnChampion;
 use crate::model::internal::{MetaItems, Positions};
-use crate::model::items::{CdnItem, Item, PartialStats};
+use crate::model::items::{CdnItem, Effect, Item, ItemDamage, PartialStats};
 use regex::Regex;
 use scraper::{Html, Selector};
 use serde::de::DeserializeOwned;
@@ -16,6 +16,7 @@ use std::{
 };
 use tokio::task;
 
+use super::helpers::extract_damagelike_expr;
 use super::*;
 
 // Files will be generated automatically, but checked manually until it is confirmed that the desired
@@ -200,13 +201,13 @@ pub fn setup_folders() {
 }
 
 // Helper function to write files
-pub(super) fn write_to_file(path_name: &str, bytes: &[u8]) {
+pub fn write_to_file(path_name: &str, bytes: &[u8]) {
     let mut file = std::fs::File::create(path_name).expect("Unable to create file");
     file.write_all(bytes).expect("Unable to write data");
 }
 
 // Helper to read from files and parse the value to a struct
-pub(super) fn read_from_file<T: DeserializeOwned>(path_name: &str) -> T {
+pub fn read_from_file<T: DeserializeOwned>(path_name: &str) -> T {
     let data = fs::read_to_string(path_name).expect("Unable to read file");
     serde_json::from_str(&data).expect("Failed to parse JSON")
 }
@@ -307,14 +308,36 @@ pub fn initialize_items() {
             item_stats.magic_penetration_flat = non_zero(stats.magic_penetration.flat);
             item_stats.magic_penetration_percent = non_zero(stats.magic_penetration.percent);
 
+            let get_damagelike_expr_from_vec = |source_vec: Vec<Effect>| -> Option<String> {
+                source_vec
+                    .get(0)
+                    .map(|p| extract_damagelike_expr(&p.effects))
+                    .filter(|s| !s.is_empty())
+            };
+
+            let damage_str = get_damagelike_expr_from_vec(cdn_item.passives)
+                .or_else(|| get_damagelike_expr_from_vec(cdn_item.active));
+
+            let (melee, ranged) = damage_str
+                .as_ref()
+                .filter(|s| s.chars().any(|c| c.is_ascii_digit()))
+                .map(|s| {
+                    let item_dmg = ItemDamage {
+                        minimum_damage: Some(s.clone()),
+                        maximum_damage: None,
+                    };
+                    (Some(item_dmg.clone()), Some(item_dmg))
+                })
+                .unwrap_or((None, None));
+
             let result = Item {
                 name: cdn_item.name,
                 levelings: None,
                 damage_type: None,
                 stats: item_stats,
                 builds_from: cdn_item.builds_from,
-                ranged: None,
-                melee: None,
+                ranged,
+                melee,
             };
 
             write_to_file(
@@ -527,14 +550,12 @@ fn generate_champion_file(path_name: &str) {
         _ => None,
     };
 
-    if champion.is_none() {
-        return;
+    if !champion.is_none() {
+        let bytes = serde_json::to_string(&champion).unwrap();
+
+        write_to_file(
+            &format!("src/internal/champions/{}.json", name),
+            bytes.as_bytes(),
+        );
     }
-
-    let bytes = serde_json::to_string(&champion).unwrap();
-
-    write_to_file(
-        &format!("src/internal/champions/{}.json", name),
-        bytes.as_bytes(),
-    );
 }
