@@ -61,18 +61,26 @@ pub fn calculate<'a>(
         .copied()
         .collect();
 
+    let mut damaging_abilities: Vec<String> = current_player_cache
+        .abilities
+        .iter()
+        .map(|(ability_key, _)| ability_key.clone())
+        .collect();
+
+    damaging_abilities.push("A".to_string());
+    damaging_abilities.push("C".to_string());
+
+    damaging_abilities.retain(|ability| !ability.contains("MONSTER"));
+
     let current_player = CurrentPlayer {
+        champion_id: current_champion_id.clone(),
         team: &active_player_expanded.team,
         position: &active_player_expanded.position,
         champion_name: &active_player_expanded.champion_name,
         current_stats: get_current_stats(&active_player),
         level: active_player_level,
         riot_id: &active_player.riot_id,
-        damaging_abilities: current_player_cache
-            .abilities
-            .iter()
-            .map(|(ability_key, _)| ability_key.clone())
-            .collect(),
+        damaging_abilities,
         damaging_items: active_player_expanded
             .items
             .iter()
@@ -111,10 +119,8 @@ pub fn calculate<'a>(
     let mut enemies = Vec::with_capacity(enemy_players.len());
 
     for enemy in enemy_players.into_iter() {
-        let current_enemy_cache = &cache
-            .champions
-            .get(cache.champion_names.get(&enemy.champion_name).unwrap())
-            .unwrap();
+        let enemy_champion_id = cache.champion_names.get(&enemy.champion_name).unwrap();
+        let current_enemy_cache = &cache.champions.get(enemy_champion_id).unwrap();
         let enemy_level = enemy.level;
         let enemy_base_stats = get_base_stats(current_enemy_cache, enemy_level);
         let enemy_current_stats =
@@ -127,6 +133,7 @@ pub fn calculate<'a>(
             &enemy.items.iter().map(|x| x.item_id).collect(),
         );
         enemies.push(Enemy {
+            champion_id: enemy_champion_id.clone(),
             champion_name: &enemy.champion_name,
             riot_id: &enemy.riot_id,
             team: &enemy.team,

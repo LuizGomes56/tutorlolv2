@@ -64,6 +64,7 @@ pub struct CurrentPlayer<'a> {
     pub team: &'a str,
     pub position: &'a str,
     pub champion_name: &'a str,
+    pub champion_id: String,
     pub base_stats: BasicStats,
     pub bonus_stats: BasicStats,
     pub current_stats: Stats,
@@ -96,6 +97,7 @@ pub struct Damages {
 
 #[derive(Serialize)]
 pub struct Enemy<'a> {
+    pub champion_id: String,
     pub champion_name: &'a str,
     pub riot_id: &'a str,
     pub team: &'a str,
