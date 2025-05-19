@@ -5,6 +5,15 @@ edition = "2024"
 authors = ["Luiz Gustavo Santana Dias Gomes"]
 repository = "https://github.com/LuizGomes56/tutorlolv2"
 
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
+debug = false
+incremental = false
+
 [dependencies]
 actix-web = "4.11.0"
 reqwest = { version = "0.12.15", features = ["json", "rustls-tls"] }

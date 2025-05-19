@@ -4,7 +4,7 @@ use std::{
 };
 
 use crate::model::{
-    application::GlobalCache, champions::Champion, items::Item, realtime::*, riot::*,
+    application::GlobalCache, champions::Champion, items::Item, realtime::*, riot::*, runes::Rune,
 };
 
 pub fn calculate<'a>(
@@ -77,7 +77,7 @@ pub fn calculate<'a>(
             .items
             .iter()
             .filter_map(|riot_item| {
-                let item = cache.items.get(&riot_item.item_id.to_string())?;
+                let item = cache.items.get(&riot_item.item_id)?;
                 let is_valid = match current_player_cache.attack_type.as_str() {
                     "MELEE" => item.melee.is_some(),
                     "RANGED" => item.ranged.is_some(),
@@ -85,8 +85,19 @@ pub fn calculate<'a>(
                 };
                 is_valid.then_some(riot_item.item_id)
             })
-            .collect::<Vec<usize>>(),
-        damaging_runes: Vec::new(),
+            .collect(),
+        damaging_runes: active_player
+            .full_runes
+            .general_runes
+            .iter()
+            .filter_map(|riot_rune| {
+                cache
+                    .runes
+                    .get(&riot_rune.id)
+                    .is_some()
+                    .then_some(riot_rune.id)
+            })
+            .collect(),
         recommended_items,
         bonus_stats: get_bonus_stats(&active_player.champion_stats, &current_player_base_stats),
         base_stats: current_player_base_stats,
@@ -127,8 +138,8 @@ pub fn calculate<'a>(
                     &full_stats,
                     &active_player.abilities,
                 ),
-                items: HashMap::new(),
-                runes: HashMap::new(),
+                items: get_items_damage(&cache.items, &full_stats, &current_player.damaging_items),
+                runes: get_runes_damage(&cache.runes, &full_stats, &current_player.damaging_runes),
             },
             bonus_stats: enemy_bonus_stats,
             base_stats: enemy_base_stats,
@@ -143,6 +154,66 @@ pub fn calculate<'a>(
             map_number,
         },
     }
+}
+
+fn get_items_damage(
+    cache: &HashMap<usize, Item>,
+    stats: &FullStats,
+    current_player_items_vec: &Vec<usize>,
+) -> HashMap<usize, InstanceDamage> {
+    let mut item_damages = HashMap::<usize, InstanceDamage>::new();
+
+    let is_ranged = stats.current_player.is_ranged;
+    for current_player_item in current_player_items_vec.into_iter() {
+        if let Some(item) = cache.get(current_player_item) {
+            let item_damage = match is_ranged {
+                true => &item.ranged,
+                false => &item.melee,
+            };
+            if let Some(damage) = item_damage {
+                item_damages.insert(
+                    current_player_item.clone(),
+                    InstanceDamage {
+                        minimum_damage: damage.minimum_damage.clone(),
+                        maximum_damage: damage.maximum_damage.clone(),
+                        damage_type: item.damage_type.clone().unwrap_or(String::from("UNKNOWN")),
+                        damages_in_area: false,
+                        damages_onhit: false,
+                    },
+                );
+            }
+        }
+    }
+    item_damages
+}
+
+fn get_runes_damage(
+    cache: &HashMap<usize, Rune>,
+    stats: &FullStats,
+    current_player_runes_vec: &Vec<usize>,
+) -> HashMap<usize, InstanceDamage> {
+    let mut rune_damages = HashMap::<usize, InstanceDamage>::new();
+
+    let is_ranged = stats.current_player.is_ranged;
+    for current_player_rune in current_player_runes_vec.into_iter() {
+        if let Some(rune) = cache.get(current_player_rune) {
+            let rune_damage = match is_ranged {
+                true => &rune.ranged,
+                false => &rune.melee,
+            };
+            rune_damages.insert(
+                current_player_rune.clone(),
+                InstanceDamage {
+                    minimum_damage: Some(rune_damage.clone()),
+                    maximum_damage: None,
+                    damage_type: rune.damage_type.clone(),
+                    damages_in_area: false,
+                    damages_onhit: false,
+                },
+            );
+        }
+    }
+    rune_damages
 }
 
 fn get_full_stats<'a>(
@@ -240,28 +311,36 @@ fn get_abilities_damage(
                 "PHYSICAL_DAMAGE" => full_stats.physical_damage_multiplier,
                 _ => 1.0,
             };
-            let minimum_damage = format!(
-                "({}) * {}",
-                replace_damage_keywords(
-                    full_stats,
-                    &ability
-                        .minimum_damage
-                        .get(indexation - 1)
-                        .unwrap_or(&String::from(default_value)),
-                ),
-                damage_multiplier
+            let minimum_damage_strfmt = replace_damage_keywords(
+                full_stats,
+                &ability
+                    .minimum_damage
+                    .get(indexation - 1)
+                    .unwrap_or(&String::from(default_value)),
             );
-            let maximum_damage = format!(
-                "({}) * {}",
-                replace_damage_keywords(
-                    full_stats,
-                    &ability
-                        .maximum_damage
-                        .get(indexation - 1)
-                        .unwrap_or(&String::from(default_value)),
-                ),
-                damage_multiplier
+            let minimum_damage: Option<String> = if minimum_damage_strfmt != "0.0" {
+                Some(format!(
+                    "({}) * {}",
+                    minimum_damage_strfmt, damage_multiplier
+                ))
+            } else {
+                None
+            };
+            let maximum_damage_strfmt = replace_damage_keywords(
+                full_stats,
+                &ability
+                    .maximum_damage
+                    .get(indexation - 1)
+                    .unwrap_or(&String::from(default_value)),
             );
+            let maximum_damage: Option<String> = if maximum_damage_strfmt != "0.0" {
+                Some(format!(
+                    "({}) * {}",
+                    maximum_damage_strfmt, damage_multiplier
+                ))
+            } else {
+                None
+            };
             ability_damages.insert(
                 keyname.to_string(),
                 InstanceDamage {
@@ -269,16 +348,18 @@ fn get_abilities_damage(
                     maximum_damage,
                     damage_type: String::from(damage_type),
                     damages_in_area,
+                    damages_onhit: false,
                 },
             );
         } else {
             ability_damages.insert(
                 keyname.to_string(),
                 InstanceDamage {
-                    minimum_damage: default_value.to_string(),
-                    maximum_damage: default_value.to_string(),
+                    minimum_damage: None,
+                    maximum_damage: None,
                     damage_type,
                     damages_in_area,
+                    damages_onhit: false,
                 },
             );
         }
@@ -292,21 +373,25 @@ fn get_abilities_damage(
     ability_damages.insert(
         String::from("A"),
         InstanceDamage {
-            minimum_damage: basic_attack_damage.to_string(),
-            maximum_damage: default_value.to_string(),
+            minimum_damage: Some(basic_attack_damage.to_string()),
+            maximum_damage: None,
             damage_type: String::from("PHYSICAL_DAMAGE"),
             damages_in_area: false,
+            damages_onhit: false,
         },
     );
     ability_damages.insert(
         String::from("C"),
         InstanceDamage {
-            minimum_damage: (basic_attack_damage
-                * (full_stats.current_player.current_stats.crit_damage / 100.0))
-                .to_string(),
-            maximum_damage: default_value.to_string(),
+            minimum_damage: Some(
+                (basic_attack_damage
+                    * (full_stats.current_player.current_stats.crit_damage / 100.0))
+                    .to_string(),
+            ),
+            maximum_damage: None,
             damage_type: String::from("PHYSICAL_DAMAGE"),
             damages_in_area: false,
+            damages_onhit: false,
         },
     );
 
@@ -496,7 +581,7 @@ fn get_base_stats(champion_cache: &Champion, level: usize) -> BasicStats {
 }
 
 fn get_enemy_current_stats(
-    cache: &HashMap<String, Item>,
+    cache: &HashMap<usize, Item>,
     base_stats: &BasicStats,
     current_items: &Vec<RiotItems>,
 ) -> BasicStats {
@@ -513,7 +598,7 @@ fn get_enemy_current_stats(
         }
     };
     for enemy_item in current_items {
-        if let Some(item) = cache.get(&enemy_item.item_id.to_string()) {
+        if let Some(item) = cache.get(&enemy_item.item_id) {
             let stats = &item.stats;
             add_if_some(&mut base.armor, stats.armor);
             add_if_some(&mut base.health, stats.health);

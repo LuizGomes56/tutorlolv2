@@ -3,7 +3,9 @@
 use crate::model::application::GlobalCache;
 use crate::model::champions::CdnChampion;
 use crate::model::internal::{MetaItems, Positions};
-use crate::model::items::{CdnItem, Effect, Item, ItemDamage, PartialStats};
+use crate::model::items::{CdnItem, Effect, Item, PartialStats};
+use crate::model::realtime::DamageLike;
+use crate::model::runes::Rune;
 use regex::Regex;
 use scraper::{Html, Selector};
 use serde::de::DeserializeOwned;
@@ -58,8 +60,18 @@ pub async fn load_cache() -> GlobalCache {
                 .expect("Failed to convert path to string"),
         );
         let name = extract_file_name(&path_name);
-        items.insert(String::from(name), data);
+        match name.parse::<usize>() {
+            Ok(item_id) => {
+                items.insert(item_id, data);
+            }
+            Err(e) => {
+                println!("Failed to parse item id: {}", e);
+                continue;
+            }
+        }
     }
+
+    let runes = read_from_file::<HashMap<usize, Rune>>("src/internal/runes.json");
 
     let mut champions = HashMap::with_capacity(champion_files.len());
     for path_name in champion_files {
@@ -75,6 +87,7 @@ pub async fn load_cache() -> GlobalCache {
     GlobalCache {
         champions,
         items,
+        runes,
         champion_names,
         meta_items,
     }
@@ -322,7 +335,7 @@ pub fn initialize_items() {
                 .as_ref()
                 .filter(|s| s.chars().any(|c| c.is_ascii_digit()))
                 .map(|s| {
-                    let item_dmg = ItemDamage {
+                    let item_dmg = DamageLike {
                         minimum_damage: Some(s.clone()),
                         maximum_damage: None,
                     };

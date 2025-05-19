@@ -2,6 +2,8 @@
 
 use serde::{Deserialize, Serialize};
 
+use super::realtime::DamageLike;
+
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Effect {
@@ -62,14 +64,6 @@ pub struct Shop {
     pub purchasable: bool,
 }
 
-#[derive(Deserialize, Serialize, Clone)]
-pub struct ItemDamage {
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub minimum_damage: Option<String>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub maximum_damage: Option<String>,
-}
-
 #[derive(Deserialize, Serialize, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct PartialStats {
@@ -117,7 +111,7 @@ pub struct Item {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub levelings: Option<Vec<usize>>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub ranged: Option<ItemDamage>,
+    pub ranged: Option<DamageLike>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub melee: Option<ItemDamage>,
+    pub melee: Option<DamageLike>,
 }

@@ -1,8 +1,16 @@
 use std::collections::HashMap;
 
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 
 use super::riot::RiotChampionStats;
+
+#[derive(Deserialize, Serialize, Clone)]
+pub struct DamageLike {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub minimum_damage: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub maximum_damage: Option<String>,
+}
 
 #[derive(Serialize)]
 pub struct Stats {
@@ -70,17 +78,20 @@ pub struct GameInformation {
 
 #[derive(Serialize)]
 pub struct InstanceDamage {
-    pub minimum_damage: String,
-    pub maximum_damage: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub minimum_damage: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub maximum_damage: Option<String>,
     pub damage_type: String,
     pub damages_in_area: bool,
+    pub damages_onhit: bool,
 }
 
 #[derive(Serialize)]
 pub struct Damages {
     pub abilities: HashMap<String, InstanceDamage>,
-    pub items: HashMap<String, f64>,
-    pub runes: HashMap<String, f64>,
+    pub items: HashMap<usize, InstanceDamage>,
+    pub runes: HashMap<usize, InstanceDamage>,
 }
 
 #[derive(Serialize)]
