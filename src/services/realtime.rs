@@ -234,12 +234,16 @@ fn get_items_damage(
                 false => &item.melee,
             };
             if let Some(damage) = item_damage {
-                let minimum_damage =
-                    eval_math_expr(&damage.minimum_damage.clone().unwrap_or(String::from("0.0")))
-                        .unwrap_or(0.0);
-                let maximum_damage =
-                    eval_math_expr(&damage.maximum_damage.clone().unwrap_or(String::from("0.0")))
-                        .unwrap_or(0.0);
+                let minimum_damage_string = replace_damage_keywords(
+                    stats,
+                    &damage.minimum_damage.clone().unwrap_or(String::from("0.0")),
+                );
+                let maximum_damage_string = replace_damage_keywords(
+                    stats,
+                    &damage.maximum_damage.clone().unwrap_or(String::from("0.0")),
+                );
+                let minimum_damage = eval_math_expr(&minimum_damage_string).unwrap_or(0.0);
+                let maximum_damage = eval_math_expr(&maximum_damage_string).unwrap_or(0.0);
                 item_damages.insert(
                     current_player_item.clone(),
                     InstanceDamage {
@@ -270,7 +274,8 @@ fn get_runes_damage(
                 true => &rune.ranged,
                 false => &rune.melee,
             };
-            let minimum_damage = eval_math_expr(&rune_damage).unwrap_or(0.0);
+            let damage_string = replace_damage_keywords(stats, rune_damage);
+            let minimum_damage = eval_math_expr(&damage_string).unwrap_or(0.0);
             rune_damages.insert(
                 current_player_rune.clone(),
                 InstanceDamage {
