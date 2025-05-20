@@ -182,7 +182,7 @@ pub async fn update_instances(instance: &str) {
     let result = fetch_api(&format!("{}.json", instance)).await;
 
     for (key, value) in result {
-        let folder_name = format!("cache/cdn/{}", instance);
+        let folder_name = format!("src/cache/cdn/{}", instance);
         task::spawn_blocking(move || {
             let path_name = format!("{}/{}.json", folder_name, key);
             let strval = value.to_string();
@@ -195,11 +195,11 @@ pub async fn update_instances(instance: &str) {
 // The program is likely to panic when an update is called.
 pub fn setup_folders() {
     for dir in &[
-        "cache",
-        "cache/cdn",
-        "cache/cdn/champions",
-        "cache/cdn/items",
-        "internal",
+        "src/cache",
+        "src/cache/cdn",
+        "src/cache/cdn/champions",
+        "src/cache/cdn/items",
+        "src/internal",
         "src/internal/items",
         "src/internal/champions",
         "src/internal/runes",
@@ -225,10 +225,10 @@ pub fn read_from_file<T: DeserializeOwned>(path_name: &str) -> T {
     serde_json::from_str(&data).expect("Failed to parse JSON")
 }
 
-// Read every file in cache/cdn/champions folder and delegates the processing to generate_champion_file
+// Read every file in src/cache/cdn/champions folder and delegates the processing to generate_champion_file
 pub fn setup_champion_cache() {
-    let files =
-        fs::read_dir("cache/cdn/champions").expect("Unable to read directory cache/cdn/champions");
+    let files = fs::read_dir("src/cache/cdn/champions")
+        .expect("Unable to read directory src/cache/cdn/champions");
 
     for file in files {
         let path_name = file.unwrap().path();
@@ -250,7 +250,8 @@ pub fn identify_damaging_items() {
         let cleaned = re.replace_all(text, "");
         cleaned.contains("damage")
     };
-    let files = fs::read_dir("cache/cdn/items").expect("Unable to read directory cache/cdn/items");
+    let files =
+        fs::read_dir("src/cache/cdn/items").expect("Unable to read directory src/cache/cdn/items");
     let mut is_damaging = Vec::new();
     for file in files {
         let path_buf = file.unwrap().path();
@@ -292,7 +293,8 @@ pub fn identify_damaging_items() {
 pub fn initialize_items() {
     let non_zero = |val: f64| -> Option<f64> { if val == 0.0 { None } else { Some(val) } };
 
-    let files = fs::read_dir("cache/cdn/items").expect("Unable to read directory cache/cdn/items");
+    let files =
+        fs::read_dir("src/cache/cdn/items").expect("Unable to read directory src/cache/cdn/items");
     for file in files {
         task::spawn_blocking(move || {
             let path_buf = file.unwrap().path();
@@ -363,8 +365,8 @@ pub fn initialize_items() {
 
 // Uses champion display name and converts to their respective ids, saving to internal
 pub fn rewrite_champion_names() {
-    let files =
-        fs::read_dir("cache/cdn/champions").expect("Unable to read directory cache/cdn/champions");
+    let files = fs::read_dir("src/cache/cdn/champions")
+        .expect("Unable to read directory src/cache/cdn/champions");
 
     let mut map = HashMap::<String, String>::new();
 

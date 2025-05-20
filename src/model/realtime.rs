@@ -56,9 +56,9 @@ impl BasicStats {
 
 #[derive(Serialize)]
 pub struct CurrentPlayer<'a> {
-    pub damaging_abilities: Vec<String>,
-    pub damaging_items: Vec<usize>,
-    pub damaging_runes: Vec<usize>,
+    pub damaging_abilities: HashMap<String, String>,
+    pub damaging_items: HashMap<usize, String>,
+    pub damaging_runes: HashMap<usize, String>,
     pub riot_id: &'a str,
     pub level: usize,
     pub team: &'a str,
@@ -170,4 +170,20 @@ pub struct FullStats<'a> {
     pub enemy_player: EnemyFullStats<'a>,
     pub physical_damage_multiplier: f64,
     pub magic_damage_multiplier: f64,
+}
+
+pub enum AttackType {
+    Melee,
+    Ranged,
+    Other,
+}
+
+impl From<&str> for AttackType {
+    fn from(s: &str) -> Self {
+        match s {
+            "MELEE" => AttackType::Melee,
+            "RANGED" => AttackType::Ranged,
+            _ => AttackType::Other,
+        }
+    }
 }

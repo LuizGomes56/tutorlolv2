@@ -9,11 +9,18 @@ use crate::model::{
 
 use super::eval::eval_math_expr;
 
+pub enum CalculateError {
+    ActivePlayerNotFound,
+    ChampionNameNotFound(String),
+    ChampionCacheNotFound(String),
+    MetaItemsNotFound(String),
+}
+
 pub fn calculate<'a>(
     cache: &'a Arc<GlobalCache>,
     game: &'a RiotRealtime,
     _item: String,
-) -> Realtime<'a> {
+) -> Result<Realtime<'a>, CalculateError> {
     let game_time = game.game_data.game_time;
     let map_number = game.game_data.map_number;
 
@@ -25,23 +32,38 @@ pub fn calculate<'a>(
     let active_player_expanded = all_players
         .iter()
         .find(|player| player.riot_id == active_player.riot_id)
-        .expect("Couldn't find active player in all players list");
+        .ok_or(CalculateError::ActivePlayerNotFound)?;
 
     let current_champion_id = cache
         .champion_names
         .get(&active_player_expanded.champion_name)
-        .unwrap();
+        .ok_or_else(|| {
+            CalculateError::ChampionNameNotFound(active_player_expanded.champion_name.clone())
+        })?;
 
-    let current_player_cache = cache.champions.get(current_champion_id).unwrap();
+    let current_player_cache = cache
+        .champions
+        .get(current_champion_id)
+        .ok_or_else(|| CalculateError::ChampionCacheNotFound(current_champion_id.clone()))?;
+
     let current_player_base_stats = get_base_stats(current_player_cache, active_player_level);
 
     let current_player_position = if !active_player_expanded.position.is_empty() {
         active_player_expanded.position.clone()
     } else {
-        current_player_cache.positions.get(0).unwrap().clone()
+        let default_position = String::from("MIDDLE");
+        current_player_cache
+            .positions
+            .get(0)
+            .unwrap_or(&default_position)
+            .clone()
     };
 
-    let current_player_recommended_items = cache.meta_items.get(current_champion_id).unwrap();
+    let current_player_recommended_items = cache
+        .meta_items
+        .get(current_champion_id)
+        .ok_or_else(|| CalculateError::MetaItemsNotFound(current_champion_id.clone()))?;
+
     let recommended_items_vec = match current_player_position.as_str() {
         "TOP" => &current_player_recommended_items.top,
         "JUNGLE" => &current_player_recommended_items.jungle,
@@ -57,23 +79,53 @@ pub fn calculate<'a>(
         .map(|item| item.item_id)
         .collect();
 
-    let recommended_items: Vec<usize> = recommended_items_vec
+    let recommended_items = recommended_items_vec
         .iter()
         .filter(|item_id| !owned_items.contains(item_id))
         .copied()
         .collect();
 
-    let mut damaging_abilities: Vec<String> = current_player_cache
+    let mut damaging_abilities: HashMap<String, String> = current_player_cache
         .abilities
         .iter()
-        .map(|(ability_key, _)| ability_key.clone())
+        .filter_map(|(key, damage)| {
+            (!key.contains("MONSTER") && !key.contains("MINION"))
+                .then(|| (key.clone(), damage.name.clone()))
+        })
         .collect();
 
-    damaging_abilities.push("A".to_string());
-    damaging_abilities.push("C".to_string());
+    damaging_abilities.extend([
+        ("A".to_string(), "Basic Attack".to_string()),
+        ("C".to_string(), "Critical Strike".to_string()),
+    ]);
 
-    damaging_abilities
-        .retain(|ability| !ability.contains("MONSTER") && !ability.contains("MINION"));
+    let damaging_runes: HashMap<usize, String> = active_player
+        .full_runes
+        .general_runes
+        .iter()
+        .filter_map(|riot_rune| {
+            cache
+                .runes
+                .get(&riot_rune.id)
+                .map(|cached| (riot_rune.id, cached.name.clone()))
+        })
+        .collect();
+
+    let attack_type = AttackType::from(current_player_cache.attack_type.as_str());
+
+    let damaging_items: HashMap<usize, String> = active_player_expanded
+        .items
+        .iter()
+        .filter_map(|riot_item| {
+            let item = cache.items.get(&riot_item.item_id)?;
+            let ok = match attack_type {
+                AttackType::Melee => item.melee.is_some(),
+                AttackType::Ranged => item.ranged.is_some(),
+                AttackType::Other => false,
+            };
+            ok.then(|| (riot_item.item_id, item.name.clone()))
+        })
+        .collect();
 
     let current_player = CurrentPlayer {
         champion_id: current_champion_id.clone(),
@@ -84,31 +136,8 @@ pub fn calculate<'a>(
         level: active_player_level,
         riot_id: &active_player.riot_id,
         damaging_abilities,
-        damaging_items: active_player_expanded
-            .items
-            .iter()
-            .filter_map(|riot_item| {
-                let item = cache.items.get(&riot_item.item_id)?;
-                let is_valid = match current_player_cache.attack_type.as_str() {
-                    "MELEE" => item.melee.is_some(),
-                    "RANGED" => item.ranged.is_some(),
-                    _ => false,
-                };
-                is_valid.then_some(riot_item.item_id)
-            })
-            .collect(),
-        damaging_runes: active_player
-            .full_runes
-            .general_runes
-            .iter()
-            .filter_map(|riot_rune| {
-                cache
-                    .runes
-                    .get(&riot_rune.id)
-                    .is_some()
-                    .then_some(riot_rune.id)
-            })
-            .collect(),
+        damaging_items,
+        damaging_runes,
         bonus_stats: get_bonus_stats(&active_player.champion_stats, &current_player_base_stats),
         base_stats: current_player_base_stats,
     };
@@ -121,8 +150,14 @@ pub fn calculate<'a>(
     let mut enemies = Vec::with_capacity(enemy_players.len());
 
     for enemy in enemy_players.into_iter() {
-        let enemy_champion_id = cache.champion_names.get(&enemy.champion_name).unwrap();
-        let current_enemy_cache = &cache.champions.get(enemy_champion_id).unwrap();
+        let enemy_champion_id = cache
+            .champion_names
+            .get(&enemy.champion_name)
+            .ok_or_else(|| CalculateError::ChampionNameNotFound(enemy.champion_name.clone()))?;
+        let current_enemy_cache = &cache
+            .champions
+            .get(enemy_champion_id)
+            .ok_or_else(|| CalculateError::ChampionCacheNotFound(enemy_champion_id.clone()))?;
         let enemy_level = enemy.level;
         let enemy_base_stats = get_base_stats(current_enemy_cache, enemy_level);
         let enemy_current_stats =
@@ -148,15 +183,31 @@ pub fn calculate<'a>(
                     &full_stats,
                     &active_player.abilities,
                 ),
-                items: get_items_damage(&cache.items, &full_stats, &current_player.damaging_items),
-                runes: get_runes_damage(&cache.runes, &full_stats, &current_player.damaging_runes),
+                items: get_items_damage(
+                    &cache.items,
+                    &full_stats,
+                    &current_player
+                        .damaging_items
+                        .iter()
+                        .map(|(key, _)| *key)
+                        .collect(),
+                ),
+                runes: get_runes_damage(
+                    &cache.runes,
+                    &full_stats,
+                    &current_player
+                        .damaging_runes
+                        .iter()
+                        .map(|(key, _)| *key)
+                        .collect(),
+                ),
             },
             bonus_stats: enemy_bonus_stats,
             base_stats: enemy_base_stats,
             current_stats: enemy_current_stats,
         });
     }
-    Realtime {
+    Ok(Realtime {
         current_player,
         enemies,
         recommended_items,
@@ -165,7 +216,7 @@ pub fn calculate<'a>(
             map_number,
         },
         compared_items: HashMap::new(),
-    }
+    })
 }
 
 fn get_items_damage(
@@ -400,6 +451,7 @@ fn replace_damage_keywords(stats: &FullStats, target_str: &str) -> String {
         ("NASUS_STACKS", 1.0),
         ("SMOLDER_STACKS", 1.0),
         ("AURELION_SOL_STACKS", 1.0),
+        ("THRESH_STACKS", 1.0),
         ("KINDRED_STACKS", 1.0),
         ("BELVETH_STACKS", 1.0),
         (
@@ -457,6 +509,7 @@ fn replace_damage_keywords(stats: &FullStats, target_str: &str) -> String {
         ),
         ("BONUS_HEALTH", stats.current_player.bonus_stats.health),
         ("BONUS_MANA", stats.current_player.bonus_stats.mana),
+        ("BONUS_MOVE_SPEED", 1.0),
         ("AP", stats.current_player.current_stats.ability_power),
         ("AD", stats.current_player.current_stats.attack_damage),
         (

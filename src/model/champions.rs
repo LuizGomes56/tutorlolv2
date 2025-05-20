@@ -64,6 +64,7 @@ pub struct CdnAbility {
 impl CdnAbility {
     pub fn format(&self, minimum_damage: Vec<String>, maximum_damage: Vec<String>) -> Ability {
         Ability {
+            name: self.name.clone(),
             damage_type: self.damage_type.clone().unwrap_or_default(),
             damages_in_area: self
                 .damage_type
@@ -113,6 +114,7 @@ pub struct CdnChampion {
 
 #[derive(Serialize, Deserialize, Clone)]
 pub struct Ability {
+    pub name: String,
     pub damage_type: String,
     pub damages_in_area: bool,
     pub minimum_damage: Vec<String>,
@@ -132,12 +134,12 @@ pub struct Champion {
 impl CdnChampion {
     pub fn format(self, abilities: HashMap<String, Ability>) -> Champion {
         Champion {
+            abilities,
             name: self.name,
             adaptative_type: self.adaptive_type,
             attack_type: self.attack_type,
             positions: self.positions,
             stats: self.stats,
-            abilities,
         }
     }
 }

@@ -1,8 +1,8 @@
 use serde::Serialize;
 
 #[derive(Serialize)]
-pub(super) struct APIResponse<T> {
+pub(super) struct APIResponse<T, U> {
     pub success: bool,
-    pub message: String,
-    pub data: T,
+    pub message: T,
+    pub data: U,
 }

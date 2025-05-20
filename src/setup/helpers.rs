@@ -82,35 +82,36 @@ fn extract_ability(modifiers: &Vec<Modifiers>, target_vec: &mut Vec<String>) {
     for i in 0..length {
         let mut parts = Vec::new();
         for modifier in modifiers {
-            let value = modifier.values[i];
-            let raw_unit = modifier.units[i].trim();
-            let scallings = extract_scaled_values(&raw_unit);
-            let unit = remove_parenthesized_additions(&raw_unit);
-            let cleaned_string = if unit.contains('%') {
-                let parts: Vec<&str> = unit.split('%').collect();
-                let suffix = parts
-                    .get(1)
-                    .map_or("".to_string(), |s| s.trim().to_string());
-                let coef = value / 100.0;
-                if coef == 1.0 && !suffix.is_empty() {
-                    suffix
-                } else if !suffix.is_empty() {
-                    format!("({} * {})", trim_f64(coef), suffix)
+            if let Some(value) = modifier.values.get(i) {
+                let raw_unit = modifier.units[i].trim();
+                let scallings = extract_scaled_values(&raw_unit);
+                let unit = remove_parenthesized_additions(&raw_unit);
+                let cleaned_string = if unit.contains('%') {
+                    let parts: Vec<&str> = unit.split('%').collect();
+                    let suffix = parts
+                        .get(1)
+                        .map_or("".to_string(), |s| s.trim().to_string());
+                    let coef = value / 100.0;
+                    if coef == 1.0 && !suffix.is_empty() {
+                        suffix
+                    } else if !suffix.is_empty() {
+                        format!("({} * {})", trim_f64(coef), suffix)
+                    } else {
+                        format!("{}", trim_f64(coef))
+                    }
+                } else if unit.is_empty() {
+                    trim_f64(*value)
                 } else {
-                    format!("{}", trim_f64(coef))
-                }
-            } else if unit.is_empty() {
-                trim_f64(value)
-            } else {
-                format!("{}{}", trim_f64(value), unit)
-            };
-            let formatted_string = replace_keys(&cleaned_string);
-            let final_string = if scallings.is_empty() {
-                formatted_string
-            } else {
-                format!("{} + {}", formatted_string, scallings)
-            };
-            parts.push(final_string);
+                    format!("{}{}", trim_f64(*value), unit)
+                };
+                let formatted_string = replace_keys(&cleaned_string);
+                let final_string = if scallings.is_empty() {
+                    formatted_string
+                } else {
+                    format!("{} + {}", formatted_string, scallings)
+                };
+                parts.push(final_string);
+            }
         }
         target_vec.push(parts.join(" + "));
     }
@@ -262,23 +263,24 @@ pub(super) fn get_from_pattern(
             let mut minimum_damage = Vec::<String>::new();
             let mut maximum_damage = Vec::<String>::new();
 
-            let effects = data
-                .effects
-                .get(effect_index)
-                .expect("Effect index passed is wrong.");
+            if let Some(effects) = data.effects.get(effect_index) {
+                if let Some(level_entry) = effects.leveling.get(leveling_index) {
+                    let modifiers = &level_entry.modifiers;
 
-            let modifiers = &effects
-                .leveling
-                .get(leveling_index)
-                .expect("Leveling index passed is wrong.")
-                .modifiers;
+                    match target_vector {
+                        IterationTarget::MINIMUM => extract_ability(modifiers, &mut minimum_damage),
+                        IterationTarget::MAXIMUM => extract_ability(modifiers, &mut maximum_damage),
+                    }
 
-            match target_vector {
-                IterationTarget::MINIMUM => extract_ability(modifiers, &mut minimum_damage),
-                IterationTarget::MAXIMUM => extract_ability(modifiers, &mut maximum_damage),
+                    map.insert(keyname, data.format(minimum_damage, maximum_damage));
+                }
+            } else {
+                println!(
+                    "Indice inválido: effect: '{}' or leveling: '{}'",
+                    effect_index, leveling_index
+                );
+                continue;
             }
-
-            map.insert(keyname, data.format(minimum_damage, maximum_damage));
         }
     }
 }
@@ -286,12 +288,45 @@ pub(super) fn get_from_pattern(
 // Replaces common keys found in the API with the corresponding ones used internally
 pub(super) fn replace_keys(s: &str) -> String {
     let replacements = [
-        ("of target's maximum health", "ENEMY_MAX_HEALTH"),
-        ("target's current health", "ENEMY_CURRENT_HEALTH"),
-        ("target's missing health", "ENEMY_MISSING_HEALTH"),
+        ("per 100", "0.01 *"),
+        ("of damage dealt", "100.0"),
+        ("of damage stored", "100.0"),
+        ("per Soul collected", " * THRESH_STACKS"),
+        ("of expended Grit", "0.0"),
+        ("of primary target's bonus health", "ENEMY_BONUS_HEALTH"),
+        ("of his bonus health", "BONUS_HEALTH"),
+        ("Pantheon's bonus health", "BONUS_HEALTH"),
+        ("critical strike chance", "CRIT_CHANCE"),
+        ("of Zac's maximum health", "MAX_HEALTH"),
+        ("of Braum's maximum health", "MAX_HEALTH"),
+        ("of her maximum health", "MAX_HEALTH"),
+        ("of maximum health", "MAX_HEALTH"),
+        ("maximum health", "MAX_HEALTH"),
+        ("of the original damage", "100.0"),
+        ("per Overwhelm stack on the target", "1.0"),
+        ("of Ivern's AP", "AP"),
+        ("of Sona's AP", "AP"),
         ("per Feast stack", "CHOGATH_STACKS"),
+        ("of Siphoning Strike stacks", "NASUS_STACKS"),
+        ("Stardust", "AURELION_SOL_STACKS"),
+        ("per mark", "KINDRED_STACKS"),
+        ("bonus armor", "BONUS_ARMOR"),
+        ("bonus mana", "BONUS_MANA"),
         ("bonus AD", "BONUS_AD"),
+        ("bonus armor", "BONUS_ARMOR"),
+        ("bonus magic resistance", "BONUS_MAGIC_RESIST"),
         ("bonus health", "BONUS_HEALTH"),
+        ("bonus movement speed", "BONUS_MOVE_SPEED"),
+        ("armor", "ARMOR"),
+        ("of the target's maximum health", "ENEMY_MAX_HEALTH"),
+        ("of target's maximum health", "ENEMY_MAX_HEALTH"),
+        ("of the target's current health", "ENEMY_CURRENT_HEALTH"),
+        ("of target's current health", "ENEMY_CURRENT_HEALTH"),
+        ("target's current health", "ENEMY_CURRENT_HEALTH"),
+        ("of the target's missing health", "ENEMY_MISSING_HEALTH"),
+        ("of target's missing health", "ENEMY_MISSING_HEALTH"),
+        ("target's missing health", "ENEMY_MISSING_HEALTH"),
+        ("maximum mana", "MAX_MANA"),
     ];
 
     replacements

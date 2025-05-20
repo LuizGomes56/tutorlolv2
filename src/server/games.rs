@@ -1,7 +1,7 @@
 use super::schemas::APIResponse;
 use crate::AppState;
 use crate::model::riot::RiotRealtime;
-use crate::services::realtime::calculate;
+use crate::services::realtime::{CalculateError, calculate};
 use actix_web::{
     HttpResponse, Responder, post,
     web::{Data, Json},
@@ -44,11 +44,41 @@ pub async fn realtime_handler(state: Data<AppState>, body: Json<RealtimeBody>) -
 
             let data = calculate(&state.cache, &game, body.item.clone());
 
-            HttpResponse::Ok().json(APIResponse {
-                success: true,
-                message: "OK".to_string(),
-                data,
-            })
+            match data {
+                Ok(data) => HttpResponse::Ok().json(APIResponse {
+                    success: true,
+                    message: (),
+                    data,
+                }),
+                Err(e) => match e {
+                    CalculateError::ActivePlayerNotFound => HttpResponse::InternalServerError()
+                        .json(APIResponse {
+                            success: false,
+                            message: "Active player not found.".to_string(),
+                            data: (),
+                        }),
+                    CalculateError::ChampionCacheNotFound(id) => {
+                        HttpResponse::InternalServerError().json(APIResponse {
+                            success: false,
+                            message: format!("Champion cache not found for id: {}", id),
+                            data: (),
+                        })
+                    }
+                    CalculateError::ChampionNameNotFound(name) => {
+                        HttpResponse::InternalServerError().json(APIResponse {
+                            success: false,
+                            message: format!("Champion name not found for name: {}", name),
+                            data: (),
+                        })
+                    }
+                    CalculateError::MetaItemsNotFound(name) => HttpResponse::InternalServerError()
+                        .json(APIResponse {
+                            success: false,
+                            message: format!("Meta items not found for name: {}", name),
+                            data: (),
+                        }),
+                },
+            }
         }
         Err(e) => HttpResponse::NotFound().json(APIResponse {
             success: false,
