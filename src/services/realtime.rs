@@ -7,6 +7,8 @@ use crate::model::{
     application::GlobalCache, champions::Champion, items::Item, realtime::*, riot::*, runes::Rune,
 };
 
+use super::eval::eval_math_expr;
+
 pub fn calculate<'a>(
     cache: &'a Arc<GlobalCache>,
     game: &'a RiotRealtime,
@@ -70,7 +72,8 @@ pub fn calculate<'a>(
     damaging_abilities.push("A".to_string());
     damaging_abilities.push("C".to_string());
 
-    damaging_abilities.retain(|ability| !ability.contains("MONSTER"));
+    damaging_abilities
+        .retain(|ability| !ability.contains("MONSTER") && !ability.contains("MINION"));
 
     let current_player = CurrentPlayer {
         champion_id: current_champion_id.clone(),
@@ -106,7 +109,6 @@ pub fn calculate<'a>(
                     .then_some(riot_rune.id)
             })
             .collect(),
-        recommended_items,
         bonus_stats: get_bonus_stats(&active_player.champion_stats, &current_player_base_stats),
         base_stats: current_player_base_stats,
     };
@@ -140,6 +142,7 @@ pub fn calculate<'a>(
             level: enemy_level,
             position: &enemy.position,
             damages: Damages {
+                compared_items: HashMap::new(),
                 abilities: get_abilities_damage(
                     current_player_cache,
                     &full_stats,
@@ -156,10 +159,12 @@ pub fn calculate<'a>(
     Realtime {
         current_player,
         enemies,
+        recommended_items,
         game_information: GameInformation {
             game_time,
             map_number,
         },
+        compared_items: HashMap::new(),
     }
 }
 
@@ -178,11 +183,17 @@ fn get_items_damage(
                 false => &item.melee,
             };
             if let Some(damage) = item_damage {
+                let minimum_damage =
+                    eval_math_expr(&damage.minimum_damage.clone().unwrap_or(String::from("0.0")))
+                        .unwrap_or(0.0);
+                let maximum_damage =
+                    eval_math_expr(&damage.maximum_damage.clone().unwrap_or(String::from("0.0")))
+                        .unwrap_or(0.0);
                 item_damages.insert(
                     current_player_item.clone(),
                     InstanceDamage {
-                        minimum_damage: damage.minimum_damage.clone(),
-                        maximum_damage: damage.maximum_damage.clone(),
+                        minimum_damage,
+                        maximum_damage,
                         damage_type: item.damage_type.clone().unwrap_or(String::from("UNKNOWN")),
                         damages_in_area: false,
                         damages_onhit: false,
@@ -208,11 +219,12 @@ fn get_runes_damage(
                 true => &rune.ranged,
                 false => &rune.melee,
             };
+            let minimum_damage = eval_math_expr(&rune_damage).unwrap_or(0.0);
             rune_damages.insert(
                 current_player_rune.clone(),
                 InstanceDamage {
-                    minimum_damage: Some(rune_damage.clone()),
-                    maximum_damage: None,
+                    minimum_damage,
+                    maximum_damage: 0.0,
                     damage_type: rune.damage_type.clone(),
                     damages_in_area: false,
                     damages_onhit: false,
@@ -297,7 +309,6 @@ fn get_abilities_damage(
     abilities: &RiotAbilities,
 ) -> HashMap<String, InstanceDamage> {
     let mut ability_damages = HashMap::<String, InstanceDamage>::new();
-    let default_value = "0.0";
     for (keyname, ability) in &current_player_cache.abilities {
         let first_char = keyname.chars().next().unwrap_or_default();
         let indexation = match first_char {
@@ -318,36 +329,16 @@ fn get_abilities_damage(
                 "PHYSICAL_DAMAGE" => full_stats.physical_damage_multiplier,
                 _ => 1.0,
             };
-            let minimum_damage_strfmt = replace_damage_keywords(
-                full_stats,
-                &ability
-                    .minimum_damage
-                    .get(indexation - 1)
-                    .unwrap_or(&String::from(default_value)),
-            );
-            let minimum_damage: Option<String> = if minimum_damage_strfmt != "0.0" {
-                Some(format!(
-                    "({}) * {}",
-                    minimum_damage_strfmt, damage_multiplier
-                ))
-            } else {
-                None
+            let eval_damage_str = |from_vec: &Vec<String>| {
+                let default_value = String::from("0.0");
+                let format_str = from_vec.get(indexation - 1).unwrap_or(&default_value);
+                let damage_str = replace_damage_keywords(full_stats, format_str);
+                let formatted_str = format!("({}) * {}", damage_str, damage_multiplier);
+                eval_math_expr(&formatted_str).unwrap_or(0.0)
             };
-            let maximum_damage_strfmt = replace_damage_keywords(
-                full_stats,
-                &ability
-                    .maximum_damage
-                    .get(indexation - 1)
-                    .unwrap_or(&String::from(default_value)),
-            );
-            let maximum_damage: Option<String> = if maximum_damage_strfmt != "0.0" {
-                Some(format!(
-                    "({}) * {}",
-                    maximum_damage_strfmt, damage_multiplier
-                ))
-            } else {
-                None
-            };
+
+            let minimum_damage = eval_damage_str(&ability.minimum_damage);
+            let maximum_damage = eval_damage_str(&ability.maximum_damage);
             ability_damages.insert(
                 keyname.to_string(),
                 InstanceDamage {
@@ -362,8 +353,8 @@ fn get_abilities_damage(
             ability_damages.insert(
                 keyname.to_string(),
                 InstanceDamage {
-                    minimum_damage: None,
-                    maximum_damage: None,
+                    minimum_damage: 0.0,
+                    maximum_damage: 0.0,
                     damage_type,
                     damages_in_area,
                     damages_onhit: false,
@@ -380,8 +371,8 @@ fn get_abilities_damage(
     ability_damages.insert(
         String::from("A"),
         InstanceDamage {
-            minimum_damage: Some(basic_attack_damage.to_string()),
-            maximum_damage: None,
+            minimum_damage: basic_attack_damage,
+            maximum_damage: 0.0,
             damage_type: String::from("PHYSICAL_DAMAGE"),
             damages_in_area: false,
             damages_onhit: false,
@@ -390,12 +381,9 @@ fn get_abilities_damage(
     ability_damages.insert(
         String::from("C"),
         InstanceDamage {
-            minimum_damage: Some(
-                (basic_attack_damage
-                    * (full_stats.current_player.current_stats.crit_damage / 100.0))
-                    .to_string(),
-            ),
-            maximum_damage: None,
+            minimum_damage: basic_attack_damage
+                * (full_stats.current_player.current_stats.crit_damage / 100.0),
+            maximum_damage: 0.0,
             damage_type: String::from("PHYSICAL_DAMAGE"),
             damages_in_area: false,
             damages_onhit: false,

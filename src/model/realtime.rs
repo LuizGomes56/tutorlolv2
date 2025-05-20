@@ -68,7 +68,6 @@ pub struct CurrentPlayer<'a> {
     pub base_stats: BasicStats,
     pub bonus_stats: BasicStats,
     pub current_stats: Stats,
-    pub recommended_items: Vec<usize>,
 }
 
 #[derive(Serialize)]
@@ -79,13 +78,18 @@ pub struct GameInformation {
 
 #[derive(Serialize)]
 pub struct InstanceDamage {
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub minimum_damage: Option<String>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub maximum_damage: Option<String>,
+    pub minimum_damage: f64,
+    pub maximum_damage: f64,
     pub damage_type: String,
     pub damages_in_area: bool,
     pub damages_onhit: bool,
+}
+
+#[derive(Serialize)]
+pub struct BasicDamages {
+    pub abilities: HashMap<String, InstanceDamage>,
+    pub items: HashMap<usize, InstanceDamage>,
+    pub runes: HashMap<usize, InstanceDamage>,
 }
 
 #[derive(Serialize)]
@@ -93,6 +97,7 @@ pub struct Damages {
     pub abilities: HashMap<String, InstanceDamage>,
     pub items: HashMap<usize, InstanceDamage>,
     pub runes: HashMap<usize, InstanceDamage>,
+    pub compared_items: HashMap<String, BasicDamages>,
 }
 
 #[derive(Serialize)]
@@ -110,10 +115,20 @@ pub struct Enemy<'a> {
 }
 
 #[derive(Serialize)]
+pub struct ItemCompared {
+    pub name: String,
+    pub has_active: bool,
+    pub gold_cost: usize,
+    pub prettified_stats: HashMap<String, String>,
+}
+
+#[derive(Serialize)]
 pub struct Realtime<'a> {
     pub current_player: CurrentPlayer<'a>,
     pub enemies: Vec<Enemy<'a>>,
     pub game_information: GameInformation,
+    pub recommended_items: Vec<usize>,
+    pub compared_items: HashMap<usize, ItemCompared>,
 }
 
 pub struct DamageMultipliers {
