@@ -2,6 +2,8 @@
 
 > 🔧 Projeto de reimplementação completa em **Rust**, com foco em performance, automação e concorrência.
 
+<span style="color:#f1fa8c;">Este é apenas a parte do SERVIDOR do projeto completo. Verifique o [Client-Side](https://github.com/LuizGomes56/tlv2app), que utiliza <i style="color:#caf2fa;">Tauri (Windows) e Yew (WebAssembly) combinados.</i></span>
+
 As versões anteriores do TutorLoL, em JavaScript e TypeScript (privadas), estão desatualizadas:
 
 - A versão **JavaScript**, a mais poderosa até então, está há **2+ anos sem updates**.
@@ -14,7 +16,7 @@ Versões públicas (protótipos, com resultados pouco confiáveis):
 
 🎯 O objetivo desta versão é **superar ambas** — combinando a performance do Rust com automação e arquitetura moderna.
 
-- Web Assembly (Wasm) com `Yew` + `wasm-bindgen`
+- Web Assembly (Wasm) com `Yew` + `wasm-bindgen`. Tauri (Desktop)
 
 ---
 
@@ -29,7 +31,7 @@ Versões públicas (protótipos, com resultados pouco confiáveis):
 - 🔁 Verificação automática da versão do jogo (diária)
 - ⚡ Atualização reativa dos `.json` ao detectar mudanças
 - 🧵 Uso de *green threads* (`tokio::spawn`) para paralelismo  
-  ⏱️ Estimativa de ganho: de **1h15m (parcial)** ⟶ **2 minutos (completo)****
+  ⏱️ Estimativa de ganho: de **1h15m (parcial)** ⟶ **5 minutos (completo)**
 
 ---
 
@@ -37,6 +39,9 @@ Versões públicas (protótipos, com resultados pouco confiáveis):
 
 - JavaScript não suporta multithreading nativo. Cada requisição leva **~1 segundo**, mesmo com cache.
 - Em Rust, com `tokio`, cada cálculo poderá rodar em paralelo, com overhead mínimo.
+- **Estimativa**: **96 vezes** mais rápido que o JavaScript.
+- <b style="color:rgb(255, 170, 182)">RUST:</b> **~210 microssegundos por cálculo**. 
+- <b style="color:rgb(255, 170, 182)">JS:</b> **~19 millissegundos por cálculo**
 
 ---
 
@@ -45,8 +50,7 @@ Versões públicas (protótipos, com resultados pouco confiáveis):
 - Otimização de alocação e uso de referências (`&T` vs `T`)
 - Implementação de `traits`, `impl`, métodos e padrão idiomático Rust
 - Evitar cópias desnecessárias (`clone`)
-- Concorrência real com `tokio`, `Arc`, `Mutex`, `RwLock`
-- Uso de `once_cell`, `lazy_static!`, `parking_lot`, etc.
+- Concorrência real com `tokio`, `Arc`, `Mutex`
 
 ---
 
@@ -75,10 +79,10 @@ Versões públicas (protótipos, com resultados pouco confiáveis):
 ## Status atual
 
 - [x] Estrutura de projeto em Rust
-- [ ] Monitoramento do meta de forma automatizada
+- [x] Monitoramento do meta de forma automatizada
 - [x] Sistema de cache automatizado
-- [ ] Calculo básico de itens, habilidades e runas
+- [x] Calculo básico de itens, habilidades e runas
 - [ ] Avaliação de itens e builds
-- [ ] WASM
+- [] WASM
 
 ---
