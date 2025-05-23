@@ -12,7 +12,7 @@ pub struct DamageLike {
     pub maximum_damage: Option<String>,
 }
 
-#[derive(Serialize)]
+#[derive(Clone, Serialize)]
 pub struct Stats {
     pub ability_power: f64,
     pub armor: f64,
@@ -97,7 +97,7 @@ pub struct Damages {
     pub abilities: HashMap<String, InstanceDamage>,
     pub items: HashMap<usize, InstanceDamage>,
     pub runes: HashMap<usize, InstanceDamage>,
-    pub compared_items: HashMap<String, BasicDamages>,
+    pub compared_items: HashMap<usize, BasicDamages>,
 }
 
 #[derive(Serialize)]
@@ -112,14 +112,27 @@ pub struct Enemy<'a> {
     pub base_stats: BasicStats,
     pub bonus_stats: BasicStats,
     pub current_stats: BasicStats,
+    pub real_resists: RealResists,
 }
 
 #[derive(Serialize)]
 pub struct ItemCompared {
     pub name: String,
-    pub has_active: bool,
     pub gold_cost: usize,
     pub prettified_stats: HashMap<String, String>,
+}
+
+#[derive(Serialize)]
+pub struct Scoreboard {
+    pub assists: usize,
+    pub creep_score: usize,
+    pub deaths: usize,
+    pub kills: usize,
+    pub riot_id: String,
+    pub champion_id: Option<String>,
+    pub champion_name: String,
+    pub team: String,
+    pub position: String,
 }
 
 #[derive(Serialize)]
@@ -129,6 +142,13 @@ pub struct Realtime<'a> {
     pub game_information: GameInformation,
     pub recommended_items: Vec<usize>,
     pub compared_items: HashMap<usize, ItemCompared>,
+    pub scoreboard: Vec<Scoreboard>,
+}
+
+#[derive(Serialize)]
+pub struct RealResists {
+    pub magic_resist: f64,
+    pub armor: f64,
 }
 
 pub struct DamageMultipliers {
@@ -138,17 +158,11 @@ pub struct DamageMultipliers {
     pub all_sources: f64,
 }
 
-pub struct RealResistances {
-    pub magic_resistance: f64,
-    pub armor: f64,
-}
-
 pub struct EnemyFullStats<'a> {
     pub current_stats: &'a BasicStats,
-    pub base_stats: &'a BasicStats,
     pub bonus_stats: &'a BasicStats,
     pub takes_extra_damage_from: DamageMultipliers,
-    pub real_resistances: RealResistances,
+    pub real_resists: RealResists,
 }
 
 pub struct SelfFullStats<'a> {

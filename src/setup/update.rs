@@ -5,6 +5,7 @@ use crate::model::champions::CdnChampion;
 use crate::model::internal::{MetaItems, Positions};
 use crate::model::items::{CdnItem, Effect, Item, PartialStats};
 use crate::model::realtime::DamageLike;
+use crate::model::riot::{RiotCDNItem, RiotFileStandard};
 use crate::model::runes::Rune;
 use regex::Regex;
 use scraper::{Html, Selector};
@@ -94,7 +95,7 @@ pub async fn load_cache() -> GlobalCache {
 }
 
 // Helper function to fetch data from the CDN. ReturnTypes are not strongly typed.
-async fn fetch_api(path_name: &str) -> HashMap<String, Value> {
+async fn fetch_cdn_api(path_name: &str) -> HashMap<String, Value> {
     let url = std::env::var("CDN_ENDPOINT").expect("CDN_ENDPOINT is not set");
     let client = reqwest::Client::new();
 
@@ -109,6 +110,77 @@ async fn fetch_api(path_name: &str) -> HashMap<String, Value> {
     let result = data.as_object().expect("Failed to convert JSON to object");
 
     result.clone().into_iter().collect()
+}
+
+async fn fetch_riot_api<T: DeserializeOwned>(path_name: &str) -> T {
+    let url = std::env::var("DD_DRAGON_ENDPOINT").expect("DD_DRAGON_ENDPOINT is not set");
+    let version = std::env::var("LOL_VERSION").expect("LOL_VERSION is not set");
+    let language = std::env::var("LOL_LANGUAGE").expect("LOL_LANGUAGE is not set");
+    let client = reqwest::Client::new();
+
+    let res = client
+        .get(&format!(
+            "{}/{}/data/{}/{}.json",
+            url.trim_end_matches('/'),
+            version,
+            language,
+            path_name
+        ))
+        .send()
+        .await
+        .expect("Failed to send request");
+
+    let data = res.json::<T>().await.expect("Failed to parse JSON");
+    data
+}
+
+pub async fn update_riot_cache() {
+    let champions_json = fetch_riot_api::<RiotFileStandard>("champion").await;
+    let mut champions_futures = Vec::new();
+
+    for (champion_id, _) in champions_json.data.clone() {
+        champions_futures.push(tokio::spawn(async move {
+            let this_path_name = format!("src/cache/riot/champions/{}.json", champion_id);
+            let this_champion_data =
+                fetch_riot_api::<RiotFileStandard>(&format!("champion/{}", champion_id)).await;
+            let data_field = this_champion_data.data;
+            let real_data = data_field.get(&champion_id.to_string()).unwrap().clone();
+            let strval = serde_json::to_string(&real_data).unwrap();
+            write_to_file(&this_path_name, strval.as_bytes());
+        }));
+    }
+
+    for champion_future in champions_futures {
+        let _ = champion_future.await;
+    }
+
+    let champion_strval = serde_json::to_string_pretty(&champions_json).unwrap();
+    let champion_bytes = champion_strval.as_bytes();
+    write_to_file("src/cache/riot/champions.json", champion_bytes);
+
+    let items_json = fetch_riot_api::<RiotFileStandard>("item").await;
+    let mut items_futures = Vec::new();
+
+    for (item_id, item_data) in items_json.data.clone() {
+        items_futures.push(task::spawn_blocking(move || {
+            let this_path_name = format!("src/cache/riot/items/{}.json", item_id);
+            let strval = serde_json::to_string(&item_data).unwrap();
+            write_to_file(&this_path_name, strval.as_bytes());
+        }));
+    }
+
+    for item_future in items_futures {
+        let _ = item_future.await;
+    }
+
+    let item_strval = serde_json::to_string_pretty(&items_json).unwrap();
+    let item_bytes = item_strval.as_bytes();
+    write_to_file("src/cache/riot/items.json", item_bytes);
+
+    let runes_json = fetch_riot_api::<Value>("runesReforged").await;
+    let runes_strval = serde_json::to_string_pretty(&runes_json).unwrap();
+    let runes_bytes = runes_strval.as_bytes();
+    write_to_file("src/cache/riot/runes.json", runes_bytes);
 }
 
 // Recovers all the common builds for the current patch so the app can recommend builds to the user
@@ -179,7 +251,7 @@ pub async fn get_meta_items() {
 }
 
 pub async fn update_instances(instance: &str) {
-    let result = fetch_api(&format!("{}.json", instance)).await;
+    let result = fetch_cdn_api(&format!("{}.json", instance)).await;
 
     for (key, value) in result {
         let folder_name = format!("src/cache/cdn/{}", instance);
@@ -199,6 +271,10 @@ pub fn setup_folders() {
         "src/cache/cdn",
         "src/cache/cdn/champions",
         "src/cache/cdn/items",
+        "src/cache/riot",
+        "src/cache/riot/champions",
+        "src/cache/riot/items",
+        "src/cache/riot/runes",
         "src/internal",
         "src/internal/items",
         "src/internal/champions",
@@ -346,7 +422,9 @@ pub fn initialize_items() {
                 .unwrap_or((None, None));
 
             let result = Item {
+                pretiffied_stats: HashMap::new(),
                 name: cdn_item.name,
+                gold: cdn_item.shop.prices.total,
                 levelings: None,
                 damage_type: None,
                 stats: item_stats,
@@ -572,5 +650,28 @@ fn generate_champion_file(path_name: &str) {
             &format!("src/internal/champions/{}.json", name),
             bytes.as_bytes(),
         );
+    }
+}
+
+pub async fn append_prettified_item_stats() {
+    let files =
+        fs::read_dir("src/cache/riot/items").expect("Unable to read directory src/cache/cdn/items");
+
+    let mut item_futures = Vec::new();
+    for file in files {
+        item_futures.push(task::spawn_blocking(move || {
+            let path_buf = file.unwrap().path();
+            let name = extract_file_name(&path_buf);
+            let path_name = format!("src/cache/riot/items/{}.json", name);
+            let pretiffied_stats = _pretiffy_item_stats(&path_name);
+            let internal_path = format!("src/internal/items/{}.json", name);
+            let mut current_content = read_from_file::<Item>(internal_path.as_str());
+            current_content.pretiffied_stats = pretiffied_stats;
+            let strval = serde_json::to_string(&current_content).unwrap();
+            write_to_file(&internal_path, strval.as_bytes());
+        }));
+    }
+    for future in item_futures {
+        let _ = future.await;
     }
 }

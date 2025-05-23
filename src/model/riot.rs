@@ -1,6 +1,19 @@
 #![allow(dead_code)]
 
-use serde::Deserialize;
+use std::collections::HashMap;
+
+use serde::{Deserialize, Serialize};
+use serde_json::Value;
+
+#[derive(Serialize, Deserialize)]
+pub struct RiotFileStandard {
+    pub data: HashMap<String, Value>,
+}
+
+#[derive(Deserialize)]
+pub struct RiotCDNItem {
+    pub description: String,
+}
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -61,6 +74,15 @@ pub struct RiotActivePlayer {
 }
 
 #[derive(Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct RiotScoreboard {
+    pub kills: usize,
+    pub deaths: usize,
+    pub assists: usize,
+    pub creep_score: usize,
+}
+
+#[derive(Deserialize)]
 pub struct RiotItems {
     #[serde(rename = "itemID")]
     pub item_id: usize,
@@ -75,6 +97,7 @@ pub struct RiotAllPlayers {
     pub position: String,
     pub riot_id: String,
     pub team: String,
+    pub scores: RiotScoreboard,
 }
 
 #[derive(Deserialize)]

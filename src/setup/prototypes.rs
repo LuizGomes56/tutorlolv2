@@ -1,8 +1,9 @@
-use crate::{model::items::Item, setup::extract_file_name};
+use crate::{model::{items::Item, riot::RiotCDNItem}, setup::extract_file_name};
 
 use super::{CdnAbility, CdnChampion, read_from_file, write_to_file};
 use std::{collections::HashMap, fs, sync::Arc};
 
+use regex::{Captures, Regex};
 use scraper::{Html, Selector};
 use serde_json::Value;
 
@@ -236,4 +237,51 @@ pub async fn _generate_writer_files() {
     for future in futures {
         _ = future.await;
     }
+}
+
+pub fn _pretiffy_item_stats(path_name: &str) -> HashMap<String, Value> {
+    let data = read_from_file::<RiotCDNItem>(path_name);
+    let mut result = HashMap::new();
+
+    let tag_regex = Regex::new(r#"<(attention|buffedStat|nerfedStat|ornnBonus)>(.*?)<\/(attention|buffedStat|nerfedStat|ornnBonus)>"#).unwrap();
+    let line_regex = Regex::new(r"(.*?)<br>").unwrap();
+    let percent_prefix_regex = Regex::new(r"^\s*\d+\s*%?\s*").unwrap();
+    let tag_strip_regex = Regex::new(r"<\/?[^>]+(>|$)").unwrap();
+
+    let u = ["buffedStat", "nerfedStat", "attention", "ornnBonus"];
+    let k = ["Cooldown", "Healing"];
+
+    let lines: Vec<_> = line_regex.captures_iter(&data.description).collect();
+    let mut line_index = 0;
+
+    for caps in tag_regex.captures_iter(&data.description) {
+        let t = &caps[1];
+        let v = caps[2].replace('%', "");
+        let mut n: Option<String> = None;
+        if line_index < lines.len() {
+            let cleaned = tag_strip_regex.replace_all(&lines[line_index][1], "").trim().to_string();
+            if !cleaned.is_empty() {
+                n = Some(cleaned);
+            }
+            line_index += 1;
+        }
+        if u.contains(&t) {
+            if let Some(n_val) = &n {
+                let j = percent_prefix_regex.replace(n_val, "").trim().to_string();
+                if !j.is_empty() {
+                    let is_percent = caps[2].contains('%');
+                    let value: Value = if k.iter().any(|&keyword| n_val.contains(keyword)) && is_percent {
+                        Value::String(format!("{}%", v))
+                    } else {
+                        match v.parse::<f64>() {
+                            Ok(num) => Value::from(num),
+                            Err(_) => continue,
+                        }
+                    };
+                    result.insert(j, value);
+                }
+            }
+        }
+    }
+    result
 }

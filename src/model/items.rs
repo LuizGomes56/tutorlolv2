@@ -1,6 +1,9 @@
 #![allow(dead_code)]
 
+use std::collections::HashMap;
+
 use serde::{Deserialize, Serialize};
+use serde_json::Value;
 
 use super::realtime::DamageLike;
 
@@ -59,9 +62,15 @@ pub struct CdnItem {
 }
 
 #[derive(Deserialize)]
+pub struct ItemPrices {
+    pub total: usize,
+}
+
+#[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Shop {
     pub purchasable: bool,
+    pub prices: ItemPrices,
 }
 
 #[derive(Deserialize, Serialize, Default)]
@@ -104,6 +113,8 @@ pub struct PartialStats {
 #[derive(Deserialize, Serialize)]
 pub struct Item {
     pub name: String,
+    pub gold: usize,
+    pub pretiffied_stats: HashMap<String, Value>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub damage_type: Option<String>,
     pub stats: PartialStats,

@@ -8,15 +8,15 @@ mod setup;
 use model::{application::GlobalCache, riot::RiotRealtime};
 use server::{
     games::realtime_handler,
-    update::{setup_project, update_champions, update_items, update_meta_items},
+    update::{setup_project, update_champions, update_items, update_meta_items, update_riot},
 };
 
 use actix_web::{App, HttpServer, main, web::Data};
 use dotenvy::dotenv;
 use services::realtime::calculate;
 use setup::update::{
-    generate_writers, initialize_items, load_cache, read_from_file, setup_champion_cache,
-    write_to_file,
+    append_prettified_item_stats, generate_writers, initialize_items, load_cache, read_from_file,
+    setup_champion_cache, update_riot_cache, write_to_file,
 };
 use sqlx::{Pool, Postgres, postgres::PgPoolOptions};
 use std::{io::Result, sync::Arc};
@@ -29,11 +29,15 @@ pub struct AppState {
 #[allow(unreachable_code)]
 #[main]
 async fn main() -> Result<()> {
+    dotenv().ok();
+
     // unsafe {
     //     generate_writers().await;
     // }
     // setup_champion_cache();
     // initialize_items();
+
+    // append_prettified_item_stats().await;
     // return Ok(());
 
     let cache = Arc::new(load_cache().await);
@@ -52,8 +56,6 @@ async fn main() -> Result<()> {
     // );
 
     // return Ok(());
-
-    dotenv().ok();
 
     let dsn = std::env::var("DATABASE_URL").expect("DATABASE_URL is not set in the environment");
     let port = std::env::var("PORT").expect("PORT is not set in the environment");
@@ -74,6 +76,7 @@ async fn main() -> Result<()> {
             }))
             .service(realtime_handler)
             .service(setup_project)
+            .service(update_riot)
             .service(update_champions)
             .service(update_items)
             .service(update_meta_items)

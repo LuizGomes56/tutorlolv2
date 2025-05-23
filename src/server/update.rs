@@ -1,7 +1,7 @@
 use super::schemas::APIResponse;
 use crate::setup::update::{
     get_meta_items, initialize_items, rewrite_champion_names, setup_champion_cache, setup_folders,
-    update_instances,
+    update_instances, update_riot_cache,
 };
 use actix_web::{HttpResponse, Responder, get};
 
@@ -15,6 +15,17 @@ pub async fn setup_project() -> impl Responder {
         success: true,
         message: "Project is ready".to_string(),
         data: "client updated".to_string(),
+    })
+}
+
+#[get("/api/update/riot")]
+pub async fn update_riot() -> impl Responder {
+    update_riot_cache().await;
+
+    HttpResponse::Ok().json(APIResponse {
+        success: true,
+        message: "Riot updated on client".to_string(),
+        data: "latest version added to cache".to_string(),
     })
 }
 
