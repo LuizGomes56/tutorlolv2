@@ -84,6 +84,10 @@ pub struct InstanceDamage {
     pub damage_type: String,
     pub damages_in_area: bool,
     pub damages_onhit: bool,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub min_dmg_change: Option<f64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub max_dmg_change: Option<f64>,
 }
 
 pub type DamageLike<T> = HashMap<T, InstanceDamage>;

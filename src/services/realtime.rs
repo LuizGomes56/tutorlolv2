@@ -1,4 +1,4 @@
-use std::{collections::HashMap, sync::Arc};
+use std::{collections::HashMap, hash::Hash, sync::Arc};
 
 use crate::model::{
     application::GlobalCache, champions::Champion, items::Item, realtime::*, riot::*, runes::Rune,
@@ -261,25 +261,33 @@ pub fn calculate<'a>(
                         (&enemy_bonus_stats, &enemy_current_stats),
                         &enemy_items,
                     );
-                    let simulated_ability_damage = get_abilities_damage(
+                    let mut simulated_ability_damage = get_abilities_damage(
                         &current_player_cache,
                         &simulated_full_stats,
                         &active_player.abilities,
                     );
-                    let simulated_item_damage = get_items_damage(
+                    let mut simulated_item_damage = get_items_damage(
                         &cache.items,
                         &simulated_full_stats,
                         &current_player_items_vec,
                     );
-                    let simulated_rune_damage = get_runes_damage(
+                    let mut simulated_rune_damage = get_runes_damage(
                         &cache.runes,
                         &simulated_full_stats,
                         &current_player_runes_vec,
                     );
-                    let total_abilities_damage =
-                        get_comparison_total_damage(&simulated_ability_damage);
-                    let total_items_damage = get_comparison_total_damage(&simulated_item_damage);
-                    let total_runes_damage = get_comparison_total_damage(&simulated_rune_damage);
+                    let total_abilities_damage = get_comparison_total_damage(
+                        &normal_abilities_damage,
+                        &mut simulated_ability_damage,
+                    );
+                    let total_items_damage = get_comparison_total_damage(
+                        &normal_items_damage,
+                        &mut simulated_item_damage,
+                    );
+                    let total_runes_damage = get_comparison_total_damage(
+                        &normal_runes_damage,
+                        &mut simulated_rune_damage,
+                    );
                     let change_abilities_damage = get_comparison_damage_change(
                         total_abilities_damage,
                         &normal_abilities_damage,
@@ -491,6 +499,8 @@ fn get_items_damage(
                         damage_type,
                         damages_in_area: false,
                         damages_onhit: item.damages_onhit,
+                        min_dmg_change: None,
+                        max_dmg_change: None,
                     },
                 );
             }
@@ -531,6 +541,8 @@ fn get_runes_damage(
                     damage_type,
                     damages_in_area: false,
                     damages_onhit: false,
+                    min_dmg_change: None,
+                    max_dmg_change: None,
                 },
             );
         }
@@ -538,11 +550,19 @@ fn get_runes_damage(
     rune_damages
 }
 
-fn get_comparison_total_damage<T>(instance: &DamageLike<T>) -> f64 {
-    instance
-        .values()
-        .map(|sim| sim.minimum_damage + sim.maximum_damage)
-        .sum()
+fn get_comparison_total_damage<T>(prev: &DamageLike<T>, next: &mut DamageLike<T>) -> f64
+where
+    T: Eq + Hash,
+{
+    let mut sum = 0f64;
+    for (key, val) in next.iter_mut() {
+        sum += val.minimum_damage + val.maximum_damage;
+        if let Some(prev_val) = prev.get(key) {
+            val.min_dmg_change = Some(val.minimum_damage - prev_val.minimum_damage);
+            val.max_dmg_change = Some(val.maximum_damage - prev_val.maximum_damage);
+        }
+    }
+    sum
 }
 
 fn get_comparison_damage_change<T>(total_damage: f64, prev: &DamageLike<T>) -> f64 {
@@ -705,6 +725,8 @@ fn get_abilities_damage(
                     damage_type: String::from(damage_type),
                     damages_in_area,
                     damages_onhit: false,
+                    min_dmg_change: None,
+                    max_dmg_change: None,
                 },
             );
         } else {
@@ -716,6 +738,8 @@ fn get_abilities_damage(
                     damage_type,
                     damages_in_area,
                     damages_onhit: false,
+                    min_dmg_change: None,
+                    max_dmg_change: None,
                 },
             );
         }
@@ -734,6 +758,8 @@ fn get_abilities_damage(
             damage_type: String::from("PHYSICAL_DAMAGE"),
             damages_in_area: false,
             damages_onhit: false,
+            min_dmg_change: None,
+            max_dmg_change: None,
         },
     );
     ability_damages.insert(
@@ -745,6 +771,8 @@ fn get_abilities_damage(
             damage_type: String::from("PHYSICAL_DAMAGE"),
             damages_in_area: false,
             damages_onhit: false,
+            min_dmg_change: None,
+            max_dmg_change: None,
         },
     );
 
