@@ -155,6 +155,8 @@ pub struct RiotRealtimeGameData {
 #[serde(rename_all = "PascalCase")]
 pub struct RealtimeEvent {
     pub event_name: String,
+    pub dragon_type: Option<String>,
+    pub killer_name: Option<String>,
 }
 
 #[derive(Deserialize)]

@@ -116,6 +116,13 @@ pub struct Enemy<'a> {
     pub real_resists: RealResists,
 }
 
+#[derive(Serialize, Default)]
+pub struct DragonMultipliers {
+    pub earth: f64,
+    pub fire: f64,
+    pub chemtech: f64,
+}
+
 #[derive(Serialize)]
 pub struct ItemCompared {
     pub name: String,
@@ -144,6 +151,8 @@ pub struct Realtime<'a> {
     pub recommended_items: Vec<usize>,
     pub compared_items: HashMap<usize, ItemCompared>,
     pub scoreboard: Vec<Scoreboard>,
+    pub enemy_dragon_multipliers: DragonMultipliers,
+    pub ally_dragon_multipliers: DragonMultipliers,
 }
 
 #[derive(Serialize)]

@@ -83,6 +83,6 @@ Versões públicas (protótipos, com resultados pouco confiáveis):
 - [x] Sistema de cache automatizado
 - [x] Calculo básico de itens, habilidades e runas
 - [ ] Avaliação de itens e builds
-- [] WASM
+- [ ] WASM
 
 ---

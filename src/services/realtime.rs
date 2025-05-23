@@ -9,7 +9,7 @@ use super::eval::eval_math_expr;
 pub fn calculate<'a>(
     cache: &'a Arc<GlobalCache>,
     game: &'a RiotRealtime,
-    simulated_items: &Vec<usize>,
+    simulated_items: &'a Vec<usize>,
 ) -> Result<Realtime<'a>, String> {
     let game_time = game.game_data.game_time;
     let map_number = game.game_data.map_number;
@@ -38,6 +38,12 @@ pub fn calculate<'a>(
         .iter()
         .find(|player| player.riot_id == active_player.riot_id)
         .ok_or("Current player not found in allPlayers".to_string())?;
+
+    let (enemy_dragon_multipliers, ally_dragon_multipliers) = get_dragon_multipliers(
+        &game.events.events,
+        &scoreboard,
+        &active_player_expanded.team,
+    );
 
     let current_champion_id = cache
         .champion_names
@@ -180,12 +186,13 @@ pub fn calculate<'a>(
                 simulated_item_cache,
                 &mut cloned_champion_stats,
                 &owned_items,
+                &ally_dragon_multipliers,
             );
             Ok((*simulated_item_id, cloned_champion_stats))
         })
         .collect::<Result<HashMap<usize, Stats>, String>>()?;
 
-    let mut enemies = Vec::with_capacity(1 << 4);
+    let mut enemies = Vec::with_capacity(1 << 3);
 
     for player in all_players.into_iter() {
         let player_champion_id =
@@ -213,8 +220,12 @@ pub fn calculate<'a>(
                 })?;
             let enemy_level = player.level;
             let enemy_base_stats = get_base_stats(current_enemy_cache, enemy_level);
-            let enemy_current_stats =
-                get_enemy_current_stats(&cache.items, &enemy_base_stats, &player.items);
+            let enemy_current_stats = get_enemy_current_stats(
+                &cache.items,
+                &enemy_base_stats,
+                &player.items,
+                enemy_dragon_multipliers.earth,
+            );
             let enemy_bonus_stats =
                 get_bonus_stats(&enemy_current_stats.to_riot_format(), &enemy_base_stats);
             let enemy_items = &player.items.iter().map(|x| x.item_id).collect();
@@ -305,7 +316,38 @@ pub fn calculate<'a>(
         },
         compared_items: compared_items_info,
         scoreboard,
+        enemy_dragon_multipliers,
+        ally_dragon_multipliers,
     })
+}
+
+fn get_dragon_multipliers(
+    event_list: &[RealtimeEvent],
+    scoreboard: &[Scoreboard],
+    current_player_team: &str,
+) -> (DragonMultipliers, DragonMultipliers) {
+    let mut ally_team = DragonMultipliers::default();
+    let mut enemy_team = DragonMultipliers::default();
+
+    for event in event_list {
+        let (Some(killer), Some(dragon_type)) = (&event.killer_name, &event.dragon_type) else {
+            continue;
+        };
+        if let Some(player) = scoreboard.iter().find(|p| &p.riot_id == killer) {
+            let target = if player.team == current_player_team {
+                &mut ally_team
+            } else {
+                &mut enemy_team
+            };
+            match dragon_type.as_str() {
+                "Earth" => target.earth += 0.05,
+                "Fire" => target.fire += 0.03,
+                "Chemtech" => target.chemtech += 0.06,
+                _ => {}
+            }
+        }
+    }
+    (ally_team, enemy_team)
 }
 
 fn simulate_champion_stats(
@@ -313,6 +355,7 @@ fn simulate_champion_stats(
     simulated_item_cache: &Item,
     cloned_champion_stats: &mut Stats,
     current_owned_items: &Vec<usize>,
+    ally_dragon_multipliers: &DragonMultipliers,
 ) {
     let stats = &simulated_item_cache.stats;
     if current_owned_items.contains(&simulated_item_id) {
@@ -325,11 +368,11 @@ fn simulate_champion_stats(
         &mut cloned_champion_stats.ability_power,
         stats.ability_power,
     );
-    assign_value(&mut cloned_champion_stats.max_health, stats.health);
     assign_value(
         &mut cloned_champion_stats.attack_damage,
         stats.attack_damage,
     );
+    assign_value(&mut cloned_champion_stats.max_health, stats.health);
     assign_value(&mut cloned_champion_stats.armor, stats.armor);
     assign_value(
         &mut cloned_champion_stats.magic_resist,
@@ -361,6 +404,10 @@ fn simulate_champion_stats(
         &mut cloned_champion_stats.magic_penetration_percent,
         stats.magic_penetration_percent,
     );
+    cloned_champion_stats.ability_power *= ally_dragon_multipliers.fire;
+    cloned_champion_stats.attack_damage *= ally_dragon_multipliers.fire;
+    cloned_champion_stats.armor *= ally_dragon_multipliers.earth;
+    cloned_champion_stats.magic_resist *= ally_dragon_multipliers.earth;
 }
 
 fn get_items_damage(
@@ -842,6 +889,7 @@ fn get_enemy_current_stats(
     champion_cache: &HashMap<usize, Item>,
     base_stats: &BasicStats,
     current_items: &Vec<RiotItems>,
+    earth_dragon: f64,
 ) -> BasicStats {
     let mut base = BasicStats {
         armor: base_stats.armor,
@@ -865,5 +913,7 @@ fn get_enemy_current_stats(
             add_if_some(&mut base.mana, stats.mana);
         }
     }
+    base.armor *= earth_dragon;
+    base.magic_resist *= earth_dragon;
     base
 }
