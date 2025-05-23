@@ -8,6 +8,7 @@ mod setup;
 use model::{application::GlobalCache, riot::RiotRealtime};
 use server::{
     games::realtime_handler,
+    images::{download_arts, download_instances, download_items, download_runes},
     update::{setup_project, update_champions, update_items, update_meta_items, update_riot},
 };
 
@@ -80,6 +81,10 @@ async fn main() -> Result<()> {
             .service(update_champions)
             .service(update_items)
             .service(update_meta_items)
+            .service(download_instances)
+            .service(download_items)
+            .service(download_arts)
+            .service(download_runes)
     })
     .bind(host)
     .expect("Some error has ocurred when starting the server")

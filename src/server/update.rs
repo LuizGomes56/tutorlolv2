@@ -14,7 +14,7 @@ pub async fn setup_project() -> impl Responder {
     HttpResponse::Ok().json(APIResponse {
         success: true,
         message: "Project is ready".to_string(),
-        data: "client updated".to_string(),
+        data: (),
     })
 }
 
@@ -25,7 +25,7 @@ pub async fn update_riot() -> impl Responder {
     HttpResponse::Ok().json(APIResponse {
         success: true,
         message: "Riot updated on client".to_string(),
-        data: "latest version added to cache".to_string(),
+        data: (),
     })
 }
 
@@ -36,7 +36,7 @@ pub async fn update_champions() -> impl Responder {
     HttpResponse::Ok().json(APIResponse {
         success: true,
         message: "Champions updated on client".to_string(),
-        data: "latest version added to cache".to_string(),
+        data: (),
     })
 }
 
@@ -47,7 +47,7 @@ pub async fn update_items() -> impl Responder {
     HttpResponse::Ok().json(APIResponse {
         success: true,
         message: "Items updated on client".to_string(),
-        data: "latest version added to cache".to_string(),
+        data: (),
     })
 }
 
@@ -58,6 +58,6 @@ pub async fn update_meta_items() -> impl Responder {
     HttpResponse::Ok().json(APIResponse {
         success: true,
         message: "Meta Items updated on client".to_string(),
-        data: "latest version added to cache".to_string(),
+        data: (),
     })
 }

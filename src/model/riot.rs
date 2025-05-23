@@ -6,13 +6,57 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
 #[derive(Serialize, Deserialize)]
-pub struct RiotFileStandard {
+pub struct RiotCDNStandard {
     pub data: HashMap<String, Value>,
 }
 
 #[derive(Deserialize)]
 pub struct RiotCDNItem {
     pub description: String,
+}
+
+#[derive(Deserialize)]
+pub struct RiotCDNImage {
+    pub full: String,
+}
+
+#[derive(Deserialize)]
+pub struct RiotCDNInstance {
+    pub image: RiotCDNImage,
+}
+
+#[derive(Deserialize)]
+pub struct RiotCDNRuneTree {
+    pub icon: String,
+    pub id: usize,
+    pub name: String,
+}
+
+#[derive(Deserialize)]
+pub struct RiotCDNRuneSlot {
+    pub runes: Vec<RiotCDNRuneTree>,
+}
+
+#[derive(Deserialize)]
+pub struct RiotCDNRune {
+    pub icon: String,
+    pub id: usize,
+    pub name: String,
+    pub slots: Vec<RiotCDNRuneSlot>,
+}
+
+#[derive(Deserialize)]
+pub struct RiotCDNSkin {
+    pub num: usize,
+}
+
+#[derive(Deserialize)]
+pub struct RiotCDNChampion {
+    pub id: String,
+    pub image: RiotCDNImage,
+    pub passive: RiotCDNInstance,
+    pub spells: Vec<RiotCDNInstance>,
+    pub skins: Vec<RiotCDNSkin>,
 }
 
 #[derive(Deserialize)]

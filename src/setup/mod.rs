@@ -1,4 +1,5 @@
 mod helpers;
+pub mod images;
 mod prototypes;
 pub mod update;
 mod writers;
