@@ -4,7 +4,7 @@ use crate::model::application::GlobalCache;
 use crate::model::champions::CdnChampion;
 use crate::model::internal::MetaItems;
 use crate::model::items::{CdnItem, Effect, Item, PartialStats};
-use crate::model::realtime::DamageLike;
+use crate::model::realtime::DamageObject;
 use crate::model::riot::RiotCDNStandard;
 use crate::model::runes::Rune;
 use regex::Regex;
@@ -419,7 +419,7 @@ pub fn initialize_items() {
                 .as_ref()
                 .filter(|s| s.chars().any(|c| c.is_ascii_digit()))
                 .map(|s| {
-                    let item_dmg = DamageLike {
+                    let item_dmg = DamageObject {
                         minimum_damage: Some(s.clone()),
                         maximum_damage: None,
                     };

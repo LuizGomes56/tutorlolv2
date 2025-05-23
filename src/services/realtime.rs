@@ -39,7 +39,7 @@ pub fn calculate<'a>(
         .find(|player| player.riot_id == active_player.riot_id)
         .ok_or("Current player not found in allPlayers".to_string())?;
 
-    let (enemy_dragon_multipliers, ally_dragon_multipliers) = get_dragon_multipliers(
+    let (ally_dragon_multipliers, enemy_dragon_multipliers) = get_dragon_multipliers(
         &game.events.events,
         &scoreboard,
         &active_player_expanded.team,
@@ -193,6 +193,7 @@ pub fn calculate<'a>(
         .collect::<Result<HashMap<usize, Stats>, String>>()?;
 
     let mut enemies = Vec::with_capacity(1 << 3);
+    let mut best_item = (0usize, 0f64);
 
     for player in all_players.into_iter() {
         let player_champion_id =
@@ -275,16 +276,45 @@ pub fn calculate<'a>(
                         &simulated_full_stats,
                         &current_player_runes_vec,
                     );
+                    let total_abilities_damage =
+                        get_comparison_total_damage(&simulated_ability_damage);
+                    let total_items_damage = get_comparison_total_damage(&simulated_item_damage);
+                    let total_runes_damage = get_comparison_total_damage(&simulated_rune_damage);
+                    let change_abilities_damage = get_comparison_damage_change(
+                        total_abilities_damage,
+                        &normal_abilities_damage,
+                    );
+                    let change_items_damage =
+                        get_comparison_damage_change(total_items_damage, &normal_items_damage);
+                    let change_runes_damage =
+                        get_comparison_damage_change(total_runes_damage, &normal_runes_damage);
+                    let total_compared_damage =
+                        total_abilities_damage + total_items_damage + total_runes_damage;
+                    if total_compared_damage > best_item.1 {
+                        best_item = (*simulated_item_id, total_compared_damage);
+                    }
                     (
                         *simulated_item_id,
-                        BasicDamages {
-                            abilities: simulated_ability_damage,
-                            items: simulated_item_damage,
-                            runes: simulated_rune_damage,
+                        SimulatedDamages {
+                            abilities: ComparedDamage {
+                                total: total_abilities_damage,
+                                change: change_abilities_damage,
+                                damages: simulated_ability_damage,
+                            },
+                            items: ComparedDamage {
+                                total: total_items_damage,
+                                change: change_items_damage,
+                                damages: simulated_item_damage,
+                            },
+                            runes: ComparedDamage {
+                                total: total_runes_damage,
+                                change: change_runes_damage,
+                                damages: simulated_rune_damage,
+                            },
                         },
                     )
                 })
-                .collect::<HashMap<usize, BasicDamages>>();
+                .collect::<HashMap<usize, SimulatedDamages>>();
             let damages = Damages {
                 compared_items,
                 abilities: normal_abilities_damage,
@@ -306,6 +336,7 @@ pub fn calculate<'a>(
             });
         }
     }
+
     Ok(Realtime {
         current_player,
         enemies,
@@ -315,6 +346,7 @@ pub fn calculate<'a>(
             map_number,
         },
         compared_items: compared_items_info,
+        best_item: best_item.0,
         scoreboard,
         enemy_dragon_multipliers,
         ally_dragon_multipliers,
@@ -326,14 +358,17 @@ fn get_dragon_multipliers(
     scoreboard: &[Scoreboard],
     current_player_team: &str,
 ) -> (DragonMultipliers, DragonMultipliers) {
-    let mut ally_team = DragonMultipliers::default();
-    let mut enemy_team = DragonMultipliers::default();
+    let mut ally_team = DragonMultipliers::new();
+    let mut enemy_team = DragonMultipliers::new();
 
     for event in event_list {
         let (Some(killer), Some(dragon_type)) = (&event.killer_name, &event.dragon_type) else {
             continue;
         };
-        if let Some(player) = scoreboard.iter().find(|p| &p.riot_id == killer) {
+        if let Some(player) = scoreboard
+            .iter()
+            .find(|p| &p.riot_id.split('#').next().unwrap_or_default() == killer)
+        {
             let target = if player.team == current_player_team {
                 &mut ally_team
             } else {
@@ -414,8 +449,8 @@ fn get_items_damage(
     items_cache: &HashMap<usize, Item>,
     stats: &FullStats,
     current_player_items_vec: &Vec<usize>,
-) -> HashMap<usize, InstanceDamage> {
-    let mut item_damages = HashMap::<usize, InstanceDamage>::new();
+) -> DamageLike<usize> {
+    let mut item_damages = DamageLike::<usize>::new();
 
     let is_ranged = stats.current_player.is_ranged;
     for current_player_item in current_player_items_vec.into_iter() {
@@ -468,8 +503,8 @@ fn get_runes_damage(
     runes_cache: &HashMap<usize, Rune>,
     stats: &FullStats,
     current_player_runes_vec: &Vec<usize>,
-) -> HashMap<usize, InstanceDamage> {
-    let mut rune_damages = HashMap::<usize, InstanceDamage>::new();
+) -> DamageLike<usize> {
+    let mut rune_damages = DamageLike::<usize>::new();
 
     let is_ranged = stats.current_player.is_ranged;
     for current_player_rune in current_player_runes_vec.into_iter() {
@@ -501,6 +536,21 @@ fn get_runes_damage(
         }
     }
     rune_damages
+}
+
+fn get_comparison_total_damage<T>(instance: &DamageLike<T>) -> f64 {
+    instance
+        .values()
+        .map(|sim| sim.minimum_damage + sim.maximum_damage)
+        .sum()
+}
+
+fn get_comparison_damage_change<T>(total_damage: f64, prev: &DamageLike<T>) -> f64 {
+    total_damage
+        - prev
+            .iter()
+            .map(|(_, value)| value.maximum_damage + value.minimum_damage)
+            .sum::<f64>()
 }
 
 fn get_full_stats<'a>(
@@ -618,8 +668,8 @@ fn get_abilities_damage(
     current_player_cache: &Champion,
     full_stats: &FullStats,
     abilities: &RiotAbilities,
-) -> HashMap<String, InstanceDamage> {
-    let mut ability_damages = HashMap::<String, InstanceDamage>::new();
+) -> DamageLike<String> {
+    let mut ability_damages = DamageLike::<String>::new();
     for (keyname, ability) in &current_player_cache.abilities {
         let first_char = keyname.chars().next().unwrap_or_default();
         let indexation = match first_char {

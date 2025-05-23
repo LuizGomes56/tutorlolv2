@@ -6,7 +6,7 @@ use serde_json::Value;
 use super::riot::RiotChampionStats;
 
 #[derive(Deserialize, Serialize, Clone)]
-pub struct DamageLike {
+pub struct DamageObject {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub minimum_damage: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -86,19 +86,28 @@ pub struct InstanceDamage {
     pub damages_onhit: bool,
 }
 
+pub type DamageLike<T> = HashMap<T, InstanceDamage>;
+
 #[derive(Serialize)]
-pub struct BasicDamages {
-    pub abilities: HashMap<String, InstanceDamage>,
-    pub items: HashMap<usize, InstanceDamage>,
-    pub runes: HashMap<usize, InstanceDamage>,
+pub struct ComparedDamage<T> {
+    pub total: f64,
+    pub change: f64,
+    pub damages: DamageLike<T>,
+}
+
+#[derive(Serialize)]
+pub struct SimulatedDamages {
+    pub abilities: ComparedDamage<String>,
+    pub items: ComparedDamage<usize>,
+    pub runes: ComparedDamage<usize>,
 }
 
 #[derive(Serialize)]
 pub struct Damages {
-    pub abilities: HashMap<String, InstanceDamage>,
-    pub items: HashMap<usize, InstanceDamage>,
-    pub runes: HashMap<usize, InstanceDamage>,
-    pub compared_items: HashMap<usize, BasicDamages>,
+    pub abilities: DamageLike<String>,
+    pub items: DamageLike<usize>,
+    pub runes: DamageLike<usize>,
+    pub compared_items: HashMap<usize, SimulatedDamages>,
 }
 
 #[derive(Serialize)]
@@ -116,11 +125,21 @@ pub struct Enemy<'a> {
     pub real_resists: RealResists,
 }
 
-#[derive(Serialize, Default)]
+#[derive(Serialize)]
 pub struct DragonMultipliers {
     pub earth: f64,
     pub fire: f64,
     pub chemtech: f64,
+}
+
+impl DragonMultipliers {
+    pub fn new() -> DragonMultipliers {
+        DragonMultipliers {
+            earth: 1.0,
+            fire: 1.0,
+            chemtech: 1.0,
+        }
+    }
 }
 
 #[derive(Serialize)]
@@ -150,6 +169,7 @@ pub struct Realtime<'a> {
     pub game_information: GameInformation,
     pub recommended_items: Vec<usize>,
     pub compared_items: HashMap<usize, ItemCompared>,
+    pub best_item: usize,
     pub scoreboard: Vec<Scoreboard>,
     pub enemy_dragon_multipliers: DragonMultipliers,
     pub ally_dragon_multipliers: DragonMultipliers,

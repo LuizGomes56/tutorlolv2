@@ -5,7 +5,7 @@ use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
-use super::realtime::DamageLike;
+use super::realtime::DamageObject;
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -122,8 +122,8 @@ pub struct Item {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub levelings: Option<Vec<usize>>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub ranged: Option<DamageLike>,
+    pub ranged: Option<DamageObject>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub melee: Option<DamageLike>,
+    pub melee: Option<DamageObject>,
     pub damages_onhit: bool,
 }
