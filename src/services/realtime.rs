@@ -1,7 +1,4 @@
-use std::{
-    collections::{HashMap, HashSet},
-    sync::Arc,
-};
+use std::{collections::HashMap, sync::Arc};
 
 use crate::model::{
     application::GlobalCache, champions::Champion, items::Item, realtime::*, riot::*, runes::Rune,
@@ -89,7 +86,7 @@ pub fn calculate<'a>(
         _ => &Vec::new(),
     };
 
-    let owned_items: HashSet<usize> = active_player_expanded
+    let owned_items: Vec<usize> = active_player_expanded
         .items
         .iter()
         .map(|item| item.item_id)
@@ -129,18 +126,16 @@ pub fn calculate<'a>(
 
     let attack_type = AttackType::from(current_player_cache.attack_type.as_str());
 
-    let current_player_items = &active_player_expanded.items;
-
-    let damaging_items: HashMap<usize, String> = current_player_items
+    let damaging_items: HashMap<usize, String> = owned_items
         .iter()
-        .filter_map(|riot_item| {
-            let item = cache.items.get(&riot_item.item_id)?;
+        .filter_map(|item_id| {
+            let item = cache.items.get(&item_id)?;
             let ok = match attack_type {
                 AttackType::Melee => item.melee.is_some(),
                 AttackType::Ranged => item.ranged.is_some(),
                 AttackType::Other => false,
             };
-            ok.then(|| (riot_item.item_id, item.name.clone()))
+            ok.then(|| (*item_id, item.name.clone()))
         })
         .collect();
 
@@ -172,23 +167,19 @@ pub fn calculate<'a>(
                 )
             })?;
             let mut cloned_champion_stats = current_player.current_stats.clone();
-            let current_owned_items = &current_player_items
-                .iter()
-                .map(|riot_item| riot_item.item_id)
-                .collect::<Vec<usize>>();
             compared_items_info.insert(
                 *simulated_item_id,
                 ItemCompared {
                     name: simulated_item_cache.name.clone(),
                     gold_cost: simulated_item_cache.gold,
-                    prettified_stats: HashMap::new(),
+                    prettified_stats: simulated_item_cache.pretiffied_stats.clone(),
                 },
             );
             simulate_champion_stats(
                 *simulated_item_id,
                 simulated_item_cache,
                 &mut cloned_champion_stats,
-                current_owned_items,
+                &owned_items,
             );
             Ok((*simulated_item_id, cloned_champion_stats))
         })
@@ -330,6 +321,10 @@ fn simulate_champion_stats(
     let assign_value = |key: &mut f64, value: Option<f64>| {
         *key += value.unwrap_or(0.0);
     };
+    assign_value(
+        &mut cloned_champion_stats.ability_power,
+        stats.ability_power,
+    );
     assign_value(&mut cloned_champion_stats.max_health, stats.health);
     assign_value(
         &mut cloned_champion_stats.attack_damage,
@@ -413,7 +408,7 @@ fn get_items_damage(
                         maximum_damage,
                         damage_type,
                         damages_in_area: false,
-                        damages_onhit: false,
+                        damages_onhit: item.damages_onhit,
                     },
                 );
             }

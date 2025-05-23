@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 
 use serde::{Deserialize, Serialize};
+use serde_json::Value;
 
 use super::riot::RiotChampionStats;
 
@@ -119,7 +120,7 @@ pub struct Enemy<'a> {
 pub struct ItemCompared {
     pub name: String,
     pub gold_cost: usize,
-    pub prettified_stats: HashMap<String, String>,
+    pub prettified_stats: HashMap<String, Value>,
 }
 
 #[derive(Serialize)]

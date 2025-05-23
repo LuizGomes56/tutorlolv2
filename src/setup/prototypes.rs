@@ -3,7 +3,7 @@ use crate::{model::{items::Item, riot::RiotCDNItem}, setup::extract_file_name};
 use super::{CdnAbility, CdnChampion, read_from_file, write_to_file};
 use std::{collections::HashMap, fs, sync::Arc};
 
-use regex::{Captures, Regex};
+use regex::Regex;
 use scraper::{Html, Selector};
 use serde_json::Value;
 

@@ -1,5 +1,4 @@
 #![allow(unused_imports)]
-
 mod model;
 mod server;
 mod services;
@@ -32,37 +31,10 @@ pub struct AppState {
 async fn main() -> Result<()> {
     dotenv().ok();
 
-    // unsafe {
-    //     generate_writers().await;
-    // }
-    // setup_champion_cache();
-    // initialize_items();
-
-    // append_prettified_item_stats().await;
-    // return Ok(());
-
     let cache = Arc::new(load_cache().await);
-
-    // let game = read_from_file::<RiotRealtime>("sample.json");
-
-    // let start_time = std::time::Instant::now();
-
-    // let data = calculate(&cache, &game, String::from("4645"));
-
-    // println!("Time elapsed: {:.2?}", start_time.elapsed());
-
-    // write_to_file(
-    //     "test.json",
-    //     serde_json::to_string_pretty(&data).unwrap().as_bytes(),
-    // );
-
-    // return Ok(());
-
     let dsn = std::env::var("DATABASE_URL").expect("DATABASE_URL is not set in the environment");
     let port = std::env::var("PORT").expect("PORT is not set in the environment");
-
     let host = format!("127.0.0.1:{}", port);
-
     let pool = PgPoolOptions::new()
         .max_connections(5)
         .connect(&dsn)

@@ -1,7 +1,5 @@
 use std::{collections::HashMap, fs};
 
-use tokio::sync::Semaphore;
-
 use crate::model::riot::{RiotCDNChampion, RiotCDNRune};
 
 use super::{extract_file_name, read_from_file, write_to_file};

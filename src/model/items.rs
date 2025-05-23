@@ -125,4 +125,5 @@ pub struct Item {
     pub ranged: Option<DamageLike>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub melee: Option<DamageLike>,
+    pub damages_onhit: bool,
 }

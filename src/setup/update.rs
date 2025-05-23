@@ -2,10 +2,10 @@
 
 use crate::model::application::GlobalCache;
 use crate::model::champions::CdnChampion;
-use crate::model::internal::{MetaItems, Positions};
+use crate::model::internal::MetaItems;
 use crate::model::items::{CdnItem, Effect, Item, PartialStats};
 use crate::model::realtime::DamageLike;
-use crate::model::riot::{RiotCDNItem, RiotCDNStandard};
+use crate::model::riot::RiotCDNStandard;
 use crate::model::runes::Rune;
 use regex::Regex;
 use scraper::{Html, Selector};
@@ -433,6 +433,7 @@ pub fn initialize_items() {
                 gold: cdn_item.shop.prices.total,
                 levelings: None,
                 damage_type: None,
+                damages_onhit: false,
                 stats: item_stats,
                 builds_from: cdn_item.builds_from,
                 ranged,
@@ -671,6 +672,10 @@ pub async fn append_prettified_item_stats() {
             let path_name = format!("src/cache/riot/items/{}.json", name);
             let pretiffied_stats = _pretiffy_item_stats(&path_name);
             let internal_path = format!("src/internal/items/{}.json", name);
+            if !Path::new(&internal_path).exists() {
+                println!("Item {} does not exist", name);
+                return;
+            }
             let mut current_content = read_from_file::<Item>(internal_path.as_str());
             current_content.pretiffied_stats = pretiffied_stats;
             let strval = serde_json::to_string(&current_content).unwrap();
