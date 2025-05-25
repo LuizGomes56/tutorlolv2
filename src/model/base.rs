@@ -97,11 +97,6 @@ pub struct Damages {
     pub compared_items: HashMap<usize, SimulatedDamages>,
 }
 
-pub enum PlayerKind<'a> {
-    Realtime(&'a CurrentPlayer<'a>),
-    Calculator(&'a CurrentPlayerX),
-}
-
 pub struct DamageMultipliers {
     pub magic_damage: f64,
     pub physical_damage: f64,
@@ -157,6 +152,7 @@ pub trait CurrentPlayerLike {
     fn get_base_stats(&self) -> &BasicStats;
     fn get_bonus_stats(&self) -> &BasicStats;
     fn get_level(&self) -> usize;
+    fn get_current_stats(&self) -> &Stats;
 }
 
 impl<'a> CurrentPlayerLike for CurrentPlayer<'a> {
@@ -169,6 +165,9 @@ impl<'a> CurrentPlayerLike for CurrentPlayer<'a> {
     fn get_level(&self) -> usize {
         self.level
     }
+    fn get_current_stats(&self) -> &Stats {
+        &self.current_stats
+    }
 }
 
 impl CurrentPlayerLike for CurrentPlayerX {
@@ -180,5 +179,8 @@ impl CurrentPlayerLike for CurrentPlayerX {
     }
     fn get_level(&self) -> usize {
         self.level
+    }
+    fn get_current_stats(&self) -> &Stats {
+        &self.current_stats
     }
 }

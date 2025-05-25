@@ -2,8 +2,9 @@ use std::{collections::HashMap, hash::Hash};
 
 use crate::model::{
     base::{
-        AttackType, BasicStats, ComparedItem, CurrentPlayerLike, DamageLike, DamageMultipliers,
-        EnemyFullStats, FullStats, InstanceDamage, RealResists, SelfFullStats, Stats,
+        AttackType, BasicStats, ComparedDamage, ComparedItem, CurrentPlayerLike, DamageLike,
+        DamageMultipliers, Damages, EnemyFullStats, FullStats, InstanceDamage, RealResists,
+        SelfFullStats, SimulatedDamages, Stats,
     },
     calculator::AbilitiesX,
     champions::Champion,
@@ -15,6 +16,111 @@ use crate::model::{
 };
 
 use super::eval::eval_math_expr;
+
+pub(super) fn get_damaging_vec(map: &HashMap<usize, String>) -> Vec<usize> {
+    map.iter().map(|(key, _)| *key).collect()
+}
+
+pub(super) fn calculate_enemy_state<T: CurrentPlayerLike>(
+    items_cache: &HashMap<usize, Item>,
+    runes_cache: &HashMap<usize, Rune>,
+    current_player_cache: &Champion,
+    current_player: &T,
+    current_player_items_vec: &Vec<usize>,
+    current_player_runes_vec: &Vec<usize>,
+    enemy_base_stats: &BasicStats,
+    enemy_current_stats: &BasicStats,
+    enemy_items: &Vec<usize>,
+    abilities: &AbilitiesX,
+    best_item: &mut (usize, f64),
+    simulated_champion_stats: &HashMap<usize, Stats>,
+) -> (Damages, RealResists, BasicStats) {
+    let enemy_bonus_stats =
+        get_bonus_stats(&enemy_current_stats.to_riot_format(), &enemy_base_stats);
+    let full_stats = get_full_stats(
+        current_player,
+        &current_player.get_current_stats(),
+        (&enemy_bonus_stats, &enemy_current_stats),
+        &enemy_items,
+    );
+    let normal_abilities_damage =
+        get_abilities_damage(current_player_cache, &full_stats, &abilities);
+    let normal_items_damage = get_items_damage(&items_cache, &full_stats, current_player_items_vec);
+    let normal_runes_damage = get_runes_damage(&runes_cache, &full_stats, current_player_runes_vec);
+    let compared_items = simulated_champion_stats
+        .iter()
+        .map(|(simulated_item_id, simulated_stats)| {
+            let simulated_full_stats = get_full_stats(
+                current_player,
+                &simulated_stats,
+                (&enemy_bonus_stats, &enemy_current_stats),
+                &enemy_items,
+            );
+            let mut simulated_ability_damage =
+                get_abilities_damage(&current_player_cache, &simulated_full_stats, &abilities);
+            let mut simulated_item_damage = get_items_damage(
+                &items_cache,
+                &simulated_full_stats,
+                &current_player_items_vec,
+            );
+            let mut simulated_rune_damage = get_runes_damage(
+                &runes_cache,
+                &simulated_full_stats,
+                &current_player_runes_vec,
+            );
+            let total_abilities_damage = get_comparison_total_damage(
+                &normal_abilities_damage,
+                &mut simulated_ability_damage,
+            );
+            let total_items_damage =
+                get_comparison_total_damage(&normal_items_damage, &mut simulated_item_damage);
+            let total_runes_damage =
+                get_comparison_total_damage(&normal_runes_damage, &mut simulated_rune_damage);
+            let change_abilities_damage =
+                get_comparison_damage_change(total_abilities_damage, &normal_abilities_damage);
+            let change_items_damage =
+                get_comparison_damage_change(total_items_damage, &normal_items_damage);
+            let change_runes_damage =
+                get_comparison_damage_change(total_runes_damage, &normal_runes_damage);
+            let total_compared_damage =
+                total_abilities_damage + total_items_damage + total_runes_damage;
+            if total_compared_damage > best_item.1 {
+                *best_item = (*simulated_item_id, total_compared_damage);
+            }
+            (
+                *simulated_item_id,
+                SimulatedDamages {
+                    abilities: ComparedDamage {
+                        total: total_abilities_damage,
+                        change: change_abilities_damage,
+                        damages: simulated_ability_damage,
+                    },
+                    items: ComparedDamage {
+                        total: total_items_damage,
+                        change: change_items_damage,
+                        damages: simulated_item_damage,
+                    },
+                    runes: ComparedDamage {
+                        total: total_runes_damage,
+                        change: change_runes_damage,
+                        damages: simulated_rune_damage,
+                    },
+                },
+            )
+        })
+        .collect::<HashMap<usize, SimulatedDamages>>();
+    let damages = Damages {
+        compared_items,
+        abilities: normal_abilities_damage,
+        items: normal_items_damage,
+        runes: normal_runes_damage,
+    };
+    (
+        damages,
+        full_stats.enemy_player.real_resists,
+        enemy_bonus_stats,
+    )
+}
 
 pub(super) fn get_simulated_champion_stats(
     simulated_items: &Vec<usize>,
@@ -293,10 +399,10 @@ pub(super) fn get_runes_damage(
     rune_damages
 }
 
-pub(super) fn get_comparison_total_damage<T>(prev: &DamageLike<T>, next: &mut DamageLike<T>) -> f64
-where
-    T: Eq + Hash,
-{
+pub(super) fn get_comparison_total_damage<T: Eq + Hash>(
+    prev: &DamageLike<T>,
+    next: &mut DamageLike<T>,
+) -> f64 {
     let mut sum = 0f64;
     for (key, val) in next.iter_mut() {
         sum += val.minimum_damage + val.maximum_damage;
