@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct StatsMap {
+pub struct ChampionCdnStatsMap {
     pub flat: f64,
     pub percent: f64,
     pub per_level: f64,
@@ -15,22 +15,22 @@ pub struct StatsMap {
 
 #[derive(Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct Stats {
-    pub health: StatsMap,
-    pub mana: StatsMap,
-    pub armor: StatsMap,
-    pub magic_resistance: StatsMap,
-    pub attack_damage: StatsMap,
-    pub attack_speed: StatsMap,
-    pub movespeed: StatsMap,
-    pub critical_strike_damage: StatsMap,
-    pub critical_strike_damage_modifier: StatsMap,
-    pub attack_speed_ratio: StatsMap,
-    pub attack_range: StatsMap,
-    pub aram_damage_taken: StatsMap,
-    pub aram_damage_dealt: StatsMap,
-    pub urf_damage_taken: StatsMap,
-    pub urf_damage_dealt: StatsMap,
+pub struct ChampionCdnStats {
+    pub health: ChampionCdnStatsMap,
+    pub mana: ChampionCdnStatsMap,
+    pub armor: ChampionCdnStatsMap,
+    pub magic_resistance: ChampionCdnStatsMap,
+    pub attack_damage: ChampionCdnStatsMap,
+    pub attack_speed: ChampionCdnStatsMap,
+    pub movespeed: ChampionCdnStatsMap,
+    pub critical_strike_damage: ChampionCdnStatsMap,
+    pub critical_strike_damage_modifier: ChampionCdnStatsMap,
+    pub attack_speed_ratio: ChampionCdnStatsMap,
+    pub attack_range: ChampionCdnStatsMap,
+    pub aram_damage_taken: ChampionCdnStatsMap,
+    pub aram_damage_dealt: ChampionCdnStatsMap,
+    pub urf_damage_taken: ChampionCdnStatsMap,
+    pub urf_damage_dealt: ChampionCdnStatsMap,
 }
 
 #[derive(Deserialize)]
@@ -107,7 +107,7 @@ pub struct CdnChampion {
     pub name: String,
     pub attack_type: String,
     pub adaptive_type: String,
-    pub stats: Stats,
+    pub stats: ChampionCdnStats,
     pub abilities: Abilities,
     pub positions: Vec<String>,
 }
@@ -127,7 +127,7 @@ pub struct Champion {
     pub adaptative_type: String,
     pub attack_type: String,
     pub positions: Vec<String>,
-    pub stats: Stats,
+    pub stats: ChampionCdnStats,
     pub abilities: HashMap<String, Ability>,
 }
 

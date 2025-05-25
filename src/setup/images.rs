@@ -1,6 +1,6 @@
 use std::{collections::HashMap, fs};
 
-use crate::model::riot::{RiotCDNChampion, RiotCDNRune};
+use crate::model::riot::{RiotCdnChampion, RiotCdnRune};
 
 use super::{extract_file_name, read_from_file, write_to_file};
 
@@ -22,7 +22,7 @@ pub async fn img_download_instances() {
         outer_futures.push(tokio::spawn(async move {
             let path_buf = file.unwrap().path();
             let path_name = path_buf.to_str().unwrap();
-            let outer_result = read_from_file::<RiotCDNChampion>(path_name);
+            let outer_result = read_from_file::<RiotCdnChampion>(path_name);
             let spells = outer_result.spells;
             let mut inner_futures = Vec::new();
             let champion_icon_url =
@@ -86,7 +86,7 @@ pub async fn img_download_arts() {
     for file in files {
         let path_buf = file.unwrap().path();
         let path_name = path_buf.to_str().unwrap();
-        let outer_result = read_from_file::<RiotCDNChampion>(path_name);
+        let outer_result = read_from_file::<RiotCdnChampion>(path_name);
         let skins = outer_result.skins;
         let mut inner_futures = Vec::new();
         for skin in skins.into_iter() {
@@ -116,7 +116,7 @@ pub async fn img_download_arts() {
 }
 
 pub async fn img_download_runes() {
-    let runes_data = read_from_file::<Vec<RiotCDNRune>>("src/cache/riot/runes.json");
+    let runes_data = read_from_file::<Vec<RiotCdnRune>>("src/cache/riot/runes.json");
     let client = reqwest::Client::new();
     let mut rune_futures = Vec::new();
     let mut runes_map = HashMap::<usize, String>::new();

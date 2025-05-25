@@ -17,7 +17,7 @@ pub struct Effect {
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct StatsMap {
+pub struct ItemsCdnStatsMap {
     pub flat: f64,
     pub per_level: f64,
     pub percent: f64,
@@ -29,20 +29,20 @@ pub struct StatsMap {
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ItemStats {
-    pub ability_power: StatsMap,
-    pub armor: StatsMap,
-    pub armor_penetration: StatsMap,
-    pub magic_penetration: StatsMap,
-    pub attack_damage: StatsMap,
-    pub attack_speed: StatsMap,
-    pub critical_strike_chance: StatsMap,
-    pub critical_strike_damage: StatsMap,
-    pub health: StatsMap,
-    pub lifesteal: StatsMap,
-    pub magic_resistance: StatsMap,
-    pub mana: StatsMap,
-    pub movespeed: StatsMap,
-    pub omnivamp: StatsMap,
+    pub ability_power: ItemsCdnStatsMap,
+    pub armor: ItemsCdnStatsMap,
+    pub armor_penetration: ItemsCdnStatsMap,
+    pub magic_penetration: ItemsCdnStatsMap,
+    pub attack_damage: ItemsCdnStatsMap,
+    pub attack_speed: ItemsCdnStatsMap,
+    pub critical_strike_chance: ItemsCdnStatsMap,
+    pub critical_strike_damage: ItemsCdnStatsMap,
+    pub health: ItemsCdnStatsMap,
+    pub lifesteal: ItemsCdnStatsMap,
+    pub magic_resistance: ItemsCdnStatsMap,
+    pub mana: ItemsCdnStatsMap,
+    pub movespeed: ItemsCdnStatsMap,
+    pub omnivamp: ItemsCdnStatsMap,
 }
 
 #[derive(Deserialize)]

@@ -1,4 +1,4 @@
-use crate::{model::{items::Item, riot::RiotCDNItem}, setup::extract_file_name};
+use crate::{model::{items::Item, riot::RiotCdnItem}, setup::extract_file_name};
 
 use super::{CdnAbility, CdnChampion, read_from_file, write_to_file};
 use std::{collections::HashMap, fs, sync::Arc};
@@ -240,7 +240,7 @@ pub async fn _generate_writer_files() {
 }
 
 pub fn _pretiffy_item_stats(path_name: &str) -> HashMap<String, Value> {
-    let data = read_from_file::<RiotCDNItem>(path_name);
+    let data = read_from_file::<RiotCdnItem>(path_name);
     let mut result = HashMap::new();
 
     let tag_regex = Regex::new(r#"<(attention|buffedStat|nerfedStat|ornnBonus)>(.*?)<\/(attention|buffedStat|nerfedStat|ornnBonus)>"#).unwrap();

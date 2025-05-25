@@ -6,14 +6,14 @@ mod setup;
 
 use model::{application::GlobalCache, riot::RiotRealtime};
 use server::{
-    games::realtime_handler,
+    games::{calculator_handler, realtime_handler},
     images::{download_arts, download_instances, download_items, download_runes},
     update::{setup_project, update_champions, update_items, update_meta_items, update_riot},
 };
 
 use actix_web::{App, HttpServer, main, web::Data};
 use dotenvy::dotenv;
-use services::realtime::calculate;
+use services::realtime::realtime;
 use setup::update::{
     append_prettified_item_stats, generate_writers, initialize_items, load_cache, read_from_file,
     setup_champion_cache, update_riot_cache, write_to_file,
@@ -48,6 +48,7 @@ async fn main() -> Result<()> {
                 cache: cache.clone(),
             }))
             .service(realtime_handler)
+            .service(calculator_handler)
             .service(setup_project)
             .service(update_riot)
             .service(update_champions)

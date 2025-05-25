@@ -5,58 +5,60 @@ use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
+use super::calculator::AbilitiesX;
+
 #[derive(Serialize, Deserialize)]
-pub struct RiotCDNStandard {
+pub struct RiotCdnStandard {
     pub data: HashMap<String, Value>,
 }
 
 #[derive(Deserialize)]
-pub struct RiotCDNItem {
+pub struct RiotCdnItem {
     pub description: String,
 }
 
 #[derive(Deserialize)]
-pub struct RiotCDNImage {
+pub struct RiotCdnImage {
     pub full: String,
 }
 
 #[derive(Deserialize)]
-pub struct RiotCDNInstance {
-    pub image: RiotCDNImage,
+pub struct RiotCdnInstance {
+    pub image: RiotCdnImage,
 }
 
 #[derive(Deserialize)]
-pub struct RiotCDNRuneTree {
+pub struct RiotCdnRuneTree {
     pub icon: String,
     pub id: usize,
     pub name: String,
 }
 
 #[derive(Deserialize)]
-pub struct RiotCDNRuneSlot {
-    pub runes: Vec<RiotCDNRuneTree>,
+pub struct RiotCdnRuneSlot {
+    pub runes: Vec<RiotCdnRuneTree>,
 }
 
 #[derive(Deserialize)]
-pub struct RiotCDNRune {
+pub struct RiotCdnRune {
     pub icon: String,
     pub id: usize,
     pub name: String,
-    pub slots: Vec<RiotCDNRuneSlot>,
+    pub slots: Vec<RiotCdnRuneSlot>,
 }
 
 #[derive(Deserialize)]
-pub struct RiotCDNSkin {
+pub struct RiotCdnSkin {
     pub num: usize,
 }
 
 #[derive(Deserialize)]
-pub struct RiotCDNChampion {
+pub struct RiotCdnChampion {
     pub id: String,
-    pub image: RiotCDNImage,
-    pub passive: RiotCDNInstance,
-    pub spells: Vec<RiotCDNInstance>,
-    pub skins: Vec<RiotCDNSkin>,
+    pub image: RiotCdnImage,
+    pub passive: RiotCdnInstance,
+    pub spells: Vec<RiotCdnInstance>,
+    pub skins: Vec<RiotCdnSkin>,
 }
 
 #[derive(Deserialize)]
@@ -72,6 +74,17 @@ pub struct RiotAbilities {
     pub w: RiotAbility,
     pub e: RiotAbility,
     pub r: RiotAbility,
+}
+
+impl RiotAbilities {
+    pub fn get_levelings(&self) -> AbilitiesX {
+        AbilitiesX {
+            q: self.q.ability_level,
+            w: self.w.ability_level,
+            e: self.e.ability_level,
+            r: self.r.ability_level,
+        }
+    }
 }
 
 #[derive(Deserialize, Default)]

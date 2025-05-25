@@ -1,7 +1,8 @@
 use super::schemas::APIResponse;
-use crate::AppState;
 use crate::model::riot::RiotRealtime;
-use crate::services::realtime::calculate;
+use crate::services::calculator::calculator;
+use crate::services::realtime::realtime;
+use crate::{AppState, model::calculator::GameX};
 use actix_web::{
     HttpResponse, Responder, post,
     web::{Data, Json},
@@ -24,6 +25,31 @@ struct RealtimeBody {
     simulated_items: Vec<usize>,
 }
 
+#[derive(Deserialize)]
+struct CalculatorBody {
+    game: GameX,
+    simulated_items: Vec<usize>,
+}
+
+#[post("/api/calculator")]
+pub async fn calculator_handler(
+    state: Data<AppState>,
+    body: Json<CalculatorBody>,
+) -> impl Responder {
+    match calculator(&state.cache, &body.game, &body.simulated_items) {
+        Ok(data) => HttpResponse::Ok().json(APIResponse {
+            success: true,
+            message: (),
+            data,
+        }),
+        Err(e) => HttpResponse::InternalServerError().json(APIResponse {
+            success: false,
+            message: e,
+            data: (),
+        }),
+    }
+}
+
 #[post("/api/realtime")]
 pub async fn realtime_handler(state: Data<AppState>, body: Json<RealtimeBody>) -> impl Responder {
     match sqlx::query_as::<_, RealtimeResponse>(
@@ -42,9 +68,7 @@ pub async fn realtime_handler(state: Data<AppState>, body: Json<RealtimeBody>) -
             let game: RiotRealtime =
                 serde_json::from_str(&val.game).expect("Failed to parse game data");
 
-            let data = calculate(&state.cache, &game, &body.simulated_items);
-
-            match data {
+            match realtime(&state.cache, &game, &body.simulated_items) {
                 Ok(data) => HttpResponse::Ok().json(APIResponse {
                     success: true,
                     message: (),

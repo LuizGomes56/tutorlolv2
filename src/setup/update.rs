@@ -5,7 +5,7 @@ use crate::model::champions::CdnChampion;
 use crate::model::internal::MetaItems;
 use crate::model::items::{CdnItem, Effect, Item, PartialStats};
 use crate::model::realtime::DamageObject;
-use crate::model::riot::RiotCDNStandard;
+use crate::model::riot::RiotCdnStandard;
 use crate::model::runes::Rune;
 use regex::Regex;
 use scraper::{Html, Selector};
@@ -135,14 +135,14 @@ async fn fetch_riot_api<T: DeserializeOwned>(path_name: &str) -> T {
 }
 
 pub async fn update_riot_cache() {
-    let champions_json = fetch_riot_api::<RiotCDNStandard>("champion").await;
+    let champions_json = fetch_riot_api::<RiotCdnStandard>("champion").await;
     let mut champions_futures = Vec::new();
 
     for (champion_id, _) in champions_json.data.clone() {
         champions_futures.push(tokio::spawn(async move {
             let this_path_name = format!("src/cache/riot/champions/{}.json", champion_id);
             let this_champion_data =
-                fetch_riot_api::<RiotCDNStandard>(&format!("champion/{}", champion_id)).await;
+                fetch_riot_api::<RiotCdnStandard>(&format!("champion/{}", champion_id)).await;
             let data_field = this_champion_data.data;
             let real_data = data_field.get(&champion_id.to_string()).unwrap().clone();
             let strval = serde_json::to_string(&real_data).unwrap();
@@ -158,7 +158,7 @@ pub async fn update_riot_cache() {
     let champion_bytes = champion_strval.as_bytes();
     write_to_file("src/cache/riot/champions.json", champion_bytes);
 
-    let items_json = fetch_riot_api::<RiotCDNStandard>("item").await;
+    let items_json = fetch_riot_api::<RiotCdnStandard>("item").await;
     let mut items_futures = Vec::new();
 
     for (item_id, item_data) in items_json.data.clone() {

@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
-use super::riot::RiotChampionStats;
+use super::base::{BasicStats, ComparedItem, Damages, RealResists, Stats};
 
 #[derive(Deserialize, Serialize, Clone)]
 pub struct DamageObject {
@@ -11,48 +11,6 @@ pub struct DamageObject {
     pub minimum_damage: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub maximum_damage: Option<String>,
-}
-
-#[derive(Clone, Serialize)]
-pub struct Stats {
-    pub ability_power: f64,
-    pub armor: f64,
-    pub armor_penetration_flat: f64,
-    pub armor_penetration_percent: f64,
-    pub attack_damage: f64,
-    pub attack_range: f64,
-    pub attack_speed: f64,
-    pub crit_chance: f64,
-    pub crit_damage: f64,
-    pub current_health: f64,
-    pub magic_penetration_flat: f64,
-    pub magic_penetration_percent: f64,
-    pub magic_resist: f64,
-    pub max_health: f64,
-    pub max_mana: f64,
-    pub current_mana: f64,
-}
-
-#[derive(Serialize)]
-pub struct BasicStats {
-    pub armor: f64,
-    pub health: f64,
-    pub attack_damage: f64,
-    pub magic_resist: f64,
-    pub mana: f64,
-}
-
-impl BasicStats {
-    pub fn to_riot_format(&self) -> RiotChampionStats {
-        RiotChampionStats {
-            armor: self.armor,
-            max_health: self.health,
-            attack_damage: self.attack_damage,
-            magic_resist: self.magic_resist,
-            resource_max: self.mana,
-            ..Default::default()
-        }
-    }
 }
 
 #[derive(Serialize)]
@@ -75,43 +33,6 @@ pub struct CurrentPlayer<'a> {
 pub struct GameInformation {
     pub game_time: f64,
     pub map_number: usize,
-}
-
-#[derive(Serialize)]
-pub struct InstanceDamage {
-    pub minimum_damage: f64,
-    pub maximum_damage: f64,
-    pub damage_type: String,
-    pub damages_in_area: bool,
-    pub damages_onhit: bool,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub min_dmg_change: Option<f64>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub max_dmg_change: Option<f64>,
-}
-
-pub type DamageLike<T> = HashMap<T, InstanceDamage>;
-
-#[derive(Serialize)]
-pub struct ComparedDamage<T> {
-    pub total: f64,
-    pub change: f64,
-    pub damages: DamageLike<T>,
-}
-
-#[derive(Serialize)]
-pub struct SimulatedDamages {
-    pub abilities: ComparedDamage<String>,
-    pub items: ComparedDamage<usize>,
-    pub runes: ComparedDamage<usize>,
-}
-
-#[derive(Serialize)]
-pub struct Damages {
-    pub abilities: DamageLike<String>,
-    pub items: DamageLike<usize>,
-    pub runes: DamageLike<usize>,
-    pub compared_items: HashMap<usize, SimulatedDamages>,
 }
 
 #[derive(Serialize)]
@@ -147,13 +68,6 @@ impl DragonMultipliers {
 }
 
 #[derive(Serialize)]
-pub struct ItemCompared {
-    pub name: String,
-    pub gold_cost: usize,
-    pub prettified_stats: HashMap<String, Value>,
-}
-
-#[derive(Serialize)]
 pub struct Scoreboard {
     pub assists: usize,
     pub creep_score: usize,
@@ -172,66 +86,9 @@ pub struct Realtime<'a> {
     pub enemies: Vec<Enemy<'a>>,
     pub game_information: GameInformation,
     pub recommended_items: Vec<usize>,
-    pub compared_items: HashMap<usize, ItemCompared>,
+    pub compared_items: HashMap<usize, ComparedItem>,
     pub best_item: usize,
     pub scoreboard: Vec<Scoreboard>,
     pub enemy_dragon_multipliers: DragonMultipliers,
     pub ally_dragon_multipliers: DragonMultipliers,
-}
-
-#[derive(Serialize)]
-pub struct RealResists {
-    pub magic_resist: f64,
-    pub armor: f64,
-}
-
-pub struct DamageMultipliers {
-    pub magic_damage: f64,
-    pub physical_damage: f64,
-    pub true_damage: f64,
-    pub all_sources: f64,
-}
-
-pub struct EnemyFullStats<'a> {
-    pub current_stats: &'a BasicStats,
-    pub bonus_stats: &'a BasicStats,
-    pub takes_extra_damage_from: DamageMultipliers,
-    pub real_resists: RealResists,
-}
-
-pub struct SelfFullStats<'a> {
-    pub current_stats: &'a Stats,
-    pub base_stats: &'a BasicStats,
-    pub bonus_stats: &'a BasicStats,
-    pub is_ranged: bool,
-    pub level: usize,
-    pub deals_extra_damage_from: DamageMultipliers,
-    pub is_physical_adaptative_type: bool,
-}
-
-pub struct FullStats<'a> {
-    pub missing_health: f64,
-    pub enemy_has_steelcaps: bool,
-    pub enemy_has_rocksolid: bool,
-    pub enemy_has_randuin: bool,
-    pub current_player: SelfFullStats<'a>,
-    pub enemy_player: EnemyFullStats<'a>,
-    pub physical_damage_multiplier: f64,
-    pub magic_damage_multiplier: f64,
-}
-
-pub enum AttackType {
-    Melee,
-    Ranged,
-    Other,
-}
-
-impl From<&str> for AttackType {
-    fn from(s: &str) -> Self {
-        match s {
-            "MELEE" => AttackType::Melee,
-            "RANGED" => AttackType::Ranged,
-            _ => AttackType::Other,
-        }
-    }
 }
