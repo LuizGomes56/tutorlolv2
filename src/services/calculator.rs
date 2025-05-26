@@ -3,7 +3,7 @@ use std::{collections::HashMap, hash::Hash, sync::Arc};
 use crate::model::{
     application::GlobalCache,
     base::{AttackType, ComparedDamage, ComparedItem, Damages, SimulatedDamages, Stats},
-    calculator::{AbilitiesX, Calculator, CurrentPlayerX, EnemyX, GameX},
+    calculator::{AbilitiesX, ActivePlayerX, Calculator, CurrentPlayerX, EnemyX, GameX},
     champions::Champion,
     items::Item,
     realtime::*,
@@ -12,6 +12,58 @@ use crate::model::{
 };
 
 use super::*;
+
+fn apply_auto_stats(
+    active_player: &ActivePlayerX,
+    items_cache: &HashMap<usize, Item>,
+) -> Result<RiotChampionStats, String> {
+    let mut stats = RiotChampionStats::default();
+    let stacks = active_player.stacks.unwrap_or_default() as f64;
+
+    match active_player.champion_id.as_str() {
+        "Veigar" => stats.ability_power += stacks,
+        "Chogath" => {
+            let scallings = [0.0, 80.0, 120.0, 160.0];
+            let mut r_ability_level = active_player.abilities.r;
+            if r_ability_level > 3 {
+                r_ability_level = 3
+            }
+            stats.max_health += stacks * scallings[r_ability_level]
+        }
+        "Sion" => stats.max_health += stacks,
+        _ => {}
+    }
+
+    let add_if_some = |target: &mut f64, value: Option<f64>| {
+        if let Some(v) = value {
+            *target += v;
+        }
+    };
+
+    for item_id in active_player.items.iter() {
+        let cached_item = items_cache
+            .get(&item_id)
+            .ok_or_else(|| format!("Item {} not found on cache", item_id.to_string()))?;
+
+        let item_stats = &cached_item.stats;
+
+        add_if_some(&mut stats.ability_power, item_stats.ability_power);
+        add_if_some(&mut stats.attack_damage, item_stats.attack_damage);
+        add_if_some(&mut stats.armor, item_stats.armor);
+        add_if_some(&mut stats.magic_resist, item_stats.magic_resistance);
+        add_if_some(&mut stats.max_health, item_stats.health);
+        add_if_some(&mut stats.crit_chance, item_stats.critical_strike_chance);
+        add_if_some(&mut stats.crit_damage, item_stats.critical_strike_damage);
+        add_if_some(&mut stats.resource_max, item_stats.mana);
+        add_if_some(&mut stats.attack_speed, item_stats.attack_speed);
+    }
+
+    if stats.crit_chance > 100.0 {
+        stats.crit_chance = 100.0;
+    }
+
+    Ok(stats)
+}
 
 pub fn calculator<'a>(
     cache: &'a Arc<GlobalCache>,
@@ -82,10 +134,11 @@ pub fn calculator<'a>(
     let attack_type = AttackType::from(current_player_cache.attack_type.as_str());
 
     let damaging_items = get_damaging_items(&cache.items, attack_type, &owned_items);
+
     let active_player_champion_stats = if active_player.champion_stats.is_some() {
         active_player.champion_stats.as_ref().unwrap()
     } else {
-        &RiotChampionStats::default()
+        &apply_auto_stats(active_player, &cache.items)?
     };
 
     let current_player = CurrentPlayerX {

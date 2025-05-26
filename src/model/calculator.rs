@@ -59,6 +59,8 @@ pub struct ActivePlayerX {
     pub items: Vec<usize>,
     pub runes: Vec<usize>,
     pub level: usize,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub stacks: Option<usize>,
 }
 
 #[derive(Deserialize)]
@@ -68,6 +70,8 @@ pub struct EnemyPlayersX {
     pub level: usize,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub stats: Option<BasicStats>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub stacks: Option<usize>,
 }
 
 #[derive(Deserialize)]
