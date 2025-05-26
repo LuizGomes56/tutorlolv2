@@ -2,10 +2,7 @@ use std::collections::HashMap;
 
 use serde::{Deserialize, Serialize};
 
-use super::{
-    base::{BasicStats, ComparedItem, Damages, RealResists, Stats},
-    riot::RiotChampionStats,
-};
+use super::base::{BasicStats, ComparedItem, Damages, RealResists, Stats};
 
 #[derive(Serialize)]
 pub struct CurrentPlayerX {
@@ -50,7 +47,7 @@ pub struct AbilitiesX {
 pub struct ActivePlayerX {
     pub champion_id: String,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub champion_stats: Option<RiotChampionStats>,
+    pub champion_stats: Option<Stats>,
     pub abilities: AbilitiesX,
     pub items: Vec<usize>,
     pub runes: Vec<usize>,

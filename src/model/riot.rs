@@ -83,7 +83,7 @@ impl RiotAbilities {
     }
 }
 
-#[derive(Deserialize, Default)]
+#[derive(Deserialize, Clone, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct RiotChampionStats {
     pub ability_power: f64,

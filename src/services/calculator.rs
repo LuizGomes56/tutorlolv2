@@ -2,11 +2,10 @@ use std::{collections::HashMap, sync::Arc};
 
 use crate::model::{
     application::GlobalCache,
-    base::{AttackType, ComparedItem},
+    base::{AttackType, ComparedItem, Stats},
     calculator::{ActivePlayerX, Calculator, CurrentPlayerX, EnemyX, GameX},
     items::Item,
     realtime::*,
-    riot::*,
 };
 
 use super::*;
@@ -14,8 +13,8 @@ use super::*;
 fn apply_auto_stats(
     active_player: &ActivePlayerX,
     items_cache: &HashMap<usize, Item>,
-) -> Result<RiotChampionStats, String> {
-    let mut stats = RiotChampionStats::default();
+) -> Result<Stats, String> {
+    let mut stats = Stats::default();
     let stacks = active_player.stacks.unwrap_or_default() as f64;
 
     match active_player.champion_id.as_str() {
@@ -60,7 +59,7 @@ fn apply_auto_stats(
         add_if_some(&mut stats.max_health, item_stats.health);
         add_if_some(&mut stats.crit_chance, item_stats.critical_strike_chance);
         add_if_some(&mut stats.crit_damage, item_stats.critical_strike_damage);
-        add_if_some(&mut stats.resource_max, item_stats.mana);
+        add_if_some(&mut stats.max_mana, item_stats.mana);
         add_if_some(&mut stats.attack_speed, item_stats.attack_speed);
     }
 
@@ -142,18 +141,18 @@ pub fn calculator<'a>(
     let damaging_items = get_damaging_items(&cache.items, attack_type, &owned_items);
 
     let active_player_champion_stats = if active_player.champion_stats.is_some() {
-        active_player.champion_stats.as_ref().unwrap()
+        active_player.champion_stats.clone().unwrap()
     } else {
-        &apply_auto_stats(active_player, &cache.items)?
+        apply_auto_stats(active_player, &cache.items)?
     };
 
     let current_player = CurrentPlayerX {
-        current_stats: get_current_stats(active_player_champion_stats),
+        bonus_stats: get_bonus_stats(&active_player_champion_stats, &current_player_base_stats),
+        current_stats: active_player_champion_stats,
         level: active_player_level,
         damaging_abilities,
         damaging_items,
         damaging_runes,
-        bonus_stats: get_bonus_stats(active_player_champion_stats, &current_player_base_stats),
         base_stats: current_player_base_stats,
     };
 

@@ -18,7 +18,7 @@ pub struct InstanceDamage {
     pub max_dmg_change: Option<f64>,
 }
 
-#[derive(Clone, Serialize)]
+#[derive(Clone, Default, Deserialize, Serialize)]
 pub struct Stats {
     pub ability_power: f64,
     pub armor: f64,
@@ -38,19 +38,12 @@ pub struct Stats {
     pub current_mana: f64,
 }
 
-pub type DamageLike<T> = HashMap<T, InstanceDamage>;
-
-#[derive(Clone, Deserialize, Serialize)]
-pub struct BasicStats {
-    pub armor: f64,
-    pub health: f64,
-    pub attack_damage: f64,
-    pub magic_resist: f64,
-    pub mana: f64,
+pub trait ToRiotFormat {
+    fn format(&self) -> RiotChampionStats;
 }
 
-impl BasicStats {
-    pub fn to_riot_format(&self) -> RiotChampionStats {
+impl ToRiotFormat for BasicStats {
+    fn format(&self) -> RiotChampionStats {
         RiotChampionStats {
             armor: self.armor,
             max_health: self.health,
@@ -60,6 +53,69 @@ impl BasicStats {
             ..Default::default()
         }
     }
+}
+
+impl ToRiotFormat for RiotChampionStats {
+    fn format(&self) -> RiotChampionStats {
+        (*self).clone()
+    }
+}
+
+impl RiotChampionStats {
+    pub fn transform(&self) -> Stats {
+        Stats {
+            ability_power: self.ability_power,
+            armor: self.armor,
+            armor_penetration_flat: self.physical_lethality,
+            armor_penetration_percent: self.armor_penetration_percent,
+            attack_damage: self.attack_damage,
+            attack_range: self.attack_range,
+            attack_speed: self.attack_speed,
+            crit_chance: self.crit_chance,
+            crit_damage: self.crit_damage,
+            current_health: self.current_health,
+            magic_penetration_flat: self.magic_penetration_flat,
+            magic_penetration_percent: self.magic_penetration_percent,
+            magic_resist: self.magic_resist,
+            max_health: self.max_health,
+            max_mana: self.resource_max,
+            current_mana: self.resource_value,
+        }
+    }
+}
+
+impl ToRiotFormat for Stats {
+    fn format(&self) -> RiotChampionStats {
+        RiotChampionStats {
+            ability_power: self.ability_power,
+            armor: self.armor,
+            physical_lethality: self.armor_penetration_flat,
+            armor_penetration_percent: self.armor_penetration_percent,
+            attack_damage: self.attack_damage,
+            attack_range: self.attack_range,
+            attack_speed: self.attack_speed,
+            crit_chance: self.crit_chance,
+            crit_damage: self.crit_damage,
+            current_health: self.current_health,
+            magic_penetration_flat: self.magic_penetration_flat,
+            magic_penetration_percent: self.magic_penetration_percent,
+            magic_resist: self.magic_resist,
+            max_health: self.max_health,
+            resource_max: self.max_mana,
+            resource_value: self.current_mana,
+        }
+    }
+}
+
+pub type DamageLike<T> = HashMap<T, InstanceDamage>;
+
+#[derive(Clone, Deserialize, Serialize)]
+pub struct BasicStats {
+    pub armor: f64,
+    pub health: f64,
+    pub attack_damage: f64,
+    pub magic_resist: f64,
+    pub mana: f64,
 }
 
 #[derive(Serialize)]

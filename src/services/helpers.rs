@@ -4,14 +4,13 @@ use crate::model::{
     base::{
         AttackType, BasicStats, ComparedDamage, ComparedItem, CurrentPlayerLike, DamageLike,
         DamageMultipliers, Damages, EnemyFullStats, FullStats, InstanceDamage, RealResists,
-        SelfFullStats, SimulatedDamages, Stats,
+        SelfFullStats, SimulatedDamages, Stats, ToRiotFormat,
     },
     calculator::AbilitiesX,
     champions::Champion,
     internal::Positions,
     items::Item,
     realtime::DragonMultipliers,
-    riot::RiotChampionStats,
     runes::Rune,
 };
 
@@ -39,8 +38,7 @@ pub fn calculate_enemy_state<T: CurrentPlayerLike>(
     best_item: &mut (usize, f64),
     simulated_champion_stats: &HashMap<usize, Stats>,
 ) -> (Damages, RealResists, BasicStats) {
-    let enemy_bonus_stats =
-        get_bonus_stats(&enemy_current_stats.to_riot_format(), &enemy_base_stats);
+    let enemy_bonus_stats = get_bonus_stats(enemy_current_stats, &enemy_base_stats);
     let full_stats = get_full_stats(
         current_player,
         &current_player.get_current_stats(),
@@ -720,34 +718,14 @@ pub fn replace_damage_keywords(stats: &FullStats, target_str: &str) -> String {
         })
 }
 
-pub fn get_current_stats(champion_stats: &RiotChampionStats) -> Stats {
-    Stats {
-        ability_power: champion_stats.ability_power,
-        armor: champion_stats.armor,
-        armor_penetration_flat: champion_stats.physical_lethality,
-        armor_penetration_percent: champion_stats.armor_penetration_percent,
-        attack_damage: champion_stats.attack_damage,
-        attack_range: champion_stats.attack_range,
-        attack_speed: champion_stats.attack_speed,
-        crit_chance: champion_stats.crit_chance,
-        crit_damage: champion_stats.crit_damage,
-        current_health: champion_stats.current_health,
-        magic_penetration_flat: champion_stats.magic_penetration_flat,
-        magic_penetration_percent: champion_stats.magic_penetration_percent,
-        magic_resist: champion_stats.magic_resist,
-        max_health: champion_stats.max_health,
-        max_mana: champion_stats.resource_max,
-        current_mana: champion_stats.resource_value,
-    }
-}
-
-pub fn get_bonus_stats(current_stats: &RiotChampionStats, base_stats: &BasicStats) -> BasicStats {
+pub fn get_bonus_stats<T: ToRiotFormat>(current_stats: &T, base_stats: &BasicStats) -> BasicStats {
+    let value = current_stats.format();
     BasicStats {
-        armor: current_stats.armor - base_stats.armor,
-        health: current_stats.max_health - base_stats.health,
-        attack_damage: current_stats.attack_damage - base_stats.attack_damage,
-        magic_resist: current_stats.magic_resist - base_stats.magic_resist,
-        mana: current_stats.resource_max - base_stats.mana,
+        armor: value.armor - base_stats.armor,
+        health: value.max_health - base_stats.health,
+        attack_damage: value.attack_damage - base_stats.attack_damage,
+        magic_resist: value.magic_resist - base_stats.magic_resist,
+        mana: value.resource_max - base_stats.mana,
     }
 }
 

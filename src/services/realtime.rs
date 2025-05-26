@@ -124,15 +124,15 @@ pub fn realtime<'a>(
     let current_player = CurrentPlayer {
         champion_id: current_champion_id.clone(),
         team: &active_player_expanded.team,
+        bonus_stats: get_bonus_stats(&active_player.champion_stats, &current_player_base_stats),
         position: &active_player_expanded.position,
         champion_name: &active_player_expanded.champion_name,
-        current_stats: get_current_stats(&active_player.champion_stats),
         level: active_player_level,
         riot_id: &active_player.riot_id,
         damaging_abilities,
         damaging_items,
         damaging_runes,
-        bonus_stats: get_bonus_stats(&active_player.champion_stats, &current_player_base_stats),
+        current_stats: active_player.champion_stats.transform(),
         base_stats: current_player_base_stats,
     };
 
