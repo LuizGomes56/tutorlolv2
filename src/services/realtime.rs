@@ -235,3 +235,35 @@ pub fn realtime<'a>(
         ally_dragon_multipliers,
     })
 }
+
+pub(super) fn get_dragon_multipliers(
+    event_list: &[RealtimeEvent],
+    scoreboard: &[Scoreboard],
+    current_player_team: &str,
+) -> (DragonMultipliers, DragonMultipliers) {
+    let mut ally_team = DragonMultipliers::new();
+    let mut enemy_team = DragonMultipliers::new();
+
+    for event in event_list {
+        let (Some(killer), Some(dragon_type)) = (&event.killer_name, &event.dragon_type) else {
+            continue;
+        };
+        if let Some(player) = scoreboard
+            .iter()
+            .find(|p| &p.riot_id.split('#').next().unwrap_or_default() == killer)
+        {
+            let target = if player.team == current_player_team {
+                &mut ally_team
+            } else {
+                &mut enemy_team
+            };
+            match dragon_type.as_str() {
+                "Earth" => target.earth += EARTH_DRAGON_MULTIPLIER,
+                "Fire" => target.fire += FIRE_DRAGON_MULTIPLIER,
+                "Chemtech" => target.chemtech += CHEMTECH_DRAGON_MULTIPLIER,
+                _ => {}
+            }
+        }
+    }
+    (ally_team, enemy_team)
+}

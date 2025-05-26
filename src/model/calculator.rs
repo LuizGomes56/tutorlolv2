@@ -7,6 +7,7 @@ use serde_json::Value;
 
 use super::{
     base::{BasicStats, ComparedItem, Damages, RealResists, Stats},
+    realtime::DragonMultipliers,
     riot::RiotChampionStats,
 };
 
@@ -52,7 +53,8 @@ pub struct AbilitiesX {
 #[derive(Deserialize)]
 pub struct ActivePlayerX {
     pub champion_id: String,
-    pub champion_stats: RiotChampionStats,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub champion_stats: Option<RiotChampionStats>,
     pub abilities: AbilitiesX,
     pub items: Vec<usize>,
     pub runes: Vec<usize>,
@@ -72,4 +74,8 @@ pub struct EnemyPlayersX {
 pub struct GameX {
     pub active_player: ActivePlayerX,
     pub enemy_players: Vec<EnemyPlayersX>,
+    pub ally_dragon_multipliers: DragonMultipliers,
+    pub ally_earth_dragons: usize,
+    pub ally_fire_dragons: usize,
+    pub enemy_earth_dragons: usize,
 }

@@ -50,7 +50,7 @@ pub struct Enemy<'a> {
     pub real_resists: RealResists,
 }
 
-#[derive(Serialize)]
+#[derive(Deserialize, Serialize)]
 pub struct DragonMultipliers {
     pub earth: f64,
     pub fire: f64,

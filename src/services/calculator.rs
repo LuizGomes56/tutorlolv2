@@ -19,18 +19,15 @@ pub fn calculator<'a>(
     simulated_items: &'a Vec<usize>,
 ) -> Result<Calculator, String> {
     let active_player = &game.active_player;
-    let enemy_players = &game.enemy_players;
-
     let active_player_level = active_player.level;
 
-    // let (ally_dragon_multipliers, enemy_dragon_multipliers) = get_dragon_multipliers(
-    //     &game.events.events,
-    //     &scoreboard,
-    //     &active_player_expanded.team,
-    // );
+    let ally_dragon_multiplers = &DragonMultipliers {
+        earth: EARTH_DRAGON_MULTIPLIER * game.ally_earth_dragons as f64,
+        fire: FIRE_DRAGON_MULTIPLIER * game.ally_fire_dragons as f64,
+        chemtech: 1.0,
+    };
 
     let current_champion_id = &active_player.champion_id;
-
     let current_player_cache = cache.champions.get(current_champion_id).ok_or_else(|| {
         format!(
             "Champion {} not found on cache",
@@ -39,7 +36,6 @@ pub fn calculator<'a>(
     })?;
 
     let current_player_base_stats = get_base_stats(current_player_cache, active_player_level);
-
     let current_player_position = {
         let default_position = String::from("MIDDLE");
         current_player_cache
@@ -86,14 +82,19 @@ pub fn calculator<'a>(
     let attack_type = AttackType::from(current_player_cache.attack_type.as_str());
 
     let damaging_items = get_damaging_items(&cache.items, attack_type, &owned_items);
+    let active_player_champion_stats = if active_player.champion_stats.is_some() {
+        active_player.champion_stats.as_ref().unwrap()
+    } else {
+        &RiotChampionStats::default()
+    };
 
     let current_player = CurrentPlayerX {
-        current_stats: get_current_stats(&active_player.champion_stats),
+        current_stats: get_current_stats(active_player_champion_stats),
         level: active_player_level,
         damaging_abilities,
         damaging_items,
         damaging_runes,
-        bonus_stats: get_bonus_stats(&active_player.champion_stats, &current_player_base_stats),
+        bonus_stats: get_bonus_stats(active_player_champion_stats, &current_player_base_stats),
         base_stats: current_player_base_stats,
     };
 
@@ -104,20 +105,16 @@ pub fn calculator<'a>(
         &owned_items,
         &current_player.current_stats,
         &cache.items,
-        &DragonMultipliers {
-            earth: 1.0,
-            fire: 1.0,
-            chemtech: 1.0,
-        },
+        ally_dragon_multiplers,
         &mut compared_items_info,
     )?;
 
     let mut enemies = Vec::with_capacity(1 << 3);
     let mut best_item = (0usize, 0f64);
 
-    for player in enemy_players.into_iter() {
-        let player_champion_id = &player.champion_id;
-        let current_enemy_cache = &cache.champions.get(player_champion_id).ok_or_else(|| {
+    for player in game.enemy_players.iter() {
+        let player_champion_id = player.champion_id.clone();
+        let current_enemy_cache = &cache.champions.get(&player_champion_id).ok_or_else(|| {
             format!(
                 "ChampionID {} not found in champions cache",
                 player_champion_id.clone()
@@ -130,7 +127,7 @@ pub fn calculator<'a>(
             &cache.items,
             &enemy_base_stats,
             &enemy_items,
-            1.0,
+            EARTH_DRAGON_MULTIPLIER * game.enemy_earth_dragons as f64,
         ));
         let (damages, real_resists, bonus_stats) = calculate_enemy_state(
             &cache.items,
@@ -147,7 +144,7 @@ pub fn calculator<'a>(
             &simulated_champion_stats,
         );
         enemies.push(EnemyX {
-            champion_id: player_champion_id.clone(),
+            champion_id: player_champion_id,
             level: enemy_level,
             damages,
             real_resists,

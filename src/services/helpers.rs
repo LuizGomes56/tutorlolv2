@@ -17,6 +17,10 @@ use crate::model::{
 
 use super::eval::eval_math_expr;
 
+pub const EARTH_DRAGON_MULTIPLIER: f64 = 0.05;
+pub const FIRE_DRAGON_MULTIPLIER: f64 = 0.03;
+pub const CHEMTECH_DRAGON_MULTIPLIER: f64 = 0.06;
+
 pub(super) fn get_damaging_vec(map: &HashMap<usize, String>) -> Vec<usize> {
     map.iter().map(|(key, _)| *key).collect()
 }
@@ -208,38 +212,6 @@ pub(super) fn get_recommended_items<'a>(
         "SUPPORT" => Some(&recommendations.support),
         _ => None,
     }
-}
-
-pub(super) fn get_dragon_multipliers(
-    event_list: &[RealtimeEvent],
-    scoreboard: &[Scoreboard],
-    current_player_team: &str,
-) -> (DragonMultipliers, DragonMultipliers) {
-    let mut ally_team = DragonMultipliers::new();
-    let mut enemy_team = DragonMultipliers::new();
-
-    for event in event_list {
-        let (Some(killer), Some(dragon_type)) = (&event.killer_name, &event.dragon_type) else {
-            continue;
-        };
-        if let Some(player) = scoreboard
-            .iter()
-            .find(|p| &p.riot_id.split('#').next().unwrap_or_default() == killer)
-        {
-            let target = if player.team == current_player_team {
-                &mut ally_team
-            } else {
-                &mut enemy_team
-            };
-            match dragon_type.as_str() {
-                "Earth" => target.earth += 0.05,
-                "Fire" => target.fire += 0.03,
-                "Chemtech" => target.chemtech += 0.06,
-                _ => {}
-            }
-        }
-    }
-    (ally_team, enemy_team)
 }
 
 pub(super) fn simulate_champion_stats(

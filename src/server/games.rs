@@ -36,7 +36,11 @@ pub async fn calculator_handler(
     state: Data<AppState>,
     body: Json<CalculatorBody>,
 ) -> impl Responder {
-    match calculator(&state.cache, &body.game, &body.simulated_items) {
+    let CalculatorBody {
+        game,
+        simulated_items,
+    } = body.into_inner();
+    match calculator(&state.cache, &game, &simulated_items) {
         Ok(data) => HttpResponse::Ok().json(APIResponse {
             success: true,
             message: (),
