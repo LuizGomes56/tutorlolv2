@@ -1,14 +1,12 @@
-use std::{collections::HashMap, hash::Hash, sync::Arc};
+use std::{collections::HashMap, sync::Arc};
 
 use crate::model::{
     application::GlobalCache,
-    base::{AttackType, ComparedDamage, ComparedItem, Damages, SimulatedDamages, Stats},
-    calculator::{AbilitiesX, ActivePlayerX, Calculator, CurrentPlayerX, EnemyX, GameX},
-    champions::Champion,
+    base::{AttackType, ComparedItem},
+    calculator::{ActivePlayerX, Calculator, CurrentPlayerX, EnemyX, GameX},
     items::Item,
     realtime::*,
     riot::*,
-    runes::Rune,
 };
 
 use super::*;

@@ -1,6 +1,6 @@
 use actix_web::{
     Error, HttpResponse,
-    body::{BoxBody, EitherBody, MessageBody},
+    body::{BoxBody, EitherBody},
     dev::{ServiceRequest, ServiceResponse},
     middleware::Next,
     web::{Data, Json},

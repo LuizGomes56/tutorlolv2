@@ -1,5 +1,5 @@
 use super::helpers::{IterationTarget, get_from_pattern, get_passive_damage};
-use crate::model::champions::{Ability, CdnAbility, CdnChampion, Champion};
+use crate::model::champions::{Ability, CdnChampion, Champion};
 use std::collections::HashMap;
 
 pub mod aatrox;

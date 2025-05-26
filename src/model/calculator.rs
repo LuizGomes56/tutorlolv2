@@ -1,13 +1,9 @@
-#![allow(dead_code)]
-
 use std::collections::HashMap;
 
 use serde::{Deserialize, Serialize};
-use serde_json::Value;
 
 use super::{
     base::{BasicStats, ComparedItem, Damages, RealResists, Stats},
-    realtime::DragonMultipliers,
     riot::RiotChampionStats,
 };
 
@@ -78,7 +74,6 @@ pub struct EnemyPlayersX {
 pub struct GameX {
     pub active_player: ActivePlayerX,
     pub enemy_players: Vec<EnemyPlayersX>,
-    pub ally_dragon_multipliers: DragonMultipliers,
     pub ally_earth_dragons: usize,
     pub ally_fire_dragons: usize,
     pub enemy_earth_dragons: usize,

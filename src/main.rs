@@ -1,4 +1,5 @@
-#![allow(unused_imports)]
+#![allow(dead_code)]
+
 mod middlewares;
 mod model;
 mod server;
@@ -6,27 +7,24 @@ mod services;
 mod setup;
 
 use middlewares::password::password_middleware;
-use model::{application::GlobalCache, riot::RiotRealtime};
+use model::application::GlobalCache;
 use server::{
     games::{calculator_handler, realtime_handler},
     images::{download_arts, download_instances, download_items, download_runes},
+    internal::{
+        internal_append_prettified_item_stats, internal_generate_writer_files,
+        internal_identify_damaging_items, internal_replace_item_names_with_ids,
+    },
     update::{update_champions, update_items, update_meta_items, update_project, update_riot},
 };
 
 use actix_web::{
-    App, HttpServer,
-    dev::Service,
-    main,
+    App, HttpServer, main,
     middleware::from_fn,
-    scope,
-    web::{Data, Json, scope},
+    web::{Data, scope},
 };
 use dotenvy::dotenv;
-use services::realtime::realtime;
-use setup::update::{
-    append_prettified_item_stats, generate_writers, initialize_items, load_cache, read_from_file,
-    setup_champion_cache, update_riot_cache, write_to_file,
-};
+use setup::update::load_cache;
 use sqlx::{Pool, Postgres, postgres::PgPoolOptions};
 use std::{env, io::Result, sync::Arc};
 
@@ -36,12 +34,11 @@ pub struct AppState {
     password: String,
 }
 
-#[allow(unreachable_code)]
 #[main]
 async fn main() -> Result<()> {
     dotenv().ok();
 
-    let cache = Arc::new(load_cache().await);
+    let cache = Arc::new(load_cache());
     let dsn = env::var("DATABASE_URL").expect("DATABASE_URL is not set in the environment");
     let port = env::var("PORT").expect("PORT is not set in the environment");
     let host = format!("127.0.0.1:{}", port);
@@ -81,6 +78,14 @@ async fn main() -> Result<()> {
                             .service(download_items)
                             .service(download_arts)
                             .service(download_runes),
+                    )
+                    .service(
+                        scope("/internal")
+                            .wrap(from_fn(password_middleware))
+                            .service(internal_generate_writer_files)
+                            .service(internal_append_prettified_item_stats)
+                            .service(internal_identify_damaging_items)
+                            .service(internal_replace_item_names_with_ids),
                     ),
             )
     })

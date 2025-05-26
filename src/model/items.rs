@@ -1,5 +1,3 @@
-#![allow(dead_code)]
-
 use std::collections::HashMap;
 
 use serde::{Deserialize, Serialize};
@@ -19,11 +17,7 @@ pub struct Effect {
 #[serde(rename_all = "camelCase")]
 pub struct ItemsCdnStatsMap {
     pub flat: f64,
-    pub per_level: f64,
     pub percent: f64,
-    pub percent_base: f64,
-    pub percent_bonus: f64,
-    pub percent_per_level: f64,
 }
 
 #[derive(Deserialize)]

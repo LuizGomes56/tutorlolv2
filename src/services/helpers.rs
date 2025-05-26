@@ -10,8 +10,8 @@ use crate::model::{
     champions::Champion,
     internal::Positions,
     items::Item,
-    realtime::{CurrentPlayer, DragonMultipliers, Scoreboard},
-    riot::{RealtimeEvent, RiotAbilities, RiotChampionStats},
+    realtime::DragonMultipliers,
+    riot::RiotChampionStats,
     runes::Rune,
 };
 

@@ -1,5 +1,3 @@
-#![allow(dead_code)]
-
 use std::collections::HashMap;
 
 use serde::{Deserialize, Serialize};
@@ -58,7 +56,6 @@ pub struct CdnAbility {
     pub damage_type: Option<String>,
     pub effects: Vec<Effect>,
     pub name: String,
-    pub spell_effects: Option<String>,
 }
 
 impl CdnAbility {
@@ -89,7 +86,7 @@ pub struct Abilities {
 }
 
 impl Abilities {
-    pub fn iter(&self) -> impl Iterator<Item = (&'static str, &Vec<CdnAbility>)> {
+    pub fn into_iterator(&self) -> impl Iterator<Item = (&'static str, &Vec<CdnAbility>)> {
         [
             ("q", &self.q),
             ("w", &self.w),

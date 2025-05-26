@@ -1,15 +1,9 @@
 use super::schemas::APIResponse;
-use crate::{
-    AppState,
-    setup::update::{
-        get_meta_items, initialize_items, rewrite_champion_names, setup_champion_cache,
-        setup_folders, update_instances, update_riot_cache,
-    },
+use crate::setup::update::{
+    get_meta_items, initialize_items, rewrite_champion_names, setup_champion_cache, setup_folders,
+    update_instances, update_riot_cache,
 };
-use actix_web::{
-    HttpResponse, Responder, post,
-    web::{Data, Json},
-};
+use actix_web::{HttpResponse, Responder, post};
 
 #[post("/project")]
 pub async fn update_project() -> impl Responder {

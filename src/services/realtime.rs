@@ -1,13 +1,10 @@
-use std::{collections::HashMap, hash::Hash, sync::Arc};
+use std::{collections::HashMap, sync::Arc};
 
 use crate::model::{
     application::GlobalCache,
-    base::{AttackType, ComparedDamage, ComparedItem, Damages, SimulatedDamages, Stats},
-    champions::Champion,
-    items::Item,
+    base::{AttackType, ComparedItem},
     realtime::*,
     riot::*,
-    runes::Rune,
 };
 
 use super::*;

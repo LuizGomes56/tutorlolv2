@@ -1,5 +1,3 @@
-#![allow(dead_code)]
-
 use std::collections::HashMap;
 
 use serde::{Deserialize, Serialize};
@@ -31,7 +29,6 @@ pub struct RiotCdnInstance {
 pub struct RiotCdnRuneTree {
     pub icon: String,
     pub id: usize,
-    pub name: String,
 }
 
 #[derive(Deserialize)]
@@ -43,7 +40,6 @@ pub struct RiotCdnRuneSlot {
 pub struct RiotCdnRune {
     pub icon: String,
     pub id: usize,
-    pub name: String,
     pub slots: Vec<RiotCdnRuneSlot>,
 }
 
@@ -167,7 +163,6 @@ pub struct RiotRealtimeGameData {
 #[derive(Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct RealtimeEvent {
-    pub event_name: String,
     pub dragon_type: Option<String>,
     pub killer_name: Option<String>,
 }

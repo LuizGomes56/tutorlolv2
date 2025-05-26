@@ -1,12 +1,6 @@
-use std::env;
-
-use actix_web::{
-    HttpResponse, Responder, post,
-    web::{Data, Json},
-};
+use actix_web::{HttpResponse, Responder, post};
 
 use crate::{
-    AppState,
     server::schemas::APIResponse,
     setup::images::{
         img_download_arts, img_download_instances, img_download_items, img_download_runes,
