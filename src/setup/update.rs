@@ -11,6 +11,7 @@ use regex::Regex;
 use scraper::{Html, Selector};
 use serde::de::DeserializeOwned;
 use serde_json::Value;
+use std::env;
 use std::{
     collections::HashMap,
     fs,
@@ -28,13 +29,6 @@ use super::*;
 // decided to put it to remember me that I should not run this code without checking the outputs
 pub async unsafe fn generate_writers() {
     _generate_writer_files().await;
-}
-
-pub(super) fn extract_file_name(path: &Path) -> &str {
-    path.file_name()
-        .and_then(|os_str| os_str.to_str())
-        .map(|s| s.trim_end_matches(".json"))
-        .unwrap_or_default()
 }
 
 pub async fn load_cache() -> GlobalCache {
@@ -96,7 +90,7 @@ pub async fn load_cache() -> GlobalCache {
 
 // Helper function to fetch data from the CDN. ReturnTypes are not strongly typed.
 async fn fetch_cdn_api(path_name: &str) -> HashMap<String, Value> {
-    let url = std::env::var("CDN_ENDPOINT").expect("CDN_ENDPOINT is not set");
+    let url = env::var("CDN_ENDPOINT").expect("CDN_ENDPOINT is not set");
     let client = reqwest::Client::new();
 
     let res = client
@@ -113,9 +107,9 @@ async fn fetch_cdn_api(path_name: &str) -> HashMap<String, Value> {
 }
 
 async fn fetch_riot_api<T: DeserializeOwned>(path_name: &str) -> T {
-    let url = std::env::var("DD_DRAGON_ENDPOINT").expect("DD_DRAGON_ENDPOINT is not set");
-    let version = std::env::var("LOL_VERSION").expect("LOL_VERSION is not set");
-    let language = std::env::var("LOL_LANGUAGE").expect("LOL_LANGUAGE is not set");
+    let url = env::var("DD_DRAGON_ENDPOINT").expect("DD_DRAGON_ENDPOINT is not set");
+    let version = env::var("LOL_VERSION").expect("LOL_VERSION is not set");
+    let language = env::var("LOL_LANGUAGE").expect("LOL_LANGUAGE is not set");
     let client = reqwest::Client::new();
 
     let res = client
@@ -201,7 +195,7 @@ pub async fn get_meta_items() {
             let champion_name = name.to_lowercase().clone();
             let client = client_arc.clone();
             second_future.push(tokio::spawn(async move {
-                let endpoint = std::env::var("META_ENDPOINT").expect("META_ENDPOINT is not set");
+                let endpoint = env::var("META_ENDPOINT").expect("META_ENDPOINT is not set");
                 let url = format!("{}/{}/build/{}", endpoint, champion_name, position);
 
                 let res = client

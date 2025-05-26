@@ -19,11 +19,12 @@ use setup::update::{
     setup_champion_cache, update_riot_cache, write_to_file,
 };
 use sqlx::{Pool, Postgres, postgres::PgPoolOptions};
-use std::{io::Result, sync::Arc};
+use std::{env, io::Result, sync::Arc};
 
 pub struct AppState {
     db: Pool<Postgres>,
     cache: Arc<GlobalCache>,
+    password: String,
 }
 
 #[allow(unreachable_code)]
@@ -32,8 +33,8 @@ async fn main() -> Result<()> {
     dotenv().ok();
 
     let cache = Arc::new(load_cache().await);
-    let dsn = std::env::var("DATABASE_URL").expect("DATABASE_URL is not set in the environment");
-    let port = std::env::var("PORT").expect("PORT is not set in the environment");
+    let dsn = env::var("DATABASE_URL").expect("DATABASE_URL is not set in the environment");
+    let port = env::var("PORT").expect("PORT is not set in the environment");
     let host = format!("127.0.0.1:{}", port);
     let pool = PgPoolOptions::new()
         .max_connections(5)
@@ -46,6 +47,7 @@ async fn main() -> Result<()> {
             .app_data(Data::new(AppState {
                 db: pool.clone(),
                 cache: cache.clone(),
+                password: env::var("SYSTEM_PASSWORD").expect("SYSTEM_PASSWORD is not set"),
             }))
             .service(realtime_handler)
             .service(calculator_handler)

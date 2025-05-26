@@ -1,12 +1,12 @@
-use std::{collections::HashMap, fs};
+use std::{collections::HashMap, env, fs};
 
 use crate::model::riot::{RiotCdnChampion, RiotCdnRune};
 
 use super::{extract_file_name, read_from_file, write_to_file};
 
 fn get_base_uri() -> String {
-    let url = std::env::var("DD_DRAGON_ENDPOINT").expect("DD_DRAGON_ENDPOINT is not set");
-    let version = std::env::var("LOL_VERSION").expect("LOL_VERSION is not set");
+    let url = env::var("DD_DRAGON_ENDPOINT").expect("DD_DRAGON_ENDPOINT is not set");
+    let version = env::var("LOL_VERSION").expect("LOL_VERSION is not set");
 
     format!("{}/{}/img", url, version)
 }
@@ -81,7 +81,7 @@ pub async fn img_download_instances() {
 
 pub async fn img_download_arts() {
     let files = fs::read_dir("src/cache/riot/champions").unwrap();
-    let base_uri = std::env::var("DD_DRAGON_ENDPOINT").expect("DD_DRAGON_ENDPOINT is not set");
+    let base_uri = env::var("DD_DRAGON_ENDPOINT").expect("DD_DRAGON_ENDPOINT is not set");
     let client = reqwest::Client::new();
     for file in files {
         let path_buf = file.unwrap().path();
@@ -120,7 +120,7 @@ pub async fn img_download_runes() {
     let client = reqwest::Client::new();
     let mut rune_futures = Vec::new();
     let mut runes_map = HashMap::<usize, String>::new();
-    let endpoint = std::env::var("RIOT_IMAGE_ENDPOINT").expect("RIOT_IMAGE_ENDPOINT is not set");
+    let endpoint = env::var("RIOT_IMAGE_ENDPOINT").expect("RIOT_IMAGE_ENDPOINT is not set");
     for value in runes_data {
         runes_map.insert(value.id, value.icon);
         for slot in value.slots {

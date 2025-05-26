@@ -21,11 +21,11 @@ pub const EARTH_DRAGON_MULTIPLIER: f64 = 0.05;
 pub const FIRE_DRAGON_MULTIPLIER: f64 = 0.03;
 pub const CHEMTECH_DRAGON_MULTIPLIER: f64 = 0.06;
 
-pub(super) fn get_damaging_vec(map: &HashMap<usize, String>) -> Vec<usize> {
+pub fn get_damaging_vec(map: &HashMap<usize, String>) -> Vec<usize> {
     map.iter().map(|(key, _)| *key).collect()
 }
 
-pub(super) fn calculate_enemy_state<T: CurrentPlayerLike>(
+pub fn calculate_enemy_state<T: CurrentPlayerLike>(
     items_cache: &HashMap<usize, Item>,
     runes_cache: &HashMap<usize, Rune>,
     current_player_cache: &Champion,
@@ -126,7 +126,7 @@ pub(super) fn calculate_enemy_state<T: CurrentPlayerLike>(
     )
 }
 
-pub(super) fn get_simulated_champion_stats(
+pub fn get_simulated_champion_stats(
     simulated_items: &Vec<usize>,
     owned_items: &Vec<usize>,
     current_stats: &Stats,
@@ -165,7 +165,7 @@ pub(super) fn get_simulated_champion_stats(
         .collect()
 }
 
-pub(super) fn get_damaging_abilities(champion_cache: &Champion) -> HashMap<String, String> {
+pub fn get_damaging_abilities(champion_cache: &Champion) -> HashMap<String, String> {
     let mut damaging_abilities: HashMap<String, String> = champion_cache
         .abilities
         .iter()
@@ -181,7 +181,7 @@ pub(super) fn get_damaging_abilities(champion_cache: &Champion) -> HashMap<Strin
     damaging_abilities
 }
 
-pub(super) fn get_damaging_items(
+pub fn get_damaging_items(
     items_cache: &HashMap<usize, Item>,
     attack_type: AttackType,
     owned_items: &Vec<usize>,
@@ -200,7 +200,7 @@ pub(super) fn get_damaging_items(
         .collect()
 }
 
-pub(super) fn get_recommended_items<'a>(
+pub fn get_recommended_items<'a>(
     positon: &str,
     recommendations: &'a Positions,
 ) -> Option<&'a Vec<usize>> {
@@ -214,7 +214,7 @@ pub(super) fn get_recommended_items<'a>(
     }
 }
 
-pub(super) fn simulate_champion_stats(
+pub fn simulate_champion_stats(
     simulated_item_id: usize,
     simulated_item_cache: &Item,
     cloned_champion_stats: &mut Stats,
@@ -274,7 +274,7 @@ pub(super) fn simulate_champion_stats(
     cloned_champion_stats.magic_resist *= ally_dragon_multipliers.earth;
 }
 
-pub(super) fn get_items_damage(
+pub fn get_items_damage(
     items_cache: &HashMap<usize, Item>,
     stats: &FullStats,
     current_player_items_vec: &Vec<usize>,
@@ -330,7 +330,7 @@ pub(super) fn get_items_damage(
     item_damages
 }
 
-pub(super) fn get_runes_damage(
+pub fn get_runes_damage(
     runes_cache: &HashMap<usize, Rune>,
     stats: &FullStats,
     current_player_runes_vec: &Vec<usize>,
@@ -371,7 +371,7 @@ pub(super) fn get_runes_damage(
     rune_damages
 }
 
-pub(super) fn get_comparison_total_damage<T: Eq + Hash>(
+pub fn get_comparison_total_damage<T: Eq + Hash>(
     prev: &DamageLike<T>,
     next: &mut DamageLike<T>,
 ) -> f64 {
@@ -386,7 +386,7 @@ pub(super) fn get_comparison_total_damage<T: Eq + Hash>(
     sum
 }
 
-pub(super) fn get_comparison_damage_change<T>(total_damage: f64, prev: &DamageLike<T>) -> f64 {
+pub fn get_comparison_damage_change<T>(total_damage: f64, prev: &DamageLike<T>) -> f64 {
     total_damage
         - prev
             .iter()
@@ -394,7 +394,7 @@ pub(super) fn get_comparison_damage_change<T>(total_damage: f64, prev: &DamageLi
             .sum::<f64>()
 }
 
-pub(super) fn get_full_stats<'a, T: CurrentPlayerLike>(
+pub fn get_full_stats<'a, T: CurrentPlayerLike>(
     current_player: &'a T,
     current_stats: &'a Stats,
     enemy_state: (&'a BasicStats, &'a BasicStats),
@@ -459,7 +459,7 @@ pub(super) fn get_full_stats<'a, T: CurrentPlayerLike>(
     }
 }
 
-pub(super) fn get_damage_multipliers(full_stats: &FullStats, damage_type: &str) -> (f64, f64) {
+pub fn get_damage_multipliers(full_stats: &FullStats, damage_type: &str) -> (f64, f64) {
     let enemy_damage_multipliers = &full_stats.enemy_player.takes_extra_damage_from;
     let (enemy_debuff_multiplier, damage_reduction_multiplier, damage_increase_multiplier) =
         match damage_type {
@@ -505,7 +505,7 @@ pub(super) fn get_damage_multipliers(full_stats: &FullStats, damage_type: &str) 
     )
 }
 
-pub(super) fn get_abilities_damage(
+pub fn get_abilities_damage(
     current_player_cache: &Champion,
     full_stats: &FullStats,
     abilities: &AbilitiesX,
@@ -600,7 +600,7 @@ pub(super) fn get_abilities_damage(
     ability_damages
 }
 
-pub(super) fn replace_damage_keywords(stats: &FullStats, target_str: &str) -> String {
+pub fn replace_damage_keywords(stats: &FullStats, target_str: &str) -> String {
     let replacements = [
         ("CHOGATH_STACKS", 1.0),
         ("VEIGAR_STACKS", 1.0),
@@ -720,7 +720,7 @@ pub(super) fn replace_damage_keywords(stats: &FullStats, target_str: &str) -> St
         })
 }
 
-pub(super) fn get_current_stats(champion_stats: &RiotChampionStats) -> Stats {
+pub fn get_current_stats(champion_stats: &RiotChampionStats) -> Stats {
     Stats {
         ability_power: champion_stats.ability_power,
         armor: champion_stats.armor,
@@ -741,10 +741,7 @@ pub(super) fn get_current_stats(champion_stats: &RiotChampionStats) -> Stats {
     }
 }
 
-pub(super) fn get_bonus_stats(
-    current_stats: &RiotChampionStats,
-    base_stats: &BasicStats,
-) -> BasicStats {
+pub fn get_bonus_stats(current_stats: &RiotChampionStats, base_stats: &BasicStats) -> BasicStats {
     BasicStats {
         armor: current_stats.armor - base_stats.armor,
         health: current_stats.max_health - base_stats.health,
@@ -754,7 +751,7 @@ pub(super) fn get_bonus_stats(
     }
 }
 
-pub(super) fn get_base_stats(champion_cache: &Champion, level: usize) -> BasicStats {
+pub fn get_base_stats(champion_cache: &Champion, level: usize) -> BasicStats {
     let stat_formula = |base: f64, growth: f64, level: usize| {
         base + growth * (level as f64 - 1f64) * (0.7025 + 0.0175 * (level as f64 - 1f64))
     };
@@ -787,7 +784,7 @@ pub(super) fn get_base_stats(champion_cache: &Champion, level: usize) -> BasicSt
     }
 }
 
-pub(super) fn get_enemy_current_stats(
+pub fn get_enemy_current_stats(
     champion_cache: &HashMap<usize, Item>,
     base_stats: &BasicStats,
     current_items: &Vec<usize>,

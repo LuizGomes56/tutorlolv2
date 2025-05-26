@@ -1,7 +1,7 @@
 use crate::{model::{items::Item, riot::RiotCdnItem}, setup::extract_file_name};
 
 use super::{CdnAbility, CdnChampion, read_from_file, write_to_file};
-use std::{collections::HashMap, fs, sync::Arc};
+use std::{collections::HashMap, env, fs, sync::Arc};
 
 use regex::Regex;
 use scraper::{Html, Selector};
@@ -54,8 +54,8 @@ async fn _get_meta_items() {
     let mut final_map = _MetaItemValue::<usize>::new();
     let mut outer_future = Vec::new();
 
-    let endpoint = std::env::var("META_ENDPOINT").expect("META_ENDPOINT is not set");
-    let replacement_str = std::env::var("META_REPLACEMENT").expect("META_REPLACEMENT is not set");
+    let endpoint = env::var("META_ENDPOINT").expect("META_ENDPOINT is not set");
+    let replacement_str = env::var("META_REPLACEMENT").expect("META_REPLACEMENT is not set");
     let semaphore = Arc::new(tokio::sync::Semaphore::new(2));
 
     for (_, name) in champion_names {

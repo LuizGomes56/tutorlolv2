@@ -236,7 +236,7 @@ pub fn realtime<'a>(
     })
 }
 
-pub(super) fn get_dragon_multipliers(
+fn get_dragon_multipliers(
     event_list: &[RealtimeEvent],
     scoreboard: &[Scoreboard],
     current_player_team: &str,

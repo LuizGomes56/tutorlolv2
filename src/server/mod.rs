@@ -1,4 +1,4 @@
 pub mod games;
 pub mod images;
-pub mod schemas;
+mod schemas;
 pub mod update;

@@ -1,10 +1,17 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, path::Path};
 
 use regex::Regex;
 
 use crate::model::champions::Modifiers;
 
 use super::{Ability, CdnAbility, CdnChampion};
+
+pub fn extract_file_name(path: &Path) -> &str {
+    path.file_name()
+        .and_then(|os_str| os_str.to_str())
+        .map(|s| s.trim_end_matches(".json"))
+        .unwrap_or_default()
+}
 
 // Takes the reference of the description of one ability, the reference vector
 // where data will be written at, and adds the tuples of scalling found.
@@ -26,7 +33,7 @@ fn assign_scalings(description: &String, ref_vec: &mut Vec<String>) {
 // target_vec -> determines if final ocurrence will be written in Minimum or Maximum vector
 // keyname -> name of the key to be added in the map after final Vec<String> is created
 // map -> reference to the map created internally by the caller function. (Must be created)
-pub(super) fn get_passive_damage(
+pub fn get_passive_damage(
     data: &CdnChampion,
     indexes: (usize, usize),
     postfix: Option<&str>,
@@ -202,7 +209,7 @@ fn process_scaled_string(input: &str) -> String {
     }
 }
 
-pub(super) fn extract_damagelike_expr(input: &str) -> String {
+pub fn extract_damagelike_expr(input: &str) -> String {
     let re = Regex::new(r"\{\{as\|([^\}]+)\}\}").unwrap();
     let mut results = Vec::new();
     for cap in re.captures_iter(input) {
@@ -235,7 +242,7 @@ fn remove_parenthesized_additions(input: &str) -> String {
     re.replace_all(input, "").to_string()
 }
 
-pub(super) enum IterationTarget {
+pub enum IterationTarget {
     MINIMUM,
     MAXIMUM,
 }
@@ -244,7 +251,7 @@ type IteratorExtractor<'a> = HashMap<usize, HashMap<usize, (String, &'a Iteratio
 
 // Takes a pattern of [Index on Vec<Effect>], [Index on Vec<Leveling>], [(Keyname, Max/Min)]
 // And assigns to the map the correct format that will be used internally.
-pub(super) fn get_from_pattern(
+pub fn get_from_pattern(
     data: &CdnAbility,
     map: &mut HashMap<String, Ability>,
     pattern: &[(usize, usize, &str, IterationTarget)],
@@ -286,7 +293,7 @@ pub(super) fn get_from_pattern(
 }
 
 // Replaces common keys found in the API with the corresponding ones used internally
-pub(super) fn replace_keys(s: &str) -> String {
+pub fn replace_keys(s: &str) -> String {
     let replacements = [
         ("per 100", "0.01 *"),
         ("of damage dealt", "100.0"),
