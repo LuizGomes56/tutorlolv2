@@ -6,6 +6,7 @@ mod server;
 mod services;
 mod setup;
 
+use actix_files::Files;
 use middlewares::password::password_middleware;
 use model::application::GlobalCache;
 use server::{
@@ -55,6 +56,7 @@ async fn main() -> Result<()> {
                 cache: cache.clone(),
                 password: env::var("SYSTEM_PASSWORD").expect("SYSTEM_PASSWORD is not set"),
             }))
+            .service(Files::new("/cdn", "src/img"))
             .service(
                 scope("/api")
                     .service(
