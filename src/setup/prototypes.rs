@@ -1,6 +1,6 @@
-use crate::{model::{items::Item, riot::RiotCdnItem}, setup::extract_file_name};
+use crate::{model::{champions::{CdnAbility, CdnChampion}, items::Item, riot::RiotCdnItem}, setup::extract_file_name};
 
-use super::{CdnAbility, CdnChampion, read_from_file, write_to_file};
+use super::{read_from_file, write_to_file};
 use std::{collections::HashMap, env, fs, sync::Arc};
 
 use regex::Regex;

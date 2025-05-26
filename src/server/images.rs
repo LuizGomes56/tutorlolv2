@@ -7,25 +7,14 @@ use actix_web::{
 
 use crate::{
     AppState,
-    server::schemas::{APIResponse, AccessRequest},
+    server::schemas::APIResponse,
     setup::images::{
         img_download_arts, img_download_instances, img_download_items, img_download_runes,
     },
 };
 
-#[post("/api/images/instances")]
-pub async fn download_instances(
-    state: Data<AppState>,
-    body: Json<AccessRequest>,
-) -> impl Responder {
-    if body.password() != state.password {
-        return HttpResponse::Unauthorized().json(APIResponse {
-            success: false,
-            message: "Unauthorized".to_string(),
-            data: (),
-        });
-    }
-
+#[post("/instances")]
+pub async fn download_instances() -> impl Responder {
     img_download_instances().await;
 
     HttpResponse::Ok().json(APIResponse {
@@ -35,16 +24,8 @@ pub async fn download_instances(
     })
 }
 
-#[post("/api/images/items")]
-pub async fn download_items(state: Data<AppState>, body: Json<AccessRequest>) -> impl Responder {
-    if body.password() != state.password {
-        return HttpResponse::Unauthorized().json(APIResponse {
-            success: false,
-            message: "Unauthorized".to_string(),
-            data: (),
-        });
-    }
-
+#[post("/items")]
+pub async fn download_items() -> impl Responder {
     img_download_items().await;
 
     HttpResponse::Ok().json(APIResponse {
@@ -54,16 +35,8 @@ pub async fn download_items(state: Data<AppState>, body: Json<AccessRequest>) ->
     })
 }
 
-#[post("/api/images/runes")]
-pub async fn download_runes(state: Data<AppState>, body: Json<AccessRequest>) -> impl Responder {
-    if body.password() != state.password {
-        return HttpResponse::Unauthorized().json(APIResponse {
-            success: false,
-            message: "Unauthorized".to_string(),
-            data: (),
-        });
-    }
-
+#[post("/runes")]
+pub async fn download_runes() -> impl Responder {
     img_download_runes().await;
 
     HttpResponse::Ok().json(APIResponse {
@@ -73,16 +46,8 @@ pub async fn download_runes(state: Data<AppState>, body: Json<AccessRequest>) ->
     })
 }
 
-#[post("/api/images/arts")]
-pub async fn download_arts(state: Data<AppState>, body: Json<AccessRequest>) -> impl Responder {
-    if body.password() != state.password {
-        return HttpResponse::Unauthorized().json(APIResponse {
-            success: false,
-            message: "Unauthorized".to_string(),
-            data: (),
-        });
-    }
-
+#[post("/arts")]
+pub async fn download_arts() -> impl Responder {
     img_download_arts().await;
 
     HttpResponse::Ok().json(APIResponse {

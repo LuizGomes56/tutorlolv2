@@ -1,7 +1,7 @@
 #![allow(dead_code)]
 
 use crate::model::application::GlobalCache;
-use crate::model::champions::CdnChampion;
+use crate::model::champions::{CdnChampion, Champion};
 use crate::model::internal::MetaItems;
 use crate::model::items::{CdnItem, Effect, Item, PartialStats};
 use crate::model::realtime::DamageObject;

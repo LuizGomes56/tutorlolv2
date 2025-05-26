@@ -2,9 +2,7 @@ use std::{collections::HashMap, path::Path};
 
 use regex::Regex;
 
-use crate::model::champions::Modifiers;
-
-use super::{Ability, CdnAbility, CdnChampion};
+use crate::model::champions::{Ability, CdnAbility, CdnChampion, Modifiers};
 
 pub fn extract_file_name(path: &Path) -> &str {
     path.file_name()

@@ -1,17 +1,26 @@
 #![allow(unused_imports)]
+mod middlewares;
 mod model;
 mod server;
 mod services;
 mod setup;
 
+use middlewares::password::password_middleware;
 use model::{application::GlobalCache, riot::RiotRealtime};
 use server::{
     games::{calculator_handler, realtime_handler},
     images::{download_arts, download_instances, download_items, download_runes},
-    update::{setup_project, update_champions, update_items, update_meta_items, update_riot},
+    update::{update_champions, update_items, update_meta_items, update_project, update_riot},
 };
 
-use actix_web::{App, HttpServer, main, web::Data};
+use actix_web::{
+    App, HttpServer,
+    dev::Service,
+    main,
+    middleware::from_fn,
+    scope,
+    web::{Data, Json, scope},
+};
 use dotenvy::dotenv;
 use services::realtime::realtime;
 use setup::update::{
@@ -49,17 +58,31 @@ async fn main() -> Result<()> {
                 cache: cache.clone(),
                 password: env::var("SYSTEM_PASSWORD").expect("SYSTEM_PASSWORD is not set"),
             }))
-            .service(realtime_handler)
-            .service(calculator_handler)
-            .service(setup_project)
-            .service(update_riot)
-            .service(update_champions)
-            .service(update_items)
-            .service(update_meta_items)
-            .service(download_instances)
-            .service(download_items)
-            .service(download_arts)
-            .service(download_runes)
+            .service(
+                scope("/api")
+                    .service(
+                        scope("/games")
+                            .service(realtime_handler)
+                            .service(calculator_handler),
+                    )
+                    .service(
+                        scope("/update")
+                            .wrap(from_fn(password_middleware))
+                            .service(update_project)
+                            .service(update_riot)
+                            .service(update_champions)
+                            .service(update_items)
+                            .service(update_meta_items),
+                    )
+                    .service(
+                        scope("/images")
+                            .wrap(from_fn(password_middleware))
+                            .service(download_instances)
+                            .service(download_items)
+                            .service(download_arts)
+                            .service(download_runes),
+                    ),
+            )
     })
     .bind(host)
     .expect("Some error has ocurred when starting the server")

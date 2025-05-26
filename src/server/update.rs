@@ -1,7 +1,6 @@
 use super::schemas::APIResponse;
 use crate::{
     AppState,
-    server::schemas::AccessRequest,
     setup::update::{
         get_meta_items, initialize_items, rewrite_champion_names, setup_champion_cache,
         setup_folders, update_instances, update_riot_cache,
@@ -12,16 +11,8 @@ use actix_web::{
     web::{Data, Json},
 };
 
-#[post("/api/setup")]
-pub async fn setup_project(state: Data<AppState>, body: Json<AccessRequest>) -> impl Responder {
-    if body.password() != state.password {
-        return HttpResponse::Unauthorized().json(APIResponse {
-            success: false,
-            message: "Unauthorized".to_string(),
-            data: (),
-        });
-    }
-
+#[post("/project")]
+pub async fn update_project() -> impl Responder {
     setup_folders();
     setup_champion_cache();
     rewrite_champion_names();
@@ -33,16 +24,8 @@ pub async fn setup_project(state: Data<AppState>, body: Json<AccessRequest>) -> 
     })
 }
 
-#[post("/api/update/riot")]
-pub async fn update_riot(state: Data<AppState>, body: Json<AccessRequest>) -> impl Responder {
-    if body.password() != state.password {
-        return HttpResponse::Unauthorized().json(APIResponse {
-            success: false,
-            message: "Unauthorized".to_string(),
-            data: (),
-        });
-    }
-
+#[post("/riot")]
+pub async fn update_riot() -> impl Responder {
     update_riot_cache().await;
 
     HttpResponse::Ok().json(APIResponse {
@@ -52,16 +35,8 @@ pub async fn update_riot(state: Data<AppState>, body: Json<AccessRequest>) -> im
     })
 }
 
-#[post("/api/update/champions")]
-pub async fn update_champions(state: Data<AppState>, body: Json<AccessRequest>) -> impl Responder {
-    if body.password() != state.password {
-        return HttpResponse::Unauthorized().json(APIResponse {
-            success: false,
-            message: "Unauthorized".to_string(),
-            data: (),
-        });
-    }
-
+#[post("/champions")]
+pub async fn update_champions() -> impl Responder {
     update_instances("champions").await;
 
     HttpResponse::Ok().json(APIResponse {
@@ -71,16 +46,8 @@ pub async fn update_champions(state: Data<AppState>, body: Json<AccessRequest>) 
     })
 }
 
-#[post("/api/update/items")]
-pub async fn update_items(state: Data<AppState>, body: Json<AccessRequest>) -> impl Responder {
-    if body.password() != state.password {
-        return HttpResponse::Unauthorized().json(APIResponse {
-            success: false,
-            message: "Unauthorized".to_string(),
-            data: (),
-        });
-    }
-
+#[post("/items")]
+pub async fn update_items() -> impl Responder {
     update_instances("items").await;
 
     HttpResponse::Ok().json(APIResponse {
@@ -90,16 +57,8 @@ pub async fn update_items(state: Data<AppState>, body: Json<AccessRequest>) -> i
     })
 }
 
-#[post("/api/update/meta_items")]
-pub async fn update_meta_items(state: Data<AppState>, body: Json<AccessRequest>) -> impl Responder {
-    if body.password() != state.password {
-        return HttpResponse::Unauthorized().json(APIResponse {
-            success: false,
-            message: "Unauthorized".to_string(),
-            data: (),
-        });
-    }
-
+#[post("/meta_items")]
+pub async fn update_meta_items() -> impl Responder {
     get_meta_items().await;
 
     HttpResponse::Ok().json(APIResponse {

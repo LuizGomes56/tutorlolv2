@@ -31,7 +31,7 @@ struct CalculatorBody {
     simulated_items: Vec<usize>,
 }
 
-#[post("/api/calculator")]
+#[post("/calculator")]
 pub async fn calculator_handler(
     state: Data<AppState>,
     body: Json<CalculatorBody>,
@@ -54,7 +54,7 @@ pub async fn calculator_handler(
     }
 }
 
-#[post("/api/realtime")]
+#[post("/realtime")]
 pub async fn realtime_handler(state: Data<AppState>, body: Json<RealtimeBody>) -> impl Responder {
     match sqlx::query_as::<_, RealtimeResponse>(
         "SELECT g.game_id, g.summoner_name, 
