@@ -31,6 +31,14 @@ fn apply_auto_stats(
             stats.max_health += stacks * scallings[r_ability_level]
         }
         "Sion" => stats.max_health += stacks,
+        "Darius" => {
+            stats.armor_penetration_percent += 15.0 + 5.0 * active_player.abilities.e as f64
+        }
+        "Pantheon" => stats.armor_penetration_percent += 10.0 * active_player.abilities.r as f64,
+        "Nilah" => stats.armor_penetration_percent += stats.crit_chance / 3.0,
+        "Mordekaiser" => {
+            stats.magic_penetration_percent += 2.5 + 2.5 * active_player.abilities.e as f64
+        }
         _ => {}
     }
 
@@ -73,7 +81,7 @@ pub fn calculator<'a>(
     let active_player = &game.active_player;
     let active_player_level = active_player.level;
 
-    let ally_dragon_multiplers = &DragonMultipliers {
+    let ally_dragon_multipliers = &DragonMultipliers {
         earth: EARTH_DRAGON_MULTIPLIER * game.ally_earth_dragons as f64,
         fire: FIRE_DRAGON_MULTIPLIER * game.ally_fire_dragons as f64,
         chemtech: 1.0,
@@ -158,7 +166,7 @@ pub fn calculator<'a>(
         &owned_items,
         &current_player.current_stats,
         &cache.items,
-        ally_dragon_multiplers,
+        ally_dragon_multipliers,
         &mut compared_items_info,
     )?;
 
