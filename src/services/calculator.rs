@@ -154,6 +154,7 @@ pub fn calculator<'a>(
         damaging_items,
         damaging_runes,
         base_stats: current_player_base_stats,
+        champion_id: active_player.champion_id.clone(),
     };
 
     let mut compared_items_info = HashMap::<usize, ComparedItem>::new();

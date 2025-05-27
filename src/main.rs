@@ -6,6 +6,7 @@ mod server;
 mod services;
 mod setup;
 
+use actix_cors::Cors;
 use actix_files::Files;
 use middlewares::password::password_middleware;
 use model::application::GlobalCache;
@@ -20,7 +21,7 @@ use server::{
 };
 
 use actix_web::{
-    App, HttpServer, main,
+    App, HttpServer, http, main,
     middleware::from_fn,
     web::{Data, scope},
 };
@@ -50,7 +51,17 @@ async fn main() -> Result<()> {
         .expect("Error when trying to connect to the database");
 
     HttpServer::new(move || {
+        let cors = Cors::default()
+            .allowed_origin("http://localhost:8080")
+            .allowed_methods(vec!["GET", "POST"])
+            .allowed_headers(vec![
+                http::header::AUTHORIZATION,
+                http::header::CONTENT_TYPE,
+            ])
+            .max_age(3600);
+
         App::new()
+            .wrap(cors)
             .app_data(Data::new(AppState {
                 db: pool.clone(),
                 cache: cache.clone(),

@@ -6,6 +6,7 @@ use super::base::{BasicStats, ComparedItem, Damages, RealResists, Stats};
 
 #[derive(Serialize)]
 pub struct CurrentPlayerX {
+    pub champion_id: String,
     pub damaging_abilities: HashMap<String, String>,
     pub damaging_items: HashMap<usize, String>,
     pub damaging_runes: HashMap<usize, String>,
