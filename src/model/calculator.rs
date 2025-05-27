@@ -48,14 +48,12 @@ pub struct AbilitiesX {
 #[derive(Deserialize)]
 pub struct ActivePlayerX {
     pub champion_id: String,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub champion_stats: Option<Stats>,
+    pub champion_stats: Stats,
     pub abilities: AbilitiesX,
     pub items: Vec<usize>,
     pub runes: Vec<usize>,
     pub level: usize,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub stacks: Option<usize>,
+    pub stacks: usize,
 }
 
 #[derive(Deserialize)]
@@ -63,10 +61,8 @@ pub struct EnemyPlayersX {
     pub champion_id: String,
     pub items: Vec<usize>,
     pub level: usize,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub stats: Option<BasicStats>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub stacks: Option<usize>,
+    pub stats: BasicStats,
+    pub stacks: usize,
 }
 
 #[derive(Deserialize)]

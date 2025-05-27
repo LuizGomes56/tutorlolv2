@@ -10,15 +10,7 @@ use actix_cors::Cors;
 use actix_files::Files;
 use middlewares::password::password_middleware;
 use model::application::GlobalCache;
-use server::{
-    games::{calculator_handler, realtime_handler},
-    images::{download_arts, download_instances, download_items, download_runes},
-    internal::{
-        internal_append_prettified_item_stats, internal_generate_writer_files,
-        internal_identify_damaging_items, internal_replace_item_names_with_ids,
-    },
-    update::{update_champions, update_items, update_meta_items, update_project, update_riot},
-};
+use server::{games::*, images::*, internal::*, statics::*, update::*};
 
 use actix_web::{
     App, HttpServer, http, main,
@@ -52,7 +44,8 @@ async fn main() -> Result<()> {
 
     HttpServer::new(move || {
         let cors = Cors::default()
-            .allowed_origin("http://localhost:8080")
+            .allow_any_origin()
+            // .allowed_origin("http://localhost:8080")
             .allowed_methods(vec!["GET", "POST"])
             .allowed_headers(vec![
                 http::header::AUTHORIZATION,
@@ -74,6 +67,12 @@ async fn main() -> Result<()> {
                         scope("/games")
                             .service(realtime_handler)
                             .service(calculator_handler),
+                    )
+                    .service(
+                        scope("/static")
+                            .service(static_champions)
+                            .service(static_items)
+                            .service(static_runes),
                     )
                     .service(
                         scope("/update")

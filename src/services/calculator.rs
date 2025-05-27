@@ -15,7 +15,7 @@ fn apply_auto_stats(
     items_cache: &HashMap<usize, Item>,
 ) -> Result<Stats, String> {
     let mut stats = Stats::default();
-    let stacks = active_player.stacks.unwrap_or_default() as f64;
+    let stacks = active_player.stacks as f64;
 
     match active_player.champion_id.as_str() {
         "Veigar" => stats.ability_power += stacks,
@@ -140,11 +140,8 @@ pub fn calculator<'a>(
 
     let damaging_items = get_damaging_items(&cache.items, attack_type, &owned_items);
 
-    let active_player_champion_stats = if active_player.champion_stats.is_some() {
-        active_player.champion_stats.clone().unwrap()
-    } else {
-        apply_auto_stats(active_player, &cache.items)?
-    };
+    let active_player_champion_stats = active_player.champion_stats.clone();
+    // apply_auto_stats(active_player, &cache.items)?
 
     let current_player = CurrentPlayerX {
         bonus_stats: get_bonus_stats(&active_player_champion_stats, &current_player_base_stats),
@@ -183,12 +180,15 @@ pub fn calculator<'a>(
         let enemy_level = player.level;
         let enemy_base_stats = get_base_stats(current_enemy_cache, enemy_level);
         let enemy_items = &player.items;
-        let enemy_current_stats = player.stats.clone().unwrap_or(get_enemy_current_stats(
-            &cache.items,
-            &enemy_base_stats,
-            &enemy_items,
-            EARTH_DRAGON_MULTIPLIER * game.enemy_earth_dragons as f64,
-        ));
+        let enemy_current_stats = player.stats.clone();
+        /*
+            get_enemy_current_stats(
+                &cache.items,
+                &enemy_base_stats,
+                &enemy_items,
+                EARTH_DRAGON_MULTIPLIER * game.enemy_earth_dragons as f64,
+            )
+        */
         let (damages, real_resists, bonus_stats) = calculate_enemy_state(
             &cache.items,
             &cache.runes,
