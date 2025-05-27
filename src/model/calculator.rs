@@ -18,6 +18,7 @@ pub struct CurrentPlayerX {
 
 #[derive(Serialize)]
 pub struct EnemyX {
+    pub champion_name: String,
     pub champion_id: String,
     pub level: usize,
     pub damages: Damages,

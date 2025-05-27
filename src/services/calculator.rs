@@ -179,6 +179,7 @@ pub fn calculator<'a>(
                 player_champion_id.clone()
             )
         })?;
+        let champion_name = current_enemy_cache.name.clone();
         let enemy_level = player.level;
         let enemy_base_stats = get_base_stats(current_enemy_cache, enemy_level);
         let enemy_items = &player.items;
@@ -203,6 +204,7 @@ pub fn calculator<'a>(
             &simulated_champion_stats,
         );
         enemies.push(EnemyX {
+            champion_name,
             champion_id: player_champion_id,
             level: enemy_level,
             damages,
