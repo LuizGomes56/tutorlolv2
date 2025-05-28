@@ -6,7 +6,12 @@ use crate::{AppState, server::schemas::APIResponse};
 
 #[get("/champions")]
 pub async fn static_champions(state: Data<AppState>) -> impl Responder {
-    let data = state.cache.champion_names.clone();
+    let data = state
+        .cache
+        .champion_names
+        .iter()
+        .map(|(k, v)| (v.clone(), k.clone()))
+        .collect::<HashMap<String, String>>();
     HttpResponse::Ok().json(APIResponse {
         success: true,
         message: (),

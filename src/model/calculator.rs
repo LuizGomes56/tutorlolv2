@@ -62,7 +62,6 @@ pub struct EnemyPlayersX {
     pub items: Vec<usize>,
     pub level: usize,
     pub stats: BasicStats,
-    pub stacks: usize,
 }
 
 #[derive(Deserialize)]
