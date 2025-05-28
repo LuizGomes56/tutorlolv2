@@ -10,7 +10,7 @@ use actix_cors::Cors;
 use actix_files::Files;
 use middlewares::password::password_middleware;
 use model::application::GlobalCache;
-use server::{games::*, images::*, internal::*, statics::*, update::*};
+use server::{games::*, images::*, internal::*, setup::*, statics::*, update::*};
 
 use actix_web::{
     App, HttpServer, http, main,
@@ -75,9 +75,15 @@ async fn main() -> Result<()> {
                             .service(static_runes),
                     )
                     .service(
+                        scope("/setup")
+                            .wrap(from_fn(password_middleware))
+                            .service(setup_champions)
+                            .service(setup_folders)
+                            .service(setup_project),
+                    )
+                    .service(
                         scope("/update")
                             .wrap(from_fn(password_middleware))
-                            .service(update_project)
                             .service(update_riot)
                             .service(update_champions)
                             .service(update_items)

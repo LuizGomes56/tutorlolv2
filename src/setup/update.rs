@@ -298,7 +298,7 @@ pub async fn update_instances(instance: &str) {
 
 // Creates basic folders necessary to run the program. If one of these folders are not found,
 // The program is likely to panic when an update is called.
-pub fn setup_folders() {
+pub fn setup_project_folders() {
     for dir in &[
         "src/img",
         "src/img/champions",
@@ -336,7 +336,7 @@ pub fn write_to_file(path_name: &str, bytes: &[u8]) {
 
 // Helper to read from files and parse the value to a struct
 pub fn read_from_file<T: DeserializeOwned>(path_name: &str) -> T {
-    let data = fs::read_to_string(path_name).expect("Unable to read file");
+    let data = fs::read_to_string(path_name).expect(&format!("Unable to read file: {}", path_name));
     serde_json::from_str(&data).expect("Failed to parse JSON")
 }
 
