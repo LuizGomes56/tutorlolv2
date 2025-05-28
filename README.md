@@ -43,46 +43,71 @@ Versões públicas (protótipos, com resultados pouco confiáveis):
 - <b style="color:rgb(255, 170, 182)">RUST:</b> **~210 microssegundos por cálculo**. 
 - <b style="color:rgb(255, 170, 182)">JS:</b> **~19 millissegundos por cálculo**
 
----
+## Benchmark de resposta do servidor
 
-### 🧪 Aprendizado e Técnicas
+### 1 milhão de respostas síncronas
 
-- Otimização de alocação e uso de referências (`&T` vs `T`)
-- Implementação de `traits`, `impl`, métodos e padrão idiomático Rust
-- Evitar cópias desnecessárias (`clone`)
-- Concorrência real com `tokio`, `Arc`, `Mutex`
+**TypeScript**: 1202 segundos (832 req/s)
 
----
 
-## 📋 Requisitos do Aplicativo
+**Rust**: 775 segundos (1290 req/s)
 
-- ✅ Calcular o **dano individual** de cada:
-  - habilidade, item, runa, trait
-- 🔄 Mostrar a **diferença antes/depois** de aplicar um item
-- 📚 Permitir **acúmulo de dano** por fonte
-- 💡 *Recursos opcionais*:
+- 1.55x de diferença de velocidade no momento
 
-<table>
-  <tr><td>🩸</td><td>Calcular <b>ganho de vida</b> por roubo de vida</td></tr>
-  <tr><td>⏱️</td><td>Estimar <b>tempo de combate</b></td></tr>
-  <tr><td>📊</td><td>Determinar <b>quem está ganhando</b></td></tr>
-  <tr><td>💥</td><td>Calcular <b>DPS objetivo</b></td></tr>
-  <tr><td>🛍️</td><td>Sugerir <b>melhor item</b> para o momento</td></tr>
-  <tr><td>📈</td><td>Avaliar <b>valor percentual</b> de cada item</td></tr>
-  <tr><td>🐉</td><td>Identificar impacto de um <b>dragão</b> no jogo</td></tr>
-  <tr><td style="color:orange;">🆕</td><td><b>Estimar dano do inimigo</b> contra o jogador</td></tr>
-  <tr><td style="color:orange;">🆕</td><td><b>Simular lutas</b> para prever o provável vencedor</td></tr>
-</table>
+
+### Async (64 goroutines), 1024 requests
+
+**TypeScript**: 1.21 segundos (846 req/s)
+
+
+**Rust**: 0.21 segundos (4947 req/s)
+
+### Uso de recursos
+
+**TypeScript**: (11% - 21%) CPU, (465MB - 600MB) RAM
+
+
+**Rust**: (11% - 15%) CPU, (4MB - 6MB) RAM
+
+- Rust usou aproximadamente 1% da memória usada pelo TypeScript
+- Uso de CPU similar, porém mais estável
+
+### Falhas usando 512 goroutines, 1 << 16 requests
+
+**TypeScript**: 92.6% de falha
+
+
+**Rust**: 0.9% de falha
+
+- As requisições para o servidor Rust-Actix falharam apenas no começo. 
+Após as primeiras 512 requisições, o servidor Rust terminou as tarefas significativamente mais devagar,
+com média de 200 req/s, demonstrando a degradação do servidor, mas ainda sendo capaz de enviar respostas.
+- O TypeScript não foi capaz de gerenciar mais que 100 requisições ao mesmo tempo, virtualmente ignorando
+todas que estiverem fora de suas capacidades
 
 ---
 
 ## Status atual
 
+- [X] Atualização e setup automáticos
+- [ ] Definição da estrutura do JSON para cada personagem (3 de 172)
+- [ ] Definição para atualização automática dos itens (0 de 315)
+- [ ] Tratamento de itens e campeões que são excessão
+- [ ] Construção de funcionalidades novas (0 de 5)
+- [ ] Configurar SEO
+- [ ] Configurar o servidor para manter o projeto rodando
+- [ ] Proteção contra panics (Não iniciado)
 - [x] Estrutura de projeto em Rust
 - [x] Monitoramento do meta de forma automatizada
 - [x] Sistema de cache automatizado
+- [ ] Otimização e simplificaçao do código
 - [x] Calculo básico de itens, habilidades e runas
 - [ ] Avaliação de itens e builds
-- [ ] WASM
+- [X] WASM (Setup frontend)
+- [-] Sobreposição no jogo (overlay)
+- [X] Todas as features disponíveis no projeto TypeScript concluídas
+- [ ] Cálculos confiáveis
+- [ ] Benchmark de diferença de performance entre todas as aplicações
+- [ ] Integração do frontend com o App Windows (Tauri)
 
 ---

@@ -71,6 +71,8 @@ pub async fn generate_writer_files() {
 }
 
 pub fn load_cache() -> GlobalCache {
+    println!("load_cache: started loading champion_files");
+
     let champion_files: Vec<PathBuf> = fs::read_dir("src/internal/champions")
         .expect("Failed to read champions")
         .map(|e| e.unwrap().path())
@@ -79,10 +81,15 @@ pub fn load_cache() -> GlobalCache {
     let champion_names =
         read_from_file::<HashMap<String, String>>("src/internal/champion_names.json");
 
+    println!("load_cache: started loading item_files");
+
     let item_files: Vec<PathBuf> = fs::read_dir("src/internal/items")
         .expect("Failed to read items")
         .map(|e| e.unwrap().path())
         .collect();
+
+
+    println!("load_cache: started loading meta_items");
 
     let meta_items = read_from_file::<MetaItems>("src/internal/meta_items.json");
 
@@ -104,6 +111,8 @@ pub fn load_cache() -> GlobalCache {
             }
         }
     }
+
+    println!("load_cache: started loading runes");
 
     let runes = read_from_file::<HashMap<usize, Rune>>("src/internal/runes.json");
 
@@ -129,11 +138,14 @@ pub fn load_cache() -> GlobalCache {
 
 // Helper function to fetch data from the CDN. ReturnTypes are not strongly typed.
 async fn fetch_cdn_api(path_name: &str) -> HashMap<String, Value> {
-    let url = env::var("CDN_ENDPOINT").expect("CDN_ENDPOINT is not set");
+    let uri = env::var("CDN_ENDPOINT").expect("CDN_ENDPOINT is not set");
     let client = reqwest::Client::new();
+    let url = &format!("{}/{}", uri.trim_end_matches('/'), path_name);
+
+    println!("fetch_cdn_api: {}", url);
 
     let res = client
-        .get(&format!("{}/{}", url.trim_end_matches('/'), path_name))
+        .get(url)
         .send()
         .await
         .expect("Failed to send request");
@@ -146,19 +158,22 @@ async fn fetch_cdn_api(path_name: &str) -> HashMap<String, Value> {
 }
 
 async fn fetch_riot_api<T: DeserializeOwned>(path_name: &str) -> T {
-    let url = env::var("DD_DRAGON_ENDPOINT").expect("DD_DRAGON_ENDPOINT is not set");
+    let uri = env::var("DD_DRAGON_ENDPOINT").expect("DD_DRAGON_ENDPOINT is not set");
     let version = env::var("LOL_VERSION").expect("LOL_VERSION is not set");
     let language = env::var("LOL_LANGUAGE").expect("LOL_LANGUAGE is not set");
     let client = reqwest::Client::new();
-
-    let res = client
-        .get(&format!(
+    let url =&format!(
             "{}/{}/data/{}/{}.json",
-            url.trim_end_matches('/'),
+            uri.trim_end_matches('/'),
             version,
             language,
             path_name
-        ))
+        );  
+
+    println!("fetch_riot_api: {}", url);
+
+    let res = client
+        .get(url)
         .send()
         .await
         .expect("Failed to send request");
@@ -333,12 +348,16 @@ pub fn setup_project_folders() {
 
 // Helper function to write files
 pub fn write_to_file(path_name: &str, bytes: &[u8]) {
+    println!("write_to_file: {}", path_name);
+
     let mut file = std::fs::File::create(path_name).expect("Unable to create file");
     file.write_all(bytes).expect("Unable to write data");
 }
 
 // Helper to read from files and parse the value to a struct
 pub fn read_from_file<T: DeserializeOwned>(path_name: &str) -> T {
+    println!("read_from_file: {}", path_name);
+    
     let data = fs::read_to_string(path_name).expect(&format!("Unable to read file: {}", path_name));
     serde_json::from_str(&data).expect("Failed to parse JSON")
 }
