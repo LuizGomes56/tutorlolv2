@@ -5,6 +5,7 @@ mod model;
 mod server;
 mod services;
 mod setup;
+mod writers;
 
 use actix_cors::Cors;
 use actix_files::Files;

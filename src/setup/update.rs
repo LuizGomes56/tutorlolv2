@@ -40,7 +40,7 @@ pub async fn generate_writer_files() {
 
     for (_, champion_id) in champion_names {
         futures.push(tokio::spawn(async move {
-            let path_name = format!("src/setup/writers/{}.rs", champion_id.to_lowercase());
+            let path_name = format!("src/writers/{}.rs", champion_id.to_lowercase());
             if let Ok(data) = fs::read_to_string(&path_name) {
                 if data.get(0..25).map_or(false, |s| s.contains("#![mark_checked]")) {
                     return;
@@ -299,7 +299,8 @@ pub async fn update_instances(instance: &str) {
 // Creates basic folders necessary to run the program. If one of these folders are not found,
 // The program is likely to panic when an update is called.
 pub fn setup_project_folders() {
-    for dir in &[
+    for dir in [
+        "src",
         "src/img",
         "src/img/champions",
         "src/img/runes",
@@ -307,6 +308,8 @@ pub fn setup_project_folders() {
         "src/img/splash",
         "src/img/abilities",
         "src/img/items",
+        "src/img/other",
+        "src/img/stats",
         "src/cache",
         "src/cache/cdn",
         "src/cache/cdn/champions",
@@ -317,7 +320,7 @@ pub fn setup_project_folders() {
         "src/internal",
         "src/internal/items",
         "src/internal/champions",
-        "src/internal/runes",
+        "src/writers",
     ] {
         let path = Path::new(dir);
         if !path.exists() {
