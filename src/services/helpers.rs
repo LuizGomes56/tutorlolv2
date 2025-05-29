@@ -70,20 +70,14 @@ pub fn calculate_enemy_state<T: CurrentPlayerLike>(
                 &simulated_full_stats,
                 &current_player_runes_vec,
             );
-            let total_abilities_damage = get_comparison_total_damage(
+            let (total_abilities_damage, change_abilities_damage) = get_comparison_total_damage(
                 &normal_abilities_damage,
                 &mut simulated_ability_damage,
             );
-            let total_items_damage =
+            let (total_items_damage, change_items_damage) =
                 get_comparison_total_damage(&normal_items_damage, &mut simulated_item_damage);
-            let total_runes_damage =
+            let (total_runes_damage, change_runes_damage) =
                 get_comparison_total_damage(&normal_runes_damage, &mut simulated_rune_damage);
-            let change_abilities_damage =
-                get_comparison_damage_change(total_abilities_damage, &normal_abilities_damage);
-            let change_items_damage =
-                get_comparison_damage_change(total_items_damage, &normal_items_damage);
-            let change_runes_damage =
-                get_comparison_damage_change(total_runes_damage, &normal_runes_damage);
             let total_compared_damage =
                 total_abilities_damage + total_items_damage + total_runes_damage;
             if total_compared_damage > best_item.1 {
@@ -372,7 +366,7 @@ pub fn get_runes_damage(
 pub fn get_comparison_total_damage<T: Eq + Hash>(
     prev: &DamageLike<T>,
     next: &mut DamageLike<T>,
-) -> f64 {
+) -> (f64, f64) {
     let mut sum = 0f64;
     for (key, val) in next.iter_mut() {
         sum += val.minimum_damage + val.maximum_damage;
@@ -381,15 +375,13 @@ pub fn get_comparison_total_damage<T: Eq + Hash>(
             val.max_dmg_change = Some(val.maximum_damage - prev_val.maximum_damage);
         }
     }
-    sum
-}
-
-pub fn get_comparison_damage_change<T>(total_damage: f64, prev: &DamageLike<T>) -> f64 {
-    total_damage
-        - prev
+    (
+        sum,
+        sum - prev
             .iter()
             .map(|(_, value)| value.maximum_damage + value.minimum_damage)
-            .sum::<f64>()
+            .sum::<f64>(),
+    )
 }
 
 pub fn get_full_stats<'a, T: CurrentPlayerLike>(
@@ -509,7 +501,14 @@ pub fn get_abilities_damage(
     abilities: &AbilitiesX,
 ) -> DamageLike<String> {
     let mut ability_damages = DamageLike::<String>::new();
-    for (keyname, ability) in &current_player_cache.abilities {
+    for (keyname, ability) in current_player_cache
+        .abilities
+        .iter()
+        .filter_map(|(key, val)| {
+            (!key.contains("MONSTER") && !key.contains("MINION"))
+                .then(|| (key.clone(), val.clone()))
+        })
+    {
         let first_char = keyname.chars().next().unwrap_or_default();
         let indexation = match first_char {
             'P' => full_stats.current_player.level,
