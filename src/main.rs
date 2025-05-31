@@ -11,7 +11,7 @@ use actix_cors::Cors;
 use actix_files::Files;
 use middlewares::password::password_middleware;
 use model::application::GlobalCache;
-use server::{games::*, images::*, internal::*, setup::*, statics::*, update::*};
+use server::{formulas::*, games::*, images::*, internal::*, setup::*, statics::*, update::*};
 
 use actix_web::{
     App, HttpServer, http, main,
@@ -75,6 +75,7 @@ async fn main() -> Result<()> {
                             .service(static_items)
                             .service(static_runes),
                     )
+                    .service(scope("/formulas").service(formulas_champions))
                     .service(
                         scope("/setup")
                             .wrap(from_fn(password_middleware))

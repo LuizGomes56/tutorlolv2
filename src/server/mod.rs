@@ -1,3 +1,4 @@
+pub mod formulas;
 pub mod games;
 pub mod images;
 pub mod internal;
