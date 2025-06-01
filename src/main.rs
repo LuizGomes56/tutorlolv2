@@ -9,7 +9,7 @@ mod writers;
 
 use actix_cors::Cors;
 use actix_files::Files;
-use middlewares::password::password_middleware;
+use middlewares::{logger::logger_middleware, password::password_middleware};
 use model::application::GlobalCache;
 use server::{formulas::*, games::*, images::*, internal::*, setup::*, statics::*, update::*};
 
@@ -64,6 +64,7 @@ async fn main() -> Result<()> {
             .service(Files::new("/cdn", "src/img"))
             .service(
                 scope("/api")
+                    .wrap(from_fn(logger_middleware))
                     .service(
                         scope("/games")
                             .service(realtime_handler)
