@@ -73,22 +73,31 @@ pub async fn realtime_handler(state: Data<AppState>, body: Json<RealtimeBody>) -
                 serde_json::from_str(&val.game).expect("Failed to parse game data");
 
             match realtime(&state.cache, &game, &body.simulated_items) {
-                Ok(data) => HttpResponse::Ok().json(APIResponse {
-                    success: true,
-                    message: (),
-                    data,
-                }),
-                Err(e) => HttpResponse::InternalServerError().json(APIResponse {
-                    success: false,
-                    message: e,
-                    data: (),
-                }),
+                Ok(data) => {
+                    println!("Success on realtime response");
+                    HttpResponse::Ok().json(APIResponse {
+                        success: true,
+                        message: (),
+                        data,
+                    })
+                }
+                Err(e) => {
+                    println!("Error on realtime response: {:#?}", e);
+                    HttpResponse::InternalServerError().json(APIResponse {
+                        success: false,
+                        message: e,
+                        data: (),
+                    })
+                }
             }
         }
-        Err(e) => HttpResponse::NotFound().json(APIResponse {
-            success: false,
-            message: "No registers were found in the database.".to_string(),
-            data: e.to_string(),
-        }),
+        Err(e) => {
+            println!("Error on realtime database query response: {:#?}", e);
+            HttpResponse::NotFound().json(APIResponse {
+                success: false,
+                message: "No registers were found in the database.".to_string(),
+                data: e.to_string(),
+            })
+        }
     }
 }
