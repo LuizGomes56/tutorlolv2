@@ -70,6 +70,9 @@ fn apply_auto_stats(
     Ok(stats)
 }
 
+// #![warn] Comparison tool is not working;
+// #![warn] Stats are not being assigned correctly
+// #![warn] Untreated item/champion exceptions
 pub fn calculator<'a>(
     cache: &'a Arc<GlobalCache>,
     game: &'a GameX,

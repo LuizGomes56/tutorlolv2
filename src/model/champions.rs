@@ -6,9 +6,7 @@ use serde::{Deserialize, Serialize};
 #[serde(rename_all = "camelCase")]
 pub struct ChampionCdnStatsMap {
     pub flat: f64,
-    pub percent: f64,
     pub per_level: f64,
-    pub percent_per_level: f64,
 }
 
 #[derive(Serialize, Deserialize)]

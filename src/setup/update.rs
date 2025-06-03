@@ -25,7 +25,7 @@ type MetaItemValue<T> = HashMap<String, HashMap<String, Vec<T>>>;
 
 // Files will be generated automatically, but checked manually until it is confirmed that the desired
 // format was succesfully generated. Once it is done, it will be added a comment to the header to
-// prevent the generator from editing that file. "#![mark_stable]".
+// prevent the generator from editing that file. "#![stable]".
 pub async fn generate_writer_files() {
     let champion_names =
         read_from_file::<HashMap<String, String>>("src/internal/champion_names.json");
@@ -42,7 +42,7 @@ pub async fn generate_writer_files() {
         futures.push(tokio::spawn(async move {
             let path_name = format!("src/writers/{}.rs", champion_id.to_lowercase());
             if let Ok(data) = fs::read_to_string(&path_name) {
-                if data.get(0..260).map_or(false, |s| s.contains("#![mark_stable]")) {
+                if data.contains("#![stable]") {
                     return;
                 }
             }
@@ -706,7 +706,7 @@ fn generate_champion_file(path_name: &str) {
     };
 
     if !champion.is_none() {
-        let bytes = serde_json::to_string(&champion).unwrap();
+        let bytes = serde_json::to_string_pretty(&champion).unwrap();
 
         write_to_file(
             &format!("src/internal/champions/{}.json", name),
