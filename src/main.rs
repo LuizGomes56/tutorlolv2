@@ -68,7 +68,9 @@ async fn main() -> Result<()> {
                     .service(
                         scope("/games")
                             .service(realtime_handler)
-                            .service(calculator_handler),
+                            .service(calculator_handler)
+                            .service(create_game_handler)
+                            .service(get_by_code_handler),
                     )
                     .service(
                         scope("/static")
