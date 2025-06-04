@@ -51,7 +51,7 @@ pub async fn img_download_instances() {
                 let inner_base_uri = outer_base_uri.clone();
                 let inner_client = outer_client.clone();
                 inner_futures.push(tokio::spawn(async move {
-                    let label_vec = vec!["Q", "W", "E", "R"];
+                    let label_vec = ["Q", "W", "E", "R"];
                     let url = format!("{}/spell/{}", inner_base_uri, spell.image.full);
                     let spell_dir = "src/img/abilities";
                     let file_name = format!(

@@ -16,12 +16,15 @@ use server::{formulas::*, games::*, images::*, internal::*, setup::*, statics::*
 use actix_web::{
     App, HttpServer, http, main,
     middleware::from_fn,
-    web::{Data, scope},
+    mime,
+    web::{Data, JsonConfig, scope},
 };
 use dotenvy::dotenv;
 use setup::update::load_cache;
 use sqlx::{Pool, Postgres, postgres::PgPoolOptions};
 use std::{env, io::Result, sync::Arc};
+
+use crate::middlewares::error::json_error_middleware;
 
 pub struct AppState {
     db: Pool<Postgres>,
@@ -47,20 +50,24 @@ async fn main() -> Result<()> {
         let cors = Cors::default()
             .allow_any_origin()
             // .allowed_origin("http://localhost:8080")
-            .allowed_methods(vec!["GET", "POST"])
-            .allowed_headers(vec![
-                http::header::AUTHORIZATION,
-                http::header::CONTENT_TYPE,
-            ])
+            .allowed_methods(["GET", "POST"])
+            .allowed_headers([http::header::AUTHORIZATION, http::header::CONTENT_TYPE])
             .max_age(3600);
 
         App::new()
             .wrap(cors)
-            .app_data(Data::new(AppState {
-                db: pool.clone(),
-                cache: cache.clone(),
-                password: env::var("SYSTEM_PASSWORD").expect("SYSTEM_PASSWORD is not set"),
-            }))
+            .app_data({
+                Data::new(AppState {
+                    db: pool.clone(),
+                    cache: cache.clone(),
+                    password: env::var("SYSTEM_PASSWORD").expect("SYSTEM_PASSWORD is not set"),
+                })
+            })
+            .app_data(
+                JsonConfig::default()
+                    .content_type(|mime| mime == mime::APPLICATION_JSON)
+                    .error_handler(json_error_middleware),
+            )
             .service(Files::new("/cdn", "src/img"))
             .service(
                 scope("/api")
