@@ -54,16 +54,14 @@ pub fn realtime<'a>(
         .ok_or_else(|| {
             format!(
                 "Champion name {} does not have a matching ID in champion_names cache",
-                active_player_expanded.champion_name.clone()
+                &active_player_expanded.champion_name
             )
         })?;
 
-    let current_player_cache = cache.champions.get(current_champion_id).ok_or_else(|| {
-        format!(
-            "Champion {} not found on cache",
-            current_champion_id.clone()
-        )
-    })?;
+    let current_player_cache = cache
+        .champions
+        .get(current_champion_id)
+        .ok_or_else(|| format!("Champion {} not found on cache", &current_champion_id))?;
 
     let current_player_base_stats = get_base_stats(current_player_cache, active_player_level);
 
@@ -82,7 +80,7 @@ pub fn realtime<'a>(
         cache.meta_items.get(current_champion_id).ok_or_else(|| {
             format!(
                 "Champion {} not found when trying to access meta_items",
-                current_champion_id.clone()
+                &current_champion_id
             )
         })?;
 
@@ -158,7 +156,7 @@ pub fn realtime<'a>(
                 .ok_or_else(|| {
                     format!(
                         "Champion {} does not have a matching ID in champion_names cache",
-                        player.champion_name.clone()
+                        &player.champion_name
                     )
                 })?;
         scoreboard
@@ -171,7 +169,7 @@ pub fn realtime<'a>(
                 &cache.champions.get(player_champion_id).ok_or_else(|| {
                     format!(
                         "ChampionID {} not found in champions cache",
-                        player_champion_id.clone()
+                        &player_champion_id
                     )
                 })?;
             let enemy_level = player.level;

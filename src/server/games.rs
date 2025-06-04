@@ -12,10 +12,6 @@ use sqlx::prelude::FromRow;
 
 #[derive(Serialize, FromRow)]
 struct RealtimeResponse {
-    game_id: String,
-    summoner_name: String,
-    game_code: String,
-    champion_name: Option<String>,
     game: String,
 }
 
@@ -58,8 +54,7 @@ pub async fn calculator_handler(
 pub async fn realtime_handler(state: Data<AppState>, body: Json<RealtimeBody>) -> impl Responder {
     match sqlx::query_as::<_, RealtimeResponse>(
         "SELECT g.game_id, g.summoner_name, 
-        g.game_code, g.champion_name, 
-        gd.game_data as game FROM games g
+        g.game_code, gd.game_data as game FROM games g
         JOIN game_data gd ON g.game_id = gd.game_id
         WHERE game_code = $1
         ORDER BY game_time DESC LIMIT 1",

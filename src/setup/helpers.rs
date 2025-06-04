@@ -31,12 +31,12 @@ fn assign_scalings(description: &String, ref_vec: &mut Vec<String>) {
 // target_vec -> determines if final ocurrence will be written in Minimum or Maximum vector
 // keyname -> name of the key to be added in the map after final Vec<String> is created
 // map -> reference to the map created internally by the caller function. (Must be created)
-pub fn get_passive_damage(
+pub fn extract_passive_damage(
     data: &CdnChampion,
     indexes: (usize, usize),
     postfix: Option<&str>,
     scalings: Option<usize>,
-    target_vec: &IterationTarget,
+    target_vec: &Target,
     keyname: &str,
     map: &mut HashMap<String, Ability>,
 ) {
@@ -52,11 +52,11 @@ pub fn get_passive_damage(
     }
 
     match target_vec {
-        IterationTarget::MINIMUM => {
+        Target::MINIMUM => {
             minimum_damage = assign_as_linear_range(passive_bounds, 18, postfix);
             assign_scalings(&description, &mut minimum_damage);
         }
-        IterationTarget::MAXIMUM => {
+        Target::MAXIMUM => {
             maximum_damage = assign_as_linear_range(passive_bounds, 18, postfix);
             assign_scalings(&description, &mut minimum_damage);
         }
@@ -240,19 +240,19 @@ fn remove_parenthesized_additions(input: &str) -> String {
     re.replace_all(input, "").to_string()
 }
 
-pub enum IterationTarget {
+pub enum Target {
     MINIMUM,
     MAXIMUM,
 }
 
-type IteratorExtractor<'a> = HashMap<usize, HashMap<usize, (String, &'a IterationTarget)>>;
+type IteratorExtractor<'a> = HashMap<usize, HashMap<usize, (String, &'a Target)>>;
 
 // Takes a pattern of [Index on Vec<Effect>], [Index on Vec<Leveling>], [(Keyname, Max/Min)]
 // And assigns to the map the correct format that will be used internally.
-pub fn get_from_pattern(
+pub fn extract_ability_damage(
     data: &CdnAbility,
     map: &mut HashMap<String, Ability>,
-    pattern: &[(usize, usize, &str, IterationTarget)],
+    pattern: &[(usize, usize, &str, Target)],
 ) {
     let mut indexes: IteratorExtractor = HashMap::new();
 
@@ -273,8 +273,8 @@ pub fn get_from_pattern(
                     let modifiers = &level_entry.modifiers;
 
                     match target_vector {
-                        IterationTarget::MINIMUM => extract_ability(modifiers, &mut minimum_damage),
-                        IterationTarget::MAXIMUM => extract_ability(modifiers, &mut maximum_damage),
+                        Target::MINIMUM => extract_ability(modifiers, &mut minimum_damage),
+                        Target::MAXIMUM => extract_ability(modifiers, &mut maximum_damage),
                     }
 
                     map.insert(keyname, data.format(minimum_damage, maximum_damage));
