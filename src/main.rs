@@ -68,7 +68,7 @@ async fn main() -> Result<()> {
                     .content_type(|mime| mime == mime::APPLICATION_JSON)
                     .error_handler(json_error_middleware),
             )
-            .service(Files::new("/cdn", "src/img"))
+            .service(Files::new("/cdn", "img"))
             .service(
                 scope("/api")
                     .wrap(from_fn(logger_middleware))

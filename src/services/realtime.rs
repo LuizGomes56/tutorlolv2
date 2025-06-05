@@ -12,8 +12,21 @@ use super::*;
 pub fn realtime<'a>(
     cache: &'a Arc<GlobalCache>,
     game: &'a RiotRealtime,
+    // #![hint] Find the best item possible instead of the best one in the array specified
+    // _: &'a Vec<usize>,
     simulated_items: &'a Vec<usize>,
 ) -> Result<Realtime<'a>, String> {
+    // #![todo] Filter legendary items that are available to be purchased according to [game][game_data][map_number]
+    // #![warn] Calculating every item in the game is too expensive. Normally, it takes 200ns to run this function
+    // #![warn] If this option is enabled, the average time of execution rises up to 10ms
+    // #![size] JSON size rises from 6KB to 572KB average, making the server use too much memory, like NodeJS
+    // #![test] Benchmarking with this option led to nearly 8 times more memory usage, and 1.5 times CPU usage
+    // let simulated_items = &cache
+    //     .items
+    //     .iter()
+    //     .map(|(item_id, _)| item_id.clone())
+    //     .collect::<Vec<usize>>();
+
     let game_time = game.game_data.game_time;
     let map_number = game.game_data.map_number;
 

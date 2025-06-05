@@ -12,7 +12,7 @@ fn get_base_uri() -> String {
 }
 
 pub async fn img_download_instances() {
-    let files = fs::read_dir("src/cache/riot/champions").unwrap();
+    let files = fs::read_dir("cache/riot/champions").unwrap();
     let base_uri = get_base_uri();
     let client = reqwest::Client::new();
     let mut outer_futures = Vec::new();
@@ -29,7 +29,7 @@ pub async fn img_download_instances() {
                 format!("{}/champion/{}", outer_base_uri, outer_result.image.full);
             let champion_response = outer_client.get(&champion_icon_url).send().await.unwrap();
             let champion_bytes = champion_response.bytes().await.unwrap();
-            let champion_dir = "src/img/champions";
+            let champion_dir = "img/champions";
             let champion_file_name = format!("{}.png", outer_result.id);
             write_to_file(
                 &format!("{}/{}", champion_dir, &champion_file_name),
@@ -43,7 +43,7 @@ pub async fn img_download_instances() {
             let passive_bytes = passive_response.bytes().await.unwrap();
             let passive_file_name = format!("{}P.png", outer_result.id);
             write_to_file(
-                &format!("src/img/abilities/{}", &passive_file_name),
+                &format!("img/abilities/{}", &passive_file_name),
                 &passive_bytes,
             );
             for (index, spell) in spells.into_iter().enumerate() {
@@ -53,7 +53,7 @@ pub async fn img_download_instances() {
                 inner_futures.push(tokio::spawn(async move {
                     let label_vec = ["Q", "W", "E", "R"];
                     let url = format!("{}/spell/{}", inner_base_uri, spell.image.full);
-                    let spell_dir = "src/img/abilities";
+                    let spell_dir = "img/abilities";
                     let file_name = format!(
                         "{}{}.png",
                         &inner_id,
@@ -80,7 +80,7 @@ pub async fn img_download_instances() {
 }
 
 pub async fn img_download_arts() {
-    let files = fs::read_dir("src/cache/riot/champions").unwrap();
+    let files = fs::read_dir("cache/riot/champions").unwrap();
     let base_uri = env::var("DD_DRAGON_ENDPOINT").expect("DD_DRAGON_ENDPOINT is not set");
     let client = reqwest::Client::new();
     for file in files {
@@ -101,7 +101,7 @@ pub async fn img_download_arts() {
                         "{}/img/champion/{}/{}_{}.jpg",
                         inner_base_uri, label, inner_id, &skin_number
                     );
-                    let label_dir = format!("src/img/{}", label);
+                    let label_dir = format!("img/{}", label);
                     let file_name = format!("{}_{}.jpg", &inner_id, &skin_number);
                     let label_response = inner_client.get(&url).send().await.unwrap();
                     let label_bytes = label_response.bytes().await.unwrap();
@@ -116,7 +116,7 @@ pub async fn img_download_arts() {
 }
 
 pub async fn img_download_runes() {
-    let runes_data = read_from_file::<Vec<RiotCdnRune>>("src/cache/riot/runes.json");
+    let runes_data = read_from_file::<Vec<RiotCdnRune>>("cache/riot/runes.json");
     let client = reqwest::Client::new();
     let mut rune_futures = Vec::new();
     let mut runes_map = HashMap::<usize, String>::new();
@@ -136,7 +136,7 @@ pub async fn img_download_runes() {
         rune_futures.push(tokio::spawn(async move {
             let rune_response = cloned_client.get(&url).send().await.unwrap();
             let rune_bytes = rune_response.bytes().await.unwrap();
-            write_to_file(&format!("src/img/runes/{}", file_name), &rune_bytes);
+            write_to_file(&format!("img/runes/{}", file_name), &rune_bytes);
         }));
     }
     for rune_future in rune_futures {
@@ -145,7 +145,7 @@ pub async fn img_download_runes() {
 }
 
 pub async fn img_download_items() {
-    let files = fs::read_dir("src/cache/riot/items").unwrap();
+    let files = fs::read_dir("cache/riot/items").unwrap();
     let base_uri = get_base_uri();
     let client = reqwest::Client::new();
     let mut item_futures = Vec::new();
@@ -158,7 +158,7 @@ pub async fn img_download_items() {
             let item_icon_url = format!("{}/item/{}.png", cloned_base_uri, item_id);
             let item_response = cloned_client.get(&item_icon_url).send().await.unwrap();
             let item_bytes = item_response.bytes().await.unwrap();
-            let item_dir = "src/img/items";
+            let item_dir = "img/items";
             let item_file_name = format!("{}.png", item_id);
             write_to_file(&format!("{}/{}", item_dir, item_file_name), &item_bytes);
         }));

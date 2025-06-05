@@ -7,4 +7,6 @@ cache
 writers
 img
 *.json
+*.sh
+*.js
 **/formulas.rs
