@@ -12,7 +12,7 @@ codegen-units = 1
 panic = "abort"
 strip = true
 debug = false
-incremental = true
+incremental = false
 
 [dependencies]
 actix-web = "4.11.0"

@@ -10,3 +10,4 @@ img
 *.sh
 *.js
 **/formulas.rs
+formulas

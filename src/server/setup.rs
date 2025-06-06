@@ -1,5 +1,6 @@
 use actix_web::{HttpResponse, Responder, post};
 
+#[allow(unused_imports)]
 use crate::{
     server::schemas::APIResponse,
     setup::{
@@ -20,10 +21,11 @@ pub async fn setup_project() -> impl Responder {
     setup_project_folders();
 
     tokio::spawn(async move {
-        let (_, _, _, _, _) = tokio::join!(
+        let (_, _, _, _) = tokio::join!(
             tokio::spawn(update_riot_cache()),
             tokio::spawn(update_instances("champions")),
-            tokio::spawn(generate_writer_files()),
+            // #![warn] Development only
+            // tokio::spawn(generate_writer_files()),
             tokio::spawn(update_instances("items")),
             tokio::spawn(get_meta_items()),
         );
@@ -45,8 +47,8 @@ pub async fn setup_project() -> impl Responder {
 
     HttpResponse::Ok().json(APIResponse {
         success: true,
-        message: "Project complete setup started".to_string(),
-        data: (),
+        message: "Project setup started. Expected time to complete: 3-5 minutes",
+        data: "Using 9 green threads",
     })
 }
 
@@ -55,7 +57,7 @@ pub async fn setup_folders() -> impl Responder {
     setup_project_folders();
     HttpResponse::Ok().json(APIResponse {
         success: true,
-        message: "Folders are ready".to_string(),
+        message: "Folders are ready",
         data: (),
     })
 }
@@ -63,10 +65,9 @@ pub async fn setup_folders() -> impl Responder {
 #[post("/champions")]
 pub async fn setup_champions() -> impl Responder {
     setup_champion_cache();
-
     HttpResponse::Ok().json(APIResponse {
         success: true,
-        message: "Champions are ready".to_string(),
+        message: "Champions are ready",
         data: (),
     })
 }

@@ -27,6 +27,10 @@ pub async fn img_download_instances() {
             let mut inner_futures = Vec::new();
             let champion_icon_url =
                 format!("{}/champion/{}", outer_base_uri, outer_result.image.full);
+            println!(
+                "fn[img_download_instances]: [champion] {}",
+                &champion_icon_url
+            );
             let champion_response = outer_client.get(&champion_icon_url).send().await.unwrap();
             let champion_bytes = champion_response.bytes().await.unwrap();
             let champion_dir = "img/champions";
@@ -38,6 +42,10 @@ pub async fn img_download_instances() {
             let passive_icon_url = format!(
                 "{}/passive/{}",
                 outer_base_uri, outer_result.passive.image.full
+            );
+            println!(
+                "fn[img_download_instances]: [passive] {}",
+                &passive_icon_url
             );
             let passive_response = outer_client.get(&passive_icon_url).send().await.unwrap();
             let passive_bytes = passive_response.bytes().await.unwrap();
@@ -61,6 +69,7 @@ pub async fn img_download_instances() {
                             .get(index)
                             .unwrap_or(&format!("_Error_{}", index).as_str())
                     );
+                    println!("fn[img_download_instances]: [spell] {}", &url);
                     let spell_response = inner_client.get(&url).send().await.unwrap();
                     let spell_bytes = spell_response.bytes().await.unwrap();
                     write_to_file(
@@ -103,6 +112,7 @@ pub async fn img_download_arts() {
                     );
                     let label_dir = format!("img/{}", label);
                     let file_name = format!("{}_{}.jpg", &inner_id, &skin_number);
+                    println!("fn[img_download_arts]: {}", &url);
                     let label_response = inner_client.get(&url).send().await.unwrap();
                     let label_bytes = label_response.bytes().await.unwrap();
                     write_to_file(&format!("{}/{}", label_dir, &file_name), &label_bytes);
@@ -134,6 +144,7 @@ pub async fn img_download_runes() {
         let file_name = format!("{}.png", rune_id);
         let cloned_client = client.clone();
         rune_futures.push(tokio::spawn(async move {
+            println!("fn[img_download_runes]: {}", &url);
             let rune_response = cloned_client.get(&url).send().await.unwrap();
             let rune_bytes = rune_response.bytes().await.unwrap();
             write_to_file(&format!("img/runes/{}", file_name), &rune_bytes);
@@ -156,6 +167,7 @@ pub async fn img_download_items() {
             let path_buf = file.unwrap().path();
             let item_id = extract_file_name(&path_buf);
             let item_icon_url = format!("{}/item/{}.png", cloned_base_uri, item_id);
+            println!("fn[img_download_items]: {}", &item_icon_url);
             let item_response = cloned_client.get(&item_icon_url).send().await.unwrap();
             let item_bytes = item_response.bytes().await.unwrap();
             let item_dir = "img/items";

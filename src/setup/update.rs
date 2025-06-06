@@ -315,7 +315,7 @@ pub async fn update_instances(instance: &str) {
 // The program is likely to panic when an update is called.
 pub fn setup_project_folders() {
     for dir in [
-        "src/writers",
+        "formulas",
         "img",
         "img/champions",
         "img/runes",
@@ -369,11 +369,9 @@ pub fn setup_champion_cache() {
     for file in files {
         let path_name = file.unwrap().path();
         task::spawn_blocking(move || {
-            generate_champion_file(
-                path_name
-                    .to_str()
-                    .expect("Failed to convert path to string"),
-            );
+            let strpath = path_name.to_str().expect("Failed to convert path to string at [setup_champion_cache]");
+            println!("fn[setup_champion_cache]: {}", strpath);
+            generate_champion_file(strpath);
         });
     }
 }
@@ -381,6 +379,7 @@ pub fn setup_champion_cache() {
 // Not meant to be used frequently. Just a quick check for every
 // patch to identify if a new damaging item was added
 pub fn identify_damaging_items() {
+    println!("fn[identify_damaging_items]");
     let contains_damage_outside_template = |text: &str| -> bool {
         let re = Regex::new(r"\{\{[^}]*\}\}").unwrap();
         let cleaned = re.replace_all(text, "");
@@ -427,6 +426,7 @@ pub fn identify_damaging_items() {
 // Replaces the content found in the files to a shorter and adapted version,
 // initializes items as default, and Damaging stats must be added separately.
 pub fn initialize_items() {
+    println!("fn[initialize_items]");
     let non_zero = |val: f64| -> Option<f64> { if val == 0.0 { None } else { Some(val) } };
 
     let files =
@@ -435,6 +435,9 @@ pub fn initialize_items() {
         task::spawn_blocking(move || {
             let path_buf = file.unwrap().path();
             let path_name = path_buf.to_str().unwrap();
+
+            println!("fn[initialize_items]: [initializing] {}", path_name);
+
             let cdn_item = read_from_file::<CdnItem>(path_name);
 
             let stats = &cdn_item.stats;
@@ -504,6 +507,7 @@ pub fn initialize_items() {
 
 // Uses champion display name and converts to their respective ids, saving to internal
 pub fn rewrite_champion_names() {
+    println!("fn[rewrite_champion_names]");
     let files = fs::read_dir("cache/cdn/champions")
         .expect("Unable to read directory cache/cdn/champions");
 
@@ -715,6 +719,7 @@ fn generate_champion_file(path_name: &str) {
 }
 
 pub async fn append_prettified_item_stats() {
+    println!("fn[append_prettified_item_stats]");
     let files =
         fs::read_dir("cache/riot/items").expect("Unable to read directory cache/cdn/items");
 
@@ -742,6 +747,7 @@ pub async fn append_prettified_item_stats() {
 }
 
 pub fn replace_item_names_with_ids() {
+    println!("fn[replace_item_names_with_ids]");
     let mut meta_items = read_from_file::<MetaItemValue<Value>>("internal/meta_items.json");
     let items_folder = fs::read_dir("internal/items").expect("Failed to read items folder");
 

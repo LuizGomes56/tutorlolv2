@@ -20,7 +20,7 @@ struct CreateGameResponse {
 
 #[get("/create")]
 pub async fn create_game_handler(state: Data<AppState>) -> impl Responder {
-    let game_code = random_range(100_000..999_999);
+    let game_code = random_range(100_000..1_000_000);
     let game_id = Uuid::new_v4().to_string();
     match sqlx::query("INSERT INTO games (game_id, game_code) VALUES ($1, $2)")
         .bind(&game_id)
