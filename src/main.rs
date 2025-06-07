@@ -16,7 +16,7 @@ use server::{formulas::*, games::*, images::*, internal::*, setup::*, statics::*
 use actix_web::{
     App, HttpServer, http, main,
     middleware::from_fn,
-    mime,
+    mime::{self, Mime},
     web::{Data, JsonConfig, scope},
 };
 use dotenvy::dotenv;
@@ -36,19 +36,19 @@ pub struct AppState {
 async fn main() -> Result<()> {
     dotenv().ok();
 
-    let cache = Arc::new(load_cache());
-    let dsn = env::var("DATABASE_URL").expect("DATABASE_URL is not set in the environment");
-    let port = env::var("PORT").expect("PORT is not set in the environment");
-    let host = format!("127.0.0.1:{}", port);
-    let pool = PgPoolOptions::new()
+    let cache: Arc<GlobalCache> = Arc::new(load_cache());
+    let dsn: String = env::var("DATABASE_URL").expect("DATABASE_URL is not set in the environment");
+    let host: String = env::var("HOST").expect("HOST is not set in the environment");
+    let pool: Pool<Postgres> = PgPoolOptions::new()
         .max_connections(5)
         .connect(&dsn)
         .await
-        .expect("Error when trying to connect to the database");
+        .expect("Error while attempting to connect to the database");
 
     HttpServer::new(move || {
-        let cors = Cors::default()
+        let cors: Cors = Cors::default()
             .allow_any_origin()
+            // #![todo] Allow only frontend to send requests to this server.
             // .allowed_origin("http://localhost:8080")
             .allowed_methods(["GET", "POST"])
             .allowed_headers([http::header::AUTHORIZATION, http::header::CONTENT_TYPE])
@@ -65,7 +65,7 @@ async fn main() -> Result<()> {
             })
             .app_data(
                 JsonConfig::default()
-                    .content_type(|mime| mime == mime::APPLICATION_JSON)
+                    .content_type(|mime: Mime| mime == mime::APPLICATION_JSON)
                     .error_handler(json_error_middleware),
             )
             .service(Files::new("/cdn", "img"))

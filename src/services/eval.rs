@@ -6,6 +6,10 @@ enum Token {
     RParen,
 }
 
+// Takes a string and evaluates it mathematically.
+// None values mean NaN as in JavaScript
+// Only parenthesis may be used. [] and {} are not supported
+// Exponentiation is done with the ^ operator, not with the ** operator
 pub fn eval_math_expr(expr: &str) -> Result<f64, ()> {
     let tokens: Vec<Token> = tokenize(expr)?;
     let rpn: Vec<Token> = shunting_yard(&tokens);

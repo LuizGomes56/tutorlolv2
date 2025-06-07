@@ -11,22 +11,20 @@ use crate::{AppState, server::schemas::APIResponse};
 
 #[derive(Deserialize)]
 pub struct AccessRequest {
-    password: String,
+    pub password: String,
 }
 
-impl AccessRequest {
-    pub fn password(&self) -> &str {
-        &self.password
-    }
-}
-
+// Some routes may be accessible only by the owner of the server
+// Image uploads, generators, and updaters must be controlled
+// Exposing this routes can overload server with too many thread spawns
+// Also can cause excessive resource usage from third-party services
 pub async fn password_middleware(
     state: Data<AppState>,
     body: Json<AccessRequest>,
     req: ServiceRequest,
     next: Next<BoxBody>,
 ) -> Result<ServiceResponse<EitherBody<BoxBody, BoxBody>>, Error> {
-    if body.password() != state.password {
+    if body.password != state.password {
         let response = HttpResponse::Unauthorized().json(APIResponse {
             success: false,
             message: "Password given is invalid".to_string(),

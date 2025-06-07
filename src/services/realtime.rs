@@ -18,11 +18,13 @@ pub fn realtime<'a>(
     // _: &'a Vec<usize>,
     simulated_items: &'a Vec<usize>,
 ) -> Result<Realtime<'a>, String> {
-    // #![todo] Filter legendary items that are available to be purchased according to [game][game_data][map_number]
-    // #! Calculating every item in the game is too expensive. Normally, it takes 200ns to run this function
-    // #! If this option is enabled, the average time of execution rises up to 10ms
-    // #! JSON size rises from 6KB to 572KB average, making the server use too much memory, like NodeJS
-    // #! Benchmarking with this option led to nearly 8 times more memory usage, and 1.5 times CPU usage
+    // #![todo] Filter legendary items that are available to be purchased [game][game_data][map_number]
+    // Calculating every item in the game is too expensive. Normally, it takes 200ns to run this function
+    // If this option is enabled, the average time of execution rises up to 10ms to 20ms (Similar to NodeJS)
+    // JSON size rises from (6 * NUM_ENEMIES) to (572 * NUM_ENEMIES) KB. Too large to be sent efficiently to the client
+    // Benchmarks with this option showed nearly 8 times more memory usage, and 1.5 times CPU usage
+    // Execution time is still really good, but not worth it to leave this feature on.
+
     // let simulated_items = &cache
     //     .items
     //     .iter()
@@ -100,10 +102,10 @@ pub fn realtime<'a>(
             )
         })?;
 
-    let ri_vec: Vec<usize> = Vec::new();
+    let recommended_items_fallback: Vec<usize> = Vec::new();
     let recommended_items_vec: &Vec<usize> =
         get_recommended_items(&current_player_position, &current_player_recommended_items)
-            .unwrap_or(&ri_vec);
+            .unwrap_or(&recommended_items_fallback);
 
     let owned_items: Vec<usize> = active_player_expanded
         .items
@@ -210,8 +212,8 @@ pub fn realtime<'a>(
                 current_player: GameStateCurrentPlayer {
                     thisv: &current_player,
                     cache: current_player_cache,
-                    items: &get_damaging_vec(&current_player.damaging_items),
-                    runes: &get_damaging_vec(&current_player.damaging_runes),
+                    items: &keys_as_vec(&current_player.damaging_items),
+                    runes: &keys_as_vec(&current_player.damaging_runes),
                     abilities: &active_player.abilities.get_levelings(),
                     simulated_stats: &simulated_champion_stats,
                 },

@@ -114,10 +114,10 @@ pub fn calculator<'a>(
             )
         })?;
 
-    let ri_vec: Vec<usize> = Vec::new();
+    let recommended_items_fallback: Vec<usize> = Vec::new();
     let recommended_items_vec: &Vec<usize> =
         get_recommended_items(&current_player_position, &current_player_recommended_items)
-            .unwrap_or(&ri_vec);
+            .unwrap_or(&recommended_items_fallback);
 
     let owned_items: &Vec<usize> = &active_player.items;
 
@@ -204,8 +204,8 @@ pub fn calculator<'a>(
             current_player: GameStateCurrentPlayer {
                 thisv: &current_player,
                 cache: &current_player_cache,
-                items: &get_damaging_vec(&current_player.damaging_items),
-                runes: &get_damaging_vec(&current_player.damaging_runes),
+                items: &keys_as_vec(&current_player.damaging_items),
+                runes: &keys_as_vec(&current_player.damaging_runes),
                 abilities: &active_player.abilities,
                 simulated_stats: &simulated_champion_stats,
             },

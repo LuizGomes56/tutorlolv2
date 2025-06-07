@@ -6,12 +6,13 @@ use actix_web::{
 use crate::server::schemas::APIResponse;
 
 pub fn json_error_middleware(err: JsonPayloadError, _: &HttpRequest) -> actix_web::Error {
-    let error_response = match &err {
+    let error_response: APIResponse<String, ()> = match &err {
         JsonPayloadError::ContentType => APIResponse {
             success: false,
             message: "Content-Type must be application/json".to_string(),
             data: (),
         },
+        // Most common error. Implemented to prevent server from returning plain text.
         JsonPayloadError::Deserialize(e) => APIResponse {
             success: false,
             message: format!(
