@@ -500,6 +500,7 @@ pub fn get_full_stats<'a, T: CurrentPlayerLike>(
 
     // Translates to (physical, magic, true, all_sources)
     let mut enemy_dmg_mod: (f64, f64, f64, f64) = (1.0, 1.0, 1.0, 1.0);
+    let self_dmg_mod: (f64, f64, f64, f64) = (1.0, 1.0, 1.0, 1.0);
 
     match enemy_champion_id {
         "Kassadin" => {
@@ -530,7 +531,6 @@ pub fn get_full_stats<'a, T: CurrentPlayerLike>(
                 14 => 1.15,
                 15..17 => 1.2,
                 17 => 1.25,
-                18 => 1.3,
                 _ => 1.3,
             };
             enemy_current_stats.armor *= malphite_resist_multiplier;
@@ -561,10 +561,10 @@ pub fn get_full_stats<'a, T: CurrentPlayerLike>(
             level: current_player.get_level(),
             // #![unsupported] only permanent modifiers are supported
             damage_mod: DamageMultipliers {
-                magic_damage: 1.0,
-                physical_damage: 1.0,
-                true_damage: 1.0,
-                all_sources: 1.0,
+                magic_damage: self_dmg_mod.0,
+                physical_damage: self_dmg_mod.1,
+                true_damage: self_dmg_mod.2,
+                all_sources: self_dmg_mod.3,
             },
             is_physical_adaptative_type: 0.35 * current_player.get_bonus_stats().attack_damage
                 >= 0.2 * current_stats.ability_power,

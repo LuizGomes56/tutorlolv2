@@ -11,6 +11,7 @@ use actix_cors::Cors;
 use actix_files::Files;
 use middlewares::{logger::logger_middleware, password::password_middleware};
 use model::application::GlobalCache;
+use reqwest::Client;
 use server::{formulas::*, games::*, images::*, internal::*, setup::*, statics::*, update::*};
 
 use actix_web::{
@@ -30,13 +31,13 @@ pub struct AppState {
     db: Pool<Postgres>,
     cache: Arc<GlobalCache>,
     password: String,
+    client: Client,
 }
 
 #[main]
 async fn main() -> Result<()> {
     dotenv().ok();
 
-    let cache: Arc<GlobalCache> = Arc::new(load_cache());
     let dsn: String = env::var("DATABASE_URL").expect("DATABASE_URL is not set in the environment");
     let host: String = env::var("HOST").expect("HOST is not set in the environment");
     let pool: Pool<Postgres> = PgPoolOptions::new()
@@ -54,12 +55,16 @@ async fn main() -> Result<()> {
             .allowed_headers([http::header::AUTHORIZATION, http::header::CONTENT_TYPE])
             .max_age(3600);
 
+        let cache: Arc<GlobalCache> = Arc::new(load_cache());
+        let client = Client::new();
+
         App::new()
             .wrap(cors)
             .app_data({
                 Data::new(AppState {
                     db: pool.clone(),
-                    cache: cache.clone(),
+                    cache,
+                    client,
                     password: env::var("SYSTEM_PASSWORD").expect("SYSTEM_PASSWORD is not set"),
                 })
             })

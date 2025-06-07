@@ -1,20 +1,24 @@
-use crate::model::application::GlobalCache;
-use crate::model::champions::{CdnAbility, CdnChampion, Champion};
-use crate::model::internal::{MetaItems, Positions};
-use crate::model::items::{CdnItem, Effect, Item, PartialStats};
-use crate::model::realtime::DamageObject;
-use crate::model::riot::{RiotCdnItem, RiotCdnStandard};
-use crate::model::runes::Rune;
+use crate::model::{
+    application::GlobalCache,
+    champions::{CdnAbility, CdnChampion, Champion},
+    internal::{MetaItems, Positions},
+    items::{CdnItem, Effect, Item, ItemStats, PartialStats},
+    realtime::DamageObject,
+    runes::Rune,
+    riot::{RiotCdnItem, RiotCdnStandard},
+};
 use regex::Regex;
+use reqwest::{Client, Response};
 use scraper::{Html, Selector};
 use serde::de::DeserializeOwned;
-use serde_json::Value;
-use std::env;
+use serde_json::{Map, Value};
 use std::{
-    collections::HashMap,
-    fs,
-    io::Write,
     path::{Path, PathBuf},
+    collections::HashMap,
+    env,
+    io::Write,
+    fs::{self, DirEntry, ReadDir},
+    borrow::Cow
 };
 use tokio::task::{self, JoinHandle};
 
@@ -24,7 +28,7 @@ use super::*;
 type MetaItemValue<T> = HashMap<String, HashMap<String, Vec<T>>>;
 
 // Files will be generated automatically, but checked manually until it is confirmed that the desired
-// format was succesfully generated. Once it is done, it will be added a comment to the header to
+// format was succesfully achieved. Once it is done, a comment must be added to the header to
 // prevent the generator from editing that file. "#![stable]".
 pub async fn generate_writer_files() {
     let champion_names: HashMap<String, String> =
@@ -70,6 +74,7 @@ pub async fn generate_writer_files() {
     }
 }
 
+// Syncronously loads all the cache that will live in memory through the entire execution
 pub fn load_cache() -> GlobalCache {
     println!("load_cache: started loading champion_files");
 
@@ -136,11 +141,10 @@ pub fn load_cache() -> GlobalCache {
     }
 }
 
-// Helper function to fetch data from the CDN. ReturnTypes are not strongly typed.
-async fn fetch_cdn_api(path_name: &str) -> HashMap<String, Value> {
-    let uri = env::var("CDN_ENDPOINT").expect("CDN_ENDPOINT is not set");
-    let client = reqwest::Client::new();
-    let url = &format!("{}/{}", uri.trim_end_matches('/'), path_name);
+// Helper function to fetch data from the CDN. Returns a HashMap with `any` value.
+async fn fetch_cdn_api(client: Client ,path_name: &str) -> HashMap<String, Value> {
+    let uri: String = env::var("CDN_ENDPOINT").expect("CDN_ENDPOINT is not set");
+    let url: &String = &format!("{}/{}", uri.trim_end_matches('/'), path_name);
 
     println!("fetch_cdn_api: {}", url);
 
@@ -152,17 +156,16 @@ async fn fetch_cdn_api(path_name: &str) -> HashMap<String, Value> {
 
     let data: Value = res.json().await.expect("Failed to parse JSON");
 
-    let result = data.as_object().expect("Failed to convert JSON to object");
-
+    let result: &Map<String, Value> = data.as_object().expect("Failed to convert JSON to object");
     result.clone().into_iter().collect()
 }
 
-async fn fetch_riot_api<T: DeserializeOwned>(path_name: &str) -> T {
-    let uri = env::var("DD_DRAGON_ENDPOINT").expect("DD_DRAGON_ENDPOINT is not set");
-    let version = env::var("LOL_VERSION").expect("LOL_VERSION is not set");
-    let language = env::var("LOL_LANGUAGE").expect("LOL_LANGUAGE is not set");
-    let client = reqwest::Client::new();
-    let url =&format!(
+// Fetches DataDragon API from Riot Games. Only the final file path needs to be provided
+async fn fetch_riot_api<T: DeserializeOwned>(client: Client, path_name: &str) -> T {
+    let uri: String = env::var("DD_DRAGON_ENDPOINT").expect("DD_DRAGON_ENDPOINT is not set");
+    let version: String = env::var("LOL_VERSION").expect("LOL_VERSION is not set");
+    let language: String = env::var("LOL_LANGUAGE").expect("LOL_LANGUAGE is not set");
+    let url: &String = &format!(
             "{}/{}/data/{}/{}.json",
             uri.trim_end_matches('/'),
             version,
@@ -172,28 +175,34 @@ async fn fetch_riot_api<T: DeserializeOwned>(path_name: &str) -> T {
 
     println!("fetch_riot_api: {}", url);
 
-    let res = client
+    let res: Response = client
         .get(url)
         .send()
         .await
         .expect("Failed to send request");
 
-    let data = res.json::<T>().await.expect("Failed to parse JSON");
+    let data: T = res.json::<T>().await.expect("Failed to parse JSON");
     data
 }
 
-pub async fn update_riot_cache() {
-    let champions_json = fetch_riot_api::<RiotCdnStandard>("champion").await;
-    let mut champions_futures = Vec::new();
+// Updates files in `cache/riot` with the corresponding ones in the patch determined by `LOL_VERSION`
+// Uncontrolled concurrency is used. Expected to spawn nearly 600 tokio tasks in total.
+// Threads are not all spawned at the same time. Each task has its conclusion awaited
+// before the next one is allowed to start. Maximum number of threads spawned is the amount of 
+// items in Riot's `item.json`, of approximately 400
+pub async fn update_riot_cache(client: Client) {
+    let champions_json: RiotCdnStandard = fetch_riot_api::<RiotCdnStandard>(client.clone(), "champion").await;
+    let mut champions_futures: Vec<JoinHandle<()>> = Vec::new();
 
     for (champion_id, _) in champions_json.data.clone() {
+        let client: Client = client.clone();
         champions_futures.push(tokio::spawn(async move {
-            let this_path_name = format!("cache/riot/champions/{}.json", champion_id);
-            let this_champion_data =
-                fetch_riot_api::<RiotCdnStandard>(&format!("champion/{}", champion_id)).await;
-            let data_field = this_champion_data.data;
-            let real_data = data_field.get(&champion_id.to_string()).unwrap().clone();
-            let strval = serde_json::to_string(&real_data).unwrap();
+            let this_path_name: String = format!("cache/riot/champions/{}.json", champion_id);
+            let this_champion_data: RiotCdnStandard =
+                fetch_riot_api::<RiotCdnStandard>(client, &format!("champion/{}", champion_id)).await;
+            let data_field: HashMap<String, Value> = this_champion_data.data;
+            let real_data: Value = data_field.get(&champion_id.to_string()).unwrap().clone();
+            let strval: String = serde_json::to_string(&real_data).unwrap();
             write_to_file(&this_path_name, strval.as_bytes());
         }));
     }
@@ -202,17 +211,17 @@ pub async fn update_riot_cache() {
         let _ = champion_future.await;
     }
 
-    let champion_strval = serde_json::to_string_pretty(&champions_json).unwrap();
-    let champion_bytes = champion_strval.as_bytes();
+    let champion_strval: String = serde_json::to_string_pretty(&champions_json).unwrap();
+    let champion_bytes: &[u8] = champion_strval.as_bytes();
     write_to_file("cache/riot/champions.json", champion_bytes);
 
-    let items_json = fetch_riot_api::<RiotCdnStandard>("item").await;
-    let mut items_futures = Vec::new();
+    let items_json: RiotCdnStandard = fetch_riot_api::<RiotCdnStandard>(client.clone(), "item").await;
+    let mut items_futures: Vec<JoinHandle<()>> = Vec::new();
 
     for (item_id, item_data) in items_json.data.clone() {
         items_futures.push(task::spawn_blocking(move || {
-            let this_path_name = format!("cache/riot/items/{}.json", item_id);
-            let strval = serde_json::to_string(&item_data).unwrap();
+            let this_path_name: String = format!("cache/riot/items/{}.json", item_id);
+            let strval: String = serde_json::to_string(&item_data).unwrap();
             write_to_file(&this_path_name, strval.as_bytes());
         }));
     }
@@ -221,23 +230,21 @@ pub async fn update_riot_cache() {
         let _ = item_future.await;
     }
 
-    let item_strval = serde_json::to_string_pretty(&items_json).unwrap();
-    let item_bytes = item_strval.as_bytes();
+    let item_strval: String = serde_json::to_string_pretty(&items_json).unwrap();
+    let item_bytes: &[u8] = item_strval.as_bytes();
     write_to_file("cache/riot/items.json", item_bytes);
 
-    let runes_json = fetch_riot_api::<Value>("runesReforged").await;
-    let runes_strval = serde_json::to_string_pretty(&runes_json).unwrap();
-    let runes_bytes = runes_strval.as_bytes();
+    let runes_json: Value = fetch_riot_api::<Value>(client, "runesReforged").await;
+    let runes_strval: String = serde_json::to_string_pretty(&runes_json).unwrap();
+    let runes_bytes: &[u8] = runes_strval.as_bytes();
     write_to_file("cache/riot/runes.json", runes_bytes);
 }
 
 // Recovers all the common builds for the current patch so the app can recommend builds to the user
 // Average time to update is 2m30s. Making the outer loop a new task overloads the target website
 // causing requests to timeout.
-pub async fn get_meta_items() {
-    let client_arc = reqwest::Client::new();
-
-    let champion_names =
+pub async fn get_meta_items(client: Client) {
+    let champion_names: HashMap<String, String> =
         read_from_file::<HashMap<String, String>>("internal/champion_names.json");
 
     let positions = ["top", "jungle", "mid", "adc", "support"];
@@ -246,11 +253,11 @@ pub async fn get_meta_items() {
     for (_, name) in champion_names {
         let mut second_future = Vec::new();
         for position in positions {
-            let champion_name = name.to_lowercase().clone();
-            let client = client_arc.clone();
+            let champion_name: String = name.to_lowercase().clone();
+            let client: Client = client.clone();
             second_future.push(tokio::spawn(async move {
-                let endpoint = env::var("META_ENDPOINT").expect("META_ENDPOINT is not set");
-                let url = format!("{}/{}/build/{}", endpoint, champion_name, position);
+                let endpoint: String = env::var("META_ENDPOINT").expect("META_ENDPOINT is not set");
+                let url: String = format!("{}/{}/build/{}", endpoint, champion_name, position);
 
                 let res = client
                     .get(url)
@@ -260,14 +267,14 @@ pub async fn get_meta_items() {
 
                 let mut result = HashMap::<String, Vec<String>>::new();
 
-                let html = res.text().await.expect("Could not read response text");
-                let document = Html::parse_document(&html);
-                let full_build = Selector::parse(".m-1q4a7cx:nth-of-type(4) > div > div img")
+                let html: String = res.text().await.expect("Could not read response text");
+                let document: Html = Html::parse_document(&html);
+                let full_build: Selector = Selector::parse(".m-1q4a7cx:nth-of-type(4) > div > div img")
                     .expect("Failed to parse nested selector");
-                let situational_build = Selector::parse(".m-s76v8c > div > div img")
+                let situational_build: Selector = Selector::parse(".m-s76v8c > div > div img")
                     .expect("Failed to parse selector .m-s76v8c");
 
-                let mut items = Vec::<String>::new();
+                let mut items: Vec<String> = Vec::<String>::new();
                 let mut push_items = |selector: &Selector| {
                     for img in document.select(selector) {
                         if let Some(alt) = img.value().attr("alt") {
@@ -282,7 +289,7 @@ pub async fn get_meta_items() {
             }));
         }
 
-        let mut collected_result = HashMap::new();
+        let mut collected_result: HashMap<String, Vec<String>> = HashMap::new();
         for result in second_future {
             println!("Fetching meta items for {}", name);
             collected_result.extend(result.await.unwrap());
@@ -298,14 +305,15 @@ pub async fn get_meta_items() {
     );
 }
 
-pub async fn update_instances(instance: &str) {
-    let result = fetch_cdn_api(&format!("{}.json", instance)).await;
+// Takes an instance parameter and uses CDN API to get its data and save to file system.
+pub async fn update_instances(client: Client, instance: &str) {
+    let result: HashMap<String, Value> = fetch_cdn_api(client, &format!("{}.json", instance)).await;
 
     for (key, value) in result {
-        let folder_name = format!("cache/cdn/{}", instance);
+        let folder_name: String = format!("cache/cdn/{}", instance);
         task::spawn_blocking(move || {
-            let path_name = format!("{}/{}.json", folder_name, key);
-            let strval = value.to_string();
+            let path_name: String = format!("{}/{}.json", folder_name, key);
+            let strval: String = value.to_string();
             write_to_file(&path_name, strval.as_bytes());
         });
     }
@@ -336,9 +344,9 @@ pub fn setup_project_folders() {
         "internal/items",
         "internal/champions",
     ] {
-        let path = Path::new(dir);
+        let path: &Path = Path::new(dir);
         if !path.exists() {
-            let error_msg = format!("Unable to create directory '{}'", dir);
+            let error_msg: String = format!("Unable to create directory '{}'", dir);
 
             fs::create_dir_all(path).expect(&error_msg);
         }
@@ -357,19 +365,19 @@ pub fn write_to_file(path_name: &str, bytes: &[u8]) {
 pub fn read_from_file<T: DeserializeOwned>(path_name: &str) -> T {
     println!("read_from_file: {}", path_name);
     
-    let data = fs::read_to_string(path_name).expect(&format!("Unable to read file: {}", path_name));
+    let data: String = fs::read_to_string(path_name).expect(&format!("Unable to read file: {}", path_name));
     serde_json::from_str(&data).expect("Failed to parse JSON")
 }
 
 // Read every file in cache/cdn/champions folder and delegates the processing to generate_champion_file
 pub fn setup_champion_cache() {
-    let files = fs::read_dir("cache/cdn/champions")
+    let files: ReadDir = fs::read_dir("cache/cdn/champions")
         .expect("Unable to read directory cache/cdn/champions");
 
     for file in files {
-        let path_name = file.unwrap().path();
+        let path_name: PathBuf = file.unwrap().path();
         task::spawn_blocking(move || {
-            let strpath = path_name.to_str().expect("Failed to convert path to string at [setup_champion_cache]");
+            let strpath: &str = path_name.to_str().expect("Failed to convert path to string at [setup_champion_cache]");
             println!("fn[setup_champion_cache]: {}", strpath);
             generate_champion_file(strpath);
         });
@@ -381,21 +389,21 @@ pub fn setup_champion_cache() {
 pub fn identify_damaging_items() {
     println!("fn[identify_damaging_items]");
     let contains_damage_outside_template = |text: &str| -> bool {
-        let re = Regex::new(r"\{\{[^}]*\}\}").unwrap();
-        let cleaned = re.replace_all(text, "");
+        let re: Regex = Regex::new(r"\{\{[^}]*\}\}").unwrap();
+        let cleaned: Cow<'_, str> = re.replace_all(text, "");
         cleaned.contains("damage")
     };
-    let files =
+    let files: ReadDir =
         fs::read_dir("cache/cdn/items").expect("Unable to read directory cache/cdn/items");
-    let mut is_damaging = Vec::new();
+    let mut is_damaging: Vec<usize> = Vec::new();
     for file in files {
-        let path_buf = file.unwrap().path();
-        let path_name = path_buf.to_str().unwrap();
-        let result = read_from_file::<CdnItem>(path_name);
+        let path_buf: PathBuf = file.unwrap().path();
+        let path_name: &str = path_buf.to_str().unwrap();
+        let result: CdnItem = read_from_file::<CdnItem>(path_name);
         if !result.shop.purchasable {
             continue;
         }
-        let mut found_match = false;
+        let mut found_match: bool = false;
         if !result.passives.is_empty() {
             for passive in &result.passives {
                 if contains_damage_outside_template(&passive.effects) {
@@ -429,19 +437,19 @@ pub fn initialize_items() {
     println!("fn[initialize_items]");
     let non_zero = |val: f64| -> Option<f64> { if val == 0.0 { None } else { Some(val) } };
 
-    let files =
+    let files: ReadDir =
         fs::read_dir("cache/cdn/items").expect("Unable to read directory cache/cdn/items");
     for file in files {
         task::spawn_blocking(move || {
-            let path_buf = file.unwrap().path();
-            let path_name = path_buf.to_str().unwrap();
+            let path_buf: PathBuf = file.unwrap().path();
+            let path_name: &str = path_buf.to_str().unwrap();
 
             println!("fn[initialize_items]: [initializing] {}", path_name);
 
-            let cdn_item = read_from_file::<CdnItem>(path_name);
+            let cdn_item: CdnItem = read_from_file::<CdnItem>(path_name);
 
-            let stats = &cdn_item.stats;
-            let mut item_stats = PartialStats::default();
+            let stats: &ItemStats = &cdn_item.stats;
+            let mut item_stats: PartialStats = PartialStats::default();
 
             item_stats.ability_power = non_zero(stats.ability_power.flat);
             item_stats.armor = non_zero(stats.armor.flat);
@@ -465,18 +473,18 @@ pub fn initialize_items() {
             let get_damagelike_expr_from_vec = |source_vec: Vec<Effect>| -> Option<String> {
                 source_vec
                     .get(0)
-                    .map(|p| extract_damagelike_expr(&p.effects))
-                    .filter(|s| !s.is_empty())
+                    .map(|p: &Effect| extract_damagelike_expr(&p.effects))
+                    .filter(|s: &String| !s.is_empty())
             };
 
-            let damage_str = get_damagelike_expr_from_vec(cdn_item.passives)
+            let damage_str: Option<String> = get_damagelike_expr_from_vec(cdn_item.passives)
                 .or_else(|| get_damagelike_expr_from_vec(cdn_item.active));
 
             let (melee, ranged) = damage_str
                 .as_ref()
-                .filter(|s| s.chars().any(|c| c.is_ascii_digit()))
-                .map(|s| {
-                    let item_dmg = DamageObject {
+                .filter(|s: &&String| s.chars().any(|c: char| c.is_ascii_digit()))
+                .map(|s: &String| {
+                    let item_dmg: DamageObject = DamageObject {
                         minimum_damage: Some(s.clone()),
                         maximum_damage: None,
                     };
@@ -484,7 +492,7 @@ pub fn initialize_items() {
                 })
                 .unwrap_or((None, None));
 
-            let result = Item {
+            let result: Item = Item {
                 pretiffied_stats: HashMap::new(),
                 name: cdn_item.name,
                 gold: cdn_item.shop.prices.total,
@@ -508,16 +516,16 @@ pub fn initialize_items() {
 // Uses champion display name and converts to their respective ids, saving to internal
 pub fn rewrite_champion_names() {
     println!("fn[rewrite_champion_names]");
-    let files = fs::read_dir("cache/cdn/champions")
+    let files: ReadDir = fs::read_dir("cache/cdn/champions")
         .expect("Unable to read directory cache/cdn/champions");
 
-    let mut map = HashMap::<String, String>::new();
+    let mut map: HashMap<String, String> = HashMap::<String, String>::new();
 
     for file in files {
-        let path_buf = file.unwrap().path();
-        let path_name = path_buf.to_str().unwrap();
-        let result = read_from_file::<CdnChampion>(path_name);
-        let name = extract_file_name(&path_buf);
+        let path_buf: PathBuf = file.unwrap().path();
+        let path_name: &str = path_buf.to_str().unwrap();
+        let result: CdnChampion = read_from_file::<CdnChampion>(path_name);
+        let name: &str = extract_file_name(&path_buf);
         map.insert(result.name, name.to_string());
     }
 
@@ -531,8 +539,8 @@ pub fn rewrite_champion_names() {
 // champions will need to be rewritten over time. If an error occurs while trying to update a
 // champion, it will be skipped. Writes the resulting json to internal/{champion_name}.json
 fn generate_champion_file(path_name: &str) {
-    let result = read_from_file::<CdnChampion>(path_name);
-    let name = extract_file_name(Path::new(path_name));
+    let result: CdnChampion = read_from_file::<CdnChampion>(path_name);
+    let name: &str = extract_file_name(Path::new(path_name));
 
     let champion: Option<Champion> = match name {
         "Aatrox" => Some(aatrox::transform(result)),
@@ -709,35 +717,38 @@ fn generate_champion_file(path_name: &str) {
     };
 
     if !champion.is_none() {
-        let bytes = serde_json::to_string_pretty(&champion).unwrap();
+        let string_value: String = serde_json::to_string_pretty(&champion).unwrap();
 
         write_to_file(
             &format!("internal/champions/{}.json", name),
-            bytes.as_bytes(),
+            string_value.as_bytes(),
         );
     }
 }
 
+// `internal/items` folder must exist, as well as dir `cache/riot/items`. Takes every file
+// and reads the "description" value from Riot `item.json` and parses its XML into a HashMap
+// only updates the key `prettified_stats`. All the remaining content remains the same
 pub async fn append_prettified_item_stats() {
     println!("fn[append_prettified_item_stats]");
-    let files =
+    let files: ReadDir =
         fs::read_dir("cache/riot/items").expect("Unable to read directory cache/cdn/items");
 
     let mut item_futures = Vec::new();
     for file in files {
         item_futures.push(task::spawn_blocking(move || {
-            let path_buf = file.unwrap().path();
-            let name = extract_file_name(&path_buf);
-            let path_name = format!("cache/riot/items/{}.json", name);
-            let pretiffied_stats = pretiffy_item_stats(&path_name);
-            let internal_path = format!("internal/items/{}.json", name);
+            let path_buf: PathBuf = file.unwrap().path();
+            let name: &str = extract_file_name(&path_buf);
+            let path_name: String = format!("cache/riot/items/{}.json", name);
+            let pretiffied_stats: HashMap<String, Value> = pretiffy_item_stats(&path_name);
+            let internal_path: String = format!("internal/items/{}.json", name);
             if !Path::new(&internal_path).exists() {
                 println!("Item {} does not exist", name);
                 return;
             }
-            let mut current_content = read_from_file::<Item>(internal_path.as_str());
+            let mut current_content: Item = read_from_file::<Item>(internal_path.as_str());
             current_content.pretiffied_stats = pretiffied_stats;
-            let strval = serde_json::to_string(&current_content).unwrap();
+            let strval: String = serde_json::to_string(&current_content).unwrap();
             write_to_file(&internal_path, strval.as_bytes());
         }));
     }
@@ -746,18 +757,23 @@ pub async fn append_prettified_item_stats() {
     }
 }
 
+// When MetaItems are recovered, each item is written in the array with its name instead of ID
+// This function replaces those names with IDs without changing the rest of the content.
+// If one's ID is not found, it will remain unchanged
 pub fn replace_item_names_with_ids() {
     println!("fn[replace_item_names_with_ids]");
-    let mut meta_items = read_from_file::<MetaItemValue<Value>>("internal/meta_items.json");
-    let items_folder = fs::read_dir("internal/items").expect("Failed to read items folder");
+    let mut meta_items: MetaItemValue<Value> = read_from_file::<MetaItemValue<Value>>("internal/meta_items.json");
+    let items_folder: ReadDir = fs::read_dir("internal/items").expect("Failed to read items folder");
 
+    // 4 `for` loops does not look pretty, but there's the only way to do it
+    // 170 * 5 * 7 * 7 = 41650 expected iterations
     for entry in items_folder {
-        let entry = entry.expect("Invalid DirEntry");
-        let path = entry.path();
-        let file_name = extract_file_name(&path);
-        let item_id = file_name.parse::<usize>().unwrap_or(0);
+        let entry: DirEntry = entry.expect("Invalid DirEntry");
+        let path: PathBuf = entry.path();
+        let file_name: &str = extract_file_name(&path);
+        let item_id: usize = file_name.parse::<usize>().unwrap_or(0);
 
-        let internal_item =
+        let internal_item: Item =
             read_from_file::<Item>(path.to_str().expect("Failed to convert path to string"));
 
         for (_, positions) in meta_items.iter_mut() {
@@ -780,13 +796,14 @@ pub fn replace_item_names_with_ids() {
     );
 }
 
+// Returns a new array with the coordinates where an ability was found according to CDN API
 fn transform_ability(key: &str, abilities: &Vec<CdnAbility>) -> Vec<String> {
-    let mut writer_keybinds = Vec::<String>::new();
+    let mut writer_keybinds: Vec<String> = Vec::<String>::new();
 
     for (ability_index, ability) in abilities.iter().enumerate() {
         for (effect_index, effect) in ability.effects.iter().enumerate() {
             for (leveling_index, leveling) in effect.leveling.iter().enumerate() {
-                let attr = leveling
+                let attr: String = leveling
                     .attribute
                     .as_deref()
                     .unwrap_or_default()
@@ -796,7 +813,7 @@ fn transform_ability(key: &str, abilities: &Vec<CdnAbility>) -> Vec<String> {
                     continue;
                 }
 
-                let suffix = if attr.contains("monster") {
+                let suffix: &'static str = if attr.contains("monster") {
                     "_MONSTER"
                 } else if attr.contains("bonus") {
                     "_BONUS"
@@ -811,8 +828,8 @@ fn transform_ability(key: &str, abilities: &Vec<CdnAbility>) -> Vec<String> {
                     ""
                 };
 
-                let base_key = format!("{}_{}_{}", key, ability_index, effect_index);
-                let final_key = format!("{}{}", base_key, suffix);
+                let base_key: String = format!("{}_{}_{}_{}", key, ability_index, effect_index, leveling_index);
+                let final_key: String = format!("{}{}", base_key, suffix);
 
                 writer_keybinds.push(format!(
                     "({}, {}, \"{}\", {})",
@@ -831,27 +848,30 @@ fn transform_ability(key: &str, abilities: &Vec<CdnAbility>) -> Vec<String> {
     writer_keybinds
 }
 
+// Returns the value that will be added to key `pretiffied_stats` for each item.
+// Depends on Riot API `item.json` and requires manual maintainance if a new XML tag is added
 fn pretiffy_item_stats(path_name: &str) -> HashMap<String, Value> {
-    let data = read_from_file::<RiotCdnItem>(path_name);
-    let mut result = HashMap::new();
+    let data: RiotCdnItem = read_from_file::<RiotCdnItem>(path_name);
+    let mut result: HashMap<String, Value> = HashMap::new();
 
-    let tag_regex = Regex::new(r#"<(attention|buffedStat|nerfedStat|ornnBonus)>(.*?)<\/(attention|buffedStat|nerfedStat|ornnBonus)>"#).unwrap();
-    let line_regex = Regex::new(r"(.*?)<br>").unwrap();
-    let percent_prefix_regex = Regex::new(r"^\s*\d+\s*%?\s*").unwrap();
-    let tag_strip_regex = Regex::new(r"<\/?[^>]+(>|$)").unwrap();
+    // #![manual_impl]
+    let tag_regex: Regex = Regex::new(r#"<(attention|buffedStat|nerfedStat|ornnBonus)>(.*?)<\/(attention|buffedStat|nerfedStat|ornnBonus)>"#).unwrap();
+    let line_regex: Regex = Regex::new(r"(.*?)<br>").unwrap();
+    let percent_prefix_regex: Regex = Regex::new(r"^\s*\d+\s*%?\s*").unwrap();
+    let tag_strip_regex: Regex = Regex::new(r"<\/?[^>]+(>|$)").unwrap();
 
-    let u = ["buffedStat", "nerfedStat", "attention", "ornnBonus"];
-    let k = ["Cooldown", "Healing"];
+    let u: [&'static str; 4] = ["buffedStat", "nerfedStat", "attention", "ornnBonus"];
+    let k: [&'static str; 2] = ["Cooldown", "Healing"];
 
     let lines: Vec<_> = line_regex.captures_iter(&data.description).collect();
-    let mut line_index = 0;
+    let mut line_index: usize = 0;
 
     for caps in tag_regex.captures_iter(&data.description) {
-        let t = &caps[1];
-        let v = caps[2].replace('%', "");
+        let t: &str = &caps[1];
+        let v: String = caps[2].replace('%', "");
         let mut n: Option<String> = None;
         if line_index < lines.len() {
-            let cleaned = tag_strip_regex
+            let cleaned: String = tag_strip_regex
                 .replace_all(&lines[line_index][1], "")
                 .trim()
                 .to_string();
@@ -862,9 +882,9 @@ fn pretiffy_item_stats(path_name: &str) -> HashMap<String, Value> {
         }
         if u.contains(&t) {
             if let Some(n_val) = &n {
-                let j = percent_prefix_regex.replace(n_val, "").trim().to_string();
+                let j: String = percent_prefix_regex.replace(n_val, "").trim().to_string();
                 if !j.is_empty() {
-                    let is_percent = caps[2].contains('%');
+                    let is_percent: bool = caps[2].contains('%');
                     let value: Value =
                         if k.iter().any(|&keyword| n_val.contains(keyword)) && is_percent {
                             Value::String(format!("{}%", v))

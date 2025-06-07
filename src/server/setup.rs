@@ -1,5 +1,7 @@
-use actix_web::{HttpResponse, Responder, post};
+use actix_web::{HttpResponse, Responder, post, web::Data};
+use reqwest::Client;
 
+use crate::AppState;
 #[allow(unused_imports)]
 use crate::{
     server::schemas::APIResponse,
@@ -17,17 +19,19 @@ use crate::{
 };
 
 #[post("/project")]
-pub async fn setup_project() -> impl Responder {
+pub async fn setup_project(state: Data<AppState>) -> impl Responder {
     setup_project_folders();
+
+    let client: Client = state.client.clone();
 
     tokio::spawn(async move {
         let (_, _, _, _) = tokio::join!(
-            tokio::spawn(update_riot_cache()),
-            tokio::spawn(update_instances("champions")),
+            tokio::spawn(update_riot_cache(client.clone())),
+            tokio::spawn(update_instances(client.clone(), "champions")),
             // #![dev]
             // tokio::spawn(generate_writer_files()),
-            tokio::spawn(update_instances("items")),
-            tokio::spawn(get_meta_items()),
+            tokio::spawn(update_instances(client.clone(), "items")),
+            tokio::spawn(get_meta_items(client)),
         );
 
         replace_item_names_with_ids();
@@ -40,10 +44,10 @@ pub async fn setup_project() -> impl Responder {
     });
 
     let (_, _, _, _) = tokio::join!(
-        tokio::spawn(img_download_arts()),
-        tokio::spawn(img_download_instances()),
-        tokio::spawn(img_download_items()),
-        tokio::spawn(img_download_runes()),
+        tokio::spawn(img_download_arts(state.client.clone())),
+        tokio::spawn(img_download_instances(state.client.clone())),
+        tokio::spawn(img_download_items(state.client.clone())),
+        tokio::spawn(img_download_runes(state.client.clone())),
     );
 
     HttpResponse::Ok().json(APIResponse {

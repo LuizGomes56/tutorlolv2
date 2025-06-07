@@ -19,10 +19,9 @@ fn get_base_uri() -> String {
     format!("{}/{}/img", url, version)
 }
 
-pub async fn img_download_instances() {
+pub async fn img_download_instances(client: Client) {
     let files: ReadDir = fs::read_dir("cache/riot/champions").unwrap();
     let base_uri: String = get_base_uri();
-    let client: Client = reqwest::Client::new();
     let mut outer_futures: Vec<JoinHandle<()>> = Vec::new();
     for file in files {
         let outer_base_uri: String = base_uri.clone();
@@ -98,10 +97,9 @@ pub async fn img_download_instances() {
     }
 }
 
-pub async fn img_download_arts() {
+pub async fn img_download_arts(client: Client) {
     let files: ReadDir = fs::read_dir("cache/riot/champions").unwrap();
     let base_uri: String = env::var("DD_DRAGON_ENDPOINT").expect("DD_DRAGON_ENDPOINT is not set");
-    let client: Client = reqwest::Client::new();
     for file in files {
         let path_buf: PathBuf = file.unwrap().path();
         let path_name: &str = path_buf.to_str().unwrap();
@@ -135,9 +133,8 @@ pub async fn img_download_arts() {
     }
 }
 
-pub async fn img_download_runes() {
+pub async fn img_download_runes(client: Client) {
     let runes_data: Vec<RiotCdnRune> = read_from_file::<Vec<RiotCdnRune>>("cache/riot/runes.json");
-    let client: Client = reqwest::Client::new();
     let mut rune_futures: Vec<JoinHandle<()>> = Vec::new();
     let mut runes_map: HashMap<usize, String> = HashMap::<usize, String>::new();
     let endpoint: String = env::var("RIOT_IMAGE_ENDPOINT").expect("RIOT_IMAGE_ENDPOINT is not set");
@@ -165,10 +162,9 @@ pub async fn img_download_runes() {
     }
 }
 
-pub async fn img_download_items() {
+pub async fn img_download_items(client: Client) {
     let files: ReadDir = fs::read_dir("cache/riot/items").unwrap();
     let base_uri: String = get_base_uri();
-    let client: Client = reqwest::Client::new();
     let mut item_futures: Vec<JoinHandle<()>> = Vec::new();
     for file in files {
         let cloned_base_uri: String = base_uri.clone();

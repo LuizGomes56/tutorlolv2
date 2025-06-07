@@ -4,6 +4,8 @@ use regex::{Captures, Match, Regex};
 
 use crate::model::champions::{Ability, CdnAbility, CdnChampion, Modifiers};
 
+// Receives a path and returns its file name without the `.json` extension
+// .trim_end_matches may be called if file does not end with `.json`
 pub fn extract_file_name(path: &Path) -> &str {
     path.file_name()
         .and_then(|os_str| os_str.to_str())
@@ -23,7 +25,7 @@ fn assign_scalings(description: &String, ref_vec: &mut Vec<String>) {
     });
 }
 
-// Easier way to get passive damage when the standard format matches.
+// Easier way to get passive damage when the standard format (struct CdnChampion) matches.
 // data -> the reference to the data passed to the caller function.
 // indexes -> the (ability_index, effect_index) of the description string to be extracted.
 // postfix -> optional hardcoded string to be added after each matching in final Vec<String>
@@ -96,7 +98,7 @@ fn extract_ability(modifiers: &Vec<Modifiers>, target_vec: &mut Vec<String>) {
                     let suffix: String = parts
                         .get(1)
                         .map_or("".to_string(), |s: &&str| s.trim().to_string());
-                    let coef = value / 100.0;
+                    let coef: f64 = value / 100.0;
                     if coef == 1.0 && !suffix.is_empty() {
                         suffix
                     } else if !suffix.is_empty() {
@@ -240,6 +242,10 @@ fn remove_parenthesized_additions(input: &str) -> String {
     re.replace_all(input, "").to_string()
 }
 
+// Determines if it should be written in "minimum_damage" or "maximum_damage" field
+// "maximum_damage" may not be filled if no "minimum_damage" exists.
+// Doing so will cause the display to show "0 - {max_damage}"
+// While "minimum_damage" without "maximum_damage" will show "{min_damage}"
 pub enum Target {
     MINIMUM,
     MAXIMUM,
@@ -281,7 +287,7 @@ pub fn extract_ability_damage(
                 }
             } else {
                 println!(
-                    "Indice inválido: effect: '{}' or leveling: '{}'",
+                    "Invalid index: effect: '{}' or leveling: '{}'",
                     effect_index, leveling_index
                 );
                 continue;
@@ -292,7 +298,7 @@ pub fn extract_ability_damage(
 
 // Replaces common keys found in the API with the corresponding ones used internally
 pub fn replace_keys(s: &str) -> String {
-    let replacements = [
+    let replacements: [(&'static str, &'static str); 39] = [
         ("per 100", "0.01 *"),
         ("of damage dealt", "100.0"),
         ("of damage stored", "100.0"),
