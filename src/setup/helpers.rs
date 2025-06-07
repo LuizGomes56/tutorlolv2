@@ -1,13 +1,13 @@
 use std::{collections::HashMap, path::Path};
 
-use regex::Regex;
+use regex::{Captures, Match, Regex};
 
 use crate::model::champions::{Ability, CdnAbility, CdnChampion, Modifiers};
 
 pub fn extract_file_name(path: &Path) -> &str {
     path.file_name()
         .and_then(|os_str| os_str.to_str())
-        .map(|s| s.trim_end_matches(".json"))
+        .map(|s: &str| s.trim_end_matches(".json"))
         .unwrap_or_default()
 }
 
@@ -17,8 +17,8 @@ fn assign_scalings(description: &String, ref_vec: &mut Vec<String>) {
     if description.is_empty() {
         return;
     }
-    let scalings = extract_scaled_values(&description);
-    ref_vec.iter_mut().for_each(|dmg| {
+    let scalings: String = extract_scaled_values(&description);
+    ref_vec.iter_mut().for_each(|dmg: &mut String| {
         *dmg = format!("{} + {}", dmg, scalings);
     });
 }
@@ -40,12 +40,12 @@ pub fn extract_passive_damage(
     keyname: &str,
     map: &mut HashMap<String, Ability>,
 ) {
-    let mut minimum_damage = Vec::<String>::new();
-    let mut maximum_damage = Vec::<String>::new();
+    let mut minimum_damage: Vec<String> = Vec::<String>::new();
+    let mut maximum_damage: Vec<String> = Vec::<String>::new();
 
     let (passive, passive_bounds) = extract_passive_bounds(&data, indexes);
 
-    let mut description = &String::new();
+    let mut description: &String = &String::new();
 
     if let Some(scalings) = scalings {
         description = &passive.effects[scalings].description;
@@ -83,19 +83,19 @@ fn extract_ability(modifiers: &Vec<Modifiers>, target_vec: &mut Vec<String>) {
     if modifiers.is_empty() {
         return;
     }
-    let length = modifiers[0].values.len();
+    let length: usize = modifiers[0].values.len();
     for i in 0..length {
-        let mut parts = Vec::new();
+        let mut parts: Vec<String> = Vec::new();
         for modifier in modifiers {
             if let Some(value) = modifier.values.get(i) {
-                let raw_unit = modifier.units[i].trim();
-                let scallings = extract_scaled_values(&raw_unit);
-                let unit = remove_parenthesized_additions(&raw_unit);
-                let cleaned_string = if unit.contains('%') {
+                let raw_unit: &str = modifier.units[i].trim();
+                let scallings: String = extract_scaled_values(&raw_unit);
+                let unit: String = remove_parenthesized_additions(&raw_unit);
+                let cleaned_string: String = if unit.contains('%') {
                     let parts: Vec<&str> = unit.split('%').collect();
-                    let suffix = parts
+                    let suffix: String = parts
                         .get(1)
-                        .map_or("".to_string(), |s| s.trim().to_string());
+                        .map_or("".to_string(), |s: &&str| s.trim().to_string());
                     let coef = value / 100.0;
                     if coef == 1.0 && !suffix.is_empty() {
                         suffix
@@ -109,8 +109,8 @@ fn extract_ability(modifiers: &Vec<Modifiers>, target_vec: &mut Vec<String>) {
                 } else {
                     format!("{}{}", trim_f64(*value), unit)
                 };
-                let formatted_string = replace_keys(&cleaned_string);
-                let final_string = if scallings.is_empty() {
+                let formatted_string: String = replace_keys(&cleaned_string);
+                let final_string: String = if scallings.is_empty() {
                     formatted_string
                 } else {
                     format!("{} + {}", formatted_string, scallings)
@@ -125,17 +125,17 @@ fn extract_ability(modifiers: &Vec<Modifiers>, target_vec: &mut Vec<String>) {
 // Takes a string with the match "{number} : {number}" and returns the numeric values
 // Might return nothing if no values are found, or a tuple is malformed
 fn extract_range_values(input: &str) -> Option<(f64, f64)> {
-    let re = Regex::new(r"(\d+(?:\.\d+)?)(%)?\s*[:\-–]\s*(\d+(?:\.\d+)?)(%)?").ok()?;
-    let caps = re.captures(input)?;
+    let re: Regex = Regex::new(r"(\d+(?:\.\d+)?)(%)?\s*[:\-–]\s*(\d+(?:\.\d+)?)(%)?").ok()?;
+    let caps: Captures<'_> = re.captures(input)?;
 
-    let first = caps.get(1)?.as_str().parse::<f64>().ok()?;
-    let second = caps.get(3)?.as_str().parse::<f64>().ok()?;
+    let first: f64 = caps.get(1)?.as_str().parse::<f64>().ok()?;
+    let second: f64 = caps.get(3)?.as_str().parse::<f64>().ok()?;
 
-    let first_is_percent = caps.get(2).is_some();
-    let second_is_percent = caps.get(4).is_some();
+    let first_is_percent: bool = caps.get(2).is_some();
+    let second_is_percent: bool = caps.get(4).is_some();
 
-    let denom1 = if first_is_percent { 100.0 } else { 1.0 };
-    let denom2 = if second_is_percent { 100.0 } else { 1.0 };
+    let denom1: f64 = if first_is_percent { 100.0 } else { 1.0 };
+    let denom2: f64 = if second_is_percent { 100.0 } else { 1.0 };
 
     Some((first / denom1, second / denom2))
 }
@@ -148,20 +148,20 @@ fn extract_passive_bounds(
 ) -> (&CdnAbility, (f64, f64)) {
     let (ability_index, effect_index) = indexes;
 
-    let passive = data
+    let passive: &CdnAbility = data
         .abilities
         .p
         .get(ability_index)
         .expect("ability_index is invalid.");
 
-    let passive_effects = passive
+    let passive_effects: String = passive
         .effects
         .get(effect_index)
         .expect("effect_index is invalid.")
         .description
         .clone();
 
-    let passive_bounds = extract_range_values(&passive_effects)
+    let passive_bounds: (f64, f64) = extract_range_values(&passive_effects)
         .expect("Couldn't extract numeric values for passive.");
 
     (passive, passive_bounds)
@@ -169,19 +169,19 @@ fn extract_passive_bounds(
 
 // Gets the tuples that are in pattern (+ Scalling) and formats the string to the internal format.
 fn extract_scaled_values(input: &str) -> String {
-    let re = Regex::new(r"\(([^)]+)\)").unwrap();
-    let mut result = Vec::new();
+    let re: Regex = Regex::new(r"\(([^)]+)\)").unwrap();
+    let mut result: Vec<String> = Vec::new();
     for cap in re.captures_iter(input) {
-        let content = cap[1].trim();
+        let content: &str = cap[1].trim();
         if content.to_lowercase().contains("based on level") {
             continue;
         }
-        let cleaned = content.trim_start_matches('+').trim();
+        let cleaned: &str = content.trim_start_matches('+').trim();
         let parts: Vec<&str> = cleaned.split_whitespace().collect();
         if parts.len() >= 2 && parts[0].ends_with('%') {
             if let Ok(percent) = parts[0].trim_end_matches('%').parse::<f64>() {
-                let decimal = percent / 100.0;
-                let rest = parts[1..].join(" ");
+                let decimal: f64 = percent / 100.0;
+                let rest: String = parts[1..].join(" ");
                 result.push(format!("({} * {})", decimal, rest));
                 continue;
             }
@@ -190,16 +190,16 @@ fn extract_scaled_values(input: &str) -> String {
     }
     result
         .iter()
-        .map(|value| replace_keys(value))
+        .map(|value: &String| replace_keys(value))
         .collect::<Vec<String>>()
         .join(" + ")
 }
 
 fn process_scaled_string(input: &str) -> String {
-    let re = Regex::new(r"\([^\)]*\)").unwrap();
-    let paren_part = re.find(input).map(|m| m.as_str()).unwrap_or("");
-    let base = input.replace(paren_part, "").trim().to_string();
-    let scaled = extract_scaled_values(paren_part);
+    let re: Regex = Regex::new(r"\([^\)]*\)").unwrap();
+    let paren_part: &str = re.find(input).map(|m: Match<'_>| m.as_str()).unwrap_or("");
+    let base: String = input.replace(paren_part, "").trim().to_string();
+    let scaled: String = extract_scaled_values(paren_part);
     if !scaled.is_empty() {
         format!("{} + {}", base, scaled)
     } else {
@@ -208,11 +208,11 @@ fn process_scaled_string(input: &str) -> String {
 }
 
 pub fn extract_damagelike_expr(input: &str) -> String {
-    let re = Regex::new(r"\{\{as\|([^\}]+)\}\}").unwrap();
-    let mut results = Vec::new();
+    let re: Regex = Regex::new(r"\{\{as\|([^\}]+)\}\}").unwrap();
+    let mut results: Vec<String> = Vec::new();
     for cap in re.captures_iter(input) {
-        let mut content = cap[1].to_string();
-        let nested = Regex::new(r"\{\{[^}]+\|([^}]+)\}\}").unwrap();
+        let mut content: String = cap[1].to_string();
+        let nested: Regex = Regex::new(r"\{\{[^}]+\|([^}]+)\}\}").unwrap();
         content = nested.replace_all(&content, "$1").to_string();
         results.push(content);
     }
@@ -222,10 +222,10 @@ pub fn extract_damagelike_expr(input: &str) -> String {
 // Useful for passives where scalling is linear over all 18 levels.
 // Returns the array with the values for each level adjusted
 fn assign_as_linear_range(bounds: (f64, f64), size: usize, postfix: Option<&str>) -> Vec<String> {
-    let mut result = Vec::<String>::new();
+    let mut result: Vec<String> = Vec::<String>::new();
     let (start, end) = bounds;
     for i in 0..size {
-        let value = start + (((end - start) * (i as f64)) / (size as f64 - 1.0));
+        let value: f64 = start + (((end - start) * (i as f64)) / (size as f64 - 1.0));
         if let Some(postfix) = postfix {
             result.push(format!("({} + {})", value, postfix));
             continue;
@@ -236,7 +236,7 @@ fn assign_as_linear_range(bounds: (f64, f64), size: usize, postfix: Option<&str>
 }
 
 fn remove_parenthesized_additions(input: &str) -> String {
-    let re = Regex::new(r"\(\+\s*[^)]*\)").unwrap();
+    let re: Regex = Regex::new(r"\(\+\s*[^)]*\)").unwrap();
     re.replace_all(input, "").to_string()
 }
 
@@ -265,12 +265,12 @@ pub fn extract_ability_damage(
 
     for (effect_index, leveling) in indexes {
         for (leveling_index, (keyname, target_vector)) in leveling {
-            let mut minimum_damage = Vec::<String>::new();
-            let mut maximum_damage = Vec::<String>::new();
+            let mut minimum_damage: Vec<String> = Vec::<String>::new();
+            let mut maximum_damage: Vec<String> = Vec::<String>::new();
 
             if let Some(effects) = data.effects.get(effect_index) {
                 if let Some(level_entry) = effects.leveling.get(leveling_index) {
-                    let modifiers = &level_entry.modifiers;
+                    let modifiers: &Vec<Modifiers> = &level_entry.modifiers;
 
                     match target_vector {
                         Target::MINIMUM => extract_ability(modifiers, &mut minimum_damage),
@@ -336,5 +336,7 @@ pub fn replace_keys(s: &str) -> String {
 
     replacements
         .iter()
-        .fold(s.to_string(), |acc, (old, new)| acc.replace(old, new))
+        .fold(s.to_string(), |acc: String, (old, new)| {
+            acc.replace(old, new)
+        })
 }

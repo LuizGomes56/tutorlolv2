@@ -24,7 +24,7 @@ pub async fn setup_project() -> impl Responder {
         let (_, _, _, _) = tokio::join!(
             tokio::spawn(update_riot_cache()),
             tokio::spawn(update_instances("champions")),
-            // #![warn] Development only
+            // #![dev_only]
             // tokio::spawn(generate_writer_files()),
             tokio::spawn(update_instances("items")),
             tokio::spawn(get_meta_items()),
@@ -33,7 +33,8 @@ pub async fn setup_project() -> impl Responder {
         replace_item_names_with_ids();
         setup_champion_cache();
         initialize_items();
-        identify_damaging_items();
+        // #![dev_only]
+        // identify_damaging_items();
         rewrite_champion_names();
         append_prettified_item_stats().await;
     });

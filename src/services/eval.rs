@@ -7,14 +7,14 @@ enum Token {
 }
 
 pub fn eval_math_expr(expr: &str) -> Result<f64, ()> {
-    let tokens = tokenize(expr)?;
-    let rpn = shunting_yard(&tokens);
+    let tokens: Vec<Token> = tokenize(expr)?;
+    let rpn: Vec<Token> = shunting_yard(&tokens);
     evaluate_rpn(&rpn)
 }
 
 fn tokenize(expr: &str) -> Result<Vec<Token>, ()> {
-    let mut tokens = Vec::new();
-    let mut num_buf = String::new();
+    let mut tokens: Vec<Token> = Vec::new();
+    let mut num_buf: String = String::new();
     let mut chars = expr.chars().peekable();
 
     while let Some(&ch) = chars.peek() {
@@ -77,8 +77,8 @@ fn is_right_associative(op: char) -> bool {
 }
 
 fn shunting_yard(tokens: &[Token]) -> Vec<Token> {
-    let mut output = Vec::new();
-    let mut ops = Vec::new();
+    let mut output: Vec<Token> = Vec::new();
+    let mut ops: Vec<Token> = Vec::new();
 
     for token in tokens {
         match token {

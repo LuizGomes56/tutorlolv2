@@ -161,9 +161,9 @@ pub struct DamageMultipliers {
 }
 
 pub struct EnemyFullStats<'a> {
-    pub current_stats: &'a BasicStats,
-    pub bonus_stats: &'a BasicStats,
-    pub takes_extra_damage_from: DamageMultipliers,
+    pub current_stats: &'a mut BasicStats,
+    pub bonus_stats: &'a mut BasicStats,
+    pub damage_mod: DamageMultipliers,
     pub real_resists: RealResists,
 }
 
@@ -173,7 +173,7 @@ pub struct SelfFullStats<'a> {
     pub bonus_stats: &'a BasicStats,
     pub is_ranged: bool,
     pub level: usize,
-    pub deals_extra_damage_from: DamageMultipliers,
+    pub damage_mod: DamageMultipliers,
     pub is_physical_adaptative_type: bool,
 }
 
