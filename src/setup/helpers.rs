@@ -1,8 +1,6 @@
-use std::{collections::HashMap, path::Path};
-
-use regex::{Captures, Match, Regex};
-
 use crate::model::champions::{Ability, CdnAbility, CdnChampion, Modifiers};
+use regex::{Captures, Match, Regex};
+use std::{collections::HashMap, path::Path};
 
 // Receives a path and returns its file name without the `.json` extension
 // .trim_end_matches may be called if file does not end with `.json`

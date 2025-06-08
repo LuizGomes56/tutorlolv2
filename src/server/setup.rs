@@ -5,7 +5,6 @@ use reqwest::Client;
 use tokio::task::{self, JoinHandle};
 
 use crate::AppState;
-#[allow(unused_imports)]
 use crate::{
     server::schemas::APIResponse,
     setup::{

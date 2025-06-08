@@ -1,4 +1,8 @@
-use std::{env, fs, path::Path};
+use std::{
+    env,
+    fs::{self, DirEntry},
+    path::Path,
+};
 
 fn main() {
     let out_path: String = env::var("OUT_DIR").unwrap();
@@ -6,7 +10,7 @@ fn main() {
     let mut match_arms: String = String::new();
 
     for entry in fs::read_dir(writer_dir).unwrap() {
-        let entry = entry.unwrap();
+        let entry: DirEntry = entry.unwrap();
         let name: String = entry.file_name().into_string().unwrap();
         if name.ends_with(".rs") && name != "mod.rs" {
             let mod_name: &str = name.trim_end_matches(".rs");

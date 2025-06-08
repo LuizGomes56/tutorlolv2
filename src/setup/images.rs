@@ -1,16 +1,18 @@
+use crate::{
+    model::riot::{RiotCdnChampion, RiotCdnInstance, RiotCdnRune, RiotCdnSkin},
+    setup::{
+        helpers::extract_file_name,
+        update::{read_from_file, write_to_file},
+    },
+};
+use reqwest::{Client, Response};
 use std::{
     collections::HashMap,
     env,
     fs::{self, ReadDir},
     path::{Path, PathBuf},
 };
-
-use reqwest::{Client, Response};
 use tokio::task::JoinHandle;
-
-use crate::model::riot::{RiotCdnChampion, RiotCdnInstance, RiotCdnRune, RiotCdnSkin};
-
-use super::{extract_file_name, read_from_file, write_to_file};
 
 fn get_base_uri() -> String {
     let url: String = env::var("DD_DRAGON_ENDPOINT").expect("DD_DRAGON_ENDPOINT is not set");

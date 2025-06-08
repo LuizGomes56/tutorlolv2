@@ -25,7 +25,7 @@ use setup::update::load_cache;
 use sqlx::{Pool, Postgres, postgres::PgPoolOptions};
 use std::{env, io::Result, sync::Arc};
 
-use crate::middlewares::error::json_error_middleware;
+use crate::{middlewares::error::json_error_middleware, setup::update::CacheError};
 
 pub struct AppState {
     db: Pool<Postgres>,
@@ -42,12 +42,29 @@ async fn main() -> Result<()> {
     let cache: Arc<GlobalCache> = match load_cache() {
         Ok(cache) => Arc::new(cache),
         Err(e) => {
-            println!(
-                "Program was not successful in loading cache.\n
-                    Please call route `setup/project` to initialize and rerun the program\n
-                    Error occurred: {:#?}",
-                e
-            );
+            match e {
+                CacheError::IoError(e) => println!(
+                    "IoError when loading cache. 
+                    Use route `/setup/project` to initialize cache, and
+                    then run the program again.
+                    Error: {:#?}",
+                    e
+                ),
+                CacheError::ParseIntError(e) => println!(
+                    "ParseIntError when loading cache. 
+                    This may be due to erros in JSON file generation. 
+                    Error: {:#?}",
+                    e
+                ),
+                CacheError::PathBufError(e) => {
+                    println!(
+                        "PathBufError when loading cache.
+                        It might indicate that folders are not present.
+                        Error: {:#?}",
+                        e.display()
+                    )
+                }
+            };
             Arc::new(GlobalCache::default())
         }
     };

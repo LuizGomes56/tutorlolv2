@@ -12,7 +12,7 @@ use crate::model::{
 
 use super::*;
 
-fn apply_auto_stats(
+fn _apply_auto_stats(
     active_player: &ActivePlayerX,
     items_cache: &HashMap<usize, Item>,
 ) -> Result<Stats, String> {
@@ -187,15 +187,13 @@ pub fn calculator<'a>(
         let enemy_level: usize = player.level;
         let mut enemy_base_stats: BasicStats = get_base_stats(current_enemy_cache, enemy_level);
         let enemy_items: &Vec<usize> = &player.items;
-        let mut enemy_current_stats: BasicStats = player.stats.clone();
-        /*
-            get_enemy_current_stats(
-                &cache.items,
-                &enemy_base_stats,
-                &enemy_items,
-                EARTH_DRAGON_MULTIPLIER * game.enemy_earth_dragons as f64,
-            )
-        */
+        // #![todo] Let user define enemy stats manually instead of predicting it from its items
+        let mut enemy_current_stats: BasicStats = get_enemy_current_stats(
+            &cache.items,
+            &enemy_base_stats,
+            &enemy_items,
+            EARTH_DRAGON_MULTIPLIER * game.enemy_earth_dragons as f64,
+        );
         let (damages, real_resists, bonus_stats) = calculate_enemy_state(GameState {
             cache: GameStateCache {
                 items: &cache.items,
