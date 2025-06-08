@@ -39,9 +39,9 @@ pub async fn setup_project(state: Data<AppState>) -> impl Responder {
             let _ = update_future.await;
         }
 
-        task::spawn_blocking(rewrite_champion_names).await.ok();
-        task::spawn_blocking(setup_champion_cache).await.ok();
-        task::spawn_blocking(initialize_items).await.ok();
+        let _ = task::spawn_blocking(rewrite_champion_names).await.ok();
+        let _ = task::spawn_blocking(setup_champion_cache).await.ok();
+        let _ = task::spawn_blocking(initialize_items).await.ok();
 
         append_prettified_item_stats().await;
 

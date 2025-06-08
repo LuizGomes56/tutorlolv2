@@ -4,7 +4,7 @@ use crate::{
     server::schemas::APIResponse,
     setup::update::{
         append_prettified_item_stats, generate_writer_files, identify_damaging_items,
-        replace_item_names_with_ids,
+        replace_item_names_with_ids, rewrite_champion_names,
     },
 };
 
@@ -34,6 +34,16 @@ pub async fn internal_identify_damaging_items() -> impl Responder {
     HttpResponse::Ok().json(APIResponse {
         success: true,
         message: "Damaging items identified",
+        data: (),
+    })
+}
+
+#[post("/rewrite_champion_names")]
+pub async fn internal_rewrite_champion_names() -> impl Responder {
+    rewrite_champion_names();
+    HttpResponse::Ok().json(APIResponse {
+        success: true,
+        message: "Champion names rewritten",
         data: (),
     })
 }

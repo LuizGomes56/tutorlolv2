@@ -793,7 +793,7 @@ pub fn replace_item_names_with_ids() {
             for (_, items) in positions.iter_mut() {
                 for item in items.iter_mut() {
                     if let Value::String(s) = item {
-                        if s == &internal_item.name {
+                        if s.to_lowercase() == internal_item.name.to_lowercase() {
                             *item = Value::Number(item_id.into());
                         }
                     }
