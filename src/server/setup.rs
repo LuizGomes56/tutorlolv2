@@ -1,5 +1,8 @@
+use std::time::Instant;
+
 use actix_web::{HttpResponse, Responder, post, web::Data};
 use reqwest::Client;
+use tokio::task::{self, JoinHandle};
 
 use crate::AppState;
 #[allow(unused_imports)]
@@ -12,7 +15,7 @@ use crate::{
         update::{
             append_prettified_item_stats, generate_writer_files, get_meta_items,
             identify_damaging_items, initialize_items, replace_item_names_with_ids,
-            rewrite_champion_names, setup_champion_cache, setup_project_folders, update_instances,
+            rewrite_champion_names, setup_champion_cache, setup_project_folders, update_cdn_cache,
             update_riot_cache,
         },
     },
@@ -25,35 +28,52 @@ pub async fn setup_project(state: Data<AppState>) -> impl Responder {
     let client: Client = state.client.clone();
 
     tokio::spawn(async move {
-        let (_, _, _, _) = tokio::join!(
-            tokio::spawn(update_riot_cache(client.clone())),
-            tokio::spawn(update_instances(client.clone(), "champions")),
-            // #![dev]
-            // tokio::spawn(generate_writer_files()),
-            tokio::spawn(update_instances(client.clone(), "items")),
-            tokio::spawn(get_meta_items(client)),
-        );
+        let start_time: Instant = Instant::now();
+        let mut update_futures: Vec<JoinHandle<()>> = Vec::new();
 
-        replace_item_names_with_ids();
-        setup_champion_cache();
-        initialize_items();
-        // #![dev]
-        // identify_damaging_items();
-        rewrite_champion_names();
+        update_futures.push(tokio::spawn(update_riot_cache(client.clone())));
+        update_futures.push(tokio::spawn(update_cdn_cache(client.clone(), "champions")));
+        update_futures.push(tokio::spawn(update_cdn_cache(client.clone(), "items")));
+
+        for update_future in update_futures {
+            let _ = update_future.await;
+        }
+
+        task::spawn_blocking(rewrite_champion_names).await.ok();
+        task::spawn_blocking(setup_champion_cache).await.ok();
+        task::spawn_blocking(initialize_items).await.ok();
+
         append_prettified_item_stats().await;
-    });
 
-    let (_, _, _, _) = tokio::join!(
-        tokio::spawn(img_download_arts(state.client.clone())),
-        tokio::spawn(img_download_instances(state.client.clone())),
-        tokio::spawn(img_download_items(state.client.clone())),
-        tokio::spawn(img_download_runes(state.client.clone())),
-    );
+        let client_1: Client = client.clone();
+
+        tokio::spawn(async move {
+            get_meta_items(client_1).await;
+            replace_item_names_with_ids();
+            // #![dev]
+            identify_damaging_items();
+        });
+
+        // #![dev]
+        tokio::spawn(generate_writer_files());
+
+        // There's no need to await for image download conclusion
+        // They are independent and may run in parallel
+        tokio::spawn(img_download_arts(client.clone()));
+        tokio::spawn(img_download_instances(client.clone()));
+        tokio::spawn(img_download_items(client.clone()));
+        tokio::spawn(img_download_runes(client));
+
+        println!(
+            "Project setup completed in {}ms",
+            start_time.elapsed().as_millis()
+        );
+    });
 
     HttpResponse::Ok().json(APIResponse {
         success: true,
         message: "Project setup started. Expected time to complete: 3-5 minutes",
-        data: "Using 9 green threads",
+        data: "Using 10 tokio threads",
     })
 }
 

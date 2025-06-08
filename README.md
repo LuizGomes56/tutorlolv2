@@ -1,5 +1,7 @@
 # TutorLoL v2
 
+> cargo run --release > log.txt 2>&1
+
 > 🔧 Projeto de reimplementação completa em **Rust**, com foco em performance, automação e concorrência.
 
 <span style="color:#f1fa8c;">Este é apenas a parte do SERVIDOR do projeto completo. Verifique o [Client-Side](https://github.com/LuizGomes56/tlv2app), que utiliza <i style="color:#caf2fa;">Tauri (Windows) e Yew (WebAssembly) combinados.</i></span>
@@ -90,7 +92,7 @@ todas que estiverem fora de suas capacidades
 ## Status atual
 
 - [X] Atualização e setup automáticos
-- [ ] Definição da estrutura do JSON para cada personagem (3 de 172)
+- [ ] Definição da estrutura do JSON para cada personagem (2 de 172)
 - [ ] Definição para atualização automática dos itens (0 de 315)
 - [ ] Tratamento de itens e campeões que são excessão
 - [ ] Construção de funcionalidades novas (0 de 5)
@@ -104,10 +106,10 @@ todas que estiverem fora de suas capacidades
 - [x] Calculo básico de itens, habilidades e runas
 - [ ] Avaliação de itens e builds
 - [X] WASM (Setup frontend)
-- [-] Sobreposição no jogo (overlay)
+- [X] Sobreposição no jogo (overlay)
 - [X] Todas as features disponíveis no projeto TypeScript concluídas
 - [ ] Cálculos confiáveis
-- [ ] Benchmark de diferença de performance entre todas as aplicações
-- [ ] Integração do frontend com o App Windows (Tauri)
+- [X] Benchmark de diferença de performance entre todas as aplicações
+- [X] Integração do frontend com o App Windows (Tauri)
 
 ---

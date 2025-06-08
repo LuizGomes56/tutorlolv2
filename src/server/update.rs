@@ -1,7 +1,7 @@
 use super::schemas::APIResponse;
 use crate::{
     AppState,
-    setup::update::{get_meta_items, update_instances, update_riot_cache},
+    setup::update::{get_meta_items, update_cdn_cache, update_riot_cache},
 };
 use actix_web::{HttpResponse, Responder, post, web::Data};
 
@@ -17,7 +17,7 @@ pub async fn update_riot(state: Data<AppState>) -> impl Responder {
 
 #[post("/champions")]
 pub async fn update_champions(state: Data<AppState>) -> impl Responder {
-    update_instances(state.client.clone(), "champions").await;
+    update_cdn_cache(state.client.clone(), "champions").await;
     HttpResponse::Ok().json(APIResponse {
         success: true,
         message: "Champions updated on client",
@@ -27,7 +27,7 @@ pub async fn update_champions(state: Data<AppState>) -> impl Responder {
 
 #[post("/items")]
 pub async fn update_items(state: Data<AppState>) -> impl Responder {
-    update_instances(state.client.clone(), "items").await;
+    update_cdn_cache(state.client.clone(), "items").await;
     HttpResponse::Ok().json(APIResponse {
         success: true,
         message: "Items updated on client",

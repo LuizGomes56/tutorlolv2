@@ -13,14 +13,9 @@ use scraper::{Html, Selector};
 use serde::de::DeserializeOwned;
 use serde_json::{Map, Value};
 use std::{
-    path::{Path, PathBuf},
-    collections::HashMap,
-    env,
-    io::Write,
-    fs::{self, DirEntry, ReadDir},
-    borrow::Cow
+    borrow::Cow, collections::HashMap, env, fs::{self, DirEntry, ReadDir}, io::Write, path::{Path, PathBuf}, sync::Arc
 };
-use tokio::task::{self, JoinHandle};
+use tokio::{sync::{Semaphore, SemaphorePermit}, task::{self, JoinHandle}};
 
 use super::helpers::extract_damagelike_expr;
 use super::*;
@@ -74,71 +69,82 @@ pub async fn generate_writer_files() {
     }
 }
 
+#[derive(Debug)]
+pub enum CacheError {
+    IoError(std::io::Error),
+    SerdeError(serde_json::Error),
+    PathBufError(std::path::PathBuf),
+    ParseIntError(std::num::ParseIntError),
+}
+
 // Syncronously loads all the cache that will live in memory through the entire execution
-pub fn load_cache() -> GlobalCache {
-    println!("load_cache: started loading champion_files");
-
-    let champion_files: Vec<PathBuf> = fs::read_dir("internal/champions")
-        .expect("Failed to read champions")
-        .map(|e| e.unwrap().path())
-        .collect();
-
-    let champion_names: HashMap<String, String> =
-        read_from_file::<HashMap<String, String>>("internal/champion_names.json");
-
-    println!("load_cache: started loading item_files");
-
-    let item_files: Vec<PathBuf> = fs::read_dir("internal/items")
-        .expect("Failed to read items")
-        .map(|e| e.unwrap().path())
-        .collect();
-
-
-    println!("load_cache: started loading meta_items");
-
-    let meta_items: HashMap<String, Positions> = read_from_file::<MetaItems>("internal/meta_items.json");
-
-    let mut items = HashMap::with_capacity(item_files.len());
-    for path_name in item_files {
-        let data: Item = read_from_file::<Item>(
-            path_name
-                .to_str()
-                .expect("Failed to convert path to string"),
-        );
-        let name: &str = extract_file_name(&path_name);
-        match name.parse::<usize>() {
-            Ok(item_id) => {
-                items.insert(item_id, data);
-            }
-            Err(e) => {
-                println!("Failed to parse item id: {}", e);
-                continue;
+pub fn load_cache() -> Result<GlobalCache, CacheError> {
+    println!("fn[load_cache]: started loading champion_files");
+    let mut champions: HashMap<String, Champion> = HashMap::new();
+    match fs::read_dir("internal/champions") {
+        Ok(read_dir) => {
+            for entry in read_dir {
+                let path_buf: PathBuf = entry.map_err(CacheError::IoError)?.path();
+                let path_name: &str = path_buf
+                    .to_str()
+                    .ok_or_else(|| CacheError::PathBufError(path_buf.clone()))?;
+                let file_name: &str = extract_file_name(&path_buf);
+                let data: Champion = read_from_file::<Champion>(path_name);
+                champions.insert(String::from(file_name), data);
             }
         }
+        Err(e) => return Err(CacheError::IoError(e)),
     }
 
-    println!("load_cache: started loading runes");
-
-    let runes: HashMap<usize, Rune> = read_from_file::<HashMap<usize, Rune>>("internal/runes.json");
-
-    let mut champions: HashMap<String, Champion> = HashMap::with_capacity(champion_files.len());
-    for path_name in champion_files {
-        let data: Champion = read_from_file::<Champion>(
-            path_name
-                .to_str()
-                .expect("Failed to convert path to string"),
-        );
-        let name: &str = extract_file_name(&path_name);
-        champions.insert(String::from(name), data);
+    println!("fn[load_cache]: started loading item_files");
+    let mut items: HashMap<usize, Item> = HashMap::new();
+    match fs::read_dir("internal/items") {
+        Ok(read_dir) => {
+            for entry in read_dir {
+                let path_buf: PathBuf = entry.map_err(CacheError::IoError)?.path();
+                let path_name: &str = path_buf
+                    .to_str()
+                    .ok_or_else(|| CacheError::PathBufError(path_buf.clone()))?;
+                let file_name: &str = extract_file_name(&path_buf);
+                let data: Item = read_from_file::<Item>(path_name);
+                let item_id: usize = file_name.parse::<usize>().map_err(CacheError::ParseIntError)?;
+                items.insert(item_id, data);        
+            }
+        }
+        Err(e) => return Err(CacheError::IoError(e)),
     }
 
-    GlobalCache {
+    let champion_names_path: &'static str = "internal/champion_names.json";
+    let champion_names: HashMap<String, String>= if Path::new(champion_names_path).exists() {
+        println!("fn[load_cache]: started loading champion_names");    
+        read_from_file::<HashMap<String, String>>("internal/champion_names.json")
+    } else {
+        HashMap::new()
+    };
+    
+    let meta_items_path: &'static str = "internal/meta_items.json";
+    let meta_items: HashMap<String, Positions> = if Path::new(meta_items_path).exists() {
+        println!("fn[load_cache]: started loading meta_items");
+        read_from_file::<MetaItems>("internal/meta_items.json")
+    } else {
+        HashMap::new()
+    };
+    
+    let runes_path: &'static str = "internal/runes.json";
+    let runes: HashMap<usize, Rune> = if Path::new(runes_path).exists() {
+        println!("fn[load_cache]: started loading runes");
+        read_from_file::<HashMap<usize, Rune>>("internal/runes.json")
+    } else {
+        HashMap::new()
+    };
+    
+    Ok(GlobalCache {
         champions,
         items,
         runes,
         champion_names,
         meta_items,
-    }
+    })
 }
 
 // Helper function to fetch data from the CDN. Returns a HashMap with `any` value.
@@ -186,17 +192,19 @@ async fn fetch_riot_api<T: DeserializeOwned>(client: Client, path_name: &str) ->
 }
 
 // Updates files in `cache/riot` with the corresponding ones in the patch determined by `LOL_VERSION`
-// Uncontrolled concurrency is used. Expected to spawn nearly 600 tokio tasks in total.
-// Threads are not all spawned at the same time. Each task has its conclusion awaited
-// before the next one is allowed to start. Maximum number of threads spawned is the amount of 
-// items in Riot's `item.json`, of approximately 400
+// Runs a maximum of 32 tokio threads at the same time
 pub async fn update_riot_cache(client: Client) {
     let champions_json: RiotCdnStandard = fetch_riot_api::<RiotCdnStandard>(client.clone(), "champion").await;
     let mut champions_futures: Vec<JoinHandle<()>> = Vec::new();
+    let champions_semaphore: Arc<Semaphore> = Arc::new(Semaphore::new(1 << 5));
 
     for (champion_id, _) in champions_json.data.clone() {
         let client: Client = client.clone();
+        let semaphore: Arc<Semaphore> = champions_semaphore.clone();
+
         champions_futures.push(tokio::spawn(async move {
+            let _permit: SemaphorePermit<'_> = semaphore.acquire().await.unwrap();
+
             let this_path_name: String = format!("cache/riot/champions/{}.json", champion_id);
             let this_champion_data: RiotCdnStandard =
                 fetch_riot_api::<RiotCdnStandard>(client, &format!("champion/{}", champion_id)).await;
@@ -306,7 +314,7 @@ pub async fn get_meta_items(client: Client) {
 }
 
 // Takes an instance parameter and uses CDN API to get its data and save to file system.
-pub async fn update_instances(client: Client, instance: &str) {
+pub async fn update_cdn_cache(client: Client, instance: &str) {
     let result: HashMap<String, Value> = fetch_cdn_api(client, &format!("{}.json", instance)).await;
 
     for (key, value) in result {
@@ -365,7 +373,7 @@ pub fn write_to_file(path_name: &str, bytes: &[u8]) {
 pub fn read_from_file<T: DeserializeOwned>(path_name: &str) -> T {
     println!("read_from_file: {}", path_name);
     
-    let data: String = fs::read_to_string(path_name).expect(&format!("Unable to read file: {}", path_name));
+    let data: String = fs::read_to_string(path_name).expect(&format!("Unable to read file [fn read_from_file<T: DeserializeOwned>(path_name: &str) -> T]: {}", path_name));
     serde_json::from_str(&data).expect("Failed to parse JSON")
 }
 

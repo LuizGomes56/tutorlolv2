@@ -5,6 +5,7 @@ use super::internal::Positions;
 use super::items::Item;
 use super::runes::Rune;
 
+#[derive(Default)]
 pub struct GlobalCache {
     pub champions: HashMap<String, Champion>,
     pub items: HashMap<usize, Item>,

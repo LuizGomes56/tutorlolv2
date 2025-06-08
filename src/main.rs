@@ -38,6 +38,19 @@ pub struct AppState {
 async fn main() -> Result<()> {
     dotenv().ok();
 
+    let client: Client = Client::new();
+    let cache: Arc<GlobalCache> = match load_cache() {
+        Ok(cache) => Arc::new(cache),
+        Err(e) => {
+            println!(
+                "Program was not successful in loading cache.\n
+                    Please call route `setup/project` to initialize and rerun the program\n
+                    Error occurred: {:#?}",
+                e
+            );
+            Arc::new(GlobalCache::default())
+        }
+    };
     let dsn: String = env::var("DATABASE_URL").expect("DATABASE_URL is not set in the environment");
     let host: String = env::var("HOST").expect("HOST is not set in the environment");
     let pool: Pool<Postgres> = PgPoolOptions::new()
@@ -55,16 +68,13 @@ async fn main() -> Result<()> {
             .allowed_headers([http::header::AUTHORIZATION, http::header::CONTENT_TYPE])
             .max_age(3600);
 
-        let cache: Arc<GlobalCache> = Arc::new(load_cache());
-        let client = Client::new();
-
         App::new()
             .wrap(cors)
             .app_data({
                 Data::new(AppState {
                     db: pool.clone(),
-                    cache,
-                    client,
+                    cache: cache.clone(),
+                    client: client.clone(),
                     password: env::var("SYSTEM_PASSWORD").expect("SYSTEM_PASSWORD is not set"),
                 })
             })

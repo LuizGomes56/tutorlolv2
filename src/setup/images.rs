@@ -2,7 +2,7 @@ use std::{
     collections::HashMap,
     env,
     fs::{self, ReadDir},
-    path::PathBuf,
+    path::{Path, PathBuf},
 };
 
 use reqwest::{Client, Response};
@@ -32,45 +32,53 @@ pub async fn img_download_instances(client: Client) {
             let outer_result: RiotCdnChampion = read_from_file::<RiotCdnChampion>(path_name);
             let spells: Vec<RiotCdnInstance> = outer_result.spells;
             let mut inner_futures: Vec<JoinHandle<()>> = Vec::new();
-            let champion_icon_url: String =
-                format!("{}/champion/{}", outer_base_uri, outer_result.image.full);
-            println!(
-                "fn[img_download_instances]: [champion] {}",
-                &champion_icon_url
-            );
-            let champion_response: Response =
-                outer_client.get(&champion_icon_url).send().await.unwrap();
-            let champion_bytes = champion_response.bytes().await.unwrap();
             let champion_dir: &'static str = "img/champions";
             let champion_file_name: String = format!("{}.png", outer_result.id);
-            write_to_file(
-                &format!("{}/{}", champion_dir, &champion_file_name),
-                &champion_bytes,
-            );
-            let passive_icon_url: String = format!(
-                "{}/passive/{}",
-                outer_base_uri, outer_result.passive.image.full
-            );
-            println!(
-                "fn[img_download_instances]: [passive] {}",
-                &passive_icon_url
-            );
-            let passive_response: Response =
-                outer_client.get(&passive_icon_url).send().await.unwrap();
-            let passive_bytes = passive_response.bytes().await.unwrap();
+            let champion_file_path: String = format!("{}/{}", champion_dir, &champion_file_name);
+            if Path::new(&champion_file_path).exists() {
+                println!(
+                    "[ALREADY_EXISTS] fn[img_download_instances]: [Champion] {}",
+                    &champion_file_path
+                );
+            } else {
+                let champion_icon_url: String =
+                    format!("{}/champion/{}", outer_base_uri, outer_result.image.full);
+                println!(
+                    "[REQUESTING] fn[img_download_instances]: [Champion] {}",
+                    &champion_icon_url
+                );
+                let champion_response: Response =
+                    outer_client.get(&champion_icon_url).send().await.unwrap();
+                let champion_bytes = champion_response.bytes().await.unwrap();
+                write_to_file(&champion_file_path, &champion_bytes);
+            }
             let passive_file_name: String = format!("{}P.png", outer_result.id);
-            write_to_file(
-                &format!("img/abilities/{}", &passive_file_name),
-                &passive_bytes,
-            );
+            let passive_file_path: String = format!("img/abilities/{}", &passive_file_name);
+            if Path::new(&passive_file_path).exists() {
+                println!(
+                    "[ALREADY_EXISTS] fn[img_download_instances]: [Passive] {}",
+                    &passive_file_path
+                );
+            } else {
+                let passive_icon_url: String = format!(
+                    "{}/passive/{}",
+                    outer_base_uri, outer_result.passive.image.full
+                );
+                println!(
+                    "[REQUESTING] fn[img_download_instances]: [Passive] {}",
+                    &passive_icon_url
+                );
+                let passive_response: Response =
+                    outer_client.get(&passive_icon_url).send().await.unwrap();
+                let passive_bytes = passive_response.bytes().await.unwrap();
+                write_to_file(&passive_file_path, &passive_bytes);
+            }
             for (index, spell) in spells.into_iter().enumerate() {
                 let inner_id: String = outer_result.id.clone();
                 let inner_base_uri: String = outer_base_uri.clone();
                 let inner_client: Client = outer_client.clone();
                 inner_futures.push(tokio::spawn(async move {
                     let label_vec: [&'static str; 4] = ["Q", "W", "E", "R"];
-                    let url: String = format!("{}/spell/{}", inner_base_uri, spell.image.full);
-                    let spell_dir: &'static str = "img/abilities";
                     let file_name: String = format!(
                         "{}{}.png",
                         &inner_id,
@@ -78,13 +86,20 @@ pub async fn img_download_instances(client: Client) {
                             .get(index)
                             .unwrap_or(&format!("_Error_{}", index).as_str())
                     );
-                    println!("fn[img_download_instances]: [spell] {}", &url);
-                    let spell_response: Response = inner_client.get(&url).send().await.unwrap();
-                    let spell_bytes = spell_response.bytes().await.unwrap();
-                    write_to_file(
-                        &format!("{}/{}", spell_dir, file_name.as_str()),
-                        &spell_bytes,
-                    );
+                    let spell_dir: &'static str = "img/abilities";
+                    let spell_file_path = format!("{}/{}", spell_dir, file_name.as_str());
+                    if Path::new(&spell_file_path).exists() {
+                        println!(
+                            "[ALREADY_EXISTS] fn[img_download_instances]: [Spell] {}",
+                            &spell_file_path
+                        );
+                    } else {
+                        let url: String = format!("{}/spell/{}", inner_base_uri, spell.image.full);
+                        println!("[REQUESTING] fn[img_download_instances]: [Spell] {}", &url);
+                        let spell_response: Response = inner_client.get(&url).send().await.unwrap();
+                        let spell_bytes = spell_response.bytes().await.unwrap();
+                        write_to_file(&spell_file_path, &spell_bytes);
+                    }
                 }));
             }
             for inner_future in inner_futures {
@@ -120,10 +135,18 @@ pub async fn img_download_arts(client: Client) {
                     );
                     let label_dir: String = format!("img/{}", label);
                     let file_name: String = format!("{}_{}.jpg", &inner_id, &skin_number);
-                    println!("fn[img_download_arts]: {}", &url);
-                    let label_response: Response = inner_client.get(&url).send().await.unwrap();
-                    let label_bytes = label_response.bytes().await.unwrap();
-                    write_to_file(&format!("{}/{}", label_dir, &file_name), &label_bytes);
+                    let final_name: String = format!("{}/{}", label_dir, &file_name);
+                    if Path::new(&final_name).exists() {
+                        println!(
+                            "[ALREADY_EXISTS] fn[img_download_arts]: [Arts] {}",
+                            &final_name
+                        );
+                    } else {
+                        println!("[REQUESTING] fn[img_download_arts]: [Arts] {}", &url);
+                        let label_response: Response = inner_client.get(&url).send().await.unwrap();
+                        let label_bytes = label_response.bytes().await.unwrap();
+                        write_to_file(&final_name, &label_bytes);
+                    }
                 }
             }));
         }
@@ -151,10 +174,18 @@ pub async fn img_download_runes(client: Client) {
         let file_name: String = format!("{}.png", rune_id);
         let cloned_client: Client = client.clone();
         rune_futures.push(tokio::spawn(async move {
-            println!("fn[img_download_runes]: {}", &url);
-            let rune_response: Response = cloned_client.get(&url).send().await.unwrap();
-            let rune_bytes = rune_response.bytes().await.unwrap();
-            write_to_file(&format!("img/runes/{}", file_name), &rune_bytes);
+            let rune_file_path = format!("img/runes/{}", file_name);
+            if Path::new(&rune_file_path).exists() {
+                println!(
+                    "[ALREADY_EXISTS] fn[img_download_runes]: [Rune] {}",
+                    &rune_file_path
+                );
+            } else {
+                println!("[REQUESTING] fn[img_download_runes]: [Rune] {}", &url);
+                let rune_response: Response = cloned_client.get(&url).send().await.unwrap();
+                let rune_bytes = rune_response.bytes().await.unwrap();
+                write_to_file(&rune_file_path, &rune_bytes);
+            }
         }));
     }
     for rune_future in rune_futures {
@@ -172,13 +203,25 @@ pub async fn img_download_items(client: Client) {
         item_futures.push(tokio::spawn(async move {
             let path_buf: PathBuf = file.unwrap().path();
             let item_id: &str = extract_file_name(&path_buf);
-            let item_icon_url: String = format!("{}/item/{}.png", cloned_base_uri, item_id);
-            println!("fn[img_download_items]: {}", &item_icon_url);
-            let item_response: Response = cloned_client.get(&item_icon_url).send().await.unwrap();
-            let item_bytes = item_response.bytes().await.unwrap();
             let item_dir: &'static str = "img/items";
             let item_file_name: String = format!("{}.png", item_id);
-            write_to_file(&format!("{}/{}", item_dir, item_file_name), &item_bytes);
+            let item_file_path: String = format!("{}/{}", item_dir, item_file_name);
+            if Path::new(&item_file_path).exists() {
+                println!(
+                    "[ALREADY_EXISTS] fn[img_download_items]: [Item] {}",
+                    &item_file_path
+                );
+            } else {
+                let item_icon_url: String = format!("{}/item/{}.png", cloned_base_uri, item_id);
+                println!(
+                    "[REQUESTING] fn[img_download_items]: [Item] {}",
+                    &item_icon_url
+                );
+                let item_response: Response =
+                    cloned_client.get(&item_icon_url).send().await.unwrap();
+                let item_bytes = item_response.bytes().await.unwrap();
+                write_to_file(&item_file_path, &item_bytes);
+            }
         }));
     }
     for item_future in item_futures {
