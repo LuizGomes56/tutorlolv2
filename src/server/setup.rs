@@ -40,7 +40,6 @@ pub async fn setup_project(state: Data<AppState>) -> impl Responder {
         }
 
         let _ = task::spawn_blocking(rewrite_champion_names).await.ok();
-        let _ = task::spawn_blocking(setup_champion_cache).await.ok();
         let _ = task::spawn_blocking(initialize_items).await.ok();
 
         append_prettified_item_stats().await;
@@ -55,7 +54,10 @@ pub async fn setup_project(state: Data<AppState>) -> impl Responder {
         });
 
         // #![dev]
-        tokio::spawn(generate_writer_files());
+        tokio::spawn(async move {
+            generate_writer_files().await;
+            setup_champion_cache();
+        });
 
         // There's no need to await for image download conclusion
         // They are independent and may run in parallel
