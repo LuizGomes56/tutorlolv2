@@ -1,7 +1,10 @@
 use super::schemas::APIResponse;
 use crate::{
     AppState,
-    setup::update::{get_meta_items, update_cdn_cache, update_riot_cache},
+    setup::{
+        cache::{update_cdn_cache, update_riot_cache},
+        scraper::meta_items_scraper,
+    },
 };
 use actix_web::{HttpResponse, Responder, post, web::Data};
 
@@ -55,7 +58,7 @@ pub async fn update_items(state: Data<AppState>) -> impl Responder {
 
 #[post("/meta_items")]
 pub async fn update_meta_items(state: Data<AppState>) -> impl Responder {
-    match get_meta_items(state.client.clone(), state.envcfg.clone()).await {
+    match meta_items_scraper(state.client.clone(), state.envcfg.clone()).await {
         Ok(_) => HttpResponse::Ok().json(APIResponse {
             success: true,
             message: "Meta Items updated on client",

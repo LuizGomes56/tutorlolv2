@@ -1,16 +1,17 @@
 use crate::{
     AppState, EnvConfig,
     server::schemas::APIResponse,
-    setup::update::UpdateError,
     setup::{
+        cache::{update_cdn_cache, update_riot_cache},
+        generators::generate_writer_files,
         images::{
             img_download_arts, img_download_instances, img_download_items, img_download_runes,
         },
+        scraper::meta_items_scraper,
         update::{
-            append_prettified_item_stats, generate_writer_files, get_meta_items,
-            identify_damaging_items, initialize_items, replace_item_names_with_ids,
-            rewrite_champion_names, setup_champion_cache, setup_project_folders, update_cdn_cache,
-            update_riot_cache,
+            prettify_internal_items, setup_champion_names, setup_damaging_items,
+            setup_internal_champions, setup_internal_items, setup_meta_items,
+            setup_project_folders,
         },
     },
 };
@@ -27,7 +28,7 @@ pub async fn setup_project(state: Data<AppState>) -> impl Responder {
     let envcfg: Arc<EnvConfig> = state.envcfg.clone();
 
     tokio::spawn(async move {
-        let mut update_futures: Vec<JoinHandle<Result<(), UpdateError>>> = Vec::new();
+        let mut update_futures: Vec<JoinHandle<Result<(), _>>> = Vec::new();
 
         update_futures.push(tokio::spawn(update_riot_cache(
             client.clone(),
@@ -50,25 +51,26 @@ pub async fn setup_project(state: Data<AppState>) -> impl Responder {
             }
         }
 
-        let _ = task::spawn_blocking(rewrite_champion_names).await.ok();
-        let _ = task::spawn_blocking(initialize_items).await.ok();
-        let _ = append_prettified_item_stats().await;
+        let _ = task::spawn_blocking(setup_champion_names).await.ok();
+        let _ = task::spawn_blocking(setup_internal_items).await.ok();
+        let _ = prettify_internal_items().await;
 
         let client_1: Client = client.clone();
         let envcfg_1: Arc<EnvConfig> = envcfg.clone();
 
         tokio::spawn(async move {
-            let _ = get_meta_items(client_1, envcfg_1).await;
-            let _ = replace_item_names_with_ids();
+            let _ = meta_items_scraper(client_1, envcfg_1).await;
+            let _ = setup_meta_items();
             // #![dev]
-            let _ = identify_damaging_items();
+            let _ = setup_damaging_items();
         });
 
         // #![dev]
         let envcfg_2: Arc<EnvConfig> = envcfg.clone();
+
         tokio::spawn(async move {
             let _ = generate_writer_files(envcfg_2).await;
-            let _ = setup_champion_cache();
+            let _ = setup_internal_champions();
         });
 
         // There's no need to await for image download conclusion
@@ -82,7 +84,7 @@ pub async fn setup_project(state: Data<AppState>) -> impl Responder {
     HttpResponse::Ok().json(APIResponse {
         success: true,
         message: "Project setup started. Expected time to complete: 3-5 minutes",
-        data: "Using 10 tokio threads",
+        data: (),
     })
 }
 
@@ -104,7 +106,7 @@ pub async fn setup_folders() -> impl Responder {
 
 #[post("/champions")]
 pub async fn setup_champions() -> impl Responder {
-    match setup_champion_cache() {
+    match setup_internal_champions() {
         Ok(_) => HttpResponse::Ok().json(APIResponse {
             success: true,
             message: "Champions are ready",

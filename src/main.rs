@@ -9,13 +9,6 @@ mod writers;
 
 use actix_cors::Cors;
 use actix_files::Files;
-use middlewares::{
-    error::json_error_middleware, logger::logger_middleware, password::password_middleware,
-};
-use model::application::GlobalCache;
-use reqwest::Client;
-use server::{formulas::*, games::*, images::*, internal::*, setup::*, statics::*, update::*};
-
 use actix_web::{
     App, HttpServer, http, main,
     middleware::from_fn,
@@ -23,7 +16,13 @@ use actix_web::{
     web::{Data, JsonConfig, scope},
 };
 use dotenvy::dotenv;
-use setup::update::load_cache;
+use middlewares::{
+    error::json_error_middleware, logger::logger_middleware, password::password_middleware,
+};
+use model::application::GlobalCache;
+use reqwest::Client;
+use server::{formulas::*, games::*, images::*, internal::*, setup::*, statics::*, update::*};
+use setup::cache::load_cache;
 use sqlx::{Pool, Postgres, postgres::PgPoolOptions};
 use std::{env, io::Result, sync::Arc};
 

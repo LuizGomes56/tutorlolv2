@@ -29,11 +29,14 @@ impl AddValue for f64 {
 use super::eval::eval_math_expr;
 
 // By 06/07/2025 Earth dragons give +5% resists
+// #![manual_impl]
 pub const EARTH_DRAGON_MULTIPLIER: f64 = 0.05;
 // By 06/07/2025 Fire dragons give +3% bonus attack stats
+// #![manual_impl]
 pub const FIRE_DRAGON_MULTIPLIER: f64 = 0.03;
 // Chemtech Dragons will be used to calculate shields/healing/vamp
 // #![unsupported]
+// #![manual_impl]
 pub const CHEMTECH_DRAGON_MULTIPLIER: f64 = 0.06;
 
 pub struct GameStateCache<'a> {
@@ -41,10 +44,7 @@ pub struct GameStateCache<'a> {
     pub runes: &'a HashMap<usize, Rune>,
 }
 
-pub struct GameStateCurrentPlayer<'a, T>
-where
-    T: CurrentPlayerLike,
-{
+pub struct GameStateCurrentPlayer<'a, T: CurrentPlayerLike> {
     pub thisv: &'a T,
     pub cache: &'a Champion,
     pub items: &'a Vec<usize>,
@@ -61,10 +61,7 @@ pub struct GameStateEnemyPlayer<'a> {
     pub level: usize,
 }
 
-pub struct GameState<'a, T>
-where
-    T: CurrentPlayerLike,
-{
+pub struct GameState<'a, T: CurrentPlayerLike> {
     pub cache: GameStateCache<'a>,
     pub current_player: GameStateCurrentPlayer<'a, T>,
     pub enemy_player: GameStateEnemyPlayer<'a>,
