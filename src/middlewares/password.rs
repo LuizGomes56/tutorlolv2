@@ -24,8 +24,8 @@ pub async fn password_middleware(
     req: ServiceRequest,
     next: Next<BoxBody>,
 ) -> Result<ServiceResponse<EitherBody<BoxBody, BoxBody>>, Error> {
-    if body.password != state.password {
-        let response = HttpResponse::Unauthorized().json(APIResponse {
+    if body.password != state.envcfg.system_password {
+        let response: HttpResponse = HttpResponse::Unauthorized().json(APIResponse {
             success: false,
             message: "Password given is invalid".to_string(),
             data: (),
@@ -34,6 +34,6 @@ pub async fn password_middleware(
         return Ok(req.into_response(response.map_into_left_body()));
     }
 
-    let res = next.call(req).await?;
+    let res: ServiceResponse = next.call(req).await?;
     Ok(res.map_into_right_body())
 }

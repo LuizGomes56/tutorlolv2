@@ -1,5 +1,4 @@
-use std::{collections::HashMap, sync::Arc};
-
+use super::*;
 use crate::model::{
     application::GlobalCache,
     base::{AttackType, BasicStats, ComparedItem, Stats},
@@ -8,8 +7,7 @@ use crate::model::{
     riot::*,
     runes::Rune,
 };
-
-use super::*;
+use std::{collections::HashMap, sync::Arc};
 
 pub fn realtime<'a>(
     cache: &'a Arc<GlobalCache>,

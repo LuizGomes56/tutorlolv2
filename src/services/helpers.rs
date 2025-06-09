@@ -1,5 +1,3 @@
-use std::{collections::HashMap, hash::Hash};
-
 use crate::model::{
     base::{
         AttackType, BasicStats, ComparedDamage, ComparedItem, CurrentPlayerLike, DamageLike,
@@ -14,6 +12,7 @@ use crate::model::{
     riot::RiotChampionStats,
     runes::Rune,
 };
+use std::{collections::HashMap, hash::Hash};
 
 trait AddValue {
     fn add_if_some(&mut self, value: Option<f64>);

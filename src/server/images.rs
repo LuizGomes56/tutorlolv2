@@ -1,5 +1,3 @@
-use actix_web::{HttpResponse, Responder, post, web::Data};
-
 use crate::{
     AppState,
     server::schemas::APIResponse,
@@ -7,10 +5,11 @@ use crate::{
         img_download_arts, img_download_instances, img_download_items, img_download_runes,
     },
 };
+use actix_web::{HttpResponse, Responder, post, web::Data};
 
 #[post("/instances")]
 pub async fn download_instances(state: Data<AppState>) -> impl Responder {
-    img_download_instances(state.client.clone()).await;
+    img_download_instances(state.client.clone(), state.envcfg.clone()).await;
     HttpResponse::Ok().json(APIResponse {
         success: true,
         message: "Downloaded instances",
@@ -20,7 +19,7 @@ pub async fn download_instances(state: Data<AppState>) -> impl Responder {
 
 #[post("/items")]
 pub async fn download_items(state: Data<AppState>) -> impl Responder {
-    img_download_items(state.client.clone()).await;
+    img_download_items(state.client.clone(), state.envcfg.clone()).await;
     HttpResponse::Ok().json(APIResponse {
         success: true,
         message: "Downloaded items",
@@ -30,7 +29,7 @@ pub async fn download_items(state: Data<AppState>) -> impl Responder {
 
 #[post("/runes")]
 pub async fn download_runes(state: Data<AppState>) -> impl Responder {
-    img_download_runes(state.client.clone()).await;
+    img_download_runes(state.client.clone(), state.envcfg.clone()).await;
     HttpResponse::Ok().json(APIResponse {
         success: true,
         message: "Downloaded runes",
@@ -40,7 +39,7 @@ pub async fn download_runes(state: Data<AppState>) -> impl Responder {
 
 #[post("/arts")]
 pub async fn download_arts(state: Data<AppState>) -> impl Responder {
-    img_download_arts(state.client.clone()).await;
+    img_download_arts(state.client.clone(), state.envcfg.clone()).await;
     HttpResponse::Ok().json(APIResponse {
         success: true,
         message: "Downloaded centered art",

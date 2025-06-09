@@ -1,8 +1,6 @@
-use std::collections::HashMap;
-
-use actix_web::{HttpResponse, Responder, get, web::Data};
-
 use crate::{AppState, server::schemas::APIResponse};
+use actix_web::{HttpResponse, Responder, get, web::Data};
+use std::collections::HashMap;
 
 #[get("/champions")]
 pub async fn static_champions(state: Data<AppState>) -> impl Responder {

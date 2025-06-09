@@ -1,126 +1,125 @@
 use crate::{
+    EnvConfig,
     model::riot::{RiotCdnChampion, RiotCdnInstance, RiotCdnRune, RiotCdnSkin},
     setup::{
         helpers::extract_file_name,
-        update::{read_from_file, write_to_file},
+        update::{UpdateError, read_from_file, write_to_file},
     },
 };
 use reqwest::{Client, Response};
 use std::{
     collections::HashMap,
-    env,
     fs::{self, ReadDir},
     path::{Path, PathBuf},
+    sync::Arc,
 };
 use tokio::task::JoinHandle;
 
-fn get_base_uri() -> String {
-    let url: String = env::var("DD_DRAGON_ENDPOINT").expect("DD_DRAGON_ENDPOINT is not set");
-    let version: String = env::var("LOL_VERSION").expect("LOL_VERSION is not set");
-
+fn get_base_uri(envcfg: Arc<EnvConfig>) -> String {
+    let url: &str = &envcfg.dd_dragon_endpoint;
+    let version: &str = &envcfg.lol_version;
     format!("{}/{}/img", url, version)
 }
 
-pub async fn img_download_instances(client: Client) {
+pub async fn img_download_instances(client: Client, envcfg: Arc<EnvConfig>) {
     let files: ReadDir = fs::read_dir("cache/riot/champions").unwrap();
-    let base_uri: String = get_base_uri();
-    let mut outer_futures: Vec<JoinHandle<()>> = Vec::new();
+    let base_uri: String = get_base_uri(envcfg);
     for file in files {
         let outer_base_uri: String = base_uri.clone();
         let outer_client: Client = client.clone();
-        outer_futures.push(tokio::spawn(async move {
-            let path_buf: PathBuf = file.unwrap().path();
-            let path_name: &str = path_buf.to_str().unwrap();
-            let outer_result: RiotCdnChampion = read_from_file::<RiotCdnChampion>(path_name);
-            let spells: Vec<RiotCdnInstance> = outer_result.spells;
-            let mut inner_futures: Vec<JoinHandle<()>> = Vec::new();
-            let champion_dir: &'static str = "img/champions";
-            let champion_file_name: String = format!("{}.png", outer_result.id);
-            let champion_file_path: String = format!("{}/{}", champion_dir, &champion_file_name);
-            if Path::new(&champion_file_path).exists() {
-                println!(
-                    "[ALREADY_EXISTS] fn[img_download_instances]: [Champion] {}",
-                    &champion_file_path
+
+        let path_buf: PathBuf = file.unwrap().path();
+        let path_name: &str = path_buf.to_str().unwrap();
+        let outer_result: RiotCdnChampion = read_from_file::<RiotCdnChampion>(path_name).unwrap();
+        let spells: Vec<RiotCdnInstance> = outer_result.spells;
+        let mut inner_futures: Vec<JoinHandle<()>> = Vec::new();
+        let champion_dir: &'static str = "img/champions";
+        let champion_file_name: String = format!("{}.png", outer_result.id);
+        let champion_file_path: String = format!("{}/{}", champion_dir, &champion_file_name);
+        if Path::new(&champion_file_path).exists() {
+            println!(
+                "[ALREADY_EXISTS] fn[img_download_instances]: [Champion] {}",
+                &champion_file_path
+            );
+        } else {
+            let champion_icon_url: String =
+                format!("{}/champion/{}", outer_base_uri, outer_result.image.full);
+            println!(
+                "[REQUESTING] fn[img_download_instances]: [Champion] {}",
+                &champion_icon_url
+            );
+            let champion_response: Response = client.get(&champion_icon_url).send().await.unwrap();
+            let champion_bytes = champion_response.bytes().await.unwrap();
+            let _ = write_to_file(&champion_file_path, &champion_bytes)
+                .map_err(|e: UpdateError| println!("[ERROR] fn[img_download_instances]: {:#?}", e));
+        }
+        let passive_file_name: String = format!("{}P.png", outer_result.id);
+        let passive_file_path: String = format!("img/abilities/{}", &passive_file_name);
+        if Path::new(&passive_file_path).exists() {
+            println!(
+                "[ALREADY_EXISTS] fn[img_download_instances]: [Passive] {}",
+                &passive_file_path
+            );
+        } else {
+            let passive_icon_url: String = format!(
+                "{}/passive/{}",
+                outer_base_uri, outer_result.passive.image.full
+            );
+            println!(
+                "[REQUESTING] fn[img_download_instances]: [Passive] {}",
+                &passive_icon_url
+            );
+            let passive_response: Response =
+                outer_client.get(&passive_icon_url).send().await.unwrap();
+            let passive_bytes = passive_response.bytes().await.unwrap();
+            let _ = write_to_file(&passive_file_path, &passive_bytes)
+                .map_err(|e: UpdateError| println!("[ERROR] fn[img_download_instances]: {:#?}", e));
+        }
+        for (index, spell) in spells.into_iter().enumerate() {
+            let inner_id: String = outer_result.id.clone();
+            let inner_base_uri: String = outer_base_uri.clone();
+            let inner_client: Client = outer_client.clone();
+            inner_futures.push(tokio::spawn(async move {
+                let label_vec: [&'static str; 4] = ["Q", "W", "E", "R"];
+                let file_name: String = format!(
+                    "{}{}.png",
+                    &inner_id,
+                    &label_vec
+                        .get(index)
+                        .unwrap_or(&format!("_Error_{}", index).as_str())
                 );
-            } else {
-                let champion_icon_url: String =
-                    format!("{}/champion/{}", outer_base_uri, outer_result.image.full);
-                println!(
-                    "[REQUESTING] fn[img_download_instances]: [Champion] {}",
-                    &champion_icon_url
-                );
-                let champion_response: Response =
-                    outer_client.get(&champion_icon_url).send().await.unwrap();
-                let champion_bytes = champion_response.bytes().await.unwrap();
-                write_to_file(&champion_file_path, &champion_bytes);
-            }
-            let passive_file_name: String = format!("{}P.png", outer_result.id);
-            let passive_file_path: String = format!("img/abilities/{}", &passive_file_name);
-            if Path::new(&passive_file_path).exists() {
-                println!(
-                    "[ALREADY_EXISTS] fn[img_download_instances]: [Passive] {}",
-                    &passive_file_path
-                );
-            } else {
-                let passive_icon_url: String = format!(
-                    "{}/passive/{}",
-                    outer_base_uri, outer_result.passive.image.full
-                );
-                println!(
-                    "[REQUESTING] fn[img_download_instances]: [Passive] {}",
-                    &passive_icon_url
-                );
-                let passive_response: Response =
-                    outer_client.get(&passive_icon_url).send().await.unwrap();
-                let passive_bytes = passive_response.bytes().await.unwrap();
-                write_to_file(&passive_file_path, &passive_bytes);
-            }
-            for (index, spell) in spells.into_iter().enumerate() {
-                let inner_id: String = outer_result.id.clone();
-                let inner_base_uri: String = outer_base_uri.clone();
-                let inner_client: Client = outer_client.clone();
-                inner_futures.push(tokio::spawn(async move {
-                    let label_vec: [&'static str; 4] = ["Q", "W", "E", "R"];
-                    let file_name: String = format!(
-                        "{}{}.png",
-                        &inner_id,
-                        &label_vec
-                            .get(index)
-                            .unwrap_or(&format!("_Error_{}", index).as_str())
+                let spell_dir: &'static str = "img/abilities";
+                let spell_file_path = format!("{}/{}", spell_dir, file_name.as_str());
+                if Path::new(&spell_file_path).exists() {
+                    println!(
+                        "[ALREADY_EXISTS] fn[img_download_instances]: [Spell] {}",
+                        &spell_file_path
                     );
-                    let spell_dir: &'static str = "img/abilities";
-                    let spell_file_path = format!("{}/{}", spell_dir, file_name.as_str());
-                    if Path::new(&spell_file_path).exists() {
-                        println!(
-                            "[ALREADY_EXISTS] fn[img_download_instances]: [Spell] {}",
-                            &spell_file_path
-                        );
-                    } else {
-                        let url: String = format!("{}/spell/{}", inner_base_uri, spell.image.full);
-                        println!("[REQUESTING] fn[img_download_instances]: [Spell] {}", &url);
-                        let spell_response: Response = inner_client.get(&url).send().await.unwrap();
-                        let spell_bytes = spell_response.bytes().await.unwrap();
-                        write_to_file(&spell_file_path, &spell_bytes);
-                    }
-                }));
-            }
-            for inner_future in inner_futures {
-                let _ = inner_future.await.unwrap();
-            }
-        }));
-    }
-    for outer_future in outer_futures {
-        let _ = outer_future.await.unwrap();
+                } else {
+                    let url: String = format!("{}/spell/{}", inner_base_uri, spell.image.full);
+                    println!("[REQUESTING] fn[img_download_instances]: [Spell] {}", &url);
+                    let spell_response: Response = inner_client.get(&url).send().await.unwrap();
+                    let spell_bytes = spell_response.bytes().await.unwrap();
+                    let _ =
+                        write_to_file(&spell_file_path, &spell_bytes).map_err(|e: UpdateError| {
+                            println!("[ERROR] fn[img_download_instances]: {:#?}", e)
+                        });
+                }
+            }));
+        }
+        for inner_future in inner_futures {
+            let _ = inner_future.await.unwrap();
+        }
     }
 }
 
-pub async fn img_download_arts(client: Client) {
+pub async fn img_download_arts(client: Client, envcfg: Arc<EnvConfig>) {
     let files: ReadDir = fs::read_dir("cache/riot/champions").unwrap();
-    let base_uri: String = env::var("DD_DRAGON_ENDPOINT").expect("DD_DRAGON_ENDPOINT is not set");
+    let base_uri: String = envcfg.dd_dragon_endpoint.clone();
     for file in files {
         let path_buf: PathBuf = file.unwrap().path();
         let path_name: &str = path_buf.to_str().unwrap();
-        let outer_result: RiotCdnChampion = read_from_file::<RiotCdnChampion>(path_name);
+        let outer_result: RiotCdnChampion = read_from_file::<RiotCdnChampion>(path_name).unwrap();
         let skins: Vec<RiotCdnSkin> = outer_result.skins;
         let mut inner_futures: Vec<JoinHandle<()>> = Vec::new();
         for skin in skins.into_iter() {
@@ -147,7 +146,10 @@ pub async fn img_download_arts(client: Client) {
                         println!("[REQUESTING] fn[img_download_arts]: [Arts] {}", &url);
                         let label_response: Response = inner_client.get(&url).send().await.unwrap();
                         let label_bytes = label_response.bytes().await.unwrap();
-                        write_to_file(&final_name, &label_bytes);
+                        let _ =
+                            write_to_file(&final_name, &label_bytes).map_err(|e: UpdateError| {
+                                println!("[ERROR] fn[img_download_arts]: {:#?}", e)
+                            });
                     }
                 }
             }));
@@ -158,11 +160,12 @@ pub async fn img_download_arts(client: Client) {
     }
 }
 
-pub async fn img_download_runes(client: Client) {
-    let runes_data: Vec<RiotCdnRune> = read_from_file::<Vec<RiotCdnRune>>("cache/riot/runes.json");
+pub async fn img_download_runes(client: Client, envcfg: Arc<EnvConfig>) {
+    let runes_data: Vec<RiotCdnRune> =
+        read_from_file::<Vec<RiotCdnRune>>("cache/riot/runes.json").unwrap();
     let mut rune_futures: Vec<JoinHandle<()>> = Vec::new();
     let mut runes_map: HashMap<usize, String> = HashMap::<usize, String>::new();
-    let endpoint: String = env::var("RIOT_IMAGE_ENDPOINT").expect("RIOT_IMAGE_ENDPOINT is not set");
+    let endpoint: &str = &envcfg.riot_image_endpoint;
     for value in runes_data {
         runes_map.insert(value.id, value.icon);
         for slot in value.slots {
@@ -186,7 +189,8 @@ pub async fn img_download_runes(client: Client) {
                 println!("[REQUESTING] fn[img_download_runes]: [Rune] {}", &url);
                 let rune_response: Response = cloned_client.get(&url).send().await.unwrap();
                 let rune_bytes = rune_response.bytes().await.unwrap();
-                write_to_file(&rune_file_path, &rune_bytes);
+                let _ = write_to_file(&rune_file_path, &rune_bytes)
+                    .map_err(|e: UpdateError| println!("[ERROR] fn[img_download_runes]: {:#?}", e));
             }
         }));
     }
@@ -195,9 +199,9 @@ pub async fn img_download_runes(client: Client) {
     }
 }
 
-pub async fn img_download_items(client: Client) {
+pub async fn img_download_items(client: Client, envcfg: Arc<EnvConfig>) {
     let files: ReadDir = fs::read_dir("cache/riot/items").unwrap();
-    let base_uri: String = get_base_uri();
+    let base_uri: String = get_base_uri(envcfg);
     let mut item_futures: Vec<JoinHandle<()>> = Vec::new();
     for file in files {
         let cloned_base_uri: String = base_uri.clone();
@@ -222,7 +226,8 @@ pub async fn img_download_items(client: Client) {
                 let item_response: Response =
                     cloned_client.get(&item_icon_url).send().await.unwrap();
                 let item_bytes = item_response.bytes().await.unwrap();
-                write_to_file(&item_file_path, &item_bytes);
+                let _ = write_to_file(&item_file_path, &item_bytes)
+                    .map_err(|e: UpdateError| println!("[ERROR] fn[img_download_items]: {:#?}", e));
             }
         }));
     }

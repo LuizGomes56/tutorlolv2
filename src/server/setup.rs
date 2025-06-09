@@ -1,12 +1,7 @@
-use std::time::Instant;
-
-use actix_web::{HttpResponse, Responder, post, web::Data};
-use reqwest::Client;
-use tokio::task::{self, JoinHandle};
-
-use crate::AppState;
 use crate::{
+    AppState, EnvConfig,
     server::schemas::APIResponse,
+    setup::update::UpdateError,
     setup::{
         images::{
             img_download_arts, img_download_instances, img_download_items, img_download_runes,
@@ -19,56 +14,69 @@ use crate::{
         },
     },
 };
+use actix_web::{HttpResponse, Responder, post, web::Data};
+use reqwest::Client;
+use std::sync::Arc;
+use tokio::task::{self, JoinHandle};
 
 #[post("/project")]
 pub async fn setup_project(state: Data<AppState>) -> impl Responder {
-    setup_project_folders();
+    let _ = setup_project_folders();
 
     let client: Client = state.client.clone();
+    let envcfg: Arc<EnvConfig> = state.envcfg.clone();
 
     tokio::spawn(async move {
-        let start_time: Instant = Instant::now();
-        let mut update_futures: Vec<JoinHandle<()>> = Vec::new();
+        let mut update_futures: Vec<JoinHandle<Result<(), UpdateError>>> = Vec::new();
 
-        update_futures.push(tokio::spawn(update_riot_cache(client.clone())));
-        update_futures.push(tokio::spawn(update_cdn_cache(client.clone(), "champions")));
-        update_futures.push(tokio::spawn(update_cdn_cache(client.clone(), "items")));
+        update_futures.push(tokio::spawn(update_riot_cache(
+            client.clone(),
+            envcfg.clone(),
+        )));
+        update_futures.push(tokio::spawn(update_cdn_cache(
+            client.clone(),
+            envcfg.clone(),
+            "champions",
+        )));
+        update_futures.push(tokio::spawn(update_cdn_cache(
+            client.clone(),
+            envcfg.clone(),
+            "items",
+        )));
 
         for update_future in update_futures {
-            let _ = update_future.await;
+            if let Err(e) = update_future.await {
+                println!("Error joining update future at fn[setup_project]: {:#?}", e);
+            }
         }
 
         let _ = task::spawn_blocking(rewrite_champion_names).await.ok();
         let _ = task::spawn_blocking(initialize_items).await.ok();
-
-        append_prettified_item_stats().await;
+        let _ = append_prettified_item_stats().await;
 
         let client_1: Client = client.clone();
+        let envcfg_1: Arc<EnvConfig> = envcfg.clone();
 
         tokio::spawn(async move {
-            get_meta_items(client_1).await;
-            replace_item_names_with_ids();
+            let _ = get_meta_items(client_1, envcfg_1).await;
+            let _ = replace_item_names_with_ids();
             // #![dev]
-            identify_damaging_items();
+            let _ = identify_damaging_items();
         });
 
         // #![dev]
+        let envcfg_2: Arc<EnvConfig> = envcfg.clone();
         tokio::spawn(async move {
-            generate_writer_files().await;
-            setup_champion_cache();
+            let _ = generate_writer_files(envcfg_2).await;
+            let _ = setup_champion_cache();
         });
 
         // There's no need to await for image download conclusion
         // They are independent and may run in parallel
-        tokio::spawn(img_download_arts(client.clone()));
-        tokio::spawn(img_download_instances(client.clone()));
-        tokio::spawn(img_download_items(client.clone()));
-        tokio::spawn(img_download_runes(client));
-
-        println!(
-            "Project setup completed in {}ms",
-            start_time.elapsed().as_millis()
-        );
+        tokio::spawn(img_download_arts(client.clone(), envcfg.clone()));
+        tokio::spawn(img_download_instances(client.clone(), envcfg.clone()));
+        tokio::spawn(img_download_items(client.clone(), envcfg.clone()));
+        tokio::spawn(img_download_runes(client, envcfg));
     });
 
     HttpResponse::Ok().json(APIResponse {
@@ -80,20 +88,32 @@ pub async fn setup_project(state: Data<AppState>) -> impl Responder {
 
 #[post("/folders")]
 pub async fn setup_folders() -> impl Responder {
-    setup_project_folders();
-    HttpResponse::Ok().json(APIResponse {
-        success: true,
-        message: "Folders are ready",
-        data: (),
-    })
+    match setup_project_folders() {
+        Ok(_) => HttpResponse::Ok().json(APIResponse {
+            success: true,
+            message: "Folders are ready",
+            data: (),
+        }),
+        Err(e) => HttpResponse::Ok().json(APIResponse {
+            success: false,
+            message: format!("Unexpected error: {:#?}", e),
+            data: (),
+        }),
+    }
 }
 
 #[post("/champions")]
 pub async fn setup_champions() -> impl Responder {
-    setup_champion_cache();
-    HttpResponse::Ok().json(APIResponse {
-        success: true,
-        message: "Champions are ready",
-        data: (),
-    })
+    match setup_champion_cache() {
+        Ok(_) => HttpResponse::Ok().json(APIResponse {
+            success: true,
+            message: "Champions are ready",
+            data: (),
+        }),
+        Err(e) => HttpResponse::Ok().json(APIResponse {
+            success: false,
+            message: format!("Unexpected error: {:#?}", e),
+            data: (),
+        }),
+    }
 }

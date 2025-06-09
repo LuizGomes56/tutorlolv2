@@ -1,8 +1,12 @@
 use super::schemas::APIResponse;
-use crate::model::riot::RiotRealtime;
-use crate::services::calculator::calculator;
-use crate::services::realtime::realtime;
-use crate::{AppState, model::calculator::GameX};
+use crate::{
+    AppState,
+    model::{
+        calculator::GameX,
+        riot::{RiotAllPlayers, RiotRealtime},
+    },
+    services::{calculator::calculator, realtime::realtime},
+};
 use actix_web::{
     HttpResponse, Responder, get, post,
     web::{Data, Json},
@@ -20,8 +24,8 @@ struct CreateGameResponse {
 
 #[get("/create")]
 pub async fn create_game_handler(state: Data<AppState>) -> impl Responder {
-    let game_code = random_range(100_000..1_000_000);
-    let game_id = Uuid::new_v4().to_string();
+    let game_code: i32 = random_range(100_000..1_000_000);
+    let game_id: String = Uuid::new_v4().to_string();
     match sqlx::query("INSERT INTO games (game_id, game_code) VALUES ($1, $2)")
         .bind(&game_id)
         .bind(game_code)
@@ -122,13 +126,13 @@ pub async fn realtime_handler(state: Data<AppState>, body: Json<RealtimeBody>) -
     } = body.into_inner();
     match serde_json::from_str::<RiotRealtime>(&game_data) {
         Ok(realtime_data) => {
-            let game_time = realtime_data.game_data.game_time;
-            let summoner_name = realtime_data.active_player.riot_id.clone();
-            let champion_name = realtime_data
+            let game_time: f64 = realtime_data.game_data.game_time;
+            let summoner_name: String = realtime_data.active_player.riot_id.clone();
+            let champion_name: String = realtime_data
                 .all_players
                 .iter()
-                .find(|p| p.riot_id == summoner_name)
-                .map(|p| p.champion_name.clone())
+                .find(|p: &&RiotAllPlayers| p.riot_id == summoner_name)
+                .map(|p: &RiotAllPlayers| p.champion_name.clone())
                 .unwrap_or_default();
 
             println!(
@@ -150,7 +154,7 @@ pub async fn realtime_handler(state: Data<AppState>, body: Json<RealtimeBody>) -
                 Ok(_) => {
                     match realtime(&state.cache, &realtime_data, &simulated_items) {
                         Ok(data) => {
-                            let message = format!("Success on request for game_code: {}, game_id: {}", game_code, game_id);
+                            let message: String = format!("Success on request for game_code: {}, game_id: {}", game_code, game_id);
                             println!("realtime_handler: {}", message);
                             HttpResponse::Ok().json(APIResponse {
                                 success: true,

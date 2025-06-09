@@ -9,7 +9,9 @@ mod writers;
 
 use actix_cors::Cors;
 use actix_files::Files;
-use middlewares::{logger::logger_middleware, password::password_middleware};
+use middlewares::{
+    error::json_error_middleware, logger::logger_middleware, password::password_middleware,
+};
 use model::application::GlobalCache;
 use reqwest::Client;
 use server::{formulas::*, games::*, images::*, internal::*, setup::*, statics::*, update::*};
@@ -25,51 +27,57 @@ use setup::update::load_cache;
 use sqlx::{Pool, Postgres, postgres::PgPoolOptions};
 use std::{env, io::Result, sync::Arc};
 
-use crate::{middlewares::error::json_error_middleware, setup::update::CacheError};
+pub struct EnvConfig {
+    pub environment: String,
+    pub lol_version: String,
+    pub lol_language: String,
+    pub system_password: String,
+    pub cdn_endpoint: String,
+    pub dd_dragon_endpoint: String,
+    pub riot_image_endpoint: String,
+    pub meta_endpoint: String,
+}
+
+impl EnvConfig {
+    pub fn new() -> Self {
+        EnvConfig {
+            environment: env::var("ENVIRONMENT").expect("[env] ENVIRONMENT is not set"),
+            lol_version: env::var("LOL_VERSION").expect("[env] LOL_VERSION is not set"),
+            lol_language: env::var("LOL_LANGUAGE").expect("[env] LOL_LANGUAGE is not set"),
+            system_password: env::var("SYSTEM_PASSWORD").expect("[env] SYSTEM_PASSWORD is not set"),
+            cdn_endpoint: env::var("CDN_ENDPOINT").expect("[env] CDN_ENDPOINT is not set"),
+            dd_dragon_endpoint: env::var("DD_DRAGON_ENDPOINT")
+                .expect("[env] DD_DRAGON_ENDPOINT is not set"),
+            riot_image_endpoint: env::var("RIOT_IMAGE_ENDPOINT")
+                .expect("[env] RIOT_IMAGE_ENDPOINT is not set"),
+            meta_endpoint: env::var("META_ENDPOINT").expect("[env] META_ENDPOINT is not set"),
+        }
+    }
+}
 
 pub struct AppState {
-    db: Pool<Postgres>,
     cache: Arc<GlobalCache>,
-    password: String,
     client: Client,
+    db: Pool<Postgres>,
+    envcfg: Arc<EnvConfig>,
 }
 
 #[main]
 async fn main() -> Result<()> {
     dotenv().ok();
 
+    let envcfg: Arc<EnvConfig> = Arc::new(EnvConfig::new());
     let client: Client = Client::new();
     let cache: Arc<GlobalCache> = match load_cache() {
         Ok(cache) => Arc::new(cache),
         Err(e) => {
-            match e {
-                CacheError::IoError(e) => println!(
-                    "IoError when loading cache. 
-                    Use route `/setup/project` to initialize cache, and
-                    then run the program again.
-                    Error: {:#?}",
-                    e
-                ),
-                CacheError::ParseIntError(e) => println!(
-                    "ParseIntError when loading cache. 
-                    This may be due to erros in JSON file generation. 
-                    Error: {:#?}",
-                    e
-                ),
-                CacheError::PathBufError(e) => {
-                    println!(
-                        "PathBufError when loading cache.
-                        It might indicate that folders are not present.
-                        Error: {:#?}",
-                        e.display()
-                    )
-                }
-            };
+            println!("Failed to load cache: {:#?}", e);
             Arc::new(GlobalCache::default())
         }
     };
-    let dsn: String = env::var("DATABASE_URL").expect("DATABASE_URL is not set in the environment");
-    let host: String = env::var("HOST").expect("HOST is not set in the environment");
+
+    let dsn: String = env::var("DATABASE_URL").expect("[env] DATABASE_URL is not set");
+    let host: String = env::var("HOST").expect("[env] HOST is not set");
     let pool: Pool<Postgres> = PgPoolOptions::new()
         .max_connections(5)
         .connect(&dsn)
@@ -92,7 +100,7 @@ async fn main() -> Result<()> {
                     db: pool.clone(),
                     cache: cache.clone(),
                     client: client.clone(),
-                    password: env::var("SYSTEM_PASSWORD").expect("SYSTEM_PASSWORD is not set"),
+                    envcfg: envcfg.clone(),
                 })
             })
             .app_data(

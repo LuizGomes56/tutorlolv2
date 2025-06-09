@@ -1,5 +1,4 @@
-use std::{collections::HashMap, sync::Arc};
-
+use super::*;
 use crate::model::{
     application::GlobalCache,
     base::{AttackType, BasicStats, ComparedItem, Stats},
@@ -9,8 +8,7 @@ use crate::model::{
     realtime::*,
     runes::Rune,
 };
-
-use super::*;
+use std::{collections::HashMap, sync::Arc};
 
 fn _apply_auto_stats(
     active_player: &ActivePlayerX,
