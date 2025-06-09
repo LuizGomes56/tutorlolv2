@@ -1,19 +1,17 @@
-use std::{collections::HashMap, sync::Arc};
-
-use reqwest::{Client, Response};
-use scraper::{Html, Selector, error::SelectorErrorKind};
-use tokio::task::JoinHandle;
-
 use crate::{
     EnvConfig,
-    setup::helpers::{SetupError, read_from_file, write_to_file},
+    setup::helpers::{SetupError, read_json_file, write_to_file},
 };
+use reqwest::{Client, Response};
+use scraper::{Html, Selector, error::SelectorErrorKind};
+use std::{collections::HashMap, sync::Arc};
+use tokio::task::JoinHandle;
 
 // Recovers all the common builds for the current patch so the app can recommend builds to the user
 // Average time to update is 2m30s. Making the outer loop a new task overloads the target website
 // causing requests to timeout.
 pub async fn meta_items_scraper(client: Client, envcfg: Arc<EnvConfig>) -> Result<(), SetupError> {
-    let champion_names: HashMap<String, String> = read_from_file("internal/champion_names.json")?;
+    let champion_names: HashMap<String, String> = read_json_file("internal/champion_names.json")?;
     let endpoint: String = envcfg.meta_endpoint.clone();
     let positions: [&'static str; 5] = ["top", "jungle", "mid", "adc", "support"];
     let mut collected_results: HashMap<String, HashMap<String, Vec<String>>> =

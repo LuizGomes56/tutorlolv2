@@ -1,10 +1,7 @@
 use crate::{
     EnvConfig,
     model::riot::{RiotCdnChampion, RiotCdnInstance, RiotCdnRune, RiotCdnSkin},
-    setup::{
-        generators::extract_file_name,
-        helpers::{SetupError, read_from_file, write_to_file},
-    },
+    setup::helpers::{SetupError, extract_file_name, read_json_file, write_to_file},
 };
 use reqwest::{Client, Response};
 use std::{
@@ -30,7 +27,7 @@ pub async fn img_download_instances(client: Client, envcfg: Arc<EnvConfig>) {
 
         let path_buf: PathBuf = file.unwrap().path();
         let path_name: &str = path_buf.to_str().unwrap();
-        let outer_result: RiotCdnChampion = read_from_file::<RiotCdnChampion>(path_name).unwrap();
+        let outer_result: RiotCdnChampion = read_json_file::<RiotCdnChampion>(path_name).unwrap();
         let spells: Vec<RiotCdnInstance> = outer_result.spells;
         let mut inner_futures: Vec<JoinHandle<()>> = Vec::new();
         let champion_dir: &'static str = "img/champions";
@@ -119,7 +116,7 @@ pub async fn img_download_arts(client: Client, envcfg: Arc<EnvConfig>) {
     for file in files {
         let path_buf: PathBuf = file.unwrap().path();
         let path_name: &str = path_buf.to_str().unwrap();
-        let outer_result: RiotCdnChampion = read_from_file::<RiotCdnChampion>(path_name).unwrap();
+        let outer_result: RiotCdnChampion = read_json_file::<RiotCdnChampion>(path_name).unwrap();
         let skins: Vec<RiotCdnSkin> = outer_result.skins;
         let mut inner_futures: Vec<JoinHandle<()>> = Vec::new();
         for skin in skins.into_iter() {
@@ -162,7 +159,7 @@ pub async fn img_download_arts(client: Client, envcfg: Arc<EnvConfig>) {
 
 pub async fn img_download_runes(client: Client, envcfg: Arc<EnvConfig>) {
     let runes_data: Vec<RiotCdnRune> =
-        read_from_file::<Vec<RiotCdnRune>>("cache/riot/runes.json").unwrap();
+        read_json_file::<Vec<RiotCdnRune>>("cache/riot/runes.json").unwrap();
     let mut rune_futures: Vec<JoinHandle<()>> = Vec::new();
     let mut runes_map: HashMap<usize, String> = HashMap::<usize, String>::new();
     let endpoint: &str = &envcfg.riot_image_endpoint;

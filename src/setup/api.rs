@@ -1,10 +1,8 @@
-use std::{collections::HashMap, sync::Arc};
-
+use crate::{EnvConfig, setup::helpers::SetupError};
 use reqwest::{Client, Response};
 use serde::de::DeserializeOwned;
 use serde_json::{Map, Value};
-
-use crate::{EnvConfig, setup::helpers::SetupError};
+use std::{collections::HashMap, sync::Arc};
 
 // Helper function to fetch data from the CDN. Returns a HashMap with `any` value.
 pub async fn fetch_cdn_api(

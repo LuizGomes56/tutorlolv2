@@ -6,8 +6,7 @@ use crate::{
     },
     setup::{
         api::{fetch_cdn_api, fetch_riot_api},
-        generators::extract_file_name,
-        helpers::{SetupError, read_from_file, write_to_file},
+        helpers::{SetupError, extract_file_name, read_json_file, write_to_file},
     },
 };
 use reqwest::Client;
@@ -51,7 +50,7 @@ where
             .ok_or_else(|| SetupError("fn[load_json_map]: Invalid path".to_string()))?;
         let file_key_str: &str = key_fn(&path_buf)?;
         let file_key: K = convert_key(file_key_str)?;
-        let data: V = read_from_file(path_name)?;
+        let data: V = read_json_file(path_name)?;
         map.insert(file_key, data);
     }
 
@@ -61,7 +60,7 @@ where
 fn load_optional_json_cache<T: Default + DeserializeOwned>(path: &str, label: &str) -> T {
     if Path::new(path).exists() {
         println!("fn[load_cache]: started loading {}", label);
-        read_from_file::<T>(path).unwrap()
+        read_json_file::<T>(path).unwrap()
     } else {
         T::default()
     }

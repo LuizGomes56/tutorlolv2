@@ -1,15 +1,10 @@
-use super::generators::extract_damagelike_expr;
 use crate::{
     model::{
         champions::{CdnChampion, Champion},
-        items::{CdnItem, Effect, Item, ItemStats, PartialStats},
-        realtime::DamageObject,
+        items::{CdnItem, Item, ItemStats, PartialStats},
         riot::RiotCdnItem,
     },
-    setup::{
-        generators::extract_file_name,
-        helpers::{SetupError, read_from_file, write_to_file},
-    },
+    setup::helpers::{SetupError, extract_file_name, read_json_file, write_to_file},
     writers,
 };
 use regex::Regex;
@@ -122,7 +117,7 @@ pub fn setup_internal_items() -> Result<(), SetupError> {
                 }
             };
             println!("fn[initialize_items]: [initializing] {}", path_str);
-            let cdn_item: CdnItem = match read_from_file(path_str) {
+            let cdn_item: CdnItem = match read_json_file(path_str) {
                 Ok(v) => v,
                 Err(e) => {
                     eprintln!("Failed to read item file '{}': {:#?}", path_str, e);
@@ -149,27 +144,6 @@ pub fn setup_internal_items() -> Result<(), SetupError> {
             item_stats.magic_penetration_flat = non_zero(stats.magic_penetration.flat);
             item_stats.magic_penetration_percent = non_zero(stats.magic_penetration.percent);
 
-            let get_damagelike_expr_from_vec = |vec: Vec<Effect>| -> Option<String> {
-                vec.get(0)
-                    .map(|p: &Effect| extract_damagelike_expr(&p.effects))
-                    .filter(|s: &String| !s.is_empty())
-            };
-
-            let damage_str: Option<String> = get_damagelike_expr_from_vec(cdn_item.passives)
-                .or_else(|| get_damagelike_expr_from_vec(cdn_item.active));
-
-            let (melee, ranged) = damage_str
-                .as_ref()
-                .filter(|s: &&String| s.chars().any(|c| c.is_ascii_digit()))
-                .map(|s: &String| {
-                    let dmg: DamageObject = DamageObject {
-                        minimum_damage: Some(s.clone()),
-                        maximum_damage: None,
-                    };
-                    (Some(dmg.clone()), Some(dmg))
-                })
-                .unwrap_or((None, None));
-
             let result: Item = Item {
                 pretiffied_stats: HashMap::new(),
                 name: cdn_item.name.clone(),
@@ -179,8 +153,8 @@ pub fn setup_internal_items() -> Result<(), SetupError> {
                 damages_onhit: false,
                 stats: item_stats,
                 builds_from: cdn_item.builds_from,
-                ranged,
-                melee,
+                ranged: None,
+                melee: None,
             };
             let json: String = match serde_json::to_string(&result) {
                 Ok(s) => s,
@@ -227,7 +201,7 @@ pub fn setup_damaging_items() -> Result<(), SetupError> {
             .to_str()
             .ok_or_else(|| SetupError(format!("Invalid UTF-8 in path: {:?}", path_buf)))?;
 
-        let result: CdnItem = read_from_file(path_str).map_err(|e: SetupError| {
+        let result: CdnItem = read_json_file(path_str).map_err(|e: SetupError| {
             SetupError(format!("Failed to read file '{}': {:#?}", path_str, e))
         })?;
 
@@ -290,7 +264,7 @@ pub fn setup_champion_names() -> Result<(), SetupError> {
             .to_str()
             .ok_or_else(|| SetupError(format!("Invalid UTF-8 in path: {:?}", path_buf)))?;
 
-        let result: CdnChampion = read_from_file(path_str).map_err(|e: SetupError| {
+        let result: CdnChampion = read_json_file(path_str).map_err(|e: SetupError| {
             SetupError(format!("Failed to read file '{}': {:#?}", path_str, e))
         })?;
 
@@ -312,7 +286,7 @@ pub fn setup_champion_names() -> Result<(), SetupError> {
 pub fn setup_meta_items() -> Result<(), SetupError> {
     println!("fn[replace_item_names_with_ids]");
 
-    let mut meta_items: MetaItemValue<Value> = read_from_file("internal/meta_items.json")
+    let mut meta_items: MetaItemValue<Value> = read_json_file("internal/meta_items.json")
         .map_err(|e: SetupError| SetupError(format!("Failed to read meta_items.json: {:#?}", e)))?;
 
     let items_folder: ReadDir = fs::read_dir("internal/items")
@@ -334,7 +308,7 @@ pub fn setup_meta_items() -> Result<(), SetupError> {
             .to_str()
             .ok_or_else(|| SetupError(format!("Failed to convert path to string: {:?}", path)))?;
 
-        let internal_item: Item = read_from_file(path_str).map_err(|e: SetupError| {
+        let internal_item: Item = read_json_file(path_str).map_err(|e: SetupError| {
             SetupError(format!("Failed to read item file '{}': {:#?}", path_str, e))
         })?;
 
@@ -394,7 +368,7 @@ pub async fn prettify_internal_items() -> Result<(), SetupError> {
             }
 
             let mut current_content: Item =
-                read_from_file(&internal_path).map_err(|e: SetupError| {
+                read_json_file(&internal_path).map_err(|e: SetupError| {
                     SetupError(format!("Failed to read '{}': {:#?}", internal_path, e))
                 })?;
 
@@ -421,7 +395,7 @@ pub async fn prettify_internal_items() -> Result<(), SetupError> {
 // Returns the value that will be added to key `pretiffied_stats` for each item.
 // Depends on Riot API `item.json` and requires manual maintainance if a new XML tag is added
 fn pretiffy_items(path_name: &str) -> HashMap<String, Value> {
-    let data: RiotCdnItem = match read_from_file(path_name) {
+    let data: RiotCdnItem = match read_json_file(path_name) {
         Ok(data) => data,
         Err(e) => {
             println!("Failed to read {}: {:#?}", path_name, e);
@@ -508,7 +482,7 @@ fn pretiffy_items(path_name: &str) -> HashMap<String, Value> {
 // champions will need to be rewritten over time. If an error occurs while trying to update a
 // champion, it will be skipped. Writes the resulting json to internal/{champion_name}.json
 fn run_writer_file(path_name: &str) -> Result<(), SetupError> {
-    let result: CdnChampion = read_from_file(path_name)
+    let result: CdnChampion = read_json_file(path_name)
         .map_err(|e: SetupError| SetupError(format!("Failed to read '{}': {:#?}", path_name, e)))?;
     let name: &str = extract_file_name(Path::new(path_name));
     let name_lower: String = name.to_lowercase();

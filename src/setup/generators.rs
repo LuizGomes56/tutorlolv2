@@ -1,10 +1,10 @@
 use crate::{
     EnvConfig,
     model::champions::{Ability, CdnAbility, CdnChampion, Modifiers},
-    setup::helpers::{SetupError, read_from_file, write_to_file},
+    setup::helpers::{SetupError, read_json_file, write_to_file},
 };
 use regex::{Captures, Match, Regex};
-use std::{collections::HashMap, fs, path::Path, sync::Arc};
+use std::{collections::HashMap, fs, sync::Arc};
 use tokio::task::JoinHandle;
 
 // Files will be generated automatically, but checked manually until it is
@@ -12,7 +12,7 @@ use tokio::task::JoinHandle;
 // Once it is done, a comment must be added to the header to
 // prevent the generator from editing that file. "#![stable]".
 pub async fn generate_writer_files(envcfg: Arc<EnvConfig>) -> Result<(), SetupError> {
-    let champion_names: HashMap<String, String> = read_from_file("internal/champion_names.json")
+    let champion_names: HashMap<String, String> = read_json_file("internal/champion_names.json")
         .map_err(|e: SetupError| {
             SetupError(format!("Failed to read champion_names.json: {:#?}", e))
         })?;
@@ -54,7 +54,7 @@ pub fn transform(data: CdnChampion) -> Champion {
 "#,
             );
 
-            let champion_data: CdnChampion = match read_from_file::<CdnChampion>(&format!(
+            let champion_data: CdnChampion = match read_json_file::<CdnChampion>(&format!(
                 "cache/cdn/champions/{}.json",
                 champion_id
             )) {
@@ -86,15 +86,6 @@ pub fn transform(data: CdnChampion) -> Champion {
     }
 
     Ok(())
-}
-
-// Receives a path and returns its file name without the `.json` extension
-// .trim_end_matches may be called if file does not end with `.json`
-pub fn extract_file_name(path: &Path) -> &str {
-    path.file_name()
-        .and_then(|os_str| os_str.to_str())
-        .map(|s: &str| s.trim_end_matches(".json"))
-        .unwrap_or_default()
 }
 
 // Takes the reference of the description of one ability, the reference vector
@@ -293,7 +284,7 @@ fn process_scaled_string(input: &str) -> String {
     }
 }
 
-pub fn extract_damagelike_expr(input: &str) -> String {
+fn extract_damagelike_expr(input: &str) -> String {
     let re: Regex = Regex::new(r"\{\{as\|([^\}]+)\}\}").unwrap();
     let mut results: Vec<String> = Vec::new();
     for cap in re.captures_iter(input) {
