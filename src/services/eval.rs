@@ -1,3 +1,5 @@
+use crate::model::base::AdaptativeType;
+
 pub trait ConditionalAddition {
     fn add_if_some(&mut self, value: Option<f64>);
 }
@@ -32,6 +34,14 @@ impl RiotFormulas {
         let prod: f64 = from_vec.iter().map(|value: &f64| 100.0 - value).product();
         let result: f64 = 1.0 - prod / 10f64.powi(counter << 1);
         if result > 0.0 { result } else { 1.0 }
+    }
+
+    pub fn adaptative_type(attack_damage: f64, ability_power: f64) -> AdaptativeType {
+        if 0.35 * attack_damage >= 0.2 * ability_power {
+            AdaptativeType::Physical
+        } else {
+            AdaptativeType::Magic
+        }
     }
 }
 

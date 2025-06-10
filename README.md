@@ -94,17 +94,17 @@ todas que estiverem fora de suas capacidades
 - [X] Atualização e setup automáticos
 - [ ] Definição da estrutura do JSON para cada personagem (2 de 172)
 - [ ] Definição para atualização automática dos itens (0 de 315)
-- [ ] Tratamento de itens e campeões que são excessão
+- [X] Tratamento de itens e campeões que são exceção
 - [ ] Construção de funcionalidades novas (0 de 5)
 - [ ] Configurar SEO
-- [ ] Configurar o servidor para manter o projeto rodando
-- [ ] Proteção contra panics (Não iniciado)
+- [X] Configurar o servidor para manter o projeto rodando
+- [X] Proteção contra panics
 - [x] Estrutura de projeto em Rust
 - [x] Monitoramento do meta de forma automatizada
 - [x] Sistema de cache automatizado
-- [ ] Otimização e simplificaçao do código
+- [ ] Otimização e simplificaçao do código (Iniciado)
 - [x] Calculo básico de itens, habilidades e runas
-- [ ] Avaliação de itens e builds
+- [X] Avaliação de itens e builds
 - [X] WASM (Setup frontend)
 - [X] Sobreposição no jogo (overlay)
 - [X] Todas as features disponíveis no projeto TypeScript concluídas

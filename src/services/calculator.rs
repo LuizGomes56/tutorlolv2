@@ -11,20 +11,21 @@ use crate::{
     },
     services::eval::{ConditionalAddition, RiotFormulas},
 };
-use std::{collections::HashMap, sync::Arc};
+use std::{
+    collections::{BTreeMap, HashMap},
+    sync::Arc,
+};
 
 // If user opted not to dictate the active player's stats, this function is called
 // it reads all items present in cache and evaluates what the game condition would be
 // if all items were owned in a real game. Stacks and champion exceptions are partially
 // taken into consideration when calculation is made. It is less accurate than Realtime.
 fn apply_auto_stats(
-    champion_cache: &Champion,
+    stats: &mut Stats,
     items_cache: &HashMap<usize, Item>,
     active_player: &ActivePlayerX,
     base_stats: &BasicStats,
-) -> Result<(Stats, BasicStats), String> {
-    let mut stats: Stats = Stats::new(&champion_cache.stats);
-
+) -> Result<BasicStats, String> {
     let stacks: f64 = active_player.stacks as f64;
     let owned_items: &Vec<usize> = &active_player.items;
 
@@ -61,7 +62,7 @@ fn apply_auto_stats(
 
     stats.crit_chance = stats.crit_chance.clamp(0.0, 100.0);
 
-    let bonus_stats: BasicStats = get_bonus_stats(&stats, base_stats);
+    let bonus_stats: BasicStats = get_bonus_stats(stats, base_stats);
 
     // #![manual_impl]
     // #![todo] File generator
@@ -75,15 +76,6 @@ fn apply_auto_stats(
             3119 => stats.max_health += 0.15 * (bonus_stats.health + 500.0),
             3121 => stats.max_health += 0.15 * (bonus_stats.health + 860.0),
             4633 | 4637 => stats.ability_power += 0.02 * (bonus_stats.health + stats.max_health),
-            _ => {}
-        }
-    }
-
-    // Make sure these are the last items to be evaluated.
-    for item_id in owned_items {
-        match item_id {
-            3089 | 223089 => stats.ability_power *= 1.3,
-            8002 => stats.attack_damage *= 1.5,
             _ => {}
         }
     }
@@ -116,31 +108,32 @@ fn apply_auto_stats(
     stats.armor_penetration_percent = RiotFormulas::percent_value(armor_penetration);
     stats.magic_penetration_percent = RiotFormulas::percent_value(magic_penetration);
 
-    Ok((stats, bonus_stats))
+    Ok(bonus_stats)
 }
 
 // #![manual_impl]
 // #![unsupported]
-fn _rune_exceptions(
+fn rune_exceptions(
     champion_stats: &mut Stats,
     owned_runes: &Vec<usize>,
     level: f64,
-    this_stack: usize,
+    stack_tree: &BTreeMap<usize, usize>,
     adaptative_type: AdaptativeType,
 ) {
     for rune in owned_runes {
+        let this_stack: usize = *stack_tree.get(&rune).unwrap_or(&0);
         match rune {
             8008 => {
                 if champion_stats.attack_range < 350.0 {
                     champion_stats.attack_speed +=
-                        this_stack as f64 * (5.0 + 11.0 / 17.0 * (level - 1.0));
+                        (this_stack as f64) * (5.0 + 11.0 / 17.0 * (level - 1.0));
                 } else {
                     champion_stats.attack_speed +=
-                        this_stack as f64 * (3.6 + 4.4 / 17.0 * (level - 1.0));
+                        (this_stack as f64) * (3.6 + 4.4 / 17.0 * (level - 1.0));
                 }
             }
             8010 => {
-                let formula = this_stack as f64 * (1.8 + 2.2 / 17.0 * (level - 1.0));
+                let formula: f64 = (this_stack as f64) * (1.8 + 2.2 / 17.0 * (level - 1.0));
                 match adaptative_type {
                     AdaptativeType::Physical => {
                         champion_stats.attack_damage += 0.6 * formula;
@@ -153,7 +146,7 @@ fn _rune_exceptions(
             8120 | 8136 | 8138 => match adaptative_type {
                 AdaptativeType::Physical => {
                     champion_stats.attack_damage += match this_stack {
-                        0..10 => 1.2 * this_stack as f64,
+                        0..10 => 1.2 * (this_stack as f64),
                         _ => 18.0,
                     };
                 }
@@ -189,15 +182,15 @@ fn _rune_exceptions(
             }
             9000 => match adaptative_type {
                 AdaptativeType::Physical => {
-                    champion_stats.attack_damage += 5.4 * this_stack as f64;
+                    champion_stats.attack_damage += 5.4 * (this_stack as f64);
                 }
                 AdaptativeType::Magic => {
-                    champion_stats.ability_power += 9.0 * this_stack as f64;
+                    champion_stats.ability_power += 9.0 * (this_stack as f64);
                 }
             },
-            9001 => champion_stats.max_health += 65.0 * this_stack as f64,
-            9002 => champion_stats.max_health += 10.0 * level * this_stack as f64,
-            9003 => champion_stats.attack_speed += 10.0 * this_stack as f64,
+            9001 => champion_stats.max_health += 65.0 * (this_stack as f64),
+            9002 => champion_stats.max_health += 10.0 * level * (this_stack as f64),
+            9003 => champion_stats.attack_speed += 10.0 * (this_stack as f64),
             _ => {}
         }
     }
@@ -205,14 +198,21 @@ fn _rune_exceptions(
 
 // #![manual_impl]
 // #![unsupported]
-fn _item_exceptions(champion_stats: &mut Stats, owned_items: &Vec<usize>, this_stack: usize) {
+fn item_exceptions(
+    champion_stats: &mut Stats,
+    owned_items: &Vec<usize>,
+    stack_tree: &BTreeMap<usize, usize>,
+) {
     for item_id in owned_items {
+        let this_stack: usize = *stack_tree.get(&item_id).unwrap_or(&0);
         match item_id {
+            1082 => champion_stats.ability_power += (this_stack.clamp(1, 1 << 32) << 2) as f64,
             3041 => champion_stats.ability_power += (5 * this_stack.clamp(1, 1 << 32)) as f64,
-            1082 => champion_stats.ability_power += (4 * this_stack.clamp(1, 1 << 32)) as f64,
+            3089 | 223089 => champion_stats.ability_power *= 1.3,
             6697 | 7008 => {
                 champion_stats.attack_damage += (15 + this_stack.clamp(1, 1 << 32) << 1) as f64
             }
+            8002 => champion_stats.attack_damage *= 1.5,
             _ => {}
         }
     }
@@ -267,6 +267,7 @@ pub fn calculator<'a>(
             .unwrap_or(&recommended_items_fallback);
 
     let owned_items: &Vec<usize> = &active_player.items;
+    let owned_runes: &Vec<usize> = &active_player.runes;
 
     let recommended_items: Vec<usize> = recommended_items_vec
         .iter()
@@ -275,9 +276,7 @@ pub fn calculator<'a>(
         .collect();
 
     let damaging_abilities: HashMap<String, String> = get_damaging_abilities(current_player_cache);
-
-    let damaging_runes: HashMap<usize, String> = active_player
-        .runes
+    let damaging_runes: HashMap<usize, String> = owned_runes
         .iter()
         .filter_map(|riot_rune: &usize| {
             cache
@@ -292,12 +291,27 @@ pub fn calculator<'a>(
     let damaging_items: HashMap<usize, String> =
         get_damaging_items(&cache.items, attack_type, &owned_items);
 
-    let (current_stats, bonus_stats) = apply_auto_stats(
-        &current_player_cache,
+    let mut current_stats: Stats = Stats::new(&current_player_cache.stats);
+
+    item_exceptions(&mut current_stats, &owned_items, &game.stack_exceptions);
+
+    let bonus_stats: BasicStats = apply_auto_stats(
+        &mut current_stats,
         &cache.items,
         active_player,
         &current_player_base_stats,
     )?;
+
+    let adaptative_type: AdaptativeType =
+        RiotFormulas::adaptative_type(bonus_stats.attack_damage, current_stats.ability_power);
+
+    rune_exceptions(
+        &mut current_stats,
+        &owned_runes,
+        active_player_level as f64,
+        &game.stack_exceptions,
+        adaptative_type,
+    );
 
     let current_player: CurrentPlayerX = CurrentPlayerX {
         bonus_stats,

@@ -550,9 +550,9 @@ pub fn get_full_stats<'a, T: CurrentPlayerLike>(
                 true_damage: self_dmg_mod.2,
                 all_sources: self_dmg_mod.3,
             },
-            adaptative_type: AdaptativeType::from(
-                0.35 * current_player.get_bonus_stats().attack_damage
-                    >= 0.2 * current_stats.ability_power,
+            adaptative_type: RiotFormulas::adaptative_type(
+                current_player.get_base_stats().attack_damage,
+                current_stats.ability_power,
             ),
         },
         enemy_player: EnemyFullStats {

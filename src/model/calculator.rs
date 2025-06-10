@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::collections::{BTreeMap, HashMap};
 
 use serde::{Deserialize, Serialize};
 
@@ -70,4 +70,5 @@ pub struct GameX {
     pub ally_earth_dragons: usize,
     pub ally_fire_dragons: usize,
     pub enemy_earth_dragons: usize,
+    pub stack_exceptions: BTreeMap<usize, usize>,
 }
