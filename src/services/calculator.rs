@@ -1,27 +1,117 @@
 use super::*;
-use crate::model::{
-    application::GlobalCache,
-    base::{AttackType, BasicStats, ComparedItem, Stats},
-    calculator::{ActivePlayerX, Calculator, CurrentPlayerX, EnemyX, GameX},
-    champions::Champion,
-    items::Item,
-    realtime::*,
-    runes::Rune,
+use crate::{
+    model::{
+        application::GlobalCache,
+        base::{AttackType, BasicStats, ComparedItem, Stats},
+        calculator::{ActivePlayerX, Calculator, CurrentPlayerX, EnemyX, GameX},
+        champions::Champion,
+        items::Item,
+        realtime::*,
+        runes::Rune,
+    },
+    services::eval::{ConditionalAddition, RiotFormulas},
 };
 use std::{collections::HashMap, sync::Arc};
 
-fn _apply_auto_stats(
-    active_player: &ActivePlayerX,
+// If user opted not to dictate the active player's stats, this function is called
+// it reads all items present in cache and evaluates what the game condition would be
+// if all items were owned in a real game. Stacks and champion exceptions are partially
+// taken into consideration when calculation is made. It is less accurate than Realtime.
+fn apply_auto_stats(
+    champion_cache: &Champion,
     items_cache: &HashMap<usize, Item>,
-) -> Result<Stats, String> {
-    let mut stats = Stats::default();
-    let stacks = active_player.stacks as f64;
+    active_player: &ActivePlayerX,
+    base_stats: &BasicStats,
+) -> Result<(Stats, BasicStats), String> {
+    let mut stats: Stats = Stats {
+        ability_power: 0.0,
+        armor: champion_cache.stats.armor.flat,
+        armor_penetration_flat: 0.0,
+        armor_penetration_percent: 0.0,
+        attack_damage: champion_cache.stats.attack_damage.flat,
+        attack_range: champion_cache.stats.attack_range.flat,
+        attack_speed: champion_cache.stats.attack_speed.flat,
+        crit_chance: 0.0,
+        crit_damage: champion_cache.stats.critical_strike_damage_modifier.flat,
+        current_health: champion_cache.stats.health.flat,
+        magic_penetration_flat: 0.0,
+        magic_penetration_percent: 0.0,
+        magic_resist: champion_cache.stats.magic_resistance.flat,
+        max_health: champion_cache.stats.health.flat,
+        max_mana: champion_cache.stats.mana.flat,
+        current_mana: champion_cache.stats.mana.flat,
+    };
 
+    let stacks: f64 = active_player.stacks as f64;
+    let owned_items: &Vec<usize> = &active_player.items;
+
+    let mut armor_penetration: Vec<f64> = vec![];
+    let mut magic_penetration: Vec<f64> = vec![];
+
+    for item_id in owned_items {
+        let cached_item = items_cache
+            .get(&item_id)
+            .ok_or_else(|| format!("Item {} not found on cache", item_id.to_string()))?;
+
+        let item_stats = &cached_item.stats;
+
+        stats.ability_power.add_if_some(item_stats.ability_power);
+        stats.attack_damage.add_if_some(item_stats.attack_damage);
+        stats.armor.add_if_some(item_stats.armor);
+        stats.magic_resist.add_if_some(item_stats.magic_resistance);
+        stats.max_health.add_if_some(item_stats.health);
+        stats
+            .crit_chance
+            .add_if_some(item_stats.critical_strike_chance);
+        stats
+            .crit_damage
+            .add_if_some(item_stats.critical_strike_damage);
+        stats.max_mana.add_if_some(item_stats.mana);
+        stats.attack_speed.add_if_some(item_stats.attack_speed);
+        if let Some(armor_penetration_percent) = item_stats.armor_penetration_percent {
+            armor_penetration.push(armor_penetration_percent);
+        }
+        if let Some(magic_penetration_percent) = item_stats.magic_penetration_percent {
+            magic_penetration.push(magic_penetration_percent);
+        }
+    }
+
+    stats.crit_chance = stats.crit_chance.clamp(0.0, 100.0);
+
+    let bonus_stats: BasicStats = get_bonus_stats(&stats, base_stats);
+
+    // #![manual_impl]
+    // #![todo] File generator
+    // Depend on bonus stats, that has to be evaluated later
+    for item_id in owned_items {
+        match item_id {
+            2501 => stats.attack_damage += 0.025 * (bonus_stats.health + 500.0),
+            3003 => stats.ability_power += 0.01 * bonus_stats.mana,
+            3004 | 3042 => stats.ability_power += 0.025 * bonus_stats.mana,
+            3040 => stats.ability_power += 0.02 * bonus_stats.mana,
+            3119 => stats.max_health += 0.15 * (bonus_stats.health + 500.0),
+            3121 => stats.max_health += 0.15 * (bonus_stats.health + 860.0),
+            4633 | 4637 => stats.ability_power += 0.02 * (bonus_stats.health + stats.max_health),
+            _ => {}
+        }
+    }
+
+    // Make sure these are the last items to be evaluated.
+    for item_id in owned_items {
+        match item_id {
+            3089 | 223089 => stats.ability_power *= 1.3,
+            8002 => stats.attack_damage *= 1.5,
+            _ => {}
+        }
+    }
+
+    // #![manual_impl]
+    // #![todo] Create exception file that is generated automatically
     match active_player.champion_id.as_str() {
         "Veigar" => stats.ability_power += stacks,
         "Chogath" => {
-            let scallings = [0.0, 80.0, 120.0, 160.0];
-            let mut r_ability_level = active_player.abilities.r;
+            let scallings: [f64; 4] = [0.0, 80.0, 120.0, 160.0];
+            let mut r_ability_level: usize = active_player.abilities.r;
             if r_ability_level > 3 {
                 r_ability_level = 3
             }
@@ -29,45 +119,24 @@ fn _apply_auto_stats(
         }
         "Sion" => stats.max_health += stacks,
         "Darius" => {
-            stats.armor_penetration_percent += 15.0 + 5.0 * active_player.abilities.e as f64
+            armor_penetration.push(15.0 + 5.0 * active_player.abilities.e as f64);
         }
-        "Pantheon" => stats.armor_penetration_percent += 10.0 * active_player.abilities.r as f64,
-        "Nilah" => stats.armor_penetration_percent += stats.crit_chance / 3.0,
+        "Pantheon" => {
+            armor_penetration.push(10.0 * active_player.abilities.r as f64);
+        }
+        "Nilah" => {
+            armor_penetration.push(stats.crit_chance / 3.0);
+        }
         "Mordekaiser" => {
-            stats.magic_penetration_percent += 2.5 + 2.5 * active_player.abilities.e as f64
+            magic_penetration.push(2.5 + 2.5 * active_player.abilities.e as f64);
         }
         _ => {}
     }
 
-    let add_if_some = |target: &mut f64, value: Option<f64>| {
-        if let Some(v) = value {
-            *target += v;
-        }
-    };
+    stats.armor_penetration_percent = RiotFormulas::percent_value(armor_penetration);
+    stats.magic_penetration_percent = RiotFormulas::percent_value(magic_penetration);
 
-    for item_id in active_player.items.iter() {
-        let cached_item = items_cache
-            .get(&item_id)
-            .ok_or_else(|| format!("Item {} not found on cache", item_id.to_string()))?;
-
-        let item_stats = &cached_item.stats;
-
-        add_if_some(&mut stats.ability_power, item_stats.ability_power);
-        add_if_some(&mut stats.attack_damage, item_stats.attack_damage);
-        add_if_some(&mut stats.armor, item_stats.armor);
-        add_if_some(&mut stats.magic_resist, item_stats.magic_resistance);
-        add_if_some(&mut stats.max_health, item_stats.health);
-        add_if_some(&mut stats.crit_chance, item_stats.critical_strike_chance);
-        add_if_some(&mut stats.crit_damage, item_stats.critical_strike_damage);
-        add_if_some(&mut stats.max_mana, item_stats.mana);
-        add_if_some(&mut stats.attack_speed, item_stats.attack_speed);
-    }
-
-    if stats.crit_chance > 100.0 {
-        stats.crit_chance = 100.0;
-    }
-
-    Ok(stats)
+    Ok((stats, bonus_stats))
 }
 
 // #![todo] Comparison tool is not working;
@@ -84,6 +153,7 @@ pub fn calculator<'a>(
     let ally_dragon_multipliers: &DragonMultipliers = &DragonMultipliers {
         earth: EARTH_DRAGON_MULTIPLIER * game.ally_earth_dragons as f64,
         fire: FIRE_DRAGON_MULTIPLIER * game.ally_fire_dragons as f64,
+        // #![unsupported]
         chemtech: 1.0,
     };
 
@@ -143,12 +213,16 @@ pub fn calculator<'a>(
     let damaging_items: HashMap<usize, String> =
         get_damaging_items(&cache.items, attack_type, &owned_items);
 
-    let active_player_champion_stats: Stats = active_player.champion_stats.clone();
-    // apply_auto_stats(active_player, &cache.items)?
+    let (current_stats, bonus_stats) = apply_auto_stats(
+        &current_player_cache,
+        &cache.items,
+        active_player,
+        &current_player_base_stats,
+    )?;
 
     let current_player: CurrentPlayerX = CurrentPlayerX {
-        bonus_stats: get_bonus_stats(&active_player_champion_stats, &current_player_base_stats),
-        current_stats: active_player_champion_stats,
+        bonus_stats,
+        current_stats,
         level: active_player_level,
         damaging_abilities,
         damaging_items,
@@ -169,13 +243,11 @@ pub fn calculator<'a>(
         &mut compared_items_info,
     )?;
 
-    let mut enemies: Vec<EnemyX> = Vec::with_capacity(1 << 3);
-    let mut best_item: (usize, f64) = (0usize, 0f64);
-
+    let mut enemies: Vec<EnemyX> = Vec::with_capacity(game.enemy_players.len());
     for player in game.enemy_players.iter() {
         let player_champion_id: String = player.champion_id.clone();
-        let current_enemy_cache: &&Champion =
-            &cache.champions.get(&player_champion_id).ok_or_else(|| {
+        let current_enemy_cache: &Champion =
+            cache.champions.get(&player_champion_id).ok_or_else(|| {
                 format!(
                     "ChampionID {} not found in champions cache",
                     player_champion_id
@@ -200,8 +272,8 @@ pub fn calculator<'a>(
             current_player: GameStateCurrentPlayer {
                 thisv: &current_player,
                 cache: &current_player_cache,
-                items: &keys_as_vec(&current_player.damaging_items),
-                runes: &keys_as_vec(&current_player.damaging_runes),
+                items: &clone_keys(&current_player.damaging_items),
+                runes: &clone_keys(&current_player.damaging_runes),
                 abilities: &active_player.abilities,
                 simulated_stats: &simulated_champion_stats,
             },
@@ -212,7 +284,6 @@ pub fn calculator<'a>(
                 champion_id: &player_champion_id,
                 level: enemy_level,
             },
-            best_item: &mut best_item,
         });
         enemies.push(EnemyX {
             champion_name,
@@ -231,6 +302,5 @@ pub fn calculator<'a>(
         enemies,
         recommended_items,
         compared_items: compared_items_info,
-        best_item: best_item.0,
     })
 }

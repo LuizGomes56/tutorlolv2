@@ -1,3 +1,49 @@
+pub trait ConditionalAddition {
+    fn add_if_some(&mut self, value: Option<f64>);
+}
+
+impl ConditionalAddition for f64 {
+    fn add_if_some(&mut self, value: Option<Self>) {
+        if let Some(v) = value {
+            *self += v;
+        }
+    }
+}
+
+pub struct RiotFormulas;
+
+impl RiotFormulas {
+    // Uses wiki's formula to return base stats for a given champion
+    pub fn stat_growth(base: f64, growth_per_level: f64, level: usize) -> f64 {
+        base + growth_per_level * (level as f64 - 1.0) * (0.7025 + 0.0175 * (level as f64 - 1.0))
+    }
+    /// ```
+    ///
+    /// // Percentage values are entered in this section as a number in range 0-100
+    /// // 30% and 30% penetration should yield 49% penetration (0.51 true value)
+    /// for x in vec yield 1 - x / 10.pow(x.len_digits << 1)
+    /// let from_vec = [30, 30];
+    /// return 0.51
+    ///
+    /// ```
+    pub fn percent_value(from_vec: Vec<f64>) -> f64 {
+        let counter: i32 = from_vec.len() as i32;
+        let prod: f64 = from_vec.iter().map(|value: &f64| 100.0 - value).product();
+        let result: f64 = 1.0 - prod / 10f64.powi(counter << 1);
+        if result > 0.0 { result } else { 1.0 }
+    }
+}
+
+pub trait MathEval {
+    fn eval(&self) -> Result<f64, ()>;
+}
+
+impl<T: AsRef<str>> MathEval for T {
+    fn eval(&self) -> Result<f64, ()> {
+        eval_math_expr(self.as_ref())
+    }
+}
+
 #[derive(Clone)]
 enum Token {
     Number(f64),
@@ -10,7 +56,7 @@ enum Token {
 // None values mean NaN as in JavaScript
 // Only parenthesis may be used. [] and {} are not supported
 // Exponentiation is done with the ^ operator, not with the ** operator
-pub fn eval_math_expr(expr: &str) -> Result<f64, ()> {
+fn eval_math_expr(expr: &str) -> Result<f64, ()> {
     let tokens: Vec<Token> = tokenize(expr)?;
     let rpn: Vec<Token> = shunting_yard(&tokens);
     evaluate_rpn(&rpn)

@@ -1,32 +1,22 @@
-use crate::model::{
-    base::{
-        AttackType, BasicStats, ComparedDamage, ComparedItem, CurrentPlayerLike, DamageLike,
-        DamageMultipliers, Damages, EnemyFullStats, FullStats, InstanceDamage, RealResists,
-        SelfFullStats, SimulatedDamages, Stats, ToRiotFormat,
+use super::eval::{ConditionalAddition, MathEval};
+use crate::{
+    model::{
+        base::{
+            AttackType, BasicStats, ComparedDamage, ComparedItem, CurrentPlayerLike, DamageLike,
+            DamageMultipliers, Damages, EnemyFullStats, FullStats, InstanceDamage, RealResists,
+            SelfFullStats, SimulatedDamages, Stats, ToRiotFormat,
+        },
+        calculator::AbilitiesX,
+        champions::Champion,
+        internal::Positions,
+        items::{Item, PartialStats},
+        realtime::{DamageObject, DragonMultipliers},
+        riot::RiotChampionStats,
+        runes::Rune,
     },
-    calculator::AbilitiesX,
-    champions::Champion,
-    internal::Positions,
-    items::{Item, PartialStats},
-    realtime::{DamageObject, DragonMultipliers},
-    riot::RiotChampionStats,
-    runes::Rune,
+    services::eval::RiotFormulas,
 };
 use std::{collections::HashMap, hash::Hash};
-
-trait AddValue {
-    fn add_if_some(&mut self, value: Option<f64>);
-}
-
-impl AddValue for f64 {
-    fn add_if_some(&mut self, value: Option<f64>) {
-        if let Some(v) = value {
-            *self += v;
-        }
-    }
-}
-
-use super::eval::eval_math_expr;
 
 // By 06/07/2025 Earth dragons give +5% resists
 // #![manual_impl]
@@ -65,10 +55,10 @@ pub struct GameState<'a, T: CurrentPlayerLike> {
     pub cache: GameStateCache<'a>,
     pub current_player: GameStateCurrentPlayer<'a, T>,
     pub enemy_player: GameStateEnemyPlayer<'a>,
-    pub best_item: &'a mut (usize, f64),
 }
 
-pub fn keys_as_vec(map: &HashMap<usize, String>) -> Vec<usize> {
+// Returns a cloned vector with the keys of the map.
+pub fn clone_keys(map: &HashMap<usize, String>) -> Vec<usize> {
     map.keys().cloned().collect()
 }
 
@@ -100,7 +90,6 @@ pub fn calculate_enemy_state<T: CurrentPlayerLike>(
                 champion_id: enemy_champion_id,
                 level: enemy_level,
             },
-        best_item,
     } = state;
 
     let mut enemy_bonus_stats: BasicStats = get_bonus_stats(enemy_current_stats, &enemy_base_stats);
@@ -156,11 +145,6 @@ pub fn calculate_enemy_state<T: CurrentPlayerLike>(
                 get_comparison_total_damage(&normal_items_damage, &mut simulated_item_damage);
             let (total_runes_damage, change_runes_damage) =
                 get_comparison_total_damage(&normal_runes_damage, &mut simulated_rune_damage);
-            let total_compared_damage: f64 =
-                total_abilities_damage + total_items_damage + total_runes_damage;
-            if total_compared_damage > best_item.1 {
-                *best_item = (*simulated_item_id, total_compared_damage);
-            }
             (
                 *simulated_item_id,
                 SimulatedDamages {
@@ -192,6 +176,11 @@ pub fn calculate_enemy_state<T: CurrentPlayerLike>(
     (damages, real_resists, enemy_bonus_stats)
 }
 
+// Takes each simulated item and clones the current champions stats
+// and adds to these stats the value as if the player owned the item
+// Supports multiple inputs, being that the reason why a HashMap is returned
+// Mutates compared_items_info map, inserting the prettified stats, name and gold
+// Dragon effects are taken into consideration
 pub fn get_simulated_champion_stats(
     simulated_items: &Vec<usize>,
     owned_items: &Vec<usize>,
@@ -381,10 +370,10 @@ pub fn get_items_damage(
                     ),
                     damage_reduction_multiplier,
                 );
-                let minimum_damage: f64 = damage_increase_multiplier
-                    * eval_math_expr(&minimum_damage_string).unwrap_or_default();
-                let maximum_damage: f64 = damage_increase_multiplier
-                    * eval_math_expr(&maximum_damage_string).unwrap_or_default();
+                let minimum_damage: f64 =
+                    damage_increase_multiplier * &minimum_damage_string.eval().unwrap_or_default();
+                let maximum_damage: f64 =
+                    damage_increase_multiplier * &maximum_damage_string.eval().unwrap_or_default();
                 item_damages.insert(
                     *current_player_item,
                     InstanceDamage {
@@ -427,7 +416,7 @@ pub fn get_runes_damage(
                 damage_reduction_multiplier
             );
             let minimum_damage: f64 =
-                damage_increase_multiplier * eval_math_expr(&damage_string).unwrap_or_default();
+                damage_increase_multiplier * &damage_string.eval().unwrap_or_default();
             rune_damages.insert(
                 *current_player_rune,
                 InstanceDamage {
@@ -445,6 +434,8 @@ pub fn get_runes_damage(
     rune_damages
 }
 
+// Sums all the damages in every key of a DamageLike expression
+// Returns the total and the change in total damage respectively
 pub fn get_comparison_total_damage<T: Eq + Hash>(
     prev: &DamageLike<T>,
     next: &mut DamageLike<T>,
@@ -480,12 +471,9 @@ pub fn get_full_stats<'a, T: CurrentPlayerLike>(
     let mut real_magic_resist: f64 = enemy_current_stats.magic_resist
         * current_stats.magic_penetration_percent
         - current_stats.magic_penetration_flat;
-    if real_armor < 0.0 {
-        real_armor = 0.0;
-    }
-    if real_magic_resist < 0.0 {
-        real_magic_resist = 0.0;
-    }
+
+    real_armor = real_armor.clamp(0.0, (1 << 32) as f64);
+    real_magic_resist = real_magic_resist.clamp(0.0, (1 << 32) as f64);
 
     let physical_damage_multiplier: f64 = 100.0 / (100.0 + real_armor);
     let magic_damage_multiplier: f64 = 100.0 / (100.0 + real_magic_resist);
@@ -656,7 +644,7 @@ pub fn get_abilities_damage(
                 let damage_str: String = replace_damage_keywords(full_stats, format_str);
                 let formatted_str: String =
                     format!("({}) * {}", damage_str, damage_reduction_multiplier);
-                (damage_increase_multiplier) * eval_math_expr(&formatted_str).unwrap_or_default()
+                (damage_increase_multiplier) * &formatted_str.eval().unwrap_or_default()
             };
 
             let minimum_damage: f64 = eval_damage_str(&ability.minimum_damage);
@@ -728,8 +716,8 @@ pub fn get_abilities_damage(
 
 // Takes a string and replaces keywords defined manually.
 // Expected to return a string that can be evaluted mathematically, but not guaranteed
-// #![unsupported] Champion stacks are ignored.
 // Stacks information is not accessible unless sent from client.
+// #![unsupported] Champion stacks are ignored.
 pub fn replace_damage_keywords(stats: &FullStats, target_str: &str) -> String {
     let replacements: [(&'static str, f64); 48] = [
         ("CHOGATH_STACKS", 1.0),
@@ -867,33 +855,30 @@ pub fn get_bonus_stats<T: ToRiotFormat>(current_stats: &T, base_stats: &BasicSta
     }
 }
 
-// Uses wiki's formula to return base stats for a given champion
+// Reads cached values for a given champion and assigns its base stats at a given level
 pub fn get_base_stats(champion_cache: &Champion, level: usize) -> BasicStats {
-    let stat_formula = |base: f64, growth: f64, level: usize| {
-        base + growth * (level as f64 - 1f64) * (0.7025 + 0.0175 * (level as f64 - 1f64))
-    };
     BasicStats {
-        armor: stat_formula(
+        armor: RiotFormulas::stat_growth(
             champion_cache.stats.armor.flat,
             champion_cache.stats.armor.per_level,
             level,
         ),
-        health: stat_formula(
+        health: RiotFormulas::stat_growth(
             champion_cache.stats.health.flat,
             champion_cache.stats.health.per_level,
             level,
         ),
-        attack_damage: stat_formula(
+        attack_damage: RiotFormulas::stat_growth(
             champion_cache.stats.attack_damage.flat,
             champion_cache.stats.attack_damage.per_level,
             level,
         ),
-        magic_resist: stat_formula(
+        magic_resist: RiotFormulas::stat_growth(
             champion_cache.stats.magic_resistance.flat,
             champion_cache.stats.magic_resistance.per_level,
             level,
         ),
-        mana: stat_formula(
+        mana: RiotFormulas::stat_growth(
             champion_cache.stats.mana.flat,
             champion_cache.stats.mana.per_level,
             level,
