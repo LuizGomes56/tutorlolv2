@@ -1,4 +1,7 @@
-use crate::model::base::AdaptativeType;
+use crate::model::{
+    base::{AdaptativeType, Stats},
+    champions::ChampionCdnStats,
+};
 
 pub trait ConditionalAddition {
     fn add_if_some(&mut self, value: Option<f64>);
@@ -24,16 +27,17 @@ impl RiotFormulas {
     /// 30% and 30% penetration should yield 49% penetration (0.51 true value)
     ///
     /// ```
-    /// for x in vec yield 1 - x / 10.pow(x.len_digits << 1)
+    /// for x in vec yield x / 10.pow(len(x) << 1)
     /// let from_vec = [30, 30];
     /// return 0.51
     ///
     /// ```
     pub fn percent_value(from_vec: Vec<f64>) -> f64 {
-        let counter: i32 = from_vec.len() as i32;
-        let prod: f64 = from_vec.iter().map(|value: &f64| 100.0 - value).product();
-        let result: f64 = 1.0 - prod / 10f64.powi(counter << 1);
-        if result > 0.0 { result } else { 1.0 }
+        from_vec
+            .iter()
+            .map(|value: &f64| 100.0 - value)
+            .product::<f64>()
+            / 10f64.powi((from_vec.len() << 1) as i32)
     }
 
     pub fn adaptative_type(attack_damage: f64, ability_power: f64) -> AdaptativeType {
@@ -41,6 +45,47 @@ impl RiotFormulas {
             AdaptativeType::Physical
         } else {
             AdaptativeType::Magic
+        }
+    }
+
+    pub fn full_base_stats(cdn: &ChampionCdnStats, level: usize) -> Stats {
+        Stats {
+            ability_power: 0.0,
+            armor: Self::stat_growth(cdn.armor.flat, cdn.armor.per_level, level),
+            armor_penetration_flat: 0.0,
+            armor_penetration_percent: 0.0,
+            attack_damage: Self::stat_growth(
+                cdn.attack_damage.flat,
+                cdn.attack_damage.per_level,
+                level,
+            ),
+            attack_range: Self::stat_growth(
+                cdn.attack_range.flat,
+                cdn.attack_range.per_level,
+                level,
+            ),
+            attack_speed: Self::stat_growth(
+                cdn.attack_speed.flat,
+                cdn.attack_speed.per_level,
+                level,
+            ),
+            crit_chance: 0.0,
+            crit_damage: Self::stat_growth(
+                cdn.critical_strike_damage.flat,
+                cdn.critical_strike_damage.per_level,
+                level,
+            ) * cdn.critical_strike_damage_modifier.flat,
+            current_health: Self::stat_growth(cdn.health.flat, cdn.health.per_level, level),
+            max_health: Self::stat_growth(cdn.health.flat, cdn.health.per_level, level),
+            current_mana: Self::stat_growth(cdn.mana.flat, cdn.mana.per_level, level),
+            max_mana: Self::stat_growth(cdn.mana.flat, cdn.mana.per_level, level),
+            magic_penetration_flat: 0.0,
+            magic_penetration_percent: 0.0,
+            magic_resist: Self::stat_growth(
+                cdn.magic_resistance.flat,
+                cdn.magic_resistance.per_level,
+                level,
+            ),
         }
     }
 }

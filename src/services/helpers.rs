@@ -320,14 +320,16 @@ pub fn simulate_champion_stats(
         .armor_penetration_flat
         .add_if_some(stats.armor_penetration_flat);
     cloned_stats
-        .armor_penetration_percent
-        .add_if_some(stats.armor_penetration_percent);
-    cloned_stats
         .magic_penetration_flat
         .add_if_some(stats.magic_penetration_flat);
-    cloned_stats
-        .magic_penetration_percent
-        .add_if_some(stats.magic_penetration_percent);
+    cloned_stats.armor_penetration_percent = RiotFormulas::percent_value(vec![
+        cloned_stats.armor_penetration_percent,
+        stats.armor_penetration_percent.unwrap_or_default(),
+    ]);
+    cloned_stats.magic_penetration_percent = RiotFormulas::percent_value(vec![
+        cloned_stats.magic_penetration_percent,
+        stats.magic_penetration_percent.unwrap_or_default(),
+    ]);
     cloned_stats.ability_power *= ally_dragon_multipliers.fire;
     cloned_stats.attack_damage *= ally_dragon_multipliers.fire;
     cloned_stats.armor *= ally_dragon_multipliers.earth;

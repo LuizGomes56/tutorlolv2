@@ -1,5 +1,4 @@
 use super::{calculator::CurrentPlayerX, realtime::CurrentPlayer, riot::RiotChampionStats};
-use crate::model::champions::ChampionCdnStats;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::collections::HashMap;
@@ -35,29 +34,6 @@ pub struct Stats {
     pub max_health: f64,
     pub max_mana: f64,
     pub current_mana: f64,
-}
-
-impl Stats {
-    pub fn new(cdn: &ChampionCdnStats) -> Self {
-        Stats {
-            ability_power: 0.0,
-            armor: cdn.armor.flat,
-            armor_penetration_flat: 0.0,
-            armor_penetration_percent: 0.0,
-            attack_damage: cdn.attack_damage.flat,
-            attack_range: cdn.attack_range.flat,
-            attack_speed: cdn.attack_speed.flat,
-            crit_chance: 0.0,
-            crit_damage: cdn.critical_strike_damage_modifier.flat,
-            current_health: cdn.health.flat,
-            max_health: cdn.health.flat,
-            current_mana: cdn.mana.flat,
-            max_mana: cdn.mana.flat,
-            magic_penetration_flat: 0.0,
-            magic_penetration_percent: 0.0,
-            magic_resist: cdn.magic_resistance.flat,
-        }
-    }
 }
 
 pub trait ToRiotFormat {

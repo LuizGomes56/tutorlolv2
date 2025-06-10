@@ -1,4 +1,4 @@
-use std::collections::{BTreeMap, HashMap};
+use std::collections::HashMap;
 
 use serde::{Deserialize, Serialize};
 
@@ -63,7 +63,7 @@ pub struct EnemyPlayersX {
     pub items: Vec<usize>,
     pub level: usize,
     pub stats: BasicStats,
-    pub inherit_stats: bool,
+    pub infer_stats: bool,
 }
 
 #[derive(Deserialize)]
@@ -73,5 +73,5 @@ pub struct GameX {
     pub ally_earth_dragons: usize,
     pub ally_fire_dragons: usize,
     pub enemy_earth_dragons: usize,
-    pub stack_exceptions: BTreeMap<usize, usize>,
+    pub stack_exceptions: HashMap<usize, usize>,
 }
