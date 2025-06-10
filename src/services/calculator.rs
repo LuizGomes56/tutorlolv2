@@ -85,9 +85,7 @@ fn apply_auto_stats(
     match active_player.champion_id.as_str() {
         "Veigar" => stats.ability_power += stacks,
         "Chogath" => {
-            let scallings: [f64; 4] = [0.0, 80.0, 120.0, 160.0];
-            let r_ability_level: usize = active_player.abilities.r.clamp(0, 3);
-            stats.max_health += stacks * scallings[r_ability_level]
+            stats.max_health += stacks * 80.0 + 40.0 * active_player.abilities.r.clamp(0, 3) as f64;
         }
         "Sion" => stats.max_health += stacks,
         "Darius" => {
@@ -295,12 +293,16 @@ pub fn calculator<'a>(
 
     item_exceptions(&mut current_stats, &owned_items, &game.stack_exceptions);
 
-    let bonus_stats: BasicStats = apply_auto_stats(
-        &mut current_stats,
-        &cache.items,
-        active_player,
-        &current_player_base_stats,
-    )?;
+    let bonus_stats: BasicStats = if active_player.infer_stats {
+        apply_auto_stats(
+            &mut current_stats,
+            &cache.items,
+            active_player,
+            &current_player_base_stats,
+        )?
+    } else {
+        get_bonus_stats(&active_player.champion_stats, &current_player_base_stats)
+    };
 
     let adaptative_type: AdaptativeType =
         RiotFormulas::adaptative_type(bonus_stats.attack_damage, current_stats.ability_power);

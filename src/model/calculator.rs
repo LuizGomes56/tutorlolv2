@@ -53,6 +53,8 @@ pub struct ActivePlayerX {
     pub runes: Vec<usize>,
     pub level: usize,
     pub stacks: usize,
+    // Determines if stats should be inferred or used as <literal>[Stats] from Sender
+    pub infer_stats: bool,
 }
 
 #[derive(Deserialize)]
@@ -61,6 +63,7 @@ pub struct EnemyPlayersX {
     pub items: Vec<usize>,
     pub level: usize,
     pub stats: BasicStats,
+    pub inherit_stats: bool,
 }
 
 #[derive(Deserialize)]
