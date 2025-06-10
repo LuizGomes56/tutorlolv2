@@ -9,6 +9,10 @@ use crate::model::{
 };
 use std::{collections::HashMap, sync::Arc};
 
+// Takes a type constructed from port 2999 and returns a new type "Realtime"
+// `simulated_items` dictates how many clones of player current stats will be created
+// for each clone, abilities, runes and items damages will be recalculated
+// Returns a HashMap with results for each enemy, and the best item in general.
 pub fn realtime<'a>(
     cache: &'a Arc<GlobalCache>,
     game: &'a RiotRealtime,
@@ -164,7 +168,6 @@ pub fn realtime<'a>(
     )?;
 
     let mut enemies: Vec<Enemy<'_>> = Vec::with_capacity(1 << 3);
-    let mut best_item: (usize, f64) = (0usize, 0f64);
 
     for player in all_players.into_iter() {
         let player_champion_id: &String = cache
@@ -210,8 +213,8 @@ pub fn realtime<'a>(
                 current_player: GameStateCurrentPlayer {
                     thisv: &current_player,
                     cache: current_player_cache,
-                    items: &keys_as_vec(&current_player.damaging_items),
-                    runes: &keys_as_vec(&current_player.damaging_runes),
+                    items: &clone_keys(&current_player.damaging_items),
+                    runes: &clone_keys(&current_player.damaging_runes),
                     abilities: &active_player.abilities.get_levelings(),
                     simulated_stats: &simulated_champion_stats,
                 },
@@ -222,7 +225,6 @@ pub fn realtime<'a>(
                     champion_id: &player_champion_id,
                     level: enemy_level,
                 },
-                best_item: &mut best_item,
             });
             enemies.push(Enemy {
                 champion_id: player_champion_id.clone(),
@@ -249,7 +251,6 @@ pub fn realtime<'a>(
             map_number,
         },
         compared_items: compared_items_info,
-        best_item: best_item.0,
         scoreboard,
         enemy_dragon_multipliers,
         ally_dragon_multipliers,

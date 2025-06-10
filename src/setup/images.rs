@@ -9,6 +9,7 @@ use std::{
     fs::{self, ReadDir},
     path::{Path, PathBuf},
     sync::Arc,
+    time::Instant,
 };
 use tokio::task::JoinHandle;
 
@@ -108,6 +109,10 @@ pub async fn img_download_instances(client: Client, envcfg: Arc<EnvConfig>) {
             let _ = inner_future.await.unwrap();
         }
     }
+    println!(
+        "[COMPLETED] fn[img_download_instances]: {:#?}",
+        Instant::now()
+    );
 }
 
 pub async fn img_download_arts(client: Client, envcfg: Arc<EnvConfig>) {
@@ -155,6 +160,7 @@ pub async fn img_download_arts(client: Client, envcfg: Arc<EnvConfig>) {
             let _ = inner_future.await.unwrap();
         }
     }
+    println!("[COMPLETED] fn[img_download_arts]: {:#?}", Instant::now());
 }
 
 pub async fn img_download_runes(client: Client, envcfg: Arc<EnvConfig>) {
@@ -194,6 +200,7 @@ pub async fn img_download_runes(client: Client, envcfg: Arc<EnvConfig>) {
     for rune_future in rune_futures {
         let _ = rune_future.await;
     }
+    println!("[COMPLETED] fn[img_download_runes]: {:#?}", Instant::now());
 }
 
 pub async fn img_download_items(client: Client, envcfg: Arc<EnvConfig>) {
@@ -231,4 +238,5 @@ pub async fn img_download_items(client: Client, envcfg: Arc<EnvConfig>) {
     for item_future in item_futures {
         let _ = item_future.await.unwrap();
     }
+    println!("[COMPLETED] fn[img_download_items]: {:#?}", Instant::now());
 }

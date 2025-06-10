@@ -10,8 +10,8 @@ use crate::{
 };
 use actix_web::{HttpResponse, Responder, post, web::Data};
 
-#[post("/generate_writer_files")]
-pub async fn internal_generate_writer_files(state: Data<AppState>) -> impl Responder {
+#[post("/create_writer_files")]
+pub async fn internal_create_writer_files(state: Data<AppState>) -> impl Responder {
     match generate_writer_files(state.envcfg.clone()).await {
         Ok(_) => HttpResponse::Ok().json(APIResponse {
             success: true,
@@ -26,8 +26,8 @@ pub async fn internal_generate_writer_files(state: Data<AppState>) -> impl Respo
     }
 }
 
-#[post("/append_prettified_item_stats")]
-pub async fn internal_append_prettified_item_stats() -> impl Responder {
+#[post("/prettify_item_stats")]
+pub async fn internal_prettify_item_stats() -> impl Responder {
     match prettify_internal_items().await {
         Ok(_) => HttpResponse::Ok().json(APIResponse {
             success: true,
@@ -42,8 +42,8 @@ pub async fn internal_append_prettified_item_stats() -> impl Responder {
     }
 }
 
-#[post("/identify_damaging_items")]
-pub async fn internal_identify_damaging_items() -> impl Responder {
+#[post("/create_damaging_items")]
+pub async fn internal_create_damaging_items() -> impl Responder {
     match setup_damaging_items() {
         Ok(_) => HttpResponse::Ok().json(APIResponse {
             success: true,
@@ -74,8 +74,8 @@ pub async fn internal_rewrite_champion_names() -> impl Responder {
     }
 }
 
-#[post("/replace_item_names_with_ids")]
-pub async fn internal_replace_item_names_with_ids() -> impl Responder {
+#[post("/create_meta_items")]
+pub async fn internal_create_meta_items() -> impl Responder {
     match setup_meta_items() {
         Ok(_) => HttpResponse::Ok().json(APIResponse {
             success: true,

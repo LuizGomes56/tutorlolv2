@@ -6,16 +6,16 @@ use actix_web::{
 use crate::server::schemas::APIResponse;
 
 pub fn json_error_middleware(err: JsonPayloadError, _: &HttpRequest) -> actix_web::Error {
-    let error_response: APIResponse<String, ()> = match &err {
+    let error_response: APIResponse<&'_ str, ()> = match &err {
         JsonPayloadError::ContentType => APIResponse {
             success: false,
-            message: "Content-Type must be application/json".to_string(),
+            message: "Content-Type must be application/json",
             data: (),
         },
         // Most common error. Implemented to prevent server from returning plain text.
         JsonPayloadError::Deserialize(e) => APIResponse {
             success: false,
-            message: format!(
+            message: &format!(
                 "[BAD REQUEST]: A JSON serialization error ocurred due to malformed, invalid or missing fields on your JSON: {}",
                 e
             ),
@@ -23,12 +23,12 @@ pub fn json_error_middleware(err: JsonPayloadError, _: &HttpRequest) -> actix_we
         },
         JsonPayloadError::Overflow { limit } => APIResponse {
             success: false,
-            message: format!("Payload limit exceeded. Limit: {}", limit),
+            message: &format!("Payload limit exceeded. Limit: {}", limit),
             data: (),
         },
         _ => APIResponse {
             success: false,
-            message: "Unknown error while parsing JSON".to_string(),
+            message: "Unknown error while parsing JSON",
             data: (),
         },
     };

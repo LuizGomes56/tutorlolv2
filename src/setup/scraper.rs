@@ -4,7 +4,7 @@ use crate::{
 };
 use reqwest::{Client, Response};
 use scraper::{Html, Selector, error::SelectorErrorKind};
-use std::{collections::HashMap, sync::Arc};
+use std::{collections::HashMap, sync::Arc, time::Instant};
 use tokio::task::JoinHandle;
 
 // Recovers all the common builds for the current patch so the app can recommend builds to the user
@@ -80,6 +80,6 @@ pub async fn meta_items_scraper(client: Client, envcfg: Arc<EnvConfig>) -> Resul
         .map_err(|e: serde_json::Error| SetupError(e.to_string()))?;
 
     write_to_file("internal/meta_items.json", json.as_bytes())?;
-
+    println!("[COMPLETED] fn[meta_items_scraper]: {:#?}", Instant::now());
     Ok(())
 }

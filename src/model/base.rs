@@ -18,7 +18,7 @@ pub struct InstanceDamage {
     pub max_dmg_change: Option<f64>,
 }
 
-#[derive(Clone, Default, Deserialize, Serialize)]
+#[derive(Clone, Deserialize, Serialize)]
 pub struct Stats {
     pub ability_power: f64,
     pub armor: f64,

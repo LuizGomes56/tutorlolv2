@@ -17,11 +17,15 @@ use crate::{
 };
 use actix_web::{HttpResponse, Responder, post, web::Data};
 use reqwest::Client;
-use std::sync::Arc;
+use std::{sync::Arc, time::Instant};
 use tokio::task::{self, JoinHandle};
 
 #[post("/project")]
 pub async fn setup_project(state: Data<AppState>) -> impl Responder {
+    println!(
+        "fn[setup_project]: Started execution at: {:#?}",
+        Instant::now()
+    );
     let _ = setup_project_folders();
 
     let client: Client = state.client.clone();

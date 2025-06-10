@@ -151,10 +151,10 @@ async fn main() -> Result<()> {
                     .service(
                         scope("/internal")
                             .wrap(from_fn(password_middleware))
-                            .service(internal_generate_writer_files)
-                            .service(internal_append_prettified_item_stats)
-                            .service(internal_identify_damaging_items)
-                            .service(internal_replace_item_names_with_ids)
+                            .service(internal_create_writer_files)
+                            .service(internal_prettify_item_stats)
+                            .service(internal_create_damaging_items)
+                            .service(internal_create_meta_items)
                             .service(internal_rewrite_champion_names),
                     ),
             )
