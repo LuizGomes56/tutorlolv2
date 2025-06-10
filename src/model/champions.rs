@@ -1,15 +1,14 @@
+use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
-use serde::{Deserialize, Serialize};
-
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ChampionCdnStatsMap {
     pub flat: f64,
     pub per_level: f64,
 }
 
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ChampionCdnStats {
     pub health: ChampionCdnStatsMap,

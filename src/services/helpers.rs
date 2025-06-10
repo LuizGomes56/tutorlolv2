@@ -2,9 +2,9 @@ use super::eval::{ConditionalAddition, MathEval};
 use crate::{
     model::{
         base::{
-            AttackType, BasicStats, ComparedDamage, ComparedItem, CurrentPlayerLike, DamageLike,
-            DamageMultipliers, Damages, EnemyFullStats, FullStats, InstanceDamage, RealResists,
-            SelfFullStats, SimulatedDamages, Stats, ToRiotFormat,
+            AdaptativeType, AttackType, BasicStats, ComparedDamage, ComparedItem,
+            CurrentPlayerLike, DamageLike, DamageMultipliers, Damages, EnemyFullStats, FullStats,
+            InstanceDamage, RealResists, SelfFullStats, SimulatedDamages, Stats, ToRiotFormat,
         },
         calculator::AbilitiesX,
         champions::Champion,
@@ -472,8 +472,8 @@ pub fn get_full_stats<'a, T: CurrentPlayerLike>(
         * current_stats.magic_penetration_percent
         - current_stats.magic_penetration_flat;
 
-    real_armor = real_armor.clamp(0.0, (1 << 32) as f64);
-    real_magic_resist = real_magic_resist.clamp(0.0, (1 << 32) as f64);
+    real_armor = real_armor.clamp(0.0, 1e+300f64);
+    real_magic_resist = real_magic_resist.clamp(0.0, 1e+300f64);
 
     let physical_damage_multiplier: f64 = 100.0 / (100.0 + real_armor);
     let magic_damage_multiplier: f64 = 100.0 / (100.0 + real_magic_resist);
@@ -550,8 +550,10 @@ pub fn get_full_stats<'a, T: CurrentPlayerLike>(
                 true_damage: self_dmg_mod.2,
                 all_sources: self_dmg_mod.3,
             },
-            is_physical_adaptative_type: 0.35 * current_player.get_bonus_stats().attack_damage
-                >= 0.2 * current_stats.ability_power,
+            adaptative_type: AdaptativeType::from(
+                0.35 * current_player.get_bonus_stats().attack_damage
+                    >= 0.2 * current_stats.ability_power,
+            ),
         },
         enemy_player: EnemyFullStats {
             current_stats: enemy_current_stats,
@@ -730,10 +732,9 @@ pub fn replace_damage_keywords(stats: &FullStats, target_str: &str) -> String {
         ("BELVETH_STACKS", 1.0),
         (
             "ADAPTATIVE_DAMAGE",
-            if stats.current_player.is_physical_adaptative_type {
-                stats.physical_damage_multiplier
-            } else {
-                stats.magic_damage_multiplier
+            match stats.current_player.adaptative_type {
+                AdaptativeType::Physical => stats.physical_damage_multiplier,
+                AdaptativeType::Magic => stats.magic_damage_multiplier,
             },
         ),
         ("MISSING_HEALTH", stats.missing_health),

@@ -17,10 +17,11 @@ impl RiotFormulas {
     pub fn stat_growth(base: f64, growth_per_level: f64, level: usize) -> f64 {
         base + growth_per_level * (level as f64 - 1.0) * (0.7025 + 0.0175 * (level as f64 - 1.0))
     }
-    /// ```
+    /// Percentage values are entered in this section as a number in range 0-100
     ///
-    /// // Percentage values are entered in this section as a number in range 0-100
-    /// // 30% and 30% penetration should yield 49% penetration (0.51 true value)
+    /// 30% and 30% penetration should yield 49% penetration (0.51 true value)
+    ///
+    /// ```
     /// for x in vec yield 1 - x / 10.pow(x.len_digits << 1)
     /// let from_vec = [30, 30];
     /// return 0.51

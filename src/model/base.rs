@@ -1,9 +1,8 @@
-use std::collections::HashMap;
-
+use super::{calculator::CurrentPlayerX, realtime::CurrentPlayer, riot::RiotChampionStats};
+use crate::model::champions::ChampionCdnStats;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
-
-use super::{calculator::CurrentPlayerX, realtime::CurrentPlayer, riot::RiotChampionStats};
+use std::collections::HashMap;
 
 #[derive(Serialize)]
 pub struct InstanceDamage {
@@ -36,6 +35,29 @@ pub struct Stats {
     pub max_health: f64,
     pub max_mana: f64,
     pub current_mana: f64,
+}
+
+impl Stats {
+    pub fn new(cdn: &ChampionCdnStats) -> Self {
+        Stats {
+            ability_power: 0.0,
+            armor: cdn.armor.flat,
+            armor_penetration_flat: 0.0,
+            armor_penetration_percent: 0.0,
+            attack_damage: cdn.attack_damage.flat,
+            attack_range: cdn.attack_range.flat,
+            attack_speed: cdn.attack_speed.flat,
+            crit_chance: 0.0,
+            crit_damage: cdn.critical_strike_damage_modifier.flat,
+            current_health: cdn.health.flat,
+            max_health: cdn.health.flat,
+            current_mana: cdn.mana.flat,
+            max_mana: cdn.mana.flat,
+            magic_penetration_flat: 0.0,
+            magic_penetration_percent: 0.0,
+            magic_resist: cdn.magic_resistance.flat,
+        }
+    }
 }
 
 pub trait ToRiotFormat {
@@ -167,6 +189,21 @@ pub struct EnemyFullStats<'a> {
     pub real_resists: RealResists,
 }
 
+pub enum AdaptativeType {
+    Physical,
+    Magic,
+}
+
+impl From<bool> for AdaptativeType {
+    fn from(value: bool) -> Self {
+        if value {
+            AdaptativeType::Physical
+        } else {
+            AdaptativeType::Magic
+        }
+    }
+}
+
 pub struct SelfFullStats<'a> {
     pub current_stats: &'a Stats,
     pub base_stats: &'a BasicStats,
@@ -174,7 +211,7 @@ pub struct SelfFullStats<'a> {
     pub is_ranged: bool,
     pub level: usize,
     pub damage_mod: DamageMultipliers,
-    pub is_physical_adaptative_type: bool,
+    pub adaptative_type: AdaptativeType,
 }
 
 pub struct FullStats<'a> {

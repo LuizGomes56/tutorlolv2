@@ -2,10 +2,10 @@ use super::*;
 use crate::{
     model::{
         application::GlobalCache,
-        base::{AttackType, BasicStats, ComparedItem, Stats},
+        base::{AdaptativeType, AttackType, BasicStats, ComparedItem, Stats},
         calculator::{ActivePlayerX, Calculator, CurrentPlayerX, EnemyX, GameX},
         champions::Champion,
-        items::Item,
+        items::{Item, PartialStats},
         realtime::*,
         runes::Rune,
     },
@@ -23,24 +23,7 @@ fn apply_auto_stats(
     active_player: &ActivePlayerX,
     base_stats: &BasicStats,
 ) -> Result<(Stats, BasicStats), String> {
-    let mut stats: Stats = Stats {
-        ability_power: 0.0,
-        armor: champion_cache.stats.armor.flat,
-        armor_penetration_flat: 0.0,
-        armor_penetration_percent: 0.0,
-        attack_damage: champion_cache.stats.attack_damage.flat,
-        attack_range: champion_cache.stats.attack_range.flat,
-        attack_speed: champion_cache.stats.attack_speed.flat,
-        crit_chance: 0.0,
-        crit_damage: champion_cache.stats.critical_strike_damage_modifier.flat,
-        current_health: champion_cache.stats.health.flat,
-        magic_penetration_flat: 0.0,
-        magic_penetration_percent: 0.0,
-        magic_resist: champion_cache.stats.magic_resistance.flat,
-        max_health: champion_cache.stats.health.flat,
-        max_mana: champion_cache.stats.mana.flat,
-        current_mana: champion_cache.stats.mana.flat,
-    };
+    let mut stats: Stats = Stats::new(&champion_cache.stats);
 
     let stacks: f64 = active_player.stacks as f64;
     let owned_items: &Vec<usize> = &active_player.items;
@@ -51,9 +34,9 @@ fn apply_auto_stats(
     for item_id in owned_items {
         let cached_item = items_cache
             .get(&item_id)
-            .ok_or_else(|| format!("Item {} not found on cache", item_id.to_string()))?;
+            .ok_or_else(|| format!("Item {} not found on cache", item_id))?;
 
-        let item_stats = &cached_item.stats;
+        let item_stats: &PartialStats = &cached_item.stats;
 
         stats.ability_power.add_if_some(item_stats.ability_power);
         stats.attack_damage.add_if_some(item_stats.attack_damage);
@@ -111,10 +94,7 @@ fn apply_auto_stats(
         "Veigar" => stats.ability_power += stacks,
         "Chogath" => {
             let scallings: [f64; 4] = [0.0, 80.0, 120.0, 160.0];
-            let mut r_ability_level: usize = active_player.abilities.r;
-            if r_ability_level > 3 {
-                r_ability_level = 3
-            }
+            let r_ability_level: usize = active_player.abilities.r.clamp(0, 3);
             stats.max_health += stacks * scallings[r_ability_level]
         }
         "Sion" => stats.max_health += stacks,
@@ -137,6 +117,105 @@ fn apply_auto_stats(
     stats.magic_penetration_percent = RiotFormulas::percent_value(magic_penetration);
 
     Ok((stats, bonus_stats))
+}
+
+// #![manual_impl]
+// #![unsupported]
+fn _rune_exceptions(
+    champion_stats: &mut Stats,
+    owned_runes: &Vec<usize>,
+    level: f64,
+    this_stack: usize,
+    adaptative_type: AdaptativeType,
+) {
+    for rune in owned_runes {
+        match rune {
+            8008 => {
+                if champion_stats.attack_range < 350.0 {
+                    champion_stats.attack_speed +=
+                        this_stack as f64 * (5.0 + 11.0 / 17.0 * (level - 1.0));
+                } else {
+                    champion_stats.attack_speed +=
+                        this_stack as f64 * (3.6 + 4.4 / 17.0 * (level - 1.0));
+                }
+            }
+            8010 => {
+                let formula = this_stack as f64 * (1.8 + 2.2 / 17.0 * (level - 1.0));
+                match adaptative_type {
+                    AdaptativeType::Physical => {
+                        champion_stats.attack_damage += 0.6 * formula;
+                    }
+                    AdaptativeType::Magic => {
+                        champion_stats.ability_power += formula;
+                    }
+                }
+            }
+            8120 | 8136 | 8138 => match adaptative_type {
+                AdaptativeType::Physical => {
+                    champion_stats.attack_damage += match this_stack {
+                        0..10 => 1.2 * this_stack as f64,
+                        _ => 18.0,
+                    };
+                }
+                AdaptativeType::Magic => {
+                    champion_stats.ability_power += match this_stack {
+                        0..10 => (this_stack << 1) as f64,
+                        _ => 30.0,
+                    };
+                }
+            },
+            8232 => {
+                champion_stats.ability_power += 12.0 + level;
+                champion_stats.attack_damage += 7.2 + 0.6 * level
+            }
+            8233 => match adaptative_type {
+                AdaptativeType::Physical => {
+                    champion_stats.attack_damage += 1.8 + 16.2 / 17.0 * (level - 1.0);
+                }
+                AdaptativeType::Magic => {
+                    champion_stats.ability_power += 3.0 + 27.0 / 17.0 * (level - 1.0);
+                }
+            },
+            8236 => {
+                let formula: f64 = (this_stack << 2 * (this_stack + 1)) as f64;
+                match adaptative_type {
+                    AdaptativeType::Physical => {
+                        champion_stats.attack_damage += 0.6 * formula;
+                    }
+                    AdaptativeType::Magic => {
+                        champion_stats.ability_power += formula;
+                    }
+                }
+            }
+            9000 => match adaptative_type {
+                AdaptativeType::Physical => {
+                    champion_stats.attack_damage += 5.4 * this_stack as f64;
+                }
+                AdaptativeType::Magic => {
+                    champion_stats.ability_power += 9.0 * this_stack as f64;
+                }
+            },
+            9001 => champion_stats.max_health += 65.0 * this_stack as f64,
+            9002 => champion_stats.max_health += 10.0 * level * this_stack as f64,
+            9003 => champion_stats.attack_speed += 10.0 * this_stack as f64,
+            _ => {}
+        }
+    }
+}
+
+// #![manual_impl]
+// #![unsupported]
+fn _item_exceptions(champion_stats: &mut Stats, owned_items: &Vec<usize>, this_stack: usize) {
+    for item_id in owned_items {
+        match item_id {
+            3041 => champion_stats.ability_power += (5 * this_stack.clamp(1, 1 << 32)) as f64,
+            1082 => champion_stats.ability_power += (4 * this_stack.clamp(1, 1 << 32)) as f64,
+            6697 | 7008 => {
+                champion_stats.attack_damage += (15 + this_stack.clamp(1, 1 << 32) << 1) as f64
+            }
+            _ => {}
+        }
+    }
 }
 
 // #![todo] Comparison tool is not working;
