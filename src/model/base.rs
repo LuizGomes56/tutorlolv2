@@ -219,7 +219,7 @@ impl ToString for AttackType {
 
 impl PartialEq<AttackType> for String {
     fn eq(&self, other: &AttackType) -> bool {
-        self.to_string().to_uppercase() == other.to_string()
+        self.to_string() == other.to_string()
     }
 }
 
