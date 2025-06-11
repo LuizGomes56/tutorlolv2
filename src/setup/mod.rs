@@ -1,5 +1,6 @@
 mod api;
 pub mod cache;
+pub mod exceptions;
 pub mod generators;
 mod helpers;
 pub mod images;

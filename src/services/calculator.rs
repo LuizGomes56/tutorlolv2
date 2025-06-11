@@ -113,23 +113,25 @@ fn rune_exceptions(
     owned_runes: &Vec<usize>,
     level: f64,
     exception_map: &HashMap<usize, usize>,
-    adaptative_type: AdaptativeType,
+    value_types: (AdaptativeType, AttackType),
 ) {
     for rune in owned_runes {
         let this_stack: usize = *exception_map.get(&rune).unwrap_or(&0);
         match rune {
-            8008 => {
-                if champion_stats.attack_range < 350.0 {
+            8008 => match value_types.1 {
+                AttackType::Melee => {
                     champion_stats.attack_speed +=
                         (this_stack as f64) * (5.0 + 11.0 / 17.0 * (level - 1.0));
-                } else {
+                }
+                AttackType::Ranged => {
                     champion_stats.attack_speed +=
                         (this_stack as f64) * (3.6 + 4.4 / 17.0 * (level - 1.0));
                 }
-            }
+                _ => {}
+            },
             8010 => {
                 let formula: f64 = (this_stack as f64) * (1.8 + 2.2 / 17.0 * (level - 1.0));
-                match adaptative_type {
+                match value_types.0 {
                     AdaptativeType::Physical => {
                         champion_stats.attack_damage += 0.6 * formula;
                     }
@@ -138,7 +140,7 @@ fn rune_exceptions(
                     }
                 }
             }
-            8120 | 8136 | 8138 => match adaptative_type {
+            8120 | 8136 | 8138 => match value_types.0 {
                 AdaptativeType::Physical => {
                     champion_stats.attack_damage += match this_stack {
                         0..10 => 1.2 * (this_stack as f64),
@@ -156,7 +158,7 @@ fn rune_exceptions(
                 champion_stats.ability_power += 12.0 + level;
                 champion_stats.attack_damage += 7.2 + 0.6 * level
             }
-            8233 => match adaptative_type {
+            8233 => match value_types.0 {
                 AdaptativeType::Physical => {
                     champion_stats.attack_damage += 1.8 + 16.2 / 17.0 * (level - 1.0);
                 }
@@ -166,7 +168,7 @@ fn rune_exceptions(
             },
             8236 => {
                 let formula: f64 = (this_stack << 2 * (this_stack + 1)) as f64;
-                match adaptative_type {
+                match value_types.0 {
                     AdaptativeType::Physical => {
                         champion_stats.attack_damage += 0.6 * formula;
                     }
@@ -175,7 +177,7 @@ fn rune_exceptions(
                     }
                 }
             }
-            9000 => match adaptative_type {
+            9000 => match value_types.0 {
                 AdaptativeType::Physical => {
                     champion_stats.attack_damage += 5.4 * (this_stack as f64);
                 }
@@ -201,11 +203,16 @@ fn item_exceptions(
     for item_id in owned_items {
         let this_stack: usize = *exception_map.get(&item_id).unwrap_or(&0);
         match item_id {
-            1082 => champion_stats.ability_power += (this_stack.clamp(1, 1 << 32) << 2) as f64,
-            3041 => champion_stats.ability_power += (5 * this_stack.clamp(1, 1 << 32)) as f64,
+            1082 => {
+                champion_stats.ability_power += (this_stack.clamp(1, CLAMP_USIZE_MAX) << 2) as f64
+            }
+            3041 => {
+                champion_stats.ability_power += (5 * this_stack.clamp(1, CLAMP_USIZE_MAX)) as f64
+            }
             3089 | 223089 => champion_stats.ability_power *= 1.3,
             6697 | 7008 => {
-                champion_stats.attack_damage += (15 + this_stack.clamp(1, 1 << 32) << 1) as f64
+                champion_stats.attack_damage +=
+                    (15 + this_stack.clamp(1, CLAMP_USIZE_MAX) << 1) as f64
             }
             8002 => champion_stats.ability_power *= 1.5,
             _ => {}
@@ -310,7 +317,10 @@ pub fn calculator<'a>(
         &owned_runes,
         active_player_level as f64,
         &game.stack_exceptions,
-        adaptative_type,
+        (
+            adaptative_type,
+            AttackType::from(current_player_cache.attack_type.as_str()),
+        ),
     );
 
     let current_player: CurrentPlayerX = CurrentPlayerX {

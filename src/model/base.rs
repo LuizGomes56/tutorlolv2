@@ -207,6 +207,22 @@ pub enum AttackType {
     Other,
 }
 
+impl ToString for AttackType {
+    fn to_string(&self) -> String {
+        match self {
+            AttackType::Melee => "MELEE".to_string(),
+            AttackType::Ranged => "RANGED".to_string(),
+            AttackType::Other => "OTHER".to_string(),
+        }
+    }
+}
+
+impl PartialEq<AttackType> for String {
+    fn eq(&self, other: &AttackType) -> bool {
+        self.to_string().to_uppercase() == other.to_string()
+    }
+}
+
 impl From<&str> for AttackType {
     fn from(s: &str) -> Self {
         match s {

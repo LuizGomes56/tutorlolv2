@@ -18,6 +18,8 @@ use crate::{
 };
 use std::{collections::HashMap, hash::Hash};
 
+pub const CLAMP_USIZE_MAX: usize = 1 << 32;
+pub const CLAMP_F64_MAX: f64 = 1e+300f64;
 // By 06/07/2025 Earth dragons give +5% resists
 // #![manual_impl]
 pub const EARTH_DRAGON_MULTIPLIER: f64 = 0.05;
@@ -103,6 +105,7 @@ pub fn calculate_enemy_state<T: CurrentPlayerLike>(
             &mut enemy_current_stats,
         ),
         &enemy_items,
+        current_player_cache.attack_type == AttackType::Ranged,
     );
     let normal_abilities_damage: HashMap<String, InstanceDamage> =
         get_abilities_damage(current_player_cache, &full_stats, &abilities);
@@ -124,6 +127,7 @@ pub fn calculate_enemy_state<T: CurrentPlayerLike>(
                     &mut enemy_current_stats,
                 ),
                 &enemy_items,
+                current_player_cache.attack_type == AttackType::Ranged,
             );
             let mut simulated_ability_damage: HashMap<String, InstanceDamage> =
                 get_abilities_damage(&current_player_cache, &simulated_full_stats, &abilities);
@@ -466,6 +470,7 @@ pub fn get_full_stats<'a, T: CurrentPlayerLike>(
     current_stats: &'a Stats,
     enemy_state: (&'a str, usize, &'a mut BasicStats, &'a mut BasicStats),
     enemy_items: &'a Vec<usize>,
+    is_ranged: bool,
 ) -> FullStats<'a> {
     let (enemy_champion_id, enemy_level, enemy_bonus_stats, enemy_current_stats) = enemy_state;
     let mut real_armor: f64 = enemy_current_stats.armor * current_stats.armor_penetration_percent
@@ -474,8 +479,8 @@ pub fn get_full_stats<'a, T: CurrentPlayerLike>(
         * current_stats.magic_penetration_percent
         - current_stats.magic_penetration_flat;
 
-    real_armor = real_armor.clamp(0.0, 1e+300f64);
-    real_magic_resist = real_magic_resist.clamp(0.0, 1e+300f64);
+    real_armor = real_armor.clamp(0.0, CLAMP_F64_MAX);
+    real_magic_resist = real_magic_resist.clamp(0.0, CLAMP_F64_MAX);
 
     let physical_damage_multiplier: f64 = 100.0 / (100.0 + real_armor);
     let magic_damage_multiplier: f64 = 100.0 / (100.0 + real_magic_resist);
@@ -538,12 +543,7 @@ pub fn get_full_stats<'a, T: CurrentPlayerLike>(
             current_stats: &current_stats,
             base_stats: current_player.get_base_stats(),
             bonus_stats: current_player.get_bonus_stats(),
-            // #![manual_impl]
-            // This may not be valid anymore.
-            // Melee champions today can reach an attack range > 350.0
-            // In this scenario, they will be falsely marked as ranged
-            // #![unsafe_impl]
-            is_ranged: current_stats.attack_range > 350.0,
+            is_ranged,
             level: current_player.get_level(),
             // #![unsupported] only permanent modifiers are supported
             damage_mod: DamageMultipliers {

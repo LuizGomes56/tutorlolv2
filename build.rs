@@ -7,17 +7,21 @@ use std::{
 
 fn main() {
     let out_path: String = env::var("OUT_DIR").unwrap();
-    let writers_dir: &Path = Path::new("src/writers");
+
+    if !Path::new("formulas").exists() {
+        fs::create_dir("formulas").unwrap();
+    }
+
     {
         let mut match_arms: String = String::new();
 
-        for entry in fs::read_dir(writers_dir).unwrap() {
+        for entry in fs::read_dir("src/writers").unwrap() {
             let entry: DirEntry = entry.unwrap();
             let name: String = entry.file_name().into_string().unwrap();
             if name.ends_with(".rs") && name != "mod.rs" {
                 let content: String = fs::read_to_string(entry.path()).unwrap();
                 let formulas_path: &String =
-                    &format!("formulas/{}.rs", name.trim_end_matches(".rs"));
+                    &format!("formulas/{}.txt", name.trim_end_matches(".rs"));
                 if !Path::new(formulas_path).exists() {
                     fs::File::create(formulas_path).unwrap();
                 }
@@ -46,13 +50,12 @@ fn main() {
             if let Ok(map) = serde_json::from_str::<HashMap<String, String>>(&champion_names) {
                 for (_, champion_id) in map.into_iter() {
                     let id = champion_id.to_lowercase();
-                    if !Path::new(&writers_dir.join(format!("{}.rs", id))).exists() {
+                    if !Path::new(&format!("src/writers/{}.rs", id)).exists() {
                         let content = r#"use super::{Ability, CdnChampion, Champion,
 	                        HashMap, Target, extract_ability_damage}; 
                             // #![auto_generated] 
                             #[writer_macros::writer] pub fn transform(data: CdnChampion) -> Champion {}"#;
-                        fs::write(writers_dir.join(format!("{}.rs", id)), content.as_bytes())
-                            .unwrap();
+                        fs::write(&format!("src/writers/{}.rs", id), content.as_bytes()).unwrap();
                     }
                 }
             }
