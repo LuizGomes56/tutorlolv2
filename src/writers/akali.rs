@@ -1,4 +1,6 @@
-use super::{Ability, CdnChampion, Champion, HashMap, Target, extract_ability_damage};
+use super::{
+    Ability, CdnChampion, Champion, HashMap, Target, extract_ability_damage, extract_passive_damage,
+};
 
 // #![stable]
 // #![since] "06/11/2025"
@@ -9,6 +11,7 @@ use super::{Ability, CdnChampion, Champion, HashMap, Target, extract_ability_dam
 
 #[writer_macros::writer]
 pub fn transform(data: CdnChampion) -> Champion {
+    passive!("P", (0, 2), Target::MINIMUM, (Some(2), None));
     ability!(q, (0, 0, "Q", Target::MINIMUM));
     ability!(
         e,
@@ -22,6 +25,5 @@ pub fn transform(data: CdnChampion) -> Champion {
         (2, 0, "R2", Target::MINIMUM),
         (2, 1, "R2_MAX", Target::MAXIMUM)
     );
-
     merge_ability!("R2");
 }

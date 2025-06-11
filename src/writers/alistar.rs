@@ -1,27 +1,19 @@
-use super::{
-	Ability, CdnChampion, Champion,
-	HashMap, Target, extract_ability_damage
-};
+use super::{Ability, CdnChampion, Champion, HashMap, Target, extract_ability_damage};
 
-// #![auto_generated]
+// #![stable]
+// #![since] "06/11/2025"
+// #![patch] "25.11"
+// * R is captured by the generator but does not deal any damage
+// * Damage reductions are not planned to ever be implemented
 
 #[writer_macros::writer]
 pub fn transform(data: CdnChampion) -> Champion {
-	ability!(
-		q,
-		(0, 0, "Q_0_0_0", Target::MINIMUM)
-	);
-	ability!(
-		w,
-		(0, 0, "W_0_0_0", Target::MINIMUM)
-	);
-	ability!(
-		e,
-		(0, 0, "E_0_0_0", Target::MINIMUM),
-		(0, 1, "E_0_0_1_MAXIMUM", Target::MAXIMUM)
-	);
-	ability!(
-		r,
-		(0, 0, "R_0_0_0", Target::MINIMUM)
-	);
+    ability!(q, (0, 0, "Q", Target::MINIMUM));
+    ability!(w, (0, 0, "W", Target::MINIMUM));
+    ability!(
+        e,
+        (0, 0, "E", Target::MINIMUM),
+        (0, 1, "E_MAX", Target::MAXIMUM)
+    );
+    merge_ability!("E");
 }

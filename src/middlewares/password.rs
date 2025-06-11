@@ -1,3 +1,5 @@
+use std::time::Instant;
+
 use actix_web::{
     Error, HttpResponse,
     body::{BoxBody, EitherBody},
@@ -24,6 +26,8 @@ pub async fn password_middleware(
     req: ServiceRequest,
     next: Next<BoxBody>,
 ) -> Result<ServiceResponse<EitherBody<BoxBody, BoxBody>>, Error> {
+    println!("Instant Time: {:#?}", Instant::now());
+
     if body.password != state.envcfg.system_password {
         let response: HttpResponse = HttpResponse::Unauthorized().json(APIResponse {
             success: false,

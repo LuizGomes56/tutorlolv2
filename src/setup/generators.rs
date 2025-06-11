@@ -7,10 +7,10 @@ use regex::{Captures, Match, Regex};
 use std::{collections::HashMap, fs, sync::Arc};
 use tokio::task::JoinHandle;
 
-// Files will be generated automatically, but checked manually until it is
-// confirmed that the desired format was succesfully achieved.
-// Once it is done, a comment must be added to the header to
-// prevent the generator from editing that file. "#![stable]".
+/// Files will be generated automatically, but checked manually until it is
+/// confirmed that the desired format was succesfully achieved.
+/// Once it is done, a comment must be added to the header to
+/// prevent the generator from editing that file. "#![stable]".
 pub async fn generate_writer_files(envcfg: Arc<EnvConfig>) -> Result<(), SetupError> {
     let champion_names: HashMap<String, String> = read_json_file("internal/champion_names.json")
         .map_err(|e: SetupError| {
@@ -86,8 +86,8 @@ pub fn transform(data: CdnChampion) -> Champion {
     Ok(())
 }
 
-// Takes the reference of the description of one ability, the reference vector
-// where data will be written at, and adds the tuples of scalling found.
+/// Takes the reference of the description of one ability, the reference vector
+/// where data will be written at, and adds the tuples of scalling found.
 fn assign_scalings(description: &String, ref_vec: &mut Vec<String>) {
     if description.is_empty() {
         return;
@@ -98,14 +98,21 @@ fn assign_scalings(description: &String, ref_vec: &mut Vec<String>) {
     });
 }
 
-// Easier way to get passive damage when the standard format (struct CdnChampion) matches.
-// data -> the reference to the data passed to the caller function.
-// indexes -> the (ability_index, effect_index) of the description string to be extracted.
-// postfix -> optional hardcoded string to be added after each matching in final Vec<String>
-// scalings -> optional index where the description string can be found to get passive's scallings
-// target_vec -> determines if final ocurrence will be written in Minimum or Maximum vector
-// keyname -> name of the key to be added in the map after final Vec<String> is created
-// map -> reference to the map created internally by the caller function. (Must be created)
+/// Easier way to get passive damage when the standard format (struct CdnChampion) matches.
+///
+/// `data` > the reference to the data passed to the caller function.
+///
+/// `indexes` > the (ability_index, effect_index) of the description string to be extracted.
+///
+/// `postfix` > optional hardcoded string to be added after each matching in final Vec<String>
+///
+/// `scalings` > optional index where the description string can be found to get passive's scallings
+///
+/// `target_vec` > determines if final ocurrence will be written in Minimum or Maximum vector
+///
+/// `keyname` > name of the key to be added in the map after final Vec<String> is created
+///
+/// `map` > reference to the map created internally by the caller function. (Must be created)
 pub fn extract_passive_damage(
     data: &CdnChampion,
     indexes: (usize, usize),
@@ -133,7 +140,7 @@ pub fn extract_passive_damage(
         }
         Target::MAXIMUM => {
             maximum_damage = process_linear_range(passive_bounds, 18, postfix);
-            assign_scalings(&description, &mut minimum_damage);
+            assign_scalings(&description, &mut maximum_damage);
         }
     };
 
@@ -143,7 +150,7 @@ pub fn extract_passive_damage(
     );
 }
 
-// Helper function to remove the decimal point if it's not needed, or expand floats.
+/// Helper function to remove the decimal point if it's not needed, or expand floats.
 fn trim_f64(val: f64) -> String {
     if val.fract() == 0.0 {
         format!("{:.0}", val)
@@ -152,8 +159,8 @@ fn trim_f64(val: f64) -> String {
     }
 }
 
-// Takes the default format of the API and assigns to target_vec the correct format
-// Used internally.
+/// Takes the default format of the API and assigns to target_vec the correct format
+/// Used internally.
 fn extract_ability(modifiers: &Vec<Modifiers>, target_vec: &mut Vec<String>) {
     if modifiers.is_empty() {
         return;
@@ -197,8 +204,8 @@ fn extract_ability(modifiers: &Vec<Modifiers>, target_vec: &mut Vec<String>) {
     }
 }
 
-// Takes a string with the match "{number} : {number}" and returns the numeric values
-// Might return nothing if no values are found, or a tuple is malformed
+/// Takes a string with the match "{number} : {number}" and returns the numeric values
+/// Might return nothing if no values are found, or a tuple is malformed
 fn extract_range_values(input: &str) -> Option<(f64, f64)> {
     let re: Regex = Regex::new(r"(\d+(?:\.\d+)?)(%)?\s*[:\-–]\s*(\d+(?:\.\d+)?)(%)?").ok()?;
     let caps: Captures<'_> = re.captures(input)?;
@@ -215,8 +222,8 @@ fn extract_range_values(input: &str) -> Option<(f64, f64)> {
     Some((first / denom1, second / denom2))
 }
 
-// Lots of passive strings match with a pattern of (number) : (number) ... (+ Scalings)
-// This function returns the first two values it found, assuming there will always be two.
+/// Lots of passive strings match with a pattern of (number) : (number) ... (+ Scalings)
+/// This function returns the first two values it found, assuming there will always be two.
 fn extract_passive_bounds(
     data: &CdnChampion,
     indexes: (usize, usize),
@@ -242,7 +249,7 @@ fn extract_passive_bounds(
     (passive, passive_bounds)
 }
 
-// Gets the tuples that are in pattern (+ Scalling) and formats the string to the internal format.
+/// Gets the tuples that are in pattern (+ Scalling) and formats the string to the internal format.
 fn extract_scaled_values(input: &str) -> String {
     let re: Regex = Regex::new(r"\(([^)]+)\)").unwrap();
     let mut result: Vec<String> = Vec::new();
@@ -294,8 +301,8 @@ fn extract_damagelike_expr(input: &str) -> String {
     process_scaled_string(&results.join(" ").replace("{{as|", ""))
 }
 
-// Useful for passives where scalling is linear over all 18 levels.
-// Returns the array with the values for each level adjusted
+/// Useful for passives where scalling is linear over all 18 levels.
+/// Returns the array with the values for each level adjusted
 fn process_linear_range(bounds: (f64, f64), size: usize, postfix: Option<&str>) -> Vec<String> {
     let mut result: Vec<String> = Vec::<String>::new();
     let (start, end) = bounds;
@@ -315,10 +322,10 @@ fn remove_parenthesized_additions(input: &str) -> String {
     re.replace_all(input, "").to_string()
 }
 
-// Determines if it should be written in "minimum_damage" or "maximum_damage" field
-// "maximum_damage" may not be filled if no "minimum_damage" exists.
-// Doing so will cause the display to show "0 - {max_damage}"
-// While "minimum_damage" without "maximum_damage" will show "{min_damage}"
+/// Determines if it should be written in "minimum_damage" or "maximum_damage" field
+/// "maximum_damage" may not be filled if no "minimum_damage" exists.
+/// Doing so will cause the display to show "0 - {max_damage}"
+/// While "minimum_damage" without "maximum_damage" will show "{min_damage}"
 pub enum Target {
     MINIMUM,
     MAXIMUM,
@@ -369,7 +376,7 @@ pub fn extract_ability_damage(
     }
 }
 
-// Replaces common keys found in the API with the corresponding ones used internally
+/// Replaces common keys found in the API with the corresponding ones used internally
 pub fn replace_keys(s: &str) -> String {
     let replacements: [(&'static str, &'static str); 39] = [
         ("per 100", "0.01 *"),
@@ -420,7 +427,7 @@ pub fn replace_keys(s: &str) -> String {
         })
 }
 
-// Returns a new array with the coordinates where an ability was found according to CDN API
+/// Returns a new array with the coordinates where an ability was found according to CDN API
 fn transform_ability(key: &str, abilities: &Vec<CdnAbility>) -> Vec<String> {
     let mut writer_keybinds: Vec<String> = Vec::<String>::new();
 
