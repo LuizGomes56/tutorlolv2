@@ -14,6 +14,9 @@ strip = true
 debug = false
 incremental = false
 
+[build-dependencies]
+serde_json = "1.0.140"
+
 [dependencies]
 writer_macros = { path = "./writer_macros" }
 actix-web = "4.11.0"
