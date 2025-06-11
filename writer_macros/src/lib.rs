@@ -37,6 +37,21 @@ use syn::parse_macro_input;
 /// passive!("P", (0, 0), Target::MINIMUM, (None, Some("ENEMY_MAX_HEALTH")));
 /// passive!("P", (0, 0), Target::MAXIMUM, (Some(<usize>scalling), Some("POSTFIX")));
 /// ```
+///
+/// ### `merge_ability!`
+///
+/// Has two variants. The one with only one argument takes the {STRING} and checks for
+/// the key {STRING}_MAX in the HashMap and if found, moves the value from "maximum_damage" of it
+/// into the original key, that should represent the minimum damage. At the end, the key {STRING}_MAX
+/// is removed from the HashMap.
+///
+/// The other variant takes two arguments, the first one is the key that represent minimum_damage,
+/// and the second one is the key that represent maximum_damage.
+///
+/// ```
+/// merge_ability!("Q");
+/// merge_ability!("Q_MIN", "Q_MAX");
+/// ```
 #[proc_macro_attribute]
 pub fn writer(_args: TokenStream, input: TokenStream) -> TokenStream {
     let mut func = parse_macro_input!(input as syn::ItemFn);
@@ -46,22 +61,22 @@ pub fn writer(_args: TokenStream, input: TokenStream) -> TokenStream {
 
         #[allow(unused_macros)]
         macro_rules! ability {
-            ($field:ident, $idx:literal, $(($a:literal, $b:literal, $c:literal, $d:expr)),* $(,)?) => {{
+            ($field:ident, $idx:literal, $(($a:literal, $b:literal, $c:literal, $d:expr)),* $(,)?) => {
                 let pattern = [$(($a, $b, $c, $d)),*];
                 extract_ability_damage(&data.abilities.$field[$idx], &mut abilities, &pattern);
-            }};
-            ($field:ident, $(($a:literal, $b:literal, $c:literal, $d:expr)),* $(,)?) => {{
+            };
+            ($field:ident, $(($a:literal, $b:literal, $c:literal, $d:expr)),* $(,)?) => {
                 let pattern = [$(($a, $b, $c, $d)),*];
                 extract_ability_damage(&data.abilities.$field[0], &mut abilities, &pattern);
-            }};
+            };
         }
 
         #[allow(unused_macros)]
         macro_rules! passive {
-            ($key:literal, ($i:literal, $j:literal), $target:expr) => {{
+            ($key:literal, ($i:literal, $j:literal), $target:expr) => {
                 extract_passive_damage(&data, ($i, $j), None, None, &$target, $key, &mut abilities);
-            }};
-            ($key:literal, ($i:literal, $j:literal), $target:expr, ($scaling:expr, $postfix:expr)) => {{
+            };
+            ($key:literal, ($i:literal, $j:literal), $target:expr, ($scaling:expr, $postfix:expr)) => {
                 extract_passive_damage(
                     &data,
                     ($i, $j),
@@ -71,7 +86,39 @@ pub fn writer(_args: TokenStream, input: TokenStream) -> TokenStream {
                     $key,
                     &mut abilities,
                 );
-            }};
+            };
+        }
+
+        #[allow(unused_macros)]
+        macro_rules! merge_ability {
+            ($key:literal) => {
+                let max_dmg = abilities.get(&format!("{}_MAX", $key));
+                if let Some(value) = max_dmg {
+                    let max_damage = value.maximum_damage.clone();
+                    if let Some(mut_ref) = abilities.get_mut($key) {
+                        mut_ref.maximum_damage = max_damage;
+                        abilities.remove(&format!("{}_MAX", $key));
+                    } else {
+                        println!("macro [merge_ability!]: Error: Destination key from arg#2 does not exist: {:?}", $key);
+                    }
+                } else {
+                    println!("macro [merge_ability!]: Error: key from arg#1 does not exist: {:?}_MAX", $key);
+                }
+            };
+            ($into:literal, $from:literal) => {
+                let max_dmg = abilities.get(&format!($from));
+                if let Some(value) = max_dmg {
+                    let max_damage = value.maximum_damage.clone();
+                    if let Some(mut_ref) = abilities.get_mut($into) {
+                        mut_ref.maximum_damage = max_damage;
+                        abilities.remove(&format!($from));
+                    } else {
+                        println!("macro [merge_ability!]: Error: Destination key from arg#2 does not exist: {:?}", $into);
+                    }
+                } else {
+                    println!("macro [merge_ability!]: Error: key from arg#1 does not exist: {:?}", $from);
+                }
+            };
         }
     };
 

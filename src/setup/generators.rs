@@ -326,8 +326,8 @@ pub enum Target {
 
 type IteratorExtractor<'a> = HashMap<usize, HashMap<usize, (String, &'a Target)>>;
 
-// Takes a pattern of [Index on Vec<Effect>], [Index on Vec<Leveling>], [(Keyname, Max/Min)]
-// And assigns to the map the correct format that will be used internally.
+/// Takes a pattern of `[Index on Vec<Effect>], [Index on Vec<Leveling>], [(Keyname, Max/Min)]`
+/// And assigns to the map the correct format that will be used internally.
 pub fn extract_ability_damage(
     data: &CdnAbility,
     map: &mut HashMap<String, Ability>,
