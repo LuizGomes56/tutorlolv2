@@ -13,10 +13,10 @@ use crate::{
 };
 use std::{collections::HashMap, sync::Arc};
 
-// If user opted not to dictate the active player's stats, this function is called
-// it reads all items present in cache and evaluates what the game condition would be
-// if all items were owned in a real game. Stacks and champion exceptions are partially
-// taken into consideration when calculation is made. It is less accurate than Realtime.
+/// If user opted not to dictate the active player's stats, this function is called
+/// it reads all items present in cache and evaluates what the game condition would be
+/// if all items were owned in a real game. Stacks and champion exceptions are partially
+/// taken into consideration when calculation is made. It is less accurate than Realtime.
 fn apply_auto_stats(
     stats: &mut Stats,
     items_cache: &HashMap<usize, Item>,

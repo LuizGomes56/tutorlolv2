@@ -23,8 +23,8 @@ include!(concat!(env!("OUT_DIR"), "/writers_generated.rs"));
 
 type MetaItemValue<T> = HashMap<String, HashMap<String, Vec<T>>>;
 
-// Creates basic folders necessary to run the program. If one of these folders are not found,
-// The program is likely to panic when an update is called.
+/// Creates basic folders necessary to run the program. If one of these folders are not found,
+/// The program is likely to panic when an update is called.
 pub fn setup_project_folders() -> Result<(), SetupError> {
     for dir in [
         "formulas",
@@ -60,8 +60,8 @@ pub fn setup_project_folders() -> Result<(), SetupError> {
     Ok(())
 }
 
-// Read every file in cache/cdn/champions folder and delegates
-// the processing to generate_champion_file
+/// Read every file in cache/cdn/champions folder and delegates
+/// the processing to generate_champion_file
 pub fn setup_internal_champions() -> Result<(), SetupError> {
     let files: ReadDir = fs::read_dir("cache/cdn/champions").map_err(|e: io::Error| {
         SetupError(format!(
@@ -97,8 +97,8 @@ pub fn setup_internal_champions() -> Result<(), SetupError> {
     Ok(())
 }
 
-// Replaces the content found in the files to a shorter and adapted version,
-// initializes items as default, and Damaging stats must be added separately.
+/// Replaces the content found in the files to a shorter and adapted version,
+/// initializes items as default, and Damaging stats must be added separately.
 pub fn setup_internal_items() -> Result<(), SetupError> {
     println!("fn[initialize_items]");
     let non_zero = |val: f64| -> Option<f64> { if val == 0.0 { None } else { Some(val) } };
@@ -174,8 +174,8 @@ pub fn setup_internal_items() -> Result<(), SetupError> {
     Ok(())
 }
 
-// Not meant to be used frequently. Just a quick check for every
-// patch to identify if a new damaging item was added
+/// Not meant to be used frequently. Just a quick check for every
+/// patch to identify if a new damaging item was added
 pub fn setup_damaging_items() -> Result<(), SetupError> {
     println!("fn[identify_damaging_items]");
 
@@ -242,7 +242,7 @@ pub fn setup_damaging_items() -> Result<(), SetupError> {
     Ok(())
 }
 
-// Uses champion display name and converts to their respective ids, saving to internal
+/// Uses champion display name and converts to their respective ids, saving to internal
 pub fn setup_champion_names() -> Result<(), SetupError> {
     println!("fn[rewrite_champion_names]");
 
@@ -280,9 +280,9 @@ pub fn setup_champion_names() -> Result<(), SetupError> {
     Ok(())
 }
 
-// When MetaItems are recovered, each item is written in the array with its name instead of ID
-// This function replaces those names with IDs without changing the rest of the content.
-// If one's ID is not found, it will remain unchanged
+/// When MetaItems are recovered, each item is written in the array with its name instead of ID
+/// This function replaces those names with IDs without changing the rest of the content.
+/// If one's ID is not found, it will remain unchanged
 pub fn setup_meta_items() -> Result<(), SetupError> {
     println!("fn[replace_item_names_with_ids]");
 
@@ -335,9 +335,9 @@ pub fn setup_meta_items() -> Result<(), SetupError> {
     Ok(())
 }
 
-// `internal/items` folder must exist, as well as dir `cache/riot/items`. Takes every file
-// and reads the "description" value from Riot `item.json` and parses its XML into a HashMap
-// only updates the key `prettified_stats`. All the remaining content remains the same
+/// `internal/items` folder must exist, as well as dir `cache/riot/items`. Takes every file
+/// and reads the "description" value from Riot `item.json` and parses its XML into a HashMap
+/// only updates the key `prettified_stats`. All the remaining content remains the same
 pub async fn prettify_internal_items() -> Result<(), SetupError> {
     println!("fn[append_prettified_item_stats]");
 
@@ -392,8 +392,8 @@ pub async fn prettify_internal_items() -> Result<(), SetupError> {
     Ok(())
 }
 
-// Returns the value that will be added to key `pretiffied_stats` for each item.
-// Depends on Riot API `item.json` and requires manual maintainance if a new XML tag is added
+/// Returns the value that will be added to key `pretiffied_stats` for each item.
+/// Depends on Riot API `item.json` and requires manual maintainance if a new XML tag is added
 fn pretiffy_items(path_name: &str) -> HashMap<String, Value> {
     let data: RiotCdnItem = match read_json_file(path_name) {
         Ok(data) => data,
@@ -478,9 +478,9 @@ fn pretiffy_items(path_name: &str) -> HashMap<String, Value> {
     result
 }
 
-// Automatically updates every champion in the game. New champions, or big updates to existing
-// champions will need to be rewritten over time. If an error occurs while trying to update a
-// champion, it will be skipped. Writes the resulting json to internal/{champion_name}.json
+/// Automatically updates every champion in the game. New champions, or big updates to existing
+/// champions will need to be rewritten over time. If an error occurs while trying to update a
+/// champion, it will be skipped. Writes the resulting json to internal/{champion_name}.json
 fn run_writer_file(path_name: &str) -> Result<(), SetupError> {
     let result: CdnChampion = read_json_file(path_name)
         .map_err(|e: SetupError| SetupError(format!("Failed to read '{}': {:#?}", path_name, e)))?;

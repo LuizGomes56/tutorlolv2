@@ -9,14 +9,14 @@ use crate::model::{
 };
 use std::{collections::HashMap, sync::Arc};
 
-// Takes a type constructed from port 2999 and returns a new type "Realtime"
-// `simulated_items` dictates how many clones of player current stats will be created
-// for each clone, abilities, runes and items damages will be recalculated
-// Returns a HashMap with results for each enemy, and the best item in general.
+/// Takes a type constructed from port 2999 and returns a new type "Realtime"
+/// `simulated_items` dictates how many clones of player current stats will be created
+/// for each clone, abilities, runes and items damages will be recalculated
+/// Returns a HashMap with results for each enemy, and the best item in general.
 pub fn realtime<'a>(
     cache: &'a Arc<GlobalCache>,
     game: &'a RiotRealtime,
-    // #![hint] Find the best item possible instead of the best one in the array specified
+    // Find the best item possible instead of the best one in the array specified
     // _: &'a Vec<usize>,
     simulated_items: &'a Vec<usize>,
 ) -> Result<Realtime<'a>, String> {

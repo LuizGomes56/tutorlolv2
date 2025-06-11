@@ -1,8 +1,9 @@
 use super::{Ability, CdnChampion, Champion, HashMap, Target, extract_ability_damage};
 
-// #![since] "06/11/2025"
+// ! #![unstable] [W] "06/11/2025"
+// #![preserve]
 // #![patch] "25.11"
-// #![pending_review] Verify if W generates the desired output
+// #![todo] W should join in between scallings a "*", not a "+"
 
 #[writer_macros::writer]
 pub fn transform(data: CdnChampion) -> Champion {

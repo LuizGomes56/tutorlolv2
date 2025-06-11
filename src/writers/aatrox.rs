@@ -5,10 +5,10 @@ use super::{
 // #![stable]
 // #![since] "06/01/2025"
 // #![patch] "25.9"
-// #![unsupported_damage_type(MINION)]
-// * Q_MAX was intentionally placed at position "minimum_damage"
-// * Passive postfix "ENEMY_MAX_HEALTH" need manual fix if Riot changes it
-// * Minion and Monster bonus damages are omitted in version 0.1.0
+// #![unsupported] MINION | MONSTER
+/// * Q_MAX was intentionally placed at position "minimum_damage"
+/// * Passive postfix "ENEMY_MAX_HEALTH" need manual fix if Riot changes it
+/// * Minion and Monster bonus damages are omitted in version 0.1.0
 
 #[writer_macros::writer]
 pub fn transform(data: CdnChampion) -> Champion {

@@ -4,7 +4,7 @@ use serde::de::DeserializeOwned;
 use serde_json::{Map, Value};
 use std::{collections::HashMap, sync::Arc};
 
-// Helper function to fetch data from the CDN. Returns a HashMap with `any` value.
+/// Helper function to fetch data from the CDN. Returns a HashMap with `any` value.
 pub async fn fetch_cdn_api(
     client: Client,
     envcfg: Arc<EnvConfig>,
@@ -33,7 +33,7 @@ pub async fn fetch_cdn_api(
     Ok(result.clone().into_iter().collect())
 }
 
-// Fetches DataDragon API from Riot Games. Only the final file path needs to be provided
+/// Fetches DataDragon API from Riot Games. Only the final file path needs to be provided
 pub async fn fetch_riot_api<T: DeserializeOwned>(
     client: Client,
     envcfg: Arc<EnvConfig>,

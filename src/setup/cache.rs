@@ -66,7 +66,7 @@ fn load_optional_json_cache<T: Default + DeserializeOwned>(path: &str, label: &s
     }
 }
 
-// Syncronously loads all the cache that will live in memory through the entire execution
+/// Syncronously loads all the cache that will live in memory through the entire execution
 pub fn load_cache() -> Result<GlobalCache, SetupError> {
     println!("fn[load_cache]: started loading champion_files");
     let champions: HashMap<String, Champion> = load_json_cache(
@@ -99,7 +99,7 @@ pub fn load_cache() -> Result<GlobalCache, SetupError> {
     })
 }
 
-// Takes an instance parameter and uses CDN API to get its data and save to file system.
+/// Takes an instance parameter and uses CDN API to get its data and save to file system.
 pub async fn update_cdn_cache(
     client: Client,
     envcfg: Arc<EnvConfig>,
@@ -120,8 +120,8 @@ pub async fn update_cdn_cache(
     Ok(())
 }
 
-// Updates files in `cache/riot` with the corresponding ones in the patch determined by `LOL_VERSION`
-// Runs a maximum of 32 tokio threads at the same time
+/// Updates files in `cache/riot` with the corresponding ones in the patch determined by `LOL_VERSION`
+/// Runs a maximum of 32 tokio threads at the same time
 pub async fn update_riot_cache(client: Client, envcfg: Arc<EnvConfig>) -> Result<(), SetupError> {
     let champions_json: RiotCdnStandard =
         fetch_riot_api::<RiotCdnStandard>(client.clone(), envcfg.clone(), "champion")

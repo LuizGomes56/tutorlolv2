@@ -3,7 +3,7 @@ use super::{Ability, CdnChampion, Champion, HashMap, Target, extract_ability_dam
 // #![stable]
 // #![since] "06/11/2025"
 // #![patch] "25.11"
-// #![unsupported_damage_type(MINION)]
+// #![unsupported] MINION | MONSTER
 
 #[writer_macros::writer]
 pub fn transform(data: CdnChampion) -> Champion {

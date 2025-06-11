@@ -20,13 +20,13 @@ use std::{collections::HashMap, hash::Hash};
 
 pub const CLAMP_USIZE_MAX: usize = 1 << 32;
 pub const CLAMP_F64_MAX: f64 = 1e+300f64;
-// By 06/07/2025 Earth dragons give +5% resists
+/// By 06/07/2025 Earth dragons give +5% resists
 // #![manual_impl]
 pub const EARTH_DRAGON_MULTIPLIER: f64 = 0.05;
-// By 06/07/2025 Fire dragons give +3% bonus attack stats
+/// By 06/07/2025 Fire dragons give +3% bonus attack stats
 // #![manual_impl]
 pub const FIRE_DRAGON_MULTIPLIER: f64 = 0.03;
-// Chemtech Dragons will be used to calculate shields/healing/vamp
+/// Chemtech Dragons will be used to calculate shields/healing/vamp
 // #![unsupported]
 // #![manual_impl]
 pub const CHEMTECH_DRAGON_MULTIPLIER: f64 = 0.06;
@@ -59,13 +59,13 @@ pub struct GameState<'a, T: CurrentPlayerLike> {
     pub enemy_player: GameStateEnemyPlayer<'a>,
 }
 
-// Returns a cloned vector with the keys of the map.
+/// Returns a cloned vector with the keys of the map.
 pub fn clone_keys(map: &HashMap<usize, String>) -> Vec<usize> {
     map.keys().cloned().collect()
 }
 
-// All references may be dropped after this function is called.
-// Removed excessive argument function
+/// All references may be dropped after this function is called.
+/// Removed excessive argument function
 pub fn calculate_enemy_state<T: CurrentPlayerLike>(
     state: GameState<'_, T>,
 ) -> (Damages, RealResists, BasicStats) {
@@ -180,11 +180,11 @@ pub fn calculate_enemy_state<T: CurrentPlayerLike>(
     (damages, real_resists, enemy_bonus_stats)
 }
 
-// Takes each simulated item and clones the current champions stats
-// and adds to these stats the value as if the player owned the item
-// Supports multiple inputs, being that the reason why a HashMap is returned
-// Mutates compared_items_info map, inserting the prettified stats, name and gold
-// Dragon effects are taken into consideration
+/// Takes each simulated item and clones the current champions stats
+/// and adds to these stats the value as if the player owned the item
+/// Supports multiple inputs, being that the reason why a HashMap is returned
+/// Mutates compared_items_info map, inserting the prettified stats, name and gold
+/// Dragon effects are taken into consideration
 pub fn get_simulated_champion_stats(
     simulated_items: &Vec<usize>,
     owned_items: &Vec<usize>,
@@ -225,11 +225,11 @@ pub fn get_simulated_champion_stats(
         .collect()
 }
 
-// Checks cache and returns a map with the matching keys and their names.
-// Basic attacks and critical strikes are always included.
-// Ignores key that is related to Monster or Minion damage
+/// Checks cache and returns a map with the matching keys and their names.
+/// Basic attacks and critical strikes are always included.
+/// Ignores key that is related to Monster or Minion damage
 // #![unsupported] Minions and Monster damages are not evaluated
-// In the future a table to represent damage on monsters/towers may be created
+/// In the future a table to represent damage on monsters/towers may be created
 pub fn get_damaging_abilities(champion_cache: &Champion) -> HashMap<String, String> {
     let mut damaging_abilities: HashMap<String, String> = champion_cache
         .abilities
@@ -246,12 +246,12 @@ pub fn get_damaging_abilities(champion_cache: &Champion) -> HashMap<String, Stri
     damaging_abilities
 }
 
-// Items may or may not contain damage information. Returns items that do
-// Returns a map with their matching keys and item name.
-// Every item should have a matching value for both ranged and melee champions
-// For safety, damaging items are evaluated only if item contains a key that matches attack type
-// Common exceptions for this error would be in items that are not purchasable for melee champions
-// Even in this situation, it is recommended to add damage value for both attack types
+/// Items may or may not contain damage information. Returns items that do
+/// Returns a map with their matching keys and item name.
+/// Every item should have a matching value for both ranged and melee champions
+/// For safety, damaging items are evaluated only if item contains a key that matches attack type
+/// Common exceptions for this error would be in items that are not purchasable for melee champions
+/// Even in this situation, it is recommended to add damage value for both attack types
 pub fn get_damaging_items(
     items_cache: &HashMap<usize, Item>,
     attack_type: AttackType,
@@ -271,12 +271,12 @@ pub fn get_damaging_items(
         .collect()
 }
 
-// Returns ref that should live longer than the function
-// Takes player position and checks `meta_items.json`
-// May return None. When there are not enough data to evaluate
-// Most common items for a champion in a given position, it may be empty
-// In case it returns None, an empty <Vec> should be used.
-// This function can't return an owned Vec since it moves `recommendations`
+/// Returns ref that should live longer than the function
+/// Takes player position and checks `meta_items.json`
+/// May return None. When there are not enough data to evaluate
+/// Most common items for a champion in a given position, it may be empty
+/// In case it returns None, an empty <Vec> should be used.
+/// This function can't return an owned Vec since it moves `recommendations`
 pub fn get_recommended_items<'a>(
     positon: &str,
     recommendations: &'a Positions,
@@ -291,9 +291,9 @@ pub fn get_recommended_items<'a>(
     }
 }
 
-// Receives a deep copy of the original champion stats and mutates its reference
-// Takes an item and adds to this cloned mut ref the stats as if the player owned it
-// If player already owns the item, this function does nothing
+/// Receives a deep copy of the original champion stats and mutates its reference
+/// Takes an item and adds to this cloned mut ref the stats as if the player owned it
+/// If player already owns the item, this function does nothing
 pub fn simulate_champion_stats(
     simulated_item_id: usize,
     simulated_item_cache: &Item,
@@ -340,7 +340,7 @@ pub fn simulate_champion_stats(
     cloned_stats.magic_resist *= ally_dragon_multipliers.earth;
 }
 
-// Reads items from cache and evaluates its damages, if some.
+/// Reads items from cache and evaluates its damages, if some.
 pub fn get_items_damage(
     items_cache: &HashMap<usize, Item>,
     stats: &FullStats,
@@ -398,7 +398,7 @@ pub fn get_items_damage(
     item_damages
 }
 
-// Reads runes from cache and evaluates its damages, if some.
+/// Reads runes from cache and evaluates its damages, if some.
 pub fn get_runes_damage(
     runes_cache: &HashMap<usize, Rune>,
     stats: &FullStats,
@@ -440,8 +440,8 @@ pub fn get_runes_damage(
     rune_damages
 }
 
-// Sums all the damages in every key of a DamageLike expression
-// Returns the total and the change in total damage respectively
+/// Sums all the damages in every key of a DamageLike expression
+/// Returns the total and the change in total damage respectively
 pub fn get_comparison_total_damage<T: Eq + Hash>(
     prev: &DamageLike<T>,
     next: &mut DamageLike<T>,
@@ -463,8 +463,8 @@ pub fn get_comparison_total_damage<T: Eq + Hash>(
     )
 }
 
-// Creates a big struct containing all the stats of the current player and the enemy
-// Part of the returned value contains reference to the arguments passed to this function
+/// Creates a big struct containing all the stats of the current player and the enemy
+/// Part of the returned value contains reference to the arguments passed to this function
 pub fn get_full_stats<'a, T: CurrentPlayerLike>(
     current_player: &'a T,
     current_stats: &'a Stats,
@@ -575,10 +575,10 @@ pub fn get_full_stats<'a, T: CurrentPlayerLike>(
     }
 }
 
-// Checks damage type and returns its multipliers. Usually a number
-// If a debuff is found, values returned will be < 1.0, else >= 1.0
-// return[0]: value that will replace PHYSICAL_MULTIPLIER or MAGIC_MULTIPLIER
-// return[1]: value in decimal form that represents percentage of bonus/debuff damage
+/// Checks damage type and returns its multipliers. Usually a number
+/// If a debuff is found, values returned will be < 1.0, else >= 1.0
+/// return[0]: value that will replace PHYSICAL_MULTIPLIER or MAGIC_MULTIPLIER
+/// return[1]: value in decimal form that represents percentage of bonus/debuff damage
 pub fn get_damage_multipliers(full_stats: &FullStats, damage_type: &str) -> (f64, f64) {
     let enemy_damage_multipliers: &DamageMultipliers = &full_stats.enemy_player.damage_mod;
     let (enemy_debuff_multiplier, damage_reduction_multiplier, damage_increase_multiplier) =
@@ -610,9 +610,9 @@ pub fn get_damage_multipliers(full_stats: &FullStats, damage_type: &str) -> (f64
     )
 }
 
-// Evaluates abilities damages to a given champion, whose stats are in `full_stats`
-// Intentionally ignores Monster and Minion damages
-// Invalid inputs will cause the function to return an empty HashMap
+/// Evaluates abilities damages to a given champion, whose stats are in `full_stats`
+/// Intentionally ignores Monster and Minion damages
+/// Invalid inputs will cause the function to return an empty HashMap
 pub fn get_abilities_damage(
     current_player_cache: &Champion,
     full_stats: &FullStats,
@@ -718,9 +718,9 @@ pub fn get_abilities_damage(
     ability_damages
 }
 
-// Takes a string and replaces keywords defined manually.
-// Expected to return a string that can be evaluted mathematically, but not guaranteed
-// Stacks information is not accessible unless sent from client.
+/// Takes a string and replaces keywords defined manually.
+/// Expected to return a string that can be evaluted mathematically, but not guaranteed
+/// Stacks information is not accessible unless sent from client.
 // #![unsupported] Champion stacks are ignored.
 pub fn replace_damage_keywords(stats: &FullStats, target_str: &str) -> String {
     let replacements: [(&'static str, f64); 48] = [
@@ -845,8 +845,8 @@ pub fn replace_damage_keywords(stats: &FullStats, target_str: &str) -> String {
         })
 }
 
-// Returns the difference between current stats and base stats
-// current_stats must be a tpe that can be converted to struct `RiotChampionStats`
+/// Returns the difference between current stats and base stats
+/// current_stats must be a tpe that can be converted to struct `RiotChampionStats`
 pub fn get_bonus_stats<T: ToRiotFormat>(current_stats: &T, base_stats: &BasicStats) -> BasicStats {
     let value: RiotChampionStats = current_stats.format();
     BasicStats {
@@ -858,7 +858,7 @@ pub fn get_bonus_stats<T: ToRiotFormat>(current_stats: &T, base_stats: &BasicSta
     }
 }
 
-// Reads cached values for a given champion and assigns its base stats at a given level
+/// Reads cached values for a given champion and assigns its base stats at a given level
 pub fn get_base_stats(champion_cache: &Champion, level: usize) -> BasicStats {
     BasicStats {
         armor: RiotFormulas::stat_growth(
@@ -889,10 +889,10 @@ pub fn get_base_stats(champion_cache: &Champion, level: usize) -> BasicStats {
     }
 }
 
-// Reads enemy player's items and base stats
-// Return value may not match the in-game value due to runes/stacks
-// There are several other situations where enemy current stats
-// Can't be evaluated precisely.
+/// Reads enemy player's items and base stats
+/// Return value may not match the in-game value due to runes/stacks
+/// There are several other situations where enemy current stats
+/// Can't be evaluated precisely.
 pub fn get_enemy_current_stats(
     champion_cache: &HashMap<usize, Item>,
     base_stats: &BasicStats,

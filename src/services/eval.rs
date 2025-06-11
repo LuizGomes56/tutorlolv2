@@ -18,7 +18,7 @@ impl ConditionalAddition for f64 {
 pub struct RiotFormulas;
 
 impl RiotFormulas {
-    // Uses wiki's formula to return base stats for a given champion
+    /// Uses wiki's formula to return base stats for a given champion
     pub fn stat_growth(base: f64, growth_per_level: f64, level: usize) -> f64 {
         base + growth_per_level * (level as f64 - 1.0) * (0.7025 + 0.0175 * (level as f64 - 1.0))
     }
@@ -108,10 +108,10 @@ enum Token {
     RParen,
 }
 
-// Takes a string and evaluates it mathematically.
-// None values mean NaN as in JavaScript
-// Only parenthesis may be used. [] and {} are not supported
-// Exponentiation is done with the ^ operator, not with the ** operator
+/// Takes a string and evaluates it mathematically.
+/// None values mean NaN as in JavaScript
+/// Only parenthesis may be used. [] and {} are not supported
+/// Exponentiation is done with the ^ operator, not with the ** operator
 fn eval_math_expr(expr: &str) -> Result<f64, ()> {
     let tokens: Vec<Token> = tokenize(expr)?;
     let rpn: Vec<Token> = shunting_yard(&tokens);

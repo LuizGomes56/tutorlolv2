@@ -1,26 +1,15 @@
-use super::{
-	Ability, CdnChampion, Champion,
-	HashMap, Target, extract_ability_damage
-};
+use super::{Ability, CdnChampion, Champion, HashMap, Target, extract_ability_damage};
 
-// #![auto_generated]
+// #![stable]
+// #![since] "06/11/2025"
+// #![patch] "25.11"
+// #![unsupported] Tibbers
+// #![todo] Add Tibbers
 
 #[writer_macros::writer]
 pub fn transform(data: CdnChampion) -> Champion {
-	ability!(
-		q,
-		(0, 0, "Q_0_0_0", Target::MINIMUM)
-	);
-	ability!(
-		w,
-		(0, 0, "W_0_0_0", Target::MINIMUM)
-	);
-	ability!(
-		e,
-		(1, 0, "E_0_1_0", Target::MINIMUM)
-	);
-	ability!(
-		r,
-		(1, 0, "R_0_1_0", Target::MINIMUM)
-	);
+    ability!(q, (0, 0, "Q", Target::MINIMUM));
+    ability!(w, (0, 0, "W", Target::MINIMUM));
+    ability!(e, (1, 0, "E", Target::MINIMUM));
+    ability!(r, (1, 0, "R", Target::MINIMUM));
 }

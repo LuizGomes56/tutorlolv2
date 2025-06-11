@@ -34,7 +34,7 @@ pub async fn generate_writer_files(envcfg: Arc<EnvConfig>) -> Result<(), SetupEr
         futures.push(tokio::spawn(async move {
             let path_name: String = format!("{}/{}.rs", writer_target, champion_id.to_lowercase());
             if let Ok(data) = fs::read_to_string(&path_name) {
-                if data.contains("#![stable]") {
+                if data.contains("#![stable]") || data.contains("#![preserve]") {
                     return;
                 }
             }

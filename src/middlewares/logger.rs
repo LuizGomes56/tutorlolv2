@@ -6,7 +6,7 @@ use actix_web::{
 };
 
 // #![dev]
-// Logs all the incoming requests to the server
+/// Logs all the incoming requests to the server
 pub async fn logger_middleware(
     req: ServiceRequest,
     next: Next<BoxBody>,

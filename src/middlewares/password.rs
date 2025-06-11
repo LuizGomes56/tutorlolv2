@@ -16,10 +16,10 @@ pub struct AccessRequest {
     pub password: String,
 }
 
-// Some routes may be accessible only by the owner of the server
-// Image uploads, generators, and updaters must be controlled
-// Exposing this routes can overload server with too many thread spawns
-// Also can cause excessive resource usage from third-party services
+/// Some routes may be accessible only by the owner of the server
+/// Image uploads, generators, and updaters must be controlled
+/// Exposing this routes can overload server with too many thread spawns
+/// Also can cause excessive resource usage from third-party services
 pub async fn password_middleware(
     state: Data<AppState>,
     body: Json<AccessRequest>,

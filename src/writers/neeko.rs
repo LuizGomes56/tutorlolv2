@@ -3,10 +3,10 @@ use super::{Ability, CdnChampion, Champion, HashMap, Target, extract_ability_dam
 // #![stable]
 // #![since] "06/01/2025"
 // #![patch] "25.9"
-// #![unsupported_damage_type(MONSTER)]
-// * Column Cell Template Exibition = `{LEFT} - {RIGHT}`
-// * Q {LEFT} represents initial damage, and {RIGHT} the total.
-// * Q1 represents the damage of each secondary explosion
+// #![unsupported] MINION | MONSTER
+/// * Column Cell Template Exibition = `{LEFT} - {RIGHT}`
+/// * Q `{LEFT}` represents initial damage, and `{RIGHT}` the total.
+/// * Q1 represents the damage of each secondary explosion
 
 #[writer_macros::writer]
 pub fn transform(data: CdnChampion) -> Champion {
