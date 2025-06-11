@@ -5,6 +5,7 @@ use super::{
 // #![stable]
 // #![since] "06/01/2025"
 // #![patch] "25.9"
+// #![unsupported_damage_type(MINION)]
 // * Q_MAX was intentionally placed at position "minimum_damage"
 // * Passive postfix "ENEMY_MAX_HEALTH" need manual fix if Riot changes it
 // * Minion and Monster bonus damages are omitted in version 0.1.0
@@ -33,34 +34,24 @@ pub fn transform(data: CdnChampion) -> Champion {
         (2, 0, "W_MAX", Target::MAXIMUM),
     );
 
-    let mut insert_max = |keyname: &str| {
-        let max_damage = abilities
-            .get(&format!("{}_MAX", keyname))
-            .unwrap()
-            .maximum_damage
-            .clone();
-        let map_mut_ref = abilities.get_mut(keyname).unwrap();
-        map_mut_ref.maximum_damage = max_damage;
-        abilities.remove(&format!("{}_MAX", keyname));
-    };
-
-    insert_max("Q1");
-    insert_max("Q2");
-    insert_max("Q3");
-
-    let default_ability = abilities.get("Q1").unwrap().clone();
+    merge_ability!("Q1");
+    merge_ability!("Q2");
+    merge_ability!("Q3");
+    merge_ability!("W");
 
     let [q1_max_damage, q2_max_damage, q3_max_damage] =
         ["Q1", "Q2", "Q3"].map(|key| abilities.get(key).unwrap().maximum_damage.clone());
 
-    let mut q_max_damage = Vec::<String>::new();
+    let q_max_damage = (0..q1_max_damage.len())
+        .map(|i| {
+            format!(
+                "({}) + ({}) + ({})",
+                q1_max_damage[i], q2_max_damage[i], q3_max_damage[i]
+            )
+        })
+        .collect();
 
-    for i in 0..q1_max_damage.len() {
-        q_max_damage.push(format!(
-            "({}) + ({}) + ({})",
-            q1_max_damage[i], q2_max_damage[i], q3_max_damage[i]
-        ));
-    }
+    let default_ability = abilities.get("Q1").unwrap().clone();
 
     abilities.insert(
         String::from("Q_MAX"),
@@ -69,9 +60,4 @@ pub fn transform(data: CdnChampion) -> Champion {
             ..default_ability
         },
     );
-
-    let w_max = abilities.get("W_MAX").unwrap().maximum_damage.clone();
-    let w_mut_ref = abilities.get_mut("W").unwrap();
-    w_mut_ref.maximum_damage = w_max;
-    abilities.remove("W_MAX");
 }
