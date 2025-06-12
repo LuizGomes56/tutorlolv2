@@ -1,7 +1,7 @@
 use super::{Ability, CdnChampion, Champion, HashMap, Target, extract_ability_damage};
 
-// ! #![unstable] [P] "06/11/2025" | "25.11"
-// #![unsupported] BARD_STACKS (Meeps)
+// #![stable] "06/11/2025" | "25.11"
+// #![unsupported] [P] BARD_STACKS (Meeps)
 
 #[writer_macros::writer]
 pub fn transform(data: CdnChampion) -> Champion {
