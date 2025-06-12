@@ -1,14 +1,9 @@
-use super::{
-	Ability, CdnChampion, Champion,
-	HashMap, Target, extract_ability_damage
-};
+use super::{Ability, CdnChampion, Champion, HashMap, Target, extract_ability_damage};
 
-// #![auto_generated]
+// ! #![unstable] [P] "06/11/2025" | "25.11"
+// #![unsupported] BARD_STACKS (Meeps)
 
 #[writer_macros::writer]
 pub fn transform(data: CdnChampion) -> Champion {
-	ability!(
-		q,
-		(0, 0, "Q_0_0_0", Target::MINIMUM)
-	);
+    ability!(q, (0, 0, "Q", Target::MINIMUM));
 }

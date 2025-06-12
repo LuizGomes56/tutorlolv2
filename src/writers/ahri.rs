@@ -1,8 +1,6 @@
 use super::{Ability, CdnChampion, Champion, HashMap, Target, extract_ability_damage};
 
-// #![stable]
-// #![since] "06/11/2025"
-// #![patch] "25.11"
+// #![stable] "06/11/2025" | "25.11"
 // #![unsupported] MINION | MONSTER
 
 #[writer_macros::writer]

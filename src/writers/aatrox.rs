@@ -2,9 +2,7 @@ use super::{
     Ability, CdnChampion, Champion, HashMap, Target, extract_ability_damage, extract_passive_damage,
 };
 
-// #![stable]
-// #![since] "06/01/2025"
-// #![patch] "25.9"
+// #![stable] "06/11/2025" | "25.11"
 // #![unsupported] MINION | MONSTER
 /// * Q_MAX was intentionally placed at position "minimum_damage"
 /// * Passive postfix "ENEMY_MAX_HEALTH" need manual fix if Riot changes it
@@ -57,6 +55,7 @@ pub fn transform(data: CdnChampion) -> Champion {
         String::from("Q_MAX"),
         Ability {
             minimum_damage: q_max_damage,
+            maximum_damage: Vec::new(),
             ..default_ability
         },
     );

@@ -1,8 +1,6 @@
 use super::{Ability, CdnChampion, Champion, HashMap, Target, extract_ability_damage};
 
-// #![stable]
-// #![since] "06/11/2025"
-// #![patch] "25.11"
+// #![stable] "06/11/2025" | "25.11"
 // * R is captured by the generator but does not deal any damage
 // * Damage reductions are not planned to ever be implemented
 

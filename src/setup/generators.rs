@@ -93,9 +93,11 @@ fn assign_scalings(description: &String, ref_vec: &mut Vec<String>) {
         return;
     }
     let scalings: String = extract_scaled_values(&description);
-    ref_vec.iter_mut().for_each(|dmg: &mut String| {
-        *dmg = format!("{} + {}", dmg, scalings);
-    });
+    if scalings.len() > 0 {
+        ref_vec.iter_mut().for_each(|dmg: &mut String| {
+            *dmg = format!("{} + {}", dmg, scalings);
+        });
+    }
 }
 
 /// Easier way to get passive damage when the standard format (struct CdnChampion) matches.
@@ -250,7 +252,7 @@ fn extract_passive_bounds(
 }
 
 /// Gets the tuples that are in pattern (+ Scalling) and formats the string to the internal format.
-fn extract_scaled_values(input: &str) -> String {
+pub fn extract_scaled_values(input: &str) -> String {
     let re: Regex = Regex::new(r"\(([^)]+)\)").unwrap();
     let mut result: Vec<String> = Vec::new();
     for cap in re.captures_iter(input) {

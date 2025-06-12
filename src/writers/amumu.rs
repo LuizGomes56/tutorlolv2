@@ -1,8 +1,7 @@
 use super::{Ability, CdnChampion, Champion, HashMap, Target, extract_ability_damage};
 
-// ! #![unstable] [W] "06/11/2025"
+// ! #![unstable] [W] "06/11/2025" | "25.11"
 // #![preserve]
-// #![patch] "25.11"
 // #![todo] W should join in between scallings a "*", not a "+"
 
 #[writer_macros::writer]

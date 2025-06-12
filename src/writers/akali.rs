@@ -2,9 +2,7 @@ use super::{
     Ability, CdnChampion, Champion, HashMap, Target, extract_ability_damage, extract_passive_damage,
 };
 
-// #![stable]
-// #![since] "06/11/2025"
-// #![patch] "25.11"
+// #![stable] "06/11/2025" | "25.11"
 /// * Maximum damage from R was omitted
 /// * It would add another cell to the table with value: R1 + R2_MAX
 /// * E damage was split in 3 different parts, but may be merged in the future
