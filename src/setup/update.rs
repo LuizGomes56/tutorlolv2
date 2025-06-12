@@ -17,7 +17,6 @@ use std::{
     num::ParseIntError,
     path::{Path, PathBuf},
 };
-use tokio::task::{self, JoinHandle};
 
 include!(concat!(env!("OUT_DIR"), "/writers_generated.rs"));
 
@@ -80,7 +79,7 @@ pub fn setup_internal_champions() -> Result<(), SetupError> {
             })?
             .path();
 
-        task::spawn_blocking(move || match path_name.to_str() {
+        match path_name.to_str() {
             Some(strpath) => {
                 println!("fn[setup_champion_cache]: {}", strpath);
                 let _ = run_writer_file(strpath)
@@ -92,7 +91,7 @@ pub fn setup_internal_champions() -> Result<(), SetupError> {
                     path_name
                 );
             }
-        });
+        };
     }
     Ok(())
 }
@@ -107,69 +106,51 @@ pub fn setup_internal_items() -> Result<(), SetupError> {
     for file in files {
         let entry: DirEntry =
             file.map_err(|e: io::Error| SetupError(format!("Failed to read DirEntry: {}", e)))?;
-        task::spawn_blocking(move || {
-            let path_buf: PathBuf = entry.path();
-            let path_str: &str = match path_buf.to_str() {
-                Some(s) => s,
-                None => {
-                    eprintln!("Invalid UTF-8 in path: {:?}", path_buf);
-                    return;
-                }
-            };
-            println!("fn[initialize_items]: [initializing] {}", path_str);
-            let cdn_item: CdnItem = match read_json_file(path_str) {
-                Ok(v) => v,
-                Err(e) => {
-                    eprintln!("Failed to read item file '{}': {:#?}", path_str, e);
-                    return;
-                }
-            };
-            let stats: &ItemStats = &cdn_item.stats;
-            let mut item_stats: PartialStats = PartialStats::default();
+        let path_buf: PathBuf = entry.path();
+        let path_str: &str = path_buf
+            .to_str()
+            .ok_or_else(|| SetupError(format!("Invalid UTF-8 in path: {:?}", path_buf)))?;
+        println!("fn[initialize_items]: [initializing] {}", path_str);
+        let cdn_item: CdnItem = read_json_file(path_str)?;
+        let stats: &ItemStats = &cdn_item.stats;
+        let mut item_stats: PartialStats = PartialStats::default();
 
-            item_stats.ability_power = non_zero(stats.ability_power.flat);
-            item_stats.armor = non_zero(stats.armor.flat);
-            item_stats.attack_damage = non_zero(stats.attack_damage.flat);
-            item_stats.attack_speed = non_zero(stats.attack_speed.flat);
-            item_stats.critical_strike_chance = non_zero(stats.critical_strike_chance.flat);
-            item_stats.critical_strike_damage = non_zero(stats.critical_strike_damage.flat);
-            item_stats.health = non_zero(stats.health.flat);
-            item_stats.lifesteal = non_zero(stats.lifesteal.flat);
-            item_stats.magic_resistance = non_zero(stats.magic_resistance.flat);
-            item_stats.mana = non_zero(stats.mana.flat);
-            item_stats.movespeed = non_zero(stats.movespeed.flat);
-            item_stats.omnivamp = non_zero(stats.omnivamp.flat);
-            item_stats.armor_penetration_flat = non_zero(stats.armor_penetration.flat);
-            item_stats.armor_penetration_percent = non_zero(stats.armor_penetration.percent);
-            item_stats.magic_penetration_flat = non_zero(stats.magic_penetration.flat);
-            item_stats.magic_penetration_percent = non_zero(stats.magic_penetration.percent);
+        item_stats.ability_power = non_zero(stats.ability_power.flat);
+        item_stats.armor = non_zero(stats.armor.flat);
+        item_stats.attack_damage = non_zero(stats.attack_damage.flat);
+        item_stats.attack_speed = non_zero(stats.attack_speed.flat);
+        item_stats.critical_strike_chance = non_zero(stats.critical_strike_chance.flat);
+        item_stats.critical_strike_damage = non_zero(stats.critical_strike_damage.flat);
+        item_stats.health = non_zero(stats.health.flat);
+        item_stats.lifesteal = non_zero(stats.lifesteal.flat);
+        item_stats.magic_resistance = non_zero(stats.magic_resistance.flat);
+        item_stats.mana = non_zero(stats.mana.flat);
+        item_stats.movespeed = non_zero(stats.movespeed.flat);
+        item_stats.omnivamp = non_zero(stats.omnivamp.flat);
+        item_stats.armor_penetration_flat = non_zero(stats.armor_penetration.flat);
+        item_stats.armor_penetration_percent = non_zero(stats.armor_penetration.percent);
+        item_stats.magic_penetration_flat = non_zero(stats.magic_penetration.flat);
+        item_stats.magic_penetration_percent = non_zero(stats.magic_penetration.percent);
 
-            let result: Item = Item {
-                pretiffied_stats: HashMap::new(),
-                name: cdn_item.name.clone(),
-                gold: cdn_item.shop.prices.total,
-                levelings: None,
-                damage_type: None,
-                damages_onhit: false,
-                stats: item_stats,
-                builds_from: cdn_item.builds_from,
-                ranged: None,
-                melee: None,
-            };
-            let json: String = match serde_json::to_string(&result) {
-                Ok(s) => s,
-                Err(e) => {
-                    eprintln!("Failed to serialize item '{}': {}", cdn_item.name, e);
-                    return;
-                }
-            };
-            if let Err(e) = write_to_file(
-                &format!("internal/items/{}.json", cdn_item.id),
-                json.as_bytes(),
-            ) {
-                eprintln!("Failed to write item '{}': {:#?}", cdn_item.name, e.0);
-            }
-        });
+        let result: Item = Item {
+            pretiffied_stats: HashMap::new(),
+            name: cdn_item.name.clone(),
+            gold: cdn_item.shop.prices.total,
+            levelings: None,
+            damage_type: None,
+            damages_onhit: false,
+            stats: item_stats,
+            builds_from: cdn_item.builds_from,
+            ranged: None,
+            melee: None,
+        };
+        let json: String = serde_json::to_string(&result).map_err(|e: serde_json::Error| {
+            SetupError(format!("Failed to serialize item: {:#?}", e))
+        })?;
+        write_to_file(
+            &format!("internal/items/{}.json", cdn_item.id),
+            json.as_bytes(),
+        )?;
     }
     Ok(())
 }
@@ -348,46 +329,33 @@ pub async fn prettify_internal_items() -> Result<(), SetupError> {
         ))
     })?;
 
-    let mut item_futures: Vec<JoinHandle<Result<(), SetupError>>> = Vec::new();
-
     for file in files {
         let file_entry: DirEntry =
             file.map_err(|e: io::Error| SetupError(format!("Failed to read DirEntry: {}", e)))?;
+        let path_buf: PathBuf = file_entry.path();
+        let name: &str = extract_file_name(&path_buf);
+        let path_name: String = format!("cache/riot/items/{}.json", name);
+        let internal_path: String = format!("internal/items/{}.json", name);
 
-        item_futures.push(task::spawn_blocking(move || -> Result<(), SetupError> {
-            let path_buf: PathBuf = file_entry.path();
-            let name: &str = extract_file_name(&path_buf);
-            let path_name: String = format!("cache/riot/items/{}.json", name);
-            let internal_path: String = format!("internal/items/{}.json", name);
+        let prettified_stats: HashMap<String, Value> = pretiffy_items(&path_name);
 
-            let prettified_stats: HashMap<String, Value> = pretiffy_items(&path_name);
-
-            if !Path::new(&internal_path).exists() {
-                println!("Item {} does not exist", name);
-                return Ok(());
-            }
-
-            let mut current_content: Item =
-                read_json_file(&internal_path).map_err(|e: SetupError| {
-                    SetupError(format!("Failed to read '{}': {:#?}", internal_path, e))
-                })?;
-
-            current_content.pretiffied_stats = prettified_stats;
-
-            let json =
-                serde_json::to_string(&current_content).map_err(|e: serde_json::Error| {
-                    SetupError(format!("Failed to serialize Item '{}': {}", name, e))
-                })?;
-
-            write_to_file(&internal_path, json.as_bytes())?;
-
-            Ok(())
-        }));
-    }
-    for future in item_futures {
-        if let Err(e) = future.await {
-            return Err(SetupError(format!("Task join error: {:#?}", e)));
+        if !Path::new(&internal_path).exists() {
+            println!("Item {} does not exist", name);
+            return Ok(());
         }
+
+        let mut current_content: Item =
+            read_json_file(&internal_path).map_err(|e: SetupError| {
+                SetupError(format!("Failed to read '{}': {:#?}", internal_path, e))
+            })?;
+
+        current_content.pretiffied_stats = prettified_stats;
+
+        let json = serde_json::to_string(&current_content).map_err(|e: serde_json::Error| {
+            SetupError(format!("Failed to serialize Item '{}': {}", name, e))
+        })?;
+
+        write_to_file(&internal_path, json.as_bytes())?;
     }
     Ok(())
 }

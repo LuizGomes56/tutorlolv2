@@ -110,12 +110,10 @@ pub async fn update_cdn_cache(
 
     for (key, value) in result {
         let folder_name: String = format!("cache/cdn/{}", instance);
-        task::spawn_blocking(move || {
-            let path_name: String = format!("{}/{}.json", folder_name, key);
-            let strval: String = value.to_string();
-            let _ = write_to_file(&path_name, strval.as_bytes())
-                .map_err(|e: SetupError| eprintln!("fn[update_cdn_cache]: {:#?}", e));
-        });
+
+        let path_name: String = format!("{}/{}.json", folder_name, key);
+        let strval: String = value.to_string();
+        let _ = write_to_file(&path_name, strval.as_bytes())?;
     }
     Ok(())
 }
