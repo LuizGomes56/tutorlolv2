@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use rustc_hash::FxHashMap;
 
 use serde::{Deserialize, Serialize};
 
@@ -7,9 +7,9 @@ use super::base::{BasicStats, ComparedItem, Damages, RealResists, Stats};
 #[derive(Serialize)]
 pub struct CurrentPlayerX {
     pub champion_id: String,
-    pub damaging_abilities: HashMap<String, String>,
-    pub damaging_items: HashMap<usize, String>,
-    pub damaging_runes: HashMap<usize, String>,
+    pub damaging_abilities: FxHashMap<String, String>,
+    pub damaging_items: FxHashMap<usize, String>,
+    pub damaging_runes: FxHashMap<usize, String>,
     pub level: usize,
     pub base_stats: BasicStats,
     pub bonus_stats: BasicStats,
@@ -33,7 +33,7 @@ pub struct Calculator {
     pub current_player: CurrentPlayerX,
     pub enemies: Vec<EnemyX>,
     pub recommended_items: Vec<usize>,
-    pub compared_items: HashMap<usize, ComparedItem>,
+    pub compared_items: FxHashMap<usize, ComparedItem>,
 }
 
 #[derive(Deserialize)]
@@ -73,5 +73,5 @@ pub struct GameX {
     pub ally_earth_dragons: usize,
     pub ally_fire_dragons: usize,
     pub enemy_earth_dragons: usize,
-    pub stack_exceptions: HashMap<usize, usize>,
+    pub stack_exceptions: FxHashMap<usize, usize>,
 }

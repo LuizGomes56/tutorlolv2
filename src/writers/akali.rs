@@ -1,5 +1,5 @@
 use super::{
-    Ability, CdnChampion, Champion, HashMap, Target, extract_ability_damage, extract_passive_damage,
+    Ability, CdnChampion, Champion, FxHashMap, Target, extract_ability_damage, extract_passive_damage,
 };
 
 // #![stable] "06/11/2025" | "25.11"

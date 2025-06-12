@@ -3,22 +3,23 @@ use crate::{
     setup::helpers::{SetupError, read_json_file, write_to_file},
 };
 use reqwest::{Client, Response};
+use rustc_hash::FxHashMap;
 use scraper::{Html, Selector, error::SelectorErrorKind};
-use std::{collections::HashMap, sync::Arc, time::Instant};
+use std::{sync::Arc, time::Instant};
 use tokio::task::JoinHandle;
 
 /// Recovers all the common builds for the current patch so the app can recommend builds to the user
 /// Average time to update is 2m30s. Making the outer loop a new task overloads the target website
 /// causing requests to timeout.
 pub async fn meta_items_scraper(client: Client, envcfg: Arc<EnvConfig>) -> Result<(), SetupError> {
-    let champion_names: HashMap<String, String> = read_json_file("internal/champion_names.json")?;
+    let champion_names: FxHashMap<String, String> = read_json_file("internal/champion_names.json")?;
     let endpoint: String = envcfg.meta_endpoint.clone();
     let positions: [&'static str; 5] = ["top", "jungle", "mid", "adc", "support"];
-    let mut collected_results: HashMap<String, HashMap<String, Vec<String>>> =
-        HashMap::<String, HashMap<String, Vec<String>>>::new();
+    let mut collected_results: FxHashMap<String, FxHashMap<String, Vec<String>>> =
+        FxHashMap::<String, FxHashMap<String, Vec<String>>>::default();
 
     for (_, name) in champion_names {
-        let mut futures_vec: Vec<JoinHandle<Result<HashMap<String, Vec<String>>, SetupError>>> =
+        let mut futures_vec: Vec<JoinHandle<Result<FxHashMap<String, Vec<String>>, SetupError>>> =
             Vec::new();
         for position in positions {
             let endpoint: String = endpoint.clone();
@@ -33,8 +34,8 @@ pub async fn meta_items_scraper(client: Client, envcfg: Arc<EnvConfig>) -> Resul
                     .await
                     .map_err(|e: reqwest::Error| SetupError(e.to_string()))?;
 
-                let mut result: HashMap<String, Vec<String>> =
-                    HashMap::<String, Vec<String>>::new();
+                let mut result: FxHashMap<String, Vec<String>> =
+                    FxHashMap::<String, Vec<String>>::default();
 
                 let html: String = res
                     .text()
@@ -62,7 +63,7 @@ pub async fn meta_items_scraper(client: Client, envcfg: Arc<EnvConfig>) -> Resul
             }));
         }
 
-        let mut collected_result: HashMap<String, Vec<String>> = HashMap::new();
+        let mut collected_result: FxHashMap<String, Vec<String>> = FxHashMap::default();
         for result in futures_vec {
             println!("Fetching meta items for {}", name);
             match result.await {

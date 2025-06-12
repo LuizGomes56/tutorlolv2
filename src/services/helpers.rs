@@ -16,7 +16,8 @@ use crate::{
     },
     services::eval::RiotFormulas,
 };
-use std::{collections::HashMap, hash::Hash};
+use rustc_hash::FxHashMap;
+use std::hash::Hash;
 
 pub const CLAMP_USIZE_MAX: usize = 1 << 32;
 pub const CLAMP_F64_MAX: f64 = 1e+300f64;
@@ -32,8 +33,8 @@ pub const FIRE_DRAGON_MULTIPLIER: f64 = 0.03;
 pub const CHEMTECH_DRAGON_MULTIPLIER: f64 = 0.06;
 
 pub struct GameStateCache<'a> {
-    pub items: &'a HashMap<usize, Item>,
-    pub runes: &'a HashMap<usize, Rune>,
+    pub items: &'a FxHashMap<usize, Item>,
+    pub runes: &'a FxHashMap<usize, Rune>,
 }
 
 pub struct GameStateCurrentPlayer<'a, T: CurrentPlayerLike> {
@@ -42,7 +43,7 @@ pub struct GameStateCurrentPlayer<'a, T: CurrentPlayerLike> {
     pub items: &'a Vec<usize>,
     pub runes: &'a Vec<usize>,
     pub abilities: &'a AbilitiesX,
-    pub simulated_stats: &'a HashMap<usize, Stats>,
+    pub simulated_stats: &'a FxHashMap<usize, Stats>,
 }
 
 pub struct GameStateEnemyPlayer<'a> {
@@ -60,7 +61,7 @@ pub struct GameState<'a, T: CurrentPlayerLike> {
 }
 
 /// Returns a cloned vector with the keys of the map.
-pub fn clone_keys(map: &HashMap<usize, String>) -> Vec<usize> {
+pub fn clone_keys(map: &FxHashMap<usize, String>) -> Vec<usize> {
     map.keys().cloned().collect()
 }
 
@@ -107,14 +108,14 @@ pub fn calculate_enemy_state<T: CurrentPlayerLike>(
         &enemy_items,
         current_player_cache.attack_type == AttackType::Ranged,
     );
-    let normal_abilities_damage: HashMap<String, InstanceDamage> =
+    let normal_abilities_damage: FxHashMap<String, InstanceDamage> =
         get_abilities_damage(current_player_cache, &full_stats, &abilities);
-    let normal_items_damage: HashMap<usize, InstanceDamage> =
+    let normal_items_damage: FxHashMap<usize, InstanceDamage> =
         get_items_damage(&items_cache, &full_stats, current_player_items_vec);
-    let normal_runes_damage: HashMap<usize, InstanceDamage> =
+    let normal_runes_damage: FxHashMap<usize, InstanceDamage> =
         get_runes_damage(&runes_cache, &full_stats, current_player_runes_vec);
     let real_resists: RealResists = full_stats.enemy_player.real_resists;
-    let compared_items: HashMap<usize, SimulatedDamages> = simulated_champion_stats
+    let compared_items: FxHashMap<usize, SimulatedDamages> = simulated_champion_stats
         .iter()
         .map(|(simulated_item_id, simulated_stats)| {
             let simulated_full_stats: FullStats<'_> = get_full_stats(
@@ -129,14 +130,14 @@ pub fn calculate_enemy_state<T: CurrentPlayerLike>(
                 &enemy_items,
                 current_player_cache.attack_type == AttackType::Ranged,
             );
-            let mut simulated_ability_damage: HashMap<String, InstanceDamage> =
+            let mut simulated_ability_damage: FxHashMap<String, InstanceDamage> =
                 get_abilities_damage(&current_player_cache, &simulated_full_stats, &abilities);
-            let mut simulated_item_damage: HashMap<usize, InstanceDamage> = get_items_damage(
+            let mut simulated_item_damage: FxHashMap<usize, InstanceDamage> = get_items_damage(
                 &items_cache,
                 &simulated_full_stats,
                 &current_player_items_vec,
             );
-            let mut simulated_rune_damage: HashMap<usize, InstanceDamage> = get_runes_damage(
+            let mut simulated_rune_damage: FxHashMap<usize, InstanceDamage> = get_runes_damage(
                 &runes_cache,
                 &simulated_full_stats,
                 &current_player_runes_vec,
@@ -170,7 +171,7 @@ pub fn calculate_enemy_state<T: CurrentPlayerLike>(
                 },
             )
         })
-        .collect::<HashMap<usize, SimulatedDamages>>();
+        .collect::<FxHashMap<usize, SimulatedDamages>>();
     let damages: Damages = Damages {
         compared_items,
         abilities: normal_abilities_damage,
@@ -182,17 +183,17 @@ pub fn calculate_enemy_state<T: CurrentPlayerLike>(
 
 /// Takes each simulated item and clones the current champions stats
 /// and adds to these stats the value as if the player owned the item
-/// Supports multiple inputs, being that the reason why a HashMap is returned
+/// Supports multiple inputs, being that the reason why a FxHashMap is returned
 /// Mutates compared_items_info map, inserting the prettified stats, name and gold
 /// Dragon effects are taken into consideration
 pub fn get_simulated_champion_stats(
     simulated_items: &Vec<usize>,
     owned_items: &Vec<usize>,
     current_stats: &Stats,
-    items_cache: &HashMap<usize, Item>,
+    items_cache: &FxHashMap<usize, Item>,
     ally_dragon_multipliers: &DragonMultipliers,
-    compared_items_info: &mut HashMap<usize, ComparedItem>,
-) -> Result<HashMap<usize, Stats>, String> {
+    compared_items_info: &mut FxHashMap<usize, ComparedItem>,
+) -> Result<FxHashMap<usize, Stats>, String> {
     simulated_items
         .iter()
         .filter(|this_item: &&usize| !owned_items.contains(this_item))
@@ -230,8 +231,8 @@ pub fn get_simulated_champion_stats(
 /// Ignores key that is related to Monster or Minion damage
 // #![unsupported] Minions and Monster damages are not evaluated
 /// In the future a table to represent damage on monsters/towers may be created
-pub fn get_damaging_abilities(champion_cache: &Champion) -> HashMap<String, String> {
-    let mut damaging_abilities: HashMap<String, String> = champion_cache
+pub fn get_damaging_abilities(champion_cache: &Champion) -> FxHashMap<String, String> {
+    let mut damaging_abilities: FxHashMap<String, String> = champion_cache
         .abilities
         .iter()
         .filter_map(|(key, ability)| {
@@ -253,10 +254,10 @@ pub fn get_damaging_abilities(champion_cache: &Champion) -> HashMap<String, Stri
 /// Common exceptions for this error would be in items that are not purchasable for melee champions
 /// Even in this situation, it is recommended to add damage value for both attack types
 pub fn get_damaging_items(
-    items_cache: &HashMap<usize, Item>,
+    items_cache: &FxHashMap<usize, Item>,
     attack_type: AttackType,
     owned_items: &Vec<usize>,
-) -> HashMap<usize, String> {
+) -> FxHashMap<usize, String> {
     owned_items
         .iter()
         .filter_map(|item_id: &usize| {
@@ -342,11 +343,11 @@ pub fn simulate_champion_stats(
 
 /// Reads items from cache and evaluates its damages, if some.
 pub fn get_items_damage(
-    items_cache: &HashMap<usize, Item>,
+    items_cache: &FxHashMap<usize, Item>,
     stats: &FullStats,
     current_player_items_vec: &Vec<usize>,
 ) -> DamageLike<usize> {
-    let mut item_damages: DamageLike<usize> = DamageLike::<usize>::new();
+    let mut item_damages: DamageLike<usize> = DamageLike::<usize>::default();
 
     let is_ranged: bool = stats.current_player.is_ranged;
     for current_player_item in current_player_items_vec.into_iter() {
@@ -400,11 +401,11 @@ pub fn get_items_damage(
 
 /// Reads runes from cache and evaluates its damages, if some.
 pub fn get_runes_damage(
-    runes_cache: &HashMap<usize, Rune>,
+    runes_cache: &FxHashMap<usize, Rune>,
     stats: &FullStats,
     current_player_runes_vec: &Vec<usize>,
 ) -> DamageLike<usize> {
-    let mut rune_damages: DamageLike<usize> = DamageLike::<usize>::new();
+    let mut rune_damages: DamageLike<usize> = DamageLike::<usize>::default();
 
     let is_ranged: bool = stats.current_player.is_ranged;
     for current_player_rune in current_player_runes_vec.into_iter() {
@@ -532,7 +533,8 @@ pub fn get_full_stats<'a, T: CurrentPlayerLike>(
     FullStats {
         physical_damage_multiplier,
         magic_damage_multiplier,
-        missing_health: 1.0 - (current_stats.current_health / current_stats.max_health),
+        missing_health: 1.0
+            - (current_stats.current_health / current_stats.max_health.clamp(1.0, CLAMP_F64_MAX)),
         // #![manual_impl]
         enemy_has_steelcaps: has_item(enemy_items, &[3047]),
         // #![manual_impl]
@@ -612,13 +614,13 @@ pub fn get_damage_multipliers(full_stats: &FullStats, damage_type: &str) -> (f64
 
 /// Evaluates abilities damages to a given champion, whose stats are in `full_stats`
 /// Intentionally ignores Monster and Minion damages
-/// Invalid inputs will cause the function to return an empty HashMap
+/// Invalid inputs will cause the function to return an empty FxHashMap
 pub fn get_abilities_damage(
     current_player_cache: &Champion,
     full_stats: &FullStats,
     abilities: &AbilitiesX,
 ) -> DamageLike<String> {
-    let mut ability_damages: DamageLike<String> = DamageLike::<String>::new();
+    let mut ability_damages: DamageLike<String> = DamageLike::<String>::default();
     for (keyname, ability) in current_player_cache
         .abilities
         .iter()
@@ -894,7 +896,7 @@ pub fn get_base_stats(champion_cache: &Champion, level: usize) -> BasicStats {
 /// There are several other situations where enemy current stats
 /// Can't be evaluated precisely.
 pub fn get_enemy_current_stats(
-    champion_cache: &HashMap<usize, Item>,
+    champion_cache: &FxHashMap<usize, Item>,
     base_stats: &BasicStats,
     current_items: &Vec<usize>,
     earth_dragon: f64,

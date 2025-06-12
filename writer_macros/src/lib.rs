@@ -41,9 +41,9 @@ use syn::parse_macro_input;
 /// ### `merge_ability!`
 ///
 /// Has two variants. The one with only one argument takes the {STRING} and checks for
-/// the key {STRING}_MAX in the HashMap and if found, moves the value from "maximum_damage" of it
+/// the key {STRING}_MAX in the FxHashMap and if found, moves the value from "maximum_damage" of it
 /// into the original key, that should represent the minimum damage. At the end, the key {STRING}_MAX
-/// is removed from the HashMap.
+/// is removed from the FxHashMap.
 ///
 /// The other variant takes two arguments, the first one is the key that represent minimum_damage,
 /// and the second one is the key that represent maximum_damage.
@@ -57,7 +57,7 @@ pub fn writer(_args: TokenStream, input: TokenStream) -> TokenStream {
     let mut func = parse_macro_input!(input as syn::ItemFn);
 
     let map_decl = quote! {
-        let mut abilities = HashMap::<String, Ability>::new();
+        let mut abilities = FxHashMap::<String, Ability>::default();
 
         #[allow(unused_macros)]
         macro_rules! ability {

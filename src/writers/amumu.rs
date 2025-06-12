@@ -1,4 +1,4 @@
-use super::{Ability, CdnChampion, Champion, HashMap, Target, extract_ability_damage};
+use super::{Ability, CdnChampion, Champion, FxHashMap, Target, extract_ability_damage};
 
 // ! #![unstable] [W] "06/11/2025" | "25.11"
 // #![preserve]

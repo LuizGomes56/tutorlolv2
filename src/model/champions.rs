@@ -1,5 +1,5 @@
+use rustc_hash::FxHashMap;
 use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
 
 #[derive(Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -122,11 +122,11 @@ pub struct Champion {
     pub attack_type: String,
     pub positions: Vec<String>,
     pub stats: ChampionCdnStats,
-    pub abilities: HashMap<String, Ability>,
+    pub abilities: FxHashMap<String, Ability>,
 }
 
 impl CdnChampion {
-    pub fn format(self, abilities: HashMap<String, Ability>) -> Champion {
+    pub fn format(self, abilities: FxHashMap<String, Ability>) -> Champion {
         Champion {
             abilities,
             name: self.name,

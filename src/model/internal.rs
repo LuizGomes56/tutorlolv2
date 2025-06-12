@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use rustc_hash::FxHashMap;
 
 use serde::Deserialize;
 
@@ -11,4 +11,4 @@ pub struct Positions {
     pub support: Vec<usize>,
 }
 
-pub type MetaItems = HashMap<String, Positions>;
+pub type MetaItems = FxHashMap<String, Positions>;

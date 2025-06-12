@@ -1,6 +1,6 @@
 use crate::{AppState, server::schemas::APIResponse};
 use actix_web::{HttpResponse, Responder, get, web::Data};
-use std::collections::HashMap;
+use rustc_hash::FxHashMap;
 
 #[get("/champions")]
 pub async fn static_champions(state: Data<AppState>) -> impl Responder {
@@ -9,7 +9,7 @@ pub async fn static_champions(state: Data<AppState>) -> impl Responder {
         .champion_names
         .iter()
         .map(|(k, v)| (v.clone(), k.clone()))
-        .collect::<HashMap<String, String>>();
+        .collect::<FxHashMap<String, String>>();
     HttpResponse::Ok().json(APIResponse {
         success: true,
         message: (),
@@ -24,7 +24,7 @@ pub async fn static_items(state: Data<AppState>) -> impl Responder {
         .items
         .iter()
         .map(|(item_id, value)| (*item_id, value.name.clone()))
-        .collect::<HashMap<usize, String>>();
+        .collect::<FxHashMap<usize, String>>();
     HttpResponse::Ok().json(APIResponse {
         success: true,
         message: (),
@@ -39,7 +39,7 @@ pub async fn static_runes(state: Data<AppState>) -> impl Responder {
         .runes
         .iter()
         .map(|(rune_id, value)| (*rune_id, value.name.clone()))
-        .collect::<HashMap<usize, String>>();
+        .collect::<FxHashMap<usize, String>>();
     HttpResponse::Ok().json(APIResponse {
         success: true,
         message: (),

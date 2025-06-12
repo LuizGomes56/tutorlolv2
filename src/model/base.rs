@@ -1,7 +1,7 @@
 use super::{calculator::CurrentPlayerX, realtime::CurrentPlayer, riot::RiotChampionStats};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
-use std::collections::HashMap;
+use rustc_hash::FxHashMap;
 
 #[derive(Serialize)]
 pub struct InstanceDamage {
@@ -105,7 +105,7 @@ impl ToRiotFormat for Stats {
     }
 }
 
-pub type DamageLike<T> = HashMap<T, InstanceDamage>;
+pub type DamageLike<T> = FxHashMap<T, InstanceDamage>;
 
 #[derive(Clone, Deserialize, Serialize)]
 pub struct BasicStats {
@@ -120,7 +120,7 @@ pub struct BasicStats {
 pub struct ComparedItem {
     pub name: String,
     pub gold_cost: usize,
-    pub prettified_stats: HashMap<String, Value>,
+    pub prettified_stats: FxHashMap<String, Value>,
 }
 
 #[derive(Serialize)]
@@ -148,7 +148,7 @@ pub struct Damages {
     pub abilities: DamageLike<String>,
     pub items: DamageLike<usize>,
     pub runes: DamageLike<usize>,
-    pub compared_items: HashMap<usize, SimulatedDamages>,
+    pub compared_items: FxHashMap<usize, SimulatedDamages>,
 }
 
 pub struct DamageMultipliers {

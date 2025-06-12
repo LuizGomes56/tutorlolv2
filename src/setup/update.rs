@@ -8,10 +8,10 @@ use crate::{
     writers,
 };
 use regex::Regex;
+use rustc_hash::FxHashMap;
 use serde_json::Value;
 use std::{
     borrow::Cow,
-    collections::HashMap,
     fs::{self, DirEntry, ReadDir},
     io::{self},
     num::ParseIntError,
@@ -20,7 +20,7 @@ use std::{
 
 include!(concat!(env!("OUT_DIR"), "/writers_generated.rs"));
 
-type MetaItemValue<T> = HashMap<String, HashMap<String, Vec<T>>>;
+type MetaItemValue<T> = FxHashMap<String, FxHashMap<String, Vec<T>>>;
 
 /// Creates basic folders necessary to run the program. If one of these folders are not found,
 /// The program is likely to panic when an update is called.
@@ -133,7 +133,7 @@ pub fn setup_internal_items() -> Result<(), SetupError> {
         item_stats.magic_penetration_percent = non_zero(stats.magic_penetration.percent);
 
         let result: Item = Item {
-            pretiffied_stats: HashMap::new(),
+            pretiffied_stats: FxHashMap::default(),
             name: cdn_item.name.clone(),
             gold: cdn_item.shop.prices.total,
             levelings: None,
@@ -234,7 +234,7 @@ pub fn setup_champion_names() -> Result<(), SetupError> {
         ))
     })?;
 
-    let mut map: HashMap<String, String> = HashMap::<String, String>::new();
+    let mut map: FxHashMap<String, String> = FxHashMap::<String, String>::default();
 
     for file in files {
         let path_buf: PathBuf = file
@@ -317,7 +317,7 @@ pub fn setup_meta_items() -> Result<(), SetupError> {
 }
 
 /// `internal/items` folder must exist, as well as dir `cache/riot/items`. Takes every file
-/// and reads the "description" value from Riot `item.json` and parses its XML into a HashMap
+/// and reads the "description" value from Riot `item.json` and parses its XML into a FxHashMap
 /// only updates the key `prettified_stats`. All the remaining content remains the same
 pub async fn prettify_internal_items() -> Result<(), SetupError> {
     println!("fn[append_prettified_item_stats]");
@@ -337,7 +337,7 @@ pub async fn prettify_internal_items() -> Result<(), SetupError> {
         let path_name: String = format!("cache/riot/items/{}.json", name);
         let internal_path: String = format!("internal/items/{}.json", name);
 
-        let prettified_stats: HashMap<String, Value> = pretiffy_items(&path_name);
+        let prettified_stats: FxHashMap<String, Value> = pretiffy_items(&path_name);
 
         if !Path::new(&internal_path).exists() {
             println!("Item {} does not exist", name);
@@ -362,15 +362,15 @@ pub async fn prettify_internal_items() -> Result<(), SetupError> {
 
 /// Returns the value that will be added to key `pretiffied_stats` for each item.
 /// Depends on Riot API `item.json` and requires manual maintainance if a new XML tag is added
-fn pretiffy_items(path_name: &str) -> HashMap<String, Value> {
+fn pretiffy_items(path_name: &str) -> FxHashMap<String, Value> {
     let data: RiotCdnItem = match read_json_file(path_name) {
         Ok(data) => data,
         Err(e) => {
             println!("Failed to read {}: {:#?}", path_name, e);
-            return HashMap::new();
+            return FxHashMap::default();
         }
     };
-    let mut result: HashMap<String, Value> = HashMap::new();
+    let mut result: FxHashMap<String, Value> = FxHashMap::default();
 
     // #![manual_impl]
     let tag_regex: Regex = match Regex::new(
@@ -379,28 +379,28 @@ fn pretiffy_items(path_name: &str) -> HashMap<String, Value> {
         Ok(value) => value,
         Err(e) => {
             println!("[tag_regex] Error on Regex Creation: {:#?}", e);
-            return HashMap::new();
+            return FxHashMap::default();
         }
     };
     let line_regex: Regex = match Regex::new(r"(.*?)<br>") {
         Ok(value) => value,
         Err(e) => {
             println!("[line_regex] Error on Regex Creation: {:#?}", e);
-            return HashMap::new();
+            return FxHashMap::default();
         }
     };
     let percent_prefix_regex: Regex = match Regex::new(r"^\s*\d+\s*%?\s*") {
         Ok(value) => value,
         Err(e) => {
             println!("[percent_prefix_regex] Error on Regex Creation: {:#?}", e);
-            return HashMap::new();
+            return FxHashMap::default();
         }
     };
     let tag_strip_regex: Regex = match Regex::new(r"<\/?[^>]+(>|$)") {
         Ok(value) => value,
         Err(e) => {
             println!("[tag_strip_regex] Error on Regex Creation: {:#?}", e);
-            return HashMap::new();
+            return FxHashMap::default();
         }
     };
 

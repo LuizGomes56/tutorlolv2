@@ -1,4 +1,4 @@
-use super::{Ability, CdnChampion, Champion, HashMap, Target, extract_ability_damage};
+use super::{Ability, CdnChampion, Champion, FxHashMap, Target, extract_ability_damage};
 
 // #![auto_generated]
 

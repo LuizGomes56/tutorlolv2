@@ -11,7 +11,8 @@ use crate::{
     },
     services::eval::{ConditionalAddition, RiotFormulas},
 };
-use std::{collections::HashMap, sync::Arc};
+use rustc_hash::FxHashMap;
+use std::sync::Arc;
 
 /// If user opted not to dictate the active player's stats, this function is called
 /// it reads all items present in cache and evaluates what the game condition would be
@@ -19,7 +20,7 @@ use std::{collections::HashMap, sync::Arc};
 /// taken into consideration when calculation is made. It is less accurate than Realtime.
 fn apply_auto_stats(
     stats: &mut Stats,
-    items_cache: &HashMap<usize, Item>,
+    items_cache: &FxHashMap<usize, Item>,
     active_player: &ActivePlayerX,
     base_stats: &BasicStats,
 ) -> Result<BasicStats, String> {
@@ -112,7 +113,7 @@ fn rune_exceptions(
     champion_stats: &mut Stats,
     owned_runes: &Vec<usize>,
     level: f64,
-    exception_map: &HashMap<usize, usize>,
+    exception_map: &FxHashMap<usize, usize>,
     value_types: (AdaptativeType, AttackType),
 ) {
     for rune in owned_runes {
@@ -198,7 +199,7 @@ fn rune_exceptions(
 fn item_exceptions(
     champion_stats: &mut Stats,
     owned_items: &Vec<usize>,
-    exception_map: &HashMap<usize, usize>,
+    exception_map: &FxHashMap<usize, usize>,
 ) {
     for item_id in owned_items {
         let this_stack: usize = *exception_map.get(&item_id).unwrap_or(&0);
@@ -277,8 +278,9 @@ pub fn calculator<'a>(
         .copied()
         .collect();
 
-    let damaging_abilities: HashMap<String, String> = get_damaging_abilities(current_player_cache);
-    let damaging_runes: HashMap<usize, String> = owned_runes
+    let damaging_abilities: FxHashMap<String, String> =
+        get_damaging_abilities(current_player_cache);
+    let damaging_runes: FxHashMap<usize, String> = owned_runes
         .iter()
         .filter_map(|riot_rune: &usize| {
             cache
@@ -290,7 +292,7 @@ pub fn calculator<'a>(
 
     let attack_type: AttackType = AttackType::from(current_player_cache.attack_type.as_str());
 
-    let damaging_items: HashMap<usize, String> =
+    let damaging_items: FxHashMap<usize, String> =
         get_damaging_items(&cache.items, attack_type, &owned_items);
 
     let mut current_stats: Stats =
@@ -334,10 +336,10 @@ pub fn calculator<'a>(
         champion_id: active_player.champion_id.clone(),
     };
 
-    let mut compared_items_info: HashMap<usize, ComparedItem> =
-        HashMap::<usize, ComparedItem>::new();
+    let mut compared_items_info: FxHashMap<usize, ComparedItem> =
+        FxHashMap::<usize, ComparedItem>::default();
 
-    let simulated_champion_stats: HashMap<usize, Stats> = get_simulated_champion_stats(
+    let simulated_champion_stats: FxHashMap<usize, Stats> = get_simulated_champion_stats(
         &simulated_items,
         &owned_items,
         &current_player.current_stats,

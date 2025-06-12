@@ -10,10 +10,10 @@ use crate::{
     },
 };
 use reqwest::Client;
+use rustc_hash::FxHashMap;
 use serde::de::DeserializeOwned;
 use serde_json::Value;
 use std::{
-    collections::HashMap,
     fs::{self, ReadDir},
     hash::Hash,
     io,
@@ -30,14 +30,14 @@ fn load_json_cache<K, V, F, G>(
     dir_path: &str,
     key_fn: F,
     convert_key: G,
-) -> Result<HashMap<K, V>, SetupError>
+) -> Result<FxHashMap<K, V>, SetupError>
 where
     F: Fn(&PathBuf) -> Result<&str, SetupError>,
     G: Fn(&str) -> Result<K, SetupError>,
     V: DeserializeOwned,
     K: Eq + Hash,
 {
-    let mut map: HashMap<K, V> = HashMap::new();
+    let mut map: FxHashMap<K, V> = FxHashMap::default();
     let read_dir: ReadDir =
         fs::read_dir(dir_path).map_err(|e: io::Error| SetupError(e.to_string()))?;
 
@@ -69,14 +69,14 @@ fn load_optional_json_cache<T: Default + DeserializeOwned>(path: &str, label: &s
 /// Syncronously loads all the cache that will live in memory through the entire execution
 pub fn load_cache() -> Result<GlobalCache, SetupError> {
     println!("fn[load_cache]: started loading champion_files");
-    let champions: HashMap<String, Champion> = load_json_cache(
+    let champions: FxHashMap<String, Champion> = load_json_cache(
         "internal/champions",
         |path: &PathBuf| Ok(extract_file_name(path)),
         |s: &str| Ok(s.to_string()),
     )?;
 
     println!("fn[load_cache]: started loading item_files");
-    let items: HashMap<usize, Item> = load_json_cache(
+    let items: FxHashMap<usize, Item> = load_json_cache(
         "internal/items",
         |path: &PathBuf| Ok(extract_file_name(path)),
         |s: &str| {
@@ -85,10 +85,10 @@ pub fn load_cache() -> Result<GlobalCache, SetupError> {
         },
     )?;
 
-    let champion_names: HashMap<String, String> =
+    let champion_names: FxHashMap<String, String> =
         load_optional_json_cache("internal/champion_names.json", "champion_names");
     let meta_items: MetaItems = load_optional_json_cache("internal/meta_items.json", "meta_items");
-    let runes: HashMap<usize, Rune> = load_optional_json_cache("internal/runes.json", "runes");
+    let runes: FxHashMap<usize, Rune> = load_optional_json_cache("internal/runes.json", "runes");
 
     Ok(GlobalCache {
         champions,
@@ -105,7 +105,7 @@ pub async fn update_cdn_cache(
     envcfg: Arc<EnvConfig>,
     instance: &str,
 ) -> Result<(), SetupError> {
-    let result: HashMap<String, Value> =
+    let result: FxHashMap<String, Value> =
         fetch_cdn_api(client, envcfg, &format!("{}.json", instance)).await?;
 
     for (key, value) in result {
@@ -152,7 +152,7 @@ pub async fn update_riot_cache(client: Client, envcfg: Arc<EnvConfig>) -> Result
                 SetupError(format!("Failed to fetch data for {}: {}", champion_id, e.0))
             })?;
 
-            let data_field: HashMap<String, Value> = champion_data.data;
+            let data_field: FxHashMap<String, Value> = champion_data.data;
             let real_data: &Value = data_field.get(&champion_id).ok_or_else(|| {
                 SetupError(format!("Champion {} not found in result", champion_id))
             })?;

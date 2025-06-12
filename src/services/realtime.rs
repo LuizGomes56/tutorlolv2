@@ -7,12 +7,13 @@ use crate::model::{
     riot::*,
     runes::Rune,
 };
-use std::{collections::HashMap, sync::Arc};
+use rustc_hash::FxHashMap;
+use std::sync::Arc;
 
 /// Takes a type constructed from port 2999 and returns a new type "Realtime"
 /// `simulated_items` dictates how many clones of player current stats will be created
 /// for each clone, abilities, runes and items damages will be recalculated
-/// Returns a HashMap with results for each enemy, and the best item in general.
+/// Returns a FxHashMap with results for each enemy, and the best item in general.
 pub fn realtime<'a>(
     cache: &'a Arc<GlobalCache>,
     game: &'a RiotRealtime,
@@ -121,9 +122,10 @@ pub fn realtime<'a>(
         .copied()
         .collect();
 
-    let damaging_abilities: HashMap<String, String> = get_damaging_abilities(current_player_cache);
+    let damaging_abilities: FxHashMap<String, String> =
+        get_damaging_abilities(current_player_cache);
 
-    let damaging_runes: HashMap<usize, String> = active_player
+    let damaging_runes: FxHashMap<usize, String> = active_player
         .full_runes
         .general_runes
         .iter()
@@ -137,7 +139,7 @@ pub fn realtime<'a>(
 
     let attack_type: AttackType = AttackType::from(current_player_cache.attack_type.as_str());
 
-    let damaging_items: HashMap<usize, String> =
+    let damaging_items: FxHashMap<usize, String> =
         get_damaging_items(&cache.items, attack_type, &owned_items);
 
     let current_player: CurrentPlayer<'_> = CurrentPlayer {
@@ -155,10 +157,10 @@ pub fn realtime<'a>(
         base_stats: current_player_base_stats,
     };
 
-    let mut compared_items_info: HashMap<usize, ComparedItem> =
-        HashMap::<usize, ComparedItem>::new();
+    let mut compared_items_info: FxHashMap<usize, ComparedItem> =
+        FxHashMap::<usize, ComparedItem>::default();
 
-    let simulated_champion_stats: HashMap<usize, Stats> = get_simulated_champion_stats(
+    let simulated_champion_stats: FxHashMap<usize, Stats> = get_simulated_champion_stats(
         &simulated_items,
         &owned_items,
         &current_player.current_stats,

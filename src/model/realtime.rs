@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use rustc_hash::FxHashMap;
 
 use serde::{Deserialize, Serialize};
 
@@ -14,9 +14,9 @@ pub struct DamageObject {
 
 #[derive(Serialize)]
 pub struct CurrentPlayer<'a> {
-    pub damaging_abilities: HashMap<String, String>,
-    pub damaging_items: HashMap<usize, String>,
-    pub damaging_runes: HashMap<usize, String>,
+    pub damaging_abilities: FxHashMap<String, String>,
+    pub damaging_items: FxHashMap<usize, String>,
+    pub damaging_runes: FxHashMap<usize, String>,
     pub riot_id: &'a str,
     pub level: usize,
     pub team: &'a str,
@@ -85,7 +85,7 @@ pub struct Realtime<'a> {
     pub enemies: Vec<Enemy<'a>>,
     pub game_information: GameInformation,
     pub recommended_items: Vec<usize>,
-    pub compared_items: HashMap<usize, ComparedItem>,
+    pub compared_items: FxHashMap<usize, ComparedItem>,
     pub scoreboard: Vec<Scoreboard>,
     pub enemy_dragon_multipliers: DragonMultipliers,
     pub ally_dragon_multipliers: DragonMultipliers,

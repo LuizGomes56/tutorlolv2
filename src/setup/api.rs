@@ -1,15 +1,16 @@
 use crate::{EnvConfig, setup::helpers::SetupError};
 use reqwest::{Client, Response};
+use rustc_hash::FxHashMap;
 use serde::de::DeserializeOwned;
 use serde_json::{Map, Value};
-use std::{collections::HashMap, sync::Arc};
+use std::sync::Arc;
 
-/// Helper function to fetch data from the CDN. Returns a HashMap with `any` value.
+/// Helper function to fetch data from the CDN. Returns a FxHashMap with `any` value.
 pub async fn fetch_cdn_api(
     client: Client,
     envcfg: Arc<EnvConfig>,
     path_name: &str,
-) -> Result<HashMap<String, Value>, SetupError> {
+) -> Result<FxHashMap<String, Value>, SetupError> {
     let uri: &String = &envcfg.cdn_endpoint;
     let url: String = format!("{}/{}", uri.trim_end_matches('/'), path_name);
 
