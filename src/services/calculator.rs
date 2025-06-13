@@ -67,13 +67,22 @@ fn apply_auto_stats(
     // Depend on bonus stats, that has to be evaluated later
     for item_id in owned_items {
         match item_id {
-            2501 => stats.attack_damage += 0.025 * (bonus_stats.health + 500.0),
-            3003 => stats.ability_power += 0.01 * bonus_stats.mana,
-            3004 | 3042 => stats.ability_power += 0.025 * bonus_stats.mana,
-            3040 => stats.ability_power += 0.02 * bonus_stats.mana,
-            3119 => stats.max_health += 0.15 * (bonus_stats.health + 500.0),
-            3121 => stats.max_health += 0.15 * (bonus_stats.health + 860.0),
-            4633 | 4637 => stats.ability_power += 0.02 * (bonus_stats.health + stats.max_health),
+            // Overlord's Bloodmail
+            2501 | 222501 => stats.attack_damage += 0.025 * (bonus_stats.health + 500.0),
+            // Archangel's Staff
+            3003 | 223003 => stats.ability_power += 0.01 * bonus_stats.mana,
+            // Manamune | Muramana
+            3004 | 3042 | 223004 | 223042 => stats.attack_damage += 0.025 * bonus_stats.mana,
+            // Seraph's Embrace
+            3040 | 223040 => stats.ability_power += 0.02 * bonus_stats.mana,
+            // Winter's Approach
+            3119 | 223119 => stats.max_health += 0.15 * (bonus_stats.health + 500.0),
+            // Fimbulwinter
+            3121 | 223121 => stats.max_health += 0.15 * (bonus_stats.health + 860.0),
+            // Riftmaker | Demonic Embrace
+            4633 | 4637 | 224633 | 224637 => {
+                stats.ability_power += 0.02 * (bonus_stats.health + stats.max_health)
+            }
             _ => {}
         }
     }
@@ -119,6 +128,7 @@ fn rune_exceptions(
     for rune in owned_runes {
         let this_stack: usize = *exception_map.get(&rune).unwrap_or(&0);
         match rune {
+            // Lethal Tempo
             8008 => match value_types.1 {
                 AttackType::Melee => {
                     champion_stats.attack_speed +=
@@ -130,6 +140,7 @@ fn rune_exceptions(
                 }
                 _ => {}
             },
+            // Conqueror
             8010 => {
                 let formula: f64 = (this_stack as f64) * (1.8 + 2.2 / 17.0 * (level - 1.0));
                 match value_types.0 {
@@ -141,6 +152,7 @@ fn rune_exceptions(
                     }
                 }
             }
+            // Eyeball Collection | Ghost Poro | Zombie Ward :: Removed Runes
             8120 | 8136 | 8138 => match value_types.0 {
                 AdaptativeType::Physical => {
                     champion_stats.attack_damage += match this_stack {
@@ -155,10 +167,12 @@ fn rune_exceptions(
                     };
                 }
             },
+            // Waterwalking
             8232 => {
                 champion_stats.ability_power += 12.0 + level;
                 champion_stats.attack_damage += 7.2 + 0.6 * level
             }
+            // Absolute Focus
             8233 => match value_types.0 {
                 AdaptativeType::Physical => {
                     champion_stats.attack_damage += 1.8 + 16.2 / 17.0 * (level - 1.0);
@@ -167,6 +181,7 @@ fn rune_exceptions(
                     champion_stats.ability_power += 3.0 + 27.0 / 17.0 * (level - 1.0);
                 }
             },
+            // Gathering Storm
             8236 => {
                 let formula: f64 = (this_stack << 2 * (this_stack + 1)) as f64;
                 match value_types.0 {
@@ -178,6 +193,7 @@ fn rune_exceptions(
                     }
                 }
             }
+            // Adaptative damage shard
             9000 => match value_types.0 {
                 AdaptativeType::Physical => {
                     champion_stats.attack_damage += 5.4 * (this_stack as f64);
@@ -186,8 +202,11 @@ fn rune_exceptions(
                     champion_stats.ability_power += 9.0 * (this_stack as f64);
                 }
             },
+            // Max health shard
             9001 => champion_stats.max_health += 65.0 * (this_stack as f64),
+            // Health per level shard
             9002 => champion_stats.max_health += 10.0 * level * (this_stack as f64),
+            // Attack speed shard
             9003 => champion_stats.attack_speed += 10.0 * (this_stack as f64),
             _ => {}
         }
@@ -204,17 +223,22 @@ fn item_exceptions(
     for item_id in owned_items {
         let this_stack: usize = *exception_map.get(&item_id).unwrap_or(&0);
         match item_id {
+            // Dark Seal
             1082 => {
                 champion_stats.ability_power += (this_stack.clamp(1, CLAMP_USIZE_MAX) << 2) as f64
             }
+            // Mejai's Soulstealer
             3041 => {
                 champion_stats.ability_power += (5 * this_stack.clamp(1, CLAMP_USIZE_MAX)) as f64
             }
+            // Rabadon's Deathcap
             3089 | 223089 => champion_stats.ability_power *= 1.3,
+            // Hubris
             6697 | 7008 => {
                 champion_stats.attack_damage +=
                     (15 + this_stack.clamp(1, CLAMP_USIZE_MAX) << 1) as f64
             }
+            // Wooglet's Witchcap
             8002 => champion_stats.ability_power *= 1.5,
             _ => {}
         }
@@ -233,10 +257,10 @@ pub fn calculator<'a>(
     let active_player_level: usize = active_player.level;
 
     let ally_dragon_multipliers: &DragonMultipliers = &DragonMultipliers {
-        earth: EARTH_DRAGON_MULTIPLIER * game.ally_earth_dragons as f64,
-        fire: FIRE_DRAGON_MULTIPLIER * game.ally_fire_dragons as f64,
+        earth: 1.0 + EARTH_DRAGON_MULTIPLIER * game.ally_earth_dragons as f64,
+        fire: 1.0 + FIRE_DRAGON_MULTIPLIER * game.ally_fire_dragons as f64,
         // #![unsupported]
-        chemtech: 1.0,
+        chemtech: 1.0 + CHEMTECH_DRAGON_MULTIPLIER * 0.0,
     };
 
     let current_champion_id: &String = &active_player.champion_id;

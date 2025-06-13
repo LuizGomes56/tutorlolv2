@@ -1,5 +1,5 @@
 use crate::{
-    AppState, EnvConfig,
+    AppState, EnvConfig, match_fn,
     server::schemas::APIResponse,
     setup::{
         cache::{update_cdn_cache, update_riot_cache},
@@ -94,32 +94,10 @@ pub async fn setup_project(state: Data<AppState>) -> impl Responder {
 
 #[post("/folders")]
 pub async fn setup_folders() -> impl Responder {
-    match setup_project_folders() {
-        Ok(_) => HttpResponse::Ok().json(APIResponse {
-            success: true,
-            message: "Folders are ready",
-            data: (),
-        }),
-        Err(e) => HttpResponse::Ok().json(APIResponse {
-            success: false,
-            message: format!("Unexpected error: {:#?}", e),
-            data: (),
-        }),
-    }
+    match_fn!(setup_project_folders())
 }
 
 #[post("/champions")]
 pub async fn setup_champions() -> impl Responder {
-    match setup_internal_champions() {
-        Ok(_) => HttpResponse::Ok().json(APIResponse {
-            success: true,
-            message: "Champions are ready",
-            data: (),
-        }),
-        Err(e) => HttpResponse::Ok().json(APIResponse {
-            success: false,
-            message: format!("Unexpected error: {:#?}", e),
-            data: (),
-        }),
-    }
+    match_fn!(setup_internal_champions())
 }

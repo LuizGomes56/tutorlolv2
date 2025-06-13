@@ -115,18 +115,26 @@ pub fn setup_internal_items() -> Result<(), SetupError> {
         let stats: &ItemStats = &cdn_item.stats;
         let mut item_stats: PartialStats = PartialStats::default();
 
-        item_stats.ability_power = non_zero(stats.ability_power.flat);
-        item_stats.armor = non_zero(stats.armor.flat);
-        item_stats.attack_damage = non_zero(stats.attack_damage.flat);
-        item_stats.attack_speed = non_zero(stats.attack_speed.flat);
-        item_stats.critical_strike_chance = non_zero(stats.critical_strike_chance.flat);
-        item_stats.critical_strike_damage = non_zero(stats.critical_strike_damage.flat);
-        item_stats.health = non_zero(stats.health.flat);
-        item_stats.lifesteal = non_zero(stats.lifesteal.flat);
-        item_stats.magic_resistance = non_zero(stats.magic_resistance.flat);
-        item_stats.mana = non_zero(stats.mana.flat);
-        item_stats.movespeed = non_zero(stats.movespeed.flat);
-        item_stats.omnivamp = non_zero(stats.omnivamp.flat);
+        macro_rules! insert_non_zero {
+            ($field:ident) => {
+                item_stats.$field = non_zero(stats.$field.flat);
+            };
+        }
+
+        insert_non_zero!(ability_power);
+        insert_non_zero!(ability_power);
+        insert_non_zero!(armor);
+        insert_non_zero!(attack_damage);
+        insert_non_zero!(attack_speed);
+        insert_non_zero!(critical_strike_chance);
+        insert_non_zero!(critical_strike_damage);
+        insert_non_zero!(health);
+        insert_non_zero!(lifesteal);
+        insert_non_zero!(magic_resistance);
+        insert_non_zero!(mana);
+        insert_non_zero!(movespeed);
+        insert_non_zero!(omnivamp);
+
         item_stats.armor_penetration_flat = non_zero(stats.armor_penetration.flat);
         item_stats.armor_penetration_percent = non_zero(stats.armor_penetration.percent);
         item_stats.magic_penetration_flat = non_zero(stats.magic_penetration.flat);

@@ -306,35 +306,38 @@ pub fn simulate_champion_stats(
     if current_owned_items.contains(&simulated_item_id) {
         return;
     }
-    cloned_stats.ability_power.add_if_some(stats.ability_power);
-    cloned_stats.attack_damage.add_if_some(stats.attack_damage);
+
+    macro_rules! add_stat {
+        ($field:ident) => {
+            cloned_stats.$field.add_if_some(stats.$field);
+        };
+        ($field:ident, $a:expr) => {
+            cloned_stats.$field = RiotFormulas::percent_value(vec![
+                cloned_stats.$field,
+                stats.$field.unwrap_or_default(),
+            ]);
+        };
+    }
+
+    cloned_stats.max_mana.add_if_some(stats.mana);
     cloned_stats.max_health.add_if_some(stats.health);
-    cloned_stats.armor.add_if_some(stats.armor);
     cloned_stats
         .magic_resist
         .add_if_some(stats.magic_resistance);
-    cloned_stats.max_mana.add_if_some(stats.mana);
-    cloned_stats.attack_speed.add_if_some(stats.attack_speed);
     cloned_stats
         .crit_chance
         .add_if_some(stats.critical_strike_chance);
     cloned_stats
         .crit_damage
         .add_if_some(stats.critical_strike_damage);
-    cloned_stats
-        .armor_penetration_flat
-        .add_if_some(stats.armor_penetration_flat);
-    cloned_stats
-        .magic_penetration_flat
-        .add_if_some(stats.magic_penetration_flat);
-    cloned_stats.armor_penetration_percent = RiotFormulas::percent_value(vec![
-        cloned_stats.armor_penetration_percent,
-        stats.armor_penetration_percent.unwrap_or_default(),
-    ]);
-    cloned_stats.magic_penetration_percent = RiotFormulas::percent_value(vec![
-        cloned_stats.magic_penetration_percent,
-        stats.magic_penetration_percent.unwrap_or_default(),
-    ]);
+    add_stat!(ability_power);
+    add_stat!(attack_damage);
+    add_stat!(armor);
+    add_stat!(attack_speed);
+    add_stat!(armor_penetration_flat);
+    add_stat!(magic_penetration_flat);
+    add_stat!(armor_penetration_percent, _);
+    add_stat!(magic_penetration_percent, _);
     cloned_stats.ability_power *= ally_dragon_multipliers.fire;
     cloned_stats.attack_damage *= ally_dragon_multipliers.fire;
     cloned_stats.armor *= ally_dragon_multipliers.earth;
@@ -862,32 +865,22 @@ pub fn get_bonus_stats<T: ToRiotFormat>(current_stats: &T, base_stats: &BasicSta
 
 /// Reads cached values for a given champion and assigns its base stats at a given level
 pub fn get_base_stats(champion_cache: &Champion, level: usize) -> BasicStats {
+    macro_rules! assign_value {
+        ($field:ident) => {
+            RiotFormulas::stat_growth(
+                champion_cache.stats.$field.flat,
+                champion_cache.stats.$field.per_level,
+                level,
+            )
+        };
+    }
+
     BasicStats {
-        armor: RiotFormulas::stat_growth(
-            champion_cache.stats.armor.flat,
-            champion_cache.stats.armor.per_level,
-            level,
-        ),
-        health: RiotFormulas::stat_growth(
-            champion_cache.stats.health.flat,
-            champion_cache.stats.health.per_level,
-            level,
-        ),
-        attack_damage: RiotFormulas::stat_growth(
-            champion_cache.stats.attack_damage.flat,
-            champion_cache.stats.attack_damage.per_level,
-            level,
-        ),
-        magic_resist: RiotFormulas::stat_growth(
-            champion_cache.stats.magic_resistance.flat,
-            champion_cache.stats.magic_resistance.per_level,
-            level,
-        ),
-        mana: RiotFormulas::stat_growth(
-            champion_cache.stats.mana.flat,
-            champion_cache.stats.mana.per_level,
-            level,
-        ),
+        armor: assign_value!(armor),
+        health: assign_value!(health),
+        attack_damage: assign_value!(attack_damage),
+        magic_resist: assign_value!(magic_resistance),
+        mana: assign_value!(mana),
     }
 }
 
@@ -901,21 +894,22 @@ pub fn get_enemy_current_stats(
     current_items: &Vec<usize>,
     earth_dragon: f64,
 ) -> BasicStats {
-    let mut base: BasicStats = BasicStats {
-        armor: base_stats.armor,
-        health: base_stats.health,
-        attack_damage: base_stats.attack_damage,
-        magic_resist: base_stats.magic_resist,
-        mana: base_stats.mana,
-    };
+    let mut base: BasicStats = base_stats.clone();
     for enemy_item in current_items {
         if let Some(item) = champion_cache.get(&enemy_item) {
             let stats: &PartialStats = &item.stats;
-            base.armor.add_if_some(stats.armor);
-            base.health.add_if_some(stats.health);
-            base.attack_damage.add_if_some(stats.attack_damage);
+
+            macro_rules! add_value {
+                ($field:ident) => {
+                    base.$field.add_if_some(stats.$field);
+                };
+            }
+
+            add_value!(attack_damage);
+            add_value!(health);
+            add_value!(armor);
             base.magic_resist.add_if_some(stats.magic_resistance);
-            base.mana.add_if_some(stats.mana);
+            add_value!(mana);
         }
     }
     base.armor *= earth_dragon;
