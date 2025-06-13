@@ -52,6 +52,19 @@ use syn::parse_macro_input;
 /// merge_ability!("Q");
 /// merge_ability!("Q_MIN", "Q_MAX");
 /// ```
+///
+/// ### `max_from_min!`
+///
+/// Takes a key and from its `minimum_damage`, insert into `maximum_damage` the same values
+/// that may be modified or not by a closure. Returns a mutable reference to the original key
+///
+/// ```
+/// max_from_min!("Q", |value| { format!("3 * ({})", value) });
+/// max_from_min!("R", |value| { format!("3 * ({})", value) });
+/// ```
+///
+/// Takes "Q".minimum_damage and inserts 3 * (original_value) into "Q".maximum_damage
+/// Returns a mutable reference to "Q" at the end, after modification.
 #[proc_macro_attribute]
 pub fn writer(_args: TokenStream, input: TokenStream) -> TokenStream {
     let mut func = parse_macro_input!(input as syn::ItemFn);
@@ -119,6 +132,24 @@ pub fn writer(_args: TokenStream, input: TokenStream) -> TokenStream {
                     println!("macro [merge_ability!]: Error: key from arg#1 does not exist: {:?}", $from);
                 }
             };
+        }
+
+        #[allow(unused_macros)]
+        macro_rules! max_from_min {
+            ($key:literal, $closure:expr) => {{
+                let new_value = match abilities.get($key) {
+                    Some(value) => {
+                        value.minimum_damage.iter().map($closure).collect::<Vec<String>>()
+                    },
+                    None => {
+                        println!("macro [max_from_min!]: Error: key '{}' not found", $key);
+                        vec![]
+                    }
+                };
+                let this_mut_ref = abilities.get_mut($key).unwrap();
+                this_mut_ref.maximum_damage = new_value;
+                this_mut_ref
+            }};
         }
     };
 

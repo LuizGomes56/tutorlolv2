@@ -8,11 +8,11 @@ use crate::{
 use actix_web::{HttpResponse, Responder, post, web::Data};
 
 macro_rules! download_image {
-    ($state:expr, $fn:expr) => {{
-        $fn($state.client.clone(), $state.envcfg.clone()).await;
+    ($state:expr, $call:expr) => {{
+        $call($state.client.clone(), $state.envcfg.clone()).await;
         HttpResponse::Ok().json(APIResponse {
             success: true,
-            message: &format!("Executed fn[{}]", stringify!($fn)),
+            message: &format!("Executed fn[{}]", stringify!($call)),
             data: (),
         })
     }};
