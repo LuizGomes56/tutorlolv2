@@ -20,10 +20,15 @@ pub fn transform(data: CdnChampion) -> Champion {
     merge_ability!("W");
     merge_ability!("W_MINION");
 
-    let q_mut_ref = max_from_min!("Q", |value| {
-        format!("({}) * MAGIC_MULTIPLIER + ({})", value, value)
-    });
-    q_mut_ref.damage_type = String::from("MIXED");
+    let q_max = merge_damage!(
+        || format!("({}) * MAGIC_MULTIPLIER + ({})", Q, Q),
+        (Q, minimum_damage)
+    );
+    let r_max = merge_damage!(|| format!("3 * ({})", R), (R, minimum_damage));
 
-    max_from_min!("R", |value| { format!("3 * ({})", value) });
+    let q_mut_ref = abilities.get_mut("Q").unwrap();
+    q_mut_ref.maximum_damage = q_max;
+    q_mut_ref.damage_type = String::from("MIXED");
+    let r_mut_ref = abilities.get_mut("R").unwrap();
+    r_mut_ref.maximum_damage = r_max;
 }

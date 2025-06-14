@@ -1,5 +1,6 @@
 use super::{
-    Ability, CdnChampion, Champion, FxHashMap, Target, extract_ability_damage, extract_passive_damage,
+    Ability, CdnChampion, Champion, FxHashMap, Target, extract_ability_damage,
+    extract_passive_damage,
 };
 
 // #![stable] "06/11/2025" | "25.11"
@@ -37,24 +38,17 @@ pub fn transform(data: CdnChampion) -> Champion {
     merge_ability!("Q3");
     merge_ability!("W");
 
-    let [q1_max_damage, q2_max_damage, q3_max_damage] =
-        ["Q1", "Q2", "Q3"].map(|key| abilities.get(key).unwrap().maximum_damage.clone());
-
-    let q_max_damage = (0..q1_max_damage.len())
-        .map(|i| {
-            format!(
-                "({}) + ({}) + ({})",
-                q1_max_damage[i], q2_max_damage[i], q3_max_damage[i]
-            )
-        })
-        .collect();
-
     let default_ability = abilities.get("Q1").unwrap().clone();
 
     abilities.insert(
         String::from("Q_MAX"),
         Ability {
-            minimum_damage: q_max_damage,
+            minimum_damage: merge_damage!(
+                || format!("({}) + ({}) + ({})", Q1, Q2, Q3),
+                (Q1, maximum_damage),
+                (Q2, maximum_damage),
+                (Q3, maximum_damage)
+            ),
             maximum_damage: Vec::new(),
             ..default_ability
         },
