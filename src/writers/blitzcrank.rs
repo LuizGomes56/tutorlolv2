@@ -3,6 +3,7 @@ use crate::setup::generators::extract_scaled_values;
 use super::{Ability, CdnChampion, Champion, FxHashMap, Target, extract_ability_damage};
 
 // ! #![unstable] [E] "06/11/2025" | "25.11"
+// #![preserve]
 // #![todo] Find a reliable way to capture the damage of E
 
 #[writer_macros::writer]

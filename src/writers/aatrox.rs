@@ -38,16 +38,16 @@ pub fn transform(data: CdnChampion) -> Champion {
     merge_ability!("Q3");
     merge_ability!("W");
 
-    let default_ability = abilities.get("Q1").unwrap().clone();
+    let default_ability = get!("Q1").clone();
 
     abilities.insert(
         String::from("Q_MAX"),
         Ability {
             minimum_damage: merge_damage!(
-                || format!("({}) + ({}) + ({})", Q1, Q2, Q3),
-                (Q1, maximum_damage),
-                (Q2, maximum_damage),
-                (Q3, maximum_damage)
+                || format!("({}) + ({}) + ({})", q1, q2, q3),
+                (q1, maximum_damage),
+                (q2, maximum_damage),
+                (q3, maximum_damage)
             ),
             maximum_damage: Vec::new(),
             ..default_ability

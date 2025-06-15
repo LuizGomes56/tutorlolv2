@@ -2,6 +2,7 @@ use super::{Ability, CdnChampion, Champion, FxHashMap, Target, extract_ability_d
 
 // #![auto_generated]
 // ! #![unstable] [X] "06/11/2025" | "25.11"
+// #![preserve]
 
 #[writer_macros::writer]
 pub fn transform(data: CdnChampion) -> Champion {
