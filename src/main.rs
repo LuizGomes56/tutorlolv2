@@ -111,6 +111,7 @@ async fn main() -> Result<()> {
             .service(
                 scope("/api")
                     .wrap(from_fn(logger_middleware))
+                    .service(scope("/formulas").service(formulas_champions))
                     .service(
                         scope("/games")
                             .service(realtime_handler)
@@ -124,7 +125,6 @@ async fn main() -> Result<()> {
                             .service(static_items)
                             .service(static_runes),
                     )
-                    .service(scope("/formulas").service(formulas_champions))
                     .service(
                         scope("/setup")
                             .wrap(from_fn(password_middleware))
@@ -139,7 +139,8 @@ async fn main() -> Result<()> {
                             .service(update_riot)
                             .service(update_champions)
                             .service(update_items)
-                            .service(update_meta_items),
+                            .service(update_meta_items)
+                            .service(update_version),
                     )
                     .service(
                         scope("/images")

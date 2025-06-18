@@ -1,7 +1,10 @@
 use crate::{
     EnvConfig,
     model::riot::{RiotCdnChampion, RiotCdnInstance, RiotCdnRune, RiotCdnSkin},
-    setup::helpers::{SetupError, extract_file_name, read_json_file, write_to_file},
+    setup::{
+        api::riot_base_url,
+        helpers::{SetupError, extract_file_name, read_json_file, write_to_file},
+    },
 };
 use reqwest::{Client, Response};
 use rustc_hash::FxHashMap;
@@ -13,15 +16,9 @@ use std::{
 };
 use tokio::task::JoinHandle;
 
-fn get_base_uri(envcfg: Arc<EnvConfig>) -> String {
-    let url: &str = &envcfg.dd_dragon_endpoint;
-    let version: &str = &envcfg.lol_version;
-    format!("{}/{}/img", url, version)
-}
-
 pub async fn img_download_instances(client: Client, envcfg: Arc<EnvConfig>) {
     let files: ReadDir = fs::read_dir("cache/riot/champions").unwrap();
-    let base_uri: String = get_base_uri(envcfg);
+    let base_uri: String = riot_base_url(envcfg);
     for file in files {
         let outer_base_uri: String = base_uri.clone();
         let outer_client: Client = client.clone();
@@ -40,8 +37,10 @@ pub async fn img_download_instances(client: Client, envcfg: Arc<EnvConfig>) {
                 &champion_file_path
             );
         } else {
-            let champion_icon_url: String =
-                format!("{}/champion/{}", outer_base_uri, outer_result.image.full);
+            let champion_icon_url: String = format!(
+                "{}/img/champion/{}",
+                outer_base_uri, outer_result.image.full
+            );
             println!(
                 "[REQUESTING] fn[img_download_instances]: [Champion] {}",
                 &champion_icon_url
@@ -60,7 +59,7 @@ pub async fn img_download_instances(client: Client, envcfg: Arc<EnvConfig>) {
             );
         } else {
             let passive_icon_url: String = format!(
-                "{}/passive/{}",
+                "{}/img/passive/{}",
                 outer_base_uri, outer_result.passive.image.full
             );
             println!(
@@ -94,7 +93,7 @@ pub async fn img_download_instances(client: Client, envcfg: Arc<EnvConfig>) {
                         &spell_file_path
                     );
                 } else {
-                    let url: String = format!("{}/spell/{}", inner_base_uri, spell.image.full);
+                    let url: String = format!("{}/img/spell/{}", inner_base_uri, spell.image.full);
                     println!("[REQUESTING] fn[img_download_instances]: [Spell] {}", &url);
                     let spell_response: Response = inner_client.get(&url).send().await.unwrap();
                     let spell_bytes = spell_response.bytes().await.unwrap();
@@ -117,7 +116,7 @@ pub async fn img_download_instances(client: Client, envcfg: Arc<EnvConfig>) {
 
 pub async fn img_download_arts(client: Client, envcfg: Arc<EnvConfig>) {
     let files: ReadDir = fs::read_dir("cache/riot/champions").unwrap();
-    let base_uri: String = envcfg.dd_dragon_endpoint.clone();
+    let base_uri: String = format!("{}/cdn", envcfg.dd_dragon_endpoint.clone());
     for file in files {
         let path_buf: PathBuf = file.unwrap().path();
         let path_name: &str = path_buf.to_str().unwrap();
@@ -205,7 +204,7 @@ pub async fn img_download_runes(client: Client, envcfg: Arc<EnvConfig>) {
 
 pub async fn img_download_items(client: Client, envcfg: Arc<EnvConfig>) {
     let files: ReadDir = fs::read_dir("cache/riot/items").unwrap();
-    let base_uri: String = get_base_uri(envcfg);
+    let base_uri: String = riot_base_url(envcfg);
     let mut item_futures: Vec<JoinHandle<()>> = Vec::new();
     for file in files {
         let cloned_base_uri: String = base_uri.clone();
