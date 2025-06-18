@@ -61,6 +61,7 @@ pub fn setup_project_folders() -> Result<(), SetupError> {
 
 /// Read every file in cache/cdn/champions folder and delegates
 /// the processing to generate_champion_file
+#[writer_macros::trace_time]
 pub fn setup_internal_champions() -> Result<(), SetupError> {
     let files: ReadDir = fs::read_dir("cache/cdn/champions").map_err(|e: io::Error| {
         SetupError(format!(
@@ -81,7 +82,6 @@ pub fn setup_internal_champions() -> Result<(), SetupError> {
 
         match path_name.to_str() {
             Some(strpath) => {
-                println!("fn[setup_champion_cache]: {}", strpath);
                 let _ = run_writer_file(strpath)
                     .map_err(|e: SetupError| eprintln!("fn[setup_champion_cache]: {:#?}", e));
             }
@@ -98,8 +98,8 @@ pub fn setup_internal_champions() -> Result<(), SetupError> {
 
 /// Replaces the content found in the files to a shorter and adapted version,
 /// initializes items as default, and Damaging stats must be added separately.
+#[writer_macros::trace_time]
 pub fn setup_internal_items() -> Result<(), SetupError> {
-    println!("fn[initialize_items]");
     let non_zero = |val: f64| -> Option<f64> { if val == 0.0 { None } else { Some(val) } };
     let files: ReadDir = fs::read_dir("cache/cdn/items")
         .map_err(|e: io::Error| SetupError(format!("Unable to read directory: {}", e)))?;
@@ -110,7 +110,6 @@ pub fn setup_internal_items() -> Result<(), SetupError> {
         let path_str: &str = path_buf
             .to_str()
             .ok_or_else(|| SetupError(format!("Invalid UTF-8 in path: {:?}", path_buf)))?;
-        println!("fn[initialize_items]: [initializing] {}", path_str);
         let cdn_item: CdnItem = read_json_file(path_str)?;
         let stats: &ItemStats = &cdn_item.stats;
         let mut item_stats: PartialStats = PartialStats::default();
@@ -165,9 +164,8 @@ pub fn setup_internal_items() -> Result<(), SetupError> {
 
 /// Not meant to be used frequently. Just a quick check for every
 /// patch to identify if a new damaging item was added
+#[writer_macros::trace_time]
 pub fn setup_damaging_items() -> Result<(), SetupError> {
-    println!("fn[identify_damaging_items]");
-
     let re: Regex = Regex::new(r"\{\{[^}]*\}\}")
         .map_err(|e: regex::Error| SetupError(format!("Regex creation failed: {}", e)))?;
 
@@ -232,9 +230,8 @@ pub fn setup_damaging_items() -> Result<(), SetupError> {
 }
 
 /// Uses champion display name and converts to their respective ids, saving to internal
+#[writer_macros::trace_time]
 pub fn setup_champion_names() -> Result<(), SetupError> {
-    println!("fn[rewrite_champion_names]");
-
     let files: ReadDir = fs::read_dir("cache/cdn/champions").map_err(|e: io::Error| {
         SetupError(format!(
             "Unable to read directory cache/cdn/champions: {}",
@@ -272,9 +269,8 @@ pub fn setup_champion_names() -> Result<(), SetupError> {
 /// When MetaItems are recovered, each item is written in the array with its name instead of ID
 /// This function replaces those names with IDs without changing the rest of the content.
 /// If one's ID is not found, it will remain unchanged
+#[writer_macros::trace_time]
 pub fn setup_meta_items() -> Result<(), SetupError> {
-    println!("fn[replace_item_names_with_ids]");
-
     let mut meta_items: MetaItemValue<Value> = read_json_file("internal/meta_items.json")
         .map_err(|e: SetupError| SetupError(format!("Failed to read meta_items.json: {:#?}", e)))?;
 
@@ -327,9 +323,8 @@ pub fn setup_meta_items() -> Result<(), SetupError> {
 /// `internal/items` folder must exist, as well as dir `cache/riot/items`. Takes every file
 /// and reads the "description" value from Riot `item.json` and parses its XML into a FxHashMap
 /// only updates the key `prettified_stats`. All the remaining content remains the same
+#[writer_macros::trace_time]
 pub async fn prettify_internal_items() -> Result<(), SetupError> {
-    println!("fn[append_prettified_item_stats]");
-
     let files: ReadDir = fs::read_dir("cache/riot/items").map_err(|e: io::Error| {
         SetupError(format!(
             "Unable to read directory 'cache/riot/items': {}",

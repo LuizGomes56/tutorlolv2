@@ -16,6 +16,7 @@ use std::{
 };
 use tokio::task::JoinHandle;
 
+#[writer_macros::trace_time]
 pub async fn img_download_instances(client: Client, envcfg: Arc<EnvConfig>) {
     let files: ReadDir = fs::read_dir("cache/riot/champions").unwrap();
     let base_uri: String = riot_base_url(envcfg);
@@ -114,6 +115,7 @@ pub async fn img_download_instances(client: Client, envcfg: Arc<EnvConfig>) {
     );
 }
 
+#[writer_macros::trace_time]
 pub async fn img_download_arts(client: Client, envcfg: Arc<EnvConfig>) {
     let files: ReadDir = fs::read_dir("cache/riot/champions").unwrap();
     let base_uri: String = format!("{}/cdn", envcfg.dd_dragon_endpoint.clone());
@@ -162,6 +164,7 @@ pub async fn img_download_arts(client: Client, envcfg: Arc<EnvConfig>) {
     println!("[COMPLETED] fn[img_download_arts]: {:#?}", Instant::now());
 }
 
+#[writer_macros::trace_time]
 pub async fn img_download_runes(client: Client, envcfg: Arc<EnvConfig>) {
     let runes_data: Vec<RiotCdnRune> =
         read_json_file::<Vec<RiotCdnRune>>("cache/riot/runes.json").unwrap();
@@ -202,6 +205,7 @@ pub async fn img_download_runes(client: Client, envcfg: Arc<EnvConfig>) {
     println!("[COMPLETED] fn[img_download_runes]: {:#?}", Instant::now());
 }
 
+#[writer_macros::trace_time]
 pub async fn img_download_items(client: Client, envcfg: Arc<EnvConfig>) {
     let files: ReadDir = fs::read_dir("cache/riot/items").unwrap();
     let base_uri: String = riot_base_url(envcfg);

@@ -12,6 +12,7 @@ use tokio::task::JoinHandle;
 /// confirmed that the desired format was succesfully achieved.
 /// Once it is done, a comment must be added to the header to
 /// prevent the generator from editing that file. "#![stable]".
+#[writer_macros::trace_time]
 pub async fn generate_writer_files(envcfg: Arc<EnvConfig>) -> Result<(), SetupError> {
     let champion_names: FxHashMap<String, String> = read_json_file("internal/champion_names.json")
         .map_err(|e: SetupError| {

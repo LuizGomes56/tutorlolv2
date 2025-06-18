@@ -5,12 +5,13 @@ use crate::{
 use reqwest::{Client, Response};
 use rustc_hash::FxHashMap;
 use scraper::{Html, Selector, error::SelectorErrorKind};
-use std::{sync::Arc, time::Instant};
+use std::sync::Arc;
 use tokio::task::JoinHandle;
 
 /// Recovers all the common builds for the current patch so the app can recommend builds to the user
 /// Average time to update is 2m30s. Making the outer loop a new task overloads the target website
 /// causing requests to timeout.
+#[writer_macros::trace_time]
 pub async fn meta_items_scraper(client: Client, envcfg: Arc<EnvConfig>) -> Result<(), SetupError> {
     let champion_names: FxHashMap<String, String> = read_json_file("internal/champion_names.json")?;
     let endpoint: String = envcfg.meta_endpoint.clone();
@@ -81,6 +82,5 @@ pub async fn meta_items_scraper(client: Client, envcfg: Arc<EnvConfig>) -> Resul
         .map_err(|e: serde_json::Error| SetupError(e.to_string()))?;
 
     write_to_file("internal/meta_items.json", json.as_bytes())?;
-    println!("[COMPLETED] fn[meta_items_scraper]: {:#?}", Instant::now());
     Ok(())
 }

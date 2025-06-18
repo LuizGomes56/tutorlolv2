@@ -210,9 +210,9 @@ pub enum AttackType {
 impl ToString for AttackType {
     fn to_string(&self) -> String {
         match self {
-            AttackType::Melee => "MELEE".to_string(),
-            AttackType::Ranged => "RANGED".to_string(),
-            AttackType::Other => "OTHER".to_string(),
+            Self::Melee => "MELEE".to_string(),
+            Self::Ranged => "RANGED".to_string(),
+            Self::Other => "OTHER".to_string(),
         }
     }
 }

@@ -38,7 +38,9 @@ unsafe fn set_env_var(key: &str, value: &str) -> std::io::Result<()> {
     Ok(())
 }
 
-/// Update `LOL_VERSION` in `.env`.
+/// Update `LOL_VERSION` in `.env`. The route that calls this function
+/// will be scheduled to run once a day.
+#[writer_macros::trace_time]
 pub async unsafe fn update_env_version(
     client: Client,
     envcfg: Arc<EnvConfig>,

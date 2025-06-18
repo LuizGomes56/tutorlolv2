@@ -24,7 +24,7 @@ use reqwest::Client;
 use server::{formulas::*, games::*, images::*, internal::*, setup::*, statics::*, update::*};
 use setup::cache::load_cache;
 use sqlx::{Pool, Postgres, postgres::PgPoolOptions};
-use std::{env, io::Result, sync::Arc};
+use std::{env, io, sync::Arc};
 
 pub struct EnvConfig {
     pub environment: String,
@@ -37,19 +37,23 @@ pub struct EnvConfig {
     pub meta_endpoint: String,
 }
 
+macro_rules! env_var {
+    ($name:literal) => {
+        env::var($name).expect(&format!("[env] {} is not set", $name))
+    };
+}
+
 impl EnvConfig {
     pub fn new() -> Self {
         EnvConfig {
-            environment: env::var("ENVIRONMENT").expect("[env] ENVIRONMENT is not set"),
-            lol_version: env::var("LOL_VERSION").expect("[env] LOL_VERSION is not set"),
-            lol_language: env::var("LOL_LANGUAGE").expect("[env] LOL_LANGUAGE is not set"),
-            system_password: env::var("SYSTEM_PASSWORD").expect("[env] SYSTEM_PASSWORD is not set"),
-            cdn_endpoint: env::var("CDN_ENDPOINT").expect("[env] CDN_ENDPOINT is not set"),
-            dd_dragon_endpoint: env::var("DD_DRAGON_ENDPOINT")
-                .expect("[env] DD_DRAGON_ENDPOINT is not set"),
-            riot_image_endpoint: env::var("RIOT_IMAGE_ENDPOINT")
-                .expect("[env] RIOT_IMAGE_ENDPOINT is not set"),
-            meta_endpoint: env::var("META_ENDPOINT").expect("[env] META_ENDPOINT is not set"),
+            environment: env_var!("ENVIRONMENT"),
+            lol_version: env_var!("LOL_VERSION"),
+            lol_language: env_var!("LOL_LANGUAGE"),
+            system_password: env_var!("SYSTEM_PASSWORD"),
+            cdn_endpoint: env_var!("CDN_ENDPOINT"),
+            dd_dragon_endpoint: env_var!("DD_DRAGON_ENDPOINT"),
+            riot_image_endpoint: env_var!("RIOT_IMAGE_ENDPOINT"),
+            meta_endpoint: env_var!("META_ENDPOINT"),
         }
     }
 }
@@ -62,7 +66,7 @@ pub struct AppState {
 }
 
 #[main]
-async fn main() -> Result<()> {
+async fn main() -> io::Result<()> {
     dotenv().ok();
 
     let envcfg: Arc<EnvConfig> = Arc::new(EnvConfig::new());
@@ -75,8 +79,8 @@ async fn main() -> Result<()> {
         }
     };
 
-    let dsn: String = env::var("DATABASE_URL").expect("[env] DATABASE_URL is not set");
-    let host: String = env::var("HOST").expect("[env] HOST is not set");
+    let dsn: String = env_var!("DATABASE_URL");
+    let host: String = env_var!("HOST");
     let pool: Pool<Postgres> = PgPoolOptions::new()
         .max_connections(5)
         .connect(&dsn)

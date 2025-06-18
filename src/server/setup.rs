@@ -18,7 +18,7 @@ use crate::{
 use actix_web::{HttpResponse, Responder, post, web::Data};
 use reqwest::Client;
 use std::{sync::Arc, time::Instant};
-use tokio::task::{self, JoinHandle};
+use tokio::task;
 
 #[post("/project")]
 pub async fn setup_project(state: Data<AppState>) -> impl Responder {
@@ -26,13 +26,13 @@ pub async fn setup_project(state: Data<AppState>) -> impl Responder {
         "fn[setup_project]: Started execution at: {:#?}",
         Instant::now()
     );
-    let _ = setup_project_folders();
 
+    let _ = setup_project_folders();
     let client: Client = state.client.clone();
     let envcfg: Arc<EnvConfig> = state.envcfg.clone();
 
     tokio::spawn(async move {
-        let mut update_futures: Vec<JoinHandle<Result<(), _>>> = Vec::new();
+        let mut update_futures = Vec::new();
 
         update_futures.push(tokio::spawn(update_riot_cache(
             client.clone(),

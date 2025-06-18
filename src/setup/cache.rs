@@ -57,9 +57,8 @@ where
     Ok(map)
 }
 
-fn load_optional_json_cache<T: Default + DeserializeOwned>(path: &str, label: &str) -> T {
+fn load_optional_json_cache<T: Default + DeserializeOwned>(path: &str) -> T {
     if Path::new(path).exists() {
-        println!("fn[load_cache]: started loading {}", label);
         read_json_file::<T>(path).unwrap()
     } else {
         T::default()
@@ -67,15 +66,14 @@ fn load_optional_json_cache<T: Default + DeserializeOwned>(path: &str, label: &s
 }
 
 /// Syncronously loads all the cache that will live in memory through the entire execution
+#[writer_macros::trace_time]
 pub fn load_cache() -> Result<GlobalCache, SetupError> {
-    println!("fn[load_cache]: started loading champion_files");
     let champions: FxHashMap<String, Champion> = load_json_cache(
         "internal/champions",
         |path: &PathBuf| Ok(extract_file_name(path)),
         |s: &str| Ok(s.to_string()),
     )?;
 
-    println!("fn[load_cache]: started loading item_files");
     let items: FxHashMap<usize, Item> = load_json_cache(
         "internal/items",
         |path: &PathBuf| Ok(extract_file_name(path)),
@@ -86,9 +84,9 @@ pub fn load_cache() -> Result<GlobalCache, SetupError> {
     )?;
 
     let champion_names: FxHashMap<String, String> =
-        load_optional_json_cache("internal/champion_names.json", "champion_names");
-    let meta_items: MetaItems = load_optional_json_cache("internal/meta_items.json", "meta_items");
-    let runes: FxHashMap<usize, Rune> = load_optional_json_cache("internal/runes.json", "runes");
+        load_optional_json_cache("internal/champion_names.json");
+    let meta_items: MetaItems = load_optional_json_cache("internal/meta_items.json");
+    let runes: FxHashMap<usize, Rune> = load_optional_json_cache("internal/runes.json");
 
     Ok(GlobalCache {
         champions,
@@ -100,6 +98,7 @@ pub fn load_cache() -> Result<GlobalCache, SetupError> {
 }
 
 /// Takes an instance parameter and uses CDN API to get its data and save to file system.
+#[writer_macros::trace_time]
 pub async fn update_cdn_cache(
     client: Client,
     envcfg: Arc<EnvConfig>,
@@ -120,6 +119,7 @@ pub async fn update_cdn_cache(
 
 /// Updates files in `cache/riot` with the corresponding ones in the patch determined by `LOL_VERSION`
 /// Runs a maximum of 32 tokio threads at the same time
+#[writer_macros::trace_time]
 pub async fn update_riot_cache(client: Client, envcfg: Arc<EnvConfig>) -> Result<(), SetupError> {
     let champions_json: RiotCdnStandard =
         fetch_riot_api::<RiotCdnStandard>(client.clone(), envcfg.clone(), "champion")
