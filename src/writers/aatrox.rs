@@ -3,7 +3,7 @@ use super::{
     extract_passive_damage,
 };
 
-// #![stable] "06/11/2025" | "25.11"
+// #![stable] "06/18/2025" | "25.11"
 // #![unsupported] MINION | MONSTER
 /// * Q_MAX was intentionally placed at position "minimum_damage"
 /// * Passive postfix "ENEMY_MAX_HEALTH" need manual fix if Riot changes it
@@ -44,6 +44,7 @@ pub fn transform(data: CdnChampion) -> Champion {
         String::from("Q_MAX"),
         Ability {
             minimum_damage: merge_damage!(
+                5,
                 || format!("({}) + ({}) + ({})", q1, q2, q3),
                 (q1, maximum_damage),
                 (q2, maximum_damage),

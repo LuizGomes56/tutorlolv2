@@ -1,6 +1,6 @@
 use super::{Ability, CdnChampion, Champion, FxHashMap, Target, extract_ability_damage};
 
-// #![stable] "06/11/2025" | "25.11"
+// #![stable] "06/18/2025" | "25.11"
 // #![unsupported] MINION | MONSTER
 
 #[writer_macros::writer]
@@ -21,6 +21,7 @@ pub fn transform(data: CdnChampion) -> Champion {
     merge_ability!("W_MINION");
 
     let q_max = merge_damage!(
+        5,
         || format!("({}) * MAGIC_MULTIPLIER + ({})", q, q),
         (q, minimum_damage)
     );
@@ -29,6 +30,6 @@ pub fn transform(data: CdnChampion) -> Champion {
     q_mut_ref.maximum_damage = q_max;
     q_mut_ref.damage_type = String::from("MIXED");
 
-    let r_max = merge_damage!(|| format!("3 * ({})", r), (r, minimum_damage));
+    let r_max = merge_damage!(3, || format!("3 * ({})", r), (r, minimum_damage));
     get!(mut "R").maximum_damage = r_max;
 }

@@ -381,7 +381,7 @@ pub fn extract_ability_damage(
 
 /// Replaces common keys found in the API with the corresponding ones used internally
 pub fn replace_keys(s: &str) -> String {
-    let replacements: [(&'static str, &'static str); 39] = [
+    let replacements: [(&'static str, &'static str); 40] = [
         ("per 100", "0.01 *"),
         ("of damage dealt", "100.0"),
         ("of damage stored", "100.0"),
@@ -412,6 +412,7 @@ pub fn replace_keys(s: &str) -> String {
         ("of Zac's maximum health", "MAX_HEALTH"),
         ("of Braum's maximum health", "MAX_HEALTH"),
         ("of her maximum health", "MAX_HEALTH"),
+        ("of his maximum health", "MAX_HEALTH"),
         ("of maximum health", "MAX_HEALTH"),
         ("maximum health", "MAX_HEALTH"),
         ("of the target's current health", "ENEMY_CURRENT_HEALTH"),

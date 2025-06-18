@@ -189,7 +189,7 @@ fn rune_exceptions(
             },
             // Gathering Storm
             8236 => {
-                let formula: f64 = (this_stack << 2 * (this_stack + 1)) as f64;
+                let formula: f64 = ((this_stack * (this_stack + 1)) << 2) as f64;
                 match value_types.0 {
                     AdaptativeType::Physical => {
                         champion_stats.attack_damage += 0.6 * formula;

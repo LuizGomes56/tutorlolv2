@@ -1,6 +1,6 @@
 use super::{Ability, CdnChampion, Champion, FxHashMap, Target, extract_ability_damage};
 
-// #![stable] "06/11/2025" | "25.11"
+// #![stable] "06/18/2025" | "25.11"
 
 #[writer_macros::writer]
 pub fn transform(data: CdnChampion) -> Champion {
@@ -18,7 +18,7 @@ pub fn transform(data: CdnChampion) -> Champion {
     ability!(
         r,
         (0, 0, "R", Target::MINIMUM),
-        (1, 0, "R_MAX", Target::MINIMUM)
+        (1, 0, "R_MAX", Target::MAXIMUM)
     );
     merge_ability!("E");
     merge_ability!("R");
