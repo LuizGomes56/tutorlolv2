@@ -195,38 +195,42 @@ pub fn get_simulated_champion_stats(
     current_stats: &Stats,
     items_cache: &FxHashMap<usize, Item>,
     ally_dragon_multipliers: &DragonMultipliers,
-    compared_items_info: &mut FxHashMap<usize, ComparedItem>,
-) -> Result<FxHashMap<usize, Stats>, String> {
-    simulated_items
+) -> Result<(FxHashMap<usize, Stats>, FxHashMap<usize, ComparedItem>), String> {
+    let to_simulate: Vec<usize> = simulated_items
         .iter()
-        .filter(|this_item: &&usize| !owned_items.contains(this_item))
-        .map(|simulated_item_id: &usize| {
-            let simulated_item_cache: &Item =
-                items_cache.get(simulated_item_id).ok_or_else(|| {
-                    format!(
-                        "Simulated item {} not found in items cache",
-                        simulated_item_id
-                    )
-                })?;
-            let mut cloned_champion_stats: Stats = current_stats.clone();
-            compared_items_info.insert(
-                *simulated_item_id,
-                ComparedItem {
-                    name: simulated_item_cache.name.clone(),
-                    gold_cost: simulated_item_cache.gold,
-                    prettified_stats: simulated_item_cache.pretiffied_stats.clone(),
-                },
-            );
+        .filter(|&&id| !owned_items.contains(&id))
+        .cloned()
+        .collect();
+    let raw: Vec<Result<(usize, Stats, ComparedItem), String>> = to_simulate
+        .par_iter()
+        .map(|&item_id| {
+            let item: &Item = items_cache
+                .get(&item_id)
+                .ok_or_else(|| format!("Simulated item {} not in cache", item_id))?;
+            let mut stats: Stats = current_stats.clone();
             simulate_champion_stats(
-                *simulated_item_id,
-                simulated_item_cache,
-                &mut cloned_champion_stats,
-                &owned_items,
-                &ally_dragon_multipliers,
+                item_id,
+                item,
+                &mut stats,
+                owned_items,
+                ally_dragon_multipliers,
             );
-            Ok((*simulated_item_id, cloned_champion_stats))
+            let compared: ComparedItem = ComparedItem {
+                name: item.name.clone(),
+                gold_cost: item.gold,
+                prettified_stats: item.prettified_stats.clone(),
+            };
+            Ok((item_id, stats, compared))
         })
-        .collect()
+        .collect();
+    let mut stats_map = FxHashMap::default();
+    let mut compared_map = FxHashMap::default();
+    for r in raw {
+        let (id, stats, comp) = r?; // retorna Err na primeira falha
+        stats_map.insert(id, stats);
+        compared_map.insert(id, comp);
+    }
+    Ok((stats_map, compared_map))
 }
 
 /// Checks cache and returns a map with the matching keys and their names.

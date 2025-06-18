@@ -130,7 +130,8 @@ async fn main() -> Result<()> {
                             .wrap(from_fn(password_middleware))
                             .service(setup_champions)
                             .service(setup_folders)
-                            .service(setup_project),
+                            .service(setup_project)
+                            .service(setup_items),
                     )
                     .service(
                         scope("/update")

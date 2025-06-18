@@ -141,7 +141,7 @@ pub fn setup_internal_items() -> Result<(), SetupError> {
         item_stats.magic_penetration_percent = non_zero(stats.magic_penetration.percent);
 
         let result: Item = Item {
-            pretiffied_stats: FxHashMap::default(),
+            prettified_stats: FxHashMap::default(),
             name: cdn_item.name.clone(),
             gold: cdn_item.shop.prices.total,
             levelings: None,
@@ -349,7 +349,7 @@ pub async fn prettify_internal_items() -> Result<(), SetupError> {
 
         if !Path::new(&internal_path).exists() {
             println!("Item {} does not exist", name);
-            return Ok(());
+            continue;
         }
 
         let mut current_content: Item =
@@ -357,7 +357,7 @@ pub async fn prettify_internal_items() -> Result<(), SetupError> {
                 SetupError(format!("Failed to read '{}': {:#?}", internal_path, e))
             })?;
 
-        current_content.pretiffied_stats = prettified_stats;
+        current_content.prettified_stats = prettified_stats;
 
         let json = serde_json::to_string(&current_content).map_err(|e: serde_json::Error| {
             SetupError(format!("Failed to serialize Item '{}': {}", name, e))
@@ -368,7 +368,7 @@ pub async fn prettify_internal_items() -> Result<(), SetupError> {
     Ok(())
 }
 
-/// Returns the value that will be added to key `pretiffied_stats` for each item.
+/// Returns the value that will be added to key `prettified_stats` for each item.
 /// Depends on Riot API `item.json` and requires manual maintainance if a new XML tag is added
 fn pretiffy_items(path_name: &str) -> FxHashMap<String, Value> {
     let data: RiotCdnItem = match read_json_file(path_name) {

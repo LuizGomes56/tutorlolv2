@@ -101,3 +101,8 @@ pub async fn setup_folders() -> impl Responder {
 pub async fn setup_champions() -> impl Responder {
     match_fn!(setup_internal_champions())
 }
+
+#[post("/items")]
+pub async fn setup_items() -> impl Responder {
+    match_fn!(setup_internal_items())
+}

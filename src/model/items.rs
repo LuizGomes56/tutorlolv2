@@ -108,7 +108,7 @@ pub struct PartialStats {
 pub struct Item {
     pub name: String,
     pub gold: usize,
-    pub pretiffied_stats: FxHashMap<String, Value>,
+    pub prettified_stats: FxHashMap<String, Value>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub damage_type: Option<String>,
     pub stats: PartialStats,

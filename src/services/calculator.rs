@@ -2,7 +2,7 @@ use super::*;
 use crate::{
     model::{
         application::GlobalCache,
-        base::{AdaptativeType, AttackType, BasicStats, ComparedItem, Stats},
+        base::{AdaptativeType, AttackType, BasicStats, Stats},
         calculator::{ActivePlayerX, Calculator, CurrentPlayerX, EnemyX, GameX},
         champions::Champion,
         items::{Item, PartialStats},
@@ -366,16 +366,12 @@ pub fn calculator<'a>(
         champion_id: active_player.champion_id.clone(),
     };
 
-    let mut compared_items_info: FxHashMap<usize, ComparedItem> =
-        FxHashMap::<usize, ComparedItem>::default();
-
-    let simulated_champion_stats: FxHashMap<usize, Stats> = get_simulated_champion_stats(
+    let (simulated_champion_stats, compared_items_info) = get_simulated_champion_stats(
         &simulated_items,
         &owned_items,
         &current_player.current_stats,
         &cache.items,
         ally_dragon_multipliers,
-        &mut compared_items_info,
     )?;
 
     let mut enemies: Vec<EnemyX> = Vec::with_capacity(game.enemy_players.len());
