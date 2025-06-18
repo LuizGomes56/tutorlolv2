@@ -3,30 +3,23 @@ use crate::{
     server::schemas::APIResponse,
     setup::{
         cache::{update_cdn_cache, update_riot_cache},
-        generators::generate_writer_files,
         images::{
             img_download_arts, img_download_instances, img_download_items, img_download_runes,
         },
         scraper::meta_items_scraper,
         update::{
-            prettify_internal_items, setup_champion_names, setup_damaging_items,
-            setup_internal_champions, setup_internal_items, setup_meta_items,
+            prettify_internal_items, setup_champion_names, setup_internal_items, setup_meta_items,
             setup_project_folders,
         },
     },
 };
 use actix_web::{HttpResponse, Responder, post, web::Data};
 use reqwest::Client;
-use std::{sync::Arc, time::Instant};
+use std::sync::Arc;
 use tokio::task;
 
 #[post("/project")]
 pub async fn setup_project(state: Data<AppState>) -> impl Responder {
-    println!(
-        "fn[setup_project]: Started execution at: {:#?}",
-        Instant::now()
-    );
-
     let _ = setup_project_folders();
     let client: Client = state.client.clone();
     let envcfg: Arc<EnvConfig> = state.envcfg.clone();
@@ -65,17 +58,24 @@ pub async fn setup_project(state: Data<AppState>) -> impl Responder {
         tokio::spawn(async move {
             let _ = meta_items_scraper(client_1, envcfg_1).await;
             let _ = setup_meta_items();
-            // #![dev]
-            let _ = setup_damaging_items();
+            #[cfg(debug_assertions)]
+            {
+                use crate::setup::update::setup_damaging_items;
+                let _ = setup_damaging_items();
+            }
         });
 
-        // #![dev]
-        let envcfg_2: Arc<EnvConfig> = envcfg.clone();
-
-        tokio::spawn(async move {
-            let _ = generate_writer_files(envcfg_2).await;
-            let _ = setup_internal_champions();
-        });
+        #[cfg(debug_assertions)]
+        {
+            use crate::setup::{
+                generators::generate_writer_files, update::setup_internal_champions,
+            };
+            let envcfg_2: Arc<EnvConfig> = envcfg.clone();
+            tokio::spawn(async move {
+                let _ = generate_writer_files(envcfg_2).await;
+                let _ = setup_internal_champions();
+            });
+        }
 
         // There's no need to await for image download conclusion
         // They are independent and may run in parallel
@@ -99,7 +99,15 @@ pub async fn setup_folders() -> impl Responder {
 
 #[post("/champions")]
 pub async fn setup_champions() -> impl Responder {
-    match_fn!(setup_internal_champions())
+    #[cfg(debug_assertions)]
+    {
+        use crate::setup::update::setup_internal_champions;
+        match_fn!(setup_internal_champions())
+    }
+    #[cfg(not(debug_assertions))]
+    {
+        match_fn!(where "fn[setup_champions] can't be called in release")
+    }
 }
 
 #[post("/items")]

@@ -5,7 +5,6 @@ use crate::{
         riot::RiotCdnItem,
     },
     setup::helpers::{SetupError, extract_file_name, read_json_file, write_to_file},
-    writers,
 };
 use regex::Regex;
 use rustc_hash::FxHashMap;
@@ -18,7 +17,10 @@ use std::{
     path::{Path, PathBuf},
 };
 
+#[cfg(debug_assertions)]
 include!(concat!(env!("OUT_DIR"), "/writers_generated.rs"));
+#[cfg(debug_assertions)]
+use crate::writers;
 
 type MetaItemValue<T> = FxHashMap<String, FxHashMap<String, Vec<T>>>;
 
@@ -62,6 +64,7 @@ pub fn setup_project_folders() -> Result<(), SetupError> {
 /// Read every file in cache/cdn/champions folder and delegates
 /// the processing to generate_champion_file
 #[writer_macros::trace_time]
+#[cfg(debug_assertions)]
 pub fn setup_internal_champions() -> Result<(), SetupError> {
     let files: ReadDir = fs::read_dir("cache/cdn/champions").map_err(|e: io::Error| {
         SetupError(format!(
@@ -165,6 +168,7 @@ pub fn setup_internal_items() -> Result<(), SetupError> {
 /// Not meant to be used frequently. Just a quick check for every
 /// patch to identify if a new damaging item was added
 #[writer_macros::trace_time]
+#[cfg(debug_assertions)]
 pub fn setup_damaging_items() -> Result<(), SetupError> {
     let re: Regex = Regex::new(r"\{\{[^}]*\}\}")
         .map_err(|e: regex::Error| SetupError(format!("Regex creation failed: {}", e)))?;
@@ -452,6 +456,7 @@ fn pretiffy_items(path_name: &str) -> FxHashMap<String, Value> {
 /// Automatically updates every champion in the game. New champions, or big updates to existing
 /// champions will need to be rewritten over time. If an error occurs while trying to update a
 /// champion, it will be skipped. Writes the resulting json to internal/{champion_name}.json
+#[cfg(debug_assertions)]
 fn run_writer_file(path_name: &str) -> Result<(), SetupError> {
     let result: CdnChampion = read_json_file(path_name)
         .map_err(|e: SetupError| SetupError(format!("Failed to read '{}': {:#?}", path_name, e)))?;

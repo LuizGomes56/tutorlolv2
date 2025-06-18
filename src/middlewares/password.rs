@@ -1,5 +1,4 @@
-use std::time::Instant;
-
+use crate::{AppState, server::schemas::APIResponse};
 use actix_web::{
     Error, HttpResponse,
     body::{BoxBody, EitherBody},
@@ -8,8 +7,6 @@ use actix_web::{
     web::{Data, Json},
 };
 use serde::Deserialize;
-
-use crate::{AppState, server::schemas::APIResponse};
 
 #[derive(Deserialize)]
 pub struct AccessRequest {
@@ -26,8 +23,6 @@ pub async fn password_middleware(
     req: ServiceRequest,
     next: Next<BoxBody>,
 ) -> Result<ServiceResponse<EitherBody<BoxBody, BoxBody>>, Error> {
-    println!("Instant Time: {:#?}", Instant::now());
-
     if body.password != state.envcfg.system_password {
         let response: HttpResponse = HttpResponse::Unauthorized().json(APIResponse {
             success: false,

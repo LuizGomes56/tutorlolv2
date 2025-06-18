@@ -10,6 +10,7 @@ pub struct SetupError(pub String);
 
 /// Helper function to write files
 pub fn write_to_file(path_name: &str, bytes: &[u8]) -> Result<(), SetupError> {
+    #[cfg(debug_assertions)]
     println!("write_to_file: {}", path_name);
     let mut file: fs::File = File::create(path_name).map_err(|e: io::Error| {
         SetupError(format!("Unable to create file '{}': {}", path_name, e))

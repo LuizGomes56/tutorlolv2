@@ -5,7 +5,6 @@ use actix_web::{
     middleware::Next,
 };
 
-// #![dev]
 /// Logs all the incoming requests to the server
 pub async fn logger_middleware(
     req: ServiceRequest,

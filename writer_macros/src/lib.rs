@@ -125,6 +125,10 @@ pub fn writer(_args: TokenStream, input: TokenStream) -> TokenStream {
         #[allow(unused_macros)]
     });
 
+    func.attrs.push(syn::parse_quote! {
+        #[cfg(debug_assertions)]
+    });
+
     let map_decl = quote! {
         let mut abilities = FxHashMap::<String, Ability>::default();
 
