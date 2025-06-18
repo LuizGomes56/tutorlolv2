@@ -254,6 +254,7 @@ fn item_exceptions(
 // #![todo] Comparison tool is not working;
 // #![todo] Stats are not being assigned correctly
 // #![todo] Untreated item/champion exceptions
+#[writer_macros::trace_time]
 pub fn calculator<'a>(
     cache: &'a Arc<GlobalCache>,
     game: &'a GameX,

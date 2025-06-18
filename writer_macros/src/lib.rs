@@ -246,3 +246,36 @@ pub fn writer(_args: TokenStream, input: TokenStream) -> TokenStream {
         #func
     })
 }
+
+/// Attribute to trace function entry and execution time
+#[proc_macro_attribute]
+pub fn trace_time(_args: TokenStream, input: TokenStream) -> TokenStream {
+    let mut function = parse_macro_input!(input as syn::ItemFn);
+    let fn_name = function.sig.ident.to_string();
+    let original_block = function.block;
+    let is_async = function.sig.asyncness.is_some();
+    let output = &function.sig.output;
+    let timed_block = if is_async {
+        quote! {{
+            println!("fn[{}]", #fn_name);
+            let __start = std::time::Instant::now();
+            let __result = (async move #original_block).await;
+            let __elapsed = __start.elapsed();
+            println!("fn[{}] took {:?}", #fn_name, __elapsed);
+            __result
+        }}
+    } else {
+        quote! {{
+            println!("fn[{}]", #fn_name);
+            let __start = std::time::Instant::now();
+            let __result = (|| #output {
+                #original_block
+            })();
+            let __elapsed = __start.elapsed();
+            println!("fn[{}] took {:?}", #fn_name, __elapsed);
+            __result
+        }}
+    };
+    function.block = Box::new(syn::parse2(timed_block).expect("Failed to parse timed block"));
+    TokenStream::from(quote! { #function })
+}

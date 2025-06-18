@@ -14,6 +14,7 @@ use std::sync::Arc;
 /// `simulated_items` dictates how many clones of player current stats will be created
 /// for each clone, abilities, runes and items damages will be recalculated
 /// Returns a FxHashMap with results for each enemy, and the best item in general.
+#[writer_macros::trace_time]
 pub fn realtime<'a>(
     cache: &'a Arc<GlobalCache>,
     game: &'a RiotRealtime,
