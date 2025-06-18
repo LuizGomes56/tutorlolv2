@@ -16,6 +16,7 @@ use crate::{
     },
     services::eval::RiotFormulas,
 };
+use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use rustc_hash::FxHashMap;
 use std::hash::Hash;
 
@@ -67,7 +68,8 @@ pub fn clone_keys(map: &FxHashMap<usize, String>) -> Vec<usize> {
 
 /// All references may be dropped after this function is called.
 /// Removed excessive argument function
-pub fn calculate_enemy_state<T: CurrentPlayerLike>(
+/// `current_player` must not be used as mut ref + Impl Sync
+pub fn calculate_enemy_state<T: CurrentPlayerLike + Sync>(
     state: GameState<'_, T>,
 ) -> (Damages, RealResists, BasicStats) {
     let GameState {
@@ -95,14 +97,14 @@ pub fn calculate_enemy_state<T: CurrentPlayerLike>(
             },
     } = state;
 
-    let mut enemy_bonus_stats: BasicStats = get_bonus_stats(enemy_current_stats, &enemy_base_stats);
+    let enemy_bonus_stats: BasicStats = get_bonus_stats(enemy_current_stats, &enemy_base_stats);
     let full_stats: FullStats<'_> = get_full_stats(
         current_player,
         &current_player.get_current_stats(),
         (
             enemy_champion_id,
             enemy_level,
-            &mut enemy_bonus_stats,
+            &enemy_bonus_stats,
             &mut enemy_current_stats,
         ),
         &enemy_items,
@@ -116,15 +118,16 @@ pub fn calculate_enemy_state<T: CurrentPlayerLike>(
         get_runes_damage(&runes_cache, &full_stats, current_player_runes_vec);
     let real_resists: RealResists = full_stats.enemy_player.real_resists;
     let compared_items: FxHashMap<usize, SimulatedDamages> = simulated_champion_stats
-        .iter()
+        .par_iter()
         .map(|(simulated_item_id, simulated_stats)| {
+            let mut enemy_current_stats = enemy_current_stats.clone();
             let simulated_full_stats: FullStats<'_> = get_full_stats(
                 current_player,
                 &simulated_stats,
                 (
                     enemy_champion_id,
                     enemy_level,
-                    &mut enemy_bonus_stats,
+                    &enemy_bonus_stats,
                     &mut enemy_current_stats,
                 ),
                 &enemy_items,
@@ -472,7 +475,7 @@ pub fn get_comparison_total_damage<T: Eq + Hash>(
 pub fn get_full_stats<'a, T: CurrentPlayerLike>(
     current_player: &'a T,
     current_stats: &'a Stats,
-    enemy_state: (&'a str, usize, &'a mut BasicStats, &'a mut BasicStats),
+    enemy_state: (&'a str, usize, &'a BasicStats, &'a mut BasicStats),
     enemy_items: &'a Vec<usize>,
     is_ranged: bool,
 ) -> FullStats<'a> {

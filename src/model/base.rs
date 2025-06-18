@@ -1,7 +1,7 @@
 use super::{calculator::CurrentPlayerX, realtime::CurrentPlayer, riot::RiotChampionStats};
+use rustc_hash::FxHashMap;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
-use rustc_hash::FxHashMap;
 
 #[derive(Serialize)]
 pub struct InstanceDamage {
@@ -160,7 +160,7 @@ pub struct DamageMultipliers {
 
 pub struct EnemyFullStats<'a> {
     pub current_stats: &'a mut BasicStats,
-    pub bonus_stats: &'a mut BasicStats,
+    pub bonus_stats: &'a BasicStats,
     pub damage_mod: DamageMultipliers,
     pub real_resists: RealResists,
 }

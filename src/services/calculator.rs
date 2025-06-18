@@ -37,19 +37,25 @@ fn apply_auto_stats(
 
         let item_stats: &PartialStats = &cached_item.stats;
 
-        stats.ability_power.add_if_some(item_stats.ability_power);
-        stats.attack_damage.add_if_some(item_stats.attack_damage);
-        stats.armor.add_if_some(item_stats.armor);
-        stats.magic_resist.add_if_some(item_stats.magic_resistance);
-        stats.max_health.add_if_some(item_stats.health);
-        stats
-            .crit_chance
-            .add_if_some(item_stats.critical_strike_chance);
-        stats
-            .crit_damage
-            .add_if_some(item_stats.critical_strike_damage);
-        stats.max_mana.add_if_some(item_stats.mana);
-        stats.attack_speed.add_if_some(item_stats.attack_speed);
+        macro_rules! add_stat {
+            ($field:ident) => {
+                stats.$field.add_if_some(item_stats.$field);
+            };
+            ($field:ident, $field2:ident) => {
+                stats.$field.add_if_some(item_stats.$field2);
+            };
+        }
+
+        add_stat!(ability_power);
+        add_stat!(attack_damage);
+        add_stat!(armor);
+        add_stat!(magic_resist, magic_resistance);
+        add_stat!(max_health, health);
+        add_stat!(crit_chance, critical_strike_chance);
+        add_stat!(crit_damage, critical_strike_damage);
+        add_stat!(max_mana, mana);
+        add_stat!(attack_speed);
+
         if let Some(armor_penetration_percent) = item_stats.armor_penetration_percent {
             armor_penetration.push(armor_penetration_percent);
         }

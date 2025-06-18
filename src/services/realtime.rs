@@ -18,21 +18,17 @@ pub fn realtime<'a>(
     cache: &'a Arc<GlobalCache>,
     game: &'a RiotRealtime,
     // Find the best item possible instead of the best one in the array specified
-    // _: &'a Vec<usize>,
-    simulated_items: &'a Vec<usize>,
+    _: &'a Vec<usize>,
+    // simulated_items: &'a Vec<usize>,
 ) -> Result<Realtime<'a>, String> {
     // #![todo] Filter legendary items that are available to be purchased [game][game_data][map_number]
-    // Calculating every item in the game is too expensive. Normally, it takes 200ns to run this function
-    // If this option is enabled, the average time of execution rises up to 10ms to 20ms (Similar to NodeJS)
-    // JSON size rises from (6 * NUM_ENEMIES) to (572 * NUM_ENEMIES) KB. Too large to be sent efficiently to the client
-    // Benchmarks with this option showed nearly 8 times more memory usage, and 1.5 times CPU usage
-    // Execution time is still really good, but not worth it to leave this feature on.
-
-    // let simulated_items = &cache
-    //     .items
-    //     .iter()
-    //     .map(|(item_id, _)| item_id.clone())
-    //     .collect::<Vec<usize>>();
+    // Normally, it takes 200ns to run this function. Even with Rayon, capturing all items increase time to 5ms
+    // Still, better than the 10-20ms of the previous version, 100% synchronous
+    let simulated_items = &cache
+        .items
+        .iter()
+        .map(|(item_id, _)| item_id.clone())
+        .collect::<Vec<usize>>();
 
     let game_time: f64 = game.game_data.game_time;
     let map_number: usize = game.game_data.map_number;
