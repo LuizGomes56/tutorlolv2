@@ -16,8 +16,8 @@ pub fn transform(data: CdnChampion) -> Champion {
     );
     merge_ability!("R");
     let e_value = &data.abilities.e[0];
-    abilities.insert(
-        String::from("E"),
+    insert!(
+        "E",
         Ability {
             name: e_value.name.clone(),
             damage_type: e_value
@@ -34,6 +34,6 @@ pub fn transform(data: CdnChampion) -> Champion {
                 })
                 .collect(),
             maximum_damage: Vec::new(),
-        },
+        }
     );
 }

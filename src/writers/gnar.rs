@@ -1,6 +1,6 @@
 use super::{Ability, CdnChampion, Champion, FxHashMap, Target, extract_ability_damage};
 
-// #![auto_generated]
+// #![stable] "06/18/2025" | "25.11"
 
 #[writer_macros::writer]
 pub fn transform(data: CdnChampion) -> Champion {

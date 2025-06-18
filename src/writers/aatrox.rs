@@ -40,8 +40,8 @@ pub fn transform(data: CdnChampion) -> Champion {
 
     let default_ability = get!("Q1").clone();
 
-    abilities.insert(
-        String::from("Q_MAX"),
+    insert!(
+        "Q_MAX",
         Ability {
             minimum_damage: merge_damage!(
                 5,
@@ -52,6 +52,6 @@ pub fn transform(data: CdnChampion) -> Champion {
             ),
             maximum_damage: Vec::new(),
             ..default_ability
-        },
+        }
     );
 }
