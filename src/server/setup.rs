@@ -8,8 +8,8 @@ use crate::{
         },
         scraper::meta_items_scraper,
         update::{
-            prettify_internal_items, setup_champion_names, setup_internal_items, setup_meta_items,
-            setup_project_folders,
+            prettify_internal_items, setup_champion_names, setup_internal_champions,
+            setup_internal_items, setup_meta_items, setup_project_folders,
         },
     },
 };
@@ -66,16 +66,15 @@ pub async fn setup_project(state: Data<AppState>) -> impl Responder {
         });
 
         #[cfg(debug_assertions)]
-        {
-            use crate::setup::{
-                generators::generate_writer_files, update::setup_internal_champions,
-            };
-            let envcfg_2: Arc<EnvConfig> = envcfg.clone();
-            tokio::spawn(async move {
+        let envcfg_2: Arc<EnvConfig> = envcfg.clone();
+        tokio::spawn(async move {
+            #[cfg(debug_assertions)]
+            {
+                use crate::setup::generators::generate_writer_files;
                 let _ = generate_writer_files(envcfg_2).await;
-                let _ = setup_internal_champions();
-            });
-        }
+            }
+            let _ = setup_internal_champions();
+        });
 
         // There's no need to await for image download conclusion
         // They are independent and may run in parallel
@@ -99,15 +98,7 @@ pub async fn setup_folders() -> impl Responder {
 
 #[post("/champions")]
 pub async fn setup_champions() -> impl Responder {
-    #[cfg(debug_assertions)]
-    {
-        use crate::setup::update::setup_internal_champions;
-        match_fn!(setup_internal_champions())
-    }
-    #[cfg(not(debug_assertions))]
-    {
-        match_fn!(where "fn[setup_champions] can't be called in release")
-    }
+    match_fn!(setup_internal_champions())
 }
 
 #[post("/items")]
