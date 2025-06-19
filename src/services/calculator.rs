@@ -11,6 +11,7 @@ use crate::{
     },
     services::eval::{ConditionalAddition, RiotFormulas},
 };
+use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use rustc_hash::FxHashMap;
 use std::sync::Arc;
 
@@ -375,63 +376,69 @@ pub fn calculator<'a>(
         ally_dragon_multipliers,
     )?;
 
-    let mut enemies: Vec<EnemyX> = Vec::with_capacity(game.enemy_players.len());
-    for player in game.enemy_players.iter() {
-        let player_champion_id: String = player.champion_id.clone();
-        let current_enemy_cache: &Champion =
-            cache.champions.get(&player_champion_id).ok_or_else(|| {
-                format!(
-                    "ChampionID {} not found in champions cache",
-                    player_champion_id
+    let enemies: Vec<EnemyX> = game
+        .enemy_players
+        .par_iter()
+        .map(|player| {
+            let player_champion_id: String = player.champion_id.clone();
+            let current_enemy_cache: &Champion =
+                cache.champions.get(&player_champion_id).ok_or_else(|| {
+                    format!(
+                        "ChampionID {} not found in champions cache",
+                        player_champion_id
+                    )
+                })?;
+            let champion_name: String = current_enemy_cache.name.clone();
+            let enemy_level: usize = player.level;
+            let enemy_base_stats: BasicStats = get_base_stats(current_enemy_cache, enemy_level);
+            let enemy_items: &Vec<usize> = &player.items;
+
+            // #![todo] Let user define enemy stats manually instead of predicting it from its items
+            let mut enemy_current_stats: BasicStats = if player.infer_stats {
+                get_enemy_current_stats(
+                    &cache.items,
+                    &enemy_base_stats,
+                    &enemy_items,
+                    1.0 + EARTH_DRAGON_MULTIPLIER * game.enemy_earth_dragons as f64,
                 )
-            })?;
-        let champion_name: String = current_enemy_cache.name.clone();
-        let enemy_level: usize = player.level;
-        let enemy_base_stats: BasicStats = get_base_stats(current_enemy_cache, enemy_level);
-        let enemy_items: &Vec<usize> = &player.items;
-        // #![todo] Let user define enemy stats manually instead of predicting it from its items
-        let mut enemy_current_stats: BasicStats = if player.infer_stats {
-            get_enemy_current_stats(
-                &cache.items,
-                &enemy_base_stats,
-                &enemy_items,
-                1.0 + EARTH_DRAGON_MULTIPLIER * game.enemy_earth_dragons as f64,
-            )
-        } else {
-            player.stats.clone()
-        };
-        let (damages, real_resists, bonus_stats) = calculate_enemy_state(GameState {
-            cache: GameStateCache {
-                items: &cache.items,
-                runes: &cache.runes,
-            },
-            current_player: GameStateCurrentPlayer {
-                thisv: &current_player,
-                cache: &current_player_cache,
-                items: &clone_keys(&current_player.damaging_items),
-                runes: &clone_keys(&current_player.damaging_runes),
-                abilities: &active_player.abilities,
-                simulated_stats: &simulated_champion_stats,
-            },
-            enemy_player: GameStateEnemyPlayer {
-                base_stats: &enemy_base_stats,
-                current_stats: &mut enemy_current_stats,
-                items: &enemy_items,
-                champion_id: &player_champion_id,
+            } else {
+                player.stats.clone()
+            };
+
+            let (damages, real_resists, bonus_stats) = calculate_enemy_state(GameState {
+                cache: GameStateCache {
+                    items: &cache.items,
+                    runes: &cache.runes,
+                },
+                current_player: GameStateCurrentPlayer {
+                    thisv: &current_player,
+                    cache: &current_player_cache,
+                    items: &clone_keys(&current_player.damaging_items),
+                    runes: &clone_keys(&current_player.damaging_runes),
+                    abilities: &active_player.abilities,
+                    simulated_stats: &simulated_champion_stats,
+                },
+                enemy_player: GameStateEnemyPlayer {
+                    base_stats: &enemy_base_stats,
+                    current_stats: &mut enemy_current_stats,
+                    items: &enemy_items,
+                    champion_id: &player_champion_id,
+                    level: enemy_level,
+                },
+            });
+
+            Ok::<EnemyX, String>(EnemyX {
+                champion_name,
+                champion_id: player_champion_id,
                 level: enemy_level,
-            },
-        });
-        enemies.push(EnemyX {
-            champion_name,
-            champion_id: player_champion_id,
-            level: enemy_level,
-            damages,
-            real_resists,
-            bonus_stats,
-            base_stats: enemy_base_stats,
-            current_stats: enemy_current_stats,
-        });
-    }
+                damages,
+                real_resists,
+                bonus_stats,
+                base_stats: enemy_base_stats,
+                current_stats: enemy_current_stats,
+            })
+        })
+        .collect::<Result<Vec<_>, _>>()?;
 
     Ok(Calculator {
         current_player,
