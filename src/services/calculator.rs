@@ -387,15 +387,19 @@ pub fn calculator<'a>(
             })?;
         let champion_name: String = current_enemy_cache.name.clone();
         let enemy_level: usize = player.level;
-        let mut enemy_base_stats: BasicStats = get_base_stats(current_enemy_cache, enemy_level);
+        let enemy_base_stats: BasicStats = get_base_stats(current_enemy_cache, enemy_level);
         let enemy_items: &Vec<usize> = &player.items;
         // #![todo] Let user define enemy stats manually instead of predicting it from its items
-        let mut enemy_current_stats: BasicStats = get_enemy_current_stats(
-            &cache.items,
-            &enemy_base_stats,
-            &enemy_items,
-            EARTH_DRAGON_MULTIPLIER * game.enemy_earth_dragons as f64,
-        );
+        let mut enemy_current_stats: BasicStats = if player.infer_stats {
+            get_enemy_current_stats(
+                &cache.items,
+                &enemy_base_stats,
+                &enemy_items,
+                1.0 + EARTH_DRAGON_MULTIPLIER * game.enemy_earth_dragons as f64,
+            )
+        } else {
+            player.stats.clone()
+        };
         let (damages, real_resists, bonus_stats) = calculate_enemy_state(GameState {
             cache: GameStateCache {
                 items: &cache.items,
@@ -410,7 +414,7 @@ pub fn calculator<'a>(
                 simulated_stats: &simulated_champion_stats,
             },
             enemy_player: GameStateEnemyPlayer {
-                base_stats: &mut enemy_base_stats,
+                base_stats: &enemy_base_stats,
                 current_stats: &mut enemy_current_stats,
                 items: &enemy_items,
                 champion_id: &player_champion_id,

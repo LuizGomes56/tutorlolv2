@@ -180,8 +180,8 @@ pub fn realtime<'a>(
             .unwrap()
             .champion_id = Some(player_champion_id.clone());
         if player.team != active_player_expanded.team {
-            let current_enemy_cache: &&Champion =
-                &cache.champions.get(player_champion_id).ok_or_else(|| {
+            let current_enemy_cache: &Champion =
+                cache.champions.get(player_champion_id).ok_or_else(|| {
                     format!(
                         "ChampionID {} not found in champions cache",
                         &player_champion_id

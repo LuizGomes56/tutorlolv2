@@ -48,7 +48,7 @@ pub struct GameStateCurrentPlayer<'a, T: CurrentPlayerLike> {
 }
 
 pub struct GameStateEnemyPlayer<'a> {
-    pub base_stats: &'a mut BasicStats,
+    pub base_stats: &'a BasicStats,
     pub current_stats: &'a mut BasicStats,
     pub items: &'a Vec<usize>,
     pub champion_id: &'a str,
@@ -63,7 +63,7 @@ pub struct GameState<'a, T: CurrentPlayerLike> {
 
 /// Returns a cloned vector with the keys of the map.
 pub fn clone_keys(map: &FxHashMap<usize, String>) -> Vec<usize> {
-    map.keys().cloned().collect()
+    map.keys().copied().collect()
 }
 
 /// All references may be dropped after this function is called.
