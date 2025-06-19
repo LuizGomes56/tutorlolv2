@@ -9,5 +9,4 @@ target
 internal
 cache
 img
-**/formulas.rs
 formulas
