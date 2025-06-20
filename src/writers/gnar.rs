@@ -6,8 +6,8 @@ use super::{Ability, CdnChampion, Champion, FxHashMap, Target, extract_ability_d
 pub fn transform(data: CdnChampion) -> Champion {
     ability!(
         q,
-        (0, 0, "Q", Target::MINIMUM),
-        (0, 1, "Q_MAX", Target::MAXIMUM),
+        (0, 1, "Q", Target::MINIMUM),
+        (0, 0, "Q_MAX", Target::MAXIMUM),
     );
     ability!(q, 1, (0, 0, "Q_MEGA", Target::MINIMUM));
     ability!(w, (1, 0, "W", Target::MINIMUM),);
