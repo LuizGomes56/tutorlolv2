@@ -87,6 +87,13 @@ pub fn load_cache() -> Result<GlobalCache, SetupError> {
         load_optional_json_cache("internal/champion_names.json");
     let meta_items: MetaItems = load_optional_json_cache("internal/meta_items.json");
     let runes: FxHashMap<usize, Rune> = load_optional_json_cache("internal/runes.json");
+    let simulated_items = items
+        .iter()
+        .filter_map(|(item_id, item)| match *item_id {
+            3000..8000 => (item.tier >= 3).then(|| *item_id),
+            _ => None,
+        })
+        .collect::<Vec<usize>>();
 
     Ok(GlobalCache {
         champions,
@@ -94,6 +101,7 @@ pub fn load_cache() -> Result<GlobalCache, SetupError> {
         runes,
         champion_names,
         meta_items,
+        simulated_items,
     })
 }
 

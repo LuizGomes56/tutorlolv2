@@ -190,8 +190,8 @@ pub fn calculate_enemy_state<T: CurrentPlayerLike + Sync>(
 /// Mutates compared_items_info map, inserting the prettified stats, name and gold
 /// Dragon effects are taken into consideration
 pub fn get_simulated_champion_stats(
-    simulated_items: &Vec<usize>,
-    owned_items: &Vec<usize>,
+    simulated_items: &[usize],
+    owned_items: &[usize],
     current_stats: &Stats,
     items_cache: &FxHashMap<usize, Item>,
     ally_dragon_multipliers: &DragonMultipliers,
@@ -199,7 +199,7 @@ pub fn get_simulated_champion_stats(
     let raw: Vec<Result<(usize, Stats, ComparedItem), String>> = simulated_items
         .par_iter()
         .copied()
-        .filter(|&item_id| items_cache.contains_key(&item_id))
+        .filter(|&item_id| !owned_items.contains(&item_id) && items_cache.contains_key(&item_id))
         .map(|item_id| {
             let item: &Item = items_cache
                 .get(&item_id)
@@ -220,8 +220,9 @@ pub fn get_simulated_champion_stats(
             Ok((item_id, stats, compared))
         })
         .collect();
-    let mut stats_map = FxHashMap::default();
-    let mut compared_map = FxHashMap::default();
+    let n: usize = simulated_items.len();
+    let mut stats_map = FxHashMap::with_capacity_and_hasher(n, Default::default());
+    let mut compared_map = FxHashMap::with_capacity_and_hasher(n, Default::default());
     for r in raw {
         let (id, stats, comp) = r?;
         stats_map.insert(id, stats);
@@ -259,7 +260,7 @@ pub fn get_damaging_abilities(champion_cache: &Champion) -> FxHashMap<String, St
 pub fn get_damaging_items(
     items_cache: &FxHashMap<usize, Item>,
     attack_type: AttackType,
-    owned_items: &Vec<usize>,
+    owned_items: &[usize],
 ) -> FxHashMap<usize, String> {
     owned_items
         .iter()
@@ -302,7 +303,7 @@ pub fn simulate_champion_stats(
     simulated_item_id: usize,
     simulated_item_cache: &Item,
     cloned_stats: &mut Stats,
-    current_owned_items: &Vec<usize>,
+    current_owned_items: &[usize],
     ally_dragon_multipliers: &DragonMultipliers,
 ) {
     let stats: &PartialStats = &simulated_item_cache.stats;
@@ -348,7 +349,7 @@ pub fn simulate_champion_stats(
 pub fn get_items_damage(
     items_cache: &FxHashMap<usize, Item>,
     stats: &FullStats,
-    current_player_items_vec: &Vec<usize>,
+    current_player_items_vec: &[usize],
 ) -> DamageLike<usize> {
     let mut item_damages: DamageLike<usize> = DamageLike::<usize>::default();
 
@@ -406,7 +407,7 @@ pub fn get_items_damage(
 pub fn get_runes_damage(
     runes_cache: &FxHashMap<usize, Rune>,
     stats: &FullStats,
-    current_player_runes_vec: &Vec<usize>,
+    current_player_runes_vec: &[usize],
 ) -> DamageLike<usize> {
     let mut rune_damages: DamageLike<usize> = DamageLike::<usize>::default();
 
@@ -647,7 +648,7 @@ pub fn get_abilities_damage(
         if indexation > 0 {
             let (damage_reduction_multiplier, damage_increase_multiplier) =
                 get_damage_multipliers(full_stats, &damage_type);
-            let eval_damage_str = |from_vec: &Vec<String>| {
+            let eval_damage_str = |from_vec: &[String]| {
                 let default_value: String = String::from("0.0");
                 let format_str: &String = from_vec.get(indexation - 1).unwrap_or(&default_value);
                 let damage_str: String = replace_damage_keywords(full_stats, format_str);
@@ -891,7 +892,7 @@ pub fn get_base_stats(champion_cache: &Champion, level: usize) -> BasicStats {
 pub fn get_enemy_current_stats(
     champion_cache: &FxHashMap<usize, Item>,
     base_stats: &BasicStats,
-    current_items: &Vec<usize>,
+    current_items: &[usize],
     earth_dragon: f64,
 ) -> BasicStats {
     let mut base: BasicStats = base_stats.clone();

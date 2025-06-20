@@ -26,7 +26,7 @@ fn apply_auto_stats(
     base_stats: &BasicStats,
 ) -> Result<BasicStats, String> {
     let stacks: f64 = active_player.stacks as f64;
-    let owned_items: &Vec<usize> = &active_player.items;
+    let owned_items: &[usize] = &active_player.items;
 
     let mut armor_penetration: Vec<f64> = vec![];
     let mut magic_penetration: Vec<f64> = vec![];
@@ -127,7 +127,7 @@ fn apply_auto_stats(
 // #![unsupported]
 fn rune_exceptions(
     champion_stats: &mut Stats,
-    owned_runes: &Vec<usize>,
+    owned_runes: &[usize],
     level: f64,
     exception_map: &FxHashMap<usize, usize>,
     value_types: (AdaptativeType, AttackType),
@@ -224,7 +224,7 @@ fn rune_exceptions(
 // #![unsupported]
 fn item_exceptions(
     champion_stats: &mut Stats,
-    owned_items: &Vec<usize>,
+    owned_items: &[usize],
     exception_map: &FxHashMap<usize, usize>,
 ) {
     for item_id in owned_items {
@@ -252,19 +252,12 @@ fn item_exceptions(
     }
 }
 
-// #![todo] Comparison tool is not working;
-// #![todo] Stats are not being assigned correctly
-// #![todo] Untreated item/champion exceptions
+// #![todo] Comparison tool is not reliable;
+// #![todo] Stats are not assigned correctly
+// #![todo] Review exceptions
 #[writer_macros::trace_time]
 pub fn calculator<'a>(cache: &'a Arc<GlobalCache>, game: &'a GameX) -> Result<Calculator, String> {
-    let simulated_items: &Vec<usize> = &cache
-        .items
-        .iter()
-        .filter_map(|(item_id, item)| match *item_id {
-            3000..8000 => (item.tier >= 3).then(|| *item_id),
-            _ => None,
-        })
-        .collect::<Vec<usize>>();
+    let simulated_items: &[usize] = &cache.simulated_items;
 
     let active_player: &ActivePlayerX = &game.active_player;
     let active_player_level: usize = active_player.level;
@@ -302,12 +295,12 @@ pub fn calculator<'a>(cache: &'a Arc<GlobalCache>, game: &'a GameX) -> Result<Ca
         })?;
 
     let recommended_items_fallback: Vec<usize> = Vec::new();
-    let recommended_items_vec: &Vec<usize> =
+    let recommended_items_vec: &[usize] =
         get_recommended_items(&current_player_position, &current_player_recommended_items)
             .unwrap_or(&recommended_items_fallback);
 
-    let owned_items: &Vec<usize> = &active_player.items;
-    let owned_runes: &Vec<usize> = &active_player.runes;
+    let owned_items: &[usize] = &active_player.items;
+    let owned_runes: &[usize] = &active_player.runes;
 
     let recommended_items: Vec<usize> = recommended_items_vec
         .iter()
@@ -426,7 +419,7 @@ pub fn calculator<'a>(cache: &'a Arc<GlobalCache>, game: &'a GameX) -> Result<Ca
                 enemy_player: GameStateEnemyPlayer {
                     base_stats: &enemy_base_stats,
                     current_stats: &mut enemy_current_stats,
-                    items: &enemy_items,
+                    items: enemy_items,
                     champion_id: &player_champion_id,
                     level: enemy_level,
                 },

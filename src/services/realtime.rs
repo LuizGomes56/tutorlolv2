@@ -21,14 +21,7 @@ pub fn realtime<'a>(
     game: &'a RiotRealtime,
 ) -> Result<Realtime<'a>, String> {
     // #![todo] Filter legendary items that are available to be purchased [game][game_data][map_number]
-    let simulated_items: &Vec<usize> = &cache
-        .items
-        .iter()
-        .filter_map(|(item_id, item)| match *item_id {
-            3000..8000 => (item.tier >= 3).then(|| *item_id),
-            _ => None,
-        })
-        .collect::<Vec<usize>>();
+    let simulated_items: &[usize] = &cache.simulated_items;
 
     let game_time: f64 = game.game_data.game_time;
     let map_number: usize = game.game_data.map_number;
@@ -102,7 +95,7 @@ pub fn realtime<'a>(
         })?;
 
     let recommended_items_fallback: Vec<usize> = Vec::new();
-    let recommended_items_vec: &Vec<usize> =
+    let recommended_items_vec: &[usize] =
         get_recommended_items(&current_player_position, &current_player_recommended_items)
             .unwrap_or(&recommended_items_fallback);
 

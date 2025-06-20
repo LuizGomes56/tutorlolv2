@@ -160,7 +160,7 @@ fn trim_f64(val: f64) -> String {
 
 /// Takes the default format of the API and assigns to target_vec the correct format
 /// Used internally.
-fn extract_ability(modifiers: &Vec<Modifiers>, target_vec: &mut Vec<String>) {
+fn extract_ability(modifiers: &[Modifiers], target_vec: &mut Vec<String>) {
     if modifiers.is_empty() {
         return;
     }
@@ -428,7 +428,7 @@ pub fn replace_keys(s: &str) -> String {
 }
 
 /// Returns a new array with the coordinates where an ability was found according to CDN API
-fn transform_ability(key: &str, abilities: &Vec<CdnAbility>) -> Vec<String> {
+fn transform_ability(key: &str, abilities: &[CdnAbility]) -> Vec<String> {
     let mut writer_keybinds: Vec<String> = Vec::<String>::new();
 
     for (ability_index, ability) in abilities.iter().enumerate() {

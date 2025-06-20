@@ -5,6 +5,7 @@
 *.sh
 *.js
 *.txt
+*.pdf
 target
 internal
 cache
