@@ -11,9 +11,9 @@ use actix_cors::Cors;
 use actix_files::Files;
 use actix_web::{
     App, HttpResponse, HttpServer,
-    http::{self, header::DispositionType},
+    http::header,
     main,
-    middleware::from_fn,
+    middleware::{DefaultHeaders, from_fn},
     mime,
     web::{self, Data, JsonConfig, scope},
 };
@@ -96,7 +96,7 @@ async fn main() -> io::Result<()> {
             // #![todo] Allow only frontend to send requests to this server.
             // .allowed_origin("http://localhost:8080")
             .allowed_methods(["GET", "POST"])
-            .allowed_headers([http::header::AUTHORIZATION, http::header::CONTENT_TYPE])
+            .allowed_headers([header::AUTHORIZATION, header::CONTENT_TYPE])
             .max_age(3600);
 
         App::new()
@@ -115,10 +115,18 @@ async fn main() -> io::Result<()> {
                     .error_handler(json_error_middleware),
             )
             .service(
-                Files::new("/cdn", "img").mime_override(|ext| match ext.as_str() {
-                    "png" | "jpg" | "svg" => DispositionType::Inline,
-                    _ => DispositionType::Attachment,
-                }),
+                scope("/cdn")
+                    .wrap(
+                        DefaultHeaders::new()
+                            .add((header::CACHE_CONTROL, "no-store, no-cache, must-revalidate"))
+                            .add((header::PRAGMA, "no-cache"))
+                            .add((header::EXPIRES, "0")),
+                    )
+                    .service(
+                        Files::new("", "img")
+                            .use_etag(false)
+                            .use_last_modified(false),
+                    ),
             )
             .service(health_check)
             .service(
