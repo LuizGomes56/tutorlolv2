@@ -11,7 +11,6 @@ use regex::Regex;
 use rustc_hash::FxHashMap;
 use serde_json::Value;
 use std::{
-    borrow::Cow,
     fs::{self, DirEntry, ReadDir},
     io::{self},
     num::ParseIntError,
@@ -162,6 +161,81 @@ pub fn setup_internal_items() -> Result<(), SetupError> {
     Ok(())
 }
 
+/// Pending. Must read CDN API files and interpret the damages of runes
+// #![manual_impl]
+// #![unstable] "05/24/2024" | "14.5"
+pub fn setup_internal_runes() -> Result<(), SetupError> {
+    write_to_file("internal/runes.json", 
+br#"{
+    "8005": {
+        "name": "Press The Attack",
+        "type": "ADAPTATIVE_DAMAGE",
+        "melee": "(40 + ((120 / 17) * (LEVEL - 1))) * ADAPTATIVE_DAMAGE",
+        "ranged": "(40 + ((120 / 17) * (LEVEL - 1))) * ADAPTATIVE_DAMAGE"
+    },
+    "8112": {
+        "name": "Electrocute",
+        "type": "ADAPTATIVE_DAMAGE",
+        "melee": "(30 + ((190 / 17) * (LEVEL - 1)) + (0.1 * BONUS_AD) + (0.05 * AP)) * ADAPTATIVE_DAMAGE",
+        "ranged": "(30 + ((190 / 17) * (LEVEL - 1)) + (0.1 * BONUS_AD) + (0.05 * AP)) * ADAPTATIVE_DAMAGE"
+    },
+    "8124": {
+        "name": "Predator",
+        "type": "ADAPTATIVE_DAMAGE",
+        "melee": "(20 + ((160 / 17) * (LEVEL - 1)) + ((0.25 * BONUS_AD + 0.15 * AP))) * ADAPTATIVE_DAMAGE",
+        "ranged": "(20 + ((160 / 17) * (LEVEL - 1)) + ((0.25 * BONUS_AD + 0.15 * AP))) * ADAPTATIVE_DAMAGE"
+    },
+    "8126": {
+        "name": "Cheap Shot",
+        "type": "true",
+        "melee": "10 + ((35 / 17) * (LEVEL - 1))",
+        "ranged": "10 + ((35 / 17) * (LEVEL - 1))"
+    },
+    "8128": {
+        "name": "Dark Harvest",
+        "type": "ADAPTATIVE_DAMAGE",
+        "melee": "(20 + ((60 / 17) * (LEVEL - 1)) + (0.1 * BONUS_AD) + (0.05 * AP)) * ADAPTATIVE_DAMAGE",
+        "ranged": "(20 + ((60 / 17) * (LEVEL - 1)) + (0.1 * BONUS_AD) + (0.05 * AP)) * ADAPTATIVE_DAMAGE"
+    },
+    "8143": {
+        "name": "Sudden Impact",
+        "type": "true",
+        "melee": "20 + (60 / 17 * (LEVEL - 1))",
+        "ranged": "20 + (60 / 17 * (LEVEL - 1))"
+    },
+    "8214": {
+        "name": "Aery",
+        "type": "ADAPTATIVE_DAMAGE",
+        "melee": "(10 + ((40 / 17) * (LEVEL - 1)) + (0.1 * BONUS_AD) + (0.05 * AP)) * ADAPTATIVE_DAMAGE",
+        "ranged": "(10 + ((40 / 17) * (LEVEL - 1)) + (0.1 * BONUS_AD) + (0.05 * AP)) * ADAPTATIVE_DAMAGE"
+    },
+    "8229": {
+        "name": "Comet",
+        "type": "ADAPTATIVE_DAMAGE",
+        "melee": "(30 + ((100 / 17) * (LEVEL - 1)) + ((0.1 * BONUS_AD) + (0.05 * AP))) * ADAPTATIVE_DAMAGE",
+        "ranged": "(30 + ((100 / 17) * (LEVEL - 1)) + ((0.1 * BONUS_AD) + (0.05 * AP))) * ADAPTATIVE_DAMAGE"
+    },
+    "8237": {
+        "name": "Scorch",
+        "type": "MAGIC_DAMAGE",
+        "melee": "(20 + ((20 / 17) * (LEVEL - 1))) * MAGIC_MULTIPLIER",
+        "ranged": "(20 + ((20 / 17) * (LEVEL - 1))) * MAGIC_MULTIPLIER"
+    },
+    "8437": {
+        "name": "Grasp",
+        "type": "MAGIC_DAMAGE",
+        "melee": "(0.035 * MAX_HEALTH) * MAGIC_MULTIPLIER",
+        "ranged": "(0.021 * MAX_HEALTH) * MAGIC_MULTIPLIER"
+    },
+    "8439": {
+        "name": "Aftershock",
+        "type": "ADAPTATIVE_DAMAGE",
+        "melee": "(25 + ((95 / 17) * (LEVEL - 1)) + (0.08 * BONUS_HEALTH)) * MAGIC_MULTIPLIER",
+        "ranged": "(25 + ((95 / 17) * (LEVEL - 1)) + (0.08 * BONUS_HEALTH)) * MAGIC_MULTIPLIER"
+    }
+}"#)
+}
+
 /// Not meant to be used frequently. Just a quick check for every
 /// patch to identify if a new damaging item was added
 #[writer_macros::trace_time]
@@ -171,7 +245,7 @@ pub fn setup_damaging_items() -> Result<(), SetupError> {
         .map_err(|e: regex::Error| SetupError(format!("Regex creation failed: {}", e)))?;
 
     let contains_damage_outside_template = |text: &str| -> bool {
-        let cleaned: Cow<str> = re.replace_all(text, "");
+        let cleaned = re.replace_all(text, "");
         cleaned.contains("damage")
     };
 

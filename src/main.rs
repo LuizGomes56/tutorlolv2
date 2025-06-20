@@ -10,10 +10,12 @@ mod writers;
 use actix_cors::Cors;
 use actix_files::Files;
 use actix_web::{
-    App, HttpServer, http, main,
+    App, HttpResponse, HttpServer,
+    http::{self, header::DispositionType},
+    main,
     middleware::from_fn,
-    mime::{self, Mime},
-    web::{Data, JsonConfig, scope},
+    mime,
+    web::{self, Data, JsonConfig, scope},
 };
 use dotenvy::dotenv;
 use middlewares::{
@@ -21,7 +23,10 @@ use middlewares::{
 };
 use model::application::GlobalCache;
 use reqwest::Client;
-use server::{formulas::*, games::*, images::*, internal::*, setup::*, statics::*, update::*};
+use server::{
+    base::*, formulas::*, games::*, images::*, internal::*, schemas::APIResponse, setup::*,
+    statics::*, update::*,
+};
 use setup::cache::load_cache;
 use sqlx::{Pool, Postgres, postgres::PgPoolOptions};
 use std::{env, io, sync::Arc};
@@ -106,10 +111,16 @@ async fn main() -> io::Result<()> {
             })
             .app_data(
                 JsonConfig::default()
-                    .content_type(|mime: Mime| mime == mime::APPLICATION_JSON)
+                    .content_type(|mime: mime::Mime| mime == mime::APPLICATION_JSON)
                     .error_handler(json_error_middleware),
             )
-            .service(Files::new("/cdn", "img"))
+            .service(
+                Files::new("/cdn", "img").mime_override(|ext| match ext.as_str() {
+                    "png" | "jpg" | "svg" => DispositionType::Inline,
+                    _ => DispositionType::Attachment,
+                }),
+            )
+            .service(health_check)
             .service(
                 scope("/api")
                     .wrap(from_fn(logger_middleware))
@@ -133,7 +144,8 @@ async fn main() -> io::Result<()> {
                             .service(setup_champions)
                             .service(setup_folders)
                             .service(setup_project)
-                            .service(setup_items),
+                            .service(setup_items)
+                            .service(setup_runes),
                     )
                     .service(
                         scope("/update")
@@ -162,6 +174,13 @@ async fn main() -> io::Result<()> {
                             .service(internal_rewrite_champion_names),
                     ),
             )
+            .default_service(web::route().to(|| async {
+                HttpResponse::NotFound().json(APIResponse {
+                    success: false,
+                    message: "Unimplemented route. Check methods and paths",
+                    data: (),
+                })
+            }))
     })
     .bind(host)
     .expect("Some error has ocurred when starting the server")

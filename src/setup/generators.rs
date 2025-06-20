@@ -1,14 +1,11 @@
-use crate::{
-    model::champions::{Ability, CdnAbility, CdnChampion, Modifiers},
-    setup::helpers::{SetupError, read_json_file, write_to_file},
-};
+use crate::model::champions::{Ability, CdnAbility, CdnChampion, Modifiers};
 use regex::{Captures, Match, Regex};
 use rustc_hash::FxHashMap;
-use std::fs;
-use tokio::task::JoinHandle;
 
-/// Pending. Must read CDN API files and interpret the damages of runes
-pub async fn generate_internal_runes() {}
+#[cfg(debug_assertions)]
+use crate::setup::helpers::{SetupError, read_json_file, write_to_file};
+#[cfg(debug_assertions)]
+use std::fs;
 
 /// Files will be generated automatically, but checked manually until it is
 /// confirmed that the desired format was succesfully achieved.
@@ -23,7 +20,7 @@ pub async fn generate_writer_files() -> Result<(), SetupError> {
         })?;
     let writer_target: &'static str = "src/writers";
 
-    let mut futures: Vec<JoinHandle<()>> = Vec::new();
+    let mut futures = Vec::new();
     let bind_function = |ability_name: &str, coords: Vec<String>| {
         "\tability!(\n\t\t$1,\n\t\t$2\n\t);\n"
             .replace("$1", ability_name)

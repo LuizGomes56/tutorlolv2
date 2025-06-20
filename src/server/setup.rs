@@ -9,7 +9,7 @@ use crate::{
         scraper::meta_items_scraper,
         update::{
             prettify_internal_items, setup_champion_names, setup_internal_champions,
-            setup_internal_items, setup_meta_items, setup_project_folders,
+            setup_internal_items, setup_internal_runes, setup_meta_items, setup_project_folders,
         },
     },
 };
@@ -102,4 +102,9 @@ pub async fn setup_champions() -> impl Responder {
 #[post("/items")]
 pub async fn setup_items() -> impl Responder {
     match_fn!(setup_internal_items())
+}
+
+#[post("/runes")]
+pub async fn setup_runes() -> impl Responder {
+    match_fn!(setup_internal_runes())
 }
