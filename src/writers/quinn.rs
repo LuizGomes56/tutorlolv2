@@ -1,18 +1,9 @@
-use super::{
-	Ability, CdnChampion, Champion,
-	FxHashMap, Target, extract_ability_damage
-};
+use super::{Ability, CdnChampion, Champion, FxHashMap, Target, extract_ability_damage};
 
-// #![auto_generated]
+// #![stable] "06/19/2025" | "25.12"
 
 #[writer_macros::writer]
 pub fn transform(data: CdnChampion) -> Champion {
-	ability!(
-		q,
-		(0, 0, "Q_0_0_0", Target::MINIMUM)
-	);
-	ability!(
-		e,
-		(0, 0, "E_0_0_0", Target::MINIMUM)
-	);
+    ability!(q, (0, 0, "Q", Target::MINIMUM));
+    ability!(e, (0, 0, "E", Target::MINIMUM));
 }

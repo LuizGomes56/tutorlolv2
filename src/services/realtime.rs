@@ -20,17 +20,17 @@ pub fn realtime<'a>(
     cache: &'a Arc<GlobalCache>,
     game: &'a RiotRealtime,
     // Find the best item possible instead of the best one in the array specified
-    _: &'a Vec<usize>,
-    // simulated_items: &'a Vec<usize>,
+    // _: &'a Vec<usize>,
+    simulated_items: &'a Vec<usize>,
 ) -> Result<Realtime<'a>, String> {
     // #![todo] Filter legendary items that are available to be purchased [game][game_data][map_number]
     // Normally, it takes 200ns to run this function. Even with Rayon, capturing all items increase time to 5ms
     // Still, better than the 10-20ms of the previous version, 100% synchronous
-    let simulated_items = &cache
-        .items
-        .iter()
-        .map(|(item_id, _)| item_id.clone())
-        .collect::<Vec<usize>>();
+    // let simulated_items = &cache
+    //     .items
+    //     .iter()
+    //     .map(|(item_id, _)| item_id.clone())
+    //     .collect::<Vec<usize>>();
 
     let game_time: f64 = game.game_data.game_time;
     let map_number: usize = game.game_data.map_number;
