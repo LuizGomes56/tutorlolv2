@@ -46,6 +46,7 @@ pub struct CdnItem {
     pub builds_from: Vec<usize>,
     pub builds_into: Vec<usize>,
     pub name: String,
+    pub tier: usize,
     pub passives: Vec<Effect>,
     pub required_ally: String,
     pub required_champion: String,
@@ -108,6 +109,7 @@ pub struct PartialStats {
 pub struct Item {
     pub name: String,
     pub gold: usize,
+    pub tier: usize,
     pub prettified_stats: FxHashMap<String, Value>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub damage_type: Option<String>,

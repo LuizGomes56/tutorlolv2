@@ -146,6 +146,7 @@ pub fn setup_internal_items() -> Result<(), SetupError> {
             damage_type: None,
             damages_onhit: false,
             stats: item_stats,
+            tier: cdn_item.tier,
             builds_from: cdn_item.builds_from,
             ranged: None,
             melee: None,

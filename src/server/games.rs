@@ -48,7 +48,6 @@ pub async fn create_game_handler(state: Data<AppState>) -> impl Responder {
 #[derive(Deserialize)]
 struct GetByCodeBody {
     game_code: usize,
-    simulated_items: Vec<usize>,
 }
 
 #[post("/get_by_code")]
@@ -56,10 +55,7 @@ pub async fn get_by_code_handler(
     state: Data<AppState>,
     body: Json<GetByCodeBody>,
 ) -> impl Responder {
-    let GetByCodeBody {
-        game_code,
-        simulated_items,
-    } = body.into_inner();
+    let GetByCodeBody { game_code } = body.into_inner();
 
     match sqlx::query_as::<_, RealtimeSqlxQuery>(
         "SELECT g.game_id, gd.game_data AS game 
@@ -74,7 +70,7 @@ pub async fn get_by_code_handler(
     .await
     {
         Ok(data) => match serde_json::from_str::<RiotRealtime>(&data.game) {
-            Ok(riot_realtime) => match realtime(&state.cache, &riot_realtime, &simulated_items) {
+            Ok(riot_realtime) => match realtime(&state.cache, &riot_realtime) {
                 Ok(realtime_data) => HttpResponse::Ok().json(APIResponse {
                     success: true,
                     message: "Game data fetched successfully",
@@ -108,7 +104,6 @@ struct RealtimeBody {
     game_id: String,
     game_code: i32,
     game_data: String,
-    simulated_items: Vec<usize>,
 }
 
 #[derive(Serialize, FromRow)]
@@ -122,7 +117,6 @@ pub async fn realtime_handler(state: Data<AppState>, body: Json<RealtimeBody>) -
         game_id,
         game_code,
         game_data,
-        simulated_items,
     } = body.into_inner();
     match serde_json::from_str::<RiotRealtime>(&game_data) {
         Ok(realtime_data) => {
@@ -152,7 +146,7 @@ pub async fn realtime_handler(state: Data<AppState>, body: Json<RealtimeBody>) -
             .execute(&state.db)
             .await {
                 Ok(_) => {
-                    match realtime(&state.cache, &realtime_data, &simulated_items) {
+                    match realtime(&state.cache, &realtime_data) {
                         Ok(data) => {
                             let message: String = format!("Success on request for game_code: {}, game_id: {}", game_code, game_id);
                             println!("realtime_handler: {}", message);
@@ -192,7 +186,6 @@ pub async fn realtime_handler(state: Data<AppState>, body: Json<RealtimeBody>) -
 #[derive(Deserialize)]
 struct CalculatorBody {
     game: GameX,
-    simulated_items: Vec<usize>,
 }
 
 #[post("/calculator")]
@@ -200,11 +193,8 @@ pub async fn calculator_handler(
     state: Data<AppState>,
     body: Json<CalculatorBody>,
 ) -> impl Responder {
-    let CalculatorBody {
-        game,
-        simulated_items,
-    } = body.into_inner();
-    match calculator(&state.cache, &game, &simulated_items) {
+    let CalculatorBody { game } = body.into_inner();
+    match calculator(&state.cache, &game) {
         Ok(data) => HttpResponse::Ok().json(APIResponse {
             success: true,
             message: (),

@@ -256,11 +256,16 @@ fn item_exceptions(
 // #![todo] Stats are not being assigned correctly
 // #![todo] Untreated item/champion exceptions
 #[writer_macros::trace_time]
-pub fn calculator<'a>(
-    cache: &'a Arc<GlobalCache>,
-    game: &'a GameX,
-    simulated_items: &'a Vec<usize>,
-) -> Result<Calculator, String> {
+pub fn calculator<'a>(cache: &'a Arc<GlobalCache>, game: &'a GameX) -> Result<Calculator, String> {
+    let simulated_items: &Vec<usize> = &cache
+        .items
+        .iter()
+        .filter_map(|(item_id, item)| match *item_id {
+            3000..8000 => (item.tier >= 3).then(|| *item_id),
+            _ => None,
+        })
+        .collect::<Vec<usize>>();
+
     let active_player: &ActivePlayerX = &game.active_player;
     let active_player_level: usize = active_player.level;
 

@@ -196,14 +196,11 @@ pub fn get_simulated_champion_stats(
     items_cache: &FxHashMap<usize, Item>,
     ally_dragon_multipliers: &DragonMultipliers,
 ) -> Result<(FxHashMap<usize, Stats>, FxHashMap<usize, ComparedItem>), String> {
-    let to_simulate: Vec<usize> = simulated_items
-        .iter()
-        .filter(|&&id| !owned_items.contains(&id))
-        .cloned()
-        .collect();
-    let raw: Vec<Result<(usize, Stats, ComparedItem), String>> = to_simulate
+    let raw: Vec<Result<(usize, Stats, ComparedItem), String>> = simulated_items
         .par_iter()
-        .map(|&item_id| {
+        .copied()
+        .filter(|&item_id| items_cache.contains_key(&item_id))
+        .map(|item_id| {
             let item: &Item = items_cache
                 .get(&item_id)
                 .ok_or_else(|| format!("Simulated item {} not in cache", item_id))?;
@@ -226,7 +223,7 @@ pub fn get_simulated_champion_stats(
     let mut stats_map = FxHashMap::default();
     let mut compared_map = FxHashMap::default();
     for r in raw {
-        let (id, stats, comp) = r?; // retorna Err na primeira falha
+        let (id, stats, comp) = r?;
         stats_map.insert(id, stats);
         compared_map.insert(id, comp);
     }
@@ -239,19 +236,18 @@ pub fn get_simulated_champion_stats(
 // #![unsupported] Minions and Monster damages are not evaluated
 /// In the future a table to represent damage on monsters/towers may be created
 pub fn get_damaging_abilities(champion_cache: &Champion) -> FxHashMap<String, String> {
-    let mut damaging_abilities: FxHashMap<String, String> = champion_cache
+    champion_cache
         .abilities
         .iter()
         .filter_map(|(key, ability)| {
             (!key.contains("MONSTER") && !key.contains("MINION"))
                 .then(|| (key.clone(), ability.name.clone()))
         })
-        .collect();
-    damaging_abilities.extend([
-        ("A".to_string(), "Basic Attack".to_string()),
-        ("C".to_string(), "Critical Strike".to_string()),
-    ]);
-    damaging_abilities
+        .chain([
+            ("A".to_string(), "Basic Attack".to_string()),
+            ("C".to_string(), "Critical Strike".to_string()),
+        ])
+        .collect()
 }
 
 /// Items may or may not contain damage information. Returns items that do
@@ -318,7 +314,10 @@ pub fn simulate_champion_stats(
         ($field:ident) => {
             cloned_stats.$field.add_if_some(stats.$field);
         };
-        ($field:ident, $a:expr) => {
+        ($field:ident, $field2:ident) => {
+            cloned_stats.$field.add_if_some(stats.$field2);
+        };
+        (#$field:ident) => {
             cloned_stats.$field = RiotFormulas::percent_value(vec![
                 cloned_stats.$field,
                 stats.$field.unwrap_or_default(),
@@ -326,25 +325,19 @@ pub fn simulate_champion_stats(
         };
     }
 
-    cloned_stats.max_mana.add_if_some(stats.mana);
-    cloned_stats.max_health.add_if_some(stats.health);
-    cloned_stats
-        .magic_resist
-        .add_if_some(stats.magic_resistance);
-    cloned_stats
-        .crit_chance
-        .add_if_some(stats.critical_strike_chance);
-    cloned_stats
-        .crit_damage
-        .add_if_some(stats.critical_strike_damage);
+    add_stat!(max_mana, mana);
+    add_stat!(max_health, health);
+    add_stat!(magic_resist, magic_resistance);
+    add_stat!(crit_chance, critical_strike_chance);
+    add_stat!(crit_damage, critical_strike_damage);
     add_stat!(ability_power);
     add_stat!(attack_damage);
     add_stat!(armor);
     add_stat!(attack_speed);
     add_stat!(armor_penetration_flat);
     add_stat!(magic_penetration_flat);
-    add_stat!(armor_penetration_percent, _);
-    add_stat!(magic_penetration_percent, _);
+    add_stat!(#armor_penetration_percent);
+    add_stat!(#magic_penetration_percent);
     cloned_stats.ability_power *= ally_dragon_multipliers.fire;
     cloned_stats.attack_damage *= ally_dragon_multipliers.fire;
     cloned_stats.armor *= ally_dragon_multipliers.earth;
