@@ -1,30 +1,27 @@
 use crate::{
-    EnvConfig,
     model::champions::{Ability, CdnAbility, CdnChampion, Modifiers},
     setup::helpers::{SetupError, read_json_file, write_to_file},
 };
 use regex::{Captures, Match, Regex};
 use rustc_hash::FxHashMap;
-use std::{fs, sync::Arc};
+use std::fs;
 use tokio::task::JoinHandle;
+
+/// Pending. Must read CDN API files and interpret the damages of runes
+pub async fn generate_internal_runes() {}
 
 /// Files will be generated automatically, but checked manually until it is
 /// confirmed that the desired format was succesfully achieved.
 /// Once it is done, a comment must be added to the header to
-/// prevent the generator from editing that file. "#![stable]".
+/// prevent the generator from editing that file with `#![stable]`, `#![preserve]`.
 #[writer_macros::trace_time]
 #[cfg(debug_assertions)]
-pub async fn generate_writer_files(envcfg: Arc<EnvConfig>) -> Result<(), SetupError> {
+pub async fn generate_writer_files() -> Result<(), SetupError> {
     let champion_names: FxHashMap<String, String> = read_json_file("internal/champion_names.json")
         .map_err(|e: SetupError| {
             SetupError(format!("Failed to read champion_names.json: {:#?}", e))
         })?;
-    let environment: &str = &envcfg.environment;
-    let writer_target: &'static str = if environment == "PRODUCTION" {
-        "formulas"
-    } else {
-        "src/writers"
-    };
+    let writer_target: &'static str = "src/writers";
 
     let mut futures: Vec<JoinHandle<()>> = Vec::new();
     let bind_function = |ability_name: &str, coords: Vec<String>| {

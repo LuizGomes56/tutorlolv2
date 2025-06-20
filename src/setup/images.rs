@@ -218,7 +218,7 @@ pub async fn img_download_items(client: Client, envcfg: Arc<EnvConfig>) {
                     &item_file_path
                 );
             } else {
-                let item_icon_url: String = format!("{}/item/{}.png", cloned_base_uri, item_id);
+                let item_icon_url: String = format!("{}/img/item/{}.png", cloned_base_uri, item_id);
                 println!(
                     "[REQUESTING] fn[img_download_items]: [Item] {}",
                     &item_icon_url

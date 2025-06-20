@@ -1,16 +1,16 @@
 use crate::{
-    AppState, match_fn,
+    match_fn,
     server::schemas::APIResponse,
     setup::update::{prettify_internal_items, setup_champion_names, setup_meta_items},
 };
-use actix_web::{HttpResponse, Responder, post, web::Data};
+use actix_web::{HttpResponse, Responder, post};
 
 #[post("/create_writer_files")]
-pub async fn internal_create_writer_files(state: Data<AppState>) -> impl Responder {
+pub async fn internal_create_writer_files() -> impl Responder {
     #[cfg(debug_assertions)]
     {
         use crate::setup::generators::generate_writer_files;
-        match_fn!(generate_writer_files(state.envcfg.clone()).await)
+        match_fn!(generate_writer_files().await)
     }
     #[cfg(not(debug_assertions))]
     {

@@ -27,7 +27,6 @@ use sqlx::{Pool, Postgres, postgres::PgPoolOptions};
 use std::{env, io, sync::Arc};
 
 pub struct EnvConfig {
-    pub environment: String,
     pub lol_version: String,
     pub lol_language: String,
     pub system_password: String,
@@ -46,7 +45,6 @@ macro_rules! env_var {
 impl EnvConfig {
     pub fn new() -> Self {
         EnvConfig {
-            environment: env_var!("ENVIRONMENT"),
             lol_version: env_var!("LOL_VERSION"),
             lol_language: env_var!("LOL_LANGUAGE"),
             system_password: env_var!("SYSTEM_PASSWORD"),

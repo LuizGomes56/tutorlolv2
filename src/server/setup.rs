@@ -65,13 +65,11 @@ pub async fn setup_project(state: Data<AppState>) -> impl Responder {
             }
         });
 
-        #[cfg(debug_assertions)]
-        let envcfg_2: Arc<EnvConfig> = envcfg.clone();
         tokio::spawn(async move {
             #[cfg(debug_assertions)]
             {
                 use crate::setup::generators::generate_writer_files;
-                let _ = generate_writer_files(envcfg_2).await;
+                let _ = generate_writer_files().await;
             }
             let _ = setup_internal_champions();
         });
