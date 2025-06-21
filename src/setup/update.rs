@@ -81,7 +81,7 @@ pub fn setup_internal_champions() -> Result<(), SetupError> {
 
         match path_name.to_str() {
             Some(strpath) => {
-                let _ = run_writer_file(strpath)
+                let _ = run_writer_file(strpath, None)
                     .map_err(|e: SetupError| eprintln!("fn[setup_champion_cache]: {:#?}", e));
             }
             None => {

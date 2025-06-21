@@ -284,9 +284,7 @@ pub fn trace_time(_args: TokenStream, input: TokenStream) -> TokenStream {
 pub fn test(_args: TokenStream, input: TokenStream) -> TokenStream {
     let mut func = parse_macro_input!(input as syn::ItemFn);
 
-    func.sig.output = syn::parse_quote!(-> Result<(), Box<dyn std::error::Error>>);
-
-    func.attrs.push(syn::parse_quote! { #[test] });
+    func.sig.output = syn::parse_quote!(-> Result<(), Box<dyn std::error::Error + Send + Sync>>);
 
     let test_logic: syn::Block = syn::parse_quote!({
         let replace_strings = |target_str: &str| {
@@ -356,7 +354,9 @@ pub fn test(_args: TokenStream, input: TokenStream) -> TokenStream {
             .unwrap()
             .to_string_lossy()
             .to_string();
-        let file_stem = std::fs::read_dir("internal/champions")?
+
+        let file_stem = std::fs::read_dir("internal/champions")
+            .map_err(|e| format!("Failed to read champions directory: {}", e))?
             .filter_map(Result::ok)
             .find_map(|e| {
                 e.file_name().to_str().and_then(|s| {
@@ -365,10 +365,15 @@ pub fn test(_args: TokenStream, input: TokenStream) -> TokenStream {
                         .then_some(s.to_owned())
                 })
             })
-            .ok_or_else(|| format!("{} not found", this_stem))?;
-        run_writer_file(&format!("cache/cdn/champions/{}", file_stem)).unwrap();
+            .ok_or_else(|| format!("Champion file for {} not found", this_stem))?;
+
+        run_writer_file(&format!("cache/cdn/champions/{}", file_stem), data)
+            .map_err(|e| format!("Failed to run writer file: {:#?}", e))?;
+
         let path = format!("internal/champions/{}", file_stem);
-        let data: Champion = serde_json::from_str(&std::fs::read_to_string(&path)?)?;
+        let data: Champion = serde_json::from_str(&std::fs::read_to_string(&path)?)
+            .map_err(|e| format!("Failed to parse champion data: {}", e))?;
+
         let mut fails = Vec::new();
         for (key, val) in data.abilities {
             macro_rules! check_err {
@@ -385,7 +390,10 @@ pub fn test(_args: TokenStream, input: TokenStream) -> TokenStream {
             check_err!(minimum_damage);
             check_err!(maximum_damage);
         }
-        assert!(fails.is_empty(), "Errors at keys: {}", fails.join(", "));
+
+        if !fails.is_empty() {
+            return Err(format!("Validation errors at keys: {}", fails.join(", ")).into());
+        }
     });
 
     let original_block = func.block;

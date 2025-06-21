@@ -1,5 +1,6 @@
+pub use crate::model::champions::CdnChampion;
 use crate::{
-    model::champions::{Ability, CdnChampion, Champion},
+    model::champions::{Ability, Champion},
     setup::generators::{Target, extract_ability_damage, extract_passive_damage},
 };
 use rustc_hash::FxHashMap;

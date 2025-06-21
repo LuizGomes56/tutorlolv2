@@ -31,4 +31,4 @@ pub fn transform(data: CdnChampion) -> Champion {
 }
 
 #[writer_macros::test]
-pub fn test() {}
+pub fn test(data: Option<CdnChampion>) {}

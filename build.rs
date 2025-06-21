@@ -14,6 +14,7 @@ fn main() {
 
     {
         let mut match_arms: String = String::new();
+        let mut test_mods: Vec<String> = Vec::new();
 
         for entry in fs::read_dir("src/writers").unwrap() {
             let entry: DirEntry = entry.unwrap();
@@ -28,15 +29,28 @@ fn main() {
                 fs::write(formulas_path, content.as_bytes()).unwrap();
                 let mod_name: &str = name.trim_end_matches(".rs");
                 match_arms += &format!(
-                    "\t\t\"{mod}\" => Some(writers::{mod}::transform(result)),\n",
-                    mod = mod_name
+                    "\t\t\"{mod_name}\" => Some(writers::{mod_name}::transform(result)),\n",
                 );
+                test_mods.push(format!(
+                    "(\"{}\", Box::new(writers::{}::test))",
+                    mod_name, mod_name
+                ));
             }
         }
 
         let writer_transform_code: String = format!(
             "pub fn try_transform(name: &str, result: CdnChampion) -> Option<Champion> {{\n\tmatch name {{\n{match_arms}\t\t_ => None,\n\t}}\n}}"
         );
+
+        let writer_tests_code: String = format!(
+            r#"pub fn writer_tests() -> Vec<(&'static str, Box<dyn Fn(Option<CdnChampion>) -> Result<(), Box<dyn std::error::Error + Send + Sync>> + Send>)> {{
+    vec![
+        {}
+    ]
+}}"#,
+            test_mods.join(",\n\t\t")
+        );
+        fs::write(format!("{}/writers_test.rs", out_path), writer_tests_code).unwrap();
 
         fs::write(
             format!("{}/writers_generated.rs", out_path),
@@ -55,6 +69,15 @@ fn main() {
 	                        HashMap, Target, extract_ability_damage}; 
                             // #![auto_generated] 
                             #[writer_macros::writer] pub fn transform(data: CdnChampion) -> Champion {}"#;
+                        fs::write(&format!("src/writers/{}.rs", id), content.as_bytes()).unwrap();
+                    } else {
+                        let mut content =
+                            fs::read_to_string(&format!("src/writers/{}.rs", id)).unwrap();
+                        if !content.contains("#[writer_macros::test]") {
+                            content.push_str(
+                                "\n\n#[writer_macros::test]\npub fn test(data: Option<CdnChampion>) {}",
+                            );
+                        }
                         fs::write(&format!("src/writers/{}.rs", id), content.as_bytes()).unwrap();
                     }
                 }
