@@ -28,8 +28,7 @@ fn main() {
                 fs::write(formulas_path, content.as_bytes()).unwrap();
                 let mod_name: &str = name.trim_end_matches(".rs");
                 match_arms += &format!(
-                    "\t\t\"{mod}\" => Some(writers::{mod}::transform(result)),\n",
-                    mod = mod_name
+                    "\t\t\"{mod_name}\" => Some(writers::{mod_name}::transform(result)),\n",
                 );
             }
         }
