@@ -729,7 +729,7 @@ pub fn get_abilities_damage(
 /// Stacks information is not accessible unless sent from client.
 // #![unsupported] Champion stacks are ignored.
 pub fn replace_damage_keywords(stats: &FullStats, target_str: &str) -> String {
-    let replacements: [(&'static str, f64); 48] = [
+    let replacements = [
         ("CHOGATH_STACKS", 1.0),
         ("VEIGAR_STACKS", 1.0),
         ("NASUS_STACKS", 1.0),
@@ -766,6 +766,7 @@ pub fn replace_damage_keywords(stats: &FullStats, target_str: &str) -> String {
         ),
         ("ENEMY_BONUS_HEALTH", stats.enemy_player.bonus_stats.health),
         ("ENEMY_ARMOR", stats.enemy_player.current_stats.armor),
+        ("ENEMY_MAX_HEALTH", stats.enemy_player.current_stats.health),
         ("ENEMY_HEALTH", stats.enemy_player.current_stats.health),
         (
             "ENEMY_CURRENT_HEALTH",

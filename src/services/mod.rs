@@ -1,5 +1,5 @@
 pub mod calculator;
-mod eval;
+pub mod eval;
 mod helpers;
 pub mod realtime;
 

@@ -279,3 +279,123 @@ pub fn trace_time(_args: TokenStream, input: TokenStream) -> TokenStream {
     function.block = Box::new(syn::parse2(timed_block).expect("Failed to parse timed block"));
     TokenStream::from(quote! { #function })
 }
+
+#[proc_macro_attribute]
+pub fn test(_args: TokenStream, input: TokenStream) -> TokenStream {
+    let mut func = parse_macro_input!(input as syn::ItemFn);
+
+    func.sig.output = syn::parse_quote!(-> Result<(), Box<dyn std::error::Error>>);
+
+    func.attrs.push(syn::parse_quote! { #[test] });
+
+    let test_logic: syn::Block = syn::parse_quote!({
+        let replace_strings = |target_str: &str| {
+            let replacements = [
+                ("CHOGATH_STACKS", 100.0),
+                ("VEIGAR_STACKS", 100.0),
+                ("NASUS_STACKS", 100.0),
+                ("SMOLDER_STACKS", 100.0),
+                ("AURELION_SOL_STACKS", 100.0),
+                ("THRESH_STACKS", 100.0),
+                ("KINDRED_STACKS", 100.0),
+                ("BELVETH_STACKS", 100.0),
+                ("ADAPTATIVE_DAMAGE", 100.0),
+                ("MISSING_HEALTH", 100.0),
+                ("LEVEL", 100.0),
+                ("PHYSICAL_MULTIPLIER", 100.0),
+                ("MAGIC_MULTIPLIER", 100.0),
+                ("STEELCAPS_EFFECT", 100.0),
+                ("RANDUIN_EFFECT", 100.0),
+                ("ROCKSOLID_EFFECT", 100.0),
+                ("ENEMY_BONUS_HEALTH", 100.0),
+                ("ENEMY_ARMOR", 100.0),
+                ("ENEMY_HEALTH", 100.0),
+                ("ENEMY_MAX_HEALTH", 100.0),
+                ("ENEMY_CURRENT_HEALTH", 100.0),
+                ("ENEMY_MISSING_HEALTH", 100.0),
+                ("ENEMY_MAGIC_RESIST", 100.0),
+                ("BASE_HEALTH", 100.0),
+                ("BASE_AD", 100.0),
+                ("BASE_ARMOR", 100.0),
+                ("BASE_MAGIC_RESIST", 100.0),
+                ("BASE_MANA", 100.0),
+                ("BONUS_AD", 100.0),
+                ("BONUS_ARMOR", 100.0),
+                ("BONUS_MAGIC_RESIST", 100.0),
+                ("BONUS_HEALTH", 100.0),
+                ("BONUS_MANA", 100.0),
+                ("BONUS_MOVE_SPEED", 100.0),
+                ("AP", 100.0),
+                ("AD", 100.0),
+                ("ARMOR_PENETRATION_FLAT", 100.0),
+                ("ARMOR_PENETRATION_PERCENT", 100.0),
+                ("MAGIC_PENETRATION_FLAT", 100.0),
+                ("MAGIC_PENETRATION_PERCENT", 100.0),
+                ("MAX_MANA", 100.0),
+                ("CURRENT_MANA", 100.0),
+                ("MAX_HEALTH", 100.0),
+                ("CURRENT_HEALTH", 100.0),
+                ("ARMOR", 100.0),
+                ("MAGIC_RESIST", 100.0),
+                ("CRIT_CHANCE", 100.0),
+                ("CRIT_DAMAGE", 100.0),
+                ("ATTACK_SPEED", 100.0),
+            ];
+            replacements
+                .iter()
+                .fold(target_str.to_string(), |acc: String, (old, new)| {
+                    acc.replace(old, &new.to_string())
+                })
+        };
+
+        use crate::services::eval::MathEval;
+        use crate::setup::generators::run_writer_file;
+
+        let this_stem = std::path::Path::new(file!())
+            .file_stem()
+            .unwrap()
+            .to_string_lossy()
+            .to_string();
+        let file_stem = std::fs::read_dir("internal/champions")?
+            .filter_map(Result::ok)
+            .find_map(|e| {
+                e.file_name().to_str().and_then(|s| {
+                    s.trim_end_matches(".json")
+                        .eq_ignore_ascii_case(&this_stem)
+                        .then_some(s.to_owned())
+                })
+            })
+            .ok_or_else(|| format!("{} not found", this_stem))?;
+        run_writer_file(&format!("cache/cdn/champions/{}", file_stem)).unwrap();
+        let path = format!("internal/champions/{}", file_stem);
+        let data: Champion = serde_json::from_str(&std::fs::read_to_string(&path)?)?;
+        let mut fails = Vec::new();
+        for (key, val) in data.abilities {
+            macro_rules! check_err {
+                ($field:ident) => {
+                    for c in &val.$field {
+                        let v = replace_strings(c);
+                        if v.is_empty() || v.eval().is_err() {
+                            fails.push(format!("{}::{}", key.clone(), stringify!($field)));
+                            break;
+                        }
+                    }
+                };
+            }
+            check_err!(minimum_damage);
+            check_err!(maximum_damage);
+        }
+        assert!(fails.is_empty(), "Errors at keys: {}", fails.join(", "));
+    });
+
+    let original_block = func.block;
+    func.block = Box::new(syn::parse_quote!({
+        #test_logic
+        #original_block
+        Ok(())
+    }));
+
+    TokenStream::from(quote! {
+        #func
+    })
+}

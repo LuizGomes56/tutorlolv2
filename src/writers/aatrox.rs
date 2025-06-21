@@ -55,3 +55,6 @@ pub fn transform(data: CdnChampion) -> Champion {
         }
     );
 }
+
+#[writer_macros::test]
+fn test() {}

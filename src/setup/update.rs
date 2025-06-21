@@ -1,11 +1,13 @@
-use crate::writers;
 use crate::{
     model::{
-        champions::{CdnChampion, Champion},
+        champions::CdnChampion,
         items::{CdnItem, Item, ItemStats, PartialStats},
         riot::RiotCdnItem,
     },
-    setup::helpers::{SetupError, extract_file_name, read_json_file, write_to_file},
+    setup::{
+        generators::run_writer_file,
+        helpers::{SetupError, extract_file_name, read_json_file, write_to_file},
+    },
 };
 use regex::Regex;
 use rustc_hash::FxHashMap;
@@ -16,8 +18,6 @@ use std::{
     num::ParseIntError,
     path::{Path, PathBuf},
 };
-
-include!(concat!(env!("OUT_DIR"), "/writers_generated.rs"));
 
 type MetaItemValue<T> = FxHashMap<String, FxHashMap<String, Vec<T>>>;
 
@@ -523,28 +523,4 @@ fn pretiffy_items(path_name: &str) -> FxHashMap<String, Value> {
         }
     }
     result
-}
-
-/// Automatically updates every champion in the game. New champions, or big updates to existing
-/// champions will need to be rewritten over time. If an error occurs while trying to update a
-/// champion, it will be skipped. Writes the resulting json to internal/{champion_name}.json
-fn run_writer_file(path_name: &str) -> Result<(), SetupError> {
-    let result: CdnChampion = read_json_file(path_name)
-        .map_err(|e: SetupError| SetupError(format!("Failed to read '{}': {:#?}", path_name, e)))?;
-    let name: &str = extract_file_name(Path::new(path_name));
-    let name_lower: String = name.to_lowercase();
-    let champion: Option<Champion> = try_transform(&name_lower, result);
-    if let Some(champion_data) = champion {
-        let string_value: String =
-            serde_json::to_string_pretty(&champion_data).map_err(|e: serde_json::Error| {
-                SetupError(format!("Failed to serialize champion '{}': {}", name, e))
-            })?;
-        write_to_file(
-            &format!("internal/champions/{}.json", name),
-            string_value.as_bytes(),
-        )?;
-    } else {
-        println!("Champion '{}' not found in transformation map", name);
-    }
-    Ok(())
 }

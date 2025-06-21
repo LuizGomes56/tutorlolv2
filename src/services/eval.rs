@@ -3,7 +3,7 @@ use crate::model::{
     champions::ChampionCdnStats,
 };
 
-pub trait ConditionalAddition {
+pub(super) trait ConditionalAddition {
     fn add_if_some(&mut self, value: Option<f64>);
 }
 
@@ -15,7 +15,7 @@ impl ConditionalAddition for f64 {
     }
 }
 
-pub struct RiotFormulas;
+pub(super) struct RiotFormulas;
 
 impl RiotFormulas {
     /// Uses wiki's formula to return base stats for a given champion
