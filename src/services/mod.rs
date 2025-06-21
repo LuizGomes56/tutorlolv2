@@ -1,6 +1,6 @@
-pub mod calculator;
+pub(crate) mod calculator;
 pub mod eval;
 mod helpers;
-pub mod realtime;
+pub(crate) mod realtime;
 
 use helpers::*;
