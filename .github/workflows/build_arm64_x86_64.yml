@@ -1,0 +1,68 @@
+name: Rust cross-compile arm64 and x86_64 (rustls)
+
+on:
+  push:
+    branches: ["master"]
+  pull_request:
+    branches: ["master"]
+
+env:
+  CARGO_TERM_COLOR: always
+  BIN_NAME: tutorlolv2
+
+jobs:
+  build-arm64:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-unknown-linux-gnu
+
+      - name: Install cross
+        run: cargo install cross --git https://github.com/cross-rs/cross
+
+      - name: Build ARM64 binary with cross
+        run: |
+          cross build --release \
+            --target aarch64-unknown-linux-gnu
+      - name: Verify and package binary
+        run: |
+          file target/aarch64-unknown-linux-gnu/release/${BIN_NAME}
+          mkdir -p dist
+          cp target/aarch64-unknown-linux-gnu/release/${BIN_NAME} dist/
+          cd dist
+          tar -czf ${BIN_NAME}-linux-arm64.tar.gz ${BIN_NAME}
+          ls -lh ${BIN_NAME}-linux-arm64.tar.gz
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.BIN_NAME }}-linux-arm64
+          path: dist/${{ env.BIN_NAME }}-linux-arm64.tar.gz
+          retention-days: 30
+
+  build-x86_64:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Build x86_64 binary
+        run: cargo build --release
+
+      - name: Package x86_64 binary
+        run: |
+          mkdir -p dist
+          cp target/release/${BIN_NAME} dist/
+          cd dist
+          tar -czf ${BIN_NAME}-linux-x86_64.tar.gz ${BIN_NAME}
+      - name: Upload x86_64 artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.BIN_NAME }}-linux-x86_64
+          path: dist/${{ env.BIN_NAME }}-linux-x86_64.tar.gz
+          retention-days: 30
