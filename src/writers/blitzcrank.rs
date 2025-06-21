@@ -1,6 +1,6 @@
 use crate::setup::generators::extract_scaled_values;
 
-use super::{Ability, CdnChampion, Champion, FxHashMap, Target, extract_ability_damage};
+use super::*;
 
 // ! #![unstable] [E] "06/11/2025" | "25.11"
 // #![preserve]
@@ -37,3 +37,6 @@ pub fn transform(data: CdnChampion) -> Champion {
         }
     );
 }
+
+#[writer_macros::test]
+pub fn test() {}

@@ -1,4 +1,4 @@
-use super::{Ability, CdnChampion, Champion, FxHashMap, Target, extract_ability_damage};
+use super::*;
 
 // #![stable] "06/18/2025" | "25.11"
 
@@ -22,3 +22,6 @@ pub fn transform(data: CdnChampion) -> Champion {
     merge_ability!("Q");
     merge_ability!("R");
 }
+
+#[writer_macros::test]
+pub fn test() {}

@@ -28,3 +28,6 @@ pub fn transform(data: CdnChampion) -> Champion {
 		(0, 1, "R_0_0_1_MAXIMUM", Target::MAXIMUM)
 	);
 }
+
+#[writer_macros::test]
+pub fn test() {}

@@ -16,3 +16,6 @@ pub fn transform(data: CdnChampion) -> Champion {
 		(0, 0, "W_0_0_0", Target::MINIMUM)
 	);
 }
+
+#[writer_macros::test]
+pub fn test() {}

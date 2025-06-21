@@ -1,4 +1,4 @@
-use super::{Ability, CdnChampion, Champion, FxHashMap, Target, extract_ability_damage};
+use super::*;
 
 // #![stable] "06/18/2025" | "25.11"
 // #![unsupported] MINION | MONSTER
@@ -33,3 +33,6 @@ pub fn transform(data: CdnChampion) -> Champion {
     let r_max = merge_damage!(3, || format!("3 * ({})", r), (r, minimum_damage));
     get!(mut "R").maximum_damage = r_max;
 }
+
+#[writer_macros::test]
+pub fn test() {}

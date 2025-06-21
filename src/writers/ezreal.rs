@@ -1,4 +1,4 @@
-use super::{Ability, CdnChampion, Champion, FxHashMap, Target, extract_ability_damage};
+use super::*;
 
 // #![stable] "06/18/2025" | "25.11"
 
@@ -15,3 +15,6 @@ pub fn transform(data: CdnChampion) -> Champion {
     let r_monster = get!("R_MINION").clone();
     insert!("R_MONSTER", r_monster);
 }
+
+#[writer_macros::test]
+pub fn test() {}

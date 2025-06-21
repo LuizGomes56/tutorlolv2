@@ -1,4 +1,4 @@
-use super::{Ability, CdnChampion, Champion, FxHashMap, Target, extract_ability_damage};
+use super::*;
 
 // #![stable] "06/18/2025" | "25.11"
 // #![unsupported] MINION | MONSTER
@@ -20,3 +20,6 @@ pub fn transform(data: CdnChampion) -> Champion {
     ability!(r, (2, 0, "R", Target::MINIMUM));
     merge_ability!("Q");
 }
+
+#[writer_macros::test]
+pub fn test() {}

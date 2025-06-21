@@ -4,13 +4,13 @@ use super::*;
 
 #[writer_macros::writer]
 pub fn transform(data: CdnChampion) -> Champion {
-	ability!(
-		q,
-		(0, 0, "Q_0_0_0", Target::MINIMUM)
-	);
-	ability!(
-		e,
-		(0, 0, "E_0_0_0", Target::MINIMUM),
-		(1, 0, "E_0_1_0_MAXIMUM", Target::MAXIMUM)
-	);
+    ability!(q, (0, 0, "Q_0_0_0", Target::MINIMUM));
+    ability!(
+        e,
+        (0, 0, "E_0_0_0", Target::MINIMUM),
+        (1, 0, "E_0_1_0_MAXIMUM", Target::MAXIMUM)
+    );
 }
+
+#[writer_macros::test]
+pub fn test() {}
