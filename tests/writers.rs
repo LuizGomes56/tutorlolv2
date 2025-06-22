@@ -24,7 +24,6 @@ fn test_string(target_str: &str) -> String {
         "KINDRED_STACKS",
         "BELVETH_STACKS",
         "ADAPTATIVE_DAMAGE",
-        "MISSING_HEALTH",
         "LEVEL",
         "PHYSICAL_MULTIPLIER",
         "MAGIC_MULTIPLIER",
@@ -49,8 +48,6 @@ fn test_string(target_str: &str) -> String {
         "BONUS_HEALTH",
         "BONUS_MANA",
         "BONUS_MOVE_SPEED",
-        "AP",
-        "AD",
         "ARMOR_PENETRATION_FLAT",
         "ARMOR_PENETRATION_PERCENT",
         "MAGIC_PENETRATION_FLAT",
@@ -64,6 +61,9 @@ fn test_string(target_str: &str) -> String {
         "CRIT_CHANCE",
         "CRIT_DAMAGE",
         "ATTACK_SPEED",
+        "MISSING_HEALTH",
+        "AP",
+        "AD",
     ];
     replacements
         .iter()
@@ -95,41 +95,72 @@ async fn main() {
         map
     };
 
-    let mut eval_errors = Vec::new();
-    for (id, val) in fx_hashmap.into_iter() {
-        if let Some(chn_data) = try_transform(id.to_lowercase().as_str(), val) {
-            for (ability_key, ability_val) in chn_data.abilities.into_iter() {
-                macro_rules! check_eval {
-                    ($field:ident) => {{
-                        for damage in ability_val.$field.into_iter() {
-                            if test_string(&damage).eval().is_err() {
-                                eval_errors.push(format!(
-                                    "{}{}{} - {}::{}",
-                                    CYAN,
-                                    id,
-                                    RESET,
-                                    ability_key,
-                                    stringify!($field)
-                                ));
-                                break;
-                            }
-                        }
-                    }};
-                }
-                check_eval!(minimum_damage);
-                check_eval!(maximum_damage);
-            }
-        }
+    let mut champions: Vec<(String, CdnChampion)> = fx_hashmap.into_iter().collect();
+    let chunk_size = (champions.len() + 15) / 16;
+
+    let mut chunks = Vec::with_capacity(16);
+    while !champions.is_empty() {
+        let len = chunk_size.min(champions.len());
+        chunks.push(champions.drain(..len).collect::<Vec<_>>());
     }
 
-    if eval_errors.len() > 0 {
-        println!("{RED}Found {} errors{RESET}", eval_errors.len());
-        for err in &eval_errors {
+    println!(
+        "Processing {} champions with {} workers...",
+        champions.len(),
+        chunks.len()
+    );
+
+    let tasks: Vec<_> = chunks
+        .into_iter()
+        .map(|chunk| {
+            tokio::spawn(async move {
+                let mut eval_errors = Vec::new();
+
+                for (id, val) in chunk.into_iter() {
+                    if let Some(chn_data) = try_transform(id.to_lowercase().as_str(), val) {
+                        for (ability_key, ability_val) in chn_data.abilities.into_iter() {
+                            macro_rules! check_eval {
+                                ($field:ident) => {{
+                                    for damage in ability_val.$field.into_iter() {
+                                        if test_string(&damage).eval().is_err() {
+                                            println!("damage is: {:#?}", damage);
+                                            eval_errors.push(format!(
+                                                "{}{}{} - {}::{}",
+                                                CYAN,
+                                                id,
+                                                RESET,
+                                                ability_key,
+                                                stringify!($field)
+                                            ));
+                                            break;
+                                        }
+                                    }
+                                }};
+                            }
+                            check_eval!(minimum_damage);
+                            check_eval!(maximum_damage);
+                        }
+                    }
+                }
+                eval_errors
+            })
+        })
+        .collect();
+
+    let mut all_eval_errors = Vec::new();
+    for task in tasks {
+        let errors = task.await.unwrap();
+        all_eval_errors.extend(errors);
+    }
+
+    if all_eval_errors.len() > 0 {
+        println!("{RED}Found {} errors{RESET}", all_eval_errors.len());
+        for err in &all_eval_errors {
             println!("{CYAN}→ {err}{RESET}");
         }
         panic!(
             "{RED}Validation failed on {} ability fields.{RESET}",
-            eval_errors.len()
+            all_eval_errors.len()
         );
     } else {
         println!("{GREEN}✓ All validations passed!{RESET}");

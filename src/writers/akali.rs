@@ -1,6 +1,4 @@
-use super::{
-    Ability, CdnChampion, Champion, FxHashMap, Target, extract_ability_damage, extract_passive_damage,
-};
+use super::*;
 
 // #![stable] "06/11/2025" | "25.11"
 /// * Maximum damage from R was omitted

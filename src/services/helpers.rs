@@ -745,7 +745,6 @@ pub fn replace_damage_keywords(stats: &FullStats, target_str: &str) -> String {
                 AdaptativeType::Magic => stats.magic_damage_multiplier,
             },
         ),
-        ("MISSING_HEALTH", stats.missing_health),
         ("LEVEL", stats.current_player.level as f64),
         ("PHYSICAL_MULTIPLIER", stats.physical_damage_multiplier),
         ("MAGIC_MULTIPLIER", stats.magic_damage_multiplier),
@@ -798,8 +797,6 @@ pub fn replace_damage_keywords(stats: &FullStats, target_str: &str) -> String {
         ("BONUS_MANA", stats.current_player.bonus_stats.mana),
         // #![unsupported]
         ("BONUS_MOVE_SPEED", 1.0),
-        ("AP", stats.current_player.current_stats.ability_power),
-        ("AD", stats.current_player.current_stats.attack_damage),
         (
             "ARMOR_PENETRATION_FLAT",
             stats.current_player.current_stats.armor_penetration_flat,
@@ -843,6 +840,9 @@ pub fn replace_damage_keywords(stats: &FullStats, target_str: &str) -> String {
             "ATTACK_SPEED",
             stats.current_player.current_stats.attack_speed,
         ),
+        ("MISSING_HEALTH", stats.missing_health),
+        ("AP", stats.current_player.current_stats.ability_power),
+        ("AD", stats.current_player.current_stats.attack_damage),
     ];
 
     replacements
