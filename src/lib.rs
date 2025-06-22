@@ -21,14 +21,15 @@ use middlewares::{
     error::json_error_middleware, logger::logger_middleware, password::password_middleware,
 };
 use model::application::GlobalCache;
+use once_cell::sync::Lazy;
 use reqwest::Client;
 use server::{
-    base::*, formulas::*, games::*, images::*, internal::*, schemas::APIResponse, setup::*,
-    statics::*, update::*,
+    formulas::*, games::*, images::*, internal::*, schemas::APIResponse, setup::*, statics::*,
+    update::*,
 };
 use setup::cache::load_cache;
 use sqlx::{Pool, Postgres, postgres::PgPoolOptions};
-use std::{env, io, sync::Arc};
+use std::{env, io};
 
 pub struct EnvConfig {
     pub lol_version: String,
@@ -60,29 +61,22 @@ impl EnvConfig {
     }
 }
 
+pub static GLOBAL_CACHE: Lazy<&'static GlobalCache> =
+    Lazy::new(|| Box::leak(Box::new(load_cache().unwrap_or_default())));
+pub static ENV_CONFIG: Lazy<EnvConfig> = Lazy::new(EnvConfig::new);
+
 pub struct AppState {
-    cache: Arc<GlobalCache>,
     client: Client,
     db: Pool<Postgres>,
-    envcfg: Arc<EnvConfig>,
 }
 
 pub async fn run() -> io::Result<()> {
     dotenv().ok();
 
-    let envcfg: Arc<EnvConfig> = Arc::new(EnvConfig::new());
-    let client: Client = Client::new();
-    let cache: Arc<GlobalCache> = match load_cache() {
-        Ok(cache) => Arc::new(cache),
-        Err(e) => {
-            println!("Failed to load cache: {:#?}", e);
-            Arc::new(GlobalCache::default())
-        }
-    };
-
-    let dsn: String = env_var!("DATABASE_URL");
-    let host: String = env_var!("HOST");
-    let pool: Pool<Postgres> = PgPoolOptions::new()
+    let client = Client::new();
+    let dsn = env_var!("DATABASE_URL");
+    let host = env_var!("HOST");
+    let pool = PgPoolOptions::new()
         .max_connections(5)
         .connect(&dsn)
         .await
@@ -102,14 +96,12 @@ pub async fn run() -> io::Result<()> {
             .app_data({
                 Data::new(AppState {
                     db: pool.clone(),
-                    cache: cache.clone(),
                     client: client.clone(),
-                    envcfg: envcfg.clone(),
                 })
             })
             .app_data(
                 JsonConfig::default()
-                    .content_type(|mime: mime::Mime| mime == mime::APPLICATION_JSON)
+                    .content_type(|mime| mime == mime::APPLICATION_JSON)
                     .error_handler(json_error_middleware),
             )
             .service(
@@ -126,7 +118,20 @@ pub async fn run() -> io::Result<()> {
                             .use_last_modified(false),
                     ),
             )
-            .service(health_check)
+            .service(web::resource("/").to(|| async {
+                HttpResponse::Ok().json(APIResponse {
+                    success: true,
+                    message: "Server is up and running",
+                    data: (),
+                })
+            }))
+            .service(web::resource("/").route(web::get().to(|| async {
+                HttpResponse::Ok().json(APIResponse {
+                    success: true,
+                    message: "Server is up and running",
+                    data: (),
+                })
+            })))
             .service(
                 scope("/api")
                     .wrap(from_fn(logger_middleware))

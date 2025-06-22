@@ -9,7 +9,7 @@ use actix_web::{HttpResponse, Responder, post, web::Data};
 
 macro_rules! download_image {
     ($state:expr, $call:expr) => {{
-        $call($state.client.clone(), $state.envcfg.clone()).await;
+        $call($state.client.clone()).await;
         HttpResponse::Ok().json(APIResponse {
             success: true,
             message: &format!("Executed fn[{}]", stringify!($call)),

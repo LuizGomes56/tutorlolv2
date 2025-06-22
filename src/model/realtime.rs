@@ -1,8 +1,6 @@
-use rustc_hash::FxHashMap;
-
-use serde::{Deserialize, Serialize};
-
 use super::base::{BasicStats, ComparedItem, Damages, RealResists, Stats};
+use rustc_hash::FxHashMap;
+use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Clone)]
 pub struct DamageObject {

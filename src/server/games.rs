@@ -1,10 +1,7 @@
 use super::schemas::APIResponse;
 use crate::{
     AppState,
-    model::{
-        calculator::GameX,
-        riot::{RiotAllPlayers, RiotRealtime},
-    },
+    model::{calculator::GameX, riot::RiotRealtime},
     services::{calculator::calculator, realtime::realtime},
 };
 use actix_web::{
@@ -24,8 +21,8 @@ struct CreateGameResponse {
 
 #[get("/create")]
 pub async fn create_game_handler(state: Data<AppState>) -> impl Responder {
-    let game_code: i32 = random_range(100_000..1_000_000);
-    let game_id: String = Uuid::new_v4().to_string();
+    let game_code = random_range(100_000..1_000_000);
+    let game_id = Uuid::new_v4().to_string();
     match sqlx::query("INSERT INTO games (game_id, game_code) VALUES ($1, $2)")
         .bind(&game_id)
         .bind(game_code)
@@ -70,7 +67,7 @@ pub async fn get_by_code_handler(
     .await
     {
         Ok(data) => match serde_json::from_str::<RiotRealtime>(&data.game) {
-            Ok(riot_realtime) => match realtime(&state.cache, &riot_realtime) {
+            Ok(riot_realtime) => match realtime(&riot_realtime) {
                 Ok(realtime_data) => HttpResponse::Ok().json(APIResponse {
                     success: true,
                     message: "Game data fetched successfully",
@@ -120,13 +117,13 @@ pub async fn realtime_handler(state: Data<AppState>, body: Json<RealtimeBody>) -
     } = body.into_inner();
     match serde_json::from_str::<RiotRealtime>(&game_data) {
         Ok(realtime_data) => {
-            let game_time: f64 = realtime_data.game_data.game_time;
-            let summoner_name: String = realtime_data.active_player.riot_id.clone();
-            let champion_name: String = realtime_data
+            let game_time = realtime_data.game_data.game_time;
+            let summoner_name = realtime_data.active_player.riot_id.clone();
+            let champion_name = realtime_data
                 .all_players
                 .iter()
-                .find(|p: &&RiotAllPlayers| p.riot_id == summoner_name)
-                .map(|p: &RiotAllPlayers| p.champion_name.clone())
+                .find(|p| p.riot_id == summoner_name)
+                .map(|p| p.champion_name.clone())
                 .unwrap_or_default();
 
             println!(
@@ -146,9 +143,9 @@ pub async fn realtime_handler(state: Data<AppState>, body: Json<RealtimeBody>) -
             .execute(&state.db)
             .await {
                 Ok(_) => {
-                    match realtime(&state.cache, &realtime_data) {
+                    match realtime(&realtime_data) {
                         Ok(data) => {
-                            let message: String = format!("Success on request for game_code: {}, game_id: {}", game_code, game_id);
+                            let message = format!("Success on request for game_code: {}, game_id: {}", game_code, game_id);
                             println!("realtime_handler: {}", message);
                             HttpResponse::Ok().json(APIResponse {
                                 success: true,
@@ -189,12 +186,9 @@ struct CalculatorBody {
 }
 
 #[post("/calculator")]
-pub async fn calculator_handler(
-    state: Data<AppState>,
-    body: Json<CalculatorBody>,
-) -> impl Responder {
+pub async fn calculator_handler(body: Json<CalculatorBody>) -> impl Responder {
     let CalculatorBody { game } = body.into_inner();
-    match calculator(&state.cache, &game) {
+    match calculator(game) {
         Ok(data) => HttpResponse::Ok().json(APIResponse {
             success: true,
             message: (),

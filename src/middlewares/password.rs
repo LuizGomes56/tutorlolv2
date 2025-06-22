@@ -1,10 +1,10 @@
-use crate::{AppState, server::schemas::APIResponse};
+use crate::{ENV_CONFIG, server::schemas::APIResponse};
 use actix_web::{
     Error, HttpResponse,
     body::{BoxBody, EitherBody},
     dev::{ServiceRequest, ServiceResponse},
     middleware::Next,
-    web::{Data, Json},
+    web::Json,
 };
 use serde::Deserialize;
 
@@ -18,12 +18,11 @@ pub struct AccessRequest {
 /// Exposing this routes can overload server with too many thread spawns
 /// Also can cause excessive resource usage from third-party services
 pub async fn password_middleware(
-    state: Data<AppState>,
     body: Json<AccessRequest>,
     req: ServiceRequest,
     next: Next<BoxBody>,
 ) -> Result<ServiceResponse<EitherBody<BoxBody, BoxBody>>, Error> {
-    if body.password != state.envcfg.system_password {
+    if body.password != ENV_CONFIG.system_password {
         let response: HttpResponse = HttpResponse::Unauthorized().json(APIResponse {
             success: false,
             message: "Password given is invalid".to_string(),

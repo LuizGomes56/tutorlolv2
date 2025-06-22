@@ -1,13 +1,13 @@
 use crate::{
-    EnvConfig,
     model::{
-        application::GlobalCache, champions::Champion, internal::MetaItems, items::Item,
-        riot::RiotCdnStandard, runes::Rune,
+        application::GlobalCache, internal::Positions, items::Item, riot::RiotCdnStandard,
+        runes::Rune,
     },
     setup::{
         api::{fetch_cdn_api, fetch_riot_api},
         helpers::{SetupError, extract_file_name, read_json_file, write_to_file},
     },
+    writers::Champion,
 };
 use reqwest::Client;
 use rustc_hash::FxHashMap;
@@ -22,7 +22,7 @@ use std::{
     sync::Arc,
 };
 use tokio::{
-    sync::{AcquireError, Semaphore, SemaphorePermit},
+    sync::Semaphore,
     task::{self, JoinHandle},
 };
 
@@ -35,7 +35,7 @@ where
     F: Fn(&PathBuf) -> Result<&str, SetupError>,
     G: Fn(&str) -> Result<K, SetupError>,
     V: DeserializeOwned,
-    K: Eq + Hash,
+    K: Eq + Hash + 'static,
 {
     let mut map: FxHashMap<K, V> = FxHashMap::default();
     let read_dir: ReadDir =
@@ -70,14 +70,14 @@ fn load_optional_json_cache<T: Default + DeserializeOwned>(path: &str) -> T {
 pub fn load_cache() -> Result<GlobalCache, SetupError> {
     let champions: FxHashMap<String, Champion> = load_json_cache(
         "internal/champions",
-        |path: &PathBuf| Ok(extract_file_name(path)),
-        |s: &str| Ok(s.to_string()),
+        |path| Ok(extract_file_name(path)),
+        |s| Ok(s.to_string()),
     )?;
 
     let items: FxHashMap<usize, Item> = load_json_cache(
         "internal/items",
-        |path: &PathBuf| Ok(extract_file_name(path)),
-        |s: &str| {
+        |path| Ok(extract_file_name(path)),
+        |s| {
             s.parse::<usize>()
                 .map_err(|e: ParseIntError| SetupError(e.to_string()))
         },
@@ -85,7 +85,8 @@ pub fn load_cache() -> Result<GlobalCache, SetupError> {
 
     let champion_names: FxHashMap<String, String> =
         load_optional_json_cache("internal/champion_names.json");
-    let meta_items: MetaItems = load_optional_json_cache("internal/meta_items.json");
+    let meta_items: FxHashMap<String, Positions> =
+        load_optional_json_cache("internal/meta_items.json");
     let runes: FxHashMap<usize, Rune> = load_optional_json_cache("internal/runes.json");
     let simulated_items = items
         .iter()
@@ -107,13 +108,9 @@ pub fn load_cache() -> Result<GlobalCache, SetupError> {
 
 /// Takes an instance parameter and uses CDN API to get its data and save to file system.
 #[writer_macros::trace_time]
-pub async fn update_cdn_cache(
-    client: Client,
-    envcfg: Arc<EnvConfig>,
-    instance: &str,
-) -> Result<(), SetupError> {
+pub async fn update_cdn_cache(client: Client, instance: &str) -> Result<(), SetupError> {
     let result: FxHashMap<String, Value> =
-        fetch_cdn_api(client, envcfg, &format!("{}.json", instance)).await?;
+        fetch_cdn_api(client, &format!("{}.json", instance)).await?;
 
     for (key, value) in result {
         let folder_name: String = format!("cache/cdn/{}", instance);
@@ -128,37 +125,32 @@ pub async fn update_cdn_cache(
 /// Updates files in `cache/riot` with the corresponding ones in the patch determined by `LOL_VERSION`
 /// Runs a maximum of 32 tokio threads at the same time
 #[writer_macros::trace_time]
-pub async fn update_riot_cache(client: Client, envcfg: Arc<EnvConfig>) -> Result<(), SetupError> {
-    let champions_json: RiotCdnStandard =
-        fetch_riot_api::<RiotCdnStandard>(client.clone(), envcfg.clone(), "champion")
-            .await
-            .map_err(|e: SetupError| SetupError(format!("Failed to fetch champions: {}", e.0)))?;
+pub async fn update_riot_cache(client: Client) -> Result<(), SetupError> {
+    let champions_json = fetch_riot_api::<RiotCdnStandard>(client.clone(), "champion")
+        .await
+        .map_err(|e| SetupError(format!("Failed to fetch champions: {}", e.0)))?;
 
     let mut champions_futures = Vec::<JoinHandle<Result<(), SetupError>>>::new();
-    let semaphore: Arc<Semaphore> = Arc::new(Semaphore::new(1 << 5));
+    let semaphore = Arc::new(Semaphore::new(1 << 5));
 
     for (champion_id, _) in champions_json.data.clone() {
-        let client: Client = client.clone();
-        let semaphore: Arc<Semaphore> = semaphore.clone();
-        let envcfg: Arc<EnvConfig> = envcfg.clone();
+        let client = client.clone();
+        let semaphore = semaphore.clone();
 
         champions_futures.push(tokio::spawn(async move {
-            let _permit: SemaphorePermit<'_> = semaphore
+            let _permit = semaphore
                 .acquire()
                 .await
-                .map_err(|e: AcquireError| SetupError(format!("Semaphore error: {}", e)))?;
+                .map_err(|e| SetupError(format!("Semaphore error: {}", e)))?;
 
-            let path_name: String = format!("cache/riot/champions/{}.json", champion_id);
+            let path_name = format!("cache/riot/champions/{}.json", champion_id);
 
-            let champion_data: RiotCdnStandard = fetch_riot_api::<RiotCdnStandard>(
-                client,
-                envcfg,
-                &format!("champion/{}", champion_id),
-            )
-            .await
-            .map_err(|e: SetupError| {
-                SetupError(format!("Failed to fetch data for {}: {}", champion_id, e.0))
-            })?;
+            let champion_data =
+                fetch_riot_api::<RiotCdnStandard>(client, &format!("champion/{}", champion_id))
+                    .await
+                    .map_err(|e: SetupError| {
+                        SetupError(format!("Failed to fetch data for {}: {}", champion_id, e.0))
+                    })?;
 
             let data_field: FxHashMap<String, Value> = champion_data.data;
             let real_data: &Value = data_field.get(&champion_id).ok_or_else(|| {
@@ -190,10 +182,9 @@ pub async fn update_riot_cache(client: Client, envcfg: Arc<EnvConfig>) -> Result
         })?;
     write_to_file("cache/riot/champions.json", champions_pretty.as_bytes())?;
 
-    let items_json: RiotCdnStandard =
-        fetch_riot_api::<RiotCdnStandard>(client.clone(), envcfg.clone(), "item")
-            .await
-            .map_err(|e: SetupError| SetupError(format!("Failed to fetch items: {}", e.0)))?;
+    let items_json: RiotCdnStandard = fetch_riot_api::<RiotCdnStandard>(client.clone(), "item")
+        .await
+        .map_err(|e: SetupError| SetupError(format!("Failed to fetch items: {}", e.0)))?;
 
     let mut items_futures: Vec<JoinHandle<Result<(), SetupError>>> =
         Vec::<JoinHandle<Result<(), SetupError>>>::new();
@@ -224,7 +215,7 @@ pub async fn update_riot_cache(client: Client, envcfg: Arc<EnvConfig>) -> Result
     write_to_file("cache/riot/items.json", items_pretty.as_bytes())?;
 
     // Runes
-    let runes_json: Value = fetch_riot_api::<Value>(client, envcfg, "runesReforged")
+    let runes_json: Value = fetch_riot_api::<Value>(client, "runesReforged")
         .await
         .map_err(|e: SetupError| SetupError(format!("Failed to fetch runes: {}", e.0)))?;
 

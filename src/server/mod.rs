@@ -1,4 +1,3 @@
-pub mod base;
 pub mod formulas;
 pub mod games;
 pub mod images;

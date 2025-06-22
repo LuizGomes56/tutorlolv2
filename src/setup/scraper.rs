@@ -1,36 +1,35 @@
 use crate::{
-    EnvConfig,
+    ENV_CONFIG,
     setup::helpers::{SetupError, read_json_file, write_to_file},
 };
-use reqwest::{Client, Response};
+use reqwest::Client;
 use rustc_hash::FxHashMap;
 use scraper::{Html, Selector, error::SelectorErrorKind};
-use std::sync::Arc;
 use tokio::task::JoinHandle;
 
 /// Recovers all the common builds for the current patch so the app can recommend builds to the user
 /// Average time to update is 2m30s. Making the outer loop a new task overloads the target website
 /// causing requests to timeout.
 #[writer_macros::trace_time]
-pub async fn meta_items_scraper(client: Client, envcfg: Arc<EnvConfig>) -> Result<(), SetupError> {
+pub async fn meta_items_scraper(client: Client) -> Result<(), SetupError> {
     let champion_names: FxHashMap<String, String> = read_json_file("internal/champion_names.json")?;
-    let endpoint: String = envcfg.meta_endpoint.clone();
-    let positions: [&'static str; 5] = ["top", "jungle", "mid", "adc", "support"];
-    let mut collected_results: FxHashMap<String, FxHashMap<String, Vec<String>>> =
-        FxHashMap::<String, FxHashMap<String, Vec<String>>>::default();
+    let positions = ["top", "jungle", "mid", "adc", "support"];
+    let mut collected_results = FxHashMap::<String, FxHashMap<String, Vec<String>>>::default();
 
     for (_, name) in champion_names {
         let mut futures_vec: Vec<JoinHandle<Result<FxHashMap<String, Vec<String>>, SetupError>>> =
             Vec::new();
         for position in positions {
-            let endpoint: String = endpoint.clone();
-            let champion_name: String = name.to_lowercase().clone();
-            let client: Client = client.clone();
+            let champion_name = name.to_lowercase().clone();
+            let client = client.clone();
             futures_vec.push(tokio::spawn(async move {
-                let url: String = format!("{}/{}/build/{}", endpoint, champion_name, position);
+                let url = format!(
+                    "{}/{}/build/{}",
+                    ENV_CONFIG.meta_endpoint, champion_name, position
+                );
 
-                let res: Response = client
-                    .get(url)
+                let res = client
+                    .get(&url)
                     .send()
                     .await
                     .map_err(|e: reqwest::Error| SetupError(e.to_string()))?;

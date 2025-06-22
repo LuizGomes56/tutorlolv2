@@ -1,7 +1,4 @@
-use super::champions::Champion;
-use super::internal::Positions;
-use super::items::Item;
-use super::runes::Rune;
+use super::{champions::Champion, internal::Positions, items::Item, runes::Rune};
 use rustc_hash::FxHashMap;
 
 #[derive(Default)]

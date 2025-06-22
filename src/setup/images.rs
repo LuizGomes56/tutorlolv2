@@ -1,5 +1,5 @@
 use crate::{
-    EnvConfig,
+    ENV_CONFIG,
     model::riot::{RiotCdnChampion, RiotCdnInstance, RiotCdnRune, RiotCdnSkin},
     setup::{
         api::riot_base_url,
@@ -11,14 +11,13 @@ use rustc_hash::FxHashMap;
 use std::{
     fs::{self, ReadDir},
     path::{Path, PathBuf},
-    sync::Arc,
 };
 use tokio::task::JoinHandle;
 
 #[writer_macros::trace_time]
-pub async fn img_download_instances(client: Client, envcfg: Arc<EnvConfig>) {
+pub async fn img_download_instances(client: Client) {
     let files: ReadDir = fs::read_dir("cache/riot/champions").unwrap();
-    let base_uri: String = riot_base_url(envcfg);
+    let base_uri: String = riot_base_url();
     for file in files {
         let outer_base_uri: String = base_uri.clone();
         let outer_client: Client = client.clone();
@@ -111,9 +110,9 @@ pub async fn img_download_instances(client: Client, envcfg: Arc<EnvConfig>) {
 }
 
 #[writer_macros::trace_time]
-pub async fn img_download_arts(client: Client, envcfg: Arc<EnvConfig>) {
+pub async fn img_download_arts(client: Client) {
     let files: ReadDir = fs::read_dir("cache/riot/champions").unwrap();
-    let base_uri: String = format!("{}/cdn", envcfg.dd_dragon_endpoint.clone());
+    let base_uri: String = format!("{}/cdn", ENV_CONFIG.dd_dragon_endpoint);
     for file in files {
         let path_buf: PathBuf = file.unwrap().path();
         let path_name: &str = path_buf.to_str().unwrap();
@@ -159,12 +158,11 @@ pub async fn img_download_arts(client: Client, envcfg: Arc<EnvConfig>) {
 }
 
 #[writer_macros::trace_time]
-pub async fn img_download_runes(client: Client, envcfg: Arc<EnvConfig>) {
+pub async fn img_download_runes(client: Client) {
     let runes_data: Vec<RiotCdnRune> =
         read_json_file::<Vec<RiotCdnRune>>("cache/riot/runes.json").unwrap();
     let mut rune_futures: Vec<JoinHandle<()>> = Vec::new();
     let mut runes_map: FxHashMap<usize, String> = FxHashMap::<usize, String>::default();
-    let endpoint: &str = &envcfg.riot_image_endpoint;
     for value in runes_data {
         runes_map.insert(value.id, value.icon);
         for slot in value.slots {
@@ -174,7 +172,7 @@ pub async fn img_download_runes(client: Client, envcfg: Arc<EnvConfig>) {
         }
     }
     for (rune_id, rune_icon) in runes_map {
-        let url: String = format!("{}/{}", endpoint, rune_icon);
+        let url: String = format!("{}/{}", ENV_CONFIG.riot_image_endpoint, rune_icon);
         let file_name: String = format!("{}.png", rune_id);
         let cloned_client: Client = client.clone();
         rune_futures.push(tokio::spawn(async move {
@@ -199,9 +197,9 @@ pub async fn img_download_runes(client: Client, envcfg: Arc<EnvConfig>) {
 }
 
 #[writer_macros::trace_time]
-pub async fn img_download_items(client: Client, envcfg: Arc<EnvConfig>) {
+pub async fn img_download_items(client: Client) {
     let files: ReadDir = fs::read_dir("cache/riot/items").unwrap();
-    let base_uri: String = riot_base_url(envcfg);
+    let base_uri: String = riot_base_url();
     let mut item_futures: Vec<JoinHandle<()>> = Vec::new();
     for file in files {
         let cloned_base_uri: String = base_uri.clone();

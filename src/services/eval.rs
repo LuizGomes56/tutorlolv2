@@ -49,43 +49,30 @@ impl RiotFormulas {
     }
 
     pub fn full_base_stats(cdn: &ChampionCdnStats, level: usize) -> Stats {
+        macro_rules! assign_value {
+            ($field:ident) => {
+                Self::stat_growth(cdn.$field.flat, cdn.$field.per_level, level)
+            };
+        }
+
         Stats {
             ability_power: 0.0,
-            armor: Self::stat_growth(cdn.armor.flat, cdn.armor.per_level, level),
+            armor: assign_value!(armor),
             armor_penetration_flat: 0.0,
             armor_penetration_percent: 0.0,
-            attack_damage: Self::stat_growth(
-                cdn.attack_damage.flat,
-                cdn.attack_damage.per_level,
-                level,
-            ),
-            attack_range: Self::stat_growth(
-                cdn.attack_range.flat,
-                cdn.attack_range.per_level,
-                level,
-            ),
-            attack_speed: Self::stat_growth(
-                cdn.attack_speed.flat,
-                cdn.attack_speed.per_level,
-                level,
-            ),
+            attack_damage: assign_value!(attack_damage),
+            attack_range: assign_value!(attack_range),
+            attack_speed: assign_value!(attack_speed),
             crit_chance: 0.0,
-            crit_damage: Self::stat_growth(
-                cdn.critical_strike_damage.flat,
-                cdn.critical_strike_damage.per_level,
-                level,
-            ) * cdn.critical_strike_damage_modifier.flat,
-            current_health: Self::stat_growth(cdn.health.flat, cdn.health.per_level, level),
-            max_health: Self::stat_growth(cdn.health.flat, cdn.health.per_level, level),
-            current_mana: Self::stat_growth(cdn.mana.flat, cdn.mana.per_level, level),
-            max_mana: Self::stat_growth(cdn.mana.flat, cdn.mana.per_level, level),
+            crit_damage: assign_value!(critical_strike_damage)
+                * cdn.critical_strike_damage_modifier.flat,
+            current_health: assign_value!(health),
+            max_health: assign_value!(health),
+            current_mana: assign_value!(mana),
+            max_mana: assign_value!(mana),
             magic_penetration_flat: 0.0,
             magic_penetration_percent: 0.0,
-            magic_resist: Self::stat_growth(
-                cdn.magic_resistance.flat,
-                cdn.magic_resistance.per_level,
-                level,
-            ),
+            magic_resist: assign_value!(magic_resistance),
         }
     }
 }
@@ -113,14 +100,14 @@ enum Token {
 /// Only parenthesis may be used. [] and {} are not supported
 /// Exponentiation is done with the ^ operator, not with the ** operator
 fn eval_math_expr(expr: &str) -> Result<f64, ()> {
-    let tokens: Vec<Token> = tokenize(expr)?;
-    let rpn: Vec<Token> = shunting_yard(&tokens);
+    let tokens = tokenize(expr)?;
+    let rpn = shunting_yard(&tokens);
     evaluate_rpn(&rpn)
 }
 
 fn tokenize(expr: &str) -> Result<Vec<Token>, ()> {
-    let mut tokens: Vec<Token> = Vec::new();
-    let mut num_buf: String = String::new();
+    let mut tokens = Vec::new();
+    let mut num_buf = String::new();
     let mut chars = expr.chars().peekable();
 
     while let Some(&ch) = chars.peek() {
@@ -183,8 +170,8 @@ fn is_right_associative(op: char) -> bool {
 }
 
 fn shunting_yard(tokens: &[Token]) -> Vec<Token> {
-    let mut output: Vec<Token> = Vec::new();
-    let mut ops: Vec<Token> = Vec::new();
+    let mut output = Vec::new();
+    let mut ops = Vec::new();
 
     for token in tokens {
         match token {
@@ -221,7 +208,7 @@ fn shunting_yard(tokens: &[Token]) -> Vec<Token> {
 }
 
 fn evaluate_rpn(rpn: &[Token]) -> Result<f64, ()> {
-    let mut stack: Vec<f64> = Vec::new();
+    let mut stack = Vec::<f64>::new();
 
     for token in rpn {
         match token {

@@ -6,51 +6,38 @@ const RESET: &str = "\x1b[0m";
 async fn main() {
     dotenvy::dotenv().ok();
 
-    let args: Vec<String> = std::env::args().collect();
+    let args = std::env::args().collect::<Vec<String>>();
 
-    let fetch_remote_url: Option<String> = args
-        .iter()
-        .find_map(|arg| arg.strip_prefix("--endpoint=").map(|s| s.to_string()));
-
-    let current_version: Option<String> = args
-        .iter()
-        .find_map(|arg| arg.strip_prefix("--version=").map(|s| s.to_string()));
-
-    let fetch_remote_url = match fetch_remote_url {
-        Some(url) if !url.is_empty() => url,
-        _ => match std::env::var("DD_DRAGON_ENDPOINT") {
-            Ok(url) if !url.is_empty() => url,
-            _ => {
-                panic!(
-                    "{RED}ERROR: Remote URL is required but not provided. Use --fetch-remote= or set DD_DRAGON_ENDPOINT environment variable{RESET}"
-                );
-            }
-        },
+    let get_flag = |flag, fallback| {
+        let maybe_flag = args
+            .iter()
+            .find_map(|arg| arg.strip_prefix(flag).map(|s| s.to_string()));
+        match maybe_flag {
+            Some(flag) if !flag.is_empty() => flag,
+            _ => match std::env::var(fallback) {
+                Ok(flag) if !flag.is_empty() => flag,
+                _ => panic!("{RED}ERROR: {flag} is required but not provided{RESET}"),
+            },
+        }
     };
 
-    let current_version = match current_version {
-        Some(version) if !version.is_empty() => version,
-        _ => match std::env::var("LOL_VERSION") {
-            Ok(version) if !version.is_empty() => version,
-            _ => {
-                panic!(
-                    "{RED}ERROR: Current version is required but not provided. Use --version= or set LOL_VERSION environment variable{RESET}"
-                );
-            }
-        },
-    };
+    let fetch_remote_url = get_flag("--fetch-remote=", "DD_DRAGON_ENDPOINT");
+    let current_version = get_flag("--version=", "LOL_VERSION");
 
-    let latest_version =
-        match tutorlolv2::setup::api::fetch_version(reqwest::Client::new(), fetch_remote_url).await
-        {
-            Ok(version) => version,
-            Err(e) => {
-                panic!(
-                    "{RED}ERROR: Failed to fetch latest version from API: {:#?}{RESET}",
-                    e
-                );
-            }
-        };
+    let latest_version = match tutorlolv2::setup::api::fetch_version(
+        reqwest::Client::new(),
+        &fetch_remote_url,
+    )
+    .await
+    {
+        Ok(version) => version,
+        Err(e) => {
+            panic!(
+                "{RED}ERROR: Failed to fetch latest version from API: {:#?}{RESET}",
+                e
+            );
+        }
+    };
 
     println!("Latest version: {}", latest_version);
 

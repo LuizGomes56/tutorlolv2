@@ -1,7 +1,7 @@
 use crate::{
     model::{
         champions::CdnChampion,
-        items::{CdnItem, Item, ItemStats, PartialStats},
+        items::{CdnItem, Item, PartialStats},
         riot::RiotCdnItem,
     },
     setup::{
@@ -12,12 +12,7 @@ use crate::{
 use regex::Regex;
 use rustc_hash::FxHashMap;
 use serde_json::Value;
-use std::{
-    fs::{self, DirEntry, ReadDir},
-    io::{self},
-    num::ParseIntError,
-    path::{Path, PathBuf},
-};
+use std::{fs, num::ParseIntError, path::Path};
 
 type MetaItemValue<T> = FxHashMap<String, FxHashMap<String, Vec<T>>>;
 
@@ -46,12 +41,11 @@ pub fn setup_project_folders() -> Result<(), SetupError> {
         "internal/items",
         "internal/champions",
     ] {
-        let path: &Path = Path::new(dir);
+        let path = Path::new(dir);
 
         if !path.exists() {
-            fs::create_dir_all(path).map_err(|e: io::Error| {
-                SetupError(format!("Unable to create directory '{}': {}", dir, e))
-            })?;
+            fs::create_dir_all(path)
+                .map_err(|e| SetupError(format!("Unable to create directory '{}': {}", dir, e)))?;
         }
     }
 
@@ -62,7 +56,7 @@ pub fn setup_project_folders() -> Result<(), SetupError> {
 /// the processing to generate_champion_file
 #[writer_macros::trace_time]
 pub fn setup_internal_champions() -> Result<(), SetupError> {
-    let files: ReadDir = fs::read_dir("cache/cdn/champions").map_err(|e: io::Error| {
+    let files = fs::read_dir("cache/cdn/champions").map_err(|e| {
         SetupError(format!(
             "fn[setup_champion_cache]: Unable to read directory cache/cdn/champions: {}",
             e
@@ -70,8 +64,8 @@ pub fn setup_internal_champions() -> Result<(), SetupError> {
     })?;
 
     for file in files {
-        let path_name: PathBuf = file
-            .map_err(|e: io::Error| {
+        let path_name = file
+            .map_err(|e| {
                 SetupError(format!(
                     "fn[setup_champion_cache]: Failed to read DirEntry: {}",
                     e
@@ -82,7 +76,7 @@ pub fn setup_internal_champions() -> Result<(), SetupError> {
         match path_name.to_str() {
             Some(strpath) => {
                 let _ = run_writer_file(strpath)
-                    .map_err(|e: SetupError| eprintln!("fn[setup_champion_cache]: {:#?}", e));
+                    .map_err(|e| eprintln!("fn[setup_champion_cache]: {:#?}", e));
             }
             None => {
                 eprintln!(
@@ -100,18 +94,17 @@ pub fn setup_internal_champions() -> Result<(), SetupError> {
 #[writer_macros::trace_time]
 pub fn setup_internal_items() -> Result<(), SetupError> {
     let non_zero = |val: f64| -> Option<f64> { if val == 0.0 { None } else { Some(val) } };
-    let files: ReadDir = fs::read_dir("cache/cdn/items")
-        .map_err(|e: io::Error| SetupError(format!("Unable to read directory: {}", e)))?;
+    let files = fs::read_dir("cache/cdn/items")
+        .map_err(|e| SetupError(format!("Unable to read directory: {}", e)))?;
     for file in files {
-        let entry: DirEntry =
-            file.map_err(|e: io::Error| SetupError(format!("Failed to read DirEntry: {}", e)))?;
-        let path_buf: PathBuf = entry.path();
-        let path_str: &str = path_buf
+        let entry = file.map_err(|e| SetupError(format!("Failed to read DirEntry: {}", e)))?;
+        let path_buf = entry.path();
+        let path_str = path_buf
             .to_str()
             .ok_or_else(|| SetupError(format!("Invalid UTF-8 in path: {:?}", path_buf)))?;
         let cdn_item: CdnItem = read_json_file(path_str)?;
-        let stats: &ItemStats = &cdn_item.stats;
-        let mut item_stats: PartialStats = PartialStats::default();
+        let stats = &cdn_item.stats;
+        let mut item_stats = PartialStats::default();
 
         macro_rules! insert_non_zero {
             ($field:ident) => {
@@ -140,7 +133,7 @@ pub fn setup_internal_items() -> Result<(), SetupError> {
 
         let result: Item = Item {
             prettified_stats: FxHashMap::default(),
-            name: cdn_item.name.clone(),
+            name: cdn_item.name,
             gold: cdn_item.shop.prices.total,
             levelings: None,
             damage_type: None,
@@ -250,23 +243,21 @@ pub fn setup_damaging_items() -> Result<(), SetupError> {
         cleaned.contains("damage")
     };
 
-    let files: ReadDir = fs::read_dir("cache/cdn/items")
-        .map_err(|e: io::Error| SetupError(format!("Unable to read directory: {}", e)))?;
+    let files = fs::read_dir("cache/cdn/items")
+        .map_err(|e| SetupError(format!("Unable to read directory: {}", e)))?;
 
     let mut is_damaging: Vec<usize> = Vec::new();
 
     for entry in files {
-        let entry: DirEntry =
-            entry.map_err(|e: io::Error| SetupError(format!("Failed to read DirEntry: {}", e)))?;
+        let entry = entry.map_err(|e| SetupError(format!("Failed to read DirEntry: {}", e)))?;
 
-        let path_buf: PathBuf = entry.path();
-        let path_str: &str = path_buf
+        let path_buf = entry.path();
+        let path_str = path_buf
             .to_str()
             .ok_or_else(|| SetupError(format!("Invalid UTF-8 in path: {:?}", path_buf)))?;
 
-        let result: CdnItem = read_json_file(path_str).map_err(|e: SetupError| {
-            SetupError(format!("Failed to read file '{}': {:#?}", path_str, e))
-        })?;
+        let result: CdnItem = read_json_file(path_str)
+            .map_err(|e| SetupError(format!("Failed to read file '{}': {:#?}", path_str, e)))?;
 
         if !result.shop.purchasable {
             continue;
@@ -308,7 +299,7 @@ pub fn setup_damaging_items() -> Result<(), SetupError> {
 /// Uses champion display name and converts to their respective ids, saving to internal
 #[writer_macros::trace_time]
 pub fn setup_champion_names() -> Result<(), SetupError> {
-    let files: ReadDir = fs::read_dir("cache/cdn/champions").map_err(|e: io::Error| {
+    let files = fs::read_dir("cache/cdn/champions").map_err(|e| {
         SetupError(format!(
             "Unable to read directory cache/cdn/champions: {}",
             e
@@ -318,19 +309,18 @@ pub fn setup_champion_names() -> Result<(), SetupError> {
     let mut map: FxHashMap<String, String> = FxHashMap::<String, String>::default();
 
     for file in files {
-        let path_buf: PathBuf = file
-            .map_err(|e: io::Error| SetupError(format!("Failed to read DirEntry: {}", e)))?
+        let path_buf = file
+            .map_err(|e| SetupError(format!("Failed to read DirEntry: {}", e)))?
             .path();
 
-        let path_str: &str = path_buf
+        let path_str = path_buf
             .to_str()
             .ok_or_else(|| SetupError(format!("Invalid UTF-8 in path: {:?}", path_buf)))?;
 
-        let result: CdnChampion = read_json_file(path_str).map_err(|e: SetupError| {
-            SetupError(format!("Failed to read file '{}': {:#?}", path_str, e))
-        })?;
+        let result: CdnChampion = read_json_file(path_str)
+            .map_err(|e| SetupError(format!("Failed to read file '{}': {:#?}", path_str, e)))?;
 
-        let name: &str = extract_file_name(&path_buf);
+        let name = extract_file_name(&path_buf);
         map.insert(result.name, name.to_string());
     }
 
@@ -348,28 +338,27 @@ pub fn setup_champion_names() -> Result<(), SetupError> {
 #[writer_macros::trace_time]
 pub fn setup_meta_items() -> Result<(), SetupError> {
     let mut meta_items: MetaItemValue<Value> = read_json_file("internal/meta_items.json")
-        .map_err(|e: SetupError| SetupError(format!("Failed to read meta_items.json: {:#?}", e)))?;
+        .map_err(|e| SetupError(format!("Failed to read meta_items.json: {:#?}", e)))?;
 
-    let items_folder: ReadDir = fs::read_dir("internal/items")
-        .map_err(|e: io::Error| SetupError(format!("Failed to read items folder: {}", e)))?;
+    let items_folder = fs::read_dir("internal/items")
+        .map_err(|e| SetupError(format!("Failed to read items folder: {}", e)))?;
 
     for entry in items_folder {
-        let entry: DirEntry =
-            entry.map_err(|e: io::Error| SetupError(format!("Invalid DirEntry: {}", e)))?;
+        let entry = entry.map_err(|e| SetupError(format!("Invalid DirEntry: {}", e)))?;
 
-        let path: PathBuf = entry.path();
+        let path = entry.path();
 
-        let file_name: &str = extract_file_name(&path);
+        let file_name = extract_file_name(&path);
 
-        let item_id: usize = file_name.parse::<usize>().map_err(|e: ParseIntError| {
+        let item_id = file_name.parse::<usize>().map_err(|e: ParseIntError| {
             SetupError(format!("Invalid item ID '{}': {}", file_name, e))
         })?;
 
-        let path_str: &str = path
+        let path_str = path
             .to_str()
             .ok_or_else(|| SetupError(format!("Failed to convert path to string: {:?}", path)))?;
 
-        let internal_item: Item = read_json_file(path_str).map_err(|e: SetupError| {
+        let internal_item: Item = read_json_file(path_str).map_err(|e| {
             SetupError(format!("Failed to read item file '{}': {:#?}", path_str, e))
         })?;
 
@@ -401,7 +390,7 @@ pub fn setup_meta_items() -> Result<(), SetupError> {
 /// only updates the key `prettified_stats`. All the remaining content remains the same
 #[writer_macros::trace_time]
 pub async fn prettify_internal_items() -> Result<(), SetupError> {
-    let files: ReadDir = fs::read_dir("cache/riot/items").map_err(|e: io::Error| {
+    let files = fs::read_dir("cache/riot/items").map_err(|e| {
         SetupError(format!(
             "Unable to read directory 'cache/riot/items': {}",
             e
@@ -409,24 +398,21 @@ pub async fn prettify_internal_items() -> Result<(), SetupError> {
     })?;
 
     for file in files {
-        let file_entry: DirEntry =
-            file.map_err(|e: io::Error| SetupError(format!("Failed to read DirEntry: {}", e)))?;
-        let path_buf: PathBuf = file_entry.path();
-        let name: &str = extract_file_name(&path_buf);
-        let path_name: String = format!("cache/riot/items/{}.json", name);
-        let internal_path: String = format!("internal/items/{}.json", name);
+        let file_entry = file.map_err(|e| SetupError(format!("Failed to read DirEntry: {}", e)))?;
+        let path_buf = file_entry.path();
+        let name = extract_file_name(&path_buf);
+        let path_name = format!("cache/riot/items/{}.json", name);
+        let internal_path = format!("internal/items/{}.json", name);
 
-        let prettified_stats: FxHashMap<String, Value> = pretiffy_items(&path_name);
+        let prettified_stats = pretiffy_items(&path_name);
 
         if !Path::new(&internal_path).exists() {
             println!("Item {} does not exist", name);
             continue;
         }
 
-        let mut current_content: Item =
-            read_json_file(&internal_path).map_err(|e: SetupError| {
-                SetupError(format!("Failed to read '{}': {:#?}", internal_path, e))
-            })?;
+        let mut current_content: Item = read_json_file(&internal_path)
+            .map_err(|e| SetupError(format!("Failed to read '{}': {:#?}", internal_path, e)))?;
 
         current_content.prettified_stats = prettified_stats;
 
@@ -449,7 +435,7 @@ fn pretiffy_items(path_name: &str) -> FxHashMap<String, Value> {
             return FxHashMap::default();
         }
     };
-    let mut result: FxHashMap<String, Value> = FxHashMap::default();
+    let mut result: FxHashMap<_, Value> = FxHashMap::default();
 
     // #![manual_impl]
     let tag_regex: Regex = match Regex::new(
@@ -490,7 +476,7 @@ fn pretiffy_items(path_name: &str) -> FxHashMap<String, Value> {
     let mut line_index: usize = 0;
 
     for caps in tag_regex.captures_iter(&data.description) {
-        let t: &str = &caps[1];
+        let t = &caps[1];
         let v: String = caps[2].replace('%', "");
         let mut n: Option<String> = None;
         if line_index < lines.len() {

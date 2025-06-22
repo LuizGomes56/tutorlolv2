@@ -1,5 +1,5 @@
 use crate::{
-    AppState, EnvConfig, match_fn,
+    AppState, match_fn,
     server::schemas::APIResponse,
     setup::{
         cache::{update_cdn_cache, update_riot_cache},
@@ -14,33 +14,19 @@ use crate::{
     },
 };
 use actix_web::{HttpResponse, Responder, post, web::Data};
-use reqwest::Client;
-use std::sync::Arc;
 use tokio::task;
 
 #[post("/project")]
 pub async fn setup_project(state: Data<AppState>) -> impl Responder {
     let _ = setup_project_folders();
-    let client: Client = state.client.clone();
-    let envcfg: Arc<EnvConfig> = state.envcfg.clone();
+    let client = state.client.clone();
 
     tokio::spawn(async move {
         let mut update_futures = Vec::new();
 
-        update_futures.push(tokio::spawn(update_riot_cache(
-            client.clone(),
-            envcfg.clone(),
-        )));
-        update_futures.push(tokio::spawn(update_cdn_cache(
-            client.clone(),
-            envcfg.clone(),
-            "champions",
-        )));
-        update_futures.push(tokio::spawn(update_cdn_cache(
-            client.clone(),
-            envcfg.clone(),
-            "items",
-        )));
+        update_futures.push(tokio::spawn(update_riot_cache(client.clone())));
+        update_futures.push(tokio::spawn(update_cdn_cache(client.clone(), "champions")));
+        update_futures.push(tokio::spawn(update_cdn_cache(client.clone(), "items")));
 
         for update_future in update_futures {
             if let Err(e) = update_future.await {
@@ -52,34 +38,27 @@ pub async fn setup_project(state: Data<AppState>) -> impl Responder {
         let _ = task::spawn_blocking(setup_internal_items).await.ok();
         let _ = prettify_internal_items().await;
 
-        let client_1: Client = client.clone();
-        let envcfg_1: Arc<EnvConfig> = envcfg.clone();
+        let client_1 = client.clone();
 
         tokio::spawn(async move {
-            let _ = meta_items_scraper(client_1, envcfg_1).await;
+            let _ = meta_items_scraper(client_1).await;
             let _ = setup_meta_items();
             #[cfg(debug_assertions)]
-            {
-                use crate::setup::update::setup_damaging_items;
-                let _ = setup_damaging_items();
-            }
+            let _ = crate::setup::update::setup_damaging_items();
         });
 
         tokio::spawn(async move {
             #[cfg(debug_assertions)]
-            {
-                use crate::setup::generators::generate_writer_files;
-                let _ = generate_writer_files().await;
-            }
+            let _ = crate::setup::generators::generate_writer_files().await;
             let _ = setup_internal_champions();
         });
 
         // There's no need to await for image download conclusion
         // They are independent and may run in parallel
-        tokio::spawn(img_download_arts(client.clone(), envcfg.clone()));
-        tokio::spawn(img_download_instances(client.clone(), envcfg.clone()));
-        tokio::spawn(img_download_items(client.clone(), envcfg.clone()));
-        tokio::spawn(img_download_runes(client, envcfg));
+        tokio::spawn(img_download_arts(client.clone()));
+        tokio::spawn(img_download_instances(client.clone()));
+        tokio::spawn(img_download_items(client.clone()));
+        tokio::spawn(img_download_runes(client));
     });
 
     HttpResponse::Ok().json(APIResponse {

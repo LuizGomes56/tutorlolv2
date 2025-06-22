@@ -1,5 +1,3 @@
-use rustc_hash::FxHashMap;
-
 use serde::Deserialize;
 
 #[derive(Deserialize)]
@@ -10,5 +8,3 @@ pub struct Positions {
     pub adc: Vec<usize>,
     pub support: Vec<usize>,
 }
-
-pub type MetaItems = FxHashMap<String, Positions>;

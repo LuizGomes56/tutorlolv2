@@ -1,15 +1,14 @@
-use crate::{AppState, server::schemas::APIResponse};
-use actix_web::{HttpResponse, Responder, get, web::Data};
+use crate::{GLOBAL_CACHE, server::schemas::APIResponse};
+use actix_web::{HttpResponse, Responder, get};
 use rustc_hash::FxHashMap;
 
 #[get("/champions")]
-pub async fn static_champions(state: Data<AppState>) -> impl Responder {
-    let data = state
-        .cache
+pub async fn static_champions() -> impl Responder {
+    let data = GLOBAL_CACHE
         .champion_names
         .iter()
-        .map(|(k, v)| (v.clone(), k.clone()))
-        .collect::<FxHashMap<String, String>>();
+        .map(|(k, v)| (v, k))
+        .collect::<FxHashMap<_, _>>();
     HttpResponse::Ok().json(APIResponse {
         success: true,
         message: (),
@@ -18,13 +17,12 @@ pub async fn static_champions(state: Data<AppState>) -> impl Responder {
 }
 
 #[get("/items")]
-pub async fn static_items(state: Data<AppState>) -> impl Responder {
-    let data = state
-        .cache
+pub async fn static_items() -> impl Responder {
+    let data = GLOBAL_CACHE
         .items
         .iter()
-        .map(|(item_id, value)| (*item_id, value.name.clone()))
-        .collect::<FxHashMap<usize, String>>();
+        .map(|(item_id, value)| (item_id, &value.name))
+        .collect::<FxHashMap<_, _>>();
     HttpResponse::Ok().json(APIResponse {
         success: true,
         message: (),
@@ -33,13 +31,12 @@ pub async fn static_items(state: Data<AppState>) -> impl Responder {
 }
 
 #[get("/runes")]
-pub async fn static_runes(state: Data<AppState>) -> impl Responder {
-    let data = state
-        .cache
+pub async fn static_runes() -> impl Responder {
+    let data = GLOBAL_CACHE
         .runes
         .iter()
-        .map(|(rune_id, value)| (*rune_id, value.name.clone()))
-        .collect::<FxHashMap<usize, String>>();
+        .map(|(rune_id, value)| (rune_id, &value.name))
+        .collect::<FxHashMap<_, _>>();
     HttpResponse::Ok().json(APIResponse {
         success: true,
         message: (),

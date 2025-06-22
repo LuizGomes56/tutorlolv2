@@ -1,37 +1,29 @@
 use super::*;
-use crate::model::{
-    application::GlobalCache,
-    base::{AttackType, BasicStats},
-    champions::Champion,
-    realtime::*,
-    riot::*,
-    runes::Rune,
+use crate::{
+    GLOBAL_CACHE,
+    model::{base::AttackType, realtime::*, riot::*},
 };
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
 use rustc_hash::FxHashMap;
-use std::sync::Arc;
 
 /// Takes a type constructed from port 2999 and returns a new type "Realtime"
 /// `simulated_items` dictates how many clones of player current stats will be created
 /// for each clone, abilities, runes and items damages will be recalculated
 /// Returns a FxHashMap with results for each enemy, and the best item in general.
 #[writer_macros::trace_time]
-pub fn realtime<'a>(
-    cache: &'a Arc<GlobalCache>,
-    game: &'a RiotRealtime,
-) -> Result<Realtime<'a>, String> {
+pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, String> {
     // #![todo] Filter legendary items that are available to be purchased [game][game_data][map_number]
-    let simulated_items: &[usize] = &cache.simulated_items;
+    let simulated_items = &GLOBAL_CACHE.simulated_items;
 
-    let game_time: f64 = game.game_data.game_time;
-    let map_number: usize = game.game_data.map_number;
+    let game_time = game.game_data.game_time;
+    let map_number = game.game_data.map_number;
 
-    let active_player: &RiotActivePlayer = &game.active_player;
-    let all_players: &Vec<RiotAllPlayers> = &game.all_players;
+    let active_player = &game.active_player;
+    let all_players = &game.all_players;
 
-    let mut scoreboard: Vec<Scoreboard> = all_players
+    let mut scoreboard = all_players
         .iter()
-        .map(|player: &RiotAllPlayers| Scoreboard {
+        .map(|player| Scoreboard {
             riot_id: player.riot_id.clone(),
             team: player.team.clone(),
             kills: player.scores.kills,
@@ -44,11 +36,11 @@ pub fn realtime<'a>(
         })
         .collect::<Vec<Scoreboard>>();
 
-    let active_player_level: usize = active_player.level;
+    let active_player_level = active_player.level;
 
-    let active_player_expanded: &RiotAllPlayers = all_players
+    let active_player_expanded = all_players
         .iter()
-        .find(|player: &&RiotAllPlayers| player.riot_id == active_player.riot_id)
+        .find(|player| player.riot_id == active_player.riot_id)
         .ok_or("Current player not found in allPlayers".to_string())?;
 
     let (ally_dragon_multipliers, enemy_dragon_multipliers) = get_dragon_multipliers(
@@ -57,7 +49,7 @@ pub fn realtime<'a>(
         &active_player_expanded.team,
     );
 
-    let current_champion_id: &String = cache
+    let current_champion_id = GLOBAL_CACHE
         .champion_names
         .get(&active_player_expanded.champion_name)
         .ok_or_else(|| {
@@ -67,71 +59,64 @@ pub fn realtime<'a>(
             )
         })?;
 
-    let current_player_cache: &Champion = cache
+    let current_player_cache = GLOBAL_CACHE
         .champions
         .get(current_champion_id)
         .ok_or_else(|| format!("Champion {} not found on cache", &current_champion_id))?;
 
-    let current_player_base_stats: BasicStats =
-        get_base_stats(current_player_cache, active_player_level);
+    let current_player_base_stats = get_base_stats(current_player_cache, active_player_level);
 
-    let current_player_position: String = if !active_player_expanded.position.is_empty() {
+    let current_player_position = if !active_player_expanded.position.is_empty() {
         active_player_expanded.position.clone()
     } else {
-        let default_position: String = String::from("MIDDLE");
-        current_player_cache
-            .positions
-            .get(0)
-            .unwrap_or(&default_position)
-            .clone()
+        if let Some(pos) = current_player_cache.positions.get(0) {
+            pos.clone()
+        } else {
+            String::from("MIDDLE")
+        }
     };
 
-    let current_player_recommended_items =
-        cache.meta_items.get(current_champion_id).ok_or_else(|| {
+    let current_player_recommended_items = GLOBAL_CACHE
+        .meta_items
+        .get(current_champion_id)
+        .ok_or_else(|| {
             format!(
                 "Champion {} not found when trying to access meta_items",
                 &current_champion_id
             )
         })?;
 
-    let recommended_items_fallback: Vec<usize> = Vec::new();
-    let recommended_items_vec: &[usize] =
-        get_recommended_items(&current_player_position, &current_player_recommended_items)
-            .unwrap_or(&recommended_items_fallback);
-
-    let owned_items: Vec<usize> = active_player_expanded
+    let owned_items = active_player_expanded
         .items
         .iter()
-        .map(|item: &RiotItems| item.item_id)
-        .collect();
+        .map(|item| item.item_id)
+        .collect::<Vec<usize>>();
 
-    let recommended_items: Vec<usize> = recommended_items_vec
-        .iter()
-        .filter(|item_id: &&usize| !owned_items.contains(item_id))
-        .copied()
-        .collect();
+    let recommended_items = get_recommended_items(
+        &current_player_position,
+        &current_player_recommended_items,
+        &owned_items,
+    );
 
-    let damaging_abilities: FxHashMap<String, String> =
-        get_damaging_abilities(current_player_cache);
+    let damaging_abilities = get_damaging_abilities(current_player_cache);
 
-    let damaging_runes: FxHashMap<usize, String> = active_player
+    let damaging_runes = active_player
         .full_runes
         .general_runes
         .iter()
         .filter_map(|riot_rune: &RiotGeneralRunes| {
-            cache
+            GLOBAL_CACHE
                 .runes
                 .get(&riot_rune.id)
-                .map(|cached: &Rune| (riot_rune.id, cached.name.clone()))
+                .map(|cached| (riot_rune.id, cached.name.clone()))
         })
-        .collect();
+        .collect::<FxHashMap<usize, String>>();
 
-    let attack_type: AttackType = AttackType::from(current_player_cache.attack_type.as_str());
+    let attack_type = AttackType::from(current_player_cache.attack_type.as_str());
 
-    let damaging_items: FxHashMap<usize, String> =
-        get_damaging_items(&cache.items, attack_type, &owned_items);
+    let damaging_items = get_damaging_items(&GLOBAL_CACHE.items, attack_type, &owned_items);
 
-    let current_player: CurrentPlayer<'_> = CurrentPlayer {
+    let current_player = CurrentPlayer {
         champion_id: current_champion_id.clone(),
         team: &active_player_expanded.team,
         bonus_stats: get_bonus_stats(&active_player.champion_stats, &current_player_base_stats),
@@ -147,17 +132,20 @@ pub fn realtime<'a>(
     };
 
     let (simulated_champion_stats, compared_items_info) = get_simulated_champion_stats(
-        &simulated_items,
+        simulated_items,
         &owned_items,
         &current_player.current_stats,
-        &cache.items,
+        &GLOBAL_CACHE.items,
         &ally_dragon_multipliers,
     )?;
+
+    let damaging_items_vec = &clone_keys(&current_player.damaging_items);
+    let damaging_runes_vec = &clone_keys(&current_player.damaging_runes);
 
     let (scoreboard_updates, enemy_data): (Vec<_>, Vec<_>) = all_players
         .into_par_iter()
         .map(|player| {
-            let player_champion_id: String = cache
+            let player_champion_id = GLOBAL_CACHE
                 .champion_names
                 .get(&player.champion_name)
                 .ok_or_else(|| {
@@ -171,39 +159,43 @@ pub fn realtime<'a>(
             let scoreboard_update = (player.riot_id.clone(), player_champion_id.clone());
 
             let enemy_data = if player.team != active_player_expanded.team {
-                let current_enemy_cache: &Champion =
-                    cache.champions.get(&player_champion_id).ok_or_else(|| {
+                let current_enemy_cache = GLOBAL_CACHE
+                    .champions
+                    .get(&player_champion_id)
+                    .ok_or_else(|| {
                         format!(
                             "ChampionID {} not found in champions cache",
                             &player_champion_id
                         )
                     })?;
-                let enemy_level: usize = player.level;
-                let mut enemy_base_stats: BasicStats =
-                    get_base_stats(current_enemy_cache, enemy_level);
-                let enemy_items: Vec<usize> =
-                    player.items.iter().map(|x: &RiotItems| x.item_id).collect();
-                let mut enemy_current_stats: BasicStats = get_enemy_current_stats(
-                    &cache.items,
+                let enemy_level = player.level;
+                let enemy_base_stats = get_base_stats(current_enemy_cache, enemy_level);
+                let enemy_items = player
+                    .items
+                    .iter()
+                    .map(|x| x.item_id)
+                    .collect::<Vec<usize>>();
+                let mut enemy_current_stats = get_enemy_current_stats(
+                    &GLOBAL_CACHE.items,
                     &enemy_base_stats,
                     &enemy_items,
                     enemy_dragon_multipliers.earth,
                 );
                 let (damages, real_resists, bonus_stats) = calculate_enemy_state(GameState {
                     cache: GameStateCache {
-                        items: &cache.items,
-                        runes: &cache.runes,
+                        items: &GLOBAL_CACHE.items,
+                        runes: &GLOBAL_CACHE.runes,
                     },
                     current_player: GameStateCurrentPlayer {
                         thisv: &current_player,
                         cache: current_player_cache,
-                        items: &clone_keys(&current_player.damaging_items),
-                        runes: &clone_keys(&current_player.damaging_runes),
+                        items: damaging_items_vec,
+                        runes: damaging_runes_vec,
                         abilities: &active_player.abilities.get_levelings(),
                         simulated_stats: &simulated_champion_stats,
                     },
                     enemy_player: GameStateEnemyPlayer {
-                        base_stats: &mut enemy_base_stats,
+                        base_stats: &enemy_base_stats,
                         current_stats: &mut enemy_current_stats,
                         items: &enemy_items,
                         champion_id: &player_champion_id,
@@ -212,7 +204,7 @@ pub fn realtime<'a>(
                 });
 
                 Some(Enemy {
-                    champion_id: player_champion_id.clone(),
+                    champion_id: player_champion_id,
                     champion_name: &player.champion_name,
                     riot_id: &player.riot_id,
                     team: &player.team,
@@ -237,12 +229,12 @@ pub fn realtime<'a>(
     for (riot_id, champion_id) in scoreboard_updates {
         scoreboard
             .iter_mut()
-            .find(|this_player: &&mut Scoreboard| this_player.riot_id == riot_id)
+            .find(|this_player| this_player.riot_id == riot_id)
             .unwrap()
             .champion_id = Some(champion_id);
     }
 
-    let enemies: Vec<Enemy> = enemy_data.into_iter().filter_map(|enemy| enemy).collect();
+    let enemies = enemy_data.into_iter().filter_map(|enemy| enemy).collect();
 
     Ok(Realtime {
         current_player,
@@ -264,8 +256,8 @@ fn get_dragon_multipliers(
     scoreboard: &[Scoreboard],
     current_player_team: &str,
 ) -> (DragonMultipliers, DragonMultipliers) {
-    let mut ally_team: DragonMultipliers = DragonMultipliers::new();
-    let mut enemy_team: DragonMultipliers = DragonMultipliers::new();
+    let mut ally_team = DragonMultipliers::new();
+    let mut enemy_team = DragonMultipliers::new();
 
     for event in event_list {
         let (Some(killer), Some(dragon_type)) = (&event.killer_name, &event.dragon_type) else {
@@ -273,9 +265,9 @@ fn get_dragon_multipliers(
         };
         if let Some(player) = scoreboard
             .iter()
-            .find(|p: &&Scoreboard| &p.riot_id.split('#').next().unwrap_or_default() == killer)
+            .find(|p| &p.riot_id.split('#').next().unwrap_or_default() == killer)
         {
-            let target: &mut DragonMultipliers = if player.team == current_player_team {
+            let target = if player.team == current_player_team {
                 &mut ally_team
             } else {
                 &mut enemy_team
