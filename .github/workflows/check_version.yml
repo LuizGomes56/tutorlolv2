@@ -2,8 +2,9 @@ name: Test Version Endpoint
 
 on:
   push:
-    branches:
-      - '**'
+    branches: ["*"]
+  pull_request:
+    branches: ["*"]
 
 jobs:
   test-version:
@@ -16,7 +17,7 @@ jobs:
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
 
-      - name: Run version test
+      - name: Compare app version with game current version
         env:
           VERSION_ENDPOINT: ${{ secrets.VERSION_ENDPOINT }}
           VERSION: ${{ secrets.VERSION }}
