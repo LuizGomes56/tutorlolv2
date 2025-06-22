@@ -1,0 +1,24 @@
+name: Test Version Endpoint
+
+on:
+  push:
+    branches:
+      - '**'
+
+jobs:
+  test-version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Run version test
+        env:
+          VERSION_ENDPOINT: ${{ secrets.VERSION_ENDPOINT }}
+          VERSION: ${{ secrets.VERSION }}
+        run: |
+          cargo test --test version -- --endpoint=${VERSION_ENDPOINT} --version=${VERSION}
