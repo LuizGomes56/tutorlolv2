@@ -10,6 +10,11 @@ name = "writers"
 path = "tests/writers.rs"
 harness = false
 
+[[test]]
+name = "version"
+path = "tests/version.rs"
+harness = false
+
 [profile.release]
 opt-level = 3
 lto = true

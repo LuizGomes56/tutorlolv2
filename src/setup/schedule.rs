@@ -1,14 +1,8 @@
+use crate::setup::{api::fetch_version, helpers::SetupError};
+use reqwest::Client;
 use std::{
     fs,
     io::{BufRead, BufReader, Write},
-    sync::Arc,
-};
-
-use reqwest::Client;
-
-use crate::{
-    EnvConfig,
-    setup::{api::fetch_version, helpers::SetupError},
 };
 
 /// Change in `.env` the value of existing environment variable, or creates it if it doesn't exist.
@@ -41,10 +35,7 @@ unsafe fn set_env_var(key: &str, value: &str) -> std::io::Result<()> {
 /// Update `LOL_VERSION` in `.env`. The route that calls this function
 /// will be scheduled to run once a day.
 #[writer_macros::trace_time]
-pub async unsafe fn update_env_version(
-    client: Client,
-    envcfg: Arc<EnvConfig>,
-) -> Result<(), SetupError> {
-    let version: &String = &fetch_version(client, envcfg).await?;
+pub async unsafe fn update_env_version(client: Client, endpoint: String) -> Result<(), SetupError> {
+    let version: &String = &fetch_version(client, endpoint).await?;
     Ok(unsafe { set_env_var("LOL_VERSION", version).unwrap() })
 }

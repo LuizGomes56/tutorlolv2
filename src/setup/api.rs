@@ -14,7 +14,7 @@ pub fn riot_base_url(envcfg: Arc<EnvConfig>) -> String {
 
 /// Helper function to fetch data from the CDN. Returns a FxHashMap with `any` value.
 #[writer_macros::trace_time]
-pub async fn fetch_cdn_api(
+pub(crate) async fn fetch_cdn_api(
     client: Client,
     envcfg: Arc<EnvConfig>,
     path_name: &str,
@@ -44,7 +44,7 @@ pub async fn fetch_cdn_api(
 
 /// Fetches DataDragon API from Riot Games. Only the final file path needs to be provided
 #[writer_macros::trace_time]
-pub async fn fetch_riot_api<T: DeserializeOwned>(
+pub(crate) async fn fetch_riot_api<T: DeserializeOwned>(
     client: Client,
     envcfg: Arc<EnvConfig>,
     path_name: &str,
@@ -67,8 +67,8 @@ pub async fn fetch_riot_api<T: DeserializeOwned>(
 
 /// Get current game version
 #[writer_macros::trace_time]
-pub async fn fetch_version(client: Client, envcfg: Arc<EnvConfig>) -> Result<String, SetupError> {
-    let url: &String = &format!("{}/api/versions.json", envcfg.dd_dragon_endpoint);
+pub async fn fetch_version(client: Client, endpoint: String) -> Result<String, SetupError> {
+    let url: &String = &format!("{}/api/versions.json", endpoint);
 
     println!("fetch_version: {}", url);
 

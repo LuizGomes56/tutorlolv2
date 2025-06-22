@@ -31,5 +31,11 @@ pub async fn update_meta_items(state: Data<AppState>) -> impl Responder {
 
 #[post("/version")]
 pub async fn update_version(state: Data<AppState>) -> impl Responder {
-    match_fn!(unsafe { update_env_version(state.client.clone(), state.envcfg.clone()).await })
+    match_fn!(unsafe {
+        update_env_version(
+            state.client.clone(),
+            state.envcfg.dd_dragon_endpoint.clone(),
+        )
+        .await
+    })
 }

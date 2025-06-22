@@ -4,7 +4,7 @@ mod middlewares;
 mod model;
 mod server;
 pub mod services;
-mod setup;
+pub mod setup;
 pub mod writers;
 
 use actix_cors::Cors;

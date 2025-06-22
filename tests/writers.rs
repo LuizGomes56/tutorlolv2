@@ -1,17 +1,16 @@
-use std::{fs, path};
-
 use rustc_hash::FxHashMap;
+use std::{fs, path};
 use tutorlolv2::{
     services::eval::MathEval,
     writers::{self, CdnChampion, Champion},
 };
 
-include!(concat!(env!("OUT_DIR"), "/writers_generated.rs"));
-
 const CYAN: &str = "\x1b[36m";
 const RED: &str = "\x1b[31m";
 const GREEN: &str = "\x1b[32m";
 const RESET: &str = "\x1b[0m";
+
+include!(concat!(env!("OUT_DIR"), "/writers_generated.rs"));
 
 fn test_string(target_str: &str) -> String {
     let replacements = [
@@ -123,7 +122,7 @@ async fn main() {
                                 ($field:ident) => {{
                                     for damage in ability_val.$field.into_iter() {
                                         if test_string(&damage).eval().is_err() {
-                                            println!("damage is: {:#?}", damage);
+                                            println!("[ERROR] EXPRESSION: {:#?}", damage);
                                             eval_errors.push(format!(
                                                 "{}{}{} - {}::{}",
                                                 CYAN,
