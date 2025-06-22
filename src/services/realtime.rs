@@ -7,14 +7,8 @@ use rayon::iter::{IntoParallelIterator, ParallelIterator};
 use rustc_hash::FxHashMap;
 
 /// Takes a type constructed from port 2999 and returns a new type "Realtime"
-/// `simulated_items` dictates how many clones of player current stats will be created
-/// for each clone, abilities, runes and items damages will be recalculated
-/// Returns a FxHashMap with results for each enemy, and the best item in general.
 #[writer_macros::trace_time]
 pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, String> {
-    // #![todo] Filter legendary items that are available to be purchased [game][game_data][map_number]
-    let simulated_items = &GLOBAL_CACHE.simulated_items;
-
     let game_time = game.game_data.game_time;
     let map_number = game.game_data.map_number;
 
@@ -24,15 +18,15 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, String> {
     let mut scoreboard = all_players
         .iter()
         .map(|player| Scoreboard {
-            riot_id: player.riot_id.clone(),
-            team: player.team.clone(),
+            riot_id: &player.riot_id,
+            team: &player.team,
             kills: player.scores.kills,
             deaths: player.scores.deaths,
             assists: player.scores.assists,
             creep_score: player.scores.creep_score,
             champion_id: None,
-            position: player.position.clone(),
-            champion_name: player.champion_name.clone(),
+            position: &player.position,
+            champion_name: &player.champion_name,
         })
         .collect::<Vec<Scoreboard>>();
 
@@ -67,12 +61,12 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, String> {
     let current_player_base_stats = get_base_stats(current_player_cache, active_player_level);
 
     let current_player_position = if !active_player_expanded.position.is_empty() {
-        active_player_expanded.position.clone()
+        &active_player_expanded.position
     } else {
         if let Some(pos) = current_player_cache.positions.get(0) {
-            pos.clone()
+            pos
         } else {
-            String::from("MIDDLE")
+            &String::from("MIDDLE")
         }
     };
 
@@ -108,16 +102,16 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, String> {
             GLOBAL_CACHE
                 .runes
                 .get(&riot_rune.id)
-                .map(|cached| (riot_rune.id, cached.name.clone()))
+                .map(|cached| (riot_rune.id, cached.name.as_ref()))
         })
-        .collect::<FxHashMap<usize, String>>();
+        .collect::<FxHashMap<usize, &'_ str>>();
 
     let attack_type = AttackType::from(current_player_cache.attack_type.as_str());
 
-    let damaging_items = get_damaging_items(&GLOBAL_CACHE.items, attack_type, &owned_items);
+    let damaging_items = get_damaging_items(attack_type, &owned_items);
 
     let current_player = CurrentPlayer {
-        champion_id: current_champion_id.clone(),
+        champion_id: current_champion_id,
         team: &active_player_expanded.team,
         bonus_stats: get_bonus_stats(&active_player.champion_stats, &current_player_base_stats),
         position: &active_player_expanded.position,
@@ -132,15 +126,10 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, String> {
     };
 
     let (simulated_champion_stats, compared_items_info) = get_simulated_champion_stats(
-        simulated_items,
         &owned_items,
         &current_player.current_stats,
-        &GLOBAL_CACHE.items,
         &ally_dragon_multipliers,
     )?;
-
-    let damaging_items_vec = &clone_keys(&current_player.damaging_items);
-    let damaging_runes_vec = &clone_keys(&current_player.damaging_runes);
 
     let (scoreboard_updates, enemy_data): (Vec<_>, Vec<_>) = all_players
         .into_par_iter()
@@ -153,19 +142,18 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, String> {
                         "Champion {} does not have a matching ID in champion_names cache",
                         &player.champion_name
                     )
-                })?
-                .clone();
+                })?;
 
-            let scoreboard_update = (player.riot_id.clone(), player_champion_id.clone());
+            let scoreboard_update = (&player.riot_id, player_champion_id);
 
             let enemy_data = if player.team != active_player_expanded.team {
                 let current_enemy_cache = GLOBAL_CACHE
                     .champions
-                    .get(&player_champion_id)
+                    .get(player_champion_id)
                     .ok_or_else(|| {
                         format!(
                             "ChampionID {} not found in champions cache",
-                            &player_champion_id
+                            player_champion_id
                         )
                     })?;
                 let enemy_level = player.level;
@@ -176,21 +164,14 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, String> {
                     .map(|x| x.item_id)
                     .collect::<Vec<usize>>();
                 let mut enemy_current_stats = get_enemy_current_stats(
-                    &GLOBAL_CACHE.items,
                     &enemy_base_stats,
                     &enemy_items,
                     enemy_dragon_multipliers.earth,
                 );
                 let (damages, real_resists, bonus_stats) = calculate_enemy_state(GameState {
-                    cache: GameStateCache {
-                        items: &GLOBAL_CACHE.items,
-                        runes: &GLOBAL_CACHE.runes,
-                    },
                     current_player: GameStateCurrentPlayer {
                         thisv: &current_player,
                         cache: current_player_cache,
-                        items: damaging_items_vec,
-                        runes: damaging_runes_vec,
                         abilities: &active_player.abilities.get_levelings(),
                         simulated_stats: &simulated_champion_stats,
                     },
@@ -198,7 +179,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, String> {
                         base_stats: &enemy_base_stats,
                         current_stats: &mut enemy_current_stats,
                         items: &enemy_items,
-                        champion_id: &player_champion_id,
+                        champion_id: player_champion_id,
                         level: enemy_level,
                     },
                 });

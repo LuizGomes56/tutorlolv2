@@ -117,10 +117,10 @@ pub struct BasicStats {
 }
 
 #[derive(Serialize)]
-pub struct ComparedItem {
-    pub name: String,
+pub struct ComparedItem<'a> {
+    pub name: &'a str,
     pub gold_cost: usize,
-    pub prettified_stats: FxHashMap<String, Value>,
+    pub prettified_stats: &'a FxHashMap<String, Value>,
 }
 
 #[derive(Serialize)]
@@ -130,17 +130,10 @@ pub struct RealResists {
 }
 
 #[derive(Serialize)]
-pub struct ComparedDamage<T> {
-    pub total: f64,
-    pub change: f64,
-    pub damages: DamageLike<T>,
-}
-
-#[derive(Serialize)]
 pub struct SimulatedDamages {
-    pub abilities: ComparedDamage<String>,
-    pub items: ComparedDamage<usize>,
-    pub runes: ComparedDamage<usize>,
+    pub abilities: DamageLike<String>,
+    pub items: DamageLike<usize>,
+    pub runes: DamageLike<usize>,
 }
 
 #[derive(Serialize)]
@@ -238,6 +231,8 @@ pub trait CurrentPlayerLike {
     fn get_bonus_stats(&self) -> &BasicStats;
     fn get_level(&self) -> usize;
     fn get_current_stats(&self) -> &Stats;
+    fn get_damaging_items(&self) -> &FxHashMap<usize, &str>;
+    fn get_damaging_runes(&self) -> &FxHashMap<usize, &str>;
 }
 
 impl<'a> CurrentPlayerLike for CurrentPlayer<'a> {
@@ -253,9 +248,15 @@ impl<'a> CurrentPlayerLike for CurrentPlayer<'a> {
     fn get_current_stats(&self) -> &Stats {
         &self.current_stats
     }
+    fn get_damaging_items(&self) -> &FxHashMap<usize, &str> {
+        &self.damaging_items
+    }
+    fn get_damaging_runes(&self) -> &FxHashMap<usize, &str> {
+        &self.damaging_runes
+    }
 }
 
-impl CurrentPlayerLike for CurrentPlayerX {
+impl<'a> CurrentPlayerLike for CurrentPlayerX<'a> {
     fn get_base_stats(&self) -> &BasicStats {
         &self.base_stats
     }
@@ -267,5 +268,11 @@ impl CurrentPlayerLike for CurrentPlayerX {
     }
     fn get_current_stats(&self) -> &Stats {
         &self.current_stats
+    }
+    fn get_damaging_items(&self) -> &FxHashMap<usize, &str> {
+        &self.damaging_items
+    }
+    fn get_damaging_runes(&self) -> &FxHashMap<usize, &str> {
+        &self.damaging_runes
     }
 }

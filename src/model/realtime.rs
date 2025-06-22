@@ -12,15 +12,15 @@ pub struct DamageObject {
 
 #[derive(Serialize)]
 pub struct CurrentPlayer<'a> {
-    pub damaging_abilities: FxHashMap<String, String>,
-    pub damaging_items: FxHashMap<usize, String>,
-    pub damaging_runes: FxHashMap<usize, String>,
+    pub damaging_abilities: FxHashMap<&'a str, &'a str>,
+    pub damaging_items: FxHashMap<usize, &'a str>,
+    pub damaging_runes: FxHashMap<usize, &'a str>,
     pub riot_id: &'a str,
     pub level: usize,
     pub team: &'a str,
     pub position: &'a str,
     pub champion_name: &'a str,
-    pub champion_id: String,
+    pub champion_id: &'a str,
     pub base_stats: BasicStats,
     pub bonus_stats: BasicStats,
     pub current_stats: Stats,
@@ -34,7 +34,7 @@ pub struct GameInformation {
 
 #[derive(Serialize)]
 pub struct Enemy<'a> {
-    pub champion_id: String,
+    pub champion_id: &'a str,
     pub champion_name: &'a str,
     pub riot_id: &'a str,
     pub team: &'a str,
@@ -65,16 +65,16 @@ impl DragonMultipliers {
 }
 
 #[derive(Serialize)]
-pub struct Scoreboard {
+pub struct Scoreboard<'a> {
     pub assists: usize,
     pub creep_score: usize,
     pub deaths: usize,
     pub kills: usize,
-    pub riot_id: String,
-    pub champion_id: Option<String>,
-    pub champion_name: String,
-    pub team: String,
-    pub position: String,
+    pub riot_id: &'a str,
+    pub champion_id: Option<&'a str>,
+    pub champion_name: &'a str,
+    pub team: &'a str,
+    pub position: &'a str,
 }
 
 #[derive(Serialize)]
@@ -83,8 +83,8 @@ pub struct Realtime<'a> {
     pub enemies: Vec<Enemy<'a>>,
     pub game_information: GameInformation,
     pub recommended_items: Vec<usize>,
-    pub compared_items: FxHashMap<usize, ComparedItem>,
-    pub scoreboard: Vec<Scoreboard>,
+    pub compared_items: FxHashMap<usize, ComparedItem<'a>>,
+    pub scoreboard: Vec<Scoreboard<'a>>,
     pub enemy_dragon_multipliers: DragonMultipliers,
     pub ally_dragon_multipliers: DragonMultipliers,
 }

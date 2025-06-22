@@ -5,11 +5,11 @@ use serde::{Deserialize, Serialize};
 use super::base::{BasicStats, ComparedItem, Damages, RealResists, Stats};
 
 #[derive(Serialize)]
-pub struct CurrentPlayerX {
+pub struct CurrentPlayerX<'a> {
     pub champion_id: String,
-    pub damaging_abilities: FxHashMap<String, String>,
-    pub damaging_items: FxHashMap<usize, String>,
-    pub damaging_runes: FxHashMap<usize, String>,
+    pub damaging_abilities: FxHashMap<&'a str, &'a str>,
+    pub damaging_items: FxHashMap<usize, &'a str>,
+    pub damaging_runes: FxHashMap<usize, &'a str>,
     pub level: usize,
     pub base_stats: BasicStats,
     pub bonus_stats: BasicStats,
@@ -17,8 +17,8 @@ pub struct CurrentPlayerX {
 }
 
 #[derive(Serialize)]
-pub struct EnemyX {
-    pub champion_name: String,
+pub struct EnemyX<'a> {
+    pub champion_name: &'a str,
     pub champion_id: String,
     pub level: usize,
     pub damages: Damages,
@@ -29,11 +29,11 @@ pub struct EnemyX {
 }
 
 #[derive(Serialize)]
-pub struct Calculator {
-    pub current_player: CurrentPlayerX,
-    pub enemies: Vec<EnemyX>,
+pub struct Calculator<'a> {
+    pub current_player: CurrentPlayerX<'a>,
+    pub enemies: Vec<EnemyX<'a>>,
     pub recommended_items: Vec<usize>,
-    pub compared_items: FxHashMap<usize, ComparedItem>,
+    pub compared_items: FxHashMap<usize, ComparedItem<'a>>,
 }
 
 #[derive(Deserialize)]
