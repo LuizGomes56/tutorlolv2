@@ -20,7 +20,7 @@ use dotenvy::dotenv;
 use middlewares::{
     error::json_error_middleware, logger::logger_middleware, password::password_middleware,
 };
-use model::application::GlobalCache;
+use model::{application::GlobalCache, cache::*};
 use once_cell::sync::Lazy;
 use reqwest::Client;
 use server::{
@@ -30,6 +30,12 @@ use server::{
 use setup::cache::load_cache;
 use sqlx::{Pool, Postgres, postgres::PgPoolOptions};
 use std::{env, io};
+
+include!(concat!(env!("OUT_DIR"), "/internal_champions.rs"));
+include!(concat!(env!("OUT_DIR"), "/internal_items.rs"));
+include!(concat!(env!("OUT_DIR"), "/internal_runes.rs"));
+include!(concat!(env!("OUT_DIR"), "/internal_meta.rs"));
+include!(concat!(env!("OUT_DIR"), "/internal_names.rs"));
 
 pub struct EnvConfig {
     pub lol_version: String,
