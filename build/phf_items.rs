@@ -128,27 +128,28 @@ fn format_stats(stats: &PartialStats) -> String {
 }
 
 pub fn global_phf_internal_items(out_dir: &str) {
-    let mut internal_items_map = HashMap::new();
-
-    for entry in fs::read_dir("internal/items").unwrap() {
-        let path = entry.unwrap().path();
-        let file_stem = path.file_stem().unwrap();
-        let file_name = file_stem.to_str().unwrap();
-        let content = fs::read_to_string(&path).unwrap();
-        let parsed = serde_json::from_str::<Item>(&content).unwrap();
-        internal_items_map.insert(file_name.to_owned(), parsed);
-    }
-
     let out_path = Path::new(&out_dir).join("internal_items.rs");
     let mut phf_map_contents = String::from(
         "pub static INTERNAL_ITEMS: ::phf::Map<usize, &'static CachedItem> = ::phf::phf_map! {\n",
     );
     let mut consts_decl = String::new();
 
-    for (key, item) in &internal_items_map {
-        phf_map_contents.push_str(&format!("\t{}usize => &ITEM_{},\n", key, key));
-        consts_decl.push_str(&format!(
-            r#"pub const ITEM_{}: CachedItem = CachedItem {{
+    if let Some(dir) = fs::read_dir("internal/items").ok() {
+        let mut internal_items_map = HashMap::new();
+
+        for entry in dir {
+            let path = entry.unwrap().path();
+            let file_stem = path.file_stem().unwrap();
+            let file_name = file_stem.to_str().unwrap();
+            let content = fs::read_to_string(&path).unwrap();
+            let parsed = serde_json::from_str::<Item>(&content).unwrap();
+            internal_items_map.insert(file_name.to_owned(), parsed);
+        }
+
+        for (key, item) in &internal_items_map {
+            phf_map_contents.push_str(&format!("\t{}usize => &ITEM_{},\n", key, key));
+            consts_decl.push_str(&format!(
+                r#"pub const ITEM_{}: CachedItem = CachedItem {{
     name: "{}",
     gold: {},
     tier: {},
@@ -165,37 +166,38 @@ pub fn global_phf_internal_items(out_dir: &str) {
 }};
 
 "#,
-            key,
-            item.name,
-            item.gold,
-            item.tier,
-            if item.damage_type.is_some() {
-                format!("Some(\"{}\")", item.damage_type.clone().unwrap())
-            } else {
-                "None".to_string()
-            },
-            item.damages_onhit,
-            format_damage_object(&item.ranged),
-            format_damage_object(&item.melee),
-            item.builds_from
-                .iter()
-                .map(|v| v.to_string())
-                .collect::<Vec<_>>()
-                .join(", "),
-            if item.levelings.is_some() {
-                item.levelings
-                    .clone()
-                    .unwrap()
+                key,
+                item.name,
+                item.gold,
+                item.tier,
+                if item.damage_type.is_some() {
+                    format!("Some(\"{}\")", item.damage_type.clone().unwrap())
+                } else {
+                    "None".to_string()
+                },
+                item.damages_onhit,
+                format_damage_object(&item.ranged),
+                format_damage_object(&item.melee),
+                item.builds_from
                     .iter()
                     .map(|v| v.to_string())
                     .collect::<Vec<_>>()
-                    .join(", ")
-            } else {
-                "None".to_string()
-            },
-            format_prettified_stats(&item.prettified_stats),
-            format_stats(&item.stats),
-        ));
+                    .join(", "),
+                if item.levelings.is_some() {
+                    item.levelings
+                        .clone()
+                        .unwrap()
+                        .iter()
+                        .map(|v| v.to_string())
+                        .collect::<Vec<_>>()
+                        .join(", ")
+                } else {
+                    "None".to_string()
+                },
+                format_prettified_stats(&item.prettified_stats),
+                format_stats(&item.stats),
+            ));
+        }
     }
 
     phf_map_contents.push_str("};\n");

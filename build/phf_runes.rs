@@ -10,20 +10,19 @@ pub struct Rune {
 }
 
 pub fn global_phf_internal_runes(out_dir: &str) {
-    let content = fs::read_to_string("internal/runes.json").unwrap();
-    let internal_runes_map = serde_json::from_str::<HashMap<usize, Rune>>(&content).unwrap();
-
     let out_path = Path::new(&out_dir).join("internal_runes.rs");
-
     let mut phf_map_contents = String::from(
         "pub static INTERNAL_RUNES: ::phf::Map<usize, &'static CachedRune> = ::phf::phf_map! {\n",
     );
     let mut consts_decl = String::new();
 
-    for (key, rune) in &internal_runes_map {
-        phf_map_contents.push_str(&format!("\t{}usize => &RUNE_{},\n", key, key));
-        consts_decl.push_str(&format!(
-            r#"pub const RUNE_{}: CachedRune = CachedRune {{
+    if let Some(content) = fs::read_to_string("internal/runes.json").ok() {
+        let internal_runes_map = serde_json::from_str::<HashMap<usize, Rune>>(&content).unwrap();
+
+        for (key, rune) in &internal_runes_map {
+            phf_map_contents.push_str(&format!("\t{}usize => &RUNE_{},\n", key, key));
+            consts_decl.push_str(&format!(
+                r#"pub const RUNE_{}: CachedRune = CachedRune {{
     name: "{}",
     damage_type: "{}",
     ranged: "{}",
@@ -31,8 +30,9 @@ pub fn global_phf_internal_runes(out_dir: &str) {
 }};
             
 "#,
-            key, rune.name, rune.damage_type, rune.ranged, rune.melee
-        ));
+                key, rune.name, rune.damage_type, rune.ranged, rune.melee
+            ));
+        }
     }
 
     phf_map_contents.push_str("};\n");

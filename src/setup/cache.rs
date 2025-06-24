@@ -1,110 +1,18 @@
 use crate::{
-    model::{
-        application::GlobalCache, internal::Positions, items::Item, riot::RiotCdnStandard,
-        runes::Rune,
-    },
+    model::riot::RiotCdnStandard,
     setup::{
         api::{fetch_cdn_api, fetch_riot_api},
-        helpers::{SetupError, extract_file_name, read_json_file, write_to_file},
+        helpers::{SetupError, write_to_file},
     },
-    writers::Champion,
 };
 use reqwest::Client;
 use rustc_hash::FxHashMap;
-use serde::de::DeserializeOwned;
 use serde_json::Value;
-use std::{
-    fs::{self, ReadDir},
-    hash::Hash,
-    io,
-    num::ParseIntError,
-    path::{Path, PathBuf},
-    sync::Arc,
-};
+use std::sync::Arc;
 use tokio::{
     sync::Semaphore,
     task::{self, JoinHandle},
 };
-
-fn load_json_cache<K, V, F, G>(
-    dir_path: &str,
-    key_fn: F,
-    convert_key: G,
-) -> Result<FxHashMap<K, V>, SetupError>
-where
-    F: Fn(&PathBuf) -> Result<&str, SetupError>,
-    G: Fn(&str) -> Result<K, SetupError>,
-    V: DeserializeOwned,
-    K: Eq + Hash + 'static,
-{
-    let mut map: FxHashMap<K, V> = FxHashMap::default();
-    let read_dir: ReadDir =
-        fs::read_dir(dir_path).map_err(|e: io::Error| SetupError(e.to_string()))?;
-
-    for entry in read_dir {
-        let path_buf: PathBuf = entry
-            .map_err(|e: io::Error| SetupError(e.to_string()))?
-            .path();
-        let path_name: &str = path_buf
-            .to_str()
-            .ok_or_else(|| SetupError("fn[load_json_map]: Invalid path".to_string()))?;
-        let file_key_str: &str = key_fn(&path_buf)?;
-        let file_key: K = convert_key(file_key_str)?;
-        let data: V = read_json_file(path_name)?;
-        map.insert(file_key, data);
-    }
-
-    Ok(map)
-}
-
-fn load_optional_json_cache<T: Default + DeserializeOwned>(path: &str) -> T {
-    if Path::new(path).exists() {
-        read_json_file::<T>(path).unwrap()
-    } else {
-        T::default()
-    }
-}
-
-/// Syncronously loads all the cache that will live in memory through the entire execution
-#[writer_macros::trace_time]
-pub fn load_cache() -> Result<GlobalCache, SetupError> {
-    let champions: FxHashMap<String, Champion> = load_json_cache(
-        "internal/champions",
-        |path| Ok(extract_file_name(path)),
-        |s| Ok(s.to_string()),
-    )?;
-
-    let items: FxHashMap<usize, Item> = load_json_cache(
-        "internal/items",
-        |path| Ok(extract_file_name(path)),
-        |s| {
-            s.parse::<usize>()
-                .map_err(|e: ParseIntError| SetupError(e.to_string()))
-        },
-    )?;
-
-    let champion_names: FxHashMap<String, String> =
-        load_optional_json_cache("internal/champion_names.json");
-    let meta_items: FxHashMap<String, Positions> =
-        load_optional_json_cache("internal/meta_items.json");
-    let runes: FxHashMap<usize, Rune> = load_optional_json_cache("internal/runes.json");
-    let simulated_items = items
-        .iter()
-        .filter_map(|(item_id, item)| match *item_id {
-            3000..8000 => (item.tier >= 3).then(|| *item_id),
-            _ => None,
-        })
-        .collect::<Vec<usize>>();
-
-    Ok(GlobalCache {
-        champions,
-        items,
-        runes,
-        champion_names,
-        meta_items,
-        simulated_items,
-    })
-}
 
 /// Takes an instance parameter and uses CDN API to get its data and save to file system.
 #[writer_macros::trace_time]

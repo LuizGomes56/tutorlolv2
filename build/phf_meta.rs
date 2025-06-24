@@ -11,30 +11,28 @@ pub struct Positions {
 }
 
 pub fn global_phf_internal_meta_items(out_dir: &str) {
-    let content = fs::read_to_string("internal/meta_items.json").unwrap();
-    let meta_items_map = serde_json::from_str::<HashMap<String, Positions>>(&content).unwrap();
-
     let out_path = Path::new(&out_dir).join("internal_meta.rs");
-
     let mut phf_map_contents = String::from(
         "pub static META_ITEMS: ::phf::Map<&'static str, &'static CachedMetaItem> = ::phf::phf_map! {\n",
     );
     let mut consts_decl = String::new();
 
-    for (key, item) in &meta_items_map {
-        macro_rules! join_usize {
-            ($field:ident) => {
-                item.$field
-                    .iter()
-                    .map(|x| format!("{}", x))
-                    .collect::<Vec<String>>()
-                    .join(", ")
-            };
-        }
+    if let Some(content) = fs::read_to_string("internal/meta_items.json").ok() {
+        let meta_items_map = serde_json::from_str::<HashMap<String, Positions>>(&content).unwrap();
+        for (key, item) in &meta_items_map {
+            macro_rules! join_usize {
+                ($field:ident) => {
+                    item.$field
+                        .iter()
+                        .map(|x| format!("{}", x))
+                        .collect::<Vec<String>>()
+                        .join(", ")
+                };
+            }
 
-        phf_map_contents.push_str(&format!("\t\"{}\" => &META_{},\n", key, key.to_uppercase()));
-        consts_decl.push_str(&format!(
-            r#"pub const META_{}: CachedMetaItem = CachedMetaItem {{
+            phf_map_contents.push_str(&format!("\t\"{}\" => &META_{},\n", key, key.to_uppercase()));
+            consts_decl.push_str(&format!(
+                r#"pub const META_{}: CachedMetaItem = CachedMetaItem {{
     top: &[{}],
     mid: &[{}],
     jungle: &[{}],
@@ -43,13 +41,14 @@ pub fn global_phf_internal_meta_items(out_dir: &str) {
 }};
             
 "#,
-            key.to_uppercase(),
-            join_usize!(top),
-            join_usize!(mid),
-            join_usize!(jungle),
-            join_usize!(adc),
-            join_usize!(support)
-        ));
+                key.to_uppercase(),
+                join_usize!(top),
+                join_usize!(mid),
+                join_usize!(jungle),
+                join_usize!(adc),
+                join_usize!(support)
+            ));
+        }
     }
 
     phf_map_contents.push_str("};\n");

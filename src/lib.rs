@@ -20,14 +20,13 @@ use dotenvy::dotenv;
 use middlewares::{
     error::json_error_middleware, logger::logger_middleware, password::password_middleware,
 };
-use model::{application::GlobalCache, cache::*};
+use model::cache::*;
 use once_cell::sync::Lazy;
 use reqwest::Client;
 use server::{
     formulas::*, games::*, images::*, internal::*, schemas::APIResponse, setup::*, statics::*,
     update::*,
 };
-use setup::cache::load_cache;
 use sqlx::{Pool, Postgres, postgres::PgPoolOptions};
 use std::{env, io};
 
@@ -36,6 +35,15 @@ include!(concat!(env!("OUT_DIR"), "/internal_items.rs"));
 include!(concat!(env!("OUT_DIR"), "/internal_runes.rs"));
 include!(concat!(env!("OUT_DIR"), "/internal_meta.rs"));
 include!(concat!(env!("OUT_DIR"), "/internal_names.rs"));
+
+pub const GLOBAL_CACHE: GlobalCache = GlobalCache {
+    champions: &INTERNAL_CHAMPIONS,
+    items: &INTERNAL_ITEMS,
+    runes: &INTERNAL_RUNES,
+    meta_items: &META_ITEMS,
+    champion_names: &INTERNAL_NAMES,
+    simulated_items: &[4645],
+};
 
 pub struct EnvConfig {
     pub lol_version: String,
@@ -67,8 +75,6 @@ impl EnvConfig {
     }
 }
 
-pub static GLOBAL_CACHE: Lazy<&'static GlobalCache> =
-    Lazy::new(|| Box::leak(Box::new(load_cache().unwrap_or_default())));
 pub static ENV_CONFIG: Lazy<EnvConfig> = Lazy::new(EnvConfig::new);
 
 pub struct AppState {

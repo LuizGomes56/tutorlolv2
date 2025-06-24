@@ -106,26 +106,26 @@ fn format_abilities(abilities: &HashMap<String, Ability>) -> String {
 
 pub fn global_phf_internal_champions(out_dir: &str) {
     let mut internal_champions_map = HashMap::new();
-
-    for entry in fs::read_dir("internal/champions").unwrap() {
-        let path = entry.unwrap().path();
-        let file_stem = path.file_stem().unwrap();
-        let file_name = file_stem.to_str().unwrap();
-        let content = fs::read_to_string(&path).unwrap();
-        let parsed = serde_json::from_str::<Champion>(&content).unwrap();
-        internal_champions_map.insert(file_name.to_owned(), parsed);
-    }
-
     let out_path = Path::new(&out_dir).join("internal_champions.rs");
     let mut phf_map_contents = String::from(
         "pub static INTERNAL_CHAMPIONS: ::phf::Map<&'static str, &'static CachedChampion> = ::phf::phf_map! {\n",
     );
     let mut consts_decl = String::new();
 
-    for (key, champion) in &internal_champions_map {
-        phf_map_contents.push_str(&format!("\t\"{}\" => &{},\n", key, key.to_uppercase()));
-        consts_decl.push_str(&format!(
-            r#"pub const {}: CachedChampion = CachedChampion {{
+    if let Some(dir) = fs::read_dir("internal/champions").ok() {
+        for entry in dir {
+            let path = entry.unwrap().path();
+            let file_stem = path.file_stem().unwrap();
+            let file_name = file_stem.to_str().unwrap();
+            let content = fs::read_to_string(&path).unwrap();
+            let parsed = serde_json::from_str::<Champion>(&content).unwrap();
+            internal_champions_map.insert(file_name.to_owned(), parsed);
+        }
+
+        for (key, champion) in &internal_champions_map {
+            phf_map_contents.push_str(&format!("\t\"{}\" => &{},\n", key, key.to_uppercase()));
+            consts_decl.push_str(&format!(
+                r#"pub const {}: CachedChampion = CachedChampion {{
     name: "{}",
     adaptative_type: "{}",
     attack_type: "{}",
@@ -139,14 +139,15 @@ pub fn global_phf_internal_champions(out_dir: &str) {
 }};
 
 "#,
-            key.to_uppercase(),
-            champion.name,
-            champion.adaptative_type,
-            champion.attack_type,
-            champion.positions.join("\", \""),
-            format_stats(&champion.stats),
-            format_abilities(&champion.abilities),
-        ));
+                key.to_uppercase(),
+                champion.name,
+                champion.adaptative_type,
+                champion.attack_type,
+                champion.positions.join("\", \""),
+                format_stats(&champion.stats),
+                format_abilities(&champion.abilities),
+            ));
+        }
     }
 
     phf_map_contents.push_str("};\n");
