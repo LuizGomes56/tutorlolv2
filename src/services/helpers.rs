@@ -2,11 +2,11 @@ use crate::{
     GLOBAL_CACHE,
     model::{
         base::{AdaptativeType, BasicStats, ComparedItem, DamageExpression, GenericStats, Stats},
-        cache::{CachedChampion, CachedItem},
+        cache::{CachedChampion, CachedItem, EvalContext},
         calculator::AbilitiesX,
         realtime::DragonMultipliers,
     },
-    services::eval::RiotFormulas,
+    services::riot_formulas::RiotFormulas,
 };
 use rustc_hash::FxHashMap;
 
@@ -35,27 +35,24 @@ pub fn get_simulated_champion_stats<'a>(
             if owned_items.contains(item_id) {
                 return None;
             }
-            if let Some(item) = GLOBAL_CACHE.items.get(item_id) {
-                let expected_stats =
-                    simulate_champion_stats(item, current_stats, &ally_dragon_multipliers);
-                Some((
-                    (*item_id, expected_stats),
-                    (
-                        *item_id,
-                        ComparedItem {
-                            name: &item.name,
-                            gold_cost: item.gold,
-                            prettified_stats: item
-                                .prettified_stats
-                                .iter()
-                                .map(|(key, val)| (*key, *val))
-                                .collect(),
-                        },
-                    ),
-                ))
-            } else {
-                None
-            }
+            let item = GLOBAL_CACHE.items.get(item_id)?;
+            let expected_stats =
+                simulate_champion_stats(item, current_stats, &ally_dragon_multipliers);
+            Some((
+                (*item_id, expected_stats),
+                (
+                    *item_id,
+                    ComparedItem {
+                        name: &item.name,
+                        gold_cost: item.gold,
+                        prettified_stats: item
+                            .prettified_stats
+                            .iter()
+                            .map(|(key, val)| (*key, *val))
+                            .collect(),
+                    },
+                ),
+            ))
         })
         .collect()
 }
@@ -104,47 +101,45 @@ pub fn simulate_champion_stats(
 pub fn get_items_damage(
     current_player_items: &[usize],
     is_ranged: bool,
-) -> impl Iterator<Item = (usize, DamageExpression)> {
-    current_player_items.into_iter().filter_map(move |item_id| {
-        if let Some(item) = GLOBAL_CACHE.items.get(item_id) {
+) -> Vec<(usize, DamageExpression)> {
+    current_player_items
+        .into_iter()
+        .filter_map(move |item_id| {
+            let item = GLOBAL_CACHE.items.get(item_id)?;
             let item_damage = if is_ranged { &item.ranged } else { &item.melee };
-            if let Some(damage) = item_damage {
-                Some((
-                    *item_id,
-                    DamageExpression {
-                        damage_type: item.damage_type.unwrap_or("UNKNOWN"),
-                        minimum_damage: damage.minimum_damage,
-                        maximum_damage: damage.maximum_damage,
-                    },
-                ))
-            } else {
-                None
-            }
-        } else {
-            None
-        }
-    })
+            Some((
+                *item_id,
+                DamageExpression {
+                    level: 0,
+                    damage_type: item.damage_type.unwrap_or("UNKNOWN"),
+                    minimum_damage: item_damage.minimum_damage,
+                    maximum_damage: item_damage.maximum_damage,
+                },
+            ))
+        })
+        .collect()
 }
 
 pub fn get_runes_damage(
     current_player_runes: &[usize],
     is_ranged: bool,
-) -> impl Iterator<Item = (usize, DamageExpression)> {
-    current_player_runes.into_iter().filter_map(move |rune_id| {
-        if let Some(rune) = GLOBAL_CACHE.runes.get(rune_id) {
+) -> Vec<(usize, DamageExpression)> {
+    current_player_runes
+        .into_iter()
+        .filter_map(move |rune_id| {
+            let rune = GLOBAL_CACHE.runes.get(rune_id)?;
             let minimum_damage = if is_ranged { rune.ranged } else { rune.melee };
             Some((
                 *rune_id,
                 DamageExpression {
+                    level: 0,
                     damage_type: rune.damage_type,
-                    minimum_damage: Some(minimum_damage),
-                    maximum_damage: None,
+                    minimum_damage,
+                    maximum_damage: |_, _| 0.0,
                 },
             ))
-        } else {
-            None
-        }
-    })
+        })
+        .collect()
 }
 
 pub fn get_full_stats(
@@ -273,7 +268,7 @@ pub fn get_abilities_damage(
     current_player_cache: &&CachedChampion,
     current_player_level: usize,
     abilities: AbilitiesX,
-) -> impl Iterator<Item = (&'static str, DamageExpression)> {
+) -> Vec<(&'static str, DamageExpression)> {
     current_player_cache
         .abilities
         .iter()
@@ -291,38 +286,43 @@ pub fn get_abilities_damage(
             Some((
                 *key,
                 DamageExpression {
+                    level,
                     damage_type: value.damage_type,
-                    minimum_damage: value.minimum_damage.get(level - 1).copied(),
-                    maximum_damage: value.maximum_damage.get(level - 1).copied(),
+                    minimum_damage: value.minimum_damage,
+                    maximum_damage: value.maximum_damage,
                 },
             ))
         })
         .chain(std::iter::once((
             "A",
             DamageExpression {
+                level: 0,
                 damage_type: "PHYSICAL_DAMAGE",
-                minimum_damage: Some("AD * PHYSICAL_MULTIPLIER * PHYSICAL_MODIFIER"),
-                maximum_damage: None,
+                minimum_damage: |_, ctx: &EvalContext| ctx.AD * ctx.PHYSICAL_MULTIPLIER,
+                maximum_damage: |_, _| 0.0,
             },
         )))
         .chain(std::iter::once((
             "C",
             DamageExpression {
+                level: 0,
                 damage_type: "PHYSICAL_DAMAGE",
-                minimum_damage: Some("AD * PHYSICAL_MULTIPLIER * PHYSICAL_MODIFIER * CRIT_DAMAGE"),
-                maximum_damage: None,
+                minimum_damage: |_, ctx: &EvalContext| {
+                    ctx.AD * ctx.PHYSICAL_MULTIPLIER * ctx.CRIT_DAMAGE
+                },
+                maximum_damage: |_, _| 0.0,
             },
         )))
+        .collect()
 }
 
 // #![unsupported] Champion stacks are ignored.
 /// current_player_state: (CurrentStats, BaseStats, BonusStats, Level)
 /// enemy_state:(CurrentStats, BonusStats, GenericStats)
-pub fn replace_damage_keywords(
+pub fn get_eval_ctx(
     current_player_state: (Stats, BasicStats, BasicStats, usize),
     enemy_state: (BasicStats, BasicStats, GenericStats),
-    target_str: &str,
-) -> String {
+) -> EvalContext {
     let (enemy_current_stats, enemy_bonus_stats, generic_stats) = enemy_state;
     let (
         current_player_stats,
@@ -330,104 +330,69 @@ pub fn replace_damage_keywords(
         current_player_bonus_stats,
         current_player_level,
     ) = current_player_state;
-    let replacements = [
-        ("CHOGATH_STACKS", 1.0),
-        ("VEIGAR_STACKS", 1.0),
-        ("NASUS_STACKS", 1.0),
-        ("SMOLDER_STACKS", 1.0),
-        ("AURELION_SOL_STACKS", 1.0),
-        ("THRESH_STACKS", 1.0),
-        ("KINDRED_STACKS", 1.0),
-        ("BELVETH_STACKS", 1.0),
-        (
-            "ADAPTATIVE_DAMAGE",
-            match RiotFormulas::adaptative_type(
-                current_player_stats.attack_damage,
-                current_player_stats.ability_power,
-            ) {
-                AdaptativeType::Physical => generic_stats.armor_mod,
-                AdaptativeType::Magic => generic_stats.magic_mod,
-            },
-        ),
-        ("LEVEL", current_player_level as f64),
-        ("PHYSICAL_MULTIPLIER", generic_stats.armor_mod),
-        ("MAGIC_MULTIPLIER", generic_stats.magic_mod),
+    EvalContext {
+        CHOGATH_STACKS: 1.0,
+        VEIGAR_STACKS: 1.0,
+        NASUS_STACKS: 1.0,
+        SMOLDER_STACKS: 1.0,
+        AURELION_SOL_STACKS: 1.0,
+        THRESH_STACKS: 1.0,
+        KINDRED_STACKS: 1.0,
+        BELVETH_STACKS: 1.0,
+        ADAPTATIVE_DAMAGE: match RiotFormulas::adaptative_type(
+            current_player_stats.attack_damage,
+            current_player_stats.ability_power,
+        ) {
+            AdaptativeType::Physical => generic_stats.armor_mod,
+            AdaptativeType::Magic => generic_stats.magic_mod,
+        },
+        LEVEL: current_player_level as f64,
+        PHYSICAL_MULTIPLIER: generic_stats.armor_mod,
+        MAGIC_MULTIPLIER: generic_stats.magic_mod,
         // #![manual_impl]
-        (
-            "STEELCAPS_EFFECT",
-            if generic_stats.steelcaps { 0.88 } else { 1.0 },
-        ),
+        STEELCAPS_EFFECT: if generic_stats.steelcaps { 0.88 } else { 1.0 },
         // #![manual_impl]
-        (
-            "RANDUIN_EFFECT",
-            if generic_stats.randuin { 0.7 } else { 1.0 },
-        ),
+        RANDUIN_EFFECT: if generic_stats.randuin { 0.7 } else { 1.0 },
         // #![manual_impl]
-        (
-            "ROCKSOLID_EFFECT",
-            if generic_stats.rocksolid { 0.8 } else { 1.0 },
-        ),
-        ("ENEMY_BONUS_HEALTH", enemy_bonus_stats.health),
-        ("ENEMY_ARMOR", enemy_current_stats.armor),
-        ("ENEMY_MAX_HEALTH", enemy_current_stats.health),
-        ("ENEMY_HEALTH", enemy_current_stats.health),
-        ("ENEMY_CURRENT_HEALTH", enemy_current_stats.health),
-        ("ENEMY_MISSING_HEALTH", enemy_current_stats.health),
-        ("ENEMY_MAGIC_RESIST", enemy_current_stats.magic_resist),
-        ("BASE_HEALTH", current_player_base_stats.health),
-        ("BASE_AD", current_player_base_stats.attack_damage),
-        ("BASE_ARMOR", current_player_base_stats.armor),
-        ("BASE_MAGIC_RESIST", current_player_base_stats.magic_resist),
-        ("BASE_MANA", current_player_base_stats.mana),
-        ("BONUS_AD", current_player_bonus_stats.attack_damage),
-        ("BONUS_ARMOR", current_player_bonus_stats.armor),
-        (
-            "BONUS_MAGIC_RESIST",
-            current_player_bonus_stats.magic_resist,
-        ),
-        ("BONUS_HEALTH", current_player_bonus_stats.health),
-        ("BONUS_MANA", current_player_bonus_stats.mana),
+        ROCKSOLID_EFFECT: if generic_stats.rocksolid { 0.8 } else { 1.0 },
+        ENEMY_BONUS_HEALTH: enemy_bonus_stats.health,
+        ENEMY_ARMOR: enemy_current_stats.armor,
+        ENEMY_MAX_HEALTH: enemy_current_stats.health,
+        ENEMY_HEALTH: enemy_current_stats.health,
+        ENEMY_CURRENT_HEALTH: enemy_current_stats.health,
+        ENEMY_MISSING_HEALTH: enemy_current_stats.health,
+        ENEMY_MAGIC_RESIST: enemy_current_stats.magic_resist,
+        BASE_HEALTH: current_player_base_stats.health,
+        BASE_AD: current_player_base_stats.attack_damage,
+        BASE_ARMOR: current_player_base_stats.armor,
+        BASE_MAGIC_RESIST: current_player_base_stats.magic_resist,
+        BASE_MANA: current_player_base_stats.mana,
+        BONUS_AD: current_player_bonus_stats.attack_damage,
+        BONUS_ARMOR: current_player_bonus_stats.armor,
+        BONUS_MAGIC_RESIST: current_player_bonus_stats.magic_resist,
+        BONUS_HEALTH: current_player_bonus_stats.health,
+        BONUS_MANA: current_player_bonus_stats.mana,
         // #![unsupported]
-        ("BONUS_MOVE_SPEED", 1.0),
-        (
-            "ARMOR_PENETRATION_FLAT",
-            current_player_stats.armor_penetration_flat,
-        ),
-        (
-            "ARMOR_PENETRATION_PERCENT",
-            current_player_stats.armor_penetration_percent,
-        ),
-        (
-            "MAGIC_PENETRATION_FLAT",
-            current_player_stats.magic_penetration_flat,
-        ),
-        (
-            "MAGIC_PENETRATION_PERCENT",
-            current_player_stats.magic_penetration_percent,
-        ),
-        ("MAX_MANA", current_player_stats.max_mana),
-        ("CURRENT_MANA", current_player_stats.current_mana),
-        ("MAX_HEALTH", current_player_stats.max_health),
-        ("CURRENT_HEALTH", current_player_stats.current_health),
-        ("ARMOR", current_player_stats.armor),
-        ("MAGIC_RESIST", current_player_stats.magic_resist),
-        ("CRIT_CHANCE", current_player_stats.crit_chance),
-        ("CRIT_DAMAGE", current_player_stats.crit_damage),
-        ("ATTACK_SPEED", current_player_stats.attack_speed),
-        (
-            "MISSING_HEALTH",
-            1.0 - (current_player_stats.current_health
+        BONUS_MOVE_SPEED: 1.0,
+        ARMOR_PENETRATION_FLAT: current_player_stats.armor_penetration_flat,
+        ARMOR_PENETRATION_PERCENT: current_player_stats.armor_penetration_percent,
+        MAGIC_PENETRATION_FLAT: current_player_stats.magic_penetration_flat,
+        MAGIC_PENETRATION_PERCENT: current_player_stats.magic_penetration_percent,
+        MAX_MANA: current_player_stats.max_mana,
+        CURRENT_MANA: current_player_stats.current_mana,
+        MAX_HEALTH: current_player_stats.max_health,
+        CURRENT_HEALTH: current_player_stats.current_health,
+        ARMOR: current_player_stats.armor,
+        MAGIC_RESIST: current_player_stats.magic_resist,
+        CRIT_CHANCE: current_player_stats.crit_chance,
+        CRIT_DAMAGE: current_player_stats.crit_damage,
+        ATTACK_SPEED: current_player_stats.attack_speed,
+        MISSING_HEALTH: 1.0
+            - (current_player_stats.current_health
                 / current_player_stats.max_health.clamp(1.0, CLAMP_F64_MAX)),
-        ),
-        ("AP", current_player_stats.ability_power),
-        ("AD", current_player_stats.attack_damage),
-    ];
-
-    replacements
-        .iter()
-        .fold(target_str.to_string(), |acc, (old, new)| {
-            acc.replace(old, &new.to_string())
-        })
+        AP: current_player_stats.ability_power,
+        AD: current_player_stats.attack_damage,
+    }
 }
 
 /// Returns the difference between current stats and base stats

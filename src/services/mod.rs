@@ -1,6 +1,6 @@
 pub(crate) mod calculator;
-pub mod eval;
 mod helpers;
 pub(crate) mod realtime;
+mod riot_formulas;
 
 use helpers::*;

@@ -1,9 +1,9 @@
-#![allow(dead_code)]
+#![allow(dead_code, unused_parens, unused_variables)]
 
 mod middlewares;
 mod model;
 mod server;
-pub mod services;
+mod services;
 pub mod setup;
 pub mod writers;
 

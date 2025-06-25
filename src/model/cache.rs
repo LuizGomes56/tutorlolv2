@@ -1,3 +1,56 @@
+#[allow(non_snake_case)]
+pub struct EvalContext {
+    pub CHOGATH_STACKS: f64,
+    pub VEIGAR_STACKS: f64,
+    pub NASUS_STACKS: f64,
+    pub SMOLDER_STACKS: f64,
+    pub AURELION_SOL_STACKS: f64,
+    pub THRESH_STACKS: f64,
+    pub KINDRED_STACKS: f64,
+    pub BELVETH_STACKS: f64,
+    pub ADAPTATIVE_DAMAGE: f64,
+    pub LEVEL: f64,
+    pub PHYSICAL_MULTIPLIER: f64,
+    pub MAGIC_MULTIPLIER: f64,
+    pub STEELCAPS_EFFECT: f64,
+    pub RANDUIN_EFFECT: f64,
+    pub ROCKSOLID_EFFECT: f64,
+    pub ENEMY_BONUS_HEALTH: f64,
+    pub ENEMY_ARMOR: f64,
+    pub ENEMY_MAX_HEALTH: f64,
+    pub ENEMY_HEALTH: f64,
+    pub ENEMY_CURRENT_HEALTH: f64,
+    pub ENEMY_MISSING_HEALTH: f64,
+    pub ENEMY_MAGIC_RESIST: f64,
+    pub BASE_HEALTH: f64,
+    pub BASE_AD: f64,
+    pub BASE_ARMOR: f64,
+    pub BASE_MAGIC_RESIST: f64,
+    pub BASE_MANA: f64,
+    pub BONUS_AD: f64,
+    pub BONUS_ARMOR: f64,
+    pub BONUS_MAGIC_RESIST: f64,
+    pub BONUS_HEALTH: f64,
+    pub BONUS_MANA: f64,
+    pub BONUS_MOVE_SPEED: f64,
+    pub ARMOR_PENETRATION_FLAT: f64,
+    pub ARMOR_PENETRATION_PERCENT: f64,
+    pub MAGIC_PENETRATION_FLAT: f64,
+    pub MAGIC_PENETRATION_PERCENT: f64,
+    pub MAX_MANA: f64,
+    pub CURRENT_MANA: f64,
+    pub MAX_HEALTH: f64,
+    pub CURRENT_HEALTH: f64,
+    pub ARMOR: f64,
+    pub MAGIC_RESIST: f64,
+    pub CRIT_CHANCE: f64,
+    pub CRIT_DAMAGE: f64,
+    pub ATTACK_SPEED: f64,
+    pub MISSING_HEALTH: f64,
+    pub AP: f64,
+    pub AD: f64,
+}
+
 pub struct CachedChampion {
     pub name: &'static str,
     pub adaptative_type: &'static str,
@@ -11,8 +64,8 @@ pub struct CachedChampionAbility {
     pub name: &'static str,
     pub damage_type: &'static str,
     pub damages_in_area: bool,
-    pub minimum_damage: &'static [&'static str],
-    pub maximum_damage: &'static [&'static str],
+    pub minimum_damage: fn(usize, &EvalContext) -> f64,
+    pub maximum_damage: fn(usize, &EvalContext) -> f64,
 }
 
 pub struct CachedChampionStatsMap {
@@ -39,8 +92,8 @@ pub struct CachedChampionStats {
 }
 
 pub struct CachedItemDamages {
-    pub minimum_damage: Option<&'static str>,
-    pub maximum_damage: Option<&'static str>,
+    pub minimum_damage: fn(usize, &EvalContext) -> f64,
+    pub maximum_damage: fn(usize, &EvalContext) -> f64,
 }
 
 pub struct CachedItem {
@@ -52,8 +105,8 @@ pub struct CachedItem {
     pub stats: CachedItemStats,
     pub builds_from: &'static [usize],
     pub levelings: Option<&'static [usize]>,
-    pub ranged: Option<CachedItemDamages>,
-    pub melee: Option<CachedItemDamages>,
+    pub ranged: CachedItemDamages,
+    pub melee: CachedItemDamages,
     pub damages_onhit: bool,
 }
 
@@ -68,8 +121,8 @@ pub struct CachedMetaItem {
 pub struct CachedRune {
     pub name: &'static str,
     pub damage_type: &'static str,
-    pub ranged: &'static str,
-    pub melee: &'static str,
+    pub ranged: fn(usize, &EvalContext) -> f64,
+    pub melee: fn(usize, &EvalContext) -> f64,
 }
 
 pub struct CachedItemStats {

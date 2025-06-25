@@ -5,7 +5,7 @@ use crate::{
         base::{AdaptativeType, AttackType, BasicStats, Stats},
         calculator::{ActivePlayerX, Calculator, GameX},
     },
-    services::eval::RiotFormulas,
+    services::riot_formulas::RiotFormulas,
 };
 use rustc_hash::FxHashMap;
 

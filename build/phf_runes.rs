@@ -1,3 +1,4 @@
+use super::transform_expr;
 use serde::Deserialize;
 use std::{collections::HashMap, fs, path::Path};
 
@@ -25,12 +26,16 @@ pub fn global_phf_internal_runes(out_dir: &str) {
                 r#"pub const RUNE_{}: CachedRune = CachedRune {{
     name: "{}",
     damage_type: "{}",
-    ranged: "{}",
-    melee: "{}",
+    ranged: {},
+    melee: {},
 }};
             
 "#,
-                key, rune.name, rune.damage_type, rune.ranged, rune.melee
+                key,
+                rune.name,
+                rune.damage_type,
+                format!("|_, ctx: &EvalContext| {}", transform_expr(&rune.ranged)),
+                format!("|_, ctx: &EvalContext| {}", transform_expr(&rune.melee)),
             ));
         }
     }

@@ -1,3 +1,4 @@
+use super::transform_expr;
 use serde::Deserialize;
 use serde_json::Value;
 use std::{collections::HashMap, fs, path::Path};
@@ -71,12 +72,15 @@ fn format_damage_object(damage_object: &Option<DamageObject>) -> String {
         ($field:ident) => {
             if let Some(damage_object) = damage_object {
                 if damage_object.$field.is_none() {
-                    String::from("None")
+                    String::from("|_, _| 0.0")
                 } else {
-                    format!("Some({})", damage_object.$field.clone().unwrap().as_str())
+                    format!(
+                        "|_, ctx: &EvalContext| {}",
+                        transform_expr(damage_object.$field.clone().unwrap().as_str())
+                    )
                 }
             } else {
-                String::from("None")
+                String::from("|_, _| 0.0")
             }
         };
     }
@@ -155,15 +159,15 @@ pub fn global_phf_internal_items(out_dir: &str) {
                 continue;
             }
             let usize_v = usize_key.unwrap();
-            if item.tier >= 3 {
-                match usize_v {
-                    0..8000 => {
-                        siml_items_size += 1;
-                        items_vec.push(usize_v.to_string());
-                    }
-                    _ => {}
-                }
-            }
+            // if item.tier >= 3 {
+            //     match usize_v {
+            //         0..8000 => {
+            siml_items_size += 1;
+            items_vec.push(usize_v.to_string());
+            //         }
+            //         _ => {}
+            //     }
+            // }
             phf_map_contents.push_str(&format!("\t{}usize => &ITEM_{},\n", key, key));
             consts_decl.push_str(&format!(
                 r#"pub const ITEM_{}: CachedItem = CachedItem {{
@@ -172,8 +176,8 @@ pub fn global_phf_internal_items(out_dir: &str) {
     tier: {},
     damage_type: {},
     damages_onhit: {},
-    ranged: Some({}),
-    melee: Some({}),
+    ranged: {},
+    melee: {},
     builds_from: &[{}],
     levelings: {},
     prettified_stats: &[{}],

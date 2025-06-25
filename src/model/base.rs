@@ -1,3 +1,5 @@
+use crate::model::cache::EvalContext;
+
 use super::riot::RiotChampionStats;
 use rustc_hash::FxHashMap;
 use serde::{Deserialize, Serialize};
@@ -142,8 +144,10 @@ pub struct GenericStats {
     pub randuin: bool,
 }
 
+#[derive(Copy, Clone)]
 pub struct DamageExpression {
+    pub level: usize,
     pub damage_type: &'static str,
-    pub minimum_damage: Option<&'static str>,
-    pub maximum_damage: Option<&'static str>,
+    pub minimum_damage: fn(usize, &EvalContext) -> f64,
+    pub maximum_damage: fn(usize, &EvalContext) -> f64,
 }
