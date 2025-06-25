@@ -42,7 +42,7 @@ pub const GLOBAL_CACHE: GlobalCache = GlobalCache {
     runes: &INTERNAL_RUNES,
     meta_items: &META_ITEMS,
     champion_names: &INTERNAL_NAMES,
-    simulated_items: &[4645],
+    simulated_items: &SIMULATED_ITEMS,
 };
 
 pub struct EnvConfig {

@@ -6,7 +6,7 @@ use rustc_hash::FxHashMap;
 pub async fn static_champions() -> impl Responder {
     let data = GLOBAL_CACHE
         .champion_names
-        .iter()
+        .entries()
         .map(|(k, v)| (v, k))
         .collect::<FxHashMap<_, _>>();
     HttpResponse::Ok().json(APIResponse {
@@ -20,7 +20,7 @@ pub async fn static_champions() -> impl Responder {
 pub async fn static_items() -> impl Responder {
     let data = GLOBAL_CACHE
         .items
-        .iter()
+        .entries()
         .map(|(item_id, value)| (item_id, &value.name))
         .collect::<FxHashMap<_, _>>();
     HttpResponse::Ok().json(APIResponse {
@@ -34,7 +34,7 @@ pub async fn static_items() -> impl Responder {
 pub async fn static_runes() -> impl Responder {
     let data = GLOBAL_CACHE
         .runes
-        .iter()
+        .entries()
         .map(|(rune_id, value)| (rune_id, &value.name))
         .collect::<FxHashMap<_, _>>();
     HttpResponse::Ok().json(APIResponse {

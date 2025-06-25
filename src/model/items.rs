@@ -1,7 +1,14 @@
-use super::realtime::DamageObject;
 use rustc_hash::FxHashMap;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
+
+#[derive(Deserialize, Serialize, Clone)]
+pub struct DamageObject {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub minimum_damage: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub maximum_damage: Option<String>,
+}
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]

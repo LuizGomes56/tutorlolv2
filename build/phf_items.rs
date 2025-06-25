@@ -132,6 +132,9 @@ pub fn global_phf_internal_items(out_dir: &str) {
     let mut phf_map_contents = String::from(
         "pub static INTERNAL_ITEMS: ::phf::Map<usize, &'static CachedItem> = ::phf::phf_map! {\n",
     );
+    let mut siml_items_decl = String::from("const SIMULATED_ITEMS: [usize; ");
+    let mut siml_items_size = 0;
+    let mut items_vec = Vec::<String>::new();
     let mut consts_decl = String::new();
 
     if let Some(dir) = fs::read_dir("internal/items").ok() {
@@ -147,6 +150,20 @@ pub fn global_phf_internal_items(out_dir: &str) {
         }
 
         for (key, item) in &internal_items_map {
+            let usize_key = key.parse::<usize>().ok();
+            if usize_key.is_none() {
+                continue;
+            }
+            let usize_v = usize_key.unwrap();
+            if item.tier >= 3 {
+                match usize_v {
+                    0..8000 => {
+                        siml_items_size += 1;
+                        items_vec.push(usize_v.to_string());
+                    }
+                    _ => {}
+                }
+            }
             phf_map_contents.push_str(&format!("\t{}usize => &ITEM_{},\n", key, key));
             consts_decl.push_str(&format!(
                 r#"pub const ITEM_{}: CachedItem = CachedItem {{
@@ -200,8 +217,18 @@ pub fn global_phf_internal_items(out_dir: &str) {
         }
     }
 
+    siml_items_decl.push_str(&format!(
+        "{}] = [\n\t{}\n];",
+        siml_items_size,
+        items_vec
+            .iter()
+            .map(|v| v.to_string())
+            .collect::<Vec<_>>()
+            .join(",\n\t")
+    ));
+
     phf_map_contents.push_str("};\n");
 
-    let final_content = format!("{}{}", consts_decl, phf_map_contents);
+    let final_content = format!("{}{}\n{}", consts_decl, phf_map_contents, siml_items_decl);
     fs::write(out_path, final_content).unwrap();
 }

@@ -1,4 +1,3 @@
-pub mod application;
 pub mod base;
 pub mod cache;
 pub mod calculator;
