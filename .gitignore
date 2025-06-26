@@ -6,6 +6,7 @@
 *.js
 *.txt
 *.pdf
+*.svg
 target
 internal
 cache

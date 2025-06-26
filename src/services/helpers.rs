@@ -45,11 +45,7 @@ pub fn get_simulated_champion_stats<'a>(
                     ComparedItem {
                         name: &item.name,
                         gold_cost: item.gold,
-                        prettified_stats: item
-                            .prettified_stats
-                            .iter()
-                            .map(|(key, val)| (*key, *val))
-                            .collect(),
+                        prettified_stats: item.prettified_stats.iter().copied().collect(),
                     },
                 ),
             ))
@@ -244,6 +240,7 @@ pub fn get_full_stats(
     (enemy_current_stats, enemy_bonus_stats, generic_stats)
 }
 
+#[inline]
 pub fn get_damage_multipliers(
     self_mod: (f64, f64, f64, f64),
     enemy_mod: (f64, f64, f64, f64),
@@ -308,7 +305,7 @@ pub fn get_abilities_damage(
                 level: 0,
                 damage_type: "PHYSICAL_DAMAGE",
                 minimum_damage: |_, ctx: &EvalContext| {
-                    ctx.AD * ctx.PHYSICAL_MULTIPLIER * ctx.CRIT_DAMAGE
+                    ctx.AD * ctx.PHYSICAL_MULTIPLIER * ctx.CRIT_DAMAGE / 100.0
                 },
                 maximum_damage: |_, _| 0.0,
             },

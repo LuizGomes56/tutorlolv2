@@ -28,9 +28,9 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, String> {
                 ..
             },
         all_players,
-        // events: RiotRealtimeEvents {
-        //     events: game_events,
-        // },
+        events: RiotRealtimeEvents {
+            events: game_events,
+        },
         ..
     } = game;
 
@@ -48,19 +48,20 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, String> {
             current_player_riot_id
         ))?;
 
+    let players_map = all_players
+        .iter()
+        .map(|player| {
+            (
+                player.riot_id.split('#').next().unwrap_or_default(),
+                &player.team,
+            )
+        })
+        .collect::<FxHashMap<&str, &String>>();
+
+    let (enemy_dragon_multipliers, ally_dragon_multipliers) =
+        get_dragon_multipliers(game_events, players_map, current_player_team);
+
     // __print_time("Step 1");
-
-    let enemy_dragon_multipliers = DragonMultipliers {
-        earth: 1.0,
-        fire: 1.0,
-        chemtech: 1.0,
-    };
-
-    let ally_dragon_multipliers = DragonMultipliers {
-        earth: 1.0,
-        fire: 1.0,
-        chemtech: 1.0,
-    };
 
     let current_player_stats = current_player_riot_stats.to_stats();
 
@@ -157,13 +158,11 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, String> {
 
     // __print_time("Step 13");
 
-    let current_player_items_expr =
-        get_items_damage(&current_player_items, current_player_is_ranged);
+    let items_iter_expr = get_items_damage(&current_player_items, current_player_is_ranged);
 
     // __print_time("Step 14");
 
-    let current_player_runes_expr =
-        get_runes_damage(&current_player_runes, current_player_is_ranged);
+    let runes_iter_expr = get_runes_damage(&current_player_runes, current_player_is_ranged);
 
     // __print_time("Step 15");
 
@@ -292,7 +291,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, String> {
 
                 // __print_time("[ITERATOR] Step 19");
 
-                let items_damage = current_player_items_expr
+                let items_damage = items_iter_expr
                     .iter()
                     .copied()
                     .map(|(item_id, item_expr)| transform_expr!((item_id, item_expr)))
@@ -300,7 +299,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, String> {
 
                 // __print_time("[ITERATOR] Step 20");
 
-                let runes_damage = current_player_runes_expr
+                let runes_damage = runes_iter_expr
                     .iter()
                     .copied()
                     .map(|(rune_id, rune_expr)| transform_expr!((rune_id, rune_expr)))
@@ -355,7 +354,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, String> {
 
                         // __print_time(&format!("[CMP] [ITERATOR] [{}] Step 25", sim_item_id));
 
-                        let sim_items_damage = current_player_items_expr
+                        let sim_items_damage = items_iter_expr
                             .iter()
                             .copied()
                             .map(|(item_id, item_expr)| {
@@ -369,7 +368,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, String> {
 
                         // __print_time(&format!("[CMP] [ITERATOR] [{}] Step 26", sim_item_id));
 
-                        let sim_runes_damage = current_player_runes_expr
+                        let sim_runes_damage = runes_iter_expr
                             .iter()
                             .copied()
                             .map(|(rune_id, rune_expr)| {
@@ -433,21 +432,15 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, String> {
             damaging_items: current_player_items
                 .into_iter()
                 .filter_map(|item_id| {
-                    if let Some(item) = GLOBAL_CACHE.items.get(&item_id) {
-                        Some((item_id, item.name))
-                    } else {
-                        None
-                    }
+                    let item = GLOBAL_CACHE.items.get(&item_id)?;
+                    Some((item_id, item.name))
                 })
                 .collect(),
             damaging_runes: current_player_runes
                 .into_iter()
                 .filter_map(|rune_id| {
-                    if let Some(rune) = GLOBAL_CACHE.runes.get(&rune_id) {
-                        Some((rune_id, rune.name))
-                    } else {
-                        None
-                    }
+                    let rune = GLOBAL_CACHE.runes.get(&rune_id)?;
+                    Some((rune_id, rune.name))
                 })
                 .collect(),
             riot_id: &current_player_riot_id,
@@ -476,26 +469,23 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, String> {
     })
 }
 
-fn get_dragon_multipliers(
+fn get_dragon_multipliers<'a>(
     event_list: &[RealtimeEvent],
-    scoreboard: &[Scoreboard],
+    players: FxHashMap<&str, &String>,
     current_player_team: &str,
 ) -> (DragonMultipliers, DragonMultipliers) {
-    let mut ally_team = DragonMultipliers::new();
-    let mut enemy_team = DragonMultipliers::new();
+    let mut ally_effect = DragonMultipliers::new();
+    let mut enemy_effect = DragonMultipliers::new();
 
     for event in event_list {
         let (Some(killer), Some(dragon_type)) = (&event.killer_name, &event.dragon_type) else {
             continue;
         };
-        if let Some(player) = scoreboard
-            .iter()
-            .find(|p| &p.riot_id.split('#').next().unwrap_or_default() == killer)
-        {
-            let target = if player.team == current_player_team {
-                &mut ally_team
+        if let Some(&team) = players.get(killer.as_str()) {
+            let target = if team == current_player_team {
+                &mut ally_effect
             } else {
-                &mut enemy_team
+                &mut enemy_effect
             };
             match dragon_type.as_str() {
                 "Earth" => target.earth += EARTH_DRAGON_MULTIPLIER,
@@ -505,5 +495,5 @@ fn get_dragon_multipliers(
             }
         }
     }
-    (ally_team, enemy_team)
+    (ally_effect, enemy_effect)
 }
