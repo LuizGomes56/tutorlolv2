@@ -21,6 +21,8 @@ pub fn global_phf_internal_runes(out_dir: &str) {
         let internal_runes_map = serde_json::from_str::<HashMap<usize, Rune>>(&content).unwrap();
 
         for (key, rune) in &internal_runes_map {
+            let ranged_expr = transform_expr(&rune.ranged);
+            let melee_expr = transform_expr(&rune.melee);
             phf_map_contents.push_str(&format!("\t{}usize => &RUNE_{},\n", key, key));
             consts_decl.push_str(&format!(
                 r#"pub const RUNE_{}: CachedRune = CachedRune {{
@@ -34,8 +36,24 @@ pub fn global_phf_internal_runes(out_dir: &str) {
                 key,
                 rune.name,
                 rune.damage_type,
-                format!("|_, ctx: &EvalContext| {}", transform_expr(&rune.ranged)),
-                format!("|_, ctx: &EvalContext| {}", transform_expr(&rune.melee)),
+                format!(
+                    "|_, {}| {}",
+                    if ranged_expr.1 {
+                        "ctx: &EvalContext"
+                    } else {
+                        "_"
+                    },
+                    ranged_expr.0
+                ),
+                format!(
+                    "|_, {}| {}",
+                    if melee_expr.1 {
+                        "ctx: &EvalContext"
+                    } else {
+                        "_"
+                    },
+                    melee_expr.0
+                ),
             ));
         }
     }

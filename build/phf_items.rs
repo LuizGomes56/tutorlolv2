@@ -69,20 +69,19 @@ pub struct Item {
 
 fn format_damage_object(damage_object: &Option<DamageObject>) -> String {
     macro_rules! assign_value {
-        ($field:ident) => {
+        ($field:ident) => {{
             if let Some(damage_object) = damage_object {
-                if damage_object.$field.is_none() {
-                    String::from("|_, _| 0.0")
+                if let Some(raw) = damage_object.$field.as_ref().map(String::as_str) {
+                    let (expr, changed) = transform_expr(raw);
+                    let ctx_param = if changed { "ctx: &EvalContext" } else { "_" };
+                    format!("|_, {}| {}", ctx_param, expr)
                 } else {
-                    format!(
-                        "|_, ctx: &EvalContext| {}",
-                        transform_expr(damage_object.$field.clone().unwrap().as_str())
-                    )
+                    String::from("|_, _| 0.0")
                 }
             } else {
                 String::from("|_, _| 0.0")
             }
-        };
+        }};
     }
     format!(
         "CachedItemDamages {{ minimum_damage: {}, maximum_damage: {} }}",

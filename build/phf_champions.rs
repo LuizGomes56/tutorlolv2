@@ -100,15 +100,19 @@ fn format_abilities(abilities: &HashMap<String, Ability>) -> String {
                 if ability.$field.is_empty() {
                     $var.push_str("|_, _| 0.0");
                 } else {
-                    $var.push_str(
-                        "|level: usize, ctx: &EvalContext| -> f64 {\n\t\t\t\t\tmatch level {",
-                    );
-                    for (i, dmg) in ability.$field.iter().enumerate() {
-                        $var.push_str(&format!(
-                            "\n\t\t\t\t\t\t{} => {},",
-                            i + 1,
-                            transform_expr(dmg)
-                        ));
+                    let transformed: Vec<(String, bool)> = ability
+                        .$field
+                        .iter()
+                        .map(|dmg| transform_expr(dmg))
+                        .collect();
+                    let needs_ctx = transformed.iter().any(|&(_, changed)| changed);
+                    let ctx_param = if needs_ctx { "ctx: &EvalContext" } else { "_" };
+                    $var.push_str(&format!(
+                        "|level: usize, {}| -> f64 {{\n\t\t\t\t\tmatch level {{",
+                        ctx_param
+                    ));
+                    for (i, (expr, _)) in transformed.into_iter().enumerate() {
+                        $var.push_str(&format!("\n\t\t\t\t\t\t{} => {},", i + 1, expr));
                     }
                     $var.push_str("\n\t\t\t\t\t\t_ => 0.0,");
                     $var.push_str("\n\t\t\t\t\t}");

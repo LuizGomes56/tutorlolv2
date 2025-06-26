@@ -1,7 +1,10 @@
 use crate::{
     GLOBAL_CACHE,
     model::{
-        base::{AdaptativeType, BasicStats, ComparedItem, DamageExpression, GenericStats, Stats},
+        base::{
+            AdaptativeType, BasicStats, ComparedItem, DamageExpression, DamageMultipliers,
+            GenericStats, Stats,
+        },
         cache::{CachedChampion, CachedItem, EvalContext},
         calculator::AbilitiesX,
         realtime::DragonMultipliers,
@@ -10,8 +13,6 @@ use crate::{
 };
 use rustc_hash::FxHashMap;
 
-pub const CLAMP_USIZE_MAX: usize = 1 << 32;
-pub const CLAMP_F64_MAX: f64 = 1e+300f64;
 /// By 06/07/2025 Earth dragons give +5% resists
 // #![manual_impl]
 pub const EARTH_DRAGON_MULTIPLIER: f64 = 0.05;
@@ -153,7 +154,7 @@ pub fn get_full_stats(
 
     macro_rules! real_resist {
         ($tuple:expr, $resist_val:expr) => {{
-            let real_val = ($resist_val * $tuple.0 - $tuple.1).clamp(0.0, CLAMP_F64_MAX);
+            let real_val = ($resist_val * $tuple.0 - $tuple.1).max(0.0);
             let modf_val = 100.0 / (100.0 + real_val);
             (real_val, modf_val)
         }};
@@ -241,12 +242,12 @@ pub fn get_full_stats(
 }
 
 #[inline]
-pub fn get_damage_multipliers(
-    self_mod: (f64, f64, f64, f64),
-    enemy_mod: (f64, f64, f64, f64),
-    damage_mod: (f64, f64),
-    damage_type: &str,
-) -> f64 {
+pub fn get_damage_multipliers(modifiers: &DamageMultipliers, damage_type: &str) -> f64 {
+    let DamageMultipliers {
+        self_mod,
+        enemy_mod,
+        damage_mod,
+    } = modifiers;
     let (enemy_debuff_multiplier, damage_reduction_multiplier, damage_increase_multiplier) =
         match damage_type {
             "PHYSICAL_DAMAGE" => (enemy_mod.0, damage_mod.0, self_mod.0),
@@ -317,7 +318,7 @@ pub fn get_abilities_damage(
 /// current_player_state: (CurrentStats, BaseStats, BonusStats, Level)
 /// enemy_state:(CurrentStats, BonusStats, GenericStats)
 pub fn get_eval_ctx(
-    current_player_state: (Stats, BasicStats, BasicStats, usize),
+    current_player_state: &(Stats, BasicStats, BasicStats, usize),
     enemy_state: (BasicStats, BasicStats, GenericStats),
 ) -> EvalContext {
     let (enemy_current_stats, enemy_bonus_stats, generic_stats) = enemy_state;
@@ -343,7 +344,7 @@ pub fn get_eval_ctx(
             AdaptativeType::Physical => generic_stats.armor_mod,
             AdaptativeType::Magic => generic_stats.magic_mod,
         },
-        LEVEL: current_player_level as f64,
+        LEVEL: *current_player_level as f64,
         PHYSICAL_MULTIPLIER: generic_stats.armor_mod,
         MAGIC_MULTIPLIER: generic_stats.magic_mod,
         // #![manual_impl]
@@ -385,8 +386,7 @@ pub fn get_eval_ctx(
         CRIT_DAMAGE: current_player_stats.crit_damage,
         ATTACK_SPEED: current_player_stats.attack_speed,
         MISSING_HEALTH: 1.0
-            - (current_player_stats.current_health
-                / current_player_stats.max_health.clamp(1.0, CLAMP_F64_MAX)),
+            - (current_player_stats.current_health / current_player_stats.max_health.max(1.0)),
         AP: current_player_stats.ability_power,
         AD: current_player_stats.attack_damage,
     }

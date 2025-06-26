@@ -2,7 +2,11 @@ use super::*;
 use crate::{
     GLOBAL_CACHE,
     model::{
-        base::{BasicStats, DamageLike, Damages, InstanceDamage, SimulatedDamages},
+        base::{
+            BasicStats, DamageExpression, DamageLike, DamageMultipliers, Damages, InstanceDamage,
+            SimulatedDamages,
+        },
+        cache::EvalContext,
         realtime::*,
         riot::*,
     },
@@ -12,7 +16,7 @@ use rustc_hash::FxHashMap;
 /// Takes a type constructed from port 2999 and returns a new type "Realtime"
 #[writer_macros::trace_time]
 pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, String> {
-    let __start_time = std::time::Instant::now();
+    // let __start_time = std::time::Instant::now();
     // let __print_time = |msg: &str| println!("{}: {:#?}", msg, __start_time.elapsed().as_micros());
 
     let current_player_level = game.active_player.level;
@@ -147,6 +151,12 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, String> {
 
     let current_player_is_ranged = current_player_cache.attack_type == "RANGED";
     let current_player_levelings = current_player_abilities.get_levelings();
+    let current_player_state = (
+        current_player_stats,
+        current_player_bonus_stats,
+        current_player_base_stats,
+        current_player_level,
+    );
 
     // __print_time("Step 12");
 
@@ -213,80 +223,23 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, String> {
                     ),
                 );
 
+                let damage_multipliers = DamageMultipliers {
+                    self_mod: generic_stats.self_mod,
+                    enemy_mod: generic_stats.enemy_mod,
+                    damage_mod: (generic_stats.armor_mod, generic_stats.magic_mod),
+                };
+
                 let eval_ctx = get_eval_ctx(
-                    (
-                        current_player_stats,
-                        current_player_bonus_stats,
-                        current_player_base_stats,
-                        current_player_level,
-                    ),
+                    &current_player_state,
                     (enemy_current_stats, enemy_bonus_stats, generic_stats),
                 );
 
                 // __print_time("[ITERATOR] Step 18");
 
-                macro_rules! eval_expr {
-                    ($lvl:expr, $cmp:expr) => {
-                        $cmp($lvl, &eval_ctx)
-                    };
-                    ($lvl:expr, $cmp:expr, $siml:expr, $genr:expr) => {
-                        $cmp(
-                            $lvl,
-                            &get_eval_ctx(
-                                (
-                                    $siml.0,
-                                    $siml.1,
-                                    current_player_base_stats,
-                                    current_player_level,
-                                ),
-                                $genr,
-                            ),
-                        )
-                    };
-                }
-                macro_rules! transform_expr {
-                    (($key:expr, $val:expr)) => {{
-                        let damage_mod = get_damage_multipliers(
-                            generic_stats.self_mod,
-                            generic_stats.enemy_mod,
-                            (generic_stats.armor_mod, generic_stats.magic_mod),
-                            $val.damage_type,
-                        );
-                        (
-                            $key,
-                            InstanceDamage {
-                                damage_type: $val.damage_type,
-                                minimum_damage: damage_mod
-                                    * eval_expr!($val.level, $val.minimum_damage),
-                                maximum_damage: damage_mod
-                                    * eval_expr!($val.level, $val.maximum_damage),
-                            },
-                        )
-                    }};
-                    (($key:expr, $val:expr), $siml:expr, $genr:expr) => {{
-                        let damage_mod = get_damage_multipliers(
-                            $genr.2.self_mod,
-                            $genr.2.enemy_mod,
-                            ($genr.2.armor_mod, $genr.2.magic_mod),
-                            $val.damage_type,
-                        );
-                        (
-                            $key,
-                            InstanceDamage {
-                                damage_type: $val.damage_type,
-                                minimum_damage: damage_mod
-                                    * eval_expr!($val.level, $val.minimum_damage, $siml, $genr),
-                                maximum_damage: damage_mod
-                                    * eval_expr!($val.level, $val.maximum_damage, $siml, $genr),
-                            },
-                        )
-                    }};
-                }
-
                 let abilities_damage = abilities_iter_expr
                     .iter()
                     .copied()
-                    .map(|(ability_key, ability_expr)| transform_expr!((ability_key, ability_expr)))
+                    .map(|tuple| transform_expr(tuple, &damage_multipliers, &eval_ctx))
                     .collect::<DamageLike<&'static str>>();
 
                 // __print_time("[ITERATOR] Step 19");
@@ -294,7 +247,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, String> {
                 let items_damage = items_iter_expr
                     .iter()
                     .copied()
-                    .map(|(item_id, item_expr)| transform_expr!((item_id, item_expr)))
+                    .map(|tuple| transform_expr(tuple, &damage_multipliers, &eval_ctx))
                     .collect::<DamageLike<usize>>();
 
                 // __print_time("[ITERATOR] Step 20");
@@ -302,89 +255,93 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, String> {
                 let runes_damage = runes_iter_expr
                     .iter()
                     .copied()
-                    .map(|(rune_id, rune_expr)| transform_expr!((rune_id, rune_expr)))
+                    .map(|tuple| transform_expr(tuple, &damage_multipliers, &eval_ctx))
                     .collect::<DamageLike<usize>>();
 
                 // __print_time("[ITERATOR] Step 21");
 
                 let compared_items_damage = simulated_stats
                     .iter()
-                    .map(|(sim_item_id, sim_stats)| {
-                        // __print_time(&format!("[CMP] [ITERATOR] [{}] Step 22", sim_item_id));
+                    .map(|(siml_item_id, siml_stats)| {
+                        // __print_time(&format!("[CMP] [ITERATOR] [{}] Step 22", siml_item_id));
 
-                        let sim_gen_stats = get_full_stats(
+                        let siml_full_stats = get_full_stats(
                             (player_champion_id, enemy_level, 1.0),
                             (enemy_base_stats, &enemy_items),
                             (
-                                sim_stats.armor_penetration_percent,
-                                sim_stats.armor_penetration_flat,
+                                siml_stats.armor_penetration_percent,
+                                siml_stats.armor_penetration_flat,
                             ),
                             (
-                                sim_stats.magic_penetration_percent,
-                                sim_stats.magic_penetration_flat,
+                                siml_stats.magic_penetration_percent,
+                                siml_stats.magic_penetration_flat,
                             ),
                         );
 
-                        // __print_time(&format!("[CMP] [ITERATOR] [{}] Step 23", sim_item_id));
+                        let siml_damage_multipliers = DamageMultipliers {
+                            self_mod: siml_full_stats.2.self_mod,
+                            enemy_mod: siml_full_stats.2.enemy_mod,
+                            damage_mod: (siml_full_stats.2.armor_mod, siml_full_stats.2.magic_mod),
+                        };
 
-                        let sim_bonus_stats = get_bonus_stats(
+                        // __print_time(&format!("[CMP] [ITERATOR] [{}] Step 23", siml_item_id));
+
+                        let siml_bonus_stats = get_bonus_stats(
                             BasicStats {
-                                armor: sim_stats.armor,
-                                health: sim_stats.max_health,
-                                attack_damage: sim_stats.attack_damage,
-                                magic_resist: sim_stats.magic_resist,
-                                mana: sim_stats.max_mana,
+                                armor: siml_stats.armor,
+                                health: siml_stats.max_health,
+                                attack_damage: siml_stats.attack_damage,
+                                magic_resist: siml_stats.magic_resist,
+                                mana: siml_stats.max_mana,
                             },
                             current_player_basic_stats,
                         );
 
-                        // __print_time(&format!("[CMP] [ITERATOR] [{}] Step 24", sim_item_id));
+                        let siml_current_player_state = (
+                            *siml_stats,
+                            siml_bonus_stats,
+                            current_player_state.2,
+                            current_player_state.3,
+                        );
 
-                        let sim_abilities_damage = abilities_iter_expr
+                        let siml_eval_ctx =
+                            get_eval_ctx(&siml_current_player_state, siml_full_stats);
+
+                        // __print_time(&format!("[CMP] [ITERATOR] [{}] Step 24", siml_item_id));
+
+                        let siml_abilities_damage = abilities_iter_expr
                             .iter()
                             .copied()
-                            .map(|(ability_key, ability_expr)| {
-                                transform_expr!(
-                                    (ability_key, ability_expr),
-                                    (*sim_stats, sim_bonus_stats),
-                                    sim_gen_stats
-                                )
+                            .map(|tuple| {
+                                transform_expr(tuple, &siml_damage_multipliers, &siml_eval_ctx)
                             })
                             .collect::<DamageLike<&'static str>>();
 
-                        // __print_time(&format!("[CMP] [ITERATOR] [{}] Step 25", sim_item_id));
+                        // __print_time(&format!("[CMP] [ITERATOR] [{}] Step 25", siml_item_id));
 
-                        let sim_items_damage = items_iter_expr
+                        let siml_items_damage = items_iter_expr
                             .iter()
                             .copied()
-                            .map(|(item_id, item_expr)| {
-                                transform_expr!(
-                                    (item_id, item_expr),
-                                    (*sim_stats, sim_bonus_stats),
-                                    sim_gen_stats
-                                )
+                            .map(|tuple| {
+                                transform_expr(tuple, &siml_damage_multipliers, &siml_eval_ctx)
                             })
                             .collect::<DamageLike<usize>>();
 
-                        // __print_time(&format!("[CMP] [ITERATOR] [{}] Step 26", sim_item_id));
+                        // __print_time(&format!("[CMP] [ITERATOR] [{}] Step 26", siml_item_id));
 
-                        let sim_runes_damage = runes_iter_expr
+                        let siml_runes_damage = runes_iter_expr
                             .iter()
                             .copied()
-                            .map(|(rune_id, rune_expr)| {
-                                transform_expr!(
-                                    (rune_id, rune_expr),
-                                    (*sim_stats, sim_bonus_stats),
-                                    sim_gen_stats
-                                )
+                            .map(|tuple| {
+                                transform_expr(tuple, &siml_damage_multipliers, &siml_eval_ctx)
                             })
                             .collect::<DamageLike<usize>>();
                         (
-                            *sim_item_id,
+                            *siml_item_id,
                             SimulatedDamages {
-                                abilities: sim_abilities_damage,
-                                items: sim_items_damage,
-                                runes: sim_runes_damage,
+                                abilities: siml_abilities_damage,
+                                items: siml_items_damage,
+                                runes: siml_runes_damage,
                             },
                         )
                     })
@@ -496,4 +453,20 @@ fn get_dragon_multipliers<'a>(
         }
     }
     (ally_effect, enemy_effect)
+}
+
+fn transform_expr<T: Copy + 'static>(
+    tuple: (T, DamageExpression),
+    damage_mlt: &DamageMultipliers,
+    eval_ctx: &EvalContext,
+) -> (T, InstanceDamage) {
+    let damage_mod = get_damage_multipliers(damage_mlt, tuple.1.damage_type);
+    (
+        tuple.0,
+        InstanceDamage {
+            damage_type: tuple.1.damage_type,
+            minimum_damage: damage_mod * (tuple.1.minimum_damage)(tuple.1.level, eval_ctx),
+            maximum_damage: damage_mod * (tuple.1.maximum_damage)(tuple.1.level, eval_ctx),
+        },
+    )
 }

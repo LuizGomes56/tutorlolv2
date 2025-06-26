@@ -2,8 +2,6 @@ pub mod base;
 pub mod cache;
 pub mod calculator;
 pub mod champions;
-pub mod internal;
 pub mod items;
 pub mod realtime;
 pub mod riot;
-pub mod runes;

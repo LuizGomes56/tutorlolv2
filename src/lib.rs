@@ -1,4 +1,4 @@
-#![allow(dead_code, unused_parens, unused_variables)]
+#![allow(unused_parens)]
 
 mod middlewares;
 mod model;

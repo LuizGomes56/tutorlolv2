@@ -230,20 +230,13 @@ fn item_exceptions(
         let this_stack: usize = *exception_map.get(&item_id).unwrap_or(&0);
         match item_id {
             // Dark Seal
-            1082 => {
-                champion_stats.ability_power += (this_stack.clamp(1, CLAMP_USIZE_MAX) << 2) as f64
-            }
+            1082 => champion_stats.ability_power += (this_stack.max(1) << 2) as f64,
             // Mejai's Soulstealer
-            3041 => {
-                champion_stats.ability_power += (5 * this_stack.clamp(1, CLAMP_USIZE_MAX)) as f64
-            }
+            3041 => champion_stats.ability_power += (5 * this_stack.max(1)) as f64,
             // Rabadon's Deathcap
             3089 | 223089 => champion_stats.ability_power *= 1.3,
             // Hubris
-            6697 | 7008 => {
-                champion_stats.attack_damage +=
-                    (15 + this_stack.clamp(1, CLAMP_USIZE_MAX) << 1) as f64
-            }
+            6697 | 7008 => champion_stats.attack_damage += (15 + this_stack.max(1) << 1) as f64,
             // Wooglet's Witchcap
             8002 => champion_stats.ability_power *= 1.5,
             _ => {}

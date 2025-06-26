@@ -87,13 +87,6 @@ pub struct Damages {
     pub compared_items: FxHashMap<usize, SimulatedDamages>,
 }
 
-pub struct DamageMultipliers {
-    pub magic_damage: f64,
-    pub physical_damage: f64,
-    pub true_damage: f64,
-    pub all_sources: f64,
-}
-
 pub enum AdaptativeType {
     Physical,
     Magic,
@@ -150,4 +143,10 @@ pub struct DamageExpression {
     pub damage_type: &'static str,
     pub minimum_damage: fn(usize, &EvalContext) -> f64,
     pub maximum_damage: fn(usize, &EvalContext) -> f64,
+}
+
+pub struct DamageMultipliers {
+    pub self_mod: (f64, f64, f64, f64),
+    pub enemy_mod: (f64, f64, f64, f64),
+    pub damage_mod: (f64, f64),
 }
