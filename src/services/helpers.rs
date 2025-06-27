@@ -27,31 +27,33 @@ pub const CHEMTECH_DRAGON_MULTIPLIER: f64 = 0.06;
 pub fn get_simulated_champion_stats<'a>(
     current_stats: &Stats,
     owned_items: &[usize],
-    ally_dragon_multipliers: DragonMultipliers,
+    ally_dragon_multipliers: &DragonMultipliers,
 ) -> (FxHashMap<usize, Stats>, FxHashMap<usize, ComparedItem>) {
-    GLOBAL_CACHE
+    let mut simulated_stats =
+        FxHashMap::with_capacity_and_hasher(GLOBAL_CACHE.simulated_items.len(), Default::default());
+    let mut simulated_items =
+        FxHashMap::with_capacity_and_hasher(GLOBAL_CACHE.simulated_items.len(), Default::default());
+    for item_id in GLOBAL_CACHE
         .simulated_items
         .iter()
-        .filter_map(move |item_id| {
-            if owned_items.contains(item_id) {
-                return None;
-            }
-            let item = GLOBAL_CACHE.items.get(item_id)?;
-            let expected_stats =
-                simulate_champion_stats(item, *current_stats, &ally_dragon_multipliers);
-            Some((
-                (*item_id, expected_stats),
-                (
-                    *item_id,
-                    ComparedItem {
-                        name: &item.name,
-                        gold_cost: item.gold,
-                        prettified_stats: item.prettified_stats.iter().copied().collect(),
-                    },
-                ),
-            ))
-        })
-        .collect()
+        .filter(|id| !owned_items.contains(id))
+    {
+        if let Some(item) = GLOBAL_CACHE.items.get(item_id) {
+            simulated_stats.insert(
+                *item_id,
+                simulate_champion_stats(item, *current_stats, ally_dragon_multipliers),
+            );
+            simulated_items.insert(
+                *item_id,
+                ComparedItem {
+                    name: &item.name,
+                    gold_cost: item.gold,
+                    prettified_stats: item.prettified_stats.iter().copied().collect(),
+                },
+            );
+        }
+    }
+    (simulated_stats, simulated_items)
 }
 
 pub fn simulate_champion_stats(
@@ -99,12 +101,11 @@ pub fn get_items_damage(
     current_player_items: &[usize],
     is_ranged: bool,
 ) -> Vec<(usize, DamageExpression)> {
-    current_player_items
-        .into_iter()
-        .filter_map(move |item_id| {
-            let item = GLOBAL_CACHE.items.get(item_id)?;
+    let mut result = Vec::<(usize, DamageExpression)>::with_capacity(current_player_items.len());
+    for item_id in current_player_items {
+        if let Some(item) = GLOBAL_CACHE.items.get(item_id) {
             let item_damage = if is_ranged { &item.ranged } else { &item.melee };
-            Some((
+            result.push((
                 *item_id,
                 DamageExpression {
                     level: 0,
@@ -112,21 +113,21 @@ pub fn get_items_damage(
                     minimum_damage: item_damage.minimum_damage,
                     maximum_damage: item_damage.maximum_damage,
                 },
-            ))
-        })
-        .collect()
+            ));
+        }
+    }
+    result
 }
 
 pub fn get_runes_damage(
     current_player_runes: &[usize],
     is_ranged: bool,
 ) -> Vec<(usize, DamageExpression)> {
-    current_player_runes
-        .into_iter()
-        .filter_map(move |rune_id| {
-            let rune = GLOBAL_CACHE.runes.get(rune_id)?;
+    let mut result = Vec::<(usize, DamageExpression)>::with_capacity(current_player_runes.len());
+    for rune_id in current_player_runes {
+        if let Some(rune) = GLOBAL_CACHE.runes.get(rune_id) {
             let minimum_damage = if is_ranged { rune.ranged } else { rune.melee };
-            Some((
+            result.push((
                 *rune_id,
                 DamageExpression {
                     level: 0,
@@ -134,9 +135,10 @@ pub fn get_runes_damage(
                     minimum_damage,
                     maximum_damage: |_, _| 0.0,
                 },
-            ))
-        })
-        .collect()
+            ));
+        }
+    }
+    result
 }
 
 pub fn get_full_stats(
@@ -319,7 +321,7 @@ pub fn get_abilities_damage(
 /// enemy_state:(CurrentStats, BonusStats, GenericStats)
 pub fn get_eval_ctx(
     current_player_state: &(&Stats, BasicStats, BasicStats, usize),
-    enemy_state: (BasicStats, BasicStats, GenericStats),
+    enemy_state: &(BasicStats, BasicStats, GenericStats),
 ) -> EvalContext {
     let (enemy_current_stats, enemy_bonus_stats, generic_stats) = enemy_state;
     let (

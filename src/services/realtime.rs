@@ -1,5 +1,3 @@
-use std::hash::Hash;
-
 use super::*;
 use crate::{
     GLOBAL_CACHE,
@@ -13,8 +11,9 @@ use crate::{
         riot::*,
     },
 };
-use rayon::iter::{IntoParallelIterator, ParallelIterator};
+use rayon::iter::{ParallelBridge, ParallelIterator};
 use rustc_hash::FxHashMap;
+use std::hash::Hash;
 
 pub enum RealtimeError {
     CurrentPlayerNotFound,
@@ -25,9 +24,6 @@ pub enum RealtimeError {
 /// Takes a type constructed from port 2999 and returns a new type "Realtime"
 #[writer_macros::trace_time]
 pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeError> {
-    // let __start_time = std::time::Instant::now();
-    // let __print_time = |msg: &str| println!("{}: {:#?}", msg, __start_time.elapsed().as_micros());
-
     let current_player_level = game.active_player.level;
     let game_time = game.game_data.game_time;
     let map_number = game.game_data.map_number;
@@ -52,6 +48,8 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
         items: current_player_riot_items,
         position: current_player_position,
         team: current_player_team,
+        riot_id: current_player_riot_id,
+        scores: current_player_scores,
         ..
     } = all_players
         .iter()
@@ -71,30 +69,18 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
     let (enemy_dragon_multipliers, ally_dragon_multipliers) =
         get_dragon_multipliers(game_events, players_map, current_player_team);
 
-    // __print_time("Step 1");
-
     let current_player_stats = current_player_riot_stats.to_stats();
-
-    // __print_time("Step 2");
-
     let current_player_champion_id = GLOBAL_CACHE
         .champion_names
         .get(current_player_champion_name)
         .ok_or(RealtimeError::ChampionNameNotFound)?;
-
-    // __print_time("Step 3");
 
     let current_player_cache = GLOBAL_CACHE
         .champions
         .get(current_player_champion_id)
         .ok_or(RealtimeError::ChampionCacheNotFound)?;
 
-    // __print_time("Step 4");
-
     let current_player_base_stats = get_base_stats(current_player_cache, current_player_level);
-
-    // __print_time("Step 5");
-
     let current_player_basic_stats = BasicStats {
         armor: current_player_stats.armor,
         health: current_player_stats.max_health,
@@ -103,12 +89,8 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
         mana: current_player_stats.max_mana,
     };
 
-    // __print_time("Step 6");
-
     let current_player_bonus_stats =
         get_bonus_stats(current_player_basic_stats, current_player_base_stats);
-
-    // __print_time("Step 7");
 
     let current_player_recommended_items = {
         if let Some(meta_items) = GLOBAL_CACHE.meta_items.get(current_player_champion_id) {
@@ -125,30 +107,22 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
         }
     };
 
-    // __print_time("Step 8");
-
     let current_player_runes = current_player_riot_runes
         .general_runes
         .iter()
         .map(|riot_rune| riot_rune.id)
         .collect::<Vec<usize>>();
 
-    // __print_time("Step 9");
-
     let current_player_items = current_player_riot_items
         .iter()
         .map(|value| value.item_id)
         .collect::<Vec<usize>>();
 
-    // __print_time("Step 10");
-
     let (simulated_stats, compared_items) = get_simulated_champion_stats(
         &current_player_stats,
         &current_player_items,
-        ally_dragon_multipliers,
+        &ally_dragon_multipliers,
     );
-
-    // __print_time("Step 11");
 
     let current_player_is_ranged = current_player_cache.attack_type == "RANGED";
     let current_player_levelings = current_player_abilities.get_levelings();
@@ -159,59 +133,72 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
         current_player_level,
     );
 
-    // __print_time("Step 12");
-
     let abilities_iter_expr = get_abilities_damage(
         current_player_cache,
         current_player_level,
         current_player_levelings,
     );
-
-    // __print_time("Step 13");
-
     let items_iter_expr = get_items_damage(&current_player_items, current_player_is_ranged);
-
-    // __print_time("Step 14");
-
     let runes_iter_expr = get_runes_damage(&current_player_runes, current_player_is_ranged);
 
-    // __print_time("Step 15");
-
-    let (scoreboard, player_values) = all_players
-        .into_par_iter()
+    let enemies = all_players
+        .into_iter()
+        .filter(|player| &player.team != current_player_team)
+        .par_bridge()
         .filter_map(|player| {
             let player_champion_id = GLOBAL_CACHE.champion_names.get(&player.champion_name)?;
-            let scoreboard = Scoreboard {
-                assists: player.scores.assists,
-                creep_score: player.scores.creep_score,
-                deaths: player.scores.deaths,
-                kills: player.scores.kills,
-                riot_id: &player.riot_id,
-                champion_id: player_champion_id,
-                champion_name: &player.champion_name,
-                team: &player.team,
-                position: &player.position,
+
+            let RiotAllPlayers {
+                champion_name: enemy_champion_name,
+                items: enemy_riot_items,
+                riot_id,
+                team,
+                position,
+                ..
+            } = player;
+            let enemy_items = enemy_riot_items
+                .iter()
+                .map(|value| value.item_id)
+                .collect::<Vec<usize>>();
+            let enemy_level = player.level;
+            let enemy_cache = GLOBAL_CACHE.champions.get(player_champion_id)?;
+            let enemy_base_stats = get_base_stats(enemy_cache, enemy_level);
+
+            let full_stats = get_full_stats(
+                (
+                    player_champion_id,
+                    enemy_level,
+                    enemy_dragon_multipliers.earth,
+                ),
+                (enemy_base_stats, &enemy_items),
+                (
+                    current_player_stats.armor_penetration_percent,
+                    current_player_stats.armor_penetration_flat,
+                ),
+                (
+                    current_player_stats.magic_penetration_percent,
+                    current_player_stats.magic_penetration_flat,
+                ),
+            );
+
+            let damage_multipliers = DamageMultipliers {
+                self_mod: full_stats.2.self_mod,
+                enemy_mod: full_stats.2.enemy_mod,
+                damage_mod: (full_stats.2.armor_mod, full_stats.2.magic_mod),
             };
 
-            // __print_time("[ITERATOR] Step 16");
+            let eval_ctx = get_eval_ctx(&current_player_state, &full_stats);
 
-            let enemy_data = if &player.team != current_player_team {
-                let RiotAllPlayers {
-                    champion_name: enemy_champion_name,
-                    items: enemy_riot_items,
-                    ..
-                } = player;
-                let enemy_items = enemy_riot_items
-                    .iter()
-                    .map(|value| value.item_id)
-                    .collect::<Vec<usize>>();
-                let enemy_level = player.level;
-                let enemy_cache = GLOBAL_CACHE.champions.get(player_champion_id)?;
-                let enemy_base_stats = get_base_stats(enemy_cache, enemy_level);
+            let abilities_damage =
+                get_damages(&abilities_iter_expr, &damage_multipliers, &eval_ctx);
+            let items_damage = get_damages(&items_iter_expr, &damage_multipliers, &eval_ctx);
+            let runes_damage = get_damages(&runes_iter_expr, &damage_multipliers, &eval_ctx);
 
-                // __print_time("[ITERATOR] Step 17");
+            let mut compared_items_damage =
+                FxHashMap::with_capacity_and_hasher(simulated_stats.len(), Default::default());
 
-                let (enemy_current_stats, enemy_bonus_stats, generic_stats) = get_full_stats(
+            for (siml_item_id, siml_stats) in simulated_stats.iter() {
+                let siml_full_stats = get_full_stats(
                     (
                         player_champion_id,
                         enemy_level,
@@ -219,150 +206,82 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
                     ),
                     (enemy_base_stats, &enemy_items),
                     (
-                        current_player_stats.armor_penetration_percent,
-                        current_player_stats.armor_penetration_flat,
+                        siml_stats.armor_penetration_percent,
+                        siml_stats.armor_penetration_flat,
                     ),
                     (
-                        current_player_stats.magic_penetration_percent,
-                        current_player_stats.magic_penetration_flat,
+                        siml_stats.magic_penetration_percent,
+                        siml_stats.magic_penetration_flat,
                     ),
                 );
 
-                let damage_multipliers = DamageMultipliers {
-                    self_mod: generic_stats.self_mod,
-                    enemy_mod: generic_stats.enemy_mod,
-                    damage_mod: (generic_stats.armor_mod, generic_stats.magic_mod),
+                let siml_damage_multipliers = DamageMultipliers {
+                    self_mod: siml_full_stats.2.self_mod,
+                    enemy_mod: siml_full_stats.2.enemy_mod,
+                    damage_mod: (siml_full_stats.2.armor_mod, siml_full_stats.2.magic_mod),
                 };
 
-                let eval_ctx = get_eval_ctx(
-                    &current_player_state,
-                    (enemy_current_stats, enemy_bonus_stats, generic_stats),
+                let siml_bonus_stats = get_bonus_stats(
+                    BasicStats {
+                        armor: siml_stats.armor,
+                        health: siml_stats.max_health,
+                        attack_damage: siml_stats.attack_damage,
+                        magic_resist: siml_stats.magic_resist,
+                        mana: siml_stats.max_mana,
+                    },
+                    current_player_basic_stats,
                 );
 
-                // __print_time("[ITERATOR] Step 18");
+                let siml_current_player_state = (
+                    siml_stats,
+                    siml_bonus_stats,
+                    current_player_state.2,
+                    current_player_state.3,
+                );
 
-                let abilities_damage =
-                    get_damages(&abilities_iter_expr, &damage_multipliers, &eval_ctx);
+                let siml_eval_ctx = get_eval_ctx(&siml_current_player_state, &siml_full_stats);
 
-                // __print_time("[ITERATOR] Step 19");
+                let siml_abilities_damage = get_damages(
+                    &abilities_iter_expr,
+                    &siml_damage_multipliers,
+                    &siml_eval_ctx,
+                );
+                let siml_items_damage =
+                    get_damages(&items_iter_expr, &siml_damage_multipliers, &siml_eval_ctx);
+                let siml_runes_damage =
+                    get_damages(&runes_iter_expr, &siml_damage_multipliers, &siml_eval_ctx);
 
-                let items_damage = get_damages(&items_iter_expr, &damage_multipliers, &eval_ctx);
-
-                // __print_time("[ITERATOR] Step 20");
-
-                let runes_damage = get_damages(&runes_iter_expr, &damage_multipliers, &eval_ctx);
-
-                // __print_time("[ITERATOR] Step 21");
-
-                let compared_items_damage = simulated_stats
-                    .iter()
-                    .map(|(siml_item_id, siml_stats)| {
-                        // __print_time(&format!("[CMP] [ITERATOR] [{}] Step 22", siml_item_id));
-
-                        let siml_full_stats = get_full_stats(
-                            (
-                                player_champion_id,
-                                enemy_level,
-                                enemy_dragon_multipliers.earth,
-                            ),
-                            (enemy_base_stats, &enemy_items),
-                            (
-                                siml_stats.armor_penetration_percent,
-                                siml_stats.armor_penetration_flat,
-                            ),
-                            (
-                                siml_stats.magic_penetration_percent,
-                                siml_stats.magic_penetration_flat,
-                            ),
-                        );
-
-                        let siml_damage_multipliers = DamageMultipliers {
-                            self_mod: siml_full_stats.2.self_mod,
-                            enemy_mod: siml_full_stats.2.enemy_mod,
-                            damage_mod: (siml_full_stats.2.armor_mod, siml_full_stats.2.magic_mod),
-                        };
-
-                        // __print_time(&format!("[CMP] [ITERATOR] [{}] Step 23", siml_item_id));
-
-                        let siml_bonus_stats = get_bonus_stats(
-                            BasicStats {
-                                armor: siml_stats.armor,
-                                health: siml_stats.max_health,
-                                attack_damage: siml_stats.attack_damage,
-                                magic_resist: siml_stats.magic_resist,
-                                mana: siml_stats.max_mana,
-                            },
-                            current_player_basic_stats,
-                        );
-
-                        let siml_current_player_state = (
-                            siml_stats,
-                            siml_bonus_stats,
-                            current_player_state.2,
-                            current_player_state.3,
-                        );
-
-                        let siml_eval_ctx =
-                            get_eval_ctx(&siml_current_player_state, siml_full_stats);
-
-                        // __print_time(&format!("[CMP] [ITERATOR] [{}] Step 24", siml_item_id));
-
-                        let siml_abilities_damage = get_damages(
-                            &abilities_iter_expr,
-                            &siml_damage_multipliers,
-                            &siml_eval_ctx,
-                        );
-
-                        // __print_time("[ITERATOR] Step 19");
-
-                        let siml_items_damage =
-                            get_damages(&items_iter_expr, &siml_damage_multipliers, &siml_eval_ctx);
-
-                        // __print_time("[ITERATOR] Step 20");
-
-                        let siml_runes_damage =
-                            get_damages(&runes_iter_expr, &siml_damage_multipliers, &siml_eval_ctx);
-
-                        (
-                            *siml_item_id,
-                            SimulatedDamages {
-                                abilities: siml_abilities_damage,
-                                items: siml_items_damage,
-                                runes: siml_runes_damage,
-                            },
-                        )
-                    })
-                    .collect::<FxHashMap<usize, SimulatedDamages>>();
-
-                // __print_time("[ITERATOR] Step 27");
-
-                Some(Enemy {
-                    champion_id: player_champion_id,
-                    champion_name: &enemy_champion_name,
-                    riot_id: &player.riot_id,
-                    team: &player.team,
-                    position: &player.position,
-                    damages: Damages {
-                        abilities: abilities_damage,
-                        items: items_damage,
-                        runes: runes_damage,
-                        compared_items: compared_items_damage,
+                compared_items_damage.insert(
+                    *siml_item_id,
+                    SimulatedDamages {
+                        abilities: siml_abilities_damage,
+                        items: siml_items_damage,
+                        runes: siml_runes_damage,
                     },
-                    level: player.level,
-                    base_stats: enemy_base_stats,
-                    current_stats: enemy_current_stats,
-                    bonus_stats: enemy_bonus_stats,
-                    real_armor: generic_stats.real_armor,
-                    real_magic_resist: generic_stats.real_magic,
-                })
-            } else {
-                None
-            };
-            Some((scoreboard, enemy_data))
-        })
-        .collect::<(Vec<Scoreboard>, Vec<Option<Enemy>>)>();
+                );
+            }
 
-    // __print_time("[FINAL] Step 28");
+            Some(Enemy {
+                champion_id: player_champion_id,
+                champion_name: &enemy_champion_name,
+                riot_id,
+                team,
+                position,
+                damages: Damages {
+                    abilities: abilities_damage,
+                    items: items_damage,
+                    runes: runes_damage,
+                    compared_items: compared_items_damage,
+                },
+                level: player.level,
+                base_stats: enemy_base_stats,
+                current_stats: full_stats.0,
+                bonus_stats: full_stats.1,
+                real_armor: full_stats.2.real_armor,
+                real_magic_resist: full_stats.2.real_magic,
+            })
+        })
+        .collect::<Vec<Enemy>>();
 
     Ok(Realtime {
         current_player: CurrentPlayer {
@@ -397,17 +316,23 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
             bonus_stats: current_player_bonus_stats,
             current_stats: current_player_stats,
         },
-        enemies: player_values
-            .into_iter()
-            .filter_map(|enemy| enemy)
-            .collect::<Vec<Enemy>>(),
+        enemies,
+        scoreboard: Scoreboard {
+            kills: current_player_scores.kills,
+            assists: current_player_scores.assists,
+            creep_score: current_player_scores.creep_score,
+            deaths: current_player_scores.deaths,
+            riot_id: current_player_riot_id,
+            champion_id: current_player_champion_id,
+            position: current_player_position,
+            champion_name: current_player_champion_name,
+        },
         game_information: GameInformation {
             game_time,
             map_number,
         },
         recommended_items: current_player_recommended_items,
         compared_items,
-        scoreboard,
         enemy_dragon_multipliers,
         ally_dragon_multipliers,
     })
@@ -447,11 +372,12 @@ fn transform_expr<T: Copy + 'static>(
     damage_mlt: &DamageMultipliers,
     eval_ctx: &EvalContext,
 ) -> (T, InstanceDamage) {
-    let damage_mod = get_damage_multipliers(damage_mlt, tuple.1.damage_type);
+    let damage_type = tuple.1.damage_type;
+    let damage_mod = get_damage_multipliers(damage_mlt, damage_type);
     (
         tuple.0,
         InstanceDamage {
-            damage_type: tuple.1.damage_type,
+            damage_type,
             minimum_damage: damage_mod * (tuple.1.minimum_damage)(tuple.1.level, eval_ctx),
             maximum_damage: damage_mod * (tuple.1.maximum_damage)(tuple.1.level, eval_ctx),
         },
@@ -463,9 +389,10 @@ fn get_damages<T: Copy + Eq + Hash + 'static>(
     damage_multipliers: &DamageMultipliers,
     eval_ctx: &EvalContext,
 ) -> DamageLike<T> {
-    tuples
-        .iter()
-        .copied()
-        .map(|tuple| transform_expr(tuple, damage_multipliers, eval_ctx))
-        .collect()
+    let mut result = DamageLike::<T>::with_capacity_and_hasher(tuples.len(), Default::default());
+    for tuple in tuples.iter().copied() {
+        let (key, val) = transform_expr(tuple, damage_multipliers, eval_ctx);
+        result.insert(key, val);
+    }
+    result
 }

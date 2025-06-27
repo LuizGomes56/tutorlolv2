@@ -66,7 +66,6 @@ pub struct Scoreboard<'a> {
     pub riot_id: &'a str,
     pub champion_id: &'static str,
     pub champion_name: &'a str,
-    pub team: &'a str,
     pub position: &'a str,
 }
 
@@ -77,7 +76,7 @@ pub struct Realtime<'a> {
     pub game_information: GameInformation,
     pub recommended_items: &'static [usize],
     pub compared_items: FxHashMap<usize, ComparedItem>,
-    pub scoreboard: Vec<Scoreboard<'a>>,
+    pub scoreboard: Scoreboard<'a>,
     pub enemy_dragon_multipliers: DragonMultipliers,
     pub ally_dragon_multipliers: DragonMultipliers,
 }
