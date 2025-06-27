@@ -74,7 +74,7 @@ fn format_damage_object(damage_object: &Option<DamageObject>) -> String {
                 if let Some(raw) = damage_object.$field.as_ref().map(String::as_str) {
                     let (expr, changed) = transform_expr(raw);
                     let ctx_param = if changed { "ctx: &EvalContext" } else { "_" };
-                    format!("|_, {}| {}", ctx_param, expr)
+                    format!("|_, {}| {}", ctx_param, expr.to_lowercase())
                 } else {
                     String::from("|_, _| 0.0")
                 }

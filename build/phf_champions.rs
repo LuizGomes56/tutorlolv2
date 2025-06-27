@@ -112,7 +112,11 @@ fn format_abilities(abilities: &HashMap<String, Ability>) -> String {
                         ctx_param
                     ));
                     for (i, (expr, _)) in transformed.into_iter().enumerate() {
-                        $var.push_str(&format!("\n\t\t\t\t\t\t{} => {},", i + 1, expr));
+                        $var.push_str(&format!(
+                            "\n\t\t\t\t\t\t{} => {},",
+                            i + 1,
+                            expr.to_lowercase()
+                        ));
                     }
                     $var.push_str("\n\t\t\t\t\t\t_ => 0.0,");
                     $var.push_str("\n\t\t\t\t\t}");

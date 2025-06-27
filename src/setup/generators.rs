@@ -302,7 +302,7 @@ pub fn extract_scaled_values(input: &str) -> String {
         .join(" + ")
 }
 
-fn process_scaled_string(input: &str) -> String {
+pub fn process_scaled_string(input: &str) -> String {
     let re: Regex = Regex::new(r"\([^\)]*\)").unwrap();
     let paren_part: &str = re.find(input).map(|m: Match<'_>| m.as_str()).unwrap_or("");
     let base: String = input.replace(paren_part, "").trim().to_string();
@@ -314,7 +314,7 @@ fn process_scaled_string(input: &str) -> String {
     }
 }
 
-fn extract_damagelike_expr(input: &str) -> String {
+pub fn extract_damagelike_expr(input: &str) -> String {
     let re: Regex = Regex::new(r"\{\{as\|([^\}]+)\}\}").unwrap();
     let mut results: Vec<String> = Vec::new();
     for cap in re.captures_iter(input) {

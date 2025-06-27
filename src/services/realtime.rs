@@ -1,3 +1,5 @@
+use std::hash::Hash;
+
 use super::*;
 use crate::{
     GLOBAL_CACHE,
@@ -11,11 +13,18 @@ use crate::{
         riot::*,
     },
 };
+use rayon::iter::{IntoParallelIterator, ParallelIterator};
 use rustc_hash::FxHashMap;
+
+pub enum RealtimeError {
+    CurrentPlayerNotFound,
+    ChampionNameNotFound,
+    ChampionCacheNotFound,
+}
 
 /// Takes a type constructed from port 2999 and returns a new type "Realtime"
 #[writer_macros::trace_time]
-pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, String> {
+pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeError> {
     // let __start_time = std::time::Instant::now();
     // let __print_time = |msg: &str| println!("{}: {:#?}", msg, __start_time.elapsed().as_micros());
 
@@ -47,10 +56,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, String> {
     } = all_players
         .iter()
         .find(|player| &player.riot_id == current_player_riot_id)
-        .ok_or(format!(
-            "Current player not found in allPlayers. No matches for {}",
-            current_player_riot_id
-        ))?;
+        .ok_or(RealtimeError::CurrentPlayerNotFound)?;
 
     let players_map = all_players
         .iter()
@@ -74,19 +80,14 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, String> {
     let current_player_champion_id = GLOBAL_CACHE
         .champion_names
         .get(current_player_champion_name)
-        .ok_or_else(|| {
-            format!(
-                "Champion name {} does not have a matching ID in champion_names cache",
-                current_player_champion_name
-            )
-        })?;
+        .ok_or(RealtimeError::ChampionNameNotFound)?;
 
     // __print_time("Step 3");
 
     let current_player_cache = GLOBAL_CACHE
         .champions
         .get(current_player_champion_id)
-        .ok_or_else(|| format!("Champion {} not found on cache", current_player_champion_id))?;
+        .ok_or(RealtimeError::ChampionCacheNotFound)?;
 
     // __print_time("Step 4");
 
@@ -142,7 +143,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, String> {
     // __print_time("Step 10");
 
     let (simulated_stats, compared_items) = get_simulated_champion_stats(
-        current_player_stats,
+        &current_player_stats,
         &current_player_items,
         ally_dragon_multipliers,
     );
@@ -152,7 +153,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, String> {
     let current_player_is_ranged = current_player_cache.attack_type == "RANGED";
     let current_player_levelings = current_player_abilities.get_levelings();
     let current_player_state = (
-        current_player_stats,
+        &current_player_stats,
         current_player_bonus_stats,
         current_player_base_stats,
         current_player_level,
@@ -177,7 +178,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, String> {
     // __print_time("Step 15");
 
     let (scoreboard, player_values) = all_players
-        .into_iter()
+        .into_par_iter()
         .filter_map(|player| {
             let player_champion_id = GLOBAL_CACHE.champion_names.get(&player.champion_name)?;
             let scoreboard = Scoreboard {
@@ -211,7 +212,11 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, String> {
                 // __print_time("[ITERATOR] Step 17");
 
                 let (enemy_current_stats, enemy_bonus_stats, generic_stats) = get_full_stats(
-                    (player_champion_id, enemy_level, 1.0),
+                    (
+                        player_champion_id,
+                        enemy_level,
+                        enemy_dragon_multipliers.earth,
+                    ),
                     (enemy_base_stats, &enemy_items),
                     (
                         current_player_stats.armor_penetration_percent,
@@ -236,27 +241,16 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, String> {
 
                 // __print_time("[ITERATOR] Step 18");
 
-                let abilities_damage = abilities_iter_expr
-                    .iter()
-                    .copied()
-                    .map(|tuple| transform_expr(tuple, &damage_multipliers, &eval_ctx))
-                    .collect::<DamageLike<&'static str>>();
+                let abilities_damage =
+                    get_damages(&abilities_iter_expr, &damage_multipliers, &eval_ctx);
 
                 // __print_time("[ITERATOR] Step 19");
 
-                let items_damage = items_iter_expr
-                    .iter()
-                    .copied()
-                    .map(|tuple| transform_expr(tuple, &damage_multipliers, &eval_ctx))
-                    .collect::<DamageLike<usize>>();
+                let items_damage = get_damages(&items_iter_expr, &damage_multipliers, &eval_ctx);
 
                 // __print_time("[ITERATOR] Step 20");
 
-                let runes_damage = runes_iter_expr
-                    .iter()
-                    .copied()
-                    .map(|tuple| transform_expr(tuple, &damage_multipliers, &eval_ctx))
-                    .collect::<DamageLike<usize>>();
+                let runes_damage = get_damages(&runes_iter_expr, &damage_multipliers, &eval_ctx);
 
                 // __print_time("[ITERATOR] Step 21");
 
@@ -266,7 +260,11 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, String> {
                         // __print_time(&format!("[CMP] [ITERATOR] [{}] Step 22", siml_item_id));
 
                         let siml_full_stats = get_full_stats(
-                            (player_champion_id, enemy_level, 1.0),
+                            (
+                                player_champion_id,
+                                enemy_level,
+                                enemy_dragon_multipliers.earth,
+                            ),
                             (enemy_base_stats, &enemy_items),
                             (
                                 siml_stats.armor_penetration_percent,
@@ -298,7 +296,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, String> {
                         );
 
                         let siml_current_player_state = (
-                            *siml_stats,
+                            siml_stats,
                             siml_bonus_stats,
                             current_player_state.2,
                             current_player_state.3,
@@ -309,33 +307,22 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, String> {
 
                         // __print_time(&format!("[CMP] [ITERATOR] [{}] Step 24", siml_item_id));
 
-                        let siml_abilities_damage = abilities_iter_expr
-                            .iter()
-                            .copied()
-                            .map(|tuple| {
-                                transform_expr(tuple, &siml_damage_multipliers, &siml_eval_ctx)
-                            })
-                            .collect::<DamageLike<&'static str>>();
+                        let siml_abilities_damage = get_damages(
+                            &abilities_iter_expr,
+                            &siml_damage_multipliers,
+                            &siml_eval_ctx,
+                        );
 
-                        // __print_time(&format!("[CMP] [ITERATOR] [{}] Step 25", siml_item_id));
+                        // __print_time("[ITERATOR] Step 19");
 
-                        let siml_items_damage = items_iter_expr
-                            .iter()
-                            .copied()
-                            .map(|tuple| {
-                                transform_expr(tuple, &siml_damage_multipliers, &siml_eval_ctx)
-                            })
-                            .collect::<DamageLike<usize>>();
+                        let siml_items_damage =
+                            get_damages(&items_iter_expr, &siml_damage_multipliers, &siml_eval_ctx);
 
-                        // __print_time(&format!("[CMP] [ITERATOR] [{}] Step 26", siml_item_id));
+                        // __print_time("[ITERATOR] Step 20");
 
-                        let siml_runes_damage = runes_iter_expr
-                            .iter()
-                            .copied()
-                            .map(|tuple| {
-                                transform_expr(tuple, &siml_damage_multipliers, &siml_eval_ctx)
-                            })
-                            .collect::<DamageLike<usize>>();
+                        let siml_runes_damage =
+                            get_damages(&runes_iter_expr, &siml_damage_multipliers, &siml_eval_ctx);
+
                         (
                             *siml_item_id,
                             SimulatedDamages {
@@ -469,4 +456,16 @@ fn transform_expr<T: Copy + 'static>(
             maximum_damage: damage_mod * (tuple.1.maximum_damage)(tuple.1.level, eval_ctx),
         },
     )
+}
+
+fn get_damages<T: Copy + Eq + Hash + 'static>(
+    tuples: &[(T, DamageExpression)],
+    damage_multipliers: &DamageMultipliers,
+    eval_ctx: &EvalContext,
+) -> DamageLike<T> {
+    tuples
+        .iter()
+        .copied()
+        .map(|tuple| transform_expr(tuple, damage_multipliers, eval_ctx))
+        .collect()
 }

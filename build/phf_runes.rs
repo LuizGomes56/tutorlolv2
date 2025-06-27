@@ -43,7 +43,7 @@ pub fn global_phf_internal_runes(out_dir: &str) {
                     } else {
                         "_"
                     },
-                    ranged_expr.0
+                    ranged_expr.0.to_lowercase()
                 ),
                 format!(
                     "|_, {}| {}",
@@ -52,7 +52,7 @@ pub fn global_phf_internal_runes(out_dir: &str) {
                     } else {
                         "_"
                     },
-                    melee_expr.0
+                    melee_expr.0.to_lowercase()
                 ),
             ));
         }

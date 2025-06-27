@@ -25,7 +25,7 @@ pub const FIRE_DRAGON_MULTIPLIER: f64 = 0.03;
 pub const CHEMTECH_DRAGON_MULTIPLIER: f64 = 0.06;
 
 pub fn get_simulated_champion_stats<'a>(
-    current_stats: Stats,
+    current_stats: &Stats,
     owned_items: &[usize],
     ally_dragon_multipliers: DragonMultipliers,
 ) -> (FxHashMap<usize, Stats>, FxHashMap<usize, ComparedItem>) {
@@ -38,7 +38,7 @@ pub fn get_simulated_champion_stats<'a>(
             }
             let item = GLOBAL_CACHE.items.get(item_id)?;
             let expected_stats =
-                simulate_champion_stats(item, current_stats, &ally_dragon_multipliers);
+                simulate_champion_stats(item, *current_stats, &ally_dragon_multipliers);
             Some((
                 (*item_id, expected_stats),
                 (
@@ -296,7 +296,7 @@ pub fn get_abilities_damage(
             DamageExpression {
                 level: 0,
                 damage_type: "PHYSICAL_DAMAGE",
-                minimum_damage: |_, ctx: &EvalContext| ctx.AD * ctx.PHYSICAL_MULTIPLIER,
+                minimum_damage: |_, ctx: &EvalContext| ctx.ad * ctx.physical_multiplier,
                 maximum_damage: |_, _| 0.0,
             },
         )))
@@ -306,7 +306,7 @@ pub fn get_abilities_damage(
                 level: 0,
                 damage_type: "PHYSICAL_DAMAGE",
                 minimum_damage: |_, ctx: &EvalContext| {
-                    ctx.AD * ctx.PHYSICAL_MULTIPLIER * ctx.CRIT_DAMAGE / 100.0
+                    ctx.ad * ctx.physical_multiplier * ctx.crit_damage / 100.0
                 },
                 maximum_damage: |_, _| 0.0,
             },
@@ -318,7 +318,7 @@ pub fn get_abilities_damage(
 /// current_player_state: (CurrentStats, BaseStats, BonusStats, Level)
 /// enemy_state:(CurrentStats, BonusStats, GenericStats)
 pub fn get_eval_ctx(
-    current_player_state: &(Stats, BasicStats, BasicStats, usize),
+    current_player_state: &(&Stats, BasicStats, BasicStats, usize),
     enemy_state: (BasicStats, BasicStats, GenericStats),
 ) -> EvalContext {
     let (enemy_current_stats, enemy_bonus_stats, generic_stats) = enemy_state;
@@ -329,66 +329,66 @@ pub fn get_eval_ctx(
         current_player_level,
     ) = current_player_state;
     EvalContext {
-        CHOGATH_STACKS: 1.0,
-        VEIGAR_STACKS: 1.0,
-        NASUS_STACKS: 1.0,
-        SMOLDER_STACKS: 1.0,
-        AURELION_SOL_STACKS: 1.0,
-        THRESH_STACKS: 1.0,
-        KINDRED_STACKS: 1.0,
-        BELVETH_STACKS: 1.0,
-        ADAPTATIVE_DAMAGE: match RiotFormulas::adaptative_type(
+        chogath_stacks: 1.0,
+        veigar_stacks: 1.0,
+        nasus_stacks: 1.0,
+        smolder_stacks: 1.0,
+        aurelion_sol_stacks: 1.0,
+        thresh_stacks: 1.0,
+        kindred_stacks: 1.0,
+        belveth_stacks: 1.0,
+        adaptative_damage: match RiotFormulas::adaptative_type(
             current_player_stats.attack_damage,
             current_player_stats.ability_power,
         ) {
             AdaptativeType::Physical => generic_stats.armor_mod,
             AdaptativeType::Magic => generic_stats.magic_mod,
         },
-        LEVEL: *current_player_level as f64,
-        PHYSICAL_MULTIPLIER: generic_stats.armor_mod,
-        MAGIC_MULTIPLIER: generic_stats.magic_mod,
+        level: *current_player_level as f64,
+        physical_multiplier: generic_stats.armor_mod,
+        magic_multiplier: generic_stats.magic_mod,
         // #![manual_impl]
-        STEELCAPS_EFFECT: if generic_stats.steelcaps { 0.88 } else { 1.0 },
+        steelcaps_effect: if generic_stats.steelcaps { 0.88 } else { 1.0 },
         // #![manual_impl]
-        RANDUIN_EFFECT: if generic_stats.randuin { 0.7 } else { 1.0 },
+        randuin_effect: if generic_stats.randuin { 0.7 } else { 1.0 },
         // #![manual_impl]
-        ROCKSOLID_EFFECT: if generic_stats.rocksolid { 0.8 } else { 1.0 },
-        ENEMY_BONUS_HEALTH: enemy_bonus_stats.health,
-        ENEMY_ARMOR: enemy_current_stats.armor,
-        ENEMY_MAX_HEALTH: enemy_current_stats.health,
-        ENEMY_HEALTH: enemy_current_stats.health,
-        ENEMY_CURRENT_HEALTH: enemy_current_stats.health,
-        ENEMY_MISSING_HEALTH: enemy_current_stats.health,
-        ENEMY_MAGIC_RESIST: enemy_current_stats.magic_resist,
-        BASE_HEALTH: current_player_base_stats.health,
-        BASE_AD: current_player_base_stats.attack_damage,
-        BASE_ARMOR: current_player_base_stats.armor,
-        BASE_MAGIC_RESIST: current_player_base_stats.magic_resist,
-        BASE_MANA: current_player_base_stats.mana,
-        BONUS_AD: current_player_bonus_stats.attack_damage,
-        BONUS_ARMOR: current_player_bonus_stats.armor,
-        BONUS_MAGIC_RESIST: current_player_bonus_stats.magic_resist,
-        BONUS_HEALTH: current_player_bonus_stats.health,
-        BONUS_MANA: current_player_bonus_stats.mana,
+        rocksolid_effect: if generic_stats.rocksolid { 0.8 } else { 1.0 },
+        enemy_bonus_health: enemy_bonus_stats.health,
+        enemy_armor: enemy_current_stats.armor,
+        enemy_max_health: enemy_current_stats.health,
+        enemy_health: enemy_current_stats.health,
+        enemy_current_health: enemy_current_stats.health,
+        enemy_missing_health: enemy_current_stats.health,
+        enemy_magic_resist: enemy_current_stats.magic_resist,
+        base_health: current_player_base_stats.health,
+        base_ad: current_player_base_stats.attack_damage,
+        base_armor: current_player_base_stats.armor,
+        base_magic_resist: current_player_base_stats.magic_resist,
+        base_mana: current_player_base_stats.mana,
+        bonus_ad: current_player_bonus_stats.attack_damage,
+        bonus_armor: current_player_bonus_stats.armor,
+        bonus_magic_resist: current_player_bonus_stats.magic_resist,
+        bonus_health: current_player_bonus_stats.health,
+        bonus_mana: current_player_bonus_stats.mana,
         // #![unsupported]
-        BONUS_MOVE_SPEED: 1.0,
-        ARMOR_PENETRATION_FLAT: current_player_stats.armor_penetration_flat,
-        ARMOR_PENETRATION_PERCENT: current_player_stats.armor_penetration_percent,
-        MAGIC_PENETRATION_FLAT: current_player_stats.magic_penetration_flat,
-        MAGIC_PENETRATION_PERCENT: current_player_stats.magic_penetration_percent,
-        MAX_MANA: current_player_stats.max_mana,
-        CURRENT_MANA: current_player_stats.current_mana,
-        MAX_HEALTH: current_player_stats.max_health,
-        CURRENT_HEALTH: current_player_stats.current_health,
-        ARMOR: current_player_stats.armor,
-        MAGIC_RESIST: current_player_stats.magic_resist,
-        CRIT_CHANCE: current_player_stats.crit_chance,
-        CRIT_DAMAGE: current_player_stats.crit_damage,
-        ATTACK_SPEED: current_player_stats.attack_speed,
-        MISSING_HEALTH: 1.0
+        bonus_move_speed: 1.0,
+        armor_penetration_flat: current_player_stats.armor_penetration_flat,
+        armor_penetration_percent: current_player_stats.armor_penetration_percent,
+        magic_penetration_flat: current_player_stats.magic_penetration_flat,
+        magic_penetration_percent: current_player_stats.magic_penetration_percent,
+        max_mana: current_player_stats.max_mana,
+        current_mana: current_player_stats.current_mana,
+        max_health: current_player_stats.max_health,
+        current_health: current_player_stats.current_health,
+        armor: current_player_stats.armor,
+        magic_resist: current_player_stats.magic_resist,
+        crit_chance: current_player_stats.crit_chance,
+        crit_damage: current_player_stats.crit_damage,
+        attack_speed: current_player_stats.attack_speed,
+        missing_health: 1.0
             - (current_player_stats.current_health / current_player_stats.max_health.max(1.0)),
-        AP: current_player_stats.ability_power,
-        AD: current_player_stats.attack_damage,
+        ap: current_player_stats.ability_power,
+        ad: current_player_stats.attack_damage,
     }
 }
 
