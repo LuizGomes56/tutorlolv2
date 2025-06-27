@@ -1,26 +1,20 @@
-use super::eval::{ConditionalAddition, MathEval};
+use std::hash::Hash;
+
 use crate::{
     GLOBAL_CACHE,
     model::{
         base::{
-            AdaptativeType, AttackType, BasicStats, ComparedItem, CurrentPlayerLike, DamageLike,
-            DamageMultipliers, Damages, EnemyFullStats, FullStats, InstanceDamage, RealResists,
-            SelfFullStats, SimulatedDamages, Stats, ToRiotFormat,
+            AdaptativeType, BasicStats, ComparedItem, DamageExpression, DamageLike,
+            DamageMultipliers, GenericStats, InstanceDamage, Stats,
         },
+        cache::{CachedChampion, CachedItem, EvalContext},
         calculator::AbilitiesX,
-        champions::Champion,
-        internal::Positions,
-        items::{Item, PartialStats},
         realtime::DragonMultipliers,
-        riot::RiotChampionStats,
     },
-    services::eval::RiotFormulas,
+    services::riot_formulas::RiotFormulas,
 };
-use rayon::iter::{IntoParallelIterator, IntoParallelRefIterator, ParallelIterator};
 use rustc_hash::FxHashMap;
 
-pub const CLAMP_USIZE_MAX: usize = 1 << 32;
-pub const CLAMP_F64_MAX: f64 = 1e+300f64;
 /// By 06/07/2025 Earth dragons give +5% resists
 // #![manual_impl]
 pub const EARTH_DRAGON_MULTIPLIER: f64 = 0.05;
@@ -32,255 +26,55 @@ pub const FIRE_DRAGON_MULTIPLIER: f64 = 0.03;
 // #![manual_impl]
 pub const CHEMTECH_DRAGON_MULTIPLIER: f64 = 0.06;
 
-pub struct GameStateCurrentPlayer<'a, T: CurrentPlayerLike> {
-    pub thisv: &'a T,
-    pub cache: &'a Champion,
-    pub abilities: &'a AbilitiesX,
-    pub simulated_stats: &'a FxHashMap<usize, Stats>,
-}
-
-pub struct GameStateEnemyPlayer<'a> {
-    pub base_stats: &'a BasicStats,
-    pub current_stats: &'a mut BasicStats,
-    pub items: &'a Vec<usize>,
-    pub champion_id: &'a str,
-    pub level: usize,
-}
-
-pub struct GameState<'a, T: CurrentPlayerLike> {
-    pub current_player: GameStateCurrentPlayer<'a, T>,
-    pub enemy_player: GameStateEnemyPlayer<'a>,
-}
-
-/// All references may be dropped after this function is called.
-/// Removed excessive argument function
-/// `current_player` must not be used as mut ref + Impl Sync
-pub fn calculate_enemy_state<T: CurrentPlayerLike + Sync>(
-    state: GameState<'_, T>,
-) -> (Damages, RealResists, BasicStats) {
-    let GameState {
-        current_player:
-            GameStateCurrentPlayer {
-                thisv: current_player,
-                cache: current_player_cache,
-                abilities,
-                simulated_stats: simulated_champion_stats,
-            },
-        enemy_player:
-            GameStateEnemyPlayer {
-                base_stats: enemy_base_stats,
-                current_stats: mut enemy_current_stats,
-                items: enemy_items,
-                champion_id: enemy_champion_id,
-                level: enemy_level,
-            },
-    } = state;
-
-    let current_player_items = current_player.get_damaging_items();
-    let current_player_runes = current_player.get_damaging_runes();
-
-    let enemy_bonus_stats = get_bonus_stats(enemy_current_stats, &enemy_base_stats);
-    let full_stats = get_full_stats(
-        current_player,
-        &current_player.get_current_stats(),
-        (
-            enemy_champion_id,
-            enemy_level,
-            &enemy_bonus_stats,
-            &mut enemy_current_stats,
-        ),
-        &enemy_items,
-        current_player_cache.attack_type == AttackType::Ranged,
-    );
-    let normal_abilities_damage =
-        get_abilities_damage(current_player_cache, &full_stats, &abilities);
-    let normal_items_damage = get_items_damage(&full_stats, &current_player_items);
-    let normal_runes_damage = get_runes_damage(&full_stats, &current_player_runes);
-    let real_resists = full_stats.enemy_player.real_resists;
-    let compared_items = simulated_champion_stats
-        .into_par_iter()
-        .map(|(simulated_item_id, simulated_stats)| {
-            let mut enemy_current_stats = enemy_current_stats.clone();
-            let simulated_full_stats = get_full_stats(
-                current_player,
-                &simulated_stats,
-                (
-                    enemy_champion_id,
-                    enemy_level,
-                    &enemy_bonus_stats,
-                    &mut enemy_current_stats,
-                ),
-                &enemy_items,
-                current_player_cache.attack_type == AttackType::Ranged,
-            );
-            (
-                *simulated_item_id,
-                SimulatedDamages {
-                    abilities: get_abilities_damage(
-                        &current_player_cache,
-                        &simulated_full_stats,
-                        &abilities,
-                    ),
-                    items: get_items_damage(&simulated_full_stats, &current_player_items),
-                    runes: get_runes_damage(&simulated_full_stats, &current_player_runes),
-                },
-            )
-        })
-        .collect::<FxHashMap<usize, SimulatedDamages>>();
-    let damages = Damages {
-        compared_items,
-        abilities: normal_abilities_damage,
-        items: normal_items_damage,
-        runes: normal_runes_damage,
-    };
-    (damages, real_resists, enemy_bonus_stats)
-}
-
-/// Takes each simulated item and clones the current champions stats
-/// and adds to these stats the value as if the player owned the item
-/// Supports multiple inputs, being that the reason why a FxHashMap is returned
-/// Mutates compared_items_info map, inserting the prettified stats, name and gold
-/// Dragon effects are taken into consideration
 pub fn get_simulated_champion_stats<'a>(
-    owned_items: &[usize],
     current_stats: &Stats,
+    owned_items: &[usize],
     ally_dragon_multipliers: &DragonMultipliers,
-) -> Result<(FxHashMap<usize, Stats>, FxHashMap<usize, ComparedItem<'a>>), String> {
-    let raw: Vec<Result<(usize, Stats, ComparedItem), String>> = GLOBAL_CACHE
+) -> (FxHashMap<usize, Stats>, FxHashMap<usize, ComparedItem>) {
+    let mut simulated_stats =
+        FxHashMap::with_capacity_and_hasher(GLOBAL_CACHE.simulated_items.len(), Default::default());
+    let mut simulated_items =
+        FxHashMap::with_capacity_and_hasher(GLOBAL_CACHE.simulated_items.len(), Default::default());
+    for item_id in GLOBAL_CACHE
         .simulated_items
-        .par_iter()
-        .copied()
-        .filter(|&item_id| {
-            !owned_items.contains(&item_id) && GLOBAL_CACHE.items.contains_key(&item_id)
-        })
-        .map(|item_id| {
-            let item: &Item = GLOBAL_CACHE
-                .items
-                .get(&item_id)
-                .ok_or_else(|| format!("Simulated item {} not in cache", item_id))?;
-            let mut stats = current_stats.clone();
-            simulate_champion_stats(
-                item_id,
-                item,
-                &mut stats,
-                owned_items,
-                ally_dragon_multipliers,
+        .iter()
+        .filter(|id| !owned_items.contains(id))
+    {
+        if let Some(item) = GLOBAL_CACHE.items.get(item_id) {
+            simulated_stats.insert(
+                *item_id,
+                simulate_champion_stats(item, *current_stats, ally_dragon_multipliers),
             );
-            let compared: ComparedItem = ComparedItem {
-                name: &item.name,
-                gold_cost: item.gold,
-                prettified_stats: &item.prettified_stats,
-            };
-            Ok((item_id, stats, compared))
-        })
-        .collect();
-    let n: usize = GLOBAL_CACHE.simulated_items.len();
-    let mut stats_map = FxHashMap::with_capacity_and_hasher(n, Default::default());
-    let mut compared_map = FxHashMap::with_capacity_and_hasher(n, Default::default());
-    for r in raw {
-        let (id, stats, comp) = r?;
-        stats_map.insert(id, stats);
-        compared_map.insert(id, comp);
+            simulated_items.insert(
+                *item_id,
+                ComparedItem {
+                    name: &item.name,
+                    gold_cost: item.gold,
+                    prettified_stats: item.prettified_stats.iter().copied().collect(),
+                },
+            );
+        }
     }
-    Ok((stats_map, compared_map))
+    (simulated_stats, simulated_items)
 }
 
-/// Checks cache and returns a map with the matching keys and their names.
-/// Basic attacks and critical strikes are always included.
-/// Ignores key that is related to Monster or Minion damage
-// #![unsupported] Minions and Monster damages are not evaluated
-/// In the future a table to represent damage on monsters/towers may be created
-pub fn get_damaging_abilities<'a>(
-    champion_cache: &'static Champion,
-) -> FxHashMap<&'a str, &'a str> {
-    champion_cache
-        .abilities
-        .iter()
-        .filter_map(|(key, ability)| {
-            (!key.contains("MONSTER") && !key.contains("MINION"))
-                .then(|| (key.as_str(), ability.name.as_ref()))
-        })
-        .chain([("A", "Basic Attack"), ("C", "Critical Strike")])
-        .collect()
-}
-
-/// Items may or may not contain damage information. Returns items that do
-/// Returns a map with their matching keys and item name.
-/// Every item should have a matching value for both ranged and melee champions
-/// For safety, damaging items are evaluated only if item contains a key that matches attack type
-/// Common exceptions for this error would be in items that are not purchasable for melee champions
-/// Even in this situation, it is recommended to add damage value for both attack types
-pub fn get_damaging_items<'a>(
-    attack_type: AttackType,
-    owned_items: &[usize],
-) -> FxHashMap<usize, &'a str> {
-    owned_items
-        .iter()
-        .filter_map(|item_id| {
-            let item: &Item = GLOBAL_CACHE.items.get(&item_id)?;
-            let ok: bool = match attack_type {
-                AttackType::Melee => item.melee.is_some(),
-                AttackType::Ranged => item.ranged.is_some(),
-                AttackType::Other => false,
-            };
-            ok.then(|| (*item_id, item.name.as_ref()))
-        })
-        .collect()
-}
-
-/// Takes player position and checks `meta_items.json`
-/// When there are not enough data to evaluate the most common items
-/// for a champion in a given position, it may be empty
-pub fn get_recommended_items(
-    positon: &str,
-    recommendations: &Positions,
-    owned_items: &[usize],
-) -> Vec<usize> {
-    let rec_items = match positon {
-        "TOP" => Some(&recommendations.top),
-        "JUNGLE" => Some(&recommendations.jungle),
-        "MIDDLE" => Some(&recommendations.mid),
-        "BOTTOM" => Some(&recommendations.adc),
-        "SUPPORT" => Some(&recommendations.support),
-        _ => None,
-    };
-    match rec_items {
-        Some(items) => items
-            .iter()
-            .copied()
-            .filter(|id| !owned_items.contains(id))
-            .collect(),
-        None => Vec::new(),
-    }
-}
-
-/// Receives a deep copy of the original champion stats and mutates its reference
-/// Takes an item and adds to this cloned mut ref the stats as if the player owned it
-/// If player already owns the item, this function does nothing
 pub fn simulate_champion_stats(
-    simulated_item_id: usize,
-    simulated_item_cache: &Item,
-    cloned_stats: &mut Stats,
-    current_owned_items: &[usize],
+    item_cache: &&CachedItem,
+    cloned_stats: Stats,
     ally_dragon_multipliers: &DragonMultipliers,
-) {
-    let stats: &PartialStats = &simulated_item_cache.stats;
-    if current_owned_items.contains(&simulated_item_id) {
-        return;
-    }
+) -> Stats {
+    let stats = &item_cache.stats;
+    let mut result = cloned_stats;
 
     macro_rules! add_stat {
         ($field:ident) => {
-            cloned_stats.$field.add_if_some(stats.$field);
+            result.$field += stats.$field;
         };
         ($field:ident, $field2:ident) => {
-            cloned_stats.$field.add_if_some(stats.$field2);
+            result.$field += stats.$field2;
         };
         (#$field:ident) => {
-            cloned_stats.$field = RiotFormulas::percent_value(vec![
-                cloned_stats.$field,
-                stats.$field.unwrap_or_default(),
-            ]);
+            result.$field = RiotFormulas::percent_value(vec![result.$field, stats.$field]);
         };
     }
 
@@ -297,143 +91,89 @@ pub fn simulate_champion_stats(
     add_stat!(magic_penetration_flat);
     add_stat!(#armor_penetration_percent);
     add_stat!(#magic_penetration_percent);
-    cloned_stats.ability_power *= ally_dragon_multipliers.fire;
-    cloned_stats.attack_damage *= ally_dragon_multipliers.fire;
-    cloned_stats.armor *= ally_dragon_multipliers.earth;
-    cloned_stats.magic_resist *= ally_dragon_multipliers.earth;
+    result.ability_power *= ally_dragon_multipliers.fire;
+    result.attack_damage *= ally_dragon_multipliers.fire;
+    result.armor *= ally_dragon_multipliers.earth;
+    result.magic_resist *= ally_dragon_multipliers.earth;
+
+    result
 }
 
-/// Reads items from cache and evaluates its damages, if some.
 pub fn get_items_damage(
-    stats: &FullStats,
-    current_player_items: &FxHashMap<usize, &str>,
-) -> DamageLike<usize> {
-    let mut item_damages = DamageLike::<usize>::default();
-
-    let is_ranged: bool = stats.current_player.is_ranged;
-    for current_player_item in current_player_items.keys() {
-        if let Some(item) = GLOBAL_CACHE.items.get(current_player_item) {
-            let item_damage = match is_ranged {
-                true => &item.ranged,
-                false => &item.melee,
-            };
-            if let Some(damage) = item_damage {
-                let damage_type = item.damage_type.clone().unwrap_or(String::from("UNKNOWN"));
-                let (damage_reduction_multiplier, damage_increase_multiplier) =
-                    get_damage_multipliers(stats, &damage_type);
-                let minimum_damage_string = format!(
-                    "({}) * {}",
-                    replace_damage_keywords(
-                        stats,
-                        &damage.minimum_damage.clone().unwrap_or_default(),
-                    ),
-                    damage_reduction_multiplier,
-                );
-                let maximum_damage_string = format!(
-                    "({}) * {}",
-                    replace_damage_keywords(
-                        stats,
-                        &damage.maximum_damage.clone().unwrap_or_default(),
-                    ),
-                    damage_reduction_multiplier,
-                );
-                let minimum_damage =
-                    damage_increase_multiplier * &minimum_damage_string.eval().unwrap_or_default();
-                let maximum_damage =
-                    damage_increase_multiplier * &maximum_damage_string.eval().unwrap_or_default();
-                item_damages.insert(
-                    *current_player_item,
-                    InstanceDamage {
-                        minimum_damage,
-                        maximum_damage,
-                        damage_type,
-                        damages_in_area: false,
-                        damages_onhit: item.damages_onhit,
-                        min_dmg_change: None,
-                        max_dmg_change: None,
-                    },
-                );
-            }
-        }
-    }
-    item_damages
-}
-
-/// Reads runes from cache and evaluates its damages, if some.
-pub fn get_runes_damage(
-    stats: &FullStats,
-    current_player_runes: &FxHashMap<usize, &str>,
-) -> DamageLike<usize> {
-    let mut rune_damages = DamageLike::<usize>::default();
-
-    let is_ranged = stats.current_player.is_ranged;
-    for current_player_rune in current_player_runes.keys() {
-        if let Some(rune) = GLOBAL_CACHE.runes.get(current_player_rune) {
-            let rune_damage = match is_ranged {
-                true => &rune.ranged,
-                false => &rune.melee,
-            };
-            let damage_type = rune.damage_type.clone();
-            let (damage_reduction_multiplier, damage_increase_multiplier) =
-                get_damage_multipliers(stats, &damage_type);
-            let damage_string = format!(
-                "({}) * {}",
-                replace_damage_keywords(stats, rune_damage),
-                damage_reduction_multiplier
-            );
-            let minimum_damage =
-                damage_increase_multiplier * &damage_string.eval().unwrap_or_default();
-            rune_damages.insert(
-                *current_player_rune,
-                InstanceDamage {
-                    minimum_damage,
-                    maximum_damage: 0.0,
-                    damage_type,
-                    damages_in_area: false,
-                    damages_onhit: false,
-                    min_dmg_change: None,
-                    max_dmg_change: None,
-                },
-            );
-        }
-    }
-    rune_damages
-}
-
-/// Creates a big struct containing all the stats of the current player and the enemy
-/// Part of the returned value contains reference to the arguments passed to this function
-pub fn get_full_stats<'a, T: CurrentPlayerLike>(
-    current_player: &'a T,
-    current_stats: &'a Stats,
-    enemy_state: (&'a str, usize, &'a BasicStats, &'a mut BasicStats),
-    enemy_items: &'a Vec<usize>,
+    current_player_items: &[usize],
     is_ranged: bool,
-) -> FullStats<'a> {
-    let (enemy_champion_id, enemy_level, enemy_bonus_stats, enemy_current_stats) = enemy_state;
-    let mut real_armor = enemy_current_stats.armor * current_stats.armor_penetration_percent
-        - current_stats.armor_penetration_flat;
-    let mut real_magic_resist = enemy_current_stats.magic_resist
-        * current_stats.magic_penetration_percent
-        - current_stats.magic_penetration_flat;
+) -> Vec<(usize, DamageExpression)> {
+    let mut result = Vec::<(usize, DamageExpression)>::with_capacity(current_player_items.len());
+    for item_id in current_player_items {
+        if let Some(item) = GLOBAL_CACHE.items.get(item_id) {
+            let item_damage = if is_ranged { &item.ranged } else { &item.melee };
+            result.push((
+                *item_id,
+                DamageExpression {
+                    level: 0,
+                    damage_type: item.damage_type.unwrap_or("UNKNOWN"),
+                    minimum_damage: item_damage.minimum_damage,
+                    maximum_damage: item_damage.maximum_damage,
+                },
+            ));
+        }
+    }
+    result
+}
 
-    real_armor = real_armor.clamp(0.0, CLAMP_F64_MAX);
-    real_magic_resist = real_magic_resist.clamp(0.0, CLAMP_F64_MAX);
+pub fn get_runes_damage(
+    current_player_runes: &[usize],
+    is_ranged: bool,
+) -> Vec<(usize, DamageExpression)> {
+    let mut result = Vec::<(usize, DamageExpression)>::with_capacity(current_player_runes.len());
+    for rune_id in current_player_runes {
+        if let Some(rune) = GLOBAL_CACHE.runes.get(rune_id) {
+            let minimum_damage = if is_ranged { rune.ranged } else { rune.melee };
+            result.push((
+                *rune_id,
+                DamageExpression {
+                    level: 0,
+                    damage_type: rune.damage_type,
+                    minimum_damage,
+                    maximum_damage: |_, _| 0.0,
+                },
+            ));
+        }
+    }
+    result
+}
 
-    let physical_damage_multiplier = 100.0 / (100.0 + real_armor);
-    let magic_damage_multiplier = 100.0 / (100.0 + real_magic_resist);
+pub fn get_full_stats(
+    enemy_state: (&str, usize, f64),
+    enemy_stats: (BasicStats, &[usize]),
+    magic_val: (f64, f64),
+    armor_val: (f64, f64),
+) -> (BasicStats, BasicStats, GenericStats) {
+    let (enemy_champion_id, enemy_level, earth_dragon_mod) = enemy_state;
+    let (enemy_base_stats, enemy_items) = enemy_stats;
 
-    let has_item = |item: &[usize], check_for: &[usize]| -> bool {
-        check_for.iter().any(|id| item.contains(id))
-    };
+    let mut enemy_current_stats =
+        get_enemy_current_stats(enemy_base_stats, enemy_items, earth_dragon_mod);
+    let mut enemy_bonus_stats = get_bonus_stats(enemy_current_stats, enemy_base_stats);
 
-    // Translates to (physical, magic, true, all_sources)
-    let mut enemy_dmg_mod = (1.0, 1.0, 1.0, 1.0);
-    let self_dmg_mod = (1.0, 1.0, 1.0, 1.0);
+    macro_rules! real_resist {
+        ($tuple:expr, $resist_val:expr) => {{
+            let real_val = ($resist_val * $tuple.0 - $tuple.1).max(0.0);
+            let modf_val = 100.0 / (100.0 + real_val);
+            (real_val, modf_val)
+        }};
+    }
+
+    let (real_armor, armor_mod) = real_resist!(armor_val, enemy_current_stats.armor);
+    let (real_magic, magic_mod) = real_resist!(magic_val, enemy_current_stats.magic_resist);
+    let (enemy_physical_mod, mut enemy_magic_mod, enemy_true_mod, enemy_global_mod) =
+        (1.0, 1.0, 1.0, 1.0);
+    let (self_physical_mod, self_magic_mod, self_true_mod, self_global_mod) = (1.0, 1.0, 1.0, 1.0);
 
     match enemy_champion_id {
         "Kassadin" => {
             // #![manual_impl]
-            enemy_dmg_mod.1 = 0.9;
+            enemy_magic_mod = 0.9;
         }
         "Ornn" => {
             // Starts game with +10% armor/mr/hp already
@@ -446,9 +186,15 @@ pub fn get_full_stats<'a, T: CurrentPlayerLike>(
                 18 => 1.3,
                 _ => 1.1,
             };
-            enemy_current_stats.armor *= ornn_resist_multiplier;
-            enemy_current_stats.magic_resist *= ornn_resist_multiplier;
-            enemy_current_stats.health *= ornn_resist_multiplier;
+            macro_rules! assign_value {
+                ($field:ident) => {
+                    enemy_current_stats.$field *= ornn_resist_multiplier;
+                    enemy_bonus_stats.$field *= ornn_resist_multiplier;
+                };
+            }
+            assign_value!(armor);
+            assign_value!(magic_resist);
+            assign_value!(health);
         }
         "Malphite" => {
             // W upgrade pattern for malphite by 06/07/2025
@@ -462,342 +208,210 @@ pub fn get_full_stats<'a, T: CurrentPlayerLike>(
                 _ => 1.3,
             };
             enemy_current_stats.armor *= malphite_resist_multiplier;
+            enemy_bonus_stats.armor *= malphite_resist_multiplier;
         }
         _ => {}
     }
 
-    FullStats {
-        physical_damage_multiplier,
-        magic_damage_multiplier,
-        missing_health: 1.0
-            - (current_stats.current_health / current_stats.max_health.clamp(1.0, CLAMP_F64_MAX)),
+    let has_item = |origin: &[usize], check_for: &[usize]| -> bool {
+        check_for.iter().any(|id| origin.contains(id))
+    };
+
+    let generic_stats = GenericStats {
+        real_armor,
+        real_magic,
+        armor_mod,
+        magic_mod,
+        enemy_mod: (
+            enemy_physical_mod,
+            enemy_magic_mod,
+            enemy_true_mod,
+            enemy_global_mod,
+        ),
+        self_mod: (
+            self_physical_mod,
+            self_magic_mod,
+            self_true_mod,
+            self_global_mod,
+        ),
         // #![manual_impl]
-        enemy_has_steelcaps: has_item(enemy_items, &[3047]),
+        steelcaps: has_item(enemy_items, &[3047]),
         // #![manual_impl]
-        enemy_has_rocksolid: has_item(enemy_items, &[3082, 3110, 3143]),
+        rocksolid: has_item(enemy_items, &[3082, 3110, 3143]),
         // #![manual_impl]
-        enemy_has_randuin: has_item(enemy_items, &[3143]),
-        current_player: SelfFullStats {
-            current_stats: &current_stats,
-            base_stats: current_player.get_base_stats(),
-            bonus_stats: current_player.get_bonus_stats(),
-            is_ranged,
-            level: current_player.get_level(),
-            // #![unsupported] only permanent modifiers are supported
-            damage_mod: DamageMultipliers {
-                magic_damage: self_dmg_mod.0,
-                physical_damage: self_dmg_mod.1,
-                true_damage: self_dmg_mod.2,
-                all_sources: self_dmg_mod.3,
-            },
-            adaptative_type: RiotFormulas::adaptative_type(
-                current_player.get_base_stats().attack_damage,
-                current_stats.ability_power,
-            ),
-        },
-        enemy_player: EnemyFullStats {
-            current_stats: enemy_current_stats,
-            bonus_stats: enemy_bonus_stats,
-            // #![unsupported] only permanent modifiers are supported
-            damage_mod: DamageMultipliers {
-                magic_damage: enemy_dmg_mod.0,
-                physical_damage: enemy_dmg_mod.1,
-                true_damage: enemy_dmg_mod.2,
-                all_sources: enemy_dmg_mod.3,
-            },
-            real_resists: RealResists {
-                armor: real_armor,
-                magic_resist: real_magic_resist,
-            },
-        },
-    }
+        randuin: has_item(enemy_items, &[3143]),
+    };
+
+    (enemy_current_stats, enemy_bonus_stats, generic_stats)
 }
 
-/// Checks damage type and returns its multipliers. Usually a number
-/// If a debuff is found, values returned will be < 1.0, else >= 1.0
-/// return[0]: value that will replace PHYSICAL_MULTIPLIER or MAGIC_MULTIPLIER
-/// return[1]: value in decimal form that represents percentage of bonus/debuff damage
-pub fn get_damage_multipliers(full_stats: &FullStats, damage_type: &str) -> (f64, f64) {
-    let enemy_damage_multipliers = &full_stats.enemy_player.damage_mod;
+#[inline]
+pub fn get_damage_multipliers(modifiers: &DamageMultipliers, damage_type: &str) -> f64 {
+    let DamageMultipliers {
+        self_mod,
+        enemy_mod,
+        damage_mod,
+    } = modifiers;
     let (enemy_debuff_multiplier, damage_reduction_multiplier, damage_increase_multiplier) =
         match damage_type {
-            "MAGIC_DAMAGE" => (
-                full_stats.enemy_player.damage_mod.magic_damage,
-                full_stats.magic_damage_multiplier,
-                full_stats.current_player.damage_mod.magic_damage,
-            ),
-            "PHYSICAL_DAMAGE" => (
-                full_stats.enemy_player.damage_mod.physical_damage,
-                full_stats.physical_damage_multiplier,
-                full_stats.current_player.damage_mod.physical_damage,
-            ),
-            "TRUE_DAMAGE" => (
-                full_stats.enemy_player.damage_mod.true_damage,
-                1.0,
-                full_stats.current_player.damage_mod.true_damage,
-            ),
+            "PHYSICAL_DAMAGE" => (enemy_mod.0, damage_mod.0, self_mod.0),
+            "MAGIC_DAMAGE" => (enemy_mod.1, damage_mod.1, self_mod.1),
+            "TRUE_DAMAGE" => (enemy_mod.2, 1.0, self_mod.2),
             _ => (1.0, 1.0, 1.0),
         };
-    let damage_bonus = full_stats.current_player.damage_mod.all_sources;
-    (
-        damage_reduction_multiplier,
-        enemy_debuff_multiplier
-            * damage_increase_multiplier
-            * damage_bonus
-            * enemy_damage_multipliers.all_sources,
-    )
+    damage_reduction_multiplier
+        * enemy_debuff_multiplier
+        * damage_increase_multiplier
+        * self_mod.3
+        * enemy_mod.3
 }
 
-/// Evaluates abilities damages to a given champion, whose stats are in `full_stats`
-/// Intentionally ignores Monster and Minion damages
-/// Invalid inputs will cause the function to return an empty FxHashMap
 pub fn get_abilities_damage(
-    current_player_cache: &Champion,
-    full_stats: &FullStats,
-    abilities: &AbilitiesX,
-) -> DamageLike<String> {
-    let mut ability_damages = DamageLike::<String>::default();
-    for (keyname, ability) in current_player_cache
+    current_player_cache: &&CachedChampion,
+    current_player_level: usize,
+    abilities: AbilitiesX,
+) -> Vec<(&'static str, DamageExpression)> {
+    current_player_cache
         .abilities
         .iter()
-        .filter_map(|(key, val)| {
-            (!key.contains("MONSTER") && !key.contains("MINION")).then(|| (key.clone(), val))
-        })
-    {
-        let first_char = keyname.chars().next().unwrap_or_default();
-        let indexation = match first_char {
-            'P' => full_stats.current_player.level,
-            _ => match first_char {
+        .filter(|(key, _)| !key.contains("MONSTER") && !key.contains("MINION"))
+        .filter_map(move |(key, value)| {
+            let first_char = key.chars().next()?;
+            let level = match first_char {
+                'P' => current_player_level,
                 'Q' => abilities.q,
                 'W' => abilities.w,
                 'E' => abilities.e,
                 'R' => abilities.r,
-                _ => return ability_damages,
-            },
-        };
-        let damages_in_area = ability.damages_in_area;
-        let damage_type = ability.damage_type.clone();
-        if indexation > 0 {
-            let (damage_reduction_multiplier, damage_increase_multiplier) =
-                get_damage_multipliers(full_stats, &damage_type);
-            let eval_damage_str = |from_vec: &[String]| {
-                let default_value = String::from("0.0");
-                let format_str = from_vec.get(indexation - 1).unwrap_or(&default_value);
-                let damage_str = replace_damage_keywords(full_stats, format_str);
-                let formatted_str = format!("({}) * {}", damage_str, damage_reduction_multiplier);
-                (damage_increase_multiplier) * &formatted_str.eval().unwrap_or_default()
+                _ => return None,
             };
-
-            let minimum_damage = eval_damage_str(&ability.minimum_damage);
-            let maximum_damage = eval_damage_str(&ability.maximum_damage);
-            ability_damages.insert(
-                keyname.to_string(),
-                InstanceDamage {
-                    minimum_damage,
-                    maximum_damage,
-                    damage_type: String::from(damage_type),
-                    damages_in_area,
-                    damages_onhit: false,
-                    min_dmg_change: None,
-                    max_dmg_change: None,
+            Some((
+                *key,
+                DamageExpression {
+                    level,
+                    damage_type: value.damage_type,
+                    minimum_damage: value.minimum_damage,
+                    maximum_damage: value.maximum_damage,
                 },
-            );
-        } else {
-            // For abilities at level zero, return default values right away
-            // Avoids processing unnecessary math expressions
-            ability_damages.insert(
-                keyname.to_string(),
-                InstanceDamage {
-                    minimum_damage: 0.0,
-                    maximum_damage: 0.0,
-                    damage_type,
-                    damages_in_area,
-                    damages_onhit: false,
-                    min_dmg_change: None,
-                    max_dmg_change: None,
+            ))
+        })
+        .chain(std::iter::once((
+            "A",
+            DamageExpression {
+                level: 0,
+                damage_type: "PHYSICAL_DAMAGE",
+                minimum_damage: |_, ctx: &EvalContext| ctx.ad * ctx.physical_multiplier,
+                maximum_damage: |_, _| 0.0,
+            },
+        )))
+        .chain(std::iter::once((
+            "C",
+            DamageExpression {
+                level: 0,
+                damage_type: "PHYSICAL_DAMAGE",
+                minimum_damage: |_, ctx: &EvalContext| {
+                    ctx.ad * ctx.physical_multiplier * ctx.crit_damage / 100.0
                 },
-            );
-        }
-    }
-    // Some champions may have a range value in their basic attacks, or a different damage type
-    // Champions listed below are considered to be "normal" while exceptions are not implemented
-    // #![unsupported] Senna, Akshan, Corki, Kalista
-    let basic_attack_damage = full_stats.current_player.current_stats.attack_damage
-        * full_stats.physical_damage_multiplier
-        * full_stats.current_player.damage_mod.physical_damage;
-    ability_damages.insert(
-        String::from("A"),
-        InstanceDamage {
-            minimum_damage: basic_attack_damage,
-            maximum_damage: 0.0,
-            damage_type: String::from("PHYSICAL_DAMAGE"),
-            damages_in_area: false,
-            damages_onhit: false,
-            min_dmg_change: None,
-            max_dmg_change: None,
-        },
-    );
-    // Same issue as basic attack description above
-    ability_damages.insert(
-        String::from("C"),
-        InstanceDamage {
-            minimum_damage: basic_attack_damage
-                * (full_stats.current_player.current_stats.crit_damage / 100.0),
-            maximum_damage: 0.0,
-            damage_type: String::from("PHYSICAL_DAMAGE"),
-            damages_in_area: false,
-            damages_onhit: false,
-            min_dmg_change: None,
-            max_dmg_change: None,
-        },
-    );
-
-    ability_damages
+                maximum_damage: |_, _| 0.0,
+            },
+        )))
+        .collect()
 }
 
-/// Takes a string and replaces keywords defined manually.
-/// Expected to return a string that can be evaluted mathematically, but not guaranteed
-/// Stacks information is not accessible unless sent from client.
 // #![unsupported] Champion stacks are ignored.
-pub fn replace_damage_keywords(stats: &FullStats, target_str: &str) -> String {
-    let replacements = [
-        ("CHOGATH_STACKS", 1.0),
-        ("VEIGAR_STACKS", 1.0),
-        ("NASUS_STACKS", 1.0),
-        ("SMOLDER_STACKS", 1.0),
-        ("AURELION_SOL_STACKS", 1.0),
-        ("THRESH_STACKS", 1.0),
-        ("KINDRED_STACKS", 1.0),
-        ("BELVETH_STACKS", 1.0),
-        (
-            "ADAPTATIVE_DAMAGE",
-            match stats.current_player.adaptative_type {
-                AdaptativeType::Physical => stats.physical_damage_multiplier,
-                AdaptativeType::Magic => stats.magic_damage_multiplier,
-            },
-        ),
-        ("LEVEL", stats.current_player.level as f64),
-        ("PHYSICAL_MULTIPLIER", stats.physical_damage_multiplier),
-        ("MAGIC_MULTIPLIER", stats.magic_damage_multiplier),
+/// current_player_state: (CurrentStats, BaseStats, BonusStats, Level)
+/// enemy_state:(CurrentStats, BonusStats, GenericStats)
+pub fn get_eval_ctx(
+    current_player_state: &(&Stats, BasicStats, BasicStats, usize),
+    enemy_state: &(BasicStats, BasicStats, GenericStats),
+) -> EvalContext {
+    let (enemy_current_stats, enemy_bonus_stats, generic_stats) = enemy_state;
+    let (
+        current_player_stats,
+        current_player_base_stats,
+        current_player_bonus_stats,
+        current_player_level,
+    ) = current_player_state;
+    EvalContext {
+        chogath_stacks: 1.0,
+        veigar_stacks: 1.0,
+        nasus_stacks: 1.0,
+        smolder_stacks: 1.0,
+        aurelion_sol_stacks: 1.0,
+        thresh_stacks: 1.0,
+        kindred_stacks: 1.0,
+        belveth_stacks: 1.0,
+        adaptative_damage: match RiotFormulas::adaptative_type(
+            current_player_stats.attack_damage,
+            current_player_stats.ability_power,
+        ) {
+            AdaptativeType::Physical => generic_stats.armor_mod,
+            AdaptativeType::Magic => generic_stats.magic_mod,
+        },
+        level: *current_player_level as f64,
+        physical_multiplier: generic_stats.armor_mod,
+        magic_multiplier: generic_stats.magic_mod,
         // #![manual_impl]
-        (
-            "STEELCAPS_EFFECT",
-            if stats.enemy_has_steelcaps { 0.88 } else { 1.0 },
-        ),
+        steelcaps_effect: if generic_stats.steelcaps { 0.88 } else { 1.0 },
         // #![manual_impl]
-        (
-            "RANDUIN_EFFECT",
-            if stats.enemy_has_randuin { 0.7 } else { 1.0 },
-        ),
+        randuin_effect: if generic_stats.randuin { 0.7 } else { 1.0 },
         // #![manual_impl]
-        (
-            "ROCKSOLID_EFFECT",
-            if stats.enemy_has_rocksolid { 0.8 } else { 1.0 },
-        ),
-        ("ENEMY_BONUS_HEALTH", stats.enemy_player.bonus_stats.health),
-        ("ENEMY_ARMOR", stats.enemy_player.current_stats.armor),
-        ("ENEMY_MAX_HEALTH", stats.enemy_player.current_stats.health),
-        ("ENEMY_HEALTH", stats.enemy_player.current_stats.health),
-        (
-            "ENEMY_CURRENT_HEALTH",
-            stats.enemy_player.current_stats.health,
-        ),
-        (
-            "ENEMY_MISSING_HEALTH",
-            stats.enemy_player.current_stats.health,
-        ),
-        (
-            "ENEMY_MAGIC_RESIST",
-            stats.enemy_player.current_stats.magic_resist,
-        ),
-        ("BASE_HEALTH", stats.current_player.base_stats.health),
-        ("BASE_AD", stats.current_player.base_stats.attack_damage),
-        ("BASE_ARMOR", stats.current_player.base_stats.armor),
-        (
-            "BASE_MAGIC_RESIST",
-            stats.current_player.base_stats.magic_resist,
-        ),
-        ("BASE_MANA", stats.current_player.base_stats.mana),
-        ("BONUS_AD", stats.current_player.bonus_stats.attack_damage),
-        ("BONUS_ARMOR", stats.current_player.bonus_stats.armor),
-        (
-            "BONUS_MAGIC_RESIST",
-            stats.current_player.bonus_stats.magic_resist,
-        ),
-        ("BONUS_HEALTH", stats.current_player.bonus_stats.health),
-        ("BONUS_MANA", stats.current_player.bonus_stats.mana),
+        rocksolid_effect: if generic_stats.rocksolid { 0.8 } else { 1.0 },
+        enemy_bonus_health: enemy_bonus_stats.health,
+        enemy_armor: enemy_current_stats.armor,
+        enemy_max_health: enemy_current_stats.health,
+        enemy_health: enemy_current_stats.health,
+        enemy_current_health: enemy_current_stats.health,
+        enemy_missing_health: enemy_current_stats.health,
+        enemy_magic_resist: enemy_current_stats.magic_resist,
+        base_health: current_player_base_stats.health,
+        base_ad: current_player_base_stats.attack_damage,
+        base_armor: current_player_base_stats.armor,
+        base_magic_resist: current_player_base_stats.magic_resist,
+        base_mana: current_player_base_stats.mana,
+        bonus_ad: current_player_bonus_stats.attack_damage,
+        bonus_armor: current_player_bonus_stats.armor,
+        bonus_magic_resist: current_player_bonus_stats.magic_resist,
+        bonus_health: current_player_bonus_stats.health,
+        bonus_mana: current_player_bonus_stats.mana,
         // #![unsupported]
-        ("BONUS_MOVE_SPEED", 1.0),
-        (
-            "ARMOR_PENETRATION_FLAT",
-            stats.current_player.current_stats.armor_penetration_flat,
-        ),
-        (
-            "ARMOR_PENETRATION_PERCENT",
-            stats.current_player.current_stats.armor_penetration_percent,
-        ),
-        (
-            "MAGIC_PENETRATION_FLAT",
-            stats.current_player.current_stats.magic_penetration_flat,
-        ),
-        (
-            "MAGIC_PENETRATION_PERCENT",
-            stats.current_player.current_stats.magic_penetration_percent,
-        ),
-        ("MAX_MANA", stats.current_player.current_stats.max_mana),
-        (
-            "CURRENT_MANA",
-            stats.current_player.current_stats.current_mana,
-        ),
-        ("MAX_HEALTH", stats.current_player.current_stats.max_health),
-        (
-            "CURRENT_HEALTH",
-            stats.current_player.current_stats.current_health,
-        ),
-        ("ARMOR", stats.current_player.current_stats.armor),
-        (
-            "MAGIC_RESIST",
-            stats.current_player.current_stats.magic_resist,
-        ),
-        (
-            "CRIT_CHANCE",
-            stats.current_player.current_stats.crit_chance,
-        ),
-        (
-            "CRIT_DAMAGE",
-            stats.current_player.current_stats.crit_damage,
-        ),
-        (
-            "ATTACK_SPEED",
-            stats.current_player.current_stats.attack_speed,
-        ),
-        ("MISSING_HEALTH", stats.missing_health),
-        ("AP", stats.current_player.current_stats.ability_power),
-        ("AD", stats.current_player.current_stats.attack_damage),
-    ];
-
-    replacements
-        .iter()
-        .fold(target_str.to_string(), |acc: String, (old, new)| {
-            acc.replace(old, &new.to_string())
-        })
+        bonus_move_speed: 1.0,
+        armor_penetration_flat: current_player_stats.armor_penetration_flat,
+        armor_penetration_percent: current_player_stats.armor_penetration_percent,
+        magic_penetration_flat: current_player_stats.magic_penetration_flat,
+        magic_penetration_percent: current_player_stats.magic_penetration_percent,
+        max_mana: current_player_stats.max_mana,
+        current_mana: current_player_stats.current_mana,
+        max_health: current_player_stats.max_health,
+        current_health: current_player_stats.current_health,
+        armor: current_player_stats.armor,
+        magic_resist: current_player_stats.magic_resist,
+        crit_chance: current_player_stats.crit_chance,
+        crit_damage: current_player_stats.crit_damage,
+        attack_speed: current_player_stats.attack_speed,
+        missing_health: 1.0
+            - (current_player_stats.current_health / current_player_stats.max_health.max(1.0)),
+        ap: current_player_stats.ability_power,
+        ad: current_player_stats.attack_damage,
+    }
 }
 
 /// Returns the difference between current stats and base stats
 /// current_stats must be a tpe that can be converted to struct `RiotChampionStats`
-pub fn get_bonus_stats<T: ToRiotFormat>(current_stats: &T, base_stats: &BasicStats) -> BasicStats {
-    let value: RiotChampionStats = current_stats.format();
+#[inline]
+pub fn get_bonus_stats(current_stats: BasicStats, base_stats: BasicStats) -> BasicStats {
     BasicStats {
-        armor: value.armor - base_stats.armor,
-        health: value.max_health - base_stats.health,
-        attack_damage: value.attack_damage - base_stats.attack_damage,
-        magic_resist: value.magic_resist - base_stats.magic_resist,
-        mana: value.resource_max - base_stats.mana,
+        armor: current_stats.armor - base_stats.armor,
+        health: current_stats.health - base_stats.health,
+        attack_damage: current_stats.attack_damage - base_stats.attack_damage,
+        magic_resist: current_stats.magic_resist - base_stats.magic_resist,
+        mana: current_stats.mana - base_stats.mana,
     }
 }
 
 /// Reads cached values for a given champion and assigns its base stats at a given level
-pub fn get_base_stats(champion_cache: &Champion, level: usize) -> BasicStats {
+#[inline]
+pub fn get_base_stats(champion_cache: &&CachedChampion, level: usize) -> BasicStats {
     macro_rules! assign_value {
         ($field:ident) => {
             RiotFormulas::stat_growth(
@@ -807,7 +421,6 @@ pub fn get_base_stats(champion_cache: &Champion, level: usize) -> BasicStats {
             )
         };
     }
-
     BasicStats {
         armor: assign_value!(armor),
         health: assign_value!(health),
@@ -821,30 +434,57 @@ pub fn get_base_stats(champion_cache: &Champion, level: usize) -> BasicStats {
 /// Return value may not match the in-game value due to runes/stacks
 /// There are several other situations where enemy current stats
 /// Can't be evaluated precisely.
+#[inline]
 pub fn get_enemy_current_stats(
-    base_stats: &BasicStats,
+    mut basic_stats: BasicStats,
     current_items: &[usize],
-    earth_dragon: f64,
+    earth_dragon_mod: f64,
 ) -> BasicStats {
-    let mut base = base_stats.clone();
     for enemy_item in current_items {
         if let Some(item) = GLOBAL_CACHE.items.get(&enemy_item) {
-            let stats = &item.stats;
-
             macro_rules! add_value {
                 ($field:ident) => {
-                    base.$field.add_if_some(stats.$field);
+                    basic_stats.$field += item.stats.$field;
                 };
             }
-
             add_value!(attack_damage);
             add_value!(health);
             add_value!(armor);
-            base.magic_resist.add_if_some(stats.magic_resistance);
+            basic_stats.magic_resist += item.stats.magic_resistance;
             add_value!(mana);
         }
     }
-    base.armor *= earth_dragon;
-    base.magic_resist *= earth_dragon;
-    base
+    basic_stats.armor *= earth_dragon_mod;
+    basic_stats.magic_resist *= earth_dragon_mod;
+    basic_stats
+}
+
+fn transform_expr<T: Copy + 'static>(
+    tuple: (T, DamageExpression),
+    damage_mlt: &DamageMultipliers,
+    eval_ctx: &EvalContext,
+) -> (T, InstanceDamage) {
+    let damage_type = tuple.1.damage_type;
+    let damage_mod = get_damage_multipliers(damage_mlt, damage_type);
+    (
+        tuple.0,
+        InstanceDamage {
+            damage_type,
+            minimum_damage: damage_mod * (tuple.1.minimum_damage)(tuple.1.level, eval_ctx),
+            maximum_damage: damage_mod * (tuple.1.maximum_damage)(tuple.1.level, eval_ctx),
+        },
+    )
+}
+
+pub fn get_damages<T: Copy + Eq + Hash + 'static>(
+    tuples: &[(T, DamageExpression)],
+    damage_multipliers: &DamageMultipliers,
+    eval_ctx: &EvalContext,
+) -> DamageLike<T> {
+    let mut result = DamageLike::<T>::with_capacity_and_hasher(tuples.len(), Default::default());
+    for tuple in tuples.iter().copied() {
+        let (key, val) = transform_expr(tuple, damage_multipliers, eval_ctx);
+        result.insert(key, val);
+    }
+    result
 }

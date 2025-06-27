@@ -1,6 +1,6 @@
-use std::{collections::HashMap, fs, path::Path};
-
+use super::transform_expr;
 use serde::Deserialize;
+use std::{collections::HashMap, fs, path::Path};
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -78,27 +78,62 @@ fn format_stats(stats: &ChampionCdnStats) -> String {
     all_stats.join("\n\t\t")
 }
 
+/// ```
+/// minimum_damage: |level: usize, ctx: &EvalContext| -> f64 {
+/// match level {
+///     1 => 75.0 + 0.55 * ctx.ability_power + 0.02 * ctx.bonus_mana,
+///     2 => 95.0 + 0.55 * ctx.ability_power + 0.02 * ctx.bonus_mana,
+///     3 => 115.0 + 0.55 * ctx.ability_power + 0.02 * ctx.bonus_mana,
+///     4 => 135.0 + 0.55 * ctx.ability_power + 0.02 * ctx.bonus_mana,
+///     5 => 155.0 + 0.55 * ctx.ability_power + 0.02 * ctx.bonus_mana,
+///     _ => 0.0,
+/// }
+/// maximum_damage: |_, _| 0.0,
+/// ```
 fn format_abilities(abilities: &HashMap<String, Ability>) -> String {
     let mut res = String::new();
     for (name, ability) in abilities {
+        let mut min_dmg = String::new();
+        let mut max_dmg = String::new();
+        macro_rules! format_dmg {
+            ($var:expr, $field:ident) => {
+                if ability.$field.is_empty() {
+                    $var.push_str("|_, _| 0.0");
+                } else {
+                    let transformed: Vec<(String, bool)> = ability
+                        .$field
+                        .iter()
+                        .map(|dmg| transform_expr(dmg))
+                        .collect();
+                    let needs_ctx = transformed.iter().any(|&(_, changed)| changed);
+                    let ctx_param = if needs_ctx { "ctx: &EvalContext" } else { "_" };
+                    $var.push_str(&format!(
+                        "|level: usize, {}| -> f64 {{\n\t\t\t\t\tmatch level {{",
+                        ctx_param
+                    ));
+                    for (i, (expr, _)) in transformed.into_iter().enumerate() {
+                        $var.push_str(&format!(
+                            "\n\t\t\t\t\t\t{} => {},",
+                            i + 1,
+                            expr.to_lowercase()
+                        ));
+                    }
+                    $var.push_str("\n\t\t\t\t\t\t_ => 0.0,");
+                    $var.push_str("\n\t\t\t\t\t}");
+                    $var.push_str("\n\t\t\t\t}");
+                }
+            };
+        }
+        format_dmg!(min_dmg, minimum_damage);
+        format_dmg!(max_dmg, maximum_damage);
         res.push_str(&format!(
-            "(\n\t\t\t\"{}\",\n\t\t\tCachedChampionAbility {{\n\t\t\t\tname: \"{}\",\n\t\t\t\tdamage_type: \"{}\",\n\t\t\t\tdamages_in_area: {},\n\t\t\t\tminimum_damage: &[{}],\n\t\t\t\tmaximum_damage: &[{}],\n\t\t\t}},\n\t\t),\n\t\t",
+            "(\n\t\t\t\"{}\",\n\t\t\tCachedChampionAbility {{\n\t\t\t\tname: \"{}\",\n\t\t\t\tdamage_type: \"{}\",\n\t\t\t\tdamages_in_area: {},\n\t\t\t\tminimum_damage: {},\n\t\t\t\tmaximum_damage: {},\n\t\t\t}},\n\t\t),\n\t\t",
             name,
             ability.name,
             ability.damage_type,
             ability.damages_in_area,
-            ability
-                .minimum_damage
-                .iter()
-                .map(|s| format!("\"{}\"", s))
-                .collect::<Vec<String>>()
-                .join(", "),
-            ability
-                .maximum_damage
-                .iter()
-                .map(|s| format!("\"{}\"", s))
-                .collect::<Vec<String>>()
-                .join(", "),
+            min_dmg,
+            max_dmg,
         ));
     }
     res

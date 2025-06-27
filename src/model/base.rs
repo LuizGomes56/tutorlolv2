@@ -1,22 +1,17 @@
-use super::{calculator::CurrentPlayerX, realtime::CurrentPlayer, riot::RiotChampionStats};
+use crate::model::cache::EvalContext;
+
+use super::riot::RiotChampionStats;
 use rustc_hash::FxHashMap;
 use serde::{Deserialize, Serialize};
-use serde_json::Value;
 
 #[derive(Serialize)]
 pub struct InstanceDamage {
     pub minimum_damage: f64,
     pub maximum_damage: f64,
-    pub damage_type: String,
-    pub damages_in_area: bool,
-    pub damages_onhit: bool,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub min_dmg_change: Option<f64>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub max_dmg_change: Option<f64>,
+    pub damage_type: &'static str,
 }
 
-#[derive(Clone, Deserialize, Serialize)]
+#[derive(Copy, Clone, Deserialize, Serialize)]
 pub struct Stats {
     pub ability_power: f64,
     pub armor: f64,
@@ -36,31 +31,8 @@ pub struct Stats {
     pub current_mana: f64,
 }
 
-pub trait ToRiotFormat {
-    fn format(&self) -> RiotChampionStats;
-}
-
-impl ToRiotFormat for BasicStats {
-    fn format(&self) -> RiotChampionStats {
-        RiotChampionStats {
-            armor: self.armor,
-            max_health: self.health,
-            attack_damage: self.attack_damage,
-            magic_resist: self.magic_resist,
-            resource_max: self.mana,
-            ..Default::default()
-        }
-    }
-}
-
-impl ToRiotFormat for RiotChampionStats {
-    fn format(&self) -> RiotChampionStats {
-        (*self).clone()
-    }
-}
-
 impl RiotChampionStats {
-    pub fn transform(&self) -> Stats {
+    pub fn to_stats(&self) -> Stats {
         Stats {
             ability_power: self.ability_power,
             armor: self.armor,
@@ -82,32 +54,9 @@ impl RiotChampionStats {
     }
 }
 
-impl ToRiotFormat for Stats {
-    fn format(&self) -> RiotChampionStats {
-        RiotChampionStats {
-            ability_power: self.ability_power,
-            armor: self.armor,
-            physical_lethality: self.armor_penetration_flat,
-            armor_penetration_percent: self.armor_penetration_percent,
-            attack_damage: self.attack_damage,
-            attack_range: self.attack_range,
-            attack_speed: self.attack_speed,
-            crit_chance: self.crit_chance,
-            crit_damage: self.crit_damage,
-            current_health: self.current_health,
-            magic_penetration_flat: self.magic_penetration_flat,
-            magic_penetration_percent: self.magic_penetration_percent,
-            magic_resist: self.magic_resist,
-            max_health: self.max_health,
-            resource_max: self.max_mana,
-            resource_value: self.current_mana,
-        }
-    }
-}
-
 pub type DamageLike<T> = FxHashMap<T, InstanceDamage>;
 
-#[derive(Clone, Deserialize, Serialize)]
+#[derive(Copy, Clone, Deserialize, Serialize)]
 pub struct BasicStats {
     pub armor: f64,
     pub health: f64,
@@ -117,45 +66,25 @@ pub struct BasicStats {
 }
 
 #[derive(Serialize)]
-pub struct ComparedItem<'a> {
-    pub name: &'a str,
+pub struct ComparedItem {
+    pub name: &'static str,
     pub gold_cost: usize,
-    pub prettified_stats: &'a FxHashMap<String, Value>,
-}
-
-#[derive(Serialize)]
-pub struct RealResists {
-    pub magic_resist: f64,
-    pub armor: f64,
+    pub prettified_stats: FxHashMap<&'static str, f64>,
 }
 
 #[derive(Serialize)]
 pub struct SimulatedDamages {
-    pub abilities: DamageLike<String>,
+    pub abilities: DamageLike<&'static str>,
     pub items: DamageLike<usize>,
     pub runes: DamageLike<usize>,
 }
 
 #[derive(Serialize)]
 pub struct Damages {
-    pub abilities: DamageLike<String>,
+    pub abilities: DamageLike<&'static str>,
     pub items: DamageLike<usize>,
     pub runes: DamageLike<usize>,
     pub compared_items: FxHashMap<usize, SimulatedDamages>,
-}
-
-pub struct DamageMultipliers {
-    pub magic_damage: f64,
-    pub physical_damage: f64,
-    pub true_damage: f64,
-    pub all_sources: f64,
-}
-
-pub struct EnemyFullStats<'a> {
-    pub current_stats: &'a mut BasicStats,
-    pub bonus_stats: &'a BasicStats,
-    pub damage_mod: DamageMultipliers,
-    pub real_resists: RealResists,
 }
 
 pub enum AdaptativeType {
@@ -173,31 +102,20 @@ impl From<bool> for AdaptativeType {
     }
 }
 
-pub struct SelfFullStats<'a> {
-    pub current_stats: &'a Stats,
-    pub base_stats: &'a BasicStats,
-    pub bonus_stats: &'a BasicStats,
-    pub is_ranged: bool,
-    pub level: usize,
-    pub damage_mod: DamageMultipliers,
-    pub adaptative_type: AdaptativeType,
-}
-
-pub struct FullStats<'a> {
-    pub missing_health: f64,
-    pub enemy_has_steelcaps: bool,
-    pub enemy_has_rocksolid: bool,
-    pub enemy_has_randuin: bool,
-    pub current_player: SelfFullStats<'a>,
-    pub enemy_player: EnemyFullStats<'a>,
-    pub physical_damage_multiplier: f64,
-    pub magic_damage_multiplier: f64,
-}
-
 pub enum AttackType {
     Melee,
     Ranged,
     Other,
+}
+
+impl From<bool> for AttackType {
+    fn from(is_ranged: bool) -> Self {
+        if is_ranged {
+            AttackType::Ranged
+        } else {
+            AttackType::Melee
+        }
+    }
 }
 
 impl ToString for AttackType {
@@ -216,63 +134,29 @@ impl PartialEq<AttackType> for String {
     }
 }
 
-impl From<&str> for AttackType {
-    fn from(s: &str) -> Self {
-        match s {
-            "MELEE" => AttackType::Melee,
-            "RANGED" => AttackType::Ranged,
-            _ => AttackType::Other,
-        }
-    }
+#[derive(Clone, Copy)]
+pub struct GenericStats {
+    pub real_armor: f64,
+    pub real_magic: f64,
+    pub armor_mod: f64,
+    pub magic_mod: f64,
+    pub enemy_mod: (f64, f64, f64, f64),
+    pub self_mod: (f64, f64, f64, f64),
+    pub steelcaps: bool,
+    pub rocksolid: bool,
+    pub randuin: bool,
 }
 
-pub trait CurrentPlayerLike {
-    fn get_base_stats(&self) -> &BasicStats;
-    fn get_bonus_stats(&self) -> &BasicStats;
-    fn get_level(&self) -> usize;
-    fn get_current_stats(&self) -> &Stats;
-    fn get_damaging_items(&self) -> &FxHashMap<usize, &str>;
-    fn get_damaging_runes(&self) -> &FxHashMap<usize, &str>;
+#[derive(Copy, Clone)]
+pub struct DamageExpression {
+    pub level: usize,
+    pub damage_type: &'static str,
+    pub minimum_damage: fn(usize, &EvalContext) -> f64,
+    pub maximum_damage: fn(usize, &EvalContext) -> f64,
 }
 
-impl<'a> CurrentPlayerLike for CurrentPlayer<'a> {
-    fn get_base_stats(&self) -> &BasicStats {
-        &self.base_stats
-    }
-    fn get_bonus_stats(&self) -> &BasicStats {
-        &self.bonus_stats
-    }
-    fn get_level(&self) -> usize {
-        self.level
-    }
-    fn get_current_stats(&self) -> &Stats {
-        &self.current_stats
-    }
-    fn get_damaging_items(&self) -> &FxHashMap<usize, &str> {
-        &self.damaging_items
-    }
-    fn get_damaging_runes(&self) -> &FxHashMap<usize, &str> {
-        &self.damaging_runes
-    }
-}
-
-impl<'a> CurrentPlayerLike for CurrentPlayerX<'a> {
-    fn get_base_stats(&self) -> &BasicStats {
-        &self.base_stats
-    }
-    fn get_bonus_stats(&self) -> &BasicStats {
-        &self.bonus_stats
-    }
-    fn get_level(&self) -> usize {
-        self.level
-    }
-    fn get_current_stats(&self) -> &Stats {
-        &self.current_stats
-    }
-    fn get_damaging_items(&self) -> &FxHashMap<usize, &str> {
-        &self.damaging_items
-    }
-    fn get_damaging_runes(&self) -> &FxHashMap<usize, &str> {
-        &self.damaging_runes
-    }
+pub struct DamageMultipliers {
+    pub self_mod: (f64, f64, f64, f64),
+    pub enemy_mod: (f64, f64, f64, f64),
+    pub damage_mod: (f64, f64),
 }

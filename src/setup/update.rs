@@ -93,7 +93,6 @@ pub fn setup_internal_champions() -> Result<(), SetupError> {
 /// initializes items as default, and Damaging stats must be added separately.
 #[writer_macros::trace_time]
 pub fn setup_internal_items() -> Result<(), SetupError> {
-    let non_zero = |val: f64| -> Option<f64> { if val == 0.0 { None } else { Some(val) } };
     let files = fs::read_dir("cache/cdn/items")
         .map_err(|e| SetupError(format!("Unable to read directory: {}", e)))?;
     for file in files {
@@ -108,7 +107,7 @@ pub fn setup_internal_items() -> Result<(), SetupError> {
 
         macro_rules! insert_non_zero {
             ($field:ident) => {
-                item_stats.$field = non_zero(stats.$field.flat);
+                item_stats.$field = stats.$field.flat;
             };
         }
 
@@ -126,10 +125,10 @@ pub fn setup_internal_items() -> Result<(), SetupError> {
         insert_non_zero!(movespeed);
         insert_non_zero!(omnivamp);
 
-        item_stats.armor_penetration_flat = non_zero(stats.armor_penetration.flat);
-        item_stats.armor_penetration_percent = non_zero(stats.armor_penetration.percent);
-        item_stats.magic_penetration_flat = non_zero(stats.magic_penetration.flat);
-        item_stats.magic_penetration_percent = non_zero(stats.magic_penetration.percent);
+        item_stats.armor_penetration_flat = stats.armor_penetration.flat;
+        item_stats.armor_penetration_percent = stats.armor_penetration.percent;
+        item_stats.magic_penetration_flat = stats.magic_penetration.flat;
+        item_stats.magic_penetration_percent = stats.magic_penetration.percent;
 
         let result: Item = Item {
             prettified_stats: FxHashMap::default(),
@@ -143,6 +142,7 @@ pub fn setup_internal_items() -> Result<(), SetupError> {
             builds_from: cdn_item.builds_from,
             ranged: None,
             melee: None,
+            purchasable: cdn_item.shop.purchasable,
         };
         let json: String = serde_json::to_string(&result).map_err(|e: serde_json::Error| {
             SetupError(format!("Failed to serialize item: {:#?}", e))

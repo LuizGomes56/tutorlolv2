@@ -1,7 +1,14 @@
-use super::realtime::DamageObject;
 use rustc_hash::FxHashMap;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
+
+#[derive(Deserialize, Serialize, Clone)]
+pub struct DamageObject {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub minimum_damage: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub maximum_damage: Option<String>,
+}
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -69,38 +76,22 @@ pub struct Shop {
 #[derive(Deserialize, Serialize, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct PartialStats {
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub ability_power: Option<f64>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub armor: Option<f64>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub armor_penetration_percent: Option<f64>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub armor_penetration_flat: Option<f64>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub magic_penetration_percent: Option<f64>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub magic_penetration_flat: Option<f64>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub attack_damage: Option<f64>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub attack_speed: Option<f64>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub critical_strike_chance: Option<f64>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub critical_strike_damage: Option<f64>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub health: Option<f64>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub lifesteal: Option<f64>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub magic_resistance: Option<f64>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub mana: Option<f64>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub movespeed: Option<f64>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub omnivamp: Option<f64>,
+    pub ability_power: f64,
+    pub armor: f64,
+    pub armor_penetration_percent: f64,
+    pub armor_penetration_flat: f64,
+    pub magic_penetration_percent: f64,
+    pub magic_penetration_flat: f64,
+    pub attack_damage: f64,
+    pub attack_speed: f64,
+    pub critical_strike_chance: f64,
+    pub critical_strike_damage: f64,
+    pub health: f64,
+    pub lifesteal: f64,
+    pub magic_resistance: f64,
+    pub mana: f64,
+    pub movespeed: f64,
+    pub omnivamp: f64,
 }
 
 #[derive(Deserialize, Serialize)]
@@ -109,15 +100,12 @@ pub struct Item {
     pub gold: usize,
     pub tier: usize,
     pub prettified_stats: FxHashMap<String, Value>,
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub damage_type: Option<String>,
     pub stats: PartialStats,
     pub builds_from: Vec<usize>,
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub levelings: Option<Vec<usize>>,
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub ranged: Option<DamageObject>,
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub melee: Option<DamageObject>,
     pub damages_onhit: bool,
+    pub purchasable: bool,
 }

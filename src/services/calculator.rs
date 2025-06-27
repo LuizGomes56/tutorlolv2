@@ -2,11 +2,14 @@ use super::*;
 use crate::{
     GLOBAL_CACHE,
     model::{
-        base::{AdaptativeType, AttackType, BasicStats, Stats},
-        calculator::{ActivePlayerX, Calculator, CurrentPlayerX, EnemyX, GameX},
-        realtime::*,
+        base::{
+            AdaptativeType, AttackType, BasicStats, DamageMultipliers, Damages, SimulatedDamages,
+            Stats,
+        },
+        calculator::*,
+        realtime::DragonMultipliers,
     },
-    services::eval::{ConditionalAddition, RiotFormulas},
+    services::riot_formulas::RiotFormulas,
 };
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
 use rustc_hash::FxHashMap;
@@ -18,8 +21,8 @@ use rustc_hash::FxHashMap;
 fn apply_auto_stats(
     stats: &mut Stats,
     active_player: &ActivePlayerX,
-    base_stats: &BasicStats,
-) -> Result<BasicStats, String> {
+    base_stats: BasicStats,
+) -> Result<BasicStats, CalculationError> {
     let stacks = active_player.stacks as f64;
     let owned_items = &active_player.items;
 
@@ -30,16 +33,16 @@ fn apply_auto_stats(
         let cached_item = GLOBAL_CACHE
             .items
             .get(&item_id)
-            .ok_or_else(|| format!("Item {} not found on cache", item_id))?;
+            .ok_or_else(|| CalculationError::ItemCacheNotFound)?;
 
         let item_stats = &cached_item.stats;
 
         macro_rules! add_stat {
             ($field:ident) => {
-                stats.$field.add_if_some(item_stats.$field);
+                stats.$field += item_stats.$field;
             };
             ($field:ident, $field2:ident) => {
-                stats.$field.add_if_some(item_stats.$field2);
+                stats.$field += item_stats.$field2;
             };
         }
 
@@ -53,17 +56,22 @@ fn apply_auto_stats(
         add_stat!(max_mana, mana);
         add_stat!(attack_speed);
 
-        if let Some(armor_penetration_percent) = item_stats.armor_penetration_percent {
-            armor_penetration.push(armor_penetration_percent);
-        }
-        if let Some(magic_penetration_percent) = item_stats.magic_penetration_percent {
-            magic_penetration.push(magic_penetration_percent);
-        }
+        armor_penetration.push(item_stats.armor_penetration_percent);
+        magic_penetration.push(item_stats.magic_penetration_percent);
     }
 
     stats.crit_chance = stats.crit_chance.clamp(0.0, 100.0);
 
-    let bonus_stats: BasicStats = get_bonus_stats(stats, base_stats);
+    let bonus_stats: BasicStats = get_bonus_stats(
+        BasicStats {
+            armor: stats.armor,
+            health: stats.max_health,
+            attack_damage: stats.attack_damage,
+            magic_resist: stats.magic_resist,
+            mana: stats.max_mana,
+        },
+        base_stats,
+    );
 
     // #![manual_impl]
     // #![todo] File generator
@@ -227,20 +235,13 @@ fn item_exceptions(
         let this_stack: usize = *exception_map.get(&item_id).unwrap_or(&0);
         match item_id {
             // Dark Seal
-            1082 => {
-                champion_stats.ability_power += (this_stack.clamp(1, CLAMP_USIZE_MAX) << 2) as f64
-            }
+            1082 => champion_stats.ability_power += (this_stack.max(1) << 2) as f64,
             // Mejai's Soulstealer
-            3041 => {
-                champion_stats.ability_power += (5 * this_stack.clamp(1, CLAMP_USIZE_MAX)) as f64
-            }
+            3041 => champion_stats.ability_power += (5 * this_stack.max(1)) as f64,
             // Rabadon's Deathcap
             3089 | 223089 => champion_stats.ability_power *= 1.3,
             // Hubris
-            6697 | 7008 => {
-                champion_stats.attack_damage +=
-                    (15 + this_stack.clamp(1, CLAMP_USIZE_MAX) << 1) as f64
-            }
+            6697 | 7008 => champion_stats.attack_damage += (15 + this_stack.max(1) << 1) as f64,
             // Wooglet's Witchcap
             8002 => champion_stats.ability_power *= 1.5,
             _ => {}
@@ -251,180 +252,299 @@ fn item_exceptions(
 // #![todo] Comparison tool is not reliable;
 // #![todo] Stats are not assigned correctly
 // #![todo] Review exceptions
-// ! This function has less calculations to do, receives and returns less data
-// ! But still, is approximately 8 times slower than `realtime()`
-// ! This difference has to be further investigated
 #[writer_macros::trace_time]
-pub fn calculator<'a>(game: GameX) -> Result<Calculator<'a>, String> {
-    let current_player_def = game.active_player;
-    let current_player_level = current_player_def.level;
-    let current_player_champion_id = &current_player_def.champion_id;
+pub fn calculator(game: GameX) -> Result<Calculator, CalculationError> {
+    let GameX {
+        active_player,
+        enemy_players,
+        ally_fire_dragons,
+        ally_earth_dragons,
+        enemy_earth_dragons,
+        stack_exceptions,
+    } = game;
+
+    let ActivePlayerX {
+        level: current_player_level,
+        champion_id: ref current_player_champion_id,
+        abilities: current_player_abilities,
+        // #![todo]
+        champion_stats: ref _current_player_stats,
+        runes: ref current_player_runes,
+        items: ref current_player_items,
+        infer_stats: current_player_infer_stats,
+        // #![todo]
+        stacks: _current_player_stacks,
+    } = active_player;
+
     let current_player_cache = GLOBAL_CACHE
         .champions
-        .get(current_player_champion_id)
-        .ok_or_else(|| format!("Champion {} not found on cache", current_player_champion_id))?;
-    let current_player_base_stats = get_base_stats(current_player_cache, current_player_level);
-    let owned_items = &current_player_def.items;
-    let owned_runes = &current_player_def.runes;
-    let current_player_position = {
-        if let Some(pos) = current_player_cache.positions.get(0) {
-            pos
-        } else {
-            &String::from("MIDDLE")
-        }
-    };
-    let current_player_cached_recommended_items = GLOBAL_CACHE
-        .meta_items
-        .get(current_player_champion_id)
-        .ok_or_else(|| {
-            format!(
-                "Champion {} not found when trying to access meta_items",
-                current_player_champion_id
-            )
-        })?;
-    let current_player_recommended_items = get_recommended_items(
-        current_player_position,
-        current_player_cached_recommended_items,
-        owned_items,
-    );
-
-    let damaging_abilities = get_damaging_abilities(current_player_cache);
-    let damaging_runes = owned_runes
-        .iter()
-        .filter_map(|riot_rune| {
-            GLOBAL_CACHE
-                .runes
-                .get(&riot_rune)
-                .map(|cached| (*riot_rune, cached.name.as_ref()))
-        })
-        .collect::<FxHashMap<usize, &'_ str>>();
-    let attack_type = AttackType::from(current_player_cache.attack_type.as_str());
-    let damaging_items = get_damaging_items(attack_type, &owned_items);
+        .get(&current_player_champion_id)
+        .ok_or(CalculationError::ChampionCacheNotFound)?;
 
     let mut current_player_stats =
         RiotFormulas::full_base_stats(&current_player_cache.stats, current_player_level);
 
-    let bonus_stats = if current_player_def.infer_stats {
+    let current_player_base_stats = get_base_stats(current_player_cache, current_player_level);
+    let current_player_basic_stats = BasicStats {
+        armor: current_player_stats.armor,
+        health: current_player_stats.max_health,
+        attack_damage: current_player_stats.attack_damage,
+        magic_resist: current_player_stats.magic_resist,
+        mana: current_player_stats.max_mana,
+    };
+
+    let current_player_bonus_stats = if current_player_infer_stats {
         apply_auto_stats(
             &mut current_player_stats,
-            &current_player_def,
-            &current_player_base_stats,
+            &active_player,
+            current_player_base_stats,
         )?
     } else {
-        get_bonus_stats(
-            &current_player_def.champion_stats,
-            &current_player_base_stats,
-        )
+        get_bonus_stats(current_player_basic_stats, current_player_base_stats)
     };
+
+    let current_player_champion_id = active_player.champion_id;
 
     item_exceptions(
         &mut current_player_stats,
-        owned_items,
-        &game.stack_exceptions,
+        &current_player_items,
+        &stack_exceptions,
     );
 
     let adaptative_type = RiotFormulas::adaptative_type(
-        bonus_stats.attack_damage,
+        current_player_bonus_stats.attack_damage,
         current_player_stats.ability_power,
     );
 
     rune_exceptions(
         &mut current_player_stats,
-        owned_runes,
+        &current_player_runes,
         current_player_level as f64,
-        &game.stack_exceptions,
+        &stack_exceptions,
         (
             adaptative_type,
-            AttackType::from(current_player_cache.attack_type.as_str()),
+            AttackType::from(current_player_cache.attack_type == "RANGED"),
         ),
     );
 
-    let current_player = CurrentPlayerX {
-        bonus_stats,
-        current_stats: current_player_stats,
-        level: current_player_level,
-        damaging_abilities,
-        damaging_items,
-        damaging_runes,
-        base_stats: current_player_base_stats,
-        champion_id: current_player_def.champion_id,
+    let current_player_recommended_items = {
+        if let Some(meta_items) = GLOBAL_CACHE.meta_items.get(&current_player_champion_id) {
+            if let Some(position) = current_player_cache.positions.get(0) {
+                match *position {
+                    "TOP" => meta_items.top,
+                    "JUNGLE" => meta_items.jungle,
+                    "MIDDLE" => meta_items.mid,
+                    "BOTTOM" => meta_items.adc,
+                    "SUPPORT" => meta_items.support,
+                    _ => &[],
+                }
+            } else {
+                &[]
+            }
+        } else {
+            &[]
+        }
     };
 
     let ally_dragon_multipliers = DragonMultipliers {
-        earth: 1.0 + EARTH_DRAGON_MULTIPLIER * game.ally_earth_dragons as f64,
-        fire: 1.0 + FIRE_DRAGON_MULTIPLIER * game.ally_fire_dragons as f64,
-        // #![unsupported]
-        chemtech: 1.0 + CHEMTECH_DRAGON_MULTIPLIER * 0.0,
+        fire: 1.0 + FIRE_DRAGON_MULTIPLIER * ally_fire_dragons as f64,
+        earth: 1.0 + EARTH_DRAGON_MULTIPLIER * ally_earth_dragons as f64,
+        chemtech: 1.0,
+    };
+    let enemy_dragon_multipliers = DragonMultipliers {
+        fire: 1.0,
+        earth: 1.0 + EARTH_DRAGON_MULTIPLIER * enemy_earth_dragons as f64,
+        chemtech: 1.0,
     };
 
-    let (simulated_champion_stats, compared_items_info) = get_simulated_champion_stats(
-        owned_items,
-        &current_player.current_stats,
+    let (simulated_stats, compared_items) = get_simulated_champion_stats(
+        &current_player_stats,
+        &current_player_items,
         &ally_dragon_multipliers,
-    )?;
+    );
 
-    let enemies =
-        game.enemy_players
-            .into_par_iter()
-            .map(|player| {
-                let current_enemy_cache = GLOBAL_CACHE
-                    .champions
-                    .get(&player.champion_id)
-                    .ok_or_else(|| {
-                        format!(
-                            "ChampionID {} not found in champions cache",
-                            player.champion_id
-                        )
-                    })?;
-                let champion_name = &current_player_cache.name;
-                let enemy_level = player.level;
-                let enemy_base_stats = get_base_stats(current_enemy_cache, enemy_level);
-                let enemy_items = &player.items;
+    let current_player_is_ranged = current_player_cache.attack_type == "RANGED";
+    let current_player_state = (
+        &current_player_stats,
+        current_player_bonus_stats,
+        current_player_base_stats,
+        current_player_level,
+    );
 
-                // #![todo] Let user define enemy stats manually instead of predicting it from its items
-                let mut enemy_current_stats = if player.infer_stats {
-                    get_enemy_current_stats(
-                        &enemy_base_stats,
-                        &enemy_items,
-                        1.0 + EARTH_DRAGON_MULTIPLIER * game.enemy_earth_dragons as f64,
-                    )
-                } else {
-                    player.stats
+    let abilities_iter_expr = get_abilities_damage(
+        current_player_cache,
+        current_player_level,
+        current_player_abilities,
+    );
+    let items_iter_expr = get_items_damage(&current_player_items, current_player_is_ranged);
+    let runes_iter_expr = get_runes_damage(&current_player_runes, current_player_is_ranged);
+
+    let enemies = enemy_players
+        .into_par_iter()
+        .map(|player| {
+            let EnemyPlayersX {
+                champion_id: player_champion_id,
+                items: enemy_items,
+                level: enemy_level,
+                // #![todo]
+                infer_stats: _infer_enemy_stats,
+                // #![todo]
+                stats: _enemy_stats,
+            } = player;
+            let enemy_cache = GLOBAL_CACHE.champions.get(&player_champion_id).unwrap();
+            let enemy_base_stats = get_base_stats(enemy_cache, enemy_level);
+            let enemy_champion_name = GLOBAL_CACHE
+                .champion_names
+                .get_key(&player_champion_id)
+                .unwrap();
+
+            let full_stats = get_full_stats(
+                (
+                    &player_champion_id,
+                    enemy_level,
+                    enemy_dragon_multipliers.earth,
+                ),
+                (enemy_base_stats, &enemy_items),
+                (
+                    current_player_stats.armor_penetration_percent,
+                    current_player_stats.armor_penetration_flat,
+                ),
+                (
+                    current_player_stats.magic_penetration_percent,
+                    current_player_stats.magic_penetration_flat,
+                ),
+            );
+
+            let damage_multipliers = DamageMultipliers {
+                self_mod: full_stats.2.self_mod,
+                enemy_mod: full_stats.2.enemy_mod,
+                damage_mod: (full_stats.2.armor_mod, full_stats.2.magic_mod),
+            };
+
+            let eval_ctx = get_eval_ctx(&current_player_state, &full_stats);
+
+            let abilities_damage =
+                get_damages(&abilities_iter_expr, &damage_multipliers, &eval_ctx);
+            let items_damage = get_damages(&items_iter_expr, &damage_multipliers, &eval_ctx);
+            let runes_damage = get_damages(&runes_iter_expr, &damage_multipliers, &eval_ctx);
+
+            let mut compared_items_damage =
+                FxHashMap::with_capacity_and_hasher(simulated_stats.len(), Default::default());
+
+            for (siml_item_id, siml_stats) in simulated_stats.iter() {
+                let siml_full_stats = get_full_stats(
+                    (
+                        &player_champion_id,
+                        enemy_level,
+                        enemy_dragon_multipliers.earth,
+                    ),
+                    (enemy_base_stats, &enemy_items),
+                    (
+                        siml_stats.armor_penetration_percent,
+                        siml_stats.armor_penetration_flat,
+                    ),
+                    (
+                        siml_stats.magic_penetration_percent,
+                        siml_stats.magic_penetration_flat,
+                    ),
+                );
+
+                let siml_damage_multipliers = DamageMultipliers {
+                    self_mod: siml_full_stats.2.self_mod,
+                    enemy_mod: siml_full_stats.2.enemy_mod,
+                    damage_mod: (siml_full_stats.2.armor_mod, siml_full_stats.2.magic_mod),
                 };
 
-                let (damages, real_resists, bonus_stats) = calculate_enemy_state(GameState {
-                    current_player: GameStateCurrentPlayer {
-                        thisv: &current_player,
-                        cache: current_player_cache,
-                        abilities: &current_player_def.abilities,
-                        simulated_stats: &simulated_champion_stats,
+                let siml_bonus_stats = get_bonus_stats(
+                    BasicStats {
+                        armor: siml_stats.armor,
+                        health: siml_stats.max_health,
+                        attack_damage: siml_stats.attack_damage,
+                        magic_resist: siml_stats.magic_resist,
+                        mana: siml_stats.max_mana,
                     },
-                    enemy_player: GameStateEnemyPlayer {
-                        base_stats: &enemy_base_stats,
-                        current_stats: &mut enemy_current_stats,
-                        items: enemy_items,
-                        champion_id: &player.champion_id,
-                        level: enemy_level,
-                    },
-                });
+                    current_player_basic_stats,
+                );
 
-                Ok::<EnemyX, String>(EnemyX {
-                    champion_name,
-                    champion_id: player.champion_id,
-                    level: enemy_level,
-                    damages,
-                    real_resists,
-                    bonus_stats,
-                    base_stats: enemy_base_stats,
-                    current_stats: enemy_current_stats,
-                })
-            })
-            .collect::<Result<Vec<_>, _>>()?;
+                let siml_current_player_state = (
+                    siml_stats,
+                    siml_bonus_stats,
+                    current_player_state.2,
+                    current_player_state.3,
+                );
+
+                let siml_eval_ctx = get_eval_ctx(&siml_current_player_state, &siml_full_stats);
+
+                let siml_abilities_damage = get_damages(
+                    &abilities_iter_expr,
+                    &siml_damage_multipliers,
+                    &siml_eval_ctx,
+                );
+                let siml_items_damage =
+                    get_damages(&items_iter_expr, &siml_damage_multipliers, &siml_eval_ctx);
+                let siml_runes_damage =
+                    get_damages(&runes_iter_expr, &siml_damage_multipliers, &siml_eval_ctx);
+
+                compared_items_damage.insert(
+                    *siml_item_id,
+                    SimulatedDamages {
+                        abilities: siml_abilities_damage,
+                        items: siml_items_damage,
+                        runes: siml_runes_damage,
+                    },
+                );
+            }
+
+            EnemyX {
+                champion_id: player_champion_id,
+                champion_name: enemy_champion_name,
+                damages: Damages {
+                    abilities: abilities_damage,
+                    items: items_damage,
+                    runes: runes_damage,
+                    compared_items: compared_items_damage,
+                },
+                level: player.level,
+                base_stats: enemy_base_stats,
+                current_stats: full_stats.0,
+                bonus_stats: full_stats.1,
+                real_armor: full_stats.2.real_armor,
+                real_magic_resist: full_stats.2.real_magic,
+            }
+        })
+        .collect::<Vec<EnemyX>>();
 
     Ok(Calculator {
-        current_player,
+        current_player: CurrentPlayerX {
+            damaging_abilities: current_player_cache
+                .abilities
+                .into_iter()
+                .map(|(key, val)| (*key, val.name))
+                .chain(std::iter::once(("A", "Basic Attack")))
+                .chain(std::iter::once(("C", "Critical Strike")))
+                .collect(),
+            damaging_items: current_player_items
+                .into_iter()
+                .filter_map(|item_id| {
+                    let item = GLOBAL_CACHE.items.get(item_id)?;
+                    Some((*item_id, item.name))
+                })
+                .collect(),
+            damaging_runes: current_player_runes
+                .into_iter()
+                .filter_map(|rune_id| {
+                    let rune = GLOBAL_CACHE.runes.get(rune_id)?;
+                    Some((*rune_id, rune.name))
+                })
+                .collect(),
+            level: current_player_level,
+            champion_id: current_player_champion_id,
+            base_stats: current_player_base_stats,
+            bonus_stats: current_player_bonus_stats,
+            current_stats: current_player_stats,
+        },
         enemies,
+        compared_items,
         recommended_items: current_player_recommended_items,
-        compared_items: compared_items_info,
     })
 }

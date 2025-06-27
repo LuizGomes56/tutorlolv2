@@ -1,257 +1,349 @@
 use super::*;
 use crate::{
     GLOBAL_CACHE,
-    model::{base::AttackType, realtime::*, riot::*},
+    model::{
+        base::{BasicStats, DamageMultipliers, Damages, SimulatedDamages},
+        realtime::*,
+        riot::*,
+    },
 };
-use rayon::iter::{IntoParallelIterator, ParallelIterator};
+use rayon::iter::{ParallelBridge, ParallelIterator};
 use rustc_hash::FxHashMap;
 
 /// Takes a type constructed from port 2999 and returns a new type "Realtime"
 #[writer_macros::trace_time]
-pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, String> {
+pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationError> {
+    let current_player_level = game.active_player.level;
     let game_time = game.game_data.game_time;
     let map_number = game.game_data.map_number;
+    let RiotRealtime {
+        active_player:
+            RiotActivePlayer {
+                abilities: current_player_abilities,
+                champion_stats: current_player_riot_stats,
+                full_runes: current_player_riot_runes,
+                riot_id: current_player_riot_id,
+                ..
+            },
+        all_players,
+        events: RiotRealtimeEvents {
+            events: game_events,
+        },
+        ..
+    } = game;
 
-    let active_player = &game.active_player;
-    let all_players = &game.all_players;
-
-    let mut scoreboard = all_players
+    let RiotAllPlayers {
+        champion_name: current_player_champion_name,
+        items: current_player_riot_items,
+        position: current_player_position,
+        team: current_player_team,
+        riot_id: current_player_riot_id,
+        scores: current_player_scores,
+        ..
+    } = all_players
         .iter()
-        .map(|player| Scoreboard {
-            riot_id: &player.riot_id,
-            team: &player.team,
-            kills: player.scores.kills,
-            deaths: player.scores.deaths,
-            assists: player.scores.assists,
-            creep_score: player.scores.creep_score,
-            champion_id: None,
-            position: &player.position,
-            champion_name: &player.champion_name,
-        })
-        .collect::<Vec<Scoreboard>>();
+        .find(|player| &player.riot_id == current_player_riot_id)
+        .ok_or(CalculationError::CurrentPlayerNotFound)?;
 
-    let active_player_level = active_player.level;
-
-    let active_player_expanded = all_players
+    let players_map = all_players
         .iter()
-        .find(|player| player.riot_id == active_player.riot_id)
-        .ok_or("Current player not found in allPlayers".to_string())?;
-
-    let (ally_dragon_multipliers, enemy_dragon_multipliers) = get_dragon_multipliers(
-        &game.events.events,
-        &scoreboard,
-        &active_player_expanded.team,
-    );
-
-    let current_champion_id = GLOBAL_CACHE
-        .champion_names
-        .get(&active_player_expanded.champion_name)
-        .ok_or_else(|| {
-            format!(
-                "Champion name {} does not have a matching ID in champion_names cache",
-                &active_player_expanded.champion_name
+        .map(|player| {
+            (
+                player.riot_id.split('#').next().unwrap_or_default(),
+                &player.team,
             )
-        })?;
+        })
+        .collect::<FxHashMap<&str, &String>>();
+
+    let (enemy_dragon_multipliers, ally_dragon_multipliers) =
+        get_dragon_multipliers(game_events, players_map, current_player_team);
+
+    let current_player_stats = current_player_riot_stats.to_stats();
+    let current_player_champion_id = GLOBAL_CACHE
+        .champion_names
+        .get(current_player_champion_name)
+        .ok_or(CalculationError::ChampionNameNotFound)?;
 
     let current_player_cache = GLOBAL_CACHE
         .champions
-        .get(current_champion_id)
-        .ok_or_else(|| format!("Champion {} not found on cache", &current_champion_id))?;
+        .get(current_player_champion_id)
+        .ok_or(CalculationError::ChampionCacheNotFound)?;
 
-    let current_player_base_stats = get_base_stats(current_player_cache, active_player_level);
+    let current_player_base_stats = get_base_stats(current_player_cache, current_player_level);
+    let current_player_basic_stats = BasicStats {
+        armor: current_player_stats.armor,
+        health: current_player_stats.max_health,
+        attack_damage: current_player_stats.attack_damage,
+        magic_resist: current_player_stats.magic_resist,
+        mana: current_player_stats.max_mana,
+    };
 
-    let current_player_position = if !active_player_expanded.position.is_empty() {
-        &active_player_expanded.position
-    } else {
-        if let Some(pos) = current_player_cache.positions.get(0) {
-            pos
+    let current_player_bonus_stats =
+        get_bonus_stats(current_player_basic_stats, current_player_base_stats);
+
+    let current_player_recommended_items = {
+        if let Some(meta_items) = GLOBAL_CACHE.meta_items.get(current_player_champion_id) {
+            match current_player_position.as_str() {
+                "TOP" => meta_items.top,
+                "JUNGLE" => meta_items.jungle,
+                "MIDDLE" => meta_items.mid,
+                "BOTTOM" => meta_items.adc,
+                "SUPPORT" => meta_items.support,
+                _ => &[],
+            }
         } else {
-            &String::from("MIDDLE")
+            &[]
         }
     };
 
-    let current_player_recommended_items = GLOBAL_CACHE
-        .meta_items
-        .get(current_champion_id)
-        .ok_or_else(|| {
-            format!(
-                "Champion {} not found when trying to access meta_items",
-                &current_champion_id
-            )
-        })?;
-
-    let owned_items = active_player_expanded
-        .items
-        .iter()
-        .map(|item| item.item_id)
-        .collect::<Vec<usize>>();
-
-    let recommended_items = get_recommended_items(
-        &current_player_position,
-        &current_player_recommended_items,
-        &owned_items,
-    );
-
-    let damaging_abilities = get_damaging_abilities(current_player_cache);
-
-    let damaging_runes = active_player
-        .full_runes
+    let current_player_runes = current_player_riot_runes
         .general_runes
         .iter()
-        .filter_map(|riot_rune: &RiotGeneralRunes| {
-            GLOBAL_CACHE
-                .runes
-                .get(&riot_rune.id)
-                .map(|cached| (riot_rune.id, cached.name.as_ref()))
-        })
-        .collect::<FxHashMap<usize, &'_ str>>();
+        .map(|riot_rune| riot_rune.id)
+        .collect::<Vec<usize>>();
 
-    let attack_type = AttackType::from(current_player_cache.attack_type.as_str());
+    let current_player_items = current_player_riot_items
+        .iter()
+        .map(|value| value.item_id)
+        .collect::<Vec<usize>>();
 
-    let damaging_items = get_damaging_items(attack_type, &owned_items);
-
-    let current_player = CurrentPlayer {
-        champion_id: current_champion_id,
-        team: &active_player_expanded.team,
-        bonus_stats: get_bonus_stats(&active_player.champion_stats, &current_player_base_stats),
-        position: &active_player_expanded.position,
-        champion_name: &active_player_expanded.champion_name,
-        level: active_player_level,
-        riot_id: &active_player.riot_id,
-        damaging_abilities,
-        damaging_items,
-        damaging_runes,
-        current_stats: active_player.champion_stats.transform(),
-        base_stats: current_player_base_stats,
-    };
-
-    let (simulated_champion_stats, compared_items_info) = get_simulated_champion_stats(
-        &owned_items,
-        &current_player.current_stats,
+    let (simulated_stats, compared_items) = get_simulated_champion_stats(
+        &current_player_stats,
+        &current_player_items,
         &ally_dragon_multipliers,
-    )?;
+    );
 
-    let (scoreboard_updates, enemy_data): (Vec<_>, Vec<_>) = all_players
-        .into_par_iter()
-        .map(|player| {
-            let player_champion_id = GLOBAL_CACHE
-                .champion_names
-                .get(&player.champion_name)
-                .ok_or_else(|| {
-                    format!(
-                        "Champion {} does not have a matching ID in champion_names cache",
-                        &player.champion_name
-                    )
-                })?;
+    let current_player_is_ranged = current_player_cache.attack_type == "RANGED";
+    let current_player_levelings = current_player_abilities.get_levelings();
+    let current_player_state = (
+        &current_player_stats,
+        current_player_bonus_stats,
+        current_player_base_stats,
+        current_player_level,
+    );
 
-            let scoreboard_update = (&player.riot_id, player_champion_id);
+    let abilities_iter_expr = get_abilities_damage(
+        current_player_cache,
+        current_player_level,
+        current_player_levelings,
+    );
+    let items_iter_expr = get_items_damage(&current_player_items, current_player_is_ranged);
+    let runes_iter_expr = get_runes_damage(&current_player_runes, current_player_is_ranged);
 
-            let enemy_data = if player.team != active_player_expanded.team {
-                let current_enemy_cache = GLOBAL_CACHE
-                    .champions
-                    .get(player_champion_id)
-                    .ok_or_else(|| {
-                        format!(
-                            "ChampionID {} not found in champions cache",
-                            player_champion_id
-                        )
-                    })?;
-                let enemy_level = player.level;
-                let enemy_base_stats = get_base_stats(current_enemy_cache, enemy_level);
-                let enemy_items = player
-                    .items
-                    .iter()
-                    .map(|x| x.item_id)
-                    .collect::<Vec<usize>>();
-                let mut enemy_current_stats = get_enemy_current_stats(
-                    &enemy_base_stats,
-                    &enemy_items,
+    let enemies = all_players
+        .into_iter()
+        .filter(|player| &player.team != current_player_team)
+        .par_bridge()
+        .filter_map(|player| {
+            let player_champion_id = GLOBAL_CACHE.champion_names.get(&player.champion_name)?;
+
+            let RiotAllPlayers {
+                champion_name: enemy_champion_name,
+                items: enemy_riot_items,
+                riot_id,
+                team,
+                position,
+                ..
+            } = player;
+            let enemy_items = enemy_riot_items
+                .iter()
+                .map(|value| value.item_id)
+                .collect::<Vec<usize>>();
+            let enemy_level = player.level;
+            let enemy_cache = GLOBAL_CACHE.champions.get(player_champion_id)?;
+            let enemy_base_stats = get_base_stats(enemy_cache, enemy_level);
+
+            let full_stats = get_full_stats(
+                (
+                    player_champion_id,
+                    enemy_level,
                     enemy_dragon_multipliers.earth,
-                );
-                let (damages, real_resists, bonus_stats) = calculate_enemy_state(GameState {
-                    current_player: GameStateCurrentPlayer {
-                        thisv: &current_player,
-                        cache: current_player_cache,
-                        abilities: &active_player.abilities.get_levelings(),
-                        simulated_stats: &simulated_champion_stats,
-                    },
-                    enemy_player: GameStateEnemyPlayer {
-                        base_stats: &enemy_base_stats,
-                        current_stats: &mut enemy_current_stats,
-                        items: &enemy_items,
-                        champion_id: player_champion_id,
-                        level: enemy_level,
-                    },
-                });
+                ),
+                (enemy_base_stats, &enemy_items),
+                (
+                    current_player_stats.armor_penetration_percent,
+                    current_player_stats.armor_penetration_flat,
+                ),
+                (
+                    current_player_stats.magic_penetration_percent,
+                    current_player_stats.magic_penetration_flat,
+                ),
+            );
 
-                Some(Enemy {
-                    champion_id: player_champion_id,
-                    champion_name: &player.champion_name,
-                    riot_id: &player.riot_id,
-                    team: &player.team,
-                    level: enemy_level,
-                    position: &player.position,
-                    damages,
-                    real_resists,
-                    bonus_stats,
-                    base_stats: enemy_base_stats,
-                    current_stats: enemy_current_stats,
-                })
-            } else {
-                None
+            let damage_multipliers = DamageMultipliers {
+                self_mod: full_stats.2.self_mod,
+                enemy_mod: full_stats.2.enemy_mod,
+                damage_mod: (full_stats.2.armor_mod, full_stats.2.magic_mod),
             };
 
-            Ok::<_, String>((scoreboard_update, enemy_data))
+            let eval_ctx = get_eval_ctx(&current_player_state, &full_stats);
+
+            let abilities_damage =
+                get_damages(&abilities_iter_expr, &damage_multipliers, &eval_ctx);
+            let items_damage = get_damages(&items_iter_expr, &damage_multipliers, &eval_ctx);
+            let runes_damage = get_damages(&runes_iter_expr, &damage_multipliers, &eval_ctx);
+
+            let mut compared_items_damage =
+                FxHashMap::with_capacity_and_hasher(simulated_stats.len(), Default::default());
+
+            for (siml_item_id, siml_stats) in simulated_stats.iter() {
+                let siml_full_stats = get_full_stats(
+                    (
+                        player_champion_id,
+                        enemy_level,
+                        enemy_dragon_multipliers.earth,
+                    ),
+                    (enemy_base_stats, &enemy_items),
+                    (
+                        siml_stats.armor_penetration_percent,
+                        siml_stats.armor_penetration_flat,
+                    ),
+                    (
+                        siml_stats.magic_penetration_percent,
+                        siml_stats.magic_penetration_flat,
+                    ),
+                );
+
+                let siml_damage_multipliers = DamageMultipliers {
+                    self_mod: siml_full_stats.2.self_mod,
+                    enemy_mod: siml_full_stats.2.enemy_mod,
+                    damage_mod: (siml_full_stats.2.armor_mod, siml_full_stats.2.magic_mod),
+                };
+
+                let siml_bonus_stats = get_bonus_stats(
+                    BasicStats {
+                        armor: siml_stats.armor,
+                        health: siml_stats.max_health,
+                        attack_damage: siml_stats.attack_damage,
+                        magic_resist: siml_stats.magic_resist,
+                        mana: siml_stats.max_mana,
+                    },
+                    current_player_basic_stats,
+                );
+
+                let siml_current_player_state = (
+                    siml_stats,
+                    siml_bonus_stats,
+                    current_player_state.2,
+                    current_player_state.3,
+                );
+
+                let siml_eval_ctx = get_eval_ctx(&siml_current_player_state, &siml_full_stats);
+
+                let siml_abilities_damage = get_damages(
+                    &abilities_iter_expr,
+                    &siml_damage_multipliers,
+                    &siml_eval_ctx,
+                );
+                let siml_items_damage =
+                    get_damages(&items_iter_expr, &siml_damage_multipliers, &siml_eval_ctx);
+                let siml_runes_damage =
+                    get_damages(&runes_iter_expr, &siml_damage_multipliers, &siml_eval_ctx);
+
+                compared_items_damage.insert(
+                    *siml_item_id,
+                    SimulatedDamages {
+                        abilities: siml_abilities_damage,
+                        items: siml_items_damage,
+                        runes: siml_runes_damage,
+                    },
+                );
+            }
+
+            Some(Enemy {
+                champion_id: player_champion_id,
+                champion_name: &enemy_champion_name,
+                riot_id,
+                team,
+                position,
+                damages: Damages {
+                    abilities: abilities_damage,
+                    items: items_damage,
+                    runes: runes_damage,
+                    compared_items: compared_items_damage,
+                },
+                level: player.level,
+                base_stats: enemy_base_stats,
+                current_stats: full_stats.0,
+                bonus_stats: full_stats.1,
+                real_armor: full_stats.2.real_armor,
+                real_magic_resist: full_stats.2.real_magic,
+            })
         })
-        .collect::<Result<Vec<_>, _>>()?
-        .into_iter()
-        .unzip();
-
-    for (riot_id, champion_id) in scoreboard_updates {
-        scoreboard
-            .iter_mut()
-            .find(|this_player| this_player.riot_id == riot_id)
-            .unwrap()
-            .champion_id = Some(champion_id);
-    }
-
-    let enemies = enemy_data.into_iter().filter_map(|enemy| enemy).collect();
+        .collect::<Vec<Enemy>>();
 
     Ok(Realtime {
-        current_player,
+        current_player: CurrentPlayer {
+            damaging_abilities: current_player_cache
+                .abilities
+                .into_iter()
+                .map(|(key, val)| (*key, val.name))
+                .chain(std::iter::once(("A", "Basic Attack")))
+                .chain(std::iter::once(("C", "Critical Strike")))
+                .collect(),
+            damaging_items: current_player_items
+                .into_iter()
+                .filter_map(|item_id| {
+                    let item = GLOBAL_CACHE.items.get(&item_id)?;
+                    Some((item_id, item.name))
+                })
+                .collect(),
+            damaging_runes: current_player_runes
+                .into_iter()
+                .filter_map(|rune_id| {
+                    let rune = GLOBAL_CACHE.runes.get(&rune_id)?;
+                    Some((rune_id, rune.name))
+                })
+                .collect(),
+            riot_id: &current_player_riot_id,
+            level: current_player_level,
+            team: &current_player_team,
+            position: &current_player_position,
+            champion_name: &current_player_champion_name,
+            champion_id: &current_player_champion_id,
+            base_stats: current_player_base_stats,
+            bonus_stats: current_player_bonus_stats,
+            current_stats: current_player_stats,
+        },
         enemies,
-        recommended_items,
+        scoreboard: Scoreboard {
+            kills: current_player_scores.kills,
+            assists: current_player_scores.assists,
+            creep_score: current_player_scores.creep_score,
+            deaths: current_player_scores.deaths,
+            riot_id: current_player_riot_id,
+            champion_id: current_player_champion_id,
+            position: current_player_position,
+            champion_name: current_player_champion_name,
+        },
         game_information: GameInformation {
             game_time,
             map_number,
         },
-        compared_items: compared_items_info,
-        scoreboard,
+        recommended_items: current_player_recommended_items,
+        compared_items,
         enemy_dragon_multipliers,
         ally_dragon_multipliers,
     })
 }
 
-fn get_dragon_multipliers(
+fn get_dragon_multipliers<'a>(
     event_list: &[RealtimeEvent],
-    scoreboard: &[Scoreboard],
+    players: FxHashMap<&str, &String>,
     current_player_team: &str,
 ) -> (DragonMultipliers, DragonMultipliers) {
-    let mut ally_team = DragonMultipliers::new();
-    let mut enemy_team = DragonMultipliers::new();
+    let mut ally_effect = DragonMultipliers::new();
+    let mut enemy_effect = DragonMultipliers::new();
 
     for event in event_list {
         let (Some(killer), Some(dragon_type)) = (&event.killer_name, &event.dragon_type) else {
             continue;
         };
-        if let Some(player) = scoreboard
-            .iter()
-            .find(|p| &p.riot_id.split('#').next().unwrap_or_default() == killer)
-        {
-            let target = if player.team == current_player_team {
-                &mut ally_team
+        if let Some(&team) = players.get(killer.as_str()) {
+            let target = if team == current_player_team {
+                &mut ally_effect
             } else {
-                &mut enemy_team
+                &mut enemy_effect
             };
             match dragon_type.as_str() {
                 "Earth" => target.earth += EARTH_DRAGON_MULTIPLIER,
@@ -261,5 +353,5 @@ fn get_dragon_multipliers(
             }
         }
     }
-    (ally_team, enemy_team)
+    (ally_effect, enemy_effect)
 }

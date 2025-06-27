@@ -1,3 +1,55 @@
+pub struct EvalContext {
+    pub chogath_stacks: f64,
+    pub veigar_stacks: f64,
+    pub nasus_stacks: f64,
+    pub smolder_stacks: f64,
+    pub aurelion_sol_stacks: f64,
+    pub thresh_stacks: f64,
+    pub kindred_stacks: f64,
+    pub belveth_stacks: f64,
+    pub adaptative_damage: f64,
+    pub level: f64,
+    pub physical_multiplier: f64,
+    pub magic_multiplier: f64,
+    pub steelcaps_effect: f64,
+    pub randuin_effect: f64,
+    pub rocksolid_effect: f64,
+    pub enemy_bonus_health: f64,
+    pub enemy_armor: f64,
+    pub enemy_max_health: f64,
+    pub enemy_health: f64,
+    pub enemy_current_health: f64,
+    pub enemy_missing_health: f64,
+    pub enemy_magic_resist: f64,
+    pub base_health: f64,
+    pub base_ad: f64,
+    pub base_armor: f64,
+    pub base_magic_resist: f64,
+    pub base_mana: f64,
+    pub bonus_ad: f64,
+    pub bonus_armor: f64,
+    pub bonus_magic_resist: f64,
+    pub bonus_health: f64,
+    pub bonus_mana: f64,
+    pub bonus_move_speed: f64,
+    pub armor_penetration_flat: f64,
+    pub armor_penetration_percent: f64,
+    pub magic_penetration_flat: f64,
+    pub magic_penetration_percent: f64,
+    pub max_mana: f64,
+    pub current_mana: f64,
+    pub max_health: f64,
+    pub current_health: f64,
+    pub armor: f64,
+    pub magic_resist: f64,
+    pub crit_chance: f64,
+    pub crit_damage: f64,
+    pub attack_speed: f64,
+    pub missing_health: f64,
+    pub ap: f64,
+    pub ad: f64,
+}
+
 pub struct CachedChampion {
     pub name: &'static str,
     pub adaptative_type: &'static str,
@@ -11,8 +63,8 @@ pub struct CachedChampionAbility {
     pub name: &'static str,
     pub damage_type: &'static str,
     pub damages_in_area: bool,
-    pub minimum_damage: &'static [&'static str],
-    pub maximum_damage: &'static [&'static str],
+    pub minimum_damage: fn(usize, &EvalContext) -> f64,
+    pub maximum_damage: fn(usize, &EvalContext) -> f64,
 }
 
 pub struct CachedChampionStatsMap {
@@ -39,8 +91,8 @@ pub struct CachedChampionStats {
 }
 
 pub struct CachedItemDamages {
-    pub minimum_damage: Option<&'static str>,
-    pub maximum_damage: Option<&'static str>,
+    pub minimum_damage: fn(usize, &EvalContext) -> f64,
+    pub maximum_damage: fn(usize, &EvalContext) -> f64,
 }
 
 pub struct CachedItem {
@@ -52,8 +104,8 @@ pub struct CachedItem {
     pub stats: CachedItemStats,
     pub builds_from: &'static [usize],
     pub levelings: Option<&'static [usize]>,
-    pub ranged: Option<CachedItemDamages>,
-    pub melee: Option<CachedItemDamages>,
+    pub ranged: CachedItemDamages,
+    pub melee: CachedItemDamages,
     pub damages_onhit: bool,
 }
 
@@ -68,8 +120,8 @@ pub struct CachedMetaItem {
 pub struct CachedRune {
     pub name: &'static str,
     pub damage_type: &'static str,
-    pub ranged: &'static str,
-    pub melee: &'static str,
+    pub ranged: fn(usize, &EvalContext) -> f64,
+    pub melee: fn(usize, &EvalContext) -> f64,
 }
 
 pub struct CachedItemStats {
@@ -89,4 +141,13 @@ pub struct CachedItemStats {
     pub mana: f64,
     pub movespeed: f64,
     pub omnivamp: f64,
+}
+
+pub struct GlobalCache {
+    pub champions: &'static phf::Map<&'static str, &'static CachedChampion>,
+    pub items: &'static phf::Map<usize, &'static CachedItem>,
+    pub runes: &'static phf::Map<usize, &'static CachedRune>,
+    pub meta_items: &'static phf::Map<&'static str, &'static CachedMetaItem>,
+    pub champion_names: &'static phf::Map<&'static str, &'static str>,
+    pub simulated_items: &'static [usize],
 }

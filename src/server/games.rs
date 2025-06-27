@@ -2,7 +2,7 @@ use super::schemas::APIResponse;
 use crate::{
     AppState,
     model::{calculator::GameX, riot::RiotRealtime},
-    services::{calculator::calculator, realtime::realtime},
+    services::{CalculationError, calculator::calculator, realtime::realtime},
 };
 use actix_web::{
     HttpResponse, Responder, get, post,
@@ -47,6 +47,18 @@ struct GetByCodeBody {
     game_code: usize,
 }
 
+#[inline(always)]
+fn get_calculation_error(e: CalculationError) -> &'static str {
+    match e {
+        CalculationError::CurrentPlayerNotFound => "Current player not found in allPlayers",
+        CalculationError::ChampionNameNotFound => {
+            "Could not convert champion name to its corresponding id"
+        }
+        CalculationError::ChampionCacheNotFound => "Current champion cache not found",
+        CalculationError::ItemCacheNotFound => "One item's cache was not found",
+    }
+}
+
 #[post("/get_by_code")]
 pub async fn get_by_code_handler(
     state: Data<AppState>,
@@ -73,11 +85,14 @@ pub async fn get_by_code_handler(
                     message: "Game data fetched successfully",
                     data: realtime_data,
                 }),
-                Err(e) => HttpResponse::InternalServerError().json(APIResponse {
-                    success: false,
-                    message: format!("realtime calculation failed: {}", e),
-                    data: (),
-                }),
+                Err(e) => {
+                    let message = get_calculation_error(e);
+                    HttpResponse::InternalServerError().json(APIResponse {
+                        success: false,
+                        message,
+                        data: (),
+                    })
+                }
             },
             Err(e) => HttpResponse::InternalServerError().json(APIResponse {
                 success: false,
@@ -154,10 +169,11 @@ pub async fn realtime_handler(state: Data<AppState>, body: Json<RealtimeBody>) -
                             })
                         }
                         Err(e) => {
-                            println!("Error on realtime response: {:#?}", e);
+                            let message = get_calculation_error(e);
+                            println!("Error on realtime response: {:#?}", message);
                             HttpResponse::InternalServerError().json(APIResponse {
                                 success: false,
-                                message: e,
+                                message,
                                 data: (),
                             })
                         }
@@ -194,10 +210,13 @@ pub async fn calculator_handler(body: Json<CalculatorBody>) -> impl Responder {
             message: (),
             data,
         }),
-        Err(e) => HttpResponse::InternalServerError().json(APIResponse {
-            success: false,
-            message: e,
-            data: (),
+        Err(e) => HttpResponse::InternalServerError().json({
+            let message = get_calculation_error(e);
+            APIResponse {
+                success: false,
+                message,
+                data: (),
+            }
         }),
     }
 }
