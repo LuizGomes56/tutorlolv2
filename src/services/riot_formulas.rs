@@ -1,6 +1,6 @@
 use crate::model::{
     base::{AdaptativeType, Stats},
-    champions::ChampionCdnStats,
+    cache::CachedChampionStats,
 };
 
 pub(super) struct RiotFormulas;
@@ -36,7 +36,7 @@ impl RiotFormulas {
         }
     }
 
-    pub fn full_base_stats(cdn: &ChampionCdnStats, level: usize) -> Stats {
+    pub fn full_base_stats(cdn: &CachedChampionStats, level: usize) -> Stats {
         macro_rules! assign_value {
             ($field:ident) => {
                 Self::stat_growth(cdn.$field.flat, cdn.$field.per_level, level)

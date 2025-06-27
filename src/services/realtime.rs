@@ -2,28 +2,17 @@ use super::*;
 use crate::{
     GLOBAL_CACHE,
     model::{
-        base::{
-            BasicStats, DamageExpression, DamageLike, DamageMultipliers, Damages, InstanceDamage,
-            SimulatedDamages,
-        },
-        cache::EvalContext,
+        base::{BasicStats, DamageMultipliers, Damages, SimulatedDamages},
         realtime::*,
         riot::*,
     },
 };
 use rayon::iter::{ParallelBridge, ParallelIterator};
 use rustc_hash::FxHashMap;
-use std::hash::Hash;
-
-pub enum RealtimeError {
-    CurrentPlayerNotFound,
-    ChampionNameNotFound,
-    ChampionCacheNotFound,
-}
 
 /// Takes a type constructed from port 2999 and returns a new type "Realtime"
 #[writer_macros::trace_time]
-pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeError> {
+pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationError> {
     let current_player_level = game.active_player.level;
     let game_time = game.game_data.game_time;
     let map_number = game.game_data.map_number;
@@ -54,7 +43,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
     } = all_players
         .iter()
         .find(|player| &player.riot_id == current_player_riot_id)
-        .ok_or(RealtimeError::CurrentPlayerNotFound)?;
+        .ok_or(CalculationError::CurrentPlayerNotFound)?;
 
     let players_map = all_players
         .iter()
@@ -73,12 +62,12 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
     let current_player_champion_id = GLOBAL_CACHE
         .champion_names
         .get(current_player_champion_name)
-        .ok_or(RealtimeError::ChampionNameNotFound)?;
+        .ok_or(CalculationError::ChampionNameNotFound)?;
 
     let current_player_cache = GLOBAL_CACHE
         .champions
         .get(current_player_champion_id)
-        .ok_or(RealtimeError::ChampionCacheNotFound)?;
+        .ok_or(CalculationError::ChampionCacheNotFound)?;
 
     let current_player_base_stats = get_base_stats(current_player_cache, current_player_level);
     let current_player_basic_stats = BasicStats {
@@ -365,34 +354,4 @@ fn get_dragon_multipliers<'a>(
         }
     }
     (ally_effect, enemy_effect)
-}
-
-fn transform_expr<T: Copy + 'static>(
-    tuple: (T, DamageExpression),
-    damage_mlt: &DamageMultipliers,
-    eval_ctx: &EvalContext,
-) -> (T, InstanceDamage) {
-    let damage_type = tuple.1.damage_type;
-    let damage_mod = get_damage_multipliers(damage_mlt, damage_type);
-    (
-        tuple.0,
-        InstanceDamage {
-            damage_type,
-            minimum_damage: damage_mod * (tuple.1.minimum_damage)(tuple.1.level, eval_ctx),
-            maximum_damage: damage_mod * (tuple.1.maximum_damage)(tuple.1.level, eval_ctx),
-        },
-    )
-}
-
-fn get_damages<T: Copy + Eq + Hash + 'static>(
-    tuples: &[(T, DamageExpression)],
-    damage_multipliers: &DamageMultipliers,
-    eval_ctx: &EvalContext,
-) -> DamageLike<T> {
-    let mut result = DamageLike::<T>::with_capacity_and_hasher(tuples.len(), Default::default());
-    for tuple in tuples.iter().copied() {
-        let (key, val) = transform_expr(tuple, damage_multipliers, eval_ctx);
-        result.insert(key, val);
-    }
-    result
 }

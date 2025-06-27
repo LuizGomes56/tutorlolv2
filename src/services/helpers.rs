@@ -1,9 +1,11 @@
+use std::hash::Hash;
+
 use crate::{
     GLOBAL_CACHE,
     model::{
         base::{
-            AdaptativeType, BasicStats, ComparedItem, DamageExpression, DamageMultipliers,
-            GenericStats, Stats,
+            AdaptativeType, BasicStats, ComparedItem, DamageExpression, DamageLike,
+            DamageMultipliers, GenericStats, InstanceDamage, Stats,
         },
         cache::{CachedChampion, CachedItem, EvalContext},
         calculator::AbilitiesX,
@@ -455,4 +457,34 @@ pub fn get_enemy_current_stats(
     basic_stats.armor *= earth_dragon_mod;
     basic_stats.magic_resist *= earth_dragon_mod;
     basic_stats
+}
+
+fn transform_expr<T: Copy + 'static>(
+    tuple: (T, DamageExpression),
+    damage_mlt: &DamageMultipliers,
+    eval_ctx: &EvalContext,
+) -> (T, InstanceDamage) {
+    let damage_type = tuple.1.damage_type;
+    let damage_mod = get_damage_multipliers(damage_mlt, damage_type);
+    (
+        tuple.0,
+        InstanceDamage {
+            damage_type,
+            minimum_damage: damage_mod * (tuple.1.minimum_damage)(tuple.1.level, eval_ctx),
+            maximum_damage: damage_mod * (tuple.1.maximum_damage)(tuple.1.level, eval_ctx),
+        },
+    )
+}
+
+pub fn get_damages<T: Copy + Eq + Hash + 'static>(
+    tuples: &[(T, DamageExpression)],
+    damage_multipliers: &DamageMultipliers,
+    eval_ctx: &EvalContext,
+) -> DamageLike<T> {
+    let mut result = DamageLike::<T>::with_capacity_and_hasher(tuples.len(), Default::default());
+    for tuple in tuples.iter().copied() {
+        let (key, val) = transform_expr(tuple, damage_multipliers, eval_ctx);
+        result.insert(key, val);
+    }
+    result
 }

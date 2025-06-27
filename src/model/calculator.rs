@@ -33,7 +33,7 @@ pub struct EnemyX {
 pub struct Calculator {
     pub current_player: CurrentPlayerX,
     pub enemies: Vec<EnemyX>,
-    pub recommended_items: Vec<usize>,
+    pub recommended_items: &'static [usize],
     pub compared_items: FxHashMap<usize, ComparedItem>,
 }
 

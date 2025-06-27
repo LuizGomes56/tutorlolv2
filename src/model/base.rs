@@ -108,6 +108,16 @@ pub enum AttackType {
     Other,
 }
 
+impl From<bool> for AttackType {
+    fn from(is_ranged: bool) -> Self {
+        if is_ranged {
+            AttackType::Ranged
+        } else {
+            AttackType::Melee
+        }
+    }
+}
+
 impl ToString for AttackType {
     fn to_string(&self) -> String {
         match self {

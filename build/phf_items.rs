@@ -54,17 +54,14 @@ pub struct Item {
     pub gold: usize,
     pub tier: usize,
     pub prettified_stats: HashMap<String, Value>,
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub damage_type: Option<String>,
     pub stats: PartialStats,
     pub builds_from: Vec<usize>,
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub levelings: Option<Vec<usize>>,
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub ranged: Option<DamageObject>,
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub melee: Option<DamageObject>,
     pub damages_onhit: bool,
+    pub purchasable: bool,
 }
 
 fn format_damage_object(damage_object: &Option<DamageObject>) -> String {
@@ -158,15 +155,10 @@ pub fn global_phf_internal_items(out_dir: &str) {
                 continue;
             }
             let usize_v = usize_key.unwrap();
-            // if item.tier >= 3 {
-            //     match usize_v {
-            //         0..8000 => {
-            siml_items_size += 1;
-            items_vec.push(usize_v.to_string());
-            //         }
-            //         _ => {}
-            //     }
-            // }
+            if item.tier >= 3 && item.purchasable {
+                siml_items_size += 1;
+                items_vec.push(usize_v.to_string());
+            }
             phf_map_contents.push_str(&format!("\t{}usize => &ITEM_{},\n", key, key));
             consts_decl.push_str(&format!(
                 r#"pub const ITEM_{}: CachedItem = CachedItem {{
