@@ -1,7 +1,7 @@
 use super::schemas::APIResponse;
 use crate::{
     AppState,
-    model::{calculator::GameX, riot::RiotRealtime},
+    model::{calculator::InputGame, riot::RiotRealtime},
     services::{CalculationError, calculator::calculator, realtime::realtime},
 };
 use actix_web::{
@@ -198,7 +198,7 @@ pub async fn realtime_handler(state: Data<AppState>, body: Json<RealtimeBody>) -
 
 #[derive(Deserialize)]
 struct CalculatorBody {
-    game: GameX,
+    game: InputGame,
 }
 
 #[post("/calculator")]

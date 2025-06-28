@@ -7,9 +7,6 @@ use regex::{Captures, Match, Regex};
 use rustc_hash::FxHashMap;
 use std::path::Path;
 
-#[cfg(debug_assertions)]
-use std::fs;
-
 include!(concat!(env!("OUT_DIR"), "/writers_generated.rs"));
 
 /// Automatically updates every champion in the game. New champions, or big updates to existing
@@ -59,7 +56,7 @@ pub async fn generate_writer_files() -> Result<(), SetupError> {
     for (_, champion_id) in champion_names {
         futures.push(tokio::spawn(async move {
             let path_name: String = format!("{}/{}.rs", writer_target, champion_id.to_lowercase());
-            if let Ok(data) = fs::read_to_string(&path_name) {
+            if let Ok(data) = std::fs::read_to_string(&path_name) {
                 if data.contains("#![stable]") || data.contains("#![preserve]") {
                     return;
                 }

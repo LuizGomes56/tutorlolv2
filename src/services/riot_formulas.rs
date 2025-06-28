@@ -7,7 +7,7 @@ pub(super) struct RiotFormulas;
 
 impl RiotFormulas {
     /// Uses wiki's formula to return base stats for a given champion
-    pub fn stat_growth(base: f64, growth_per_level: f64, level: usize) -> f64 {
+    pub const fn stat_growth(base: f64, growth_per_level: f64, level: usize) -> f64 {
         base + growth_per_level * (level as f64 - 1.0) * (0.7025 + 0.0175 * (level as f64 - 1.0))
     }
     /// Percentage values are entered in this section as a number in range 0-100
@@ -28,7 +28,7 @@ impl RiotFormulas {
             / 10f64.powi((from_vec.len() << 1) as i32)
     }
 
-    pub fn adaptative_type(attack_damage: f64, ability_power: f64) -> AdaptativeType {
+    pub const fn adaptative_type(attack_damage: f64, ability_power: f64) -> AdaptativeType {
         if 0.35 * attack_damage >= 0.2 * ability_power {
             AdaptativeType::Physical
         } else {
@@ -36,7 +36,7 @@ impl RiotFormulas {
         }
     }
 
-    pub fn full_base_stats(cdn: &CachedChampionStats, level: usize) -> Stats {
+    pub const fn full_base_stats(cdn: &CachedChampionStats, level: usize) -> Stats {
         macro_rules! assign_value {
             ($field:ident) => {
                 Self::stat_growth(cdn.$field.flat, cdn.$field.per_level, level)

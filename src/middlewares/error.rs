@@ -1,10 +1,11 @@
+use crate::server::schemas::APIResponse;
 use actix_web::{
     HttpRequest, HttpResponse,
     error::{InternalError, JsonPayloadError},
 };
 
-use crate::server::schemas::APIResponse;
-
+/// Avoid retuning plain text when a JSON deserialization error occurs.
+/// This API should ALWAYS return a JSON response, including for unimplemented endpoints.
 pub fn json_error_middleware(err: JsonPayloadError, _: &HttpRequest) -> actix_web::Error {
     let error_response: APIResponse<&'_ str, ()> = match &err {
         JsonPayloadError::ContentType => APIResponse {

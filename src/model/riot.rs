@@ -1,9 +1,7 @@
+use crate::model::base::AbilityLevels;
 use rustc_hash::FxHashMap;
-
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
-
-use super::calculator::AbilitiesX;
 
 #[derive(Serialize, Deserialize)]
 pub struct RiotCdnStandard {
@@ -73,8 +71,8 @@ pub struct RiotAbilities {
 }
 
 impl RiotAbilities {
-    pub fn get_levelings(&self) -> AbilitiesX {
-        AbilitiesX {
+    pub fn get_levelings(&self) -> AbilityLevels {
+        AbilityLevels {
             q: self.q.ability_level,
             w: self.w.ability_level,
             e: self.e.ability_level,

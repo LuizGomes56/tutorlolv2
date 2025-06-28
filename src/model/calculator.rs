@@ -1,11 +1,10 @@
+use super::base::{BasicStats, ComparedItem, Damages, Stats};
+use crate::model::base::AbilityLevels;
 use rustc_hash::FxHashMap;
-
 use serde::{Deserialize, Serialize};
 
-use super::base::{BasicStats, ComparedItem, Damages, Stats};
-
 #[derive(Serialize)]
-pub struct CurrentPlayerX {
+pub struct OutputCurrentPlayer {
     pub champion_id: String,
     pub damaging_abilities: FxHashMap<&'static str, &'static str>,
     pub damaging_items: FxHashMap<usize, &'static str>,
@@ -17,7 +16,7 @@ pub struct CurrentPlayerX {
 }
 
 #[derive(Serialize)]
-pub struct EnemyX {
+pub struct OutputEnemy {
     pub champion_name: &'static str,
     pub champion_id: String,
     pub level: usize,
@@ -30,26 +29,18 @@ pub struct EnemyX {
 }
 
 #[derive(Serialize)]
-pub struct Calculator {
-    pub current_player: CurrentPlayerX,
-    pub enemies: Vec<EnemyX>,
+pub struct OutputGame {
+    pub current_player: OutputCurrentPlayer,
+    pub enemies: Vec<OutputEnemy>,
     pub recommended_items: &'static [usize],
     pub compared_items: FxHashMap<usize, ComparedItem>,
 }
 
-#[derive(Copy, Clone, Deserialize)]
-pub struct AbilitiesX {
-    pub q: usize,
-    pub w: usize,
-    pub e: usize,
-    pub r: usize,
-}
-
 #[derive(Deserialize)]
-pub struct ActivePlayerX {
+pub struct InputActivePlayer {
     pub champion_id: String,
     pub champion_stats: Stats,
-    pub abilities: AbilitiesX,
+    pub abilities: AbilityLevels,
     pub items: Vec<usize>,
     pub runes: Vec<usize>,
     pub level: usize,
@@ -59,7 +50,7 @@ pub struct ActivePlayerX {
 }
 
 #[derive(Deserialize)]
-pub struct EnemyPlayersX {
+pub struct InputEnemyPlayers {
     pub champion_id: String,
     pub items: Vec<usize>,
     pub level: usize,
@@ -68,9 +59,9 @@ pub struct EnemyPlayersX {
 }
 
 #[derive(Deserialize)]
-pub struct GameX {
-    pub active_player: ActivePlayerX,
-    pub enemy_players: Vec<EnemyPlayersX>,
+pub struct InputGame {
+    pub active_player: InputActivePlayer,
+    pub enemy_players: Vec<InputEnemyPlayers>,
     pub ally_earth_dragons: usize,
     pub ally_fire_dragons: usize,
     pub enemy_earth_dragons: usize,

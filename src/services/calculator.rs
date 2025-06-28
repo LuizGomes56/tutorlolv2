@@ -1,14 +1,7 @@
 use super::*;
 use crate::{
     GLOBAL_CACHE,
-    model::{
-        base::{
-            AdaptativeType, AttackType, BasicStats, DamageMultipliers, Damages, SimulatedDamages,
-            Stats,
-        },
-        calculator::*,
-        realtime::DragonMultipliers,
-    },
+    model::{base::*, calculator::*},
     services::riot_formulas::RiotFormulas,
 };
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
@@ -20,7 +13,7 @@ use rustc_hash::FxHashMap;
 /// taken into consideration when calculation is made. It is less accurate than Realtime.
 fn apply_auto_stats(
     stats: &mut Stats,
-    active_player: &ActivePlayerX,
+    active_player: &InputActivePlayer,
     base_stats: BasicStats,
 ) -> Result<BasicStats, CalculationError> {
     let stacks = active_player.stacks as f64;
@@ -149,7 +142,6 @@ fn rune_exceptions(
                     champion_stats.attack_speed +=
                         (this_stack as f64) * (3.6 + 4.4 / 17.0 * (level - 1.0));
                 }
-                _ => {}
             },
             // Conqueror
             8010 => {
@@ -253,8 +245,8 @@ fn item_exceptions(
 // #![todo] Stats are not assigned correctly
 // #![todo] Review exceptions
 #[writer_macros::trace_time]
-pub fn calculator(game: GameX) -> Result<Calculator, CalculationError> {
-    let GameX {
+pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
+    let InputGame {
         active_player,
         enemy_players,
         ally_fire_dragons,
@@ -263,7 +255,7 @@ pub fn calculator(game: GameX) -> Result<Calculator, CalculationError> {
         stack_exceptions,
     } = game;
 
-    let ActivePlayerX {
+    let InputActivePlayer {
         level: current_player_level,
         champion_id: ref current_player_champion_id,
         abilities: current_player_abilities,
@@ -303,6 +295,7 @@ pub fn calculator(game: GameX) -> Result<Calculator, CalculationError> {
         get_bonus_stats(current_player_basic_stats, current_player_base_stats)
     };
 
+    let current_player_attack_type = AttackType::from_str(current_player_cache.attack_type);
     let current_player_champion_id = active_player.champion_id;
 
     item_exceptions(
@@ -321,30 +314,26 @@ pub fn calculator(game: GameX) -> Result<Calculator, CalculationError> {
         &current_player_runes,
         current_player_level as f64,
         &stack_exceptions,
-        (
-            adaptative_type,
-            AttackType::from(current_player_cache.attack_type == "RANGED"),
-        ),
+        (adaptative_type, current_player_attack_type),
     );
 
-    let current_player_recommended_items = {
-        if let Some(meta_items) = GLOBAL_CACHE.meta_items.get(&current_player_champion_id) {
-            if let Some(position) = current_player_cache.positions.get(0) {
-                match *position {
+    let current_player_recommended_items = GLOBAL_CACHE
+        .meta_items
+        .get(&current_player_champion_id)
+        .and_then(|meta_items| {
+            current_player_cache
+                .positions
+                .get(0)
+                .map(|position| match *position {
                     "TOP" => meta_items.top,
                     "JUNGLE" => meta_items.jungle,
                     "MIDDLE" => meta_items.mid,
                     "BOTTOM" => meta_items.adc,
                     "SUPPORT" => meta_items.support,
                     _ => &[],
-                }
-            } else {
-                &[]
-            }
-        } else {
-            &[]
-        }
-    };
+                })
+        })
+        .unwrap_or(&[]);
 
     let ally_dragon_multipliers = DragonMultipliers {
         fire: 1.0 + FIRE_DRAGON_MULTIPLIER * ally_fire_dragons as f64,
@@ -363,7 +352,6 @@ pub fn calculator(game: GameX) -> Result<Calculator, CalculationError> {
         &ally_dragon_multipliers,
     );
 
-    let current_player_is_ranged = current_player_cache.attack_type == "RANGED";
     let current_player_state = (
         &current_player_stats,
         current_player_bonus_stats,
@@ -376,13 +364,13 @@ pub fn calculator(game: GameX) -> Result<Calculator, CalculationError> {
         current_player_level,
         current_player_abilities,
     );
-    let items_iter_expr = get_items_damage(&current_player_items, current_player_is_ranged);
-    let runes_iter_expr = get_runes_damage(&current_player_runes, current_player_is_ranged);
+    let items_iter_expr = get_items_damage(&current_player_items, current_player_attack_type);
+    let runes_iter_expr = get_runes_damage(&current_player_runes, current_player_attack_type);
 
     let enemies = enemy_players
         .into_par_iter()
         .map(|player| {
-            let EnemyPlayersX {
+            let InputEnemyPlayers {
                 champion_id: player_champion_id,
                 items: enemy_items,
                 level: enemy_level,
@@ -498,7 +486,7 @@ pub fn calculator(game: GameX) -> Result<Calculator, CalculationError> {
                 );
             }
 
-            Ok(EnemyX {
+            Ok(OutputEnemy {
                 champion_id: player_champion_id,
                 champion_name: enemy_champion_name,
                 damages: Damages {
@@ -515,10 +503,10 @@ pub fn calculator(game: GameX) -> Result<Calculator, CalculationError> {
                 real_magic_resist: full_stats.2.real_magic,
             })
         })
-        .collect::<Result<Vec<EnemyX>, CalculationError>>()?;
+        .collect::<Result<Vec<OutputEnemy>, CalculationError>>()?;
 
-    Ok(Calculator {
-        current_player: CurrentPlayerX {
+    Ok(OutputGame {
+        current_player: OutputCurrentPlayer {
             damaging_abilities: current_player_cache
                 .abilities
                 .into_iter()

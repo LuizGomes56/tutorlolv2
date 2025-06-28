@@ -2,7 +2,9 @@ use super::*;
 use crate::{
     GLOBAL_CACHE,
     model::{
-        base::{BasicStats, DamageMultipliers, Damages, SimulatedDamages},
+        base::{
+            AttackType, BasicStats, DamageMultipliers, Damages, DragonMultipliers, SimulatedDamages,
+        },
         realtime::*,
         riot::*,
     },
@@ -113,7 +115,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
         &ally_dragon_multipliers,
     );
 
-    let current_player_is_ranged = current_player_cache.attack_type == "RANGED";
+    let current_player_attack_type = AttackType::from_str(current_player_cache.attack_type);
     let current_player_levelings = current_player_abilities.get_levelings();
     let current_player_state = (
         &current_player_stats,
@@ -127,8 +129,8 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
         current_player_level,
         current_player_levelings,
     );
-    let items_iter_expr = get_items_damage(&current_player_items, current_player_is_ranged);
-    let runes_iter_expr = get_runes_damage(&current_player_runes, current_player_is_ranged);
+    let items_iter_expr = get_items_damage(&current_player_items, current_player_attack_type);
+    let runes_iter_expr = get_runes_damage(&current_player_runes, current_player_attack_type);
 
     let enemies = all_players
         .into_iter()

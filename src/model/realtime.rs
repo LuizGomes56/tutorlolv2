@@ -1,6 +1,7 @@
 use super::base::{BasicStats, ComparedItem, Damages, Stats};
+use crate::model::base::DragonMultipliers;
 use rustc_hash::FxHashMap;
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
 
 #[derive(Serialize)]
 pub struct CurrentPlayer<'a> {
@@ -38,23 +39,6 @@ pub struct Enemy<'a> {
     pub current_stats: BasicStats,
     pub real_armor: f64,
     pub real_magic_resist: f64,
-}
-
-#[derive(Clone, Copy, Deserialize, Serialize)]
-pub struct DragonMultipliers {
-    pub earth: f64,
-    pub fire: f64,
-    pub chemtech: f64,
-}
-
-impl DragonMultipliers {
-    pub fn new() -> DragonMultipliers {
-        DragonMultipliers {
-            earth: 1.0,
-            fire: 1.0,
-            chemtech: 1.0,
-        }
-    }
 }
 
 #[derive(Serialize)]

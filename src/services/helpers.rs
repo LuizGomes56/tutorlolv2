@@ -3,13 +3,8 @@ use std::hash::Hash;
 use crate::{
     GLOBAL_CACHE,
     model::{
-        base::{
-            AdaptativeType, BasicStats, ComparedItem, DamageExpression, DamageLike,
-            DamageMultipliers, GenericStats, InstanceDamage, Stats,
-        },
+        base::*,
         cache::{CachedChampion, CachedItem, EvalContext},
-        calculator::AbilitiesX,
-        realtime::DragonMultipliers,
     },
     services::riot_formulas::RiotFormulas,
 };
@@ -101,12 +96,15 @@ pub fn simulate_champion_stats(
 
 pub fn get_items_damage(
     current_player_items: &[usize],
-    is_ranged: bool,
+    attack_type: AttackType,
 ) -> Vec<(usize, DamageExpression)> {
     let mut result = Vec::<(usize, DamageExpression)>::with_capacity(current_player_items.len());
     for item_id in current_player_items {
         if let Some(item) = GLOBAL_CACHE.items.get(item_id) {
-            let item_damage = if is_ranged { &item.ranged } else { &item.melee };
+            let item_damage = match attack_type {
+                AttackType::Ranged => &item.ranged,
+                AttackType::Melee => &item.melee,
+            };
             result.push((
                 *item_id,
                 DamageExpression {
@@ -123,12 +121,15 @@ pub fn get_items_damage(
 
 pub fn get_runes_damage(
     current_player_runes: &[usize],
-    is_ranged: bool,
+    attack_type: AttackType,
 ) -> Vec<(usize, DamageExpression)> {
     let mut result = Vec::<(usize, DamageExpression)>::with_capacity(current_player_runes.len());
     for rune_id in current_player_runes {
         if let Some(rune) = GLOBAL_CACHE.runes.get(rune_id) {
-            let minimum_damage = if is_ranged { rune.ranged } else { rune.melee };
+            let minimum_damage = match attack_type {
+                AttackType::Ranged => rune.ranged,
+                AttackType::Melee => rune.melee,
+            };
             result.push((
                 *rune_id,
                 DamageExpression {
@@ -269,7 +270,7 @@ pub fn get_damage_multipliers(modifiers: &DamageMultipliers, damage_type: &str) 
 pub fn get_abilities_damage(
     current_player_cache: &&CachedChampion,
     current_player_level: usize,
-    abilities: AbilitiesX,
+    abilities: AbilityLevels,
 ) -> Vec<(&'static str, DamageExpression)> {
     current_player_cache
         .abilities
@@ -399,7 +400,7 @@ pub fn get_eval_ctx(
 /// Returns the difference between current stats and base stats
 /// current_stats must be a tpe that can be converted to struct `RiotChampionStats`
 #[inline]
-pub fn get_bonus_stats(current_stats: BasicStats, base_stats: BasicStats) -> BasicStats {
+pub const fn get_bonus_stats(current_stats: BasicStats, base_stats: BasicStats) -> BasicStats {
     BasicStats {
         armor: current_stats.armor - base_stats.armor,
         health: current_stats.health - base_stats.health,
@@ -411,7 +412,7 @@ pub fn get_bonus_stats(current_stats: BasicStats, base_stats: BasicStats) -> Bas
 
 /// Reads cached values for a given champion and assigns its base stats at a given level
 #[inline]
-pub fn get_base_stats(champion_cache: &&CachedChampion, level: usize) -> BasicStats {
+pub const fn get_base_stats(champion_cache: &&CachedChampion, level: usize) -> BasicStats {
     macro_rules! assign_value {
         ($field:ident) => {
             RiotFormulas::stat_growth(

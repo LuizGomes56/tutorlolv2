@@ -1,6 +1,5 @@
-use crate::model::cache::EvalContext;
-
 use super::riot::RiotChampionStats;
+use crate::model::cache::EvalContext;
 use rustc_hash::FxHashMap;
 use serde::{Deserialize, Serialize};
 
@@ -87,53 +86,6 @@ pub struct Damages {
     pub compared_items: FxHashMap<usize, SimulatedDamages>,
 }
 
-pub enum AdaptativeType {
-    Physical,
-    Magic,
-}
-
-impl From<bool> for AdaptativeType {
-    fn from(value: bool) -> Self {
-        if value {
-            AdaptativeType::Physical
-        } else {
-            AdaptativeType::Magic
-        }
-    }
-}
-
-pub enum AttackType {
-    Melee,
-    Ranged,
-    Other,
-}
-
-impl From<bool> for AttackType {
-    fn from(is_ranged: bool) -> Self {
-        if is_ranged {
-            AttackType::Ranged
-        } else {
-            AttackType::Melee
-        }
-    }
-}
-
-impl ToString for AttackType {
-    fn to_string(&self) -> String {
-        match self {
-            Self::Melee => "MELEE".to_string(),
-            Self::Ranged => "RANGED".to_string(),
-            Self::Other => "OTHER".to_string(),
-        }
-    }
-}
-
-impl PartialEq<AttackType> for String {
-    fn eq(&self, other: &AttackType) -> bool {
-        self.to_string() == other.to_string()
-    }
-}
-
 #[derive(Clone, Copy)]
 pub struct GenericStats {
     pub real_armor: f64,
@@ -159,4 +111,51 @@ pub struct DamageMultipliers {
     pub self_mod: (f64, f64, f64, f64),
     pub enemy_mod: (f64, f64, f64, f64),
     pub damage_mod: (f64, f64),
+}
+
+pub enum AdaptativeType {
+    Physical,
+    Magic,
+}
+
+#[derive(Copy, Clone)]
+pub enum AttackType {
+    Melee,
+    Ranged,
+}
+
+#[derive(Copy, Clone, Deserialize)]
+pub struct AbilityLevels {
+    pub q: usize,
+    pub w: usize,
+    pub e: usize,
+    pub r: usize,
+}
+
+impl AttackType {
+    pub fn from_str(s: &'static str) -> AttackType {
+        match s {
+            "MELEE" => AttackType::Melee,
+            "RANGED" => AttackType::Ranged,
+            _ => AttackType::Ranged,
+        }
+    }
+}
+
+#[derive(Clone, Copy, Serialize)]
+pub struct DragonMultipliers {
+    pub earth: f64,
+    pub fire: f64,
+    pub chemtech: f64,
+}
+
+impl DragonMultipliers {
+    #[inline]
+    pub const fn new() -> DragonMultipliers {
+        DragonMultipliers {
+            earth: 1.0,
+            fire: 1.0,
+            chemtech: 1.0,
+        }
+    }
 }
