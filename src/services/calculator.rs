@@ -62,7 +62,7 @@ fn apply_auto_stats(
 
     stats.crit_chance = stats.crit_chance.clamp(0.0, 100.0);
 
-    let bonus_stats: BasicStats = get_bonus_stats(
+    let bonus_stats = get_bonus_stats(
         BasicStats {
             armor: stats.armor,
             health: stats.max_health,
@@ -137,7 +137,7 @@ fn rune_exceptions(
     value_types: (AdaptativeType, AttackType),
 ) {
     for rune in owned_runes {
-        let this_stack: usize = *exception_map.get(&rune).unwrap_or(&0);
+        let this_stack = *exception_map.get(&rune).unwrap_or(&0);
         match rune {
             // Lethal Tempo
             8008 => match value_types.1 {
@@ -232,7 +232,7 @@ fn item_exceptions(
     exception_map: &FxHashMap<usize, usize>,
 ) {
     for item_id in owned_items {
-        let this_stack: usize = *exception_map.get(&item_id).unwrap_or(&0);
+        let this_stack = *exception_map.get(&item_id).unwrap_or(&0);
         match item_id {
             // Dark Seal
             1082 => champion_stats.ability_power += (this_stack.max(1) << 2) as f64,
@@ -391,12 +391,15 @@ pub fn calculator(game: GameX) -> Result<Calculator, CalculationError> {
                 // #![todo]
                 stats: _enemy_stats,
             } = player;
-            let enemy_cache = GLOBAL_CACHE.champions.get(&player_champion_id).unwrap();
+            let enemy_cache = GLOBAL_CACHE
+                .champions
+                .get(&player_champion_id)
+                .ok_or(CalculationError::ChampionCacheNotFound)?;
             let enemy_base_stats = get_base_stats(enemy_cache, enemy_level);
             let enemy_champion_name = GLOBAL_CACHE
                 .champion_names
                 .get_key(&player_champion_id)
-                .unwrap();
+                .ok_or(CalculationError::ChampionCacheNotFound)?;
 
             let full_stats = get_full_stats(
                 (
@@ -495,7 +498,7 @@ pub fn calculator(game: GameX) -> Result<Calculator, CalculationError> {
                 );
             }
 
-            EnemyX {
+            Ok(EnemyX {
                 champion_id: player_champion_id,
                 champion_name: enemy_champion_name,
                 damages: Damages {
@@ -510,9 +513,9 @@ pub fn calculator(game: GameX) -> Result<Calculator, CalculationError> {
                 bonus_stats: full_stats.1,
                 real_armor: full_stats.2.real_armor,
                 real_magic_resist: full_stats.2.real_magic,
-            }
+            })
         })
-        .collect::<Vec<EnemyX>>();
+        .collect::<Result<Vec<EnemyX>, CalculationError>>()?;
 
     Ok(Calculator {
         current_player: CurrentPlayerX {
