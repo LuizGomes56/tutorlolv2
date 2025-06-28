@@ -32,10 +32,10 @@ macro_rules! match_fn {
             }),
         }
     };
-    ($name:literal) => {
+    () => {
         HttpResponse::Ok().json(APIResponse {
             success: true,
-            message: $name,
+            message: "This route is not accessible in release mode",
             data: (),
         })
     };

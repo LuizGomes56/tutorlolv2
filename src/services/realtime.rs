@@ -64,12 +64,18 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
     let current_player_champion_id = GLOBAL_CACHE
         .champion_names
         .get(current_player_champion_name)
-        .ok_or(CalculationError::ChampionNameNotFound)?;
+        .ok_or(CalculationError::ChampionNameNotFound(format!(
+            "[GLOBAL_CACHE.champion_names]: {}",
+            current_player_champion_name
+        )))?;
 
     let current_player_cache = GLOBAL_CACHE
         .champions
         .get(current_player_champion_id)
-        .ok_or(CalculationError::ChampionCacheNotFound)?;
+        .ok_or(CalculationError::ChampionCacheNotFound(format!(
+            "[GLOBAL_CACHE.champions]: {}",
+            current_player_champion_id
+        )))?;
 
     let current_player_base_stats = get_base_stats(current_player_cache, current_player_level);
     let current_player_basic_stats = BasicStats {
@@ -137,7 +143,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
         .filter(|player| &player.team != current_player_team)
         .par_bridge()
         .filter_map(|player| {
-            let player_champion_id = GLOBAL_CACHE.champion_names.get(&player.champion_name)?;
+            let enemy_champion_id = GLOBAL_CACHE.champion_names.get(&player.champion_name)?;
 
             let RiotAllPlayers {
                 champion_name: enemy_champion_name,
@@ -152,12 +158,12 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
                 .map(|value| value.item_id)
                 .collect::<Vec<usize>>();
             let enemy_level = player.level;
-            let enemy_cache = GLOBAL_CACHE.champions.get(player_champion_id)?;
+            let enemy_cache = GLOBAL_CACHE.champions.get(enemy_champion_id)?;
             let enemy_base_stats = get_base_stats(enemy_cache, enemy_level);
 
             let full_stats = get_full_stats(
                 (
-                    player_champion_id,
+                    enemy_champion_id,
                     enemy_level,
                     enemy_dragon_multipliers.earth,
                 ),
@@ -191,7 +197,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
             for (siml_item_id, siml_stats) in simulated_stats.iter() {
                 let siml_full_stats = get_full_stats(
                     (
-                        player_champion_id,
+                        enemy_champion_id,
                         enemy_level,
                         enemy_dragon_multipliers.earth,
                     ),
@@ -253,7 +259,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
             }
 
             Some(Enemy {
-                champion_id: player_champion_id,
+                champion_id: enemy_champion_id,
                 champion_name: &enemy_champion_name,
                 riot_id,
                 team,

@@ -26,7 +26,7 @@ fn apply_auto_stats(
         let cached_item = GLOBAL_CACHE
             .items
             .get(&item_id)
-            .ok_or_else(|| CalculationError::ItemCacheNotFound)?;
+            .ok_or_else(|| CalculationError::ItemCacheNotFound(*item_id))?;
 
         let item_stats = &cached_item.stats;
 
@@ -270,8 +270,11 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
 
     let current_player_cache = GLOBAL_CACHE
         .champions
-        .get(&current_player_champion_id)
-        .ok_or(CalculationError::ChampionCacheNotFound)?;
+        .get(current_player_champion_id)
+        .ok_or(CalculationError::ChampionCacheNotFound(format!(
+            "[GLOBAL_CACHE.champions]: {}",
+            current_player_champion_id
+        )))?;
 
     let mut current_player_stats =
         RiotFormulas::full_base_stats(&current_player_cache.stats, current_player_level);
@@ -300,7 +303,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
 
     item_exceptions(
         &mut current_player_stats,
-        &current_player_items,
+        current_player_items,
         &stack_exceptions,
     );
 
@@ -311,7 +314,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
 
     rune_exceptions(
         &mut current_player_stats,
-        &current_player_runes,
+        current_player_runes,
         current_player_level as f64,
         &stack_exceptions,
         (adaptative_type, current_player_attack_type),
@@ -348,7 +351,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
 
     let (simulated_stats, compared_items) = get_simulated_champion_stats(
         &current_player_stats,
-        &current_player_items,
+        current_player_items,
         &ally_dragon_multipliers,
     );
 
@@ -371,7 +374,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
         .into_par_iter()
         .map(|player| {
             let InputEnemyPlayers {
-                champion_id: player_champion_id,
+                champion_name: enemy_champion_name,
                 items: enemy_items,
                 level: enemy_level,
                 // #![todo]
@@ -379,19 +382,23 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
                 // #![todo]
                 stats: _enemy_stats,
             } = player;
-            let enemy_cache = GLOBAL_CACHE
-                .champions
-                .get(&player_champion_id)
-                .ok_or(CalculationError::ChampionCacheNotFound)?;
-            let enemy_base_stats = get_base_stats(enemy_cache, enemy_level);
-            let enemy_champion_name = GLOBAL_CACHE
+            let enemy_champion_id = GLOBAL_CACHE
                 .champion_names
-                .get_key(&player_champion_id)
-                .ok_or(CalculationError::ChampionCacheNotFound)?;
-
+                .get(&enemy_champion_name)
+                .ok_or(CalculationError::ChampionCacheNotFound(format!(
+                    "[enemy_players.into_par_iter()]: {}",
+                    enemy_champion_name
+                )))?;
+            let enemy_cache = GLOBAL_CACHE.champions.get(enemy_champion_id).ok_or(
+                CalculationError::ChampionCacheNotFound(format!(
+                    "[enemy_players.into_par_iter()]: {}",
+                    enemy_champion_id
+                )),
+            )?;
+            let enemy_base_stats = get_base_stats(enemy_cache, enemy_level);
             let full_stats = get_full_stats(
                 (
-                    &player_champion_id,
+                    enemy_champion_id,
                     enemy_level,
                     enemy_dragon_multipliers.earth,
                 ),
@@ -425,7 +432,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
             for (siml_item_id, siml_stats) in simulated_stats.iter() {
                 let siml_full_stats = get_full_stats(
                     (
-                        &player_champion_id,
+                        enemy_champion_id,
                         enemy_level,
                         enemy_dragon_multipliers.earth,
                     ),
@@ -487,7 +494,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
             }
 
             Ok(OutputEnemy {
-                champion_id: player_champion_id,
+                champion_id: enemy_champion_id,
                 champion_name: enemy_champion_name,
                 damages: Damages {
                     abilities: abilities_damage,

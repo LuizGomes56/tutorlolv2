@@ -7,7 +7,7 @@ use helpers::*;
 
 pub enum CalculationError {
     CurrentPlayerNotFound,
-    ChampionNameNotFound,
-    ChampionCacheNotFound,
-    ItemCacheNotFound,
+    ChampionNameNotFound(String),
+    ChampionCacheNotFound(String),
+    ItemCacheNotFound(usize),
 }

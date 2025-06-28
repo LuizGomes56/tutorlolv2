@@ -17,8 +17,8 @@ pub struct OutputCurrentPlayer {
 
 #[derive(Serialize)]
 pub struct OutputEnemy {
-    pub champion_name: &'static str,
-    pub champion_id: String,
+    pub champion_name: String,
+    pub champion_id: &'static str,
     pub level: usize,
     pub damages: Damages,
     pub base_stats: BasicStats,
@@ -51,7 +51,7 @@ pub struct InputActivePlayer {
 
 #[derive(Deserialize)]
 pub struct InputEnemyPlayers {
-    pub champion_id: String,
+    pub champion_name: String,
     pub items: Vec<usize>,
     pub level: usize,
     pub stats: BasicStats,

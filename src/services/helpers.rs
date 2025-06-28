@@ -275,7 +275,6 @@ pub fn get_abilities_damage(
     current_player_cache
         .abilities
         .iter()
-        .filter(|(key, _)| !key.contains("MONSTER") && !key.contains("MINION"))
         .filter_map(move |(key, value)| {
             let first_char = key.chars().next()?;
             let level = match first_char {

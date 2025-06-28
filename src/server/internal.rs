@@ -9,12 +9,11 @@ use actix_web::{HttpResponse, Responder, post};
 pub async fn internal_create_writer_files() -> impl Responder {
     #[cfg(debug_assertions)]
     {
-        use crate::setup::generators::generate_writer_files;
-        match_fn!(generate_writer_files().await)
+        match_fn!(crate::setup::generators::generate_writer_files().await)
     }
     #[cfg(not(debug_assertions))]
     {
-        match_fn!("fn[internal_create_writer_files] can't be called in release")
+        match_fn!()
     }
 }
 
@@ -27,12 +26,11 @@ pub async fn internal_prettify_item_stats() -> impl Responder {
 pub async fn internal_create_damaging_items() -> impl Responder {
     #[cfg(debug_assertions)]
     {
-        use crate::setup::update::setup_damaging_items;
-        match_fn!(setup_damaging_items())
+        match_fn!(crate::setup::update::setup_damaging_items())
     }
     #[cfg(not(debug_assertions))]
     {
-        match_fn!("fn[internal_create_damaging_items] can't be called in release")
+        match_fn!()
     }
 }
 

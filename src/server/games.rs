@@ -19,31 +19,29 @@ struct CreateGameResponse {
     game_id: String,
 }
 
-macro_rules! send_bincode {
+macro_rules! send_response {
     ($data:expr) => {
-        match bincode::serde::encode_to_vec($data, bincode::config::standard()) {
-            Ok(bin_data) => HttpResponse::Ok()
-                .insert_header((crate::header::CONTENT_TYPE, "application/octet-stream"))
-                .body(bin_data),
-            Err(e) => {
-                eprintln!("Error serializing bincode: {:?}", e);
-                HttpResponse::InternalServerError().json(APIResponse {
-                    success: false,
-                    message: format!("Error serializing data: {:#?}", e),
-                    data: (),
-                })
+        if cfg!(debug_assertions) {
+            HttpResponse::Ok().json(APIResponse {
+                success: true,
+                message: "Success",
+                data: $data,
+            })
+        } else {
+            match bincode::serde::encode_to_vec($data, bincode::config::standard()) {
+                Ok(bin_data) => HttpResponse::Ok()
+                    .insert_header((crate::header::CONTENT_TYPE, "application/octet-stream"))
+                    .body(bin_data),
+                Err(e) => {
+                    eprintln!("Error serializing bincode: {:?}", e);
+                    HttpResponse::InternalServerError().json(APIResponse {
+                        success: false,
+                        message: format!("Error serializing data: {:#?}", e),
+                        data: (),
+                    })
+                }
             }
         }
-    };
-}
-
-macro_rules! send_json {
-    ($data:expr) => {
-        HttpResponse::Ok().json(APIResponse {
-            success: true,
-            message: "Success",
-            data: $data,
-        })
     };
 }
 
@@ -81,14 +79,21 @@ struct GetByCodeBody {
 }
 
 #[inline(always)]
-fn get_calculation_error(e: CalculationError) -> &'static str {
+fn get_calculation_error(e: CalculationError) -> String {
     match e {
-        CalculationError::CurrentPlayerNotFound => "Current player not found in allPlayers",
-        CalculationError::ChampionNameNotFound => {
-            "Could not convert champion name to its corresponding id"
+        CalculationError::CurrentPlayerNotFound => {
+            String::from("Current player not found in allPlayers")
         }
-        CalculationError::ChampionCacheNotFound => "Current champion cache not found",
-        CalculationError::ItemCacheNotFound => "One item's cache was not found",
+        CalculationError::ChampionNameNotFound(n) => format!(
+            "Could not convert champion name to its corresponding id: {}",
+            n
+        ),
+        CalculationError::ChampionCacheNotFound(n) => {
+            format!("Current champion cache not found: {}", n)
+        }
+        CalculationError::ItemCacheNotFound(n) => {
+            format!("One item's cache was not found: {}", n)
+        }
     }
 }
 
@@ -114,11 +119,7 @@ pub async fn get_by_code_handler(
         Ok(data) => match serde_json::from_str::<RiotRealtime>(&data.game) {
             Ok(riot_realtime) => match realtime(&riot_realtime) {
                 Ok(realtime_data) => {
-                    if cfg!(debug_assertions) {
-                        send_json!(&realtime_data)
-                    } else {
-                        send_bincode!(&realtime_data)
-                    }
+                    send_response!(&realtime_data)
                 }
                 Err(e) => {
                     let message = get_calculation_error(e);
@@ -200,11 +201,7 @@ pub async fn realtime_handler(state: Data<AppState>, body: Json<RealtimeBody>) -
                                 game_code,
                                 game_id
                             );
-                            if cfg!(debug_assertions) {
-                                send_json!(&data)
-                            } else {
-                                send_bincode!(&data)
-                            }
+                            send_response!(&data)
                         }
                         Err(e) => {
                             let message = get_calculation_error(e);
@@ -244,11 +241,7 @@ pub async fn calculator_handler(body: Json<CalculatorBody>) -> impl Responder {
     let CalculatorBody { game } = body.into_inner();
     match calculator(game) {
         Ok(data) => {
-            if cfg!(debug_assertions) {
-                send_json!(&data)
-            } else {
-                send_bincode!(&data)
-            }
+            send_response!(&data)
         }
         Err(e) => HttpResponse::InternalServerError().json({
             let message = get_calculation_error(e);
