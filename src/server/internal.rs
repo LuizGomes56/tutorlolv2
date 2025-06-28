@@ -14,7 +14,7 @@ pub async fn internal_create_writer_files() -> impl Responder {
     }
     #[cfg(not(debug_assertions))]
     {
-        match_fn!(where "fn[internal_create_writer_files] can't be called in release")
+        match_fn!("fn[internal_create_writer_files] can't be called in release")
     }
 }
 
@@ -32,7 +32,7 @@ pub async fn internal_create_damaging_items() -> impl Responder {
     }
     #[cfg(not(debug_assertions))]
     {
-        match_fn!(where "fn[internal_create_damaging_items] can't be called in release")
+        match_fn!("fn[internal_create_damaging_items] can't be called in release")
     }
 }
 

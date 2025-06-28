@@ -15,17 +15,50 @@ use uuid::Uuid;
 
 #[derive(Serialize)]
 struct CreateGameResponse {
-    game_code: i32,
+    game_code: String,
     game_id: String,
+}
+
+macro_rules! send_bincode {
+    ($data:expr) => {
+        match bincode::serde::encode_to_vec($data, bincode::config::standard()) {
+            Ok(bin_data) => HttpResponse::Ok()
+                .insert_header((crate::header::CONTENT_TYPE, "application/octet-stream"))
+                .body(bin_data),
+            Err(e) => {
+                eprintln!("Error serializing bincode: {:?}", e);
+                HttpResponse::InternalServerError().json(APIResponse {
+                    success: false,
+                    message: format!("Error serializing data: {:#?}", e),
+                    data: (),
+                })
+            }
+        }
+    };
+}
+
+macro_rules! send_json {
+    ($data:expr) => {
+        HttpResponse::Ok().json(APIResponse {
+            success: true,
+            message: "Success",
+            data: $data,
+        })
+    };
 }
 
 #[get("/create")]
 pub async fn create_game_handler(state: Data<AppState>) -> impl Responder {
-    let game_code = random_range(100_000..1_000_000);
+    let chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+        .chars()
+        .collect::<Vec<char>>();
+    let game_code = (0..6)
+        .map(|_| chars[random_range(0..chars.len())])
+        .collect::<String>();
     let game_id = Uuid::new_v4().to_string();
     match sqlx::query("INSERT INTO games (game_id, game_code) VALUES ($1, $2)")
         .bind(&game_id)
-        .bind(game_code)
+        .bind(&game_code)
         .execute(&state.db)
         .await
     {
@@ -44,7 +77,7 @@ pub async fn create_game_handler(state: Data<AppState>) -> impl Responder {
 
 #[derive(Deserialize)]
 struct GetByCodeBody {
-    game_code: usize,
+    game_code: String,
 }
 
 #[inline(always)]
@@ -74,17 +107,19 @@ pub async fn get_by_code_handler(
         ORDER BY gd.game_time DESC 
         LIMIT 1",
     )
-    .bind(game_code.to_string())
+    .bind(game_code)
     .fetch_one(&state.db)
     .await
     {
         Ok(data) => match serde_json::from_str::<RiotRealtime>(&data.game) {
             Ok(riot_realtime) => match realtime(&riot_realtime) {
-                Ok(realtime_data) => HttpResponse::Ok().json(APIResponse {
-                    success: true,
-                    message: "Game data fetched successfully",
-                    data: realtime_data,
-                }),
+                Ok(realtime_data) => {
+                    if cfg!(debug_assertions) {
+                        send_json!(&realtime_data)
+                    } else {
+                        send_bincode!(&realtime_data)
+                    }
+                }
                 Err(e) => {
                     let message = get_calculation_error(e);
                     HttpResponse::InternalServerError().json(APIResponse {
@@ -114,7 +149,7 @@ pub async fn get_by_code_handler(
 #[derive(Deserialize)]
 struct RealtimeBody {
     game_id: String,
-    game_code: i32,
+    game_code: String,
     game_data: String,
 }
 
@@ -160,13 +195,16 @@ pub async fn realtime_handler(state: Data<AppState>, body: Json<RealtimeBody>) -
                 Ok(_) => {
                     match realtime(&realtime_data) {
                         Ok(data) => {
-                            let message = format!("Success on request for game_code: {}, game_id: {}", game_code, game_id);
-                            println!("realtime_handler: {}", message);
-                            HttpResponse::Ok().json(APIResponse {
-                                success: true,
-                                message,
-                                data,
-                            })
+                            println!(
+                                "fn[realtime_handler] Success on request for game_code: {}, game_id: {}",
+                                game_code,
+                                game_id
+                            );
+                            if cfg!(debug_assertions) {
+                                send_json!(&data)
+                            } else {
+                                send_bincode!(&data)
+                            }
                         }
                         Err(e) => {
                             let message = get_calculation_error(e);
@@ -205,11 +243,13 @@ struct CalculatorBody {
 pub async fn calculator_handler(body: Json<CalculatorBody>) -> impl Responder {
     let CalculatorBody { game } = body.into_inner();
     match calculator(game) {
-        Ok(data) => HttpResponse::Ok().json(APIResponse {
-            success: true,
-            message: (),
-            data,
-        }),
+        Ok(data) => {
+            if cfg!(debug_assertions) {
+                send_json!(&data)
+            } else {
+                send_bincode!(&data)
+            }
+        }
         Err(e) => HttpResponse::InternalServerError().json({
             let message = get_calculation_error(e);
             APIResponse {

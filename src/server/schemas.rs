@@ -32,7 +32,7 @@ macro_rules! match_fn {
             }),
         }
     };
-    (where $name:literal) => {
+    ($name:literal) => {
         HttpResponse::Ok().json(APIResponse {
             success: true,
             message: $name,
