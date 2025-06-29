@@ -5,7 +5,7 @@ use crate::{
         riot::RiotCdnItem,
     },
     setup::{
-        generators::run_writer_file,
+        generators::champions::run_writer_file,
         helpers::{SetupError, extract_file_name, read_json_file, write_to_file},
     },
 };

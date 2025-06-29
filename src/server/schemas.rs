@@ -18,11 +18,11 @@ pub struct APIResponse<T, U> {
 
 #[macro_export]
 macro_rules! match_fn {
-    ($expr:expr) => {
+    (@inner $expr:expr, $msg:expr) => {
         match $expr {
             Ok(_) => HttpResponse::Ok().json(APIResponse {
                 success: true,
-                message: &format!("Executed fn[{}]", stringify!($expr)),
+                message: &$msg,
                 data: (),
             }),
             Err(e) => HttpResponse::InternalServerError().json(APIResponse {
@@ -32,11 +32,21 @@ macro_rules! match_fn {
             }),
         }
     };
-    () => {
-        HttpResponse::Ok().json(APIResponse {
-            success: true,
-            message: "This route is not accessible in release mode",
-            data: (),
-        })
+    ($expr:expr) => {
+        $crate::match_fn!(@inner $expr, format!("Executed fn[{}]", stringify!($expr)))
     };
+    (priv $expr:expr) => {{
+        #[cfg(debug_assertions)]
+        {
+            $crate::match_fn!(@inner $expr, format!("Executed fn[{}]", stringify!($expr)))
+        }
+        #[cfg(not(debug_assertions))]
+        {
+            HttpResponse::Ok().json(APIResponse {
+                success: true,
+                message: format!("Cannot call fn[{}] in release mode", stringify!($expr)),
+                data: (),
+            })
+        }
+    }};
 }

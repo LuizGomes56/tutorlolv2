@@ -1,9 +1,9 @@
+use super::*;
 use crate::{
     model::champions::{Ability, CdnAbility, CdnChampion, Champion, Modifiers},
     setup::helpers::{SetupError, extract_file_name, read_json_file, write_to_file},
     writers,
 };
-use regex::{Captures, Match, Regex};
 use rustc_hash::FxHashMap;
 use std::path::Path;
 
@@ -226,24 +226,6 @@ fn extract_ability(modifiers: &[Modifiers], target_vec: &mut Vec<String>) {
     }
 }
 
-/// Takes a string with the match "{number} : {number}" and returns the numeric values
-/// Might return nothing if no values are found, or a tuple is malformed
-fn extract_range_values(input: &str) -> Option<(f64, f64)> {
-    let re: Regex = Regex::new(r"(\d+(?:\.\d+)?)(%)?\s*[:\-–]\s*(\d+(?:\.\d+)?)(%)?").ok()?;
-    let caps: Captures<'_> = re.captures(input)?;
-
-    let first: f64 = caps.get(1)?.as_str().parse::<f64>().ok()?;
-    let second: f64 = caps.get(3)?.as_str().parse::<f64>().ok()?;
-
-    let first_is_percent: bool = caps.get(2).is_some();
-    let second_is_percent: bool = caps.get(4).is_some();
-
-    let denom1: f64 = if first_is_percent { 100.0 } else { 1.0 };
-    let denom2: f64 = if second_is_percent { 100.0 } else { 1.0 };
-
-    Some((first / denom1, second / denom2))
-}
-
 /// Lots of passive strings match with a pattern of (number) : (number) ... (+ Scalings)
 /// This function returns the first two values it found, assuming there will always be two.
 fn extract_passive_bounds(
@@ -271,58 +253,6 @@ fn extract_passive_bounds(
     (passive, passive_bounds)
 }
 
-/// Gets the tuples that are in pattern (+ Scalling) and formats the string to the internal format.
-pub fn extract_scaled_values(input: &str) -> String {
-    let re: Regex = Regex::new(r"\(([^)]+)\)").unwrap();
-    let mut result: Vec<String> = Vec::new();
-    for cap in re.captures_iter(input) {
-        let content: &str = cap[1].trim();
-        if content.to_lowercase().contains("based on level") {
-            continue;
-        }
-        let cleaned: &str = content.trim_start_matches('+').trim();
-        let parts: Vec<&str> = cleaned.split_whitespace().collect();
-        if parts.len() >= 2 && parts[0].ends_with('%') {
-            if let Ok(percent) = parts[0].trim_end_matches('%').parse::<f64>() {
-                let decimal: f64 = percent / 100.0;
-                let rest: String = parts[1..].join(" ");
-                result.push(format!("({} * {})", decimal, rest));
-                continue;
-            }
-        }
-        result.push(format!("({})", cleaned));
-    }
-    result
-        .iter()
-        .map(|value: &String| replace_keys(value))
-        .collect::<Vec<String>>()
-        .join(" + ")
-}
-
-pub fn process_scaled_string(input: &str) -> String {
-    let re: Regex = Regex::new(r"\([^\)]*\)").unwrap();
-    let paren_part: &str = re.find(input).map(|m: Match<'_>| m.as_str()).unwrap_or("");
-    let base: String = input.replace(paren_part, "").trim().to_string();
-    let scaled: String = extract_scaled_values(paren_part);
-    if !scaled.is_empty() {
-        format!("{} + {}", base, scaled)
-    } else {
-        base
-    }
-}
-
-pub fn extract_damagelike_expr(input: &str) -> String {
-    let re: Regex = Regex::new(r"\{\{as\|([^\}]+)\}\}").unwrap();
-    let mut results: Vec<String> = Vec::new();
-    for cap in re.captures_iter(input) {
-        let mut content: String = cap[1].to_string();
-        let nested: Regex = Regex::new(r"\{\{[^}]+\|([^}]+)\}\}").unwrap();
-        content = nested.replace_all(&content, "$1").to_string();
-        results.push(content);
-    }
-    process_scaled_string(&results.join(" ").replace("{{as|", ""))
-}
-
 /// Useful for passives where scalling is linear over all 18 levels.
 /// Returns the array with the values for each level adjusted
 fn process_linear_range(bounds: (f64, f64), size: usize, postfix: Option<&str>) -> Vec<String> {
@@ -337,11 +267,6 @@ fn process_linear_range(bounds: (f64, f64), size: usize, postfix: Option<&str>) 
         result.push(format!("{}", value));
     }
     result
-}
-
-fn remove_parenthesized_additions(input: &str) -> String {
-    let re: Regex = Regex::new(r"\(\+\s*[^)]*\)").unwrap();
-    re.replace_all(input, "").to_string()
 }
 
 /// Determines if it should be written in "minimum_damage" or "maximum_damage" field
@@ -396,58 +321,6 @@ pub fn extract_ability_damage(
             }
         }
     }
-}
-
-/// Replaces common keys found in the API with the corresponding ones used internally
-pub fn replace_keys(s: &str) -> String {
-    let replacements: [(&'static str, &'static str); 40] = [
-        ("per 100", "0.01 *"),
-        ("of damage dealt", "100.0"),
-        ("of damage stored", "100.0"),
-        ("per Soul collected", " * THRESH_STACKS"),
-        ("of expended Grit", "0.0"),
-        ("of primary target's bonus health", "ENEMY_BONUS_HEALTH"),
-        ("of his bonus health", "BONUS_HEALTH"),
-        ("Pantheon's bonus health", "BONUS_HEALTH"),
-        ("critical strike chance", "CRIT_CHANCE"),
-        ("of the original damage", "100.0"),
-        ("per Overwhelm stack on the target", "1.0"),
-        ("of Ivern's AP", "AP"),
-        ("of Sona's AP", "AP"),
-        ("per Feast stack", "CHOGATH_STACKS"),
-        ("of Siphoning Strike stacks", "NASUS_STACKS"),
-        ("Stardust", "AURELION_SOL_STACKS"),
-        ("per mark", "KINDRED_STACKS"),
-        ("bonus armor", "BONUS_ARMOR"),
-        ("bonus mana", "BONUS_MANA"),
-        ("bonus AD", "BONUS_AD"),
-        ("bonus armor", "BONUS_ARMOR"),
-        ("bonus magic resistance", "BONUS_MAGIC_RESIST"),
-        ("bonus health", "BONUS_HEALTH"),
-        ("bonus movement speed", "BONUS_MOVE_SPEED"),
-        ("armor", "ARMOR"),
-        ("of the target's maximum health", "ENEMY_MAX_HEALTH"),
-        ("of target's maximum health", "ENEMY_MAX_HEALTH"),
-        ("of Zac's maximum health", "MAX_HEALTH"),
-        ("of Braum's maximum health", "MAX_HEALTH"),
-        ("of her maximum health", "MAX_HEALTH"),
-        ("of his maximum health", "MAX_HEALTH"),
-        ("of maximum health", "MAX_HEALTH"),
-        ("maximum health", "MAX_HEALTH"),
-        ("of the target's current health", "ENEMY_CURRENT_HEALTH"),
-        ("of target's current health", "ENEMY_CURRENT_HEALTH"),
-        ("target's current health", "ENEMY_CURRENT_HEALTH"),
-        ("of the target's missing health", "ENEMY_MISSING_HEALTH"),
-        ("of target's missing health", "ENEMY_MISSING_HEALTH"),
-        ("target's missing health", "ENEMY_MISSING_HEALTH"),
-        ("maximum mana", "MAX_MANA"),
-    ];
-
-    replacements
-        .iter()
-        .fold(s.to_string(), |acc: String, (old, new)| {
-            acc.replace(old, new)
-        })
 }
 
 /// Returns a new array with the coordinates where an ability was found according to CDN API

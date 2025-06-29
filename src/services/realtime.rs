@@ -1,6 +1,6 @@
 use super::*;
 use crate::{
-    GLOBAL_CACHE,
+    INTERNAL_CHAMPIONS, INTERNAL_ITEMS, INTERNAL_NAMES, INTERNAL_RUNES, META_ITEMS,
     model::{
         base::{
             AttackType, BasicStats, DamageMultipliers, Damages, DragonMultipliers, SimulatedDamages,
@@ -61,21 +61,19 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
         get_dragon_multipliers(game_events, players_map, current_player_team);
 
     let current_player_stats = current_player_riot_stats.to_stats();
-    let current_player_champion_id = GLOBAL_CACHE
-        .champion_names
-        .get(current_player_champion_name)
-        .ok_or(CalculationError::ChampionNameNotFound(format!(
-            "[GLOBAL_CACHE.champion_names]: {}",
+    let current_player_champion_id = INTERNAL_NAMES.get(current_player_champion_name).ok_or(
+        CalculationError::ChampionNameNotFound(format!(
+            "[INTERNAL_NAMES]: {}",
             current_player_champion_name
-        )))?;
+        )),
+    )?;
 
-    let current_player_cache = GLOBAL_CACHE
-        .champions
-        .get(current_player_champion_id)
-        .ok_or(CalculationError::ChampionCacheNotFound(format!(
-            "[GLOBAL_CACHE.champions]: {}",
+    let current_player_cache = INTERNAL_CHAMPIONS.get(current_player_champion_id).ok_or(
+        CalculationError::ChampionCacheNotFound(format!(
+            "[INTERNAL_CHAMPIONS]: {}",
             current_player_champion_id
-        )))?;
+        )),
+    )?;
 
     let current_player_base_stats = get_base_stats(current_player_cache, current_player_level);
     let current_player_basic_stats = BasicStats {
@@ -90,7 +88,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
         get_bonus_stats(current_player_basic_stats, current_player_base_stats);
 
     let current_player_recommended_items = {
-        if let Some(meta_items) = GLOBAL_CACHE.meta_items.get(current_player_champion_id) {
+        if let Some(meta_items) = META_ITEMS.get(current_player_champion_id) {
             match current_player_position.as_str() {
                 "TOP" => meta_items.top,
                 "JUNGLE" => meta_items.jungle,
@@ -143,7 +141,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
         .filter(|player| &player.team != current_player_team)
         .par_bridge()
         .filter_map(|player| {
-            let enemy_champion_id = GLOBAL_CACHE.champion_names.get(&player.champion_name)?;
+            let enemy_champion_id = INTERNAL_NAMES.get(&player.champion_name)?;
 
             let RiotAllPlayers {
                 champion_name: enemy_champion_name,
@@ -158,7 +156,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
                 .map(|value| value.item_id)
                 .collect::<Vec<usize>>();
             let enemy_level = player.level;
-            let enemy_cache = GLOBAL_CACHE.champions.get(enemy_champion_id)?;
+            let enemy_cache = INTERNAL_CHAMPIONS.get(enemy_champion_id)?;
             let enemy_base_stats = get_base_stats(enemy_cache, enemy_level);
 
             let full_stats = get_full_stats(
@@ -260,7 +258,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
 
             Some(Enemy {
                 champion_id: enemy_champion_id,
-                champion_name: &enemy_champion_name,
+                champion_name: enemy_champion_name,
                 riot_id,
                 team,
                 position,
@@ -292,23 +290,23 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
             damaging_items: current_player_items
                 .into_iter()
                 .filter_map(|item_id| {
-                    let item = GLOBAL_CACHE.items.get(&item_id)?;
+                    let item = INTERNAL_ITEMS.get(&item_id)?;
                     Some((item_id, item.name))
                 })
                 .collect(),
             damaging_runes: current_player_runes
                 .into_iter()
                 .filter_map(|rune_id| {
-                    let rune = GLOBAL_CACHE.runes.get(&rune_id)?;
+                    let rune = INTERNAL_RUNES.get(&rune_id)?;
                     Some((rune_id, rune.name))
                 })
                 .collect(),
-            riot_id: &current_player_riot_id,
+            riot_id: current_player_riot_id,
             level: current_player_level,
-            team: &current_player_team,
-            position: &current_player_position,
-            champion_name: &current_player_champion_name,
-            champion_id: &current_player_champion_id,
+            team: current_player_team,
+            position: current_player_position,
+            champion_name: current_player_champion_name,
+            champion_id: current_player_champion_id,
             base_stats: current_player_base_stats,
             bonus_stats: current_player_bonus_stats,
             current_stats: current_player_stats,

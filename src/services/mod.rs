@@ -1,9 +1,10 @@
-pub(crate) mod calculator;
+pub mod calculator;
 mod helpers;
-pub(crate) mod realtime;
+pub mod realtime;
 mod riot_formulas;
 
 use helpers::*;
+use riot_formulas::*;
 
 pub enum CalculationError {
     CurrentPlayerNotFound,

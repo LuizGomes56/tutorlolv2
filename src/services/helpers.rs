@@ -1,14 +1,13 @@
-use std::hash::Hash;
-
+use super::riot_formulas::RiotFormulas;
 use crate::{
-    GLOBAL_CACHE,
+    INTERNAL_ITEMS, INTERNAL_RUNES, SIMULATED_ITEMS,
     model::{
         base::*,
         cache::{CachedChampion, CachedItem, EvalContext},
     },
-    services::riot_formulas::RiotFormulas,
 };
 use rustc_hash::FxHashMap;
+use std::hash::Hash;
 
 /// By 06/07/2025 Earth dragons give +5% resists
 // #![manual_impl]
@@ -27,15 +26,14 @@ pub fn get_simulated_champion_stats<'a>(
     ally_dragon_multipliers: &DragonMultipliers,
 ) -> (FxHashMap<usize, Stats>, FxHashMap<usize, ComparedItem>) {
     let mut simulated_stats =
-        FxHashMap::with_capacity_and_hasher(GLOBAL_CACHE.simulated_items.len(), Default::default());
+        FxHashMap::with_capacity_and_hasher(SIMULATED_ITEMS.len(), Default::default());
     let mut simulated_items =
-        FxHashMap::with_capacity_and_hasher(GLOBAL_CACHE.simulated_items.len(), Default::default());
-    for item_id in GLOBAL_CACHE
-        .simulated_items
+        FxHashMap::with_capacity_and_hasher(SIMULATED_ITEMS.len(), Default::default());
+    for item_id in SIMULATED_ITEMS
         .iter()
         .filter(|id| !owned_items.contains(id))
     {
-        if let Some(item) = GLOBAL_CACHE.items.get(item_id) {
+        if let Some(item) = INTERNAL_ITEMS.get(item_id) {
             simulated_stats.insert(
                 *item_id,
                 simulate_champion_stats(item, *current_stats, ally_dragon_multipliers),
@@ -43,7 +41,7 @@ pub fn get_simulated_champion_stats<'a>(
             simulated_items.insert(
                 *item_id,
                 ComparedItem {
-                    name: &item.name,
+                    name: item.name,
                     gold_cost: item.gold,
                     prettified_stats: item.prettified_stats.iter().copied().collect(),
                 },
@@ -100,7 +98,7 @@ pub fn get_items_damage(
 ) -> Vec<(usize, DamageExpression)> {
     let mut result = Vec::<(usize, DamageExpression)>::with_capacity(current_player_items.len());
     for item_id in current_player_items {
-        if let Some(item) = GLOBAL_CACHE.items.get(item_id) {
+        if let Some(item) = INTERNAL_ITEMS.get(item_id) {
             let item_damage = match attack_type {
                 AttackType::Ranged => &item.ranged,
                 AttackType::Melee => &item.melee,
@@ -125,7 +123,7 @@ pub fn get_runes_damage(
 ) -> Vec<(usize, DamageExpression)> {
     let mut result = Vec::<(usize, DamageExpression)>::with_capacity(current_player_runes.len());
     for rune_id in current_player_runes {
-        if let Some(rune) = GLOBAL_CACHE.runes.get(rune_id) {
+        if let Some(rune) = INTERNAL_RUNES.get(rune_id) {
             let minimum_damage = match attack_type {
                 AttackType::Ranged => rune.ranged,
                 AttackType::Melee => rune.melee,
@@ -174,7 +172,7 @@ pub fn get_full_stats(
     match enemy_champion_id {
         "Kassadin" => {
             // #![manual_impl]
-            enemy_magic_mod = 0.9;
+            enemy_magic_mod -= 0.1;
         }
         "Ornn" => {
             // Starts game with +10% armor/mr/hp already
@@ -441,7 +439,7 @@ pub fn get_enemy_current_stats(
     earth_dragon_mod: f64,
 ) -> BasicStats {
     for enemy_item in current_items {
-        if let Some(item) = GLOBAL_CACHE.items.get(&enemy_item) {
+        if let Some(item) = INTERNAL_ITEMS.get(enemy_item) {
             macro_rules! add_value {
                 ($field:ident) => {
                     basic_stats.$field += item.stats.$field;

@@ -11,19 +11,17 @@ struct FormulaResponse {
 
 #[get("/champions/{name}")]
 pub async fn formulas_champions(name: Path<String>) -> impl Responder {
-    let writer_content: String =
-        match fs::read_to_string(format!("formulas/{}.txt", name.to_lowercase())) {
-            Ok(content) => content,
-            Err(e) => {
-                println!(
-                    "An error occured when reading formulas file for to champion: {}, error: {}",
-                    name, e
-                );
-                String::from("Rust formula file not found in the system.")
-            }
-        };
-    let json_content: String = match fs::read_to_string(format!("internal/champions/{}.json", name))
-    {
+    let writer_content = match fs::read_to_string(format!("formulas/{}.txt", name.to_lowercase())) {
+        Ok(content) => content,
+        Err(e) => {
+            println!(
+                "An error occured when reading formulas file for to champion: {}, error: {}",
+                name, e
+            );
+            String::from("Rust formula file not found in the system.")
+        }
+    };
+    let json_content = match fs::read_to_string(format!("internal/champions/{}.json", name)) {
         Ok(content) => content,
         Err(e) => {
             println!(

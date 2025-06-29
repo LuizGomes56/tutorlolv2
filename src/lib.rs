@@ -36,15 +36,6 @@ include!(concat!(env!("OUT_DIR"), "/internal_runes.rs"));
 include!(concat!(env!("OUT_DIR"), "/internal_meta.rs"));
 include!(concat!(env!("OUT_DIR"), "/internal_names.rs"));
 
-pub const GLOBAL_CACHE: GlobalCache = GlobalCache {
-    champions: &INTERNAL_CHAMPIONS,
-    items: &INTERNAL_ITEMS,
-    runes: &INTERNAL_RUNES,
-    meta_items: &META_ITEMS,
-    champion_names: &INTERNAL_NAMES,
-    simulated_items: &SIMULATED_ITEMS,
-};
-
 pub struct EnvConfig {
     pub lol_version: String,
     pub lol_language: String,
@@ -194,7 +185,8 @@ pub async fn run() -> io::Result<()> {
                             .service(internal_prettify_item_stats)
                             .service(internal_create_damaging_items)
                             .service(internal_create_meta_items)
-                            .service(internal_rewrite_champion_names),
+                            .service(internal_rewrite_champion_names)
+                            .service(internal_assign_item_damages),
                     ),
             )
             .default_service(web::route().to(|| async {

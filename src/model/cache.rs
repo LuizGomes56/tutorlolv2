@@ -142,12 +142,3 @@ pub struct CachedItemStats {
     pub movespeed: f64,
     pub omnivamp: f64,
 }
-
-pub struct GlobalCache {
-    pub champions: &'static phf::Map<&'static str, &'static CachedChampion>,
-    pub items: &'static phf::Map<usize, &'static CachedItem>,
-    pub runes: &'static phf::Map<usize, &'static CachedRune>,
-    pub meta_items: &'static phf::Map<&'static str, &'static CachedMetaItem>,
-    pub champion_names: &'static phf::Map<&'static str, &'static str>,
-    pub simulated_items: &'static [usize],
-}

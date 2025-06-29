@@ -3,7 +3,7 @@ use crate::model::{
     cache::CachedChampionStats,
 };
 
-pub(super) struct RiotFormulas;
+pub struct RiotFormulas;
 
 impl RiotFormulas {
     /// Uses wiki's formula to return base stats for a given champion

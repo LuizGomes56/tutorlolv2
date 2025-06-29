@@ -1,8 +1,7 @@
 use super::*;
 use crate::{
-    GLOBAL_CACHE,
+    INTERNAL_CHAMPIONS, INTERNAL_ITEMS, INTERNAL_NAMES, INTERNAL_RUNES, META_ITEMS,
     model::{base::*, calculator::*},
-    services::riot_formulas::RiotFormulas,
 };
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
 use rustc_hash::FxHashMap;
@@ -23,8 +22,7 @@ fn apply_auto_stats(
     let mut magic_penetration = Vec::<f64>::new();
 
     for item_id in owned_items {
-        let cached_item = GLOBAL_CACHE
-            .items
+        let cached_item = INTERNAL_ITEMS
             .get(&item_id)
             .ok_or_else(|| CalculationError::ItemCacheNotFound(*item_id))?;
 
@@ -268,13 +266,12 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
         stacks: _current_player_stacks,
     } = active_player;
 
-    let current_player_cache = GLOBAL_CACHE
-        .champions
-        .get(current_player_champion_id)
-        .ok_or(CalculationError::ChampionCacheNotFound(format!(
-            "[GLOBAL_CACHE.champions]: {}",
+    let current_player_cache = INTERNAL_CHAMPIONS.get(current_player_champion_id).ok_or(
+        CalculationError::ChampionCacheNotFound(format!(
+            "[INTERNAL_CHAMPIONS]: {}",
             current_player_champion_id
-        )))?;
+        )),
+    )?;
 
     let mut current_player_stats =
         RiotFormulas::full_base_stats(&current_player_cache.stats, current_player_level);
@@ -320,8 +317,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
         (adaptative_type, current_player_attack_type),
     );
 
-    let current_player_recommended_items = GLOBAL_CACHE
-        .meta_items
+    let current_player_recommended_items = META_ITEMS
         .get(&current_player_champion_id)
         .and_then(|meta_items| {
             current_player_cache
@@ -367,8 +363,8 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
         current_player_level,
         current_player_abilities,
     );
-    let items_iter_expr = get_items_damage(&current_player_items, current_player_attack_type);
-    let runes_iter_expr = get_runes_damage(&current_player_runes, current_player_attack_type);
+    let items_iter_expr = get_items_damage(current_player_items, current_player_attack_type);
+    let runes_iter_expr = get_runes_damage(current_player_runes, current_player_attack_type);
 
     let enemies = enemy_players
         .into_par_iter()
@@ -382,14 +378,13 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
                 // #![todo]
                 stats: _enemy_stats,
             } = player;
-            let enemy_champion_id = GLOBAL_CACHE
-                .champion_names
-                .get(&enemy_champion_name)
-                .ok_or(CalculationError::ChampionCacheNotFound(format!(
+            let enemy_champion_id = INTERNAL_NAMES.get(&enemy_champion_name).ok_or(
+                CalculationError::ChampionCacheNotFound(format!(
                     "[enemy_players.into_par_iter()]: {}",
                     enemy_champion_name
-                )))?;
-            let enemy_cache = GLOBAL_CACHE.champions.get(enemy_champion_id).ok_or(
+                )),
+            )?;
+            let enemy_cache = INTERNAL_CHAMPIONS.get(enemy_champion_id).ok_or(
                 CalculationError::ChampionCacheNotFound(format!(
                     "[enemy_players.into_par_iter()]: {}",
                     enemy_champion_id
@@ -524,14 +519,14 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
             damaging_items: current_player_items
                 .into_iter()
                 .filter_map(|item_id| {
-                    let item = GLOBAL_CACHE.items.get(item_id)?;
+                    let item = INTERNAL_ITEMS.get(item_id)?;
                     Some((*item_id, item.name))
                 })
                 .collect(),
             damaging_runes: current_player_runes
                 .into_iter()
                 .filter_map(|rune_id| {
-                    let rune = GLOBAL_CACHE.runes.get(rune_id)?;
+                    let rune = INTERNAL_RUNES.get(rune_id)?;
                     Some((*rune_id, rune.name))
                 })
                 .collect(),

@@ -1,11 +1,10 @@
-use crate::{GLOBAL_CACHE, server::schemas::APIResponse};
+use crate::{INTERNAL_ITEMS, INTERNAL_NAMES, INTERNAL_RUNES, server::schemas::APIResponse};
 use actix_web::{HttpResponse, Responder, get};
 use rustc_hash::FxHashMap;
 
 #[get("/champions")]
 pub async fn static_champions() -> impl Responder {
-    let data = GLOBAL_CACHE
-        .champion_names
+    let data = INTERNAL_NAMES
         .entries()
         .map(|(k, v)| (v, k))
         .collect::<FxHashMap<_, _>>();
@@ -18,8 +17,7 @@ pub async fn static_champions() -> impl Responder {
 
 #[get("/items")]
 pub async fn static_items() -> impl Responder {
-    let data = GLOBAL_CACHE
-        .items
+    let data = INTERNAL_ITEMS
         .entries()
         .map(|(item_id, value)| (item_id, &value.name))
         .collect::<FxHashMap<_, _>>();
@@ -32,8 +30,7 @@ pub async fn static_items() -> impl Responder {
 
 #[get("/runes")]
 pub async fn static_runes() -> impl Responder {
-    let data = GLOBAL_CACHE
-        .runes
+    let data = INTERNAL_RUNES
         .entries()
         .map(|(rune_id, value)| (rune_id, &value.name))
         .collect::<FxHashMap<_, _>>();
