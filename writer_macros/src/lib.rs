@@ -276,3 +276,65 @@ pub fn trace_time(_args: TokenStream, input: TokenStream) -> TokenStream {
     function.block = Box::new(syn::parse2(timed_block).expect("Failed to parse timed block"));
     TokenStream::from(quote! { #function })
 }
+
+#[proc_macro_attribute]
+pub fn item_generator(_args: TokenStream, input: TokenStream) -> TokenStream {
+    let mut func = parse_macro_input!(input as syn::ItemFn);
+
+    func.attrs.push(syn::parse_quote! {
+        #[allow(unused_macros)]
+    });
+
+    let ident = &func.sig.ident;
+
+    let expand_decl = quote! {
+        let id = stringify!(#ident)
+            .split("_")
+            .last()
+            .unwrap();
+
+        let cdn_value = read_json_file::<CdnItem>(&format!("cache/cdn/items/{}.json", id))?;
+        let mut cur_value = read_json_file::<Item>(&format!("internal/items/{}.json", id))?;
+
+        macro_rules! save_change {
+            ($item:expr) => {{
+                let path = format!("internal/items/{}.json", id);
+                let json = serde_json::to_string_pretty(&$item).unwrap();
+                write_to_file(&path, json.as_bytes())
+            }};
+        };
+
+        macro_rules! write_dmg {
+            ($min_dmg:expr) => {{
+                cur_value.ranged = Some(DamageObject {
+                    minimum_damage: Some($min_dmg.clone()),
+                    maximum_damage: None,
+                });
+                cur_value.melee = Some(DamageObject {
+                    minimum_damage: Some($min_dmg),
+                    maximum_damage: None,
+                });
+            }};
+            ($min_dmg:expr, $max_dmg:expr) => {{
+                cur_value.ranged = Some(DamageObject {
+                    minimum_damage: Some($min_dmg.clone()),
+                    maximum_damage: Some($max_dmg.clone()),
+                });
+                cur_value.melee = Some(DamageObject {
+                    minimum_damage: Some($min_dmg),
+                    maximum_damage: Some($max_dmg),
+                });
+            }};
+        };
+    };
+
+    let old_block = func.block;
+    func.block = Box::new(syn::parse_quote!({
+        #expand_decl
+        #old_block
+    }));
+
+    TokenStream::from(quote! {
+        #func
+    })
+}

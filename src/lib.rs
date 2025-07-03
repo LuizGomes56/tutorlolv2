@@ -86,7 +86,7 @@ pub async fn run() -> io::Result<()> {
         .expect("Error while attempting to connect to the database");
 
     HttpServer::new(move || {
-        let cors: Cors = Cors::default()
+        let cors = Cors::default()
             .allow_any_origin()
             // #![todo] Allow only frontend to send requests to this server.
             // .allowed_origin("http://localhost:8080")
@@ -121,20 +121,6 @@ pub async fn run() -> io::Result<()> {
                             .use_last_modified(false),
                     ),
             )
-            .service(web::resource("/").to(|| async {
-                HttpResponse::Ok().json(APIResponse {
-                    success: true,
-                    message: "Server is up and running",
-                    data: (),
-                })
-            }))
-            .service(web::resource("/").route(web::get().to(|| async {
-                HttpResponse::Ok().json(APIResponse {
-                    success: true,
-                    message: "Server is up and running",
-                    data: (),
-                })
-            })))
             .service(
                 scope("/api")
                     .wrap(from_fn(logger_middleware))

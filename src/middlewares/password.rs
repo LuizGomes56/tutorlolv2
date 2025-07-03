@@ -1,7 +1,7 @@
-use crate::{ENV_CONFIG, server::schemas::APIResponse};
+use crate::{ENV_CONFIG, middlewares::MwOutput, server::schemas::APIResponse};
 use actix_web::{
-    Error, HttpResponse,
-    body::{BoxBody, EitherBody},
+    HttpResponse,
+    body::BoxBody,
     dev::{ServiceRequest, ServiceResponse},
     middleware::Next,
     web::Json,
@@ -21,11 +21,11 @@ pub async fn password_middleware(
     body: Json<AccessRequest>,
     req: ServiceRequest,
     next: Next<BoxBody>,
-) -> Result<ServiceResponse<EitherBody<BoxBody, BoxBody>>, Error> {
+) -> MwOutput {
     if body.password != ENV_CONFIG.system_password {
         let response: HttpResponse = HttpResponse::Unauthorized().json(APIResponse {
             success: false,
-            message: "Password given is invalid".to_string(),
+            message: "Password given is invalid",
             data: (),
         });
 

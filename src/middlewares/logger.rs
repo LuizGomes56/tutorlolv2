@@ -1,15 +1,9 @@
-use actix_web::{
-    Error,
-    body::{BoxBody, EitherBody},
-    dev::{ServiceRequest, ServiceResponse},
-    middleware::Next,
-};
+use actix_web::{body::BoxBody, dev::ServiceRequest, middleware::Next};
+
+use crate::middlewares::MwOutput;
 
 /// Logs all the incoming requests to the server
-pub async fn logger_middleware(
-    req: ServiceRequest,
-    next: Next<BoxBody>,
-) -> Result<ServiceResponse<EitherBody<BoxBody, BoxBody>>, Error> {
+pub async fn logger_middleware(req: ServiceRequest, next: Next<BoxBody>) -> MwOutput {
     println!("Request: {}", req.path());
 
     let res = next.call(req).await?;
