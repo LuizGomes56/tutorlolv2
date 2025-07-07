@@ -35,6 +35,7 @@ include!(concat!(env!("OUT_DIR"), "/internal_items.rs"));
 include!(concat!(env!("OUT_DIR"), "/internal_runes.rs"));
 include!(concat!(env!("OUT_DIR"), "/internal_meta.rs"));
 include!(concat!(env!("OUT_DIR"), "/internal_names.rs"));
+include!(concat!(env!("OUT_DIR"), "/const_formulas.rs"));
 
 pub struct EnvConfig {
     pub lol_version: String,

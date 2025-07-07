@@ -145,6 +145,9 @@ pub fn global_phf_internal_champions(out_dir: &str) {
     let mut phf_map_contents = String::from(
         "pub static INTERNAL_CHAMPIONS: ::phf::Map<&'static str, &'static CachedChampion> = ::phf::phf_map! {\n",
     );
+    let mut phf_string_contents = String::from(
+        "pub static INTERNAL_CHAMPIONS_STR: ::phf::Map<&'static str, &'static str> = ::phf::phf_map! {\n",
+    );
     let mut consts_decl = String::new();
 
     if let Some(dir) = fs::read_dir("internal/champions").ok() {
@@ -159,7 +162,12 @@ pub fn global_phf_internal_champions(out_dir: &str) {
 
         for (key, champion) in &internal_champions_map {
             phf_map_contents.push_str(&format!("\t\"{}\" => &{},\n", key, key.to_uppercase()));
-            consts_decl.push_str(&format!(
+            phf_string_contents.push_str(&format!(
+                "\t\"{}\" => &STRING_{},\n",
+                key,
+                key.to_uppercase()
+            ));
+            let decl = format!(
                 r#"pub const {}: CachedChampion = CachedChampion {{
     name: "{}",
     adaptative_type: "{}",
@@ -171,9 +179,7 @@ pub fn global_phf_internal_champions(out_dir: &str) {
     abilities: &[
         {}
     ],
-}};
-
-"#,
+}};"#,
                 key.to_uppercase(),
                 champion.name,
                 champion.adaptative_type,
@@ -181,12 +187,21 @@ pub fn global_phf_internal_champions(out_dir: &str) {
                 champion.positions.join("\", \""),
                 format_stats(&champion.stats),
                 format_abilities(&champion.abilities),
+            );
+            consts_decl.push_str(&decl);
+            consts_decl.push_str("\n");
+            consts_decl.push_str("\n");
+            consts_decl.push_str(&format!(
+                "pub const STRING_{}: &'static str = r########\"{}\"########;\n\n",
+                key.to_uppercase(),
+                decl
             ));
         }
     }
 
     phf_map_contents.push_str("};\n");
+    phf_string_contents.push_str("};\n");
 
-    let final_content = format!("{}{}", consts_decl, phf_map_contents);
+    let final_content = format!("{}{}{}", consts_decl, phf_map_contents, phf_string_contents);
     fs::write(out_path, final_content).unwrap();
 }

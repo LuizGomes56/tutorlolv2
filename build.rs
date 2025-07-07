@@ -11,6 +11,8 @@ use std::{
     path::{Path, PathBuf},
 };
 
+use crate::build::phf_formulas::global_phf_formulas;
+
 fn maybe_run<F>(src: &str, out_file: &Path, gen_fn: F)
 where
     F: Fn(&str),
@@ -51,6 +53,7 @@ fn main() {
     println!("cargo:rerun-if-changed=build/phf_runes.rs");
     println!("cargo:rerun-if-changed=build/phf_meta.rs");
     println!("cargo:rerun-if-changed=build/phf_names.rs");
+    println!("cargo:rerun-if-changed=build/phf_formulas.rs");
 
     let out_dir = env::var("OUT_DIR").unwrap();
     let out = PathBuf::from(&out_dir);
@@ -75,4 +78,9 @@ fn main() {
     maybe_run("build/phf_names.rs", &out.join("internal_names.rs"), |o| {
         global_phf_internal_names(o)
     });
+    maybe_run(
+        "build/phf_formulas.rs",
+        &out.join("const_formulas.rs"),
+        |o| global_phf_formulas(o),
+    );
 }

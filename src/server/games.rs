@@ -2,6 +2,7 @@ use super::schemas::APIResponse;
 use crate::{
     AppState,
     model::{calculator::InputGame, riot::RiotRealtime},
+    send_response,
     services::{CalculationError, calculator::calculator, realtime::realtime},
 };
 use actix_web::{
@@ -17,32 +18,6 @@ use uuid::Uuid;
 struct CreateGameResponse {
     game_code: String,
     game_id: String,
-}
-
-macro_rules! send_response {
-    ($data:expr) => {
-        if cfg!(debug_assertions) {
-            HttpResponse::Ok().json(APIResponse {
-                success: true,
-                message: "Success",
-                data: $data,
-            })
-        } else {
-            match bincode::serde::encode_to_vec($data, bincode::config::standard()) {
-                Ok(bin_data) => HttpResponse::Ok()
-                    .insert_header((crate::header::CONTENT_TYPE, "application/octet-stream"))
-                    .body(bin_data),
-                Err(e) => {
-                    eprintln!("Error serializing bincode: {:?}", e);
-                    HttpResponse::InternalServerError().json(APIResponse {
-                        success: false,
-                        message: format!("Error serializing data: {:#?}", e),
-                        data: (),
-                    })
-                }
-            }
-        }
-    };
 }
 
 #[get("/create")]

@@ -10,6 +10,7 @@ pub(super) fn transform_expr(expr: &str) -> (String, bool) {
 }
 
 pub mod phf_champions;
+pub mod phf_formulas;
 pub mod phf_items;
 pub mod phf_meta;
 pub mod phf_names;
