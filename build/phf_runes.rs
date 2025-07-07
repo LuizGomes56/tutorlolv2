@@ -1,4 +1,4 @@
-use super::transform_expr;
+use super::{invoke_rustfmt, transform_expr};
 use serde::Deserialize;
 use std::{collections::HashMap, fs, path::Path};
 
@@ -61,5 +61,5 @@ pub fn global_phf_internal_runes(out_dir: &str) {
     phf_map_contents.push_str("};\n");
 
     let final_content = format!("{}{}", consts_decl, phf_map_contents);
-    fs::write(out_path, final_content).unwrap();
+    fs::write(out_path, invoke_rustfmt(&final_content)).unwrap();
 }

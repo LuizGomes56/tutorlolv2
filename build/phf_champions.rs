@@ -1,4 +1,4 @@
-use super::transform_expr;
+use super::{invoke_rustfmt, transform_expr};
 use serde::Deserialize;
 use std::{collections::HashMap, fs, path::Path};
 
@@ -167,7 +167,7 @@ pub fn global_phf_internal_champions(out_dir: &str) {
                 key,
                 key.to_uppercase()
             ));
-            let decl = format!(
+            let decl = invoke_rustfmt(&format!(
                 r#"pub const {}: CachedChampion = CachedChampion {{
     name: "{}",
     adaptative_type: "{}",
@@ -187,7 +187,7 @@ pub fn global_phf_internal_champions(out_dir: &str) {
                 champion.positions.join("\", \""),
                 format_stats(&champion.stats),
                 format_abilities(&champion.abilities),
-            );
+            ));
             consts_decl.push_str(&decl);
             consts_decl.push_str("\n");
             consts_decl.push_str("\n");
@@ -203,5 +203,5 @@ pub fn global_phf_internal_champions(out_dir: &str) {
     phf_string_contents.push_str("};\n");
 
     let final_content = format!("{}{}{}", consts_decl, phf_map_contents, phf_string_contents);
-    fs::write(out_path, final_content).unwrap();
+    fs::write(out_path, &final_content).unwrap();
 }

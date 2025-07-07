@@ -1,3 +1,4 @@
+use super::invoke_rustfmt;
 use std::{collections::HashMap, fs, path::Path};
 
 pub fn global_phf_formulas(out_dir: &str) {
@@ -16,7 +17,9 @@ pub fn global_phf_formulas(out_dir: &str) {
                 champion_id,
                 champion_id.to_uppercase()
             ));
-            let text = fs::read_to_string(format!("src/writers/{}.rs", champion_id)).unwrap();
+            let text = invoke_rustfmt(
+                &fs::read_to_string(format!("src/writers/{}.rs", champion_id)).unwrap(),
+            );
             consts_decl.push_str(&format!(
                 "pub const WRITER_{}: &'static str = r########\"{}\"########;\n\n",
                 champion_id.to_uppercase(),
