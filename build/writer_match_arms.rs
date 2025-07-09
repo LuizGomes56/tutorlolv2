@@ -1,6 +1,6 @@
 use std::{collections::HashMap, fs, path::Path};
 
-pub fn writers_and_formulas(out_dir: &str) {
+pub fn writer_match_arms(out_dir: &str) {
     let mut match_arms = String::new();
 
     if !Path::new("formulas").exists() {
@@ -11,12 +11,6 @@ pub fn writers_and_formulas(out_dir: &str) {
         let entry = entry.unwrap();
         let name = entry.file_name().into_string().unwrap();
         if name.ends_with(".rs") && name != "mod.rs" {
-            let content = fs::read_to_string(entry.path()).unwrap();
-            let formulas_path = &format!("formulas/{}.txt", name.trim_end_matches(".rs"));
-            if !Path::new(formulas_path).exists() {
-                fs::File::create(formulas_path).unwrap();
-            }
-            fs::write(formulas_path, content.as_bytes()).unwrap();
             let mod_name = name.trim_end_matches(".rs");
             match_arms +=
                 &format!("\t\t\"{mod_name}\" => Some(writers::{mod_name}::transform(result)),\n",);

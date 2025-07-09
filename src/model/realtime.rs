@@ -26,7 +26,6 @@ pub struct GameInformation {
 
 #[derive(Serialize)]
 pub struct Enemy<'a> {
-    pub champion_id: &'static str,
     pub champion_name: &'a str,
     pub riot_id: &'a str,
     pub team: &'a str,
@@ -55,7 +54,7 @@ pub struct Scoreboard<'a> {
 #[derive(Serialize)]
 pub struct Realtime<'a> {
     pub current_player: CurrentPlayer<'a>,
-    pub enemies: Vec<Enemy<'a>>,
+    pub enemies: FxHashMap<&'static str, Enemy<'a>>,
     pub game_information: GameInformation,
     pub recommended_items: &'static [usize],
     pub scoreboard: Scoreboard<'a>,

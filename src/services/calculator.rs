@@ -503,24 +503,26 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
                 );
             }
 
-            Ok(OutputEnemy {
-                champion_id: enemy_champion_id,
-                champion_name: enemy_champion_name,
-                damages: Damages {
-                    abilities: abilities_damage,
-                    items: items_damage,
-                    runes: runes_damage,
-                    compared_items: compared_items_damage,
+            Ok((
+                *enemy_champion_id,
+                OutputEnemy {
+                    champion_name: enemy_champion_name,
+                    damages: Damages {
+                        abilities: abilities_damage,
+                        items: items_damage,
+                        runes: runes_damage,
+                        compared_items: compared_items_damage,
+                    },
+                    level: player.level,
+                    base_stats: enemy_base_stats,
+                    current_stats: full_stats.0,
+                    bonus_stats: full_stats.1,
+                    real_armor: full_stats.2.real_armor,
+                    real_magic_resist: full_stats.2.real_magic,
                 },
-                level: player.level,
-                base_stats: enemy_base_stats,
-                current_stats: full_stats.0,
-                bonus_stats: full_stats.1,
-                real_armor: full_stats.2.real_armor,
-                real_magic_resist: full_stats.2.real_magic,
-            })
+            ))
         })
-        .collect::<Result<Vec<OutputEnemy>, CalculationError>>()?;
+        .collect::<Result<FxHashMap<&'static str, OutputEnemy>, CalculationError>>()?;
 
     Ok(OutputGame {
         current_player: OutputCurrentPlayer {

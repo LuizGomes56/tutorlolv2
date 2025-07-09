@@ -1,3 +1,4 @@
+#![allow(unused_imports, dead_code)]
 //! Generate fields "melee" and "ranged" for each item in "internal/items/*.json".
 
 use crate::{
@@ -9,151 +10,171 @@ use crate::{
 };
 use regex::Regex;
 
+enum DmgType {
+    Magic,
+    Physicical,
+    True,
+    Mixed,
+    Adaptative,
+}
+
+impl DmgType {
+    fn stringify(&self) -> &'static str {
+        match self {
+            DmgType::Magic => "MAGIC_DAMAGE",
+            DmgType::Physicical => "PHYSICAL_DAMAGE",
+            DmgType::True => "TRUE_DAMAGE",
+            DmgType::Mixed => "MIXED_DAMAGE",
+            DmgType::Adaptative => "ADAPTATIVE_DAMAGE",
+        }
+    }
+}
+
 #[test]
 /// auto-generated content
 fn __test_item_dmg() -> Result<(), SetupError> {
-    item_1043()?;
-    item_2015()?;
-    item_2502()?;
-    item_2503()?;
-    item_3032()?;
-    item_3042()?;
-    item_3050()?;
-    item_3057()?;
-    item_3068()?;
-    item_3074()?;
-    item_3075()?;
-    item_3076()?;
-    item_3077()?;
-    item_3078()?;
-    item_3084()?;
-    item_3085()?;
-    item_3087()?;
-    item_3091()?;
-    item_3094()?;
-    item_3100()?;
-    item_3107()?;
-    item_3115()?;
-    item_3118()?;
-    item_3124()?;
-    item_3128()?;
-    item_3145()?;
-    item_3146()?;
-    item_3152()?;
-    item_3153()?;
-    item_3181()?;
-    item_3302()?;
-    item_3504()?;
-    item_3742()?;
-    item_3748()?;
-    item_3870()?;
-    item_3871()?;
-    item_3877()?;
-    item_4005()?;
-    item_4017()?;
-    item_4636()?;
-    item_4637()?;
-    item_4646()?;
-    item_6029()?;
-    item_6610()?;
-    item_6630()?;
-    item_6631()?;
-    item_6632()?;
-    item_6653()?;
-    item_6655()?;
-    item_6656()?;
-    item_6660()?;
-    item_6662()?;
-    item_6664()?;
-    item_6671()?;
-    item_6672()?;
-    item_6677()?;
-    item_6692()?;
-    item_6693()?;
-    item_6698()?;
-    item_6699()?;
-    item_7001()?;
-    item_7004()?;
-    item_7005()?;
-    item_7006()?;
-    item_7007()?;
-    item_7010()?;
-    item_7011()?;
-    item_7012()?;
-    item_7013()?;
-    item_7014()?;
-    item_7015()?;
-    item_7016()?;
-    item_7017()?;
-    item_7018()?;
-    item_7025()?;
-    item_7026()?;
-    item_7030()?;
-    item_7034()?;
-    item_7039()?;
-    item_7040()?;
-    item_7041()?;
-    item_7042()?;
-    item_221043()?;
-    item_222015()?;
-    item_223042()?;
-    item_223057()?;
-    item_223068()?;
-    item_223074()?;
-    item_223075()?;
-    item_223076()?;
-    item_223077()?;
-    item_223078()?;
-    item_223084()?;
-    item_223085()?;
-    item_223087()?;
-    item_223091()?;
-    item_223094()?;
-    item_223095()?;
-    item_223100()?;
-    item_223107()?;
-    item_223115()?;
-    item_223124()?;
-    item_223145()?;
-    item_223146()?;
-    item_223152()?;
-    item_223153()?;
-    item_223181()?;
-    item_223504()?;
-    item_223508()?;
-    item_223742()?;
-    item_223748()?;
-    item_224005()?;
-    item_224636()?;
-    item_224637()?;
-    item_226029()?;
-    item_226630()?;
-    item_226632()?;
-    item_226653()?;
-    item_226655()?;
-    item_226656()?;
-    item_226660()?;
-    item_226662()?;
-    item_226671()?;
-    item_226672()?;
-    item_226677()?;
-    item_226692()?;
-    item_226693()?;
-    item_227001()?;
-    item_227005()?;
-    item_227006()?;
-    item_227010()?;
-    item_227011()?;
-    item_227012()?;
-    item_227013()?;
-    item_227014()?;
-    item_227015()?;
-    item_227016()?;
-    item_227017()?;
-    item_227018()?;
-    item_227025()?;
-    item_227026()?;
-    item_227030()?;
+    let _ = item_1043();
+    let _ = item_2015();
+    let _ = item_2502();
+    let _ = item_2503();
+    let _ = item_3032();
+    let _ = item_3042();
+    let _ = item_3050();
+    let _ = item_3057();
+    let _ = item_3068();
+    let _ = item_3074();
+    let _ = item_3075();
+    let _ = item_3076();
+    let _ = item_3077();
+    let _ = item_3078();
+    let _ = item_3084();
+    let _ = item_3085();
+    let _ = item_3087();
+    let _ = item_3091();
+    let _ = item_3094();
+    let _ = item_3100();
+    let _ = item_3107();
+    let _ = item_3115();
+    let _ = item_3118();
+    let _ = item_3124();
+    let _ = item_3128();
+    let _ = item_3145();
+    let _ = item_3146();
+    let _ = item_3152();
+    let _ = item_3153();
+    let _ = item_3181();
+    let _ = item_3302();
+    let _ = item_3504();
+    let _ = item_3742();
+    let _ = item_3748();
+    let _ = item_3870();
+    let _ = item_3871();
+    let _ = item_3877();
+    let _ = item_4005();
+    let _ = item_4017();
+    let _ = item_4636();
+    let _ = item_4637();
+    let _ = item_4646();
+    let _ = item_6029();
+    let _ = item_6610();
+    let _ = item_6630();
+    let _ = item_6631();
+    let _ = item_6632();
+    let _ = item_6653();
+    let _ = item_6655();
+    let _ = item_6656();
+    let _ = item_6660();
+    let _ = item_6662();
+    let _ = item_6664();
+    let _ = item_6671();
+    let _ = item_6672();
+    let _ = item_6677();
+    let _ = item_6692();
+    let _ = item_6693();
+    let _ = item_6698();
+    let _ = item_6699();
+    let _ = item_7001();
+    let _ = item_7004();
+    let _ = item_7005();
+    let _ = item_7006();
+    let _ = item_7007();
+    let _ = item_7010();
+    let _ = item_7011();
+    let _ = item_7012();
+    let _ = item_7013();
+    let _ = item_7014();
+    let _ = item_7015();
+    let _ = item_7016();
+    let _ = item_7017();
+    let _ = item_7018();
+    let _ = item_7025();
+    let _ = item_7026();
+    let _ = item_7030();
+    let _ = item_7034();
+    let _ = item_7039();
+    let _ = item_7040();
+    let _ = item_7041();
+    let _ = item_7042();
+    let _ = item_221043();
+    let _ = item_222015();
+    let _ = item_223042();
+    let _ = item_223057();
+    let _ = item_223068();
+    let _ = item_223074();
+    let _ = item_223075();
+    let _ = item_223076();
+    let _ = item_223077();
+    let _ = item_223078();
+    let _ = item_223084();
+    let _ = item_223085();
+    let _ = item_223087();
+    let _ = item_223091();
+    let _ = item_223094();
+    let _ = item_223095();
+    let _ = item_223100();
+    let _ = item_223107();
+    let _ = item_223115();
+    let _ = item_223124();
+    let _ = item_223145();
+    let _ = item_223146();
+    let _ = item_223152();
+    let _ = item_223153();
+    let _ = item_223181();
+    let _ = item_223504();
+    let _ = item_223508();
+    let _ = item_223742();
+    let _ = item_223748();
+    let _ = item_224005();
+    let _ = item_224636();
+    let _ = item_224637();
+    let _ = item_226029();
+    let _ = item_226630();
+    let _ = item_226632();
+    let _ = item_226653();
+    let _ = item_226655();
+    let _ = item_226656();
+    let _ = item_226660();
+    let _ = item_226662();
+    let _ = item_226671();
+    let _ = item_226672();
+    let _ = item_226677();
+    let _ = item_226692();
+    let _ = item_226693();
+    let _ = item_227001();
+    let _ = item_227005();
+    let _ = item_227006();
+    let _ = item_227010();
+    let _ = item_227011();
+    let _ = item_227012();
+    let _ = item_227013();
+    let _ = item_227014();
+    let _ = item_227015();
+    let _ = item_227016();
+    let _ = item_227017();
+    let _ = item_227018();
+    let _ = item_227025();
+    let _ = item_227026();
+    let _ = item_227030();
     Ok(())
 }
 
@@ -165,6 +186,7 @@ pub fn assign_item_damages() -> Result<(), SetupError> {
 /// Nashor's Tooth
 #[writer_macros::item_generator]
 fn item_3115() -> Result<(), SetupError> {
+    write_type!(DmgType::Magic);
     let damage = extract_damagelike_expr(&cdn_value.passives[0].effects);
     write_dmg!(damage);
     save_change!(cur_value)
@@ -174,6 +196,7 @@ fn item_3115() -> Result<(), SetupError> {
 /// [Context](https://tutorlol.com/formulas/)
 #[writer_macros::item_generator]
 fn item_3153() -> Result<(), SetupError> {
+    write_type!(DmgType::Magic);
     let damagelike_expr = extract_damagelike_expr(&cdn_value.passives[0].effects);
     let numbers = Regex::new(r"(\d+)%")
         .unwrap()

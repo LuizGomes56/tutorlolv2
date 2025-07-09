@@ -4,7 +4,7 @@ mod build;
 use build::{
     phf_champions::global_phf_internal_champions, phf_items::global_phf_internal_items,
     phf_meta::global_phf_internal_meta_items, phf_names::global_phf_internal_names,
-    phf_runes::global_phf_internal_runes, wr_formulas::writers_and_formulas,
+    phf_runes::global_phf_internal_runes, writer_match_arms::writer_match_arms,
 };
 use std::{
     env, fs,
@@ -59,7 +59,7 @@ fn main() {
     let out = PathBuf::from(&out_dir);
 
     maybe_run("src/writers", &out.join("writers_generated.rs"), |o| {
-        writers_and_formulas(o)
+        writer_match_arms(o)
     });
     maybe_run(
         "build/phf_champions.rs",

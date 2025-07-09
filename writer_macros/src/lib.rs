@@ -296,6 +296,12 @@ pub fn item_generator(_args: TokenStream, input: TokenStream) -> TokenStream {
         let cdn_value = read_json_file::<CdnItem>(&format!("cache/cdn/items/{}.json", id))?;
         let mut cur_value = read_json_file::<Item>(&format!("internal/items/{}.json", id))?;
 
+        macro_rules! write_type {
+            ($dmg_type:expr) => {{
+                cur_value.damage_type = Some($dmg_type.stringify().to_string());
+            }}
+        }
+
         macro_rules! save_change {
             ($item:expr) => {{
                 let path = format!("internal/items/{}.json", id);

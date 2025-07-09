@@ -17,7 +17,6 @@ pub struct OutputCurrentPlayer {
 #[derive(Serialize)]
 pub struct OutputEnemy {
     pub champion_name: String,
-    pub champion_id: &'static str,
     pub level: usize,
     pub damages: Damages,
     pub base_stats: BasicStats,
@@ -30,7 +29,7 @@ pub struct OutputEnemy {
 #[derive(Serialize)]
 pub struct OutputGame {
     pub current_player: OutputCurrentPlayer,
-    pub enemies: Vec<OutputEnemy>,
+    pub enemies: FxHashMap<&'static str, OutputEnemy>,
     pub recommended_items: &'static [usize],
 }
 

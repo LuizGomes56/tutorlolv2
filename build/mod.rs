@@ -34,4 +34,4 @@ pub mod phf_items;
 pub mod phf_meta;
 pub mod phf_names;
 pub mod phf_runes;
-pub mod wr_formulas;
+pub mod writer_match_arms;
