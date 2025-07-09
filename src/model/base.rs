@@ -1,5 +1,4 @@
-use super::riot::RiotChampionStats;
-use crate::model::cache::EvalContext;
+use super::{cache::EvalContext, riot::RiotChampionStats};
 use rustc_hash::FxHashMap;
 use serde::{Deserialize, Serialize};
 

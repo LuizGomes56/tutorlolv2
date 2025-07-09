@@ -113,7 +113,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
         .map(|value| value.item_id)
         .collect::<Vec<usize>>();
 
-    let (simulated_stats, compared_items) = get_simulated_champion_stats(
+    let simulated_stats = get_simulated_champion_stats(
         &current_player_stats,
         &current_player_items,
         &ally_dragon_multipliers,
@@ -327,7 +327,6 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
             map_number,
         },
         recommended_items: current_player_recommended_items,
-        compared_items,
         enemy_dragon_multipliers,
         ally_dragon_multipliers,
     })

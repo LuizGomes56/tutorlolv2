@@ -1,5 +1,4 @@
-use super::base::{BasicStats, ComparedItem, Damages, Stats};
-use crate::model::base::DragonMultipliers;
+use super::base::{BasicStats, Damages, DragonMultipliers, Stats};
 use rustc_hash::FxHashMap;
 use serde::Serialize;
 
@@ -59,7 +58,6 @@ pub struct Realtime<'a> {
     pub enemies: Vec<Enemy<'a>>,
     pub game_information: GameInformation,
     pub recommended_items: &'static [usize],
-    pub compared_items: FxHashMap<usize, ComparedItem>,
     pub scoreboard: Scoreboard<'a>,
     pub enemy_dragon_multipliers: DragonMultipliers,
     pub ally_dragon_multipliers: DragonMultipliers,

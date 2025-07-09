@@ -24,31 +24,23 @@ pub fn get_simulated_champion_stats<'a>(
     current_stats: &Stats,
     owned_items: &[usize],
     ally_dragon_multipliers: &DragonMultipliers,
-) -> (FxHashMap<usize, Stats>, FxHashMap<usize, ComparedItem>) {
-    let mut simulated_stats =
-        FxHashMap::with_capacity_and_hasher(SIMULATED_ITEMS.len(), Default::default());
-    let mut simulated_items =
-        FxHashMap::with_capacity_and_hasher(SIMULATED_ITEMS.len(), Default::default());
-    for item_id in SIMULATED_ITEMS
-        .iter()
-        .filter(|id| !owned_items.contains(id))
-    {
+) -> FxHashMap<usize, Stats> {
+    let mut simulated_stats = FxHashMap::with_capacity_and_hasher(
+        SIMULATED_ITEMS.len() - owned_items.len(),
+        Default::default(),
+    );
+    for item_id in SIMULATED_ITEMS.iter() {
+        if owned_items.contains(item_id) {
+            continue;
+        }
         if let Some(item) = INTERNAL_ITEMS.get(item_id) {
             simulated_stats.insert(
                 *item_id,
                 simulate_champion_stats(item, *current_stats, ally_dragon_multipliers),
             );
-            simulated_items.insert(
-                *item_id,
-                ComparedItem {
-                    name: item.name,
-                    gold_cost: item.gold,
-                    prettified_stats: item.prettified_stats.iter().copied().collect(),
-                },
-            );
         }
     }
-    (simulated_stats, simulated_items)
+    simulated_stats
 }
 
 pub fn simulate_champion_stats(

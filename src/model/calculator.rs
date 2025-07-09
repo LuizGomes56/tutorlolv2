@@ -1,5 +1,4 @@
-use super::base::{BasicStats, ComparedItem, Damages, Stats};
-use crate::model::base::AbilityLevels;
+use super::base::{AbilityLevels, BasicStats, Damages, Stats};
 use rustc_hash::FxHashMap;
 use serde::{Deserialize, Serialize};
 
@@ -33,7 +32,6 @@ pub struct OutputGame {
     pub current_player: OutputCurrentPlayer,
     pub enemies: Vec<OutputEnemy>,
     pub recommended_items: &'static [usize],
-    pub compared_items: FxHashMap<usize, ComparedItem>,
 }
 
 #[derive(Deserialize)]

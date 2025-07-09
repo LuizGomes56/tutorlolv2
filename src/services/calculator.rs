@@ -345,7 +345,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
         chemtech: 1.0,
     };
 
-    let (simulated_stats, compared_items) = get_simulated_champion_stats(
+    let simulated_stats = get_simulated_champion_stats(
         &current_player_stats,
         current_player_items,
         &ally_dragon_multipliers,
@@ -537,7 +537,6 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
             current_stats: current_player_stats,
         },
         enemies,
-        compared_items,
         recommended_items: current_player_recommended_items,
     })
 }

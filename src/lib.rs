@@ -137,7 +137,8 @@ pub async fn run() -> io::Result<()> {
                         scope("/static")
                             .service(static_champions)
                             .service(static_items)
-                            .service(static_runes),
+                            .service(static_runes)
+                            .service(static_compared_items),
                     )
                     .service(
                         scope("/setup")
