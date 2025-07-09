@@ -92,7 +92,7 @@ fn format_prettified_stats(prettified_stats: &HashMap<String, Value>) -> String 
         .iter()
         .map(|(k, v)| format!("{}: {}", k, v))
         .collect::<Vec<_>>()
-        .join(", ")
+        .join(",")
 }
 
 fn format_stats(stats: &PartialStats) -> String {
@@ -124,7 +124,7 @@ fn format_stats(stats: &PartialStats) -> String {
     insert_stat!(mana);
     insert_stat!(movespeed);
     insert_stat!(omnivamp);
-    all_stats.join("\n\t\t\t")
+    all_stats.join("")
 }
 
 pub fn global_phf_internal_items(out_dir: &str) {
@@ -133,9 +133,10 @@ pub fn global_phf_internal_items(out_dir: &str) {
         "pub static INTERNAL_ITEMS: ::phf::Map<usize, &'static CachedItem> = ::phf::phf_map! {\n",
     );
     let mut siml_items_decl = String::from("const SIMULATED_ITEMS: [usize; ");
-    let mut siml_items_size = 0;
-    let mut items_vec = Vec::<String>::new();
+    let mut damaging_items_decl = String::from("const DAMAGING_ITEMS: [usize; ");
+    let mut siml_items_vec = Vec::<String>::new();
     let mut consts_decl = String::new();
+    let mut damaging_items_vec = Vec::<String>::new();
 
     if let Some(dir) = fs::read_dir("internal/items").ok() {
         let mut internal_items_map = HashMap::new();
@@ -156,28 +157,18 @@ pub fn global_phf_internal_items(out_dir: &str) {
             }
             let usize_v = usize_key.unwrap();
             if item.tier >= 3 && item.purchasable {
-                siml_items_size += 1;
-                items_vec.push(usize_v.to_string());
+                siml_items_vec.push(usize_v.to_string());
             }
-            phf_map_contents.push_str(&format!("\t{}usize => &ITEM_{},\n", key, key));
+            if item.ranged.is_some() || item.melee.is_some() {
+                damaging_items_vec.push(usize_v.to_string());
+            }
+            phf_map_contents.push_str(&format!("{}usize => &ITEM_{},", key, key));
             consts_decl.push_str(&format!(
                 r#"pub const ITEM_{}: CachedItem = CachedItem {{
-    name: "{}",
-    gold: {},
-    tier: {},
-    damage_type: {},
-    damages_onhit: {},
-    ranged: {},
-    melee: {},
-    builds_from: &[{}],
-    levelings: {},
-    prettified_stats: &[{}],
-    stats: CachedItemStats {{
-        {}
-    }},
-}};
-
-"#,
+                name: "{}",gold: {},tier: {},damage_type: {},
+                damages_onhit: {},ranged: {},melee: {},builds_from: 
+                &[{}],levelings: {},prettified_stats: &[{}],
+                stats: CachedItemStats {{{}}},}};"#,
                 key,
                 item.name,
                 item.gold,
@@ -194,7 +185,7 @@ pub fn global_phf_internal_items(out_dir: &str) {
                     .iter()
                     .map(|v| v.to_string())
                     .collect::<Vec<_>>()
-                    .join(", "),
+                    .join(","),
                 if item.levelings.is_some() {
                     item.levelings
                         .clone()
@@ -202,7 +193,7 @@ pub fn global_phf_internal_items(out_dir: &str) {
                         .iter()
                         .map(|v| v.to_string())
                         .collect::<Vec<_>>()
-                        .join(", ")
+                        .join(",")
                 } else {
                     "None".to_string()
                 },
@@ -213,17 +204,22 @@ pub fn global_phf_internal_items(out_dir: &str) {
     }
 
     siml_items_decl.push_str(&format!(
-        "{}] = [\n\t{}\n];",
-        siml_items_size,
-        items_vec
-            .iter()
-            .map(|v| v.to_string())
-            .collect::<Vec<_>>()
-            .join(",\n\t")
+        "{}] = [{}];",
+        siml_items_vec.len(),
+        siml_items_vec.join(",")
+    ));
+
+    damaging_items_decl.push_str(&format!(
+        "{}] = [{}];",
+        damaging_items_vec.len(),
+        damaging_items_vec.join(",")
     ));
 
     phf_map_contents.push_str("};\n");
 
-    let final_content = format!("{}{}\n{}", consts_decl, phf_map_contents, siml_items_decl);
+    let final_content = format!(
+        "{}{}\n{}\n\n{}",
+        consts_decl, phf_map_contents, siml_items_decl, damaging_items_decl
+    );
     fs::write(out_path, invoke_rustfmt(&final_content)).unwrap();
 }

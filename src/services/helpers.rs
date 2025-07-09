@@ -1,6 +1,6 @@
 use super::riot_formulas::RiotFormulas;
 use crate::{
-    INTERNAL_ITEMS, INTERNAL_RUNES, SIMULATED_ITEMS,
+    DAMAGING_ITEMS, DAMAGING_RUNES, INTERNAL_ITEMS, INTERNAL_RUNES, SIMULATED_ITEMS,
     model::{
         base::*,
         cache::{CachedChampion, CachedItem, EvalContext},
@@ -85,50 +85,56 @@ pub fn simulate_champion_stats(
 }
 
 pub fn get_items_damage(
-    current_player_items: &[usize],
+    current_player_damaging_items: &[usize],
     attack_type: AttackType,
 ) -> Vec<(usize, DamageExpression)> {
-    let mut result = Vec::<(usize, DamageExpression)>::with_capacity(current_player_items.len());
-    for item_id in current_player_items {
-        if let Some(item) = INTERNAL_ITEMS.get(item_id) {
-            let item_damage = match attack_type {
-                AttackType::Ranged => &item.ranged,
-                AttackType::Melee => &item.melee,
-            };
-            result.push((
-                *item_id,
-                DamageExpression {
-                    level: 0,
-                    damage_type: item.damage_type.unwrap_or("UNKNOWN"),
-                    minimum_damage: item_damage.minimum_damage,
-                    maximum_damage: item_damage.maximum_damage,
-                },
-            ));
+    let mut result =
+        Vec::<(usize, DamageExpression)>::with_capacity(current_player_damaging_items.len());
+    for item_id in current_player_damaging_items {
+        if DAMAGING_ITEMS.contains(item_id) {
+            if let Some(item) = INTERNAL_ITEMS.get(item_id) {
+                let item_damage = match attack_type {
+                    AttackType::Ranged => &item.ranged,
+                    AttackType::Melee => &item.melee,
+                };
+                result.push((
+                    *item_id,
+                    DamageExpression {
+                        level: 0,
+                        damage_type: item.damage_type.unwrap_or("UNKNOWN"),
+                        minimum_damage: item_damage.minimum_damage,
+                        maximum_damage: item_damage.maximum_damage,
+                    },
+                ));
+            }
         }
     }
     result
 }
 
 pub fn get_runes_damage(
-    current_player_runes: &[usize],
+    current_player_damaging_runes: &[usize],
     attack_type: AttackType,
 ) -> Vec<(usize, DamageExpression)> {
-    let mut result = Vec::<(usize, DamageExpression)>::with_capacity(current_player_runes.len());
-    for rune_id in current_player_runes {
-        if let Some(rune) = INTERNAL_RUNES.get(rune_id) {
-            let minimum_damage = match attack_type {
-                AttackType::Ranged => rune.ranged,
-                AttackType::Melee => rune.melee,
-            };
-            result.push((
-                *rune_id,
-                DamageExpression {
-                    level: 0,
-                    damage_type: rune.damage_type,
-                    minimum_damage,
-                    maximum_damage: |_, _| 0.0,
-                },
-            ));
+    let mut result =
+        Vec::<(usize, DamageExpression)>::with_capacity(current_player_damaging_runes.len());
+    for rune_id in current_player_damaging_runes {
+        if DAMAGING_RUNES.contains(rune_id) {
+            if let Some(rune) = INTERNAL_RUNES.get(rune_id) {
+                let minimum_damage = match attack_type {
+                    AttackType::Ranged => rune.ranged,
+                    AttackType::Melee => rune.melee,
+                };
+                result.push((
+                    *rune_id,
+                    DamageExpression {
+                        level: 0,
+                        damage_type: rune.damage_type,
+                        minimum_damage,
+                        maximum_damage: |_, _| 0.0,
+                    },
+                ));
+            }
         }
     }
     result

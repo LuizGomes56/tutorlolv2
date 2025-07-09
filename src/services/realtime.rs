@@ -1,6 +1,7 @@
 use super::*;
 use crate::{
-    INTERNAL_CHAMPIONS, INTERNAL_ITEMS, INTERNAL_NAMES, INTERNAL_RUNES, META_ITEMS,
+    DAMAGING_ITEMS, DAMAGING_RUNES, INTERNAL_CHAMPIONS, INTERNAL_ITEMS, INTERNAL_NAMES,
+    INTERNAL_RUNES, META_ITEMS,
     model::{
         base::{
             AttackType, BasicStats, DamageMultipliers, Damages, DragonMultipliers, SimulatedDamages,
@@ -102,15 +103,33 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
         }
     };
 
-    let current_player_runes = current_player_riot_runes
+    let current_player_damaging_runes = current_player_riot_runes
         .general_runes
         .iter()
-        .map(|riot_rune| riot_rune.id)
+        .filter_map(|riot_rune| {
+            let rune_id = riot_rune.id;
+            if DAMAGING_RUNES.contains(&rune_id) {
+                Some(rune_id)
+            } else {
+                None
+            }
+        })
         .collect::<Vec<usize>>();
 
     let current_player_items = current_player_riot_items
         .iter()
-        .map(|value| value.item_id)
+        .map(|riot_item| riot_item.item_id)
+        .collect::<Vec<usize>>();
+
+    let current_player_damaging_items = current_player_items
+        .iter()
+        .filter_map(|item_id| {
+            if DAMAGING_ITEMS.contains(item_id) {
+                Some(*item_id)
+            } else {
+                None
+            }
+        })
         .collect::<Vec<usize>>();
 
     let simulated_stats = get_simulated_champion_stats(
@@ -133,8 +152,10 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
         current_player_level,
         current_player_levelings,
     );
-    let items_iter_expr = get_items_damage(&current_player_items, current_player_attack_type);
-    let runes_iter_expr = get_runes_damage(&current_player_runes, current_player_attack_type);
+    let items_iter_expr =
+        get_items_damage(&current_player_damaging_items, current_player_attack_type);
+    let runes_iter_expr =
+        get_runes_damage(&current_player_damaging_runes, current_player_attack_type);
 
     let enemies = all_players
         .into_iter()
@@ -287,14 +308,14 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
                 .chain(std::iter::once(("A", "Basic Attack")))
                 .chain(std::iter::once(("C", "Critical Strike")))
                 .collect(),
-            damaging_items: current_player_items
+            damaging_items: current_player_damaging_items
                 .into_iter()
                 .filter_map(|item_id| {
                     let item = INTERNAL_ITEMS.get(&item_id)?;
                     Some((item_id, item.name))
                 })
                 .collect(),
-            damaging_runes: current_player_runes
+            damaging_runes: current_player_damaging_runes
                 .into_iter()
                 .filter_map(|rune_id| {
                     let rune = INTERNAL_RUNES.get(&rune_id)?;

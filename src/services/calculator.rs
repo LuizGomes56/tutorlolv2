@@ -1,6 +1,7 @@
 use super::*;
 use crate::{
-    INTERNAL_CHAMPIONS, INTERNAL_ITEMS, INTERNAL_NAMES, INTERNAL_RUNES, META_ITEMS,
+    DAMAGING_ITEMS, DAMAGING_RUNES, INTERNAL_CHAMPIONS, INTERNAL_ITEMS, INTERNAL_NAMES,
+    INTERNAL_RUNES, META_ITEMS,
     model::{base::*, calculator::*},
 };
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
@@ -259,12 +260,24 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
         abilities: current_player_abilities,
         // #![todo]
         champion_stats: ref _current_player_stats,
-        runes: ref current_player_runes,
-        items: ref current_player_items,
+        runes: ref current_player_full_runes,
+        items: ref current_player_full_items,
         infer_stats: current_player_infer_stats,
         // #![todo]
         stacks: _current_player_stacks,
     } = active_player;
+
+    let current_player_damaging_items = current_player_full_items
+        .into_iter()
+        .filter(|item_id| DAMAGING_ITEMS.contains(item_id))
+        .copied()
+        .collect::<Vec<usize>>();
+
+    let current_player_damaging_runes = current_player_full_runes
+        .into_iter()
+        .filter(|rune_id| DAMAGING_RUNES.contains(rune_id))
+        .copied()
+        .collect::<Vec<usize>>();
 
     let current_player_cache = INTERNAL_CHAMPIONS.get(current_player_champion_id).ok_or(
         CalculationError::ChampionCacheNotFound(format!(
@@ -300,7 +313,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
 
     item_exceptions(
         &mut current_player_stats,
-        current_player_items,
+        current_player_full_items,
         &stack_exceptions,
     );
 
@@ -311,7 +324,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
 
     rune_exceptions(
         &mut current_player_stats,
-        current_player_runes,
+        &current_player_full_runes,
         current_player_level as f64,
         &stack_exceptions,
         (adaptative_type, current_player_attack_type),
@@ -347,7 +360,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
 
     let simulated_stats = get_simulated_champion_stats(
         &current_player_stats,
-        current_player_items,
+        current_player_full_items,
         &ally_dragon_multipliers,
     );
 
@@ -363,8 +376,10 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
         current_player_level,
         current_player_abilities,
     );
-    let items_iter_expr = get_items_damage(current_player_items, current_player_attack_type);
-    let runes_iter_expr = get_runes_damage(current_player_runes, current_player_attack_type);
+    let items_iter_expr =
+        get_items_damage(&current_player_damaging_items, current_player_attack_type);
+    let runes_iter_expr =
+        get_runes_damage(&current_player_damaging_runes, current_player_attack_type);
 
     let enemies = enemy_players
         .into_par_iter()
@@ -516,18 +531,18 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
                 .chain(std::iter::once(("A", "Basic Attack")))
                 .chain(std::iter::once(("C", "Critical Strike")))
                 .collect(),
-            damaging_items: current_player_items
+            damaging_items: current_player_damaging_items
                 .into_iter()
                 .filter_map(|item_id| {
-                    let item = INTERNAL_ITEMS.get(item_id)?;
-                    Some((*item_id, item.name))
+                    let item = INTERNAL_ITEMS.get(&item_id)?;
+                    Some((item_id, item.name))
                 })
                 .collect(),
-            damaging_runes: current_player_runes
+            damaging_runes: current_player_damaging_runes
                 .into_iter()
                 .filter_map(|rune_id| {
-                    let rune = INTERNAL_RUNES.get(rune_id)?;
-                    Some((*rune_id, rune.name))
+                    let rune = INTERNAL_RUNES.get(&rune_id)?;
+                    Some((rune_id, rune.name))
                 })
                 .collect(),
             level: current_player_level,
