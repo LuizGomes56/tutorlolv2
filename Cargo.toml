@@ -26,6 +26,7 @@ regex = "1.11.1"
 bincode = { version = "2.0.1", features = ["serde"] }
 synoptic = "2.2.9"
 brotli2 = "0.3.2"
+rayon = "1.10.0"
 
 [dependencies]
 generator_macros = { path = "./generator_macros" }
@@ -54,3 +55,5 @@ rayon = "1.10.0"
 once_cell = "1.21.3"
 phf = { version = "0.12.1", features = ["macros"] }
 bincode = { version = "2.0.1", features = ["serde"] }
+image = "0.25.6"
+ravif = { version = "0.12.0", default-features = false }

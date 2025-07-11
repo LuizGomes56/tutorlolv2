@@ -73,6 +73,7 @@ pub struct AppState {
     db: Pool<Postgres>,
 }
 
+#[allow(unreachable_code)]
 pub async fn run() -> io::Result<()> {
     dotenv().ok();
 
@@ -108,12 +109,9 @@ pub async fn run() -> io::Result<()> {
                     .error_handler(json_error_middleware),
             )
             .service(
-                scope("/cdn")
+                scope("/img")
                     .wrap(
-                        DefaultHeaders::new()
-                            .add((header::CACHE_CONTROL, "no-store, no-cache, must-revalidate"))
-                            .add((header::PRAGMA, "no-cache"))
-                            .add((header::EXPIRES, "0")),
+                        DefaultHeaders::new(), // .add(("Cache-Control", "public, max-age=31536000, immutable")),
                     )
                     .service(
                         Files::new("", "img")
@@ -170,7 +168,8 @@ pub async fn run() -> io::Result<()> {
                             .service(download_instances)
                             .service(download_items)
                             .service(download_arts)
-                            .service(download_runes),
+                            .service(download_runes)
+                            .service(compress_images),
                     )
                     .service(
                         scope("/internal")

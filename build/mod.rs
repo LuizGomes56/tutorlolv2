@@ -37,11 +37,11 @@ pub(super) fn highlight(code_string: &str) -> String {
     h.keyword("lifetime", r"'\w+");
     h.keyword(
         "keyword",
-        r"\b(pub|use|crate|mut|static|dyn|unsafe|extern|type|super|mod|struct|const|enum|fn|let|impl|trait|where|loop|Self|self)\b",
+        r"\b(pub|use|crate|mut|static|ref|dyn|unsafe|extern|type|super|mod|struct|const|enum|fn|let|impl|trait|where|loop|Self|self)\b",
     );
     h.keyword(
         "control",
-        r"\b(break|continue|intrinsic|match|return|yield|for|while|match|if|else|as|in)\b",
+        r"\b(break|continue|Some|None|intrinsic|match|return|yield|for|while|match|if|else|as|in)\b",
     );
     h.keyword("constant", r"\b[A-Z]+\b");
     h.keyword("type", r"\b[A-Z][a-zA-Z0-9_]*\b");

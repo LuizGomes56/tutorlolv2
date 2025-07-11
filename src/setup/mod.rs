@@ -1,4 +1,5 @@
 pub mod api;
+pub(crate) mod avif_converter;
 pub(crate) mod cache;
 pub(crate) mod exceptions;
 pub(crate) mod generators;
