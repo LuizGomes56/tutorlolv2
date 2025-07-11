@@ -1,3 +1,5 @@
+use crate::build::highlight;
+
 use super::{invoke_rustfmt, transform_expr};
 use serde::Deserialize;
 use std::{collections::HashMap, fs, path::Path};
@@ -18,6 +20,10 @@ pub fn global_phf_internal_runes(out_dir: &str) {
     let mut damaging_runes_decl = String::from("const DAMAGING_RUNES: [usize; ");
     let mut consts_decl = String::new();
     let mut damaging_runes_vec = Vec::<String>::new();
+    let rune_formulas_out_path = Path::new(&out_dir).join("rune_formulas.br");
+    let static_runes_out_path = Path::new(&out_dir).join("static_runes.br");
+    let mut static_runes_map = HashMap::<String, usize>::new();
+    let mut rune_formulas_map = HashMap::<usize, String>::new();
 
     if let Some(content) = fs::read_to_string("internal/runes.json").ok() {
         let internal_runes_map = serde_json::from_str::<HashMap<usize, Rune>>(&content).unwrap();
@@ -28,9 +34,11 @@ pub fn global_phf_internal_runes(out_dir: &str) {
             }
             let ranged_expr = transform_expr(&rune.ranged);
             let melee_expr = transform_expr(&rune.melee);
+            static_runes_map.insert(rune.name.clone(), *key);
             phf_map_contents.push_str(&format!("\t{}usize => &RUNE_{},\n", key, key));
-            consts_decl.push_str(&format!(
-                r#"pub const RUNE_{}: CachedRune = CachedRune {{
+
+            let string_content = invoke_rustfmt(&format!(
+                r#"pub static RUNE_{}: CachedRune = CachedRune {{
                 name: "{}",damage_type: "{}",ranged: {},melee: {},}};"#,
                 key,
                 rune.name,
@@ -54,8 +62,16 @@ pub fn global_phf_internal_runes(out_dir: &str) {
                     melee_expr.0.to_lowercase()
                 ),
             ));
+            consts_decl.push_str(&string_content);
+            rune_formulas_map.insert(*key, highlight(&string_content));
         }
     }
+
+    let static_runes_bytes = compress_bytes!(static_runes_map);
+    let rune_formulas_bytes = compress_bytes!(rune_formulas_map);
+
+    fs::write(rune_formulas_out_path, rune_formulas_bytes).unwrap();
+    fs::write(static_runes_out_path, static_runes_bytes).unwrap();
 
     damaging_runes_decl.push_str(&format!(
         "{}] = [{}];",

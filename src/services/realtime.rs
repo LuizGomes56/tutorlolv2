@@ -1,7 +1,6 @@
 use super::*;
 use crate::{
-    DAMAGING_ITEMS, DAMAGING_RUNES, INTERNAL_CHAMPIONS, INTERNAL_ITEMS, INTERNAL_NAMES,
-    INTERNAL_RUNES, META_ITEMS,
+    DAMAGING_ITEMS, DAMAGING_RUNES, INTERNAL_CHAMPIONS, INTERNAL_NAMES, META_ITEMS,
     model::{
         base::{
             AttackType, BasicStats, DamageMultipliers, Damages, DragonMultipliers, SimulatedDamages,
@@ -14,7 +13,7 @@ use rayon::iter::{ParallelBridge, ParallelIterator};
 use rustc_hash::FxHashMap;
 
 /// Takes a type constructed from port 2999 and returns a new type "Realtime"
-#[writer_macros::trace_time]
+#[generator_macros::trace_time]
 pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationError> {
     let current_player_level = game.active_player.level;
     let game_time = game.game_data.game_time;
@@ -306,23 +305,17 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
             damaging_abilities: current_player_cache
                 .abilities
                 .into_iter()
-                .map(|(key, val)| (*key, val.name))
-                .chain(std::iter::once(("A", "Basic Attack")))
-                .chain(std::iter::once(("C", "Critical Strike")))
+                .map(|(key, _)| *key)
+                .chain(std::iter::once("A"))
+                .chain(std::iter::once("C"))
                 .collect(),
             damaging_items: current_player_damaging_items
                 .into_iter()
-                .filter_map(|item_id| {
-                    let item = INTERNAL_ITEMS.get(&item_id)?;
-                    Some((item_id, item.name))
-                })
+                .filter_map(|item_id| DAMAGING_ITEMS.contains(&item_id).then_some(item_id))
                 .collect(),
             damaging_runes: current_player_damaging_runes
                 .into_iter()
-                .filter_map(|rune_id| {
-                    let rune = INTERNAL_RUNES.get(&rune_id)?;
-                    Some((rune_id, rune.name))
-                })
+                .filter_map(|rune_id| DAMAGING_RUNES.contains(&rune_id).then_some(rune_id))
                 .collect(),
             riot_id: current_player_riot_id,
             level: current_player_level,

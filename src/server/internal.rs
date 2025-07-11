@@ -8,9 +8,9 @@ use crate::{
 };
 use actix_web::{HttpResponse, Responder, post};
 
-#[post("/create_writer_files")]
-pub async fn internal_create_writer_files() -> impl Responder {
-    match_fn!(priv crate::setup::generators::champions::generate_writer_files().await)
+#[post("/create_generator_files")]
+pub async fn internal_create_generator_files() -> impl Responder {
+    match_fn!(priv crate::setup::generators::champions::create_generator_files().await)
 }
 
 #[post("/prettify_item_stats")]

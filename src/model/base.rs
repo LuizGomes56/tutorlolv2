@@ -64,13 +64,6 @@ pub struct BasicStats {
 }
 
 #[derive(Serialize)]
-pub struct ComparedItem {
-    pub name: &'static str,
-    pub gold_cost: usize,
-    pub prettified_stats: FxHashMap<&'static str, f64>,
-}
-
-#[derive(Serialize)]
 pub struct SimulatedDamages {
     pub abilities: DamageLike<&'static str>,
     pub items: DamageLike<usize>,

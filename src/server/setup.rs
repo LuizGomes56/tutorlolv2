@@ -49,7 +49,7 @@ pub async fn setup_project(state: Data<AppState>) -> impl Responder {
 
         tokio::spawn(async move {
             #[cfg(debug_assertions)]
-            let _ = crate::setup::generators::champions::generate_writer_files().await;
+            let _ = crate::setup::generators::champions::create_generator_files().await;
             let _ = setup_internal_champions();
         });
 

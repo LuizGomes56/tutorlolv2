@@ -1,32 +1,38 @@
-use super::schemas::APIResponse;
-use crate::{INTERNAL_CHAMPIONS_STR, INTERNAL_NAMES, WRITER_CONTENT, send_response};
-use actix_web::{HttpResponse, Responder, routes, web::Path};
-use rustc_hash::FxHashMap;
+use crate::const_bytes;
+use actix_web::{HttpResponse, Responder, get};
 
-#[routes]
-#[get("/champions/{name}")]
+static FORMULAS_CHAMPIONS_BYTES: &'static [u8] =
+    include_bytes!(concat!(env!("OUT_DIR"), "/champion_formulas.br"));
+static FORMULAS_ITEMS_BYTES: &'static [u8] =
+    include_bytes!(concat!(env!("OUT_DIR"), "/item_formulas.br"));
+static FORMULAS_RUNES_BYTES: &'static [u8] =
+    include_bytes!(concat!(env!("OUT_DIR"), "/rune_formulas.br"));
+static FORMULAS_ABILITIES_BYTES: &'static [u8] =
+    include_bytes!(concat!(env!("OUT_DIR"), "/ability_formulas.br"));
+static FORMULAS_CHAMPION_GENERATOR_BYTES: &'static [u8] =
+    include_bytes!(concat!(env!("OUT_DIR"), "/champion_generator.br"));
+
 #[get("/champions")]
-pub async fn formulas_champions(name: Option<Path<String>>) -> impl Responder {
-    if let Some(name) = name {
-        send_response!(format!(
-            "{}\n{}",
-            WRITER_CONTENT.get(&name).unwrap_or(&"Not found"),
-            INTERNAL_CHAMPIONS_STR.get(&name).unwrap_or(&"Not found")
-        ))
-    } else {
-        let mut map = FxHashMap::default();
-        for champion_id in INTERNAL_NAMES.values() {
-            map.insert(
-                champion_id,
-                format!(
-                    "{}\n{}",
-                    WRITER_CONTENT.get(champion_id).unwrap_or(&"Not found"),
-                    INTERNAL_CHAMPIONS_STR
-                        .get(champion_id)
-                        .unwrap_or(&"Not found")
-                ),
-            );
-        }
-        send_response!(map)
-    }
+pub async fn formulas_champions() -> impl Responder {
+    const_bytes!(FORMULAS_CHAMPIONS_BYTES)
+}
+
+#[get("/champion_generator")]
+pub async fn formulas_champion_generator() -> impl Responder {
+    const_bytes!(FORMULAS_CHAMPION_GENERATOR_BYTES)
+}
+
+#[get("/abilities")]
+pub async fn formulas_abilities() -> impl Responder {
+    const_bytes!(FORMULAS_ABILITIES_BYTES)
+}
+
+#[get("/items")]
+pub async fn formulas_items() -> impl Responder {
+    const_bytes!(FORMULAS_ITEMS_BYTES)
+}
+
+#[get("/runes")]
+pub async fn formulas_runes() -> impl Responder {
+    const_bytes!(FORMULAS_RUNES_BYTES)
 }

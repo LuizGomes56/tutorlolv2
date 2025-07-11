@@ -1,11 +1,11 @@
 #![allow(unused_parens)]
 
+pub mod generators;
 mod middlewares;
 mod model;
 mod server;
 mod services;
 pub mod setup;
-pub mod writers;
 
 use actix_cors::Cors;
 use actix_files::Files;
@@ -35,7 +35,6 @@ include!(concat!(env!("OUT_DIR"), "/internal_items.rs"));
 include!(concat!(env!("OUT_DIR"), "/internal_runes.rs"));
 include!(concat!(env!("OUT_DIR"), "/internal_meta.rs"));
 include!(concat!(env!("OUT_DIR"), "/internal_names.rs"));
-include!(concat!(env!("OUT_DIR"), "/const_formulas.rs"));
 
 pub struct EnvConfig {
     pub lol_version: String,
@@ -125,7 +124,14 @@ pub async fn run() -> io::Result<()> {
             .service(
                 scope("/api")
                     .wrap(from_fn(logger_middleware))
-                    .service(scope("/formulas").service(formulas_champions))
+                    .service(
+                        scope("/formulas")
+                            .service(formulas_champions)
+                            .service(formulas_items)
+                            .service(formulas_runes)
+                            .service(formulas_abilities)
+                            .service(formulas_champion_generator),
+                    )
                     .service(
                         scope("/games")
                             .service(realtime_handler)
@@ -169,7 +175,7 @@ pub async fn run() -> io::Result<()> {
                     .service(
                         scope("/internal")
                             .wrap(from_fn(password_middleware))
-                            .service(internal_create_writer_files)
+                            .service(internal_create_generator_files)
                             .service(internal_prettify_item_stats)
                             .service(internal_create_damaging_items)
                             .service(internal_create_meta_items)

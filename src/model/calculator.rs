@@ -5,9 +5,9 @@ use serde::{Deserialize, Serialize};
 #[derive(Serialize)]
 pub struct OutputCurrentPlayer {
     pub champion_id: String,
-    pub damaging_abilities: FxHashMap<&'static str, &'static str>,
-    pub damaging_items: FxHashMap<usize, &'static str>,
-    pub damaging_runes: FxHashMap<usize, &'static str>,
+    pub damaging_abilities: Vec<&'static str>,
+    pub damaging_items: Vec<usize>,
+    pub damaging_runes: Vec<usize>,
     pub level: usize,
     pub base_stats: BasicStats,
     pub bonus_stats: BasicStats,

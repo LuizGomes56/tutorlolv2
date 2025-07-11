@@ -23,9 +23,12 @@ incremental = false
 serde_json = "1.0.140"
 serde = { version = "1.0", features = ["derive"] }
 regex = "1.11.1"
+bincode = { version = "2.0.1", features = ["serde"] }
+synoptic = "2.2.9"
+brotli2 = "0.3.2"
 
 [dependencies]
-writer_macros = { path = "./writer_macros" }
+generator_macros = { path = "./generator_macros" }
 rustc-hash = "2.1.1"
 actix-web = "4.11.0"
 reqwest = { version = "0.12.1", features = [

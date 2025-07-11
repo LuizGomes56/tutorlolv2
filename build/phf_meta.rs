@@ -32,7 +32,7 @@ pub fn global_phf_internal_meta_items(out_dir: &str) {
 
             phf_map_contents.push_str(&format!("\t\"{}\" => &META_{},\n", key, key.to_uppercase()));
             consts_decl.push_str(&format!(
-                r#"pub const META_{}: CachedMetaItem = CachedMetaItem {{
+                r#"pub static META_{}: CachedMetaItem = CachedMetaItem {{
     top: &[{}],
     mid: &[{}],
     jungle: &[{}],

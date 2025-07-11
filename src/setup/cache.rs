@@ -15,7 +15,7 @@ use tokio::{
 };
 
 /// Takes an instance parameter and uses CDN API to get its data and save to file system.
-#[writer_macros::trace_time]
+#[generator_macros::trace_time]
 pub async fn update_cdn_cache(client: Client, instance: &str) -> Result<(), SetupError> {
     let result: FxHashMap<String, Value> =
         fetch_cdn_api(client, &format!("{}.json", instance)).await?;
@@ -32,7 +32,7 @@ pub async fn update_cdn_cache(client: Client, instance: &str) -> Result<(), Setu
 
 /// Updates files in `cache/riot` with the corresponding ones in the patch determined by `LOL_VERSION`
 /// Runs a maximum of 32 tokio threads at the same time
-#[writer_macros::trace_time]
+#[generator_macros::trace_time]
 pub async fn update_riot_cache(client: Client) -> Result<(), SetupError> {
     let champions_json = fetch_riot_api::<RiotCdnStandard>(client.clone(), "champion")
         .await

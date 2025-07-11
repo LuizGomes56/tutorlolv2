@@ -1,14 +1,5 @@
 use serde::Serialize;
 
-/// Every API response will have this structure
-/// ### Example
-/// ```json
-/// {
-///     "success": true,
-///     "message": "Success",
-///     "data": {}
-/// }
-/// ```
 #[derive(Serialize)]
 pub struct APIResponse<T, U> {
     pub success: bool,
@@ -49,6 +40,17 @@ macro_rules! match_fn {
             })
         }
     }};
+}
+
+#[macro_export]
+macro_rules! const_bytes {
+    ($bytes:expr) => {
+        HttpResponse::Ok()
+            .insert_header((crate::header::CONTENT_ENCODING, "br"))
+            // .insert_header((header::CACHE_CONTROL, "public, max-age=31536000, immutable"))
+            .content_type("application/octet-stream")
+            .body($bytes)
+    };
 }
 
 #[macro_export]

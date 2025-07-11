@@ -1,52 +1,31 @@
-use crate::{
-    INTERNAL_ITEMS, INTERNAL_NAMES, INTERNAL_RUNES, SIMULATED_ITEMS, model::base::ComparedItem,
-    send_response, server::schemas::APIResponse,
-};
+use crate::const_bytes;
 use actix_web::{HttpResponse, Responder, get};
-use rustc_hash::FxHashMap;
+
+static STATIC_CHAMPIONS_BYTES: &'static [u8] =
+    include_bytes!(concat!(env!("OUT_DIR"), "/static_champions.br"));
+static STATIC_ITEMS_BYTES: &'static [u8] =
+    include_bytes!(concat!(env!("OUT_DIR"), "/static_items.br"));
+static STATIC_RUNES_BYTES: &'static [u8] =
+    include_bytes!(concat!(env!("OUT_DIR"), "/static_runes.br"));
+static STATIC_COMPARED_ITEMS_BYTES: &'static [u8] =
+    include_bytes!(concat!(env!("OUT_DIR"), "/static_compared_items.br"));
 
 #[get("/champions")]
 pub async fn static_champions() -> impl Responder {
-    let data = INTERNAL_NAMES
-        .entries()
-        .map(|(k, v)| (v, k))
-        .collect::<FxHashMap<_, _>>();
-    send_response!(data)
+    const_bytes!(STATIC_CHAMPIONS_BYTES)
 }
 
 #[get("/items")]
 pub async fn static_items() -> impl Responder {
-    let data = INTERNAL_ITEMS
-        .entries()
-        .map(|(item_id, value)| (item_id, &value.name))
-        .collect::<FxHashMap<_, _>>();
-    send_response!(data)
+    const_bytes!(STATIC_ITEMS_BYTES)
 }
 
 #[get("/runes")]
 pub async fn static_runes() -> impl Responder {
-    let data = INTERNAL_RUNES
-        .entries()
-        .map(|(rune_id, value)| (rune_id, &value.name))
-        .collect::<FxHashMap<_, _>>();
-    send_response!(data)
+    const_bytes!(STATIC_RUNES_BYTES)
 }
 
 #[get("/compared_items")]
 pub async fn static_compared_items() -> impl Responder {
-    let data = SIMULATED_ITEMS
-        .iter()
-        .filter_map(|item_id| {
-            let item = INTERNAL_ITEMS.get(item_id)?;
-            Some((
-                *item_id,
-                ComparedItem {
-                    name: item.name,
-                    gold_cost: item.gold,
-                    prettified_stats: item.prettified_stats.iter().copied().collect(),
-                },
-            ))
-        })
-        .collect::<FxHashMap<usize, ComparedItem>>();
-    send_response!(data)
+    const_bytes!(STATIC_COMPARED_ITEMS_BYTES)
 }

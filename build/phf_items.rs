@@ -1,5 +1,7 @@
+use crate::build::highlight;
+
 use super::{invoke_rustfmt, transform_expr};
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::{collections::HashMap, fs, path::Path};
 
@@ -127,8 +129,22 @@ fn format_stats(stats: &PartialStats) -> String {
     all_stats.join("")
 }
 
+#[derive(Serialize)]
+struct ComparedItem {
+    name: String,
+    gold_cost: usize,
+    prettified_stats: HashMap<String, Value>,
+}
+
 pub fn global_phf_internal_items(out_dir: &str) {
     let out_path = Path::new(&out_dir).join("internal_items.rs");
+    let item_formulas_out_path = Path::new(&out_dir).join("item_formulas.br");
+    let mut item_formulas_map = HashMap::<usize, String>::new();
+    let static_items_out_path = Path::new(&out_dir).join("static_items.br");
+    let mut static_items_map = HashMap::<String, usize>::new();
+    let static_compared_items_out_path = Path::new(&out_dir).join("static_compared_items.br");
+    let mut static_compared_items_map = HashMap::<usize, ComparedItem>::new();
+
     let mut phf_map_contents = String::from(
         "pub static INTERNAL_ITEMS: ::phf::Map<usize, &'static CachedItem> = ::phf::phf_map! {\n",
     );
@@ -163,8 +179,16 @@ pub fn global_phf_internal_items(out_dir: &str) {
                 damaging_items_vec.push(usize_v.to_string());
             }
             phf_map_contents.push_str(&format!("{}usize => &ITEM_{},", key, key));
-            consts_decl.push_str(&format!(
-                r#"pub const ITEM_{}: CachedItem = CachedItem {{
+            static_compared_items_map.insert(
+                usize_v,
+                ComparedItem {
+                    name: item.name.clone(),
+                    gold_cost: item.gold,
+                    prettified_stats: item.prettified_stats.clone().into_iter().collect(),
+                },
+            );
+            let string_content = invoke_rustfmt(&format!(
+                r#"pub static ITEM_{}: CachedItem = CachedItem {{
                 name: "{}",gold: {},tier: {},damage_type: {},
                 damages_onhit: {},ranged: {},melee: {},builds_from: 
                 &[{}],levelings: {},prettified_stats: &[{}],
@@ -200,8 +224,19 @@ pub fn global_phf_internal_items(out_dir: &str) {
                 format_prettified_stats(&item.prettified_stats),
                 format_stats(&item.stats),
             ));
+            static_items_map.insert(item.name.clone(), usize_v);
+            consts_decl.push_str(&string_content);
+            item_formulas_map.insert(usize_v, highlight(&string_content));
         }
     }
+
+    let static_items_bytes = compress_bytes!(static_items_map);
+    let item_formulas_bytes = compress_bytes!(item_formulas_map);
+    let static_compared_items_bytes = compress_bytes!(static_compared_items_map);
+
+    fs::write(item_formulas_out_path, item_formulas_bytes).unwrap();
+    fs::write(static_items_out_path, static_items_bytes).unwrap();
+    fs::write(static_compared_items_out_path, static_compared_items_bytes).unwrap();
 
     siml_items_decl.push_str(&format!(
         "{}] = [{}];",

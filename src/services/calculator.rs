@@ -1,7 +1,6 @@
 use super::*;
 use crate::{
-    DAMAGING_ITEMS, DAMAGING_RUNES, INTERNAL_CHAMPIONS, INTERNAL_ITEMS, INTERNAL_NAMES,
-    INTERNAL_RUNES, META_ITEMS,
+    DAMAGING_ITEMS, DAMAGING_RUNES, INTERNAL_CHAMPIONS, INTERNAL_ITEMS, INTERNAL_NAMES, META_ITEMS,
     model::{base::*, calculator::*},
 };
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
@@ -243,7 +242,7 @@ fn item_exceptions(
 // #![todo] Comparison tool is not reliable;
 // #![todo] Stats are not assigned correctly
 // #![todo] Review exceptions
-#[writer_macros::trace_time]
+#[generator_macros::trace_time]
 pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
     let InputGame {
         active_player,
@@ -529,23 +528,17 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
             damaging_abilities: current_player_cache
                 .abilities
                 .into_iter()
-                .map(|(key, val)| (*key, val.name))
-                .chain(std::iter::once(("A", "Basic Attack")))
-                .chain(std::iter::once(("C", "Critical Strike")))
+                .map(|(key, _)| *key)
+                .chain(std::iter::once("A"))
+                .chain(std::iter::once("C"))
                 .collect(),
             damaging_items: current_player_damaging_items
                 .into_iter()
-                .filter_map(|item_id| {
-                    let item = INTERNAL_ITEMS.get(&item_id)?;
-                    Some((item_id, item.name))
-                })
+                .filter_map(|item_id| DAMAGING_ITEMS.contains(&item_id).then_some(item_id))
                 .collect(),
             damaging_runes: current_player_damaging_runes
                 .into_iter()
-                .filter_map(|rune_id| {
-                    let rune = INTERNAL_RUNES.get(&rune_id)?;
-                    Some((rune_id, rune.name))
-                })
+                .filter_map(|rune_id| DAMAGING_RUNES.contains(&rune_id).then_some(rune_id))
                 .collect(),
             level: current_player_level,
             champion_id: current_player_champion_id,

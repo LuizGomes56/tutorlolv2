@@ -10,7 +10,7 @@ use tokio::task::JoinHandle;
 /// Recovers all the common builds for the current patch so the app can recommend builds to the user
 /// Average time to update is 2m30s. Making the outer loop a new task overloads the target website
 /// causing requests to timeout.
-#[writer_macros::trace_time]
+#[generator_macros::trace_time]
 pub async fn meta_items_scraper(client: Client) -> Result<(), SetupError> {
     let champion_names: FxHashMap<String, String> = read_json_file("internal/champion_names.json")?;
     let positions = ["top", "jungle", "mid", "adc", "support"];

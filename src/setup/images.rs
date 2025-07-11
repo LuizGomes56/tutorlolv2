@@ -14,7 +14,7 @@ use std::{
 };
 use tokio::task::JoinHandle;
 
-#[writer_macros::trace_time]
+#[generator_macros::trace_time]
 pub async fn img_download_instances(client: Client) {
     let files: ReadDir = fs::read_dir("cache/riot/champions").unwrap();
     let base_uri: String = riot_base_url();
@@ -109,7 +109,7 @@ pub async fn img_download_instances(client: Client) {
     }
 }
 
-#[writer_macros::trace_time]
+#[generator_macros::trace_time]
 pub async fn img_download_arts(client: Client) {
     let files: ReadDir = fs::read_dir("cache/riot/champions").unwrap();
     let base_uri: String = format!("{}/cdn", ENV_CONFIG.dd_dragon_endpoint);
@@ -157,7 +157,7 @@ pub async fn img_download_arts(client: Client) {
     }
 }
 
-#[writer_macros::trace_time]
+#[generator_macros::trace_time]
 pub async fn img_download_runes(client: Client) {
     let runes_data: Vec<RiotCdnRune> =
         read_json_file::<Vec<RiotCdnRune>>("cache/riot/runes.json").unwrap();
@@ -196,7 +196,7 @@ pub async fn img_download_runes(client: Client) {
     }
 }
 
-#[writer_macros::trace_time]
+#[generator_macros::trace_time]
 pub async fn img_download_items(client: Client) {
     let files: ReadDir = fs::read_dir("cache/riot/items").unwrap();
     let base_uri: String = riot_base_url();

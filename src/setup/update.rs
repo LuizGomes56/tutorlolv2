@@ -5,7 +5,7 @@ use crate::{
         riot::RiotCdnItem,
     },
     setup::{
-        generators::champions::run_writer_file,
+        generators::champions::run_generator_file,
         helpers::{SetupError, extract_file_name, read_json_file, write_to_file},
     },
 };
@@ -54,7 +54,7 @@ pub fn setup_project_folders() -> Result<(), SetupError> {
 
 /// Read every file in cache/cdn/champions folder and delegates
 /// the processing to generate_champion_file
-#[writer_macros::trace_time]
+#[generator_macros::trace_time]
 pub fn setup_internal_champions() -> Result<(), SetupError> {
     let files = fs::read_dir("cache/cdn/champions").map_err(|e| {
         SetupError(format!(
@@ -75,7 +75,7 @@ pub fn setup_internal_champions() -> Result<(), SetupError> {
 
         match path_name.to_str() {
             Some(strpath) => {
-                let _ = run_writer_file(strpath)
+                let _ = run_generator_file(strpath)
                     .map_err(|e| eprintln!("fn[setup_champion_cache]: {:#?}", e));
             }
             None => {
@@ -91,7 +91,7 @@ pub fn setup_internal_champions() -> Result<(), SetupError> {
 
 /// Replaces the content found in the files to a shorter and adapted version,
 /// initializes items as default, and Damaging stats must be added separately.
-#[writer_macros::trace_time]
+#[generator_macros::trace_time]
 pub fn setup_internal_items() -> Result<(), SetupError> {
     let files = fs::read_dir("cache/cdn/items")
         .map_err(|e| SetupError(format!("Unable to read directory: {}", e)))?;
@@ -232,7 +232,7 @@ br#"{
 
 /// Not meant to be used frequently. Just a quick check for every
 /// patch to identify if a new damaging item was added
-#[writer_macros::trace_time]
+#[generator_macros::trace_time]
 #[cfg(debug_assertions)]
 pub fn setup_damaging_items() -> Result<(), SetupError> {
     let re: Regex = Regex::new(r"\{\{[^}]*\}\}")
@@ -297,7 +297,7 @@ pub fn setup_damaging_items() -> Result<(), SetupError> {
 }
 
 /// Uses champion display name and converts to their respective ids, saving to internal
-#[writer_macros::trace_time]
+#[generator_macros::trace_time]
 pub fn setup_champion_names() -> Result<(), SetupError> {
     let files = fs::read_dir("cache/cdn/champions").map_err(|e| {
         SetupError(format!(
@@ -335,7 +335,7 @@ pub fn setup_champion_names() -> Result<(), SetupError> {
 /// When MetaItems are recovered, each item is written in the array with its name instead of ID
 /// This function replaces those names with IDs without changing the rest of the content.
 /// If one's ID is not found, it will remain unchanged
-#[writer_macros::trace_time]
+#[generator_macros::trace_time]
 pub fn setup_meta_items() -> Result<(), SetupError> {
     let mut meta_items: MetaItemValue<Value> = read_json_file("internal/meta_items.json")
         .map_err(|e| SetupError(format!("Failed to read meta_items.json: {:#?}", e)))?;
@@ -388,7 +388,7 @@ pub fn setup_meta_items() -> Result<(), SetupError> {
 /// `internal/items` folder must exist, as well as dir `cache/riot/items`. Takes every file
 /// and reads the "description" value from Riot `item.json` and parses its XML into a FxHashMap
 /// only updates the key `prettified_stats`. All the remaining content remains the same
-#[writer_macros::trace_time]
+#[generator_macros::trace_time]
 pub async fn prettify_internal_items() -> Result<(), SetupError> {
     let files = fs::read_dir("cache/riot/items").map_err(|e| {
         SetupError(format!(
