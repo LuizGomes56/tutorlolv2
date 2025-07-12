@@ -1,15 +1,17 @@
 use crate::{
-    AppState, match_fn,
+    AppState, dev_response,
+    essentials::images::{
+        img_download_arts, img_download_instances, img_download_items, img_download_runes,
+    },
     server::schemas::APIResponse,
     setup::{
         cache::{update_cdn_cache, update_riot_cache},
-        images::{
-            img_download_arts, img_download_instances, img_download_items, img_download_runes,
-        },
+        generators::champions::create_generator_files,
         scraper::meta_items_scraper,
         update::{
-            prettify_internal_items, setup_champion_names, setup_internal_champions,
-            setup_internal_items, setup_internal_runes, setup_meta_items, setup_project_folders,
+            prettify_internal_items, setup_champion_names, setup_damaging_items,
+            setup_internal_champions, setup_internal_items, setup_internal_runes, setup_meta_items,
+            setup_project_folders,
         },
     },
 };
@@ -43,13 +45,11 @@ pub async fn setup_project(state: Data<AppState>) -> impl Responder {
         tokio::spawn(async move {
             let _ = meta_items_scraper(client_1).await;
             let _ = setup_meta_items();
-            #[cfg(debug_assertions)]
-            let _ = crate::setup::update::setup_damaging_items();
+            let _ = setup_damaging_items();
         });
 
         tokio::spawn(async move {
-            #[cfg(debug_assertions)]
-            let _ = crate::setup::generators::champions::create_generator_files().await;
+            let _ = create_generator_files().await;
             let _ = setup_internal_champions();
         });
 
@@ -70,20 +70,20 @@ pub async fn setup_project(state: Data<AppState>) -> impl Responder {
 
 #[post("/folders")]
 pub async fn setup_folders() -> impl Responder {
-    match_fn!(setup_project_folders())
+    dev_response!(setup_project_folders())
 }
 
 #[post("/champions")]
 pub async fn setup_champions() -> impl Responder {
-    match_fn!(setup_internal_champions())
+    dev_response!(setup_internal_champions())
 }
 
 #[post("/items")]
 pub async fn setup_items() -> impl Responder {
-    match_fn!(setup_internal_items())
+    dev_response!(setup_internal_items())
 }
 
 #[post("/runes")]
 pub async fn setup_runes() -> impl Responder {
-    match_fn!(setup_internal_runes())
+    dev_response!(setup_internal_runes())
 }

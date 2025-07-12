@@ -24,20 +24,18 @@ async fn main() {
     let fetch_remote_url = get_flag("--fetch-remote=", "DD_DRAGON_ENDPOINT");
     let current_version = get_flag("--version=", "LOL_VERSION");
 
-    let latest_version = match tutorlolv2::setup::api::fetch_version(
-        reqwest::Client::new(),
-        &fetch_remote_url,
-    )
-    .await
-    {
-        Ok(version) => version,
-        Err(e) => {
-            panic!(
-                "{RED}ERROR: Failed to fetch latest version from API: {:#?}{RESET}",
-                e
-            );
-        }
-    };
+    let latest_version =
+        match tutorlolv2::essentials::api::fetch_version(reqwest::Client::new(), &fetch_remote_url)
+            .await
+        {
+            Ok(version) => version,
+            Err(e) => {
+                panic!(
+                    "{RED}ERROR: Failed to fetch latest version from API: {:#?}{RESET}",
+                    e
+                );
+            }
+        };
 
     println!("Latest version: {}", latest_version);
 

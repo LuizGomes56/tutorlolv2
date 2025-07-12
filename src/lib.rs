@@ -1,5 +1,6 @@
 #![allow(unused_parens)]
 
+pub mod essentials;
 pub mod generators;
 mod middlewares;
 mod model;
@@ -10,7 +11,9 @@ pub mod setup;
 use actix_cors::Cors;
 use actix_files::Files;
 use actix_web::{
-    App, HttpResponse, HttpServer,
+    App, HttpResponse, HttpServer, Scope,
+    body::{BoxBody, EitherBody},
+    dev::{ServiceFactory, ServiceRequest, ServiceResponse},
     http::header,
     middleware::{DefaultHeaders, from_fn},
     mime,
@@ -23,10 +26,9 @@ use middlewares::{
 use model::cache::*;
 use once_cell::sync::Lazy;
 use reqwest::Client;
-use server::{
-    formulas::*, games::*, images::*, internal::*, schemas::APIResponse, setup::*, statics::*,
-    update::*,
-};
+#[cfg(feature = "dev-routes")]
+use server::dev::{internal::*, setup::*, update::*};
+use server::{formulas::*, games::*, images::*, schemas::APIResponse, statics::*};
 use sqlx::{Pool, Postgres, postgres::PgPoolOptions};
 use std::{env, io};
 
@@ -71,6 +73,83 @@ pub static ENV_CONFIG: Lazy<EnvConfig> = Lazy::new(EnvConfig::new);
 pub struct AppState {
     client: Client,
     db: Pool<Postgres>,
+}
+
+fn api_scope() -> Scope<
+    impl ServiceFactory<
+        ServiceRequest,
+        Config = (),
+        Response = ServiceResponse<EitherBody<BoxBody>>,
+        Error = actix_web::Error,
+        InitError = (),
+    >,
+> {
+    let api_routes = scope("/api")
+        .wrap(from_fn(logger_middleware))
+        .service(
+            scope("/formulas")
+                .service(formulas_champions)
+                .service(formulas_items)
+                .service(formulas_runes)
+                .service(formulas_abilities)
+                .service(formulas_champion_generator),
+        )
+        .service(
+            scope("/games")
+                .service(realtime_handler)
+                .service(calculator_handler)
+                .service(create_game_handler)
+                .service(get_by_code_handler),
+        )
+        .service(
+            scope("/static")
+                .service(static_champions)
+                .service(static_items)
+                .service(static_runes)
+                .service(static_compared_items),
+        )
+        .service(
+            scope("/images")
+                .wrap(from_fn(password_middleware))
+                .service(download_instances)
+                .service(download_items)
+                .service(download_arts)
+                .service(download_runes)
+                .service(compress_images),
+        );
+
+    #[cfg(feature = "dev-routes")]
+    let api_routes = api_routes
+        .service(
+            scope("/setup")
+                .wrap(from_fn(password_middleware))
+                .service(setup_champions)
+                .service(setup_folders)
+                .service(setup_project)
+                .service(setup_items)
+                .service(setup_runes),
+        )
+        .service(
+            scope("/update")
+                .wrap(from_fn(password_middleware))
+                .service(update_riot)
+                .service(update_champions)
+                .service(update_items)
+                .service(update_meta_items)
+                .service(update_version),
+        )
+        .service(
+            scope("/internal")
+                .wrap(from_fn(password_middleware))
+                .service(internal_create_generator_files)
+                .service(internal_prettify_item_stats)
+                .service(internal_create_damaging_items)
+                .service(internal_create_meta_items)
+                .service(internal_rewrite_champion_names)
+                .service(internal_assign_item_damages),
+        );
+
+    api_routes
 }
 
 #[allow(unreachable_code)]
@@ -119,69 +198,7 @@ pub async fn run() -> io::Result<()> {
                             .use_last_modified(false),
                     ),
             )
-            .service(
-                scope("/api")
-                    .wrap(from_fn(logger_middleware))
-                    .service(
-                        scope("/formulas")
-                            .service(formulas_champions)
-                            .service(formulas_items)
-                            .service(formulas_runes)
-                            .service(formulas_abilities)
-                            .service(formulas_champion_generator),
-                    )
-                    .service(
-                        scope("/games")
-                            .service(realtime_handler)
-                            .service(calculator_handler)
-                            .service(create_game_handler)
-                            .service(get_by_code_handler),
-                    )
-                    .service(
-                        scope("/static")
-                            .service(static_champions)
-                            .service(static_items)
-                            .service(static_runes)
-                            .service(static_compared_items),
-                    )
-                    .service(
-                        scope("/setup")
-                            .wrap(from_fn(password_middleware))
-                            .service(setup_champions)
-                            .service(setup_folders)
-                            .service(setup_project)
-                            .service(setup_items)
-                            .service(setup_runes),
-                    )
-                    .service(
-                        scope("/update")
-                            .wrap(from_fn(password_middleware))
-                            .service(update_riot)
-                            .service(update_champions)
-                            .service(update_items)
-                            .service(update_meta_items)
-                            .service(update_version),
-                    )
-                    .service(
-                        scope("/images")
-                            .wrap(from_fn(password_middleware))
-                            .service(download_instances)
-                            .service(download_items)
-                            .service(download_arts)
-                            .service(download_runes)
-                            .service(compress_images),
-                    )
-                    .service(
-                        scope("/internal")
-                            .wrap(from_fn(password_middleware))
-                            .service(internal_create_generator_files)
-                            .service(internal_prettify_item_stats)
-                            .service(internal_create_damaging_items)
-                            .service(internal_create_meta_items)
-                            .service(internal_rewrite_champion_names)
-                            .service(internal_assign_item_damages),
-                    ),
-            )
+            .service(api_scope())
             .default_service(web::route().to(|| async {
                 HttpResponse::NotFound().json(APIResponse {
                     success: false,

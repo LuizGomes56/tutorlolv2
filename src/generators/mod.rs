@@ -1,5 +1,13 @@
-pub use crate::model::champions::{Ability, CdnChampion, Champion};
-use crate::setup::generators::champions::{Target, extract_ability_damage, extract_passive_damage};
+#![cfg(feature = "dev-routes")]
+
+pub use crate::model::{
+    champions::{Ability, Champion},
+    dev::champions::CdnChampion,
+};
+use crate::setup::generators::{
+    champions::{Target, extract_ability_damage, extract_passive_damage},
+    extractors::extract_scaled_values,
+};
 use rustc_hash::FxHashMap;
 
 pub mod aatrox;

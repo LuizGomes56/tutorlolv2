@@ -1,10 +1,9 @@
-pub mod api;
-pub(crate) mod avif_converter;
-pub(crate) mod cache;
-pub(crate) mod exceptions;
-pub(crate) mod generators;
-mod helpers;
-pub(crate) mod images;
-pub(crate) mod schedule;
-pub(crate) mod scraper;
-pub(crate) mod update;
+#![cfg(feature = "dev-routes")]
+
+pub mod avif_converter;
+pub mod cache;
+pub mod exceptions;
+pub mod generators;
+pub mod schedule;
+pub mod scraper;
+pub mod update;

@@ -1,10 +1,10 @@
 use crate::{
     ENV_CONFIG,
-    model::riot::{RiotCdnChampion, RiotCdnInstance, RiotCdnRune, RiotCdnSkin},
-    setup::{
+    essentials::{
         api::riot_base_url,
-        helpers::{SetupError, extract_file_name, read_json_file, write_to_file},
+        helpers::{extract_file_name, read_json_file, write_to_file},
     },
+    model::riot::{RiotCdnChampion, RiotCdnInstance, RiotCdnRune, RiotCdnSkin},
 };
 use reqwest::{Client, Response};
 use rustc_hash::FxHashMap;
@@ -47,7 +47,7 @@ pub async fn img_download_instances(client: Client) {
             let champion_response: Response = client.get(&champion_icon_url).send().await.unwrap();
             let champion_bytes = champion_response.bytes().await.unwrap();
             let _ = write_to_file(&champion_file_path, &champion_bytes)
-                .map_err(|e: SetupError| println!("[ERROR] fn[img_download_instances]: {:#?}", e));
+                .map_err(|e| println!("[ERROR] fn[img_download_instances]: {:#?}", e));
         }
         let passive_file_name: String = format!("{}P.png", outer_result.id);
         let passive_file_path: String = format!("img/abilities/{}", &passive_file_name);
@@ -69,7 +69,7 @@ pub async fn img_download_instances(client: Client) {
                 outer_client.get(&passive_icon_url).send().await.unwrap();
             let passive_bytes = passive_response.bytes().await.unwrap();
             let _ = write_to_file(&passive_file_path, &passive_bytes)
-                .map_err(|e: SetupError| println!("[ERROR] fn[img_download_instances]: {:#?}", e));
+                .map_err(|e| println!("[ERROR] fn[img_download_instances]: {:#?}", e));
         }
         for (index, spell) in spells.into_iter().enumerate() {
             let inner_id: String = outer_result.id.clone();
@@ -96,10 +96,8 @@ pub async fn img_download_instances(client: Client) {
                     println!("[REQUESTING] fn[img_download_instances]: [Spell] {}", &url);
                     let spell_response: Response = inner_client.get(&url).send().await.unwrap();
                     let spell_bytes = spell_response.bytes().await.unwrap();
-                    let _ =
-                        write_to_file(&spell_file_path, &spell_bytes).map_err(|e: SetupError| {
-                            println!("[ERROR] fn[img_download_instances]: {:#?}", e)
-                        });
+                    let _ = write_to_file(&spell_file_path, &spell_bytes)
+                        .map_err(|e| println!("[ERROR] fn[img_download_instances]: {:#?}", e));
                 }
             }));
         }
@@ -143,10 +141,8 @@ pub async fn img_download_arts(client: Client) {
                         println!("[REQUESTING] fn[img_download_arts]: [Arts] {}", &url);
                         let label_response: Response = inner_client.get(&url).send().await.unwrap();
                         let label_bytes = label_response.bytes().await.unwrap();
-                        let _ =
-                            write_to_file(&final_name, &label_bytes).map_err(|e: SetupError| {
-                                println!("[ERROR] fn[img_download_arts]: {:#?}", e)
-                            });
+                        let _ = write_to_file(&final_name, &label_bytes)
+                            .map_err(|e| println!("[ERROR] fn[img_download_arts]: {:#?}", e));
                     }
                 }
             }));
@@ -187,7 +183,7 @@ pub async fn img_download_runes(client: Client) {
                 let rune_response: Response = cloned_client.get(&url).send().await.unwrap();
                 let rune_bytes = rune_response.bytes().await.unwrap();
                 let _ = write_to_file(&rune_file_path, &rune_bytes)
-                    .map_err(|e: SetupError| println!("[ERROR] fn[img_download_runes]: {:#?}", e));
+                    .map_err(|e| println!("[ERROR] fn[img_download_runes]: {:#?}", e));
             }
         }));
     }
@@ -225,7 +221,7 @@ pub async fn img_download_items(client: Client) {
                     cloned_client.get(&item_icon_url).send().await.unwrap();
                 let item_bytes = item_response.bytes().await.unwrap();
                 let _ = write_to_file(&item_file_path, &item_bytes)
-                    .map_err(|e: SetupError| println!("[ERROR] fn[img_download_items]: {:#?}", e));
+                    .map_err(|e| println!("[ERROR] fn[img_download_items]: {:#?}", e));
             }
         }));
     }

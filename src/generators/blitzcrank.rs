@@ -1,5 +1,4 @@
 use super::*;
-use crate::setup::generators::extractors::extract_scaled_values;
 
 // ! #![unstable] [E] "06/11/2025" | "25.11"
 // #![preserve]

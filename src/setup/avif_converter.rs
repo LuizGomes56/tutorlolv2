@@ -1,3 +1,4 @@
+#![cfg(feature = "dev-routes")]
 use image::ImageReader;
 use ravif::RGBA8;
 use std::io::Write;
@@ -51,7 +52,7 @@ pub async fn convert_folder_avif(folder: &str) -> Result<(), Box<dyn std::error:
                 folder,
                 path.file_name().unwrap().to_string_lossy()
             );
-            let destination = format!("converted/{}/{}.avif", folder, file_stem);
+            let destination = format!("img/{}/{}.avif", folder, file_stem);
             if std::fs::metadata(&destination).is_ok() {
                 continue;
             }

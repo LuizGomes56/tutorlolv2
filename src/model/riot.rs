@@ -9,11 +9,6 @@ pub struct RiotCdnStandard {
 }
 
 #[derive(Deserialize)]
-pub struct RiotCdnItem {
-    pub description: String,
-}
-
-#[derive(Deserialize)]
 pub struct RiotCdnImage {
     pub full: String,
 }

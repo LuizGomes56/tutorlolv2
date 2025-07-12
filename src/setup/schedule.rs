@@ -1,7 +1,4 @@
-use crate::{
-    ENV_CONFIG,
-    setup::{api::fetch_version, helpers::SetupError},
-};
+use crate::{ENV_CONFIG, essentials::api::fetch_version};
 use reqwest::Client;
 use std::{
     fs,
@@ -38,7 +35,7 @@ unsafe fn set_env_var(key: &str, value: &str) -> std::io::Result<()> {
 /// Update `LOL_VERSION` in `.env`. The route that calls this function
 /// will be scheduled to run once a day. Must not be used in production
 #[generator_macros::trace_time]
-pub async unsafe fn update_env_version(client: Client) -> Result<(), SetupError> {
+pub async unsafe fn update_env_version(client: Client) -> Result<(), Box<dyn std::error::Error>> {
     let version = fetch_version(client, &ENV_CONFIG.dd_dragon_endpoint).await?;
     Ok(unsafe { set_env_var("LOL_VERSION", &version).unwrap() })
 }
