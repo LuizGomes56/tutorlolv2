@@ -190,7 +190,8 @@ pub async fn run() -> io::Result<()> {
             .service(
                 scope("/img")
                     .wrap(
-                        DefaultHeaders::new(), // .add(("Cache-Control", "public, max-age=31536000, immutable")),
+                        DefaultHeaders::new()
+                            .add(("Cache-Control", "public, max-age=31536000, immutable")),
                     )
                     .service(
                         Files::new("", "img")

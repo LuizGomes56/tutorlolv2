@@ -9,17 +9,14 @@ pub struct APIResponse<T, U> {
 
 #[macro_export]
 macro_rules! dev_response {
-    (@inner $expr:expr, $msg:expr) => {{
+    ($expr:expr) => {{
         let _ = $expr;
         HttpResponse::Ok().json(APIResponse {
             success: true,
-            message: $msg,
+            message: format!("Executed fn[{}]", stringify!($expr)),
             data: (),
         })
     }};
-    ($expr:expr) => {
-        $crate::dev_response!(@inner $expr, format!("Executed fn[{}]", stringify!($expr)))
-    };
 }
 
 #[macro_export]
@@ -27,7 +24,10 @@ macro_rules! const_bytes {
     ($bytes:expr) => {
         HttpResponse::Ok()
             .insert_header((crate::header::CONTENT_ENCODING, "br"))
-            // .insert_header((header::CACHE_CONTROL, "public, max-age=31536000, immutable"))
+            .insert_header((
+                crate::header::CACHE_CONTROL,
+                "public, max-age=31536000, immutable",
+            ))
             .content_type("application/octet-stream")
             .body($bytes)
     };

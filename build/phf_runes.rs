@@ -63,7 +63,10 @@ pub fn global_phf_internal_runes(out_dir: &str) {
                 ),
             ));
             consts_decl.push_str(&string_content);
-            rune_formulas_map.insert(*key, highlight(&string_content));
+            rune_formulas_map.insert(
+                *key,
+                highlight(&string_content).replacen("class=\"type\"", "class=\"constant\"", 1),
+            );
         }
     }
 

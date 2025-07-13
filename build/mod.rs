@@ -41,9 +41,10 @@ pub(super) fn highlight(code_string: &str) -> String {
     );
     h.keyword(
         "control",
-        r"\b(break|continue|Some|None|intrinsic|match|return|yield|for|while|match|if|else|as|in)\b",
+        r"\b(break|continue|intrinsic|match|return|yield|for|while|match|if|else|as|in)\b",
     );
     h.keyword("constant", r"\b[A-Z]+\b");
+    h.keyword("constant", r"\b(Some|None)\b");
     h.keyword("type", r"\b[A-Z][a-zA-Z0-9_]*\b");
     h.keyword(
         "primitive",
@@ -55,7 +56,6 @@ pub(super) fn highlight(code_string: &str) -> String {
     h.keyword("macro", r"[a-zA-Z_][a-zA-Z0-9_]*!");
     h.keyword("function", r"\b[a-z][a-zA-Z0-9_]*\(");
     h.keyword("variable", r"\b[a-z][a-zA-Z0-9_]*\b");
-    h.keyword("punctuation", r"[+\-*/=&^|!:;,<>.\[\]{}()] ");
 
     let code = code_string
         .lines()

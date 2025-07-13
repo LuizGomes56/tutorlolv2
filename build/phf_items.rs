@@ -92,7 +92,7 @@ fn format_damage_object(damage_object: &Option<DamageObject>) -> String {
 fn format_prettified_stats(prettified_stats: &HashMap<String, Value>) -> String {
     prettified_stats
         .iter()
-        .map(|(k, v)| format!("{}: {}", k, v))
+        .map(|(k, v)| format!("(\"{}\", {}f64)", k, v))
         .collect::<Vec<_>>()
         .join(",")
 }
@@ -137,7 +137,7 @@ struct ComparedItem {
 }
 
 pub fn global_phf_internal_items(out_dir: &str) {
-    let out_path = Path::new(&out_dir).join("internal_items.rs");
+    let internal_items_out_path = Path::new(&out_dir).join("internal_items.rs");
     let item_formulas_out_path = Path::new(&out_dir).join("item_formulas.br");
     let mut item_formulas_map = HashMap::<usize, String>::new();
     let static_items_out_path = Path::new(&out_dir).join("static_items.br");
@@ -184,14 +184,14 @@ pub fn global_phf_internal_items(out_dir: &str) {
                 ComparedItem {
                     name: item.name.clone(),
                     gold_cost: item.gold,
-                    prettified_stats: item.prettified_stats.clone().into_iter().collect(),
+                    prettified_stats: item.prettified_stats.clone(),
                 },
             );
-            let string_content = invoke_rustfmt(&format!(
+            let string_content = &format!(
                 r#"pub static ITEM_{}: CachedItem = CachedItem {{
                 name: "{}",gold: {},tier: {},damage_type: {},
                 damages_onhit: {},ranged: {},melee: {},builds_from: 
-                &[{}],levelings: {},prettified_stats: &[{}],
+                & [{}],levelings: {},prettified_stats: &[{}],
                 stats: CachedItemStats {{{}}},}};"#,
                 key,
                 item.name,
@@ -223,10 +223,17 @@ pub fn global_phf_internal_items(out_dir: &str) {
                 },
                 format_prettified_stats(&item.prettified_stats),
                 format_stats(&item.stats),
-            ));
+            );
             static_items_map.insert(item.name.clone(), usize_v);
             consts_decl.push_str(&string_content);
-            item_formulas_map.insert(usize_v, highlight(&string_content));
+            item_formulas_map.insert(
+                usize_v,
+                highlight(&invoke_rustfmt(&string_content)).replacen(
+                    "class=\"type\"",
+                    "class=\"constant\"",
+                    1,
+                ),
+            );
         }
     }
 
@@ -256,5 +263,5 @@ pub fn global_phf_internal_items(out_dir: &str) {
         "{}{}\n{}\n\n{}",
         consts_decl, phf_map_contents, siml_items_decl, damaging_items_decl
     );
-    fs::write(out_path, invoke_rustfmt(&final_content)).unwrap();
+    fs::write(internal_items_out_path, &final_content).unwrap();
 }

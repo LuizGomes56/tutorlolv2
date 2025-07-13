@@ -193,8 +193,9 @@ pub fn global_phf_internal_champions(out_dir: &str) {
                     champion_id.to_uppercase(),
                     key.to_uppercase(),
                     rustfmt_val
-                ));
-                map_ability_inner_formulas.insert(key.clone(), highlighted_val.clone());
+                ))
+                .replacen("class=\"type\"", "class=\"constant\"", 1);
+                map_ability_inner_formulas.insert(key.clone(), highlighted_val);
                 decl_parts.push(format!(
                     "(\"{}\", CachedChampionAbility {})",
                     key, rustfmt_val
