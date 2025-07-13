@@ -21,7 +21,7 @@ use actix_web::{
 };
 use dotenvy::dotenv;
 use middlewares::{
-    error::json_error_middleware, logger::logger_middleware, password::password_middleware,
+    jsonmw::json_error_middleware, logger::logger_middleware, password::password_middleware,
 };
 use model::cache::*;
 use once_cell::sync::Lazy;
@@ -87,19 +87,19 @@ fn api_scope() -> Scope<
     let api_routes = scope("/api")
         .wrap(from_fn(logger_middleware))
         .service(
+            scope("/games")
+                .service(realtime_handler)
+                .service(calculator_handler)
+                .service(create_game_handler)
+                .service(get_by_code_handler),
+        )
+        .service(
             scope("/formulas")
                 .service(formulas_champions)
                 .service(formulas_items)
                 .service(formulas_runes)
                 .service(formulas_abilities)
                 .service(formulas_champion_generator),
-        )
-        .service(
-            scope("/games")
-                .service(realtime_handler)
-                .service(calculator_handler)
-                .service(create_game_handler)
-                .service(get_by_code_handler),
         )
         .service(
             scope("/static")
@@ -110,6 +110,11 @@ fn api_scope() -> Scope<
         )
         .service(
             scope("/images")
+                .app_data(
+                    JsonConfig::default()
+                        .content_type(|mime| mime == mime::APPLICATION_JSON)
+                        .error_handler(json_error_middleware),
+                )
                 .wrap(from_fn(password_middleware))
                 .service(download_instances)
                 .service(download_items)
@@ -119,35 +124,40 @@ fn api_scope() -> Scope<
         );
 
     #[cfg(feature = "dev-routes")]
-    let api_routes = api_routes
-        .service(
-            scope("/setup")
-                .wrap(from_fn(password_middleware))
-                .service(setup_champions)
-                .service(setup_folders)
-                .service(setup_project)
-                .service(setup_items)
-                .service(setup_runes),
-        )
-        .service(
-            scope("/update")
-                .wrap(from_fn(password_middleware))
-                .service(update_riot)
-                .service(update_champions)
-                .service(update_items)
-                .service(update_meta_items)
-                .service(update_version),
-        )
-        .service(
-            scope("/internal")
-                .wrap(from_fn(password_middleware))
-                .service(internal_create_generator_files)
-                .service(internal_prettify_item_stats)
-                .service(internal_create_damaging_items)
-                .service(internal_create_meta_items)
-                .service(internal_rewrite_champion_names)
-                .service(internal_assign_item_damages),
-        );
+    let api_routes = api_routes.service(
+        scope("")
+            .wrap(from_fn(password_middleware))
+            .app_data(
+                JsonConfig::default()
+                    .content_type(|mime| mime == mime::APPLICATION_JSON)
+                    .error_handler(json_error_middleware),
+            )
+            .service(
+                scope("/setup")
+                    .service(setup_champions)
+                    .service(setup_folders)
+                    .service(setup_project)
+                    .service(setup_items)
+                    .service(setup_runes),
+            )
+            .service(
+                scope("/update")
+                    .service(update_riot)
+                    .service(update_champions)
+                    .service(update_items)
+                    .service(update_meta_items)
+                    .service(update_version),
+            )
+            .service(
+                scope("/internal")
+                    .service(internal_create_generator_files)
+                    .service(internal_prettify_item_stats)
+                    .service(internal_create_damaging_items)
+                    .service(internal_create_meta_items)
+                    .service(internal_rewrite_champion_names)
+                    .service(internal_assign_item_damages),
+            ),
+    );
 
     api_routes
 }
@@ -182,11 +192,6 @@ pub async fn run() -> io::Result<()> {
                     client: client.clone(),
                 })
             })
-            .app_data(
-                JsonConfig::default()
-                    .content_type(|mime| mime == mime::APPLICATION_JSON)
-                    .error_handler(json_error_middleware),
-            )
             .service(
                 scope("/img")
                     .wrap(

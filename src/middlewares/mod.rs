@@ -3,7 +3,7 @@ use actix_web::{
     dev::ServiceResponse,
 };
 
-pub mod error;
+pub mod jsonmw;
 pub mod logger;
 pub mod password;
 
