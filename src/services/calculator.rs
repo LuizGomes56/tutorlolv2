@@ -10,10 +10,11 @@ use rustc_hash::FxHashMap;
 /// it reads all items present in cache and evaluates what the game condition would be
 /// if all items were owned in a real game. Stacks and champion exceptions are partially
 /// taken into consideration when calculation is made. It is less accurate than Realtime.
-fn apply_auto_stats(
+fn infer_champion_stats(
     stats: &mut Stats,
     active_player: &InputActivePlayer,
     base_stats: BasicStats,
+    dragon_mod: DragonMultipliers,
 ) -> Result<BasicStats, CalculationError> {
     let stacks = active_player.stacks as f64;
     let owned_items = &active_player.items;
@@ -35,12 +36,18 @@ fn apply_auto_stats(
             ($field:ident, $field2:ident) => {
                 stats.$field += item_stats.$field2;
             };
+            (@$mul:ident $field:ident) => {
+                stats.$field += dragon_mod.$mul * item_stats.$field;
+            };
+            (@$mul:ident $field:ident, $field2:ident) => {
+                stats.$field += dragon_mod.$mul * item_stats.$field2;
+            };
         }
 
-        add_stat!(ability_power);
-        add_stat!(attack_damage);
-        add_stat!(armor);
-        add_stat!(magic_resist, magic_resistance);
+        add_stat!(@fire ability_power);
+        add_stat!(@fire attack_damage);
+        add_stat!(@earth armor);
+        add_stat!(@earth magic_resist, magic_resistance);
         add_stat!(max_health, health);
         add_stat!(crit_chance, critical_strike_chance);
         add_stat!(crit_damage, critical_strike_damage);
@@ -239,7 +246,6 @@ fn item_exceptions(
     }
 }
 
-// #![todo] Comparison tool is not reliable;
 // #![todo] Stats are not assigned correctly
 // #![todo] Review exceptions
 #[generator_macros::trace_time]
@@ -247,23 +253,21 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
     let InputGame {
         active_player,
         enemy_players,
-        ally_fire_dragons,
-        ally_earth_dragons,
         enemy_earth_dragons,
         stack_exceptions,
+        ally_fire_dragons,
+        ally_earth_dragons,
     } = game;
 
     let InputActivePlayer {
         level: current_player_level,
         champion_id: ref current_player_champion_id,
         abilities: current_player_abilities,
-        // #![todo]
-        champion_stats: ref _current_player_stats,
+        champion_stats: current_player_input_stats,
         runes: ref current_player_full_runes,
         items: ref current_player_full_items,
         infer_stats: current_player_infer_stats,
-        // #![todo]
-        stacks: _current_player_stacks,
+        ..
     } = active_player;
 
     let current_player_damaging_items = current_player_full_items
@@ -285,8 +289,11 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
         )),
     )?;
 
-    let mut current_player_stats =
-        RiotFormulas::full_base_stats(&current_player_cache.stats, current_player_level);
+    let mut current_player_stats = if current_player_infer_stats {
+        RiotFormulas::full_base_stats(&current_player_cache.stats, current_player_level)
+    } else {
+        current_player_input_stats
+    };
 
     let current_player_base_stats = get_base_stats(current_player_cache, current_player_level);
     let current_player_basic_stats = BasicStats {
@@ -297,11 +304,18 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
         mana: current_player_stats.max_mana,
     };
 
+    let ally_dragon_multipliers = DragonMultipliers {
+        fire: 1.0 + FIRE_DRAGON_MULTIPLIER * ally_fire_dragons as f64,
+        earth: 1.0 + EARTH_DRAGON_MULTIPLIER * ally_earth_dragons as f64,
+        chemtech: 1.0,
+    };
+
     let current_player_bonus_stats = if current_player_infer_stats {
-        apply_auto_stats(
+        infer_champion_stats(
             &mut current_player_stats,
             &active_player,
             current_player_base_stats,
+            ally_dragon_multipliers,
         )?
     } else {
         get_bonus_stats(current_player_basic_stats, current_player_base_stats)
@@ -346,22 +360,19 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
         })
         .unwrap_or(&[]);
 
-    let ally_dragon_multipliers = DragonMultipliers {
-        fire: 1.0 + FIRE_DRAGON_MULTIPLIER * ally_fire_dragons as f64,
-        earth: 1.0 + EARTH_DRAGON_MULTIPLIER * ally_earth_dragons as f64,
-        chemtech: 1.0,
-    };
     let enemy_dragon_multipliers = DragonMultipliers {
         fire: 1.0,
         earth: 1.0 + EARTH_DRAGON_MULTIPLIER * enemy_earth_dragons as f64,
         chemtech: 1.0,
     };
 
+    /*
     let simulated_stats = get_simulated_champion_stats(
         &current_player_stats,
         current_player_full_items,
         &ally_dragon_multipliers,
     );
+    */
 
     let current_player_state = (
         &current_player_stats,
@@ -380,32 +391,64 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
     let runes_iter_expr =
         get_runes_damage(&current_player_damaging_runes, current_player_attack_type);
 
-    let enemies = enemy_players
-        .into_par_iter()
-        .map(|player| {
-            let InputEnemyPlayers {
-                champion_name: enemy_champion_name,
-                items: enemy_items,
-                level: enemy_level,
-                // #![todo]
-                infer_stats: _infer_enemy_stats,
-                // #![todo]
-                stats: _enemy_stats,
-            } = player;
-            let enemy_champion_id = INTERNAL_NAMES.get(&enemy_champion_name).ok_or(
-                CalculationError::ChampionCacheNotFound(format!(
-                    "[enemy_players.into_par_iter()]: {}",
-                    enemy_champion_name
-                )),
-            )?;
-            let enemy_cache = INTERNAL_CHAMPIONS.get(enemy_champion_id).ok_or(
-                CalculationError::ChampionCacheNotFound(format!(
-                    "[enemy_players.into_par_iter()]: {}",
-                    enemy_champion_id
-                )),
-            )?;
-            let enemy_base_stats = get_base_stats(enemy_cache, enemy_level);
-            let full_stats = get_full_stats(
+    let output_enemy = |player| {
+        let InputEnemyPlayers {
+            champion_name: enemy_champion_name,
+            items: enemy_items,
+            level: enemy_level,
+            // #![todo]
+            infer_stats: _infer_enemy_stats,
+            // #![todo]
+            stats: _enemy_stats,
+        } = player;
+        let enemy_champion_id = INTERNAL_NAMES.get(&enemy_champion_name).ok_or(
+            CalculationError::ChampionCacheNotFound(format!(
+                "[enemy_players.into_par_iter()]: {}",
+                enemy_champion_name
+            )),
+        )?;
+        let enemy_cache = INTERNAL_CHAMPIONS.get(enemy_champion_id).ok_or(
+            CalculationError::ChampionCacheNotFound(format!(
+                "[enemy_players.into_par_iter()]: {}",
+                enemy_champion_id
+            )),
+        )?;
+        let enemy_base_stats = get_base_stats(enemy_cache, enemy_level);
+        let full_stats = get_full_stats(
+            (
+                enemy_champion_id,
+                enemy_level,
+                enemy_dragon_multipliers.earth,
+            ),
+            (enemy_base_stats, &enemy_items),
+            (
+                current_player_stats.armor_penetration_percent,
+                current_player_stats.armor_penetration_flat,
+            ),
+            (
+                current_player_stats.magic_penetration_percent,
+                current_player_stats.magic_penetration_flat,
+            ),
+        );
+
+        let damage_multipliers = DamageMultipliers {
+            self_mod: full_stats.2.self_mod,
+            enemy_mod: full_stats.2.enemy_mod,
+            damage_mod: (full_stats.2.armor_mod, full_stats.2.magic_mod),
+        };
+
+        let eval_ctx = get_eval_ctx(&current_player_state, &full_stats);
+
+        let abilities_damage = get_damages(&abilities_iter_expr, &damage_multipliers, &eval_ctx);
+        let items_damage = get_damages(&items_iter_expr, &damage_multipliers, &eval_ctx);
+        let runes_damage = get_damages(&runes_iter_expr, &damage_multipliers, &eval_ctx);
+
+        /*
+        let mut compared_items_damage =
+            FxHashMap::with_capacity_and_hasher(simulated_stats.len(), Default::default());
+
+        for (siml_item_id, siml_stats) in simulated_stats.iter() {
+            let siml_full_stats = get_full_stats(
                 (
                     enemy_champion_id,
                     enemy_level,
@@ -413,115 +456,93 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
                 ),
                 (enemy_base_stats, &enemy_items),
                 (
-                    current_player_stats.armor_penetration_percent,
-                    current_player_stats.armor_penetration_flat,
+                    siml_stats.armor_penetration_percent,
+                    siml_stats.armor_penetration_flat,
                 ),
                 (
-                    current_player_stats.magic_penetration_percent,
-                    current_player_stats.magic_penetration_flat,
+                    siml_stats.magic_penetration_percent,
+                    siml_stats.magic_penetration_flat,
                 ),
             );
 
-            let damage_multipliers = DamageMultipliers {
-                self_mod: full_stats.2.self_mod,
-                enemy_mod: full_stats.2.enemy_mod,
-                damage_mod: (full_stats.2.armor_mod, full_stats.2.magic_mod),
+            let siml_damage_multipliers = DamageMultipliers {
+                self_mod: siml_full_stats.2.self_mod,
+                enemy_mod: siml_full_stats.2.enemy_mod,
+                damage_mod: (siml_full_stats.2.armor_mod, siml_full_stats.2.magic_mod),
             };
 
-            let eval_ctx = get_eval_ctx(&current_player_state, &full_stats);
-
-            let abilities_damage =
-                get_damages(&abilities_iter_expr, &damage_multipliers, &eval_ctx);
-            let items_damage = get_damages(&items_iter_expr, &damage_multipliers, &eval_ctx);
-            let runes_damage = get_damages(&runes_iter_expr, &damage_multipliers, &eval_ctx);
-
-            let mut compared_items_damage =
-                FxHashMap::with_capacity_and_hasher(simulated_stats.len(), Default::default());
-
-            for (siml_item_id, siml_stats) in simulated_stats.iter() {
-                let siml_full_stats = get_full_stats(
-                    (
-                        enemy_champion_id,
-                        enemy_level,
-                        enemy_dragon_multipliers.earth,
-                    ),
-                    (enemy_base_stats, &enemy_items),
-                    (
-                        siml_stats.armor_penetration_percent,
-                        siml_stats.armor_penetration_flat,
-                    ),
-                    (
-                        siml_stats.magic_penetration_percent,
-                        siml_stats.magic_penetration_flat,
-                    ),
-                );
-
-                let siml_damage_multipliers = DamageMultipliers {
-                    self_mod: siml_full_stats.2.self_mod,
-                    enemy_mod: siml_full_stats.2.enemy_mod,
-                    damage_mod: (siml_full_stats.2.armor_mod, siml_full_stats.2.magic_mod),
-                };
-
-                let siml_bonus_stats = get_bonus_stats(
-                    BasicStats {
-                        armor: siml_stats.armor,
-                        health: siml_stats.max_health,
-                        attack_damage: siml_stats.attack_damage,
-                        magic_resist: siml_stats.magic_resist,
-                        mana: siml_stats.max_mana,
-                    },
-                    current_player_basic_stats,
-                );
-
-                let siml_current_player_state = (
-                    siml_stats,
-                    siml_bonus_stats,
-                    current_player_state.2,
-                    current_player_state.3,
-                );
-
-                let siml_eval_ctx = get_eval_ctx(&siml_current_player_state, &siml_full_stats);
-
-                let siml_abilities_damage = get_damages(
-                    &abilities_iter_expr,
-                    &siml_damage_multipliers,
-                    &siml_eval_ctx,
-                );
-                let siml_items_damage =
-                    get_damages(&items_iter_expr, &siml_damage_multipliers, &siml_eval_ctx);
-                let siml_runes_damage =
-                    get_damages(&runes_iter_expr, &siml_damage_multipliers, &siml_eval_ctx);
-
-                compared_items_damage.insert(
-                    *siml_item_id,
-                    SimulatedDamages {
-                        abilities: siml_abilities_damage,
-                        items: siml_items_damage,
-                        runes: siml_runes_damage,
-                    },
-                );
-            }
-
-            Ok((
-                *enemy_champion_id,
-                OutputEnemy {
-                    champion_name: enemy_champion_name,
-                    damages: Damages {
-                        abilities: abilities_damage,
-                        items: items_damage,
-                        runes: runes_damage,
-                        compared_items: compared_items_damage,
-                    },
-                    level: player.level,
-                    base_stats: enemy_base_stats,
-                    current_stats: full_stats.0,
-                    bonus_stats: full_stats.1,
-                    real_armor: full_stats.2.real_armor,
-                    real_magic_resist: full_stats.2.real_magic,
+            let siml_bonus_stats = get_bonus_stats(
+                BasicStats {
+                    armor: siml_stats.armor,
+                    health: siml_stats.max_health,
+                    attack_damage: siml_stats.attack_damage,
+                    magic_resist: siml_stats.magic_resist,
+                    mana: siml_stats.max_mana,
                 },
-            ))
-        })
-        .collect::<Result<FxHashMap<&'static str, OutputEnemy>, CalculationError>>()?;
+                current_player_basic_stats,
+            );
+
+            let siml_current_player_state = (
+                siml_stats,
+                siml_bonus_stats,
+                current_player_state.2,
+                current_player_state.3,
+            );
+
+            let siml_eval_ctx = get_eval_ctx(&siml_current_player_state, &siml_full_stats);
+
+            let siml_abilities_damage = get_damages(
+                &abilities_iter_expr,
+                &siml_damage_multipliers,
+                &siml_eval_ctx,
+            );
+            let siml_items_damage =
+                get_damages(&items_iter_expr, &siml_damage_multipliers, &siml_eval_ctx);
+            let siml_runes_damage =
+                get_damages(&runes_iter_expr, &siml_damage_multipliers, &siml_eval_ctx);
+
+            compared_items_damage.insert(
+                *siml_item_id,
+                SimulatedDamages {
+                    abilities: siml_abilities_damage,
+                    items: siml_items_damage,
+                    runes: siml_runes_damage,
+                },
+            );
+        }
+        */
+
+        Ok((
+            *enemy_champion_id,
+            OutputEnemy {
+                champion_name: enemy_champion_name,
+                damages: CalculatorDamages {
+                    abilities: abilities_damage,
+                    items: items_damage,
+                    runes: runes_damage,
+                    // compared_items: compared_items_damage,
+                },
+                level: player.level,
+                base_stats: enemy_base_stats,
+                current_stats: full_stats.0,
+                bonus_stats: full_stats.1,
+                real_armor: full_stats.2.real_armor,
+                real_magic_resist: full_stats.2.real_magic,
+            },
+        ))
+    };
+
+    let enemies = if enemy_players.len() > 5 {
+        enemy_players
+            .into_par_iter()
+            .map(output_enemy)
+            .collect::<Result<FxHashMap<&'static str, OutputEnemy>, CalculationError>>()?
+    } else {
+        enemy_players
+            .into_iter()
+            .map(output_enemy)
+            .collect::<Result<FxHashMap<&'static str, OutputEnemy>, CalculationError>>()?
+    };
 
     Ok(OutputGame {
         current_player: OutputCurrentPlayer {

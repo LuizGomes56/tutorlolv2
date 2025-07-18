@@ -25,10 +25,8 @@ pub fn get_simulated_champion_stats<'a>(
     owned_items: &[usize],
     ally_dragon_multipliers: &DragonMultipliers,
 ) -> FxHashMap<usize, Stats> {
-    let mut simulated_stats = FxHashMap::with_capacity_and_hasher(
-        SIMULATED_ITEMS.len() - owned_items.len(),
-        Default::default(),
-    );
+    let mut simulated_stats =
+        FxHashMap::with_capacity_and_hasher(SIMULATED_ITEMS.len(), Default::default());
     for item_id in SIMULATED_ITEMS.iter() {
         if owned_items.contains(item_id) {
             continue;
@@ -143,8 +141,8 @@ pub fn get_runes_damage(
 pub fn get_full_stats(
     enemy_state: (&str, usize, f64),
     enemy_stats: (BasicStats, &[usize]),
-    magic_val: (f64, f64),
     armor_val: (f64, f64),
+    magic_val: (f64, f64),
 ) -> (BasicStats, BasicStats, GenericStats) {
     let (enemy_champion_id, enemy_level, earth_dragon_mod) = enemy_state;
     let (enemy_base_stats, enemy_items) = enemy_stats;

@@ -1,4 +1,4 @@
-use super::base::{AbilityLevels, BasicStats, Damages, Stats};
+use super::base::{AbilityLevels, BasicStats, DamageLike, Stats};
 use rustc_hash::FxHashMap;
 use serde::{Deserialize, Serialize};
 
@@ -15,10 +15,17 @@ pub struct OutputCurrentPlayer {
 }
 
 #[derive(Serialize)]
+pub struct CalculatorDamages {
+    pub abilities: DamageLike<&'static str>,
+    pub items: DamageLike<usize>,
+    pub runes: DamageLike<usize>,
+}
+
+#[derive(Serialize)]
 pub struct OutputEnemy {
     pub champion_name: String,
     pub level: usize,
-    pub damages: Damages,
+    pub damages: CalculatorDamages,
     pub base_stats: BasicStats,
     pub bonus_stats: BasicStats,
     pub current_stats: BasicStats,
