@@ -172,6 +172,7 @@ pub mod xinzhao;
 pub mod yasuo;
 pub mod yone;
 pub mod yorick;
+pub mod yunara;
 pub mod yuumi;
 pub mod zac;
 pub mod zed;

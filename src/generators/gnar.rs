@@ -1,24 +1,28 @@
 use super::*;
 
-// #![stable] "06/18/2025" | "25.11"
+// #![auto_generated]
 
 #[generator_macros::generator]
 pub fn gen_gnar(data: CdnChampion) -> Champion {
-    ability!(
-        q,
-        (0, 1, "Q", Target::MINIMUM),
-        (0, 0, "Q_MAX", Target::MAXIMUM),
-    );
-    ability!(q, 1, (0, 0, "Q_MEGA", Target::MINIMUM));
-    ability!(w, (1, 0, "W", Target::MINIMUM),);
-    ability!(w, 1, (0, 0, "W_MEGA", Target::MINIMUM));
-    ability!(e, (2, 0, "E", Target::MINIMUM),);
-    ability!(e, 1, (0, 0, "E_MEGA", Target::MINIMUM));
-    ability!(
-        r,
-        (1, 0, "R", Target::MINIMUM),
-        (2, 0, "R_MAX", Target::MAXIMUM)
-    );
-    merge_ability!("Q");
-    merge_ability!("R");
+	ability!(
+		q,
+		(0, 0, "Q_0_0_0", Target::MINIMUM),
+		(0, 1, "Q_0_0_1", Target::MINIMUM),
+		(0, 0, "Q_1_0_0", Target::MINIMUM)
+	);
+	ability!(
+		w,
+		(2, 0, "W_0_2_0_BONUS", Target::MINIMUM),
+		(0, 0, "W_1_0_0", Target::MINIMUM)
+	);
+	ability!(
+		e,
+		(4, 0, "E_0_4_0", Target::MINIMUM),
+		(0, 0, "E_1_0_0", Target::MINIMUM)
+	);
+	ability!(
+		r,
+		(0, 0, "R_0_0_0_MAXIMUM", Target::MAXIMUM),
+		(1, 1, "R_0_1_1", Target::MINIMUM)
+	);
 }

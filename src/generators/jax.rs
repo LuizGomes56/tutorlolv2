@@ -1,23 +1,25 @@
 use super::*;
 
 // #![auto_generated]
-// ! #![unstable] [X] "06/11/2025" | "25.11"
-// #![preserve]
 
 #[generator_macros::generator]
 pub fn gen_jax(data: CdnChampion) -> Champion {
-    ability!(q, (1, 0, "Q", Target::MINIMUM));
-    ability!(w, (0, 0, "W", Target::MINIMUM));
-    ability!(
-        e,
-        (1, 0, "E", Target::MINIMUM),
-        (1, 1, "E_MAX", Target::MAXIMUM)
-    );
-    ability!(
-        r,
-        (0, 0, "R", Target::MINIMUM),
-        (1, 0, "R_MAX", Target::MAXIMUM)
-    );
-    merge_ability!("E");
-    merge_ability!("R");
+	ability!(
+		q,
+		(1, 0, "Q_0_1_0", Target::MINIMUM)
+	);
+	ability!(
+		w,
+		(0, 0, "W_0_0_0_BONUS", Target::MINIMUM)
+	);
+	ability!(
+		e,
+		(1, 0, "E_0_1_0_MAXIMUM", Target::MAXIMUM),
+		(1, 1, "E_0_1_1_MINIMUM", Target::MINIMUM)
+	);
+	ability!(
+		r,
+		(0, 4, "R_0_0_4", Target::MINIMUM),
+		(2, 0, "R_0_2_0_BONUS", Target::MINIMUM)
+	);
 }

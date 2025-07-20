@@ -6,7 +6,10 @@ use crate::{
     server::schemas::APIResponse,
     setup::{
         cache::{update_cdn_cache, update_riot_cache},
-        generators::champions::create_generator_files,
+        generators::{
+            champions::{GeneratorMode, create_generator_files, order_cdn_champion_effects},
+            items::assign_item_damages,
+        },
         scraper::meta_items_scraper,
         update::{
             prettify_internal_items, setup_champion_names, setup_damaging_items,
@@ -38,6 +41,7 @@ pub async fn setup_project(state: Data<AppState>) -> impl Responder {
 
         let _ = task::spawn_blocking(setup_champion_names).await.ok();
         let _ = task::spawn_blocking(setup_internal_items).await.ok();
+        let _ = task::spawn_blocking(setup_internal_runes).await.ok();
         let _ = prettify_internal_items().await;
 
         let client_1 = client.clone();
@@ -46,10 +50,12 @@ pub async fn setup_project(state: Data<AppState>) -> impl Responder {
             let _ = meta_items_scraper(client_1).await;
             let _ = setup_meta_items();
             let _ = setup_damaging_items();
+            let _ = assign_item_damages();
         });
 
         tokio::spawn(async move {
-            let _ = create_generator_files().await;
+            let _ = order_cdn_champion_effects();
+            let _ = create_generator_files(GeneratorMode::Partial).await;
             let _ = setup_internal_champions();
         });
 

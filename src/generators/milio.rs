@@ -6,6 +6,6 @@ use super::*;
 pub fn gen_milio(data: CdnChampion) -> Champion {
 	ability!(
 		q,
-		(1, 0, "Q_0_1_0", Target::MINIMUM)
+		(3, 0, "Q_0_3_0", Target::MINIMUM)
 	);
 }

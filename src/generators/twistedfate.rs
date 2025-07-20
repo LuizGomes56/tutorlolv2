@@ -10,9 +10,9 @@ pub fn gen_twistedfate(data: CdnChampion) -> Champion {
 	);
 	ability!(
 		w,
+		(1, 0, "W_0_1_0", Target::MINIMUM),
 		(2, 0, "W_0_2_0", Target::MINIMUM),
-		(3, 0, "W_0_3_0", Target::MINIMUM),
-		(4, 0, "W_0_4_0", Target::MINIMUM)
+		(5, 0, "W_0_5_0", Target::MINIMUM)
 	);
 	ability!(
 		e,

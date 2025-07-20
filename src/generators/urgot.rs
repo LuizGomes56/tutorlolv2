@@ -10,7 +10,7 @@ pub fn gen_urgot(data: CdnChampion) -> Champion {
 	);
 	ability!(
 		w,
-		(2, 0, "W_0_2_0", Target::MINIMUM)
+		(1, 0, "W_0_1_0", Target::MINIMUM)
 	);
 	ability!(
 		e,

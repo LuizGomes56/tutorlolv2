@@ -1,9 +1,11 @@
 use super::*;
 
-// #![stable] "06/11/2025" | "25.11"
-// #![unsupported] [P] BARD_STACKS (Meeps)
+// #![auto_generated]
 
 #[generator_macros::generator]
 pub fn gen_bard(data: CdnChampion) -> Champion {
-    ability!(q, (0, 0, "Q", Target::MINIMUM));
+	ability!(
+		q,
+		(0, 1, "Q_0_0_1", Target::MINIMUM)
+	);
 }

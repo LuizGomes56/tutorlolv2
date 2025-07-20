@@ -20,6 +20,6 @@ pub fn gen_monkeyking(data: CdnChampion) -> Champion {
 		r,
 		(0, 0, "R_0_0_0", Target::MINIMUM),
 		(0, 1, "R_0_0_1_MAXIMUM", Target::MAXIMUM),
-		(2, 0, "R_0_2_0_MAXIMUM", Target::MAXIMUM)
+		(4, 0, "R_0_4_0_MAXIMUM", Target::MAXIMUM)
 	);
 }

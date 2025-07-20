@@ -14,6 +14,6 @@ pub fn gen_rakan(data: CdnChampion) -> Champion {
 	);
 	ability!(
 		r,
-		(0, 0, "R_0_0_0", Target::MINIMUM)
+		(0, 1, "R_0_0_1", Target::MINIMUM)
 	);
 }

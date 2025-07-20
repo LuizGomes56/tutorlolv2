@@ -14,7 +14,7 @@ pub fn gen_taliyah(data: CdnChampion) -> Champion {
 	ability!(
 		e,
 		(0, 0, "E_0_0_0", Target::MINIMUM),
-		(1, 0, "E_0_1_0", Target::MINIMUM),
-		(2, 0, "E_0_2_0_MAXIMUM", Target::MAXIMUM)
+		(1, 0, "E_0_1_0_MAXIMUM", Target::MAXIMUM),
+		(2, 0, "E_0_2_0", Target::MINIMUM)
 	);
 }

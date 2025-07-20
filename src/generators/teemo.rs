@@ -6,7 +6,7 @@ use super::*;
 pub fn gen_teemo(data: CdnChampion) -> Champion {
 	ability!(
 		q,
-		(0, 0, "Q_0_0_0", Target::MINIMUM)
+		(0, 1, "Q_0_0_1", Target::MINIMUM)
 	);
 	ability!(
 		e,
@@ -19,7 +19,7 @@ pub fn gen_teemo(data: CdnChampion) -> Champion {
 	);
 	ability!(
 		r,
-		(3, 0, "R_0_3_0", Target::MINIMUM),
-		(3, 1, "R_0_3_1_MAXIMUM", Target::MAXIMUM)
+		(5, 0, "R_0_5_0", Target::MINIMUM),
+		(5, 1, "R_0_5_1_MAXIMUM", Target::MAXIMUM)
 	);
 }

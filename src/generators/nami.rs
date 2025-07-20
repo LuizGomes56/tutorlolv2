@@ -10,13 +10,13 @@ pub fn gen_nami(data: CdnChampion) -> Champion {
 	);
 	ability!(
 		w,
-		(1, 2, "W_0_1_2", Target::MINIMUM),
-		(1, 3, "W_0_1_3_MINIMUM", Target::MINIMUM)
+		(1, 1, "W_0_1_1", Target::MINIMUM),
+		(1, 2, "W_0_1_2_MINIMUM", Target::MINIMUM)
 	);
 	ability!(
 		e,
 		(0, 0, "E_0_0_0_BONUS", Target::MINIMUM),
-		(0, 1, "E_0_0_1_BONUS", Target::MINIMUM)
+		(0, 2, "E_0_0_2_BONUS", Target::MINIMUM)
 	);
 	ability!(
 		r,

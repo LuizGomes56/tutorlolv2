@@ -6,7 +6,7 @@ use super::*;
 pub fn gen_ryze(data: CdnChampion) -> Champion {
 	ability!(
 		q,
-		(1, 0, "Q_0_1_0", Target::MINIMUM)
+		(0, 0, "Q_0_0_0", Target::MINIMUM)
 	);
 	ability!(
 		w,
@@ -18,6 +18,6 @@ pub fn gen_ryze(data: CdnChampion) -> Champion {
 	);
 	ability!(
 		r,
-		(0, 0, "R_0_0_0_BONUS", Target::MINIMUM)
+		(1, 0, "R_0_1_0_BONUS", Target::MINIMUM)
 	);
 }

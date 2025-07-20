@@ -8,13 +8,16 @@ use crate::{
 use actix_web::{HttpResponse, Responder, post, web::Data};
 
 macro_rules! download_image {
-    ($state:expr, $call:expr) => {{
-        $call($state.client.clone()).await;
+    (@inner $msg:expr) => {{
         HttpResponse::Ok().json(APIResponse {
             success: true,
-            message: &format!("Executed fn[{}]", stringify!($call)),
+            message: $msg,
             data: (),
         })
+    }};
+    ($state:expr, $call:expr) => {{
+        $call($state.client.clone()).await;
+        download_image!(@inner format!("Executed fn[{}]", stringify!($call)))
     }};
 }
 
@@ -36,6 +39,20 @@ pub async fn download_runes(state: Data<AppState>) -> impl Responder {
 #[post("/arts")]
 pub async fn download_arts(state: Data<AppState>) -> impl Responder {
     download_image!(state, img_download_arts)
+}
+
+#[post("/all")]
+pub async fn download_all(state: Data<AppState>) -> impl Responder {
+    macro_rules! spawn_thread {
+        ($func:ident) => {{
+            let _ = tokio::spawn($func(state.client.clone()));
+        }};
+    }
+    spawn_thread!(img_download_instances);
+    spawn_thread!(img_download_items);
+    spawn_thread!(img_download_runes);
+    spawn_thread!(img_download_arts);
+    download_image!(@inner "Started process")
 }
 
 #[post("/compress")]

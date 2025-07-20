@@ -10,8 +10,8 @@ pub fn gen_rell(data: CdnChampion) -> Champion {
 	);
 	ability!(
 		w,
-		(1, 1, "W_0_1_1", Target::MINIMUM),
-		(1, 0, "W_1_1_0_BONUS", Target::MINIMUM)
+		(0, 0, "W_0_0_0", Target::MINIMUM),
+		(0, 0, "W_1_0_0_BONUS", Target::MINIMUM)
 	);
 	ability!(
 		e,

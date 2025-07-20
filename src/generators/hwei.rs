@@ -18,12 +18,12 @@ pub fn gen_hwei(data: CdnChampion) -> Champion {
 	ability!(
 		w,
 		(0, 0, "W_3_0_0_BONUS", Target::MINIMUM),
-		(0, 1, "W_3_0_1_MAXIMUM", Target::MAXIMUM),
+		(0, 2, "W_3_0_2_MAXIMUM", Target::MAXIMUM),
 		(1, 0, "W_3_1_0_BONUS", Target::MINIMUM)
 	);
 	ability!(
 		e,
-		(0, 0, "E_1_0_0", Target::MINIMUM),
+		(0, 1, "E_1_0_1", Target::MINIMUM),
 		(0, 0, "E_2_0_0", Target::MINIMUM),
 		(0, 0, "E_3_0_0", Target::MINIMUM)
 	);
@@ -31,7 +31,7 @@ pub fn gen_hwei(data: CdnChampion) -> Champion {
 		r,
 		(0, 0, "R_0_0_0", Target::MINIMUM),
 		(0, 1, "R_0_0_1_MAXIMUM", Target::MAXIMUM),
-		(2, 0, "R_0_2_0", Target::MINIMUM),
-		(2, 1, "R_0_2_1_MAXIMUM", Target::MAXIMUM)
+		(1, 0, "R_0_1_0", Target::MINIMUM),
+		(1, 1, "R_0_1_1_MAXIMUM", Target::MAXIMUM)
 	);
 }

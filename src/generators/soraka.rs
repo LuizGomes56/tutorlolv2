@@ -11,6 +11,6 @@ pub fn gen_soraka(data: CdnChampion) -> Champion {
 	ability!(
 		e,
 		(0, 0, "E_0_0_0", Target::MINIMUM),
-		(1, 0, "E_0_1_0_MAXIMUM", Target::MAXIMUM)
+		(1, 1, "E_0_1_1_MAXIMUM", Target::MAXIMUM)
 	);
 }

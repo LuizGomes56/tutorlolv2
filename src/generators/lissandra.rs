@@ -18,6 +18,6 @@ pub fn gen_lissandra(data: CdnChampion) -> Champion {
 	);
 	ability!(
 		r,
-		(3, 0, "R_0_3_0", Target::MINIMUM)
+		(2, 0, "R_0_2_0", Target::MINIMUM)
 	);
 }

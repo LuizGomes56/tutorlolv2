@@ -11,6 +11,6 @@ pub fn gen_mordekaiser(data: CdnChampion) -> Champion {
 	);
 	ability!(
 		e,
-		(1, 0, "E_0_1_0", Target::MINIMUM)
+		(0, 0, "E_0_0_0", Target::MINIMUM)
 	);
 }

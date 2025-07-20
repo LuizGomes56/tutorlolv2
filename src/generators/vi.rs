@@ -6,12 +6,12 @@ use super::*;
 pub fn gen_vi(data: CdnChampion) -> Champion {
 	ability!(
 		q,
-		(2, 0, "Q_0_2_0_MINIMUM", Target::MINIMUM),
-		(2, 1, "Q_0_2_1_MAXIMUM", Target::MAXIMUM)
+		(1, 0, "Q_0_1_0_MAXIMUM", Target::MAXIMUM),
+		(1, 1, "Q_0_1_1_MINIMUM", Target::MINIMUM)
 	);
 	ability!(
 		w,
-		(0, 0, "W_0_0_0_BONUS", Target::MINIMUM)
+		(1, 0, "W_0_1_0_BONUS", Target::MINIMUM)
 	);
 	ability!(
 		e,

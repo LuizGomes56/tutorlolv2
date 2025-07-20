@@ -19,6 +19,6 @@ pub fn gen_kayn(data: CdnChampion) -> Champion {
 	);
 	ability!(
 		r,
-		(2, 0, "R_0_2_0", Target::MINIMUM)
+		(3, 0, "R_0_3_0", Target::MINIMUM)
 	);
 }

@@ -18,6 +18,6 @@ pub fn gen_volibear(data: CdnChampion) -> Champion {
 	);
 	ability!(
 		r,
-		(2, 0, "R_0_2_0", Target::MINIMUM)
+		(4, 0, "R_0_4_0", Target::MINIMUM)
 	);
 }

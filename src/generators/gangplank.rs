@@ -10,16 +10,16 @@ pub fn gen_gangplank(data: CdnChampion) -> Champion {
 	);
 	ability!(
 		e,
-		(3, 1, "E_0_3_1_BONUS", Target::MINIMUM)
+		(1, 0, "E_0_1_0_BONUS", Target::MINIMUM)
 	);
 	ability!(
 		r,
 		(0, 0, "R_0_0_0", Target::MINIMUM),
 		(0, 1, "R_0_0_1", Target::MINIMUM),
 		(0, 2, "R_0_0_2_MAXIMUM", Target::MAXIMUM),
-		(2, 0, "R_0_2_0", Target::MINIMUM),
-		(2, 1, "R_0_2_1_MAXIMUM", Target::MAXIMUM),
-		(3, 0, "R_0_3_0_MAXIMUM", Target::MAXIMUM),
-		(3, 1, "R_0_3_1_MAXIMUM", Target::MAXIMUM)
+		(1, 0, "R_0_1_0_MAXIMUM", Target::MAXIMUM),
+		(1, 1, "R_0_1_1", Target::MINIMUM),
+		(2, 0, "R_0_2_0_MAXIMUM", Target::MAXIMUM),
+		(2, 1, "R_0_2_1_MAXIMUM", Target::MAXIMUM)
 	);
 }

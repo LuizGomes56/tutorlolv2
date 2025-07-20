@@ -21,6 +21,6 @@ pub fn gen_vayne(data: CdnChampion) -> Champion {
 	);
 	ability!(
 		r,
-		(0, 1, "R_0_0_1_BONUS", Target::MINIMUM)
+		(0, 0, "R_0_0_0_BONUS", Target::MINIMUM)
 	);
 }

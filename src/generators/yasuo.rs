@@ -11,12 +11,12 @@ pub fn gen_yasuo(data: CdnChampion) -> Champion {
 	ability!(
 		e,
 		(0, 0, "E_0_0_0", Target::MINIMUM),
-		(1, 0, "E_0_1_0_BONUS", Target::MINIMUM),
-		(1, 1, "E_0_1_1_BONUS", Target::MINIMUM),
-		(1, 2, "E_0_1_2_MAXIMUM", Target::MAXIMUM)
+		(2, 0, "E_0_2_0_BONUS", Target::MINIMUM),
+		(2, 1, "E_0_2_1_BONUS", Target::MINIMUM),
+		(2, 2, "E_0_2_2_MAXIMUM", Target::MAXIMUM)
 	);
 	ability!(
 		r,
-		(1, 0, "R_0_1_0", Target::MINIMUM)
+		(3, 0, "R_0_3_0", Target::MINIMUM)
 	);
 }

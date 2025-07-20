@@ -10,7 +10,7 @@ pub fn gen_vex(data: CdnChampion) -> Champion {
 	);
 	ability!(
 		w,
-		(0, 1, "W_0_0_1", Target::MINIMUM)
+		(0, 0, "W_0_0_0", Target::MINIMUM)
 	);
 	ability!(
 		e,

@@ -1,23 +1,25 @@
 use super::*;
 
-// ! #![unstable] [E] "06/11/2025" | "25.11"
-// #![preserve]
-// #![todo] Create generator/macro for his passive
+// #![auto_generated]
 
 #[generator_macros::generator]
 pub fn gen_brand(data: CdnChampion) -> Champion {
-    ability!(q, (0, 0, "Q", Target::MINIMUM));
-    ability!(
-        w,
-        (0, 0, "W", Target::MINIMUM),
-        (1, 0, "W_MAX", Target::MAXIMUM)
-    );
-    ability!(e, (0, 0, "E", Target::MINIMUM));
-    ability!(
-        r,
-        (0, 0, "R", Target::MINIMUM),
-        (0, 1, "R_MAX", Target::MAXIMUM)
-    );
-    merge_ability!("W");
-    merge_ability!("R");
+	ability!(
+		q,
+		(1, 0, "Q_0_1_0", Target::MINIMUM)
+	);
+	ability!(
+		w,
+		(0, 0, "W_0_0_0_MAXIMUM", Target::MAXIMUM),
+		(1, 0, "W_0_1_0", Target::MINIMUM)
+	);
+	ability!(
+		e,
+		(1, 0, "E_0_1_0", Target::MINIMUM)
+	);
+	ability!(
+		r,
+		(1, 0, "R_0_1_0", Target::MINIMUM),
+		(1, 1, "R_0_1_1_MAXIMUM", Target::MAXIMUM)
+	);
 }

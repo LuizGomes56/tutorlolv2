@@ -10,7 +10,7 @@ pub fn gen_rengar(data: CdnChampion) -> Champion {
 	);
 	ability!(
 		w,
-		(1, 0, "W_0_1_0", Target::MINIMUM)
+		(0, 0, "W_0_0_0", Target::MINIMUM)
 	);
 	ability!(
 		e,

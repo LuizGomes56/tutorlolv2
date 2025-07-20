@@ -1,12 +1,19 @@
 use super::*;
 
-// #![stable] "06/11/2025" | "25.11"
+// #![auto_generated]
 
 #[generator_macros::generator]
 pub fn gen_braum(data: CdnChampion) -> Champion {
-    passive!("P", (0, 2), Target::MINIMUM, (Some(2), None));
-    passive!("P_MAX", (0, 1), Target::MAXIMUM);
-    ability!(q, (0, 0, "Q", Target::MINIMUM));
-    ability!(r, (0, 0, "R", Target::MINIMUM));
-    merge_ability!("P");
+	ability!(
+		q,
+		(0, 0, "Q_0_0_0", Target::MINIMUM)
+	);
+	ability!(
+		e,
+		(0, 1, "E_0_0_1", Target::MINIMUM)
+	);
+	ability!(
+		r,
+		(1, 0, "R_0_1_0", Target::MINIMUM)
+	);
 }

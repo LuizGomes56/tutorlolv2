@@ -120,6 +120,7 @@ fn api_scope() -> Scope<
                 .service(download_items)
                 .service(download_arts)
                 .service(download_runes)
+                .service(download_all)
                 .service(compress_images),
         );
 

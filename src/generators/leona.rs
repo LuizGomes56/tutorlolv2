@@ -10,7 +10,7 @@ pub fn gen_leona(data: CdnChampion) -> Champion {
 	);
 	ability!(
 		w,
-		(0, 0, "W_0_0_0", Target::MINIMUM),
+		(0, 2, "W_0_0_2", Target::MINIMUM),
 		(1, 0, "W_0_1_0", Target::MINIMUM)
 	);
 	ability!(

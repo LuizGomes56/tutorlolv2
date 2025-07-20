@@ -6,8 +6,8 @@ use super::*;
 pub fn gen_nilah(data: CdnChampion) -> Champion {
 	ability!(
 		q,
-		(1, 0, "Q_0_1_0_MINIMUM", Target::MINIMUM),
-		(1, 1, "Q_0_1_1_MAXIMUM", Target::MAXIMUM)
+		(0, 0, "Q_0_0_0_MAXIMUM", Target::MAXIMUM),
+		(0, 1, "Q_0_0_1_MINIMUM", Target::MINIMUM)
 	);
 	ability!(
 		e,

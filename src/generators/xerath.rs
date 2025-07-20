@@ -19,8 +19,8 @@ pub fn gen_xerath(data: CdnChampion) -> Champion {
 	);
 	ability!(
 		r,
-		(1, 0, "R_0_1_0", Target::MINIMUM),
-		(1, 1, "R_0_1_1_MAXIMUM", Target::MAXIMUM),
+		(1, 0, "R_0_1_0_MAXIMUM", Target::MAXIMUM),
+		(2, 0, "R_0_2_0", Target::MINIMUM),
 		(2, 1, "R_0_2_1_MAXIMUM", Target::MAXIMUM)
 	);
 }

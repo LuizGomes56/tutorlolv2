@@ -1,15 +1,20 @@
 use super::*;
 
-// #![stable] "06/11/2025" | "25.11"
+// #![auto_generated]
 
 #[generator_macros::generator]
 pub fn gen_ashe(data: CdnChampion) -> Champion {
-    ability!(
-        q,
-        (2, 0, "Q", Target::MINIMUM),
-        (2, 1, "Q_MAX", Target::MAXIMUM)
-    );
-    ability!(w, (0, 1, "W", Target::MINIMUM));
-    ability!(r, (0, 0, "R", Target::MINIMUM));
-    merge_ability!("Q");
+	ability!(
+		q,
+		(0, 1, "Q_0_0_1", Target::MINIMUM),
+		(0, 2, "Q_0_0_2_MAXIMUM", Target::MAXIMUM)
+	);
+	ability!(
+		w,
+		(0, 1, "W_0_0_1", Target::MINIMUM)
+	);
+	ability!(
+		r,
+		(0, 0, "R_0_0_0", Target::MINIMUM)
+	);
 }

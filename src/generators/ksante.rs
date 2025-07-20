@@ -10,16 +10,16 @@ pub fn gen_ksante(data: CdnChampion) -> Champion {
 	);
 	ability!(
 		w,
-		(2, 0, "W_0_2_0", Target::MINIMUM),
-		(2, 1, "W_0_2_1_MONSTER", Target::MINIMUM),
-		(3, 0, "W_0_3_0_BONUS", Target::MINIMUM),
-		(3, 1, "W_0_3_1_BONUS", Target::MINIMUM),
-		(3, 2, "W_0_3_2_MAXIMUM", Target::MAXIMUM)
+		(1, 0, "W_0_1_0_BONUS", Target::MINIMUM),
+		(1, 1, "W_0_1_1_BONUS", Target::MINIMUM),
+		(1, 2, "W_0_1_2_MAXIMUM", Target::MAXIMUM),
+		(4, 0, "W_0_4_0_MONSTER", Target::MINIMUM),
+		(4, 1, "W_0_4_1", Target::MINIMUM)
 	);
 	ability!(
 		r,
 		(0, 0, "R_0_0_0", Target::MINIMUM),
-		(1, 0, "R_0_1_0", Target::MINIMUM),
-		(1, 1, "R_0_1_1_MAXIMUM", Target::MAXIMUM)
+		(3, 0, "R_0_3_0", Target::MINIMUM),
+		(3, 1, "R_0_3_1_MAXIMUM", Target::MAXIMUM)
 	);
 }

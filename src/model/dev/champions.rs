@@ -3,27 +3,27 @@ use crate::{
     model::champions::ChampionCdnStats,
 };
 use rustc_hash::FxHashMap;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Serialize)]
 pub struct Modifiers {
     pub units: Vec<String>,
     pub values: Vec<f64>,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Serialize)]
 pub struct ModifierLike {
     pub attribute: Option<String>,
     pub modifiers: Vec<Modifiers>,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Serialize)]
 pub struct Effect {
     pub description: String,
     pub leveling: Vec<ModifierLike>,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CdnAbility {
     pub cooldown: Option<ModifierLike>,
@@ -49,7 +49,7 @@ impl CdnAbility {
     }
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Serialize)]
 #[serde(rename_all = "UPPERCASE")]
 pub struct Abilities {
     pub p: Vec<CdnAbility>,
@@ -72,7 +72,7 @@ impl Abilities {
     }
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CdnChampion {
     pub name: String,

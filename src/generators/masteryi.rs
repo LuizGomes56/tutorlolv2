@@ -6,18 +6,18 @@ use super::*;
 pub fn gen_masteryi(data: CdnChampion) -> Champion {
 	ability!(
 		q,
-		(2, 0, "Q_0_2_0", Target::MINIMUM),
-		(2, 1, "Q_0_2_1", Target::MINIMUM),
-		(2, 2, "Q_0_2_2_MAXIMUM", Target::MAXIMUM),
-		(2, 3, "Q_0_2_3_MONSTER", Target::MINIMUM),
-		(2, 4, "Q_0_2_4_MONSTER", Target::MINIMUM),
-		(2, 5, "Q_0_2_5_MONSTER", Target::MINIMUM),
-		(2, 6, "Q_0_2_6_MONSTER", Target::MINIMUM)
+		(3, 0, "Q_0_3_0_MONSTER", Target::MINIMUM),
+		(3, 1, "Q_0_3_1_MONSTER", Target::MINIMUM),
+		(3, 2, "Q_0_3_2_MAXIMUM", Target::MAXIMUM),
+		(3, 3, "Q_0_3_3_MONSTER", Target::MINIMUM),
+		(3, 4, "Q_0_3_4", Target::MINIMUM),
+		(3, 5, "Q_0_3_5", Target::MINIMUM),
+		(3, 6, "Q_0_3_6_MONSTER", Target::MINIMUM)
 	);
 	ability!(
 		w,
-		(1, 0, "W_0_1_0", Target::MINIMUM),
-		(1, 1, "W_0_1_1", Target::MINIMUM)
+		(2, 0, "W_0_2_0", Target::MINIMUM),
+		(2, 1, "W_0_2_1", Target::MINIMUM)
 	);
 	ability!(
 		e,

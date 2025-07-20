@@ -10,8 +10,8 @@ pub fn gen_yorick(data: CdnChampion) -> Champion {
 	);
 	ability!(
 		e,
-		(0, 0, "E_0_0_0", Target::MINIMUM),
-		(0, 1, "E_0_0_1_MINIMUM", Target::MINIMUM),
-		(0, 2, "E_0_0_2_MONSTER", Target::MINIMUM)
+		(0, 0, "E_0_0_0_MONSTER", Target::MINIMUM),
+		(0, 1, "E_0_0_1", Target::MINIMUM),
+		(0, 2, "E_0_0_2_MINIMUM", Target::MINIMUM)
 	);
 }

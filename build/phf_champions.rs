@@ -188,6 +188,9 @@ pub fn global_phf_internal_champions(out_dir: &str) {
                         "",
                     )
                     .replace(";", "");
+                if rustfmt_val.is_empty() {
+                    continue;
+                }
                 let highlighted_val = highlight(&format!(
                     "intrinsic {}_{} = {}",
                     champion_id.to_uppercase(),

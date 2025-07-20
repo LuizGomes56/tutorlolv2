@@ -1,25 +1,23 @@
 use super::*;
 
-// #![stable] "06/18/2025" | "25.11"
+// #![auto_generated]
 
 #[generator_macros::generator]
 pub fn gen_anivia(data: CdnChampion) -> Champion {
-    ability!(
-        q,
-        (0, 0, "Q1", Target::MINIMUM),
-        (2, 0, "Q2", Target::MINIMUM),
-        (2, 1, "Q_MAX", Target::MAXIMUM)
-    );
-    ability!(
-        e,
-        (1, 0, "E", Target::MINIMUM),
-        (1, 1, "E_MAX", Target::MAXIMUM)
-    );
-    ability!(
-        r,
-        (0, 0, "R", Target::MINIMUM),
-        (1, 0, "R_MAX", Target::MAXIMUM)
-    );
-    merge_ability!("E");
-    merge_ability!("R");
+	ability!(
+		q,
+		(0, 0, "Q_0_0_0", Target::MINIMUM),
+		(2, 0, "Q_0_2_0", Target::MINIMUM),
+		(2, 2, "Q_0_2_2_MAXIMUM", Target::MAXIMUM)
+	);
+	ability!(
+		e,
+		(0, 0, "E_0_0_0", Target::MINIMUM),
+		(0, 1, "E_0_0_1", Target::MINIMUM)
+	);
+	ability!(
+		r,
+		(0, 0, "R_0_0_0", Target::MINIMUM),
+		(3, 0, "R_0_3_0", Target::MINIMUM)
+	);
 }
