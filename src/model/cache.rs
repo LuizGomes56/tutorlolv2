@@ -63,8 +63,8 @@ pub struct CachedChampionAbility {
     pub name: &'static str,
     pub damage_type: &'static str,
     pub damages_in_area: bool,
-    pub minimum_damage: fn(usize, &EvalContext) -> f64,
-    pub maximum_damage: fn(usize, &EvalContext) -> f64,
+    pub minimum_damage: fn(u8, &EvalContext) -> f64,
+    pub maximum_damage: fn(u8, &EvalContext) -> f64,
 }
 
 pub struct CachedChampionStatsMap {
@@ -91,37 +91,37 @@ pub struct CachedChampionStats {
 }
 
 pub struct CachedItemDamages {
-    pub minimum_damage: fn(usize, &EvalContext) -> f64,
-    pub maximum_damage: fn(usize, &EvalContext) -> f64,
+    pub minimum_damage: fn(u8, &EvalContext) -> f64,
+    pub maximum_damage: fn(u8, &EvalContext) -> f64,
 }
 
 pub struct CachedItem {
     pub name: &'static str,
-    pub gold: usize,
-    pub tier: usize,
+    pub gold: u16,
+    pub tier: u8,
     pub prettified_stats: &'static [(&'static str, f64)],
     pub damage_type: Option<&'static str>,
     pub stats: CachedItemStats,
-    pub builds_from: &'static [usize],
-    pub levelings: Option<&'static [usize]>,
+    pub builds_from: &'static [u32],
+    pub levelings: Option<&'static [u8]>,
     pub ranged: CachedItemDamages,
     pub melee: CachedItemDamages,
     pub damages_onhit: bool,
 }
 
 pub struct CachedMetaItem {
-    pub jungle: &'static [usize],
-    pub top: &'static [usize],
-    pub mid: &'static [usize],
-    pub adc: &'static [usize],
-    pub support: &'static [usize],
+    pub jungle: &'static [u32],
+    pub top: &'static [u32],
+    pub mid: &'static [u32],
+    pub adc: &'static [u32],
+    pub support: &'static [u32],
 }
 
 pub struct CachedRune {
     pub name: &'static str,
     pub damage_type: &'static str,
-    pub ranged: fn(usize, &EvalContext) -> f64,
-    pub melee: fn(usize, &EvalContext) -> f64,
+    pub ranged: fn(u8, &EvalContext) -> f64,
+    pub melee: fn(u8, &EvalContext) -> f64,
 }
 
 pub struct CachedItemStats {

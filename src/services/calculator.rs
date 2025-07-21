@@ -129,9 +129,9 @@ fn infer_champion_stats(
 // #![unsupported]
 fn rune_exceptions(
     champion_stats: &mut Stats,
-    owned_runes: &[usize],
+    owned_runes: &[u32],
     level: f64,
-    exception_map: &FxHashMap<usize, usize>,
+    exception_map: &FxHashMap<u32, u32>,
     value_types: (AdaptativeType, AttackType),
 ) {
     for rune in owned_runes {
@@ -225,8 +225,8 @@ fn rune_exceptions(
 // #![unsupported]
 fn item_exceptions(
     champion_stats: &mut Stats,
-    owned_items: &[usize],
-    exception_map: &FxHashMap<usize, usize>,
+    owned_items: &[u32],
+    exception_map: &FxHashMap<u32, u32>,
 ) {
     for item_id in owned_items {
         let this_stack = *exception_map.get(&item_id).unwrap_or(&0);
@@ -274,13 +274,13 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
         .into_iter()
         .filter(|item_id| DAMAGING_ITEMS.contains(item_id))
         .copied()
-        .collect::<Vec<usize>>();
+        .collect::<Vec<u32>>();
 
     let current_player_damaging_runes = current_player_full_runes
         .into_iter()
         .filter(|rune_id| DAMAGING_RUNES.contains(rune_id))
         .copied()
-        .collect::<Vec<usize>>();
+        .collect::<Vec<u32>>();
 
     let current_player_cache = INTERNAL_CHAMPIONS.get(current_player_champion_id).ok_or(
         CalculationError::ChampionCacheNotFound(format!(

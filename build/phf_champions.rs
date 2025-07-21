@@ -98,7 +98,7 @@ fn format_abilities(abilities: &HashMap<String, Ability>) -> HashMap<String, Str
                     let needs_ctx = transformed.iter().any(|&(_, changed)| changed);
                     let ctx_param = if needs_ctx { "ctx: &EvalContext" } else { "_" };
                     $var.push_str(&format!(
-                        "|level: usize, {}| -> f64 {{match level {{",
+                        "|level: u8, {}| -> f64 {{match level {{",
                         ctx_param
                     ));
                     for (i, (expr, _)) in transformed.into_iter().enumerate() {

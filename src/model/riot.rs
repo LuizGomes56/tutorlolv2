@@ -53,7 +53,7 @@ pub struct RiotCdnChampion {
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RiotAbility {
-    pub ability_level: usize,
+    pub ability_level: u8,
 }
 
 #[derive(Deserialize)]
@@ -100,7 +100,7 @@ pub struct RiotChampionStats {
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RiotGeneralRunes {
-    pub id: usize,
+    pub id: u32,
 }
 
 #[derive(Deserialize)]
@@ -115,23 +115,23 @@ pub struct RiotActivePlayer {
     pub abilities: RiotAbilities,
     pub champion_stats: RiotChampionStats,
     pub full_runes: RiotFullRunes,
-    pub level: usize,
+    pub level: u8,
     pub riot_id: String,
 }
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RiotScoreboard {
-    pub kills: usize,
-    pub deaths: usize,
-    pub assists: usize,
-    pub creep_score: usize,
+    pub kills: u16,
+    pub deaths: u16,
+    pub assists: u16,
+    pub creep_score: u16,
 }
 
 #[derive(Deserialize)]
 pub struct RiotItems {
     #[serde(rename = "itemID")]
-    pub item_id: usize,
+    pub item_id: u32,
 }
 
 #[derive(Deserialize)]
@@ -139,7 +139,7 @@ pub struct RiotItems {
 pub struct RiotAllPlayers {
     pub champion_name: String,
     pub items: Vec<RiotItems>,
-    pub level: usize,
+    pub level: u8,
     pub position: String,
     pub riot_id: String,
     pub team: String,
@@ -149,8 +149,8 @@ pub struct RiotAllPlayers {
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RiotRealtimeGameData {
-    pub game_time: f64,
-    pub map_number: usize,
+    pub game_time: f32,
+    pub map_number: u8,
 }
 
 #[derive(Deserialize)]

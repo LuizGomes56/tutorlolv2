@@ -6,9 +6,9 @@ use serde::{Deserialize, Serialize};
 pub struct OutputCurrentPlayer {
     pub champion_id: String,
     pub damaging_abilities: Vec<&'static str>,
-    pub damaging_items: Vec<usize>,
-    pub damaging_runes: Vec<usize>,
-    pub level: usize,
+    pub damaging_items: Vec<u32>,
+    pub damaging_runes: Vec<u32>,
+    pub level: u8,
     pub base_stats: BasicStats,
     pub bonus_stats: BasicStats,
     pub current_stats: Stats,
@@ -17,14 +17,14 @@ pub struct OutputCurrentPlayer {
 #[derive(Serialize)]
 pub struct CalculatorDamages {
     pub abilities: DamageLike<&'static str>,
-    pub items: DamageLike<usize>,
-    pub runes: DamageLike<usize>,
+    pub items: DamageLike<u32>,
+    pub runes: DamageLike<u32>,
 }
 
 #[derive(Serialize)]
 pub struct OutputEnemy {
     pub champion_name: String,
-    pub level: usize,
+    pub level: u8,
     pub damages: CalculatorDamages,
     pub base_stats: BasicStats,
     pub bonus_stats: BasicStats,
@@ -37,7 +37,7 @@ pub struct OutputEnemy {
 pub struct OutputGame {
     pub current_player: OutputCurrentPlayer,
     pub enemies: FxHashMap<&'static str, OutputEnemy>,
-    pub recommended_items: &'static [usize],
+    pub recommended_items: &'static [u32],
 }
 
 #[derive(Deserialize)]
@@ -45,10 +45,10 @@ pub struct InputActivePlayer {
     pub champion_id: String,
     pub champion_stats: Stats,
     pub abilities: AbilityLevels,
-    pub items: Vec<usize>,
-    pub runes: Vec<usize>,
-    pub level: usize,
-    pub stacks: usize,
+    pub items: Vec<u32>,
+    pub runes: Vec<u32>,
+    pub level: u8,
+    pub stacks: u32,
     // Determines if stats should be inferred or used as <literal>[Stats] from Sender
     pub infer_stats: bool,
 }
@@ -56,8 +56,8 @@ pub struct InputActivePlayer {
 #[derive(Deserialize)]
 pub struct InputEnemyPlayers {
     pub champion_name: String,
-    pub items: Vec<usize>,
-    pub level: usize,
+    pub items: Vec<u32>,
+    pub level: u8,
     pub stats: BasicStats,
     pub infer_stats: bool,
 }
@@ -66,8 +66,8 @@ pub struct InputEnemyPlayers {
 pub struct InputGame {
     pub active_player: InputActivePlayer,
     pub enemy_players: Vec<InputEnemyPlayers>,
-    pub ally_earth_dragons: usize,
-    pub ally_fire_dragons: usize,
-    pub enemy_earth_dragons: usize,
-    pub stack_exceptions: FxHashMap<usize, usize>,
+    pub ally_earth_dragons: u8,
+    pub ally_fire_dragons: u8,
+    pub enemy_earth_dragons: u8,
+    pub stack_exceptions: FxHashMap<u32, u32>,
 }

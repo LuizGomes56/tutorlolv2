@@ -2,7 +2,6 @@ use crate::build::highlight;
 
 use super::{invoke_rustfmt, transform_expr};
 use serde::{Deserialize, Serialize};
-use serde_json::Value;
 use std::{collections::HashMap, fs, path::Path};
 
 #[derive(Deserialize)]
@@ -53,13 +52,13 @@ pub struct DamageObject {
 #[derive(Deserialize)]
 pub struct Item {
     pub name: String,
-    pub gold: usize,
-    pub tier: usize,
-    pub prettified_stats: HashMap<String, Value>,
+    pub gold: u16,
+    pub tier: u8,
+    pub prettified_stats: HashMap<String, f64>,
     pub damage_type: Option<String>,
     pub stats: PartialStats,
-    pub builds_from: Vec<usize>,
-    pub levelings: Option<Vec<usize>>,
+    pub builds_from: Vec<u32>,
+    pub levelings: Option<Vec<u8>>,
     pub ranged: Option<DamageObject>,
     pub melee: Option<DamageObject>,
     pub damages_onhit: bool,
@@ -89,7 +88,7 @@ fn format_damage_object(damage_object: &Option<DamageObject>) -> String {
     )
 }
 
-fn format_prettified_stats(prettified_stats: &HashMap<String, Value>) -> String {
+fn format_prettified_stats(prettified_stats: &HashMap<String, f64>) -> String {
     prettified_stats
         .iter()
         .map(|(k, v)| format!("(\"{}\", {}f64)", k, v))
@@ -132,8 +131,8 @@ fn format_stats(stats: &PartialStats) -> String {
 #[derive(Serialize)]
 struct ComparedItem {
     name: String,
-    gold_cost: usize,
-    prettified_stats: HashMap<String, Value>,
+    gold_cost: u16,
+    prettified_stats: HashMap<String, f64>,
 }
 
 pub fn global_phf_internal_items(out_dir: &str) {
@@ -146,10 +145,10 @@ pub fn global_phf_internal_items(out_dir: &str) {
     let mut static_compared_items_map = HashMap::<usize, ComparedItem>::new();
 
     let mut phf_map_contents = String::from(
-        "pub static INTERNAL_ITEMS: ::phf::Map<usize, &'static CachedItem> = ::phf::phf_map! {\n",
+        "pub static INTERNAL_ITEMS: ::phf::Map<u32, &'static CachedItem> = ::phf::phf_map! {\n",
     );
-    let mut siml_items_decl = String::from("const SIMULATED_ITEMS: [usize; ");
-    let mut damaging_items_decl = String::from("const DAMAGING_ITEMS: [usize; ");
+    let mut siml_items_decl = String::from("const SIMULATED_ITEMS: [u32; ");
+    let mut damaging_items_decl = String::from("const DAMAGING_ITEMS: [u32; ");
     let mut siml_items_vec = Vec::<String>::new();
     let mut consts_decl = String::new();
     let mut damaging_items_vec = Vec::<String>::new();
@@ -178,7 +177,7 @@ pub fn global_phf_internal_items(out_dir: &str) {
             if item.ranged.is_some() || item.melee.is_some() {
                 damaging_items_vec.push(usize_v.to_string());
             }
-            phf_map_contents.push_str(&format!("{}usize => &ITEM_{},", key, key));
+            phf_map_contents.push_str(&format!("{}u32 => &ITEM_{},", key, key));
             static_compared_items_map.insert(
                 usize_v,
                 ComparedItem {

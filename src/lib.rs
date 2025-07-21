@@ -38,6 +38,18 @@ include!(concat!(env!("OUT_DIR"), "/internal_runes.rs"));
 include!(concat!(env!("OUT_DIR"), "/internal_meta.rs"));
 include!(concat!(env!("OUT_DIR"), "/internal_names.rs"));
 
+/// Example of `.env` file
+/// ```toml
+/// DATABASE_URL=postgresql://postgres:{PASSWORD}@localhost:5432/{USER}
+/// HOST=127.0.0.1:8082
+/// LOL_VERSION=15.14.1
+/// LOL_LANGUAGE=en_US
+/// SYSTEM_PASSWORD={SYSTEM_PASSWORD}
+/// CDN_ENDPOINT=https://cdn.merakianalytics.com/riot/lol/resources/latest/en-US
+/// DD_DRAGON_ENDPOINT=https://ddragon.leagueoflegends.com
+/// RIOT_IMAGE_ENDPOINT=https://ddragon.canisback.com/img
+/// META_ENDPOINT=*
+/// ```
 pub struct EnvConfig {
     pub lol_version: String,
     pub lol_language: String,
@@ -48,6 +60,8 @@ pub struct EnvConfig {
     pub meta_endpoint: String,
 }
 
+/// Load environment variables from `.env` file adjacent to the binary.
+/// Crashes the program if not found.
 macro_rules! env_var {
     ($name:literal) => {
         env::var($name).expect(&format!("[env] {} is not set", $name))
@@ -68,6 +82,8 @@ impl EnvConfig {
     }
 }
 
+/// Environment variables are only loaded when needed
+/// Likely to be used when "dev-routes" feature is enabled
 pub static ENV_CONFIG: Lazy<EnvConfig> = Lazy::new(EnvConfig::new);
 
 pub struct AppState {

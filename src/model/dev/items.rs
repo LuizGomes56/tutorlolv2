@@ -38,19 +38,19 @@ pub struct ItemStats {
 #[serde(rename_all = "camelCase")]
 pub struct CdnItem {
     pub active: Vec<Effect>,
-    pub builds_from: Vec<usize>,
+    pub builds_from: Vec<u32>,
     // pub builds_into: Vec<usize>,
     pub name: String,
-    pub tier: usize,
+    pub tier: u8,
     pub passives: Vec<Effect>,
-    pub id: usize,
+    pub id: u32,
     pub stats: ItemStats,
     pub shop: Shop,
 }
 
 #[derive(Deserialize)]
 pub struct ItemPrices {
-    pub total: usize,
+    pub total: u32,
 }
 
 #[derive(Deserialize)]

@@ -66,16 +66,16 @@ pub struct BasicStats {
 #[derive(Serialize)]
 pub struct SimulatedDamages {
     pub abilities: DamageLike<&'static str>,
-    pub items: DamageLike<usize>,
-    pub runes: DamageLike<usize>,
+    pub items: DamageLike<u32>,
+    pub runes: DamageLike<u32>,
 }
 
 #[derive(Serialize)]
 pub struct Damages {
     pub abilities: DamageLike<&'static str>,
-    pub items: DamageLike<usize>,
-    pub runes: DamageLike<usize>,
-    pub compared_items: FxHashMap<usize, SimulatedDamages>,
+    pub items: DamageLike<u32>,
+    pub runes: DamageLike<u32>,
+    pub compared_items: FxHashMap<u32, SimulatedDamages>,
 }
 
 #[derive(Clone, Copy)]
@@ -93,10 +93,10 @@ pub struct GenericStats {
 
 #[derive(Copy, Clone)]
 pub struct DamageExpression {
-    pub level: usize,
+    pub level: u8,
     pub damage_type: &'static str,
-    pub minimum_damage: fn(usize, &EvalContext) -> f64,
-    pub maximum_damage: fn(usize, &EvalContext) -> f64,
+    pub minimum_damage: fn(u8, &EvalContext) -> f64,
+    pub maximum_damage: fn(u8, &EvalContext) -> f64,
 }
 
 pub struct DamageMultipliers {
@@ -118,10 +118,10 @@ pub enum AttackType {
 
 #[derive(Copy, Clone, Deserialize)]
 pub struct AbilityLevels {
-    pub q: usize,
-    pub w: usize,
-    pub e: usize,
-    pub r: usize,
+    pub q: u8,
+    pub w: u8,
+    pub e: u8,
+    pub r: u8,
 }
 
 impl AttackType {

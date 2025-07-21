@@ -222,7 +222,7 @@ pub fn setup_damaging_items() {
 
     let files = fs::read_dir("cache/cdn/items").unwrap();
 
-    let mut is_damaging: Vec<usize> = Vec::new();
+    let mut is_damaging = Vec::new();
 
     for entry in files {
         let entry = entry.unwrap();

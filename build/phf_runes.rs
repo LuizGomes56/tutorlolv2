@@ -15,9 +15,9 @@ pub struct Rune {
 pub fn global_phf_internal_runes(out_dir: &str) {
     let out_path = Path::new(&out_dir).join("internal_runes.rs");
     let mut phf_map_contents = String::from(
-        "pub static INTERNAL_RUNES: ::phf::Map<usize, &'static CachedRune> = ::phf::phf_map! {\n",
+        "pub static INTERNAL_RUNES: ::phf::Map<u32, &'static CachedRune> = ::phf::phf_map! {\n",
     );
-    let mut damaging_runes_decl = String::from("const DAMAGING_RUNES: [usize; ");
+    let mut damaging_runes_decl = String::from("const DAMAGING_RUNES: [u32; ");
     let mut consts_decl = String::new();
     let mut damaging_runes_vec = Vec::<String>::new();
     let rune_formulas_out_path = Path::new(&out_dir).join("rune_formulas.br");
@@ -35,7 +35,7 @@ pub fn global_phf_internal_runes(out_dir: &str) {
             let ranged_expr = transform_expr(&rune.ranged);
             let melee_expr = transform_expr(&rune.melee);
             static_runes_map.insert(rune.name.clone(), *key);
-            phf_map_contents.push_str(&format!("\t{}usize => &RUNE_{},\n", key, key));
+            phf_map_contents.push_str(&format!("\t{}u32 => &RUNE_{},\n", key, key));
 
             let string_content = invoke_rustfmt(&format!(
                 r#"pub static RUNE_{}: CachedRune = CachedRune {{

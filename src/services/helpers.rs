@@ -22,9 +22,9 @@ pub const CHEMTECH_DRAGON_MULTIPLIER: f64 = 0.06;
 
 pub fn get_simulated_champion_stats<'a>(
     current_stats: &Stats,
-    owned_items: &[usize],
+    owned_items: &[u32],
     ally_dragon_multipliers: &DragonMultipliers,
-) -> FxHashMap<usize, Stats> {
+) -> FxHashMap<u32, Stats> {
     let mut simulated_stats =
         FxHashMap::with_capacity_and_hasher(SIMULATED_ITEMS.len(), Default::default());
     for item_id in SIMULATED_ITEMS.iter() {
@@ -83,11 +83,11 @@ pub fn simulate_champion_stats(
 }
 
 pub fn get_items_damage(
-    current_player_damaging_items: &[usize],
+    current_player_damaging_items: &[u32],
     attack_type: AttackType,
-) -> Vec<(usize, DamageExpression)> {
+) -> Vec<(u32, DamageExpression)> {
     let mut result =
-        Vec::<(usize, DamageExpression)>::with_capacity(current_player_damaging_items.len());
+        Vec::<(u32, DamageExpression)>::with_capacity(current_player_damaging_items.len());
     for item_id in current_player_damaging_items {
         if DAMAGING_ITEMS.contains(item_id) {
             if let Some(item) = INTERNAL_ITEMS.get(item_id) {
@@ -111,11 +111,11 @@ pub fn get_items_damage(
 }
 
 pub fn get_runes_damage(
-    current_player_damaging_runes: &[usize],
+    current_player_damaging_runes: &[u32],
     attack_type: AttackType,
-) -> Vec<(usize, DamageExpression)> {
+) -> Vec<(u32, DamageExpression)> {
     let mut result =
-        Vec::<(usize, DamageExpression)>::with_capacity(current_player_damaging_runes.len());
+        Vec::<(u32, DamageExpression)>::with_capacity(current_player_damaging_runes.len());
     for rune_id in current_player_damaging_runes {
         if DAMAGING_RUNES.contains(rune_id) {
             if let Some(rune) = INTERNAL_RUNES.get(rune_id) {
@@ -139,8 +139,8 @@ pub fn get_runes_damage(
 }
 
 pub fn get_full_stats(
-    enemy_state: (&str, usize, f64),
-    enemy_stats: (BasicStats, &[usize]),
+    enemy_state: (&str, u8, f64),
+    enemy_stats: (BasicStats, &[u32]),
     armor_val: (f64, f64),
     magic_val: (f64, f64),
 ) -> (BasicStats, BasicStats, GenericStats) {
@@ -208,7 +208,7 @@ pub fn get_full_stats(
         _ => {}
     }
 
-    let has_item = |origin: &[usize], check_for: &[usize]| -> bool {
+    let has_item = |origin: &[u32], check_for: &[u32]| -> bool {
         check_for.iter().any(|id| origin.contains(id))
     };
 
@@ -263,7 +263,7 @@ pub fn get_damage_multipliers(modifiers: &DamageMultipliers, damage_type: &str) 
 
 pub fn get_abilities_damage(
     current_player_cache: &&CachedChampion,
-    current_player_level: usize,
+    current_player_level: u8,
     abilities: AbilityLevels,
 ) -> Vec<(&'static str, DamageExpression)> {
     current_player_cache
@@ -316,7 +316,7 @@ pub fn get_abilities_damage(
 /// current_player_state: (CurrentStats, BaseStats, BonusStats, Level)
 /// enemy_state:(CurrentStats, BonusStats, GenericStats)
 pub fn get_eval_ctx(
-    current_player_state: &(&Stats, BasicStats, BasicStats, usize),
+    current_player_state: &(&Stats, BasicStats, BasicStats, u8),
     enemy_state: &(BasicStats, BasicStats, GenericStats),
 ) -> EvalContext {
     let (enemy_current_stats, enemy_bonus_stats, generic_stats) = enemy_state;
@@ -405,7 +405,7 @@ pub const fn get_bonus_stats(current_stats: BasicStats, base_stats: BasicStats) 
 
 /// Reads cached values for a given champion and assigns its base stats at a given level
 #[inline]
-pub const fn get_base_stats(champion_cache: &&CachedChampion, level: usize) -> BasicStats {
+pub const fn get_base_stats(champion_cache: &&CachedChampion, level: u8) -> BasicStats {
     macro_rules! assign_value {
         ($field:ident) => {
             RiotFormulas::stat_growth(
@@ -431,7 +431,7 @@ pub const fn get_base_stats(champion_cache: &&CachedChampion, level: usize) -> B
 #[inline]
 pub fn get_enemy_current_stats(
     mut basic_stats: BasicStats,
-    current_items: &[usize],
+    current_items: &[u32],
     earth_dragon_mod: f64,
 ) -> BasicStats {
     for enemy_item in current_items {

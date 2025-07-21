@@ -113,12 +113,12 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
                 None
             }
         })
-        .collect::<Vec<usize>>();
+        .collect::<Vec<u32>>();
 
     let current_player_items = current_player_riot_items
         .iter()
         .map(|riot_item| riot_item.item_id)
-        .collect::<Vec<usize>>();
+        .collect::<Vec<u32>>();
 
     let current_player_damaging_items = current_player_items
         .iter()
@@ -129,7 +129,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
                 None
             }
         })
-        .collect::<Vec<usize>>();
+        .collect::<Vec<u32>>();
 
     let simulated_stats = get_simulated_champion_stats(
         &current_player_stats,
@@ -174,7 +174,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
             let enemy_items = enemy_riot_items
                 .iter()
                 .map(|value| value.item_id)
-                .collect::<Vec<usize>>();
+                .collect::<Vec<u32>>();
             let enemy_level = player.level;
             let enemy_cache = INTERNAL_CHAMPIONS.get(enemy_champion_id)?;
             let enemy_base_stats = get_base_stats(enemy_cache, enemy_level);

@@ -32,13 +32,13 @@ pub struct PartialStats {
 #[derive(Deserialize, Serialize)]
 pub struct Item {
     pub name: String,
-    pub gold: usize,
-    pub tier: usize,
+    pub gold: u32,
+    pub tier: u8,
     pub prettified_stats: FxHashMap<String, Value>,
     pub damage_type: Option<String>,
     pub stats: PartialStats,
-    pub builds_from: Vec<usize>,
-    pub levelings: Option<Vec<usize>>,
+    pub builds_from: Vec<u32>,
+    pub levelings: Option<Vec<u8>>,
     pub ranged: Option<DamageObject>,
     pub melee: Option<DamageObject>,
     pub damages_onhit: bool,

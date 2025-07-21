@@ -7,7 +7,7 @@ pub struct RiotFormulas;
 
 impl RiotFormulas {
     /// Uses wiki's formula to return base stats for a given champion
-    pub const fn stat_growth(base: f64, growth_per_level: f64, level: usize) -> f64 {
+    pub const fn stat_growth(base: f64, growth_per_level: f64, level: u8) -> f64 {
         base + growth_per_level * (level as f64 - 1.0) * (0.7025 + 0.0175 * (level as f64 - 1.0))
     }
     /// Percentage values are entered in this section as a number in range 0-100
@@ -36,7 +36,7 @@ impl RiotFormulas {
         }
     }
 
-    pub const fn full_base_stats(cdn: &CachedChampionStats, level: usize) -> Stats {
+    pub const fn full_base_stats(cdn: &CachedChampionStats, level: u8) -> Stats {
         macro_rules! assign_value {
             ($field:ident) => {
                 Self::stat_growth(cdn.$field.flat, cdn.$field.per_level, level)

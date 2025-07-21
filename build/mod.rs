@@ -48,7 +48,7 @@ pub(super) fn highlight(code_string: &str) -> String {
     h.keyword("type", r"\b[A-Z][a-zA-Z0-9_]*\b");
     h.keyword(
         "primitive",
-        r"\b(bool|usize|i32|i64|f64|char|str|generator_macros)\b",
+        r"\b(bool|usize|u8|u16|u32|u64|isize|i8|i16|i32|i64|f64|char|str|generator_macros)\b",
     );
     h.keyword("float", r"\b\d+\.?\d*f64\b");
     h.keyword("number", r"\b\d+\.?\d*\b");

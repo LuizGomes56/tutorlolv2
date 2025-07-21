@@ -10,5 +10,5 @@ pub enum CalculationError {
     CurrentPlayerNotFound,
     ChampionNameNotFound(String),
     ChampionCacheNotFound(String),
-    ItemCacheNotFound(usize),
+    ItemCacheNotFound(u32),
 }
