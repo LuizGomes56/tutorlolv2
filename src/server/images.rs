@@ -4,6 +4,7 @@ use crate::{
         img_download_arts, img_download_instances, img_download_items, img_download_runes,
     },
     server::schemas::APIResponse,
+    setup::avif_converter::{clean_sprite_folder, concat_sprite_jsons, generate_spritesheet},
 };
 use actix_web::{HttpResponse, Responder, post, web::Data};
 
@@ -55,19 +56,34 @@ pub async fn download_all(state: Data<AppState>) -> impl Responder {
     download_image!(@inner "Started process")
 }
 
+macro_rules! convert_folder {
+    ($src:literal, $folder:expr) => {{
+        match crate::setup::avif_converter::convert_folder_avif(&format!("{}/{}", $src, $folder))
+            .await
+        {
+            Ok(_) => println!("Conversão de '{}' concluída", $folder),
+            Err(e) => eprintln!("Erro na conversão de '{}': {}", $folder, e),
+        }
+    }};
+}
+
+#[post("/sprite")]
+pub async fn generate_sprites() -> impl Responder {
+    println!("{:#?}", generate_spritesheet());
+    concat_sprite_jsons();
+    let _ = clean_sprite_folder();
+    let folders = ["abilities", "champions", "items"];
+    for folder in folders {
+        println!("Converting folder: {}", folder);
+        convert_folder!("sprite", folder);
+    }
+    download_image!(@inner "Started process")
+}
+
 #[post("/compress")]
 pub async fn compress_images() -> impl Responder {
     #[cfg(feature = "dev-routes")]
     {
-        macro_rules! convert_folder {
-            ($folder:expr) => {{
-                match crate::setup::avif_converter::convert_folder_avif($folder).await {
-                    Ok(_) => println!("Conversão de '{}' concluída", $folder),
-                    Err(e) => eprintln!("Erro na conversão de '{}': {}", $folder, e),
-                }
-            }};
-        }
-
         let folders = [
             "abilities",
             "centered",
@@ -80,8 +96,8 @@ pub async fn compress_images() -> impl Responder {
         ];
 
         for folder in folders {
-            println!("Convertendo pasta: {}", folder);
-            convert_folder!(folder);
+            println!("Converting folder: {}", folder);
+            convert_folder!("img", folder);
         }
 
         HttpResponse::Ok().json(APIResponse {

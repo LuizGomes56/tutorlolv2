@@ -14,7 +14,7 @@ pub(super) fn transform_expr(expr: &str) -> (String, bool) {
 
 pub(super) fn invoke_rustfmt(src: &str) -> String {
     let mut child = Command::new("rustfmt")
-        .args(&["--emit", "stdout"])
+        .args(&["--emit", "stdout", "--config", "max_width=70"])
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
         .spawn()
@@ -88,7 +88,8 @@ macro_rules! compress_bytes {
     ($map:expr) => {{
         use std::io::Write;
         let bytes = bincode::serde::encode_to_vec(&$map, bincode::config::standard()).unwrap();
-        let mut encoder = brotli2::write::BrotliEncoder::new(Vec::new(), 11);
+        let compress_lvl = if cfg!(debug_assertions) { 1 } else { 11 };
+        let mut encoder = brotli2::write::BrotliEncoder::new(Vec::new(), compress_lvl);
         encoder.write_all(&bytes).unwrap();
         encoder.finish().unwrap()
     }};
@@ -99,3 +100,4 @@ pub mod phf_champions;
 pub mod phf_items;
 pub mod phf_meta;
 pub mod phf_runes;
+pub mod sprite_map;

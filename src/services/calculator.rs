@@ -571,3 +571,6 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
         recommended_items: current_player_recommended_items,
     })
 }
+
+// u32::MAX - 1 = active player has a shapeshift attribute
+// u32::MAX - 1 - index = enemy X has a shapeshift attribute

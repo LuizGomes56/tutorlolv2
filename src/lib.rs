@@ -122,22 +122,8 @@ fn api_scope() -> Scope<
                 .service(static_champions)
                 .service(static_items)
                 .service(static_runes)
-                .service(static_compared_items),
-        )
-        .service(
-            scope("/images")
-                .app_data(
-                    JsonConfig::default()
-                        .content_type(|mime| mime == mime::APPLICATION_JSON)
-                        .error_handler(json_error_middleware),
-                )
-                .wrap(from_fn(password_middleware))
-                .service(download_instances)
-                .service(download_items)
-                .service(download_arts)
-                .service(download_runes)
-                .service(download_all)
-                .service(compress_images),
+                .service(static_items_def)
+                .service(static_sprite_map),
         );
 
     #[cfg(feature = "dev-routes")]
@@ -173,6 +159,16 @@ fn api_scope() -> Scope<
                     .service(internal_create_meta_items)
                     .service(internal_rewrite_champion_names)
                     .service(internal_assign_item_damages),
+            )
+            .service(
+                scope("/images")
+                    .service(download_instances)
+                    .service(download_items)
+                    .service(download_arts)
+                    .service(download_runes)
+                    .service(download_all)
+                    .service(generate_sprites)
+                    .service(compress_images),
             ),
     );
 
@@ -209,19 +205,24 @@ pub async fn run() -> io::Result<()> {
                     client: client.clone(),
                 })
             })
+            .service(api_scope())
             .service(
-                scope("/img")
+                scope("")
                     .wrap(
                         DefaultHeaders::new()
-                            .add(("Cache-Control", "public, max-age=31536000, immutable")),
+                            .add((header::CACHE_CONTROL, "public, max-age=31536000, immutable")),
                     )
                     .service(
-                        Files::new("", "img")
+                        Files::new("/img", "img")
+                            .use_etag(false)
+                            .use_last_modified(false),
+                    )
+                    .service(
+                        Files::new("/sprite", "sprite")
                             .use_etag(false)
                             .use_last_modified(false),
                     ),
             )
-            .service(api_scope())
             .default_service(web::route().to(|| async {
                 HttpResponse::NotFound().json(APIResponse {
                     success: false,

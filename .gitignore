@@ -9,6 +9,8 @@
 *.svg
 target
 internal
+safety_copy
+sprite
 cache
 img
 formulas

@@ -129,7 +129,7 @@ fn format_stats(stats: &PartialStats) -> String {
 }
 
 #[derive(Serialize)]
-struct ComparedItem {
+struct ItemDef {
     name: String,
     gold_cost: u16,
     prettified_stats: HashMap<String, f64>,
@@ -141,8 +141,8 @@ pub fn global_phf_internal_items(out_dir: &str) {
     let mut item_formulas_map = HashMap::<usize, String>::new();
     let static_items_out_path = Path::new(&out_dir).join("static_items.br");
     let mut static_items_map = HashMap::<String, usize>::new();
-    let static_compared_items_out_path = Path::new(&out_dir).join("static_compared_items.br");
-    let mut static_compared_items_map = HashMap::<usize, ComparedItem>::new();
+    let static_items_def_out_path = Path::new(&out_dir).join("static_items_def.br");
+    let mut static_items_def_map = HashMap::<usize, ItemDef>::new();
 
     let mut phf_map_contents = String::from(
         "pub static INTERNAL_ITEMS: ::phf::Map<u32, &'static CachedItem> = ::phf::phf_map! {\n",
@@ -178,9 +178,9 @@ pub fn global_phf_internal_items(out_dir: &str) {
                 damaging_items_vec.push(usize_v.to_string());
             }
             phf_map_contents.push_str(&format!("{}u32 => &ITEM_{},", key, key));
-            static_compared_items_map.insert(
+            static_items_def_map.insert(
                 usize_v,
-                ComparedItem {
+                ItemDef {
                     name: item.name.clone(),
                     gold_cost: item.gold,
                     prettified_stats: item.prettified_stats.clone(),
@@ -238,11 +238,11 @@ pub fn global_phf_internal_items(out_dir: &str) {
 
     let static_items_bytes = compress_bytes!(static_items_map);
     let item_formulas_bytes = compress_bytes!(item_formulas_map);
-    let static_compared_items_bytes = compress_bytes!(static_compared_items_map);
+    let static_items_def_bytes = compress_bytes!(static_items_def_map);
 
     fs::write(item_formulas_out_path, item_formulas_bytes).unwrap();
     fs::write(static_items_out_path, static_items_bytes).unwrap();
-    fs::write(static_compared_items_out_path, static_compared_items_bytes).unwrap();
+    fs::write(static_items_def_out_path, static_items_def_bytes).unwrap();
 
     siml_items_decl.push_str(&format!(
         "{}] = [{}];",

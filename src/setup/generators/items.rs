@@ -192,11 +192,11 @@ fn item_3115() -> TestResult {
     write_type!(DmgType::Magic);
     let damage = extract_damagelike_expr(&cdn_value.passives[0].effects);
     write_dmg!(damage);
-    save_change!(cur_value)
+    save_change!()
 }
 
 /// Blade of the Ruined King
-/// [Context](https://tutorlol.com/formulas/)
+/// [Context](https://tutorlol.com/formulas)
 #[generator_macros::item_generator]
 fn item_3153() -> TestResult {
     write_type!(DmgType::Magic);
@@ -212,10 +212,10 @@ fn item_3153() -> TestResult {
             "ENEMY_HEALTH - (({number} * ENEMY_HEALTH * (1 - {number} * PHYSICAL_MULTIPLIER).powf({power}) - AD + AD * (1 - {number} * PHYSICAL_MULTIPLIER).powf({power})) / {number})"
         )
     };
-    let min_dmg = get_dmg(numbers[0]);
-    let max_dmg = get_dmg(numbers[1]);
-    write_dmg!(min_dmg, max_dmg);
-    save_change!(cur_value)
+    let ranged_dmg = get_dmg(numbers[0]);
+    let melee_dmg = get_dmg(numbers[1]);
+    write_dmg!(@ranged ranged_dmg, @melee melee_dmg);
+    save_change!()
 }
 
 #[generator_macros::item_generator]

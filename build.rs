@@ -9,6 +9,8 @@ use build::{
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use std::{env, fs, path::Path, time::SystemTime};
 
+use crate::build::sprite_map::generate_sprite_map;
+
 struct BuildArgs {
     rerun_if_changed: &'static [&'static str],
     generated_files: &'static [&'static str],
@@ -25,6 +27,12 @@ fn main() {
     let out_dir = env::var("OUT_DIR").unwrap();
 
     let maybe_run = vec![
+        BuildArgs {
+            rerun_if_changed: &["build/sprite_map.rs", "sprite/sprite.json"],
+            generated_files: &["sprite_map.br"],
+            source_file: "build/sprite_map.rs",
+            function_name: Box::new(generate_sprite_map),
+        },
         BuildArgs {
             rerun_if_changed: &["build/generator_runner.rs", "src/generators"],
             generated_files: &["generator_runner.rs"],
@@ -54,7 +62,7 @@ fn main() {
                 "internal_items.rs",
                 "item_formulas.br",
                 "static_items.br",
-                "static_compared_items.br",
+                "static_items_def.br",
             ],
             source_file: "build/phf_items.rs",
             function_name: Box::new(global_phf_internal_items),

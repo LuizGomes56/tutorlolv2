@@ -160,7 +160,7 @@ br#"{
     },
     "8126": {
         "name": "Cheap Shot",
-        "damage_type": "true",
+        "damage_type": "TRUE_DAMAGE",
         "melee": "10 + ((35 / 17) * (LEVEL - 1))",
         "ranged": "10 + ((35 / 17) * (LEVEL - 1))"
     },
@@ -172,7 +172,7 @@ br#"{
     },
     "8143": {
         "name": "Sudden Impact",
-        "damage_type": "true",
+        "damage_type": "TRUE_DAMAGE",
         "melee": "20 + (60 / 17 * (LEVEL - 1))",
         "ranged": "20 + (60 / 17 * (LEVEL - 1))"
     },

@@ -303,14 +303,24 @@ pub fn item_generator(_args: TokenStream, input: TokenStream) -> TokenStream {
         }
 
         macro_rules! save_change {
-            ($item:expr) => {{
+            () => {{
                 let path = format!("internal/items/{}.json", id);
-                let json = serde_json::to_string_pretty(&$item).unwrap();
+                let json = serde_json::to_string_pretty(&cur_value).unwrap();
                 write_to_file(&path, json.as_bytes())
             }};
         };
 
         macro_rules! write_dmg {
+            (@ranged $ranged:expr, @melee $melee:expr) => {{
+                cur_value.ranged = Some(DamageObject {
+                    minimum_damage: Some($ranged.clone()),
+                    maximum_damage: None,
+                });
+                cur_value.melee = Some(DamageObject {
+                    minimum_damage: Some($melee),
+                    maximum_damage: None,
+                });
+            }};
             ($min_dmg:expr) => {{
                 cur_value.ranged = Some(DamageObject {
                     minimum_damage: Some($min_dmg.clone()),
