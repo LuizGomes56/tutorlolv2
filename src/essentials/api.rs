@@ -1,8 +1,7 @@
 use crate::ENV_CONFIG;
 use reqwest::Client;
-use rustc_hash::FxHashMap;
 use serde::de::DeserializeOwned;
-use serde_json::Value;
+use std::fmt::Display;
 
 /// DDragon base URL
 pub fn riot_base_url() -> String {
@@ -12,24 +11,34 @@ pub fn riot_base_url() -> String {
     )
 }
 
+#[derive(Copy, Clone)]
+pub enum CdnEndpoint {
+    Champions,
+    Items,
+}
+
+impl Display for CdnEndpoint {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            CdnEndpoint::Champions => write!(f, "champions"),
+            CdnEndpoint::Items => write!(f, "items"),
+        }
+    }
+}
+
 /// Helper function to fetch data from the CDN. Returns a FxHashMap with `any` value.
 #[generator_macros::trace_time]
-pub async fn fetch_cdn_api(
+pub async fn fetch_cdn_api<T: DeserializeOwned>(
     client: Client,
-    path_name: &str,
-) -> Result<FxHashMap<String, Value>, Box<dyn std::error::Error>> {
-    let url = format!("{}/{}", ENV_CONFIG.cdn_endpoint, path_name);
+    path_name: CdnEndpoint,
+) -> Result<T, Box<dyn std::error::Error>> {
+    let url = format!("{}/{}.json", ENV_CONFIG.cdn_endpoint, path_name);
 
     println!("fetch_cdn_api: {}", url);
 
     let res = client.get(&url).send().await?;
-
-    let data: Value = res.json().await?;
-
-    let result = data
-        .as_object()
-        .ok_or_else(|| String::from("Expected JSON object at root"))?;
-    Ok(result.clone().into_iter().collect())
+    let data = res.json::<T>().await?;
+    Ok(data)
 }
 
 /// Fetches DataDragon API from Riot Games. Only the final file path needs to be provided

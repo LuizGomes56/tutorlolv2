@@ -4,7 +4,7 @@ use crate::{
         dev::{champions::CdnChampion, items::CdnItem, riot::RiotCdnItem},
         items::{Item, PartialStats},
     },
-    setup::generators::champions::{order_cdn_champion_effects, run_generator_file},
+    setup::generators::champions::run_generator_file,
 };
 use regex::Regex;
 use rustc_hash::FxHashMap;
@@ -57,7 +57,6 @@ pub fn setup_internal_champions() {
         match path_name.to_str() {
             Some(strpath) => {
                 if let Err(_) = std::panic::catch_unwind(|| {
-                    let _ = order_cdn_champion_effects();
                     let _ = run_generator_file(strpath);
                 }) {
                     println!("Adjustments need to be made to {}", strpath);

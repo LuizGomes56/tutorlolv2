@@ -1,6 +1,6 @@
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
-#[derive(Deserialize)]
+#[derive(Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Effect {
     pub effects: String,
@@ -8,14 +8,14 @@ pub struct Effect {
     // pub unique: bool,
 }
 
-#[derive(Deserialize)]
+#[derive(Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ItemsCdnStatsMap {
     pub flat: f64,
     pub percent: f64,
 }
 
-#[derive(Deserialize)]
+#[derive(Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ItemStats {
     pub ability_power: ItemsCdnStatsMap,
@@ -34,7 +34,7 @@ pub struct ItemStats {
     pub omnivamp: ItemsCdnStatsMap,
 }
 
-#[derive(Deserialize)]
+#[derive(Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CdnItem {
     pub active: Vec<Effect>,
@@ -48,12 +48,12 @@ pub struct CdnItem {
     pub shop: Shop,
 }
 
-#[derive(Deserialize)]
+#[derive(Serialize, Deserialize)]
 pub struct ItemPrices {
     pub total: u32,
 }
 
-#[derive(Deserialize)]
+#[derive(Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Shop {
     pub purchasable: bool,

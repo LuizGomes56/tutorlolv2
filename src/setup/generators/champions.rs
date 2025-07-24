@@ -4,11 +4,14 @@ use crate::{
     generators,
     model::{
         champions::{Ability, Champion},
-        dev::champions::{CdnAbility, CdnChampion, Modifiers},
+        dev::{
+            champions::{CdnAbility, CdnChampion, Modifiers},
+            items::CdnItem,
+        },
     },
 };
 use rustc_hash::FxHashMap;
-use std::{fs, io::Write, path::Path};
+use std::path::Path;
 
 include!(concat!(env!("OUT_DIR"), "/generator_runner.rs"));
 
@@ -399,49 +402,38 @@ fn transform_ability(key: &str, abilities: &[CdnAbility]) -> Vec<String> {
 
 /// Order of Vec<Effect> from CDN API varies and to get a more consistent
 /// result after each update, keys will be ordered. This function must be
-/// called before running a generator file or a creating these generators
+/// called right after receiving the data after calling CDN API with "Champions"
 /// to avoid inconsistencies. This method is not perfect, manual adjustments
 /// may be required if a major change occurs.
-pub fn order_cdn_champion_effects() -> std::io::Result<()> {
-    let input_dir = Path::new("cache/cdn/champions");
-    for entry in fs::read_dir(input_dir)? {
-        let entry = entry?;
-        let path = entry.path();
-        if path.extension().map_or(false, |ext| ext == "json") {
-            let content = fs::read_to_string(&path)?;
-
-            let mut champion: CdnChampion = match serde_json::from_str(&content) {
-                Ok(c) => c,
-                Err(err) => {
-                    eprintln!("Erro ao desserializar {:?}: {}", path, err);
-                    continue;
-                }
-            };
-
-            for ability_list in [
-                &mut champion.abilities.q,
-                &mut champion.abilities.w,
-                &mut champion.abilities.e,
-                &mut champion.abilities.r,
-                &mut champion.abilities.p,
-            ] {
-                for ability in ability_list {
-                    ability
-                        .effects
-                        .sort_by(|a, b| a.description.cmp(&b.description));
-                    for effect in &mut ability.effects {
-                        effect.leveling.sort_by(|a, b| {
-                            a.attribute
-                                .as_deref()
-                                .unwrap_or("")
-                                .cmp(b.attribute.as_deref().unwrap_or(""))
-                        });
-                    }
+pub fn order_cdn_champion_effects(data: &mut FxHashMap<String, CdnChampion>) {
+    for (_, champion) in data.iter_mut() {
+        for ability_list in [
+            &mut champion.abilities.q,
+            &mut champion.abilities.w,
+            &mut champion.abilities.e,
+            &mut champion.abilities.r,
+            &mut champion.abilities.p,
+        ] {
+            for ability in ability_list {
+                ability
+                    .effects
+                    .sort_by(|a, b| a.description.cmp(&b.description));
+                for effect in &mut ability.effects {
+                    effect.leveling.sort_by(|a, b| {
+                        a.attribute
+                            .as_deref()
+                            .unwrap_or("")
+                            .cmp(b.attribute.as_deref().unwrap_or(""))
+                    });
                 }
             }
-            let mut output_file = fs::File::create(&path)?;
-            output_file.write_all(serde_json::to_string_pretty(&champion).unwrap().as_bytes())?;
         }
     }
-    Ok(())
+}
+
+pub fn order_cdn_item_effects(data: &mut FxHashMap<String, CdnItem>) {
+    for item in data.values_mut() {
+        item.active.sort_by(|a, b| a.effects.cmp(&b.effects));
+        item.passives.sort_by(|a, b| a.effects.cmp(&b.effects));
+    }
 }

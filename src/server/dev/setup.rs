@@ -1,13 +1,16 @@
 use crate::{
     AppState, dev_response,
-    essentials::images::{
-        img_download_arts, img_download_instances, img_download_items, img_download_runes,
+    essentials::{
+        api::CdnEndpoint,
+        images::{
+            img_download_arts, img_download_instances, img_download_items, img_download_runes,
+        },
     },
     server::schemas::APIResponse,
     setup::{
         cache::{update_cdn_cache, update_riot_cache},
         generators::{
-            champions::{GeneratorMode, create_generator_files, order_cdn_champion_effects},
+            champions::{GeneratorMode, create_generator_files},
             items::assign_item_damages,
         },
         scraper::meta_items_scraper,
@@ -30,8 +33,14 @@ pub async fn setup_project(state: Data<AppState>) -> impl Responder {
         let mut update_futures = Vec::new();
 
         update_futures.push(tokio::spawn(update_riot_cache(client.clone())));
-        update_futures.push(tokio::spawn(update_cdn_cache(client.clone(), "champions")));
-        update_futures.push(tokio::spawn(update_cdn_cache(client.clone(), "items")));
+        update_futures.push(tokio::spawn(update_cdn_cache(
+            client.clone(),
+            CdnEndpoint::Champions,
+        )));
+        update_futures.push(tokio::spawn(update_cdn_cache(
+            client.clone(),
+            CdnEndpoint::Items,
+        )));
 
         for update_future in update_futures {
             if let Err(e) = update_future.await {
@@ -54,7 +63,6 @@ pub async fn setup_project(state: Data<AppState>) -> impl Responder {
         });
 
         tokio::spawn(async move {
-            let _ = order_cdn_champion_effects();
             let _ = create_generator_files(GeneratorMode::Partial).await;
             let _ = setup_internal_champions();
         });

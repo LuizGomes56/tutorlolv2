@@ -1,5 +1,6 @@
 use crate::{
     APIResponse, AppState, dev_response,
+    essentials::api::CdnEndpoint,
     setup::{
         cache::{update_cdn_cache, update_riot_cache},
         schedule::update_env_version,
@@ -15,12 +16,12 @@ pub async fn update_riot(state: Data<AppState>) -> impl Responder {
 
 #[post("/champions")]
 pub async fn update_champions(state: Data<AppState>) -> impl Responder {
-    dev_response!(update_cdn_cache(state.client.clone(), "champions").await)
+    dev_response!(update_cdn_cache(state.client.clone(), CdnEndpoint::Champions).await)
 }
 
 #[post("/items")]
 pub async fn update_items(state: Data<AppState>) -> impl Responder {
-    dev_response!(update_cdn_cache(state.client.clone(), "items").await)
+    dev_response!(update_cdn_cache(state.client.clone(), CdnEndpoint::Items).await)
 }
 
 #[post("/meta_items")]

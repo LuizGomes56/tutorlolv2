@@ -1,9 +1,11 @@
 use crate::{
     essentials::{
-        api::{fetch_cdn_api, fetch_riot_api},
+        api::{CdnEndpoint, fetch_cdn_api, fetch_riot_api},
         helpers::write_to_file,
     },
-    model::riot::RiotCdnStandard,
+    generators::CdnChampion,
+    model::{dev::items::CdnItem, riot::RiotCdnStandard},
+    setup::generators::champions::{order_cdn_champion_effects, order_cdn_item_effects},
 };
 use reqwest::Client;
 use rustc_hash::FxHashMap;
@@ -16,18 +18,29 @@ use tokio::{
 
 /// Takes an instance parameter and uses CDN API to get its data and save to file system.
 #[generator_macros::trace_time]
-pub async fn update_cdn_cache(client: Client, instance: &str) {
-    let result: FxHashMap<String, Value> = fetch_cdn_api(client, &format!("{}.json", instance))
-        .await
-        .unwrap();
-
-    for (key, value) in result {
-        let folder_name = format!("cache/cdn/{}", instance);
-
-        let path_name = format!("{}/{}.json", folder_name, key);
-        let strval = value.to_string();
-        write_to_file(&path_name, strval.as_bytes()).unwrap();
+pub async fn update_cdn_cache(client: Client, instance: CdnEndpoint) {
+    macro_rules! ord_and_save {
+        ($type_v:ty, $func:ident) => {{
+            let mut result = fetch_cdn_api::<FxHashMap<String, $type_v>>(client, instance)
+                .await
+                .unwrap();
+            $func(&mut result);
+            for (key, value) in result {
+                let folder_name = format!("cache/cdn/{}", instance);
+                let path_name = format!("{}/{}.json", folder_name, key);
+                let strval = serde_json::to_string_pretty(&value).unwrap();
+                write_to_file(&path_name, strval.as_bytes()).unwrap();
+            }
+        }};
     }
+    match instance {
+        CdnEndpoint::Champions => {
+            ord_and_save!(CdnChampion, order_cdn_champion_effects);
+        }
+        CdnEndpoint::Items => {
+            ord_and_save!(CdnItem, order_cdn_item_effects);
+        }
+    };
 }
 
 /// Updates files in `cache/riot` with the corresponding ones in the patch determined by `LOL_VERSION`

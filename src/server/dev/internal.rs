@@ -3,7 +3,7 @@ use crate::{
     server::schemas::APIResponse,
     setup::{
         generators::{
-            champions::{GeneratorMode, create_generator_files, order_cdn_champion_effects},
+            champions::{GeneratorMode, create_generator_files},
             items::assign_item_damages,
         },
         update::{
@@ -15,7 +15,6 @@ use actix_web::{HttpResponse, Responder, post};
 
 #[post("/create_generator_files")]
 pub async fn internal_create_generator_files() -> impl Responder {
-    let _ = order_cdn_champion_effects();
     dev_response!(create_generator_files(GeneratorMode::Total).await)
 }
 
