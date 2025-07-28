@@ -10,6 +10,7 @@
 target
 internal
 safety_copy
+comptime_exports
 sprite
 cache
 img

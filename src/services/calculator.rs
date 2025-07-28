@@ -1,6 +1,7 @@
 use super::*;
 use crate::{
-    DAMAGING_ITEMS, DAMAGING_RUNES, INTERNAL_CHAMPIONS, INTERNAL_ITEMS, INTERNAL_NAMES, META_ITEMS,
+    CHAMPION_NAME_TO_ID, DAMAGING_ITEMS, DAMAGING_RUNES, INTERNAL_CHAMPIONS, INTERNAL_ITEMS,
+    META_ITEMS,
     model::{base::*, calculator::*},
 };
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
@@ -401,7 +402,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
             // #![todo]
             stats: _enemy_stats,
         } = player;
-        let enemy_champion_id = INTERNAL_NAMES.get(&enemy_champion_name).ok_or(
+        let enemy_champion_id = CHAMPION_NAME_TO_ID.get(&enemy_champion_name).ok_or(
             CalculationError::ChampionCacheNotFound(format!(
                 "[enemy_players.into_par_iter()]: {}",
                 enemy_champion_name

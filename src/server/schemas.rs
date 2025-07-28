@@ -21,7 +21,8 @@ macro_rules! dev_response {
 
 #[macro_export]
 macro_rules! const_bytes {
-    ($bytes:expr) => {
+    ($bytes:expr) => {{
+        let bytes = actix_web::web::Bytes::from_static($bytes);
         HttpResponse::Ok()
             .insert_header((crate::header::CONTENT_ENCODING, "br"))
             .insert_header((
@@ -29,8 +30,8 @@ macro_rules! const_bytes {
                 "public, max-age=31536000, immutable",
             ))
             .content_type("application/octet-stream")
-            .body($bytes)
-    };
+            .body(bytes)
+    }};
 }
 
 #[macro_export]

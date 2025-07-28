@@ -6,7 +6,11 @@ use crate::{
     server::schemas::APIResponse,
     setup::avif_converter::{clean_sprite_folder, concat_sprite_jsons, generate_spritesheet},
 };
-use actix_web::{HttpResponse, Responder, post, web::Data};
+use actix_web::{
+    HttpResponse, Responder, get, post,
+    web::{Data, Path},
+};
+use rust_embed::Embed;
 
 macro_rules! download_image {
     (@inner $msg:expr) => {{
@@ -114,3 +118,71 @@ pub async fn compress_images() -> impl Responder {
         data: (),
     })
 }
+
+#[derive(Embed)]
+#[folder = "img/abilities"]
+struct Abilities;
+
+// #[derive(Embed)]
+// #[folder = "img/centered"]
+// struct Centered;
+
+// #[derive(Embed)]
+// #[folder = "img/splash"]
+// struct Splash;
+
+#[derive(Embed)]
+#[folder = "img/champions"]
+struct Champions;
+
+#[derive(Embed)]
+#[folder = "img/items"]
+struct Items;
+
+// #[derive(Embed)]
+// #[folder = "img/other"]
+// struct Other;
+
+#[derive(Embed)]
+#[folder = "img/runes"]
+struct Runes;
+
+// #[derive(generator_macros::ServeEmbed)]
+struct _Stats;
+
+// macro_rules! embed {
+// () => {
+// paste::paste! {
+//     #[derive(Embed)]
+//     struct [<$name:camel>];
+// pub async fn [<serve_ $name:snake>](path: Path<String>) -> impl Responder {
+//     let embedded_file = $name::get(&path);
+//     match embedded_file {
+//         Some(file) => HttpResponse::Ok()
+//             .content_type($content_type)
+//             .body(file.data),
+//         None => HttpResponse::NotFound().finish(),
+//     }
+// }
+// }
+// };
+// }
+
+// #[get("/{folder}/{filename}")]
+// pub async fn serve_imgs(path_args: Path<ImgFile>) -> impl Responder {
+//     let embedded_file = match path_args.folder {
+//         ImgFolder::Abilities => Abilities::get(&path_args.filename),
+//         ImgFolder::Champions => Champions::get(&path_args.filename),
+//         ImgFolder::Items => Items::get(&path_args.filename),
+//         ImgFolder::Other => Other::get(&path_args.filename),
+//         ImgFolder::Runes => Runes::get(&path_args.filename),
+//         ImgFolder::Stats => Stats::get(&path_args.filename),
+//     };
+
+//     match embedded_file {
+//         Some(file) => HttpResponse::Ok()
+//             .content_type(file.metadata.c)
+//             .body(file.data),
+//         None => HttpResponse::NotFound().finish(),
+//     }
+// }

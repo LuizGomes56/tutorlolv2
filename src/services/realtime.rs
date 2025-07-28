@@ -1,6 +1,6 @@
 use super::*;
 use crate::{
-    DAMAGING_ITEMS, DAMAGING_RUNES, INTERNAL_CHAMPIONS, INTERNAL_NAMES, META_ITEMS,
+    CHAMPION_NAME_TO_ID, DAMAGING_ITEMS, DAMAGING_RUNES, INTERNAL_CHAMPIONS, META_ITEMS,
     model::{
         base::{
             AttackType, BasicStats, DamageMultipliers, Damages, DragonMultipliers, SimulatedDamages,
@@ -61,12 +61,12 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
         get_dragon_multipliers(game_events, players_map, current_player_team);
 
     let current_player_stats = current_player_riot_stats.to_stats();
-    let current_player_champion_id = INTERNAL_NAMES.get(current_player_champion_name).ok_or(
-        CalculationError::ChampionNameNotFound(format!(
-            "[INTERNAL_NAMES]: {}",
+    let current_player_champion_id = CHAMPION_NAME_TO_ID
+        .get(current_player_champion_name)
+        .ok_or(CalculationError::ChampionNameNotFound(format!(
+            "[CHAMPION_NAME_TO_ID]: {}",
             current_player_champion_name
-        )),
-    )?;
+        )))?;
 
     let current_player_cache = INTERNAL_CHAMPIONS.get(current_player_champion_id).ok_or(
         CalculationError::ChampionCacheNotFound(format!(
@@ -161,7 +161,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
         .filter(|player| &player.team != current_player_team)
         .par_bridge()
         .filter_map(|player| {
-            let enemy_champion_id = INTERNAL_NAMES.get(&player.champion_name)?;
+            let enemy_champion_id = CHAMPION_NAME_TO_ID.get(&player.champion_name)?;
 
             let RiotAllPlayers {
                 champion_name: enemy_champion_name,

@@ -28,7 +28,7 @@ use once_cell::sync::Lazy;
 use reqwest::Client;
 #[cfg(feature = "dev-routes")]
 use server::dev::{internal::*, setup::*, update::*};
-use server::{formulas::*, games::*, images::*, schemas::APIResponse, statics::*};
+use server::{games::*, images::*, schemas::APIResponse, statics::*};
 use sqlx::{Pool, Postgres, postgres::PgPoolOptions};
 use std::{env, io};
 
@@ -41,8 +41,8 @@ include!(concat!(env!("OUT_DIR"), "/internal_names.rs"));
 /// Example of `.env` file
 /// ```toml
 /// DATABASE_URL=postgresql://postgres:{PASSWORD}@localhost:5432/{USER}
-/// HOST=127.0.0.1:8082
-/// LOL_VERSION=15.14.1
+/// HOST=127.0.0.1:*
+/// LOL_VERSION=*
 /// LOL_LANGUAGE=en_US
 /// SYSTEM_PASSWORD={SYSTEM_PASSWORD}
 /// CDN_ENDPOINT=https://cdn.merakianalytics.com/riot/lol/resources/latest/en-US
@@ -100,31 +100,13 @@ fn api_scope() -> Scope<
         InitError = (),
     >,
 > {
-    let api_routes = scope("/api")
-        .wrap(from_fn(logger_middleware))
-        .service(
-            scope("/games")
-                .service(realtime_handler)
-                .service(calculator_handler)
-                .service(create_game_handler)
-                .service(get_by_code_handler),
-        )
-        .service(
-            scope("/formulas")
-                .service(formulas_champions)
-                .service(formulas_items)
-                .service(formulas_runes)
-                .service(formulas_abilities)
-                .service(formulas_champion_generator),
-        )
-        .service(
-            scope("/static")
-                .service(static_champions)
-                .service(static_items)
-                .service(static_runes)
-                .service(static_items_def)
-                .service(static_sprite_map),
-        );
+    let api_routes = scope("/api").wrap(from_fn(logger_middleware)).service(
+        scope("/games")
+            .service(realtime_handler)
+            .service(calculator_handler)
+            .service(create_game_handler)
+            .service(get_by_code_handler),
+    );
 
     #[cfg(feature = "dev-routes")]
     let api_routes = api_routes.service(
@@ -134,6 +116,11 @@ fn api_scope() -> Scope<
                 JsonConfig::default()
                     .content_type(|mime| mime == mime::APPLICATION_JSON)
                     .error_handler(json_error_middleware),
+            )
+            .service(
+                scope("/static")
+                    .service(static_comptime)
+                    .service(static_sprite_map),
             )
             .service(
                 scope("/setup")

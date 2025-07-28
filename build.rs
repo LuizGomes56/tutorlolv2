@@ -1,15 +1,9 @@
 #[path = "build/mod.rs"]
 mod build;
 
-use build::{
-    generator_runner::generator_runner, phf_champions::global_phf_internal_champions,
-    phf_items::global_phf_internal_items, phf_meta::global_phf_internal_meta_items,
-    phf_runes::global_phf_internal_runes,
-};
+use build::*;
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use std::{env, fs, path::Path, time::SystemTime};
-
-use crate::build::sprite_map::generate_sprite_map;
 
 struct BuildArgs {
     rerun_if_changed: &'static [&'static str],
@@ -28,10 +22,22 @@ fn main() {
 
     let maybe_run = vec![
         BuildArgs {
-            rerun_if_changed: &["build/sprite_map.rs", "sprite/sprite.json"],
-            generated_files: &["sprite_map.br"],
-            source_file: "build/sprite_map.rs",
-            function_name: Box::new(generate_sprite_map),
+            rerun_if_changed: &["build/export_champions.rs"],
+            generated_files: &["comptime_exports/champions.txt"],
+            source_file: "build/export_champions.rs",
+            function_name: Box::new(export_champions),
+        },
+        BuildArgs {
+            rerun_if_changed: &["build/export_items.rs"],
+            generated_files: &["comptime_exports/items.txt"],
+            source_file: "build/export_items.rs",
+            function_name: Box::new(export_items),
+        },
+        BuildArgs {
+            rerun_if_changed: &["build/export_runes.rs"],
+            generated_files: &["comptime_exports/runes.txt"],
+            source_file: "build/export_runes.rs",
+            function_name: Box::new(export_runes),
         },
         BuildArgs {
             rerun_if_changed: &["build/generator_runner.rs", "src/generators"],
@@ -40,44 +46,22 @@ fn main() {
             function_name: Box::new(generator_runner),
         },
         BuildArgs {
-            rerun_if_changed: &[
-                "build/phf_champions.rs",
-                "internal/champions",
-                "internal/champion_names.json",
-            ],
-            generated_files: &[
-                "internal_champions.rs",
-                "internal_names.rs",
-                "static_champions.br",
-                "champion_formulas.br",
-                "ability_formulas.br",
-                "champion_generator.br",
-            ],
-            source_file: "build/phf_champions.rs",
-            function_name: Box::new(global_phf_internal_champions),
-        },
-        BuildArgs {
-            rerun_if_changed: &["build/phf_items.rs", "internal/items"],
-            generated_files: &[
-                "internal_items.rs",
-                "item_formulas.br",
-                "static_items.br",
-                "static_items_def.br",
-            ],
-            source_file: "build/phf_items.rs",
-            function_name: Box::new(global_phf_internal_items),
-        },
-        BuildArgs {
-            rerun_if_changed: &["build/phf_meta.rs", "internal/meta_items.json"],
+            rerun_if_changed: &["build/meta_items.rs", "internal/meta_items.json"],
             generated_files: &["internal_meta.rs"],
-            source_file: "build/phf_meta.rs",
-            function_name: Box::new(global_phf_internal_meta_items),
+            source_file: "build/meta_items.rs",
+            function_name: Box::new(internal_meta_items),
         },
         BuildArgs {
-            rerun_if_changed: &["build/phf_runes.rs", "internal/runes.json"],
-            generated_files: &["internal_runes.rs", "rune_formulas.br", "static_runes.br"],
-            source_file: "build/phf_runes.rs",
-            function_name: Box::new(global_phf_internal_runes),
+            rerun_if_changed: &["build/export_code.rs"],
+            generated_files: &["export_code.br", "comptime_exports/export_code.br"],
+            source_file: "build/export_code.rs",
+            function_name: Box::new(export_code),
+        },
+        BuildArgs {
+            rerun_if_changed: &["build/sprite_map.rs", "sprite/sprite.json"],
+            generated_files: &["sprite_map.br"],
+            source_file: "build/sprite_map.rs",
+            function_name: Box::new(generate_sprite_map),
         },
     ];
 
