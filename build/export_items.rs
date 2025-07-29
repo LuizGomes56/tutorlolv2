@@ -123,7 +123,7 @@ impl ExportedComptimePhfs {
                 "pub static ITEM_GENERATOR: phf::Map<u32, &'static str> = phf::phf_map! {",
             ),
             item_descriptions: String::from(
-                "pub static ITEM_DESCRIPTIONS: phf::Map<u32, &'static ItemDescription> = phf::phf_map! {",
+                "pub static ITEM_DESCRIPTIONS: phf::Map<u32, ItemDescription> = phf::phf_map! {",
             ),
         }
     }
@@ -147,6 +147,13 @@ impl ExportedComptimePhfs {
         s.push_str(&self.item_formulas);
         s.push_str(&self.item_generator);
         s.push_str(&self.item_descriptions);
+        s.push_str(
+            "pub struct ItemDescription {
+            pub name: &'static str,
+            pub gold_cost: u16,
+            pub prettified_stats: &'static [(&'static str, f64)],
+        }",
+        );
         s
     }
 }

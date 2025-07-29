@@ -27,8 +27,8 @@ use model::cache::*;
 use once_cell::sync::Lazy;
 use reqwest::Client;
 #[cfg(feature = "dev-routes")]
-use server::dev::{internal::*, setup::*, update::*};
-use server::{games::*, images::*, schemas::APIResponse, statics::*};
+use server::dev::{images::*, internal::*, setup::*, statics::*, update::*};
+use server::{games::*, schemas::APIResponse};
 use sqlx::{Pool, Postgres, postgres::PgPoolOptions};
 use std::{env, io};
 

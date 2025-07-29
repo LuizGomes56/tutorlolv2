@@ -1,3 +1,5 @@
+use std::collections::BTreeMap;
+
 use super::*;
 
 struct ExportedComptimePhfs {
@@ -24,7 +26,7 @@ impl ExportedComptimePhfs {
                 "pub static CHAMPION_GENERATOR: phf::Map<&'static str, &'static str> = phf::phf_map! {",
             ),
             champion_abilities: String::from(
-                "pub static CHAMPION_ABILITIES: phf::OrderedMap<&'static str, &'static phf::Map<&'static str, &'static str>> = phf::phf_ordered_map! {",
+                "pub static CHAMPION_ABILITIES: phf::OrderedMap<&'static str, &'static phf::OrderedMap<&'static str, &'static str>> = phf::phf_ordered_map! {",
             ),
         }
     }
@@ -129,8 +131,8 @@ pub fn format_stats(stats: &ChampionCdnStats) -> String {
     all_stats.join("")
 }
 
-fn format_abilities(abilities: &HashMap<String, Ability>) -> HashMap<String, String> {
-    let mut formatted_map = HashMap::new();
+fn format_abilities(abilities: &HashMap<String, Ability>) -> BTreeMap<String, String> {
+    let mut formatted_map = BTreeMap::new();
     for (name, ability) in abilities {
         let mut min_dmg = String::new();
         let mut max_dmg = String::new();
@@ -208,9 +210,13 @@ pub fn export_champions(out_dir: &str) {
         );
 
         let mut constdecl_abilities = Vec::new();
+        exported_comptime_phf.champion_abilities.push_str(&format!(
+            "\"{}\" => &phf::phf_ordered_map! {{",
+            champion_id.to_uppercase()
+        ));
 
-        for (key, val) in format_abilities(&champion.abilities) {
-            let rustfmt_val = invoke_rustfmt(&val)
+        for (ability_name, ability_formula) in format_abilities(&champion.abilities) {
+            let rustfmt_val = invoke_rustfmt(&ability_formula)
                 .replace(
                     "static __phantom__: CachedChampionAbility = CachedChampionAbility ",
                     "",
@@ -222,20 +228,18 @@ pub fn export_champions(out_dir: &str) {
             let highlighted_val = highlight(&format!(
                 "intrinsic {}_{} = {}",
                 champion_id.to_uppercase(),
-                key.to_uppercase(),
+                ability_name.to_uppercase(),
                 rustfmt_val
             ))
             .replacen("class=\"type\"", "class=\"constant\"", 1);
-            push_phf_arm!(
-                champion_abilities,
-                format!("{}_{}", champion_id.to_uppercase(), key),
-                highlighted_val
-            );
+            push_phf_arm!(champion_abilities, ability_name, highlighted_val);
             constdecl_abilities.push(format!(
                 "(\"{}\", CachedChampionAbility {})",
-                key, rustfmt_val
+                ability_name, rustfmt_val
             ));
         }
+
+        exported_comptime_phf.champion_abilities.push_str("},");
 
         let constdecl = format!(
             r#"pub static {}: CachedChampion = CachedChampion {{
