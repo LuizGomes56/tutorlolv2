@@ -363,16 +363,16 @@ fn transform_ability(key: &str, abilities: &[CdnAbility]) -> Vec<String> {
                 }
 
                 let suffix = if attr.contains("monster") {
-                    "_MONSTER"
+                    "_MNSTR"
                 } else if attr.contains("bonus") {
                     "_BONUS"
                 } else if attr.contains("maximum")
                     || attr.contains("total")
                     || attr.contains("increased")
                 {
-                    "_MAXIMUM"
+                    "_MAX"
                 } else if attr.contains("minimum") {
-                    "_MINIMUM"
+                    "_MIN"
                 } else {
                     ""
                 };

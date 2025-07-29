@@ -119,7 +119,7 @@ pub fn export_runes(out_dir: &str) {
             format!("{}u32", rune_id),
             format!(
                 "r###\"{}\"###",
-                highlight(&remove_f64_suffix(&invoke_rustfmt(&constdecl))).replacen(
+                highlight(&clear_suffixes(&invoke_rustfmt(&constdecl))).replacen(
                     "class=\"type\"",
                     "class=\"constant\"",
                     1

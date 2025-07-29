@@ -112,7 +112,7 @@ macro_rules! init_map {
         serde_json::from_str::<$type_name>(&content).unwrap()
     }};
     (dir $type_name:ty, $path:literal) => {{
-        let mut map = Vec::<(String, $type_name)>::new();
+        let mut map = BTreeMap::<String, $type_name>::new();
         if let Some(dir) = std::fs::read_dir($path).ok() {
             for entry in dir {
                 let path = entry.unwrap().path();
@@ -120,10 +120,9 @@ macro_rules! init_map {
                 let file_name = file_stem.to_str().unwrap();
                 let content = std::fs::read_to_string(&path).unwrap();
                 let parsed = serde_json::from_str::<$type_name>(&content).unwrap();
-                map.push((file_name.to_owned(), parsed));
+                map.insert(file_name.to_owned(), parsed);
             }
         }
-        map.sort_by(|a, b| a.0.cmp(&b.0));
         map
     }};
 }
@@ -257,9 +256,24 @@ pub fn clean_math_expr(expr: &str) -> String {
     parsed.to_string()
 }
 
-pub fn remove_f64_suffix(input: &str) -> String {
-    let re = Regex::new(r"(\d+(?:\.\d+)?)(f64)").unwrap();
-    re.replace_all(input, "$1").to_string()
+pub fn clear_suffixes(input: &str) -> String {
+    let re_f64 = Regex::new(r"(\d+(?:\.\d+)?)(f64)").unwrap();
+    let no_suffix = re_f64.replace_all(input, "$1");
+    let re_decimal = Regex::new(r"\d+\.\d+").unwrap();
+    re_decimal
+        .replace_all(&no_suffix, |caps: &regex::Captures| {
+            let full = &caps[0];
+            if let Some((whole, decimal)) = full.split_once('.') {
+                if decimal.chars().all(|c| c == '0') && decimal.len() <= 10 {
+                    whole.to_string()
+                } else {
+                    full.to_string()
+                }
+            } else {
+                full.to_string()
+            }
+        })
+        .to_string()
 }
 
 pub trait JoinNumVec {

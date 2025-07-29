@@ -32,7 +32,7 @@ pub struct Item {
     pub name: String,
     pub gold: u16,
     pub tier: u8,
-    pub prettified_stats: HashMap<String, f64>,
+    pub prettified_stats: BTreeMap<String, f64>,
     pub damage_type: Option<String>,
     pub stats: PartialStats,
     pub builds_from: Vec<u32>,
@@ -296,7 +296,7 @@ pub fn export_items(out_dir: &str) {
             format!("{item_id}u32"),
             format!(
                 "r###\"{}\"###",
-                highlight(&invoke_rustfmt(&remove_f64_suffix(&constdecl))).replacen(
+                highlight(&clear_suffixes(&invoke_rustfmt(&constdecl))).replacen(
                     "class=\"type\"",
                     "class=\"constant\"",
                     1,

@@ -1,5 +1,3 @@
-use std::collections::BTreeMap;
-
 use super::*;
 
 struct ExportedComptimePhfs {
@@ -97,7 +95,7 @@ pub struct Champion {
     pub attack_type: String,
     pub positions: Vec<String>,
     pub stats: ChampionCdnStats,
-    pub abilities: HashMap<String, Ability>,
+    pub abilities: BTreeMap<String, Ability>,
 }
 
 pub fn format_stats(stats: &ChampionCdnStats) -> String {
@@ -131,7 +129,7 @@ pub fn format_stats(stats: &ChampionCdnStats) -> String {
     all_stats.join("")
 }
 
-fn format_abilities(abilities: &HashMap<String, Ability>) -> BTreeMap<String, String> {
+fn format_abilities(abilities: &BTreeMap<String, Ability>) -> BTreeMap<String, String> {
     let mut formatted_map = BTreeMap::new();
     for (name, ability) in abilities {
         let mut min_dmg = String::new();
@@ -210,10 +208,9 @@ pub fn export_champions(out_dir: &str) {
         );
 
         let mut constdecl_abilities = Vec::new();
-        exported_comptime_phf.champion_abilities.push_str(&format!(
-            "\"{}\" => &phf::phf_ordered_map! {{",
-            champion_id.to_uppercase()
-        ));
+        exported_comptime_phf
+            .champion_abilities
+            .push_str(&format!("\"{}\" => &phf::phf_ordered_map! {{", champion_id));
 
         for (ability_name, ability_formula) in format_abilities(&champion.abilities) {
             let rustfmt_val = invoke_rustfmt(&ability_formula)
@@ -225,12 +222,12 @@ pub fn export_champions(out_dir: &str) {
             if rustfmt_val.is_empty() {
                 continue;
             }
-            let highlighted_val = highlight(&format!(
+            let highlighted_val = clear_suffixes(&highlight(&format!(
                 "intrinsic {}_{} = {}",
                 champion_id.to_uppercase(),
                 ability_name.to_uppercase(),
                 rustfmt_val
-            ))
+            )))
             .replacen("class=\"type\"", "class=\"constant\"", 1);
             push_phf_arm!(champion_abilities, ability_name, highlighted_val);
             constdecl_abilities.push(format!(
@@ -260,7 +257,7 @@ pub fn export_champions(out_dir: &str) {
         );
 
         push_phf_arm!(champion_formulas, champion_id, {
-            invoke_rustfmt(&remove_f64_suffix(&constdecl))
+            highlight(&clear_suffixes(&invoke_rustfmt(&constdecl)))
         });
         constdecl_phf_champions.push_str(&constdecl);
     }

@@ -8,8 +8,14 @@ pub mod sprite_map;
 pub mod utils;
 
 use crate::{compress_bytes, init_map};
+use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use serde::Deserialize;
-use std::{collections::HashMap, fs, path::Path};
+use std::{
+    collections::{BTreeMap, HashMap},
+    fs,
+    path::Path,
+    sync::Mutex,
+};
 use utils::*;
 
 pub use export_champions::export_champions;

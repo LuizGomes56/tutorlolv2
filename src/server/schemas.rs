@@ -37,7 +37,8 @@ macro_rules! const_bytes {
 #[macro_export]
 macro_rules! send_response {
     ($data:expr) => {
-        if cfg!(debug_assertions) {
+        if false {
+            // if cfg!(debug_assertions) {
             HttpResponse::Ok().json(APIResponse {
                 success: true,
                 message: "Success",

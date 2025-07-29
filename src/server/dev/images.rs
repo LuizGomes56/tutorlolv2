@@ -6,11 +6,7 @@ use crate::{
     server::schemas::APIResponse,
     setup::avif_converter::{clean_sprite_folder, concat_sprite_jsons, generate_spritesheet},
 };
-use actix_web::{
-    HttpResponse, Responder, get, post,
-    web::{Data, Path},
-};
-use rust_embed::Embed;
+use actix_web::{HttpResponse, Responder, post, web::Data};
 
 macro_rules! download_image {
     (@inner $msg:expr) => {{
@@ -119,9 +115,9 @@ pub async fn compress_images() -> impl Responder {
     })
 }
 
-#[derive(Embed)]
-#[folder = "img/abilities"]
-struct Abilities;
+// #[derive(Embed)]
+// #[folder = "img/abilities"]
+// struct Abilities;
 
 // #[derive(Embed)]
 // #[folder = "img/centered"]
@@ -131,24 +127,24 @@ struct Abilities;
 // #[folder = "img/splash"]
 // struct Splash;
 
-#[derive(Embed)]
-#[folder = "img/champions"]
-struct Champions;
+// #[derive(Embed)]
+// #[folder = "img/champions"]
+// struct Champions;
 
-#[derive(Embed)]
-#[folder = "img/items"]
-struct Items;
+// #[derive(Embed)]
+// #[folder = "img/items"]
+// struct Items;
 
 // #[derive(Embed)]
 // #[folder = "img/other"]
 // struct Other;
 
-#[derive(Embed)]
-#[folder = "img/runes"]
-struct Runes;
+// #[derive(Embed)]
+// #[folder = "img/runes"]
+// struct Runes;
 
 // #[derive(generator_macros::ServeEmbed)]
-struct _Stats;
+// struct _Stats;
 
 // macro_rules! embed {
 // () => {
