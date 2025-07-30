@@ -58,7 +58,6 @@ image = { version = "0.25.6", optional = true }
 ravif = { version = "0.12.0", default-features = false, optional = true }
 regex = { version = "1.11.1", optional = true }
 rust-embed = "8.7.2"
-rkyv = "0.8.10"
 smallvec = "1.15.1"
 
 [features]

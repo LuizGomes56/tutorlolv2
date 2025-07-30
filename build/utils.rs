@@ -280,11 +280,17 @@ pub trait JoinNumVec {
     fn join(&self, sep: &str) -> String;
 }
 
-impl<T: ToString + Copy> JoinNumVec for Vec<T> {
-    fn join(&self, sep: &str) -> String {
-        self.iter()
-            .map(|s| s.to_string())
-            .collect::<Vec<String>>()
-            .join(sep)
-    }
+macro_rules! join_num_vec_trait_impl {
+    ($t:ty) => {
+        impl<T: ToString + Copy> JoinNumVec for $t {
+            fn join(&self, sep: &str) -> String {
+                self.iter()
+                    .map(|s| s.to_string())
+                    .collect::<Vec<String>>()
+                    .join(sep)
+            }
+        }
+    };
 }
+
+join_num_vec_trait_impl!(Vec<T>);

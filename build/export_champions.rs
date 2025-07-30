@@ -1,4 +1,5 @@
 use super::*;
+use std::cmp::Ordering;
 
 struct ExportedComptimePhfs {
     pub champion_name_to_id: String,
@@ -95,7 +96,7 @@ pub struct Champion {
     pub attack_type: String,
     pub positions: Vec<String>,
     pub stats: ChampionCdnStats,
-    pub abilities: BTreeMap<String, Ability>,
+    pub abilities: HashMap<String, Ability>,
 }
 
 pub fn format_stats(stats: &ChampionCdnStats) -> String {
@@ -129,8 +130,34 @@ pub fn format_stats(stats: &ChampionCdnStats) -> String {
     all_stats.join("")
 }
 
-fn format_abilities(abilities: &BTreeMap<String, Ability>) -> BTreeMap<String, String> {
-    let mut formatted_map = BTreeMap::new();
+fn sort_pqwer(data: &mut Vec<(String, String)>) {
+    let priority = |ch: char| match ch {
+        'P' => 0,
+        'Q' => 1,
+        'W' => 2,
+        'E' => 3,
+        'R' => 4,
+        _ => 5,
+    };
+
+    data.sort_by(|a, b| {
+        let a_first = a.0.chars().next().unwrap_or('Z');
+        let b_first = b.0.chars().next().unwrap_or('Z');
+        let ord1 = priority(a_first).cmp(&priority(b_first));
+        if ord1 != Ordering::Equal {
+            return ord1;
+        }
+
+        let ord2 = a.0.cmp(&b.0);
+        if ord2 != Ordering::Equal {
+            return ord2;
+        }
+        a.1.cmp(&b.1)
+    });
+}
+
+fn format_abilities(abilities: &HashMap<String, Ability>) -> Vec<(String, String)> {
+    let mut formatted_map = Vec::new();
     for (name, ability) in abilities {
         let mut min_dmg = String::new();
         let mut max_dmg = String::new();
@@ -148,11 +175,8 @@ fn format_abilities(abilities: &BTreeMap<String, Ability>) -> BTreeMap<String, S
                         })
                         .collect();
                     let needs_ctx = transformed.iter().any(|&(_, changed)| changed);
-                    let ctx_param = if needs_ctx { "ctx: &EvalContext" } else { "_" };
-                    $var.push_str(&format!(
-                        "|level: u8, {}| -> f64 {{match level {{",
-                        ctx_param
-                    ));
+                    let ctx_param = if needs_ctx { "ctx" } else { "_" };
+                    $var.push_str(&format!("|level, {}| -> f64 {{match level {{", ctx_param));
                     for (i, (expr, _)) in transformed.into_iter().enumerate() {
                         $var.push_str(&format!("{} => {},", i + 1, expr.to_lowercase()));
                     }
@@ -162,7 +186,7 @@ fn format_abilities(abilities: &BTreeMap<String, Ability>) -> BTreeMap<String, S
         }
         format_dmg!(min_dmg, minimum_damage);
         format_dmg!(max_dmg, maximum_damage);
-        formatted_map.insert(
+        formatted_map.push((
             name.clone(),
             format!(
                 "static __phantom__: CachedChampionAbility = CachedChampionAbility {{name: \"{}\",damage_type: \"{}\",
@@ -170,8 +194,9 @@ fn format_abilities(abilities: &BTreeMap<String, Ability>) -> BTreeMap<String, S
                 maximum_damage: {},}};",
                 ability.name, ability.damage_type, ability.damages_in_area, min_dmg, max_dmg,
             ),
-        );
+        ));
     }
+    sort_pqwer(&mut formatted_map);
     formatted_map
 }
 

@@ -1,6 +1,7 @@
-use super::{cache::EvalContext, riot::RiotChampionStats};
-use rustc_hash::FxHashMap;
+use super::{SIZE_ABILITIES, cache::EvalContext, riot::RiotChampionStats};
+use crate::{SIZE_DAMAGING_ITEMS, SIZE_DAMAGING_RUNES, SIZE_SIMULATED_ITEMS};
 use serde::{Deserialize, Serialize};
+use smallvec::SmallVec;
 
 #[derive(Serialize)]
 pub struct InstanceDamage {
@@ -52,7 +53,7 @@ impl RiotChampionStats {
     }
 }
 
-pub type DamageLike<T> = FxHashMap<T, InstanceDamage>;
+pub type DamageLike<const N: usize, T> = SmallVec<[(T, InstanceDamage); N]>;
 
 #[derive(Copy, Clone, Deserialize, Serialize)]
 pub struct BasicStats {
@@ -65,17 +66,17 @@ pub struct BasicStats {
 
 #[derive(Serialize)]
 pub struct SimulatedDamages {
-    pub abilities: DamageLike<&'static str>,
-    pub items: DamageLike<u32>,
-    pub runes: DamageLike<u32>,
+    pub abilities: DamageLike<SIZE_ABILITIES, &'static str>,
+    pub items: DamageLike<SIZE_DAMAGING_ITEMS, u32>,
+    pub runes: DamageLike<SIZE_DAMAGING_RUNES, u32>,
 }
 
 #[derive(Serialize)]
 pub struct Damages {
-    pub abilities: DamageLike<&'static str>,
-    pub items: DamageLike<u32>,
-    pub runes: DamageLike<u32>,
-    pub compared_items: FxHashMap<u32, SimulatedDamages>,
+    pub abilities: DamageLike<SIZE_ABILITIES, &'static str>,
+    pub items: DamageLike<SIZE_DAMAGING_ITEMS, u32>,
+    pub runes: DamageLike<SIZE_DAMAGING_RUNES, u32>,
+    pub compared_items: SmallVec<[(u32, SimulatedDamages); SIZE_SIMULATED_ITEMS]>,
 }
 
 #[derive(Clone, Copy)]

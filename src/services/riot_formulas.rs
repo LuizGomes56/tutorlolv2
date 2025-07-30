@@ -2,6 +2,7 @@ use crate::model::{
     base::{AdaptativeType, Stats},
     cache::CachedChampionStats,
 };
+use smallvec::SmallVec;
 
 pub struct RiotFormulas;
 
@@ -20,7 +21,7 @@ impl RiotFormulas {
     /// return 0.51
     ///
     /// ```
-    pub fn percent_value(from_vec: Vec<f64>) -> f64 {
+    pub fn percent_value<const N: usize>(from_vec: SmallVec<[f64; N]>) -> f64 {
         from_vec
             .iter()
             .map(|value: &f64| 100.0 - value)

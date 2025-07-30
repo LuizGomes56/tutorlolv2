@@ -1,5 +1,3 @@
-#![allow(unused_parens)]
-
 pub mod essentials;
 pub mod generators;
 mod middlewares;
@@ -162,7 +160,6 @@ fn api_scope() -> Scope<
     api_routes
 }
 
-#[allow(unreachable_code)]
 pub async fn run() -> io::Result<()> {
     dotenv().ok();
 

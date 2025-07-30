@@ -1,11 +1,13 @@
+#![allow(unreachable_code, unused_variables)]
 use super::*;
 use crate::{
     CHAMPION_NAME_TO_ID, DAMAGING_ITEMS, DAMAGING_RUNES, INTERNAL_CHAMPIONS, INTERNAL_ITEMS,
     META_ITEMS,
-    model::{base::*, calculator::*},
+    model::{
+        SIZE_ENEMIES_EXPECTED, SIZE_ITEMS_EXPECTED, SIZE_RUNES_EXPECTED, base::*, calculator::*,
+    },
 };
-use rayon::iter::{IntoParallelIterator, ParallelIterator};
-use rustc_hash::FxHashMap;
+use smallvec::SmallVec;
 
 /// If user opted not to dictate the active player's stats, this function is called
 /// it reads all items present in cache and evaluates what the game condition would be
@@ -20,8 +22,8 @@ fn infer_champion_stats(
     let stacks = active_player.stacks as f64;
     let owned_items = &active_player.items;
 
-    let mut armor_penetration = Vec::<f64>::new();
-    let mut magic_penetration = Vec::<f64>::new();
+    let mut armor_penetration = SmallVec::<[f64; 4]>::with_capacity(4);
+    let mut magic_penetration = SmallVec::<[f64; 4]>::with_capacity(4);
 
     for item_id in owned_items {
         let cached_item = INTERNAL_ITEMS
@@ -132,11 +134,13 @@ fn rune_exceptions(
     champion_stats: &mut Stats,
     owned_runes: &[u32],
     level: f64,
-    exception_map: &FxHashMap<u32, u32>,
     value_types: (AdaptativeType, AttackType),
+    // exception_map: &FxHashMap<u32, u32>,
 ) {
+    let this_stack = 0x0000;
+    return;
     for rune in owned_runes {
-        let this_stack = *exception_map.get(&rune).unwrap_or(&0);
+        // let this_stack = *exception_map.get(&rune).unwrap_or(&0);
         match rune {
             // Lethal Tempo
             8008 => match value_types.1 {
@@ -227,10 +231,12 @@ fn rune_exceptions(
 fn item_exceptions(
     champion_stats: &mut Stats,
     owned_items: &[u32],
-    exception_map: &FxHashMap<u32, u32>,
+    // exception_map: &FxHashMap<u32, u32>,
 ) {
+    return;
+    let this_stack = 0x0000;
     for item_id in owned_items {
-        let this_stack = *exception_map.get(&item_id).unwrap_or(&0);
+        // let this_stack = *exception_map.get(&item_id).unwrap_or(&0);
         match item_id {
             // Dark Seal
             1082 => champion_stats.ability_power += (this_stack.max(1) << 2) as f64,
@@ -255,9 +261,10 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
         active_player,
         enemy_players,
         enemy_earth_dragons,
-        stack_exceptions,
         ally_fire_dragons,
         ally_earth_dragons,
+        // stack_exceptions,
+        ..
     } = game;
 
     let InputActivePlayer {
@@ -275,13 +282,13 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
         .into_iter()
         .filter(|item_id| DAMAGING_ITEMS.contains(item_id))
         .copied()
-        .collect::<Vec<u32>>();
+        .collect::<SmallVec<[u32; SIZE_ITEMS_EXPECTED]>>();
 
     let current_player_damaging_runes = current_player_full_runes
         .into_iter()
         .filter(|rune_id| DAMAGING_RUNES.contains(rune_id))
         .copied()
-        .collect::<Vec<u32>>();
+        .collect::<SmallVec<[u32; SIZE_RUNES_EXPECTED]>>();
 
     let current_player_cache = INTERNAL_CHAMPIONS.get(current_player_champion_id).ok_or(
         CalculationError::ChampionCacheNotFound(format!(
@@ -328,7 +335,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
     item_exceptions(
         &mut current_player_stats,
         current_player_full_items,
-        &stack_exceptions,
+        // &stack_exceptions,
     );
 
     let adaptative_type = RiotFormulas::adaptative_type(
@@ -340,8 +347,8 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
         &mut current_player_stats,
         &current_player_full_runes,
         current_player_level as f64,
-        &stack_exceptions,
         (adaptative_type, current_player_attack_type),
+        // &stack_exceptions,
     );
 
     let current_player_recommended_items = META_ITEMS
@@ -366,14 +373,6 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
         earth: 1.0 + EARTH_DRAGON_MULTIPLIER * enemy_earth_dragons as f64,
         chemtech: 1.0,
     };
-
-    /*
-    let simulated_stats = get_simulated_champion_stats(
-        &current_player_stats,
-        current_player_full_items,
-        &ally_dragon_multipliers,
-    );
-    */
 
     let current_player_state = (
         &current_player_stats,
@@ -444,75 +443,6 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
         let items_damage = get_damages(&items_iter_expr, &damage_multipliers, &eval_ctx);
         let runes_damage = get_damages(&runes_iter_expr, &damage_multipliers, &eval_ctx);
 
-        /*
-        let mut compared_items_damage =
-            FxHashMap::with_capacity_and_hasher(simulated_stats.len(), Default::default());
-
-        for (siml_item_id, siml_stats) in simulated_stats.iter() {
-            let siml_full_stats = get_full_stats(
-                (
-                    enemy_champion_id,
-                    enemy_level,
-                    enemy_dragon_multipliers.earth,
-                ),
-                (enemy_base_stats, &enemy_items),
-                (
-                    siml_stats.armor_penetration_percent,
-                    siml_stats.armor_penetration_flat,
-                ),
-                (
-                    siml_stats.magic_penetration_percent,
-                    siml_stats.magic_penetration_flat,
-                ),
-            );
-
-            let siml_damage_multipliers = DamageMultipliers {
-                self_mod: siml_full_stats.2.self_mod,
-                enemy_mod: siml_full_stats.2.enemy_mod,
-                damage_mod: (siml_full_stats.2.armor_mod, siml_full_stats.2.magic_mod),
-            };
-
-            let siml_bonus_stats = get_bonus_stats(
-                BasicStats {
-                    armor: siml_stats.armor,
-                    health: siml_stats.max_health,
-                    attack_damage: siml_stats.attack_damage,
-                    magic_resist: siml_stats.magic_resist,
-                    mana: siml_stats.max_mana,
-                },
-                current_player_basic_stats,
-            );
-
-            let siml_current_player_state = (
-                siml_stats,
-                siml_bonus_stats,
-                current_player_state.2,
-                current_player_state.3,
-            );
-
-            let siml_eval_ctx = get_eval_ctx(&siml_current_player_state, &siml_full_stats);
-
-            let siml_abilities_damage = get_damages(
-                &abilities_iter_expr,
-                &siml_damage_multipliers,
-                &siml_eval_ctx,
-            );
-            let siml_items_damage =
-                get_damages(&items_iter_expr, &siml_damage_multipliers, &siml_eval_ctx);
-            let siml_runes_damage =
-                get_damages(&runes_iter_expr, &siml_damage_multipliers, &siml_eval_ctx);
-
-            compared_items_damage.insert(
-                *siml_item_id,
-                SimulatedDamages {
-                    abilities: siml_abilities_damage,
-                    items: siml_items_damage,
-                    runes: siml_runes_damage,
-                },
-            );
-        }
-        */
-
         Ok((
             *enemy_champion_id,
             OutputEnemy {
@@ -521,7 +451,6 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
                     abilities: abilities_damage,
                     items: items_damage,
                     runes: runes_damage,
-                    // compared_items: compared_items_damage,
                 },
                 level: player.level,
                 base_stats: enemy_base_stats,
@@ -533,17 +462,14 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
         ))
     };
 
-    let enemies = if enemy_players.len() > 5 {
-        enemy_players
-            .into_par_iter()
-            .map(output_enemy)
-            .collect::<Result<FxHashMap<&'static str, OutputEnemy>, CalculationError>>()?
-    } else {
+    let enemies =
         enemy_players
             .into_iter()
             .map(output_enemy)
-            .collect::<Result<FxHashMap<&'static str, OutputEnemy>, CalculationError>>()?
-    };
+            .collect::<Result<
+                SmallVec<[(&'static str, OutputEnemy); SIZE_ENEMIES_EXPECTED]>,
+                CalculationError,
+            >>()?;
 
     Ok(OutputGame {
         current_player: OutputCurrentPlayer {
@@ -572,6 +498,3 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
         recommended_items: current_player_recommended_items,
     })
 }
-
-// u32::MAX - 1 = active player has a shapeshift attribute
-// u32::MAX - 1 - index = enemy X has a shapeshift attribute

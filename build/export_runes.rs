@@ -59,12 +59,16 @@ pub fn export_runes(out_dir: &str) {
     );
     let mut exported_comptime_phf = ExportedComptimePhfs::new();
     let mut constdecl_internal_runes = String::new();
-    let mut constdecl_damaging_runes = String::from("const DAMAGING_RUNES: [u32; ");
-    let mut vec_damaging_runes = Vec::new();
+    let mut phf_damaging_runes =
+        String::from("pub static DAMAGING_RUNES: phf::Set<u32> = phf::phf_set! {");
+    let mut len_damaging_runes = 0usize;
     let main_map = init_map!(file HashMap<u32, Rune>, "internal/runes.json");
 
     for (rune_id, rune) in main_map {
         macro_rules! push_phf_arm {
+            (set $varname:ident, $key:expr) => {
+                $varname.push_str(&format!("{}u32,", $key))
+            };
             (var $varname:ident, $key:expr, $value:expr) => {
                 $varname.push_str(&format!("{}u32 => {},", $key, $value))
             };
@@ -76,7 +80,8 @@ pub fn export_runes(out_dir: &str) {
         }
 
         if !rune.ranged.is_empty() || !rune.melee.is_empty() {
-            vec_damaging_runes.push(rune_id);
+            push_phf_arm!(set phf_damaging_runes, rune_id);
+            len_damaging_runes += 1;
         }
         let ranged_expr = transform_expr(&clean_math_expr(&rune.ranged));
         let melee_expr = transform_expr(&clean_math_expr(&rune.melee));
@@ -96,20 +101,12 @@ pub fn export_runes(out_dir: &str) {
             rune.damage_type,
             format!(
                 "|_, {}| {}",
-                if ranged_expr.1 {
-                    "ctx: &EvalContext"
-                } else {
-                    "_"
-                },
+                if ranged_expr.1 { "ctx" } else { "_" },
                 ranged_expr.0.to_lowercase()
             ),
             format!(
                 "|_, {}| {}",
-                if melee_expr.1 {
-                    "ctx: &EvalContext"
-                } else {
-                    "_"
-                },
+                if melee_expr.1 { "ctx" } else { "_" },
                 melee_expr.0.to_lowercase()
             ),
         );
@@ -130,6 +127,7 @@ pub fn export_runes(out_dir: &str) {
 
     exported_comptime_phf.add_braces();
     phf_internal_runes.push_str("};");
+    phf_damaging_runes.push_str("};");
 
     let assign_path = |v: &'static str| Path::new(out_dir).join(v);
     let write_fn = |to: &'static str, content: String| {
@@ -137,21 +135,17 @@ pub fn export_runes(out_dir: &str) {
         fs::write(&path, content.as_bytes()).unwrap();
     };
 
-    constdecl_damaging_runes.push_str(&format!(
-        "{}] = [{}];",
-        vec_damaging_runes.len(),
-        vec_damaging_runes.join(",")
-    ));
-
     write_fn("internal_runes.rs", {
         let mut s = String::with_capacity(
-            phf_internal_runes.len()
-                + constdecl_internal_runes.len()
-                + constdecl_damaging_runes.len(),
+            phf_internal_runes.len() + constdecl_internal_runes.len() + phf_damaging_runes.len(),
         );
         s.push_str(&phf_internal_runes);
         s.push_str(&constdecl_internal_runes);
-        s.push_str(&constdecl_damaging_runes);
+        s.push_str(&phf_damaging_runes);
+        s.push_str(&format!(
+            "pub const SIZE_DAMAGING_RUNES: usize = {};",
+            len_damaging_runes
+        ));
         s
     });
     let _ = fs::write(

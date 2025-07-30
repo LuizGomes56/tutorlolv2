@@ -1,13 +1,14 @@
 use super::riot_formulas::RiotFormulas;
 use crate::{
     DAMAGING_ITEMS, DAMAGING_RUNES, INTERNAL_ITEMS, INTERNAL_RUNES, SIMULATED_ITEMS,
+    SIZE_DAMAGING_RUNES, SIZE_SIMULATED_ITEMS,
     model::{
+        SIZE_ABILITIES, SIZE_ITEMS_EXPECTED,
         base::*,
         cache::{CachedChampion, CachedItem, EvalContext},
     },
 };
-use rustc_hash::FxHashMap;
-use std::hash::Hash;
+use smallvec::SmallVec;
 
 /// By 06/07/2025 Earth dragons give +5% resists
 // #![manual_impl]
@@ -24,18 +25,18 @@ pub fn get_simulated_champion_stats<'a>(
     current_stats: &Stats,
     owned_items: &[u32],
     ally_dragon_multipliers: &DragonMultipliers,
-) -> FxHashMap<u32, Stats> {
+) -> SmallVec<[(u32, Stats); SIZE_SIMULATED_ITEMS]> {
     let mut simulated_stats =
-        FxHashMap::with_capacity_and_hasher(SIMULATED_ITEMS.len(), Default::default());
+        SmallVec::<[(u32, Stats); SIZE_SIMULATED_ITEMS]>::with_capacity(SIZE_SIMULATED_ITEMS);
     for item_id in SIMULATED_ITEMS.iter() {
         if owned_items.contains(item_id) {
             continue;
         }
         if let Some(item) = INTERNAL_ITEMS.get(item_id) {
-            simulated_stats.insert(
+            simulated_stats.push((
                 *item_id,
                 simulate_champion_stats(item, *current_stats, ally_dragon_multipliers),
-            );
+            ));
         }
     }
     simulated_stats
@@ -57,7 +58,10 @@ pub fn simulate_champion_stats(
             result.$field += stats.$field2;
         };
         (#$field:ident) => {
-            result.$field = RiotFormulas::percent_value(vec![result.$field, stats.$field]);
+            result.$field = RiotFormulas::percent_value(SmallVec::<[f64; 2]>::from([
+                result.$field,
+                stats.$field,
+            ]));
         };
     }
 
@@ -85,9 +89,8 @@ pub fn simulate_champion_stats(
 pub fn get_items_damage(
     current_player_damaging_items: &[u32],
     attack_type: AttackType,
-) -> Vec<(u32, DamageExpression)> {
-    let mut result =
-        Vec::<(u32, DamageExpression)>::with_capacity(current_player_damaging_items.len());
+) -> SmallVec<[(u32, DamageExpression); SIZE_ITEMS_EXPECTED]> {
+    let mut result = SmallVec::with_capacity(current_player_damaging_items.len());
     for item_id in current_player_damaging_items {
         if DAMAGING_ITEMS.contains(item_id) {
             if let Some(item) = INTERNAL_ITEMS.get(item_id) {
@@ -113,9 +116,8 @@ pub fn get_items_damage(
 pub fn get_runes_damage(
     current_player_damaging_runes: &[u32],
     attack_type: AttackType,
-) -> Vec<(u32, DamageExpression)> {
-    let mut result =
-        Vec::<(u32, DamageExpression)>::with_capacity(current_player_damaging_runes.len());
+) -> SmallVec<[(u32, DamageExpression); SIZE_DAMAGING_RUNES]> {
+    let mut result = SmallVec::with_capacity(current_player_damaging_runes.len());
     for rune_id in current_player_damaging_runes {
         if DAMAGING_RUNES.contains(rune_id) {
             if let Some(rune) = INTERNAL_RUNES.get(rune_id) {
@@ -265,51 +267,49 @@ pub fn get_abilities_damage(
     current_player_cache: &&CachedChampion,
     current_player_level: u8,
     abilities: AbilityLevels,
-) -> Vec<(&'static str, DamageExpression)> {
-    current_player_cache
-        .abilities
-        .iter()
-        .filter_map(move |(key, value)| {
-            let first_char = key.chars().next()?;
-            let level = match first_char {
-                'P' => current_player_level,
-                'Q' => abilities.q,
-                'W' => abilities.w,
-                'E' => abilities.e,
-                'R' => abilities.r,
-                _ => return None,
-            };
-            Some((
-                *key,
-                DamageExpression {
-                    level,
-                    damage_type: value.damage_type,
-                    minimum_damage: value.minimum_damage,
-                    maximum_damage: value.maximum_damage,
-                },
-            ))
-        })
-        .chain(std::iter::once((
-            "A",
+) -> SmallVec<[(&'static str, DamageExpression); SIZE_ABILITIES]> {
+    let mut result = SmallVec::with_capacity(current_player_cache.abilities.len() + 2);
+    for (key, value) in current_player_cache.abilities.iter() {
+        let first_char = key.chars().next().unwrap();
+        let level = match first_char {
+            'P' => current_player_level,
+            'Q' => abilities.q,
+            'W' => abilities.w,
+            'E' => abilities.e,
+            'R' => abilities.r,
+            _ => continue,
+        };
+        result.push((
+            *key,
             DamageExpression {
-                level: 0,
-                damage_type: "PHYSICAL_DAMAGE",
-                minimum_damage: |_, ctx: &EvalContext| ctx.ad * ctx.physical_multiplier,
-                maximum_damage: |_, _| 0.0,
+                level,
+                damage_type: value.damage_type,
+                minimum_damage: value.minimum_damage,
+                maximum_damage: value.maximum_damage,
             },
-        )))
-        .chain(std::iter::once((
-            "C",
-            DamageExpression {
-                level: 0,
-                damage_type: "PHYSICAL_DAMAGE",
-                minimum_damage: |_, ctx: &EvalContext| {
-                    ctx.ad * ctx.physical_multiplier * ctx.crit_damage / 100.0
-                },
-                maximum_damage: |_, _| 0.0,
+        ));
+    }
+    result.push((
+        "A",
+        DamageExpression {
+            level: 0,
+            damage_type: "PHYSICAL_DAMAGE",
+            minimum_damage: |_, ctx: &EvalContext| ctx.ad * ctx.physical_multiplier,
+            maximum_damage: |_, _| 0.0,
+        },
+    ));
+    result.push((
+        "C",
+        DamageExpression {
+            level: 0,
+            damage_type: "PHYSICAL_DAMAGE",
+            minimum_damage: |_, ctx: &EvalContext| {
+                ctx.ad * ctx.physical_multiplier * ctx.crit_damage / 100.0
             },
-        )))
-        .collect()
+            maximum_damage: |_, _| 0.0,
+        },
+    ));
+    result
 }
 
 // #![unsupported] Champion stacks are ignored.
@@ -470,15 +470,15 @@ fn transform_expr<T: Copy + 'static>(
     )
 }
 
-pub fn get_damages<T: Copy + Eq + Hash + 'static>(
+pub fn get_damages<const N: usize, T: Copy + 'static>(
     tuples: &[(T, DamageExpression)],
     damage_multipliers: &DamageMultipliers,
     eval_ctx: &EvalContext,
-) -> DamageLike<T> {
-    let mut result = DamageLike::<T>::with_capacity_and_hasher(tuples.len(), Default::default());
+) -> DamageLike<N, T> {
+    let mut result = DamageLike::<N, T>::with_capacity(tuples.len());
     for tuple in tuples.iter().copied() {
         let (key, val) = transform_expr(tuple, damage_multipliers, eval_ctx);
-        result.insert(key, val);
+        result.push((key, val));
     }
     result
 }

@@ -2,6 +2,7 @@ use super::*;
 use crate::{
     CHAMPION_NAME_TO_ID, DAMAGING_ITEMS, DAMAGING_RUNES, INTERNAL_CHAMPIONS, META_ITEMS,
     model::{
+        SIZE_ENEMIES_EXPECTED, SIZE_ITEMS_EXPECTED, SIZE_RUNES_EXPECTED,
         base::{
             AttackType, BasicStats, DamageMultipliers, Damages, DragonMultipliers, SimulatedDamages,
         },
@@ -9,8 +10,8 @@ use crate::{
         riot::*,
     },
 };
-use rayon::iter::{ParallelBridge, ParallelIterator};
 use rustc_hash::FxHashMap;
+use smallvec::SmallVec;
 
 /// Takes a type constructed from port 2999 and returns a new type "Realtime"
 #[generator_macros::trace_time]
@@ -113,12 +114,12 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
                 None
             }
         })
-        .collect::<Vec<u32>>();
+        .collect::<SmallVec<[u32; SIZE_RUNES_EXPECTED]>>();
 
     let current_player_items = current_player_riot_items
         .iter()
         .map(|riot_item| riot_item.item_id)
-        .collect::<Vec<u32>>();
+        .collect::<SmallVec<[u32; SIZE_ITEMS_EXPECTED]>>();
 
     let current_player_damaging_items = current_player_items
         .iter()
@@ -129,7 +130,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
                 None
             }
         })
-        .collect::<Vec<u32>>();
+        .collect::<SmallVec<[u32; SIZE_ITEMS_EXPECTED]>>();
 
     let simulated_stats = get_simulated_champion_stats(
         &current_player_stats,
@@ -158,9 +159,11 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
 
     let enemies = all_players
         .into_iter()
-        .filter(|player| &player.team != current_player_team)
-        .par_bridge()
         .filter_map(|player| {
+            if &player.team == current_player_team {
+                return None;
+            }
+
             let enemy_champion_id = CHAMPION_NAME_TO_ID.get(&player.champion_name)?;
 
             let RiotAllPlayers {
@@ -174,7 +177,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
             let enemy_items = enemy_riot_items
                 .iter()
                 .map(|value| value.item_id)
-                .collect::<Vec<u32>>();
+                .collect::<SmallVec<[u32; SIZE_ITEMS_EXPECTED]>>();
             let enemy_level = player.level;
             let enemy_cache = INTERNAL_CHAMPIONS.get(enemy_champion_id)?;
             let enemy_base_stats = get_base_stats(enemy_cache, enemy_level);
@@ -209,8 +212,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
             let items_damage = get_damages(&items_iter_expr, &damage_multipliers, &eval_ctx);
             let runes_damage = get_damages(&runes_iter_expr, &damage_multipliers, &eval_ctx);
 
-            let mut compared_items_damage =
-                FxHashMap::with_capacity_and_hasher(simulated_stats.len(), Default::default());
+            let mut compared_items_damage = SmallVec::with_capacity(simulated_stats.len());
 
             for (siml_item_id, siml_stats) in simulated_stats.iter() {
                 let siml_full_stats = get_full_stats(
@@ -266,14 +268,14 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
                 let siml_runes_damage =
                     get_damages(&runes_iter_expr, &siml_damage_multipliers, &siml_eval_ctx);
 
-                compared_items_damage.insert(
+                compared_items_damage.push((
                     *siml_item_id,
                     SimulatedDamages {
                         abilities: siml_abilities_damage,
                         items: siml_items_damage,
                         runes: siml_runes_damage,
                     },
-                );
+                ));
             }
 
             Some((
@@ -298,7 +300,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
                 },
             ))
         })
-        .collect::<FxHashMap<&'static str, Enemy>>();
+        .collect::<SmallVec<[(&'static str, Enemy); SIZE_ENEMIES_EXPECTED]>>();
 
     Ok(Realtime {
         current_player: CurrentPlayer {

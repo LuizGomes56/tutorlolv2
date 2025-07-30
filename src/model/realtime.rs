@@ -1,12 +1,15 @@
-use super::base::{BasicStats, Damages, DragonMultipliers, Stats};
-use rustc_hash::FxHashMap;
+use super::{
+    SIZE_ABILITIES, SIZE_ENEMIES_EXPECTED, SIZE_ITEMS_EXPECTED, SIZE_RUNES_EXPECTED,
+    base::{BasicStats, Damages, DragonMultipliers, Stats},
+};
 use serde::Serialize;
+use smallvec::SmallVec;
 
 #[derive(Serialize)]
 pub struct CurrentPlayer<'a> {
-    pub damaging_abilities: Vec<&'static str>,
-    pub damaging_items: Vec<u32>,
-    pub damaging_runes: Vec<u32>,
+    pub damaging_abilities: SmallVec<[&'static str; SIZE_ABILITIES]>,
+    pub damaging_items: SmallVec<[u32; SIZE_ITEMS_EXPECTED]>,
+    pub damaging_runes: SmallVec<[u32; SIZE_RUNES_EXPECTED]>,
     pub riot_id: &'a str,
     pub level: u8,
     pub team: &'a str,
@@ -54,7 +57,7 @@ pub struct Scoreboard<'a> {
 #[derive(Serialize)]
 pub struct Realtime<'a> {
     pub current_player: CurrentPlayer<'a>,
-    pub enemies: FxHashMap<&'static str, Enemy<'a>>,
+    pub enemies: SmallVec<[(&'static str, Enemy<'a>); SIZE_ENEMIES_EXPECTED]>,
     pub game_information: GameInformation,
     pub recommended_items: &'static [u32],
     pub scoreboard: Scoreboard<'a>,
