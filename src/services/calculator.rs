@@ -3,11 +3,10 @@ use super::*;
 use crate::{
     CHAMPION_NAME_TO_ID, DAMAGING_ITEMS, DAMAGING_RUNES, INTERNAL_CHAMPIONS, INTERNAL_ITEMS,
     META_ITEMS,
-    model::{
-        SIZE_ENEMIES_EXPECTED, SIZE_ITEMS_EXPECTED, SIZE_RUNES_EXPECTED, base::*, calculator::*,
-    },
+    model::{base::*, calculator::*},
 };
 use smallvec::SmallVec;
+use tinyset::SetU32;
 
 /// If user opted not to dictate the active player's stats, this function is called
 /// it reads all items present in cache and evaluates what the game condition would be
@@ -137,8 +136,8 @@ fn rune_exceptions(
     value_types: (AdaptativeType, AttackType),
     // exception_map: &FxHashMap<u32, u32>,
 ) {
-    let this_stack = 0x0000;
     return;
+    let this_stack = 0x0000;
     for rune in owned_runes {
         // let this_stack = *exception_map.get(&rune).unwrap_or(&0);
         match rune {
@@ -264,7 +263,6 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
         ally_fire_dragons,
         ally_earth_dragons,
         // stack_exceptions,
-        ..
     } = game;
 
     let InputActivePlayer {
@@ -282,13 +280,13 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
         .into_iter()
         .filter(|item_id| DAMAGING_ITEMS.contains(item_id))
         .copied()
-        .collect::<SmallVec<[u32; SIZE_ITEMS_EXPECTED]>>();
+        .collect::<SetU32>();
 
     let current_player_damaging_runes = current_player_full_runes
         .into_iter()
         .filter(|rune_id| DAMAGING_RUNES.contains(rune_id))
         .copied()
-        .collect::<SmallVec<[u32; SIZE_RUNES_EXPECTED]>>();
+        .collect::<SetU32>();
 
     let current_player_cache = INTERNAL_CHAMPIONS.get(current_player_champion_id).ok_or(
         CalculationError::ChampionCacheNotFound(format!(
@@ -462,24 +460,13 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
         ))
     };
 
-    let enemies =
-        enemy_players
-            .into_iter()
-            .map(output_enemy)
-            .collect::<Result<
-                SmallVec<[(&'static str, OutputEnemy); SIZE_ENEMIES_EXPECTED]>,
-                CalculationError,
-            >>()?;
+    let enemies = enemy_players
+        .into_iter()
+        .map(output_enemy)
+        .collect::<Result<SmallVec<[(&'static str, OutputEnemy); 1]>, CalculationError>>()?;
 
     Ok(OutputGame {
         current_player: OutputCurrentPlayer {
-            damaging_abilities: current_player_cache
-                .abilities
-                .into_iter()
-                .map(|(key, _)| *key)
-                .chain(std::iter::once("A"))
-                .chain(std::iter::once("C"))
-                .collect(),
             damaging_items: current_player_damaging_items
                 .into_iter()
                 .filter_map(|item_id| DAMAGING_ITEMS.contains(&item_id).then_some(item_id))

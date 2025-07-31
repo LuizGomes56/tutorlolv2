@@ -2,7 +2,7 @@ use super::*;
 use crate::{
     CHAMPION_NAME_TO_ID, DAMAGING_ITEMS, DAMAGING_RUNES, INTERNAL_CHAMPIONS, META_ITEMS,
     model::{
-        SIZE_ENEMIES_EXPECTED, SIZE_ITEMS_EXPECTED, SIZE_RUNES_EXPECTED,
+        SIZE_ENEMIES_EXPECTED, SIZE_ITEMS_EXPECTED,
         base::{
             AttackType, BasicStats, DamageMultipliers, Damages, DragonMultipliers, SimulatedDamages,
         },
@@ -12,6 +12,7 @@ use crate::{
 };
 use smallvec::SmallVec;
 use std::collections::HashMap;
+use tinyset::SetU32;
 
 /// Takes a type constructed from port 2999 and returns a new type "Realtime"
 // #[generator_macros::trace_time]
@@ -114,23 +115,23 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
                 None
             }
         })
-        .collect::<SmallVec<[u32; SIZE_RUNES_EXPECTED]>>();
+        .collect::<SetU32>();
 
     let current_player_items = current_player_riot_items
         .iter()
         .map(|riot_item| riot_item.item_id)
-        .collect::<SmallVec<[u32; SIZE_ITEMS_EXPECTED]>>();
+        .collect::<SetU32>();
 
     let current_player_damaging_items = current_player_items
         .iter()
         .filter_map(|item_id| {
-            if DAMAGING_ITEMS.contains(item_id) {
-                Some(*item_id)
+            if DAMAGING_ITEMS.contains(&item_id) {
+                Some(item_id)
             } else {
                 None
             }
         })
-        .collect::<SmallVec<[u32; SIZE_ITEMS_EXPECTED]>>();
+        .collect::<SetU32>();
 
     let simulated_stats = get_simulated_champion_stats(
         &current_player_stats,
@@ -304,21 +305,8 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
 
     Ok(Realtime {
         current_player: CurrentPlayer {
-            damaging_abilities: current_player_cache
-                .abilities
-                .into_iter()
-                .map(|(key, _)| *key)
-                .chain(std::iter::once("A"))
-                .chain(std::iter::once("C"))
-                .collect(),
-            damaging_items: current_player_damaging_items
-                .into_iter()
-                .filter_map(|item_id| DAMAGING_ITEMS.contains(&item_id).then_some(item_id))
-                .collect(),
-            damaging_runes: current_player_damaging_runes
-                .into_iter()
-                .filter_map(|rune_id| DAMAGING_RUNES.contains(&rune_id).then_some(rune_id))
-                .collect(),
+            damaging_items: current_player_damaging_items,
+            damaging_runes: current_player_damaging_runes,
             riot_id: current_player_riot_id,
             level: current_player_level,
             team: current_player_team,

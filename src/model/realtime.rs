@@ -1,15 +1,15 @@
 use super::{
-    SIZE_ABILITIES, SIZE_ENEMIES_EXPECTED, SIZE_ITEMS_EXPECTED, SIZE_RUNES_EXPECTED,
+    SIZE_ENEMIES_EXPECTED,
     base::{BasicStats, Damages, DragonMultipliers, Stats},
 };
 use serde::Serialize;
 use smallvec::SmallVec;
+use tinyset::SetU32;
 
 #[derive(Serialize)]
 pub struct CurrentPlayer<'a> {
-    pub damaging_abilities: SmallVec<[&'static str; SIZE_ABILITIES]>,
-    pub damaging_items: SmallVec<[u32; SIZE_ITEMS_EXPECTED]>,
-    pub damaging_runes: SmallVec<[u32; SIZE_RUNES_EXPECTED]>,
+    pub damaging_items: SetU32,
+    pub damaging_runes: SetU32,
     pub riot_id: &'a str,
     pub level: u8,
     pub team: &'a str,

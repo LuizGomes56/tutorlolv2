@@ -44,6 +44,7 @@ actix-web = { version = "4.11.0", default-features = false, features = [
     "http2",
     "macros",
 ] }
+tinyset = { version = "0.5.2", features = ["serde"] }
 
 generator_macros = { path = "./generator_macros", optional = true }
 reqwest = { version = "0.12.1", features = [
@@ -51,8 +52,8 @@ reqwest = { version = "0.12.1", features = [
     "rustls-tls",
 ], default-features = false, optional = true }
 rayon = { version = "1.10.0", optional = true }
-once_cell = { version = "1.21.3", optional = true }
 rustc-hash = { version = "2.1.1", optional = true }
+once_cell = { version = "1.21.3", optional = true }
 serde_json = { version = "1.0.140", optional = true }
 scraper = { version = "0.23.1", optional = true }
 image = { version = "0.25.6", optional = true }
@@ -66,7 +67,6 @@ dev = [
     "reqwest",
     "rayon",
     "once_cell",
-    "rustc-hash",
     "serde_json",
     "scraper",
     "image",

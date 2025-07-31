@@ -1,17 +1,17 @@
 use super::{
-    SIZE_ABILITIES, SIZE_ENEMIES_EXPECTED, SIZE_ITEMS_EXPECTED, SIZE_RUNES_EXPECTED,
+    SIZE_ABILITIES, SIZE_ITEMS_EXPECTED, SIZE_RUNES_EXPECTED,
     base::{AbilityLevels, BasicStats, DamageLike, Stats},
 };
 use crate::{SIZE_DAMAGING_ITEMS, SIZE_DAMAGING_RUNES};
 use serde::{Deserialize, Serialize};
 use smallvec::SmallVec;
+use tinyset::SetU32;
 
 #[derive(Serialize)]
 pub struct OutputCurrentPlayer {
     pub champion_id: String,
-    pub damaging_abilities: SmallVec<[&'static str; SIZE_ABILITIES]>,
-    pub damaging_items: SmallVec<[u32; SIZE_DAMAGING_ITEMS]>,
-    pub damaging_runes: SmallVec<[u32; SIZE_DAMAGING_RUNES]>,
+    pub damaging_items: SetU32,
+    pub damaging_runes: SetU32,
     pub level: u8,
     pub base_stats: BasicStats,
     pub bonus_stats: BasicStats,
@@ -40,7 +40,7 @@ pub struct OutputEnemy {
 #[derive(Serialize)]
 pub struct OutputGame {
     pub current_player: OutputCurrentPlayer,
-    pub enemies: SmallVec<[(&'static str, OutputEnemy); SIZE_ENEMIES_EXPECTED]>,
+    pub enemies: SmallVec<[(&'static str, OutputEnemy); 1]>,
     pub recommended_items: &'static [u32],
 }
 
@@ -68,7 +68,7 @@ pub struct InputEnemyPlayers {
 #[derive(Deserialize)]
 pub struct InputGame {
     pub active_player: InputActivePlayer,
-    pub enemy_players: SmallVec<[InputEnemyPlayers; SIZE_ENEMIES_EXPECTED]>,
+    pub enemy_players: SmallVec<[InputEnemyPlayers; 1]>,
     pub ally_earth_dragons: u8,
     pub ally_fire_dragons: u8,
     pub enemy_earth_dragons: u8,
