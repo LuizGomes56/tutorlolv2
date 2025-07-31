@@ -1,10 +1,12 @@
 use crate::{
-    essentials::helpers::{extract_file_name, read_json_file, write_to_file},
     model::{
         dev::{champions::CdnChampion, items::CdnItem, riot::RiotCdnItem},
         items::{Item, PartialStats},
     },
-    setup::generators::champions::run_generator_file,
+    setup::{
+        essentials::helpers::{extract_file_name, read_json_file, write_to_file},
+        generators::champions::run_generator_file,
+    },
 };
 use regex::Regex;
 use rustc_hash::FxHashMap;

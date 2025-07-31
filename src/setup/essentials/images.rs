@@ -1,10 +1,10 @@
 use crate::{
-    ENV_CONFIG,
-    essentials::{
+    init::dev::ENV_CONFIG,
+    model::riot::{RiotCdnChampion, RiotCdnInstance, RiotCdnRune, RiotCdnSkin},
+    setup::essentials::{
         api::riot_base_url,
         helpers::{extract_file_name, read_json_file, write_to_file},
     },
-    model::riot::{RiotCdnChampion, RiotCdnInstance, RiotCdnRune, RiotCdnSkin},
 };
 use reqwest::{Client, Response};
 use rustc_hash::FxHashMap;

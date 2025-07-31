@@ -61,6 +61,7 @@ pub fn export_runes(out_dir: &str) {
     let mut constdecl_internal_runes = String::new();
     let mut phf_damaging_runes =
         String::from("pub static DAMAGING_RUNES: phf::Set<u32> = phf::phf_set! {");
+    let mut phf_arms_name_to_id = BTreeMap::new();
     let mut len_damaging_runes = 0usize;
     let main_map = init_map!(file HashMap<u32, Rune>, "internal/runes.json");
 
@@ -90,7 +91,7 @@ pub fn export_runes(out_dir: &str) {
             format!("{}u32", rune_id),
             format!("\"{}\"", rune.name)
         );
-        push_phf_arm!(rune_name_to_id, format!("\"{}\"", rune.name), rune_id);
+        phf_arms_name_to_id.insert(rune.name.clone(), rune_id);
         push_phf_arm!(var phf_internal_runes, rune_id, format!("&RUNE_{}", rune_id));
 
         let constdecl = format!(
@@ -125,6 +126,11 @@ pub fn export_runes(out_dir: &str) {
         );
     }
 
+    for (name, item_id) in phf_arms_name_to_id {
+        exported_comptime_phf
+            .rune_name_to_id
+            .push_str(&format!("\"{}\" => {}u32,", name, item_id));
+    }
     exported_comptime_phf.add_braces();
     phf_internal_runes.push_str("};");
     phf_damaging_runes.push_str("};");

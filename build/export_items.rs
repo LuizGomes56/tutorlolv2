@@ -166,6 +166,7 @@ pub fn export_items(out_dir: &str) {
         "pub static INTERNAL_ITEMS: ::phf::Map<u32, &'static CachedItem> = ::phf::phf_map! {",
     );
     let mut constdecl_items_phf = String::new();
+    let mut phf_arms_name_to_id = BTreeMap::new();
     let mut phf_simulated_items =
         String::from("pub static SIMULATED_ITEMS: phf::OrderedSet<u32> = phf::phf_ordered_set! {");
     let mut phf_damaging_items =
@@ -261,11 +262,7 @@ pub fn export_items(out_dir: &str) {
             format_stats(&item.stats),
         );
 
-        push_phf_arm!(
-            item_name_to_id,
-            format!("\"{}\"", item.name),
-            format!("{}u32", item_id)
-        );
+        phf_arms_name_to_id.insert(item.name.clone(), item_id);
         push_phf_arm!(
             item_id_to_name,
             format!("{}u32", item_id),
@@ -291,6 +288,11 @@ pub fn export_items(out_dir: &str) {
         let path = assign_path(to);
         let _ = fs::write(&path, content.as_bytes());
     };
+    for (name, item_id) in phf_arms_name_to_id {
+        exported_comptime_phf
+            .item_name_to_id
+            .push_str(&format!("\"{}\" => {}u32,", name, item_id));
+    }
     exported_comptime_phf.add_braces();
     phf_internal_items.push_str("};");
     phf_damaging_items.push_str("};");

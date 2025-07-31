@@ -10,11 +10,11 @@ use crate::{
         riot::*,
     },
 };
-use rustc_hash::FxHashMap;
 use smallvec::SmallVec;
+use std::collections::HashMap;
 
 /// Takes a type constructed from port 2999 and returns a new type "Realtime"
-#[generator_macros::trace_time]
+// #[generator_macros::trace_time]
 pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationError> {
     let current_player_level = game.active_player.level;
     let game_time = game.game_data.game_time;
@@ -56,7 +56,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
                 &player.team,
             )
         })
-        .collect::<FxHashMap<&str, &String>>();
+        .collect::<HashMap<&str, &String>>();
 
     let (enemy_dragon_multipliers, ally_dragon_multipliers) =
         get_dragon_multipliers(game_events, players_map, current_player_team);
@@ -352,7 +352,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
 
 fn get_dragon_multipliers<'a>(
     event_list: &[RealtimeEvent],
-    players: FxHashMap<&str, &String>,
+    players: HashMap<&str, &String>,
     current_player_team: &str,
 ) -> (DragonMultipliers, DragonMultipliers) {
     let mut ally_effect = DragonMultipliers::new();

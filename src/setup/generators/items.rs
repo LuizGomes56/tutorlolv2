@@ -2,12 +2,14 @@
 //! Generate fields "melee" and "ranged" for each item in "internal/items/*.json".
 
 use crate::{
-    essentials::helpers::{read_json_file, write_to_file},
     model::{
         dev::items::CdnItem,
         items::{DamageObject, Item},
     },
-    setup::generators::extractors::{extract_damagelike_expr, process_scaled_string},
+    setup::{
+        essentials::helpers::{read_json_file, write_to_file},
+        generators::extractors::{extract_damagelike_expr, process_scaled_string},
+    },
 };
 use regex::Regex;
 

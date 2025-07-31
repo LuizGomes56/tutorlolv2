@@ -1,14 +1,14 @@
 use crate::{
     AppState, dev_response,
-    essentials::{
-        api::CdnEndpoint,
-        images::{
-            img_download_arts, img_download_instances, img_download_items, img_download_runes,
-        },
-    },
     server::schemas::APIResponse,
     setup::{
         cache::{update_cdn_cache, update_riot_cache},
+        essentials::{
+            api::CdnEndpoint,
+            images::{
+                img_download_arts, img_download_instances, img_download_items, img_download_runes,
+            },
+        },
         generators::{
             champions::{GeneratorMode, create_generator_files},
             items::assign_item_damages,

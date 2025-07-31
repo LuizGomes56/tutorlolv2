@@ -1,4 +1,3 @@
-use rustc_hash::FxHashMap;
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Clone)]
@@ -17,7 +16,7 @@ pub struct Champion {
     pub attack_type: String,
     pub positions: Vec<String>,
     pub stats: ChampionCdnStats,
-    pub abilities: FxHashMap<String, Ability>,
+    pub abilities: Vec<(String, Ability)>,
 }
 
 #[derive(Serialize, Deserialize)]

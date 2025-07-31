@@ -255,7 +255,7 @@ fn item_exceptions(
 
 // #![todo] Stats are not assigned correctly
 // #![todo] Review exceptions
-#[generator_macros::trace_time]
+// #[generator_macros::trace_time]
 pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
     let InputGame {
         active_player,

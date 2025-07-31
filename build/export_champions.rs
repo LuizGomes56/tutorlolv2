@@ -176,7 +176,7 @@ fn format_abilities(abilities: &HashMap<String, Ability>) -> Vec<(String, String
                         .collect();
                     let needs_ctx = transformed.iter().any(|&(_, changed)| changed);
                     let ctx_param = if needs_ctx { "ctx" } else { "_" };
-                    $var.push_str(&format!("|level, {}| -> f64 {{match level {{", ctx_param));
+                    $var.push_str(&format!("|level, {}| {{match level {{", ctx_param));
                     for (i, (expr, _)) in transformed.into_iter().enumerate() {
                         $var.push_str(&format!("{} => {},", i + 1, expr.to_lowercase()));
                     }

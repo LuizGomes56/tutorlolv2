@@ -1,11 +1,13 @@
 use crate::{
-    essentials::{
-        api::{CdnEndpoint, fetch_cdn_api, fetch_riot_api},
-        helpers::write_to_file,
-    },
     generators::CdnChampion,
     model::{dev::items::CdnItem, riot::RiotCdnStandard},
-    setup::generators::champions::{order_cdn_champion_effects, order_cdn_item_effects},
+    setup::{
+        essentials::{
+            api::{CdnEndpoint, fetch_cdn_api, fetch_riot_api},
+            helpers::write_to_file,
+        },
+        generators::champions::{order_cdn_champion_effects, order_cdn_item_effects},
+    },
 };
 use reqwest::Client;
 use rustc_hash::FxHashMap;

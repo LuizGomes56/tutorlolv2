@@ -1,8 +1,8 @@
 use crate::{
     APIResponse, AppState, dev_response,
-    essentials::api::CdnEndpoint,
     setup::{
         cache::{update_cdn_cache, update_riot_cache},
+        essentials::api::CdnEndpoint,
         schedule::update_env_version,
         scraper::meta_items_scraper,
     },

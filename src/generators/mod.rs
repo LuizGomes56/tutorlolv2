@@ -1,4 +1,4 @@
-#![cfg(feature = "dev-routes")]
+#![cfg(feature = "dev")]
 
 pub use crate::model::{
     champions::{Ability, Champion},

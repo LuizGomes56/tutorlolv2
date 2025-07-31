@@ -1,3 +1,5 @@
+#![cfg(feature = "dev")]
+
 use actix_web::{
     body::{BoxBody, EitherBody},
     dev::ServiceResponse,

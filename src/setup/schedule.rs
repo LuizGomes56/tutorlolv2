@@ -1,4 +1,4 @@
-use crate::{ENV_CONFIG, essentials::api::fetch_version};
+use crate::{init::dev::ENV_CONFIG, setup::essentials::api::fetch_version};
 use reqwest::Client;
 use std::{
     fs,

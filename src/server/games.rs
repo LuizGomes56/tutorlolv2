@@ -29,10 +29,7 @@ pub async fn create_game_handler(state: Data<AppState>) -> impl Responder {
         Ok(_) => HttpResponse::Ok().json(APIResponse {
             success: true,
             message: "Game created succesfully",
-            data: serde_json::json!({
-                "game_code": game_code,
-                "game_id": game_id
-            }),
+            data: format!(r#"{{"game_code": {game_code},"game_id": {game_id}}}"#),
         }),
         Err(e) => HttpResponse::InternalServerError().json(APIResponse {
             success: false,
@@ -71,6 +68,9 @@ pub async fn get_by_code_handler(
     state: Data<AppState>,
     body: actix_web::web::Bytes,
 ) -> impl Responder {
+    #[cfg(not(feature = "dev"))]
+    return HttpResponse::ServiceUnavailable();
+    #[cfg(feature = "dev")]
     match bincode::serde::decode_from_slice::<GetByCodeBody, _>(&body, bincode::config::standard())
     {
         Ok(decoded) => {

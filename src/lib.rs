@@ -1,33 +1,32 @@
-pub mod essentials;
-pub mod generators;
+mod generators;
+mod init;
 mod middlewares;
 mod model;
 mod server;
 mod services;
 pub mod setup;
 
+use crate::init::release::AppState;
+#[cfg(feature = "dev")]
+use crate::{
+    actix_web::{middleware::from_fn, mime, web::JsonConfig},
+    middlewares::{
+        jsonmw::json_error_middleware, logger::logger_middleware, password::password_middleware,
+    },
+    reqwest::Client,
+    server::dev::{images::*, internal::*, setup::*, statics::*, update::*},
+};
 use actix_cors::Cors;
-use actix_files::Files;
 use actix_web::{
     App, HttpResponse, HttpServer, Scope,
-    body::{BoxBody, EitherBody},
-    dev::{ServiceFactory, ServiceRequest, ServiceResponse},
     http::header,
-    middleware::{DefaultHeaders, from_fn},
-    mime,
-    web::{self, Data, JsonConfig, scope},
+    middleware::DefaultHeaders,
+    web::{self, Data, scope},
 };
 use dotenvy::dotenv;
-use middlewares::{
-    jsonmw::json_error_middleware, logger::logger_middleware, password::password_middleware,
-};
 use model::cache::*;
-use once_cell::sync::Lazy;
-use reqwest::Client;
-#[cfg(feature = "dev-routes")]
-use server::dev::{images::*, internal::*, setup::*, statics::*, update::*};
-use server::{games::*, schemas::APIResponse};
-use sqlx::{Pool, Postgres, postgres::PgPoolOptions};
+use server::{games::*, img::*, schemas::APIResponse};
+use sqlx::postgres::PgPoolOptions;
 use std::{env, io};
 
 include!(concat!(env!("OUT_DIR"), "/internal_champions.rs"));
@@ -36,69 +35,8 @@ include!(concat!(env!("OUT_DIR"), "/internal_runes.rs"));
 include!(concat!(env!("OUT_DIR"), "/internal_meta.rs"));
 include!(concat!(env!("OUT_DIR"), "/internal_names.rs"));
 
-/// Example of `.env` file
-/// ```toml
-/// DATABASE_URL=postgresql://postgres:{PASSWORD}@localhost:5432/{USER}
-/// HOST=127.0.0.1:*
-/// LOL_VERSION=*
-/// LOL_LANGUAGE=en_US
-/// SYSTEM_PASSWORD={SYSTEM_PASSWORD}
-/// CDN_ENDPOINT=https://cdn.merakianalytics.com/riot/lol/resources/latest/en-US
-/// DD_DRAGON_ENDPOINT=https://ddragon.leagueoflegends.com
-/// RIOT_IMAGE_ENDPOINT=https://ddragon.canisback.com/img
-/// META_ENDPOINT=*
-/// ```
-pub struct EnvConfig {
-    pub lol_version: String,
-    pub lol_language: String,
-    pub system_password: String,
-    pub cdn_endpoint: String,
-    pub dd_dragon_endpoint: String,
-    pub riot_image_endpoint: String,
-    pub meta_endpoint: String,
-}
-
-/// Load environment variables from `.env` file adjacent to the binary.
-/// Crashes the program if not found.
-macro_rules! env_var {
-    ($name:literal) => {
-        env::var($name).expect(&format!("[env] {} is not set", $name))
-    };
-}
-
-impl EnvConfig {
-    pub fn new() -> Self {
-        EnvConfig {
-            lol_version: env_var!("LOL_VERSION"),
-            lol_language: env_var!("LOL_LANGUAGE"),
-            system_password: env_var!("SYSTEM_PASSWORD"),
-            cdn_endpoint: env_var!("CDN_ENDPOINT"),
-            dd_dragon_endpoint: env_var!("DD_DRAGON_ENDPOINT"),
-            riot_image_endpoint: env_var!("RIOT_IMAGE_ENDPOINT"),
-            meta_endpoint: env_var!("META_ENDPOINT"),
-        }
-    }
-}
-
-/// Environment variables are only loaded when needed
-/// Likely to be used when "dev-routes" feature is enabled
-pub static ENV_CONFIG: Lazy<EnvConfig> = Lazy::new(EnvConfig::new);
-
-pub struct AppState {
-    client: Client,
-    db: Pool<Postgres>,
-}
-
-fn api_scope() -> Scope<
-    impl ServiceFactory<
-        ServiceRequest,
-        Config = (),
-        Response = ServiceResponse<EitherBody<BoxBody>>,
-        Error = actix_web::Error,
-        InitError = (),
-    >,
-> {
-    let api_routes = scope("/api").wrap(from_fn(logger_middleware)).service(
+fn api_scope() -> Scope {
+    let api_routes = scope("/api").service(
         scope("/games")
             .service(realtime_handler)
             .service(calculator_handler)
@@ -106,8 +44,8 @@ fn api_scope() -> Scope<
             .service(get_by_code_handler),
     );
 
-    #[cfg(feature = "dev-routes")]
-    let api_routes = api_routes.service(
+    #[cfg(feature = "dev")]
+    let api_routes = api_routes.wrap(from_fn(logger_middleware)).service(
         scope("")
             .wrap(from_fn(password_middleware))
             .app_data(
@@ -163,6 +101,7 @@ fn api_scope() -> Scope<
 pub async fn run() -> io::Result<()> {
     dotenv().ok();
 
+    #[cfg(feature = "dev")]
     let client = Client::new();
     let dsn = env_var!("DATABASE_URL");
     let host = env_var!("HOST");
@@ -186,26 +125,25 @@ pub async fn run() -> io::Result<()> {
             .app_data({
                 Data::new(AppState {
                     db: pool.clone(),
+                    #[cfg(feature = "dev")]
                     client: client.clone(),
                 })
             })
             .service(api_scope())
             .service(
-                scope("")
+                scope("/img")
                     .wrap(
                         DefaultHeaders::new()
                             .add((header::CACHE_CONTROL, "public, max-age=31536000, immutable")),
                     )
-                    .service(
-                        Files::new("/img", "img")
-                            .use_etag(false)
-                            .use_last_modified(false),
-                    )
-                    .service(
-                        Files::new("/sprite", "sprite")
-                            .use_etag(false)
-                            .use_last_modified(false),
-                    ),
+                    .service(serve_dyn_centered())
+                    .service(serve_dyn_splash())
+                    .service(serve_dyn_other())
+                    .service(serve_abilities)
+                    .service(serve_champions)
+                    .service(serve_items)
+                    .service(serve_runes)
+                    .service(serve_stats),
             )
             .default_service(web::route().to(|| async {
                 HttpResponse::NotFound().json(APIResponse {

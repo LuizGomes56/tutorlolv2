@@ -1,4 +1,4 @@
-#![cfg(feature = "dev-routes")]
+#![cfg(feature = "dev")]
 use image::{GenericImage, GenericImageView, ImageReader, RgbaImage};
 use ravif::RGBA8;
 use rustc_hash::FxHashMap;

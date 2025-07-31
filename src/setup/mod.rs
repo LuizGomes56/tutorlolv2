@@ -1,7 +1,8 @@
-#![cfg(feature = "dev-routes")]
+#![cfg(feature = "dev")]
 
 pub mod avif_converter;
 pub mod cache;
+pub mod essentials;
 pub mod exceptions;
 pub mod generators;
 pub mod schedule;
