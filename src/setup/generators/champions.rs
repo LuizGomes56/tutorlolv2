@@ -10,8 +10,7 @@ use crate::{
     },
     setup::essentials::helpers::{extract_file_name, read_json_file, write_to_file},
 };
-use rustc_hash::FxHashMap;
-use std::path::Path;
+use std::{collections::HashMap, path::Path};
 
 include!(concat!(env!("OUT_DIR"), "/generator_runner.rs"));
 
@@ -51,7 +50,7 @@ pub enum GeneratorMode {
 /// prevent the generator from editing that file with `#![stable]`, `#![preserve]`.
 #[generator_macros::trace_time]
 pub async fn create_generator_files(mode: GeneratorMode) -> Result<(), Box<dyn std::error::Error>> {
-    let champion_names: FxHashMap<String, String> = read_json_file("internal/champion_names.json")?;
+    let champion_names: HashMap<String, String> = read_json_file("internal/champion_names.json")?;
     let generator_target = "src/generators";
 
     let mut futures = Vec::new();
@@ -164,7 +163,7 @@ pub fn extract_passive_damage(
     scalings: Option<usize>,
     target_vec: &Target,
     keyname: &str,
-    map: &mut FxHashMap<String, Ability>,
+    map: &mut HashMap<String, Ability>,
 ) {
     let mut minimum_damage: Vec<String> = Vec::<String>::new();
     let mut maximum_damage: Vec<String> = Vec::<String>::new();
@@ -300,21 +299,21 @@ pub enum Target {
     MAXIMUM,
 }
 
-type IteratorExtractor<'a> = FxHashMap<usize, FxHashMap<usize, (String, &'a Target)>>;
+type IteratorExtractor<'a> = HashMap<usize, HashMap<usize, (String, &'a Target)>>;
 
 /// Takes a pattern of `[Index on Vec<Effect>], [Index on Vec<Leveling>], [(Keyname, Max/Min)]`
 /// And assigns to the map the correct format that will be used internally.
 pub fn extract_ability_damage(
     data: &CdnAbility,
-    map: &mut FxHashMap<String, Ability>,
+    map: &mut HashMap<String, Ability>,
     pattern: &[(usize, usize, &str, Target)],
 ) {
-    let mut indexes: IteratorExtractor = FxHashMap::default();
+    let mut indexes: IteratorExtractor = HashMap::default();
 
     for (effect_index, leveling_index, keyname, target_vector) in pattern.into_iter() {
         indexes
             .entry(*effect_index)
-            .or_insert(FxHashMap::default())
+            .or_insert(HashMap::default())
             .insert(*leveling_index, (keyname.to_string(), target_vector));
     }
 
@@ -405,7 +404,7 @@ fn transform_ability(key: &str, abilities: &[CdnAbility]) -> Vec<String> {
 /// called right after receiving the data after calling CDN API with "Champions"
 /// to avoid inconsistencies. This method is not perfect, manual adjustments
 /// may be required if a major change occurs.
-pub fn order_cdn_champion_effects(data: &mut FxHashMap<String, CdnChampion>) {
+pub fn order_cdn_champion_effects(data: &mut HashMap<String, CdnChampion>) {
     for (_, champion) in data.iter_mut() {
         for ability_list in [
             &mut champion.abilities.q,
@@ -431,7 +430,7 @@ pub fn order_cdn_champion_effects(data: &mut FxHashMap<String, CdnChampion>) {
     }
 }
 
-pub fn order_cdn_item_effects(data: &mut FxHashMap<String, CdnItem>) {
+pub fn order_cdn_item_effects(data: &mut HashMap<String, CdnItem>) {
     for item in data.values_mut() {
         item.active.sort_by(|a, b| a.effects.cmp(&b.effects));
         item.passives.sort_by(|a, b| a.effects.cmp(&b.effects));

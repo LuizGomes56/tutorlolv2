@@ -103,7 +103,6 @@ pub struct CachedItem {
     pub damage_type: Option<&'static str>,
     pub stats: CachedItemStats,
     pub builds_from: &'static [u32],
-    pub levelings: Option<&'static [u8]>,
     pub ranged: CachedItemDamages,
     pub melee: CachedItemDamages,
     pub damages_onhit: bool,

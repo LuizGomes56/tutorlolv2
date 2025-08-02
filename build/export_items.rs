@@ -36,7 +36,6 @@ pub struct Item {
     pub damage_type: Option<String>,
     pub stats: PartialStats,
     pub builds_from: Vec<u32>,
-    pub levelings: Option<Vec<u8>>,
     pub ranged: Option<DamageObject>,
     pub melee: Option<DamageObject>,
     pub damages_onhit: bool,
@@ -235,7 +234,7 @@ pub fn export_items(out_dir: &str) {
             r#"pub static ITEM_{}: CachedItem = CachedItem {{
             name: "{}",gold: {},tier: {},damage_type: {},
             damages_onhit: {},ranged: {},melee: {},builds_from: 
-            & [{}],levelings: {},prettified_stats: &[{}],
+            & [{}],prettified_stats: &[{}],
             stats: CachedItemStats {{{}}},}};"#,
             item_id,
             item.name,
@@ -253,11 +252,6 @@ pub fn export_items(out_dir: &str) {
             format_damage_object(&item.ranged),
             format_damage_object(&item.melee),
             item.builds_from.join(","),
-            if item.levelings.is_some() {
-                item.levelings.clone().unwrap().join(",")
-            } else {
-                "None".to_string()
-            },
             prettified_stats,
             format_stats(&item.stats),
         );

@@ -1,14 +1,14 @@
 use crate::{
     init::dev::ENV_CONFIG,
-    model::riot::{RiotCdnChampion, RiotCdnInstance, RiotCdnRune, RiotCdnSkin},
+    model::dev::riot::{RiotCdnChampion, RiotCdnInstance, RiotCdnRune, RiotCdnSkin},
     setup::essentials::{
         api::riot_base_url,
         helpers::{extract_file_name, read_json_file, write_to_file},
     },
 };
 use reqwest::{Client, Response};
-use rustc_hash::FxHashMap;
 use std::{
+    collections::HashMap,
     fs::{self, ReadDir},
     path::{Path, PathBuf},
 };
@@ -158,7 +158,7 @@ pub async fn img_download_runes(client: Client) {
     let runes_data: Vec<RiotCdnRune> =
         read_json_file::<Vec<RiotCdnRune>>("cache/riot/runes.json").unwrap();
     let mut rune_futures: Vec<JoinHandle<()>> = Vec::new();
-    let mut runes_map: FxHashMap<usize, String> = FxHashMap::<usize, String>::default();
+    let mut runes_map: HashMap<usize, String> = HashMap::<usize, String>::default();
     for value in runes_data {
         runes_map.insert(value.id, value.icon);
         for slot in value.slots {

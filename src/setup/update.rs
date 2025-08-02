@@ -1,7 +1,8 @@
 use crate::{
-    model::{
-        dev::{champions::CdnChampion, items::CdnItem, riot::RiotCdnItem},
-        items::{Item, PartialStats},
+    model::dev::{
+        champions::CdnChampion,
+        items::{CdnItem, Item, PartialStats},
+        riot::RiotCdnItem,
     },
     setup::{
         essentials::helpers::{extract_file_name, read_json_file, write_to_file},
@@ -9,11 +10,10 @@ use crate::{
     },
 };
 use regex::Regex;
-use rustc_hash::FxHashMap;
 use serde_json::Value;
-use std::{fs, path::Path};
+use std::{collections::HashMap, fs, path::Path};
 
-type MetaItemValue<T> = FxHashMap<String, FxHashMap<String, Vec<T>>>;
+type MetaItemValue<T> = HashMap<String, HashMap<String, Vec<T>>>;
 
 /// Creates basic folders necessary to run the program. If one of these folders are not found,
 /// The program is likely to panic when an update is called.
@@ -113,10 +113,9 @@ pub fn setup_internal_items() {
         item_stats.magic_penetration_percent = stats.magic_penetration.percent;
 
         let result: Item = Item {
-            prettified_stats: FxHashMap::default(),
+            prettified_stats: HashMap::default(),
             name: cdn_item.name,
             gold: cdn_item.shop.prices.total,
-            levelings: None,
             damage_type: None,
             damages_onhit: false,
             stats: item_stats,
@@ -272,7 +271,7 @@ pub fn setup_damaging_items() {
 pub fn setup_champion_names() {
     let files = fs::read_dir("cache/cdn/champions").unwrap();
 
-    let mut map: FxHashMap<String, String> = FxHashMap::<String, String>::default();
+    let mut map: HashMap<String, String> = HashMap::<String, String>::default();
 
     for file in files {
         let path_buf = file.unwrap().path();
@@ -327,7 +326,7 @@ pub fn setup_meta_items() {
 }
 
 /// `internal/items` folder must exist, as well as dir `cache/riot/items`. Takes every file
-/// and reads the "description" value from Riot `item.json` and parses its XML into a FxHashMap
+/// and reads the "description" value from Riot `item.json` and parses its XML into a HashMap
 /// only updates the key `prettified_stats`. All the remaining content remains the same
 #[generator_macros::trace_time]
 pub async fn prettify_internal_items() {
@@ -359,15 +358,15 @@ pub async fn prettify_internal_items() {
 
 /// Returns the value that will be added to key `prettified_stats` for each item.
 /// Depends on Riot API `item.json` and requires manual maintainance if a new XML tag is added
-fn pretiffy_items(path_name: &str) -> FxHashMap<String, Value> {
+fn pretiffy_items(path_name: &str) -> HashMap<String, Value> {
     let data: RiotCdnItem = match read_json_file(path_name) {
         Ok(data) => data,
         Err(e) => {
             println!("Failed to read {}: {:#?}", path_name, e);
-            return FxHashMap::default();
+            return HashMap::default();
         }
     };
-    let mut result: FxHashMap<_, Value> = FxHashMap::default();
+    let mut result: HashMap<_, Value> = HashMap::default();
 
     // #![manual_impl]
     let tag_regex = match Regex::new(
@@ -376,28 +375,28 @@ fn pretiffy_items(path_name: &str) -> FxHashMap<String, Value> {
         Ok(value) => value,
         Err(e) => {
             println!("[tag_regex] Error on Regex Creation: {:#?}", e);
-            return FxHashMap::default();
+            return HashMap::default();
         }
     };
     let line_regex = match Regex::new(r"(.*?)<br>") {
         Ok(value) => value,
         Err(e) => {
             println!("[line_regex] Error on Regex Creation: {:#?}", e);
-            return FxHashMap::default();
+            return HashMap::default();
         }
     };
     let percent_prefix_regex = match Regex::new(r"^\s*\d+\s*%?\s*") {
         Ok(value) => value,
         Err(e) => {
             println!("[percent_prefix_regex] Error on Regex Creation: {:#?}", e);
-            return FxHashMap::default();
+            return HashMap::default();
         }
     };
     let tag_strip_regex = match Regex::new(r"<\/?[^>]+(>|$)") {
         Ok(value) => value,
         Err(e) => {
             println!("[tag_strip_regex] Error on Regex Creation: {:#?}", e);
-            return FxHashMap::default();
+            return HashMap::default();
         }
     };
 

@@ -1,6 +1,6 @@
 use crate::{
     generators::CdnChampion,
-    model::{dev::items::CdnItem, riot::RiotCdnStandard},
+    model::dev::{items::CdnItem, riot::RiotCdnStandard},
     setup::{
         essentials::{
             api::{CdnEndpoint, fetch_cdn_api, fetch_riot_api},
@@ -10,9 +10,8 @@ use crate::{
     },
 };
 use reqwest::Client;
-use rustc_hash::FxHashMap;
 use serde_json::Value;
-use std::sync::Arc;
+use std::{collections::HashMap, sync::Arc};
 use tokio::{
     sync::Semaphore,
     task::{self, JoinHandle},
@@ -23,7 +22,7 @@ use tokio::{
 pub async fn update_cdn_cache(client: Client, instance: CdnEndpoint) {
     macro_rules! ord_and_save {
         ($type_v:ty, $func:ident) => {{
-            let mut result = fetch_cdn_api::<FxHashMap<String, $type_v>>(client, instance)
+            let mut result = fetch_cdn_api::<HashMap<String, $type_v>>(client, instance)
                 .await
                 .unwrap();
             $func(&mut result);

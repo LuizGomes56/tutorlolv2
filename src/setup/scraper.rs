@@ -3,8 +3,8 @@ use crate::{
     setup::essentials::helpers::{read_json_file, write_to_file},
 };
 use reqwest::Client;
-use rustc_hash::FxHashMap;
 use scraper::{Html, Selector};
+use std::collections::HashMap;
 use tokio::task::JoinHandle;
 
 /// Recovers all the common builds for the current patch so the app can recommend builds to the user
@@ -12,13 +12,13 @@ use tokio::task::JoinHandle;
 /// causing requests to timeout.
 #[generator_macros::trace_time]
 pub async fn meta_items_scraper(client: Client) {
-    let champion_names: FxHashMap<String, String> =
+    let champion_names: HashMap<String, String> =
         read_json_file("internal/champion_names.json").unwrap();
     let positions = ["top", "jungle", "mid", "adc", "support"];
-    let mut collected_results = FxHashMap::<String, FxHashMap<String, Vec<String>>>::default();
+    let mut collected_results = HashMap::<String, HashMap<String, Vec<String>>>::default();
 
     for (_, name) in champion_names {
-        let mut futures_vec: Vec<JoinHandle<Result<FxHashMap<String, Vec<String>>, String>>> =
+        let mut futures_vec: Vec<JoinHandle<Result<HashMap<String, Vec<String>>, String>>> =
             Vec::new();
         for position in positions {
             let champion_name = name.to_lowercase().clone();
@@ -31,8 +31,8 @@ pub async fn meta_items_scraper(client: Client) {
 
                 let res = client.get(&url).send().await.unwrap();
 
-                let mut result: FxHashMap<String, Vec<String>> =
-                    FxHashMap::<String, Vec<String>>::default();
+                let mut result: HashMap<String, Vec<String>> =
+                    HashMap::<String, Vec<String>>::default();
 
                 let html: String = res.text().await.unwrap();
                 let document: Html = Html::parse_document(&html);
@@ -56,7 +56,7 @@ pub async fn meta_items_scraper(client: Client) {
             }));
         }
 
-        let mut collected_result: FxHashMap<String, Vec<String>> = FxHashMap::default();
+        let mut collected_result: HashMap<String, Vec<String>> = HashMap::default();
         for result in futures_vec {
             println!("Fetching meta items for {}", name);
             match result.await {

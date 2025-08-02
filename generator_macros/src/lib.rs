@@ -15,7 +15,7 @@ pub fn generator(_args: TokenStream, input: TokenStream) -> TokenStream {
     });
 
     let map_decl = quote! {
-        let mut abilities = FxHashMap::<String, Ability>::default();
+        let mut abilities = HashMap::<String, Ability>::new();
 
         /// ### `ability!`: fn `extract_ability_damage` in a more convenient way
         ///
@@ -78,9 +78,9 @@ pub fn generator(_args: TokenStream, input: TokenStream) -> TokenStream {
         /// ### `merge_ability!`
         ///
         /// Has two variants. The one with only one argument takes the `{STRING}` and checks for
-        /// the key `{STRING}_MAX` in the `FxHashMap` and if found, moves the value from `"maximum_damage"` of it
+        /// the key `{STRING}_MAX` in the `HashMap` and if found, moves the value from `"maximum_damage"` of it
         /// into the original key, that should represent the `minimum_damage`. At the end, the key `{STRING}_MAX`
-        /// is removed from the `FxHashMap`.
+        /// is removed from the `HashMap`.
         ///
         /// The other variant takes two arguments, the first one is the key that represent `minimum_damage`,
         /// and the second one is the key that represent `maximum_damage`.
@@ -193,7 +193,7 @@ pub fn generator(_args: TokenStream, input: TokenStream) -> TokenStream {
 
         /// ### `get!`
         ///
-        /// It returns a (mutable or not) reference to the key `{STRING}` in the `FxHashMap`. Panics if not found
+        /// It returns a (mutable or not) reference to the key `{STRING}` in the `HashMap`. Panics if not found
         ///
         /// ```
         /// get!("Q"); // ref
@@ -220,7 +220,7 @@ pub fn generator(_args: TokenStream, input: TokenStream) -> TokenStream {
 
         /// ### `insert!`
         ///
-        /// It inserts the value `{VALUE}` into the `FxHashMap` under the key `{STRING}`
+        /// It inserts the value `{VALUE}` into the `HashMap` under the key `{STRING}`
         ///
         /// ```
         /// insert!("Q", Ability {...});
@@ -297,9 +297,11 @@ pub fn item_generator(_args: TokenStream, input: TokenStream) -> TokenStream {
         let mut cur_value = read_json_file::<Item>(&format!("internal/items/{}.json", id))?;
 
         macro_rules! write_type {
-            ($dmg_type:expr) => {{
-                cur_value.damage_type = Some($dmg_type.stringify().to_string());
-            }}
+            ($field:ident) => {
+                paste::paste! {
+                    cur_value.damage_type = Some(DmgType::[<$field>].stringify().to_string());
+                }
+            }
         }
 
         macro_rules! save_change {
@@ -307,6 +309,39 @@ pub fn item_generator(_args: TokenStream, input: TokenStream) -> TokenStream {
                 let path = format!("internal/items/{}.json", id);
                 let json = serde_json::to_string_pretty(&cur_value).unwrap();
                 write_to_file(&path, json.as_bytes())
+            }};
+        };
+
+        macro_rules! cap_parens {
+            ($expr:expr, $n:expr) => {{
+                let pattern = format!(r"^(?:.*?(\([^()]*\))){{{}}}", $n + 1);
+                let re = Regex::new(&pattern)
+                    .expect("Falha ao compilar a regex de parênteses");
+                re.captures(&$expr)
+                    .and_then(|cap| cap.get(1).map(|m| m.as_str()))
+                    .expect(&format!("Não existe parênteses #{} em '{}'", $n, $expr))
+            }};
+        };
+
+        macro_rules! cap_numbers {
+            ($expr:expr) => {{
+                let re = ::regex::Regex::new(r"\d+")
+                    .expect("Falha ao compilar regex de números");
+                re.find_iter(&$expr)
+                    .map(|m| m.as_str().to_string())
+                    .collect::<Vec<String>>()
+            }};
+        }
+
+        macro_rules! cap_percent {
+            ($expr:expr, $n:expr) => {{
+                let pattern = format!(r"^(?:.*?(\d+)%){{{}}}", $n + 1);
+                let re = Regex::new(&pattern)
+                    .expect("Falha ao compilar a regex de percentuais");
+                re.captures(&$expr)
+                    .and_then(|cap| cap.get(1).map(|m| m.as_str()))
+                    .expect(&format!("Não existe percentual #{} em '{}'", $n, $expr))
+                    .parse::<f64>().unwrap()
             }};
         };
 
@@ -348,6 +383,7 @@ pub fn item_generator(_args: TokenStream, input: TokenStream) -> TokenStream {
     func.block = Box::new(syn::parse_quote!({
         #expand_decl
         #old_block
+        save_change!()
     }));
 
     TokenStream::from(quote! {

@@ -8,7 +8,7 @@ use crate::setup::generators::{
     champions::{Target, extract_ability_damage, extract_passive_damage},
     extractors::extract_scaled_values,
 };
-use rustc_hash::FxHashMap;
+use std::collections::HashMap;
 
 pub mod aatrox;
 pub mod ahri;

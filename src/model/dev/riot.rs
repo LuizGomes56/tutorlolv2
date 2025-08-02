@@ -1,6 +1,6 @@
-use rustc_hash::FxHashMap;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
+use std::collections::HashMap;
 
 #[derive(Deserialize)]
 pub struct RiotCdnItem {
@@ -9,7 +9,7 @@ pub struct RiotCdnItem {
 
 #[derive(Serialize, Deserialize)]
 pub struct RiotCdnStandard {
-    pub data: FxHashMap<String, Value>,
+    pub data: HashMap<String, Value>,
 }
 
 #[derive(Deserialize)]

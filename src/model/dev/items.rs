@@ -1,4 +1,6 @@
 use serde::{Deserialize, Serialize};
+use serde_json::Value;
+use std::collections::HashMap;
 
 #[derive(Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -60,10 +62,6 @@ pub struct Shop {
     pub prices: ItemPrices,
 }
 
-use rustc_hash::FxHashMap;
-use serde::{Deserialize, Serialize};
-use serde_json::Value;
-
 #[derive(Deserialize, Serialize, Clone)]
 pub struct DamageObject {
     pub minimum_damage: Option<String>,
@@ -96,11 +94,10 @@ pub struct Item {
     pub name: String,
     pub gold: u32,
     pub tier: u8,
-    pub prettified_stats: FxHashMap<String, Value>,
+    pub prettified_stats: HashMap<String, Value>,
     pub damage_type: Option<String>,
     pub stats: PartialStats,
     pub builds_from: Vec<u32>,
-    pub levelings: Option<Vec<u8>>,
     pub ranged: Option<DamageObject>,
     pub melee: Option<DamageObject>,
     pub damages_onhit: bool,

@@ -109,10 +109,10 @@ pub async fn compress_images() -> impl Responder {
         })
     }
 
-    #[cfg(not(feature = "dev-routes"))]
+    #[cfg(not(feature = "dev"))]
     HttpResponse::Ok().json(APIResponse {
         success: true,
-        message: "feature [dev-routes] not enabled",
+        message: "feature [dev] not enabled",
         data: (),
     })
 }

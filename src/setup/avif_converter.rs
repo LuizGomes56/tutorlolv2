@@ -1,9 +1,9 @@
 #![cfg(feature = "dev")]
 use image::{GenericImage, GenericImageView, ImageReader, RgbaImage};
 use ravif::RGBA8;
-use rustc_hash::FxHashMap;
 use serde::{Deserialize, Serialize};
 use std::{
+    collections::HashMap,
     fs::{self, File},
     io::Write,
     path::Path,
@@ -106,12 +106,12 @@ pub fn concat_sprite_jsons() {
         y: u32,
     }
 
-    let mut map = FxHashMap::default();
+    let mut map = HashMap::new();
     let folders = ["abilities", "champions", "items"];
 
     for folder in folders {
         let entries = fs::read_dir(format!("sprite/{}", folder)).unwrap();
-        let mut inner_map = FxHashMap::default();
+        let mut inner_map = HashMap::new();
 
         for entry in entries {
             let entry = entry.unwrap();
@@ -208,7 +208,7 @@ pub fn generate_spritesheet() -> Result<(), String> {
     let chunk_size = 64;
     let cols = 8;
 
-    let mut corrupted_images: FxHashMap<String, Vec<String>> = FxHashMap::default();
+    let mut corrupted_images: HashMap<String, Vec<String>> = HashMap::default();
 
     for folder in &folders {
         let src_dir = Path::new("safety_copy/original_img").join(folder);

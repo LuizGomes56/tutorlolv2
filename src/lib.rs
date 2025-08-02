@@ -9,20 +9,21 @@ pub mod setup;
 use crate::init::release::AppState;
 #[cfg(feature = "dev")]
 use crate::{
-    actix_web::{middleware::from_fn, mime, web::JsonConfig},
     middlewares::{
         jsonmw::json_error_middleware, logger::logger_middleware, password::password_middleware,
     },
-    reqwest::Client,
     server::dev::{images::*, internal::*, setup::*, statics::*, update::*},
 };
 use actix_cors::Cors;
 use actix_web::{
-    App, HttpResponse, HttpServer, Scope,
+    App, HttpResponse, HttpServer,
+    dev::HttpServiceFactory,
     http::header,
     middleware::DefaultHeaders,
     web::{self, Data, scope},
 };
+#[cfg(feature = "dev")]
+use actix_web::{middleware::from_fn, mime, web::JsonConfig};
 use dotenvy::dotenv;
 use model::cache::*;
 use server::{games::*, img::*, schemas::APIResponse};
@@ -35,7 +36,7 @@ include!(concat!(env!("OUT_DIR"), "/internal_runes.rs"));
 include!(concat!(env!("OUT_DIR"), "/internal_meta.rs"));
 include!(concat!(env!("OUT_DIR"), "/internal_names.rs"));
 
-fn api_scope() -> Scope {
+fn api_scope() -> impl HttpServiceFactory + 'static {
     let api_routes = scope("/api").service(
         scope("/games")
             .service(realtime_handler)
@@ -102,7 +103,7 @@ pub async fn run() -> io::Result<()> {
     dotenv().ok();
 
     #[cfg(feature = "dev")]
-    let client = Client::new();
+    let client = reqwest::Client::new();
     let dsn = env_var!("DATABASE_URL");
     let host = env_var!("HOST");
     let pool = PgPoolOptions::new()

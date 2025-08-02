@@ -2,8 +2,8 @@ use crate::{
     generators::{Ability, Champion},
     model::champions::ChampionCdnStats,
 };
-use rustc_hash::FxHashMap;
 use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
 
 #[derive(Deserialize, Serialize)]
 pub struct Modifiers {
@@ -84,9 +84,9 @@ pub struct CdnChampion {
 }
 
 impl CdnChampion {
-    pub fn format(self, abilities: FxHashMap<String, Ability>) -> Champion {
+    pub fn format(self, abilities: HashMap<String, Ability>) -> Champion {
         Champion {
-            abilities,
+            abilities: abilities.into_iter().collect(),
             name: self.name,
             adaptative_type: self.adaptive_type,
             attack_type: self.attack_type,
