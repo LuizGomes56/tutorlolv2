@@ -1,12 +1,9 @@
 use super::*;
 use crate::{
     generators,
-    model::{
-        champions::{Ability, Champion},
-        dev::{
-            champions::{CdnAbility, CdnChampion, Modifiers},
-            items::CdnItem,
-        },
+    model::dev::{
+        champions::{Ability, CdnAbility, CdnChampion, Champion, Modifiers},
+        items::CdnItem,
     },
     setup::essentials::helpers::{extract_file_name, read_json_file, write_to_file},
 };

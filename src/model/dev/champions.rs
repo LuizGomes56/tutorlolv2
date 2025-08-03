@@ -1,7 +1,3 @@
-use crate::{
-    generators::{Ability, Champion},
-    model::champions::ChampionCdnStats,
-};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
@@ -32,17 +28,46 @@ pub struct CdnAbility {
     pub name: String,
 }
 
+#[derive(Copy, Clone, Serialize, Deserialize)]
+pub enum __Attrs {
+    None,
+    Area,
+    Full,
+    Onhit,
+}
+
+impl From<(bool, bool)> for __Attrs {
+    fn from(value: (bool, bool)) -> Self {
+        match (value.0, value.1) {
+            (true, true) => __Attrs::Full,
+            (true, false) => __Attrs::Area,
+            (false, true) => __Attrs::Onhit,
+            (false, false) => __Attrs::None,
+        }
+    }
+}
+
+impl From<bool> for __Attrs {
+    fn from(value: bool) -> Self {
+        match value {
+            true => __Attrs::Area,
+            false => __Attrs::None,
+        }
+    }
+}
+
 impl CdnAbility {
     pub fn format(&self, minimum_damage: Vec<String>, maximum_damage: Vec<String>) -> Ability {
         Ability {
             name: self.name.clone(),
             damage_type: self.damage_type.clone().unwrap_or_default(),
-            damages_in_area: self
-                .damage_type
-                .as_deref()
-                .unwrap_or_default()
-                .to_lowercase()
-                .contains("aoe"),
+            attributes: __Attrs::from(
+                self.damage_type
+                    .as_deref()
+                    .unwrap_or_default()
+                    .to_lowercase()
+                    .contains("aoe"),
+            ),
             minimum_damage,
             maximum_damage,
         }
@@ -94,4 +119,50 @@ impl CdnChampion {
             stats: self.stats,
         }
     }
+}
+
+#[derive(Serialize, Deserialize, Clone)]
+pub struct Ability {
+    pub name: String,
+    pub damage_type: String,
+    pub attributes: __Attrs,
+    pub minimum_damage: Vec<String>,
+    pub maximum_damage: Vec<String>,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct Champion {
+    pub name: String,
+    pub adaptative_type: String,
+    pub attack_type: String,
+    pub positions: Vec<String>,
+    pub stats: ChampionCdnStats,
+    pub abilities: Vec<(String, Ability)>,
+}
+
+#[derive(Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ChampionCdnStatsMap {
+    pub flat: f64,
+    pub per_level: f64,
+}
+
+#[derive(Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ChampionCdnStats {
+    pub health: ChampionCdnStatsMap,
+    pub mana: ChampionCdnStatsMap,
+    pub armor: ChampionCdnStatsMap,
+    pub magic_resistance: ChampionCdnStatsMap,
+    pub attack_damage: ChampionCdnStatsMap,
+    pub attack_speed: ChampionCdnStatsMap,
+    pub movespeed: ChampionCdnStatsMap,
+    pub critical_strike_damage: ChampionCdnStatsMap,
+    pub critical_strike_damage_modifier: ChampionCdnStatsMap,
+    pub attack_speed_ratio: ChampionCdnStatsMap,
+    pub attack_range: ChampionCdnStatsMap,
+    pub aram_damage_taken: ChampionCdnStatsMap,
+    pub aram_damage_dealt: ChampionCdnStatsMap,
+    pub urf_damage_taken: ChampionCdnStatsMap,
+    pub urf_damage_dealt: ChampionCdnStatsMap,
 }

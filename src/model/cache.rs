@@ -1,3 +1,5 @@
+use serde::{Deserialize, Serialize};
+
 pub struct EvalContext {
     pub chogath_stacks: f64,
     pub veigar_stacks: f64,
@@ -62,7 +64,7 @@ pub struct CachedChampion {
 pub struct CachedChampionAbility {
     pub name: &'static str,
     pub damage_type: &'static str,
-    pub damages_in_area: bool,
+    pub attributes: Attrs,
     pub minimum_damage: fn(u8, &EvalContext) -> f64,
     pub maximum_damage: fn(u8, &EvalContext) -> f64,
 }
@@ -140,4 +142,12 @@ pub struct CachedItemStats {
     pub mana: f64,
     pub movespeed: f64,
     pub omnivamp: f64,
+}
+
+#[derive(Copy, Clone, Serialize, Deserialize)]
+pub enum Attrs {
+    None,
+    Area,
+    Full,
+    Onhit,
 }

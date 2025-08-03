@@ -4,7 +4,7 @@ mod middlewares;
 mod model;
 mod server;
 mod services;
-pub mod setup;
+mod setup;
 
 use crate::init::release::AppState;
 #[cfg(feature = "dev")]
@@ -54,11 +54,7 @@ fn api_scope() -> impl HttpServiceFactory + 'static {
                     .content_type(|mime| mime == mime::APPLICATION_JSON)
                     .error_handler(json_error_middleware),
             )
-            .service(
-                scope("/static")
-                    .service(static_comptime)
-                    .service(static_sprite_map),
-            )
+            .service(scope("/static").service(static_comptime))
             .service(
                 scope("/setup")
                     .service(setup_champions)

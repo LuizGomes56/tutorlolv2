@@ -17,10 +17,10 @@ impl ExportedComptimePhfs {
                 "pub static RUNE_ID_TO_NAME: phf::OrderedMap<u32, &'static str> = phf::phf_ordered_map! {",
             ),
             rune_formulas: String::from(
-                "pub static RUNE_FORMULAS: phf::Map<u32, &'static str> = phf::phf_map! {",
+                "pub static RUNE_FORMULAS: phf::Map<u32, &'static [u8]> = phf::phf_map! {",
             ),
             rune_generator: String::from(
-                "pub static RUNE_GENERATOR: phf::Map<u32, &'static str> = phf::phf_map! {",
+                "pub static RUNE_GENERATOR: phf::Map<u32, &'static [u8]> = phf::phf_map! {",
             ),
         }
     }
@@ -60,80 +60,95 @@ pub fn export_runes(out_dir: &str) {
     let mut exported_comptime_phf = ExportedComptimePhfs::new();
     let mut constdecl_internal_runes = String::new();
     let mut phf_damaging_runes =
-        String::from("pub static DAMAGING_RUNES: phf::Set<u32> = phf::phf_set! {");
-    let mut phf_arms_name_to_id = BTreeMap::new();
-    let mut len_damaging_runes = 0usize;
-    let main_map = init_map!(file HashMap<u32, Rune>, "internal/runes.json");
+        String::from("pub static DAMAGING_RUNES: phf::Set<u32> = phf::phf_set!(");
+    let mut phf_btree_name_to_id = BTreeMap::new();
+    let main_map = init_map!(file BTreeMap<u32, Rune>, "internal/runes.json");
+    let damaging_runes = main_map.keys().cloned().collect::<Vec<u32>>();
 
-    for (rune_id, rune) in main_map {
-        macro_rules! push_phf_arm {
-            (set $varname:ident, $key:expr) => {
-                $varname.push_str(&format!("{}u32,", $key))
-            };
-            (var $varname:ident, $key:expr, $value:expr) => {
-                $varname.push_str(&format!("{}u32 => {},", $key, $value))
-            };
-            ($field:ident, $key:expr, $value:expr) => {
-                exported_comptime_phf
-                    .$field
-                    .push_str(&format!("{} => {},", $key, $value))
-            };
-        }
+    struct Details {
+        rune_name: String,
+        rune_formula: Vec<u8>,
+        generator: Vec<u8>,
+        constdecl: String,
+    }
 
-        if !rune.ranged.is_empty() || !rune.melee.is_empty() {
-            push_phf_arm!(set phf_damaging_runes, rune_id);
-            len_damaging_runes += 1;
-        }
-        let ranged_expr = transform_expr(&clean_math_expr(&rune.ranged));
-        let melee_expr = transform_expr(&clean_math_expr(&rune.melee));
-        push_phf_arm!(
-            rune_id_to_name,
-            format!("{}u32", rune_id),
-            format!("\"{}\"", rune.name)
-        );
-        phf_arms_name_to_id.insert(rune.name.clone(), rune_id);
-        push_phf_arm!(var phf_internal_runes, rune_id, format!("&RUNE_{}", rune_id));
-
-        let constdecl = format!(
-            r#"pub static RUNE_{}: CachedRune = CachedRune {{
+    let results = main_map
+        .into_par_iter()
+        .map(|(rune_id, rune)| {
+            let ranged_expr = transform_expr(&clean_math_expr(&rune.ranged));
+            let melee_expr = transform_expr(&clean_math_expr(&rune.melee));
+            let constdecl = format!(
+                r#"pub static RUNE_{}: CachedRune = CachedRune {{
             name: "{}",damage_type: "{}",ranged: {},melee: {},}};"#,
-            rune_id,
-            rune.name,
-            rune.damage_type,
-            format!(
-                "|_, {}| {}",
-                if ranged_expr.1 { "ctx" } else { "_" },
-                ranged_expr.0.to_lowercase()
-            ),
-            format!(
-                "|_, {}| {}",
-                if melee_expr.1 { "ctx" } else { "_" },
-                melee_expr.0.to_lowercase()
-            ),
-        );
-        constdecl_internal_runes.push_str(&constdecl);
-        push_phf_arm!(
-            rune_formulas,
-            format!("{}u32", rune_id),
-            format!(
-                "r###\"{}\"###",
-                highlight(&clear_suffixes(&invoke_rustfmt(&constdecl))).replacen(
-                    "class=\"type\"",
-                    "class=\"constant\"",
-                    1
-                )
+                rune_id,
+                rune.name,
+                rune.damage_type,
+                format!(
+                    "|_, {}| {}",
+                    if ranged_expr.1 { "ctx" } else { "_" },
+                    ranged_expr.0.to_lowercase()
+                ),
+                format!(
+                    "|_, {}| {}",
+                    if melee_expr.1 { "ctx" } else { "_" },
+                    melee_expr.0.to_lowercase()
+                ),
+            );
+
+            (
+                rune_id,
+                Details {
+                    rune_name: rune.name.clone(),
+                    rune_formula: compress_bytes!(
+                        highlight(&clear_suffixes(&invoke_rustfmt(&constdecl)))
+                            .replacen("class=\"type\"", "class=\"constant\"", 1)
+                            .as_bytes()
+                    ),
+                    generator: Vec::new(),
+                    constdecl,
+                },
             )
-        );
+        })
+        .collect::<BTreeMap<u32, Details>>();
+
+    for (rune_id, details) in results {
+        phf_internal_runes.push_str(&format!("{}u32 => &RUNE_{},", rune_id, rune_id));
+        constdecl_internal_runes.push_str(&details.constdecl);
+        phf_btree_name_to_id.insert(details.rune_name.clone(), rune_id);
+        exported_comptime_phf
+            .rune_id_to_name
+            .push_str(&format!("{}u32 => \"{}\",", rune_id, details.rune_name));
+        exported_comptime_phf.rune_formulas.push_str(&format!(
+            "{}u32 => &[{}],",
+            rune_id,
+            details.rune_formula.join(",")
+        ));
+        exported_comptime_phf.rune_generator.push_str(&format!(
+            "{}u32 => &[{}],",
+            rune_id,
+            details.generator.join(",")
+        ));
     }
 
-    for (name, item_id) in phf_arms_name_to_id {
-        exported_comptime_phf
-            .rune_name_to_id
-            .push_str(&format!("\"{}\" => {}u32,", name, item_id));
-    }
+    exported_comptime_phf.rune_name_to_id.push_str(
+        &phf_btree_name_to_id
+            .iter()
+            .map(|(rune_name, rune_id)| format!("\"{}\" => {}u32,", rune_name, rune_id))
+            .collect::<Vec<String>>()
+            .join(""),
+    );
+
+    phf_damaging_runes.push_str(
+        &damaging_runes
+            .iter()
+            .map(|rune_id| format!("{}u32,", rune_id))
+            .collect::<Vec<String>>()
+            .join(""),
+    );
+
     exported_comptime_phf.add_braces();
     phf_internal_runes.push_str("};");
-    phf_damaging_runes.push_str("};");
+    phf_damaging_runes.push_str(");");
 
     let assign_path = |v: &'static str| Path::new(out_dir).join(v);
     let write_fn = |to: &'static str, content: String| {
@@ -150,7 +165,7 @@ pub fn export_runes(out_dir: &str) {
         s.push_str(&phf_damaging_runes);
         s.push_str(&format!(
             "pub const SIZE_DAMAGING_RUNES: usize = {};",
-            len_damaging_runes
+            damaging_runes.len()
         ));
         s
     });

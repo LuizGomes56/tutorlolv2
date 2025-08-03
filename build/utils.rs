@@ -88,15 +88,7 @@ pub(super) fn highlight(code_string: &str) -> String {
 
 #[macro_export]
 macro_rules! compress_bytes {
-    ($map:expr) => {{
-        use std::io::Write;
-        let bytes = bincode::serde::encode_to_vec(&$map, bincode::config::standard()).unwrap();
-        let compress_lvl = if cfg!(debug_assertions) { 1 } else { 11 };
-        let mut encoder = brotli2::write::BrotliEncoder::new(Vec::new(), compress_lvl);
-        encoder.write_all(&bytes).unwrap();
-        encoder.finish().unwrap()
-    }};
-    (0 $bytes:expr) => {{
+    ($bytes:expr) => {{
         use std::io::Write;
         let compress_lvl = if cfg!(debug_assertions) { 1 } else { 11 };
         let mut encoder = brotli2::write::BrotliEncoder::new(Vec::new(), compress_lvl);

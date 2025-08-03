@@ -116,10 +116,10 @@ impl ExportedComptimePhfs {
                 "pub static ITEM_ID_TO_NAME: phf::OrderedMap<u32, &'static str> = phf::phf_ordered_map! {",
             ),
             item_formulas: String::from(
-                "pub static ITEM_FORMULAS: phf::Map<u32, &'static str> = phf::phf_map! {",
+                "pub static ITEM_FORMULAS: phf::Map<u32, &'static [u8]> = phf::phf_map! {",
             ),
             item_generator: String::from(
-                "pub static ITEM_GENERATOR: phf::Map<u32, &'static str> = phf::phf_map! {",
+                "pub static ITEM_GENERATOR: phf::Map<u32, &'static [u8]> = phf::phf_map! {",
             ),
             item_descriptions: String::from(
                 "pub static ITEM_DESCRIPTIONS: phf::Map<u32, ItemDescription> = phf::phf_map! {",
@@ -165,132 +165,161 @@ pub fn export_items(out_dir: &str) {
         "pub static INTERNAL_ITEMS: ::phf::Map<u32, &'static CachedItem> = ::phf::phf_map! {",
     );
     let mut constdecl_items_phf = String::new();
-    let mut phf_arms_name_to_id = BTreeMap::new();
+    let mut phf_btreemap_name_to_id = BTreeMap::new();
     let mut phf_simulated_items =
-        String::from("pub static SIMULATED_ITEMS: phf::OrderedSet<u32> = phf::phf_ordered_set! {");
+        String::from("pub static SIMULATED_ITEMS: phf::OrderedSet<u32> = phf::phf_ordered_set!(");
     let mut phf_damaging_items =
-        String::from("pub static DAMAGING_ITEMS: phf::Set<u32> = phf::phf_set! {");
+        String::from("pub static DAMAGING_ITEMS: phf::Set<u32> = phf::phf_set!(");
 
     struct PhfSetSize {
-        pub simulated_items: usize,
-        pub damaging_items: usize,
+        pub simulated_items: Vec<u32>,
+        pub damaging_items: Vec<u32>,
     }
 
     let mut phf_set_size = PhfSetSize {
-        simulated_items: 0,
-        damaging_items: 0,
+        simulated_items: vec![],
+        damaging_items: vec![],
     };
 
-    for (item_id_str, item) in main_map {
-        macro_rules! push_phf_arm {
-            (set $varname:ident, $key:expr) => {
-                $varname.push_str(&format!("{}u32,", $key))
-            };
-            (var $varname:ident, $key:expr, $value:expr) => {
-                $varname.push_str(&format!("{}u32 => {},", $key, $value))
-            };
-            ($field:ident, $key:expr, $value:expr) => {
-                exported_comptime_phf
-                    .$field
-                    .push_str(&format!("{} => {},", $key, $value))
-            };
-        }
-        let maybe_id = item_id_str.parse::<u32>();
-        if maybe_id.is_err() {
-            continue;
-        }
-        let item_id = maybe_id.unwrap();
-        if item.tier >= 3 && item.gold > 0 && item.purchasable {
-            push_phf_arm!(set phf_simulated_items, item_id);
-            phf_set_size.simulated_items += 1;
-        }
-        if item.ranged.is_some() || item.melee.is_some() {
-            push_phf_arm!(set phf_damaging_items, item_id);
-            phf_set_size.damaging_items += 1;
-        }
+    struct Details {
+        item_name: String,
+        generator: Vec<u8>,
+        item_formula: Vec<u8>,
+        constdecl: String,
+        description: String,
+        is_simulated: bool,
+        is_damaging: bool,
+    }
 
-        let prettified_stats = item
-            .prettified_stats
-            .iter()
-            .map(|(k, v)| format!("(\"{k}\", {v}f64)"))
-            .collect::<Vec<String>>()
-            .join(",");
+    let results = main_map
+        .into_par_iter()
+        .map(|(item_id_str, item)| {
+            let item_id = item_id_str.parse::<u32>().unwrap();
 
-        push_phf_arm!(
-            item_descriptions,
-            format!("{item_id}u32"),
-            format!(
-                "ItemDescription {{
+            let prettified_stats = item
+                .prettified_stats
+                .iter()
+                .map(|(k, v)| format!("(\"{k}\", {v}f64)"))
+                .collect::<Vec<String>>()
+                .join(",");
+
+            let constdecl = format!(
+                r#"pub static ITEM_{}: CachedItem = CachedItem {{
+                name: "{}",gold: {},tier: {},damage_type: {},
+                damages_onhit: {},ranged: {},melee: {},builds_from: 
+                & [{}],prettified_stats: &[{}],
+                stats: CachedItemStats {{{}}},}};"#,
+                item_id,
+                item.name,
+                item.gold,
+                item.tier,
+                if item.damage_type.is_some() {
+                    format!(
+                        "Some(\"{}\")",
+                        item.damage_type.clone().unwrap_or("UNKNOWN".to_string())
+                    )
+                } else {
+                    "None".to_string()
+                },
+                item.damages_onhit,
+                format_damage_object(&item.ranged),
+                format_damage_object(&item.melee),
+                item.builds_from.join(","),
+                prettified_stats,
+                format_stats(&item.stats),
+            );
+
+            (
+                item_id,
+                Details {
+                    item_name: item.name.clone(),
+                    generator: Vec::new(),
+                    item_formula: compress_bytes!(
+                        highlight(&clear_suffixes(&invoke_rustfmt(&constdecl)))
+                            .replacen("class=\"type\"", "class=\"constant\"", 1,)
+                            .as_bytes()
+                    ),
+                    constdecl,
+                    description: format!(
+                        "ItemDescription {{
                     name: \"{}\",
                     gold_cost: {}u16,
                     prettified_stats: &[{}],
                 }}",
-                item.name, item.gold, prettified_stats
+                        item.name, item.gold, prettified_stats
+                    ),
+                    is_simulated: item.tier >= 3 && item.gold > 0 && item.purchasable,
+                    is_damaging: item.ranged.is_some() || item.melee.is_some(),
+                },
             )
-        );
-        push_phf_arm!(var phf_internal_items, item_id, format!("&ITEM_{item_id}"));
+        })
+        .collect::<BTreeMap<u32, Details>>();
 
-        let constdecl = format!(
-            r#"pub static ITEM_{}: CachedItem = CachedItem {{
-            name: "{}",gold: {},tier: {},damage_type: {},
-            damages_onhit: {},ranged: {},melee: {},builds_from: 
-            & [{}],prettified_stats: &[{}],
-            stats: CachedItemStats {{{}}},}};"#,
+    for (item_id, details) in results.iter() {
+        phf_btreemap_name_to_id.insert(details.item_name.clone(), *item_id);
+
+        exported_comptime_phf
+            .item_descriptions
+            .push_str(&format!("{}u32 => {},", item_id, details.description));
+        exported_comptime_phf
+            .item_id_to_name
+            .push_str(&format!("{}u32 => \"{}\",", item_id, details.item_name));
+        exported_comptime_phf.item_generator.push_str(&format!(
+            "{}u32 => &[{}],",
             item_id,
-            item.name,
-            item.gold,
-            item.tier,
-            if item.damage_type.is_some() {
-                format!(
-                    "Some(\"{}\")",
-                    item.damage_type.clone().unwrap_or("UNKNOWN".to_string())
-                )
-            } else {
-                "None".to_string()
-            },
-            item.damages_onhit,
-            format_damage_object(&item.ranged),
-            format_damage_object(&item.melee),
-            item.builds_from.join(","),
-            prettified_stats,
-            format_stats(&item.stats),
-        );
+            details.generator.join(",")
+        ));
+        exported_comptime_phf.item_formulas.push_str(&format!(
+            "{}u32 => &[{}],",
+            item_id,
+            details.item_formula.join(",")
+        ));
+        constdecl_items_phf.push_str(&details.constdecl);
+        phf_internal_items.push_str(&format!("{}u32 => &ITEM_{},", item_id, item_id));
 
-        phf_arms_name_to_id.insert(item.name.clone(), item_id);
-        push_phf_arm!(
-            item_id_to_name,
-            format!("{}u32", item_id),
-            format!("\"{}\"", item.name)
-        );
-        push_phf_arm!(
-            item_formulas,
-            format!("{item_id}u32"),
-            format!(
-                "r###\"{}\"###",
-                highlight(&clear_suffixes(&invoke_rustfmt(&constdecl))).replacen(
-                    "class=\"type\"",
-                    "class=\"constant\"",
-                    1,
-                )
-            )
-        );
-        constdecl_items_phf.push_str(&constdecl);
+        if details.is_simulated {
+            phf_set_size.simulated_items.push(*item_id);
+        } else if details.is_damaging {
+            phf_set_size.damaging_items.push(*item_id);
+        }
     }
+
+    exported_comptime_phf.item_name_to_id.push_str(
+        &phf_btreemap_name_to_id
+            .iter()
+            .map(|(name, id)| format!("\"{}\" => {}u32,", name, id))
+            .collect::<Vec<String>>()
+            .join(""),
+    );
+
+    macro_rules! u32_prefix {
+        ($field:ident) => {
+            &phf_set_size
+                .$field
+                .iter()
+                .map(|value| format!("{value}u32"))
+                .collect::<Vec<String>>()
+                .join(",")
+        };
+    }
+
+    phf_simulated_items.push_str(u32_prefix!(simulated_items));
+    phf_damaging_items.push_str(u32_prefix!(damaging_items));
 
     let assign_path = |v: &'static str| Path::new(out_dir).join(v);
     let write_fn = |to: &'static str, content: String| {
         let path = assign_path(to);
         let _ = fs::write(&path, content.as_bytes());
     };
-    for (name, item_id) in phf_arms_name_to_id {
+    for (name, item_id) in phf_btreemap_name_to_id {
         exported_comptime_phf
             .item_name_to_id
             .push_str(&format!("\"{}\" => {}u32,", name, item_id));
     }
     exported_comptime_phf.add_braces();
     phf_internal_items.push_str("};");
-    phf_damaging_items.push_str("};");
-    phf_simulated_items.push_str("};");
+    phf_damaging_items.push_str(");");
+    phf_simulated_items.push_str(");");
 
     write_fn("internal_items.rs", {
         let mut s = String::with_capacity(
@@ -306,7 +335,8 @@ pub fn export_items(out_dir: &str) {
         s.push_str(&format!(
             "pub const SIZE_SIMULATED_ITEMS: usize = {};
             pub const SIZE_DAMAGING_ITEMS: usize = {};",
-            phf_set_size.simulated_items, phf_set_size.damaging_items
+            phf_set_size.simulated_items.len(),
+            phf_set_size.damaging_items.len()
         ));
         s
     });

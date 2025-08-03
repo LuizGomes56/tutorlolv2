@@ -19,13 +19,13 @@ impl ExportedComptimePhfs {
                 "pub static CHAMPION_ID_TO_NAME: phf::OrderedMap<&'static str, &'static str> = phf::phf_ordered_map! {",
             ),
             champion_formulas: String::from(
-                "pub static CHAMPION_FORMULAS: phf::Map<&'static str, &'static str> = phf::phf_map! {",
+                "pub static CHAMPION_FORMULAS: phf::Map<&'static str, &'static [u8]> = phf::phf_map! {",
             ),
             champion_generator: String::from(
-                "pub static CHAMPION_GENERATOR: phf::Map<&'static str, &'static str> = phf::phf_map! {",
+                "pub static CHAMPION_GENERATOR: phf::Map<&'static str, &'static [u8]> = phf::phf_map! {",
             ),
             champion_abilities: String::from(
-                "pub static CHAMPION_ABILITIES: phf::OrderedMap<&'static str, &'static phf::OrderedMap<&'static str, &'static str>> = phf::phf_ordered_map! {",
+                "pub static CHAMPION_ABILITIES: phf::OrderedMap<&'static str, &'static phf::OrderedMap<&'static str, &'static [u8]>> = phf::phf_ordered_map! {",
             ),
         }
     }
@@ -80,11 +80,32 @@ pub struct ChampionCdnStats {
     pub urf_damage_dealt: ChampionCdnStatsMap,
 }
 
+#[derive(Copy, Clone, Deserialize, Default)]
+pub enum Attrs {
+    #[default]
+    None,
+    Area,
+    Full,
+    Onhit,
+}
+
+impl Attrs {
+    pub fn stringify(&self) -> &'static str {
+        match self {
+            Attrs::None => "None",
+            Attrs::Area => "Area",
+            Attrs::Full => "Full",
+            Attrs::Onhit => "Onhit",
+        }
+    }
+}
+
 #[derive(Deserialize)]
 pub struct Ability {
     pub name: String,
     pub damage_type: String,
-    pub damages_in_area: bool,
+    #[serde(default)]
+    pub attributes: Attrs,
     pub minimum_damage: Vec<String>,
     pub maximum_damage: Vec<String>,
 }
@@ -190,9 +211,9 @@ fn format_abilities(abilities: &HashMap<String, Ability>) -> Vec<(String, String
             name.clone(),
             format!(
                 "static __phantom__: CachedChampionAbility = CachedChampionAbility {{name: \"{}\",damage_type: \"{}\",
-                damages_in_area: {},minimum_damage: {},
+                attributes: Attrs::{},minimum_damage: {},
                 maximum_damage: {},}};",
-                ability.name, ability.damage_type, ability.damages_in_area, min_dmg, max_dmg,
+                ability.name, ability.damage_type, ability.attributes.stringify(), min_dmg, max_dmg,
             ),
         ));
     }
@@ -209,92 +230,156 @@ pub fn export_champions(out_dir: &str) {
     );
     let mut constdecl_phf_champions = String::new();
 
-    for (champion_id, champion) in main_map {
-        macro_rules! push_phf_arm {
-            (var $varname:ident, $key:expr, $value:expr) => {
-                $varname.push_str(&format!("\"{}\" => {},", $key, $value))
-            };
-            ($field:ident, $key:expr, $value:expr) => {
-                exported_comptime_phf
-                    .$field
-                    .push_str(&format!("\"{}\" => r###\"{}\"###,", $key, $value))
-            };
-        }
+    struct Details {
+        champion_name: String,
+        generator: Vec<u8>,
+        highlighted_abilities: BTreeMap<String, Vec<u8>>,
+        champion_formula: Vec<u8>,
+        constdecl: String,
+    }
 
-        push_phf_arm!(var phf_internal_champions, champion_id, format!("&{}",champion_id.to_uppercase()));
-        push_phf_arm!(champion_name_to_id, champion.name, champion_id);
-        push_phf_arm!(champion_id_to_name, champion_id, champion.name);
-        push_phf_arm!(
-            champion_generator,
-            champion_id,
-            invoke_rustfmt(
-                &fs::read_to_string(format!("src/generators/{champion_id}.rs")).unwrap(),
-            )
-        );
+    let results = main_map
+        .into_par_iter()
+        .map(|(champion_id, champion)| {
+            let (highlighted_abilities, constdecl_abilities) =
+                format_abilities(&champion.abilities)
+                    .into_par_iter()
+                    .filter_map(|(ability_name, ability_formula)| {
+                        let rustfmt_val = invoke_rustfmt(&ability_formula)
+                        .replace(
+                            "static __phantom__: CachedChampionAbility = CachedChampionAbility ",
+                            "",
+                        )
+                        .replace(";", "");
+                        if !rustfmt_val.is_empty() {
+                            let highlighted_val = clear_suffixes(&highlight(&format!(
+                                "intrinsic {}_{} = {}",
+                                champion_id.to_uppercase(),
+                                ability_name.to_uppercase(),
+                                rustfmt_val
+                            )))
+                            .replacen(
+                                "class=\"type\"",
+                                "class=\"constant\"",
+                                1,
+                            );
+                            Some((
+                                (
+                                    ability_name.clone(),
+                                    compress_bytes!(highlighted_val.as_bytes()),
+                                ),
+                                (ability_name, rustfmt_val),
+                            ))
+                        } else {
+                            None
+                        }
+                    })
+                    .collect::<(BTreeMap<_, _>, BTreeMap<_, _>)>();
 
-        let mut constdecl_abilities = Vec::new();
-        exported_comptime_phf
-            .champion_abilities
-            .push_str(&format!("\"{}\" => &phf::phf_ordered_map! {{", champion_id));
-
-        for (ability_name, ability_formula) in format_abilities(&champion.abilities) {
-            let rustfmt_val = invoke_rustfmt(&ability_formula)
-                .replace(
-                    "static __phantom__: CachedChampionAbility = CachedChampionAbility ",
-                    "",
-                )
-                .replace(";", "");
-            if rustfmt_val.is_empty() {
-                continue;
-            }
-            let highlighted_val = clear_suffixes(&highlight(&format!(
-                "intrinsic {}_{} = {}",
-                champion_id.to_uppercase(),
-                ability_name.to_uppercase(),
-                rustfmt_val
-            )))
-            .replacen("class=\"type\"", "class=\"constant\"", 1);
-            push_phf_arm!(champion_abilities, ability_name, highlighted_val);
-            constdecl_abilities.push(format!(
-                "(\"{}\", CachedChampionAbility {})",
-                ability_name, rustfmt_val
-            ));
-        }
-
-        exported_comptime_phf.champion_abilities.push_str("},");
-
-        let constdecl = format!(
-            r#"pub static {}: CachedChampion = CachedChampion {{
+            let constdecl = format!(
+                r#"pub static {}: CachedChampion = CachedChampion {{
                 name: "{}",
                 adaptative_type: "{}",
                 attack_type: "{}",
                 positions: &["{}"],
                 stats: CachedChampionStats {{{}}},
                 abilities: &[{}],
-            }};"#,
-            champion_id.to_uppercase(),
-            champion.name,
-            champion.adaptative_type,
-            champion.attack_type,
-            champion.positions.join("\",\""),
-            format_stats(&champion.stats),
-            constdecl_abilities.join(","),
+                }};"#,
+                champion_id.to_uppercase(),
+                champion.name,
+                champion.adaptative_type,
+                champion.attack_type,
+                champion.positions.join("\",\""),
+                format_stats(&champion.stats),
+                constdecl_abilities
+                    .iter()
+                    .map(|(ability_name, rustfmt_val)| {
+                        format!(
+                            "(\"{}\", CachedChampionAbility {})",
+                            ability_name, rustfmt_val
+                        )
+                    })
+                    .collect::<Vec<String>>()
+                    .join(",")
+            );
+
+            (
+                champion_id.clone(),
+                Details {
+                    champion_name: champion.name.to_string(),
+                    champion_formula: compress_bytes!(
+                        highlight(&clear_suffixes(&invoke_rustfmt(&constdecl))).as_bytes()
+                    ),
+                    generator: compress_bytes!(
+                        invoke_rustfmt(
+                            &fs::read_to_string(format!("src/generators/{}.rs", champion_id))
+                                .unwrap(),
+                        )
+                        .as_bytes()
+                    ),
+                    highlighted_abilities,
+                    constdecl,
+                },
+            )
+        })
+        .collect::<BTreeMap<String, Details>>();
+
+    for (champion_id, detail) in results {
+        exported_comptime_phf.champion_name_to_id.push_str(&format!(
+            "\"{}\" => \"{}\",",
+            detail.champion_name, champion_id
+        ));
+
+        exported_comptime_phf.champion_id_to_name.push_str(&format!(
+            "\"{}\" => \"{}\",",
+            champion_id, detail.champion_name
+        ));
+
+        exported_comptime_phf.champion_formulas.push_str(&format!(
+            "\"{}\" => &[{}],",
+            champion_id,
+            detail.champion_formula.join(",")
+        ));
+
+        phf_internal_champions.push_str(&format!(
+            "\"{}\" => &{},",
+            champion_id,
+            champion_id.to_uppercase()
+        ));
+
+        exported_comptime_phf.champion_generator.push_str(&format!(
+            "\"{}\" => &[{}]",
+            champion_id,
+            detail.generator.join(",")
+        ));
+
+        exported_comptime_phf
+            .champion_abilities
+            .push_str(&format!("\"{}\" => &phf::phf_ordered_map! {{", champion_id));
+
+        exported_comptime_phf.champion_abilities.push_str(
+            &detail
+                .highlighted_abilities
+                .iter()
+                .map(|(ability_name, highlighted_val)| {
+                    format!("\"{}\" => &[{}],", ability_name, highlighted_val.join(","))
+                })
+                .collect::<Vec<String>>()
+                .join(""),
         );
 
-        push_phf_arm!(champion_formulas, champion_id, {
-            highlight(&clear_suffixes(&invoke_rustfmt(&constdecl)))
-        });
-        constdecl_phf_champions.push_str(&constdecl);
+        exported_comptime_phf.champion_abilities.push_str("},");
+        constdecl_phf_champions.push_str(&detail.constdecl);
     }
+
+    exported_comptime_phf.add_braces();
+    phf_internal_champions.push_str("};");
 
     let assign_path = |v: &'static str| Path::new(out_dir).join(v);
     let write_fn = |to: &'static str, content: String| {
         let path = assign_path(to);
         fs::write(&path, content.as_bytes()).unwrap();
     };
-    exported_comptime_phf.add_braces();
-    phf_internal_champions.push_str("};");
-
     write_fn("internal_champions.rs", {
         let mut s =
             String::with_capacity(constdecl_phf_champions.len() + phf_internal_champions.len());
