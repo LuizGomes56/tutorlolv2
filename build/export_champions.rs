@@ -19,13 +19,13 @@ impl ExportedComptimePhfs {
                 "pub static CHAMPION_ID_TO_NAME: phf::OrderedMap<&'static str, &'static str> = phf::phf_ordered_map! {",
             ),
             champion_formulas: String::from(
-                "pub static CHAMPION_FORMULAS: phf::Map<&'static str, &'static [u8]> = phf::phf_map! {",
+                "pub static CHAMPION_FORMULAS: phf::Map<&'static str, (usize, usize)> = phf::phf_map! {",
             ),
             champion_generator: String::from(
-                "pub static CHAMPION_GENERATOR: phf::Map<&'static str, &'static [u8]> = phf::phf_map! {",
+                "pub static CHAMPION_GENERATOR: phf::Map<&'static str, (usize, usize)> = phf::phf_map! {",
             ),
             champion_abilities: String::from(
-                "pub static CHAMPION_ABILITIES: phf::OrderedMap<&'static str, &'static phf::OrderedMap<&'static str, &'static [u8]>> = phf::phf_ordered_map! {",
+                "pub static CHAMPION_ABILITIES: phf::OrderedMap<&'static str, &'static phf::OrderedMap<&'static str, (usize, usize)>> = phf::phf_ordered_map! {",
             ),
         }
     }
@@ -221,7 +221,7 @@ fn format_abilities(abilities: &HashMap<String, Ability>) -> Vec<(String, String
     formatted_map
 }
 
-pub fn export_champions(out_dir: &str) {
+pub fn export_champions(out_dir: &str, mega_block: &mut String) {
     let main_map = init_map!(dir Champion, "internal/champions");
 
     let mut exported_comptime_phf = ExportedComptimePhfs::new();
@@ -230,15 +230,22 @@ pub fn export_champions(out_dir: &str) {
     );
     let mut constdecl_phf_champions = String::new();
 
-    struct Details {
-        champion_name: String,
-        generator: Vec<u8>,
-        highlighted_abilities: Vec<(String, Vec<u8>)>,
-        champion_formula: Vec<u8>,
-        constdecl: String,
+    struct Offsets {
+        champion_formula: (usize, usize),
+        champion_generator: (usize, usize),
+        champion_abilities: Vec<(String, (usize, usize))>,
     }
 
-    let results = main_map
+    struct Details {
+        champion_name: String,
+        generator: String,
+        highlighted_abilities: Vec<(String, String)>,
+        champion_formula: String,
+        constdecl: String,
+        offsets: Offsets,
+    }
+
+    let mut results = main_map
         .into_par_iter()
         .map(|(champion_id, champion)| {
             let (highlighted_abilities, mut constdecl_abilities) =
@@ -264,10 +271,7 @@ pub fn export_champions(out_dir: &str) {
                                 1,
                             );
                             Some((
-                                (
-                                    ability_name.clone(),
-                                    compress_bytes!(highlighted_val.as_bytes()),
-                                ),
+                                (ability_name.clone(), highlighted_val),
                                 (ability_name, rustfmt_val),
                             ))
                         } else {
@@ -309,22 +313,54 @@ pub fn export_champions(out_dir: &str) {
                 champion_id.clone(),
                 Details {
                     champion_name: champion.name.to_string(),
-                    champion_formula: compress_bytes!(
-                        highlight(&clear_suffixes(&invoke_rustfmt(&constdecl))).as_bytes()
+                    champion_formula: highlight(&clear_suffixes(&invoke_rustfmt(&constdecl))),
+                    generator: invoke_rustfmt(
+                        &fs::read_to_string(format!("src/generators/{}.rs", champion_id)).unwrap(),
                     ),
-                    generator: compress_bytes!(
-                        invoke_rustfmt(
-                            &fs::read_to_string(format!("src/generators/{}.rs", champion_id))
-                                .unwrap(),
-                        )
-                        .as_bytes()
-                    ),
+                    offsets: Offsets {
+                        champion_formula: (0, 0),
+                        champion_generator: (0, 0),
+                        champion_abilities: highlighted_abilities
+                            .iter()
+                            .map(|(name, _)| (name.clone(), (0, 0)))
+                            .collect(),
+                    },
                     highlighted_abilities,
                     constdecl,
                 },
             )
         })
         .collect::<BTreeMap<String, Details>>();
+
+    let mut current_offset = 0usize;
+
+    for (_, detail) in results.iter_mut() {
+        let formula_start = current_offset;
+        mega_block.push_str(&detail.champion_formula);
+        let formula_end = current_offset + detail.champion_formula.len();
+        detail.offsets.champion_formula = (formula_start, formula_end);
+        current_offset = formula_end;
+
+        let generator_start = current_offset;
+        mega_block.push_str(&detail.generator);
+        let generator_end = current_offset + detail.generator.len();
+        detail.offsets.champion_generator = (generator_start, generator_end);
+        current_offset = generator_end;
+
+        for (ability_name, ability_formula) in &detail.highlighted_abilities {
+            let ability_start = current_offset;
+            mega_block.push_str(ability_formula);
+            let ability_end = current_offset + ability_formula.len();
+            detail
+                .offsets
+                .champion_abilities
+                .iter_mut()
+                .find(|(name, _)| name == ability_name)
+                .unwrap()
+                .1 = (ability_start, ability_end);
+            current_offset = ability_end;
+        }
+    }
 
     for (champion_id, mut detail) in results {
         exported_comptime_phf.champion_name_to_id.push_str(&format!(
@@ -338,9 +374,8 @@ pub fn export_champions(out_dir: &str) {
         ));
 
         exported_comptime_phf.champion_formulas.push_str(&format!(
-            "\"{}\" => &[{}],",
-            champion_id,
-            detail.champion_formula.join(",")
+            "\"{}\" => ({}, {}),",
+            champion_id, detail.offsets.champion_formula.0, detail.offsets.champion_formula.1
         ));
 
         phf_internal_champions.push_str(&format!(
@@ -350,9 +385,8 @@ pub fn export_champions(out_dir: &str) {
         ));
 
         exported_comptime_phf.champion_generator.push_str(&format!(
-            "\"{}\" => &[{}],",
-            champion_id,
-            detail.generator.join(",")
+            "\"{}\" => ({}, {}),",
+            champion_id, detail.offsets.champion_generator.0, detail.offsets.champion_generator.1
         ));
 
         exported_comptime_phf
@@ -365,8 +399,27 @@ pub fn export_champions(out_dir: &str) {
             &detail
                 .highlighted_abilities
                 .iter()
-                .map(|(ability_name, highlighted_val)| {
-                    format!("\"{}\" => &[{}],", ability_name, highlighted_val.join(","))
+                .map(|(ability_name, _)| {
+                    format!(
+                        "\"{}\" => ({}, {}),",
+                        ability_name,
+                        detail
+                            .offsets
+                            .champion_abilities
+                            .iter()
+                            .find(|(name, _)| name == ability_name)
+                            .unwrap()
+                            .1
+                            .0,
+                        detail
+                            .offsets
+                            .champion_abilities
+                            .iter()
+                            .find(|(name, _)| name == ability_name)
+                            .unwrap()
+                            .1
+                            .1
+                    )
                 })
                 .collect::<Vec<String>>()
                 .join(""),

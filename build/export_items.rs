@@ -103,7 +103,6 @@ struct ExportedComptimePhfs {
     pub item_name_to_id: String,
     pub item_id_to_name: String,
     pub item_formulas: String,
-    pub item_generator: String,
     pub item_descriptions: String,
 }
 
@@ -117,10 +116,7 @@ impl ExportedComptimePhfs {
                 "pub static ITEM_ID_TO_NAME: phf::OrderedMap<u32, &'static str> = phf::phf_ordered_map! {",
             ),
             item_formulas: String::from(
-                "pub static ITEM_FORMULAS: phf::Map<u32, &'static [u8]> = phf::phf_map! {",
-            ),
-            item_generator: String::from(
-                "pub static ITEM_GENERATOR: phf::Map<u32, &'static [u8]> = phf::phf_map! {",
+                "pub static ITEM_FORMULAS: phf::Map<u32, (usize, usize)> = phf::phf_map! {",
             ),
             item_descriptions: String::from(
                 "pub static ITEM_DESCRIPTIONS: phf::Map<u32, ItemDescription> = phf::phf_map! {",
@@ -131,7 +127,6 @@ impl ExportedComptimePhfs {
         self.item_name_to_id.push_str("};");
         self.item_id_to_name.push_str("};");
         self.item_formulas.push_str("};");
-        self.item_generator.push_str("};");
         self.item_descriptions.push_str("};");
     }
     pub fn join_fields(self) -> String {
@@ -139,26 +134,20 @@ impl ExportedComptimePhfs {
             self.item_name_to_id.len()
                 + self.item_id_to_name.len()
                 + self.item_formulas.len()
-                + self.item_generator.len()
                 + self.item_descriptions.len(),
         );
         s.push_str(&self.item_name_to_id);
         s.push_str(&self.item_id_to_name);
         s.push_str(&self.item_formulas);
-        s.push_str(&self.item_generator);
         s.push_str(&self.item_descriptions);
         s.push_str(
-            "pub struct ItemDescription {
-            pub name: &'static str,
-            pub gold_cost: u16,
-            pub prettified_stats: &'static [(&'static str, f64)],
-        }",
+            "pub struct ItemDescription {pub name: &'static str,pub gold_cost: u16,pub prettified_stats: &'static [(&'static str, f64)],}",
         );
         s
     }
 }
 
-pub fn export_items(out_dir: &str) {
+pub fn export_items(out_dir: &str, mega_block: &mut String) {
     let main_map = init_map!(dir Item, "internal/items");
 
     let mut exported_comptime_phf = ExportedComptimePhfs::new();
@@ -182,79 +171,89 @@ pub fn export_items(out_dir: &str) {
         damaging_items: HashSet::new(),
     };
 
+    struct Offsets {
+        item_formula: (usize, usize),
+    }
+
     struct Details {
         item_name: String,
-        generator: Vec<u8>,
-        item_formula: Vec<u8>,
+        item_formula: String,
         constdecl: String,
         description: String,
         is_simulated: bool,
         is_damaging: bool,
+        offsets: Offsets,
     }
 
-    let results = main_map
-        .into_par_iter()
-        .map(|(item_id_str, item)| {
-            let item_id = item_id_str.parse::<u32>().unwrap();
+    let mut results =
+        main_map
+            .into_par_iter()
+            .map(|(item_id_str, item)| {
+                let item_id = item_id_str.parse::<u32>().unwrap();
 
-            let prettified_stats = item
-                .prettified_stats
-                .iter()
-                .map(|(k, v)| format!("(\"{k}\", {v}f64)"))
-                .collect::<Vec<String>>()
-                .join(",");
+                let prettified_stats = item
+                    .prettified_stats
+                    .iter()
+                    .map(|(k, v)| format!("(\"{k}\", {v}f64)"))
+                    .collect::<Vec<String>>()
+                    .join(",");
 
-            let constdecl = format!(
-                r#"pub static ITEM_{}: CachedItem = CachedItem {{
+                let constdecl = format!(
+                    r#"pub static ITEM_{}: CachedItem = CachedItem {{
                 name: "{}",gold: {},tier: {},damage_type: {},
                 damages_onhit: {},ranged: {},melee: {},builds_from: 
                 & [{}],prettified_stats: &[{}],
                 stats: CachedItemStats {{{}}},}};"#,
-                item_id,
-                item.name,
-                item.gold,
-                item.tier,
-                if item.damage_type.is_some() {
-                    format!(
-                        "Some(\"{}\")",
-                        item.damage_type.clone().unwrap_or("UNKNOWN".to_string())
-                    )
-                } else {
-                    "None".to_string()
-                },
-                item.damages_onhit,
-                format_damage_object(&item.ranged),
-                format_damage_object(&item.melee),
-                item.builds_from.join(","),
-                prettified_stats,
-                format_stats(&item.stats),
-            );
+                    item_id,
+                    item.name,
+                    item.gold,
+                    item.tier,
+                    if item.damage_type.is_some() {
+                        format!(
+                            "Some(\"{}\")",
+                            item.damage_type.clone().unwrap_or("UNKNOWN".to_string())
+                        )
+                    } else {
+                        "None".to_string()
+                    },
+                    item.damages_onhit,
+                    format_damage_object(&item.ranged),
+                    format_damage_object(&item.melee),
+                    item.builds_from.join(","),
+                    prettified_stats,
+                    format_stats(&item.stats),
+                );
 
-            (
-                item_id,
-                Details {
-                    item_name: item.name.clone(),
-                    generator: Vec::new(),
-                    item_formula: compress_bytes!(
-                        highlight(&clear_suffixes(&invoke_rustfmt(&constdecl)))
-                            .replacen("class=\"type\"", "class=\"constant\"", 1,)
-                            .as_bytes()
-                    ),
-                    constdecl,
-                    description: format!(
-                        "ItemDescription {{
-                    name: \"{}\",
-                    gold_cost: {}u16,
-                    prettified_stats: &[{}],
-                }}",
-                        item.name, item.gold, prettified_stats
-                    ),
-                    is_simulated: item.tier >= 3 && item.gold > 0 && item.purchasable,
-                    is_damaging: item.ranged.is_some() || item.melee.is_some(),
-                },
-            )
-        })
-        .collect::<BTreeMap<u32, Details>>();
+                (
+                    item_id,
+                    Details {
+                        item_name: item.name.clone(),
+                        item_formula: highlight(&clear_suffixes(&invoke_rustfmt(&constdecl)))
+                            .replacen("class=\"type\"", "class=\"constant\"", 1),
+                        constdecl,
+                        description: format!(
+                            "ItemDescription {{name: \"{}\",gold_cost: {}u16,prettified_stats: &[{}],}}",
+                            item.name, item.gold, prettified_stats
+                        ),
+                        is_simulated: item.tier >= 3 && item.gold > 0 && item.purchasable,
+                        is_damaging: item.ranged.is_some() || item.melee.is_some(),
+                        offsets: Offsets {
+                            item_formula: (0, 0),
+                        },
+                    },
+                )
+            })
+            .collect::<BTreeMap<u32, Details>>();
+
+    let mut current_offset = mega_block.len();
+
+    for (_, detail) in results.iter_mut() {
+        let formula_start = current_offset;
+        mega_block.push_str(&detail.item_formula);
+        let formula_end = current_offset + detail.item_formula.len();
+        detail.offsets.item_formula = (formula_start, formula_end);
+        current_offset = formula_end;
+    }
 
     for (item_id, details) in results.iter() {
         phf_btreemap_name_to_id.insert(details.item_name.clone(), *item_id);
@@ -265,15 +264,9 @@ pub fn export_items(out_dir: &str) {
         exported_comptime_phf
             .item_id_to_name
             .push_str(&format!("{}u32 => \"{}\",", item_id, details.item_name));
-        exported_comptime_phf.item_generator.push_str(&format!(
-            "{}u32 => &[{}],",
-            item_id,
-            details.generator.join(",")
-        ));
         exported_comptime_phf.item_formulas.push_str(&format!(
-            "{}u32 => &[{}],",
-            item_id,
-            details.item_formula.join(",")
+            "{}u32 => ({}, {}),",
+            item_id, details.offsets.item_formula.0, details.offsets.item_formula.1
         ));
         constdecl_items_phf.push_str(&details.constdecl);
         phf_internal_items.push_str(&format!("{}u32 => &ITEM_{},", item_id, item_id));

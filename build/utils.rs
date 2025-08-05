@@ -90,8 +90,7 @@ pub(super) fn highlight(code_string: &str) -> String {
 macro_rules! compress_bytes {
     ($bytes:expr) => {{
         use std::io::Write;
-        let compress_lvl = if cfg!(debug_assertions) { 1 } else { 11 };
-        let mut encoder = brotli2::write::BrotliEncoder::new(Vec::new(), compress_lvl);
+        let mut encoder = brotli2::write::BrotliEncoder::new(Vec::new(), 11);
         encoder.write_all(&$bytes).unwrap();
         encoder.finish().unwrap()
     }};
@@ -286,3 +285,4 @@ macro_rules! join_num_vec_trait_impl {
 }
 
 join_num_vec_trait_impl!(Vec<T>);
+join_num_vec_trait_impl!(&[T]);

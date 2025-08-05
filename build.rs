@@ -22,24 +22,6 @@ fn main() {
 
     let maybe_run = vec![
         BuildArgs {
-            rerun_if_changed: &["build/export_champions.rs"],
-            generated_files: &["comptime_exports/champions.txt"],
-            source_file: "build/export_champions.rs",
-            function_name: Box::new(export_champions),
-        },
-        BuildArgs {
-            rerun_if_changed: &["build/export_items.rs"],
-            generated_files: &["comptime_exports/items.txt"],
-            source_file: "build/export_items.rs",
-            function_name: Box::new(export_items),
-        },
-        BuildArgs {
-            rerun_if_changed: &["build/export_runes.rs"],
-            generated_files: &["comptime_exports/runes.txt"],
-            source_file: "build/export_runes.rs",
-            function_name: Box::new(export_runes),
-        },
-        BuildArgs {
             rerun_if_changed: &["build/generator_runner.rs", "src/generators"],
             generated_files: &["generator_runner.rs"],
             source_file: "build/generator_runner.rs",
