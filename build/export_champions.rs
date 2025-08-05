@@ -314,9 +314,9 @@ pub fn export_champions(out_dir: &str, mega_block: &mut String) {
                 Details {
                     champion_name: champion.name.to_string(),
                     champion_formula: highlight(&clear_suffixes(&invoke_rustfmt(&constdecl))),
-                    generator: invoke_rustfmt(
+                    generator: highlight(&invoke_rustfmt(
                         &fs::read_to_string(format!("src/generators/{}.rs", champion_id)).unwrap(),
-                    ),
+                    )),
                     offsets: Offsets {
                         champion_formula: (0, 0),
                         champion_generator: (0, 0),

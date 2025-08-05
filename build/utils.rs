@@ -239,6 +239,9 @@ fn tokenize(expr: &str) -> Vec<String> {
 }
 
 pub fn clean_math_expr(expr: &str) -> String {
+    if expr.contains(".powf") {
+        return expr.to_string();
+    }
     if !is_valid_math_expression(expr) {
         return "0.0".to_string();
     }

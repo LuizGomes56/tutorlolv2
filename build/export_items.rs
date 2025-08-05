@@ -51,7 +51,12 @@ pub fn format_damage_object(damage_object: &Option<DamageObject>) -> String {
                     let expr = clean_math_expr(raw);
                     let (expr, changed) = transform_expr(&expr);
                     let ctx_param = if changed { "ctx" } else { "_" };
-                    format!("|_, {}| {}", ctx_param, expr.to_lowercase())
+                    let lvl_param = if expr.to_lowercase().contains("level") {
+                        "level"
+                    } else {
+                        "_"
+                    };
+                    format!("|{}, {}| {}", lvl_param, ctx_param, expr.to_lowercase())
                 } else {
                     String::from("|_, _| 0.0")
                 }
@@ -273,7 +278,8 @@ pub fn export_items(out_dir: &str, mega_block: &mut String) {
 
         if details.is_simulated {
             phf_set_size.simulated_items.insert(*item_id);
-        } else if details.is_damaging {
+        }
+        if details.is_damaging {
             phf_set_size.damaging_items.insert(*item_id);
         }
     }
