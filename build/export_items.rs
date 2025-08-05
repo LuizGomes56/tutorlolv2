@@ -1,4 +1,5 @@
 use super::*;
+use std::collections::HashSet;
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -172,13 +173,13 @@ pub fn export_items(out_dir: &str) {
         String::from("pub static DAMAGING_ITEMS: phf::Set<u32> = phf::phf_set!(");
 
     struct PhfSetSize {
-        pub simulated_items: Vec<u32>,
-        pub damaging_items: Vec<u32>,
+        pub simulated_items: HashSet<u32>,
+        pub damaging_items: HashSet<u32>,
     }
 
     let mut phf_set_size = PhfSetSize {
-        simulated_items: vec![],
-        damaging_items: vec![],
+        simulated_items: HashSet::new(),
+        damaging_items: HashSet::new(),
     };
 
     struct Details {
@@ -278,19 +279,21 @@ pub fn export_items(out_dir: &str) {
         phf_internal_items.push_str(&format!("{}u32 => &ITEM_{},", item_id, item_id));
 
         if details.is_simulated {
-            phf_set_size.simulated_items.push(*item_id);
+            phf_set_size.simulated_items.insert(*item_id);
         } else if details.is_damaging {
-            phf_set_size.damaging_items.push(*item_id);
+            phf_set_size.damaging_items.insert(*item_id);
         }
     }
 
-    exported_comptime_phf.item_name_to_id.push_str(
-        &phf_btreemap_name_to_id
-            .iter()
-            .map(|(name, id)| format!("\"{}\" => {}u32,", name, id))
-            .collect::<Vec<String>>()
-            .join(""),
-    );
+    let mut seen = HashSet::new();
+    let arms = phf_btreemap_name_to_id
+        .iter()
+        .filter(|(name, _)| seen.insert((*name).clone()))
+        .map(|(name, id)| format!("\"{}\" => {}u32,", name, id))
+        .collect::<Vec<_>>()
+        .join("");
+
+    exported_comptime_phf.item_name_to_id.push_str(&arms);
 
     macro_rules! u32_prefix {
         ($field:ident) => {
@@ -311,11 +314,6 @@ pub fn export_items(out_dir: &str) {
         let path = assign_path(to);
         let _ = fs::write(&path, content.as_bytes());
     };
-    for (name, item_id) in phf_btreemap_name_to_id {
-        exported_comptime_phf
-            .item_name_to_id
-            .push_str(&format!("\"{}\" => {}u32,", name, item_id));
-    }
     exported_comptime_phf.add_braces();
     phf_internal_items.push_str("};");
     phf_damaging_items.push_str(");");

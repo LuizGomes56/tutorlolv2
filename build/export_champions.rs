@@ -151,7 +151,7 @@ pub fn format_stats(stats: &ChampionCdnStats) -> String {
     all_stats.join("")
 }
 
-fn sort_pqwer(data: &mut Vec<(String, String)>) {
+fn sort_pqwer<T: Ord>(data: &mut Vec<(String, T)>) {
     let priority = |ch: char| match ch {
         'P' => 0,
         'Q' => 1,
@@ -233,7 +233,7 @@ pub fn export_champions(out_dir: &str) {
     struct Details {
         champion_name: String,
         generator: Vec<u8>,
-        highlighted_abilities: BTreeMap<String, Vec<u8>>,
+        highlighted_abilities: Vec<(String, Vec<u8>)>,
         champion_formula: Vec<u8>,
         constdecl: String,
     }
@@ -241,7 +241,7 @@ pub fn export_champions(out_dir: &str) {
     let results = main_map
         .into_par_iter()
         .map(|(champion_id, champion)| {
-            let (highlighted_abilities, constdecl_abilities) =
+            let (highlighted_abilities, mut constdecl_abilities) =
                 format_abilities(&champion.abilities)
                     .into_par_iter()
                     .filter_map(|(ability_name, ability_formula)| {
@@ -274,7 +274,9 @@ pub fn export_champions(out_dir: &str) {
                             None
                         }
                     })
-                    .collect::<(BTreeMap<_, _>, BTreeMap<_, _>)>();
+                    .collect::<(Vec<_>, Vec<_>)>();
+
+            sort_pqwer(&mut constdecl_abilities);
 
             let constdecl = format!(
                 r#"pub static {}: CachedChampion = CachedChampion {{
@@ -324,7 +326,7 @@ pub fn export_champions(out_dir: &str) {
         })
         .collect::<BTreeMap<String, Details>>();
 
-    for (champion_id, detail) in results {
+    for (champion_id, mut detail) in results {
         exported_comptime_phf.champion_name_to_id.push_str(&format!(
             "\"{}\" => \"{}\",",
             detail.champion_name, champion_id
@@ -348,7 +350,7 @@ pub fn export_champions(out_dir: &str) {
         ));
 
         exported_comptime_phf.champion_generator.push_str(&format!(
-            "\"{}\" => &[{}]",
+            "\"{}\" => &[{}],",
             champion_id,
             detail.generator.join(",")
         ));
@@ -356,6 +358,8 @@ pub fn export_champions(out_dir: &str) {
         exported_comptime_phf
             .champion_abilities
             .push_str(&format!("\"{}\" => &phf::phf_ordered_map! {{", champion_id));
+
+        sort_pqwer(&mut detail.highlighted_abilities);
 
         exported_comptime_phf.champion_abilities.push_str(
             &detail
