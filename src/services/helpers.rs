@@ -1,11 +1,13 @@
 use super::riot_formulas::RiotFormulas;
 use crate::{
-    DAMAGING_ITEMS, DAMAGING_RUNES, INTERNAL_ITEMS, INTERNAL_RUNES, SIMULATED_ITEMS,
-    SIZE_DAMAGING_RUNES, SIZE_SIMULATED_ITEMS,
+    BASIC_ATTACK, CRITICAL_STRIKE, DAMAGING_ITEMS, DAMAGING_RUNES, INTERNAL_ITEMS, INTERNAL_RUNES,
+    SIMULATED_ITEMS, SIZE_DAMAGING_RUNES, SIZE_SIMULATED_ITEMS,
     model::{
         SIZE_ABILITIES, SIZE_ITEMS_EXPECTED,
         base::*,
-        cache::{CachedChampion, CachedItem, EvalContext},
+        cache::{
+            AdaptativeType, AttackType, Attrs, CachedChampion, CachedItem, DamageType, EvalContext,
+        },
     },
 };
 use smallvec::SmallVec;
@@ -103,7 +105,8 @@ pub fn get_items_damage(
                     item_id,
                     DamageExpression {
                         level: 0,
-                        damage_type: item.damage_type.unwrap_or("UNKNOWN"),
+                        attributes: item.attributes,
+                        damage_type: item.damage_type.unwrap_or_default(),
                         minimum_damage: item_damage.minimum_damage,
                         maximum_damage: item_damage.maximum_damage,
                     },
@@ -130,6 +133,7 @@ pub fn get_runes_damage(
                     rune_id,
                     DamageExpression {
                         level: 0,
+                        attributes: Attrs::None,
                         damage_type: rune.damage_type,
                         minimum_damage,
                         maximum_damage: |_, _| 0.0,
@@ -244,7 +248,7 @@ pub fn get_full_stats(
 }
 
 #[inline]
-pub fn get_damage_multipliers(modifiers: &DamageMultipliers, damage_type: &str) -> f64 {
+pub fn get_damage_multipliers(modifiers: &DamageMultipliers, damage_type: DamageType) -> f64 {
     let DamageMultipliers {
         self_mod,
         enemy_mod,
@@ -252,9 +256,9 @@ pub fn get_damage_multipliers(modifiers: &DamageMultipliers, damage_type: &str) 
     } = modifiers;
     let (enemy_debuff_multiplier, damage_reduction_multiplier, damage_increase_multiplier) =
         match damage_type {
-            "PHYSICAL_DAMAGE" => (enemy_mod.0, damage_mod.0, self_mod.0),
-            "MAGIC_DAMAGE" => (enemy_mod.1, damage_mod.1, self_mod.1),
-            "TRUE_DAMAGE" => (enemy_mod.2, 1.0, self_mod.2),
+            DamageType::Physical => (enemy_mod.0, damage_mod.0, self_mod.0),
+            DamageType::Magic => (enemy_mod.1, damage_mod.1, self_mod.1),
+            DamageType::True => (enemy_mod.2, 1.0, self_mod.2),
             _ => (1.0, 1.0, 1.0),
         };
     damage_reduction_multiplier
@@ -284,32 +288,16 @@ pub fn get_abilities_damage(
             *key,
             DamageExpression {
                 level,
+                attributes: value.attributes,
                 damage_type: value.damage_type,
                 minimum_damage: value.minimum_damage,
                 maximum_damage: value.maximum_damage,
             },
         ));
     }
-    result.push((
-        "A",
-        DamageExpression {
-            level: 0,
-            damage_type: "PHYSICAL_DAMAGE",
-            minimum_damage: |_, ctx: &EvalContext| ctx.ad * ctx.physical_multiplier,
-            maximum_damage: |_, _| 0.0,
-        },
-    ));
-    result.push((
-        "C",
-        DamageExpression {
-            level: 0,
-            damage_type: "PHYSICAL_DAMAGE",
-            minimum_damage: |_, ctx: &EvalContext| {
-                ctx.ad * ctx.physical_multiplier * ctx.crit_damage / 100.0
-            },
-            maximum_damage: |_, _| 0.0,
-        },
-    ));
+
+    result.push(("A", BASIC_ATTACK));
+    result.push(("C", CRITICAL_STRIKE));
     result
 }
 
@@ -456,17 +444,33 @@ pub fn get_enemy_current_stats(
 
 fn transform_expr<T: Copy + 'static>(
     tuple: (T, DamageExpression),
+    onhit_effects: &mut DamageValue,
     damage_mlt: &DamageMultipliers,
     eval_ctx: &EvalContext,
 ) -> (T, InstanceDamage) {
     let damage_type = tuple.1.damage_type;
     let damage_mod = get_damage_multipliers(damage_mlt, damage_type);
+    let minimum_damage = damage_mod * (tuple.1.minimum_damage)(tuple.1.level, eval_ctx);
+    let maximum_damage = damage_mod * (tuple.1.maximum_damage)(tuple.1.level, eval_ctx);
+    match tuple.1.attributes {
+        Attrs::OnhitMin => {
+            onhit_effects.minimum_damage += maximum_damage + minimum_damage;
+        }
+        Attrs::OnhitMax => {
+            onhit_effects.maximum_damage += maximum_damage + minimum_damage;
+        }
+        Attrs::Onhit => {
+            onhit_effects.minimum_damage += minimum_damage;
+            onhit_effects.maximum_damage += maximum_damage;
+        }
+        Attrs::None => {}
+    };
     (
         tuple.0,
         InstanceDamage {
             damage_type,
-            minimum_damage: damage_mod * (tuple.1.minimum_damage)(tuple.1.level, eval_ctx),
-            maximum_damage: damage_mod * (tuple.1.maximum_damage)(tuple.1.level, eval_ctx),
+            minimum_damage,
+            maximum_damage,
         },
     )
 }
@@ -475,10 +479,11 @@ pub fn get_damages<const N: usize, T: Copy + 'static>(
     tuples: &[(T, DamageExpression)],
     damage_multipliers: &DamageMultipliers,
     eval_ctx: &EvalContext,
+    onhit_effects: &mut DamageValue,
 ) -> DamageLike<N, T> {
     let mut result = DamageLike::<N, T>::with_capacity(tuples.len());
     for tuple in tuples.iter().copied() {
-        let (key, val) = transform_expr(tuple, damage_multipliers, eval_ctx);
+        let (key, val) = transform_expr(tuple, onhit_effects, damage_multipliers, eval_ctx);
         result.push((key, val));
     }
     result

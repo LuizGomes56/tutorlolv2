@@ -24,3 +24,21 @@ pub use export_runes::export_runes;
 pub use generator_runner::generator_runner;
 pub use meta_items::internal_meta_items;
 pub use sprite_map::generate_sprite_map;
+
+pub static CRITICAL_STRIKE: &'static str = r#"pub static CRITICAL_STRIKE: DamageExpression = DamageExpression {
+    level: 0,
+    attributes: Attrs::OnhitMax,
+    damage_type: DamageType::Physical,
+    minimum_damage: |_, ctx| {
+        ctx.ad * ctx.physical_multiplier * ctx.crit_damage / 100.0
+    },
+    maximum_damage: |_, _| 0.0,
+};"#;
+
+pub static BASIC_ATTACK: &'static str = r#"pub static BASIC_ATTACK: DamageExpression = DamageExpression {
+    level: 0,
+    attributes: Attrs::OnhitMin,
+    damage_type: DamageType::Physical,
+    minimum_damage: |_, ctx| ctx.ad * ctx.physical_multiplier,
+    maximum_damage: |_, _| 0.0,
+};"#;

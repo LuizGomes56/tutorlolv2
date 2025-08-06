@@ -7,5 +7,5 @@ pub mod riot;
 
 pub const SIZE_ITEMS_EXPECTED: usize = 7;
 pub const SIZE_RUNES_EXPECTED: usize = 3;
-pub const SIZE_ABILITIES: usize = 9;
+pub const SIZE_ABILITIES: usize = 10;
 pub const SIZE_ENEMIES_EXPECTED: usize = 5;

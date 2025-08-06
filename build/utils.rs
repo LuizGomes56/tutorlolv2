@@ -6,6 +6,18 @@ use std::{
 };
 use synoptic::{Highlighter, TokOpt};
 
+pub(super) fn format_damage_type(damage_type: &str) -> String {
+    let result = match damage_type {
+        "PHYSICAL_DAMAGE" => "DamageType::Physical",
+        "MAGIC_DAMAGE" => "DamageType::Magic",
+        "MIXED_DAMAGE" => "DamageType::Mixed",
+        "TRUE_DAMAGE" => "DamageType::True",
+        "ADAPTATIVE_DAMAGE" => "DamageType::Adaptative",
+        _ => "DamageType::Unknown",
+    };
+    result.to_string()
+}
+
 pub(super) fn transform_expr(expr: &str) -> (String, bool) {
     let re_num = Regex::new(r"\b(\d+(\.\d+)?)\b").unwrap();
     let with_f64 = re_num.replace_all(expr, |caps: &Captures| format!("{}f64", &caps[1]));
@@ -15,9 +27,14 @@ pub(super) fn transform_expr(expr: &str) -> (String, bool) {
     (result.into_owned(), count_ctx > 0)
 }
 
-pub(super) fn invoke_rustfmt(src: &str) -> String {
+pub(super) fn invoke_rustfmt(src: &str, width: usize) -> String {
     let mut child = Command::new("rustfmt")
-        .args(&["--emit", "stdout", "--config", "max_width=80"])
+        .args(&[
+            "--emit",
+            "stdout",
+            "--config",
+            &format!("max_width={width}"),
+        ])
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
         .spawn()
@@ -47,7 +64,7 @@ pub(super) fn highlight(code_string: &str) -> String {
         r"\b(break|continue|intrinsic|match|return|yield|for|while|match|if|else|as|in)\b",
     );
     h.keyword("constant", r"\b[A-Z]+\b");
-    h.keyword("constant", r"\b(Some|None)\b");
+    h.keyword("constant", r"\b(Some|None|BASIC_ATTACK|CRITICAL_STRIKE|Physical|Magic|Mixed|True|Adaptative|Unknown|Onhit|OnhitMin|OnhitMax)\b");
     h.keyword("type", r"\b[A-Z][a-zA-Z0-9_]*\b");
     h.keyword(
         "primitive",

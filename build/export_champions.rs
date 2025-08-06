@@ -210,11 +210,11 @@ fn format_abilities(abilities: &HashMap<String, Ability>) -> Vec<(String, String
         formatted_map.push((
             name.clone(),
             format!(
-                "static __phantom__: CachedChampionAbility = CachedChampionAbility {{name: \"{}\",damage_type: \"{}\",
+                "static __phantom__: CachedChampionAbility = CachedChampionAbility {{name: \"{}\",damage_type: {},
                 attributes: Attrs::{},minimum_damage: {},
                 maximum_damage: {},}};",
-                ability.name, ability.damage_type, ability.attributes.stringify(), min_dmg, max_dmg,
-            ),
+                ability.name, format_damage_type(&ability.damage_type), ability.attributes.stringify(), min_dmg, max_dmg,
+            )
         ));
     }
     sort_pqwer(&mut formatted_map);
@@ -252,7 +252,7 @@ pub fn export_champions(out_dir: &str, mega_block: &mut String) {
                 format_abilities(&champion.abilities)
                     .into_par_iter()
                     .filter_map(|(ability_name, ability_formula)| {
-                        let rustfmt_val = invoke_rustfmt(&ability_formula)
+                        let rustfmt_val = invoke_rustfmt(&ability_formula, 80)
                         .replace(
                             "static __phantom__: CachedChampionAbility = CachedChampionAbility ",
                             "",
@@ -285,17 +285,40 @@ pub fn export_champions(out_dir: &str, mega_block: &mut String) {
             let constdecl = format!(
                 r#"pub static {}: CachedChampion = CachedChampion {{
                 name: "{}",
-                adaptative_type: "{}",
-                attack_type: "{}",
-                positions: &["{}"],
+                adaptative_type: {},
+                attack_type: {},
+                positions: &[{}],
                 stats: CachedChampionStats {{{}}},
                 abilities: &[{}],
                 }};"#,
                 champion_id.to_uppercase(),
                 champion.name,
-                champion.adaptative_type,
-                champion.attack_type,
-                champion.positions.join("\",\""),
+                match champion.adaptative_type.as_str() {
+                    "PHYSICAL_DAMAGE" => "AdaptativeType::Physical",
+                    _ => "AdaptativeType::Magic",
+                },
+                match champion.attack_type.as_str() {
+                    "MELEE" => {
+                        "AttackType::Melee"
+                    }
+                    _ => {
+                        "AttackType::Ranged"
+                    }
+                },
+                champion
+                    .positions
+                    .iter()
+                    .map(|pos| {
+                        match pos.as_str() {
+                            "TOP" => "Position::Top",
+                            "JUNGLE" => "Position::Jungle",
+                            "MIDDLE" => "Position::Middle",
+                            "BOTTOM" => "Position::Bottom",
+                            _ => "Position::Support",
+                        }
+                    })
+                    .collect::<Vec<_>>()
+                    .join(","),
                 format_stats(&champion.stats),
                 constdecl_abilities
                     .iter()
@@ -313,9 +336,10 @@ pub fn export_champions(out_dir: &str, mega_block: &mut String) {
                 champion_id.clone(),
                 Details {
                     champion_name: champion.name.to_string(),
-                    champion_formula: highlight(&clear_suffixes(&invoke_rustfmt(&constdecl))),
+                    champion_formula: highlight(&clear_suffixes(&invoke_rustfmt(&constdecl, 80))),
                     generator: highlight(&invoke_rustfmt(
                         &fs::read_to_string(format!("src/generators/{}.rs", champion_id)).unwrap(),
+                        80,
                     )),
                     offsets: Offsets {
                         champion_formula: (0, 0),
@@ -442,6 +466,8 @@ pub fn export_champions(out_dir: &str, mega_block: &mut String) {
             String::with_capacity(constdecl_phf_champions.len() + phf_internal_champions.len());
         s.push_str(&constdecl_phf_champions);
         s.push_str(&phf_internal_champions);
+        s.push_str(&BASIC_ATTACK);
+        s.push_str(&CRITICAL_STRIKE);
         s
     });
     write_fn(

@@ -67,44 +67,43 @@ pub fn export_runes(out_dir: &str, mega_block: &mut String) {
         offsets: Offsets,
     }
 
-    let mut results =
-        main_map
-            .into_par_iter()
-            .map(|(rune_id, rune)| {
-                let ranged_expr = transform_expr(&clean_math_expr(&rune.ranged));
-                let melee_expr = transform_expr(&clean_math_expr(&rune.melee));
-                let constdecl = format!(
-                    r#"pub static RUNE_{}: CachedRune = CachedRune {{
-            name: "{}",damage_type: "{}",ranged: {},melee: {},}};"#,
-                    rune_id,
-                    rune.name,
-                    rune.damage_type,
-                    format!(
-                        "|_, {}| {}",
-                        if ranged_expr.1 { "ctx" } else { "_" },
-                        ranged_expr.0.to_lowercase()
-                    ),
-                    format!(
-                        "|_, {}| {}",
-                        if melee_expr.1 { "ctx" } else { "_" },
-                        melee_expr.0.to_lowercase()
-                    ),
-                );
+    let mut results = main_map
+        .into_par_iter()
+        .map(|(rune_id, rune)| {
+            let ranged_expr = transform_expr(&clean_math_expr(&rune.ranged));
+            let melee_expr = transform_expr(&clean_math_expr(&rune.melee));
+            let constdecl = format!(
+                r#"pub static RUNE_{}: CachedRune = CachedRune {{
+            name: "{}",damage_type: {},ranged: {},melee: {},}};"#,
+                rune_id,
+                rune.name,
+                format_damage_type(&rune.damage_type),
+                format!(
+                    "|_, {}| {}",
+                    if ranged_expr.1 { "ctx" } else { "_" },
+                    ranged_expr.0.to_lowercase()
+                ),
+                format!(
+                    "|_, {}| {}",
+                    if melee_expr.1 { "ctx" } else { "_" },
+                    melee_expr.0.to_lowercase()
+                ),
+            );
 
-                (
-                    rune_id,
-                    Details {
-                        rune_name: rune.name.clone(),
-                        rune_formula: highlight(&clear_suffixes(&invoke_rustfmt(&constdecl)))
-                            .replacen("class=\"type\"", "class=\"constant\"", 1),
-                        constdecl,
-                        offsets: Offsets {
-                            rune_formula: (0, 0),
-                        },
+            (
+                rune_id,
+                Details {
+                    rune_name: rune.name.clone(),
+                    rune_formula: highlight(&clear_suffixes(&invoke_rustfmt(&constdecl, 80)))
+                        .replacen("class=\"type\"", "class=\"constant\"", 1),
+                    constdecl,
+                    offsets: Offsets {
+                        rune_formula: (0, 0),
                     },
-                )
-            })
-            .collect::<BTreeMap<u32, Details>>();
+                },
+            )
+        })
+        .collect::<BTreeMap<u32, Details>>();
 
     let mut current_offset = mega_block.len();
 

@@ -52,18 +52,58 @@ pub struct EvalContext {
     pub ad: f64,
 }
 
+#[derive(Copy, Clone, Serialize, Default)]
+pub enum DamageType {
+    Physical,
+    Magic,
+    Mixed,
+    True,
+    Adaptative,
+    #[default]
+    Unknown,
+}
+
+#[derive(Copy, Clone, Serialize, Deserialize)]
+pub enum Attrs {
+    None,
+    Onhit,
+    OnhitMin,
+    OnhitMax,
+}
+
+#[derive(Copy, Clone)]
+pub enum AttackType {
+    Melee,
+    Ranged,
+}
+
+#[derive(Copy, Clone)]
+pub enum AdaptativeType {
+    Physical,
+    Magic,
+}
+
+#[derive(Copy, Clone)]
+pub enum Position {
+    Top,
+    Jungle,
+    Middle,
+    Bottom,
+    Support,
+}
+
 pub struct CachedChampion {
     pub name: &'static str,
-    pub adaptative_type: &'static str,
-    pub attack_type: &'static str,
-    pub positions: &'static [&'static str],
+    pub adaptative_type: AdaptativeType,
+    pub attack_type: AttackType,
+    pub positions: &'static [Position],
     pub stats: CachedChampionStats,
     pub abilities: &'static [(&'static str, CachedChampionAbility)],
 }
 
 pub struct CachedChampionAbility {
     pub name: &'static str,
-    pub damage_type: &'static str,
+    pub damage_type: DamageType,
     pub attributes: Attrs,
     pub minimum_damage: fn(u8, &EvalContext) -> f64,
     pub maximum_damage: fn(u8, &EvalContext) -> f64,
@@ -102,12 +142,12 @@ pub struct CachedItem {
     pub gold: u16,
     pub tier: u8,
     pub prettified_stats: &'static [(&'static str, f64)],
-    pub damage_type: Option<&'static str>,
+    pub damage_type: Option<DamageType>,
     pub stats: CachedItemStats,
     pub builds_from: &'static [u32],
     pub ranged: CachedItemDamages,
     pub melee: CachedItemDamages,
-    pub damages_onhit: bool,
+    pub attributes: Attrs,
 }
 
 pub struct CachedMetaItem {
@@ -120,7 +160,7 @@ pub struct CachedMetaItem {
 
 pub struct CachedRune {
     pub name: &'static str,
-    pub damage_type: &'static str,
+    pub damage_type: DamageType,
     pub ranged: fn(u8, &EvalContext) -> f64,
     pub melee: fn(u8, &EvalContext) -> f64,
 }
@@ -142,12 +182,4 @@ pub struct CachedItemStats {
     pub mana: f64,
     pub movespeed: f64,
     pub omnivamp: f64,
-}
-
-#[derive(Copy, Clone, Serialize, Deserialize)]
-pub enum Attrs {
-    None,
-    Area,
-    Full,
-    Onhit,
 }

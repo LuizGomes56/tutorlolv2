@@ -3,7 +3,11 @@ use super::*;
 use crate::{
     CHAMPION_NAME_TO_ID, DAMAGING_ITEMS, DAMAGING_RUNES, INTERNAL_CHAMPIONS, INTERNAL_ITEMS,
     META_ITEMS,
-    model::{base::*, calculator::*},
+    model::{
+        base::*,
+        cache::{AdaptativeType, AttackType, DamageType, Position},
+        calculator::*,
+    },
 };
 use smallvec::SmallVec;
 use tinyset::SetU32;
@@ -55,6 +59,8 @@ fn infer_champion_stats(
         add_stat!(crit_damage, critical_strike_damage);
         add_stat!(max_mana, mana);
         add_stat!(attack_speed);
+        add_stat!(current_mana, mana);
+        add_stat!(current_health, health);
 
         armor_penetration.push(item_stats.armor_penetration_percent);
         magic_penetration.push(item_stats.magic_penetration_percent);
@@ -327,7 +333,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
         get_bonus_stats(current_player_basic_stats, current_player_base_stats)
     };
 
-    let current_player_attack_type = AttackType::from_str(current_player_cache.attack_type);
+    let current_player_attack_type = current_player_cache.attack_type;
     let current_player_champion_id = active_player.champion_id;
 
     item_exceptions(
@@ -356,12 +362,11 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
                 .positions
                 .get(0)
                 .map(|position| match *position {
-                    "TOP" => meta_items.top,
-                    "JUNGLE" => meta_items.jungle,
-                    "MIDDLE" => meta_items.mid,
-                    "BOTTOM" => meta_items.adc,
-                    "SUPPORT" => meta_items.support,
-                    _ => &[],
+                    Position::Top => meta_items.top,
+                    Position::Jungle => meta_items.jungle,
+                    Position::Middle => meta_items.mid,
+                    Position::Bottom => meta_items.adc,
+                    Position::Support => meta_items.support,
                 })
         })
         .unwrap_or(&[]);
@@ -436,10 +441,35 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
         };
 
         let eval_ctx = get_eval_ctx(&current_player_state, &full_stats);
+        let mut onhit_effects = DamageValue::default();
 
-        let abilities_damage = get_damages(&abilities_iter_expr, &damage_multipliers, &eval_ctx);
-        let items_damage = get_damages(&items_iter_expr, &damage_multipliers, &eval_ctx);
-        let runes_damage = get_damages(&runes_iter_expr, &damage_multipliers, &eval_ctx);
+        let mut abilities_damage = get_damages(
+            &abilities_iter_expr,
+            &damage_multipliers,
+            &eval_ctx,
+            &mut onhit_effects,
+        );
+        let items_damage = get_damages(
+            &items_iter_expr,
+            &damage_multipliers,
+            &eval_ctx,
+            &mut onhit_effects,
+        );
+        let runes_damage = get_damages(
+            &runes_iter_expr,
+            &damage_multipliers,
+            &eval_ctx,
+            &mut onhit_effects,
+        );
+
+        abilities_damage.push((
+            "O",
+            InstanceDamage {
+                damage_type: DamageType::Mixed,
+                minimum_damage: onhit_effects.minimum_damage,
+                maximum_damage: onhit_effects.maximum_damage,
+            },
+        ));
 
         Ok((
             *enemy_champion_id,

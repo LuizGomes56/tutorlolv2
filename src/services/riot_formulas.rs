@@ -1,6 +1,6 @@
 use crate::model::{
-    base::{AdaptativeType, Stats},
-    cache::CachedChampionStats,
+    base::Stats,
+    cache::{AdaptativeType, CachedChampionStats},
 };
 use smallvec::SmallVec;
 

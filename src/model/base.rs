@@ -1,5 +1,9 @@
-use super::{SIZE_ABILITIES, cache::EvalContext, riot::RiotChampionStats};
-use crate::{SIZE_DAMAGING_ITEMS, SIZE_DAMAGING_RUNES, SIZE_SIMULATED_ITEMS};
+use super::{
+    SIZE_ABILITIES,
+    cache::{DamageType, EvalContext},
+    riot::RiotChampionStats,
+};
+use crate::{SIZE_DAMAGING_ITEMS, SIZE_DAMAGING_RUNES, SIZE_SIMULATED_ITEMS, model::cache::Attrs};
 use serde::{Deserialize, Serialize};
 use smallvec::SmallVec;
 
@@ -7,7 +11,7 @@ use smallvec::SmallVec;
 pub struct InstanceDamage {
     pub minimum_damage: f64,
     pub maximum_damage: f64,
-    pub damage_type: &'static str,
+    pub damage_type: DamageType,
 }
 
 #[derive(Copy, Clone, Deserialize, Serialize)]
@@ -74,8 +78,8 @@ pub struct SimulatedDamages {
 #[derive(Serialize)]
 pub struct Damages {
     pub abilities: DamageLike<SIZE_ABILITIES, &'static str>,
-    pub items: DamageLike<SIZE_DAMAGING_ITEMS, u32>,
-    pub runes: DamageLike<SIZE_DAMAGING_RUNES, u32>,
+    pub items: DamageLike<5, u32>,
+    pub runes: DamageLike<3, u32>,
     pub compared_items: SmallVec<[(u32, SimulatedDamages); SIZE_SIMULATED_ITEMS]>,
 }
 
@@ -95,9 +99,16 @@ pub struct GenericStats {
 #[derive(Copy, Clone)]
 pub struct DamageExpression {
     pub level: u8,
-    pub damage_type: &'static str,
+    pub attributes: Attrs,
+    pub damage_type: DamageType,
     pub minimum_damage: fn(u8, &EvalContext) -> f64,
     pub maximum_damage: fn(u8, &EvalContext) -> f64,
+}
+
+#[derive(Default)]
+pub struct DamageValue {
+    pub minimum_damage: f64,
+    pub maximum_damage: f64,
 }
 
 pub struct DamageMultipliers {
@@ -106,33 +117,12 @@ pub struct DamageMultipliers {
     pub damage_mod: (f64, f64),
 }
 
-pub enum AdaptativeType {
-    Physical,
-    Magic,
-}
-
-#[derive(Copy, Clone)]
-pub enum AttackType {
-    Melee,
-    Ranged,
-}
-
 #[derive(Copy, Clone, Deserialize)]
 pub struct AbilityLevels {
     pub q: u8,
     pub w: u8,
     pub e: u8,
     pub r: u8,
-}
-
-impl AttackType {
-    pub fn from_str(s: &'static str) -> AttackType {
-        match s {
-            "MELEE" => AttackType::Melee,
-            "RANGED" => AttackType::Ranged,
-            _ => AttackType::Ranged,
-        }
-    }
 }
 
 #[derive(Clone, Copy, Serialize)]

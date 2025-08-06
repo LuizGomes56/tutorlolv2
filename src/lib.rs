@@ -25,7 +25,7 @@ use actix_web::{
 #[cfg(feature = "dev")]
 use actix_web::{middleware::from_fn, mime, web::JsonConfig};
 use dotenvy::dotenv;
-use model::cache::*;
+use model::{base::DamageExpression, cache::*};
 use server::{games::*, img::*, schemas::APIResponse};
 use sqlx::postgres::PgPoolOptions;
 use std::{env, io};

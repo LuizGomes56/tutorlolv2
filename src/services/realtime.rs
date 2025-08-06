@@ -4,7 +4,8 @@ use crate::{
     model::{
         SIZE_ENEMIES_EXPECTED, SIZE_ITEMS_EXPECTED,
         base::{
-            AttackType, BasicStats, DamageMultipliers, Damages, DragonMultipliers, SimulatedDamages,
+            BasicStats, DamageMultipliers, DamageValue, Damages, DragonMultipliers,
+            SimulatedDamages,
         },
         realtime::*,
         riot::*,
@@ -139,7 +140,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
         &ally_dragon_multipliers,
     );
 
-    let current_player_attack_type = AttackType::from_str(current_player_cache.attack_type);
+    let current_player_attack_type = current_player_cache.attack_type;
     let current_player_levelings = current_player_abilities.get_levelings();
     let current_player_state = (
         &current_player_stats,
@@ -207,11 +208,26 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
             };
 
             let eval_ctx = get_eval_ctx(&current_player_state, &full_stats);
+            let mut onhit_effects = DamageValue::default();
 
-            let abilities_damage =
-                get_damages(&abilities_iter_expr, &damage_multipliers, &eval_ctx);
-            let items_damage = get_damages(&items_iter_expr, &damage_multipliers, &eval_ctx);
-            let runes_damage = get_damages(&runes_iter_expr, &damage_multipliers, &eval_ctx);
+            let abilities_damage = get_damages(
+                &abilities_iter_expr,
+                &damage_multipliers,
+                &eval_ctx,
+                &mut onhit_effects,
+            );
+            let items_damage = get_damages(
+                &items_iter_expr,
+                &damage_multipliers,
+                &eval_ctx,
+                &mut onhit_effects,
+            );
+            let runes_damage = get_damages(
+                &runes_iter_expr,
+                &damage_multipliers,
+                &eval_ctx,
+                &mut onhit_effects,
+            );
 
             let mut compared_items_damage = SmallVec::with_capacity(simulated_stats.len());
 
@@ -258,16 +274,26 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
                 );
 
                 let siml_eval_ctx = get_eval_ctx(&siml_current_player_state, &siml_full_stats);
+                let mut siml_onhit_effects = DamageValue::default();
 
                 let siml_abilities_damage = get_damages(
                     &abilities_iter_expr,
                     &siml_damage_multipliers,
                     &siml_eval_ctx,
+                    &mut siml_onhit_effects,
                 );
-                let siml_items_damage =
-                    get_damages(&items_iter_expr, &siml_damage_multipliers, &siml_eval_ctx);
-                let siml_runes_damage =
-                    get_damages(&runes_iter_expr, &siml_damage_multipliers, &siml_eval_ctx);
+                let siml_items_damage = get_damages(
+                    &items_iter_expr,
+                    &siml_damage_multipliers,
+                    &siml_eval_ctx,
+                    &mut siml_onhit_effects,
+                );
+                let siml_runes_damage = get_damages(
+                    &runes_iter_expr,
+                    &siml_damage_multipliers,
+                    &siml_eval_ctx,
+                    &mut siml_onhit_effects,
+                );
 
                 compared_items_damage.push((
                     *siml_item_id,

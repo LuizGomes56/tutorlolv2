@@ -2,7 +2,6 @@ use super::{
     SIZE_ABILITIES, SIZE_ITEMS_EXPECTED, SIZE_RUNES_EXPECTED,
     base::{AbilityLevels, BasicStats, DamageLike, Stats},
 };
-use crate::{SIZE_DAMAGING_ITEMS, SIZE_DAMAGING_RUNES};
 use serde::{Deserialize, Serialize};
 use smallvec::SmallVec;
 use tinyset::SetU32;
@@ -21,8 +20,8 @@ pub struct OutputCurrentPlayer {
 #[derive(Serialize)]
 pub struct CalculatorDamages {
     pub abilities: DamageLike<SIZE_ABILITIES, &'static str>,
-    pub items: DamageLike<SIZE_DAMAGING_ITEMS, u32>,
-    pub runes: DamageLike<SIZE_DAMAGING_RUNES, u32>,
+    pub items: DamageLike<5, u32>,
+    pub runes: DamageLike<3, u32>,
 }
 
 #[derive(Serialize)]

@@ -206,7 +206,7 @@ pub fn export_items(out_dir: &str, mega_block: &mut String) {
                 let constdecl = format!(
                     r#"pub static ITEM_{}: CachedItem = CachedItem {{
                 name: "{}",gold: {},tier: {},damage_type: {},
-                damages_onhit: {},ranged: {},melee: {},builds_from: 
+                attributes: {},ranged: {},melee: {},builds_from: 
                 & [{}],prettified_stats: &[{}],
                 stats: CachedItemStats {{{}}},}};"#,
                     item_id,
@@ -215,13 +215,17 @@ pub fn export_items(out_dir: &str, mega_block: &mut String) {
                     item.tier,
                     if item.damage_type.is_some() {
                         format!(
-                            "Some(\"{}\")",
-                            item.damage_type.clone().unwrap_or("UNKNOWN".to_string())
+                            "Some({})",
+                            format_damage_type(&item.damage_type.clone().unwrap_or_default())
                         )
                     } else {
                         "None".to_string()
                     },
-                    item.damages_onhit,
+                    if item.damages_onhit {
+                        "Attrs::OnhitMin"
+                    }else {
+                        "Attrs::None"
+                    },
                     format_damage_object(&item.ranged),
                     format_damage_object(&item.melee),
                     item.builds_from.join(","),
@@ -233,7 +237,7 @@ pub fn export_items(out_dir: &str, mega_block: &mut String) {
                     item_id,
                     Details {
                         item_name: item.name.clone(),
-                        item_formula: highlight(&clear_suffixes(&invoke_rustfmt(&constdecl)))
+                        item_formula: highlight(&clear_suffixes(&invoke_rustfmt(&constdecl, 80)))
                             .replacen("class=\"type\"", "class=\"constant\"", 1),
                         constdecl,
                         description: format!(

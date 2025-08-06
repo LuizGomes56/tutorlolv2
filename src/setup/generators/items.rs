@@ -211,8 +211,8 @@ fn item_3153() -> TestResult {
             "ENEMY_HEALTH - (({number} * ENEMY_HEALTH * (1 - {number} * PHYSICAL_MULTIPLIER).powf({power}) - AD + AD * (1 - {number} * PHYSICAL_MULTIPLIER).powf({power})) / {number})"
         )
     };
-    let ranged_dmg = get_dmg(numbers[0]);
-    let melee_dmg = get_dmg(numbers[1]);
+    let melee_dmg = get_dmg(numbers[0]);
+    let ranged_dmg = get_dmg(numbers[1]);
     write_dmg!(@ranged ranged_dmg, @melee melee_dmg);
 }
 
