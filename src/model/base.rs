@@ -105,7 +105,7 @@ pub struct DamageExpression {
     pub maximum_damage: fn(u8, &EvalContext) -> f64,
 }
 
-#[derive(Default)]
+#[derive(Default, Serialize)]
 pub struct DamageValue {
     pub minimum_damage: f64,
     pub maximum_damage: f64,
@@ -144,19 +144,9 @@ impl DragonMultipliers {
 }
 
 #[derive(Serialize)]
-pub struct MonsterDamages {
-    pub tower: f64,
-    pub dragon: f64,
-    pub baron: f64,
-    pub atakhan: f64,
-    pub voidgrubs: f64,
-    pub melee_minion: f64,
-    pub ranged_minion: f64,
-    pub super_minion: f64,
-    pub red_buff: f64,
-    pub blue_buff: f64,
-    pub gromp: f64,
-    pub krug: f64,
-    pub wolves: f64,
-    pub raptor: f64,
+pub struct MonsterExpr {
+    pub abilities: SmallVec<[DamageValue; SIZE_ABILITIES]>,
+    pub items: SmallVec<[DamageValue; 5]>,
 }
+
+pub type MonsterDamages = [MonsterExpr; 7];

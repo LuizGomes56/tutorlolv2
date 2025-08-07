@@ -5,7 +5,7 @@ use crate::{
     META_ITEMS,
     model::{
         base::*,
-        cache::{AdaptativeType, AttackType, DamageType, Position},
+        cache::{AdaptativeType, AttackType, Attrs, DamageType, Position},
         calculator::*,
     },
 };
@@ -495,27 +495,121 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
         .map(output_enemy)
         .collect::<Result<SmallVec<[(&'static str, OutputEnemy); 1]>, CalculationError>>()?;
 
-    let monster_damages = MonsterDamages {
-        tower: current_player_base_stats.attack_damage
-            + current_player_bonus_stats.attack_damage
-            + current_player_stats.ability_power * 0.6,
-        dragon: current_player_stats.attack_damage * 0.82644628099,
-        baron: current_player_stats.attack_damage * 0.45454545454,
-        atakhan: current_player_stats.attack_damage * 0.52631578947,
-        voidgrubs: current_player_stats.attack_damage,
-        melee_minion: current_player_stats.attack_damage,
-        ranged_minion: current_player_stats.attack_damage,
-        super_minion: current_player_stats.attack_damage * 0.5,
-        red_buff: current_player_stats.attack_damage * 0.70422535211,
-        blue_buff: current_player_stats.attack_damage * 0.70422535211,
-        gromp: current_player_stats.attack_damage * 0.70422535211,
-        krug: current_player_stats.attack_damage * 0.83333333333,
-        wolves: current_player_stats.attack_damage * 0.70422535211,
-        raptor: current_player_stats.attack_damage * 0.83333333333,
+    let make_state = |tuple: (i8, i8)| {
+        get_full_stats(
+            ("", 0, 1.0),
+            (
+                BasicStats {
+                    armor: tuple.0 as f64,
+                    magic_resist: tuple.1 as f64,
+                    attack_damage: 0.0,
+                    health: 2000.0,
+                    mana: 0.0,
+                },
+                &[],
+            ),
+            (
+                current_player_stats.armor_penetration_percent,
+                current_player_stats.armor_penetration_flat,
+            ),
+            (
+                current_player_stats.magic_penetration_percent,
+                current_player_stats.magic_penetration_flat,
+            ),
+        )
     };
+
+    let monster_damages = MONSTER_RESISTS.iter_enumerate().map(|(index, resists)| {
+        let mut onhit_effects = DamageValue::default();
+        let mut abilities = abilities_iter_expr
+            .iter()
+            .map(|(ability_name, dmg_expr)| {
+                let monster_state = make_state(resists);
+                let eval_ctx = get_eval_ctx(&current_player_state, &monster_state);
+                let damage_multipliers = DamageMultipliers {
+                    self_mod: monster_state.2.self_mod,
+                    enemy_mod: monster_state.2.enemy_mod,
+                    damage_mod: (monster_state.2.armor_mod, monster_state.2.magic_mod),
+                };
+                let damage_mod = get_damage_multipliers(&damage_multipliers, dmg_expr.damage_type);
+                let first_char = ability_name.chars().next().unwrap_or_default();
+                let ability_level = match first_char {
+                    'P' => current_player_level,
+                    'Q' => current_player_abilities.q,
+                    'W' => current_player_abilities.w,
+                    'E' => current_player_abilities.e,
+                    'R' => current_player_abilities.r,
+                    _ => 0,
+                };
+                let minimum_damage =
+                    damage_mod * (dmg_expr.minimum_damage)(ability_level, &eval_ctx);
+                let maximum_damage =
+                    damage_mod * (dmg_expr.maximum_damage)(ability_level, &eval_ctx);
+                match dmg_expr.attributes {
+                    Attrs::OnhitMin => {
+                        onhit_effects.minimum_damage += minimum_damage;
+                    }
+                    Attrs::OnhitMax => {
+                        onhit_effects.maximum_damage += maximum_damage;
+                    }
+                    Attrs::Onhit => {
+                        onhit_effects.minimum_damage += minimum_damage;
+                        onhit_effects.maximum_damage += maximum_damage;
+                    }
+                    _ => {}
+                };
+                DamageValue {
+                    minimum_damage,
+                    maximum_damage,
+                }
+            })
+            .collect::<SmallVec<_>>();
+        let items = items_iter_expr
+            .iter()
+            .map(|(item_name, dmg_expr)| {
+                let monster_state = make_state(resists);
+                let eval_ctx = get_eval_ctx(&current_player_state, &monster_state);
+                let damage_multipliers = DamageMultipliers {
+                    self_mod: monster_state.2.self_mod,
+                    enemy_mod: monster_state.2.enemy_mod,
+                    damage_mod: (monster_state.2.armor_mod, monster_state.2.magic_mod),
+                };
+                let damage_mod = get_damage_multipliers(&damage_multipliers, dmg_expr.damage_type);
+                let minimum_damage =
+                    damage_mod * (dmg_expr.minimum_damage)(current_player_level, &eval_ctx);
+                let maximum_damage =
+                    damage_mod * (dmg_expr.maximum_damage)(current_player_level, &eval_ctx);
+                match dmg_expr.attributes {
+                    Attrs::OnhitMin => {
+                        onhit_effects.minimum_damage += minimum_damage;
+                    }
+                    Attrs::OnhitMax => {
+                        onhit_effects.maximum_damage += maximum_damage;
+                    }
+                    Attrs::Onhit => {
+                        onhit_effects.minimum_damage += minimum_damage;
+                        onhit_effects.maximum_damage += maximum_damage;
+                    }
+                    _ => {}
+                };
+                DamageValue {
+                    minimum_damage,
+                    maximum_damage,
+                }
+            })
+            .collect::<SmallVec<_>>();
+        abilities.push(DamageValue {
+            minimum_damage: onhit_effects.minimum_damage,
+            maximum_damage: onhit_effects.maximum_damage,
+        });
+        MonsterExpr { abilities, items }
+    });
 
     Ok(OutputGame {
         monster_damages,
+        tower_damage: current_player_base_stats.attack_damage
+            + current_player_bonus_stats.attack_damage
+            + current_player_stats.ability_power * 0.6,
         current_player: OutputCurrentPlayer {
             damaging_items: current_player_damaging_items
                 .into_iter()
