@@ -336,7 +336,7 @@ pub fn export_champions(out_dir: &str, mega_block: &mut String) {
                 champion_id.clone(),
                 Details {
                     champion_name: champion.name.to_string(),
-                    champion_formula: highlight(&clear_suffixes(&invoke_rustfmt(&constdecl, 80))),
+                    champion_formula: highlight(&clear_suffixes(&invoke_rustfmt(&constdecl, 60))),
                     generator: highlight(&invoke_rustfmt(
                         &fs::read_to_string(format!("src/generators/{}.rs", champion_id)).unwrap(),
                         80,

@@ -237,7 +237,7 @@ pub fn export_items(out_dir: &str, mega_block: &mut String) {
                     item_id,
                     Details {
                         item_name: item.name.clone(),
-                        item_formula: highlight(&clear_suffixes(&invoke_rustfmt(&constdecl, 80)))
+                        item_formula: highlight(&clear_suffixes(&invoke_rustfmt(&constdecl, 60)))
                             .replacen("class=\"type\"", "class=\"constant\"", 1),
                         constdecl,
                         description: format!(

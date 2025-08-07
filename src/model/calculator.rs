@@ -1,6 +1,6 @@
 use super::{
     SIZE_ABILITIES, SIZE_ITEMS_EXPECTED, SIZE_RUNES_EXPECTED,
-    base::{AbilityLevels, BasicStats, DamageLike, Stats},
+    base::{AbilityLevels, BasicStats, DamageLike, MonsterDamages, Stats},
 };
 use serde::{Deserialize, Serialize};
 use smallvec::SmallVec;
@@ -38,6 +38,7 @@ pub struct OutputEnemy {
 
 #[derive(Serialize)]
 pub struct OutputGame {
+    pub monster_damages: MonsterDamages,
     pub current_player: OutputCurrentPlayer,
     pub enemies: SmallVec<[(&'static str, OutputEnemy); 1]>,
     pub recommended_items: &'static [u32],

@@ -190,6 +190,7 @@ pub fn assign_item_damages() -> TestResult {
 #[generator_macros::item_generator]
 fn item_3115() -> TestResult {
     write_type!(Magic);
+    damages_onhit!();
     let damage = extract_damagelike_expr(&cdn_value.passives[0].effects);
     write_dmg!(damage);
 }
@@ -273,6 +274,7 @@ fn item_3091() -> TestResult {}
 #[generator_macros::item_generator]
 fn item_3094() -> TestResult {}
 
+/// Lich Bane
 #[generator_macros::item_generator]
 fn item_3100() -> TestResult {
     write_type!(Magic);
@@ -285,6 +287,7 @@ fn item_3100() -> TestResult {
     write_dmg!(dmg);
 }
 
+/// Redemption
 #[generator_macros::item_generator]
 fn item_3107() -> TestResult {
     write_type!(True);
@@ -293,12 +296,12 @@ fn item_3107() -> TestResult {
     write_dmg!(dmg);
 }
 
+/// Malignance
 #[generator_macros::item_generator]
 #[test]
 fn item_3118() -> TestResult {
     write_type!(Magic);
     let damage = extract_damagelike_expr(&cdn_value.passives[1].effects);
-    println!("damage is {}", damage);
     let numbers = cap_numbers!(damage);
     let values = format!("{} + 0.0{} * AP", numbers[0], numbers[2]);
     write_dmg!(values.clone(), format!("3 * ({values})"));

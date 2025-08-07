@@ -495,7 +495,27 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
         .map(output_enemy)
         .collect::<Result<SmallVec<[(&'static str, OutputEnemy); 1]>, CalculationError>>()?;
 
+    let monster_damages = MonsterDamages {
+        tower: current_player_base_stats.attack_damage
+            + current_player_bonus_stats.attack_damage
+            + current_player_stats.ability_power * 0.6,
+        dragon: current_player_stats.attack_damage * 0.82644628099,
+        baron: current_player_stats.attack_damage * 0.45454545454,
+        atakhan: current_player_stats.attack_damage * 0.52631578947,
+        voidgrubs: current_player_stats.attack_damage,
+        melee_minion: current_player_stats.attack_damage,
+        ranged_minion: current_player_stats.attack_damage,
+        super_minion: current_player_stats.attack_damage * 0.5,
+        red_buff: current_player_stats.attack_damage * 0.70422535211,
+        blue_buff: current_player_stats.attack_damage * 0.70422535211,
+        gromp: current_player_stats.attack_damage * 0.70422535211,
+        krug: current_player_stats.attack_damage * 0.83333333333,
+        wolves: current_player_stats.attack_damage * 0.70422535211,
+        raptor: current_player_stats.attack_damage * 0.83333333333,
+    };
+
     Ok(OutputGame {
+        monster_damages,
         current_player: OutputCurrentPlayer {
             damaging_items: current_player_damaging_items
                 .into_iter()

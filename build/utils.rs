@@ -64,7 +64,7 @@ pub(super) fn highlight(code_string: &str) -> String {
         r"\b(break|continue|intrinsic|match|return|yield|for|while|match|if|else|as|in)\b",
     );
     h.keyword("constant", r"\b[A-Z]+\b");
-    h.keyword("constant", r"\b(Some|None|BASIC_ATTACK|CRITICAL_STRIKE|Physical|Magic|Mixed|True|Adaptative|Unknown|Onhit|OnhitMin|OnhitMax)\b");
+    h.keyword("constant", r"\b(Some|None|Top|Jungle|Middle|Bottom|Support|Melee|Ranged|BASIC_ATTACK|CRITICAL_STRIKE|Physical|Magic|Mixed|True|Adaptative|Unknown|Onhit|OnhitMin|OnhitMax)\b");
     h.keyword("type", r"\b[A-Z][a-zA-Z0-9_]*\b");
     h.keyword(
         "primitive",

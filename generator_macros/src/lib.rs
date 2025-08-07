@@ -296,13 +296,19 @@ pub fn item_generator(_args: TokenStream, input: TokenStream) -> TokenStream {
         let cdn_value = read_json_file::<CdnItem>(&format!("cache/cdn/items/{}.json", id))?;
         let mut cur_value = read_json_file::<Item>(&format!("internal/items/{}.json", id))?;
 
+        macro_rules! damages_onhit {
+            () => {{
+                cur_value.damages_onhit = true;
+            }};
+        };
+
         macro_rules! write_type {
             ($field:ident) => {
                 paste::paste! {
                     cur_value.damage_type = Some(DmgType::[<$field>].stringify().to_string());
                 }
             }
-        }
+        };
 
         macro_rules! save_change {
             () => {{
@@ -331,7 +337,7 @@ pub fn item_generator(_args: TokenStream, input: TokenStream) -> TokenStream {
                     .map(|m| m.as_str().to_string())
                     .collect::<Vec<String>>()
             }};
-        }
+        };
 
         macro_rules! cap_percent {
             ($expr:expr, $n:expr) => {{
