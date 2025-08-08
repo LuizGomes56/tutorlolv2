@@ -1,8 +1,11 @@
 use crate::{
-    model::dev::{
-        champions::CdnChampion,
-        items::{CdnItem, Item, PartialStats},
-        riot::RiotCdnItem,
+    model::{
+        cache::Attrs,
+        dev::{
+            champions::CdnChampion,
+            items::{CdnItem, Item, PartialStats},
+            riot::RiotCdnItem,
+        },
     },
     setup::{
         essentials::helpers::{extract_file_name, read_json_file, write_to_file},
@@ -117,7 +120,7 @@ pub fn setup_internal_items() {
             name: cdn_item.name,
             gold: cdn_item.shop.prices.total,
             damage_type: None,
-            damages_onhit: false,
+            attributes: Attrs::None,
             stats: item_stats,
             tier: cdn_item.tier,
             builds_from: cdn_item.builds_from,

@@ -2,6 +2,8 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::collections::HashMap;
 
+use crate::model::cache::Attrs;
+
 #[derive(Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Effect {
@@ -100,6 +102,6 @@ pub struct Item {
     pub builds_from: Vec<u32>,
     pub ranged: Option<DamageObject>,
     pub melee: Option<DamageObject>,
-    pub damages_onhit: bool,
+    pub attributes: Attrs,
     pub purchasable: bool,
 }

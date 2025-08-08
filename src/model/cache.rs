@@ -183,3 +183,8 @@ pub struct CachedItemStats {
     pub movespeed: f64,
     pub omnivamp: f64,
 }
+
+#[inline(always)]
+pub const fn __zero(_: u8, _: &EvalContext) -> f64 {
+    0.0
+}

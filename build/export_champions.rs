@@ -84,8 +84,8 @@ pub struct ChampionCdnStats {
 pub enum Attrs {
     #[default]
     None,
-    Area,
-    Full,
+    OnhitMax,
+    OnhitMin,
     Onhit,
 }
 
@@ -93,8 +93,8 @@ impl Attrs {
     pub fn stringify(&self) -> &'static str {
         match self {
             Attrs::None => "None",
-            Attrs::Area => "Area",
-            Attrs::Full => "Full",
+            Attrs::OnhitMax => "OnhitMax",
+            Attrs::OnhitMin => "OnhitMin",
             Attrs::Onhit => "Onhit",
         }
     }
@@ -185,7 +185,7 @@ fn format_abilities(abilities: &HashMap<String, Ability>) -> Vec<(String, String
         macro_rules! format_dmg {
             ($var:expr, $field:ident) => {
                 if ability.$field.is_empty() {
-                    $var.push_str("|_, _| 0.0");
+                    $var.push_str("__zero");
                 } else {
                     let transformed: Vec<(String, bool)> = ability
                         .$field

@@ -39,7 +39,7 @@ pub struct OutputEnemy {
 #[derive(Serialize)]
 pub struct OutputGame {
     pub monster_damages: MonsterDamages,
-    pub tower_damage: f64,
+    pub tower_damages: [f64; 6],
     pub current_player: OutputCurrentPlayer,
     pub enemies: SmallVec<[(&'static str, OutputEnemy); 1]>,
     pub recommended_items: &'static [u32],

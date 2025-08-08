@@ -17,7 +17,7 @@ use std::{
 };
 use utils::*;
 
-pub use export_champions::export_champions;
+pub use export_champions::{Attrs, export_champions};
 pub use export_code::export_code;
 pub use export_items::export_items;
 pub use export_runes::export_runes;
@@ -32,7 +32,7 @@ pub static CRITICAL_STRIKE: &'static str = r#"pub static CRITICAL_STRIKE: Damage
     minimum_damage: |_, ctx| {
         ctx.ad * ctx.physical_multiplier * ctx.crit_damage / 100.0
     },
-    maximum_damage: |_, _| 0.0,
+    maximum_damage: __zero,
 };"#;
 
 pub static BASIC_ATTACK: &'static str = r#"pub static BASIC_ATTACK: DamageExpression = DamageExpression {
@@ -40,5 +40,5 @@ pub static BASIC_ATTACK: &'static str = r#"pub static BASIC_ATTACK: DamageExpres
     attributes: Attrs::OnhitMin,
     damage_type: DamageType::Physical,
     minimum_damage: |_, ctx| ctx.ad * ctx.physical_multiplier,
-    maximum_damage: |_, _| 0.0,
+    maximum_damage: __zero,
 };"#;

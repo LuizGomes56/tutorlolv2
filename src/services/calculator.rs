@@ -605,11 +605,39 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
         MonsterExpr { abilities, items }
     });
 
+    let mut tower_damages: [f64; 6] = [0.0; 6];
+    let base_tower_damage = |i| match adaptative_type {
+        AdaptativeType::Physical => {
+            current_player_base_stats.attack_damage
+                + current_player_bonus_stats.attack_damage
+                + current_player_stats.ability_power
+                    * 0.6
+                    * (100.0
+                        / (140.0
+                            + (-25.0 + 50.0 * i as f64)
+                                * current_player_stats.armor_penetration_percent
+                            - current_player_stats.armor_penetration_flat))
+        }
+        AdaptativeType::Magic => {
+            current_player_base_stats.attack_damage
+                + current_player_bonus_stats.attack_damage
+                + current_player_stats.ability_power
+                    * 0.6
+                    * (100.0
+                        / (140.0
+                            + (-25.0 + 50.0 * i as f64)
+                                * current_player_stats.magic_penetration_percent
+                            - current_player_stats.magic_penetration_flat))
+        }
+    };
+
+    for i in 0..6 {
+        tower_damages[i] = base_tower_damage(i);
+    }
+
     Ok(OutputGame {
         monster_damages,
-        tower_damage: current_player_base_stats.attack_damage
-            + current_player_bonus_stats.attack_damage
-            + current_player_stats.ability_power * 0.6,
+        tower_damages,
         current_player: OutputCurrentPlayer {
             damaging_items: current_player_damaging_items
                 .into_iter()

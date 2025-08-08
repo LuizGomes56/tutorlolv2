@@ -6,7 +6,8 @@ use crate::{
         SIZE_ABILITIES, SIZE_ITEMS_EXPECTED,
         base::*,
         cache::{
-            AdaptativeType, AttackType, Attrs, CachedChampion, CachedItem, DamageType, EvalContext,
+            __zero, AdaptativeType, AttackType, Attrs, CachedChampion, CachedItem, DamageType,
+            EvalContext,
         },
     },
 };
@@ -136,7 +137,7 @@ pub fn get_runes_damage(
                         attributes: Attrs::None,
                         damage_type: rune.damage_type,
                         minimum_damage,
-                        maximum_damage: |_, _| 0.0,
+                        maximum_damage: __zero,
                     },
                 ));
             }
@@ -460,8 +461,8 @@ fn transform_expr<T: Copy + 'static>(
             onhit_effects.maximum_damage += maximum_damage + minimum_damage;
         }
         Attrs::Onhit => {
-            onhit_effects.minimum_damage += minimum_damage;
-            onhit_effects.maximum_damage += maximum_damage;
+            onhit_effects.minimum_damage += minimum_damage + minimum_damage;
+            onhit_effects.maximum_damage += minimum_damage + minimum_damage;
         }
         Attrs::None => {}
     };

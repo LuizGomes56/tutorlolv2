@@ -3,7 +3,10 @@
 //! Sort fields by their name to avoid same problem involving ordering effects
 
 use crate::{
-    model::dev::items::{CdnItem, DamageObject, Item},
+    model::{
+        cache::Attrs,
+        dev::items::{CdnItem, DamageObject, Item},
+    },
     setup::{
         essentials::helpers::{read_json_file, write_to_file},
         generators::extractors::{extract_damagelike_expr, process_scaled_string},
@@ -190,7 +193,7 @@ pub fn assign_item_damages() -> TestResult {
 #[generator_macros::item_generator]
 fn item_3115() -> TestResult {
     write_type!(Magic);
-    damages_onhit!();
+    write_onhit!(Onhit);
     let damage = extract_damagelike_expr(&cdn_value.passives[0].effects);
     write_dmg!(damage);
 }

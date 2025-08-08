@@ -39,7 +39,7 @@ pub struct Item {
     pub builds_from: Vec<u32>,
     pub ranged: Option<DamageObject>,
     pub melee: Option<DamageObject>,
-    pub damages_onhit: bool,
+    pub attributes: Attrs,
     pub purchasable: bool,
 }
 
@@ -58,10 +58,10 @@ pub fn format_damage_object(damage_object: &Option<DamageObject>) -> String {
                     };
                     format!("|{}, {}| {}", lvl_param, ctx_param, expr.to_lowercase())
                 } else {
-                    String::from("|_, _| 0.0")
+                    String::from("__zero")
                 }
             } else {
-                String::from("|_, _| 0.0")
+                String::from("__zero")
             }
         }};
     }
@@ -206,7 +206,7 @@ pub fn export_items(out_dir: &str, mega_block: &mut String) {
                 let constdecl = format!(
                     r#"pub static ITEM_{}: CachedItem = CachedItem {{
                 name: "{}",gold: {},tier: {},damage_type: {},
-                attributes: {},ranged: {},melee: {},builds_from: 
+                attributes: Attrs::{},ranged: {},melee: {},builds_from: 
                 & [{}],prettified_stats: &[{}],
                 stats: CachedItemStats {{{}}},}};"#,
                     item_id,
@@ -221,11 +221,7 @@ pub fn export_items(out_dir: &str, mega_block: &mut String) {
                     } else {
                         "None".to_string()
                     },
-                    if item.damages_onhit {
-                        "Attrs::OnhitMin"
-                    }else {
-                        "Attrs::None"
-                    },
+                    item.attributes.stringify(),
                     format_damage_object(&item.ranged),
                     format_damage_object(&item.melee),
                     item.builds_from.join(","),

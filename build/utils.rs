@@ -75,6 +75,7 @@ pub(super) fn highlight(code_string: &str) -> String {
     h.keyword("boolean", r"\b(true|false)\b");
     h.keyword("macro", r"[a-zA-Z_][a-zA-Z0-9_]*!");
     h.keyword("function", r"\b[a-z][a-zA-Z0-9_]*\(");
+    h.keyword("function", r"\b(__zero|generator)\b");
     h.keyword("variable", r"\b[a-z][a-zA-Z0-9_]*\b");
 
     let code = code_string

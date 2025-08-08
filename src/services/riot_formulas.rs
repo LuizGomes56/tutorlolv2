@@ -6,10 +6,10 @@ use smallvec::SmallVec;
 
 pub struct MonsterResists {
     pub zero: (i8, i8),
+    pub super_minion: (i8, i8),
     pub dragon: (i8, i8),
     pub baron: (i8, i8),
     pub atakhan: (i8, i8),
-    pub super_minion: (i8, i8),
     pub jungle_camp_1: (i8, i8),
     pub jungle_camp_2: (i8, i8),
 }
@@ -18,10 +18,10 @@ impl MonsterResists {
     pub fn iter_enumerate(&self) -> [(u8, (i8, i8)); 7] {
         [
             (0, self.zero),
-            (1, self.dragon),
-            (2, self.baron),
-            (3, self.atakhan),
-            (4, self.super_minion),
+            (1, self.super_minion),
+            (2, self.dragon),
+            (3, self.baron),
+            (4, self.atakhan),
             (5, self.jungle_camp_1),
             (6, self.jungle_camp_2),
         ]

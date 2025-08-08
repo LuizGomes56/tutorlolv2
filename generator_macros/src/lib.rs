@@ -296,10 +296,12 @@ pub fn item_generator(_args: TokenStream, input: TokenStream) -> TokenStream {
         let cdn_value = read_json_file::<CdnItem>(&format!("cache/cdn/items/{}.json", id))?;
         let mut cur_value = read_json_file::<Item>(&format!("internal/items/{}.json", id))?;
 
-        macro_rules! damages_onhit {
-            () => {{
-                cur_value.damages_onhit = true;
-            }};
+        macro_rules! write_onhit {
+            ($field:ident) => {
+                paste::paste! {
+                    cur_value.attributes = Attrs::[<$field>];
+                }
+            };
         };
 
         macro_rules! write_type {
