@@ -11,12 +11,12 @@ pub fn gen_corki(data: CdnChampion) -> Champion {
 	ability!(
 		w,
 		(1, 0, "W_0_1_0", Target::MINIMUM),
-		(1, 1, "W_0_1_1_MAXIMUM", Target::MAXIMUM)
+		(1, 1, "W_0_1_1_MAX", Target::MAXIMUM)
 	);
 	ability!(
 		e,
 		(0, 0, "E_0_0_0", Target::MINIMUM),
-		(0, 2, "E_0_0_2_MAXIMUM", Target::MAXIMUM)
+		(0, 2, "E_0_0_2_MAX", Target::MAXIMUM)
 	);
 	ability!(
 		r,

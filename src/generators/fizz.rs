@@ -13,7 +13,7 @@ pub fn gen_fizz(data: CdnChampion) -> Champion {
 		(0, 0, "W_0_0_0_BONUS", Target::MINIMUM),
 		(1, 0, "W_0_1_0_BONUS", Target::MINIMUM),
 		(2, 0, "W_0_2_0", Target::MINIMUM),
-		(2, 1, "W_0_2_1_MAXIMUM", Target::MAXIMUM)
+		(2, 1, "W_0_2_1_MAX", Target::MAXIMUM)
 	);
 	ability!(
 		e,

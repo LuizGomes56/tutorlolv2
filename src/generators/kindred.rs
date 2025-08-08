@@ -11,7 +11,7 @@ pub fn gen_kindred(data: CdnChampion) -> Champion {
 	ability!(
 		w,
 		(3, 0, "W_0_3_0", Target::MINIMUM),
-		(3, 1, "W_0_3_1_MONSTER", Target::MINIMUM)
+		(3, 1, "W_0_3_1_MNSTR", Target::MINIMUM)
 	);
 	ability!(
 		e,

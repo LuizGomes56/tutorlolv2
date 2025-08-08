@@ -8,7 +8,7 @@ pub fn gen_aurelionsol(data: CdnChampion) -> Champion {
 		q,
 		(0, 0, "Q_0_0_0", Target::MINIMUM),
 		(0, 1, "Q_0_0_1", Target::MINIMUM),
-		(0, 2, "Q_0_0_2_MAXIMUM", Target::MAXIMUM),
+		(0, 2, "Q_0_0_2_MAX", Target::MAXIMUM),
 		(5, 0, "Q_0_5_0_BONUS", Target::MINIMUM)
 	);
 	ability!(
@@ -18,7 +18,7 @@ pub fn gen_aurelionsol(data: CdnChampion) -> Champion {
 	ability!(
 		e,
 		(0, 0, "E_0_0_0", Target::MINIMUM),
-		(0, 1, "E_0_0_1_MAXIMUM", Target::MAXIMUM)
+		(0, 1, "E_0_0_1_MAX", Target::MAXIMUM)
 	);
 	ability!(
 		r,

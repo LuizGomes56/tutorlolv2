@@ -8,7 +8,7 @@ pub fn gen_anivia(data: CdnChampion) -> Champion {
 		q,
 		(0, 0, "Q_0_0_0", Target::MINIMUM),
 		(2, 0, "Q_0_2_0", Target::MINIMUM),
-		(2, 2, "Q_0_2_2_MAXIMUM", Target::MAXIMUM)
+		(2, 2, "Q_0_2_2_MAX", Target::MAXIMUM)
 	);
 	ability!(
 		e,

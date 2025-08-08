@@ -7,7 +7,7 @@ pub fn gen_zeri(data: CdnChampion) -> Champion {
 	ability!(
 		q,
 		(0, 0, "Q_0_0_0", Target::MINIMUM),
-		(0, 1, "Q_0_0_1_MAXIMUM", Target::MAXIMUM)
+		(0, 1, "Q_0_0_1_MAX", Target::MAXIMUM)
 	);
 	ability!(
 		w,

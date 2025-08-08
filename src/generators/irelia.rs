@@ -10,8 +10,8 @@ pub fn gen_irelia(data: CdnChampion) -> Champion {
 	);
 	ability!(
 		w,
-		(3, 0, "W_0_3_0_MAXIMUM", Target::MAXIMUM),
-		(3, 1, "W_0_3_1_MINIMUM", Target::MINIMUM)
+		(3, 0, "W_0_3_0_MAX", Target::MAXIMUM),
+		(3, 1, "W_0_3_1_MIN", Target::MINIMUM)
 	);
 	ability!(
 		e,

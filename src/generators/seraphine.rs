@@ -7,7 +7,7 @@ pub fn gen_seraphine(data: CdnChampion) -> Champion {
 	ability!(
 		q,
 		(0, 0, "Q_0_0_0", Target::MINIMUM),
-		(1, 0, "Q_0_1_0_MAXIMUM", Target::MAXIMUM)
+		(1, 0, "Q_0_1_0_MAX", Target::MAXIMUM)
 	);
 	ability!(
 		e,

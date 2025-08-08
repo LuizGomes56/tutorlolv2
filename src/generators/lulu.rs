@@ -10,8 +10,8 @@ pub fn gen_lulu(data: CdnChampion) -> Champion {
 		(0, 1, "Q_0_0_1", Target::MINIMUM),
 		(1, 0, "Q_0_1_0", Target::MINIMUM),
 		(1, 1, "Q_0_1_1", Target::MINIMUM),
-		(1, 2, "Q_0_1_2_MAXIMUM", Target::MAXIMUM),
-		(1, 3, "Q_0_1_3_MAXIMUM", Target::MAXIMUM)
+		(1, 2, "Q_0_1_2_MAX", Target::MAXIMUM),
+		(1, 3, "Q_0_1_3_MAX", Target::MAXIMUM)
 	);
 	ability!(
 		e,

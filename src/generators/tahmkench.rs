@@ -15,7 +15,7 @@ pub fn gen_tahmkench(data: CdnChampion) -> Champion {
 	ability!(
 		e,
 		(1, 0, "E_0_1_0", Target::MINIMUM),
-		(1, 1, "E_0_1_1_MAXIMUM", Target::MAXIMUM)
+		(1, 1, "E_0_1_1_MAX", Target::MAXIMUM)
 	);
 	ability!(
 		r,

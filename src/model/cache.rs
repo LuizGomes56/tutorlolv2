@@ -63,6 +63,20 @@ pub enum DamageType {
     Unknown,
 }
 
+impl ToString for DamageType {
+    fn to_string(&self) -> String {
+        let res = match self {
+            DamageType::Physical => "PHYSICAL_DAMAGE",
+            DamageType::Magic => "MAGIC_DAMAGE",
+            DamageType::Mixed => "MIXED_DAMAGE",
+            DamageType::True => "TRUE_DAMAGE",
+            DamageType::Adaptative => "ADAPTATIVE_DAMAGE",
+            DamageType::Unknown => "UNKNOWN_DAMAGE",
+        };
+        res.to_string()
+    }
+}
+
 #[derive(Copy, Clone, Serialize, Deserialize)]
 pub enum Attrs {
     None,

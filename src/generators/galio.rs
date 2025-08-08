@@ -12,8 +12,8 @@ pub fn gen_galio(data: CdnChampion) -> Champion {
 		w,
 		(0, 0, "W_0_0_0", Target::MINIMUM),
 		(0, 1, "W_0_0_1", Target::MINIMUM),
-		(2, 0, "W_0_2_0_MAXIMUM", Target::MAXIMUM),
-		(2, 1, "W_0_2_1_MINIMUM", Target::MINIMUM)
+		(2, 0, "W_0_2_0_MAX", Target::MAXIMUM),
+		(2, 1, "W_0_2_1_MIN", Target::MINIMUM)
 	);
 	ability!(
 		e,

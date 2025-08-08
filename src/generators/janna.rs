@@ -7,8 +7,8 @@ pub fn gen_janna(data: CdnChampion) -> Champion {
 	ability!(
 		q,
 		(0, 0, "Q_0_0_0_BONUS", Target::MINIMUM),
-		(0, 1, "Q_0_0_1_MAXIMUM", Target::MAXIMUM),
-		(0, 2, "Q_0_0_2_MINIMUM", Target::MINIMUM)
+		(0, 1, "Q_0_0_1_MAX", Target::MAXIMUM),
+		(0, 2, "Q_0_0_2_MIN", Target::MINIMUM)
 	);
 	ability!(
 		w,

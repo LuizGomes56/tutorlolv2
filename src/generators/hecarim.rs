@@ -12,12 +12,12 @@ pub fn gen_hecarim(data: CdnChampion) -> Champion {
 	ability!(
 		w,
 		(0, 0, "W_0_0_0", Target::MINIMUM),
-		(0, 1, "W_0_0_1_MAXIMUM", Target::MAXIMUM)
+		(0, 1, "W_0_0_1_MAX", Target::MAXIMUM)
 	);
 	ability!(
 		e,
-		(3, 0, "E_0_3_0_MAXIMUM", Target::MAXIMUM),
-		(3, 1, "E_0_3_1_MINIMUM", Target::MINIMUM)
+		(3, 0, "E_0_3_0_MAX", Target::MAXIMUM),
+		(3, 1, "E_0_3_1_MIN", Target::MINIMUM)
 	);
 	ability!(
 		r,

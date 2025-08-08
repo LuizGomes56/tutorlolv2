@@ -15,8 +15,8 @@ pub fn gen_draven(data: CdnChampion) -> Champion {
 	ability!(
 		r,
 		(0, 0, "R_0_0_0", Target::MINIMUM),
-		(0, 1, "R_0_0_1_MAXIMUM", Target::MAXIMUM),
-		(4, 0, "R_0_4_0_MINIMUM", Target::MINIMUM),
-		(4, 1, "R_0_4_1_MAXIMUM", Target::MAXIMUM)
+		(0, 1, "R_0_0_1_MAX", Target::MAXIMUM),
+		(4, 0, "R_0_4_0_MIN", Target::MINIMUM),
+		(4, 1, "R_0_4_1_MAX", Target::MAXIMUM)
 	);
 }

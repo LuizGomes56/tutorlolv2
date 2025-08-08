@@ -1,6 +1,9 @@
 #![cfg(feature = "dev")]
 
-pub use crate::model::dev::champions::{Ability, CdnChampion, Champion};
+pub use crate::model::{
+    cache::DamageType,
+    dev::champions::{Ability, CdnChampion, Champion},
+};
 use crate::setup::generators::{
     champions::{Target, extract_ability_damage, extract_passive_damage},
     extractors::extract_scaled_values,

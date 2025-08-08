@@ -11,7 +11,7 @@ pub fn gen_samira(data: CdnChampion) -> Champion {
 	ability!(
 		w,
 		(2, 0, "W_0_2_0", Target::MINIMUM),
-		(2, 1, "W_0_2_1_MAXIMUM", Target::MAXIMUM)
+		(2, 1, "W_0_2_1_MAX", Target::MAXIMUM)
 	);
 	ability!(
 		e,
@@ -21,7 +21,7 @@ pub fn gen_samira(data: CdnChampion) -> Champion {
 		r,
 		(1, 0, "R_0_1_0", Target::MINIMUM),
 		(1, 1, "R_0_1_1", Target::MINIMUM),
-		(1, 2, "R_0_1_2_MAXIMUM", Target::MAXIMUM),
-		(1, 3, "R_0_1_3_MAXIMUM", Target::MAXIMUM)
+		(1, 2, "R_0_1_2_MAX", Target::MAXIMUM),
+		(1, 3, "R_0_1_3_MAX", Target::MAXIMUM)
 	);
 }

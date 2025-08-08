@@ -19,7 +19,7 @@ pub fn gen_monkeyking(data: CdnChampion) -> Champion {
 	ability!(
 		r,
 		(0, 0, "R_0_0_0", Target::MINIMUM),
-		(0, 1, "R_0_0_1_MAXIMUM", Target::MAXIMUM),
-		(4, 0, "R_0_4_0_MAXIMUM", Target::MAXIMUM)
+		(0, 1, "R_0_0_1_MAX", Target::MAXIMUM),
+		(4, 0, "R_0_4_0_MAX", Target::MAXIMUM)
 	);
 }

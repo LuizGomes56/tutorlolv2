@@ -15,7 +15,7 @@ pub fn gen_alistar(data: CdnChampion) -> Champion {
 	ability!(
 		e,
 		(0, 0, "E_0_0_0", Target::MINIMUM),
-		(0, 1, "E_0_0_1_MAXIMUM", Target::MAXIMUM)
+		(0, 1, "E_0_0_1_MAX", Target::MAXIMUM)
 	);
 	ability!(
 		r,

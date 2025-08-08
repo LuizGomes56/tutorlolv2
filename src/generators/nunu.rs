@@ -11,17 +11,17 @@ pub fn gen_nunu(data: CdnChampion) -> Champion {
 	);
 	ability!(
 		w,
-		(2, 0, "W_0_2_0_MAXIMUM", Target::MAXIMUM),
-		(2, 1, "W_0_2_1_MINIMUM", Target::MINIMUM),
-		(4, 0, "W_0_4_0_MAXIMUM", Target::MAXIMUM),
-		(4, 1, "W_0_4_1_MINIMUM", Target::MINIMUM)
+		(2, 0, "W_0_2_0_MAX", Target::MAXIMUM),
+		(2, 1, "W_0_2_1_MIN", Target::MINIMUM),
+		(4, 0, "W_0_4_0_MAX", Target::MAXIMUM),
+		(4, 1, "W_0_4_1_MIN", Target::MINIMUM)
 	);
 	ability!(
 		e,
 		(0, 0, "E_0_0_0", Target::MINIMUM),
-		(0, 1, "E_0_0_1_MAXIMUM", Target::MAXIMUM),
+		(0, 1, "E_0_0_1_MAX", Target::MAXIMUM),
 		(1, 0, "E_0_1_0", Target::MINIMUM),
-		(3, 0, "E_0_3_0_MAXIMUM", Target::MAXIMUM)
+		(3, 0, "E_0_3_0_MAX", Target::MAXIMUM)
 	);
 	ability!(
 		r,

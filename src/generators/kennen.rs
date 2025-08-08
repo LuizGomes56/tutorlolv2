@@ -20,7 +20,7 @@ pub fn gen_kennen(data: CdnChampion) -> Champion {
 	);
 	ability!(
 		r,
-		(2, 0, "R_0_2_0_MAXIMUM", Target::MAXIMUM),
+		(2, 0, "R_0_2_0_MAX", Target::MAXIMUM),
 		(3, 0, "R_0_3_0", Target::MINIMUM)
 	);
 }

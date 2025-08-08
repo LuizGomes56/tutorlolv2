@@ -15,8 +15,8 @@ pub fn gen_reksai(data: CdnChampion) -> Champion {
 	);
 	ability!(
 		e,
-		(1, 0, "E_0_1_0_BONUS", Target::MINIMUM),
-		(1, 1, "E_0_1_1_MAXIMUM", Target::MAXIMUM)
+		(0, 0, "E_0_0_0", Target::MINIMUM),
+		(1, 0, "E_0_1_0", Target::MINIMUM)
 	);
 	ability!(
 		r,

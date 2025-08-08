@@ -7,7 +7,7 @@ pub fn gen_ashe(data: CdnChampion) -> Champion {
 	ability!(
 		q,
 		(0, 1, "Q_0_0_1", Target::MINIMUM),
-		(0, 2, "Q_0_0_2_MAXIMUM", Target::MAXIMUM)
+		(0, 2, "Q_0_0_2_MAX", Target::MAXIMUM)
 	);
 	ability!(
 		w,

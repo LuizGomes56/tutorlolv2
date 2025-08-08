@@ -10,8 +10,8 @@ pub fn gen_evelynn(data: CdnChampion) -> Champion {
 		(2, 0, "Q_0_2_0_BONUS", Target::MINIMUM),
 		(2, 1, "Q_0_2_1_BONUS", Target::MINIMUM),
 		(5, 0, "Q_0_5_0", Target::MINIMUM),
-		(5, 1, "Q_0_5_1_MAXIMUM", Target::MAXIMUM),
-		(5, 2, "Q_0_5_2_MAXIMUM", Target::MAXIMUM)
+		(5, 1, "Q_0_5_1_MAX", Target::MAXIMUM),
+		(5, 2, "Q_0_5_2_MAX", Target::MAXIMUM)
 	);
 	ability!(
 		w,

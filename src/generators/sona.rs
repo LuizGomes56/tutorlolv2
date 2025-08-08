@@ -11,7 +11,7 @@ pub fn gen_sona(data: CdnChampion) -> Champion {
 	);
 	ability!(
 		w,
-		(2, 0, "W_0_2_0_MINIMUM", Target::MINIMUM)
+		(2, 0, "W_0_2_0_MIN", Target::MINIMUM)
 	);
 	ability!(
 		r,

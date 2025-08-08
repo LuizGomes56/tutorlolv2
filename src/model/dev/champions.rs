@@ -137,7 +137,7 @@ pub struct Champion {
     pub attack_type: String,
     pub positions: Vec<String>,
     pub stats: ChampionCdnStats,
-    pub abilities: Vec<(String, Ability)>,
+    pub abilities: HashMap<String, Ability>,
 }
 
 #[derive(Serialize, Deserialize)]

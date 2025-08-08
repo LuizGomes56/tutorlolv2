@@ -7,8 +7,8 @@ pub fn gen_leesin(data: CdnChampion) -> Champion {
 	ability!(
 		q,
 		(0, 0, "Q_0_0_0", Target::MINIMUM),
-		(0, 0, "Q_1_0_0_MAXIMUM", Target::MAXIMUM),
-		(0, 1, "Q_1_0_1_MINIMUM", Target::MINIMUM)
+		(0, 0, "Q_1_0_0_MAX", Target::MAXIMUM),
+		(0, 1, "Q_1_0_1_MIN", Target::MINIMUM)
 	);
 	ability!(
 		e,

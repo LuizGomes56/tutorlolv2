@@ -16,7 +16,7 @@ pub fn gen_darius(data: CdnChampion) -> Champion {
 	ability!(
 		r,
 		(0, 0, "R_0_0_0_BONUS", Target::MINIMUM),
-		(0, 1, "R_0_0_1_MAXIMUM", Target::MAXIMUM),
+		(0, 1, "R_0_0_1_MAX", Target::MAXIMUM),
 		(0, 2, "R_0_0_2", Target::MINIMUM)
 	);
 }

@@ -6,7 +6,7 @@ use super::*;
 pub fn gen_khazix(data: CdnChampion) -> Champion {
 	ability!(
 		q,
-		(0, 0, "Q_0_0_0_MAXIMUM", Target::MAXIMUM),
+		(0, 0, "Q_0_0_0_MAX", Target::MAXIMUM),
 		(0, 1, "Q_0_0_1", Target::MINIMUM)
 	);
 	ability!(

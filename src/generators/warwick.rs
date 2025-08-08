@@ -7,7 +7,7 @@ pub fn gen_warwick(data: CdnChampion) -> Champion {
 	ability!(
 		q,
 		(0, 1, "Q_0_0_1", Target::MINIMUM),
-		(0, 2, "Q_0_0_2_MONSTER", Target::MINIMUM)
+		(0, 2, "Q_0_0_2_MNSTR", Target::MINIMUM)
 	);
 	ability!(
 		e,
@@ -15,6 +15,6 @@ pub fn gen_warwick(data: CdnChampion) -> Champion {
 	);
 	ability!(
 		r,
-		(0, 0, "R_0_0_0_MAXIMUM", Target::MAXIMUM)
+		(0, 0, "R_0_0_0_MAX", Target::MAXIMUM)
 	);
 }

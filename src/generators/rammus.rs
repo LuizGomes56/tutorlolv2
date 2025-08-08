@@ -10,7 +10,7 @@ pub fn gen_rammus(data: CdnChampion) -> Champion {
 	);
 	ability!(
 		e,
-		(0, 0, "E_0_0_0_MONSTER", Target::MINIMUM)
+		(0, 0, "E_0_0_0_MNSTR", Target::MINIMUM)
 	);
 	ability!(
 		r,

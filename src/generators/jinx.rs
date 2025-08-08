@@ -14,9 +14,9 @@ pub fn gen_jinx(data: CdnChampion) -> Champion {
 	);
 	ability!(
 		r,
-		(1, 0, "R_0_1_0_MAXIMUM", Target::MAXIMUM),
-		(1, 1, "R_0_1_1_MINIMUM", Target::MINIMUM),
-		(2, 0, "R_0_2_0_MAXIMUM", Target::MAXIMUM),
-		(2, 1, "R_0_2_1_MINIMUM", Target::MINIMUM)
+		(1, 0, "R_0_1_0_MAX", Target::MAXIMUM),
+		(1, 1, "R_0_1_1_MIN", Target::MINIMUM),
+		(2, 0, "R_0_2_0_MAX", Target::MAXIMUM),
+		(2, 1, "R_0_2_1_MIN", Target::MINIMUM)
 	);
 }

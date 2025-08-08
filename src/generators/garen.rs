@@ -15,7 +15,7 @@ pub fn gen_garen(data: CdnChampion) -> Champion {
 	ability!(
 		e,
 		(0, 0, "E_0_0_0", Target::MINIMUM),
-		(3, 0, "E_0_3_0_MAXIMUM", Target::MAXIMUM)
+		(3, 0, "E_0_3_0_MAX", Target::MAXIMUM)
 	);
 	ability!(
 		r,

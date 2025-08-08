@@ -1,25 +1,17 @@
 use super::*;
 
-// #![auto_generated]
+// #![stable] "08/07/2025" | "25.15"
 
 #[generator_macros::generator]
 pub fn gen_vex(data: CdnChampion) -> Champion {
-	ability!(
-		q,
-		(0, 0, "Q_0_0_0", Target::MINIMUM)
-	);
-	ability!(
-		w,
-		(0, 0, "W_0_0_0", Target::MINIMUM)
-	);
-	ability!(
-		e,
-		(0, 0, "E_0_0_0", Target::MINIMUM)
-	);
-	ability!(
-		r,
-		(0, 0, "R_0_0_0", Target::MINIMUM),
-		(2, 0, "R_0_2_0", Target::MINIMUM),
-		(2, 1, "R_0_2_1_MAXIMUM", Target::MAXIMUM)
-	);
+    ability!(q, (0, 0, "Q", Target::MINIMUM));
+    ability!(w, (0, 0, "W", Target::MINIMUM));
+    ability!(e, (0, 0, "E", Target::MINIMUM));
+    ability!(
+        r,
+        (0, 0, "R_MINION", Target::MINIMUM),
+        (2, 0, "R", Target::MINIMUM),
+        (2, 1, "R_MAX", Target::MAXIMUM)
+    );
+    merge_ability!("R");
 }

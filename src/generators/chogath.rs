@@ -15,7 +15,7 @@ pub fn gen_chogath(data: CdnChampion) -> Champion {
 	ability!(
 		e,
 		(0, 0, "E_0_0_0", Target::MINIMUM),
-		(0, 2, "E_0_0_2_MAXIMUM", Target::MAXIMUM)
+		(0, 2, "E_0_0_2_MAX", Target::MAXIMUM)
 	);
 	ability!(
 		r,

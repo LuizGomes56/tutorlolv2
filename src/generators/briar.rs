@@ -17,9 +17,9 @@ pub fn gen_briar(data: CdnChampion) -> Champion {
 	ability!(
 		e,
 		(2, 0, "E_0_2_0_BONUS", Target::MINIMUM),
-		(2, 1, "E_0_2_1_MAXIMUM", Target::MAXIMUM),
-		(3, 0, "E_0_3_0_MAXIMUM", Target::MAXIMUM),
-		(3, 1, "E_0_3_1_MINIMUM", Target::MINIMUM)
+		(2, 1, "E_0_2_1_MAX", Target::MAXIMUM),
+		(3, 0, "E_0_3_0_MAX", Target::MAXIMUM),
+		(3, 1, "E_0_3_1_MIN", Target::MINIMUM)
 	);
 	ability!(
 		r,

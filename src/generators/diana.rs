@@ -11,7 +11,7 @@ pub fn gen_diana(data: CdnChampion) -> Champion {
 	ability!(
 		w,
 		(0, 0, "W_0_0_0", Target::MINIMUM),
-		(0, 2, "W_0_0_2_MAXIMUM", Target::MAXIMUM)
+		(0, 2, "W_0_0_2_MAX", Target::MAXIMUM)
 	);
 	ability!(
 		e,
@@ -21,6 +21,6 @@ pub fn gen_diana(data: CdnChampion) -> Champion {
 		r,
 		(1, 0, "R_0_1_0_BONUS", Target::MINIMUM),
 		(1, 1, "R_0_1_1", Target::MINIMUM),
-		(1, 2, "R_0_1_2_MAXIMUM", Target::MAXIMUM)
+		(1, 2, "R_0_1_2_MAX", Target::MAXIMUM)
 	);
 }

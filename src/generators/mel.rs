@@ -8,8 +8,8 @@ pub fn gen_mel(data: CdnChampion) -> Champion {
 		q,
 		(0, 0, "Q_0_0_0", Target::MINIMUM),
 		(0, 1, "Q_0_0_1", Target::MINIMUM),
-		(0, 3, "Q_0_0_3_MAXIMUM", Target::MAXIMUM),
-		(0, 4, "Q_0_0_4_MAXIMUM", Target::MAXIMUM)
+		(0, 3, "Q_0_0_3_MAX", Target::MAXIMUM),
+		(0, 4, "Q_0_0_4_MAX", Target::MAXIMUM)
 	);
 	ability!(
 		w,
@@ -27,7 +27,7 @@ pub fn gen_mel(data: CdnChampion) -> Champion {
 	ability!(
 		r,
 		(0, 0, "R_0_0_0", Target::MINIMUM),
-		(2, 0, "R_0_2_0_MAXIMUM", Target::MAXIMUM),
+		(2, 0, "R_0_2_0_MAX", Target::MAXIMUM),
 		(2, 1, "R_0_2_1", Target::MINIMUM)
 	);
 }

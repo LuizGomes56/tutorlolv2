@@ -12,7 +12,7 @@ pub fn gen_velkoz(data: CdnChampion) -> Champion {
 		w,
 		(0, 0, "W_0_0_0", Target::MINIMUM),
 		(1, 0, "W_0_1_0", Target::MINIMUM),
-		(1, 1, "W_0_1_1_MAXIMUM", Target::MAXIMUM)
+		(1, 1, "W_0_1_1_MAX", Target::MAXIMUM)
 	);
 	ability!(
 		e,
@@ -21,6 +21,6 @@ pub fn gen_velkoz(data: CdnChampion) -> Champion {
 	ability!(
 		r,
 		(3, 0, "R_0_3_0", Target::MINIMUM),
-		(3, 1, "R_0_3_1_MAXIMUM", Target::MAXIMUM)
+		(3, 1, "R_0_3_1_MAX", Target::MAXIMUM)
 	);
 }

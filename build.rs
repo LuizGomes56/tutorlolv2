@@ -22,7 +22,7 @@ fn main() {
 
     let maybe_run = vec![
         BuildArgs {
-            rerun_if_changed: &["build/generator_runner.rs", "src/generators"],
+            rerun_if_changed: &["build/generator_runner.rs"],
             generated_files: &["generator_runner.rs"],
             source_file: "build/generator_runner.rs",
             function_name: Box::new(generator_runner),

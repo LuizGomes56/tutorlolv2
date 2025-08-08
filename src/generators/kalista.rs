@@ -11,7 +11,7 @@ pub fn gen_kalista(data: CdnChampion) -> Champion {
 	ability!(
 		w,
 		(1, 0, "W_0_1_0_BONUS", Target::MINIMUM),
-		(1, 1, "W_0_1_1_MAXIMUM", Target::MAXIMUM)
+		(1, 1, "W_0_1_1_MAX", Target::MAXIMUM)
 	);
 	ability!(
 		e,

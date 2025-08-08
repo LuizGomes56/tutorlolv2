@@ -14,8 +14,8 @@ pub fn gen_jax(data: CdnChampion) -> Champion {
 	);
 	ability!(
 		e,
-		(1, 0, "E_0_1_0_MAXIMUM", Target::MAXIMUM),
-		(1, 1, "E_0_1_1_MINIMUM", Target::MINIMUM)
+		(1, 0, "E_0_1_0_MAX", Target::MAXIMUM),
+		(1, 1, "E_0_1_1_MIN", Target::MINIMUM)
 	);
 	ability!(
 		r,

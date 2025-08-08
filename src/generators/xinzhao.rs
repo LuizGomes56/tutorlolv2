@@ -13,7 +13,7 @@ pub fn gen_xinzhao(data: CdnChampion) -> Champion {
 		w,
 		(0, 0, "W_0_0_0", Target::MINIMUM),
 		(0, 1, "W_0_0_1", Target::MINIMUM),
-		(0, 2, "W_0_0_2_MAXIMUM", Target::MAXIMUM)
+		(0, 2, "W_0_0_2_MAX", Target::MAXIMUM)
 	);
 	ability!(
 		e,

@@ -18,7 +18,7 @@ pub fn gen_kogmaw(data: CdnChampion) -> Champion {
 	);
 	ability!(
 		r,
-		(0, 0, "R_0_0_0_MAXIMUM", Target::MAXIMUM),
-		(0, 1, "R_0_0_1_MINIMUM", Target::MINIMUM)
+		(0, 0, "R_0_0_0_MAX", Target::MAXIMUM),
+		(0, 1, "R_0_0_1_MIN", Target::MINIMUM)
 	);
 }

@@ -21,6 +21,6 @@ pub fn gen_kassadin(data: CdnChampion) -> Champion {
 		(0, 0, "R_0_0_0", Target::MINIMUM),
 		(1, 0, "R_0_1_0_BONUS", Target::MINIMUM),
 		(1, 1, "R_0_1_1_BONUS", Target::MINIMUM),
-		(1, 2, "R_0_1_2_MAXIMUM", Target::MAXIMUM)
+		(1, 2, "R_0_1_2_MAX", Target::MAXIMUM)
 	);
 }
