@@ -199,6 +199,6 @@ pub struct CachedItemStats {
 }
 
 #[inline(always)]
-pub const fn __zero(_: u8, _: &EvalContext) -> f64 {
+pub const fn zero(_: u8, _: &EvalContext) -> f64 {
     0.0
 }

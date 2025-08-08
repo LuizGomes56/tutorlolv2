@@ -33,7 +33,6 @@ pub fn gen_aatrox(data: CdnChampion) -> Champion {
         (0, 1, "W", Target::MINIMUM),
         (1, 0, "W_MAX", Target::MAXIMUM)
     );
-    ability!(r, (1, 0, "R_0_1_0_BONUS", Target::MINIMUM));
 
     merge_ability!("Q1");
     merge_ability!("Q2");

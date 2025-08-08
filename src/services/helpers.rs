@@ -6,8 +6,8 @@ use crate::{
         SIZE_ABILITIES, SIZE_ITEMS_EXPECTED,
         base::*,
         cache::{
-            __zero, AdaptativeType, AttackType, Attrs, CachedChampion, CachedItem, DamageType,
-            EvalContext,
+            AdaptativeType, AttackType, Attrs, CachedChampion, CachedItem, DamageType, EvalContext,
+            zero,
         },
     },
 };
@@ -137,7 +137,7 @@ pub fn get_runes_damage(
                         attributes: Attrs::None,
                         damage_type: rune.damage_type,
                         minimum_damage,
-                        maximum_damage: __zero,
+                        maximum_damage: zero,
                     },
                 ));
             }

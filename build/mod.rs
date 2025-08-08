@@ -32,7 +32,7 @@ pub static CRITICAL_STRIKE: &'static str = r#"pub static CRITICAL_STRIKE: Damage
     minimum_damage: |_, ctx| {
         ctx.ad * ctx.physical_multiplier * ctx.crit_damage / 100.0
     },
-    maximum_damage: __zero,
+    maximum_damage: zero,
 };"#;
 
 pub static BASIC_ATTACK: &'static str = r#"pub static BASIC_ATTACK: DamageExpression = DamageExpression {
@@ -40,5 +40,5 @@ pub static BASIC_ATTACK: &'static str = r#"pub static BASIC_ATTACK: DamageExpres
     attributes: Attrs::OnhitMin,
     damage_type: DamageType::Physical,
     minimum_damage: |_, ctx| ctx.ad * ctx.physical_multiplier,
-    maximum_damage: __zero,
+    maximum_damage: zero,
 };"#;

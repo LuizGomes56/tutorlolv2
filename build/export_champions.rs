@@ -185,7 +185,7 @@ fn format_abilities(abilities: &HashMap<String, Ability>) -> Vec<(String, String
         macro_rules! format_dmg {
             ($var:expr, $field:ident) => {
                 if ability.$field.is_empty() {
-                    $var.push_str("__zero");
+                    $var.push_str("zero");
                 } else {
                     let transformed: Vec<(String, bool)> = ability
                         .$field

@@ -58,10 +58,10 @@ pub fn format_damage_object(damage_object: &Option<DamageObject>) -> String {
                     };
                     format!("|{}, {}| {}", lvl_param, ctx_param, expr.to_lowercase())
                 } else {
-                    String::from("__zero")
+                    String::from("zero")
                 }
             } else {
-                String::from("__zero")
+                String::from("zero")
             }
         }};
     }
