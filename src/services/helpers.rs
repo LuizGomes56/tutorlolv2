@@ -2,14 +2,11 @@ use super::riot_formulas::RiotFormulas;
 use crate::{
     BASIC_ATTACK, CRITICAL_STRIKE, DAMAGING_ITEMS, DAMAGING_RUNES, INTERNAL_ITEMS, INTERNAL_RUNES,
     SIMULATED_ITEMS, SIZE_DAMAGING_RUNES, SIZE_SIMULATED_ITEMS,
-    model::{
-        SIZE_ABILITIES, SIZE_ITEMS_EXPECTED,
-        base::*,
-        cache::{
-            AdaptativeType, AttackType, Attrs, CachedChampion, CachedItem, DamageType, EvalContext,
-            zero,
-        },
-    },
+    model::{SIZE_ABILITIES, SIZE_ITEMS_EXPECTED, base::*},
+};
+use internal_comptime::{
+    AdaptativeType, AttackType, Attrs, CachedChampion, CachedItem, DamageExpression, DamageType,
+    EvalContext, zero,
 };
 use smallvec::SmallVec;
 use tinyset::SetU32;

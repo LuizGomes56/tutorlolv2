@@ -13,6 +13,7 @@ struct BuildArgs {
 }
 
 fn main() {
+    return;
     if std::env::var_os("SKIP_CODEGEN").is_some() {
         eprintln!("Codegen ignored");
         return;

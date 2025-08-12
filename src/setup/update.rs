@@ -1,17 +1,15 @@
 use crate::{
-    model::{
-        cache::Attrs,
-        dev::{
-            champions::CdnChampion,
-            items::{CdnItem, Item, PartialStats},
-            riot::RiotCdnItem,
-        },
+    model::dev::{
+        champions::CdnChampion,
+        items::{CdnItem, Item, PartialStats},
+        riot::RiotCdnItem,
     },
     setup::{
         essentials::helpers::{extract_file_name, read_json_file, write_to_file},
         generators::champions::run_generator_file,
     },
 };
+use internal_comptime::Attrs;
 use regex::Regex;
 use serde_json::Value;
 use std::{collections::HashMap, fs, path::Path};

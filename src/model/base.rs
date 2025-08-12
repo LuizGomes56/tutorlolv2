@@ -1,9 +1,6 @@
-use super::{
-    SIZE_ABILITIES,
-    cache::{DamageType, EvalContext},
-    riot::RiotChampionStats,
-};
-use crate::{SIZE_DAMAGING_ITEMS, SIZE_DAMAGING_RUNES, SIZE_SIMULATED_ITEMS, model::cache::Attrs};
+use super::{SIZE_ABILITIES, riot::RiotChampionStats};
+use crate::{SIZE_DAMAGING_ITEMS, SIZE_DAMAGING_RUNES, SIZE_SIMULATED_ITEMS};
+use internal_comptime::DamageType;
 use serde::{Deserialize, Serialize};
 use smallvec::SmallVec;
 
@@ -94,15 +91,6 @@ pub struct GenericStats {
     pub steelcaps: bool,
     pub rocksolid: bool,
     pub randuin: bool,
-}
-
-#[derive(Copy, Clone)]
-pub struct DamageExpression {
-    pub level: u8,
-    pub attributes: Attrs,
-    pub damage_type: DamageType,
-    pub minimum_damage: fn(u8, &EvalContext) -> f64,
-    pub maximum_damage: fn(u8, &EvalContext) -> f64,
 }
 
 #[derive(Default, Serialize)]

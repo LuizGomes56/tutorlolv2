@@ -32,6 +32,7 @@ rayon = "1.10.0"
 brotli2 = "0.3.2"
 
 [dependencies]
+internal_comptime = { path = "internal_comptime" }
 serde = { version = "1.0", features = ["derive"] }
 tokio = { version = "1.47", default-features = false }
 sqlx = { version = "0.8", features = [

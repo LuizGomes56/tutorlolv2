@@ -307,3 +307,5 @@ macro_rules! join_num_vec_trait_impl {
 
 join_num_vec_trait_impl!(Vec<T>);
 join_num_vec_trait_impl!(&[T]);
+
+pub const USE_SUPER: &str = "use super::*;";

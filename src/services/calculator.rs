@@ -1,13 +1,9 @@
 #![allow(unreachable_code, unused_variables)]
 use super::*;
-use crate::{
-    CHAMPION_NAME_TO_ID, DAMAGING_ITEMS, DAMAGING_RUNES, INTERNAL_CHAMPIONS, INTERNAL_ITEMS,
-    META_ITEMS,
-    model::{
-        base::*,
-        cache::{AdaptativeType, AttackType, Attrs, DamageType, Position},
-        calculator::*,
-    },
+use crate::model::{base::*, calculator::*};
+use internal_comptime::{
+    AdaptativeType, AttackType, Attrs, CHAMPION_NAME_TO_ID, DAMAGING_ITEMS, DAMAGING_RUNES,
+    DamageType, INTERNAL_CHAMPIONS, INTERNAL_ITEMS, META_ITEMS, Position,
 };
 use smallvec::SmallVec;
 use tinyset::SetU32;

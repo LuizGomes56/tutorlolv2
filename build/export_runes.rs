@@ -44,7 +44,7 @@ pub struct Rune {
     pub melee: String,
 }
 
-pub fn export_runes(out_dir: &str, mega_block: &mut String) {
+pub fn export_runes(mega_block: &mut String) {
     let mut phf_internal_runes = String::from(
         "pub static INTERNAL_RUNES: phf::Map<u32, &'static CachedRune> = phf::phf_map! {",
     );
@@ -74,9 +74,8 @@ pub fn export_runes(out_dir: &str, mega_block: &mut String) {
             let melee_expr = transform_expr(&clean_math_expr(&rune.melee));
             let constdecl = format!(
                 r#"pub static RUNE_{}: CachedRune = CachedRune {{
-            name: "{}",damage_type: {},ranged: {},melee: {},}};"#,
+            damage_type: {},ranged: {},melee: {},}};"#,
                 rune_id,
-                rune.name,
                 format_damage_type(&rune.damage_type),
                 format!(
                     "|_, {}| {}",
@@ -148,16 +147,14 @@ pub fn export_runes(out_dir: &str, mega_block: &mut String) {
     phf_internal_runes.push_str("};");
     phf_damaging_runes.push_str(");");
 
-    let assign_path = |v: &'static str| Path::new(out_dir).join(v);
-    let write_fn = |to: &'static str, content: String| {
-        let path = assign_path(to);
-        fs::write(&path, content.as_bytes()).unwrap();
-    };
-
-    write_fn("internal_runes.rs", {
+    let _ = fs::write("internal_comptime/src/data/runes.rs", {
         let mut s = String::with_capacity(
-            phf_internal_runes.len() + constdecl_internal_runes.len() + phf_damaging_runes.len(),
+            phf_internal_runes.len()
+                + constdecl_internal_runes.len()
+                + USE_SUPER.len()
+                + phf_damaging_runes.len(),
         );
+        s.push_str(USE_SUPER);
         s.push_str(&phf_internal_runes);
         s.push_str(&constdecl_internal_runes);
         s.push_str(&phf_damaging_runes);

@@ -1,11 +1,11 @@
 use super::*;
 
-// #![auto_generated]
+// #![preserve]
 
 #[generator_macros::generator]
 pub fn gen_taric(data: CdnChampion) -> Champion {
 	ability!(
 		e,
-		(0, 0, "E_0_0_0", Target::MINIMUM)
+		(0, 0, "E_0_0_0", Min)
 	);
 }

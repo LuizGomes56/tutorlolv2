@@ -1,23 +1,10 @@
 use super::*;
 
-// #![auto_generated]
+// #![preserve]
 
 #[generator_macros::generator]
 pub fn gen_akali(data: CdnChampion) -> Champion {
-	ability!(
-		q,
-		(0, 0, "Q_0_0_0", Target::MINIMUM)
-	);
-	ability!(
-		e,
-		(0, 0, "E_0_0_0", Target::MINIMUM),
-		(2, 0, "E_0_2_0", Target::MINIMUM),
-		(2, 1, "E_0_2_1_MAX", Target::MAXIMUM)
-	);
-	ability!(
-		r,
-		(0, 0, "R_0_0_0", Target::MINIMUM),
-		(2, 0, "R_0_2_0_MAX", Target::MAXIMUM),
-		(2, 1, "R_0_2_1_MIN", Target::MINIMUM)
-	);
+    ability!(q, (0, 0, None, Min));
+    ability!(e, (0, 0, None, Min), (2, 0, _1, Min), (2, 1, _1Max, Max));
+    ability!(r, (0, 0, None, Min), (2, 0, _1Max, Max), (2, 1, _1Min, Min));
 }

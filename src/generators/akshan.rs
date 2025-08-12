@@ -1,24 +1,16 @@
 use super::*;
 
-// #![auto_generated]
+// #![preserve]
 
 #[generator_macros::generator]
 pub fn gen_akshan(data: CdnChampion) -> Champion {
-	ability!(
-		q,
-		(0, 0, "Q_0_0_0", Target::MINIMUM),
-		(1, 0, "Q_0_1_0", Target::MINIMUM),
-		(3, 0, "Q_0_3_0_MAX", Target::MAXIMUM)
-	);
-	ability!(
-		e,
-		(4, 0, "E_0_4_0", Target::MINIMUM)
-	);
-	ability!(
-		r,
-		(4, 0, "R_0_4_0", Target::MINIMUM),
-		(4, 1, "R_0_4_1_MAX", Target::MAXIMUM),
-		(4, 2, "R_0_4_2_MIN", Target::MINIMUM),
-		(4, 3, "R_0_4_3_MIN", Target::MINIMUM)
-	);
+    ability!(q, (0, 0, None, Min), (1, 0, _1, Min), (3, 0, _1Max, Max));
+    ability!(e, (4, 0, None, Min));
+    ability!(
+        r,
+        (4, 0, _1, Min),
+        (4, 1, _1Max, Max),
+        (4, 2, _2, Min),
+        (4, 3, _2Max, Min)
+    );
 }

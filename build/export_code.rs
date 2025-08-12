@@ -12,11 +12,11 @@ const ONHIT_EFFECT: &'static str = r#"<pre><span class="control">intrinsic</span
 };
 </pre>"#;
 
-pub fn export_code(out_dir: &str) {
+pub fn export_code(_: &str) {
     let mut mega_block = String::with_capacity(1 << 24);
-    export_champions(out_dir, &mut mega_block);
-    export_items(out_dir, &mut mega_block);
-    export_runes(out_dir, &mut mega_block);
+    export_champions(&mut mega_block);
+    export_items(&mut mega_block);
+    export_runes(&mut mega_block);
     let mut bytes = Vec::new();
     for file in ["champions", "items", "runes"] {
         let content = fs::read(format!("comptime_exports/{}.txt", file)).unwrap();

@@ -9,8 +9,7 @@ pub struct Positions {
     pub support: Vec<usize>,
 }
 
-pub fn internal_meta_items(out_dir: &str) {
-    let out_path = Path::new(&out_dir).join("internal_meta.rs");
+pub fn internal_meta_items(_: &str) {
     let mut phf_meta_items = String::from(
         "pub static META_ITEMS: phf::Map<&'static str, &'static CachedMetaItem> = phf::phf_map! {",
     );
@@ -44,8 +43,9 @@ pub fn internal_meta_items(out_dir: &str) {
 
     phf_meta_items.push_str("};");
 
-    let _ = fs::write(out_path, {
-        let mut s = String::with_capacity(constdecl.len() + phf_meta_items.len());
+    let _ = fs::write("internal_comptime/src/data/meta.rs", {
+        let mut s = String::with_capacity(constdecl.len() + phf_meta_items.len() + USE_SUPER.len());
+        s.push_str(USE_SUPER);
         s.push_str(&constdecl);
         s.push_str(&phf_meta_items);
         s

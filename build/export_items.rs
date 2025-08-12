@@ -36,7 +36,6 @@ pub struct Item {
     pub prettified_stats: BTreeMap<String, f64>,
     pub damage_type: Option<String>,
     pub stats: PartialStats,
-    pub builds_from: Vec<u32>,
     pub ranged: Option<DamageObject>,
     pub melee: Option<DamageObject>,
     pub attributes: Attrs,
@@ -152,7 +151,7 @@ impl ExportedComptimePhfs {
     }
 }
 
-pub fn export_items(out_dir: &str, mega_block: &mut String) {
+pub fn export_items(mega_block: &mut String) {
     let main_map = init_map!(dir Item, "internal/items");
 
     let mut exported_comptime_phf = ExportedComptimePhfs::new();
@@ -199,20 +198,28 @@ pub fn export_items(out_dir: &str, mega_block: &mut String) {
                 let prettified_stats = item
                     .prettified_stats
                     .iter()
-                    .map(|(k, v)| format!("(\"{k}\", {v}f64)"))
+                    .map(|(k, v)| format!("StatName::{}({}f64)",
+                    {
+                        let mut s = k.replace(" ", "");
+                        if s == "Lethality" {
+                            s = "ArmorPenetration".to_string();
+                        } 
+                        if s == "HealandShieldPower" {
+                            s = "HealAndShieldPower".to_string()
+                        }
+                        s
+                    }, v
+                ))
                     .collect::<Vec<String>>()
                     .join(",");
 
                 let constdecl = format!(
                     r#"pub static ITEM_{}: CachedItem = CachedItem {{
-                name: "{}",gold: {},tier: {},damage_type: {},
-                attributes: Attrs::{},ranged: {},melee: {},builds_from: 
-                & [{}],prettified_stats: &[{}],
+                gold: {},damage_type: {},
+                attributes: Attrs::{},ranged: {},melee: {},prettified_stats: &[{}],
                 stats: CachedItemStats {{{}}},}};"#,
                     item_id,
-                    item.name,
                     item.gold,
-                    item.tier,
                     if item.damage_type.is_some() {
                         format!(
                             "Some({})",
@@ -224,7 +231,6 @@ pub fn export_items(out_dir: &str, mega_block: &mut String) {
                     item.attributes.stringify(),
                     format_damage_object(&item.ranged),
                     format_damage_object(&item.melee),
-                    item.builds_from.join(","),
                     prettified_stats,
                     format_stats(&item.stats),
                 );
@@ -308,23 +314,20 @@ pub fn export_items(out_dir: &str, mega_block: &mut String) {
     phf_simulated_items.push_str(u32_prefix!(simulated_items));
     phf_damaging_items.push_str(u32_prefix!(damaging_items));
 
-    let assign_path = |v: &'static str| Path::new(out_dir).join(v);
-    let write_fn = |to: &'static str, content: String| {
-        let path = assign_path(to);
-        let _ = fs::write(&path, content.as_bytes());
-    };
     exported_comptime_phf.add_braces();
     phf_internal_items.push_str("};");
     phf_damaging_items.push_str(");");
     phf_simulated_items.push_str(");");
 
-    write_fn("internal_items.rs", {
+    let _ = fs::write("internal_comptime/src/data/items.rs", {
         let mut s = String::with_capacity(
             phf_internal_items.len()
                 + constdecl_items_phf.len()
                 + phf_simulated_items.len()
-                + phf_damaging_items.len(),
+                + phf_damaging_items.len()
+                + USE_SUPER.len(),
         );
+        s.push_str(USE_SUPER);
         s.push_str(&phf_internal_items);
         s.push_str(&constdecl_items_phf);
         s.push_str(&phf_simulated_items);

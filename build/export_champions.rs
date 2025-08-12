@@ -102,7 +102,6 @@ impl Attrs {
 
 #[derive(Deserialize)]
 pub struct Ability {
-    pub name: String,
     pub damage_type: String,
     #[serde(default)]
     pub attributes: Attrs,
@@ -131,6 +130,9 @@ pub fn format_stats(stats: &ChampionCdnStats) -> String {
                 stats.$field.per_level
             )
         };
+        (lone $field:ident) => {
+            format!("{}: {}f64,", stringify!($field), stats.$field.flat,)
+        };
     }
     let mut all_stats = Vec::new();
     all_stats.push(insert_stat!(health));
@@ -139,15 +141,15 @@ pub fn format_stats(stats: &ChampionCdnStats) -> String {
     all_stats.push(insert_stat!(magic_resistance));
     all_stats.push(insert_stat!(attack_damage));
     all_stats.push(insert_stat!(attack_speed));
-    all_stats.push(insert_stat!(movespeed));
-    all_stats.push(insert_stat!(critical_strike_damage));
-    all_stats.push(insert_stat!(critical_strike_damage_modifier));
-    all_stats.push(insert_stat!(attack_speed_ratio));
-    all_stats.push(insert_stat!(attack_range));
-    all_stats.push(insert_stat!(aram_damage_taken));
-    all_stats.push(insert_stat!(aram_damage_dealt));
-    all_stats.push(insert_stat!(urf_damage_taken));
-    all_stats.push(insert_stat!(urf_damage_dealt));
+    all_stats.push(insert_stat!(lone movespeed));
+    all_stats.push(insert_stat!(lone critical_strike_damage));
+    all_stats.push(insert_stat!(lone critical_strike_damage_modifier));
+    all_stats.push(insert_stat!(lone attack_speed_ratio));
+    all_stats.push(insert_stat!(lone attack_range));
+    all_stats.push(insert_stat!(lone aram_damage_taken));
+    all_stats.push(insert_stat!(lone aram_damage_dealt));
+    all_stats.push(insert_stat!(lone urf_damage_taken));
+    all_stats.push(insert_stat!(lone urf_damage_dealt));
     all_stats.join("")
 }
 
@@ -210,10 +212,10 @@ fn format_abilities(abilities: &HashMap<String, Ability>) -> Vec<(String, String
         formatted_map.push((
             name.clone(),
             format!(
-                "static __phantom__: CachedChampionAbility = CachedChampionAbility {{name: \"{}\",damage_type: {},
+                "static __phantom__: CachedChampionAbility = CachedChampionAbility {{damage_type: {},
                 attributes: Attrs::{},minimum_damage: {},
                 maximum_damage: {},}};",
-                ability.name, format_damage_type(&ability.damage_type), ability.attributes.stringify(), min_dmg, max_dmg,
+                format_damage_type(&ability.damage_type), ability.attributes.stringify(), min_dmg, max_dmg,
             )
         ));
     }
@@ -221,7 +223,7 @@ fn format_abilities(abilities: &HashMap<String, Ability>) -> Vec<(String, String
     formatted_map
 }
 
-pub fn export_champions(out_dir: &str, mega_block: &mut String) {
+pub fn export_champions(mega_block: &mut String) {
     let main_map = init_map!(dir Champion, "internal/champions");
 
     let mut exported_comptime_phf = ExportedComptimePhfs::new();
@@ -284,7 +286,6 @@ pub fn export_champions(out_dir: &str, mega_block: &mut String) {
 
             let constdecl = format!(
                 r#"pub static {}: CachedChampion = CachedChampion {{
-                name: "{}",
                 adaptative_type: {},
                 attack_type: {},
                 positions: &[{}],
@@ -292,7 +293,6 @@ pub fn export_champions(out_dir: &str, mega_block: &mut String) {
                 abilities: &[{}],
                 }};"#,
                 champion_id.to_uppercase(),
-                champion.name,
                 match champion.adaptative_type.as_str() {
                     "PHYSICAL_DAMAGE" => "AdaptativeType::Physical",
                     _ => "AdaptativeType::Magic",
@@ -456,22 +456,19 @@ pub fn export_champions(out_dir: &str, mega_block: &mut String) {
     exported_comptime_phf.add_braces();
     phf_internal_champions.push_str("};");
 
-    let assign_path = |v: &'static str| Path::new(out_dir).join(v);
-    let write_fn = |to: &'static str, content: String| {
-        let path = assign_path(to);
-        fs::write(&path, content.as_bytes()).unwrap();
-    };
-    write_fn("internal_champions.rs", {
-        let mut s =
-            String::with_capacity(constdecl_phf_champions.len() + phf_internal_champions.len());
+    let _ = fs::write("internal_comptime/src/data/champions.rs", {
+        let mut s = String::with_capacity(
+            USE_SUPER.len() + constdecl_phf_champions.len() + phf_internal_champions.len(),
+        );
+        s.push_str(USE_SUPER);
         s.push_str(&constdecl_phf_champions);
         s.push_str(&phf_internal_champions);
         s.push_str(&BASIC_ATTACK);
         s.push_str(&CRITICAL_STRIKE);
         s
     });
-    write_fn(
-        "internal_names.rs",
+    let _ = fs::write(
+        "internal_comptime/src/data/names.rs",
         exported_comptime_phf
             .champion_name_to_id
             .clone()

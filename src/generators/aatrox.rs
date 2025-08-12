@@ -7,49 +7,35 @@ use super::*;
 
 #[generator_macros::generator]
 pub fn gen_aatrox(data: CdnChampion) -> Champion {
-    passive!(
-        "P",
-        (0, 0),
-        Target::MINIMUM,
-        (None, Some("ENEMY_MAX_HEALTH"))
-    );
-    ability!(
-        w,
-        (0, 0, "W", Target::MINIMUM),
-        (0, 1, "W_MINION", Target::MINIMUM),
-        (2, 0, "W_MAX", Target::MAXIMUM),
-    );
+    passive!(None, (0, 0), Min, (None, Some("ENEMY_MAX_HEALTH")));
+    ability!(w, (0, 0, None, Min), (0, 1, Minion, Min), (2, 0, Max, Max));
     ability!(
         q,
-        (2, 0, "Q1", Target::MINIMUM),
-        (2, 1, "Q1_MAX", Target::MAXIMUM),
-        (3, 0, "Q2", Target::MINIMUM),
-        (3, 1, "Q2_MAX", Target::MAXIMUM),
-        (5, 0, "Q3", Target::MINIMUM),
-        (5, 1, "Q3_MAX", Target::MAXIMUM)
+        (2, 0, _1, Min),
+        (2, 1, _1Max, Max),
+        (3, 0, _2, Min),
+        (3, 1, _2Max, Max),
+        (5, 0, _3, Min),
+        (5, 1, _3Max, Max)
     );
-    ability!(
-        w,
-        (0, 1, "W", Target::MINIMUM),
-        (1, 0, "W_MAX", Target::MAXIMUM)
-    );
+    ability!(w, (0, 1, None, Min), (1, 0, Max, Max));
 
-    merge_ability!("Q1");
-    merge_ability!("Q2");
-    merge_ability!("Q3");
-    merge_ability!("W");
+    merge_ability!((Q, _1), (Q, _1Max));
+    merge_ability!((Q, _2), (Q, _2Max));
+    merge_ability!((Q, _3), (Q, _3Max));
+    merge_ability!((W, None), (W, Max));
 
-    let default_ability = get!("Q1").clone();
+    let default_ability = get!((Q, _1)).clone();
 
     insert!(
-        "Q_MAX",
+        (Q, Max),
         Ability {
             minimum_damage: merge_damage!(
                 5,
-                || format!("({}) + ({}) + ({})", q1, q2, q3),
-                (q1, maximum_damage),
-                (q2, maximum_damage),
-                (q3, maximum_damage)
+                |(q1, q2, q3)| format!("({}) + ({}) + ({})", q1, q2, q3),
+                ((Q, _1), maximum_damage),
+                ((Q, _2), maximum_damage),
+                ((Q, _3), maximum_damage)
             ),
             maximum_damage: Vec::new(),
             ..default_ability
