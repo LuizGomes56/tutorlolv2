@@ -5,8 +5,8 @@ use crate::{
     model::{SIZE_ABILITIES, SIZE_ITEMS_EXPECTED, base::*},
 };
 use internal_comptime::{
-    AdaptativeType, AttackType, Attrs, CachedChampion, CachedItem, DamageExpression, DamageType,
-    EvalContext, zero,
+    AbilityLike, AdaptativeType, AttackType, Attrs, CachedChampion, CachedItem, DamageExpression,
+    DamageType, EvalContext, zero,
 };
 use smallvec::SmallVec;
 use tinyset::SetU32;
@@ -270,16 +270,15 @@ pub fn get_abilities_damage(
     current_player_cache: &&CachedChampion,
     current_player_level: u8,
     abilities: AbilityLevels,
-) -> SmallVec<[(&'static str, DamageExpression); SIZE_ABILITIES]> {
+) -> SmallVec<[(AbilityLike, DamageExpression); SIZE_ABILITIES]> {
     let mut result = SmallVec::with_capacity(current_player_cache.abilities.len() + 2);
     for (key, value) in current_player_cache.abilities.iter() {
-        let first_char = key.chars().next().unwrap();
-        let level = match first_char {
-            'P' => current_player_level,
-            'Q' => abilities.q,
-            'W' => abilities.w,
-            'E' => abilities.e,
-            'R' => abilities.r,
+        let level = match key {
+            AbilityLike::P(_) => current_player_level,
+            AbilityLike::Q(_) => abilities.q,
+            AbilityLike::W(_) => abilities.w,
+            AbilityLike::E(_) => abilities.e,
+            AbilityLike::R(_) => abilities.r,
             _ => continue,
         };
         result.push((
@@ -294,8 +293,8 @@ pub fn get_abilities_damage(
         ));
     }
 
-    result.push(("A", BASIC_ATTACK));
-    result.push(("C", CRITICAL_STRIKE));
+    result.push((AbilityLike::A, BASIC_ATTACK));
+    result.push((AbilityLike::C, CRITICAL_STRIKE));
     result
 }
 

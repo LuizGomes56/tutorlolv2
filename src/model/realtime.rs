@@ -14,7 +14,6 @@ pub struct CurrentPlayer<'a> {
     pub level: u8,
     pub team: &'a str,
     pub position: &'a str,
-    pub champion_name: &'a str,
     pub champion_id: &'static str,
     pub base_stats: BasicStats,
     pub bonus_stats: BasicStats,
@@ -29,7 +28,6 @@ pub struct GameInformation {
 
 #[derive(Serialize)]
 pub struct Enemy<'a> {
-    pub champion_name: &'a str,
     pub riot_id: &'a str,
     pub team: &'a str,
     pub level: u8,
@@ -50,7 +48,6 @@ pub struct Scoreboard<'a> {
     pub kills: u16,
     pub riot_id: &'a str,
     pub champion_id: &'static str,
-    pub champion_name: &'a str,
     pub position: &'a str,
 }
 

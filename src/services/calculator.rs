@@ -2,8 +2,9 @@
 use super::*;
 use crate::model::{base::*, calculator::*};
 use internal_comptime::{
-    AdaptativeType, AttackType, Attrs, CHAMPION_NAME_TO_ID, DAMAGING_ITEMS, DAMAGING_RUNES,
-    DamageType, INTERNAL_CHAMPIONS, INTERNAL_ITEMS, META_ITEMS, Position,
+    AbilityLike, AdaptativeType, AttackType, Attrs, CHAMPION_INDEX_TO_ID, CHAMPION_NAME_TO_ID,
+    DAMAGING_ITEMS, DAMAGING_RUNES, DamageType, INTERNAL_CHAMPIONS, INTERNAL_ITEMS, META_ITEMS,
+    Position,
 };
 use smallvec::SmallVec;
 use tinyset::SetU32;
@@ -102,22 +103,22 @@ fn infer_champion_stats(
 
     // #![manual_impl]
     // #![todo] Create exception file that is generated automatically
-    match active_player.champion_id.as_str() {
-        "Veigar" => stats.ability_power += stacks,
-        "Chogath" => {
+    match active_player.champion_id {
+        ChampionId::Veigar => stats.ability_power += stacks,
+        ChampionId::Chogath => {
             stats.max_health += stacks * 80.0 + 40.0 * active_player.abilities.r.clamp(0, 3) as f64;
         }
-        "Sion" => stats.max_health += stacks,
-        "Darius" => {
+        ChampionId::Sion => stats.max_health += stacks,
+        ChampionId::Darius => {
             armor_penetration.push(15.0 + 5.0 * active_player.abilities.e as f64);
         }
-        "Pantheon" => {
+        ChampionId::Pantheon => {
             armor_penetration.push(10.0 * active_player.abilities.r as f64);
         }
-        "Nilah" => {
+        ChampionId::Nilah => {
             armor_penetration.push(stats.crit_chance / 3.0);
         }
-        "Mordekaiser" => {
+        ChampionId::Mordekaiser => {
             magic_penetration.push(2.5 + 2.5 * active_player.abilities.e as f64);
         }
         _ => {}
@@ -290,10 +291,12 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
         .copied()
         .collect::<SetU32>();
 
-    let current_player_cache = INTERNAL_CHAMPIONS.get(current_player_champion_id).ok_or(
+    let current_player_str_id = CHAMPION_INDEX_TO_ID[*current_player_champion_id as usize];
+
+    let current_player_cache = INTERNAL_CHAMPIONS.get(current_player_str_id).ok_or(
         CalculationError::ChampionCacheNotFound(format!(
             "[INTERNAL_CHAMPIONS]: {}",
-            current_player_champion_id
+            current_player_str_id
         )),
     )?;
 
@@ -352,7 +355,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
     );
 
     let current_player_recommended_items = META_ITEMS
-        .get(&current_player_champion_id)
+        .get(&current_player_str_id)
         .and_then(|meta_items| {
             current_player_cache
                 .positions
@@ -459,7 +462,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
         );
 
         abilities_damage.push((
-            "O",
+            AbilityLike::O,
             InstanceDamage {
                 damage_type: DamageType::Mixed,
                 minimum_damage: onhit_effects.minimum_damage,
@@ -468,7 +471,8 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
         ));
 
         Ok((
-            *enemy_champion_id,
+            // *enemy_champion_id,
+            ChampionId::Aatrox,
             OutputEnemy {
                 champion_name: enemy_champion_name,
                 damages: CalculatorDamages {
@@ -489,7 +493,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
     let enemies = enemy_players
         .into_iter()
         .map(output_enemy)
-        .collect::<Result<SmallVec<[(&'static str, OutputEnemy); 1]>, CalculationError>>()?;
+        .collect::<Result<SmallVec<[(_, OutputEnemy); 1]>, CalculationError>>()?;
 
     let make_state = |tuple: (i8, i8)| {
         get_full_stats(
@@ -528,13 +532,12 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
                     damage_mod: (monster_state.2.armor_mod, monster_state.2.magic_mod),
                 };
                 let damage_mod = get_damage_multipliers(&damage_multipliers, dmg_expr.damage_type);
-                let first_char = ability_name.chars().next().unwrap_or_default();
-                let ability_level = match first_char {
-                    'P' => current_player_level,
-                    'Q' => current_player_abilities.q,
-                    'W' => current_player_abilities.w,
-                    'E' => current_player_abilities.e,
-                    'R' => current_player_abilities.r,
+                let ability_level = match ability_name {
+                    AbilityLike::P(_) => current_player_level,
+                    AbilityLike::Q(_) => current_player_abilities.q,
+                    AbilityLike::W(_) => current_player_abilities.w,
+                    AbilityLike::E(_) => current_player_abilities.e,
+                    AbilityLike::R(_) => current_player_abilities.r,
                     _ => 0,
                 };
                 let minimum_damage =

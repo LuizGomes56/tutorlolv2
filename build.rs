@@ -13,7 +13,6 @@ struct BuildArgs {
 }
 
 fn main() {
-    return;
     if std::env::var_os("SKIP_CODEGEN").is_some() {
         eprintln!("Codegen ignored");
         return;
@@ -28,12 +27,12 @@ fn main() {
             source_file: "build/meta_items.rs",
             function_name: Box::new(internal_meta_items),
         },
-        BuildArgs {
-            rerun_if_changed: &["build/export_code.rs"],
-            generated_files: &["export_code.br", "comptime_exports/export_code.br"],
-            source_file: "build/export_code.rs",
-            function_name: Box::new(export_code),
-        },
+        // BuildArgs {
+        //     rerun_if_changed: &["build/export_code.rs"],
+        //     generated_files: &["export_code.br", "comptime_exports/export_code.br"],
+        //     source_file: "build/export_code.rs",
+        //     function_name: Box::new(export_code),
+        // },
     ];
 
     println!("cargo:rerun-if-changed=build.rs");

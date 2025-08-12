@@ -308,7 +308,6 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
             Some((
                 *enemy_champion_id,
                 Enemy {
-                    champion_name: enemy_champion_name,
                     riot_id,
                     team,
                     position,
@@ -327,7 +326,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
                 },
             ))
         })
-        .collect::<SmallVec<[(&'static str, Enemy); SIZE_ENEMIES_EXPECTED]>>();
+        .collect::<SmallVec<[(_, Enemy); SIZE_ENEMIES_EXPECTED]>>();
 
     Ok(Realtime {
         current_player: CurrentPlayer {
@@ -337,7 +336,6 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
             level: current_player_level,
             team: current_player_team,
             position: current_player_position,
-            champion_name: current_player_champion_name,
             champion_id: current_player_champion_id,
             base_stats: current_player_base_stats,
             bonus_stats: current_player_bonus_stats,
@@ -352,7 +350,6 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
             riot_id: current_player_riot_id,
             champion_id: current_player_champion_id,
             position: current_player_position,
-            champion_name: current_player_champion_name,
         },
         game_information: GameInformation {
             game_time,
