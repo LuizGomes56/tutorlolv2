@@ -8,7 +8,6 @@ use riot_formulas::*;
 
 pub enum CalculationError {
     CurrentPlayerNotFound,
-    ChampionNameNotFound(String),
-    ChampionCacheNotFound(String),
-    ItemCacheNotFound(u32),
+    ChampionNameNotFound,
+    ChampionCacheNotFound,
 }

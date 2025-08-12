@@ -2,9 +2,8 @@
 use super::*;
 use crate::model::{base::*, calculator::*};
 use internal_comptime::{
-    AbilityLike, AdaptativeType, AttackType, Attrs, CHAMPION_INDEX_TO_ID, ChampionId,
-    DAMAGING_ITEMS, DAMAGING_RUNES, DamageType, INTERNAL_CHAMPIONS, INTERNAL_ITEMS, META_ITEMS,
-    Position,
+    AbilityLike, AdaptativeType, AttackType, Attrs, ChampionId, DAMAGING_ITEMS, DAMAGING_RUNES,
+    DamageType, INTERNAL_CHAMPIONS, INTERNAL_ITEMS, META_ITEMS, Position,
 };
 use smallvec::SmallVec;
 use tinyset::SetU32;
@@ -18,7 +17,7 @@ fn infer_champion_stats(
     active_player: &InputActivePlayer,
     base_stats: BasicStats,
     dragon_mod: DragonMultipliers,
-) -> Result<BasicStats, CalculationError> {
+) -> BasicStats {
     let stacks = active_player.stacks as f64;
     let owned_items = &active_player.items;
 
@@ -26,41 +25,39 @@ fn infer_champion_stats(
     let mut magic_penetration = SmallVec::<[f64; 4]>::with_capacity(4);
 
     for item_id in owned_items {
-        let cached_item = INTERNAL_ITEMS
-            .get(&item_id)
-            .ok_or_else(|| CalculationError::ItemCacheNotFound(*item_id))?;
+        if let Some(cached_item) = INTERNAL_ITEMS.get(&item_id) {
+            let item_stats = &cached_item.stats;
 
-        let item_stats = &cached_item.stats;
+            macro_rules! add_stat {
+                ($field:ident) => {
+                    stats.$field += item_stats.$field;
+                };
+                ($field:ident, $field2:ident) => {
+                    stats.$field += item_stats.$field2;
+                };
+                (@$mul:ident $field:ident) => {
+                    stats.$field += dragon_mod.$mul * item_stats.$field;
+                };
+                (@$mul:ident $field:ident, $field2:ident) => {
+                    stats.$field += dragon_mod.$mul * item_stats.$field2;
+                };
+            }
 
-        macro_rules! add_stat {
-            ($field:ident) => {
-                stats.$field += item_stats.$field;
-            };
-            ($field:ident, $field2:ident) => {
-                stats.$field += item_stats.$field2;
-            };
-            (@$mul:ident $field:ident) => {
-                stats.$field += dragon_mod.$mul * item_stats.$field;
-            };
-            (@$mul:ident $field:ident, $field2:ident) => {
-                stats.$field += dragon_mod.$mul * item_stats.$field2;
-            };
+            add_stat!(@fire ability_power);
+            add_stat!(@fire attack_damage);
+            add_stat!(@earth armor);
+            add_stat!(@earth magic_resist, magic_resistance);
+            add_stat!(max_health, health);
+            add_stat!(crit_chance, critical_strike_chance);
+            add_stat!(crit_damage, critical_strike_damage);
+            add_stat!(max_mana, mana);
+            add_stat!(attack_speed);
+            add_stat!(current_mana, mana);
+            add_stat!(current_health, health);
+
+            armor_penetration.push(item_stats.armor_penetration_percent);
+            magic_penetration.push(item_stats.magic_penetration_percent);
         }
-
-        add_stat!(@fire ability_power);
-        add_stat!(@fire attack_damage);
-        add_stat!(@earth armor);
-        add_stat!(@earth magic_resist, magic_resistance);
-        add_stat!(max_health, health);
-        add_stat!(crit_chance, critical_strike_chance);
-        add_stat!(crit_damage, critical_strike_damage);
-        add_stat!(max_mana, mana);
-        add_stat!(attack_speed);
-        add_stat!(current_mana, mana);
-        add_stat!(current_health, health);
-
-        armor_penetration.push(item_stats.armor_penetration_percent);
-        magic_penetration.push(item_stats.magic_penetration_percent);
     }
 
     stats.crit_chance = stats.crit_chance.clamp(0.0, 100.0);
@@ -127,7 +124,7 @@ fn infer_champion_stats(
     stats.armor_penetration_percent = RiotFormulas::percent_value(armor_penetration);
     stats.magic_penetration_percent = RiotFormulas::percent_value(magic_penetration);
 
-    Ok(bonus_stats)
+    bonus_stats
 }
 
 // #![manual_impl]
@@ -270,7 +267,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
 
     let InputActivePlayer {
         level: current_player_level,
-        champion_id: ref current_player_champion_id,
+        champion_id: current_player_champion_id,
         abilities: current_player_abilities,
         champion_stats: current_player_input_stats,
         runes: ref current_player_full_runes,
@@ -291,14 +288,9 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
         .copied()
         .collect::<SetU32>();
 
-    let current_player_str_id = CHAMPION_INDEX_TO_ID[*current_player_champion_id as usize];
-
-    let current_player_cache = INTERNAL_CHAMPIONS.get(current_player_str_id).ok_or(
-        CalculationError::ChampionCacheNotFound(format!(
-            "[INTERNAL_CHAMPIONS]: {}",
-            current_player_str_id
-        )),
-    )?;
+    let current_player_cache = INTERNAL_CHAMPIONS
+        .get(current_player_champion_id as usize)
+        .ok_or(CalculationError::ChampionCacheNotFound)?;
 
     let mut current_player_stats = if current_player_infer_stats {
         RiotFormulas::full_base_stats(&current_player_cache.stats, current_player_level)
@@ -327,7 +319,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
             &active_player,
             current_player_base_stats,
             ally_dragon_multipliers,
-        )?
+        )
     } else {
         get_bonus_stats(current_player_basic_stats, current_player_base_stats)
     };
@@ -355,7 +347,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
     );
 
     let current_player_recommended_items = META_ITEMS
-        .get(&current_player_str_id)
+        .get(current_player_champion_id as usize)
         .and_then(|meta_items| {
             current_player_cache
                 .positions
@@ -403,13 +395,9 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
             // #![todo]
             stats: _enemy_stats,
         } = player;
-        let enemy_champion_str_id = CHAMPION_INDEX_TO_ID[enemy_champion_id as usize];
-        let enemy_cache = INTERNAL_CHAMPIONS.get(enemy_champion_str_id).ok_or(
-            CalculationError::ChampionCacheNotFound(format!(
-                "[enemy_players.into_par_iter()]: {}",
-                enemy_champion_str_id
-            )),
-        )?;
+        let enemy_cache = INTERNAL_CHAMPIONS
+            .get(enemy_champion_id as usize)
+            .ok_or(CalculationError::ChampionCacheNotFound)?;
         let enemy_base_stats = get_base_stats(enemy_cache, enemy_level);
         let full_stats = get_full_stats(
             (

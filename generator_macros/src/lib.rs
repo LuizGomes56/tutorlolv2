@@ -119,7 +119,7 @@ pub fn generator(_args: TokenStream, input: TokenStream) -> TokenStream {
         /// merge_ability!("Q_MIN", "Q_MAX");
         /// ```
         macro_rules! merge_ability {
-            (($into_f:ident, $into:ident), ($from_f:ident, $from:ident)) => {
+            ($into_f:ident::$into:ident, $from_f:ident::$from:ident) => {
                 paste::paste! {
                     let from_str = AbilityLike::$from_f(AbilityName::$from).[<to_str_ $from_f:lower>]();
                     let into_str = AbilityLike::$into_f(AbilityName::$into).[<to_str_ $into_f:lower>]();
@@ -189,7 +189,7 @@ pub fn generator(_args: TokenStream, input: TokenStream) -> TokenStream {
         ///
         /// Variables are created inside the closure instead of outside it.
         macro_rules! merge_damage {
-            ($size:literal, $closure:expr, $((($field1:ident, $field2:ident), $field:ident)),+ $(,)?) => {
+            ($size:literal, $closure:expr, $(($field1:ident::$field2:ident, $field:ident)),+ $(,)?) => {
                 paste::paste! {{
                     let mut result = Vec::<String>::with_capacity($size);
                     for i in 0..$size {
@@ -220,7 +220,7 @@ pub fn generator(_args: TokenStream, input: TokenStream) -> TokenStream {
         /// get!(mut "Q_MIN"); // mut ref
         /// ```
         macro_rules! get {
-            ($field1:ident, $field2:ident) => {
+            ($field1:ident::$field2:ident) => {
                 paste::paste! {{
                     let key = AbilityLike::[<$field1>](AbilityName::$field2).[<to_str_ $field1:lower>]();
                     match abilities.get(key) {
@@ -231,7 +231,7 @@ pub fn generator(_args: TokenStream, input: TokenStream) -> TokenStream {
                     }
                 }}
             };
-            (mut $field1:ident, $field2:ident) => {
+            (mut $field1:ident::$field2:ident) => {
                 paste::paste! {{
                     let key = AbilityLike::[<$field1>](AbilityName::$field2).[<to_str_ $field1:lower>]();
                     match abilities.get_mut(key) {
@@ -252,7 +252,7 @@ pub fn generator(_args: TokenStream, input: TokenStream) -> TokenStream {
         /// insert!("Q", Ability {...});
         /// ```
         macro_rules! insert {
-            (($field1:ident, $field2:ident), $value:expr) => {
+            ($field1:ident::$field2:ident, $value:expr) => {
                 paste::paste! {{
                     let key = AbilityLike::[<$field1>](AbilityName::$field2).[<to_str_ $field1:lower>]();
                     abilities.insert(key.to_string(), $value);

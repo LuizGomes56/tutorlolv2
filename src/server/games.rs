@@ -40,21 +40,13 @@ pub async fn create_game_handler(state: Data<AppState>) -> impl Responder {
 }
 
 #[inline(always)]
-fn get_calculation_error(e: CalculationError) -> String {
+fn get_calculation_error(e: CalculationError) -> &'static str {
     match e {
-        CalculationError::CurrentPlayerNotFound => {
-            String::from("Current player not found in allPlayers")
+        CalculationError::CurrentPlayerNotFound => "Current player not found in allPlayers",
+        CalculationError::ChampionNameNotFound => {
+            "Could not convert champion name to its corresponding id"
         }
-        CalculationError::ChampionNameNotFound(n) => format!(
-            "Could not convert champion name to its corresponding id: {}",
-            n
-        ),
-        CalculationError::ChampionCacheNotFound(n) => {
-            format!("Current champion cache not found: {}", n)
-        }
-        CalculationError::ItemCacheNotFound(n) => {
-            format!("One item's cache was not found: {}", n)
-        }
+        CalculationError::ChampionCacheNotFound => "Current champion cache not found",
     }
 }
 

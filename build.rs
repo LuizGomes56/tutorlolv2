@@ -12,28 +12,22 @@ struct BuildArgs {
     function_name: Box<dyn Fn(&str) + Send + Sync>,
 }
 
-fn main() {
-    if std::env::var_os("SKIP_CODEGEN").is_some() {
-        eprintln!("Codegen ignored");
+#[tokio::main]
+async fn main() {
+    if std::env::var_os("GENERATE").is_none() {
+        eprintln!("GENERATE is not set, codegen will be ignored");
         return;
     }
 
+    export_code().await;
     let out_dir = env::var("OUT_DIR").unwrap();
 
-    let maybe_run = vec![
-        BuildArgs {
-            rerun_if_changed: &["build/meta_items.rs", "internal/meta_items.json"],
-            generated_files: &["internal_meta.rs"],
-            source_file: "build/meta_items.rs",
-            function_name: Box::new(internal_meta_items),
-        },
-        BuildArgs {
-            rerun_if_changed: &["build/export_code.rs"],
-            generated_files: &["export_code.br", "comptime_exports/export_code.br"],
-            source_file: "build/export_code.rs",
-            function_name: Box::new(export_code),
-        },
-    ];
+    let maybe_run = vec![BuildArgs {
+        rerun_if_changed: &["build/meta_items.rs", "internal/meta_items.json"],
+        generated_files: &["internal_meta.rs"],
+        source_file: "build/meta_items.rs",
+        function_name: Box::new(internal_meta_items),
+    }];
 
     println!("cargo:rerun-if-changed=build.rs");
     for build_args in &maybe_run {

@@ -1,6 +1,6 @@
 use super::*;
 use crate::{
-    CHAMPION_NAME_TO_ID, DAMAGING_ITEMS, DAMAGING_RUNES, INTERNAL_CHAMPIONS, META_ITEMS,
+    DAMAGING_ITEMS, DAMAGING_RUNES, INTERNAL_CHAMPIONS, META_ITEMS,
     model::{
         SIZE_ENEMIES_EXPECTED, SIZE_ITEMS_EXPECTED,
         base::{
@@ -11,7 +11,7 @@ use crate::{
         riot::*,
     },
 };
-use internal_comptime::CHAMPION_ID_TO_INDEX;
+use internal_comptime::CHAMPION_NAME_TO_ID;
 use smallvec::SmallVec;
 use std::collections::HashMap;
 use tinyset::SetU32;
@@ -65,25 +65,13 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
         get_dragon_multipliers(game_events, players_map, current_player_team);
 
     let current_player_stats = current_player_riot_stats.to_stats();
-    let current_player_champion_str_id = CHAMPION_NAME_TO_ID
+    let current_player_champion_id = CHAMPION_NAME_TO_ID
         .get(current_player_champion_name)
-        .ok_or(CalculationError::ChampionNameNotFound(format!(
-            "[CHAMPION_NAME_TO_ID]: {}",
-            current_player_champion_name
-        )))?;
-    let current_player_champion_id = CHAMPION_ID_TO_INDEX
-        .get(current_player_champion_str_id)
-        .ok_or(CalculationError::ChampionCacheNotFound(format!(
-            "[CHAMPION_ID_TO_INDEX]: {}",
-            current_player_champion_str_id
-        )))?;
+        .ok_or(CalculationError::ChampionNameNotFound)?;
 
     let current_player_cache = INTERNAL_CHAMPIONS
-        .get(current_player_champion_str_id)
-        .ok_or(CalculationError::ChampionCacheNotFound(format!(
-            "[INTERNAL_CHAMPIONS]: {}",
-            current_player_champion_str_id
-        )))?;
+        .get(*current_player_champion_id as usize)
+        .ok_or(CalculationError::ChampionCacheNotFound)?;
 
     let current_player_base_stats = get_base_stats(current_player_cache, current_player_level);
     let current_player_basic_stats = BasicStats {
@@ -98,7 +86,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
         get_bonus_stats(current_player_basic_stats, current_player_base_stats);
 
     let current_player_recommended_items = {
-        if let Some(meta_items) = META_ITEMS.get(current_player_champion_str_id) {
+        if let Some(meta_items) = META_ITEMS.get(*current_player_champion_id as usize) {
             match current_player_position.as_str() {
                 "TOP" => meta_items.top,
                 "JUNGLE" => meta_items.jungle,
@@ -180,14 +168,13 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
                 position,
                 ..
             } = player;
-            let enemy_champion_str_id = CHAMPION_NAME_TO_ID.get(&enemy_champion_name)?;
-            let enemy_champion_id = CHAMPION_ID_TO_INDEX.get(enemy_champion_str_id)?;
+            let enemy_champion_id = CHAMPION_NAME_TO_ID.get(&enemy_champion_name)?;
             let enemy_items = enemy_riot_items
                 .iter()
                 .map(|value| value.item_id)
                 .collect::<SmallVec<[u32; SIZE_ITEMS_EXPECTED]>>();
             let enemy_level = player.level;
-            let enemy_cache = INTERNAL_CHAMPIONS.get(enemy_champion_str_id)?;
+            let enemy_cache = INTERNAL_CHAMPIONS.get(*enemy_champion_id as usize)?;
             let enemy_base_stats = get_base_stats(enemy_cache, enemy_level);
 
             let full_stats = get_full_stats(
