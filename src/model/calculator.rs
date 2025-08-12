@@ -1,8 +1,8 @@
 use super::{
     SIZE_ABILITIES, SIZE_ITEMS_EXPECTED, SIZE_RUNES_EXPECTED,
-    base::{AbilityLevels, BasicStats, ChampionId, DamageLike, MonsterDamages, Stats},
+    base::{AbilityLevels, BasicStats, DamageLike, MonsterDamages, Stats},
 };
-use internal_comptime::AbilityLike;
+use internal_comptime::{AbilityLike, ChampionId};
 use serde::{Deserialize, Serialize};
 use smallvec::SmallVec;
 use tinyset::SetU32;
@@ -27,7 +27,6 @@ pub struct CalculatorDamages {
 
 #[derive(Serialize)]
 pub struct OutputEnemy {
-    pub champion_name: String,
     pub level: u8,
     pub damages: CalculatorDamages,
     pub base_stats: BasicStats,
@@ -60,7 +59,7 @@ pub struct InputActivePlayer {
 
 #[derive(Deserialize)]
 pub struct InputEnemyPlayers {
-    pub champion_name: String,
+    pub champion_id: ChampionId,
     pub items: SmallVec<[u32; SIZE_ITEMS_EXPECTED]>,
     pub level: u8,
     pub stats: BasicStats,

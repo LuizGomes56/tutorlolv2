@@ -5,8 +5,8 @@ use crate::{
     model::{SIZE_ABILITIES, SIZE_ITEMS_EXPECTED, base::*},
 };
 use internal_comptime::{
-    AbilityLike, AdaptativeType, AttackType, Attrs, CachedChampion, CachedItem, DamageExpression,
-    DamageType, EvalContext, zero,
+    AbilityLike, AdaptativeType, AttackType, Attrs, CachedChampion, CachedItem, ChampionId,
+    DamageExpression, DamageType, EvalContext, zero,
 };
 use smallvec::SmallVec;
 use tinyset::SetU32;
@@ -144,7 +144,7 @@ pub fn get_runes_damage(
 }
 
 pub fn get_full_stats(
-    enemy_state: (&str, u8, f64),
+    enemy_state: (ChampionId, u8, f64),
     enemy_stats: (BasicStats, &[u32]),
     armor_val: (f64, f64),
     magic_val: (f64, f64),
@@ -171,11 +171,11 @@ pub fn get_full_stats(
     let (self_physical_mod, self_magic_mod, self_true_mod, self_global_mod) = (1.0, 1.0, 1.0, 1.0);
 
     match enemy_champion_id {
-        "Kassadin" => {
+        ChampionId::Kassadin => {
             // #![manual_impl]
             enemy_magic_mod -= 0.1;
         }
-        "Ornn" => {
+        ChampionId::Ornn => {
             // Starts game with +10% armor/mr/hp already
             // After level 13, player will start upgrading items
             // At level 18, the maximum bonus must have been reached
@@ -196,7 +196,7 @@ pub fn get_full_stats(
             assign_value!(magic_resist);
             assign_value!(health);
         }
-        "Malphite" => {
+        ChampionId::Malphite => {
             // W upgrade pattern for malphite by 06/07/2025
             // #![manual_impl]
             let malphite_resist_multiplier: f64 = match enemy_level {

@@ -2,6 +2,7 @@ use super::{
     SIZE_ENEMIES_EXPECTED,
     base::{BasicStats, Damages, DragonMultipliers, Stats},
 };
+use internal_comptime::ChampionId;
 use serde::Serialize;
 use smallvec::SmallVec;
 use tinyset::SetU32;
@@ -14,7 +15,7 @@ pub struct CurrentPlayer<'a> {
     pub level: u8,
     pub team: &'a str,
     pub position: &'a str,
-    pub champion_id: &'static str,
+    pub champion_id: ChampionId,
     pub base_stats: BasicStats,
     pub bonus_stats: BasicStats,
     pub current_stats: Stats,
@@ -47,14 +48,14 @@ pub struct Scoreboard<'a> {
     pub deaths: u16,
     pub kills: u16,
     pub riot_id: &'a str,
-    pub champion_id: &'static str,
+    pub champion_id: ChampionId,
     pub position: &'a str,
 }
 
 #[derive(Serialize)]
 pub struct Realtime<'a> {
     pub current_player: CurrentPlayer<'a>,
-    pub enemies: SmallVec<[(&'static str, Enemy<'a>); SIZE_ENEMIES_EXPECTED]>,
+    pub enemies: SmallVec<[(ChampionId, Enemy<'a>); SIZE_ENEMIES_EXPECTED]>,
     pub game_information: GameInformation,
     pub recommended_items: &'static [u32],
     pub scoreboard: Scoreboard<'a>,

@@ -2,7 +2,7 @@
 use super::*;
 use crate::model::{base::*, calculator::*};
 use internal_comptime::{
-    AbilityLike, AdaptativeType, AttackType, Attrs, CHAMPION_INDEX_TO_ID, CHAMPION_NAME_TO_ID,
+    AbilityLike, AdaptativeType, AttackType, Attrs, CHAMPION_INDEX_TO_ID, ChampionId,
     DAMAGING_ITEMS, DAMAGING_RUNES, DamageType, INTERNAL_CHAMPIONS, INTERNAL_ITEMS, META_ITEMS,
     Position,
 };
@@ -395,7 +395,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
 
     let output_enemy = |player| {
         let InputEnemyPlayers {
-            champion_name: enemy_champion_name,
+            champion_id: enemy_champion_id,
             items: enemy_items,
             level: enemy_level,
             // #![todo]
@@ -403,16 +403,11 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
             // #![todo]
             stats: _enemy_stats,
         } = player;
-        let enemy_champion_id = CHAMPION_NAME_TO_ID.get(&enemy_champion_name).ok_or(
+        let enemy_champion_str_id = CHAMPION_INDEX_TO_ID[enemy_champion_id as usize];
+        let enemy_cache = INTERNAL_CHAMPIONS.get(enemy_champion_str_id).ok_or(
             CalculationError::ChampionCacheNotFound(format!(
                 "[enemy_players.into_par_iter()]: {}",
-                enemy_champion_name
-            )),
-        )?;
-        let enemy_cache = INTERNAL_CHAMPIONS.get(enemy_champion_id).ok_or(
-            CalculationError::ChampionCacheNotFound(format!(
-                "[enemy_players.into_par_iter()]: {}",
-                enemy_champion_id
+                enemy_champion_str_id
             )),
         )?;
         let enemy_base_stats = get_base_stats(enemy_cache, enemy_level);
@@ -471,10 +466,8 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
         ));
 
         Ok((
-            // *enemy_champion_id,
-            ChampionId::Aatrox,
+            enemy_champion_id,
             OutputEnemy {
-                champion_name: enemy_champion_name,
                 damages: CalculatorDamages {
                     abilities: abilities_damage,
                     items: items_damage,
@@ -497,7 +490,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
 
     let make_state = |tuple: (i8, i8)| {
         get_full_stats(
-            ("", 0, 1.0),
+            (ChampionId::Zyra, 0, 1.0),
             (
                 BasicStats {
                     armor: tuple.0 as f64,
