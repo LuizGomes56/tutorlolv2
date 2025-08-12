@@ -220,7 +220,7 @@ pub fn generator(_args: TokenStream, input: TokenStream) -> TokenStream {
         /// get!(mut "Q_MIN"); // mut ref
         /// ```
         macro_rules! get {
-            (($field1:ident, $field2:ident)) => {
+            ($field1:ident, $field2:ident) => {
                 paste::paste! {{
                     let key = AbilityLike::[<$field1>](AbilityName::$field2).[<to_str_ $field1:lower>]();
                     match abilities.get(key) {
@@ -231,7 +231,7 @@ pub fn generator(_args: TokenStream, input: TokenStream) -> TokenStream {
                     }
                 }}
             };
-            (mut ($field1:ident, $field2:ident)) => {
+            (mut $field1:ident, $field2:ident) => {
                 paste::paste! {{
                     let key = AbilityLike::[<$field1>](AbilityName::$field2).[<to_str_ $field1:lower>]();
                     match abilities.get_mut(key) {

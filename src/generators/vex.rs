@@ -4,14 +4,9 @@ use super::*;
 
 #[generator_macros::generator]
 pub fn gen_vex(data: CdnChampion) -> Champion {
-    ability!(q, (0, 0, "Q", Min));
-    ability!(w, (0, 0, "W", Min));
-    ability!(e, (0, 0, "E", Min));
-    ability!(
-        r,
-        (0, 0, "R_MINION", Min),
-        (2, 0, "R", Min),
-        (2, 1, "R_MAX", Max)
-    );
-    merge_ability!("R");
+    ability!(q, (0, 0, Void, Min));
+    ability!(w, (0, 0, Void, Min));
+    ability!(e, (0, 0, Void, Min));
+    ability!(r, (0, 0, Minion, Min), (2, 0, Void, Min), (2, 1, Max, Max));
+    merge_ability!((R, Void), (R, Max));
 }

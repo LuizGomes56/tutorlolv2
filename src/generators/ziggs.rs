@@ -4,23 +4,13 @@ use super::*;
 
 #[generator_macros::generator]
 pub fn gen_ziggs(data: CdnChampion) -> Champion {
-	ability!(
-		q,
-		(1, 0, "Q_0_1_0", Min)
-	);
-	ability!(
-		w,
-		(1, 0, "W_0_1_0", Min)
-	);
-	ability!(
-		e,
-		(1, 0, "E_0_1_0", Min),
-		(1, 1, "E_0_1_1_MAX", Max),
-		(1, 2, "E_0_1_2", Min)
-	);
-	ability!(
-		r,
-		(1, 0, "R_0_1_0", Min),
-		(1, 1, "R_0_1_1", Min)
-	);
+    ability!(q, (1, 0, _1Min, Min));
+    ability!(w, (1, 0, _1Min, Min));
+    ability!(
+        e,
+        (1, 0, _1Min, Min),
+        (1, 1, _2Max, Max),
+        (1, 2, _3Min, Min)
+    );
+    ability!(r, (1, 0, _1Min, Min), (1, 1, _2Min, Min));
 }

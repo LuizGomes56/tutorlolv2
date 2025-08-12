@@ -6,22 +6,14 @@ use super::*;
 pub fn gen_evelynn(data: CdnChampion) -> Champion {
     ability!(
         q,
-        (1, 0, "Q_0_1_0", Min),
-        (2, 0, "Q_0_2_0_BONUS", Min),
-        (2, 1, "Q_0_2_1_BONUS", Min),
-        (5, 0, "Q_0_5_0", Min),
-        (5, 1, "Q_0_5_1_MAX", Max),
-        (5, 2, "Q_0_5_2_MAX", Max)
+        (1, 0, _1Min, Min),
+        (2, 0, _2, Min),
+        (2, 1, _3, Min),
+        (5, 0, _4Min, Min),
+        (5, 1, _5Max, Max),
+        (5, 2, _6Max, Max)
     );
-    ability!(w, (2, 0, "W_0_2_0_BONUS", Min));
-    ability!(
-        e,
-        (0, 0, "E_0_0_0", Min),
-        (0, 0, "E_1_0_0", Min)
-    );
-    ability!(
-        r,
-        (0, 0, "R_0_0_0", Min),
-        (1, 0, "R_0_1_0", Min)
-    );
+    ability!(w, (2, 0, _1, Min));
+    ability!(e, (0, 0, _1Min, Min), (0, 0, _2Min, Min));
+    ability!(r, (0, 0, _1Min, Min), (1, 0, _2Min, Min));
 }

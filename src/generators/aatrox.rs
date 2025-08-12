@@ -7,8 +7,8 @@ use super::*;
 
 #[generator_macros::generator]
 pub fn gen_aatrox(data: CdnChampion) -> Champion {
-    passive!(None, (0, 0), Min, (None, Some("ENEMY_MAX_HEALTH")));
-    ability!(w, (0, 0, None, Min), (0, 1, Minion, Min), (2, 0, Max, Max));
+    passive!(Void, (0, 0), Min, (None, Some("ENEMY_MAX_HEALTH")));
+    ability!(w, (0, 0, Void, Min), (0, 1, Minion, Min), (2, 0, Max, Max));
     ability!(
         q,
         (2, 0, _1, Min),
@@ -18,14 +18,14 @@ pub fn gen_aatrox(data: CdnChampion) -> Champion {
         (5, 0, _3, Min),
         (5, 1, _3Max, Max)
     );
-    ability!(w, (0, 1, None, Min), (1, 0, Max, Max));
+    ability!(w, (0, 1, Void, Min), (1, 0, Max, Max));
 
     merge_ability!((Q, _1), (Q, _1Max));
     merge_ability!((Q, _2), (Q, _2Max));
     merge_ability!((Q, _3), (Q, _3Max));
-    merge_ability!((W, None), (W, Max));
+    merge_ability!((W, Void), (W, Max));
 
-    let default_ability = get!((Q, _1)).clone();
+    let default_ability = get!(Q, _1).clone();
 
     insert!(
         (Q, Max),

@@ -2,7 +2,7 @@
 
 pub use crate::model::dev::champions::{Ability, CdnChampion, Champion};
 use crate::setup::generators::{
-    champions::{Target, extract_ability_damage, extract_passive_damage},
+    champions::{extract_ability_damage, extract_passive_damage, Target},
     extractors::extract_scaled_values,
 };
 pub use internal_comptime::{AbilityLike, AbilityName, DamageType};

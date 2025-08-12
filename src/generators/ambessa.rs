@@ -11,7 +11,7 @@ pub fn gen_ambessa(data: CdnChampion) -> Champion {
         (0, 0, _2Max, Max),
         (0, 1, _2, Min)
     );
-    ability!(w, (0, 0, None, Min), (1, 0, Max, Max));
-    ability!(e, (0, 0, None, Min), (0, 1, Max, Max));
-    ability!(r, (0, 0, None, Min));
+    ability!(w, (0, 0, Void, Min), (1, 0, Max, Max));
+    ability!(e, (0, 0, Void, Min), (0, 1, Max, Max));
+    ability!(r, (0, 0, Void, Min));
 }

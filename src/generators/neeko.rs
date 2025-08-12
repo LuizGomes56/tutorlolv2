@@ -9,13 +9,13 @@ use super::*;
 pub fn gen_neeko(data: CdnChampion) -> Champion {
     ability!(
         q,
-        (0, 0, "Q", Min),
-        (1, 0, "Q_MONSTER", Min),
-        (2, 0, "Q1", Min),
-        (2, 1, "Q_MAX", Max)
+        (0, 0, Void, Min),
+        (1, 0, Monster, Min),
+        (2, 0, _1, Min),
+        (2, 1, _1Max, Max)
     );
-    ability!(w, (1, 0, "W", Min));
-    ability!(e, (0, 0, "E", Min));
-    ability!(r, (2, 0, "R", Min));
-    merge_ability!("Q");
+    ability!(w, (1, 0, Void, Min));
+    ability!(e, (0, 0, Void, Min));
+    ability!(r, (2, 0, Void, Min));
+    merge_ability!((Q, Void), (Q, Max));
 }

@@ -4,27 +4,17 @@ use super::*;
 
 #[generator_macros::generator]
 pub fn gen_sion(data: CdnChampion) -> Champion {
-	ability!(
-		q,
-		(0, 0, "Q_0_0_0_MAX", Max),
-		(0, 1, "Q_0_0_1_MAX", Max),
-		(0, 2, "Q_0_0_2_MIN", Min),
-		(3, 0, "Q_0_3_0_MAX", Max),
-		(3, 1, "Q_0_3_1_MNSTR", Min),
-		(3, 2, "Q_0_3_2_MIN", Min),
-		(3, 3, "Q_0_3_3_MNSTR", Min)
-	);
-	ability!(
-		w,
-		(3, 0, "W_0_3_0", Min)
-	);
-	ability!(
-		e,
-		(0, 0, "E_0_0_0", Min)
-	);
-	ability!(
-		r,
-		(2, 0, "R_0_2_0_MAX", Max),
-		(2, 1, "R_0_2_1_MIN", Min)
-	);
+    ability!(
+        q,
+        (0, 0, _1Max, Max),
+        (0, 1, _2Max, Max),
+        (0, 2, Minion1, Min),
+        (3, 0, _3Max, Max),
+        (3, 1, Monster1, Min),
+        (3, 2, Minion2, Min),
+        (3, 3, Monster2, Min)
+    );
+    ability!(w, (3, 0, _1Min, Min));
+    ability!(e, (0, 0, _1Min, Min));
+    ability!(r, (2, 0, _1Max, Max), (2, 1, Minion1, Min));
 }

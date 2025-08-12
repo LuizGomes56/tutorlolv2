@@ -4,8 +4,5 @@ use super::*;
 
 #[generator_macros::generator]
 pub fn gen_taric(data: CdnChampion) -> Champion {
-	ability!(
-		e,
-		(0, 0, "E_0_0_0", Min)
-	);
+    ability!(e, (0, 0, _1Min, Min));
 }

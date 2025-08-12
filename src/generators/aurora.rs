@@ -12,6 +12,6 @@ pub fn gen_aurora(data: CdnChampion) -> Champion {
         (1, 2, _2Max, Max),
         (1, 3, _3, Min)
     );
-    ability!(e, (0, 0, None, Min));
-    ability!(r, (0, 0, None, Min));
+    ability!(e, (0, 0, Void, Min));
+    ability!(r, (0, 0, Void, Min));
 }

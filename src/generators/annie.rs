@@ -4,8 +4,8 @@ use super::*;
 
 #[generator_macros::generator]
 pub fn gen_annie(data: CdnChampion) -> Champion {
-    ability!(q, (0, 0, None, Min));
-    ability!(w, (0, 0, None, Min));
-    ability!(e, (1, 0, None, Min));
-    ability!(r, (0, 0, None, Min));
+    ability!(q, (0, 0, Void, Min));
+    ability!(w, (0, 0, Void, Min));
+    ability!(e, (1, 0, Void, Min));
+    ability!(r, (0, 0, Void, Min));
 }

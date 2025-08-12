@@ -4,26 +4,16 @@ use super::*;
 
 #[generator_macros::generator]
 pub fn gen_pantheon(data: CdnChampion) -> Champion {
-	ability!(
-		q,
-		(4, 0, "Q_0_4_0", Min),
-		(4, 1, "Q_0_4_1", Min),
-		(4, 2, "Q_0_4_2_MAX", Max),
-		(4, 3, "Q_0_4_3_MAX", Max),
-		(5, 0, "Q_0_5_0_MAX", Max),
-		(5, 1, "Q_0_5_1", Min)
-	);
-	ability!(
-		w,
-		(0, 0, "W_0_0_0", Min)
-	);
-	ability!(
-		e,
-		(3, 0, "E_0_3_0", Min)
-	);
-	ability!(
-		r,
-		(3, 0, "R_0_3_0", Min),
-		(3, 1, "R_0_3_1", Min)
-	);
+    ability!(
+        q,
+        (4, 0, _1Min, Min),
+        (4, 1, _2Min, Min),
+        (4, 2, _3Max, Max),
+        (4, 3, _4Max, Max),
+        (5, 0, _5Max, Max),
+        (5, 1, _6Min, Min)
+    );
+    ability!(w, (0, 0, _1Min, Min));
+    ability!(e, (3, 0, _1Min, Min));
+    ability!(r, (3, 0, _1Min, Min), (3, 1, _2Min, Min));
 }

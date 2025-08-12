@@ -4,8 +4,5 @@ use super::*;
 
 #[generator_macros::generator]
 pub fn gen_zilean(data: CdnChampion) -> Champion {
-	ability!(
-		q,
-		(1, 0, "Q_0_1_0", Min)
-	);
+    ability!(q, (1, 0, _1Min, Min));
 }

@@ -4,20 +4,13 @@ use super::*;
 
 #[generator_macros::generator]
 pub fn gen_morgana(data: CdnChampion) -> Champion {
-	ability!(
-		q,
-		(0, 0, "Q_0_0_0", Min)
-	);
-	ability!(
-		w,
-		(0, 0, "W_0_0_0_MAX", Max),
-		(0, 1, "W_0_0_1_MAX", Max),
-		(0, 2, "W_0_0_2_MIN", Min),
-		(0, 3, "W_0_0_3_MAX", Max)
-	);
-	ability!(
-		r,
-		(0, 1, "R_0_0_1", Min),
-		(0, 2, "R_0_0_2_MAX", Max)
-	);
+    ability!(q, (0, 0, _1Min, Min));
+    ability!(
+        w,
+        (0, 0, _1Max, Max),
+        (0, 1, _2Max, Max),
+        (0, 2, Minion1, Min),
+        (0, 3, _3Max, Max)
+    );
+    ability!(r, (0, 1, _1Min, Min), (0, 2, _2Max, Max));
 }
