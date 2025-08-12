@@ -20,6 +20,7 @@ path = "tests.rs"
 
 
 [build-dependencies]
+internal_comptime = { path = "internal_comptime" }
 serde_json = "1.0.140"
 serde = { version = "1.0", features = ["derive"] }
 regex = "1.11.1"

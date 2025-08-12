@@ -23,12 +23,6 @@ fn main() {
 
     let maybe_run = vec![
         BuildArgs {
-            rerun_if_changed: &["build/generator_runner.rs"],
-            generated_files: &["generator_runner.rs"],
-            source_file: "build/generator_runner.rs",
-            function_name: Box::new(generator_runner),
-        },
-        BuildArgs {
             rerun_if_changed: &["build/meta_items.rs", "internal/meta_items.json"],
             generated_files: &["internal_meta.rs"],
             source_file: "build/meta_items.rs",
@@ -39,12 +33,6 @@ fn main() {
             generated_files: &["export_code.br", "comptime_exports/export_code.br"],
             source_file: "build/export_code.rs",
             function_name: Box::new(export_code),
-        },
-        BuildArgs {
-            rerun_if_changed: &["build/sprite_map.rs", "sprite/sprite.json"],
-            generated_files: &["sprite_map.br"],
-            source_file: "build/sprite_map.rs",
-            function_name: Box::new(generate_sprite_map),
         },
     ];
 

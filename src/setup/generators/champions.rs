@@ -1,15 +1,15 @@
 use super::*;
 use crate::{
-    generators,
     model::dev::{
-        champions::{Ability, CdnAbility, CdnChampion, Champion, Modifiers},
+        champions::{Ability, CdnAbility, CdnChampion, Modifiers},
         items::CdnItem,
     },
-    setup::essentials::helpers::{extract_file_name, read_json_file, write_to_file},
+    setup::{
+        essentials::helpers::{extract_file_name, read_json_file, write_to_file},
+        generators::generator_runner::try_run_generator,
+    },
 };
 use std::{collections::HashMap, path::Path};
-
-include!(concat!(env!("OUT_DIR"), "/generator_runner.rs"));
 
 /// Automatically updates every champion in the game. New champions, or big updates to existing
 /// champions will need to be rewritten over time. If an error occurs while trying to update a
