@@ -1,21 +1,15 @@
 use super::*;
 
-// #![auto_generated]
+// #![preserve]
 
 #[generator_macros::generator]
 pub fn gen_olaf(data: CdnChampion) -> Champion {
-	ability!(
-		q,
-		(0, 0, "Q_0_0_0", Target::MINIMUM),
-		(3, 0, "Q_0_3_0_MNSTR", Target::MINIMUM),
-		(3, 1, "Q_0_3_1_MNSTR", Target::MINIMUM)
-	);
-	ability!(
-		e,
-		(0, 0, "E_0_0_0", Target::MINIMUM)
-	);
-	ability!(
-		r,
-		(0, 0, "R_0_0_0_BONUS", Target::MINIMUM)
-	);
+    ability!(
+        q,
+        (0, 0, _1Min, Min),
+        (3, 0, Monster1, Min),
+        (3, 1, Monster2, Min)
+    );
+    ability!(e, (0, 0, _1Min, Min));
+    ability!(r, (0, 0, _1, Min));
 }

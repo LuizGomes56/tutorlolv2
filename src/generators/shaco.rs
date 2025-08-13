@@ -1,30 +1,23 @@
 use super::*;
 
-// #![auto_generated]
+// #![preserve]
 
 #[generator_macros::generator]
 pub fn gen_shaco(data: CdnChampion) -> Champion {
-	ability!(
-		q,
-		(1, 0, "Q_0_1_0_BONUS", Target::MINIMUM)
-	);
-	ability!(
-		w,
-		(1, 0, "W_0_1_0_MNSTR", Target::MINIMUM),
-		(1, 1, "W_0_1_1_MAX", Target::MAXIMUM),
-		(1, 2, "W_0_1_2_MNSTR", Target::MINIMUM),
-		(1, 3, "W_0_1_3", Target::MINIMUM),
-		(1, 4, "W_0_1_4_MNSTR", Target::MINIMUM)
-	);
-	ability!(
-		e,
-		(0, 0, "E_0_0_0_MAX", Target::MAXIMUM),
-		(0, 1, "E_0_0_1", Target::MINIMUM)
-	);
-	ability!(
-		r,
-		(3, 0, "R_0_3_0_MAX", Target::MAXIMUM),
-		(3, 1, "R_0_3_1", Target::MINIMUM),
-		(4, 0, "R_0_4_0", Target::MINIMUM)
-	);
+    ability!(q, (1, 0, _1, Min));
+    ability!(
+        w,
+        (1, 0, Monster1, Min),
+        (1, 1, _1Max, Max),
+        (1, 2, Monster2, Min),
+        (1, 3, _2Min, Min),
+        (1, 4, Monster3, Min)
+    );
+    ability!(e, (0, 0, _1Max, Max), (0, 1, _2Min, Min));
+    ability!(
+        r,
+        (3, 0, _1Max, Max),
+        (3, 1, _2Min, Min),
+        (4, 0, _3Min, Min)
+    );
 }

@@ -1,13 +1,9 @@
 #![allow(unreachable_code, unused_variables)]
 use super::*;
-use crate::{
-    CHAMPION_NAME_TO_ID, DAMAGING_ITEMS, DAMAGING_RUNES, INTERNAL_CHAMPIONS, INTERNAL_ITEMS,
-    META_ITEMS,
-    model::{
-        base::*,
-        cache::{AdaptativeType, AttackType, Attrs, DamageType, Position},
-        calculator::*,
-    },
+use crate::model::{base::*, calculator::*};
+use internal_comptime::{
+    AbilityLike, AdaptativeType, AttackType, Attrs, ChampionId, DAMAGING_ITEMS, DAMAGING_RUNES,
+    DamageType, INTERNAL_CHAMPIONS, INTERNAL_ITEMS, ItemId, META_ITEMS, Position, RuneId,
 };
 use smallvec::SmallVec;
 use tinyset::SetU32;
@@ -21,7 +17,7 @@ fn infer_champion_stats(
     active_player: &InputActivePlayer,
     base_stats: BasicStats,
     dragon_mod: DragonMultipliers,
-) -> Result<BasicStats, CalculationError> {
+) -> BasicStats {
     let stacks = active_player.stacks as f64;
     let owned_items = &active_player.items;
 
@@ -29,41 +25,39 @@ fn infer_champion_stats(
     let mut magic_penetration = SmallVec::<[f64; 4]>::with_capacity(4);
 
     for item_id in owned_items {
-        let cached_item = INTERNAL_ITEMS
-            .get(&item_id)
-            .ok_or_else(|| CalculationError::ItemCacheNotFound(*item_id))?;
+        if let Some(cached_item) = INTERNAL_ITEMS.get(&item_id.to_u32()) {
+            let item_stats = &cached_item.stats;
 
-        let item_stats = &cached_item.stats;
+            macro_rules! add_stat {
+                ($field:ident) => {
+                    stats.$field += item_stats.$field;
+                };
+                ($field:ident, $field2:ident) => {
+                    stats.$field += item_stats.$field2;
+                };
+                (@$mul:ident $field:ident) => {
+                    stats.$field += dragon_mod.$mul * item_stats.$field;
+                };
+                (@$mul:ident $field:ident, $field2:ident) => {
+                    stats.$field += dragon_mod.$mul * item_stats.$field2;
+                };
+            }
 
-        macro_rules! add_stat {
-            ($field:ident) => {
-                stats.$field += item_stats.$field;
-            };
-            ($field:ident, $field2:ident) => {
-                stats.$field += item_stats.$field2;
-            };
-            (@$mul:ident $field:ident) => {
-                stats.$field += dragon_mod.$mul * item_stats.$field;
-            };
-            (@$mul:ident $field:ident, $field2:ident) => {
-                stats.$field += dragon_mod.$mul * item_stats.$field2;
-            };
+            add_stat!(@fire ability_power);
+            add_stat!(@fire attack_damage);
+            add_stat!(@earth armor);
+            add_stat!(@earth magic_resist, magic_resistance);
+            add_stat!(max_health, health);
+            add_stat!(crit_chance, critical_strike_chance);
+            add_stat!(crit_damage, critical_strike_damage);
+            add_stat!(max_mana, mana);
+            add_stat!(attack_speed);
+            add_stat!(current_mana, mana);
+            add_stat!(current_health, health);
+
+            armor_penetration.push(item_stats.armor_penetration_percent);
+            magic_penetration.push(item_stats.magic_penetration_percent);
         }
-
-        add_stat!(@fire ability_power);
-        add_stat!(@fire attack_damage);
-        add_stat!(@earth armor);
-        add_stat!(@earth magic_resist, magic_resistance);
-        add_stat!(max_health, health);
-        add_stat!(crit_chance, critical_strike_chance);
-        add_stat!(crit_damage, critical_strike_damage);
-        add_stat!(max_mana, mana);
-        add_stat!(attack_speed);
-        add_stat!(current_mana, mana);
-        add_stat!(current_health, health);
-
-        armor_penetration.push(item_stats.armor_penetration_percent);
-        magic_penetration.push(item_stats.magic_penetration_percent);
     }
 
     stats.crit_chance = stats.crit_chance.clamp(0.0, 100.0);
@@ -84,20 +78,15 @@ fn infer_champion_stats(
     // Depend on bonus stats, that has to be evaluated later
     for item_id in owned_items {
         match item_id {
-            // Overlord's Bloodmail
-            2501 | 222501 => stats.attack_damage += 0.025 * (bonus_stats.health + 500.0),
-            // Archangel's Staff
-            3003 | 223003 => stats.ability_power += 0.01 * bonus_stats.mana,
-            // Manamune | Muramana
-            3004 | 3042 | 223004 | 223042 => stats.attack_damage += 0.025 * bonus_stats.mana,
-            // Seraph's Embrace
-            3040 | 223040 => stats.ability_power += 0.02 * bonus_stats.mana,
-            // Winter's Approach
-            3119 | 223119 => stats.max_health += 0.15 * (bonus_stats.health + 500.0),
-            // Fimbulwinter
-            3121 | 223121 => stats.max_health += 0.15 * (bonus_stats.health + 860.0),
-            // Riftmaker | Demonic Embrace
-            4633 | 4637 | 224633 | 224637 => {
+            ItemId::OverlordsBloodmail => {
+                stats.attack_damage += 0.025 * (bonus_stats.health + 500.0)
+            }
+            ItemId::ArchangelsStaff => stats.ability_power += 0.01 * bonus_stats.mana,
+            ItemId::Manamune | ItemId::Muramana => stats.attack_damage += 0.025 * bonus_stats.mana,
+            ItemId::SeraphsEmbrace => stats.ability_power += 0.02 * bonus_stats.mana,
+            ItemId::WintersApproach => stats.max_health += 0.15 * (bonus_stats.health + 500.0),
+            ItemId::Fimbulwinter => stats.max_health += 0.15 * (bonus_stats.health + 860.0),
+            ItemId::Riftmaker | ItemId::DemonicEmbrace => {
                 stats.ability_power += 0.02 * (bonus_stats.health + stats.max_health)
             }
             _ => {}
@@ -106,22 +95,22 @@ fn infer_champion_stats(
 
     // #![manual_impl]
     // #![todo] Create exception file that is generated automatically
-    match active_player.champion_id.as_str() {
-        "Veigar" => stats.ability_power += stacks,
-        "Chogath" => {
+    match active_player.champion_id {
+        ChampionId::Veigar => stats.ability_power += stacks,
+        ChampionId::Chogath => {
             stats.max_health += stacks * 80.0 + 40.0 * active_player.abilities.r.clamp(0, 3) as f64;
         }
-        "Sion" => stats.max_health += stacks,
-        "Darius" => {
+        ChampionId::Sion => stats.max_health += stacks,
+        ChampionId::Darius => {
             armor_penetration.push(15.0 + 5.0 * active_player.abilities.e as f64);
         }
-        "Pantheon" => {
+        ChampionId::Pantheon => {
             armor_penetration.push(10.0 * active_player.abilities.r as f64);
         }
-        "Nilah" => {
+        ChampionId::Nilah => {
             armor_penetration.push(stats.crit_chance / 3.0);
         }
-        "Mordekaiser" => {
+        ChampionId::Mordekaiser => {
             magic_penetration.push(2.5 + 2.5 * active_player.abilities.e as f64);
         }
         _ => {}
@@ -130,14 +119,14 @@ fn infer_champion_stats(
     stats.armor_penetration_percent = RiotFormulas::percent_value(armor_penetration);
     stats.magic_penetration_percent = RiotFormulas::percent_value(magic_penetration);
 
-    Ok(bonus_stats)
+    bonus_stats
 }
 
 // #![manual_impl]
 // #![unsupported]
 fn rune_exceptions(
     champion_stats: &mut Stats,
-    owned_runes: &[u32],
+    owned_runes: &[RuneId],
     level: f64,
     value_types: (AdaptativeType, AttackType),
     // exception_map: &FxHashMap<u32, u32>,
@@ -146,7 +135,7 @@ fn rune_exceptions(
     let this_stack = 0x0000;
     for rune in owned_runes {
         // let this_stack = *exception_map.get(&rune).unwrap_or(&0);
-        match rune {
+        match rune.to_u32() {
             // Lethal Tempo
             8008 => match value_types.1 {
                 AttackType::Melee => {
@@ -235,7 +224,7 @@ fn rune_exceptions(
 // #![unsupported]
 fn item_exceptions(
     champion_stats: &mut Stats,
-    owned_items: &[u32],
+    owned_items: &[ItemId],
     // exception_map: &FxHashMap<u32, u32>,
 ) {
     return;
@@ -243,16 +232,13 @@ fn item_exceptions(
     for item_id in owned_items {
         // let this_stack = *exception_map.get(&item_id).unwrap_or(&0);
         match item_id {
-            // Dark Seal
-            1082 => champion_stats.ability_power += (this_stack.max(1) << 2) as f64,
-            // Mejai's Soulstealer
-            3041 => champion_stats.ability_power += (5 * this_stack.max(1)) as f64,
-            // Rabadon's Deathcap
-            3089 | 223089 => champion_stats.ability_power *= 1.3,
-            // Hubris
-            6697 | 7008 => champion_stats.attack_damage += (15 + this_stack.max(1) << 1) as f64,
-            // Wooglet's Witchcap
-            8002 => champion_stats.ability_power *= 1.5,
+            ItemId::DarkSeal => champion_stats.ability_power += (this_stack.max(1) << 2) as f64,
+            ItemId::MejaisSoulstealer => {
+                champion_stats.ability_power += (5 * this_stack.max(1)) as f64
+            }
+            ItemId::RabadonsDeathcap => champion_stats.ability_power *= 1.3,
+            ItemId::Hubris => champion_stats.attack_damage += (15 + this_stack.max(1) << 1) as f64,
+            ItemId::WoogletsWitchcap => champion_stats.ability_power *= 1.5,
             _ => {}
         }
     }
@@ -273,7 +259,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
 
     let InputActivePlayer {
         level: current_player_level,
-        champion_id: ref current_player_champion_id,
+        champion_id: current_player_champion_id,
         abilities: current_player_abilities,
         champion_stats: current_player_input_stats,
         runes: ref current_player_full_runes,
@@ -284,22 +270,25 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
 
     let current_player_damaging_items = current_player_full_items
         .into_iter()
-        .filter(|item_id| DAMAGING_ITEMS.contains(item_id))
-        .copied()
+        .filter_map(|item_id| {
+            DAMAGING_ITEMS
+                .contains(&item_id.to_u32())
+                .then_some(*item_id as u32)
+        })
         .collect::<SetU32>();
 
     let current_player_damaging_runes = current_player_full_runes
         .into_iter()
-        .filter(|rune_id| DAMAGING_RUNES.contains(rune_id))
-        .copied()
+        .filter_map(|rune_id| {
+            DAMAGING_RUNES
+                .contains(&rune_id.to_u32())
+                .then_some(*rune_id as u32)
+        })
         .collect::<SetU32>();
 
-    let current_player_cache = INTERNAL_CHAMPIONS.get(current_player_champion_id).ok_or(
-        CalculationError::ChampionCacheNotFound(format!(
-            "[INTERNAL_CHAMPIONS]: {}",
-            current_player_champion_id
-        )),
-    )?;
+    let current_player_cache = INTERNAL_CHAMPIONS
+        .get(current_player_champion_id as usize)
+        .ok_or(CalculationError::ChampionCacheNotFound)?;
 
     let mut current_player_stats = if current_player_infer_stats {
         RiotFormulas::full_base_stats(&current_player_cache.stats, current_player_level)
@@ -328,7 +317,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
             &active_player,
             current_player_base_stats,
             ally_dragon_multipliers,
-        )?
+        )
     } else {
         get_bonus_stats(current_player_basic_stats, current_player_base_stats)
     };
@@ -338,7 +327,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
 
     item_exceptions(
         &mut current_player_stats,
-        current_player_full_items,
+        current_player_full_items.as_slice(),
         // &stack_exceptions,
     );
 
@@ -349,14 +338,14 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
 
     rune_exceptions(
         &mut current_player_stats,
-        &current_player_full_runes,
+        &current_player_full_runes.as_slice(),
         current_player_level as f64,
         (adaptative_type, current_player_attack_type),
         // &stack_exceptions,
     );
 
     let current_player_recommended_items = META_ITEMS
-        .get(&current_player_champion_id)
+        .get(current_player_champion_id as usize)
         .and_then(|meta_items| {
             current_player_cache
                 .positions
@@ -396,7 +385,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
 
     let output_enemy = |player| {
         let InputEnemyPlayers {
-            champion_name: enemy_champion_name,
+            champion_id: enemy_champion_id,
             items: enemy_items,
             level: enemy_level,
             // #![todo]
@@ -404,18 +393,9 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
             // #![todo]
             stats: _enemy_stats,
         } = player;
-        let enemy_champion_id = CHAMPION_NAME_TO_ID.get(&enemy_champion_name).ok_or(
-            CalculationError::ChampionCacheNotFound(format!(
-                "[enemy_players.into_par_iter()]: {}",
-                enemy_champion_name
-            )),
-        )?;
-        let enemy_cache = INTERNAL_CHAMPIONS.get(enemy_champion_id).ok_or(
-            CalculationError::ChampionCacheNotFound(format!(
-                "[enemy_players.into_par_iter()]: {}",
-                enemy_champion_id
-            )),
-        )?;
+        let enemy_cache = INTERNAL_CHAMPIONS
+            .get(enemy_champion_id as usize)
+            .ok_or(CalculationError::ChampionCacheNotFound)?;
         let enemy_base_stats = get_base_stats(enemy_cache, enemy_level);
         let full_stats = get_full_stats(
             (
@@ -463,7 +443,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
         );
 
         abilities_damage.push((
-            "O",
+            AbilityLike::O,
             InstanceDamage {
                 damage_type: DamageType::Mixed,
                 minimum_damage: onhit_effects.minimum_damage,
@@ -472,9 +452,8 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
         ));
 
         Ok((
-            *enemy_champion_id,
+            enemy_champion_id,
             OutputEnemy {
-                champion_name: enemy_champion_name,
                 damages: CalculatorDamages {
                     abilities: abilities_damage,
                     items: items_damage,
@@ -493,11 +472,11 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
     let enemies = enemy_players
         .into_iter()
         .map(output_enemy)
-        .collect::<Result<SmallVec<[(&'static str, OutputEnemy); 1]>, CalculationError>>()?;
+        .collect::<Result<SmallVec<[(_, OutputEnemy); 1]>, CalculationError>>()?;
 
     let make_state = |tuple: (i8, i8)| {
         get_full_stats(
-            ("", 0, 1.0),
+            (ChampionId::Zyra, 0, 1.0),
             (
                 BasicStats {
                     armor: tuple.0 as f64,
@@ -532,13 +511,12 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
                     damage_mod: (monster_state.2.armor_mod, monster_state.2.magic_mod),
                 };
                 let damage_mod = get_damage_multipliers(&damage_multipliers, dmg_expr.damage_type);
-                let first_char = ability_name.chars().next().unwrap_or_default();
-                let ability_level = match first_char {
-                    'P' => current_player_level,
-                    'Q' => current_player_abilities.q,
-                    'W' => current_player_abilities.w,
-                    'E' => current_player_abilities.e,
-                    'R' => current_player_abilities.r,
+                let ability_level = match ability_name {
+                    AbilityLike::P(_) => current_player_level,
+                    AbilityLike::Q(_) => current_player_abilities.q,
+                    AbilityLike::W(_) => current_player_abilities.w,
+                    AbilityLike::E(_) => current_player_abilities.e,
+                    AbilityLike::R(_) => current_player_abilities.r,
                     _ => 0,
                 };
                 let minimum_damage =

@@ -1,24 +1,11 @@
 use super::*;
 
-// #![auto_generated]
+// #![preserve]
 
 #[generator_macros::generator]
 pub fn gen_vi(data: CdnChampion) -> Champion {
-	ability!(
-		q,
-		(1, 0, "Q_0_1_0_MAX", Target::MAXIMUM),
-		(1, 1, "Q_0_1_1_MIN", Target::MINIMUM)
-	);
-	ability!(
-		w,
-		(1, 0, "W_0_1_0_BONUS", Target::MINIMUM)
-	);
-	ability!(
-		e,
-		(0, 0, "E_0_0_0", Target::MINIMUM)
-	);
-	ability!(
-		r,
-		(0, 0, "R_0_0_0", Target::MINIMUM)
-	);
+    ability!(q, (1, 0, _1Max, Max), (1, 1, Minion1, Min));
+    ability!(w, (1, 0, _1, Min));
+    ability!(e, (0, 0, _1Min, Min));
+    ability!(r, (0, 0, _1Min, Min));
 }

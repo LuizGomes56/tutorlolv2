@@ -1,22 +1,16 @@
 use super::*;
 
-// #![auto_generated]
+// #![preserve]
 
 #[generator_macros::generator]
 pub fn gen_jinx(data: CdnChampion) -> Champion {
-	ability!(
-		w,
-		(0, 0, "W_0_0_0", Target::MINIMUM)
-	);
-	ability!(
-		e,
-		(0, 0, "E_0_0_0", Target::MINIMUM)
-	);
-	ability!(
-		r,
-		(1, 0, "R_0_1_0_MAX", Target::MAXIMUM),
-		(1, 1, "R_0_1_1_MIN", Target::MINIMUM),
-		(2, 0, "R_0_2_0_MAX", Target::MAXIMUM),
-		(2, 1, "R_0_2_1_MIN", Target::MINIMUM)
-	);
+    ability!(w, (0, 0, _1Min, Min));
+    ability!(e, (0, 0, _1Min, Min));
+    ability!(
+        r,
+        (1, 0, _1Max, Max),
+        (1, 1, Minion1, Min),
+        (2, 0, _2Max, Max),
+        (2, 1, Minion2, Min)
+    );
 }

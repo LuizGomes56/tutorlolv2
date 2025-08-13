@@ -1,23 +1,17 @@
 use super::*;
 
-// #![auto_generated]
+// #![preserve]
 
 #[generator_macros::generator]
 pub fn gen_katarina(data: CdnChampion) -> Champion {
-	ability!(
-		q,
-		(0, 0, "Q_0_0_0", Target::MINIMUM)
-	);
-	ability!(
-		e,
-		(0, 0, "E_0_0_0", Target::MINIMUM)
-	);
-	ability!(
-		r,
-		(0, 0, "R_0_0_0", Target::MINIMUM),
-		(0, 1, "R_0_0_1_MAX", Target::MAXIMUM),
-		(0, 2, "R_0_0_2_MAX", Target::MAXIMUM),
-		(0, 3, "R_0_0_3", Target::MINIMUM),
-		(0, 4, "R_0_0_4", Target::MINIMUM)
-	);
+    ability!(q, (0, 0, _1Min, Min));
+    ability!(e, (0, 0, _1Min, Min));
+    ability!(
+        r,
+        (0, 0, _1Min, Min),
+        (0, 1, _2Max, Max),
+        (0, 2, _3Max, Max),
+        (0, 3, _4Min, Min),
+        (0, 4, _5Min, Min)
+    );
 }

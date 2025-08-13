@@ -1,30 +1,27 @@
 use super::*;
 
-// #![auto_generated]
+// #![preserve]
 
 #[generator_macros::generator]
 pub fn gen_gwen(data: CdnChampion) -> Champion {
-	ability!(
-		q,
-		(0, 0, "Q_0_0_0", Target::MINIMUM),
-		(0, 1, "Q_0_0_1", Target::MINIMUM),
-		(0, 2, "Q_0_0_2", Target::MINIMUM),
-		(0, 3, "Q_0_0_3", Target::MINIMUM),
-		(1, 0, "Q_0_1_0_MAX", Target::MAXIMUM),
-		(1, 1, "Q_0_1_1_MAX", Target::MAXIMUM),
-		(1, 2, "Q_0_1_2_MIN", Target::MINIMUM),
-		(1, 3, "Q_0_1_3_MIN", Target::MINIMUM)
-	);
-	ability!(
-		e,
-		(0, 1, "E_0_0_1_BONUS", Target::MINIMUM)
-	);
-	ability!(
-		r,
-		(0, 0, "R_0_0_0", Target::MINIMUM),
-		(0, 1, "R_0_0_1", Target::MINIMUM),
-		(3, 0, "R_0_3_0_MAX", Target::MAXIMUM),
-		(3, 1, "R_0_3_1_MAX", Target::MAXIMUM),
-		(3, 2, "R_0_3_2_MAX", Target::MAXIMUM)
-	);
+    ability!(
+        q,
+        (0, 0, _1Min, Min),
+        (0, 1, _2Min, Min),
+        (0, 2, _3Min, Min),
+        (0, 3, _4Min, Min),
+        (1, 0, _5Max, Max),
+        (1, 1, _6Max, Max),
+        (1, 2, Minion1, Min),
+        (1, 3, Minion2, Min)
+    );
+    ability!(e, (0, 1, _1, Min));
+    ability!(
+        r,
+        (0, 0, _1Min, Min),
+        (0, 1, _2Min, Min),
+        (3, 0, _3Max, Max),
+        (3, 1, _4Max, Max),
+        (3, 2, _5Max, Max)
+    );
 }

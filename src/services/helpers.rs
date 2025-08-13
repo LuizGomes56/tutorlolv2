@@ -1,15 +1,12 @@
 use super::riot_formulas::RiotFormulas;
 use crate::{
-    BASIC_ATTACK, CRITICAL_STRIKE, DAMAGING_ITEMS, DAMAGING_RUNES, INTERNAL_ITEMS, INTERNAL_RUNES,
-    SIMULATED_ITEMS, SIZE_DAMAGING_RUNES, SIZE_SIMULATED_ITEMS,
-    model::{
-        SIZE_ABILITIES, SIZE_ITEMS_EXPECTED,
-        base::*,
-        cache::{
-            AdaptativeType, AttackType, Attrs, CachedChampion, CachedItem, DamageType, EvalContext,
-            zero,
-        },
-    },
+    BASIC_ATTACK, CRITICAL_STRIKE, INTERNAL_ITEMS, INTERNAL_RUNES, SIMULATED_ITEMS,
+    SIZE_DAMAGING_RUNES, SIZE_SIMULATED_ITEMS,
+    model::{SIZE_ABILITIES, SIZE_ITEMS_EXPECTED, base::*},
+};
+use internal_comptime::{
+    AbilityLike, AdaptativeType, AttackType, Attrs, CachedChampion, CachedItem, ChampionId,
+    DamageExpression, DamageType, EvalContext, ItemId, RuneId, zero,
 };
 use smallvec::SmallVec;
 use tinyset::SetU32;
@@ -29,16 +26,16 @@ pub fn get_simulated_champion_stats<'a>(
     current_stats: &Stats,
     owned_items: &SetU32,
     ally_dragon_multipliers: &DragonMultipliers,
-) -> SmallVec<[(u32, Stats); SIZE_SIMULATED_ITEMS]> {
+) -> SmallVec<[(ItemId, Stats); SIZE_SIMULATED_ITEMS]> {
     let mut simulated_stats =
-        SmallVec::<[(u32, Stats); SIZE_SIMULATED_ITEMS]>::with_capacity(SIZE_SIMULATED_ITEMS);
+        SmallVec::<[(ItemId, Stats); SIZE_SIMULATED_ITEMS]>::with_capacity(SIZE_SIMULATED_ITEMS);
     for item_id in SIMULATED_ITEMS.iter() {
         if owned_items.contains(*item_id) {
             continue;
         }
         if let Some(item) = INTERNAL_ITEMS.get(item_id) {
             simulated_stats.push((
-                *item_id,
+                ItemId::from_u32(*item_id),
                 simulate_champion_stats(item, *current_stats, ally_dragon_multipliers),
             ));
         }
@@ -93,26 +90,24 @@ pub fn simulate_champion_stats(
 pub fn get_items_damage(
     current_player_damaging_items: &SetU32,
     attack_type: AttackType,
-) -> SmallVec<[(u32, DamageExpression); SIZE_ITEMS_EXPECTED]> {
+) -> SmallVec<[(ItemId, DamageExpression); SIZE_ITEMS_EXPECTED]> {
     let mut result = SmallVec::with_capacity(current_player_damaging_items.len());
     for item_id in current_player_damaging_items.iter() {
-        if DAMAGING_ITEMS.contains(&item_id) {
-            if let Some(item) = INTERNAL_ITEMS.get(&item_id) {
-                let item_damage = match attack_type {
-                    AttackType::Ranged => &item.ranged,
-                    AttackType::Melee => &item.melee,
-                };
-                result.push((
-                    item_id,
-                    DamageExpression {
-                        level: 0,
-                        attributes: item.attributes,
-                        damage_type: item.damage_type.unwrap_or_default(),
-                        minimum_damage: item_damage.minimum_damage,
-                        maximum_damage: item_damage.maximum_damage,
-                    },
-                ));
-            }
+        if let Some(item) = INTERNAL_ITEMS.get(&item_id) {
+            let item_damage = match attack_type {
+                AttackType::Ranged => &item.ranged,
+                AttackType::Melee => &item.melee,
+            };
+            result.push((
+                ItemId::from_u32(item_id),
+                DamageExpression {
+                    level: 0,
+                    attributes: item.attributes,
+                    damage_type: item.damage_type.unwrap_or_default(),
+                    minimum_damage: item_damage.minimum_damage,
+                    maximum_damage: item_damage.maximum_damage,
+                },
+            ));
         }
     }
     result
@@ -121,33 +116,31 @@ pub fn get_items_damage(
 pub fn get_runes_damage(
     current_player_damaging_runes: &SetU32,
     attack_type: AttackType,
-) -> SmallVec<[(u32, DamageExpression); SIZE_DAMAGING_RUNES]> {
+) -> SmallVec<[(RuneId, DamageExpression); SIZE_DAMAGING_RUNES]> {
     let mut result = SmallVec::with_capacity(current_player_damaging_runes.len());
     for rune_id in current_player_damaging_runes.iter() {
-        if DAMAGING_RUNES.contains(&rune_id) {
-            if let Some(rune) = INTERNAL_RUNES.get(&rune_id) {
-                let minimum_damage = match attack_type {
-                    AttackType::Ranged => rune.ranged,
-                    AttackType::Melee => rune.melee,
-                };
-                result.push((
-                    rune_id,
-                    DamageExpression {
-                        level: 0,
-                        attributes: Attrs::None,
-                        damage_type: rune.damage_type,
-                        minimum_damage,
-                        maximum_damage: zero,
-                    },
-                ));
-            }
+        if let Some(rune) = INTERNAL_RUNES.get(&rune_id) {
+            let minimum_damage = match attack_type {
+                AttackType::Ranged => rune.ranged,
+                AttackType::Melee => rune.melee,
+            };
+            result.push((
+                RuneId::from_u32(rune_id),
+                DamageExpression {
+                    level: 0,
+                    attributes: Attrs::None,
+                    damage_type: rune.damage_type,
+                    minimum_damage,
+                    maximum_damage: zero,
+                },
+            ));
         }
     }
     result
 }
 
 pub fn get_full_stats(
-    enemy_state: (&str, u8, f64),
+    enemy_state: (ChampionId, u8, f64),
     enemy_stats: (BasicStats, &[u32]),
     armor_val: (f64, f64),
     magic_val: (f64, f64),
@@ -174,11 +167,11 @@ pub fn get_full_stats(
     let (self_physical_mod, self_magic_mod, self_true_mod, self_global_mod) = (1.0, 1.0, 1.0, 1.0);
 
     match enemy_champion_id {
-        "Kassadin" => {
+        ChampionId::Kassadin => {
             // #![manual_impl]
             enemy_magic_mod -= 0.1;
         }
-        "Ornn" => {
+        ChampionId::Ornn => {
             // Starts game with +10% armor/mr/hp already
             // After level 13, player will start upgrading items
             // At level 18, the maximum bonus must have been reached
@@ -199,7 +192,7 @@ pub fn get_full_stats(
             assign_value!(magic_resist);
             assign_value!(health);
         }
-        "Malphite" => {
+        ChampionId::Malphite => {
             // W upgrade pattern for malphite by 06/07/2025
             // #![manual_impl]
             let malphite_resist_multiplier: f64 = match enemy_level {
@@ -273,16 +266,15 @@ pub fn get_abilities_damage(
     current_player_cache: &&CachedChampion,
     current_player_level: u8,
     abilities: AbilityLevels,
-) -> SmallVec<[(&'static str, DamageExpression); SIZE_ABILITIES]> {
+) -> SmallVec<[(AbilityLike, DamageExpression); SIZE_ABILITIES]> {
     let mut result = SmallVec::with_capacity(current_player_cache.abilities.len() + 2);
     for (key, value) in current_player_cache.abilities.iter() {
-        let first_char = key.chars().next().unwrap();
-        let level = match first_char {
-            'P' => current_player_level,
-            'Q' => abilities.q,
-            'W' => abilities.w,
-            'E' => abilities.e,
-            'R' => abilities.r,
+        let level = match key {
+            AbilityLike::P(_) => current_player_level,
+            AbilityLike::Q(_) => abilities.q,
+            AbilityLike::W(_) => abilities.w,
+            AbilityLike::E(_) => abilities.e,
+            AbilityLike::R(_) => abilities.r,
             _ => continue,
         };
         result.push((
@@ -297,8 +289,8 @@ pub fn get_abilities_damage(
         ));
     }
 
-    result.push(("A", BASIC_ATTACK));
-    result.push(("C", CRITICAL_STRIKE));
+    result.push((AbilityLike::A, BASIC_ATTACK));
+    result.push((AbilityLike::C, CRITICAL_STRIKE));
     result
 }
 

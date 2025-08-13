@@ -1,21 +1,10 @@
 use super::*;
 
-// #![auto_generated]
+// #![preserve]
 
 #[generator_macros::generator]
 pub fn gen_thresh(data: CdnChampion) -> Champion {
-	ability!(
-		q,
-		(2, 0, "Q_0_2_0", Target::MINIMUM)
-	);
-	ability!(
-		e,
-		(0, 0, "E_0_0_0", Target::MINIMUM),
-		(1, 0, "E_0_1_0_BONUS", Target::MINIMUM),
-		(1, 1, "E_0_1_1_BONUS", Target::MINIMUM)
-	);
-	ability!(
-		r,
-		(0, 0, "R_0_0_0", Target::MINIMUM)
-	);
+    ability!(q, (2, 0, _1Min, Min));
+    ability!(e, (0, 0, _1Min, Min), (1, 0, _2, Min), (1, 1, _3, Min));
+    ability!(r, (0, 0, _1Min, Min));
 }

@@ -1,28 +1,24 @@
 use super::*;
 
-// #![auto_generated]
+// #![preserve]
 
 #[generator_macros::generator]
 pub fn gen_heimerdinger(data: CdnChampion) -> Champion {
-	ability!(
-		w,
-		(0, 0, "W_0_0_0", Target::MINIMUM),
-		(1, 0, "W_0_1_0_MAX", Target::MAXIMUM),
-		(1, 1, "W_0_1_1_MAX", Target::MAXIMUM),
-		(1, 2, "W_0_1_2", Target::MINIMUM),
-		(1, 3, "W_0_1_3", Target::MINIMUM),
-		(1, 4, "W_0_1_4_MAX", Target::MAXIMUM),
-		(1, 5, "W_0_1_5_MAX", Target::MAXIMUM),
-		(0, 0, "W_1_0_0_MAX", Target::MAXIMUM),
-		(0, 1, "W_1_0_1_MAX", Target::MAXIMUM),
-		(0, 2, "W_1_0_2", Target::MINIMUM),
-		(0, 3, "W_1_0_3", Target::MINIMUM),
-		(0, 4, "W_1_0_4", Target::MINIMUM),
-		(2, 0, "W_1_2_0", Target::MINIMUM)
-	);
-	ability!(
-		e,
-		(0, 0, "E_0_0_0", Target::MINIMUM),
-		(2, 0, "E_1_2_0", Target::MINIMUM)
-	);
+    ability!(
+        w,
+        (0, 0, _1, Min),
+        (1, 0, _1Max, Max),
+        (1, 1, _2Max, Max),
+        (1, 2, _2, Min),
+        (1, 3, _3, Min),
+        (1, 4, _3Max, Max),
+        (1, 5, _4Max, Max),
+        (0, 0, _5Max, Max),
+        (0, 1, _6Max, Max),
+        (0, 2, _4, Min),
+        (0, 3, _5, Min),
+        (0, 4, _6, Min),
+        (2, 0, _7Min, Min)
+    );
+    ability!(e, (0, 0, _1Min, Min), (2, 0, _2Min, Min));
 }

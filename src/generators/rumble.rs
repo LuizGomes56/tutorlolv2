@@ -1,31 +1,31 @@
 use super::*;
 
-// #![auto_generated]
+// #![preserve]
 
 #[generator_macros::generator]
 pub fn gen_rumble(data: CdnChampion) -> Champion {
-	ability!(
-		q,
-		(0, 0, "Q_0_0_0", Target::MINIMUM),
-		(0, 1, "Q_0_0_1", Target::MINIMUM),
-		(0, 2, "Q_0_0_2_MAX", Target::MAXIMUM),
-		(0, 3, "Q_0_0_3_MAX", Target::MAXIMUM),
-		(1, 0, "Q_0_1_0", Target::MINIMUM),
-		(1, 1, "Q_0_1_1", Target::MINIMUM),
-		(1, 2, "Q_0_1_2_MAX", Target::MAXIMUM),
-		(1, 3, "Q_0_1_3_MAX", Target::MAXIMUM)
-	);
-	ability!(
-		e,
-		(0, 0, "E_0_0_0", Target::MINIMUM),
-		(0, 4, "E_0_0_4_MAX", Target::MAXIMUM),
-		(1, 0, "E_0_1_0", Target::MINIMUM),
-		(1, 3, "E_0_1_3_MAX", Target::MAXIMUM)
-	);
-	ability!(
-		r,
-		(1, 0, "R_0_1_0", Target::MINIMUM),
-		(1, 1, "R_0_1_1_MAX", Target::MAXIMUM),
-		(1, 2, "R_0_1_2_MIN", Target::MINIMUM)
-	);
+    ability!(
+        q,
+        (0, 0, _1Min, Min),
+        (0, 1, _2Min, Min),
+        (0, 2, _3Max, Max),
+        (0, 3, _4Max, Max),
+        (1, 0, _5Min, Min),
+        (1, 1, _6Min, Min),
+        (1, 2, _7Max, Max),
+        (1, 3, _8Max, Max)
+    );
+    ability!(
+        e,
+        (0, 0, _1Min, Min),
+        (0, 4, _2Max, Max),
+        (1, 0, _3Min, Min),
+        (1, 3, _4Max, Max)
+    );
+    ability!(
+        r,
+        (1, 0, _1Min, Min),
+        (1, 1, _2Max, Max),
+        (1, 2, Minion1, Min)
+    );
 }

@@ -1,23 +1,17 @@
 use super::*;
 
-// #![auto_generated]
+// #![preserve]
 
 #[generator_macros::generator]
 pub fn gen_tristana(data: CdnChampion) -> Champion {
-	ability!(
-		w,
-		(0, 0, "W_0_0_0", Target::MINIMUM)
-	);
-	ability!(
-		e,
-		(0, 0, "E_0_0_0_MIN", Target::MINIMUM),
-		(2, 0, "E_0_2_0", Target::MINIMUM),
-		(3, 0, "E_0_3_0_BONUS", Target::MINIMUM),
-		(3, 1, "E_0_3_1_BONUS", Target::MINIMUM),
-		(3, 2, "E_0_3_2", Target::MINIMUM)
-	);
-	ability!(
-		r,
-		(0, 1, "R_0_0_1", Target::MINIMUM)
-	);
+    ability!(w, (0, 0, _1Min, Min));
+    ability!(
+        e,
+        (0, 0, Minion1, Min),
+        (2, 0, _1Min, Min),
+        (3, 0, _2, Min),
+        (3, 1, _3, Min),
+        (3, 2, _4Min, Min)
+    );
+    ability!(r, (0, 1, _1Min, Min));
 }

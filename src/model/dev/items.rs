@@ -1,8 +1,7 @@
+use internal_comptime::Attrs;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::collections::HashMap;
-
-use crate::model::cache::Attrs;
 
 #[derive(Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]

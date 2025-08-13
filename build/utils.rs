@@ -64,7 +64,7 @@ pub(super) fn highlight(code_string: &str) -> String {
         r"\b(break|continue|intrinsic|match|return|yield|for|while|match|if|else|as|in)\b",
     );
     h.keyword("constant", r"\b[A-Z]+\b");
-    h.keyword("constant", r"\b(Some|None|Top|Jungle|Middle|Bottom|Support|Melee|Ranged|BASIC_ATTACK|CRITICAL_STRIKE|Physical|Magic|Mixed|True|Adaptative|Unknown|Onhit|OnhitMin|OnhitMax)\b");
+    h.keyword("constant", r"\b(_1|_2|_3|_4|_5|_6|_7|_8|Mega|Max|Min|Minion|Minion1|Minion2|Minion3|MinionMax|Monster|Monster1|Monster2|Monster3|Monster4|MonsterMax|Void|_1Max|_2Max|_3Max|_4Max|_5Max|_6Max|_7Max|_8Max|_1Min|_2Min|_3Min|_4Min|_5Min|_6Min|_7Min|_8Min|Some|None|Top|Jungle|Middle|Bottom|Support|Melee|Ranged|BASIC_ATTACK|CRITICAL_STRIKE|Physical|Magic|Mixed|True|Adaptative|Unknown|Onhit|OnhitMin|OnhitMax)\b");
     h.keyword("type", r"\b[A-Z][a-zA-Z0-9_]*\b");
     h.keyword(
         "primitive",
@@ -307,3 +307,5 @@ macro_rules! join_num_vec_trait_impl {
 
 join_num_vec_trait_impl!(Vec<T>);
 join_num_vec_trait_impl!(&[T]);
+
+pub const USE_SUPER: &str = "use super::*;";

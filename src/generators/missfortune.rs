@@ -1,20 +1,10 @@
 use super::*;
 
-// #![auto_generated]
+// #![preserve]
 
 #[generator_macros::generator]
 pub fn gen_missfortune(data: CdnChampion) -> Champion {
-	ability!(
-		q,
-		(0, 0, "Q_0_0_0", Target::MINIMUM)
-	);
-	ability!(
-		e,
-		(0, 0, "E_0_0_0", Target::MINIMUM),
-		(0, 1, "E_0_0_1_MAX", Target::MAXIMUM)
-	);
-	ability!(
-		r,
-		(0, 0, "R_0_0_0_MAX", Target::MAXIMUM)
-	);
+    ability!(q, (0, 0, _1Min, Min));
+    ability!(e, (0, 0, _1Min, Min), (0, 1, _2Max, Max));
+    ability!(r, (0, 0, _1Max, Max));
 }

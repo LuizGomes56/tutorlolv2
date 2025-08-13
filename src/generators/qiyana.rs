@@ -1,29 +1,19 @@
 use super::*;
 
-// #![auto_generated]
+// #![preserve]
 
 #[generator_macros::generator]
 pub fn gen_qiyana(data: CdnChampion) -> Champion {
-	ability!(
-		q,
-		(0, 0, "Q_0_0_0", Target::MINIMUM),
-		(0, 1, "Q_0_0_1", Target::MINIMUM),
-		(2, 0, "Q_1_2_0", Target::MINIMUM),
-		(2, 1, "Q_1_2_1", Target::MINIMUM),
-		(4, 0, "Q_1_4_0_MAX", Target::MAXIMUM),
-		(4, 1, "Q_1_4_1_MAX", Target::MAXIMUM)
-	);
-	ability!(
-		w,
-		(3, 1, "W_0_3_1_BONUS", Target::MINIMUM)
-	);
-	ability!(
-		e,
-		(0, 0, "E_0_0_0", Target::MINIMUM)
-	);
-	ability!(
-		r,
-		(1, 0, "R_0_1_0_MNSTR", Target::MINIMUM),
-		(1, 1, "R_0_1_1", Target::MINIMUM)
-	);
+    ability!(
+        q,
+        (0, 0, _1Min, Min),
+        (0, 1, _2Min, Min),
+        (2, 0, _3Min, Min),
+        (2, 1, _4Min, Min),
+        (4, 0, _5Max, Max),
+        (4, 1, _6Max, Max)
+    );
+    ability!(w, (3, 1, _1, Min));
+    ability!(e, (0, 0, _1Min, Min));
+    ability!(r, (1, 0, Monster1, Min), (1, 1, _1Min, Min));
 }

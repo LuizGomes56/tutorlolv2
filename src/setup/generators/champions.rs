@@ -1,15 +1,15 @@
 use super::*;
 use crate::{
-    generators,
     model::dev::{
-        champions::{Ability, CdnAbility, CdnChampion, Champion, Modifiers},
+        champions::{Ability, CdnAbility, CdnChampion, Modifiers},
         items::CdnItem,
     },
-    setup::essentials::helpers::{extract_file_name, read_json_file, write_to_file},
+    setup::{
+        essentials::helpers::{extract_file_name, read_json_file, write_to_file},
+        generators::generator_runner::try_run_generator,
+    },
 };
 use std::{collections::HashMap, path::Path};
-
-include!(concat!(env!("OUT_DIR"), "/generator_runner.rs"));
 
 /// Automatically updates every champion in the game. New champions, or big updates to existing
 /// champions will need to be rewritten over time. If an error occurs while trying to update a
@@ -174,11 +174,11 @@ pub fn extract_passive_damage(
     }
 
     match target_vec {
-        Target::MINIMUM => {
+        Target::Min => {
             minimum_damage = process_linear_range(passive_bounds, 18, postfix);
             assign_scalings(&description, &mut minimum_damage);
         }
-        Target::MAXIMUM => {
+        Target::Max => {
             maximum_damage = process_linear_range(passive_bounds, 18, postfix);
             assign_scalings(&description, &mut maximum_damage);
         }
@@ -292,8 +292,8 @@ fn process_linear_range(bounds: (f64, f64), size: usize, postfix: Option<&str>) 
 /// Doing so will cause the display to show "0 - {max_damage}"
 /// While "minimum_damage" without "maximum_damage" will show "{min_damage}"
 pub enum Target {
-    MINIMUM,
-    MAXIMUM,
+    Min,
+    Max,
 }
 
 type IteratorExtractor<'a> = HashMap<usize, HashMap<usize, (String, &'a Target)>>;
@@ -324,8 +324,8 @@ pub fn extract_ability_damage(
                     let modifiers: &Vec<Modifiers> = &level_entry.modifiers;
 
                     match target_vector {
-                        Target::MINIMUM => extract_ability(modifiers, &mut minimum_damage),
-                        Target::MAXIMUM => extract_ability(modifiers, &mut maximum_damage),
+                        Target::Min => extract_ability(modifiers, &mut minimum_damage),
+                        Target::Max => extract_ability(modifiers, &mut maximum_damage),
                     }
 
                     map.insert(keyname, data.format(minimum_damage, maximum_damage));
@@ -384,11 +384,7 @@ fn transform_ability(key: &str, abilities: &[CdnAbility]) -> Vec<String> {
                     effect_index,
                     leveling_index,
                     final_key,
-                    if suffix.contains("MAX") {
-                        "Target::MAXIMUM"
-                    } else {
-                        "Target::MINIMUM"
-                    }
+                    if suffix.contains("MAX") { "Max" } else { "Min" }
                 ));
             }
         }

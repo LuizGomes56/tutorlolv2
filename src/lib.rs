@@ -25,16 +25,11 @@ use actix_web::{
 #[cfg(feature = "dev")]
 use actix_web::{middleware::from_fn, mime, web::JsonConfig};
 use dotenvy::dotenv;
-use model::{base::DamageExpression, cache::*};
 use server::{games::*, img::*, schemas::APIResponse};
 use sqlx::postgres::PgPoolOptions;
-use std::{env, io};
+use std::io;
 
-include!(concat!(env!("OUT_DIR"), "/internal_champions.rs"));
-include!(concat!(env!("OUT_DIR"), "/internal_items.rs"));
-include!(concat!(env!("OUT_DIR"), "/internal_runes.rs"));
-include!(concat!(env!("OUT_DIR"), "/internal_meta.rs"));
-include!(concat!(env!("OUT_DIR"), "/internal_names.rs"));
+pub use internal_comptime::*;
 
 fn api_scope() -> impl HttpServiceFactory + 'static {
     let api_routes = scope("/api").service(

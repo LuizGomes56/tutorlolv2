@@ -1,25 +1,16 @@
 use super::*;
 
-// #![auto_generated]
+// #![preserve]
 
 #[generator_macros::generator]
 pub fn gen_monkeyking(data: CdnChampion) -> Champion {
-	ability!(
-		q,
-		(0, 1, "Q_0_0_1_BONUS", Target::MINIMUM)
-	);
-	ability!(
-		w,
-		(2, 0, "W_0_2_0", Target::MINIMUM)
-	);
-	ability!(
-		e,
-		(0, 0, "E_0_0_0", Target::MINIMUM)
-	);
-	ability!(
-		r,
-		(0, 0, "R_0_0_0", Target::MINIMUM),
-		(0, 1, "R_0_0_1_MAX", Target::MAXIMUM),
-		(4, 0, "R_0_4_0_MAX", Target::MAXIMUM)
-	);
+    ability!(q, (0, 1, _1, Min));
+    ability!(w, (2, 0, _1Min, Min));
+    ability!(e, (0, 0, _1Min, Min));
+    ability!(
+        r,
+        (0, 0, _1Min, Min),
+        (0, 1, _2Max, Max),
+        (4, 0, _3Max, Max)
+    );
 }

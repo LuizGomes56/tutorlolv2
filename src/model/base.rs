@@ -1,9 +1,6 @@
-use super::{
-    SIZE_ABILITIES,
-    cache::{DamageType, EvalContext},
-    riot::RiotChampionStats,
-};
-use crate::{SIZE_DAMAGING_ITEMS, SIZE_DAMAGING_RUNES, SIZE_SIMULATED_ITEMS, model::cache::Attrs};
+use super::{SIZE_ABILITIES, riot::RiotChampionStats};
+use crate::{SIZE_DAMAGING_ITEMS, SIZE_SIMULATED_ITEMS};
+use internal_comptime::{AbilityLike, DamageType, ItemId, RuneId};
 use serde::{Deserialize, Serialize};
 use smallvec::SmallVec;
 
@@ -70,17 +67,17 @@ pub struct BasicStats {
 
 #[derive(Serialize)]
 pub struct SimulatedDamages {
-    pub abilities: DamageLike<SIZE_ABILITIES, &'static str>,
-    pub items: DamageLike<SIZE_DAMAGING_ITEMS, u32>,
-    pub runes: DamageLike<SIZE_DAMAGING_RUNES, u32>,
+    pub abilities: DamageLike<SIZE_ABILITIES, AbilityLike>,
+    pub items: DamageLike<SIZE_DAMAGING_ITEMS, ItemId>,
+    pub runes: DamageLike<3, RuneId>,
 }
 
 #[derive(Serialize)]
 pub struct Damages {
-    pub abilities: DamageLike<SIZE_ABILITIES, &'static str>,
-    pub items: DamageLike<5, u32>,
-    pub runes: DamageLike<3, u32>,
-    pub compared_items: SmallVec<[(u32, SimulatedDamages); SIZE_SIMULATED_ITEMS]>,
+    pub abilities: DamageLike<SIZE_ABILITIES, AbilityLike>,
+    pub items: DamageLike<5, ItemId>,
+    pub runes: DamageLike<3, RuneId>,
+    pub compared_items: SmallVec<[(ItemId, SimulatedDamages); SIZE_SIMULATED_ITEMS]>,
 }
 
 #[derive(Clone, Copy)]
@@ -94,15 +91,6 @@ pub struct GenericStats {
     pub steelcaps: bool,
     pub rocksolid: bool,
     pub randuin: bool,
-}
-
-#[derive(Copy, Clone)]
-pub struct DamageExpression {
-    pub level: u8,
-    pub attributes: Attrs,
-    pub damage_type: DamageType,
-    pub minimum_damage: fn(u8, &EvalContext) -> f64,
-    pub maximum_damage: fn(u8, &EvalContext) -> f64,
 }
 
 #[derive(Default, Serialize)]

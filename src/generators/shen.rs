@@ -1,19 +1,16 @@
 use super::*;
 
-// #![auto_generated]
+// #![preserve]
 
 #[generator_macros::generator]
 pub fn gen_shen(data: CdnChampion) -> Champion {
-	ability!(
-		q,
-		(1, 0, "Q_0_1_0_MNSTR", Target::MINIMUM),
-		(2, 0, "Q_0_2_0_BONUS", Target::MINIMUM),
-		(2, 1, "Q_0_2_1_MAX", Target::MAXIMUM),
-		(3, 0, "Q_0_3_0_BONUS", Target::MINIMUM),
-		(3, 1, "Q_0_3_1_MAX", Target::MAXIMUM)
-	);
-	ability!(
-		e,
-		(0, 0, "E_0_0_0", Target::MINIMUM)
-	);
+    ability!(
+        q,
+        (1, 0, Monster1, Min),
+        (2, 0, _1, Min),
+        (2, 1, _2Max, Max),
+        (3, 0, _3, Min),
+        (3, 1, _4Max, Max)
+    );
+    ability!(e, (0, 0, _1Min, Min));
 }

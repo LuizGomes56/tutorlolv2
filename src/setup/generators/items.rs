@@ -3,15 +3,13 @@
 //! Sort fields by their name to avoid same problem involving ordering effects
 
 use crate::{
-    model::{
-        cache::Attrs,
-        dev::items::{CdnItem, DamageObject, Item},
-    },
+    model::dev::items::{CdnItem, DamageObject, Item},
     setup::{
         essentials::helpers::{read_json_file, write_to_file},
         generators::extractors::{extract_damagelike_expr, process_scaled_string},
     },
 };
+use internal_comptime::Attrs;
 use regex::Regex;
 
 enum DmgType {

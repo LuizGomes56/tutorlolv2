@@ -1,25 +1,11 @@
 use super::*;
 
-// #![auto_generated]
+// #![preserve]
 
 #[generator_macros::generator]
 pub fn gen_shyvana(data: CdnChampion) -> Champion {
-	ability!(
-		q,
-		(0, 0, "Q_0_0_0_BONUS", Target::MINIMUM)
-	);
-	ability!(
-		w,
-		(0, 2, "W_0_0_2", Target::MINIMUM),
-		(2, 0, "W_0_2_0_BONUS", Target::MINIMUM)
-	);
-	ability!(
-		e,
-		(0, 0, "E_0_0_0", Target::MINIMUM),
-		(1, 0, "E_0_1_0_MAX", Target::MAXIMUM)
-	);
-	ability!(
-		r,
-		(0, 0, "R_0_0_0", Target::MINIMUM)
-	);
+    ability!(q, (0, 0, _1, Min));
+    ability!(w, (0, 2, _1Min, Min), (2, 0, _2, Min));
+    ability!(e, (0, 0, _1Min, Min), (1, 0, _2Max, Max));
+    ability!(r, (0, 0, _1Min, Min));
 }

@@ -1,7 +1,5 @@
-use crate::model::{
-    base::Stats,
-    cache::{AdaptativeType, CachedChampionStats},
-};
+use crate::model::base::Stats;
+use internal_comptime::{AdaptativeType, CachedChampionStats};
 use smallvec::SmallVec;
 
 pub struct MonsterResists {
@@ -84,11 +82,10 @@ impl RiotFormulas {
             armor_penetration_flat: 0.0,
             armor_penetration_percent: 0.0,
             attack_damage: assign_value!(attack_damage),
-            attack_range: assign_value!(attack_range),
+            attack_range: cdn.attack_range,
             attack_speed: assign_value!(attack_speed),
             crit_chance: 0.0,
-            crit_damage: assign_value!(critical_strike_damage)
-                * cdn.critical_strike_damage_modifier.flat,
+            crit_damage: cdn.critical_strike_damage * cdn.critical_strike_damage_modifier,
             current_health: assign_value!(health),
             max_health: assign_value!(health),
             current_mana: assign_value!(mana),
