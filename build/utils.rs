@@ -1,4 +1,5 @@
 use regex::{Captures, Regex};
+use serde::Deserialize;
 use std::{
     fmt,
     io::Write,
@@ -25,6 +26,15 @@ pub(super) fn transform_expr(expr: &str) -> (String, bool) {
     let count_ctx = re_up.find_iter(with_f64.as_ref()).count();
     let result = re_up.replace_all(&with_f64, |caps: &Captures| format!("ctx.{}", &caps[1]));
     (result.into_owned(), count_ctx > 0)
+}
+
+#[derive(Deserialize)]
+pub struct Positions {
+    pub jungle: Vec<usize>,
+    pub top: Vec<usize>,
+    pub mid: Vec<usize>,
+    pub adc: Vec<usize>,
+    pub support: Vec<usize>,
 }
 
 pub(super) fn invoke_rustfmt(src: &str, width: usize) -> String {
@@ -63,8 +73,9 @@ pub(super) fn highlight(code_string: &str) -> String {
         "control",
         r"\b(break|continue|intrinsic|match|return|yield|for|while|match|if|else|as|in)\b",
     );
+
     h.keyword("constant", r"\b[A-Z]+\b");
-    h.keyword("constant", r"\b(_1|_2|_3|_4|_5|_6|_7|_8|Mega|Max|Min|Minion|Minion1|Minion2|Minion3|MinionMax|Monster|Monster1|Monster2|Monster3|Monster4|MonsterMax|Void|_1Max|_2Max|_3Max|_4Max|_5Max|_6Max|_7Max|_8Max|_1Min|_2Min|_3Min|_4Min|_5Min|_6Min|_7Min|_8Min|Some|None|Top|Jungle|Middle|Bottom|Support|Melee|Ranged|BASIC_ATTACK|CRITICAL_STRIKE|Physical|Magic|Mixed|True|Adaptative|Unknown|Onhit|OnhitMin|OnhitMax)\b");
+    h.keyword("constant", r"\b(AbilityHaste|AbilityPower|Armor|ArmorPenetration|MagicPenetration|AttackDamage|AttackSpeed|GoldPer10Seconds|AdaptiveForce|CriticalStrikeChance|CriticalStrikeDamage|Health|LifeSteal|MagicResist|Mana|MoveSpeed|Omnivamp|BaseHealthRegen|BaseManaRegen|Tenacity|HealAndShieldPower|_1|_2|_3|_4|_5|_6|_7|_8|Mega|Max|Min|Minion|Minion1|Minion2|Minion3|MinionMax|Monster|Monster1|Monster2|Monster3|Monster4|MonsterMax|Void|_1Max|_2Max|_3Max|_4Max|_5Max|_6Max|_7Max|_8Max|_1Min|_2Min|_3Min|_4Min|_5Min|_6Min|_7Min|_8Min|Some|None|Top|Jungle|Middle|Bottom|Support|Melee|Ranged|BASIC_ATTACK|CRITICAL_STRIKE|Physical|Magic|Mixed|True|Adaptative|Unknown|Onhit|OnhitMin|OnhitMax)\b");
     h.keyword("type", r"\b[A-Z][a-zA-Z0-9_]*\b");
     h.keyword(
         "primitive",

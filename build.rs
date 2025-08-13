@@ -2,7 +2,6 @@
 mod build;
 
 use build::*;
-use std::env;
 
 #[tokio::main]
 async fn main() {
@@ -12,7 +11,4 @@ async fn main() {
     }
 
     export_code().await;
-
-    let out_dir = env::var("OUT_DIR").unwrap();
-    internal_meta_items(&out_dir);
 }
