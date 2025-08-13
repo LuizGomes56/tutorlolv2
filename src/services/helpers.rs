@@ -1,12 +1,12 @@
 use super::riot_formulas::RiotFormulas;
 use crate::{
-    BASIC_ATTACK, CRITICAL_STRIKE, DAMAGING_ITEMS, DAMAGING_RUNES, INTERNAL_ITEMS, INTERNAL_RUNES,
-    SIMULATED_ITEMS, SIZE_DAMAGING_RUNES, SIZE_SIMULATED_ITEMS,
+    BASIC_ATTACK, CRITICAL_STRIKE, INTERNAL_ITEMS, INTERNAL_RUNES, SIMULATED_ITEMS,
+    SIZE_DAMAGING_RUNES, SIZE_SIMULATED_ITEMS,
     model::{SIZE_ABILITIES, SIZE_ITEMS_EXPECTED, base::*},
 };
 use internal_comptime::{
     AbilityLike, AdaptativeType, AttackType, Attrs, CachedChampion, CachedItem, ChampionId,
-    DamageExpression, DamageType, EvalContext, zero,
+    DamageExpression, DamageType, EvalContext, ItemId, RuneId, zero,
 };
 use smallvec::SmallVec;
 use tinyset::SetU32;
@@ -26,16 +26,16 @@ pub fn get_simulated_champion_stats<'a>(
     current_stats: &Stats,
     owned_items: &SetU32,
     ally_dragon_multipliers: &DragonMultipliers,
-) -> SmallVec<[(u32, Stats); SIZE_SIMULATED_ITEMS]> {
+) -> SmallVec<[(ItemId, Stats); SIZE_SIMULATED_ITEMS]> {
     let mut simulated_stats =
-        SmallVec::<[(u32, Stats); SIZE_SIMULATED_ITEMS]>::with_capacity(SIZE_SIMULATED_ITEMS);
+        SmallVec::<[(ItemId, Stats); SIZE_SIMULATED_ITEMS]>::with_capacity(SIZE_SIMULATED_ITEMS);
     for item_id in SIMULATED_ITEMS.iter() {
         if owned_items.contains(*item_id) {
             continue;
         }
         if let Some(item) = INTERNAL_ITEMS.get(item_id) {
             simulated_stats.push((
-                *item_id,
+                ItemId::from_u32(*item_id),
                 simulate_champion_stats(item, *current_stats, ally_dragon_multipliers),
             ));
         }
@@ -90,26 +90,24 @@ pub fn simulate_champion_stats(
 pub fn get_items_damage(
     current_player_damaging_items: &SetU32,
     attack_type: AttackType,
-) -> SmallVec<[(u32, DamageExpression); SIZE_ITEMS_EXPECTED]> {
+) -> SmallVec<[(ItemId, DamageExpression); SIZE_ITEMS_EXPECTED]> {
     let mut result = SmallVec::with_capacity(current_player_damaging_items.len());
     for item_id in current_player_damaging_items.iter() {
-        if DAMAGING_ITEMS.contains(&item_id) {
-            if let Some(item) = INTERNAL_ITEMS.get(&item_id) {
-                let item_damage = match attack_type {
-                    AttackType::Ranged => &item.ranged,
-                    AttackType::Melee => &item.melee,
-                };
-                result.push((
-                    item_id,
-                    DamageExpression {
-                        level: 0,
-                        attributes: item.attributes,
-                        damage_type: item.damage_type.unwrap_or_default(),
-                        minimum_damage: item_damage.minimum_damage,
-                        maximum_damage: item_damage.maximum_damage,
-                    },
-                ));
-            }
+        if let Some(item) = INTERNAL_ITEMS.get(&item_id) {
+            let item_damage = match attack_type {
+                AttackType::Ranged => &item.ranged,
+                AttackType::Melee => &item.melee,
+            };
+            result.push((
+                ItemId::from_u32(item_id),
+                DamageExpression {
+                    level: 0,
+                    attributes: item.attributes,
+                    damage_type: item.damage_type.unwrap_or_default(),
+                    minimum_damage: item_damage.minimum_damage,
+                    maximum_damage: item_damage.maximum_damage,
+                },
+            ));
         }
     }
     result
@@ -118,26 +116,24 @@ pub fn get_items_damage(
 pub fn get_runes_damage(
     current_player_damaging_runes: &SetU32,
     attack_type: AttackType,
-) -> SmallVec<[(u32, DamageExpression); SIZE_DAMAGING_RUNES]> {
+) -> SmallVec<[(RuneId, DamageExpression); SIZE_DAMAGING_RUNES]> {
     let mut result = SmallVec::with_capacity(current_player_damaging_runes.len());
     for rune_id in current_player_damaging_runes.iter() {
-        if DAMAGING_RUNES.contains(&rune_id) {
-            if let Some(rune) = INTERNAL_RUNES.get(&rune_id) {
-                let minimum_damage = match attack_type {
-                    AttackType::Ranged => rune.ranged,
-                    AttackType::Melee => rune.melee,
-                };
-                result.push((
-                    rune_id,
-                    DamageExpression {
-                        level: 0,
-                        attributes: Attrs::None,
-                        damage_type: rune.damage_type,
-                        minimum_damage,
-                        maximum_damage: zero,
-                    },
-                ));
-            }
+        if let Some(rune) = INTERNAL_RUNES.get(&rune_id) {
+            let minimum_damage = match attack_type {
+                AttackType::Ranged => rune.ranged,
+                AttackType::Melee => rune.melee,
+            };
+            result.push((
+                RuneId::from_u32(rune_id),
+                DamageExpression {
+                    level: 0,
+                    attributes: Attrs::None,
+                    damage_type: rune.damage_type,
+                    minimum_damage,
+                    maximum_damage: zero,
+                },
+            ));
         }
     }
     result

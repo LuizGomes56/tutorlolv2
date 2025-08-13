@@ -1,6 +1,6 @@
 use super::{SIZE_ABILITIES, riot::RiotChampionStats};
 use crate::{SIZE_DAMAGING_ITEMS, SIZE_SIMULATED_ITEMS};
-use internal_comptime::{AbilityLike, DamageType};
+use internal_comptime::{AbilityLike, DamageType, ItemId, RuneId};
 use serde::{Deserialize, Serialize};
 use smallvec::SmallVec;
 
@@ -68,16 +68,16 @@ pub struct BasicStats {
 #[derive(Serialize)]
 pub struct SimulatedDamages {
     pub abilities: DamageLike<SIZE_ABILITIES, AbilityLike>,
-    pub items: DamageLike<SIZE_DAMAGING_ITEMS, u32>,
-    pub runes: DamageLike<3, u32>,
+    pub items: DamageLike<SIZE_DAMAGING_ITEMS, ItemId>,
+    pub runes: DamageLike<3, RuneId>,
 }
 
 #[derive(Serialize)]
 pub struct Damages {
     pub abilities: DamageLike<SIZE_ABILITIES, AbilityLike>,
-    pub items: DamageLike<5, u32>,
-    pub runes: DamageLike<3, u32>,
-    pub compared_items: SmallVec<[(u32, SimulatedDamages); SIZE_SIMULATED_ITEMS]>,
+    pub items: DamageLike<5, ItemId>,
+    pub runes: DamageLike<3, RuneId>,
+    pub compared_items: SmallVec<[(ItemId, SimulatedDamages); SIZE_SIMULATED_ITEMS]>,
 }
 
 #[derive(Clone, Copy)]

@@ -1,3 +1,5 @@
+use shared_types::AbilityLike;
+
 use super::*;
 
 const ONHIT_EFFECT: &'static str = r#"<pre><span class="control">intrinsic</span> <span class="constant">ONHIT_EFFECT</span> = {
@@ -41,7 +43,7 @@ pub async fn export_code() {
         champions.len()
     );
     let mut champion_abilities = format!(
-        "pub static CHAMPION_ABILITIES: [&'static [(usize, usize)]; {}] = [",
+        "pub static CHAMPION_ABILITIES: [&'static [(AbilityLike, (usize, usize))]; {}] = [",
         champions.len(),
     );
     let mut internal_items = String::from(
@@ -81,19 +83,20 @@ pub async fn export_code() {
 
     macro_rules! record_offsets {
         ($value:expr) => {{
-            let start = current_offset;
-            mega_block.push_str(&$value);
-            let end = current_offset + $value.len();
-            current_offset = end;
+            let (start, end) = record_offsets!(@record $value);
             format!("({}, {})", start, end)
         }};
         ($field:ident, $value:expr) => {{
+            let (start, end) = record_offsets!(@record $value);
+            $field.push_str(&format!("({}, {}),", start, end));
+        }};
+        (@record $value:expr) => {{
             let start = current_offset;
             mega_block.push_str(&$value);
             let end = current_offset + $value.len();
             current_offset = end;
-            $field.push_str(&format!("({}, {}),", start, end));
-        }};
+            (start, end)
+        }}
     }
 
     for (champion_id, champion_detail) in champions.into_iter() {
@@ -102,9 +105,15 @@ pub async fn export_code() {
         record_offsets!(champion_formulas, champion_detail.champion_formula);
         record_offsets!(champion_generator, champion_detail.generator);
 
-        champion_abilities.push('[');
-        for (_, ability_formula) in &champion_detail.highlighted_abilities {
-            record_offsets!(champion_abilities, ability_formula);
+        champion_abilities.push_str("&[");
+        for (ability_name, ability_formula) in &champion_detail.highlighted_abilities {
+            let (start, end) = record_offsets!(@record ability_formula);
+            champion_abilities.push_str(&format!(
+                "({}, ({}, {})),",
+                AbilityLike::from_str(&ability_name),
+                start,
+                end
+            ));
         }
         champion_abilities.push_str("],");
         internal_champions_content.push_str(&champion_detail.constdecl);
@@ -144,7 +153,7 @@ pub async fn export_code() {
             internal_damaging_items_len += 1;
         }
         record_offsets!(item_formulas, item_detail.item_formula);
-        item_descriptions.push_str(&format!("{}u32 => {},", item_id, item_detail.description));
+        item_descriptions.push_str(&format!("{},", item_detail.description));
         item_id_to_name.push_str(&format!("\"{}\",", item_detail.item_name));
     }
 
@@ -219,20 +228,35 @@ pub async fn export_code() {
         })
     });
 
+    let exported_content = [
+        champion_id_to_name,
+        champion_formulas,
+        champion_generator,
+        champion_abilities,
+        item_id_to_name,
+        item_formulas,
+        item_descriptions,
+        rune_id_to_name,
+        rune_formulas,
+    ]
+    .concat();
+
     let mut bytes = Vec::from(b"use crate::*;");
 
     bytes.extend_from_slice(
         format!(
             "
+            {}
             pub static BASIC_ATTACK_OFFSET: (usize, usize) = {};
             pub static CRITICAL_STRIKE_OFFSET: (usize, usize) = {};
             pub static ONHIT_EFFECT_OFFSET: (usize, usize) = {};
             pub static UNCOMPRESSED_MEGA_BLOCK_SIZE: usize = {};
             ",
+            exported_content,
             record_offsets!(highlight(&invoke_rustfmt(&BASIC_ATTACK, 60))),
             record_offsets!(highlight(&invoke_rustfmt(&CRITICAL_STRIKE, 60))),
             record_offsets!(ONHIT_EFFECT),
-            current_offset
+            current_offset,
         )
         .as_bytes(),
     );

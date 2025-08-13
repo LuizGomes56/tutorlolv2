@@ -3,7 +3,7 @@ use super::*;
 use crate::model::{base::*, calculator::*};
 use internal_comptime::{
     AbilityLike, AdaptativeType, AttackType, Attrs, ChampionId, DAMAGING_ITEMS, DAMAGING_RUNES,
-    DamageType, INTERNAL_CHAMPIONS, INTERNAL_ITEMS, META_ITEMS, Position,
+    DamageType, INTERNAL_CHAMPIONS, INTERNAL_ITEMS, ItemId, META_ITEMS, Position, RuneId,
 };
 use smallvec::SmallVec;
 use tinyset::SetU32;
@@ -25,7 +25,7 @@ fn infer_champion_stats(
     let mut magic_penetration = SmallVec::<[f64; 4]>::with_capacity(4);
 
     for item_id in owned_items {
-        if let Some(cached_item) = INTERNAL_ITEMS.get(&item_id) {
+        if let Some(cached_item) = INTERNAL_ITEMS.get(&item_id.to_u32()) {
             let item_stats = &cached_item.stats;
 
             macro_rules! add_stat {
@@ -78,20 +78,15 @@ fn infer_champion_stats(
     // Depend on bonus stats, that has to be evaluated later
     for item_id in owned_items {
         match item_id {
-            // Overlord's Bloodmail
-            2501 | 222501 => stats.attack_damage += 0.025 * (bonus_stats.health + 500.0),
-            // Archangel's Staff
-            3003 | 223003 => stats.ability_power += 0.01 * bonus_stats.mana,
-            // Manamune | Muramana
-            3004 | 3042 | 223004 | 223042 => stats.attack_damage += 0.025 * bonus_stats.mana,
-            // Seraph's Embrace
-            3040 | 223040 => stats.ability_power += 0.02 * bonus_stats.mana,
-            // Winter's Approach
-            3119 | 223119 => stats.max_health += 0.15 * (bonus_stats.health + 500.0),
-            // Fimbulwinter
-            3121 | 223121 => stats.max_health += 0.15 * (bonus_stats.health + 860.0),
-            // Riftmaker | Demonic Embrace
-            4633 | 4637 | 224633 | 224637 => {
+            ItemId::OverlordsBloodmail => {
+                stats.attack_damage += 0.025 * (bonus_stats.health + 500.0)
+            }
+            ItemId::ArchangelsStaff => stats.ability_power += 0.01 * bonus_stats.mana,
+            ItemId::Manamune | ItemId::Muramana => stats.attack_damage += 0.025 * bonus_stats.mana,
+            ItemId::SeraphsEmbrace => stats.ability_power += 0.02 * bonus_stats.mana,
+            ItemId::WintersApproach => stats.max_health += 0.15 * (bonus_stats.health + 500.0),
+            ItemId::Fimbulwinter => stats.max_health += 0.15 * (bonus_stats.health + 860.0),
+            ItemId::Riftmaker | ItemId::DemonicEmbrace => {
                 stats.ability_power += 0.02 * (bonus_stats.health + stats.max_health)
             }
             _ => {}
@@ -131,7 +126,7 @@ fn infer_champion_stats(
 // #![unsupported]
 fn rune_exceptions(
     champion_stats: &mut Stats,
-    owned_runes: &[u32],
+    owned_runes: &[RuneId],
     level: f64,
     value_types: (AdaptativeType, AttackType),
     // exception_map: &FxHashMap<u32, u32>,
@@ -140,7 +135,7 @@ fn rune_exceptions(
     let this_stack = 0x0000;
     for rune in owned_runes {
         // let this_stack = *exception_map.get(&rune).unwrap_or(&0);
-        match rune {
+        match rune.to_u32() {
             // Lethal Tempo
             8008 => match value_types.1 {
                 AttackType::Melee => {
@@ -229,7 +224,7 @@ fn rune_exceptions(
 // #![unsupported]
 fn item_exceptions(
     champion_stats: &mut Stats,
-    owned_items: &[u32],
+    owned_items: &[ItemId],
     // exception_map: &FxHashMap<u32, u32>,
 ) {
     return;
@@ -237,16 +232,13 @@ fn item_exceptions(
     for item_id in owned_items {
         // let this_stack = *exception_map.get(&item_id).unwrap_or(&0);
         match item_id {
-            // Dark Seal
-            1082 => champion_stats.ability_power += (this_stack.max(1) << 2) as f64,
-            // Mejai's Soulstealer
-            3041 => champion_stats.ability_power += (5 * this_stack.max(1)) as f64,
-            // Rabadon's Deathcap
-            3089 | 223089 => champion_stats.ability_power *= 1.3,
-            // Hubris
-            6697 | 7008 => champion_stats.attack_damage += (15 + this_stack.max(1) << 1) as f64,
-            // Wooglet's Witchcap
-            8002 => champion_stats.ability_power *= 1.5,
+            ItemId::DarkSeal => champion_stats.ability_power += (this_stack.max(1) << 2) as f64,
+            ItemId::MejaisSoulstealer => {
+                champion_stats.ability_power += (5 * this_stack.max(1)) as f64
+            }
+            ItemId::RabadonsDeathcap => champion_stats.ability_power *= 1.3,
+            ItemId::Hubris => champion_stats.attack_damage += (15 + this_stack.max(1) << 1) as f64,
+            ItemId::WoogletsWitchcap => champion_stats.ability_power *= 1.5,
             _ => {}
         }
     }
@@ -278,14 +270,20 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
 
     let current_player_damaging_items = current_player_full_items
         .into_iter()
-        .filter(|item_id| DAMAGING_ITEMS.contains(item_id))
-        .copied()
+        .filter_map(|item_id| {
+            DAMAGING_ITEMS
+                .contains(&item_id.to_u32())
+                .then_some(*item_id as u32)
+        })
         .collect::<SetU32>();
 
     let current_player_damaging_runes = current_player_full_runes
         .into_iter()
-        .filter(|rune_id| DAMAGING_RUNES.contains(rune_id))
-        .copied()
+        .filter_map(|rune_id| {
+            DAMAGING_RUNES
+                .contains(&rune_id.to_u32())
+                .then_some(*rune_id as u32)
+        })
         .collect::<SetU32>();
 
     let current_player_cache = INTERNAL_CHAMPIONS
@@ -329,7 +327,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
 
     item_exceptions(
         &mut current_player_stats,
-        current_player_full_items,
+        current_player_full_items.as_slice(),
         // &stack_exceptions,
     );
 
@@ -340,7 +338,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
 
     rune_exceptions(
         &mut current_player_stats,
-        &current_player_full_runes,
+        &current_player_full_runes.as_slice(),
         current_player_level as f64,
         (adaptative_type, current_player_attack_type),
         // &stack_exceptions,

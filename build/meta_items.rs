@@ -13,16 +13,23 @@ pub fn internal_meta_items(_: &str) {
     let mut meta_items = String::from("#[rustfmt::skip]\npub static META_ITEMS: [CachedMetaItem; ");
     let mut constdecl = String::new();
 
+    let transform_and_join = |v: Vec<usize>| -> String {
+        v.iter()
+            .map(|x| format!("ItemId::{:?}", shared_types::ItemId::from_u32(*x as u32)))
+            .collect::<Vec<String>>()
+            .join(",")
+    };
+
     let main_map = init_map!(file BTreeMap<String, Positions>, "internal/meta_items.json");
     let len = main_map.len();
     for (_, position) in main_map {
         constdecl.push_str(&format!(
             "CachedMetaItem {{top:&[{}],mid:&[{}],jungle:&[{}],adc:&[{}],support:&[{}],}},",
-            position.top.join(","),
-            position.mid.join(","),
-            position.jungle.join(","),
-            position.adc.join(","),
-            position.support.join(",")
+            transform_and_join(position.top),
+            transform_and_join(position.mid),
+            transform_and_join(position.jungle),
+            transform_and_join(position.adc),
+            transform_and_join(position.support)
         ));
     }
 

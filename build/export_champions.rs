@@ -259,24 +259,7 @@ pub fn export_champions() -> BTreeMap<String, ChampionDetails> {
                     .map(|(ability_name, rustfmt_val)| {
                         format!(
                             "({}, CachedChampionAbility {})",
-                            match ability_name.chars().next() {
-                                Some('P') => {
-                                    AbilityLike::from_str_p(&ability_name).to_string()
-                                }
-                                Some('Q') => {
-                                    AbilityLike::from_str_q(&ability_name).to_string()
-                                }
-                                Some('W') => {
-                                    AbilityLike::from_str_w(&ability_name).to_string()
-                                }
-                                Some('E') => {
-                                    AbilityLike::from_str_e(&ability_name).to_string()
-                                }
-                                Some('R') => {
-                                    AbilityLike::from_str_r(&ability_name).to_string()
-                                }
-                                _ => ability_name.clone(),
-                            },
+                            AbilityLike::from_str(ability_name),
                             rustfmt_val
                         )
                     })
