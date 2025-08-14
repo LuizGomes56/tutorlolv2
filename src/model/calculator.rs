@@ -1,19 +1,16 @@
 use super::{
-    SIZE_ABILITIES, SIZE_ITEMS_EXPECTED, SIZE_RUNES_EXPECTED,
+    SIZE_ABILITIES, SIZE_ITEMS_EXPECTED, SIZE_RUNES_EXPECTED, WrapSetU32,
     base::{AbilityLevels, BasicStats, DamageLike, MonsterDamages, Stats},
 };
 use bincode::{Decode, Encode};
 use internal_comptime::{AbilityLike, ChampionId, ItemId, RuneId};
 use smallvec::SmallVec;
-use tinyset::SetU32;
 
 #[derive(Encode)]
 pub struct OutputCurrentPlayer {
     pub champion_id: ChampionId,
-    #[bincode(with_serde)]
-    pub damaging_items: SetU32,
-    #[bincode(with_serde)]
-    pub damaging_runes: SetU32,
+    pub damaging_items: WrapSetU32,
+    pub damaging_runes: WrapSetU32,
     pub level: u8,
     pub base_stats: BasicStats,
     pub bonus_stats: BasicStats,

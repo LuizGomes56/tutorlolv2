@@ -1,18 +1,15 @@
 use super::{
-    SIZE_ENEMIES_EXPECTED,
+    SIZE_ENEMIES_EXPECTED, WrapSetU32,
     base::{BasicStats, Damages, DragonMultipliers, Stats},
 };
 use bincode::Encode;
 use internal_comptime::{ChampionId, ItemId, Position};
 use smallvec::SmallVec;
-use tinyset::SetU32;
 
 #[derive(Encode)]
 pub struct CurrentPlayer<'a> {
-    #[bincode(with_serde)]
-    pub damaging_items: SetU32,
-    #[bincode(with_serde)]
-    pub damaging_runes: SetU32,
+    pub damaging_items: WrapSetU32,
+    pub damaging_runes: WrapSetU32,
     pub riot_id: &'a str,
     pub level: u8,
     pub team: Team,

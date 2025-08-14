@@ -620,8 +620,8 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
         monster_damages,
         tower_damages,
         current_player: OutputCurrentPlayer {
-            damaging_items: current_player_damaging_items,
-            damaging_runes: current_player_damaging_runes,
+            damaging_items: current_player_damaging_items.into(),
+            damaging_runes: current_player_damaging_runes.into(),
             level: current_player_level,
             champion_id: current_player_champion_id,
             base_stats: current_player_base_stats,

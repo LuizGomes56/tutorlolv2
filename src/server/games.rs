@@ -6,8 +6,8 @@ use crate::{
     services::{CalculationError, calculator::calculator, realtime::realtime},
 };
 use actix_web::{HttpResponse, Responder, get, post, web::Data};
+use bincode::{Decode, Encode};
 use rand::random_range;
-use serde::{Deserialize, Serialize};
 use sqlx::prelude::FromRow;
 use uuid::Uuid;
 
@@ -50,7 +50,7 @@ fn get_calculation_error(e: CalculationError) -> &'static str {
     }
 }
 
-#[derive(Deserialize)]
+#[derive(Decode)]
 struct GetByCodeBody {
     game_code: String,
 }
@@ -63,10 +63,9 @@ pub async fn get_by_code_handler(
     #[cfg(not(feature = "dev"))]
     return HttpResponse::ServiceUnavailable();
     #[cfg(feature = "dev")]
-    match bincode::serde::decode_from_slice::<GetByCodeBody, _>(&body, bincode::config::standard())
-    {
+    match bincode::decode_from_slice::<GetByCodeBody, _>(&body, bincode::config::standard()) {
         Ok(decoded) => {
-            #[derive(Serialize, FromRow)]
+            #[derive(Encode, FromRow)]
             struct RealtimeSqlxQuery {
                 game: String,
             }
@@ -129,14 +128,14 @@ pub async fn realtime_handler(
     // state: Data<AppState>,
     body: actix_web::web::Bytes,
 ) -> impl Responder {
-    #[derive(Deserialize)]
+    #[derive(Decode)]
     struct RealtimeBody {
         game_id: String,
         game_code: String,
-        game_data: RiotRealtime,
+        game_data: Vec<u8>,
     }
 
-    match bincode::serde::decode_from_slice::<RealtimeBody, _>(&body, bincode::config::standard()) {
+    match bincode::decode_from_slice::<RealtimeBody, _>(&body, bincode::config::standard()) {
         Ok(decoded) => {
             let RealtimeBody {
                 game_id,
@@ -157,7 +156,10 @@ pub async fn realtime_handler(
             //     champion_name, summoner_name
             // );
 
-            match realtime(&game_data) {
+            // Will always fail, this function is not implemented at this time.
+            // Simd-json will be used to deserialize the data
+            let data = unsafe { std::mem::transmute_copy::<_, RiotRealtime>(&game_data) };
+            match realtime(&data) {
                 Ok(data) => {
                     println!(
                         "fn[realtime_handler] Success on request for game_code: {}, game_id: {}",
