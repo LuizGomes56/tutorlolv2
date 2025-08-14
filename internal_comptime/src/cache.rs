@@ -190,7 +190,7 @@ pub enum StatName {
 pub struct CachedItem {
     pub gold: u16,
     pub prettified_stats: &'static [StatName],
-    pub damage_type: Option<DamageType>,
+    pub damage_type: DamageType,
     pub stats: CachedItemStats,
     pub ranged: CachedItemDamages,
     pub melee: CachedItemDamages,

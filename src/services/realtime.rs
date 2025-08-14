@@ -11,7 +11,7 @@ use crate::{
         riot::*,
     },
 };
-use internal_comptime::{CHAMPION_NAME_TO_ID, Position};
+use internal_comptime::{CHAMPION_NAME_TO_ID, ItemId, Position};
 use smallvec::SmallVec;
 use std::collections::HashMap;
 use tinyset::SetU32;
@@ -124,7 +124,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
         .iter()
         .filter_map(|item_id| {
             if DAMAGING_ITEMS.contains(&item_id) {
-                Some(item_id)
+                Some(ItemId::from_u32(item_id) as u32)
             } else {
                 None
             }
@@ -151,8 +151,11 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
         current_player_level,
         current_player_levelings,
     );
-    let items_iter_expr =
-        get_items_damage(&current_player_damaging_items, current_player_attack_type);
+    let items_iter_expr = get_items_damage(
+        &current_player_damaging_items,
+        current_player_attack_type,
+        current_player_level,
+    );
     let runes_iter_expr =
         get_runes_damage(&current_player_damaging_runes, current_player_attack_type);
 

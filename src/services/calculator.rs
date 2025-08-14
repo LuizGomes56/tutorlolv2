@@ -25,7 +25,7 @@ fn infer_champion_stats(
     let mut magic_penetration = SmallVec::<[f64; 4]>::with_capacity(4);
 
     for item_id in owned_items {
-        if let Some(cached_item) = INTERNAL_ITEMS.get(&item_id.to_u32()) {
+        if let Some(cached_item) = INTERNAL_ITEMS.get(*item_id as usize) {
             let item_stats = &cached_item.stats;
 
             macro_rules! add_stat {
@@ -378,8 +378,11 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
         current_player_level,
         current_player_abilities,
     );
-    let items_iter_expr =
-        get_items_damage(&current_player_damaging_items, current_player_attack_type);
+    let items_iter_expr = get_items_damage(
+        &current_player_damaging_items,
+        current_player_attack_type,
+        current_player_level,
+    );
     let runes_iter_expr =
         get_runes_damage(&current_player_damaging_runes, current_player_attack_type);
 
@@ -617,14 +620,8 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
         monster_damages,
         tower_damages,
         current_player: OutputCurrentPlayer {
-            damaging_items: current_player_damaging_items
-                .into_iter()
-                .filter_map(|item_id| DAMAGING_ITEMS.contains(&item_id).then_some(item_id))
-                .collect(),
-            damaging_runes: current_player_damaging_runes
-                .into_iter()
-                .filter_map(|rune_id| DAMAGING_RUNES.contains(&rune_id).then_some(rune_id))
-                .collect(),
+            damaging_items: current_player_damaging_items,
+            damaging_runes: current_player_damaging_runes,
             level: current_player_level,
             champion_id: current_player_champion_id,
             base_stats: current_player_base_stats,

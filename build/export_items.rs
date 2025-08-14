@@ -143,12 +143,9 @@ pub fn export_items() -> Vec<(u32, ItemDetails)> {
                 item_id,
                 item.gold,
                 if item.damage_type.is_some() {
-                    format!(
-                        "Some({})",
-                        format_damage_type(&item.damage_type.clone().unwrap_or_default())
-                    )
+                    format_damage_type(&item.damage_type.clone().unwrap_or_default())
                 } else {
-                    "None".to_string()
+                    "DamageType::Unknown".to_string()
                 },
                 item.attributes.stringify(),
                 format_damage_object(&item.ranged),
