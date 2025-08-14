@@ -25,6 +25,10 @@ fn remove_special_chars(s: &str) -> String {
 
 pub async fn export_code() {
     let mut mega_block = String::with_capacity(1 << 24);
+    let champion_languages_raw_json =
+        std::fs::read_to_string("internal/champion_languages.json").unwrap();
+    let champion_languages_json =
+        serde_json::from_str::<HashMap<String, Vec<String>>>(&champion_languages_raw_json).unwrap();
 
     let champions_handle = tokio::task::spawn_blocking(move || export_champions());
     let items_handle = tokio::task::spawn_blocking(move || export_items());
@@ -147,26 +151,30 @@ pub async fn export_code() {
         .join(",")
     );
     let champion_name_to_id_phf = format!(
-        "
-        pub static CHAMPION_NAME_TO_ID: phf::OrderedMap<&'static str, ChampionId> = phf::phf_ordered_map! {{
+        "pub static CHAMPION_NAME_TO_ID: phf::OrderedMap<&'static str, ChampionId> = phf::phf_ordered_map! {{
             {}
-        }};
-        ",
+        }};",
         champions
             .iter()
-            .map(|(key, val)| {
-                format!(
-                    "\"{}\" => ChampionId::{}",
-                    val.champion_name,
-                    remove_special_chars(key)
-                )
+            .map(|(key, _)| {
+                champion_languages_json
+                    .get(key)
+                    .unwrap()
+                    .iter().map(|champion_name_alias| {
+                        format!(
+                            "\"{}\" => ChampionId::{}",
+                            champion_name_alias,
+                            remove_special_chars(key)
+                        )
+                    })
+                    .collect::<Vec<String>>()
+                    .join(",")
             })
             .collect::<Vec<String>>()
             .join(","),
     );
     let champion_id_enum = format!(
-        "
-        #[derive(Debug, PartialEq, Ord, Eq, PartialOrd, Copy, Clone, Decode, Encode)]
+        "#[derive(Debug, PartialEq, Ord, Eq, PartialOrd, Copy, Clone, Decode, Encode)]
         #[repr(u8)]
         pub enum ChampionId {{
             {}
@@ -175,8 +183,7 @@ pub async fn export_code() {
             pub const fn as_str(&self) -> &'static str {{
                 match self {{ {} }}
             }}
-        }}
-        ",
+        }}",
         champions
             .iter()
             .map(|(key, _)| { remove_special_chars(key) })
@@ -255,8 +262,7 @@ pub async fn export_code() {
             .join(","),
     );
     let item_id_enum = format!(
-        "
-        pub struct CachedMetaItem {{
+        "pub struct CachedMetaItem {{
             pub jungle: &'static [ItemId],
             pub top: &'static [ItemId],
             pub mid: &'static [ItemId],
@@ -275,8 +281,7 @@ pub async fn export_code() {
             pub const fn from_u32(id: u32) -> Self {{
                 match id {{ {} }}
             }}  
-        }}
-        ",
+        }}",
         items
             .iter()
             .map(|(_, value)| remove_special_chars(&value.item_name))
@@ -343,7 +348,7 @@ pub async fn export_code() {
             s.push_str(&internal_damaging_items);
             s.push_str(&format!(
                 "pub const SIZE_SIMULATED_ITEMS: usize = {};
-            pub const SIZE_DAMAGING_ITEMS: usize = {};",
+                pub const SIZE_DAMAGING_ITEMS: usize = {};",
                 internal_simulated_items_len, internal_damaging_items_len
             ));
             s
@@ -370,8 +375,7 @@ pub async fn export_code() {
             .join(","),
     );
     let rune_id_enum = format!(
-        "
-        #[derive(Debug, Copy, Clone, Ord, Eq, PartialOrd, PartialEq, Decode, Encode)]
+        "#[derive(Debug, Copy, Clone, Ord, Eq, PartialOrd, PartialEq, Decode, Encode)]
         #[repr(u8)]
         pub enum RuneId {{
             {}
@@ -383,8 +387,7 @@ pub async fn export_code() {
             pub const fn from_u32(id: u32) -> Self {{
                 match id {{ {} }}
             }}
-        }}
-        ",
+        }}",
         runes
             .iter()
             .map(|(_, value)| remove_special_chars(&value.rune_name))
@@ -463,13 +466,11 @@ pub async fn export_code() {
 
     bytes.extend_from_slice(
         format!(
-            "
-            {}
+            "{}
             pub static BASIC_ATTACK_OFFSET: (usize, usize) = {};
             pub static CRITICAL_STRIKE_OFFSET: (usize, usize) = {};
             pub static ONHIT_EFFECT_OFFSET: (usize, usize) = {};
-            pub static UNCOMPRESSED_MEGA_BLOCK_SIZE: usize = {};
-            ",
+            pub static UNCOMPRESSED_MEGA_BLOCK_SIZE: usize = {};",
             exported_content,
             record_offsets!(highlight(&invoke_rustfmt(&BASIC_ATTACK, 60))),
             record_offsets!(highlight(&invoke_rustfmt(&CRITICAL_STRIKE, 60))),

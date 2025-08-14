@@ -8,8 +8,8 @@ pub struct RiotCdnItem {
 }
 
 #[derive(Serialize, Deserialize)]
-pub struct RiotCdnStandard {
-    pub data: HashMap<String, Value>,
+pub struct RiotCdnStandard<T = Value> {
+    pub data: HashMap<String, T>,
 }
 
 #[derive(Deserialize)]

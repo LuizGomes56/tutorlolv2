@@ -1,13 +1,14 @@
 use crate::model::base::AbilityLevels;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
+use smallvec::SmallVec;
 
-#[derive(Deserialize)]
+#[derive(Serialize, Default, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RiotAbility {
     pub ability_level: u8,
 }
 
-#[derive(Deserialize)]
+#[derive(Serialize, Default, Deserialize)]
 #[serde(rename_all = "UPPERCASE")]
 pub struct RiotAbilities {
     pub q: RiotAbility,
@@ -27,7 +28,7 @@ impl RiotAbilities {
     }
 }
 
-#[derive(Deserialize, Clone, Default)]
+#[derive(Serialize, Default, Deserialize, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct RiotChampionStats {
     pub ability_power: f64,
@@ -48,29 +49,30 @@ pub struct RiotChampionStats {
     pub resource_value: f64,
 }
 
-#[derive(Deserialize)]
+#[derive(Serialize, Default, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RiotGeneralRunes {
     pub id: u32,
 }
 
-#[derive(Deserialize)]
+#[derive(Serialize, Default, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RiotFullRunes {
-    pub general_runes: Vec<RiotGeneralRunes>,
+    pub general_runes: Option<SmallVec<[RiotGeneralRunes; 6]>>,
 }
 
-#[derive(Deserialize)]
+#[derive(Serialize, Default, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct RiotActivePlayer {
+pub struct RiotActivePlayer<'a> {
     pub abilities: RiotAbilities,
     pub champion_stats: RiotChampionStats,
     pub full_runes: RiotFullRunes,
     pub level: u8,
-    pub riot_id: String,
+    #[serde(borrow)]
+    pub riot_id: &'a str,
 }
 
-#[derive(Deserialize)]
+#[derive(Serialize, Default, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RiotScoreboard {
     pub kills: u16,
@@ -79,49 +81,77 @@ pub struct RiotScoreboard {
     pub creep_score: u16,
 }
 
-#[derive(Deserialize)]
+#[derive(Serialize, Default, Deserialize)]
 pub struct RiotItems {
     #[serde(rename = "itemID")]
     pub item_id: u32,
 }
 
-#[derive(Deserialize)]
+#[derive(Serialize, Default, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct RiotAllPlayers {
-    pub champion_name: String,
-    pub items: Vec<RiotItems>,
+pub struct RiotAllPlayers<'a> {
+    #[serde(borrow)]
+    pub champion_name: &'a str,
+    pub items: SmallVec<[RiotItems; 7]>,
     pub level: u8,
-    pub position: String,
-    pub riot_id: String,
-    pub team: String,
+    #[serde(borrow)]
+    pub position: &'a str,
+    #[serde(borrow)]
+    pub riot_id: &'a str,
+    #[serde(borrow)]
+    pub team: &'a str,
     pub scores: RiotScoreboard,
 }
 
-#[derive(Deserialize)]
+#[derive(Serialize, Default, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RiotRealtimeGameData {
     pub game_time: f32,
     pub map_number: u8,
 }
 
-#[derive(Deserialize)]
+#[derive(Serialize, Default, Deserialize)]
 #[serde(rename_all = "PascalCase")]
-pub struct RealtimeEvent {
-    pub dragon_type: Option<String>,
-    pub killer_name: Option<String>,
+pub struct RealtimeEvent<'a> {
+    pub dragon_type: Option<&'a str>,
+    pub killer_name: Option<&'a str>,
 }
 
-#[derive(Deserialize)]
+#[derive(Serialize, Default, Deserialize)]
 #[serde(rename_all = "PascalCase")]
-pub struct RiotRealtimeEvents {
-    pub events: Vec<RealtimeEvent>,
+pub struct RiotRealtimeEvents<'a> {
+    #[serde(borrow)]
+    pub events: SmallVec<[RealtimeEvent<'a>; 5]>,
 }
 
-#[derive(Deserialize)]
+#[derive(Serialize, Default, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct RiotRealtime {
-    pub active_player: RiotActivePlayer,
-    pub all_players: Vec<RiotAllPlayers>,
-    pub events: RiotRealtimeEvents,
+pub struct RiotRealtime<'a> {
+    #[serde(borrow)]
+    pub active_player: RiotActivePlayer<'a>,
+    #[serde(borrow)]
+    pub all_players: SmallVec<[RiotAllPlayers<'a>; 10]>,
+    #[serde(borrow)]
+    pub events: RiotRealtimeEvents<'a>,
     pub game_data: RiotRealtimeGameData,
+}
+
+#[test]
+fn _test() {
+    unsafe {
+        std::thread::Builder::new()
+            .stack_size(1 << 23)
+            .spawn_unchecked(move || {
+                let data = std::fs::read_to_string("example.json").unwrap();
+                let parsed = serde_json::from_str(&data).unwrap();
+                let start_time = std::time::Instant::now();
+                let _game = crate::services::realtime::realtime(&parsed).map_err(|e| {
+                    println!("{:?}", e);
+                });
+                println!("{:?}", start_time.elapsed());
+            })
+    }
+    .unwrap()
+    .join()
+    .unwrap();
 }

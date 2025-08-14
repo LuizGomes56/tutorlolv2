@@ -6,6 +6,7 @@ mod riot_formulas;
 use helpers::*;
 use riot_formulas::*;
 
+#[derive(Debug)]
 pub enum CalculationError {
     CurrentPlayerNotFound,
     ChampionNameNotFound,

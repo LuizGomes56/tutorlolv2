@@ -46,13 +46,9 @@ pub async fn fetch_cdn_api<T: DeserializeOwned>(
 pub async fn fetch_riot_api<T: DeserializeOwned>(
     client: Client,
     path_name: &str,
+    language: &str,
 ) -> Result<T, Box<dyn std::error::Error>> {
-    let url = format!(
-        "{}/data/{}/{}.json",
-        riot_base_url(),
-        ENV_CONFIG.lol_language,
-        path_name
-    );
+    let url = format!("{}/data/{}/{}.json", riot_base_url(), language, path_name);
 
     let res = client.get(&url).send().await?;
 
@@ -76,4 +72,17 @@ pub async fn fetch_version(
         .get(0)
         .ok_or_else(|| String::from("Version not found"))?
         .clone())
+}
+
+#[generator_macros::trace_time]
+pub async fn fetch_languages(
+    client: Client,
+    endpoint: &str,
+) -> Result<Vec<String>, Box<dyn std::error::Error>> {
+    let res = client
+        .get(format!("{}/cdn/languages.json", endpoint))
+        .send()
+        .await?;
+    let data = res.json::<Vec<String>>().await?;
+    Ok(data)
 }

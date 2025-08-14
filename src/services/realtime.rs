@@ -13,7 +13,6 @@ use crate::{
 };
 use internal_comptime::{CHAMPION_NAME_TO_ID, ItemId, Position};
 use smallvec::SmallVec;
-use std::collections::HashMap;
 use tinyset::SetU32;
 
 /// Takes a type constructed from port 2999 and returns a new type "Realtime"
@@ -59,10 +58,10 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
         .map(|player| {
             (
                 player.riot_id.split('#').next().unwrap_or_default(),
-                &player.team,
+                player.team,
             )
         })
-        .collect::<HashMap<&str, &String>>();
+        .collect::<SmallVec<[(_, _); 10]>>();
 
     let (enemy_dragon_multipliers, ally_dragon_multipliers) =
         get_dragon_multipliers(game_events, players_map, current_player_raw_team);
@@ -104,16 +103,19 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
 
     let current_player_damaging_runes = current_player_riot_runes
         .general_runes
-        .iter()
-        .filter_map(|riot_rune| {
-            let rune_id = riot_rune.id;
-            if DAMAGING_RUNES.contains(&rune_id) {
-                Some(rune_id)
-            } else {
-                None
-            }
+        .as_ref()
+        .and_then(|general_runes| {
+            Some(
+                general_runes
+                    .into_iter()
+                    .filter_map(|riot_rune| {
+                        let rune_id = riot_rune.id;
+                        DAMAGING_RUNES.contains(&rune_id).then_some(rune_id)
+                    })
+                    .collect::<SetU32>(),
+            )
         })
-        .collect::<SetU32>();
+        .unwrap_or_default();
 
     let current_player_items = current_player_riot_items
         .iter()
@@ -123,11 +125,9 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
     let current_player_damaging_items = current_player_items
         .iter()
         .filter_map(|item_id| {
-            if DAMAGING_ITEMS.contains(&item_id) {
-                Some(ItemId::from_u32(item_id) as u32)
-            } else {
-                None
-            }
+            DAMAGING_ITEMS
+                .contains(&item_id)
+                .then_some(ItemId::from_u32(item_id) as u32)
         })
         .collect::<SetU32>();
 
@@ -363,7 +363,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
 
 fn get_dragon_multipliers<'a>(
     event_list: &[RealtimeEvent],
-    players: HashMap<&str, &String>,
+    players: SmallVec<[(&str, &str); 10]>,
     current_player_team: &str,
 ) -> (DragonMultipliers, DragonMultipliers) {
     let mut ally_effect = DragonMultipliers::new();
@@ -373,13 +373,13 @@ fn get_dragon_multipliers<'a>(
         let (Some(killer), Some(dragon_type)) = (&event.killer_name, &event.dragon_type) else {
             continue;
         };
-        if let Some(&team) = players.get(killer.as_str()) {
-            let target = if team == current_player_team {
+        if let Some((_, team)) = players.iter().find(|(name, _)| name == killer) {
+            let target = if *team == current_player_team {
                 &mut ally_effect
             } else {
                 &mut enemy_effect
             };
-            match dragon_type.as_str() {
+            match *dragon_type {
                 "Earth" => target.earth += EARTH_DRAGON_MULTIPLIER,
                 "Fire" => target.fire += FIRE_DRAGON_MULTIPLIER,
                 "Chemtech" => target.chemtech += CHEMTECH_DRAGON_MULTIPLIER,

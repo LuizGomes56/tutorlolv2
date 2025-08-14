@@ -156,29 +156,30 @@ pub async fn realtime_handler(
             //     champion_name, summoner_name
             // );
 
-            // Will always fail, this function is not implemented at this time.
-            // Simd-json will be used to deserialize the data
-            let data = unsafe { std::mem::transmute_copy::<_, RiotRealtime>(&game_data) };
-            match realtime(&data) {
-                Ok(data) => {
-                    println!(
-                        "fn[realtime_handler] Success on request for game_code: {}, game_id: {}",
-                        game_code, game_id
-                    );
-                    send_response!(&data)
-                }
+            match serde_json::from_slice(&game_data) {
+                Ok(game_data) => match realtime(&game_data) {
+                    Ok(data) => send_response!(data),
+                    Err(e) => {
+                        let message = get_calculation_error(e);
+                        println!("Error on realtime response: {:#?}", message);
+                        HttpResponse::InternalServerError().json(APIResponse {
+                            success: false,
+                            message,
+                            data: (),
+                        })
+                    }
+                },
                 Err(e) => {
-                    let message = get_calculation_error(e);
-                    println!("Error on realtime response: {:#?}", message);
+                    eprintln!("Error deserializing bincode: {}", e);
                     HttpResponse::InternalServerError().json(APIResponse {
                         success: false,
-                        message,
+                        message: format!("Error deserializing data: {:#?}", e),
                         data: (),
                     })
                 }
             }
 
-            // ! Database should have a BYTEA field, but now it is JSONB
+            // ! Database should have a BYTEA field (current = JSONB)
 
             /*
             match sqlx::query(
