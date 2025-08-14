@@ -18,4 +18,5 @@ img
 formulas
 read_only
 converted
-internal_comptime/src/data
+internal_comptime/src/data/*
+!internal_comptime/src/data/mod.rs
