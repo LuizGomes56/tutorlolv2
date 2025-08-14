@@ -27,13 +27,12 @@ pub fn get_simulated_champion_stats<'a>(
     owned_items: &SetU32,
     ally_dragon_multipliers: &DragonMultipliers,
 ) -> SmallVec<[(ItemId, Stats); SIZE_SIMULATED_ITEMS]> {
-    let mut simulated_stats =
-        SmallVec::<[(ItemId, Stats); SIZE_SIMULATED_ITEMS]>::with_capacity(SIZE_SIMULATED_ITEMS);
+    let mut simulated_stats = SmallVec::with_capacity(SIZE_SIMULATED_ITEMS);
     for item_id in SIMULATED_ITEMS.iter() {
         if owned_items.contains(*item_id) {
             continue;
         }
-        if let Some(item) = INTERNAL_ITEMS.get(item_id) {
+        if let Some(item) = INTERNAL_ITEMS.get(*item_id as usize) {
             simulated_stats.push((
                 ItemId::from_u32(*item_id),
                 simulate_champion_stats(item, *current_stats, ally_dragon_multipliers),
@@ -90,20 +89,21 @@ pub fn simulate_champion_stats(
 pub fn get_items_damage(
     current_player_damaging_items: &SetU32,
     attack_type: AttackType,
+    level: u8,
 ) -> SmallVec<[(ItemId, DamageExpression); SIZE_ITEMS_EXPECTED]> {
     let mut result = SmallVec::with_capacity(current_player_damaging_items.len());
     for item_id in current_player_damaging_items.iter() {
-        if let Some(item) = INTERNAL_ITEMS.get(&item_id) {
+        if let Some(item) = INTERNAL_ITEMS.get(item_id as usize) {
             let item_damage = match attack_type {
                 AttackType::Ranged => &item.ranged,
                 AttackType::Melee => &item.melee,
             };
             result.push((
-                ItemId::from_u32(item_id),
+                unsafe { std::mem::transmute(item_id as u16) },
                 DamageExpression {
-                    level: 0,
+                    level,
                     attributes: item.attributes,
-                    damage_type: item.damage_type.unwrap_or_default(),
+                    damage_type: item.damage_type,
                     minimum_damage: item_damage.minimum_damage,
                     maximum_damage: item_damage.maximum_damage,
                 },
@@ -119,13 +119,13 @@ pub fn get_runes_damage(
 ) -> SmallVec<[(RuneId, DamageExpression); SIZE_DAMAGING_RUNES]> {
     let mut result = SmallVec::with_capacity(current_player_damaging_runes.len());
     for rune_id in current_player_damaging_runes.iter() {
-        if let Some(rune) = INTERNAL_RUNES.get(&rune_id) {
+        if let Some(rune) = INTERNAL_RUNES.get(rune_id as usize) {
             let minimum_damage = match attack_type {
                 AttackType::Ranged => rune.ranged,
                 AttackType::Melee => rune.melee,
             };
             result.push((
-                RuneId::from_u32(rune_id),
+                unsafe { std::mem::transmute(rune_id as u8) },
                 DamageExpression {
                     level: 0,
                     attributes: Attrs::None,
@@ -417,7 +417,7 @@ pub fn get_enemy_current_stats(
     earth_dragon_mod: f64,
 ) -> BasicStats {
     for enemy_item in current_items {
-        if let Some(item) = INTERNAL_ITEMS.get(enemy_item) {
+        if let Some(item) = INTERNAL_ITEMS.get(ItemId::from_u32(*enemy_item) as usize) {
             macro_rules! add_value {
                 ($field:ident) => {
                     basic_stats.$field += item.stats.$field;

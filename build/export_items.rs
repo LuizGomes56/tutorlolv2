@@ -111,67 +111,66 @@ pub struct ItemDetails {
     pub is_damaging: bool,
 }
 
-pub fn export_items() -> BTreeMap<u32, ItemDetails> {
-     init_map!(dir Item, "internal/items")
-            .into_par_iter()
-            .map(|(item_id_str, item)| {
-                let item_id = item_id_str.parse::<u32>().unwrap();
+pub fn export_items() -> Vec<(u32, ItemDetails)> {
+    let mut items = init_map!(dir Item, "internal/items")
+        .into_par_iter()
+        .map(|(item_id_str, item)| {
+            let item_id = item_id_str.parse::<u32>().unwrap();
 
-                let prettified_stats = item
-                    .prettified_stats
-                    .iter()
-                    .map(|(k, v)| format!("StatName::{}({}f64)",
-                    {
-                        let mut s = k.replace(" ", "");
-                        if s == "Lethality" {
-                            s = "ArmorPenetration".to_string();
-                        } 
-                        if s == "HealandShieldPower" {
-                            s = "HealAndShieldPower".to_string()
-                        }
-                        s
-                    }, v
-                ))
-                    .collect::<Vec<String>>()
-                    .join(",");
+            let prettified_stats = item
+                .prettified_stats
+                .iter()
+                .map(|(k, v)| format!("StatName::{}({}f64)",
+                {
+                    let mut s = k.replace(" ", "");
+                    if s == "Lethality" {
+                        s = "ArmorPenetration".to_string();
+                    } 
+                    if s == "HealandShieldPower" {
+                        s = "HealAndShieldPower".to_string()
+                    }
+                    s
+                }, v
+            ))
+                .collect::<Vec<String>>()
+                .join(",");
 
-                let constdecl = format!(
-                    r#"pub static ITEM_{}: CachedItem = CachedItem {{
-                gold: {},damage_type: {},
-                attributes: Attrs::{},ranged: {},melee: {},prettified_stats: &[{}],
-                stats: CachedItemStats {{{}}},}};"#,
-                    item_id,
-                    item.gold,
-                    if item.damage_type.is_some() {
-                        format!(
-                            "Some({})",
-                            format_damage_type(&item.damage_type.clone().unwrap_or_default())
-                        )
-                    } else {
-                        "None".to_string()
-                    },
-                    item.attributes.stringify(),
-                    format_damage_object(&item.ranged),
-                    format_damage_object(&item.melee),
-                    prettified_stats,
-                    format_stats(&item.stats),
-                );
+            let constdecl = format!(
+                r#"pub static ITEM_{}: CachedItem = CachedItem {{
+            gold: {},damage_type: {},
+            attributes: Attrs::{},ranged: {},melee: {},prettified_stats: &[{}],
+            stats: CachedItemStats {{{}}},}};"#,
+                item_id,
+                item.gold,
+                if item.damage_type.is_some() {
+                    format_damage_type(&item.damage_type.clone().unwrap_or_default())
+                } else {
+                    "DamageType::Unknown".to_string()
+                },
+                item.attributes.stringify(),
+                format_damage_object(&item.ranged),
+                format_damage_object(&item.melee),
+                prettified_stats,
+                format_stats(&item.stats),
+            );
 
-                (
-                    item_id,
-                    ItemDetails {
-                        item_name: item.name.clone(),
-                        item_formula: highlight(&clear_suffixes(&invoke_rustfmt(&constdecl, 60)))
-                            .replacen("class=\"type\"", "class=\"constant\"", 1),
-                        constdecl,
-                        description: format!(
-                            "ItemDescription {{name: \"{}\",gold_cost: {}u16,prettified_stats: &[{}],}}",
-                            item.name, item.gold, prettified_stats
-                        ),
-                        is_simulated: item.tier >= 3 && item.gold > 0 && item.purchasable,
-                        is_damaging: item.ranged.is_some() || item.melee.is_some(),
-                    },
-                )
-            })
-            .collect::<BTreeMap<u32, ItemDetails>>()
+            (
+                item_id,
+                ItemDetails {
+                    item_name: item.name.clone(),
+                    item_formula: highlight(&clear_suffixes(&invoke_rustfmt(&constdecl, 60)))
+                        .replacen("class=\"type\"", "class=\"constant\"", 1),
+                    constdecl,
+                    description: format!(
+                        "ItemDescription {{name: \"{}\",gold_cost: {}u16,prettified_stats: &[{}],}}",
+                        item.name, item.gold, prettified_stats
+                    ),
+                    is_simulated: item.tier >= 3 && item.gold > 0 && item.purchasable,
+                    is_damaging: item.ranged.is_some() || item.melee.is_some(),
+                },
+            )
+        })
+        .collect::<Vec<(u32, ItemDetails)>>();
+    items.sort_by(|a, b| a.1.item_name.cmp(&b.1.item_name));
+    items
 }
