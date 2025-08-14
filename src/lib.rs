@@ -25,11 +25,10 @@ use actix_web::{
 #[cfg(feature = "dev")]
 use actix_web::{middleware::from_fn, mime, web::JsonConfig};
 use dotenvy::dotenv;
+use internal_comptime::*;
 use server::{games::*, img::*, schemas::APIResponse};
 use sqlx::postgres::PgPoolOptions;
 use std::io;
-
-pub use internal_comptime::*;
 
 fn api_scope() -> impl HttpServiceFactory + 'static {
     let api_routes = scope("/api").service(

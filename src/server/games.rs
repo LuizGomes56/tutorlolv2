@@ -13,16 +13,16 @@ use uuid::Uuid;
 
 #[get("/create")]
 pub async fn create_game_handler(state: Data<AppState>) -> impl Responder {
-    let chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
-        .chars()
-        .collect::<Vec<char>>();
-    let game_code = (0..6)
-        .map(|_| chars[random_range(0..chars.len())])
-        .collect::<String>();
+    let chars = b"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+    let mut game_code_bytes = [0; 6];
+    for i in 0..6 {
+        game_code_bytes[i] = chars[random_range(0..chars.len())];
+    }
+    let game_code = unsafe { std::str::from_utf8_unchecked(&game_code_bytes) };
     let game_id = Uuid::new_v4().to_string();
     match sqlx::query("INSERT INTO games (game_id, game_code) VALUES ($1, $2)")
         .bind(&game_id)
-        .bind(&game_code)
+        .bind(game_code)
         .execute(&state.db)
         .await
     {
@@ -234,7 +234,7 @@ pub async fn realtime_handler(
 
 #[post("/calculator")]
 pub async fn calculator_handler(body: actix_web::web::Bytes) -> impl Responder {
-    match bincode::serde::decode_from_slice::<InputGame, _>(&body, bincode::config::standard()) {
+    match bincode::decode_from_slice::<InputGame, _>(&body, bincode::config::standard()) {
         Ok(decoded) => match calculator(decoded.0) {
             Ok(data) => {
                 send_response!(&data)

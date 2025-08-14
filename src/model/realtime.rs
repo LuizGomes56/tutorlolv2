@@ -2,14 +2,16 @@ use super::{
     SIZE_ENEMIES_EXPECTED,
     base::{BasicStats, Damages, DragonMultipliers, Stats},
 };
+use bincode::Encode;
 use internal_comptime::{ChampionId, ItemId, Position};
-use serde::Serialize;
 use smallvec::SmallVec;
 use tinyset::SetU32;
 
-#[derive(Serialize)]
+#[derive(Encode)]
 pub struct CurrentPlayer<'a> {
+    #[bincode(with_serde)]
     pub damaging_items: SetU32,
+    #[bincode(with_serde)]
     pub damaging_runes: SetU32,
     pub riot_id: &'a str,
     pub level: u8,
@@ -21,13 +23,13 @@ pub struct CurrentPlayer<'a> {
     pub current_stats: Stats,
 }
 
-#[derive(Serialize)]
+#[derive(Encode)]
 pub struct GameInformation {
     pub game_time: f32,
     pub map_number: u8,
 }
 
-#[derive(Serialize)]
+#[derive(Encode)]
 pub enum Team {
     Blue,
     Red,
@@ -43,7 +45,7 @@ impl Team {
     }
 }
 
-#[derive(Serialize)]
+#[derive(Encode)]
 pub struct Enemy<'a> {
     pub riot_id: &'a str,
     pub team: Team,
@@ -57,7 +59,7 @@ pub struct Enemy<'a> {
     pub real_magic_resist: f64,
 }
 
-#[derive(Serialize)]
+#[derive(Encode)]
 pub struct Scoreboard<'a> {
     pub assists: u16,
     pub creep_score: u16,
@@ -68,7 +70,7 @@ pub struct Scoreboard<'a> {
     pub position: Position,
 }
 
-#[derive(Serialize)]
+#[derive(Encode)]
 pub struct Realtime<'a> {
     pub current_player: CurrentPlayer<'a>,
     pub enemies: SmallVec<[(ChampionId, Enemy<'a>); SIZE_ENEMIES_EXPECTED]>,

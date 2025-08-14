@@ -1,3 +1,4 @@
+use bincode::{Decode, Encode};
 use serde::{Deserialize, Serialize};
 use shared_types::*;
 
@@ -53,7 +54,7 @@ pub struct EvalContext {
     pub ad: f64,
 }
 
-#[derive(Default, Copy, Clone, Serialize, Deserialize)]
+#[derive(Default, Copy, Clone, Encode, Decode)]
 pub enum DamageType {
     Physical,
     Magic,
@@ -78,7 +79,7 @@ impl ToString for DamageType {
     }
 }
 
-#[derive(Copy, Clone, Serialize, Deserialize)]
+#[derive(Copy, Clone, Encode, Serialize, Deserialize)]
 pub enum Attrs {
     None,
     Onhit,
@@ -98,7 +99,7 @@ pub enum AdaptativeType {
     Magic,
 }
 
-#[derive(Copy, Clone, Serialize)]
+#[derive(Copy, Clone, Encode)]
 pub enum Position {
     Top,
     Jungle,
@@ -235,17 +236,3 @@ pub struct DamageExpression {
     pub minimum_damage: fn(u8, &EvalContext) -> f64,
     pub maximum_damage: fn(u8, &EvalContext) -> f64,
 }
-
-// macro_rules! impl_unsafe_cast {
-//     ($t:ty, $n:ty) => {
-//         impl $t {
-//             pub fn unsafe_cast(n: $n) -> $t {
-//                 unsafe { std::mem::transmute(n) }
-//             }
-//         }
-//     };
-// }
-
-// impl_unsafe_cast!(ChampionId, u8);
-// impl_unsafe_cast!(ItemId, u16);
-// impl_unsafe_cast!(RuneId, u8);
