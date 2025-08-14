@@ -1,31 +1,30 @@
 use super::{
-    SIZE_ABILITIES, SIZE_ITEMS_EXPECTED, SIZE_RUNES_EXPECTED,
+    SIZE_ABILITIES, SIZE_ITEMS_EXPECTED, SIZE_RUNES_EXPECTED, WrapSetU32,
     base::{AbilityLevels, BasicStats, DamageLike, MonsterDamages, Stats},
 };
+use bincode::{Decode, Encode};
 use internal_comptime::{AbilityLike, ChampionId, ItemId, RuneId};
-use serde::{Deserialize, Serialize};
 use smallvec::SmallVec;
-use tinyset::SetU32;
 
-#[derive(Serialize)]
+#[derive(Encode)]
 pub struct OutputCurrentPlayer {
     pub champion_id: ChampionId,
-    pub damaging_items: SetU32,
-    pub damaging_runes: SetU32,
+    pub damaging_items: WrapSetU32,
+    pub damaging_runes: WrapSetU32,
     pub level: u8,
     pub base_stats: BasicStats,
     pub bonus_stats: BasicStats,
     pub current_stats: Stats,
 }
 
-#[derive(Serialize)]
+#[derive(Encode)]
 pub struct CalculatorDamages {
     pub abilities: DamageLike<SIZE_ABILITIES, AbilityLike>,
     pub items: DamageLike<5, ItemId>,
     pub runes: DamageLike<3, RuneId>,
 }
 
-#[derive(Serialize)]
+#[derive(Encode)]
 pub struct OutputEnemy {
     pub level: u8,
     pub damages: CalculatorDamages,
@@ -36,7 +35,12 @@ pub struct OutputEnemy {
     pub real_magic_resist: f64,
 }
 
-#[derive(Serialize)]
+#[derive(Encode)]
+pub struct _Test {
+    pub a: Vec<(u32, u32)>,
+}
+
+#[derive(Encode)]
 pub struct OutputGame {
     pub monster_damages: MonsterDamages,
     pub tower_damages: [f64; 6],
@@ -45,7 +49,7 @@ pub struct OutputGame {
     pub recommended_items: &'static [ItemId],
 }
 
-#[derive(Deserialize)]
+#[derive(Decode)]
 pub struct InputActivePlayer {
     pub champion_id: ChampionId,
     pub champion_stats: Stats,
@@ -57,7 +61,7 @@ pub struct InputActivePlayer {
     pub infer_stats: bool,
 }
 
-#[derive(Deserialize)]
+#[derive(Decode)]
 pub struct InputEnemyPlayers {
     pub champion_id: ChampionId,
     pub items: SmallVec<[u32; SIZE_ITEMS_EXPECTED]>,
@@ -66,7 +70,7 @@ pub struct InputEnemyPlayers {
     pub infer_stats: bool,
 }
 
-#[derive(Deserialize)]
+#[derive(Decode)]
 pub struct InputGame {
     pub active_player: InputActivePlayer,
     pub enemy_players: SmallVec<[InputEnemyPlayers; 1]>,

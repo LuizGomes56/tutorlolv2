@@ -1,17 +1,17 @@
 use super::{SIZE_ABILITIES, riot::RiotChampionStats};
 use crate::{SIZE_DAMAGING_ITEMS, SIZE_SIMULATED_ITEMS};
+use bincode::{Decode, Encode};
 use internal_comptime::{AbilityLike, DamageType, ItemId, RuneId};
-use serde::{Deserialize, Serialize};
 use smallvec::SmallVec;
 
-#[derive(Serialize)]
+#[derive(Encode)]
 pub struct InstanceDamage {
     pub minimum_damage: f64,
     pub maximum_damage: f64,
     pub damage_type: DamageType,
 }
 
-#[derive(Copy, Clone, Deserialize, Serialize)]
+#[derive(Encode, Copy, Clone, Decode)]
 pub struct Stats {
     pub ability_power: f64,
     pub armor: f64,
@@ -56,7 +56,7 @@ impl RiotChampionStats {
 
 pub type DamageLike<const N: usize, T> = SmallVec<[(T, InstanceDamage); N]>;
 
-#[derive(Copy, Clone, Deserialize, Serialize)]
+#[derive(Encode, Copy, Clone, Decode)]
 pub struct BasicStats {
     pub armor: f64,
     pub health: f64,
@@ -65,14 +65,14 @@ pub struct BasicStats {
     pub mana: f64,
 }
 
-#[derive(Serialize)]
+#[derive(Encode)]
 pub struct SimulatedDamages {
     pub abilities: DamageLike<SIZE_ABILITIES, AbilityLike>,
     pub items: DamageLike<SIZE_DAMAGING_ITEMS, ItemId>,
     pub runes: DamageLike<3, RuneId>,
 }
 
-#[derive(Serialize)]
+#[derive(Encode)]
 pub struct Damages {
     pub abilities: DamageLike<SIZE_ABILITIES, AbilityLike>,
     pub items: DamageLike<5, ItemId>,
@@ -93,7 +93,7 @@ pub struct GenericStats {
     pub randuin: bool,
 }
 
-#[derive(Default, Serialize)]
+#[derive(Default, Encode)]
 pub struct DamageValue {
     pub minimum_damage: f64,
     pub maximum_damage: f64,
@@ -105,7 +105,7 @@ pub struct DamageMultipliers {
     pub damage_mod: (f64, f64),
 }
 
-#[derive(Copy, Clone, Deserialize)]
+#[derive(Copy, Clone, Decode)]
 pub struct AbilityLevels {
     pub q: u8,
     pub w: u8,
@@ -113,7 +113,7 @@ pub struct AbilityLevels {
     pub r: u8,
 }
 
-#[derive(Clone, Copy, Serialize)]
+#[derive(Clone, Copy, Encode)]
 pub struct DragonMultipliers {
     pub earth: f64,
     pub fire: f64,
@@ -131,7 +131,7 @@ impl DragonMultipliers {
     }
 }
 
-#[derive(Serialize)]
+#[derive(Encode)]
 pub struct MonsterExpr {
     pub abilities: SmallVec<[DamageValue; SIZE_ABILITIES]>,
     pub items: SmallVec<[DamageValue; 5]>,

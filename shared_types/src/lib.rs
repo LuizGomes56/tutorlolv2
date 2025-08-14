@@ -1,6 +1,7 @@
+use bincode::Encode;
 use serde::Serialize;
 
-#[derive(Copy, Clone, Serialize)]
+#[derive(Copy, Clone, Serialize, Encode)]
 pub enum AbilityLike {
     P(AbilityName),
     Q(AbilityName),
@@ -134,7 +135,7 @@ impl_key!(w);
 impl_key!(e);
 impl_key!(r);
 
-#[derive(Clone, Copy, Serialize)]
+#[derive(Clone, Copy, Serialize, Encode)]
 pub enum AbilityName {
     _1,
     _2,

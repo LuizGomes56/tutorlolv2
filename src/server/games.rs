@@ -6,23 +6,23 @@ use crate::{
     services::{CalculationError, calculator::calculator, realtime::realtime},
 };
 use actix_web::{HttpResponse, Responder, get, post, web::Data};
+use bincode::{Decode, Encode};
 use rand::random_range;
-use serde::{Deserialize, Serialize};
 use sqlx::prelude::FromRow;
 use uuid::Uuid;
 
 #[get("/create")]
 pub async fn create_game_handler(state: Data<AppState>) -> impl Responder {
-    let chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
-        .chars()
-        .collect::<Vec<char>>();
-    let game_code = (0..6)
-        .map(|_| chars[random_range(0..chars.len())])
-        .collect::<String>();
+    let chars = b"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+    let mut game_code_bytes = [0; 6];
+    for i in 0..6 {
+        game_code_bytes[i] = chars[random_range(0..chars.len())];
+    }
+    let game_code = unsafe { std::str::from_utf8_unchecked(&game_code_bytes) };
     let game_id = Uuid::new_v4().to_string();
     match sqlx::query("INSERT INTO games (game_id, game_code) VALUES ($1, $2)")
         .bind(&game_id)
-        .bind(&game_code)
+        .bind(game_code)
         .execute(&state.db)
         .await
     {
@@ -50,7 +50,7 @@ fn get_calculation_error(e: CalculationError) -> &'static str {
     }
 }
 
-#[derive(Deserialize)]
+#[derive(Decode)]
 struct GetByCodeBody {
     game_code: String,
 }
@@ -63,10 +63,9 @@ pub async fn get_by_code_handler(
     #[cfg(not(feature = "dev"))]
     return HttpResponse::ServiceUnavailable();
     #[cfg(feature = "dev")]
-    match bincode::serde::decode_from_slice::<GetByCodeBody, _>(&body, bincode::config::standard())
-    {
+    match bincode::decode_from_slice::<GetByCodeBody, _>(&body, bincode::config::standard()) {
         Ok(decoded) => {
-            #[derive(Serialize, FromRow)]
+            #[derive(Encode, FromRow)]
             struct RealtimeSqlxQuery {
                 game: String,
             }
@@ -129,14 +128,14 @@ pub async fn realtime_handler(
     // state: Data<AppState>,
     body: actix_web::web::Bytes,
 ) -> impl Responder {
-    #[derive(Deserialize)]
+    #[derive(Decode)]
     struct RealtimeBody {
         game_id: String,
         game_code: String,
-        game_data: RiotRealtime,
+        game_data: Vec<u8>,
     }
 
-    match bincode::serde::decode_from_slice::<RealtimeBody, _>(&body, bincode::config::standard()) {
+    match bincode::decode_from_slice::<RealtimeBody, _>(&body, bincode::config::standard()) {
         Ok(decoded) => {
             let RealtimeBody {
                 game_id,
@@ -157,7 +156,10 @@ pub async fn realtime_handler(
             //     champion_name, summoner_name
             // );
 
-            match realtime(&game_data) {
+            // Will always fail, this function is not implemented at this time.
+            // Simd-json will be used to deserialize the data
+            let data = unsafe { std::mem::transmute_copy::<_, RiotRealtime>(&game_data) };
+            match realtime(&data) {
                 Ok(data) => {
                     println!(
                         "fn[realtime_handler] Success on request for game_code: {}, game_id: {}",
@@ -234,7 +236,7 @@ pub async fn realtime_handler(
 
 #[post("/calculator")]
 pub async fn calculator_handler(body: actix_web::web::Bytes) -> impl Responder {
-    match bincode::serde::decode_from_slice::<InputGame, _>(&body, bincode::config::standard()) {
+    match bincode::decode_from_slice::<InputGame, _>(&body, bincode::config::standard()) {
         Ok(decoded) => match calculator(decoded.0) {
             Ok(data) => {
                 send_response!(&data)

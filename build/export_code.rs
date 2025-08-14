@@ -166,7 +166,7 @@ pub async fn export_code() {
     );
     let champion_id_enum = format!(
         "
-        #[derive(Debug, PartialEq, Ord, Eq, PartialOrd, Copy, Clone, Serialize, Deserialize)]
+        #[derive(Debug, PartialEq, Ord, Eq, PartialOrd, Copy, Clone, Decode, Encode)]
         #[repr(u8)]
         pub enum ChampionId {{
             {}
@@ -263,7 +263,7 @@ pub async fn export_code() {
             pub adc: &'static [ItemId],
             pub support: &'static [ItemId],
         }}
-        #[derive(Debug, Copy, Clone, Ord, Eq, PartialOrd, PartialEq, Deserialize, Serialize)]
+        #[derive(Debug, Copy, Clone, Ord, Eq, PartialOrd, PartialEq, Decode, Encode)]
         #[repr(u16)]
         pub enum ItemId {{
             {}
@@ -371,7 +371,7 @@ pub async fn export_code() {
     );
     let rune_id_enum = format!(
         "
-        #[derive(Debug, Copy, Clone, Ord, Eq, PartialOrd, PartialEq, Deserialize, Serialize)]
+        #[derive(Debug, Copy, Clone, Ord, Eq, PartialOrd, PartialEq, Decode, Encode)]
         #[repr(u8)]
         pub enum RuneId {{
             {}

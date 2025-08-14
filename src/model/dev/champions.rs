@@ -1,3 +1,4 @@
+use internal_comptime::Attrs;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
@@ -28,46 +29,12 @@ pub struct CdnAbility {
     pub name: String,
 }
 
-#[derive(Copy, Clone, Serialize, Deserialize)]
-pub enum __Attrs {
-    None,
-    Area,
-    Full,
-    Onhit,
-}
-
-impl From<(bool, bool)> for __Attrs {
-    fn from(value: (bool, bool)) -> Self {
-        match (value.0, value.1) {
-            (true, true) => __Attrs::Full,
-            (true, false) => __Attrs::Area,
-            (false, true) => __Attrs::Onhit,
-            (false, false) => __Attrs::None,
-        }
-    }
-}
-
-impl From<bool> for __Attrs {
-    fn from(value: bool) -> Self {
-        match value {
-            true => __Attrs::Area,
-            false => __Attrs::None,
-        }
-    }
-}
-
 impl CdnAbility {
     pub fn format(&self, minimum_damage: Vec<String>, maximum_damage: Vec<String>) -> Ability {
         Ability {
             name: self.name.clone(),
             damage_type: self.damage_type.clone().unwrap_or_default(),
-            attributes: __Attrs::from(
-                self.damage_type
-                    .as_deref()
-                    .unwrap_or_default()
-                    .to_lowercase()
-                    .contains("aoe"),
-            ),
+            attributes: Attrs::None,
             minimum_damage,
             maximum_damage,
         }
@@ -125,7 +92,7 @@ impl CdnChampion {
 pub struct Ability {
     pub name: String,
     pub damage_type: String,
-    pub attributes: __Attrs,
+    pub attributes: Attrs,
     pub minimum_damage: Vec<String>,
     pub maximum_damage: Vec<String>,
 }

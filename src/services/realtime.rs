@@ -330,8 +330,8 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
 
     Ok(Realtime {
         current_player: CurrentPlayer {
-            damaging_items: current_player_damaging_items,
-            damaging_runes: current_player_damaging_runes,
+            damaging_items: current_player_damaging_items.into(),
+            damaging_runes: current_player_damaging_runes.into(),
             riot_id: current_player_riot_id,
             level: current_player_level,
             team: current_player_team,

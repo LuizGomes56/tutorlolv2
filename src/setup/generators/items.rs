@@ -11,8 +11,10 @@ use crate::{
 };
 use internal_comptime::Attrs;
 use regex::Regex;
+use serde::Deserialize;
 
-enum DmgType {
+#[derive(Deserialize)]
+pub enum DmgType {
     Magic,
     Physical,
     True,
