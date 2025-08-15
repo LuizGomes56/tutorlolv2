@@ -1,7 +1,6 @@
 use super::{SIZE_ABILITIES, riot::RiotChampionStats};
-use crate::{SIZE_DAMAGING_ITEMS, SIZE_SIMULATED_ITEMS};
 use bincode::{Decode, Encode};
-use internal_comptime::{AbilityLike, DamageType, ItemId, RuneId};
+use internal_comptime::DamageType;
 use smallvec::SmallVec;
 
 #[derive(Encode)]
@@ -63,21 +62,6 @@ pub struct BasicStats {
     pub attack_damage: f64,
     pub magic_resist: f64,
     pub mana: f64,
-}
-
-#[derive(Encode)]
-pub struct SimulatedDamages {
-    pub abilities: DamageLike<SIZE_ABILITIES, AbilityLike>,
-    pub items: DamageLike<SIZE_DAMAGING_ITEMS, ItemId>,
-    pub runes: DamageLike<3, RuneId>,
-}
-
-#[derive(Encode)]
-pub struct Damages {
-    pub abilities: DamageLike<SIZE_ABILITIES, AbilityLike>,
-    pub items: DamageLike<5, ItemId>,
-    pub runes: DamageLike<3, RuneId>,
-    pub compared_items: SmallVec<[(ItemId, SimulatedDamages); SIZE_SIMULATED_ITEMS]>,
 }
 
 #[derive(Clone, Copy)]

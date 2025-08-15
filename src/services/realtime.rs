@@ -3,10 +3,7 @@ use crate::{
     DAMAGING_ITEMS, DAMAGING_RUNES, INTERNAL_CHAMPIONS, META_ITEMS,
     model::{
         SIZE_ENEMIES_EXPECTED, SIZE_ITEMS_EXPECTED,
-        base::{
-            BasicStats, DamageMultipliers, DamageValue, Damages, DragonMultipliers,
-            SimulatedDamages,
-        },
+        base::{BasicStats, DamageMultipliers, DamageValue, DragonMultipliers},
         realtime::*,
         riot::*,
     },

@@ -32,9 +32,10 @@ pub fn get_simulated_champion_stats<'a>(
         if owned_items.contains(*item_id) {
             continue;
         }
-        if let Some(item) = INTERNAL_ITEMS.get(*item_id as usize) {
+        let item_id_enum = ItemId::from_u32(*item_id);
+        if let Some(item) = INTERNAL_ITEMS.get(item_id_enum as usize) {
             simulated_stats.push((
-                ItemId::from_u32(*item_id),
+                item_id_enum,
                 simulate_champion_stats(item, *current_stats, ally_dragon_multipliers),
             ));
         }

@@ -1,10 +1,26 @@
 use super::{
-    SIZE_ENEMIES_EXPECTED, WrapSetU32,
-    base::{BasicStats, Damages, DragonMultipliers, Stats},
+    SIZE_ABILITIES, SIZE_ENEMIES_EXPECTED, WrapSetU32,
+    base::{BasicStats, DamageLike, DragonMultipliers, Stats},
 };
+use crate::{SIZE_DAMAGING_ITEMS, SIZE_SIMULATED_ITEMS};
 use bincode::Encode;
-use internal_comptime::{ChampionId, ItemId, Position};
+use internal_comptime::{AbilityLike, ChampionId, ItemId, Position, RuneId};
 use smallvec::SmallVec;
+
+#[derive(Encode)]
+pub struct SimulatedDamages {
+    pub abilities: DamageLike<SIZE_ABILITIES, AbilityLike>,
+    pub items: DamageLike<SIZE_DAMAGING_ITEMS, ItemId>,
+    pub runes: DamageLike<3, RuneId>,
+}
+
+#[derive(Encode)]
+pub struct Damages {
+    pub abilities: DamageLike<SIZE_ABILITIES, AbilityLike>,
+    pub items: DamageLike<5, ItemId>,
+    pub runes: DamageLike<3, RuneId>,
+    pub compared_items: SmallVec<[(ItemId, SimulatedDamages); SIZE_SIMULATED_ITEMS]>,
+}
 
 #[derive(Encode)]
 pub struct CurrentPlayer<'a> {

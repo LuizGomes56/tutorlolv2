@@ -1,6 +1,6 @@
 [package]
 name = "tutorlolv2"
-version = "0.3.0"
+version = "0.3.2"
 edition = "2024"
 authors = ["Luiz Gustavo Santana Dias Gomes"]
 repository = "https://github.com/LuizGomes56/tutorlolv2"
@@ -49,6 +49,7 @@ actix-web = { version = "4.11.0", default-features = false, features = [
 ] }
 tinyset = { version = "0.5.2", features = ["serde"] }
 paste = "1.0.15"
+serde_json = "1.0.140"
 
 generator_macros = { path = "./generator_macros", optional = true }
 reqwest = { version = "0.12.1", features = [
@@ -57,7 +58,6 @@ reqwest = { version = "0.12.1", features = [
 ], default-features = false, optional = true }
 rayon = { version = "1.10.0", optional = true }
 once_cell = { version = "1.21.3", optional = true }
-serde_json = { version = "1.0.140", optional = true }
 scraper = { version = "0.23.1", optional = true }
 image = { version = "0.25.6", optional = true }
 ravif = { version = "0.12.0", default-features = false, optional = true }
@@ -69,7 +69,6 @@ dev = [
     "reqwest",
     "rayon",
     "once_cell",
-    "serde_json",
     "scraper",
     "image",
     "ravif",
