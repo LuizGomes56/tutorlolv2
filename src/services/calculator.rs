@@ -446,7 +446,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
         );
 
         abilities_damage.push((
-            AbilityLike::O,
+            AbilityLike::Onhit,
             InstanceDamage {
                 damage_type: DamageType::Mixed,
                 minimum_damage: onhit_effects.minimum_damage,

@@ -128,35 +128,25 @@ pub async fn realtime_handler(
     // state: Data<AppState>,
     body: actix_web::web::Bytes,
 ) -> impl Responder {
-    #[derive(Decode)]
-    struct RealtimeBody {
-        game_id: String,
-        game_code: String,
-        game_data: Vec<u8>,
+    #[derive(bincode::BorrowDecode)]
+    struct RealtimeBody<'a> {
+        game_id: &'a str,
+        game_code: &'a str,
+        game_data: &'a [u8],
     }
 
-    match bincode::decode_from_slice::<RealtimeBody, _>(&body, bincode::config::standard()) {
+    match bincode::borrow_decode_from_slice::<'_, RealtimeBody, _>(
+        &body,
+        bincode::config::standard(),
+    ) {
         Ok(decoded) => {
             let RealtimeBody {
                 game_id,
                 game_code,
                 game_data,
             } = decoded.0;
-            // let game_time = game_data.game_data.game_time;
-            // let summoner_name = game_data.active_player.riot_id.clone();
-            // let champion_name = game_data
-            //     .all_players
-            //     .iter()
-            //     .find(|p| p.riot_id == summoner_name)
-            //     .map(|p| p.champion_name.clone())
-            //     .unwrap_or_default();
 
-            // println!(
-            //     "Found champion_name: {}, and summoner_name: {}",
-            //     champion_name, summoner_name
-            // );
-
-            match serde_json::from_slice(&game_data) {
+            match serde_json::from_slice(game_data) {
                 Ok(game_data) => match realtime(&game_data) {
                     Ok(data) => send_response!(data),
                     Err(e) => {
@@ -170,16 +160,30 @@ pub async fn realtime_handler(
                     }
                 },
                 Err(e) => {
-                    eprintln!("Error deserializing bincode: {}", e);
+                    eprintln!("Error deserializing json data: {}", e);
                     HttpResponse::InternalServerError().json(APIResponse {
                         success: false,
-                        message: format!("Error deserializing data: {:#?}", e),
+                        message: format!("Error deserializing json data: {:#?}", e),
                         data: (),
                     })
                 }
             }
 
             // ! Database should have a BYTEA field (current = JSONB)
+
+            // let game_time = game_data.game_data.game_time;
+            // let summoner_name = game_data.active_player.riot_id.clone();
+            // let champion_name = game_data
+            //     .all_players
+            //     .iter()
+            //     .find(|p| p.riot_id == summoner_name)
+            //     .map(|p| p.champion_name.clone())
+            //     .unwrap_or_default();
+
+            // println!(
+            //     "Found champion_name: {}, and summoner_name: {}",
+            //     champion_name, summoner_name
+            // );
 
             /*
             match sqlx::query(
@@ -228,7 +232,7 @@ pub async fn realtime_handler(
             eprintln!("Error deserializing bincode: {}", e);
             return HttpResponse::InternalServerError().json(APIResponse {
                 success: false,
-                message: format!("Error deserializing data: {:#?}", e),
+                message: format!("Error deserializing bincode: {:#?}", e),
                 data: (),
             });
         }

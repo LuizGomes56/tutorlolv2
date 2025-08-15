@@ -219,13 +219,7 @@ pub fn export_champions() -> BTreeMap<String, ChampionDetails> {
             sort_pqwer(&mut constdecl_abilities);
 
             let constdecl = format!(
-                r#"pub static {}: CachedChampion = CachedChampion {{
-                adaptative_type: {},
-                attack_type: {},
-                positions: &[{}],
-                stats: CachedChampionStats {{{}}},
-                abilities: &[{}],
-                }};"#,
+                r#"pub static {}:CachedChampion=CachedChampion{{adaptative_type:{},attack_type:{},positions:&[{}],stats:CachedChampionStats{{{}}},abilities:&[{}],}};"#,
                 champion_id.to_uppercase(),
                 match champion.adaptative_type.as_str() {
                     "PHYSICAL_DAMAGE" => "AdaptativeType::Physical",
@@ -258,7 +252,7 @@ pub fn export_champions() -> BTreeMap<String, ChampionDetails> {
                     .iter()
                     .map(|(ability_name, rustfmt_val)| {
                         format!(
-                            "({}, CachedChampionAbility {})",
+                            "({},CachedChampionAbility{})",
                             AbilityLike::from_str(ability_name),
                             rustfmt_val
                         )

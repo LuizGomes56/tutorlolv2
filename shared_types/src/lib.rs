@@ -8,9 +8,9 @@ pub enum AbilityLike {
     W(AbilityName),
     E(AbilityName),
     R(AbilityName),
-    A,
-    C,
-    O,
+    BasicAttack,
+    CriticalStrike,
+    Onhit,
 }
 
 impl AbilityLike {

@@ -24,12 +24,12 @@ pub const CHEMTECH_DRAGON_MULTIPLIER: f64 = 0.06;
 
 pub fn get_simulated_champion_stats<'a>(
     current_stats: &Stats,
-    owned_items: &SetU32,
+    owned_items: &[u32],
     ally_dragon_multipliers: &DragonMultipliers,
 ) -> SmallVec<[(ItemId, Stats); SIZE_SIMULATED_ITEMS]> {
     let mut simulated_stats = SmallVec::with_capacity(SIZE_SIMULATED_ITEMS);
     for item_id in SIMULATED_ITEMS.iter() {
-        if owned_items.contains(*item_id) {
+        if owned_items.contains(item_id) {
             continue;
         }
         let item_id_enum = ItemId::from_u32(*item_id);
@@ -142,7 +142,7 @@ pub fn get_runes_damage(
 
 pub fn get_full_stats(
     enemy_state: (ChampionId, u8, f64),
-    enemy_stats: (BasicStats, &[u32]),
+    enemy_stats: (BasicStats, &[ItemId]),
     armor_val: (f64, f64),
     magic_val: (f64, f64),
 ) -> (BasicStats, BasicStats, GenericStats) {
@@ -178,7 +178,7 @@ pub fn get_full_stats(
             // At level 18, the maximum bonus must have been reached
             // For every upgrade, a +4% resist is applied.
             // #![manual_impl]
-            let ornn_resist_multiplier: f64 = match enemy_level {
+            let ornn_resist_multiplier = match enemy_level {
                 13..18 => (enemy_level - 12) as f64 * 0.04,
                 18 => 1.3,
                 _ => 1.1,
@@ -196,7 +196,7 @@ pub fn get_full_stats(
         ChampionId::Malphite => {
             // W upgrade pattern for malphite by 06/07/2025
             // #![manual_impl]
-            let malphite_resist_multiplier: f64 = match enemy_level {
+            let malphite_resist_multiplier = match enemy_level {
                 0..3 => 1.0,
                 3..14 => 1.1,
                 14 => 1.15,
@@ -210,7 +210,7 @@ pub fn get_full_stats(
         _ => {}
     }
 
-    let has_item = |origin: &[u32], check_for: &[u32]| -> bool {
+    let has_item = |origin: &[ItemId], check_for: &[ItemId]| -> bool {
         check_for.iter().any(|id| origin.contains(id))
     };
 
@@ -232,11 +232,21 @@ pub fn get_full_stats(
             self_global_mod,
         ),
         // #![manual_impl]
-        steelcaps: has_item(enemy_items, &[3047]),
+        steelcaps: has_item(
+            enemy_items,
+            &[ItemId::PlatedSteelcaps, ItemId::ArmoredAdvance],
+        ),
         // #![manual_impl]
-        rocksolid: has_item(enemy_items, &[3082, 3110, 3143]),
+        rocksolid: has_item(
+            enemy_items,
+            &[
+                ItemId::RanduinsOmen,
+                ItemId::FrozenHeart,
+                ItemId::WardensMail,
+            ],
+        ),
         // #![manual_impl]
-        randuin: has_item(enemy_items, &[3143]),
+        randuin: has_item(enemy_items, &[ItemId::RanduinsOmen]),
     };
 
     (enemy_current_stats, enemy_bonus_stats, generic_stats)
@@ -290,8 +300,8 @@ pub fn get_abilities_damage(
         ));
     }
 
-    result.push((AbilityLike::A, BASIC_ATTACK));
-    result.push((AbilityLike::C, CRITICAL_STRIKE));
+    result.push((AbilityLike::BasicAttack, BASIC_ATTACK));
+    result.push((AbilityLike::CriticalStrike, CRITICAL_STRIKE));
     result
 }
 
@@ -414,11 +424,11 @@ pub const fn get_base_stats(champion_cache: &&CachedChampion, level: u8) -> Basi
 #[inline]
 pub fn get_enemy_current_stats(
     mut basic_stats: BasicStats,
-    current_items: &[u32],
+    current_items: &[ItemId],
     earth_dragon_mod: f64,
 ) -> BasicStats {
     for enemy_item in current_items {
-        if let Some(item) = INTERNAL_ITEMS.get(ItemId::from_u32(*enemy_item) as usize) {
+        if let Some(item) = INTERNAL_ITEMS.get(*enemy_item as usize) {
             macro_rules! add_value {
                 ($field:ident) => {
                     basic_stats.$field += item.stats.$field;

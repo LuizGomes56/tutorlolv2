@@ -30,11 +30,11 @@ pub(super) fn transform_expr(expr: &str) -> (String, bool) {
 
 #[derive(Deserialize)]
 pub struct Positions {
-    pub jungle: Vec<usize>,
-    pub top: Vec<usize>,
-    pub mid: Vec<usize>,
-    pub adc: Vec<usize>,
-    pub support: Vec<usize>,
+    pub jungle: Vec<u32>,
+    pub top: Vec<u32>,
+    pub mid: Vec<u32>,
+    pub adc: Vec<u32>,
+    pub support: Vec<u32>,
 }
 
 pub(super) fn invoke_rustfmt(src: &str, width: usize) -> String {

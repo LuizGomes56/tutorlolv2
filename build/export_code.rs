@@ -114,12 +114,12 @@ pub async fn export_code() {
         }}
     }
 
-    let transform_and_join = |v: &[usize]| -> String {
+    let transform_and_join = |v: &[u32]| -> String {
         v.iter()
             .filter_map(|value| {
                 items
                     .iter()
-                    .find(|item| item.0 == *value as u32)
+                    .find(|item| item.0 == *value)
                     .and_then(|matched_value| {
                         Some(format!(
                             "ItemId::{}",
@@ -262,14 +262,7 @@ pub async fn export_code() {
             .join(","),
     );
     let item_id_enum = format!(
-        "pub struct CachedMetaItem {{
-            pub jungle: &'static [ItemId],
-            pub top: &'static [ItemId],
-            pub mid: &'static [ItemId],
-            pub adc: &'static [ItemId],
-            pub support: &'static [ItemId],
-        }}
-        #[derive(Debug, Copy, Clone, Ord, Eq, PartialOrd, PartialEq, Decode, Encode)]
+        "#[derive(Debug, Copy, Clone, Ord, Eq, PartialOrd, PartialEq, Decode, Encode)]
         #[repr(u16)]
         pub enum ItemId {{
             {}
@@ -294,10 +287,7 @@ pub async fn export_code() {
                 item_id,
                 remove_special_chars(&value.item_name)
             ))
-            .chain(std::iter::once(format!(
-                "_ => Self::{}",
-                remove_special_chars(&items.iter().next().unwrap().1.item_name)
-            )))
+            .chain(std::iter::once("_ => Self::YourCut".to_string(),))
             .collect::<Vec<String>>()
             .join(","),
     );
@@ -328,6 +318,13 @@ pub async fn export_code() {
     let moved_item_id_enum = item_id_enum.clone();
     tokio::task::spawn_blocking(move || {
         fs::write("internal_comptime/src/data/items.rs", {
+            const META_ITEM_STRUCT: &'static str = "pub struct CachedMetaItem {
+                pub jungle: &'static [ItemId],
+                pub top: &'static [ItemId],
+                pub mid: &'static [ItemId],
+                pub adc: &'static [ItemId],
+                pub support: &'static [ItemId],
+            }";
             let mut s = String::with_capacity(
                 internal_items.len()
                     + moved_item_id_enum.len()
@@ -336,9 +333,11 @@ pub async fn export_code() {
                     + internal_simulated_items.len()
                     + internal_damaging_items.len()
                     + champion_meta_items.len()
+                    + META_ITEM_STRUCT.len()
                     + USE_SUPER.len(),
             );
             s.push_str(USE_SUPER);
+            s.push_str(META_ITEM_STRUCT);
             s.push_str(&internal_items);
             s.push_str(&champion_meta_items);
             s.push_str(&moved_item_id_enum);

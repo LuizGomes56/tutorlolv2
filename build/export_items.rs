@@ -54,7 +54,7 @@ pub fn format_damage_object(damage_object: &Option<DamageObject>) -> String {
                     } else {
                         "_"
                     };
-                    format!("|{}, {}| {}", lvl_param, ctx_param, expr.to_lowercase())
+                    format!("|{},{}|{}", lvl_param, ctx_param, expr.to_lowercase())
                 } else {
                     String::from("zero")
                 }
@@ -64,7 +64,7 @@ pub fn format_damage_object(damage_object: &Option<DamageObject>) -> String {
         }};
     }
     format!(
-        "CachedItemDamages {{ minimum_damage: {}, maximum_damage: {} }}",
+        "CachedItemDamages{{minimum_damage:{},maximum_damage:{}}}",
         assign_value!(minimum_damage),
         assign_value!(maximum_damage),
     )
@@ -76,7 +76,7 @@ pub fn format_stats(stats: &PartialStats) -> String {
     macro_rules! insert_stat {
         ($field:ident) => {
             all_stats.push(format!(
-                "{}: {}f64,",
+                "{}:{}f64,",
                 stringify!($field),
                 stats.$field.unwrap_or(0.0)
             ));
@@ -120,7 +120,7 @@ pub fn export_items() -> Vec<(u32, ItemDetails)> {
             let prettified_stats = item
                 .prettified_stats
                 .iter()
-                .map(|(k, v)| format!("StatName::{}({}f64)",
+                .map(|(k, v)| format!("StatName::{}({}u16)",
                 {
                     let mut s = k.replace(" ", "");
                     if s == "Lethality" {
@@ -136,10 +136,7 @@ pub fn export_items() -> Vec<(u32, ItemDetails)> {
                 .join(",");
 
             let constdecl = format!(
-                r#"pub static ITEM_{}: CachedItem = CachedItem {{
-            gold: {},damage_type: {},
-            attributes: Attrs::{},ranged: {},melee: {},prettified_stats: &[{}],
-            stats: CachedItemStats {{{}}},}};"#,
+                r#"pub static ITEM_{}:CachedItem=CachedItem {{gold:{},damage_type:{},attributes:Attrs::{},ranged:{},melee:{},prettified_stats:&[{}],stats:CachedItemStats{{{}}},}};"#,
                 item_id,
                 item.gold,
                 if item.damage_type.is_some() {
@@ -162,7 +159,7 @@ pub fn export_items() -> Vec<(u32, ItemDetails)> {
                         .replacen("class=\"type\"", "class=\"constant\"", 1),
                     constdecl,
                     description: format!(
-                        "ItemDescription {{name: \"{}\",gold_cost: {}u16,prettified_stats: &[{}],}}",
+                        "ItemDescription{{name:\"{}\",gold_cost:{}u16,prettified_stats:&[{}],}}",
                         item.name, item.gold, prettified_stats
                     ),
                     is_simulated: item.tier >= 3 && item.gold > 0 && item.purchasable,

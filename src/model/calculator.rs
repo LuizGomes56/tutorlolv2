@@ -64,7 +64,7 @@ pub struct InputActivePlayer {
 #[derive(Decode)]
 pub struct InputEnemyPlayers {
     pub champion_id: ChampionId,
-    pub items: SmallVec<[u32; SIZE_ITEMS_EXPECTED]>,
+    pub items: SmallVec<[ItemId; SIZE_ITEMS_EXPECTED]>,
     pub level: u8,
     pub stats: BasicStats,
     pub infer_stats: bool,

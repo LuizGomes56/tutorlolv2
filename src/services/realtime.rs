@@ -117,14 +117,14 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
     let current_player_items = current_player_riot_items
         .iter()
         .map(|riot_item| riot_item.item_id)
-        .collect::<SetU32>();
+        .collect::<SmallVec<[_; SIZE_ITEMS_EXPECTED]>>();
 
     let current_player_damaging_items = current_player_items
         .iter()
         .filter_map(|item_id| {
             DAMAGING_ITEMS
                 .contains(&item_id)
-                .then_some(ItemId::from_u32(item_id) as u32)
+                .then_some(ItemId::from_u32(*item_id) as u32)
         })
         .collect::<SetU32>();
 
@@ -175,8 +175,8 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
             let enemy_champion_id = CHAMPION_NAME_TO_ID.get(&enemy_champion_name)?;
             let enemy_items = enemy_riot_items
                 .iter()
-                .map(|value| value.item_id)
-                .collect::<SmallVec<[u32; SIZE_ITEMS_EXPECTED]>>();
+                .map(|value| ItemId::from_u32(value.item_id))
+                .collect::<SmallVec<[_; SIZE_ITEMS_EXPECTED]>>();
             let enemy_level = player.level;
             let enemy_cache = INTERNAL_CHAMPIONS.get(*enemy_champion_id as usize)?;
             let enemy_base_stats = get_base_stats(enemy_cache, enemy_level);

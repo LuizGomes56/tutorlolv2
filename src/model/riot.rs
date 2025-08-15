@@ -1,4 +1,4 @@
-use crate::model::base::AbilityLevels;
+use crate::model::{SIZE_ITEMS_EXPECTED, base::AbilityLevels};
 use serde::{Deserialize, Serialize};
 use smallvec::SmallVec;
 
@@ -92,7 +92,7 @@ pub struct RiotItems {
 pub struct RiotAllPlayers<'a> {
     #[serde(borrow)]
     pub champion_name: &'a str,
-    pub items: SmallVec<[RiotItems; 7]>,
+    pub items: SmallVec<[RiotItems; SIZE_ITEMS_EXPECTED]>,
     pub level: u8,
     #[serde(borrow)]
     pub position: &'a str,
@@ -121,7 +121,7 @@ pub struct RealtimeEvent<'a> {
 #[serde(rename_all = "PascalCase")]
 pub struct RiotRealtimeEvents<'a> {
     #[serde(borrow)]
-    pub events: SmallVec<[RealtimeEvent<'a>; 5]>,
+    pub events: Vec<RealtimeEvent<'a>>,
 }
 
 #[derive(Serialize, Default, Deserialize)]
