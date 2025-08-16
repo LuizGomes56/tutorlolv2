@@ -424,7 +424,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
         };
 
         let eval_ctx = get_eval_ctx(&current_player_state, &full_stats);
-        let mut onhit_effects = DamageValue::default();
+        let mut onhit_effects = InstanceDamage::new(DamageType::Mixed);
 
         let mut abilities_damage = get_damages(
             &abilities_iter_expr,
@@ -445,14 +445,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
             &mut onhit_effects,
         );
 
-        abilities_damage.push((
-            AbilityLike::Onhit,
-            InstanceDamage {
-                damage_type: DamageType::Mixed,
-                minimum_damage: onhit_effects.minimum_damage,
-                maximum_damage: onhit_effects.maximum_damage,
-            },
-        ));
+        abilities_damage.push((AbilityLike::Onhit, onhit_effects));
 
         Ok((
             enemy_champion_id,
@@ -502,7 +495,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
     };
 
     let monster_damages = MONSTER_RESISTS.iter_enumerate().map(|(index, resists)| {
-        let mut onhit_effects = DamageValue::default();
+        let mut onhit_effects = InstanceDamage::new(DamageType::Mixed);
         let mut abilities = abilities_iter_expr
             .iter()
             .map(|(ability_name, dmg_expr)| {
@@ -539,7 +532,8 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
                     }
                     _ => {}
                 };
-                DamageValue {
+                InstanceDamage {
+                    damage_type: dmg_expr.damage_type,
                     minimum_damage,
                     maximum_damage,
                 }
@@ -573,13 +567,15 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
                     }
                     _ => {}
                 };
-                DamageValue {
+                InstanceDamage {
+                    damage_type: dmg_expr.damage_type,
                     minimum_damage,
                     maximum_damage,
                 }
             })
             .collect::<SmallVec<_>>();
-        abilities.push(DamageValue {
+        abilities.push(InstanceDamage {
+            damage_type: DamageType::Mixed,
             minimum_damage: onhit_effects.minimum_damage,
             maximum_damage: onhit_effects.maximum_damage,
         });
@@ -620,6 +616,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
         monster_damages,
         tower_damages,
         current_player: OutputCurrentPlayer {
+            adaptative_type,
             damaging_items: current_player_damaging_items.into(),
             damaging_runes: current_player_damaging_runes.into(),
             level: current_player_level,

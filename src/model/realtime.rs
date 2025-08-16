@@ -4,7 +4,7 @@ use super::{
 };
 use crate::{SIZE_DAMAGING_ITEMS, SIZE_SIMULATED_ITEMS};
 use bincode::Encode;
-use internal_comptime::{AbilityLike, ChampionId, ItemId, Position, RuneId};
+use internal_comptime::{AbilityLike, AdaptativeType, ChampionId, ItemId, Position, RuneId};
 use smallvec::SmallVec;
 
 #[derive(Encode)]
@@ -29,6 +29,7 @@ pub struct CurrentPlayer<'a> {
     pub riot_id: &'a str,
     pub level: u8,
     pub team: Team,
+    pub adaptative_type: AdaptativeType,
     pub position: Position,
     pub champion_id: ChampionId,
     pub base_stats: BasicStats,

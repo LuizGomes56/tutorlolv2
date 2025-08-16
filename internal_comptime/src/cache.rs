@@ -93,7 +93,7 @@ pub enum AttackType {
     Ranged,
 }
 
-#[derive(Copy, Clone)]
+#[derive(Encode, Copy, Clone)]
 pub enum AdaptativeType {
     Physical,
     Magic,

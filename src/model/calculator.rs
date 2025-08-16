@@ -3,7 +3,7 @@ use super::{
     base::{AbilityLevels, BasicStats, DamageLike, MonsterDamages, Stats},
 };
 use bincode::{Decode, Encode};
-use internal_comptime::{AbilityLike, ChampionId, ItemId, RuneId};
+use internal_comptime::{AbilityLike, AdaptativeType, ChampionId, ItemId, RuneId};
 use smallvec::SmallVec;
 
 #[derive(Encode)]
@@ -12,6 +12,7 @@ pub struct OutputCurrentPlayer {
     pub damaging_items: WrapSetU32,
     pub damaging_runes: WrapSetU32,
     pub level: u8,
+    pub adaptative_type: AdaptativeType,
     pub base_stats: BasicStats,
     pub bonus_stats: BasicStats,
     pub current_stats: Stats,
@@ -33,11 +34,6 @@ pub struct OutputEnemy {
     pub current_stats: BasicStats,
     pub real_armor: f64,
     pub real_magic_resist: f64,
-}
-
-#[derive(Encode)]
-pub struct _Test {
-    pub a: Vec<(u32, u32)>,
 }
 
 #[derive(Encode)]

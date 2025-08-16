@@ -10,6 +10,16 @@ pub struct InstanceDamage {
     pub damage_type: DamageType,
 }
 
+impl InstanceDamage {
+    pub const fn new(damage_type: DamageType) -> Self {
+        Self {
+            minimum_damage: 0.0,
+            maximum_damage: 0.0,
+            damage_type,
+        }
+    }
+}
+
 #[derive(Encode, Copy, Clone, Decode)]
 pub struct Stats {
     pub ability_power: f64,
@@ -77,12 +87,6 @@ pub struct GenericStats {
     pub randuin: bool,
 }
 
-#[derive(Default, Encode)]
-pub struct DamageValue {
-    pub minimum_damage: f64,
-    pub maximum_damage: f64,
-}
-
 pub struct DamageMultipliers {
     pub self_mod: (f64, f64, f64, f64),
     pub enemy_mod: (f64, f64, f64, f64),
@@ -117,8 +121,8 @@ impl DragonMultipliers {
 
 #[derive(Encode)]
 pub struct MonsterExpr {
-    pub abilities: SmallVec<[DamageValue; SIZE_ABILITIES]>,
-    pub items: SmallVec<[DamageValue; 5]>,
+    pub abilities: SmallVec<[InstanceDamage; SIZE_ABILITIES]>,
+    pub items: SmallVec<[InstanceDamage; 5]>,
 }
 
 pub type MonsterDamages = [MonsterExpr; 7];

@@ -448,7 +448,7 @@ pub fn get_enemy_current_stats(
 
 fn transform_expr<T: Copy + 'static>(
     tuple: (T, DamageExpression),
-    onhit_effects: &mut DamageValue,
+    onhit_effects: &mut InstanceDamage,
     damage_mlt: &DamageMultipliers,
     eval_ctx: &EvalContext,
 ) -> (T, InstanceDamage) {
@@ -483,7 +483,7 @@ pub fn get_damages<const N: usize, T: Copy + 'static>(
     tuples: &[(T, DamageExpression)],
     damage_multipliers: &DamageMultipliers,
     eval_ctx: &EvalContext,
-    onhit_effects: &mut DamageValue,
+    onhit_effects: &mut InstanceDamage,
 ) -> DamageLike<N, T> {
     let mut result = DamageLike::<N, T>::with_capacity(tuples.len());
     for tuple in tuples.iter().copied() {

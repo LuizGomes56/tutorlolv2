@@ -120,7 +120,7 @@ pub fn export_items() -> Vec<(u32, ItemDetails)> {
             let prettified_stats = item
                 .prettified_stats
                 .iter()
-                .map(|(k, v)| format!("StatName::{}({}u16)",
+                .map(|(k, v)| format!("StatName::{}({})",
                 {
                     let mut s = k.replace(" ", "");
                     if s == "Lethality" {

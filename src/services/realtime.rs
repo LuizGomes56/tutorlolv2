@@ -3,12 +3,12 @@ use crate::{
     DAMAGING_ITEMS, DAMAGING_RUNES, INTERNAL_CHAMPIONS, META_ITEMS,
     model::{
         SIZE_ENEMIES_EXPECTED, SIZE_ITEMS_EXPECTED,
-        base::{BasicStats, DamageMultipliers, DamageValue, DragonMultipliers},
+        base::{BasicStats, DamageMultipliers, DragonMultipliers, InstanceDamage},
         realtime::*,
         riot::*,
     },
 };
-use internal_comptime::{CHAMPION_NAME_TO_ID, ItemId, Position};
+use internal_comptime::{AbilityLike, CHAMPION_NAME_TO_ID, DamageType, ItemId, Position};
 use smallvec::SmallVec;
 use tinyset::SetU32;
 
@@ -205,9 +205,9 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
             };
 
             let eval_ctx = get_eval_ctx(&current_player_state, &full_stats);
-            let mut onhit_effects = DamageValue::default();
+            let mut onhit_effects = InstanceDamage::new(DamageType::Mixed);
 
-            let abilities_damage = get_damages(
+            let mut abilities_damage = get_damages(
                 &abilities_iter_expr,
                 &damage_multipliers,
                 &eval_ctx,
@@ -225,6 +225,8 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
                 &eval_ctx,
                 &mut onhit_effects,
             );
+
+            abilities_damage.push((AbilityLike::Onhit, onhit_effects));
 
             let mut compared_items_damage = SmallVec::with_capacity(simulated_stats.len());
 
@@ -271,9 +273,9 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
                 );
 
                 let siml_eval_ctx = get_eval_ctx(&siml_current_player_state, &siml_full_stats);
-                let mut siml_onhit_effects = DamageValue::default();
+                let mut siml_onhit_effects = InstanceDamage::new(DamageType::Mixed);
 
-                let siml_abilities_damage = get_damages(
+                let mut siml_abilities_damage = get_damages(
                     &abilities_iter_expr,
                     &siml_damage_multipliers,
                     &siml_eval_ctx,
@@ -291,6 +293,8 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
                     &siml_eval_ctx,
                     &mut siml_onhit_effects,
                 );
+
+                siml_abilities_damage.push((AbilityLike::Onhit, siml_onhit_effects));
 
                 compared_items_damage.push((
                     *siml_item_id,
@@ -327,6 +331,10 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
 
     Ok(Realtime {
         current_player: CurrentPlayer {
+            adaptative_type: RiotFormulas::adaptative_type(
+                current_player_bonus_stats.attack_damage,
+                current_player_stats.ability_power,
+            ),
             damaging_items: current_player_damaging_items.into(),
             damaging_runes: current_player_damaging_runes.into(),
             riot_id: current_player_riot_id,
