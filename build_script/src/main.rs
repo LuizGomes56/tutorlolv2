@@ -1,4 +1,5 @@
-use super::*;
+mod scripts;
+use scripts::*;
 use shared_types::AbilityLike;
 
 const ONHIT_EFFECT: &'static str = r#"<pre><span class="control">intrinsic</span> <span class="constant">ONHIT_EFFECT</span> = {
@@ -23,10 +24,11 @@ fn remove_special_chars(s: &str) -> String {
         .replace(",", "")
 }
 
-pub async fn export_code() {
+#[tokio::main]
+async fn main() {
     let mut mega_block = String::with_capacity(1 << 24);
     let champion_languages_raw_json =
-        std::fs::read_to_string("internal/champion_languages.json").unwrap();
+        std::fs::read_to_string(cwd!("../internal/champion_languages.json")).unwrap();
     let champion_languages_json =
         serde_json::from_str::<HashMap<String, Vec<String>>>(&champion_languages_raw_json).unwrap();
 
@@ -131,7 +133,7 @@ pub async fn export_code() {
             .join(",")
     };
 
-    let meta_items_map = init_map!(file BTreeMap<String, Positions>, "internal/meta_items.json");
+    let meta_items_map = init_map!(file BTreeMap<String, Positions>, "../internal/meta_items.json");
     let champion_meta_items =
         format!(
         "pub static META_ITEMS: [CachedMetaItem; {}] = [{}];",
@@ -229,7 +231,7 @@ pub async fn export_code() {
 
     let moved_champion_id_enum = champion_id_enum.clone();
     tokio::task::spawn_blocking(move || {
-        fs::write("internal_comptime/src/data/champions.rs", {
+        fs::write(cwd!("../internal_comptime/src/data/champions.rs"), {
             let mut s = String::with_capacity(
                 USE_SUPER.len()
                     + internal_champions_content.len()
@@ -317,7 +319,7 @@ pub async fn export_code() {
     let moved_item_id_to_u32 = item_id_to_u32.clone();
     let moved_item_id_enum = item_id_enum.clone();
     tokio::task::spawn_blocking(move || {
-        fs::write("internal_comptime/src/data/items.rs", {
+        fs::write(cwd!("../internal_comptime/src/data/items.rs"), {
             const META_ITEM_STRUCT: &'static str = "pub struct CachedMetaItem {
                 pub jungle: &'static [ItemId],
                 pub top: &'static [ItemId],
@@ -420,7 +422,7 @@ pub async fn export_code() {
     let moved_rune_id_to_u32 = rune_id_to_u32.clone();
     let moved_rune_id_enum = rune_id_enum.clone();
     tokio::task::spawn_blocking(move || {
-        fs::write("internal_comptime/src/data/runes.rs", {
+        fs::write(cwd!("../internal_comptime/src/data/runes.rs"), {
             let mut s = String::with_capacity(
                 internal_runes.len()
                     + internal_runes_content.len()
@@ -479,7 +481,7 @@ pub async fn export_code() {
         .as_bytes(),
     );
 
-    let _ = fs::write("comptime_exports/mega_block.txt", &mega_block);
+    let _ = fs::write(cwd!("../comptime_exports/mega_block.txt"), &mega_block);
 
     let mega_block_compressed = compress_bytes!(mega_block.as_bytes());
 
@@ -492,5 +494,5 @@ pub async fn export_code() {
         .as_bytes(),
     );
 
-    let _ = fs::write("comptime_exports/export_code.txt", bytes);
+    let _ = fs::write(cwd!("../comptime_exports/export_code.txt"), bytes);
 }

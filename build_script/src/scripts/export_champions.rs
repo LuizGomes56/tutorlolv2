@@ -181,7 +181,7 @@ pub struct ChampionDetails {
 }
 
 pub fn export_champions() -> BTreeMap<String, ChampionDetails> {
-    init_map!(dir Champion, "internal/champions")
+    init_map!(dir Champion, "../internal/champions")
         .into_par_iter()
         .map(|(champion_id, champion)| {
             let (highlighted_abilities, mut constdecl_abilities) =
@@ -219,7 +219,7 @@ pub fn export_champions() -> BTreeMap<String, ChampionDetails> {
             sort_pqwer(&mut constdecl_abilities);
 
             let constdecl = format!(
-                r#"pub static {}:CachedChampion=CachedChampion{{adaptative_type:{},attack_type:{},positions:&[{}],stats:CachedChampionStats{{{}}},abilities:&[{}],}};"#,
+                r#"pub static {}:CachedChampion=CachedChampion{{adaptative_type:{},attack_type:{},positions:&[{}],abilities:&[{}],stats:CachedChampionStats{{{}}}}};"#,
                 champion_id.to_uppercase(),
                 match champion.adaptative_type.as_str() {
                     "PHYSICAL_DAMAGE" => "AdaptativeType::Physical",
@@ -247,7 +247,6 @@ pub fn export_champions() -> BTreeMap<String, ChampionDetails> {
                     })
                     .collect::<Vec<_>>()
                     .join(","),
-                format_stats(&champion.stats),
                 constdecl_abilities
                     .iter()
                     .map(|(ability_name, rustfmt_val)| {
@@ -258,7 +257,8 @@ pub fn export_champions() -> BTreeMap<String, ChampionDetails> {
                         )
                     })
                     .collect::<Vec<String>>()
-                    .join(",")
+                    .join(","),
+                format_stats(&champion.stats),
             );
 
             (
@@ -267,7 +267,7 @@ pub fn export_champions() -> BTreeMap<String, ChampionDetails> {
                     champion_name: champion.name.to_string(),
                     champion_formula: highlight(&clear_suffixes(&invoke_rustfmt(&constdecl, 70))),
                     generator: highlight(&invoke_rustfmt(
-                        &fs::read_to_string(format!("src/generators/{}.rs", champion_id)).unwrap(),
+                        &fs::read_to_string(cwd!(format!("../src/generators/{}.rs", champion_id))).unwrap(),
                         80,
                     )),
                     highlighted_abilities,

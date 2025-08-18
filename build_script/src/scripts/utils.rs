@@ -7,7 +7,7 @@ use std::{
 };
 use synoptic::{Highlighter, TokOpt};
 
-pub(super) fn format_damage_type(damage_type: &str) -> String {
+pub fn format_damage_type(damage_type: &str) -> String {
     let result = match damage_type {
         "PHYSICAL_DAMAGE" => "DamageType::Physical",
         "MAGIC_DAMAGE" => "DamageType::Magic",
@@ -19,7 +19,7 @@ pub(super) fn format_damage_type(damage_type: &str) -> String {
     result.to_string()
 }
 
-pub(super) fn transform_expr(expr: &str) -> (String, bool) {
+pub fn transform_expr(expr: &str) -> (String, bool) {
     let re_num = Regex::new(r"\b(\d+(\.\d+)?)\b").unwrap();
     let with_f64 = re_num.replace_all(expr, |caps: &Captures| format!("{}f64", &caps[1]));
     let re_up = Regex::new(r"\b([A-Z][A-Z0-9_]*)\b").unwrap();
@@ -37,7 +37,7 @@ pub struct Positions {
     pub support: Vec<u32>,
 }
 
-pub(super) fn invoke_rustfmt(src: &str, width: usize) -> String {
+pub fn invoke_rustfmt(src: &str, width: usize) -> String {
     let mut child = Command::new("rustfmt")
         .args(&[
             "--emit",
@@ -59,7 +59,7 @@ pub(super) fn invoke_rustfmt(src: &str, width: usize) -> String {
     String::from_utf8_lossy(&output.stdout).into_owned()
 }
 
-pub(super) fn highlight(code_string: &str) -> String {
+pub fn highlight(code_string: &str) -> String {
     let mut h = Highlighter::new(4);
     h.bounded("comment", r"/\*", r"\*/", false);
     h.keyword("comment", r"//.*$");
@@ -116,6 +116,17 @@ pub(super) fn highlight(code_string: &str) -> String {
 }
 
 #[macro_export]
+macro_rules! cwd {
+    ($path:expr) => {
+        format!(
+            "{}/{}",
+            std::env::current_dir().unwrap().to_str().unwrap(),
+            $path
+        )
+    };
+}
+
+#[macro_export]
 macro_rules! compress_bytes {
     ($bytes:expr) => {{
         use std::io::Write;
@@ -128,7 +139,7 @@ macro_rules! compress_bytes {
 #[macro_export]
 macro_rules! init_map {
     (file $type_name:ty, $path:literal) => {{
-        let content = std::fs::read_to_string($path).unwrap();
+        let content = std::fs::read_to_string(cwd!($path)).unwrap();
         serde_json::from_str::<$type_name>(&content).unwrap()
     }};
     (dir $type_name:ty, $path:literal) => {{

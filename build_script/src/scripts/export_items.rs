@@ -112,7 +112,7 @@ pub struct ItemDetails {
 }
 
 pub fn export_items() -> Vec<(u32, ItemDetails)> {
-    let mut items = init_map!(dir Item, "internal/items")
+    let mut items = init_map!(dir Item, "../internal/items")
         .into_par_iter()
         .map(|(item_id_str, item)| {
             let item_id = item_id_str.parse::<u32>().unwrap();

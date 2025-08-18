@@ -15,7 +15,7 @@ pub struct RuneDetails {
 }
 
 pub fn export_runes() -> Vec<(u32, RuneDetails)> {
-    let mut runes = init_map!(file BTreeMap<u32, Rune>, "internal/runes.json")
+    let mut runes = init_map!(file BTreeMap<u32, Rune>, "../internal/runes.json")
         .into_par_iter()
         .map(|(rune_id, rune)| {
             let ranged_expr = transform_expr(&clean_math_expr(&rune.ranged));
