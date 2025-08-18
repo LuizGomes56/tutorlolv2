@@ -73,14 +73,14 @@ pub fn format_stats(stats: &ChampionCdnStats) -> String {
         ($field:ident) => {
             format!(
                 "{}: CachedChampionStatsMap {{
-                flat: {}f64,per_level: {}f64}},",
+                flat: {}f32,per_level: {}f32}},",
                 stringify!($field),
                 stats.$field.flat,
                 stats.$field.per_level
             )
         };
         (lone $field:ident) => {
-            format!("{}: {}f64,", stringify!($field), stats.$field.flat,)
+            format!("{}: {}f32,", stringify!($field), stats.$field.flat,)
         };
     }
     let mut all_stats = Vec::new();
@@ -181,7 +181,7 @@ pub struct ChampionDetails {
 }
 
 pub fn export_champions() -> BTreeMap<String, ChampionDetails> {
-    init_map!(dir Champion, "../internal/champions")
+    init_map!(dir Champion, "internal/champions")
         .into_par_iter()
         .map(|(champion_id, champion)| {
             let (highlighted_abilities, mut constdecl_abilities) =
@@ -267,7 +267,7 @@ pub fn export_champions() -> BTreeMap<String, ChampionDetails> {
                     champion_name: champion.name.to_string(),
                     champion_formula: highlight(&clear_suffixes(&invoke_rustfmt(&constdecl, 70))),
                     generator: highlight(&invoke_rustfmt(
-                        &fs::read_to_string(cwd!(format!("../src/generators/{}.rs", champion_id))).unwrap(),
+                        &fs::read_to_string(cwd!(format!("src/generators/{}.rs", champion_id))).unwrap(),
                         80,
                     )),
                     highlighted_abilities,

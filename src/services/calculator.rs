@@ -19,11 +19,11 @@ fn infer_champion_stats(
     base_stats: BasicStats,
     dragon_mod: DragonMultipliers,
 ) -> BasicStats {
-    let stacks = active_player.stacks as f64;
+    let stacks = active_player.stacks as f32;
     let owned_items = &active_player.items;
 
-    let mut armor_penetration = SmallVec::<[f64; 4]>::with_capacity(4);
-    let mut magic_penetration = SmallVec::<[f64; 4]>::with_capacity(4);
+    let mut armor_penetration = SmallVec::<[f32; 4]>::with_capacity(4);
+    let mut magic_penetration = SmallVec::<[f32; 4]>::with_capacity(4);
 
     for item_id in owned_items {
         if let Some(cached_item) = INTERNAL_ITEMS.get(*item_id as usize) {
@@ -99,20 +99,20 @@ fn infer_champion_stats(
     match active_player.champion_id {
         ChampionId::Veigar => stats.ability_power += stacks,
         ChampionId::Chogath => {
-            stats.max_health += stacks * 80.0 + 40.0 * active_player.abilities.r.clamp(0, 3) as f64;
+            stats.max_health += stacks * 80.0 + 40.0 * active_player.abilities.r.clamp(0, 3) as f32;
         }
         ChampionId::Sion => stats.max_health += stacks,
         ChampionId::Darius => {
-            armor_penetration.push(15.0 + 5.0 * active_player.abilities.e as f64);
+            armor_penetration.push(15.0 + 5.0 * active_player.abilities.e as f32);
         }
         ChampionId::Pantheon => {
-            armor_penetration.push(10.0 * active_player.abilities.r as f64);
+            armor_penetration.push(10.0 * active_player.abilities.r as f32);
         }
         ChampionId::Nilah => {
             armor_penetration.push(stats.crit_chance / 3.0);
         }
         ChampionId::Mordekaiser => {
-            magic_penetration.push(2.5 + 2.5 * active_player.abilities.e as f64);
+            magic_penetration.push(2.5 + 2.5 * active_player.abilities.e as f32);
         }
         _ => {}
     }
@@ -128,7 +128,7 @@ fn infer_champion_stats(
 fn rune_exceptions(
     champion_stats: &mut Stats,
     owned_runes: &[RuneId],
-    level: f64,
+    level: f32,
     value_types: (AdaptativeType, AttackType),
     // exception_map: &FxHashMap<u32, u32>,
 ) {
@@ -141,16 +141,16 @@ fn rune_exceptions(
             8008 => match value_types.1 {
                 AttackType::Melee => {
                     champion_stats.attack_speed +=
-                        (this_stack as f64) * (5.0 + 11.0 / 17.0 * (level - 1.0));
+                        (this_stack as f32) * (5.0 + 11.0 / 17.0 * (level - 1.0));
                 }
                 AttackType::Ranged => {
                     champion_stats.attack_speed +=
-                        (this_stack as f64) * (3.6 + 4.4 / 17.0 * (level - 1.0));
+                        (this_stack as f32) * (3.6 + 4.4 / 17.0 * (level - 1.0));
                 }
             },
             // Conqueror
             8010 => {
-                let formula: f64 = (this_stack as f64) * (1.8 + 2.2 / 17.0 * (level - 1.0));
+                let formula: f32 = (this_stack as f32) * (1.8 + 2.2 / 17.0 * (level - 1.0));
                 match value_types.0 {
                     AdaptativeType::Physical => {
                         champion_stats.attack_damage += 0.6 * formula;
@@ -164,13 +164,13 @@ fn rune_exceptions(
             8120 | 8136 | 8138 => match value_types.0 {
                 AdaptativeType::Physical => {
                     champion_stats.attack_damage += match this_stack {
-                        0..10 => 1.2 * (this_stack as f64),
+                        0..10 => 1.2 * (this_stack as f32),
                         _ => 18.0,
                     };
                 }
                 AdaptativeType::Magic => {
                     champion_stats.ability_power += match this_stack {
-                        0..10 => (this_stack << 1) as f64,
+                        0..10 => (this_stack << 1) as f32,
                         _ => 30.0,
                     };
                 }
@@ -191,7 +191,7 @@ fn rune_exceptions(
             },
             // Gathering Storm
             8236 => {
-                let formula: f64 = ((this_stack * (this_stack + 1)) << 2) as f64;
+                let formula: f32 = ((this_stack * (this_stack + 1)) << 2) as f32;
                 match value_types.0 {
                     AdaptativeType::Physical => {
                         champion_stats.attack_damage += 0.6 * formula;
@@ -204,18 +204,18 @@ fn rune_exceptions(
             // Adaptative damage shard
             9000 => match value_types.0 {
                 AdaptativeType::Physical => {
-                    champion_stats.attack_damage += 5.4 * (this_stack as f64);
+                    champion_stats.attack_damage += 5.4 * (this_stack as f32);
                 }
                 AdaptativeType::Magic => {
-                    champion_stats.ability_power += 9.0 * (this_stack as f64);
+                    champion_stats.ability_power += 9.0 * (this_stack as f32);
                 }
             },
             // Max health shard
-            9001 => champion_stats.max_health += 65.0 * (this_stack as f64),
+            9001 => champion_stats.max_health += 65.0 * (this_stack as f32),
             // Health per level shard
-            9002 => champion_stats.max_health += 10.0 * level * (this_stack as f64),
+            9002 => champion_stats.max_health += 10.0 * level * (this_stack as f32),
             // Attack speed shard
-            9003 => champion_stats.attack_speed += 10.0 * (this_stack as f64),
+            9003 => champion_stats.attack_speed += 10.0 * (this_stack as f32),
             _ => {}
         }
     }
@@ -233,12 +233,12 @@ fn item_exceptions(
     for item_id in owned_items {
         // let this_stack = *exception_map.get(&item_id).unwrap_or(&0);
         match item_id {
-            ItemId::DarkSeal => champion_stats.ability_power += (this_stack.max(1) << 2) as f64,
+            ItemId::DarkSeal => champion_stats.ability_power += (this_stack.max(1) << 2) as f32,
             ItemId::MejaisSoulstealer => {
-                champion_stats.ability_power += (5 * this_stack.max(1)) as f64
+                champion_stats.ability_power += (5 * this_stack.max(1)) as f32
             }
             ItemId::RabadonsDeathcap => champion_stats.ability_power *= 1.3,
-            ItemId::Hubris => champion_stats.attack_damage += (15 + this_stack.max(1) << 1) as f64,
+            ItemId::Hubris => champion_stats.attack_damage += (15 + this_stack.max(1) << 1) as f32,
             ItemId::WoogletsWitchcap => champion_stats.ability_power *= 1.5,
             _ => {}
         }
@@ -307,8 +307,8 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
     };
 
     let ally_dragon_multipliers = DragonMultipliers {
-        fire: 1.0 + FIRE_DRAGON_MULTIPLIER * ally_fire_dragons as f64,
-        earth: 1.0 + EARTH_DRAGON_MULTIPLIER * ally_earth_dragons as f64,
+        fire: 1.0 + FIRE_DRAGON_MULTIPLIER * ally_fire_dragons as f32,
+        earth: 1.0 + EARTH_DRAGON_MULTIPLIER * ally_earth_dragons as f32,
         chemtech: 1.0,
     };
 
@@ -340,7 +340,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
     rune_exceptions(
         &mut current_player_stats,
         &current_player_full_runes.as_slice(),
-        current_player_level as f64,
+        current_player_level as f32,
         (adaptative_type, current_player_attack_type),
         // &stack_exceptions,
     );
@@ -363,7 +363,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
 
     let enemy_dragon_multipliers = DragonMultipliers {
         fire: 1.0,
-        earth: 1.0 + EARTH_DRAGON_MULTIPLIER * enemy_earth_dragons as f64,
+        earth: 1.0 + EARTH_DRAGON_MULTIPLIER * enemy_earth_dragons as f32,
         chemtech: 1.0,
     };
 
@@ -476,8 +476,8 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
             (ChampionId::Zyra, 0, 1.0),
             (
                 BasicStats {
-                    armor: tuple.0 as f64,
-                    magic_resist: tuple.1 as f64,
+                    armor: tuple.0 as f32,
+                    magic_resist: tuple.1 as f32,
                     attack_damage: 0.0,
                     health: 2000.0,
                     mana: 0.0,
@@ -581,7 +581,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
                 physical_multiplier: RiotFormulas::real_resist(
                     current_player_stats.armor_penetration_percent,
                     current_player_stats.armor_penetration_flat,
-                    resists.1 as f64,
+                    resists.1 as f32,
                 )
                 .1,
                 ..Default::default()
@@ -605,7 +605,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
         }
     });
 
-    let mut tower_damages: [f64; 6] = [0.0; 6];
+    let mut tower_damages: [f32; 6] = [0.0; 6];
     let base_tower_damage = |i| match adaptative_type {
         AdaptativeType::Physical => {
             current_player_base_stats.attack_damage
@@ -614,7 +614,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
                     * 0.6
                     * (100.0
                         / (140.0
-                            + (-25.0 + 50.0 * i as f64)
+                            + (-25.0 + 50.0 * i as f32)
                                 * current_player_stats.armor_penetration_percent
                             - current_player_stats.armor_penetration_flat))
         }
@@ -625,7 +625,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
                     * 0.6
                     * (100.0
                         / (140.0
-                            + (-25.0 + 50.0 * i as f64)
+                            + (-25.0 + 50.0 * i as f32)
                                 * current_player_stats.magic_penetration_percent
                             - current_player_stats.magic_penetration_flat))
         }

@@ -33,14 +33,14 @@ pub struct OutputEnemy {
     pub base_stats: BasicStats,
     pub bonus_stats: BasicStats,
     pub current_stats: BasicStats,
-    pub real_armor: f64,
-    pub real_magic_resist: f64,
+    pub real_armor: f32,
+    pub real_magic_resist: f32,
 }
 
 #[derive(Encode)]
 pub struct OutputGame {
     pub monster_damages: MonsterDamages,
-    pub tower_damages: [f64; 6],
+    pub tower_damages: [f32; 6],
     pub current_player: OutputCurrentPlayer,
     pub enemies: SmallVec<[(ChampionId, OutputEnemy); 1]>,
     pub recommended_items: &'static [ItemId],

@@ -71,8 +71,8 @@ pub struct Enemy<'a> {
     pub base_stats: BasicStats,
     pub bonus_stats: BasicStats,
     pub current_stats: BasicStats,
-    pub real_armor: f64,
-    pub real_magic_resist: f64,
+    pub real_armor: f32,
+    pub real_magic_resist: f32,
 }
 
 #[derive(Encode)]

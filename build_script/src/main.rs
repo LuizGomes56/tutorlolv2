@@ -28,7 +28,7 @@ fn remove_special_chars(s: &str) -> String {
 async fn main() {
     let mut mega_block = String::with_capacity(1 << 24);
     let champion_languages_raw_json =
-        std::fs::read_to_string(cwd!("../internal/champion_languages.json")).unwrap();
+        std::fs::read_to_string(cwd!("internal/champion_languages.json")).unwrap();
     let champion_languages_json =
         serde_json::from_str::<HashMap<String, Vec<String>>>(&champion_languages_raw_json).unwrap();
 
@@ -39,6 +39,10 @@ async fn main() {
     let champions = champions_handle.await.unwrap();
     let items = items_handle.await.unwrap();
     let runes = runes_handle.await.unwrap();
+
+    if items.len() == 0 {
+        panic!("No items found");
+    }
 
     let mut internal_champions_content = String::with_capacity(1 << 16);
     let mut internal_champions = format!(
@@ -101,11 +105,11 @@ async fn main() {
     macro_rules! record_offsets {
         ($value:expr) => {{
             let (start, end) = record_offsets!(@record $value);
-            format!("({}, {})", start, end)
+            format!("({},{})", start, end)
         }};
         ($field:ident, $value:expr) => {{
             let (start, end) = record_offsets!(@record $value);
-            $field.push_str(&format!("({}, {}),", start, end));
+            $field.push_str(&format!("({},{}),", start, end));
         }};
         (@record $value:expr) => {{
             let start = current_offset;
@@ -133,15 +137,15 @@ async fn main() {
             .join(",")
     };
 
-    let meta_items_map = init_map!(file BTreeMap<String, Positions>, "../internal/meta_items.json");
+    let meta_items_map = init_map!(file BTreeMap<String, Positions>, "internal/meta_items.json");
     let champion_meta_items =
         format!(
-        "pub static META_ITEMS: [CachedMetaItem; {}] = [{}];",
+        "pub static META_ITEMS:[CachedMetaItem;{}]=[{}];",
         champions.len(),
         champions.iter().map(|(champion_id, _)| {
             let positions = meta_items_map.get(champion_id).unwrap();
             format!(
-                "CachedMetaItem {{top:&[{}],mid:&[{}],jungle:&[{}],adc:&[{}],support:&[{}]}}",
+                "CachedMetaItem{{top:&[{}],mid:&[{}],jungle:&[{}],adc:&[{}],support:&[{}]}}",
                 transform_and_join(&positions.top),
                 transform_and_join(&positions.mid),
                 transform_and_join(&positions.jungle),
@@ -153,18 +157,17 @@ async fn main() {
         .join(",")
     );
     let champion_name_to_id_phf = format!(
-        "pub static CHAMPION_NAME_TO_ID: phf::OrderedMap<&'static str, ChampionId> = phf::phf_ordered_map! {{
-            {}
-        }};",
+        "pub static CHAMPION_NAME_TO_ID:phf::OrderedMap<&'static str,ChampionId>=phf::phf_ordered_map!{{{}}};",
         champions
             .iter()
             .map(|(key, _)| {
                 champion_languages_json
                     .get(key)
                     .unwrap()
-                    .iter().map(|champion_name_alias| {
+                    .iter()
+                    .map(|champion_name_alias| {
                         format!(
-                            "\"{}\" => ChampionId::{}",
+                            "\"{}\"=>ChampionId::{}",
                             champion_name_alias,
                             remove_special_chars(key)
                         )
@@ -176,15 +179,11 @@ async fn main() {
             .join(","),
     );
     let champion_id_enum = format!(
-        "#[derive(Debug, PartialEq, Ord, Eq, PartialOrd, Copy, Clone, Decode, Encode)]
+        "#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode)]
         #[repr(u8)]
-        pub enum ChampionId {{
-            {}
-        }}
+        pub enum ChampionId {{{}}}
         impl ChampionId {{
-            pub const fn as_str(&self) -> &'static str {{
-                match self {{ {} }}
-            }}
+            pub const fn as_str(&self)->&'static str{{match self{{{}}}}}
         }}",
         champions
             .iter()
@@ -213,7 +212,7 @@ async fn main() {
         for (ability_name, ability_formula) in &champion_detail.highlighted_abilities {
             let (start, end) = record_offsets!(@record ability_formula);
             champion_abilities.push_str(&format!(
-                "({}, ({}, {})),",
+                "({},({},{})),",
                 AbilityLike::from_str(&ability_name),
                 start,
                 end
@@ -231,7 +230,7 @@ async fn main() {
 
     let moved_champion_id_enum = champion_id_enum.clone();
     tokio::task::spawn_blocking(move || {
-        fs::write(cwd!("../internal_comptime/src/data/champions.rs"), {
+        fs::write(cwd!("internal_comptime/src/data/champions.rs"), {
             let mut s = String::with_capacity(
                 USE_SUPER.len()
                     + internal_champions_content.len()
@@ -255,7 +254,7 @@ async fn main() {
     let mut internal_damaging_items_len = 0usize;
     let mut internal_simulated_items_len = 0usize;
     let item_id_to_u32 = format!(
-        "pub static ITEM_ID_TO_U32: [u32; {}] = [{}];",
+        "pub static ITEM_ID_TO_U32:[u32;{}]=[{}];",
         items.len(),
         items
             .iter()
@@ -264,18 +263,12 @@ async fn main() {
             .join(","),
     );
     let item_id_enum = format!(
-        "#[derive(Debug, Copy, Clone, Ord, Eq, PartialOrd, PartialEq, Decode, Encode)]
+        "#[derive(Debug,Copy,Clone,Ord,Eq,PartialOrd,PartialEq,Decode,Encode)]
         #[repr(u16)]
-        pub enum ItemId {{
-            {}
-        }}
+        pub enum ItemId {{{}}}
         impl ItemId {{
-            pub fn to_u32(&self) -> u32 {{
-                unsafe {{ *ITEM_ID_TO_U32.get_unchecked(*self as usize) }}
-            }}
-            pub const fn from_u32(id: u32) -> Self {{
-                match id {{ {} }}
-            }}  
+            pub fn to_u32(&self)->u32{{unsafe{{*ITEM_ID_TO_U32.get_unchecked(*self as usize)}}}}
+            pub const fn from_u32(id:u32)->Self{{match id {{{}}}}}  
         }}",
         items
             .iter()
@@ -285,11 +278,11 @@ async fn main() {
         items
             .iter()
             .map(|(item_id, value)| format!(
-                "{} => Self::{}",
+                "{}=>Self::{}",
                 item_id,
                 remove_special_chars(&value.item_name)
             ))
-            .chain(std::iter::once("_ => Self::YourCut".to_string(),))
+            .chain(std::iter::once("_=>Self::YourCut".to_string(),))
             .collect::<Vec<String>>()
             .join(","),
     );
@@ -319,13 +312,13 @@ async fn main() {
     let moved_item_id_to_u32 = item_id_to_u32.clone();
     let moved_item_id_enum = item_id_enum.clone();
     tokio::task::spawn_blocking(move || {
-        fs::write(cwd!("../internal_comptime/src/data/items.rs"), {
+        fs::write(cwd!("internal_comptime/src/data/items.rs"), {
             const META_ITEM_STRUCT: &'static str = "pub struct CachedMetaItem {
-                pub jungle: &'static [ItemId],
-                pub top: &'static [ItemId],
-                pub mid: &'static [ItemId],
-                pub adc: &'static [ItemId],
-                pub support: &'static [ItemId],
+                pub jungle:&'static[ItemId],
+                pub top:&'static[ItemId],
+                pub mid:&'static[ItemId],
+                pub adc:&'static[ItemId],
+                pub support:&'static[ItemId],
             }";
             let mut s = String::with_capacity(
                 internal_items.len()
@@ -348,8 +341,8 @@ async fn main() {
             s.push_str(&internal_simulated_items);
             s.push_str(&internal_damaging_items);
             s.push_str(&format!(
-                "pub const SIZE_SIMULATED_ITEMS: usize = {};
-                pub const SIZE_DAMAGING_ITEMS: usize = {};",
+                "pub const SIZE_SIMULATED_ITEMS:usize={};
+                pub const SIZE_DAMAGING_ITEMS:usize={};",
                 internal_simulated_items_len, internal_damaging_items_len
             ));
             s
@@ -357,7 +350,7 @@ async fn main() {
     });
 
     let internal_damaging_runes = format!(
-        "pub static DAMAGING_RUNES: phf::Set<u32> = phf::phf_set!({});",
+        "pub static DAMAGING_RUNES:phf::Set<u32>=phf::phf_set!({});",
         runes
             .iter()
             .map(|(rune_id, _)| format!("{}u32", rune_id))
@@ -367,7 +360,7 @@ async fn main() {
 
     let internal_damaging_runes_len = runes.len();
     let rune_id_to_u32 = format!(
-        "pub static RUNE_ID_TO_U32: [u32; {}] = [{}];",
+        "pub static RUNE_ID_TO_U32:[u32;{}]=[{}];",
         runes.len(),
         runes
             .iter()
@@ -376,18 +369,12 @@ async fn main() {
             .join(","),
     );
     let rune_id_enum = format!(
-        "#[derive(Debug, Copy, Clone, Ord, Eq, PartialOrd, PartialEq, Decode, Encode)]
+        "#[derive(Debug,Copy,Clone,Ord,Eq,PartialOrd,PartialEq,Decode,Encode)]
         #[repr(u8)]
-        pub enum RuneId {{
-            {}
-        }}
+        pub enum RuneId {{{}}}
         impl RuneId {{
-            pub fn to_u32(&self) -> u32 {{
-                unsafe {{ *RUNE_ID_TO_U32.get_unchecked(*self as usize) }}
-            }}
-            pub const fn from_u32(id: u32) -> Self {{
-                match id {{ {} }}
-            }}
+            pub fn to_u32(&self)->u32{{unsafe{{*RUNE_ID_TO_U32.get_unchecked(*self as usize)}}}}
+            pub const fn from_u32(id:u32)->Self{{match id{{{}}}}}
         }}",
         runes
             .iter()
@@ -397,12 +384,12 @@ async fn main() {
         runes
             .iter()
             .map(|(rune_id, value)| format!(
-                "{} => Self::{}",
+                "{}=>Self::{}",
                 rune_id,
                 remove_special_chars(&value.rune_name)
             ))
             .chain(std::iter::once(format!(
-                "_ => Self::{}",
+                "_=>Self::{}",
                 remove_special_chars(&runes.iter().next().unwrap().1.rune_name)
             )))
             .collect::<Vec<String>>()
@@ -422,7 +409,7 @@ async fn main() {
     let moved_rune_id_to_u32 = rune_id_to_u32.clone();
     let moved_rune_id_enum = rune_id_enum.clone();
     tokio::task::spawn_blocking(move || {
-        fs::write(cwd!("../internal_comptime/src/data/runes.rs"), {
+        fs::write(cwd!("internal_comptime/src/data/runes.rs"), {
             let mut s = String::with_capacity(
                 internal_runes.len()
                     + internal_runes_content.len()
@@ -438,7 +425,7 @@ async fn main() {
             s.push_str(&internal_runes_content);
             s.push_str(&internal_damaging_runes);
             s.push_str(&format!(
-                "pub const SIZE_DAMAGING_RUNES: usize = {};",
+                "pub const SIZE_DAMAGING_RUNES:usize={};",
                 internal_damaging_runes_len
             ));
             s
@@ -468,10 +455,10 @@ async fn main() {
     bytes.extend_from_slice(
         format!(
             "{}
-            pub static BASIC_ATTACK_OFFSET: (usize, usize) = {};
-            pub static CRITICAL_STRIKE_OFFSET: (usize, usize) = {};
-            pub static ONHIT_EFFECT_OFFSET: (usize, usize) = {};
-            pub static UNCOMPRESSED_MEGA_BLOCK_SIZE: usize = {};",
+            pub static BASIC_ATTACK_OFFSET:(usize,usize)={};
+            pub static CRITICAL_STRIKE_OFFSET:(usize,usize)={};
+            pub static ONHIT_EFFECT_OFFSET:(usize,usize)={};
+            pub static UNCOMPRESSED_MEGA_BLOCK_SIZE:usize={};",
             exported_content,
             record_offsets!(highlight(&invoke_rustfmt(&BASIC_ATTACK, 60))),
             record_offsets!(highlight(&invoke_rustfmt(&CRITICAL_STRIKE, 60))),
@@ -481,18 +468,18 @@ async fn main() {
         .as_bytes(),
     );
 
-    let _ = fs::write(cwd!("../comptime_exports/mega_block.txt"), &mega_block);
+    let _ = fs::write(cwd!("comptime_exports/mega_block.txt"), &mega_block);
 
     let mega_block_compressed = compress_bytes!(mega_block.as_bytes());
 
     bytes.extend_from_slice(
         format!(
-            "pub static MEGA_BLOCK: [u8; {}] = [{}];",
+            "pub static MEGA_BLOCK:[u8;{}]=[{}];",
             mega_block_compressed.len(),
             mega_block_compressed.join(",")
         )
         .as_bytes(),
     );
 
-    let _ = fs::write(cwd!("../comptime_exports/export_code.txt"), bytes);
+    let _ = fs::write(cwd!("comptime_exports/export_code.txt"), bytes);
 }

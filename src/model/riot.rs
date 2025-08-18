@@ -31,22 +31,22 @@ impl RiotAbilities {
 #[derive(Serialize, Default, Deserialize, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct RiotChampionStats {
-    pub ability_power: f64,
-    pub armor: f64,
-    pub physical_lethality: f64,
-    pub armor_penetration_percent: f64,
-    pub attack_damage: f64,
-    pub attack_range: f64,
-    pub attack_speed: f64,
-    pub crit_chance: f64,
-    pub crit_damage: f64,
-    pub current_health: f64,
-    pub magic_penetration_flat: f64,
-    pub magic_penetration_percent: f64,
-    pub magic_resist: f64,
-    pub max_health: f64,
-    pub resource_max: f64,
-    pub resource_value: f64,
+    pub ability_power: f32,
+    pub armor: f32,
+    pub physical_lethality: f32,
+    pub armor_penetration_percent: f32,
+    pub attack_damage: f32,
+    pub attack_range: f32,
+    pub attack_speed: f32,
+    pub crit_chance: f32,
+    pub crit_damage: f32,
+    pub current_health: f32,
+    pub magic_penetration_flat: f32,
+    pub magic_penetration_percent: f32,
+    pub magic_resist: f32,
+    pub max_health: f32,
+    pub resource_max: f32,
+    pub resource_value: f32,
 }
 
 #[derive(Serialize, Default, Deserialize)]
@@ -140,7 +140,7 @@ pub struct RiotRealtime<'a> {
 fn _test() {
     unsafe {
         std::thread::Builder::new()
-            .stack_size(1 << 23)
+            .stack_size(1 << 21)
             .spawn_unchecked(move || {
                 let data = std::fs::read_to_string("example.json").unwrap();
                 let parsed = serde_json::from_str(&data).unwrap();

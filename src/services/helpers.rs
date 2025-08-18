@@ -13,14 +13,14 @@ use tinyset::SetU32;
 
 /// By 06/07/2025 Earth dragons give +5% resists
 // #![manual_impl]
-pub const EARTH_DRAGON_MULTIPLIER: f64 = 0.05;
+pub const EARTH_DRAGON_MULTIPLIER: f32 = 0.05;
 /// By 06/07/2025 Fire dragons give +3% bonus attack stats
 // #![manual_impl]
-pub const FIRE_DRAGON_MULTIPLIER: f64 = 0.03;
+pub const FIRE_DRAGON_MULTIPLIER: f32 = 0.03;
 /// Chemtech Dragons will be used to calculate shields/healing/vamp
 // #![unsupported]
 // #![manual_impl]
-pub const CHEMTECH_DRAGON_MULTIPLIER: f64 = 0.06;
+pub const CHEMTECH_DRAGON_MULTIPLIER: f32 = 0.06;
 
 pub fn get_simulated_champion_stats(
     current_stats: &Stats,
@@ -60,7 +60,7 @@ pub fn simulate_champion_stats(
             result.$field += stats.$field2;
         };
         (#$field:ident) => {
-            result.$field = RiotFormulas::percent_value(SmallVec::<[f64; 2]>::from([
+            result.$field = RiotFormulas::percent_value(SmallVec::<[f32; 2]>::from([
                 result.$field,
                 stats.$field,
             ]));
@@ -90,10 +90,10 @@ pub fn simulate_champion_stats(
 
 #[inline]
 pub fn get_full_stats(
-    enemy_state: (ChampionId, u8, f64),
+    enemy_state: (ChampionId, u8, f32),
     enemy_stats: (BasicStats, &[ItemId]),
-    armor_val: (f64, f64),
-    magic_val: (f64, f64),
+    armor_val: (f32, f32),
+    magic_val: (f32, f32),
 ) -> (BasicStats, BasicStats, GenericStats) {
     let (enemy_champion_id, enemy_level, earth_dragon_mod) = enemy_state;
     let (enemy_base_stats, enemy_items) = enemy_stats;
@@ -122,7 +122,7 @@ pub fn get_full_stats(
             // For every upgrade, a +4% resist is applied.
             // #![manual_impl]
             let ornn_resist_multiplier = match enemy_level {
-                13..18 => (enemy_level - 12) as f64 * 0.04,
+                13..18 => (enemy_level - 12) as f32 * 0.04,
                 18 => 1.3,
                 _ => 1.1,
             };
@@ -196,7 +196,7 @@ pub fn get_full_stats(
 }
 
 #[inline]
-pub fn get_damage_multipliers(modifiers: &DamageMultipliers, damage_type: DamageType) -> f64 {
+pub fn get_damage_multipliers(modifiers: &DamageMultipliers, damage_type: DamageType) -> f32 {
     let DamageMultipliers {
         self_mod,
         enemy_mod,
@@ -328,7 +328,7 @@ pub fn get_eval_ctx(
             AdaptativeType::Physical => generic_stats.armor_mod,
             AdaptativeType::Magic => generic_stats.magic_mod,
         },
-        level: *current_player_level as f64,
+        level: *current_player_level as f32,
         physical_multiplier: generic_stats.armor_mod,
         magic_multiplier: generic_stats.magic_mod,
         // #![manual_impl]
@@ -418,7 +418,7 @@ pub const fn get_base_stats(champion_cache: &&CachedChampion, level: u8) -> Basi
 pub fn get_enemy_current_stats(
     mut basic_stats: BasicStats,
     current_items: &[ItemId],
-    earth_dragon_mod: f64,
+    earth_dragon_mod: f32,
 ) -> BasicStats {
     for enemy_item in current_items {
         if let Some(item) = INTERNAL_ITEMS.get(*enemy_item as usize) {
@@ -443,9 +443,9 @@ pub fn get_enemy_current_stats(
 fn get_instance_damage(
     damage_expression: &DamageExpression,
     onhit_effects: &mut DamageValue,
-    damage_mod: f64,
+    damage_mod: f32,
     eval_ctx: &EvalContext,
-) -> (f64, f64) {
+) -> (f32, f32) {
     let minimum_damage =
         damage_mod * (damage_expression.minimum_damage)(damage_expression.level, eval_ctx);
     let maximum_damage =

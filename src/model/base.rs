@@ -5,29 +5,29 @@ use smallvec::SmallVec;
 
 #[derive(Encode)]
 pub struct InstanceDamage {
-    pub minimum_damage: f64,
-    pub maximum_damage: f64,
+    pub minimum_damage: f32,
+    pub maximum_damage: f32,
     pub damage_type: DamageType,
 }
 
 #[derive(Encode, Copy, Clone, Decode)]
 pub struct Stats {
-    pub ability_power: f64,
-    pub armor: f64,
-    pub armor_penetration_flat: f64,
-    pub armor_penetration_percent: f64,
-    pub attack_damage: f64,
-    pub attack_range: f64,
-    pub attack_speed: f64,
-    pub crit_chance: f64,
-    pub crit_damage: f64,
-    pub current_health: f64,
-    pub magic_penetration_flat: f64,
-    pub magic_penetration_percent: f64,
-    pub magic_resist: f64,
-    pub max_health: f64,
-    pub max_mana: f64,
-    pub current_mana: f64,
+    pub ability_power: f32,
+    pub armor: f32,
+    pub armor_penetration_flat: f32,
+    pub armor_penetration_percent: f32,
+    pub attack_damage: f32,
+    pub attack_range: f32,
+    pub attack_speed: f32,
+    pub crit_chance: f32,
+    pub crit_damage: f32,
+    pub current_health: f32,
+    pub magic_penetration_flat: f32,
+    pub magic_penetration_percent: f32,
+    pub magic_resist: f32,
+    pub max_health: f32,
+    pub max_mana: f32,
+    pub current_mana: f32,
 }
 
 impl RiotChampionStats {
@@ -57,30 +57,30 @@ pub type DamageLike<const N: usize, T> = SmallVec<[(T, InstanceDamage); N]>;
 
 #[derive(Encode, Copy, Clone, Decode)]
 pub struct BasicStats {
-    pub armor: f64,
-    pub health: f64,
-    pub attack_damage: f64,
-    pub magic_resist: f64,
-    pub mana: f64,
+    pub armor: f32,
+    pub health: f32,
+    pub attack_damage: f32,
+    pub magic_resist: f32,
+    pub mana: f32,
 }
 
 #[derive(Clone, Copy)]
 pub struct GenericStats {
-    pub real_armor: f64,
-    pub real_magic: f64,
-    pub armor_mod: f64,
-    pub magic_mod: f64,
-    pub enemy_mod: (f64, f64, f64, f64),
-    pub self_mod: (f64, f64, f64, f64),
+    pub real_armor: f32,
+    pub real_magic: f32,
+    pub armor_mod: f32,
+    pub magic_mod: f32,
+    pub enemy_mod: (f32, f32, f32, f32),
+    pub self_mod: (f32, f32, f32, f32),
     pub steelcaps: bool,
     pub rocksolid: bool,
     pub randuin: bool,
 }
 
 pub struct DamageMultipliers {
-    pub self_mod: (f64, f64, f64, f64),
-    pub enemy_mod: (f64, f64, f64, f64),
-    pub damage_mod: (f64, f64),
+    pub self_mod: (f32, f32, f32, f32),
+    pub enemy_mod: (f32, f32, f32, f32),
+    pub damage_mod: (f32, f32),
 }
 
 #[derive(Copy, Clone, Decode)]
@@ -93,9 +93,9 @@ pub struct AbilityLevels {
 
 #[derive(Clone, Copy, Encode)]
 pub struct DragonMultipliers {
-    pub earth: f64,
-    pub fire: f64,
-    pub chemtech: f64,
+    pub earth: f32,
+    pub fire: f32,
+    pub chemtech: f32,
 }
 
 impl DragonMultipliers {
@@ -111,8 +111,8 @@ impl DragonMultipliers {
 
 #[derive(Encode, Default)]
 pub struct DamageValue {
-    pub minimum_damage: f64,
-    pub maximum_damage: f64,
+    pub minimum_damage: f32,
+    pub maximum_damage: f32,
 }
 
 #[derive(Encode)]

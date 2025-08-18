@@ -21,10 +21,10 @@ pub fn format_damage_type(damage_type: &str) -> String {
 
 pub fn transform_expr(expr: &str) -> (String, bool) {
     let re_num = Regex::new(r"\b(\d+(\.\d+)?)\b").unwrap();
-    let with_f64 = re_num.replace_all(expr, |caps: &Captures| format!("{}f64", &caps[1]));
+    let with_f32 = re_num.replace_all(expr, |caps: &Captures| format!("{}f32", &caps[1]));
     let re_up = Regex::new(r"\b([A-Z][A-Z0-9_]*)\b").unwrap();
-    let count_ctx = re_up.find_iter(with_f64.as_ref()).count();
-    let result = re_up.replace_all(&with_f64, |caps: &Captures| format!("ctx.{}", &caps[1]));
+    let count_ctx = re_up.find_iter(with_f32.as_ref()).count();
+    let result = re_up.replace_all(&with_f32, |caps: &Captures| format!("ctx.{}", &caps[1]));
     (result.into_owned(), count_ctx > 0)
 }
 
@@ -79,9 +79,9 @@ pub fn highlight(code_string: &str) -> String {
     h.keyword("type", r"\b[A-Z][a-zA-Z0-9_]*\b");
     h.keyword(
         "primitive",
-        r"\b(bool|usize|u8|u16|u32|u64|isize|i8|i16|i32|i64|f64|char|str|generator_macros)\b",
+        r"\b(bool|usize|u8|u16|u32|u64|isize|i8|i16|i32|i64|f32|f64|char|str|generator_macros)\b",
     );
-    h.keyword("float", r"\b\d+\.?\d*f64\b");
+    h.keyword("float", r"\b\d+\.?\d*f32\b");
     h.keyword("number", r"\b\d+\.?\d*\b");
     h.keyword("boolean", r"\b(true|false)\b");
     h.keyword("macro", r"[a-zA-Z_][a-zA-Z0-9_]*!");
@@ -119,7 +119,7 @@ pub fn highlight(code_string: &str) -> String {
 macro_rules! cwd {
     ($path:expr) => {
         format!(
-            "{}/{}",
+            "{}/../{}",
             std::env::current_dir().unwrap().to_str().unwrap(),
             $path
         )
@@ -144,7 +144,7 @@ macro_rules! init_map {
     }};
     (dir $type_name:ty, $path:literal) => {{
         let mut map = BTreeMap::<String, $type_name>::new();
-        if let Some(dir) = std::fs::read_dir($path).ok() {
+        if let Some(dir) = std::fs::read_dir(cwd!($path)).ok() {
             for entry in dir {
                 let path = entry.unwrap().path();
                 let file_stem = path.file_stem().unwrap();
@@ -153,6 +153,9 @@ macro_rules! init_map {
                 let parsed = serde_json::from_str::<$type_name>(&content).unwrap();
                 map.insert(file_name.to_owned(), parsed);
             }
+        }
+        if map.is_empty() {
+            panic!("No files found in {}", $path);
         }
         map
     }};
@@ -291,8 +294,8 @@ pub fn clean_math_expr(expr: &str) -> String {
 }
 
 pub fn clear_suffixes(input: &str) -> String {
-    let re_f64 = Regex::new(r"(\d+(?:\.\d+)?)(f64)").unwrap();
-    let no_suffix = re_f64.replace_all(input, "$1");
+    let re_f32 = Regex::new(r"(\d+(?:\.\d+)?)(f32)").unwrap();
+    let no_suffix = re_f32.replace_all(input, "$1");
     let re_decimal = Regex::new(r"\d+\.\d+").unwrap();
     re_decimal
         .replace_all(&no_suffix, |caps: &regex::Captures| {
