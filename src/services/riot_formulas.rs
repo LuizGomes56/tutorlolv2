@@ -13,7 +13,8 @@ pub struct MonsterResists {
 }
 
 impl MonsterResists {
-    pub fn iter_enumerate(&self) -> [(u8, (i8, i8)); 7] {
+    #[inline]
+    pub const fn iter_enumerate(&self) -> [(u8, (i8, i8)); 7] {
         [
             (0, self.zero),
             (1, self.super_minion),
@@ -40,6 +41,7 @@ pub struct RiotFormulas;
 
 impl RiotFormulas {
     /// Uses wiki's formula to return base stats for a given champion
+    #[inline]
     pub const fn stat_growth(base: f64, growth_per_level: f64, level: u8) -> f64 {
         base + growth_per_level * (level as f64 - 1.0) * (0.7025 + 0.0175 * (level as f64 - 1.0))
     }
@@ -61,6 +63,14 @@ impl RiotFormulas {
             / 10f64.powi((from_vec.len() << 1) as i32)
     }
 
+    #[inline]
+    pub const fn real_resist(percent_pen: f64, flat_pen: f64, resist: f64) -> (f64, f64) {
+        let real_val = (percent_pen * resist - flat_pen).max(0.0);
+        let modf_val = 100.0 / (100.0 + real_val);
+        (real_val, modf_val)
+    }
+
+    #[inline]
     pub const fn adaptative_type(attack_damage: f64, ability_power: f64) -> AdaptativeType {
         if 0.35 * attack_damage >= 0.2 * ability_power {
             AdaptativeType::Physical
@@ -69,6 +79,7 @@ impl RiotFormulas {
         }
     }
 
+    #[inline]
     pub const fn full_base_stats(cdn: &CachedChampionStats, level: u8) -> Stats {
         macro_rules! assign_value {
             ($field:ident) => {

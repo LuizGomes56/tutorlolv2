@@ -1,6 +1,6 @@
 use super::{
     SIZE_ABILITIES, SIZE_ENEMIES_EXPECTED, WrapSetU32,
-    base::{BasicStats, DamageLike, DragonMultipliers, Stats},
+    base::{Attacks, BasicStats, DamageLike, DragonMultipliers, Stats},
 };
 use crate::{SIZE_DAMAGING_ITEMS, SIZE_SIMULATED_ITEMS};
 use bincode::Encode;
@@ -9,6 +9,7 @@ use smallvec::SmallVec;
 
 #[derive(Encode)]
 pub struct SimulatedDamages {
+    pub attacks: Attacks,
     pub abilities: DamageLike<SIZE_ABILITIES, AbilityLike>,
     pub items: DamageLike<SIZE_DAMAGING_ITEMS, ItemId>,
     pub runes: DamageLike<3, RuneId>,
@@ -16,6 +17,7 @@ pub struct SimulatedDamages {
 
 #[derive(Encode)]
 pub struct Damages {
+    pub attacks: Attacks,
     pub abilities: DamageLike<SIZE_ABILITIES, AbilityLike>,
     pub items: DamageLike<5, ItemId>,
     pub runes: DamageLike<3, RuneId>,

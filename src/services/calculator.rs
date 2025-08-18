@@ -2,8 +2,9 @@
 use super::*;
 use crate::model::{base::*, calculator::*};
 use internal_comptime::{
-    AbilityLike, AdaptativeType, AttackType, Attrs, ChampionId, DAMAGING_ITEMS, DAMAGING_RUNES,
-    DamageType, INTERNAL_CHAMPIONS, INTERNAL_ITEMS, ItemId, META_ITEMS, Position, RuneId,
+    AbilityLike, AdaptativeType, AttackType, Attrs, BASIC_ATTACK, CRITICAL_STRIKE, ChampionId,
+    DAMAGING_ITEMS, DAMAGING_RUNES, EvalContext, INTERNAL_CHAMPIONS, INTERNAL_ITEMS, ItemId,
+    META_ITEMS, Position, RuneId,
 };
 use smallvec::SmallVec;
 use tinyset::SetU32;
@@ -424,9 +425,9 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
         };
 
         let eval_ctx = get_eval_ctx(&current_player_state, &full_stats);
-        let mut onhit_effects = InstanceDamage::new(DamageType::Mixed);
+        let mut onhit_effects = DamageValue::default();
 
-        let mut abilities_damage = get_damages(
+        let abilities_damage = get_damages(
             &abilities_iter_expr,
             &damage_multipliers,
             &eval_ctx,
@@ -444,13 +445,13 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
             &eval_ctx,
             &mut onhit_effects,
         );
-
-        abilities_damage.push((AbilityLike::Onhit, onhit_effects));
+        let attack_damage = get_attacks(&damage_multipliers, &eval_ctx, onhit_effects);
 
         Ok((
             enemy_champion_id,
             OutputEnemy {
                 damages: CalculatorDamages {
+                    attacks: attack_damage,
                     abilities: abilities_damage,
                     items: items_damage,
                     runes: runes_damage,
@@ -495,8 +496,8 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
     };
 
     let monster_damages = MONSTER_RESISTS.iter_enumerate().map(|(index, resists)| {
-        let mut onhit_effects = InstanceDamage::new(DamageType::Mixed);
-        let mut abilities = abilities_iter_expr
+        let mut onhit_damage = DamageValue::default();
+        let abilities = abilities_iter_expr
             .iter()
             .map(|(ability_name, dmg_expr)| {
                 let monster_state = make_state(resists);
@@ -513,7 +514,6 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
                     AbilityLike::W(_) => current_player_abilities.w,
                     AbilityLike::E(_) => current_player_abilities.e,
                     AbilityLike::R(_) => current_player_abilities.r,
-                    _ => 0,
                 };
                 let minimum_damage =
                     damage_mod * (dmg_expr.minimum_damage)(ability_level, &eval_ctx);
@@ -521,14 +521,14 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
                     damage_mod * (dmg_expr.maximum_damage)(ability_level, &eval_ctx);
                 match dmg_expr.attributes {
                     Attrs::OnhitMin => {
-                        onhit_effects.minimum_damage += minimum_damage;
+                        onhit_damage.minimum_damage += minimum_damage;
                     }
                     Attrs::OnhitMax => {
-                        onhit_effects.maximum_damage += maximum_damage;
+                        onhit_damage.maximum_damage += maximum_damage;
                     }
                     Attrs::Onhit => {
-                        onhit_effects.minimum_damage += minimum_damage;
-                        onhit_effects.maximum_damage += maximum_damage;
+                        onhit_damage.minimum_damage += minimum_damage;
+                        onhit_damage.maximum_damage += maximum_damage;
                     }
                     _ => {}
                 };
@@ -556,14 +556,14 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
                     damage_mod * (dmg_expr.maximum_damage)(current_player_level, &eval_ctx);
                 match dmg_expr.attributes {
                     Attrs::OnhitMin => {
-                        onhit_effects.minimum_damage += minimum_damage;
+                        onhit_damage.minimum_damage += minimum_damage;
                     }
                     Attrs::OnhitMax => {
-                        onhit_effects.maximum_damage += maximum_damage;
+                        onhit_damage.maximum_damage += maximum_damage;
                     }
                     Attrs::Onhit => {
-                        onhit_effects.minimum_damage += minimum_damage;
-                        onhit_effects.maximum_damage += maximum_damage;
+                        onhit_damage.minimum_damage += minimum_damage;
+                        onhit_damage.maximum_damage += maximum_damage;
                     }
                     _ => {}
                 };
@@ -574,12 +574,35 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
                 }
             })
             .collect::<SmallVec<_>>();
-        abilities.push(InstanceDamage {
-            damage_type: DamageType::Mixed,
-            minimum_damage: onhit_effects.minimum_damage,
-            maximum_damage: onhit_effects.maximum_damage,
-        });
-        MonsterExpr { abilities, items }
+        let attacks = {
+            let eval_context = EvalContext {
+                ad: current_player_stats.attack_damage,
+                crit_damage: current_player_stats.crit_damage,
+                physical_multiplier: RiotFormulas::real_resist(
+                    current_player_stats.armor_penetration_percent,
+                    current_player_stats.armor_penetration_flat,
+                    resists.1 as f64,
+                )
+                .1,
+                ..Default::default()
+            };
+            Attacks {
+                basic_attack: DamageValue {
+                    minimum_damage: (BASIC_ATTACK.minimum_damage)(0, &eval_context),
+                    maximum_damage: 0.0,
+                },
+                critical_strike: DamageValue {
+                    minimum_damage: (CRITICAL_STRIKE.minimum_damage)(0, &eval_context),
+                    maximum_damage: 0.0,
+                },
+                onhit_damage,
+            }
+        };
+        MonsterExpr {
+            attacks,
+            abilities,
+            items,
+        }
     });
 
     let mut tower_damages: [f64; 6] = [0.0; 6];

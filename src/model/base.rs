@@ -10,16 +10,6 @@ pub struct InstanceDamage {
     pub damage_type: DamageType,
 }
 
-impl InstanceDamage {
-    pub const fn new(damage_type: DamageType) -> Self {
-        Self {
-            minimum_damage: 0.0,
-            maximum_damage: 0.0,
-            damage_type,
-        }
-    }
-}
-
 #[derive(Encode, Copy, Clone, Decode)]
 pub struct Stats {
     pub ability_power: f64,
@@ -119,8 +109,22 @@ impl DragonMultipliers {
     }
 }
 
+#[derive(Encode, Default)]
+pub struct DamageValue {
+    pub minimum_damage: f64,
+    pub maximum_damage: f64,
+}
+
+#[derive(Encode)]
+pub struct Attacks {
+    pub basic_attack: DamageValue,
+    pub critical_strike: DamageValue,
+    pub onhit_damage: DamageValue,
+}
+
 #[derive(Encode)]
 pub struct MonsterExpr {
+    pub attacks: Attacks,
     pub abilities: SmallVec<[InstanceDamage; SIZE_ABILITIES]>,
     pub items: SmallVec<[InstanceDamage; 5]>,
 }

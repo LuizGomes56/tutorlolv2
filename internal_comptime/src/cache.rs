@@ -2,6 +2,7 @@ use bincode::{Decode, Encode};
 use serde::{Deserialize, Serialize};
 use shared_types::*;
 
+#[derive(Default)]
 pub struct EvalContext {
     pub chogath_stacks: f64,
     pub veigar_stacks: f64,

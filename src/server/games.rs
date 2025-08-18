@@ -146,6 +146,7 @@ pub async fn realtime_handler(
                 game_data,
             } = decoded.0;
 
+            println!("game_id: {game_id}, game_code: {game_code}");
             match serde_json::from_slice(game_data) {
                 Ok(game_data) => match realtime(&game_data) {
                     Ok(data) => send_response!(data),

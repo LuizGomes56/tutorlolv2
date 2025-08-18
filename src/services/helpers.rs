@@ -1,7 +1,7 @@
 use super::riot_formulas::RiotFormulas;
 use crate::{
     BASIC_ATTACK, CRITICAL_STRIKE, INTERNAL_ITEMS, INTERNAL_RUNES, SIMULATED_ITEMS,
-    SIZE_DAMAGING_RUNES, SIZE_SIMULATED_ITEMS,
+    SIZE_SIMULATED_ITEMS,
     model::{SIZE_ABILITIES, SIZE_ITEMS_EXPECTED, base::*},
 };
 use internal_comptime::{
@@ -22,7 +22,7 @@ pub const FIRE_DRAGON_MULTIPLIER: f64 = 0.03;
 // #![manual_impl]
 pub const CHEMTECH_DRAGON_MULTIPLIER: f64 = 0.06;
 
-pub fn get_simulated_champion_stats<'a>(
+pub fn get_simulated_champion_stats(
     current_stats: &Stats,
     owned_items: &[u32],
     ally_dragon_multipliers: &DragonMultipliers,
@@ -43,6 +43,7 @@ pub fn get_simulated_champion_stats<'a>(
     simulated_stats
 }
 
+#[inline]
 pub fn simulate_champion_stats(
     item_cache: &&CachedItem,
     cloned_stats: Stats,
@@ -87,59 +88,7 @@ pub fn simulate_champion_stats(
     result
 }
 
-pub fn get_items_damage(
-    current_player_damaging_items: &SetU32,
-    attack_type: AttackType,
-    level: u8,
-) -> SmallVec<[(ItemId, DamageExpression); SIZE_ITEMS_EXPECTED]> {
-    let mut result = SmallVec::with_capacity(current_player_damaging_items.len());
-    for item_id in current_player_damaging_items.iter() {
-        if let Some(item) = INTERNAL_ITEMS.get(item_id as usize) {
-            let item_damage = match attack_type {
-                AttackType::Ranged => &item.ranged,
-                AttackType::Melee => &item.melee,
-            };
-            result.push((
-                unsafe { std::mem::transmute(item_id as u16) },
-                DamageExpression {
-                    level,
-                    attributes: item.attributes,
-                    damage_type: item.damage_type,
-                    minimum_damage: item_damage.minimum_damage,
-                    maximum_damage: item_damage.maximum_damage,
-                },
-            ));
-        }
-    }
-    result
-}
-
-pub fn get_runes_damage(
-    current_player_damaging_runes: &SetU32,
-    attack_type: AttackType,
-) -> SmallVec<[(RuneId, DamageExpression); SIZE_DAMAGING_RUNES]> {
-    let mut result = SmallVec::with_capacity(current_player_damaging_runes.len());
-    for rune_id in current_player_damaging_runes.iter() {
-        if let Some(rune) = INTERNAL_RUNES.get(rune_id as usize) {
-            let minimum_damage = match attack_type {
-                AttackType::Ranged => rune.ranged,
-                AttackType::Melee => rune.melee,
-            };
-            result.push((
-                unsafe { std::mem::transmute(rune_id as u8) },
-                DamageExpression {
-                    level: 0,
-                    attributes: Attrs::None,
-                    damage_type: rune.damage_type,
-                    minimum_damage,
-                    maximum_damage: zero,
-                },
-            ));
-        }
-    }
-    result
-}
-
+#[inline]
 pub fn get_full_stats(
     enemy_state: (ChampionId, u8, f64),
     enemy_stats: (BasicStats, &[ItemId]),
@@ -153,16 +102,10 @@ pub fn get_full_stats(
         get_enemy_current_stats(enemy_base_stats, enemy_items, earth_dragon_mod);
     let mut enemy_bonus_stats = get_bonus_stats(enemy_current_stats, enemy_base_stats);
 
-    macro_rules! real_resist {
-        ($tuple:expr, $resist_val:expr) => {{
-            let real_val = ($resist_val * $tuple.0 - $tuple.1).max(0.0);
-            let modf_val = 100.0 / (100.0 + real_val);
-            (real_val, modf_val)
-        }};
-    }
-
-    let (real_armor, armor_mod) = real_resist!(armor_val, enemy_current_stats.armor);
-    let (real_magic, magic_mod) = real_resist!(magic_val, enemy_current_stats.magic_resist);
+    let (real_armor, armor_mod) =
+        RiotFormulas::real_resist(armor_val.0, armor_val.1, enemy_current_stats.armor);
+    let (real_magic, magic_mod) =
+        RiotFormulas::real_resist(magic_val.0, armor_val.1, enemy_current_stats.magic_resist);
     let (enemy_physical_mod, mut enemy_magic_mod, enemy_true_mod, enemy_global_mod) =
         (1.0, 1.0, 1.0, 1.0);
     let (self_physical_mod, self_magic_mod, self_true_mod, self_global_mod) = (1.0, 1.0, 1.0, 1.0);
@@ -278,7 +221,7 @@ pub fn get_abilities_damage(
     current_player_level: u8,
     abilities: AbilityLevels,
 ) -> SmallVec<[(AbilityLike, DamageExpression); SIZE_ABILITIES]> {
-    let mut result = SmallVec::with_capacity(current_player_cache.abilities.len() + 2);
+    let mut result = SmallVec::with_capacity(current_player_cache.abilities.len());
     for (key, value) in current_player_cache.abilities.iter() {
         let level = match key {
             AbilityLike::P(_) => current_player_level,
@@ -286,7 +229,6 @@ pub fn get_abilities_damage(
             AbilityLike::W(_) => abilities.w,
             AbilityLike::E(_) => abilities.e,
             AbilityLike::R(_) => abilities.r,
-            _ => continue,
         };
         result.push((
             *key,
@@ -300,8 +242,59 @@ pub fn get_abilities_damage(
         ));
     }
 
-    result.push((AbilityLike::BasicAttack, BASIC_ATTACK));
-    result.push((AbilityLike::CriticalStrike, CRITICAL_STRIKE));
+    result
+}
+
+pub fn get_items_damage(
+    current_player_damaging_items: &SetU32,
+    attack_type: AttackType,
+    level: u8,
+) -> SmallVec<[(ItemId, DamageExpression); SIZE_ITEMS_EXPECTED]> {
+    let mut result = SmallVec::with_capacity(current_player_damaging_items.len());
+    for item_id in current_player_damaging_items.iter() {
+        if let Some(item) = INTERNAL_ITEMS.get(item_id as usize) {
+            let item_damage = match attack_type {
+                AttackType::Ranged => &item.ranged,
+                AttackType::Melee => &item.melee,
+            };
+            result.push((
+                unsafe { std::mem::transmute(item_id as u16) },
+                DamageExpression {
+                    level,
+                    attributes: item.attributes,
+                    damage_type: item.damage_type,
+                    minimum_damage: item_damage.minimum_damage,
+                    maximum_damage: item_damage.maximum_damage,
+                },
+            ));
+        }
+    }
+    result
+}
+
+pub fn get_runes_damage(
+    current_player_damaging_runes: &SetU32,
+    attack_type: AttackType,
+) -> SmallVec<[(RuneId, DamageExpression); 3]> {
+    let mut result = SmallVec::with_capacity(current_player_damaging_runes.len());
+    for rune_id in current_player_damaging_runes.iter() {
+        if let Some(rune) = INTERNAL_RUNES.get(rune_id as usize) {
+            let minimum_damage = match attack_type {
+                AttackType::Ranged => rune.ranged,
+                AttackType::Melee => rune.melee,
+            };
+            result.push((
+                unsafe { std::mem::transmute(rune_id as u8) },
+                DamageExpression {
+                    level: 0,
+                    attributes: Attrs::None,
+                    damage_type: rune.damage_type,
+                    minimum_damage,
+                    maximum_damage: zero,
+                },
+            ));
+        }
+    }
     result
 }
 
@@ -446,17 +439,18 @@ pub fn get_enemy_current_stats(
     basic_stats
 }
 
-fn transform_expr<T: Copy + 'static>(
-    tuple: (T, DamageExpression),
-    onhit_effects: &mut InstanceDamage,
-    damage_mlt: &DamageMultipliers,
+#[inline]
+fn get_instance_damage(
+    damage_expression: &DamageExpression,
+    onhit_effects: &mut DamageValue,
+    damage_mod: f64,
     eval_ctx: &EvalContext,
-) -> (T, InstanceDamage) {
-    let damage_type = tuple.1.damage_type;
-    let damage_mod = get_damage_multipliers(damage_mlt, damage_type);
-    let minimum_damage = damage_mod * (tuple.1.minimum_damage)(tuple.1.level, eval_ctx);
-    let maximum_damage = damage_mod * (tuple.1.maximum_damage)(tuple.1.level, eval_ctx);
-    match tuple.1.attributes {
+) -> (f64, f64) {
+    let minimum_damage =
+        damage_mod * (damage_expression.minimum_damage)(damage_expression.level, eval_ctx);
+    let maximum_damage =
+        damage_mod * (damage_expression.maximum_damage)(damage_expression.level, eval_ctx);
+    match damage_expression.attributes {
         Attrs::OnhitMin => {
             onhit_effects.minimum_damage += maximum_damage + minimum_damage;
         }
@@ -469,26 +463,52 @@ fn transform_expr<T: Copy + 'static>(
         }
         Attrs::None => {}
     };
-    (
-        tuple.0,
-        InstanceDamage {
-            damage_type,
-            minimum_damage,
-            maximum_damage,
-        },
-    )
+    (minimum_damage, maximum_damage)
 }
 
 pub fn get_damages<const N: usize, T: Copy + 'static>(
     tuples: &[(T, DamageExpression)],
     damage_multipliers: &DamageMultipliers,
     eval_ctx: &EvalContext,
-    onhit_effects: &mut InstanceDamage,
+    onhit_effects: &mut DamageValue,
 ) -> DamageLike<N, T> {
     let mut result = DamageLike::<N, T>::with_capacity(tuples.len());
-    for tuple in tuples.iter().copied() {
-        let (key, val) = transform_expr(tuple, onhit_effects, damage_multipliers, eval_ctx);
-        result.push((key, val));
+    for tuple in tuples.iter() {
+        let damage_mod = get_damage_multipliers(damage_multipliers, tuple.1.damage_type);
+        let (minimum_damage, maximum_damage) =
+            get_instance_damage(&tuple.1, onhit_effects, damage_mod, eval_ctx);
+        result.push((
+            tuple.0,
+            InstanceDamage {
+                minimum_damage,
+                maximum_damage,
+                damage_type: tuple.1.damage_type,
+            },
+        ));
     }
     result
+}
+
+#[inline]
+pub fn get_attacks(
+    damage_multipliers: &DamageMultipliers,
+    eval_ctx: &EvalContext,
+    mut onhit_effects: DamageValue,
+) -> Attacks {
+    macro_rules! chain {
+        ($varname:ident, $damage_type:ident) => {{
+            let damage_mod = get_damage_multipliers(damage_multipliers, DamageType::$damage_type);
+            let (minimum_damage, maximum_damage) =
+                get_instance_damage(&$varname, &mut onhit_effects, damage_mod, eval_ctx);
+            DamageValue {
+                minimum_damage,
+                maximum_damage,
+            }
+        }};
+    }
+    Attacks {
+        basic_attack: chain!(BASIC_ATTACK, Physical),
+        critical_strike: chain!(CRITICAL_STRIKE, Physical),
+        onhit_damage: onhit_effects,
+    }
 }
