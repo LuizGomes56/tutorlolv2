@@ -345,22 +345,6 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
         // &stack_exceptions,
     );
 
-    let current_player_recommended_items = META_ITEMS
-        .get(current_player_champion_id as usize)
-        .and_then(|meta_items| {
-            current_player_cache
-                .positions
-                .get(0)
-                .map(|position| match *position {
-                    Position::Top => meta_items.top,
-                    Position::Jungle => meta_items.jungle,
-                    Position::Middle => meta_items.mid,
-                    Position::Bottom => meta_items.adc,
-                    Position::Support => meta_items.support,
-                })
-        })
-        .unwrap_or(&[]);
-
     let enemy_dragon_multipliers = DragonMultipliers {
         fire: 1.0,
         earth: 1.0 + EARTH_DRAGON_MULTIPLIER * enemy_earth_dragons as f32,
@@ -649,6 +633,5 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
             current_stats: current_player_stats,
         },
         enemies,
-        recommended_items: current_player_recommended_items,
     })
 }

@@ -43,7 +43,6 @@ pub struct OutputGame {
     pub tower_damages: [f32; 6],
     pub current_player: OutputCurrentPlayer,
     pub enemies: SmallVec<[(ChampionId, OutputEnemy); 1]>,
-    pub recommended_items: &'static [ItemId],
 }
 
 #[derive(Decode)]

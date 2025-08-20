@@ -91,7 +91,6 @@ pub struct Realtime<'a> {
     pub current_player: CurrentPlayer<'a>,
     pub enemies: SmallVec<[(ChampionId, Enemy<'a>); SIZE_ENEMIES_EXPECTED]>,
     pub game_information: GameInformation,
-    pub recommended_items: &'static [ItemId],
     pub scoreboard: Scoreboard<'a>,
     pub enemy_dragon_multipliers: DragonMultipliers,
     pub ally_dragon_multipliers: DragonMultipliers,

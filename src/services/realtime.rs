@@ -84,20 +84,6 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
     let current_player_bonus_stats =
         get_bonus_stats(current_player_basic_stats, current_player_base_stats);
 
-    let current_player_recommended_items = {
-        if let Some(meta_items) = META_ITEMS.get(*current_player_champion_id as usize) {
-            match current_player_position {
-                Position::Top => meta_items.top,
-                Position::Jungle => meta_items.jungle,
-                Position::Middle => meta_items.mid,
-                Position::Bottom => meta_items.adc,
-                Position::Support => meta_items.support,
-            }
-        } else {
-            &[]
-        }
-    };
-
     let current_player_damaging_runes = current_player_riot_runes
         .general_runes
         .as_ref()
@@ -361,7 +347,6 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
             game_time,
             map_number,
         },
-        recommended_items: current_player_recommended_items,
         enemy_dragon_multipliers,
         ally_dragon_multipliers,
     })

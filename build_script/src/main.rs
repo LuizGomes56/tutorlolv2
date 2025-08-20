@@ -65,6 +65,10 @@ async fn main() {
         "pub static CHAMPION_ABILITIES: [&'static [(AbilityLike, (usize, usize))]; {}] = [",
         champions.len(),
     );
+    let mut recommended_items = format!(
+        "pub static RECOMMENDED_ITEMS: [[&'static [ItemId]; 5]; {}] = [",
+        champions.len(),
+    );
     let mut internal_items = format!(
         "pub static INTERNAL_ITEMS: [&'static CachedItem; {}] = [",
         items.len(),
@@ -138,23 +142,29 @@ async fn main() {
     };
 
     let meta_items_map = init_map!(file BTreeMap<String, Positions>, "internal/meta_items.json");
-    let champion_meta_items =
-        format!(
+    let champion_meta_items = format!(
         "pub static META_ITEMS:[CachedMetaItem;{}]=[{}];",
         champions.len(),
-        champions.iter().map(|(champion_id, _)| {
-            let positions = meta_items_map.get(champion_id).unwrap();
-            format!(
-                "CachedMetaItem{{top:&[{}],mid:&[{}],jungle:&[{}],adc:&[{}],support:&[{}]}}",
-                transform_and_join(&positions.top),
-                transform_and_join(&positions.mid),
-                transform_and_join(&positions.jungle),
-                transform_and_join(&positions.adc),
-                transform_and_join(&positions.support)
-            )
-        })
-        .collect::<Vec<String>>()
-        .join(",")
+        champions
+            .iter()
+            .map(|(champion_id, _)| {
+                let positions = meta_items_map.get(champion_id).unwrap();
+                let top = transform_and_join(&positions.top);
+                let mid = transform_and_join(&positions.mid);
+                let jungle = transform_and_join(&positions.jungle);
+                let adc = transform_and_join(&positions.adc);
+                let support = transform_and_join(&positions.support);
+                recommended_items.push_str(&format!(
+                    "[&[{}],&[{}],&[{}],&[{}],&[{}]],",
+                    top, mid, jungle, adc, support
+                ));
+                format!(
+                    "CachedMetaItem{{top:&[{}],mid:&[{}],jungle:&[{}],adc:&[{}],support:&[{}]}}",
+                    top, mid, jungle, adc, support
+                )
+            })
+            .collect::<Vec<String>>()
+            .join(",")
     );
     let champion_name_to_id_phf = format!(
         "pub static CHAMPION_NAME_TO_ID:phf::OrderedMap<&'static str,ChampionId>=phf::phf_ordered_map!{{{}}};",
@@ -222,6 +232,7 @@ async fn main() {
         internal_champions_content.push_str(&champion_detail.constdecl);
     }
 
+    recommended_items.push_str("];");
     internal_champions.push_str("];");
     champion_id_to_name.push_str("];");
     champion_formulas.push_str("];");
@@ -438,6 +449,7 @@ async fn main() {
         champion_formulas,
         champion_generator,
         champion_abilities,
+        recommended_items,
         item_id_to_name,
         item_formulas,
         item_descriptions,
