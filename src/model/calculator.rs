@@ -1,6 +1,6 @@
 use super::{
-    SIZE_ABILITIES, SIZE_ITEMS_EXPECTED, SIZE_RUNES_EXPECTED, WrapSetU32,
     base::{AbilityLevels, Attacks, BasicStats, DamageLike, MonsterDamages, Stats},
+    WrapSetU32, SIZE_ABILITIES, SIZE_ITEMS_EXPECTED, SIZE_RUNES_EXPECTED,
 };
 use bincode::{Decode, Encode};
 use internal_comptime::{AbilityLike, AdaptativeType, ChampionId, ItemId, RuneId};
@@ -64,6 +64,7 @@ pub struct InputEnemyPlayers {
     pub level: u8,
     pub stats: BasicStats,
     pub infer_stats: bool,
+    pub stacks: u32,
 }
 
 #[derive(Decode)]

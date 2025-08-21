@@ -4,7 +4,7 @@ use crate::model::{base::*, calculator::*};
 use internal_comptime::{
     AbilityLike, AdaptativeType, AttackType, Attrs, BASIC_ATTACK, CRITICAL_STRIKE, ChampionId,
     DAMAGING_ITEMS, DAMAGING_RUNES, EvalContext, INTERNAL_CHAMPIONS, INTERNAL_ITEMS, ItemId,
-    META_ITEMS, Position, RuneId,
+    RuneId,
 };
 use smallvec::SmallVec;
 use tinyset::SetU32;
@@ -377,9 +377,10 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
             items: enemy_items,
             level: enemy_level,
             // #![todo]
-            infer_stats: _infer_enemy_stats,
+            infer_stats: infer_enemy_stats,
             // #![todo]
-            stats: _enemy_stats,
+            stats: enemy_stats,
+            ..
         } = player;
         let enemy_cache = INTERNAL_CHAMPIONS
             .get(enemy_champion_id as usize)
@@ -391,7 +392,11 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
                 enemy_level,
                 enemy_dragon_multipliers.earth,
             ),
-            (enemy_base_stats, &enemy_items),
+            (
+                (!infer_enemy_stats).then_some(enemy_stats),
+                enemy_base_stats,
+                &enemy_items,
+            ),
             (
                 current_player_stats.armor_penetration_percent,
                 current_player_stats.armor_penetration_flat,
@@ -459,6 +464,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
         get_full_stats(
             (ChampionId::Zyra, 0, 1.0),
             (
+                None,
                 BasicStats {
                     armor: tuple.0 as f32,
                     magic_resist: tuple.1 as f32,

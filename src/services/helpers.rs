@@ -91,15 +91,16 @@ pub fn simulate_champion_stats(
 #[inline]
 pub fn get_full_stats(
     enemy_state: (ChampionId, u8, f32),
-    enemy_stats: (BasicStats, &[ItemId]),
+    enemy_stats: (Option<BasicStats>, BasicStats, &[ItemId]),
     armor_val: (f32, f32),
     magic_val: (f32, f32),
 ) -> (BasicStats, BasicStats, GenericStats) {
     let (enemy_champion_id, enemy_level, earth_dragon_mod) = enemy_state;
-    let (enemy_base_stats, enemy_items) = enemy_stats;
+    let (enemy_current_stats, enemy_base_stats, enemy_items) = enemy_stats;
 
-    let mut enemy_current_stats =
-        get_enemy_current_stats(enemy_base_stats, enemy_items, earth_dragon_mod);
+    let mut enemy_current_stats = enemy_current_stats.unwrap_or_else(|| {
+        get_enemy_current_stats(enemy_base_stats, enemy_items, earth_dragon_mod)
+    });
     let mut enemy_bonus_stats = get_bonus_stats(enemy_current_stats, enemy_base_stats);
 
     let (real_armor, armor_mod) =

@@ -1,6 +1,6 @@
 use super::*;
 use crate::{
-    DAMAGING_ITEMS, DAMAGING_RUNES, INTERNAL_CHAMPIONS, META_ITEMS,
+    DAMAGING_ITEMS, DAMAGING_RUNES, INTERNAL_CHAMPIONS,
     model::{
         SIZE_ITEMS_EXPECTED,
         base::{BasicStats, DamageMultipliers, DamageValue, DragonMultipliers},
@@ -173,7 +173,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
                     enemy_level,
                     enemy_dragon_multipliers.earth,
                 ),
-                (enemy_base_stats, &enemy_items),
+                (None, enemy_base_stats, &enemy_items),
                 (
                     current_player_stats.armor_penetration_percent,
                     current_player_stats.armor_penetration_flat,
@@ -222,7 +222,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
                         enemy_level,
                         enemy_dragon_multipliers.earth,
                     ),
-                    (enemy_base_stats, &enemy_items),
+                    (None, enemy_base_stats, &enemy_items),
                     (
                         siml_stats.armor_penetration_percent,
                         siml_stats.armor_penetration_flat,
