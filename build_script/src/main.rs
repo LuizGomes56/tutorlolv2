@@ -35,6 +35,10 @@ async fn main() {
         "pub static INTERNAL_CHAMPIONS: [&'static CachedChampion; {}] = [",
         champions.len()
     );
+    let mut champion_positions = format!(
+        "pub static CHAMPION_POSITIONS: [&'static [Position]; {}] = [",
+        champions.len()
+    );
     let mut champion_id_to_name = format!(
         "pub static CHAMPION_ID_TO_NAME: [&'static str; {}] = [",
         champions.len()
@@ -201,6 +205,7 @@ async fn main() {
     for (champion_id, champion_detail) in champions.into_iter() {
         internal_champions.push_str(&format!("&{},", champion_id.to_uppercase()));
         champion_id_to_name.push_str(&format!("\"{}\",", champion_detail.champion_name));
+        champion_positions.push_str(&format!("&[{}],", champion_detail.positions));
         record_offsets!(champion_formulas, champion_detail.champion_formula);
         record_offsets!(champion_generator, champion_detail.generator);
 
@@ -219,6 +224,7 @@ async fn main() {
     }
 
     recommended_items.push_str("];");
+    champion_positions.push_str("];");
     internal_champions.push_str("];");
     champion_id_to_name.push_str("];");
     champion_formulas.push_str("];");
@@ -440,6 +446,7 @@ async fn main() {
     let exported_content = [
         champion_id_enum,
         champion_id_to_name,
+        champion_positions,
         champion_formulas,
         champion_generator,
         champion_abilities,
@@ -461,6 +468,8 @@ async fn main() {
     bytes.extend_from_slice(
         format!(
             "{}
+            #[derive(Debug,Copy,Clone,Decode)]
+            pub enum Position{{Top,Jungle,Middle,Bottom,Support}}
             pub static BASIC_ATTACK_OFFSET:(usize,usize)={};
             pub static CRITICAL_STRIKE_OFFSET:(usize,usize)={};
             pub static ONHIT_EFFECT_OFFSET:(usize,usize)={};

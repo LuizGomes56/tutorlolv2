@@ -178,6 +178,7 @@ pub struct ChampionDetails {
     pub highlighted_abilities: Vec<(String, String)>,
     pub champion_formula: String,
     pub constdecl: String,
+    pub positions: String,
 }
 
 pub fn export_champions() -> BTreeMap<String, ChampionDetails> {
@@ -218,6 +219,21 @@ pub fn export_champions() -> BTreeMap<String, ChampionDetails> {
 
             sort_pqwer(&mut constdecl_abilities);
 
+            let positions = champion
+                    .positions
+                    .iter()
+                    .map(|pos| {
+                        match pos.as_str() {
+                            "TOP" => "Position::Top",
+                            "JUNGLE" => "Position::Jungle",
+                            "MIDDLE" => "Position::Middle",
+                            "BOTTOM" => "Position::Bottom",
+                            _ => "Position::Support",
+                        }
+                    })
+                    .collect::<Vec<_>>()
+                    .join(",");
+
             let constdecl = format!(
                 r#"pub static {}:CachedChampion=CachedChampion{{adaptative_type:{},attack_type:{},positions:&[{}],abilities:&[{}],stats:CachedChampionStats{{{}}}}};"#,
                 champion_id.to_uppercase(),
@@ -233,20 +249,7 @@ pub fn export_champions() -> BTreeMap<String, ChampionDetails> {
                         "AttackType::Ranged"
                     }
                 },
-                champion
-                    .positions
-                    .iter()
-                    .map(|pos| {
-                        match pos.as_str() {
-                            "TOP" => "Position::Top",
-                            "JUNGLE" => "Position::Jungle",
-                            "MIDDLE" => "Position::Middle",
-                            "BOTTOM" => "Position::Bottom",
-                            _ => "Position::Support",
-                        }
-                    })
-                    .collect::<Vec<_>>()
-                    .join(","),
+                positions,
                 constdecl_abilities
                     .iter()
                     .map(|(ability_name, rustfmt_val)| {
@@ -272,6 +275,7 @@ pub fn export_champions() -> BTreeMap<String, ChampionDetails> {
                     )),
                     highlighted_abilities,
                     constdecl,
+                    positions,
                 },
             )
         })
