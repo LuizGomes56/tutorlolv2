@@ -161,6 +161,16 @@ macro_rules! init_map {
     }};
 }
 
+pub fn remove_special_chars(s: &str) -> String {
+    s.replace(" ", "")
+        .replace("-", "")
+        .replace(")", "")
+        .replace("(", "")
+        .replace("'", "")
+        .replace(".", "")
+        .replace(",", "")
+}
+
 pub fn is_valid_math_expression(expr: &str) -> bool {
     if expr.chars().any(|c| c.is_ascii_lowercase()) {
         return false;
@@ -311,6 +321,73 @@ pub fn clear_suffixes(input: &str) -> String {
             }
         })
         .to_string()
+}
+
+pub trait Case {
+    fn to_screaming_snake_case(&self) -> String;
+}
+
+impl Case for str {
+    fn to_screaming_snake_case(&self) -> String {
+        #[inline]
+        fn is_boundary(c: char) -> bool {
+            c.is_ascii_whitespace() || (c.is_ascii_punctuation() && c != '\'')
+        }
+        #[inline]
+        fn is_ignorable(c: char) -> bool {
+            c == '\''
+        }
+        let mut out = String::with_capacity(self.len() * 2);
+        let mut chars = self.chars().peekable();
+        let mut prev_was_alpha = false;
+        let mut prev_was_upper = false;
+        let mut prev_was_digit = false;
+        while let Some(c) = chars.next() {
+            if is_ignorable(c) {
+                continue;
+            }
+            if is_boundary(c) {
+                if !out.is_empty() && !out.ends_with('_') {
+                    out.push('_');
+                }
+                prev_was_alpha = false;
+                prev_was_upper = false;
+                prev_was_digit = false;
+                continue;
+            }
+            let is_upper = c.is_ascii_uppercase();
+            let is_alpha = c.is_ascii_alphabetic();
+            let is_digit = c.is_ascii_digit();
+            let next_is_lower = chars
+                .peek()
+                .map(|n| n.is_ascii_lowercase())
+                .unwrap_or(false);
+            let need_us = if out.is_empty() || out.ends_with('_') {
+                false
+            } else if is_upper {
+                (prev_was_alpha && !prev_was_upper)
+                    || prev_was_digit
+                    || (prev_was_upper && next_is_lower)
+            } else if is_alpha {
+                prev_was_digit
+            } else if is_digit {
+                prev_was_alpha
+            } else {
+                false
+            };
+            if need_us && !out.ends_with('_') {
+                out.push('_');
+            }
+            out.push(c.to_ascii_uppercase());
+            prev_was_alpha = is_alpha;
+            prev_was_upper = is_upper;
+            prev_was_digit = is_digit;
+        }
+        if out.ends_with('_') {
+            out.pop();
+        }
+        out
+    }
 }
 
 pub trait JoinNumVec {

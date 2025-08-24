@@ -98,9 +98,11 @@ pub fn get_full_stats(
     let (enemy_champion_id, enemy_level, earth_dragon_mod) = enemy_state;
     let (enemy_current_stats, enemy_base_stats, enemy_items) = enemy_stats;
 
-    let mut enemy_current_stats = enemy_current_stats.unwrap_or_else(|| {
-        get_enemy_current_stats(enemy_base_stats, enemy_items, earth_dragon_mod)
-    });
+    let mut enemy_current_stats = enemy_current_stats.unwrap_or(get_enemy_current_stats(
+        enemy_base_stats,
+        enemy_items,
+        earth_dragon_mod,
+    ));
     let mut enemy_bonus_stats = get_bonus_stats(enemy_current_stats, enemy_base_stats);
 
     let (real_armor, armor_mod) =

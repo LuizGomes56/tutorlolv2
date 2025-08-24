@@ -21,8 +21,8 @@ pub fn export_runes() -> Vec<(u32, RuneDetails)> {
             let ranged_expr = transform_expr(&clean_math_expr(&rune.ranged));
             let melee_expr = transform_expr(&clean_math_expr(&rune.melee));
             let constdecl = format!(
-                r#"pub static RUNE_{}:CachedRune=CachedRune{{damage_type:{},ranged:{},melee:{},}};"#,
-                rune_id,
+                r#"pub static {}:CachedRune=CachedRune{{damage_type:{},ranged:{},melee:{},}};"#,
+                format!("{}_{}", rune.name.to_screaming_snake_case(), rune_id),
                 format_damage_type(&rune.damage_type),
                 format!(
                     "|_,{}|{}",

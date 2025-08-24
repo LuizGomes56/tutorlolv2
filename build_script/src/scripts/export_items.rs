@@ -136,9 +136,10 @@ pub fn export_items() -> Vec<(u32, ItemDetails)> {
                 .join(",");
 
             let constdecl = format!(
-                r#"pub static ITEM_{}:CachedItem=CachedItem {{gold:{},damage_type:{},attributes:Attrs::{},ranged:{},melee:{},prettified_stats:&[{}],stats:CachedItemStats{{{}}},}};"#,
-                item_id,
+                r#"pub static {}:CachedItem=CachedItem {{gold:{},prettified_stats:&[{}],damage_type:{},attributes:Attrs::{},ranged:{},melee:{},stats:CachedItemStats{{{}}},}};"#,
+                format!("{}_{}", item.name.to_screaming_snake_case(), item_id),
                 item.gold,
+                prettified_stats,
                 if item.damage_type.is_some() {
                     format_damage_type(&item.damage_type.clone().unwrap_or_default())
                 } else {
@@ -147,7 +148,6 @@ pub fn export_items() -> Vec<(u32, ItemDetails)> {
                 item.attributes.stringify(),
                 format_damage_object(&item.ranged),
                 format_damage_object(&item.melee),
-                prettified_stats,
                 format_stats(&item.stats),
             );
 

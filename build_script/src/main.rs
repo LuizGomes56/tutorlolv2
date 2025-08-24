@@ -14,16 +14,6 @@ const ONHIT_EFFECT: &'static str = r#"<pre><span class="control">intrinsic</span
 };
 </pre>"#;
 
-fn remove_special_chars(s: &str) -> String {
-    s.replace(" ", "")
-        .replace("-", "")
-        .replace(")", "")
-        .replace("(", "")
-        .replace("'", "")
-        .replace(".", "")
-        .replace(",", "")
-}
-
 #[tokio::main]
 async fn main() {
     let mut mega_block = String::with_capacity(1 << 24);
@@ -39,10 +29,6 @@ async fn main() {
     let champions = champions_handle.await.unwrap();
     let items = items_handle.await.unwrap();
     let runes = runes_handle.await.unwrap();
-
-    if items.len() == 0 {
-        panic!("No items found");
-    }
 
     let mut internal_champions_content = String::with_capacity(1 << 16);
     let mut internal_champions = format!(
@@ -299,7 +285,11 @@ async fn main() {
     );
     for (item_id, item_detail) in items.into_iter() {
         internal_items_content.push_str(&item_detail.constdecl);
-        internal_items.push_str(&format!("&ITEM_{},", item_id));
+        internal_items.push_str(&format!(
+            "&{}_{},",
+            item_detail.item_name.to_screaming_snake_case(),
+            item_id
+        ));
         if item_detail.is_simulated {
             internal_simulated_items.push_str(&format!("{}u32,", item_id));
             internal_simulated_items_len += 1;
@@ -407,7 +397,11 @@ async fn main() {
             .join(","),
     );
     for (rune_id, rune_detail) in runes.into_iter() {
-        internal_runes.push_str(&format!("&RUNE_{},", rune_id));
+        internal_runes.push_str(&format!(
+            "&{}_{},",
+            rune_detail.rune_name.to_screaming_snake_case(),
+            rune_id
+        ));
         internal_runes_content.push_str(&rune_detail.constdecl);
         rune_id_to_name.push_str(&format!("\"{}\",", rune_detail.rune_name));
         record_offsets!(rune_formulas, rune_detail.rune_formula);
