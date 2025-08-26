@@ -16,7 +16,7 @@ const ONHIT_EFFECT: &'static str = r#"<pre><span class="control">intrinsic</span
 
 #[tokio::main]
 async fn main() {
-    let mut mega_block = String::with_capacity(1 << 24);
+    let mut mega_block = String::with_capacity(1 << 23);
     let champion_languages_raw_json =
         std::fs::read_to_string(cwd!("internal/champion_languages.json")).unwrap();
     let champion_languages_json =
@@ -44,15 +44,15 @@ async fn main() {
         champions.len()
     );
     let mut champion_formulas = format!(
-        "pub static CHAMPION_FORMULAS: [(usize, usize); {}] = [",
+        "pub static CHAMPION_FORMULAS: [(u32, u32); {}] = [",
         champions.len()
     );
     let mut champion_generator = format!(
-        "pub static CHAMPION_GENERATOR: [(usize, usize); {}] = [",
+        "pub static CHAMPION_GENERATOR: [(u32, u32); {}] = [",
         champions.len()
     );
     let mut champion_abilities = format!(
-        "pub static CHAMPION_ABILITIES: [&'static [(AbilityLike, (usize, usize))]; {}] = [",
+        "pub static CHAMPION_ABILITIES: [&'static [(AbilityLike, (u32, u32))]; {}] = [",
         champions.len(),
     );
     let mut recommended_items = format!(
@@ -73,7 +73,7 @@ async fn main() {
         items.len(),
     );
     let mut item_formulas = format!(
-        "pub static ITEM_FORMULAS: [(usize, usize); {}] = [",
+        "pub static ITEM_FORMULAS: [(u32, u32); {}] = [",
         items.len(),
     );
     let mut item_descriptions = format!(
@@ -85,7 +85,7 @@ async fn main() {
         runes.len(),
     );
     let mut rune_formulas = format!(
-        "pub static RUNE_FORMULAS: [(usize, usize); {}] = [",
+        "pub static RUNE_FORMULAS: [(u32, u32); {}] = [",
         runes.len(),
     );
     let mut internal_runes = format!(
@@ -470,9 +470,9 @@ async fn main() {
             "{}
             #[derive(Debug,Copy,Clone,Decode)]
             pub enum Position{{Top,Jungle,Middle,Bottom,Support}}
-            pub static BASIC_ATTACK_OFFSET:(usize,usize)={};
-            pub static CRITICAL_STRIKE_OFFSET:(usize,usize)={};
-            pub static ONHIT_EFFECT_OFFSET:(usize,usize)={};
+            pub static BASIC_ATTACK_OFFSET:(u32,u32)={};
+            pub static CRITICAL_STRIKE_OFFSET:(u32,u32)={};
+            pub static ONHIT_EFFECT_OFFSET:(u32,u32)={};
             pub static UNCOMPRESSED_MEGA_BLOCK_SIZE:usize={};",
             exported_content,
             record_offsets!(highlight(&invoke_rustfmt(&BASIC_ATTACK, 60))),

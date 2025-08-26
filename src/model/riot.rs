@@ -142,8 +142,8 @@ fn _test() {
         std::thread::Builder::new()
             .stack_size(1 << 21)
             .spawn_unchecked(move || {
-                let data = std::fs::read_to_string("example.json").unwrap();
-                let parsed = serde_json::from_str(&data).unwrap();
+                let data = std::fs::read("serde_test.json").unwrap();
+                let parsed = serde_json::from_slice(&data).unwrap();
                 let start_time = std::time::Instant::now();
                 let _game = crate::services::realtime::realtime(&parsed).map_err(|e| {
                     println!("{:?}", e);

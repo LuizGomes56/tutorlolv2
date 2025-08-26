@@ -124,7 +124,33 @@ pub async fn get_by_code_handler(
 }
 
 #[post("/realtime")]
-pub async fn realtime_handler(
+pub async fn realtime_handler(body: actix_web::web::Bytes) -> impl Responder {
+    match serde_json::from_slice(&body) {
+        Ok(game_data) => match realtime(&game_data) {
+            Ok(data) => send_response!(data),
+            Err(e) => {
+                let message = get_calculation_error(e);
+                println!("Error on realtime response: {:#?}", message);
+                HttpResponse::InternalServerError().json(APIResponse {
+                    success: false,
+                    message,
+                    data: (),
+                })
+            }
+        },
+        Err(e) => {
+            eprintln!("Error deserializing json data: {}", e);
+            HttpResponse::InternalServerError().json(APIResponse {
+                success: false,
+                message: format!("Error deserializing json data: {:#?}", e),
+                data: (),
+            })
+        }
+    }
+}
+
+// #[post("/realtime")]
+pub async fn _realtime_handler(
     // state: Data<AppState>,
     body: actix_web::web::Bytes,
 ) -> impl Responder {
