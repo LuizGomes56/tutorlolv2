@@ -1,17 +1,31 @@
 # TutorLoL v2
 
-> cargo run --release > log.txt 2>&1
-> cargo run -r --no-default-features
+### Pending features
+- Code to generate champions automatically after every update
+- Code to generate item damages automatically
+- Check if calculations are acceptably accurate
+- Save data from `realtime` in the database to allow others recover it by using `game_id` or `game_code`
 
-### feature dev-routes
+### Current stage
+- Overlay for `realtime` feature
+- Keyboard controls to enable/disable Window during the game (it must be in Borderless mode)
 
-Enable setup routes to generate .json files and fetch data from dependent APIs. In production, every unused segment is removed by disabling this feature, which decrease total size from 10.9KB to 6KB
+### What is done
+- Calculator component
+- Formulas
+- Help guide
+- Settings (maybe)
+- Code import/export to frontend
 
-[Client-Side](https://github.com/LuizGomes56/tlv2app)
+### Current binary sizes
+- Frontend: 1.4MB (raw), 385Kb (compressed)
+- Backend: 3MB (raw), 6.5Kb (including images)
+- Calculator average payload size = 1.2Kb
+- Realtime average payload size = 150Kb
+- 85Kb static cached bytes (formulas as html). Expands to 5.6Mb on initialization
 
-
-[Remake made in Go](https://github.com/LuizGomes56/GORemakeTutorLoL)
-
-
-[First remake in Rust](https://github.com/LuizGomes56/RSRemakeTutorLoL)
-
+### Performance
+- 10 micro-seconds for each `calculator` call
+- 220 micro-seconds for each `realtime` call
+- 0.21s page startup time
+- 12 hours to convert all images to AVIF
