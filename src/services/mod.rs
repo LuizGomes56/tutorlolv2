@@ -12,3 +12,16 @@ pub enum CalculationError {
     ChampionNameNotFound,
     ChampionCacheNotFound,
 }
+
+impl CalculationError {
+    #[inline(always)]
+    pub fn as_str(self) -> &'static str {
+        match self {
+            CalculationError::CurrentPlayerNotFound => "Current player not found in allPlayers",
+            CalculationError::ChampionNameNotFound => {
+                "Could not convert champion name to its corresponding id"
+            }
+            CalculationError::ChampionCacheNotFound => "Current champion cache not found",
+        }
+    }
+}

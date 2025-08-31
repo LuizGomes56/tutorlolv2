@@ -3,7 +3,7 @@ use crate::{
     AppState,
     model::{calculator::InputGame, riot::RiotRealtime},
     send_response,
-    services::{CalculationError, calculator::calculator, realtime::realtime},
+    services::{calculator::calculator, realtime::realtime},
 };
 use actix_web::{HttpResponse, Responder, get, post, web::Data};
 use bincode::{Decode, Encode};
@@ -36,17 +36,6 @@ pub async fn create_game_handler(state: Data<AppState>) -> impl Responder {
             message: format!("Error when inserting game_data: {}", e),
             data: (),
         }),
-    }
-}
-
-#[inline(always)]
-fn get_calculation_error(e: CalculationError) -> &'static str {
-    match e {
-        CalculationError::CurrentPlayerNotFound => "Current player not found in allPlayers",
-        CalculationError::ChampionNameNotFound => {
-            "Could not convert champion name to its corresponding id"
-        }
-        CalculationError::ChampionCacheNotFound => "Current champion cache not found",
     }
 }
 
@@ -88,7 +77,7 @@ pub async fn get_by_code_handler(
                             send_response!(&realtime_data)
                         }
                         Err(e) => {
-                            let message = get_calculation_error(e);
+                            let message = e.as_str();
                             HttpResponse::InternalServerError().json(APIResponse {
                                 success: false,
                                 message,
@@ -129,7 +118,7 @@ pub async fn realtime_handler(body: actix_web::web::Bytes) -> impl Responder {
         Ok(game_data) => match realtime(&game_data) {
             Ok(data) => send_response!(data),
             Err(e) => {
-                let message = get_calculation_error(e);
+                let message = e.as_str();
                 println!("Error on realtime response: {:#?}", message);
                 HttpResponse::InternalServerError().json(APIResponse {
                     success: false,
@@ -177,7 +166,7 @@ pub async fn _realtime_handler(
                 Ok(game_data) => match realtime(&game_data) {
                     Ok(data) => send_response!(data),
                     Err(e) => {
-                        let message = get_calculation_error(e);
+                        let message = e.as_str();
                         println!("Error on realtime response: {:#?}", message);
                         HttpResponse::InternalServerError().json(APIResponse {
                             success: false,
@@ -235,7 +224,7 @@ pub async fn _realtime_handler(
                             send_response!(&data)
                         }
                         Err(e) => {
-                            let message = get_calculation_error(e);
+                            let message = e.as_str();
                             println!("Error on realtime response: {:#?}", message);
                             HttpResponse::InternalServerError().json(APIResponse {
                                 success: false,
@@ -275,7 +264,7 @@ pub async fn calculator_handler(body: actix_web::web::Bytes) -> impl Responder {
             }
             Err(e) => HttpResponse::InternalServerError().json(APIResponse {
                 success: false,
-                message: get_calculation_error(e),
+                message: e.as_str(),
                 data: (),
             }),
         },

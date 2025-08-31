@@ -1,6 +1,6 @@
 [package]
 name = "tutorlolv2"
-version = "0.3.2"
+version = "0.3.5"
 edition = "2024"
 authors = ["Luiz Gustavo Santana Dias Gomes"]
 repository = "https://github.com/LuizGomes56/tutorlolv2"
@@ -51,6 +51,8 @@ scraper = { version = "0.24.0", optional = true }
 image = { version = "0.25.6", optional = true }
 ravif = { version = "0.12.0", default-features = false, optional = true }
 regex = { version = "1.11.1", optional = true }
+actix = "0.13.5"
+actix-web-actors = "4.3.1"
 
 [features]
 dev = [

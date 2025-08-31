@@ -8,7 +8,7 @@ use crate::{
         riot::*,
     },
 };
-use internal_comptime::{CHAMPION_NAME_TO_ID, ItemId, Position};
+use internal_comptime::{CHAMPION_NAME_TO_ID, ItemId, Position, RuneId};
 use smallvec::SmallVec;
 use tinyset::SetU32;
 
@@ -93,7 +93,9 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
                     .into_iter()
                     .filter_map(|riot_rune| {
                         let rune_id = riot_rune.id;
-                        DAMAGING_RUNES.contains(&rune_id).then_some(rune_id)
+                        DAMAGING_RUNES
+                            .contains(&rune_id)
+                            .then_some(RuneId::from_u32(rune_id) as u32)
                     })
                     .collect::<SetU32>(),
             )

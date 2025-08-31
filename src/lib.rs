@@ -6,7 +6,7 @@ mod server;
 mod services;
 mod setup;
 
-use crate::init::release::AppState;
+use crate::{init::release::AppState, server::stream::realtime_ws};
 #[cfg(feature = "dev")]
 use crate::{
     middlewares::{
@@ -33,6 +33,7 @@ use std::io;
 fn api_scope() -> impl HttpServiceFactory + 'static {
     let api_routes = scope("/api").service(
         scope("/games")
+            .service(realtime_ws)
             .service(realtime_handler)
             .service(calculator_handler)
             .service(create_game_handler)
