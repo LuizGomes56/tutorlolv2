@@ -145,9 +145,15 @@ fn _test() {
                 let data = std::fs::read("serde_test.json").unwrap();
                 let parsed = serde_json::from_slice(&data).unwrap();
                 let start_time = std::time::Instant::now();
-                let _game = crate::services::realtime::realtime(&parsed).map_err(|e| {
-                    println!("{:?}", e);
-                });
+                let game = crate::services::realtime::realtime(&parsed)
+                    .map_err(|e| {
+                        println!("{:?}", e);
+                    })
+                    .unwrap();
+                let serialized_game =
+                    bincode::encode_to_vec(&game, bincode::config::standard()).unwrap();
+                println!("{:?}", serialized_game.len()); // 68756
+                assert_eq!(serialized_game.len(), game.bincode_size());
                 println!("{:?}", start_time.elapsed());
             })
     }

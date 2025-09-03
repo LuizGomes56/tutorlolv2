@@ -1,5 +1,6 @@
 use crate::services::realtime::realtime;
 use actix::prelude::*;
+use actix_web::{Error, HttpRequest, HttpResponse, get, web};
 use actix_web_actors::ws;
 use std::io::{self, Write};
 use std::mem;
@@ -8,6 +9,11 @@ use std::ptr;
 const CHUNK: usize = 64 * 1024;
 
 struct RealtimeWs;
+
+#[get("/realtime/ws")]
+pub async fn realtime_ws(req: HttpRequest, stream: web::Payload) -> Result<HttpResponse, Error> {
+    ws::start(RealtimeWs, &req, stream)
+}
 
 impl Actor for RealtimeWs {
     type Context = ws::WebsocketContext<Self>;
@@ -138,11 +144,14 @@ fn process_realtime_json(json_bytes: &[u8], ctx: &mut ws::WebsocketContext<Realt
         }
     };
 
-    // let sizeof_data = calculate_bincode_final_size(&data);
-    let sizeof_data = 67812;
+    let sizeof_data = data.bincode_size();
+
+    println!("bincode size: {}", sizeof_data);
+
+    let void_data: &[u8] = &[0u8, 0, 0, 0];
 
     if sizeof_data == 0 {
-        ctx.binary(&[0u8, 0, 0, 0] as &[u8]);
+        ctx.binary(void_data);
         println!("sent empty data");
         return;
     }
