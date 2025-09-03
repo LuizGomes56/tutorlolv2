@@ -75,9 +75,9 @@ pub struct RiotActivePlayer<'a> {
 #[derive(Serialize, Default, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RiotScoreboard {
-    pub kills: u16,
-    pub deaths: u16,
-    pub assists: u16,
+    pub kills: u8,
+    pub deaths: u8,
+    pub assists: u8,
     pub creep_score: u16,
 }
 
@@ -138,6 +138,7 @@ pub struct RiotRealtime<'a> {
 
 #[test]
 fn _test() {
+    use super::functions::Sizer;
     unsafe {
         std::thread::Builder::new()
             .stack_size(1 << 21)
@@ -153,7 +154,7 @@ fn _test() {
                 let serialized_game =
                     bincode::encode_to_vec(&game, bincode::config::standard()).unwrap();
                 println!("{:?}", serialized_game.len()); // 68756
-                assert_eq!(serialized_game.len(), game.bincode_size());
+                assert_eq!(serialized_game.len(), game.size());
                 println!("{:?}", start_time.elapsed());
             })
     }

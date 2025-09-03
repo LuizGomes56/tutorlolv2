@@ -1,4 +1,4 @@
-use crate::services::realtime::realtime;
+use crate::{model::functions::Sizer, services::realtime::realtime};
 use actix::prelude::*;
 use actix_web::{Error, HttpRequest, HttpResponse, get, web};
 use actix_web_actors::ws;
@@ -144,7 +144,7 @@ fn process_realtime_json(json_bytes: &[u8], ctx: &mut ws::WebsocketContext<Realt
         }
     };
 
-    let sizeof_data = data.bincode_size();
+    let sizeof_data = data.size();
 
     println!("bincode size: {}", sizeof_data);
 
