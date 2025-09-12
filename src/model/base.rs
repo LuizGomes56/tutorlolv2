@@ -1,37 +1,68 @@
-use super::{SIZE_ABILITIES, riot::RiotChampionStats};
+use super::{SIZE_ABILITIES, Sizer, riot::RiotChampionStats};
 use bincode::{Decode, Encode};
 use internal_comptime::DamageType;
 use smallvec::SmallVec;
 
+macro_rules! castable {
+    (#[derive($($derives:tt),+)] pub struct $name:ident { $($fields:tt),+ }) => {
+        #[derive($($derives),+)]
+        pub struct $name<T = f32> {
+            $(pub $fields: T),+
+        }
+
+        impl $name<f32> {
+            #[inline(always)]
+            pub fn cast_i32(&self) -> $name<i32> {
+                $name {
+                    $( $fields: self.$fields as i32 ),+
+                }
+            }
+        }
+
+        impl Sizer for $name<i32> {
+            #[inline(always)]
+            fn size(&self) -> usize {
+                let mut sum = 0;
+                $(
+                    sum += self.$fields.size();
+                )+
+                sum
+            }
+        }
+    };
+}
+
 #[derive(Encode)]
-pub struct InstanceDamage {
-    pub minimum_damage: f32,
-    pub maximum_damage: f32,
+pub struct InstanceDamage<T = f32> {
+    pub minimum_damage: T,
+    pub maximum_damage: T,
     pub damage_type: DamageType,
 }
 
-#[derive(Encode, Copy, Clone, Decode)]
-pub struct Stats {
-    pub ability_power: f32,
-    pub armor: f32,
-    pub armor_penetration_flat: f32,
-    pub armor_penetration_percent: f32,
-    pub attack_damage: f32,
-    pub attack_range: f32,
-    pub attack_speed: f32,
-    pub crit_chance: f32,
-    pub crit_damage: f32,
-    pub current_health: f32,
-    pub magic_penetration_flat: f32,
-    pub magic_penetration_percent: f32,
-    pub magic_resist: f32,
-    pub max_health: f32,
-    pub max_mana: f32,
-    pub current_mana: f32,
-}
+castable!(
+    #[derive(Encode, Copy, Clone, Decode)]
+    pub struct Stats {
+        ability_power,
+        armor,
+        armor_penetration_flat,
+        armor_penetration_percent,
+        attack_damage,
+        attack_range,
+        attack_speed,
+        crit_chance,
+        crit_damage,
+        current_health,
+        magic_penetration_flat,
+        magic_penetration_percent,
+        magic_resist,
+        max_health,
+        max_mana,
+        current_mana
+    }
+);
 
 impl RiotChampionStats {
-    pub fn to_stats(&self) -> Stats {
+    pub fn to_stats(&self) -> Stats<f32> {
         Stats {
             ability_power: self.ability_power,
             armor: self.armor,
@@ -53,16 +84,18 @@ impl RiotChampionStats {
     }
 }
 
-pub type DamageLike<const N: usize, T> = SmallVec<[(T, InstanceDamage); N]>;
+pub type DamageLike<const N: usize, T> = SmallVec<[(T, InstanceDamage<i32>); N]>;
 
-#[derive(Encode, Copy, Clone, Decode)]
-pub struct BasicStats {
-    pub armor: f32,
-    pub health: f32,
-    pub attack_damage: f32,
-    pub magic_resist: f32,
-    pub mana: f32,
-}
+castable!(
+    #[derive(Encode, Copy, Clone, Decode)]
+    pub struct BasicStats {
+        armor,
+        health,
+        attack_damage,
+        magic_resist,
+        mana
+    }
+);
 
 #[derive(Clone, Copy)]
 pub struct GenericStats {
@@ -109,24 +142,24 @@ impl DragonMultipliers {
     }
 }
 
+#[derive(Encode)]
+pub struct Attacks<T = f32> {
+    pub basic_attack: DamageValue<T>,
+    pub critical_strike: DamageValue<T>,
+    pub onhit_damage: DamageValue<T>,
+}
+
+#[derive(Encode)]
+pub struct MonsterExpr<T = f32> {
+    pub attacks: Attacks<T>,
+    pub abilities: SmallVec<[InstanceDamage<T>; SIZE_ABILITIES]>,
+    pub items: SmallVec<[InstanceDamage<T>; 5]>,
+}
+
+pub type MonsterDamages<T> = [MonsterExpr<T>; 7];
+
 #[derive(Encode, Default)]
-pub struct DamageValue {
-    pub minimum_damage: f32,
-    pub maximum_damage: f32,
+pub struct DamageValue<T = f32> {
+    pub minimum_damage: T,
+    pub maximum_damage: T,
 }
-
-#[derive(Encode)]
-pub struct Attacks {
-    pub basic_attack: DamageValue,
-    pub critical_strike: DamageValue,
-    pub onhit_damage: DamageValue,
-}
-
-#[derive(Encode)]
-pub struct MonsterExpr {
-    pub attacks: Attacks,
-    pub abilities: SmallVec<[InstanceDamage; SIZE_ABILITIES]>,
-    pub items: SmallVec<[InstanceDamage; 5]>,
-}
-
-pub type MonsterDamages = [MonsterExpr; 7];

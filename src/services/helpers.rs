@@ -90,12 +90,12 @@ pub fn simulate_champion_stats(
 
 #[inline]
 pub fn get_full_stats(
-    enemy_state: (ChampionId, u8, f32),
+    enemy_state: (ChampionId, u8, f32, f32),
     enemy_stats: (Option<BasicStats>, BasicStats, &[ItemId]),
     armor_val: (f32, f32),
     magic_val: (f32, f32),
 ) -> (BasicStats, BasicStats, GenericStats) {
-    let (enemy_champion_id, enemy_level, earth_dragon_mod) = enemy_state;
+    let (enemy_champion_id, enemy_level, earth_dragon_mod, enemy_stacks) = enemy_state;
     let (enemy_current_stats, enemy_base_stats, enemy_items) = enemy_stats;
 
     let mut enemy_current_stats = enemy_current_stats.unwrap_or(get_enemy_current_stats(
@@ -114,6 +114,10 @@ pub fn get_full_stats(
     let (self_physical_mod, self_magic_mod, self_true_mod, self_global_mod) = (1.0, 1.0, 1.0, 1.0);
 
     match enemy_champion_id {
+        ChampionId::Sion => {
+            enemy_current_stats.health += enemy_stacks;
+            enemy_bonus_stats.health += enemy_stacks;
+        }
         ChampionId::Kassadin => {
             // #![manual_impl]
             enemy_magic_mod -= 0.1;
@@ -445,7 +449,7 @@ pub fn get_enemy_current_stats(
 #[inline]
 fn get_instance_damage(
     damage_expression: &DamageExpression,
-    onhit_effects: &mut DamageValue,
+    onhit_effects: &mut DamageValue<i32>,
     damage_mod: f32,
     eval_ctx: &EvalContext,
 ) -> (f32, f32) {
@@ -455,14 +459,14 @@ fn get_instance_damage(
         damage_mod * (damage_expression.maximum_damage)(damage_expression.level, eval_ctx);
     match damage_expression.attributes {
         Attrs::OnhitMin => {
-            onhit_effects.minimum_damage += maximum_damage + minimum_damage;
+            onhit_effects.minimum_damage += (maximum_damage + minimum_damage) as i32;
         }
         Attrs::OnhitMax => {
-            onhit_effects.maximum_damage += maximum_damage + minimum_damage;
+            onhit_effects.maximum_damage += (maximum_damage + minimum_damage) as i32;
         }
         Attrs::Onhit => {
-            onhit_effects.minimum_damage += minimum_damage + minimum_damage;
-            onhit_effects.maximum_damage += minimum_damage + minimum_damage;
+            onhit_effects.minimum_damage += (minimum_damage + minimum_damage) as i32;
+            onhit_effects.maximum_damage += (minimum_damage + minimum_damage) as i32;
         }
         Attrs::None => {}
     };
@@ -473,7 +477,7 @@ pub fn get_damages<const N: usize, T: Copy + 'static>(
     tuples: &[(T, DamageExpression)],
     damage_multipliers: &DamageMultipliers,
     eval_ctx: &EvalContext,
-    onhit_effects: &mut DamageValue,
+    onhit_effects: &mut DamageValue<i32>,
 ) -> DamageLike<N, T> {
     let mut result = DamageLike::<N, T>::with_capacity(tuples.len());
     for tuple in tuples.iter() {
@@ -483,8 +487,8 @@ pub fn get_damages<const N: usize, T: Copy + 'static>(
         result.push((
             tuple.0,
             InstanceDamage {
-                minimum_damage,
-                maximum_damage,
+                minimum_damage: minimum_damage as i32,
+                maximum_damage: maximum_damage as i32,
                 damage_type: tuple.1.damage_type,
             },
         ));
@@ -496,16 +500,16 @@ pub fn get_damages<const N: usize, T: Copy + 'static>(
 pub fn get_attacks(
     damage_multipliers: &DamageMultipliers,
     eval_ctx: &EvalContext,
-    mut onhit_effects: DamageValue,
-) -> Attacks {
+    mut onhit_effects: DamageValue<i32>,
+) -> Attacks<i32> {
     macro_rules! chain {
         ($varname:ident, $damage_type:ident) => {{
             let damage_mod = get_damage_multipliers(damage_multipliers, DamageType::$damage_type);
             let (minimum_damage, maximum_damage) =
                 get_instance_damage(&$varname, &mut onhit_effects, damage_mod, eval_ctx);
             DamageValue {
-                minimum_damage,
-                maximum_damage,
+                minimum_damage: minimum_damage as i32,
+                maximum_damage: maximum_damage as i32,
             }
         }};
     }

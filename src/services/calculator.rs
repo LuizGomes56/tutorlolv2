@@ -127,30 +127,27 @@ fn infer_champion_stats(
 // #![unsupported]
 fn rune_exceptions(
     champion_stats: &mut Stats,
-    owned_runes: &[RuneId],
     level: f32,
     value_types: (AdaptativeType, AttackType),
-    // exception_map: &FxHashMap<u32, u32>,
+    exceptions: &[(RuneId, u8)],
 ) {
-    return;
-    let this_stack = 0x0000;
-    for rune in owned_runes {
-        // let this_stack = *exception_map.get(&rune).unwrap_or(&0);
-        match rune.to_u32() {
+    for (rune_id, stacks) in exceptions {
+        let stacks = *stacks;
+        match rune_id.to_u32() {
             // Lethal Tempo
             8008 => match value_types.1 {
                 AttackType::Melee => {
                     champion_stats.attack_speed +=
-                        (this_stack as f32) * (5.0 + 11.0 / 17.0 * (level - 1.0));
+                        (stacks as f32) * (5.0 + 11.0 / 17.0 * (level - 1.0));
                 }
                 AttackType::Ranged => {
                     champion_stats.attack_speed +=
-                        (this_stack as f32) * (3.6 + 4.4 / 17.0 * (level - 1.0));
+                        (stacks as f32) * (3.6 + 4.4 / 17.0 * (level - 1.0));
                 }
             },
             // Conqueror
             8010 => {
-                let formula: f32 = (this_stack as f32) * (1.8 + 2.2 / 17.0 * (level - 1.0));
+                let formula: f32 = (stacks as f32) * (1.8 + 2.2 / 17.0 * (level - 1.0));
                 match value_types.0 {
                     AdaptativeType::Physical => {
                         champion_stats.attack_damage += 0.6 * formula;
@@ -163,14 +160,14 @@ fn rune_exceptions(
             // Eyeball Collection | Ghost Poro | Zombie Ward :: Removed Runes
             8120 | 8136 | 8138 => match value_types.0 {
                 AdaptativeType::Physical => {
-                    champion_stats.attack_damage += match this_stack {
-                        0..10 => 1.2 * (this_stack as f32),
+                    champion_stats.attack_damage += match stacks {
+                        0..10 => 1.2 * (stacks as f32),
                         _ => 18.0,
                     };
                 }
                 AdaptativeType::Magic => {
-                    champion_stats.ability_power += match this_stack {
-                        0..10 => (this_stack << 1) as f32,
+                    champion_stats.ability_power += match stacks {
+                        0..10 => (stacks << 1) as f32,
                         _ => 30.0,
                     };
                 }
@@ -191,7 +188,7 @@ fn rune_exceptions(
             },
             // Gathering Storm
             8236 => {
-                let formula: f32 = ((this_stack * (this_stack + 1)) << 2) as f32;
+                let formula: f32 = ((stacks * (stacks + 1)) << 2) as f32;
                 match value_types.0 {
                     AdaptativeType::Physical => {
                         champion_stats.attack_damage += 0.6 * formula;
@@ -204,18 +201,18 @@ fn rune_exceptions(
             // Adaptative damage shard
             9000 => match value_types.0 {
                 AdaptativeType::Physical => {
-                    champion_stats.attack_damage += 5.4 * (this_stack as f32);
+                    champion_stats.attack_damage += 5.4 * (stacks as f32);
                 }
                 AdaptativeType::Magic => {
-                    champion_stats.ability_power += 9.0 * (this_stack as f32);
+                    champion_stats.ability_power += 9.0 * (stacks as f32);
                 }
             },
             // Max health shard
-            9001 => champion_stats.max_health += 65.0 * (this_stack as f32),
+            9001 => champion_stats.max_health += 65.0 * (stacks as f32),
             // Health per level shard
-            9002 => champion_stats.max_health += 10.0 * level * (this_stack as f32),
+            9002 => champion_stats.max_health += 10.0 * level * (stacks as f32),
             // Attack speed shard
-            9003 => champion_stats.attack_speed += 10.0 * (this_stack as f32),
+            9003 => champion_stats.attack_speed += 10.0 * (stacks as f32),
             _ => {}
         }
     }
@@ -223,22 +220,14 @@ fn rune_exceptions(
 
 // #![manual_impl]
 // #![unsupported]
-fn item_exceptions(
-    champion_stats: &mut Stats,
-    owned_items: &[ItemId],
-    // exception_map: &FxHashMap<u32, u32>,
-) {
-    return;
-    let this_stack = 0x0000;
-    for item_id in owned_items {
-        // let this_stack = *exception_map.get(&item_id).unwrap_or(&0);
+fn item_exceptions(champion_stats: &mut Stats, exceptions: &[(ItemId, u8)]) {
+    for (item_id, stacks) in exceptions {
+        let stacks = *stacks;
         match item_id {
-            ItemId::DarkSeal => champion_stats.ability_power += (this_stack.max(1) << 2) as f32,
-            ItemId::MejaisSoulstealer => {
-                champion_stats.ability_power += (5 * this_stack.max(1)) as f32
-            }
+            ItemId::DarkSeal => champion_stats.ability_power += (stacks.max(1) << 2) as f32,
+            ItemId::MejaisSoulstealer => champion_stats.ability_power += (5 * stacks.max(1)) as f32,
             ItemId::RabadonsDeathcap => champion_stats.ability_power *= 1.3,
-            ItemId::Hubris => champion_stats.attack_damage += (15 + this_stack.max(1) << 1) as f32,
+            ItemId::Hubris => champion_stats.attack_damage += (15 + stacks.max(1) << 1) as f32,
             ItemId::WoogletsWitchcap => champion_stats.ability_power *= 1.5,
             _ => {}
         }
@@ -255,7 +244,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
         enemy_earth_dragons,
         ally_fire_dragons,
         ally_earth_dragons,
-        // stack_exceptions,
+        stack_exceptions,
     } = game;
 
     let InputActivePlayer {
@@ -326,11 +315,18 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
     let current_player_attack_type = current_player_cache.attack_type;
     let current_player_champion_id = active_player.champion_id;
 
-    item_exceptions(
-        &mut current_player_stats,
-        current_player_full_items.as_slice(),
-        // &stack_exceptions,
-    );
+    let mut item_stack_exceptions = SmallVec::<[(ItemId, u8); 5]>::new();
+    let mut rune_stack_exceptions = SmallVec::<[(RuneId, u8); 5]>::new();
+
+    for (byte, enum_id, stack) in stack_exceptions.into_iter() {
+        match byte {
+            0 => item_stack_exceptions.push((ItemId::from_u32(enum_id as u32), stack)),
+            1 => rune_stack_exceptions.push((RuneId::from_u32(enum_id as u32), stack)),
+            _ => {}
+        }
+    }
+
+    item_exceptions(&mut current_player_stats, &item_stack_exceptions);
 
     let adaptative_type = RiotFormulas::adaptative_type(
         current_player_bonus_stats.attack_damage,
@@ -339,10 +335,9 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
 
     rune_exceptions(
         &mut current_player_stats,
-        &current_player_full_runes.as_slice(),
         current_player_level as f32,
         (adaptative_type, current_player_attack_type),
-        // &stack_exceptions,
+        &rune_stack_exceptions,
     );
 
     let enemy_dragon_multipliers = DragonMultipliers {
@@ -380,7 +375,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
             infer_stats: infer_enemy_stats,
             // #![todo]
             stats: enemy_stats,
-            ..
+            stacks: enemy_stacks,
         } = player;
         let enemy_cache = INTERNAL_CHAMPIONS
             .get(enemy_champion_id as usize)
@@ -391,6 +386,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
                 enemy_champion_id,
                 enemy_level,
                 enemy_dragon_multipliers.earth,
+                enemy_stacks as f32,
             ),
             (
                 (!infer_enemy_stats).then_some(enemy_stats),
@@ -414,7 +410,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
         };
 
         let eval_ctx = get_eval_ctx(&current_player_state, &full_stats);
-        let mut onhit_effects = DamageValue::default();
+        let mut onhit_effects = DamageValue::<i32>::default();
 
         let abilities_damage = get_damages(
             &abilities_iter_expr,
@@ -446,11 +442,11 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
                     runes: runes_damage,
                 },
                 level: player.level,
-                base_stats: enemy_base_stats,
-                current_stats: full_stats.0,
-                bonus_stats: full_stats.1,
-                real_armor: full_stats.2.real_armor,
-                real_magic_resist: full_stats.2.real_magic,
+                base_stats: enemy_base_stats.cast_i32(),
+                current_stats: full_stats.0.cast_i32(),
+                bonus_stats: full_stats.1.cast_i32(),
+                real_armor: full_stats.2.real_armor as i32,
+                real_magic_resist: full_stats.2.real_magic as i32,
             },
         ))
     };
@@ -462,7 +458,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
 
     let make_state = |tuple: (i8, i8)| {
         get_full_stats(
-            (ChampionId::Zyra, 0, 1.0),
+            (ChampionId::Zyra, 0, 1.0, 0.0),
             (
                 None,
                 BasicStats {
@@ -486,7 +482,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
     };
 
     let monster_damages = MONSTER_RESISTS.iter_enumerate().map(|(index, resists)| {
-        let mut onhit_damage = DamageValue::default();
+        let mut onhit_damage = DamageValue::<i32>::default();
         let abilities = abilities_iter_expr
             .iter()
             .map(|(ability_name, dmg_expr)| {
@@ -506,9 +502,9 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
                     AbilityLike::R(_) => current_player_abilities.r,
                 };
                 let minimum_damage =
-                    damage_mod * (dmg_expr.minimum_damage)(ability_level, &eval_ctx);
+                    (damage_mod * (dmg_expr.minimum_damage)(ability_level, &eval_ctx)) as i32;
                 let maximum_damage =
-                    damage_mod * (dmg_expr.maximum_damage)(ability_level, &eval_ctx);
+                    (damage_mod * (dmg_expr.maximum_damage)(ability_level, &eval_ctx)) as i32;
                 match dmg_expr.attributes {
                     Attrs::OnhitMin => {
                         onhit_damage.minimum_damage += minimum_damage;
@@ -522,7 +518,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
                     }
                     _ => {}
                 };
-                InstanceDamage {
+                InstanceDamage::<i32> {
                     damage_type: dmg_expr.damage_type,
                     minimum_damage,
                     maximum_damage,
@@ -540,10 +536,12 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
                     damage_mod: (monster_state.2.armor_mod, monster_state.2.magic_mod),
                 };
                 let damage_mod = get_damage_multipliers(&damage_multipliers, dmg_expr.damage_type);
-                let minimum_damage =
-                    damage_mod * (dmg_expr.minimum_damage)(current_player_level, &eval_ctx);
-                let maximum_damage =
-                    damage_mod * (dmg_expr.maximum_damage)(current_player_level, &eval_ctx);
+                let minimum_damage = (damage_mod
+                    * (dmg_expr.minimum_damage)(current_player_level, &eval_ctx))
+                    as i32;
+                let maximum_damage = (damage_mod
+                    * (dmg_expr.maximum_damage)(current_player_level, &eval_ctx))
+                    as i32;
                 match dmg_expr.attributes {
                     Attrs::OnhitMin => {
                         onhit_damage.minimum_damage += minimum_damage;
@@ -557,7 +555,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
                     }
                     _ => {}
                 };
-                InstanceDamage {
+                InstanceDamage::<i32> {
                     damage_type: dmg_expr.damage_type,
                     minimum_damage,
                     maximum_damage,
@@ -576,26 +574,26 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
                 .1,
                 ..Default::default()
             };
-            Attacks {
-                basic_attack: DamageValue {
-                    minimum_damage: (BASIC_ATTACK.minimum_damage)(0, &eval_context),
-                    maximum_damage: 0.0,
+            Attacks::<i32> {
+                basic_attack: DamageValue::<i32> {
+                    minimum_damage: (BASIC_ATTACK.minimum_damage)(0, &eval_context) as i32,
+                    maximum_damage: 0,
                 },
-                critical_strike: DamageValue {
-                    minimum_damage: (CRITICAL_STRIKE.minimum_damage)(0, &eval_context),
-                    maximum_damage: 0.0,
+                critical_strike: DamageValue::<i32> {
+                    minimum_damage: (CRITICAL_STRIKE.minimum_damage)(0, &eval_context) as i32,
+                    maximum_damage: 0,
                 },
                 onhit_damage,
             }
         };
-        MonsterExpr {
+        MonsterExpr::<i32> {
             attacks,
             abilities,
             items,
         }
     });
 
-    let mut tower_damages: [f32; 6] = [0.0; 6];
+    let mut tower_damages = [0; 6];
     let base_tower_damage = |i| match adaptative_type {
         AdaptativeType::Physical => {
             current_player_base_stats.attack_damage
@@ -622,7 +620,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
     };
 
     for i in 0..6 {
-        tower_damages[i] = base_tower_damage(i);
+        tower_damages[i] = base_tower_damage(i) as i32;
     }
 
     Ok(OutputGame {
@@ -634,9 +632,9 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
             damaging_runes: current_player_damaging_runes.into(),
             level: current_player_level,
             champion_id: current_player_champion_id,
-            base_stats: current_player_base_stats,
-            bonus_stats: current_player_bonus_stats,
-            current_stats: current_player_stats,
+            base_stats: current_player_base_stats.cast_i32(),
+            bonus_stats: current_player_bonus_stats.cast_i32(),
+            current_stats: current_player_stats.cast_i32(),
         },
         enemies,
     })

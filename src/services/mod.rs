@@ -15,7 +15,7 @@ pub enum CalculationError {
 
 impl CalculationError {
     #[inline(always)]
-    pub fn as_str(self) -> &'static str {
+    pub const fn as_str(self) -> &'static str {
         match self {
             CalculationError::CurrentPlayerNotFound => "Current player not found in allPlayers",
             CalculationError::ChampionNameNotFound => {

@@ -174,6 +174,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
                     *enemy_champion_id,
                     enemy_level,
                     enemy_dragon_multipliers.earth,
+                    0.0,
                 ),
                 (None, enemy_base_stats, &enemy_items),
                 (
@@ -193,7 +194,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
             };
 
             let eval_ctx = get_eval_ctx(&current_player_state, &full_stats);
-            let mut onhit_effects = DamageValue::default();
+            let mut onhit_effects = DamageValue::<i32>::default();
 
             let abilities_damage = get_damages(
                 &abilities_iter_expr,
@@ -223,6 +224,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
                         *enemy_champion_id,
                         enemy_level,
                         enemy_dragon_multipliers.earth,
+                        0.0,
                     ),
                     (None, enemy_base_stats, &enemy_items),
                     (
@@ -260,7 +262,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
                 );
 
                 let siml_eval_ctx = get_eval_ctx(&siml_current_player_state, &siml_full_stats);
-                let mut siml_onhit_effects = DamageValue::default();
+                let mut siml_onhit_effects = DamageValue::<i32>::default();
 
                 let siml_abilities_damage = get_damages(
                     &abilities_iter_expr,
@@ -308,11 +310,11 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
                         compared_items: compared_items_damage,
                     },
                     level: player.level,
-                    base_stats: enemy_base_stats,
-                    current_stats: full_stats.0,
-                    bonus_stats: full_stats.1,
-                    real_armor: full_stats.2.real_armor,
-                    real_magic_resist: full_stats.2.real_magic,
+                    base_stats: enemy_base_stats.cast_i32(),
+                    current_stats: full_stats.0.cast_i32(),
+                    bonus_stats: full_stats.1.cast_i32(),
+                    real_armor: full_stats.2.real_armor as i32,
+                    real_magic_resist: full_stats.2.real_magic as i32,
                 },
             ))
         })
@@ -331,9 +333,9 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
             team: current_player_team,
             position: current_player_position,
             champion_id: *current_player_champion_id,
-            base_stats: current_player_base_stats,
-            bonus_stats: current_player_bonus_stats,
-            current_stats: current_player_stats,
+            base_stats: current_player_base_stats.cast_i32(),
+            bonus_stats: current_player_bonus_stats.cast_i32(),
+            current_stats: current_player_stats.cast_i32(),
         },
         enemies,
         scoreboard: Scoreboard {
@@ -346,7 +348,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
             position: current_player_position,
         },
         game_information: GameInformation {
-            game_time,
+            game_time: game_time as i32,
             map_number,
         },
         enemy_dragon_multipliers,

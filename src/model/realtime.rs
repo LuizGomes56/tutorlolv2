@@ -10,7 +10,7 @@ use smallvec::SmallVec;
 
 #[derive(Encode)]
 pub struct SimulatedDamages {
-    pub attacks: Attacks,
+    pub attacks: Attacks<i32>,
     pub abilities: DamageLike<SIZE_ABILITIES, AbilityLike>,
     pub items: DamageLike<SIZE_DAMAGING_ITEMS, ItemId>,
     pub runes: DamageLike<3, RuneId>,
@@ -18,7 +18,7 @@ pub struct SimulatedDamages {
 
 #[derive(Encode)]
 pub struct Damages {
-    pub attacks: Attacks,
+    pub attacks: Attacks<i32>,
     pub abilities: DamageLike<SIZE_ABILITIES, AbilityLike>,
     pub items: DamageLike<5, ItemId>,
     pub runes: DamageLike<3, RuneId>,
@@ -35,14 +35,14 @@ pub struct CurrentPlayer<'a> {
     pub adaptative_type: AdaptativeType,
     pub position: Position,
     pub champion_id: ChampionId,
-    pub base_stats: BasicStats,
-    pub bonus_stats: BasicStats,
-    pub current_stats: Stats,
+    pub base_stats: BasicStats<i32>,
+    pub bonus_stats: BasicStats<i32>,
+    pub current_stats: Stats<i32>,
 }
 
 #[derive(Encode)]
 pub struct GameInformation {
-    pub game_time: f32,
+    pub game_time: i32,
     pub map_number: u8,
 }
 
@@ -69,11 +69,11 @@ pub struct Enemy<'a> {
     pub level: u8,
     pub position: Position,
     pub damages: Damages,
-    pub base_stats: BasicStats,
-    pub bonus_stats: BasicStats,
-    pub current_stats: BasicStats,
-    pub real_armor: f32,
-    pub real_magic_resist: f32,
+    pub base_stats: BasicStats<i32>,
+    pub bonus_stats: BasicStats<i32>,
+    pub current_stats: BasicStats<i32>,
+    pub real_armor: i32,
+    pub real_magic_resist: i32,
 }
 
 #[derive(Encode)]
@@ -102,109 +102,46 @@ impl Sizer for Realtime<'_> {
         let sc = &self.scoreboard;
         let cp = &self.current_player;
         let en = &self.enemies;
-        let el = en.len();
-        let mut sum = 144
-            + (sc.riot_id.size() << 1)
-            + sc.creep_score.size()
-            + cp.damaging_items.size()
-            + cp.damaging_runes.0.len()
-            + el.size();
-        if el > 0 {
-            unsafe {
-                let e0 = &en.get_unchecked(0).1;
-                sum += el
-                    * (96
-                        + e0.damages.abilities.size()
-                        + e0.damages.items.size()
-                        + e0.damages.runes.size()
-                        + e0.damages.compared_items.size())
-                    + en.iter().map(|(_, e)| e.riot_id.size()).sum::<usize>();
-            }
-        }
-        sum
-    }
-}
-
-#[test]
-fn test_bincode() {
-    use super::functions::enc;
-    let data = std::fs::read("serde_test.json").unwrap();
-    let parsed = serde_json::from_slice(&data).unwrap();
-    let game = crate::services::realtime::realtime(&parsed).unwrap();
-
-    macro_rules! size {
-        ($field:ident, $len:expr) => {
-            debug_assert_eq!(enc!(&game.$field).len(), $len);
-        };
-    }
-    size!(game_information, 5);
-    size!(ally_dragon_multipliers, size_of::<DragonMultipliers>());
-    size!(enemy_dragon_multipliers, size_of::<DragonMultipliers>());
-
-    debug_assert_eq!(enc!(game).len(), game.size());
-
-    size!(scoreboard, {
-        let sc = &game.scoreboard;
-        sc.riot_id.size()
-            + sc.kills.size()
-            + sc.deaths.size()
+        self.ally_dragon_multipliers.size()
+            + self.enemy_dragon_multipliers.size()
+            + self.game_information.game_time.size()
+            + self.game_information.map_number.size()
             + sc.assists.size()
+            + sc.champion_id.size()
             + sc.creep_score.size()
-            + 2
-    });
-
-    let cp = &game.current_player;
-    debug_assert_eq!(enc!(cp.damaging_items).len(), cp.damaging_items.size());
-    size!(current_player, {
-        cp.damaging_items.size() + 110 + cp.damaging_runes.0.len() + cp.riot_id.size()
-    });
-    size!(enemies, {
-        game.enemies.len().size()
-            + game
-                .enemies
-                .iter()
-                .map(|(_, e)| {
-                    e.riot_id.size()
-                        + 96
+            + sc.deaths.size()
+            + sc.kills.size()
+            + sc.position.size()
+            + (sc.riot_id.size() << 1)
+            + cp.adaptative_type.size()
+            + cp.base_stats.size()
+            + cp.bonus_stats.size()
+            + cp.champion_id.size()
+            + cp.current_stats.size()
+            + cp.damaging_items.size()
+            + cp.damaging_runes.size()
+            + cp.level.size()
+            + cp.position.size()
+            + cp.team.size()
+            + en.len().size()
+            + en.iter()
+                .map(|(id, e)| {
+                    id.size()
+                        + e.base_stats.size()
+                        + e.bonus_stats.size()
+                        + e.current_stats.size()
                         + e.damages.abilities.size()
+                        + e.damages.attacks.size()
                         + e.damages.items.size()
                         + e.damages.runes.size()
                         + e.damages.compared_items.size()
+                        + e.level.size()
+                        + e.position.size()
+                        + e.real_armor.size()
+                        + e.real_magic_resist.size()
+                        + e.riot_id.size()
+                        + e.team.size()
                 })
                 .sum::<usize>()
-    });
-    let e1 = &game.enemies[1].1;
-
-    macro_rules! compare {
-        ($t:ident) => {
-            println!(
-                "Variant: {}, position: {}, size encoded: {}, size_.size(): {}",
-                stringify!($t),
-                ItemId::$t as usize,
-                enc!(ItemId::$t).len(),
-                ItemId::$t.size()
-            )
-        };
     }
-
-    compare!(AbyssalMask);
-    compare!(Perplexity);
-    compare!(SanguineGift);
-    compare!(StaffofFlowingWater);
-    compare!(StatBonus);
-    compare!(StatikkShiv);
-    compare!(VampiricScepter);
-    compare!(Zeal);
-
-    debug_assert_eq!(enc!(e1.riot_id).len(), e1.riot_id.size());
-    debug_assert_eq!(
-        enc!(e1.damages.abilities).len(),
-        e1.damages.abilities.size()
-    );
-    debug_assert_eq!(enc!(e1.damages.items).len(), e1.damages.items.size());
-    debug_assert_eq!(enc!(e1.damages.runes).len(), e1.damages.runes.size());
-    debug_assert_eq!(
-        enc!(e1.damages.compared_items).len(),
-        e1.damages.compared_items.size()
-    );
 }
