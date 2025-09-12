@@ -80,7 +80,7 @@ impl RiotFormulas {
     }
 
     #[inline]
-    pub const fn full_base_stats(cdn: &CachedChampionStats, level: u8) -> Stats {
+    pub const fn full_base_stats(cdn: &CachedChampionStats, level: u8) -> Stats<f32> {
         macro_rules! assign_value {
             ($field:ident) => {
                 Self::stat_growth(cdn.$field.flat, cdn.$field.per_level, level)

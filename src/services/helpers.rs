@@ -23,10 +23,10 @@ pub const FIRE_DRAGON_MULTIPLIER: f32 = 0.03;
 pub const CHEMTECH_DRAGON_MULTIPLIER: f32 = 0.06;
 
 pub fn get_simulated_champion_stats(
-    current_stats: &Stats,
+    current_stats: &Stats<f32>,
     owned_items: &[u32],
     ally_dragon_multipliers: &DragonMultipliers,
-) -> SmallVec<[(ItemId, Stats); SIZE_SIMULATED_ITEMS]> {
+) -> SmallVec<[(ItemId, Stats<f32>); SIZE_SIMULATED_ITEMS]> {
     let mut simulated_stats = SmallVec::with_capacity(SIZE_SIMULATED_ITEMS);
     for item_id in SIMULATED_ITEMS.iter() {
         if owned_items.contains(item_id) {
@@ -46,9 +46,9 @@ pub fn get_simulated_champion_stats(
 #[inline]
 pub fn simulate_champion_stats(
     item_cache: &&CachedItem,
-    cloned_stats: Stats,
+    cloned_stats: Stats<f32>,
     ally_dragon_multipliers: &DragonMultipliers,
-) -> Stats {
+) -> Stats<f32> {
     let stats = &item_cache.stats;
     let mut result = cloned_stats;
 
@@ -91,10 +91,10 @@ pub fn simulate_champion_stats(
 #[inline]
 pub fn get_full_stats(
     enemy_state: (ChampionId, u8, f32, f32),
-    enemy_stats: (Option<BasicStats>, BasicStats, &[ItemId]),
+    enemy_stats: (Option<BasicStats<f32>>, BasicStats<f32>, &[ItemId]),
     armor_val: (f32, f32),
     magic_val: (f32, f32),
-) -> (BasicStats, BasicStats, GenericStats) {
+) -> (BasicStats<f32>, BasicStats<f32>, GenericStats) {
     let (enemy_champion_id, enemy_level, earth_dragon_mod, enemy_stacks) = enemy_state;
     let (enemy_current_stats, enemy_base_stats, enemy_items) = enemy_stats;
 
@@ -114,6 +114,23 @@ pub fn get_full_stats(
     let (self_physical_mod, self_magic_mod, self_true_mod, self_global_mod) = (1.0, 1.0, 1.0, 1.0);
 
     match enemy_champion_id {
+        ChampionId::Swain => {
+            let stack_hp = 12.0 * enemy_stacks;
+            enemy_current_stats.health += stack_hp;
+            enemy_bonus_stats.health += stack_hp;
+        }
+        ChampionId::Chogath => {
+            let stack_hp = enemy_stacks * 80.0
+                + 40.0
+                    * match enemy_level {
+                        ..6 => 0.0,
+                        6..11 => 1.0,
+                        11..16 => 2.0,
+                        16.. => 3.0,
+                    };
+            enemy_current_stats.health += stack_hp;
+            enemy_bonus_stats.health += stack_hp;
+        }
         ChampionId::Sion => {
             enemy_current_stats.health += enemy_stacks;
             enemy_bonus_stats.health += enemy_stacks;
@@ -129,9 +146,9 @@ pub fn get_full_stats(
             // For every upgrade, a +4% resist is applied.
             // #![manual_impl]
             let ornn_resist_multiplier = match enemy_level {
+                ..13 => 1.1,
                 13..18 => (enemy_level - 12) as f32 * 0.04,
-                18 => 1.3,
-                _ => 1.1,
+                18.. => 1.3,
             };
             macro_rules! assign_value {
                 ($field:ident) => {
@@ -309,8 +326,8 @@ pub fn get_runes_damage(
 /// current_player_state: (CurrentStats, BaseStats, BonusStats, Level)
 /// enemy_state:(CurrentStats, BonusStats, GenericStats)
 pub fn get_eval_ctx(
-    current_player_state: &(&Stats, BasicStats, BasicStats, u8),
-    enemy_state: &(BasicStats, BasicStats, GenericStats),
+    current_player_state: &(&Stats<f32>, BasicStats<f32>, BasicStats<f32>, u8),
+    enemy_state: &(BasicStats<f32>, BasicStats<f32>, GenericStats),
 ) -> EvalContext {
     let (enemy_current_stats, enemy_bonus_stats, generic_stats) = enemy_state;
     let (
@@ -386,8 +403,11 @@ pub fn get_eval_ctx(
 /// Returns the difference between current stats and base stats
 /// current_stats must be a tpe that can be converted to struct `RiotChampionStats`
 #[inline]
-pub const fn get_bonus_stats(current_stats: BasicStats, base_stats: BasicStats) -> BasicStats {
-    BasicStats {
+pub const fn get_bonus_stats(
+    current_stats: BasicStats<f32>,
+    base_stats: BasicStats<f32>,
+) -> BasicStats<f32> {
+    BasicStats::<f32> {
         armor: current_stats.armor - base_stats.armor,
         health: current_stats.health - base_stats.health,
         attack_damage: current_stats.attack_damage - base_stats.attack_damage,
@@ -398,7 +418,7 @@ pub const fn get_bonus_stats(current_stats: BasicStats, base_stats: BasicStats) 
 
 /// Reads cached values for a given champion and assigns its base stats at a given level
 #[inline]
-pub const fn get_base_stats(champion_cache: &&CachedChampion, level: u8) -> BasicStats {
+pub const fn get_base_stats(champion_cache: &&CachedChampion, level: u8) -> BasicStats<f32> {
     macro_rules! assign_value {
         ($field:ident) => {
             RiotFormulas::stat_growth(
@@ -408,7 +428,7 @@ pub const fn get_base_stats(champion_cache: &&CachedChampion, level: u8) -> Basi
             )
         };
     }
-    BasicStats {
+    BasicStats::<f32> {
         armor: assign_value!(armor),
         health: assign_value!(health),
         attack_damage: assign_value!(attack_damage),
@@ -423,10 +443,10 @@ pub const fn get_base_stats(champion_cache: &&CachedChampion, level: u8) -> Basi
 /// Can't be evaluated precisely.
 #[inline]
 pub fn get_enemy_current_stats(
-    mut basic_stats: BasicStats,
+    mut basic_stats: BasicStats<f32>,
     current_items: &[ItemId],
     earth_dragon_mod: f32,
-) -> BasicStats {
+) -> BasicStats<f32> {
     for enemy_item in current_items {
         if let Some(item) = INTERNAL_ITEMS.get(*enemy_item as usize) {
             macro_rules! add_value {

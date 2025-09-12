@@ -14,11 +14,11 @@ use tinyset::SetU32;
 /// if all items were owned in a real game. Stacks and champion exceptions are partially
 /// taken into consideration when calculation is made. It is less accurate than Realtime.
 fn infer_champion_stats(
-    stats: &mut Stats,
+    stats: &mut Stats<f32>,
     active_player: &InputActivePlayer,
-    base_stats: BasicStats,
+    base_stats: BasicStats<f32>,
     dragon_mod: DragonMultipliers,
-) -> BasicStats {
+) -> BasicStats<f32> {
     let stacks = active_player.stacks as f32;
     let owned_items = &active_player.items;
 
@@ -64,7 +64,7 @@ fn infer_champion_stats(
     stats.crit_chance = stats.crit_chance.clamp(0.0, 100.0);
 
     let bonus_stats = get_bonus_stats(
-        BasicStats {
+        BasicStats::<f32> {
             armor: stats.armor,
             health: stats.max_health,
             attack_damage: stats.attack_damage,
@@ -97,6 +97,9 @@ fn infer_champion_stats(
     // #![manual_impl]
     // #![todo] Create exception file that is generated automatically
     match active_player.champion_id {
+        ChampionId::Swain => {
+            stats.max_health += 12.0 * stacks;
+        }
         ChampionId::Veigar => stats.ability_power += stacks,
         ChampionId::Chogath => {
             stats.max_health += stacks * 80.0 + 40.0 * active_player.abilities.r.clamp(0, 3) as f32;
@@ -126,7 +129,7 @@ fn infer_champion_stats(
 // #![manual_impl]
 // #![unsupported]
 fn rune_exceptions(
-    champion_stats: &mut Stats,
+    champion_stats: &mut Stats<f32>,
     level: f32,
     value_types: (AdaptativeType, AttackType),
     exceptions: &[(RuneId, u8)],
@@ -220,7 +223,7 @@ fn rune_exceptions(
 
 // #![manual_impl]
 // #![unsupported]
-fn item_exceptions(champion_stats: &mut Stats, exceptions: &[(ItemId, u8)]) {
+fn item_exceptions(champion_stats: &mut Stats<f32>, exceptions: &[(ItemId, u8)]) {
     for (item_id, stacks) in exceptions {
         let stacks = *stacks;
         match item_id {
@@ -283,7 +286,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
     let mut current_player_stats = if current_player_infer_stats {
         RiotFormulas::full_base_stats(&current_player_cache.stats, current_player_level)
     } else {
-        current_player_input_stats
+        current_player_input_stats.cast_f32()
     };
 
     let current_player_base_stats = get_base_stats(current_player_cache, current_player_level);
@@ -389,7 +392,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
                 enemy_stacks as f32,
             ),
             (
-                (!infer_enemy_stats).then_some(enemy_stats),
+                (!infer_enemy_stats).then_some(enemy_stats.cast_f32()),
                 enemy_base_stats,
                 &enemy_items,
             ),

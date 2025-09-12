@@ -49,7 +49,7 @@ pub struct OutputGame {
 #[derive(Decode)]
 pub struct InputActivePlayer {
     pub champion_id: ChampionId,
-    pub champion_stats: Stats,
+    pub champion_stats: Stats<i32>,
     pub abilities: AbilityLevels,
     pub items: SmallVec<[ItemId; SIZE_ITEMS_EXPECTED]>,
     pub runes: SmallVec<[RuneId; SIZE_RUNES_EXPECTED]>,
@@ -63,7 +63,7 @@ pub struct InputEnemyPlayers {
     pub champion_id: ChampionId,
     pub items: SmallVec<[ItemId; SIZE_ITEMS_EXPECTED]>,
     pub level: u8,
-    pub stats: BasicStats,
+    pub stats: BasicStats<i32>,
     pub infer_stats: bool,
     pub stacks: u32,
 }

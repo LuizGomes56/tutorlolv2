@@ -6,7 +6,7 @@ use smallvec::SmallVec;
 macro_rules! castable {
     (#[derive($($derives:tt),+)] pub struct $name:ident { $($fields:tt),+ }) => {
         #[derive($($derives),+)]
-        pub struct $name<T = f32> {
+        pub struct $name<T> {
             $(pub $fields: T),+
         }
 
@@ -15,6 +15,15 @@ macro_rules! castable {
             pub fn cast_i32(&self) -> $name<i32> {
                 $name {
                     $( $fields: self.$fields as i32 ),+
+                }
+            }
+        }
+
+        impl $name<i32> {
+            #[inline(always)]
+            pub fn cast_f32(&self) -> $name<f32> {
+                $name {
+                    $( $fields: self.$fields as f32 ),+
                 }
             }
         }
@@ -33,7 +42,7 @@ macro_rules! castable {
 }
 
 #[derive(Encode)]
-pub struct InstanceDamage<T = f32> {
+pub struct InstanceDamage<T> {
     pub minimum_damage: T,
     pub maximum_damage: T,
     pub damage_type: DamageType,
@@ -143,14 +152,14 @@ impl DragonMultipliers {
 }
 
 #[derive(Encode)]
-pub struct Attacks<T = f32> {
+pub struct Attacks<T> {
     pub basic_attack: DamageValue<T>,
     pub critical_strike: DamageValue<T>,
     pub onhit_damage: DamageValue<T>,
 }
 
 #[derive(Encode)]
-pub struct MonsterExpr<T = f32> {
+pub struct MonsterExpr<T> {
     pub attacks: Attacks<T>,
     pub abilities: SmallVec<[InstanceDamage<T>; SIZE_ABILITIES]>,
     pub items: SmallVec<[InstanceDamage<T>; 5]>,
@@ -159,7 +168,7 @@ pub struct MonsterExpr<T = f32> {
 pub type MonsterDamages<T> = [MonsterExpr<T>; 7];
 
 #[derive(Encode, Default)]
-pub struct DamageValue<T = f32> {
+pub struct DamageValue<T> {
     pub minimum_damage: T,
     pub maximum_damage: T,
 }
