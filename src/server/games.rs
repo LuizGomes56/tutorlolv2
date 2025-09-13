@@ -1,10 +1,4 @@
-use super::schemas::APIResponse;
-use crate::{
-    AppState,
-    model::{Sizer, calculator::InputGame, riot::RiotRealtime},
-    send_response,
-    services::{calculator::calculator, realtime::realtime},
-};
+use crate::{AppState, send_response};
 use actix_web::{
     HttpResponse, Responder, get, post,
     web::{Bytes, Data},
@@ -12,6 +6,10 @@ use actix_web::{
 use bincode::{Decode, Encode};
 use rand::random_range;
 use sqlx::prelude::FromRow;
+use tutorlolv2_math::{
+    math::{calculator::calculator, realtime::realtime},
+    model::{Sizer, calculator::InputGame, riot::RiotRealtime},
+};
 use uuid::Uuid;
 
 const CODE_LENGTH: usize = 6;
@@ -95,11 +93,11 @@ pub async fn get_by_code_handler(
                         Err(e) => send_error!(e.as_str()),
                     },
                     Err(e) => send_error!(format!(
-                        "Unable to parse database response into RealtimeSqlxQuery type: {}",
+                        "Unable to parse database response into RealtimeSqlxQuery type: {:#?}",
                         e
                     )),
                 },
-                Err(e) => send_error!(format!("Querying data by code failed: {}", e)),
+                Err(e) => send_error!(format!("Querying data by code failed: {:#?}", e)),
             }
         }
         Err(e) => send_error!(format!("Error deserializing data: {:#?}", e)),

@@ -11,12 +11,12 @@ target
 internal
 safety_copy
 raw_img
-comptime_exports
+tutorlolv2_exports
 sprite
 cache
 img
 formulas
 read_only
 converted
-internal_comptime/src/data/*
-!internal_comptime/src/data/mod.rs
+tutorlolv2_generated/src/data/*
+!tutorlolv2_generated/src/data/mod.rs

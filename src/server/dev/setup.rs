@@ -1,30 +1,27 @@
-use crate::{
-    AppState, dev_response,
-    server::schemas::APIResponse,
-    setup::{
-        cache::{update_cdn_cache, update_riot_cache},
-        essentials::{
-            api::CdnEndpoint,
-            images::{
-                img_download_arts, img_download_instances, img_download_items, img_download_runes,
-            },
-        },
-        generators::{
-            champions::{GeneratorMode, create_generator_files},
-            items::assign_item_damages,
-        },
-        scraper::meta_items_scraper,
-        update::{
-            prettify_internal_items, setup_champion_names, setup_damaging_items,
-            setup_internal_champions, setup_internal_items, setup_internal_runes, setup_meta_items,
-            setup_project_folders,
+use crate::{AppState, dev_response};
+use actix_web::{HttpResponse, Responder, get, web::Data};
+use tokio::task;
+use tutorlolv2_dev::setup::{
+    cache::{update_cdn_cache, update_riot_cache},
+    essentials::{
+        api::CdnEndpoint,
+        images::{
+            img_download_arts, img_download_instances, img_download_items, img_download_runes,
         },
     },
+    generators::{
+        champions::{GeneratorMode, create_generator_files},
+        items::assign_item_damages,
+    },
+    scraper::meta_items_scraper,
+    update::{
+        prettify_internal_items, setup_champion_names, setup_damaging_items,
+        setup_internal_champions, setup_internal_items, setup_internal_runes, setup_meta_items,
+        setup_project_folders,
+    },
 };
-use actix_web::{HttpResponse, Responder, post, web::Data};
-use tokio::task;
 
-#[post("/project")]
+#[get("/project")]
 pub async fn setup_project(state: Data<AppState>) -> impl Responder {
     let _ = setup_project_folders();
     let client = state.client.clone();
@@ -75,29 +72,25 @@ pub async fn setup_project(state: Data<AppState>) -> impl Responder {
         tokio::spawn(img_download_runes(client));
     });
 
-    HttpResponse::Ok().json(APIResponse {
-        success: true,
-        message: "Project setup started. Expected time to complete: 3-5 minutes",
-        data: (),
-    })
+    HttpResponse::Ok().body("Project setup started. Expected time to complete: 3-5 minutes")
 }
 
-#[post("/folders")]
+#[get("/folders")]
 pub async fn setup_folders() -> impl Responder {
     dev_response!(setup_project_folders())
 }
 
-#[post("/champions")]
+#[get("/champions")]
 pub async fn setup_champions() -> impl Responder {
     dev_response!(setup_internal_champions())
 }
 
-#[post("/items")]
+#[get("/items")]
 pub async fn setup_items() -> impl Responder {
     dev_response!(setup_internal_items())
 }
 
-#[post("/runes")]
+#[get("/runes")]
 pub async fn setup_runes() -> impl Responder {
     dev_response!(setup_internal_runes())
 }

@@ -1,22 +1,15 @@
-use crate::{
-    AppState,
-    server::schemas::APIResponse,
-    setup::{
-        avif_converter::{clean_sprite_folder, concat_sprite_jsons, generate_spritesheet},
-        essentials::images::{
-            img_download_arts, img_download_instances, img_download_items, img_download_runes,
-        },
+use crate::AppState;
+use actix_web::{HttpResponse, Responder, get, web::Data};
+use tutorlolv2_dev::setup::{
+    avif_converter::{clean_sprite_folder, concat_sprite_jsons, generate_spritesheet},
+    essentials::images::{
+        img_download_arts, img_download_instances, img_download_items, img_download_runes,
     },
 };
-use actix_web::{HttpResponse, Responder, post, web::Data};
 
 macro_rules! download_image {
     (@inner $msg:expr) => {{
-        HttpResponse::Ok().json(APIResponse {
-            success: true,
-            message: $msg,
-            data: (),
-        })
+        HttpResponse::Ok().body($msg)
     }};
     ($state:expr, $call:expr) => {{
         $call($state.client.clone()).await;
@@ -24,27 +17,27 @@ macro_rules! download_image {
     }};
 }
 
-#[post("/instances")]
+#[get("/instances")]
 pub async fn download_instances(state: Data<AppState>) -> impl Responder {
     download_image!(state, img_download_instances)
 }
 
-#[post("/items")]
+#[get("/items")]
 pub async fn download_items(state: Data<AppState>) -> impl Responder {
     download_image!(state, img_download_items)
 }
 
-#[post("/runes")]
+#[get("/runes")]
 pub async fn download_runes(state: Data<AppState>) -> impl Responder {
     download_image!(state, img_download_runes)
 }
 
-#[post("/arts")]
+#[get("/arts")]
 pub async fn download_arts(state: Data<AppState>) -> impl Responder {
     download_image!(state, img_download_arts)
 }
 
-#[post("/all")]
+#[get("/all")]
 pub async fn download_all(state: Data<AppState>) -> impl Responder {
     macro_rules! spawn_thread {
         ($func:ident) => {{
@@ -60,7 +53,7 @@ pub async fn download_all(state: Data<AppState>) -> impl Responder {
 
 macro_rules! convert_folder {
     ($src:literal, $folder:expr) => {{
-        match crate::setup::avif_converter::convert_folder_avif(&format!("{}/{}", $src, $folder))
+        match tutorlolv2_dev::avif_converter::convert_folder_avif(&format!("{}/{}", $src, $folder))
             .await
         {
             Ok(_) => println!("Conversão de '{}' concluída", $folder),
@@ -69,7 +62,7 @@ macro_rules! convert_folder {
     }};
 }
 
-#[post("/sprite")]
+#[get("/sprite")]
 pub async fn generate_sprites() -> impl Responder {
     println!("{:#?}", generate_spritesheet());
     concat_sprite_jsons();
@@ -82,7 +75,7 @@ pub async fn generate_sprites() -> impl Responder {
     download_image!(@inner "Started process")
 }
 
-#[post("/compress")]
+#[get("/compress")]
 pub async fn compress_images() -> impl Responder {
     #[cfg(feature = "dev")]
     {
@@ -102,11 +95,7 @@ pub async fn compress_images() -> impl Responder {
             convert_folder!("img", folder);
         }
 
-        HttpResponse::Ok().json(APIResponse {
-            success: true,
-            message: "Executed fn[compress_images]",
-            data: (),
-        })
+        HttpResponse::Ok().body("Executed fn[compress_images]")
     }
 
     #[cfg(not(feature = "dev"))]
