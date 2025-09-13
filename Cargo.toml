@@ -15,54 +15,36 @@ debug = false
 incremental = false
 
 [dependencies]
-internal_comptime = { path = "internal_comptime" }
-serde = { version = "1.0", features = ["derive"] }
-tokio = { version = "1.47", default-features = false }
+tutorlolv2_math = { path = "tutorlolv2_math" }
+tutorlolv2_generated = { path = "tutorlolv2_generated" }
+paste = "1.0.15"
 sqlx = { version = "0.8", features = [
     "runtime-tokio-rustls",
     "postgres",
     "macros",
 ], default-features = false }
 dotenvy = "0.15.7"
-actix-files = "0.6.6"
-actix-cors = "0.7.1"
-uuid = { version = "1.17.0", default-features = false, features = ["v4"] }
+uuid = { version = "1.18.1", default-features = false, features = ["v4"] }
 rand = { version = "0.9.2", default-features = false }
-phf = { version = "0.12.1", features = ["macros"] }
 bincode = "2.0.1"
 rust-embed = { version = "8.7.2", default-features = false }
-smallvec = { version = "1.15.1", features = ["impl_bincode"] }
 actix-web = { version = "4.11.0", default-features = false, features = [
     "http2",
     "macros",
 ] }
-tinyset = { version = "0.5.2", features = ["serde"] }
-paste = "1.0.15"
-serde_json = "1.0.140"
+actix-files = "0.6.7"
+actix-cors = "0.7.1"
+actix = "0.13.5"
+actix-web-actors = "4.3.0"
+serde_json = "1.0.143"
 
-generator_macros = { path = "./generator_macros", optional = true }
+tutorlolv2_dev = { path = "./tutorlolv2_dev", optional = true }
+tokio = { version = "1.47", default-features = false, optional = true }
 reqwest = { version = "0.12.1", features = [
     "json",
     "rustls-tls",
 ], default-features = false, optional = true }
-rayon = { version = "1.11.0", optional = true }
-once_cell = { version = "1.21.3", optional = true }
-scraper = { version = "0.24.0", optional = true }
-image = { version = "0.25.6", optional = true }
-ravif = { version = "0.12.0", default-features = false, optional = true }
-regex = { version = "1.11.1", optional = true }
-actix = "0.13.5"
-actix-web-actors = "4.3.1"
 
 [features]
-dev = [
-    "generator_macros",
-    "reqwest",
-    "rayon",
-    "once_cell",
-    "scraper",
-    "image",
-    "ravif",
-    "regex",
-]
+dev = ["tutorlolv2_dev", "reqwest", "tokio"]
 default = ["dev"]

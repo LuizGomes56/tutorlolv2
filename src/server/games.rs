@@ -1,58 +1,56 @@
-use super::schemas::APIResponse;
-use crate::{
-    AppState,
-    model::{Sizer, calculator::InputGame, riot::RiotRealtime},
-    send_response,
-    services::{calculator::calculator, realtime::realtime},
+use crate::{AppState, send_response};
+use actix_web::{
+    HttpResponse, Responder, get, post,
+    web::{Bytes, Data},
 };
-use actix_web::{HttpResponse, Responder, get, post, web::Data};
 use bincode::{Decode, Encode};
 use rand::random_range;
 use sqlx::prelude::FromRow;
+use tutorlolv2_math::{
+    math::{calculator::calculator, realtime::realtime},
+    model::{Sizer, calculator::InputGame, riot::RiotRealtime},
+};
 use uuid::Uuid;
+
+const CODE_LENGTH: usize = 6;
+
+macro_rules! send_error {
+    ($msg:expr) => {{
+        HttpResponse::InternalServerError()
+            .insert_header((crate::header::CONTENT_TYPE, "text/plain"))
+            .body($msg)
+    }};
+}
 
 #[get("/create")]
 pub async fn create_game_handler(state: Data<AppState>) -> impl Responder {
+    const BODY_LENGTH: usize = 16 + CODE_LENGTH;
     let chars = b"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-    let mut game_code_bytes = [0; 6];
+    let mut game_code_bytes = [0; CODE_LENGTH];
     unsafe {
-        for i in 0..6 {
+        for i in 0..CODE_LENGTH {
             *game_code_bytes.get_unchecked_mut(i) = chars[random_range(0..chars.len())];
         }
         let game_code = std::str::from_utf8_unchecked(&game_code_bytes);
         let uuid_v4 = Uuid::new_v4();
-        let game_id = uuid_v4.as_bytes();
+        let game_id = uuid_v4.into_bytes();
+        let body = Bytes::from({
+            let mut out = [0u8; BODY_LENGTH];
+            out[..16].copy_from_slice(&game_id);
+            out[16..].copy_from_slice(&game_code_bytes[..]);
+            out.to_vec()
+        });
         match sqlx::query("INSERT INTO games (game_id, game_code) VALUES ($1, $2)")
             .bind(&game_id)
             .bind(game_code)
             .execute(&state.db)
             .await
         {
-            Ok(_) => {
-                let mut buf = Box::<[u8]>::new_uninit_slice(24);
-                std::ptr::copy_nonoverlapping(
-                    game_code_bytes.as_ptr(),
-                    buf.as_mut_ptr() as *mut u8,
-                    6,
-                );
-                std::ptr::copy_nonoverlapping(
-                    game_id.as_ptr(),
-                    (buf.as_mut_ptr() as *mut u8).add(6),
-                    16,
-                );
-
-                let init = buf.assume_init();
-                let body = actix_web::web::Bytes::from(init);
-                HttpResponse::Ok()
-                    .insert_header((crate::header::CONTENT_TYPE, "application/octet-stream"))
-                    .insert_header((crate::header::CONTENT_LENGTH, 24))
-                    .body(body)
-            }
-            Err(e) => HttpResponse::InternalServerError().json(APIResponse {
-                success: false,
-                message: format!("Error when inserting game_data: {}", e),
-                data: (),
-            }),
+            Ok(_) => HttpResponse::Ok()
+                .insert_header((crate::header::CONTENT_TYPE, "application/octet-stream"))
+                .insert_header((crate::header::CONTENT_LENGTH, BODY_LENGTH))
+                .body(body),
+            Err(e) => send_error!(format!("Error when inserting game_data: {}", e)),
         }
     }
 }
@@ -91,42 +89,18 @@ pub async fn get_by_code_handler(
             {
                 Ok(data) => match serde_json::from_str::<RiotRealtime>(&data.game) {
                     Ok(riot_realtime) => match realtime(&riot_realtime) {
-                        Ok(realtime_data) => {
-                            send_response!(&realtime_data)
-                        }
-                        Err(e) => {
-                            let message = e.as_str();
-                            HttpResponse::InternalServerError().json(APIResponse {
-                                success: false,
-                                message,
-                                data: (),
-                            })
-                        }
+                        Ok(realtime_data) => send_response!(&realtime_data),
+                        Err(e) => send_error!(e.as_str()),
                     },
-                    Err(e) => HttpResponse::InternalServerError().json(APIResponse {
-                        success: false,
-                        message: format!(
-                            "Unable to parse database response into RealtimeSqlxQuery type: {}",
-                            e
-                        ),
-                        data: (),
-                    }),
+                    Err(e) => send_error!(format!(
+                        "Unable to parse database response into RealtimeSqlxQuery type: {:#?}",
+                        e
+                    )),
                 },
-                Err(e) => HttpResponse::InternalServerError().json(APIResponse {
-                    success: false,
-                    message: format!("Querying data by code failed: {}", e),
-                    data: (),
-                }),
+                Err(e) => send_error!(format!("Querying data by code failed: {:#?}", e)),
             }
         }
-        Err(e) => {
-            eprintln!("Error deserializing bincode: {}", e);
-            HttpResponse::InternalServerError().json(APIResponse {
-                success: false,
-                message: format!("Error deserializing data: {:#?}", e),
-                data: (),
-            })
-        }
+        Err(e) => send_error!(format!("Error deserializing data: {:#?}", e)),
     }
 }
 
@@ -135,24 +109,9 @@ pub async fn realtime_handler(body: actix_web::web::Bytes) -> impl Responder {
     match serde_json::from_slice(&body) {
         Ok(game_data) => match realtime(&game_data) {
             Ok(data) => send_response!(data),
-            Err(e) => {
-                let message = e.as_str();
-                println!("Error on realtime response: {:#?}", message);
-                HttpResponse::InternalServerError().json(APIResponse {
-                    success: false,
-                    message,
-                    data: (),
-                })
-            }
+            Err(e) => send_error!(e.as_str()),
         },
-        Err(e) => {
-            eprintln!("Error deserializing json data: {}", e);
-            HttpResponse::InternalServerError().json(APIResponse {
-                success: false,
-                message: format!("Error deserializing json data: {:#?}", e),
-                data: (),
-            })
-        }
+        Err(e) => send_error!(format!("Error deserializing json data: {:#?}", e)),
     }
 }
 
@@ -183,24 +142,9 @@ pub async fn _realtime_handler(
             match serde_json::from_slice(game_data) {
                 Ok(game_data) => match realtime(&game_data) {
                     Ok(data) => send_response!(data),
-                    Err(e) => {
-                        let message = e.as_str();
-                        println!("Error on realtime response: {:#?}", message);
-                        HttpResponse::InternalServerError().json(APIResponse {
-                            success: false,
-                            message,
-                            data: (),
-                        })
-                    }
+                    Err(e) => send_error!(e.as_str()),
                 },
-                Err(e) => {
-                    eprintln!("Error deserializing json data: {}", e);
-                    HttpResponse::InternalServerError().json(APIResponse {
-                        success: false,
-                        message: format!("Error deserializing json data: {:#?}", e),
-                        data: (),
-                    })
-                }
+                Err(e) => send_error!(format!("Error deserializing json data: {:#?}", e)),
             }
 
             // ! Database should have a BYTEA field (current = JSONB)
@@ -262,14 +206,7 @@ pub async fn _realtime_handler(
             }
             */
         }
-        Err(e) => {
-            eprintln!("Error deserializing bincode: {}", e);
-            return HttpResponse::InternalServerError().json(APIResponse {
-                success: false,
-                message: format!("Error deserializing bincode: {:#?}", e),
-                data: (),
-            });
-        }
+        Err(e) => send_error!(format!("Error deserializing bincode: {:#?}", e)),
     }
 }
 
@@ -292,29 +229,11 @@ pub async fn calculator_handler(body: actix_web::web::Bytes) -> impl Responder {
                             ))
                             .body(actix_web::web::Bytes::from(init))
                     }
-                    Err(e) => {
-                        eprintln!("Error encoding bincode: {}", e);
-                        HttpResponse::InternalServerError().json(APIResponse {
-                            success: false,
-                            message: format!("Error encoding bincode: {:#?}", e),
-                            data: (),
-                        })
-                    }
+                    Err(e) => send_error!(format!("Error encoding bincode: {:#?}", e)),
                 }
             }
-            Err(e) => HttpResponse::InternalServerError().json(APIResponse {
-                success: false,
-                message: e.as_str(),
-                data: (),
-            }),
+            Err(e) => send_error!(e.as_str()),
         },
-        Err(e) => {
-            eprintln!("Error deserializing bincode: {}", e);
-            HttpResponse::InternalServerError().json(APIResponse {
-                success: false,
-                message: format!("Error deserializing data: {:#?}", e),
-                data: (),
-            })
-        }
+        Err(e) => send_error!(format!("Error deserializing data: {:#?}", e)),
     }
 }

@@ -1,10 +1,10 @@
-use crate::{model::functions::Sizer, services::realtime::realtime};
 use actix::prelude::*;
 use actix_web::{Error, HttpRequest, HttpResponse, get, web};
 use actix_web_actors::ws;
 use std::io::{self, Write};
 use std::mem;
 use std::ptr;
+use tutorlolv2_math::{math::realtime::realtime, model::functions::Sizer};
 
 const CHUNK: usize = 64 * 1024;
 

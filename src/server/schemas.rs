@@ -1,21 +1,8 @@
-use serde::Serialize;
-
-#[derive(Serialize)]
-pub struct APIResponse<T, U> {
-    pub success: bool,
-    pub message: T,
-    pub data: U,
-}
-
 #[macro_export]
 macro_rules! dev_response {
     ($expr:expr) => {{
         let _ = $expr;
-        HttpResponse::Ok().json(APIResponse {
-            success: true,
-            message: format!("Executed fn[{}]", stringify!($expr)),
-            data: (),
-        })
+        HttpResponse::Ok().body(format!("Executed fn[{}]", stringify!($expr)))
     }};
 }
 
@@ -43,11 +30,8 @@ macro_rules! send_response {
                 .body(actix_web::web::Bytes::from(bin_data)),
             Err(e) => {
                 eprintln!("Error serializing bincode: {:?}", e);
-                HttpResponse::InternalServerError().json(APIResponse {
-                    success: false,
-                    message: format!("Error serializing data: {:#?}", e),
-                    data: (),
-                })
+                HttpResponse::InternalServerError()
+                    .body(format!("Error serializing data: {:#?}", e))
             }
         }
     };

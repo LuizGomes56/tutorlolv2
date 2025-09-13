@@ -1,9 +1,0 @@
-use super::*;
-
-// #![preserve]
-
-#[generator_macros::generator]
-pub fn gen_quinn(data: CdnChampion) -> Champion {
-    ability!(q, (0, 0, _1Min, Min));
-    ability!(e, (0, 0, _1Min, Min));
-}
