@@ -76,10 +76,6 @@ async fn main() {
         "pub static ITEM_FORMULAS: [(u32, u32); {}] = [",
         items.len(),
     );
-    let mut item_descriptions = format!(
-        "pub static ITEM_DESCRIPTIONS: [ItemDescription; {}] = [",
-        items.len(),
-    );
     let mut rune_id_to_name = format!(
         "pub static RUNE_ID_TO_NAME: [&'static str; {}] = [",
         runes.len(),
@@ -254,10 +250,8 @@ async fn main() {
         })
     });
 
-    let mut internal_damaging_items_len = 0usize;
-    let mut internal_simulated_items_len = 0usize;
-    let item_id_to_u32 = format!(
-        "pub static ITEM_ID_TO_U32:[u32;{}]=[{}];",
+    let item_id_to_riot_id = format!(
+        "pub static ITEM_ID_TO_RIOT_ID:[u32;{}]=[{}];",
         items.len(),
         items
             .iter()
@@ -270,8 +264,8 @@ async fn main() {
         #[repr(u16)]
         pub enum ItemId {{{}}}
         impl ItemId {{
-            pub fn to_u32(&self)->u32{{unsafe{{*ITEM_ID_TO_U32.get_unchecked(*self as usize)}}}}
-            pub const fn from_u32(id:u32)->Self{{match id {{{}}}}}  
+            pub fn to_riot_id(&self)->u32{{unsafe{{*ITEM_ID_TO_RIOT_ID.get_unchecked(*self as usize)}}}}
+            pub const fn from_riot_id(id:u32)->Self{{match id {{{}}}}}  
         }}",
         items
             .iter()
@@ -298,14 +292,11 @@ async fn main() {
         ));
         if item_detail.is_simulated {
             internal_simulated_items.push_str(&format!("{}u32,", item_id));
-            internal_simulated_items_len += 1;
         }
         if item_detail.is_damaging {
             internal_damaging_items.push_str(&format!("{}u32,", item_id));
-            internal_damaging_items_len += 1;
         }
         record_offsets!(item_formulas, item_detail.item_formula);
-        item_descriptions.push_str(&format!("{},", item_detail.description));
         item_id_to_name.push_str(&format!("\"{}\",", item_detail.item_name));
     }
 
@@ -314,9 +305,8 @@ async fn main() {
     internal_damaging_items.push_str(");");
     item_id_to_name.push_str("];");
     item_formulas.push_str("];");
-    item_descriptions.push_str("];");
 
-    let moved_item_id_to_u32 = item_id_to_u32.clone();
+    let moved_item_id_to_riot_id = item_id_to_riot_id.clone();
     let moved_item_id_enum = item_id_enum.clone();
     tokio::task::spawn_blocking(move || {
         fs::write(cwd!("tutorlolv2_generated/src/data/items.rs"), {
@@ -330,7 +320,7 @@ async fn main() {
             let mut s = String::with_capacity(
                 internal_items.len()
                     + moved_item_id_enum.len()
-                    + moved_item_id_to_u32.len()
+                    + moved_item_id_to_riot_id.len()
                     + internal_items_content.len()
                     + internal_simulated_items.len()
                     + internal_damaging_items.len()
@@ -343,15 +333,10 @@ async fn main() {
             s.push_str(&internal_items);
             s.push_str(&champion_meta_items);
             s.push_str(&moved_item_id_enum);
-            s.push_str(&moved_item_id_to_u32);
+            s.push_str(&moved_item_id_to_riot_id);
             s.push_str(&internal_items_content);
             s.push_str(&internal_simulated_items);
             s.push_str(&internal_damaging_items);
-            s.push_str(&format!(
-                "pub const SIZE_SIMULATED_ITEMS:usize={};
-                pub const SIZE_DAMAGING_ITEMS:usize={};",
-                internal_simulated_items_len, internal_damaging_items_len
-            ));
             s
         })
     });
@@ -365,9 +350,8 @@ async fn main() {
             .join(",")
     );
 
-    let internal_damaging_runes_len = runes.len();
-    let rune_id_to_u32 = format!(
-        "pub static RUNE_ID_TO_U32:[u32;{}]=[{}];",
+    let rune_id_to_riot_id = format!(
+        "pub static RUNE_ID_TO_RIOT_ID:[u32;{}]=[{}];",
         runes.len(),
         runes
             .iter()
@@ -380,8 +364,8 @@ async fn main() {
         #[repr(u8)]
         pub enum RuneId {{{}}}
         impl RuneId {{
-            pub fn to_u32(&self)->u32{{unsafe{{*RUNE_ID_TO_U32.get_unchecked(*self as usize)}}}}
-            pub const fn from_u32(id:u32)->Self{{match id{{{}}}}}
+            pub fn to_riot_id(&self)->u32{{unsafe{{*RUNE_ID_TO_RIOT_ID.get_unchecked(*self as usize)}}}}
+            pub const fn from_riot_id(id:u32)->Self{{match id{{{}}}}}
         }}",
         runes
             .iter()
@@ -417,7 +401,7 @@ async fn main() {
     rune_id_to_name.push_str("];");
     rune_formulas.push_str("];");
 
-    let moved_rune_id_to_u32 = rune_id_to_u32.clone();
+    let moved_rune_id_to_riot_id = rune_id_to_riot_id.clone();
     let moved_rune_id_enum = rune_id_enum.clone();
     tokio::task::spawn_blocking(move || {
         fs::write(cwd!("tutorlolv2_generated/src/data/runes.rs"), {
@@ -426,19 +410,15 @@ async fn main() {
                     + internal_runes_content.len()
                     + USE_SUPER.len()
                     + internal_damaging_runes.len()
-                    + moved_rune_id_to_u32.len()
+                    + moved_rune_id_to_riot_id.len()
                     + moved_rune_id_enum.len(),
             );
             s.push_str(USE_SUPER);
-            s.push_str(&moved_rune_id_to_u32);
+            s.push_str(&moved_rune_id_to_riot_id);
             s.push_str(&moved_rune_id_enum);
             s.push_str(&internal_runes);
             s.push_str(&internal_runes_content);
             s.push_str(&internal_damaging_runes);
-            s.push_str(&format!(
-                "pub const SIZE_DAMAGING_RUNES:usize={};",
-                internal_damaging_runes_len
-            ));
             s
         })
     });
@@ -453,11 +433,10 @@ async fn main() {
         recommended_items,
         item_id_to_name,
         item_formulas,
-        item_descriptions,
         item_id_enum,
-        item_id_to_u32,
+        item_id_to_riot_id,
         rune_id_enum,
-        rune_id_to_u32,
+        rune_id_to_riot_id,
         rune_id_to_name,
         rune_formulas,
     ]
@@ -470,10 +449,10 @@ async fn main() {
             "{}
             #[derive(Debug,Copy,Clone,Decode)]
             pub enum Position{{Top,Jungle,Middle,Bottom,Support}}
-            pub static BASIC_ATTACK_OFFSET:(u32,u32)={};
-            pub static CRITICAL_STRIKE_OFFSET:(u32,u32)={};
-            pub static ONHIT_EFFECT_OFFSET:(u32,u32)={};
-            pub static UNCOMPRESSED_MEGA_BLOCK_SIZE:usize={};",
+            pub const BASIC_ATTACK_OFFSET:(u32,u32)={};
+            pub const CRITICAL_STRIKE_OFFSET:(u32,u32)={};
+            pub const ONHIT_EFFECT_OFFSET:(u32,u32)={};
+            pub const UNCOMPRESSED_MEGA_BLOCK_SIZE:usize={};",
             exported_content,
             record_offsets!(highlight(&invoke_rustfmt(&BASIC_ATTACK, 60))),
             record_offsets!(highlight(&invoke_rustfmt(&CRITICAL_STRIKE, 60))),
@@ -489,7 +468,7 @@ async fn main() {
 
     bytes.extend_from_slice(
         format!(
-            "pub static MEGA_BLOCK:[u8;{}]=[{}];",
+            "pub const MEGA_BLOCK:[u8;{}]=[{}];",
             mega_block_compressed.len(),
             mega_block_compressed.join(",")
         )

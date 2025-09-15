@@ -106,7 +106,6 @@ pub struct ItemDetails {
     pub item_name: String,
     pub item_formula: String,
     pub constdecl: String,
-    pub description: String,
     pub is_simulated: bool,
     pub is_damaging: bool,
 }
@@ -158,10 +157,6 @@ pub fn export_items() -> Vec<(u32, ItemDetails)> {
                     item_formula: highlight(&clear_suffixes(&invoke_rustfmt(&constdecl, 60)))
                         .replacen("class=\"type\"", "class=\"constant\"", 1),
                     constdecl,
-                    description: format!(
-                        "ItemDescription{{name:\"{}\",gold_cost:{}u16,prettified_stats:&[{}],}}",
-                        item.name, item.gold, prettified_stats
-                    ),
                     is_simulated: item.tier >= 3 && item.gold > 0 && item.purchasable,
                     is_damaging: item.ranged.is_some() || item.melee.is_some(),
                 },

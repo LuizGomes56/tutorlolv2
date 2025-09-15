@@ -61,7 +61,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
         .collect::<SmallVec<[(_, _); 10]>>();
 
     let (enemy_dragon_multipliers, ally_dragon_multipliers) =
-        get_dragon_multipliers(game_events, players_map, current_player_raw_team);
+        get_dragon_multipliers(game_events, &players_map, current_player_raw_team);
 
     let current_player_stats = current_player_riot_stats.to_stats();
     let current_player_champion_id = CHAMPION_NAME_TO_ID
@@ -95,7 +95,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
                         let rune_id = riot_rune.id;
                         DAMAGING_RUNES
                             .contains(&rune_id)
-                            .then_some(RuneId::from_u32(rune_id) as u32)
+                            .then_some(RuneId::from_riot_id(rune_id) as u32)
                     })
                     .collect::<SetU32>(),
             )
@@ -112,7 +112,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
         .filter_map(|item_id| {
             DAMAGING_ITEMS
                 .contains(&item_id)
-                .then_some(ItemId::from_u32(*item_id) as u32)
+                .then_some(ItemId::from_riot_id(*item_id) as u32)
         })
         .collect::<SetU32>();
 
@@ -163,7 +163,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
             let enemy_champion_id = CHAMPION_NAME_TO_ID.get(&enemy_champion_name)?;
             let enemy_items = enemy_riot_items
                 .iter()
-                .map(|value| ItemId::from_u32(value.item_id))
+                .map(|value| ItemId::from_riot_id(value.item_id))
                 .collect::<SmallVec<[_; SIZE_ITEMS_EXPECTED]>>();
             let enemy_level = player.level;
             let enemy_cache = INTERNAL_CHAMPIONS.get(*enemy_champion_id as usize)?;
@@ -358,7 +358,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
 
 fn get_dragon_multipliers<'a>(
     event_list: &[RealtimeEvent],
-    players: SmallVec<[(&str, &str); 10]>,
+    players: &[(&str, &str)],
     current_player_team: &str,
 ) -> (DragonMultipliers, DragonMultipliers) {
     let mut ally_effect = DragonMultipliers::new();

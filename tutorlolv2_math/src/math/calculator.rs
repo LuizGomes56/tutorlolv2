@@ -1,13 +1,12 @@
-#![allow(unreachable_code, unused_variables)]
 use super::*;
 use crate::model::{base::*, calculator::*};
+use smallvec::SmallVec;
+use tinyset::SetU32;
 use tutorlolv2_generated::{
     AbilityLike, AdaptativeType, AttackType, Attrs, BASIC_ATTACK, CRITICAL_STRIKE, ChampionId,
     DAMAGING_ITEMS, DAMAGING_RUNES, EvalContext, INTERNAL_CHAMPIONS, INTERNAL_ITEMS, ItemId,
     RuneId,
 };
-use smallvec::SmallVec;
-use tinyset::SetU32;
 
 /// If user opted not to dictate the active player's stats, this function is called
 /// it reads all items present in cache and evaluates what the game condition would be
@@ -136,7 +135,7 @@ fn rune_exceptions(
 ) {
     for (rune_id, stacks) in exceptions {
         let stacks = *stacks;
-        match rune_id.to_u32() {
+        match rune_id.to_riot_id() {
             // Lethal Tempo
             8008 => match value_types.1 {
                 AttackType::Melee => {
@@ -239,7 +238,6 @@ fn item_exceptions(champion_stats: &mut Stats<f32>, exceptions: &[(ItemId, u8)])
 
 // #![todo] Stats are not assigned correctly
 // #![todo] Review exceptions
-// #[tutorlolv2_macros::trace_time]
 pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
     let InputGame {
         active_player,
@@ -265,7 +263,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
         .into_iter()
         .filter_map(|item_id| {
             DAMAGING_ITEMS
-                .contains(&item_id.to_u32())
+                .contains(&item_id.to_riot_id())
                 .then_some(*item_id as u32)
         })
         .collect::<SetU32>();
@@ -274,7 +272,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
         .into_iter()
         .filter_map(|rune_id| {
             DAMAGING_RUNES
-                .contains(&rune_id.to_u32())
+                .contains(&rune_id.to_riot_id())
                 .then_some(*rune_id as u32)
         })
         .collect::<SetU32>();
@@ -323,8 +321,8 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
 
     for (byte, enum_id, stack) in stack_exceptions.into_iter() {
         match byte {
-            0 => item_stack_exceptions.push((ItemId::from_u32(enum_id as u32), stack)),
-            1 => rune_stack_exceptions.push((RuneId::from_u32(enum_id as u32), stack)),
+            0 => item_stack_exceptions.push((ItemId::transmute(enum_id), stack)),
+            1 => rune_stack_exceptions.push((RuneId::transmute(enum_id), stack)),
             _ => {}
         }
     }
@@ -484,7 +482,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
         )
     };
 
-    let monster_damages = MONSTER_RESISTS.iter_enumerate().map(|(index, resists)| {
+    let monster_damages = MONSTER_RESISTS.iter().map(|resists| {
         let mut onhit_damage = DamageValue::<i32>::default();
         let abilities = abilities_iter_expr
             .iter()
@@ -530,7 +528,7 @@ pub fn calculator(game: InputGame) -> Result<OutputGame, CalculationError> {
             .collect::<SmallVec<_>>();
         let items = items_iter_expr
             .iter()
-            .map(|(item_name, dmg_expr)| {
+            .map(|(_, dmg_expr)| {
                 let monster_state = make_state(resists);
                 let eval_ctx = get_eval_ctx(&current_player_state, &monster_state);
                 let damage_multipliers = DamageMultipliers {
