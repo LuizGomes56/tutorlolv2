@@ -12,7 +12,6 @@ macro_rules! env_var {
 /// HOST=127.0.0.1:*
 /// LOL_VERSION=*
 /// LOL_LANGUAGE=en_US
-/// SYSTEM_PASSWORD={SYSTEM_PASSWORD}
 /// CDN_ENDPOINT=https://cdn.merakianalytics.com/riot/lol/resources/latest/en-US
 /// DD_DRAGON_ENDPOINT=https://ddragon.leagueoflegends.com
 /// RIOT_IMAGE_ENDPOINT=https://ddragon.canisback.com/img

@@ -1,4 +1,5 @@
 use super::riot_formulas::RiotFormulas;
+use crate::Transmutable;
 use crate::model::{SIZE_ABILITIES, SIZE_ITEMS_EXPECTED, base::*};
 use smallvec::SmallVec;
 use tinyset::SetU32;
@@ -8,7 +9,6 @@ use tutorlolv2_generated::{
 };
 use tutorlolv2_generated::{
     BASIC_ATTACK, CRITICAL_STRIKE, INTERNAL_ITEMS, INTERNAL_RUNES, SIMULATED_ITEMS,
-    SIZE_SIMULATED_ITEMS,
 };
 
 /// By 06/07/2025 Earth dragons give +5% resists
@@ -26,13 +26,13 @@ pub fn get_simulated_champion_stats(
     current_stats: &Stats<f32>,
     owned_items: &[u32],
     ally_dragon_multipliers: &DragonMultipliers,
-) -> SmallVec<[(ItemId, Stats<f32>); SIZE_SIMULATED_ITEMS]> {
-    let mut simulated_stats = SmallVec::with_capacity(SIZE_SIMULATED_ITEMS);
+) -> SmallVec<[(ItemId, Stats<f32>); SIMULATED_ITEMS.len()]> {
+    let mut simulated_stats = SmallVec::with_capacity(SIMULATED_ITEMS.len());
     for item_id in SIMULATED_ITEMS.iter() {
         if owned_items.contains(item_id) {
             continue;
         }
-        let item_id_enum = ItemId::from_u32(*item_id);
+        let item_id_enum = ItemId::from_riot_id(*item_id);
         if let Some(item) = INTERNAL_ITEMS.get(item_id_enum as usize) {
             simulated_stats.push((
                 item_id_enum,
@@ -282,7 +282,7 @@ pub fn get_items_damage(
                 AttackType::Melee => &item.melee,
             };
             result.push((
-                unsafe { std::mem::transmute(item_id as u16) },
+                ItemId::transmute(item_id as u16),
                 DamageExpression {
                     level,
                     attributes: item.attributes,
@@ -308,7 +308,7 @@ pub fn get_runes_damage(
                 AttackType::Melee => rune.melee,
             };
             result.push((
-                unsafe { std::mem::transmute(rune_id as u8) },
+                RuneId::transmute(rune_id as u16),
                 DamageExpression {
                     level: 0,
                     attributes: Attrs::None,

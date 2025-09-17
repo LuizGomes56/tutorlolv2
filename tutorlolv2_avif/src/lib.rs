@@ -53,7 +53,11 @@ pub async fn convert_folder_avif(folder: &str) -> Result<(), Box<dyn std::error:
         if path.is_file() && path.extension().and_then(|e| e.to_str()) != Some("svg") {
             let file_stem = path.file_stem().unwrap().to_str().unwrap().to_string();
             let source = format!("{}/{}", folder, path.file_name().unwrap().to_string_lossy());
-            let destination = format!("{}/{}.avif", folder, file_stem);
+            let destination = format!(
+                "img/{}/{}.avif",
+                folder.split("/").nth(1).unwrap(),
+                file_stem
+            );
             if fs::metadata(&destination).is_ok() {
                 continue;
             }

@@ -1,7 +1,7 @@
 use super::{SIZE_ABILITIES, Sizer, riot::RiotChampionStats};
 use bincode::{Decode, Encode};
-use tutorlolv2_generated::DamageType;
 use smallvec::SmallVec;
+use tutorlolv2_generated::DamageType;
 
 macro_rules! castable {
     (#[derive($($derives:tt),+)] pub struct $name:ident { $($fields:tt),+ }) => {
@@ -71,6 +71,7 @@ castable!(
 );
 
 impl RiotChampionStats {
+    #[inline(always)]
     pub fn to_stats(&self) -> Stats<f32> {
         Stats {
             ability_power: self.ability_power,
@@ -141,7 +142,7 @@ pub struct DragonMultipliers {
 }
 
 impl DragonMultipliers {
-    #[inline]
+    #[inline(always)]
     pub const fn new() -> DragonMultipliers {
         DragonMultipliers {
             earth: 1.0,

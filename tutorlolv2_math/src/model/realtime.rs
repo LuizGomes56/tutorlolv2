@@ -6,9 +6,12 @@ use super::{
 use bincode::Encode;
 use smallvec::SmallVec;
 use tutorlolv2_generated::{
-    AbilityLike, AdaptativeType, ChampionId, ItemId, Position, RuneId, SIZE_DAMAGING_ITEMS,
-    SIZE_SIMULATED_ITEMS,
+    AbilityLike, AdaptativeType, ChampionId, DAMAGING_ITEMS, ItemId, Position, RuneId,
+    SIMULATED_ITEMS,
 };
+
+const SIZE_DAMAGING_ITEMS: usize = DAMAGING_ITEMS.len();
+const SIZE_SIMULATED_ITEMS: usize = SIMULATED_ITEMS.len();
 
 #[derive(Encode)]
 pub struct SimulatedDamages {

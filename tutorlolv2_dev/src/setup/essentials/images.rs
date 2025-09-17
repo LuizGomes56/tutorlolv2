@@ -13,6 +13,16 @@ use std::{
     path::Path,
 };
 
+#[macro_export]
+macro_rules! target_dir {
+    () => {
+        "raw_img"
+    };
+    ($first:literal) => {
+        concat!(target_dir!(), "/", $first)
+    };
+}
+
 #[tutorlolv2_macros::trace_time]
 pub async fn img_download_instances(client: Client) {
     let files = fs::read_dir("cache/riot/champions").unwrap();
@@ -26,7 +36,7 @@ pub async fn img_download_instances(client: Client) {
         let outer_result: RiotCdnChampion = read_json_file::<RiotCdnChampion>(path_name).unwrap();
         let spells = outer_result.spells;
         let mut inner_futures = Vec::new();
-        let champion_dir: &'static str = "raw_img/champions";
+        let champion_dir = target_dir!("champions");
         let champion_file_name = format!("{}.png", outer_result.id);
         let champion_file_path = format!("{}/{}", champion_dir, &champion_file_name);
         if Path::new(&champion_file_path).exists() {
@@ -36,7 +46,7 @@ pub async fn img_download_instances(client: Client) {
             );
         } else {
             let champion_icon_url = format!(
-                "{}/raw_img/champion/{}",
+                "{}/img/champion/{}",
                 outer_base_uri, outer_result.image.full
             );
             println!(
@@ -50,7 +60,7 @@ pub async fn img_download_instances(client: Client) {
             }
         }
         let passive_file_name = format!("{}P.png", outer_result.id);
-        let passive_file_path = format!("raw_img/abilities/{}", &passive_file_name);
+        let passive_file_path = format!("{}/{}", target_dir!("abilities"), &passive_file_name);
         if Path::new(&passive_file_path).exists() {
             println!(
                 "[ALREADY_EXISTS] fn[img_download_instances]: [Passive] {}",
@@ -58,7 +68,7 @@ pub async fn img_download_instances(client: Client) {
             );
         } else {
             let passive_icon_url = format!(
-                "{}/raw_img/passive/{}",
+                "{}/img/passive/{}",
                 outer_base_uri, outer_result.passive.image.full
             );
             println!(
@@ -84,7 +94,7 @@ pub async fn img_download_instances(client: Client) {
                         .get(index)
                         .unwrap_or(&format!("_Error_{}", index).as_str())
                 );
-                let spell_dir = "raw_img/abilities";
+                let spell_dir = target_dir!("abilities");
                 let spell_file_path = format!("{}/{}", spell_dir, file_name.as_str());
                 if Path::new(&spell_file_path).exists() {
                     println!(
@@ -92,7 +102,7 @@ pub async fn img_download_instances(client: Client) {
                         &spell_file_path
                     );
                 } else {
-                    let url = format!("{}/raw_img/spell/{}", inner_base_uri, spell.image.full);
+                    let url = format!("{}/img/spell/{}", inner_base_uri, spell.image.full);
                     println!("[REQUESTING] fn[img_download_instances]: [Spell] {}", &url);
                     if let Ok(spell_response) = inner_client.get(&url).send().await {
                         let spell_bytes = spell_response.bytes().await.unwrap();
@@ -127,10 +137,10 @@ pub async fn img_download_arts(client: Client) {
                 for label in label_vec {
                     let skin_number = skin.num;
                     let url = format!(
-                        "{}/raw_img/champion/{}/{}_{}.jpg",
+                        "{}/img/champion/{}/{}_{}.jpg",
                         inner_base_uri, label, inner_id, &skin_number
                     );
-                    let label_dir = format!("raw_img/{}", label);
+                    let label_dir = format!("{}/{}", target_dir!(), label);
                     let file_name = format!("{}_{}.jpg", &inner_id, &skin_number);
                     let final_name = format!("{}/{}", label_dir, &file_name);
                     if Path::new(&final_name).exists() {
@@ -173,7 +183,7 @@ pub async fn img_download_runes(client: Client) {
         let file_name = format!("{}.png", rune_id);
         let cloned_client = client.clone();
         rune_futures.push(tokio::spawn(async move {
-            let rune_file_path = format!("raw_img/runes/{}", file_name);
+            let rune_file_path = format!("{}/{}", target_dir!("runes"), file_name);
             if Path::new(&rune_file_path).exists() {
                 println!(
                     "[ALREADY_EXISTS] fn[img_download_runes]: [Rune] {}",
@@ -205,7 +215,7 @@ pub async fn img_download_items(client: Client) {
         item_futures.push(tokio::spawn(async move {
             let path_buf = file.unwrap().path();
             let item_id = extract_file_name(&path_buf);
-            let item_dir: &'static str = "raw_img/items";
+            let item_dir: &'static str = target_dir!("items");
             let item_file_name = format!("{}.png", item_id);
             let item_file_path = format!("{}/{}", item_dir, item_file_name);
             if Path::new(&item_file_path).exists() {
@@ -214,7 +224,7 @@ pub async fn img_download_items(client: Client) {
                     &item_file_path
                 );
             } else {
-                let item_icon_url = format!("{}/raw_img/item/{}.png", cloned_base_uri, item_id);
+                let item_icon_url = format!("{}/img/item/{}.png", cloned_base_uri, item_id);
                 println!(
                     "[REQUESTING] fn[img_download_items]: [Item] {}",
                     &item_icon_url

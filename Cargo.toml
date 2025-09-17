@@ -1,6 +1,6 @@
 [package]
 name = "tutorlolv2"
-version = "0.3.5"
+version = "0.4.1"
 edition = "2024"
 authors = ["Luiz Gustavo Santana Dias Gomes"]
 repository = "https://github.com/LuizGomes56/tutorlolv2"
@@ -35,16 +35,17 @@ actix-web = { version = "4.11.0", default-features = false, features = [
 actix-files = "0.6.7"
 actix-cors = "0.7.1"
 actix = "0.13.5"
-actix-web-actors = "4.3.0"
-serde_json = "1.0.143"
+serde_json = "1.0.145"
 
 tutorlolv2_dev = { path = "./tutorlolv2_dev", optional = true }
+tutorlolv2_avif = { path = "./tutorlolv2_avif", optional = true }
 tokio = { version = "1.47", default-features = false, optional = true }
 reqwest = { version = "0.12.1", features = [
     "json",
     "rustls-tls",
 ], default-features = false, optional = true }
+actix-web-actors = "4.3.1"
 
 [features]
-dev = ["tutorlolv2_dev", "reqwest", "tokio"]
+dev = ["tutorlolv2_dev", "tutorlolv2_avif", "reqwest", "tokio"]
 default = ["dev"]

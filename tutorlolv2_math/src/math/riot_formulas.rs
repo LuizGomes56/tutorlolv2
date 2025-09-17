@@ -1,6 +1,6 @@
 use crate::model::base::Stats;
-use tutorlolv2_generated::{AdaptativeType, CachedChampionStats};
 use smallvec::SmallVec;
+use tutorlolv2_generated::{AdaptativeType, CachedChampionStats};
 
 pub struct MonsterResists {
     pub zero: (i8, i8),
@@ -14,15 +14,15 @@ pub struct MonsterResists {
 
 impl MonsterResists {
     #[inline]
-    pub const fn iter_enumerate(&self) -> [(u8, (i8, i8)); 7] {
+    pub const fn iter(&self) -> [(i8, i8); 7] {
         [
-            (0, self.zero),
-            (1, self.super_minion),
-            (2, self.dragon),
-            (3, self.baron),
-            (4, self.atakhan),
-            (5, self.jungle_camp_1),
-            (6, self.jungle_camp_2),
+            self.zero,
+            self.super_minion,
+            self.dragon,
+            self.baron,
+            self.atakhan,
+            self.jungle_camp_1,
+            self.jungle_camp_2,
         ]
     }
 }

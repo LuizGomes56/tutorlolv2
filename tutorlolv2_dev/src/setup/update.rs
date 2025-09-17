@@ -91,7 +91,7 @@ pub fn setup_internal_items() {
         let entry = file.unwrap();
         let path_buf = entry.path();
         let path_str = path_buf.to_str().unwrap();
-        let cdn_item: CdnItem = read_json_file(path_str).unwrap();
+        let cdn_item = read_json_file::<CdnItem>(path_str).unwrap();
         let stats = &cdn_item.stats;
         let mut item_stats = PartialStats::default();
 
@@ -120,7 +120,7 @@ pub fn setup_internal_items() {
         item_stats.magic_penetration_flat = stats.magic_penetration.flat;
         item_stats.magic_penetration_percent = stats.magic_penetration.percent;
 
-        let result: Item = Item {
+        let result = Item {
             prettified_stats: HashMap::default(),
             name: cdn_item.name,
             gold: cdn_item.shop.prices.total,
@@ -310,10 +310,8 @@ pub fn setup_meta_items() {
         let path = entry.path();
         let file_name = extract_file_name(&path);
         let item_id = file_name.parse::<usize>().unwrap();
-
         let path_str = path.to_str().unwrap();
-
-        let internal_item: Item = read_json_file(path_str).unwrap();
+        let internal_item = read_json_file::<Item>(path_str).unwrap();
 
         for (_, positions) in meta_items.iter_mut() {
             for (_, items) in positions.iter_mut() {
@@ -354,8 +352,7 @@ pub async fn prettify_internal_items() {
             continue;
         }
 
-        let mut current_content: Item = read_json_file(&internal_path).unwrap();
-
+        let mut current_content = read_json_file::<Item>(&internal_path).unwrap();
         current_content.prettified_stats = prettified_stats;
 
         let json = serde_json::to_string(&current_content).unwrap();
