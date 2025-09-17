@@ -1,17 +1,18 @@
 use super::*;
 
-// #![preserve]
+// #![preserve] "15.18.1" | "09/17/2025"
 
 #[tutorlolv2_macros::generator]
 pub fn gen_kassadin(data: CdnChampion) -> Champion {
-    ability!(q, (0, 0, _1Min, Min));
-    ability!(w, (0, 0, _1, Min));
-    ability!(e, (0, 0, _1Min, Min));
+    ability!(q, (0, 0, Void, Min));
+    ability!(w, (0, 0, Void, Min));
+    ability!(e, (0, 0, Void, Min));
     ability!(
         r,
-        (0, 0, _1Min, Min),
+        (0, 0, _1, Min),
         (1, 0, _2, Min),
         (1, 1, _3, Min),
-        (1, 2, _4Max, Max)
+        (1, 2, _1Max, Max)
     );
+    merge_ability!(R::_1, R::_1Max);
 }
