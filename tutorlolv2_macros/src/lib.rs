@@ -1,6 +1,6 @@
 use proc_macro::TokenStream;
 use quote::quote;
-use syn::parse_macro_input;
+use syn::{Ident, parse_macro_input, punctuated::Punctuated, token::Comma};
 
 /// ## Provides useful macros to extract data from CDN API
 ///
@@ -308,12 +308,38 @@ pub fn trace_time(_args: TokenStream, input: TokenStream) -> TokenStream {
 }
 
 #[proc_macro_attribute]
-pub fn item_generator(_args: TokenStream, input: TokenStream) -> TokenStream {
+pub fn item_generator(args: TokenStream, input: TokenStream) -> TokenStream {
     let mut func = parse_macro_input!(input as syn::ItemFn);
+
+    let args = parse_macro_input!(args with Punctuated::<Ident, Comma>::parse_terminated);
+    let dt_ident = args.iter().nth(0).cloned();
+    let attrs_ident = args.iter().nth(1).cloned();
 
     func.attrs.push(syn::parse_quote! {
         #[allow(unused_macros)]
     });
+
+    let set_damage_type = if let Some(variant) = dt_ident {
+        quote! {
+            cur_value.damage_type = Some(
+                tutorlolv2_generated::DamageType::#variant.to_string()
+            );
+        }
+    } else {
+        quote! {
+            cur_value.damage_type = Some(
+                tutorlolv2_generated::DamageType::default().to_string()
+            );
+        }
+    };
+
+    let set_attrs = if let Some(variant) = attrs_ident {
+        quote! {
+            cur_value.attributes = tutorlolv2_generated::Attrs::#variant;
+        }
+    } else {
+        quote! {}
+    };
 
     let ident = &func.sig.ident;
 
@@ -325,22 +351,6 @@ pub fn item_generator(_args: TokenStream, input: TokenStream) -> TokenStream {
 
         let cdn_value = read_json_file::<CdnItem>(&format!("cache/cdn/items/{}.json", id))?;
         let mut cur_value = read_json_file::<Item>(&format!("internal/items/{}.json", id))?;
-
-        macro_rules! write_onhit {
-            ($field:ident) => {
-                paste::paste! {
-                    cur_value.attributes = Attrs::[<$field>];
-                }
-            };
-        };
-
-        macro_rules! write_type {
-            ($field:ident) => {
-                paste::paste! {
-                    cur_value.damage_type = Some(DmgType::[<$field>].stringify().to_string());
-                }
-            }
-        };
 
         macro_rules! save_change {
             () => {{
@@ -415,6 +425,9 @@ pub fn item_generator(_args: TokenStream, input: TokenStream) -> TokenStream {
                 });
             }};
         };
+
+        #set_damage_type
+        #set_attrs
     };
 
     let old_block = func.block;

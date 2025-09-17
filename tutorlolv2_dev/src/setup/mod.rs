@@ -1,4 +1,3 @@
-pub mod avif_converter;
 pub mod cache;
 pub mod essentials;
 pub mod exceptions;

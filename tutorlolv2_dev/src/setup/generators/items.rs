@@ -5,34 +5,11 @@
 use super::*;
 use regex::Regex;
 use serde::Deserialize;
-use tutorlolv2_generated::Attrs;
-
-#[derive(Deserialize)]
-pub enum DmgType {
-    Magic,
-    Physical,
-    True,
-    Mixed,
-    Adaptative,
-}
-
-impl DmgType {
-    fn stringify(&self) -> &'static str {
-        match self {
-            DmgType::Magic => "MAGIC_DAMAGE",
-            DmgType::Physical => "PHYSICAL_DAMAGE",
-            DmgType::True => "TRUE_DAMAGE",
-            DmgType::Mixed => "MIXED_DAMAGE",
-            DmgType::Adaptative => "ADAPTATIVE_DAMAGE",
-        }
-    }
-}
 
 type TestResult = Result<(), Box<dyn std::error::Error>>;
 
-#[test]
 /// auto-generated content
-fn __test_item_dmg() -> TestResult {
+pub fn assign_item_damages() -> TestResult {
     let _ = item_1043();
     let _ = item_2015();
     let _ = item_2502();
@@ -178,25 +155,17 @@ fn __test_item_dmg() -> TestResult {
     Ok(())
 }
 
-pub fn assign_item_damages() -> TestResult {
-    item_3115()?;
-    Ok(())
-}
-
 /// Nashor's Tooth
-#[tutorlolv2_macros::item_generator]
+#[tutorlolv2_macros::item_generator(Magic, Onhit)]
 fn item_3115() -> TestResult {
-    write_type!(Magic);
-    write_onhit!(Onhit);
     let damage = extract_damagelike_expr(&cdn_value.passives[0].effects);
     write_dmg!(damage);
 }
 
 /// Blade of the Ruined King
 /// [Context](https://tutorlol.com/formulas)
-#[tutorlolv2_macros::item_generator]
+#[tutorlolv2_macros::item_generator(Physical)]
 fn item_3153() -> TestResult {
-    write_type!(Physical);
     let damagelike_expr = extract_damagelike_expr(&cdn_value.passives[0].effects);
     let numbers = Regex::new(r"(\d+)%")
         .unwrap()
@@ -272,9 +241,8 @@ fn item_3091() -> TestResult {}
 fn item_3094() -> TestResult {}
 
 /// Lich Bane
-#[tutorlolv2_macros::item_generator]
+#[tutorlolv2_macros::item_generator(Magic, OnhitMax)]
 fn item_3100() -> TestResult {
-    write_type!(Magic);
     let damage = extract_damagelike_expr(&cdn_value.passives[0].effects);
     let dmg = format!(
         "{} + {} * BASE_AD",
@@ -285,23 +253,20 @@ fn item_3100() -> TestResult {
 }
 
 /// Redemption
-#[tutorlolv2_macros::item_generator]
+#[tutorlolv2_macros::item_generator(True)]
 fn item_3107() -> TestResult {
-    write_type!(True);
     let damage = extract_damagelike_expr(&cdn_value.active[0].effects);
     let dmg = format!("{} * ENEMY_MAX_HEALTH", cap_percent!(damage, 0) / 100.0);
     write_dmg!(dmg);
 }
 
 /// Malignance
-#[tutorlolv2_macros::item_generator]
-#[test]
+#[tutorlolv2_macros::item_generator(Magic)]
 fn item_3118() -> TestResult {
-    write_type!(Magic);
-    let damage = extract_damagelike_expr(&cdn_value.passives[1].effects);
-    let numbers = cap_numbers!(damage);
-    let values = format!("{} + 0.0{} * AP", numbers[0], numbers[2]);
-    write_dmg!(values.clone(), format!("3 * ({values})"));
+    // let damage = extract_damagelike_expr(&cdn_value.passives[1].effects);
+    // let numbers = cap_numbers!(damage);
+    // let values = format!("{} + 0.0{} * AP", numbers[0], numbers[2]);
+    // write_dmg!(values.clone(), format!("3 * ({values})"));
 }
 
 #[tutorlolv2_macros::item_generator]
