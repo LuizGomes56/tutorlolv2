@@ -1,9 +1,6 @@
 use super::*;
 
 // #![stable] "08/07/2025" | "25.15"
-/// * Q_MAX was intentionally placed at position "minimum_damage"
-/// * Passive postfix "ENEMY_MAX_HEALTH" need manual fix if Riot changes it
-/// * Minion and Monster bonus damages are omitted in version 0.1.0
 
 #[tutorlolv2_macros::generator]
 pub fn gen_aatrox(data: CdnChampion) -> Champion {

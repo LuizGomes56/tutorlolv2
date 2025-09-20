@@ -1,6 +1,9 @@
 use crate::{AppState, dev_response};
-use actix_web::{HttpResponse, Responder, get, web::Data};
-use tokio::task;
+use actix_web::{
+    HttpResponse, Responder, get,
+    rt::{spawn, task::spawn_blocking},
+    web::Data,
+};
 use tutorlolv2_dev::setup::{
     cache::{update_cdn_cache, update_riot_cache},
     essentials::{
@@ -26,18 +29,15 @@ pub async fn setup_project(state: Data<AppState>) -> impl Responder {
     let _ = setup_project_folders();
     let client = state.client.clone();
 
-    tokio::spawn(async move {
+    spawn(async move {
         let mut update_futures = Vec::new();
 
-        update_futures.push(tokio::spawn(update_riot_cache(client.clone())));
-        update_futures.push(tokio::spawn(update_cdn_cache(
+        update_futures.push(spawn(update_riot_cache(client.clone())));
+        update_futures.push(spawn(update_cdn_cache(
             client.clone(),
             CdnEndpoint::Champions,
         )));
-        update_futures.push(tokio::spawn(update_cdn_cache(
-            client.clone(),
-            CdnEndpoint::Items,
-        )));
+        update_futures.push(spawn(update_cdn_cache(client.clone(), CdnEndpoint::Items)));
 
         for update_future in update_futures {
             if let Err(e) = update_future.await {
@@ -45,31 +45,31 @@ pub async fn setup_project(state: Data<AppState>) -> impl Responder {
             }
         }
 
-        let _ = task::spawn_blocking(setup_champion_names).await.ok();
-        let _ = task::spawn_blocking(setup_internal_items).await.ok();
-        let _ = task::spawn_blocking(setup_internal_runes).await.ok();
+        let _ = spawn_blocking(setup_champion_names).await.ok();
+        let _ = spawn_blocking(setup_internal_items).await.ok();
+        let _ = spawn_blocking(setup_internal_runes).await.ok();
         let _ = prettify_internal_items().await;
 
         let client_1 = client.clone();
 
-        tokio::spawn(async move {
+        spawn(async move {
             let _ = meta_items_scraper(client_1).await;
             let _ = setup_meta_items();
             let _ = setup_damaging_items();
             let _ = assign_item_damages();
         });
 
-        tokio::spawn(async move {
+        spawn(async move {
             let _ = create_generator_files(GeneratorMode::Partial).await;
             let _ = setup_internal_champions();
         });
 
         // There's no need to await for image download conclusion
         // They are independent and may run in parallel
-        tokio::spawn(img_download_arts(client.clone()));
-        tokio::spawn(img_download_instances(client.clone()));
-        tokio::spawn(img_download_items(client.clone()));
-        tokio::spawn(img_download_runes(client));
+        spawn(img_download_arts(client.clone()));
+        spawn(img_download_instances(client.clone()));
+        spawn(img_download_items(client.clone()));
+        spawn(img_download_runes(client));
     });
 
     HttpResponse::Ok().body("Project setup started. Expected time to complete: 3-5 minutes")

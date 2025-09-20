@@ -47,8 +47,8 @@ pub async fn calculator_handler(body: Bytes) -> Response {
 }
 
 const CODE_LENGTH: usize = 6;
-const CHARS: &'static [u8; 62] = b"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
 const BODY_LENGTH: usize = 16 + CODE_LENGTH;
+static CHARS: &'static [u8; 62] = b"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
 
 #[get("/create")]
 pub async fn create_game_handler(state: Data<AppState>) -> Response {

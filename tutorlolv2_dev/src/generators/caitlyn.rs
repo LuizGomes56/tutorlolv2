@@ -1,11 +1,12 @@
 use super::*;
 
-// #![preserve]
+// #![preserve] "15.18.1" | "09/20/2025"
 
 #[tutorlolv2_macros::generator]
 pub fn gen_caitlyn(data: CdnChampion) -> Champion {
-    ability!(q, (0, 0, _1Min, Min), (0, 1, _2Min, Min));
-    ability!(w, (2, 0, _1Min, Min));
-    ability!(e, (0, 0, _1Min, Min));
-    ability!(r, (2, 0, _1Min, Min));
+    ability!(q, (0, 0, Max, Max), (0, 1, Min, Min));
+    merge_ability!(Q::Min, Q::Max);
+    ability!(w, (2, 0, Void, Min));
+    ability!(e, (0, 0, Void, Min));
+    ability!(r, (2, 0, Void, Min));
 }
