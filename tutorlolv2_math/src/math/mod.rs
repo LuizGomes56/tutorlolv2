@@ -5,6 +5,7 @@ pub mod riot_formulas;
 
 use helpers::*;
 use riot_formulas::*;
+use std::{error::Error, fmt::Display};
 use tutorlolv2_generated::{ChampionId, ItemId, RuneId};
 
 #[derive(Debug)]
@@ -14,16 +15,21 @@ pub enum CalculationError {
     ChampionCacheNotFound,
 }
 
-impl CalculationError {
-    #[inline(always)]
-    pub const fn as_str(self) -> &'static str {
-        match self {
-            CalculationError::CurrentPlayerNotFound => "Current player not found in allPlayers",
-            CalculationError::ChampionNameNotFound => {
-                "Could not convert champion name to its corresponding id"
+impl Error for CalculationError {}
+
+impl Display for CalculationError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "{}",
+            match self {
+                CalculationError::CurrentPlayerNotFound => "Current player not found in allPlayers",
+                CalculationError::ChampionNameNotFound => {
+                    "Could not convert champion name to its corresponding id"
+                }
+                CalculationError::ChampionCacheNotFound => "Current champion cache not found",
             }
-            CalculationError::ChampionCacheNotFound => "Current champion cache not found",
-        }
+        )
     }
 }
 
