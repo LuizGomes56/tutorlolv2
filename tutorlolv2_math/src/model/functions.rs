@@ -11,13 +11,6 @@ use tutorlolv2_generated::{
 
 pub struct WrapSetU32(pub SetU32);
 
-#[macro_export]
-macro_rules! enc {
-    ($v:expr) => {
-        bincode::encode_to_vec(&$v, bincode::config::standard()).unwrap()
-    };
-}
-
 impl From<SetU32> for WrapSetU32 {
     #[inline(always)]
     fn from(set: SetU32) -> Self {

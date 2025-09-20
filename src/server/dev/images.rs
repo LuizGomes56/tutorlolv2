@@ -39,7 +39,7 @@ pub async fn download_arts(state: Data<AppState>) -> impl Responder {
 pub async fn download_all(state: Data<AppState>) -> impl Responder {
     macro_rules! spawn_thread {
         ($func:ident) => {{
-            let _ = tokio::spawn($func(state.client.clone()));
+            let _ = actix_web::rt::spawn($func(state.client.clone()));
         }};
     }
     spawn_thread!(img_download_instances);

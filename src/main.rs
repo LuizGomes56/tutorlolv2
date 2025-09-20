@@ -2,7 +2,6 @@ mod server;
 
 #[cfg(feature = "dev")]
 use crate::server::dev::{images::*, internal::*, setup::*, statics::*, update::*};
-use crate::server::stream::realtime_ws;
 use actix_cors::Cors;
 use actix_web::{
     App, HttpResponse, HttpServer,
@@ -25,7 +24,6 @@ pub struct AppState {
 fn api_scope() -> impl HttpServiceFactory + 'static {
     let api_routes = scope("/api").service(
         scope("/games")
-            .service(realtime_ws)
             .service(realtime_handler)
             .service(calculator_handler)
             .service(create_game_handler)
@@ -125,8 +123,7 @@ async fn main() -> std::io::Result<()> {
                     .service(serve_stats),
             )
             .default_service(web::route().to(|| async {
-                let not_found_text = "Unimplemented route. Check methods and paths";
-                HttpResponse::NotFound().body(not_found_text)
+                HttpResponse::NotFound().body("Unimplemented route. Check methods and paths")
             }))
     })
     .bind(host)
