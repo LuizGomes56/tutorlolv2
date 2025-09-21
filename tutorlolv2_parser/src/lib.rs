@@ -1,3 +1,5 @@
+use serde::Serialize;
+use serde_json::{Serializer, Value, ser::PrettyFormatter};
 use std::{
     io::Write,
     process::{Command, Stdio},
@@ -26,7 +28,7 @@ pub fn invoke_rustfmt(src: &str, width: usize) -> String {
     String::from_utf8_lossy(&output.stdout).into_owned()
 }
 
-pub fn highlight(code_string: &str) -> String {
+pub fn highlight_rust(rust_code: &str) -> String {
     let mut h = Highlighter::new(4);
     h.bounded("comment", r"/\*", r"\*/", false);
     h.keyword("comment", r"//.*$");
@@ -56,7 +58,7 @@ pub fn highlight(code_string: &str) -> String {
     h.keyword("function", r"\b(zero|generator)\b");
     h.keyword("variable", r"\b[a-z][a-zA-Z0-9_]*\b");
 
-    let code = code_string
+    let code = rust_code
         .lines()
         .map(str::to_string)
         .collect::<Vec<String>>();
@@ -80,4 +82,71 @@ pub fn highlight(code_string: &str) -> String {
         out.push_str("\n");
     }
     format!("<pre>{}</pre>", out)
+}
+
+pub fn highlight_json(input: &str) -> String {
+    let mut h = Highlighter::new(4);
+
+    h.keyword("string", r#""(?:[^"\\]|\\.)*""#);
+    h.keyword("number", r"-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?");
+    h.keyword("constant", r"\b(?:null|true|false)\b");
+
+    let lines = input.lines().map(str::to_string).collect::<Vec<String>>();
+    h.run(&lines);
+
+    let mut out = String::new();
+
+    for (i, line) in lines.iter().enumerate() {
+        let mut toks = h.line(i, line).into_iter().collect::<Vec<_>>();
+
+        for k in 0..toks.len() {
+            let is_string = matches!(&toks[k], TokOpt::Some(_, kind) if kind == "string");
+            if !is_string {
+                continue;
+            }
+            let mut next_non_ws = None::<char>;
+            let mut idx = k + 1;
+            while idx < toks.len() {
+                match &toks[idx] {
+                    TokOpt::None(txt) => {
+                        if let Some(ch) = txt.chars().find(|c| !matches!(c, ' ' | '\t')) {
+                            next_non_ws = Some(ch);
+                            break;
+                        }
+                    }
+                    TokOpt::Some(_, _) => break,
+                }
+                idx += 1;
+            }
+
+            if next_non_ws == Some(':') {
+                if let TokOpt::Some(text, _) = &toks[k] {
+                    toks[k] = TokOpt::Some(text.clone(), "variable".to_string());
+                }
+            }
+        }
+
+        let mut line_html = String::new();
+        for t in toks {
+            match t {
+                TokOpt::Some(text, kind) => {
+                    line_html.push_str(&format!("<span class=\"{kind}\">{text}</span>"));
+                }
+                TokOpt::None(text) => line_html.push_str(&text),
+            }
+        }
+        out.push_str(&line_html);
+        out.push('\n');
+    }
+
+    format!("<pre>{}</pre>", out)
+}
+
+pub fn prettify_json(input: &str) -> String {
+    let v: Value = serde_json::from_str(input).unwrap();
+    let mut buf = Vec::new();
+    let fmt = PrettyFormatter::with_indent(b"    ");
+    let mut ser = Serializer::with_formatter(&mut buf, fmt);
+    v.serialize(&mut ser).unwrap();
+    String::from_utf8(buf).unwrap()
 }

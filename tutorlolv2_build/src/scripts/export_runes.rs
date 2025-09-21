@@ -40,7 +40,7 @@ pub fn export_runes() -> Vec<(u32, RuneDetails)> {
                 rune_id,
                 RuneDetails {
                     rune_name: rune.name.clone(),
-                    rune_formula: highlight(&clear_suffixes(&invoke_rustfmt(&constdecl, 80)))
+                    rune_formula: highlight_rust(&clear_suffixes(&invoke_rustfmt(&constdecl, 80)))
                         .replacen("class=\"type\"", "class=\"constant\"", 1),
                     constdecl,
                 },

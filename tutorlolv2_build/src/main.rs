@@ -1,7 +1,7 @@
 mod scripts;
 
 use scripts::*;
-use tutorlolv2_parser::{highlight, invoke_rustfmt};
+use tutorlolv2_parser::{highlight_rust, invoke_rustfmt};
 use tutorlolv2_shared::AbilityLike;
 
 const ONHIT_EFFECT: &'static str = r#"<pre><span class="control">intrinsic</span> <span class="constant">ONHIT_EFFECT</span> = {
@@ -112,7 +112,7 @@ async fn main() {
         }}
     }
 
-    let transform_and_join = |v: &[u32]| -> String {
+    let transform_and_join = |v: &Vec<u32>| -> String {
         v.iter()
             .filter_map(|value| {
                 items
@@ -140,12 +140,16 @@ async fn main() {
                 let result = positions
                     .make_iterable()
                     .iter()
-                    .map(|position| {
-                        let result = transform_and_join(position);
-                        format!("&[{}]", result)
-                    })
+                    .map(transform_and_join)
                     .collect::<Vec<String>>();
-                recommended_items.push_str(&format!("[{}],", result.join(",")));
+                recommended_items.push_str(&format!(
+                    "[{}],",
+                    result
+                        .iter()
+                        .map(|value| format!("&[{}]", value))
+                        .collect::<Vec<String>>()
+                        .join(",")
+                ));
                 format!(
                     "CachedMetaItem{{top:&[{}],jungle:&[{}],mid:&[{}],adc:&[{}],support:&[{}]}}",
                     result[0], result[1], result[2], result[3], result[4]
@@ -456,8 +460,8 @@ async fn main() {
             pub const ONHIT_EFFECT_OFFSET:(u32,u32)={};
             pub const UNCOMPRESSED_MEGA_BLOCK_SIZE:usize={};",
             exported_content,
-            record_offsets!(highlight(&invoke_rustfmt(&BASIC_ATTACK, 60))),
-            record_offsets!(highlight(&invoke_rustfmt(&CRITICAL_STRIKE, 60))),
+            record_offsets!(highlight_rust(&invoke_rustfmt(&BASIC_ATTACK, 60))),
+            record_offsets!(highlight_rust(&invoke_rustfmt(&CRITICAL_STRIKE, 60))),
             record_offsets!(ONHIT_EFFECT),
             current_offset,
         )

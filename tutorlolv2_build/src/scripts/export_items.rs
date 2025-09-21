@@ -154,7 +154,7 @@ pub fn export_items() -> Vec<(u32, ItemDetails)> {
                 item_id,
                 ItemDetails {
                     item_name: item.name.clone(),
-                    item_formula: highlight(&clear_suffixes(&invoke_rustfmt(&constdecl, 60)))
+                    item_formula: highlight_rust(&clear_suffixes(&invoke_rustfmt(&constdecl, 60)))
                         .replacen("class=\"type\"", "class=\"constant\"", 1),
                     constdecl,
                     is_simulated: item.tier >= 3 && item.gold > 0 && item.purchasable,

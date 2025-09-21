@@ -196,7 +196,7 @@ pub fn export_champions() -> BTreeMap<String, ChampionDetails> {
                         )
                         .replace(";", "");
                         if !rustfmt_val.is_empty() {
-                            let highlighted_val = clear_suffixes(&highlight(&format!(
+                            let highlighted_val = clear_suffixes(&highlight_rust(&format!(
                                 "intrinsic {}_{} = {}",
                                 champion_id.to_uppercase(),
                                 ability_name.to_uppercase(),
@@ -268,8 +268,8 @@ pub fn export_champions() -> BTreeMap<String, ChampionDetails> {
                 champion_id.clone(),
                 ChampionDetails {
                     champion_name: champion.name.to_string(),
-                    champion_formula: highlight(&clear_suffixes(&invoke_rustfmt(&constdecl, 70))),
-                    generator: highlight(&invoke_rustfmt(
+                    champion_formula: highlight_rust(&clear_suffixes(&invoke_rustfmt(&constdecl, 70))),
+                    generator: highlight_rust(&invoke_rustfmt(
                         &fs::read_to_string(cwd!(format!("tutorlolv2_dev/src/generators/{}.rs", champion_id))).unwrap(),
                         80,
                     )),
