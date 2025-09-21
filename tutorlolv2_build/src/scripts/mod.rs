@@ -13,6 +13,7 @@ pub use std::{
     collections::{BTreeMap, HashMap},
     fs,
 };
+pub use tutorlolv2_parser::*;
 pub use utils::*;
 
 pub static CRITICAL_STRIKE: &'static str = r#"pub static CRITICAL_STRIKE: DamageExpression = DamageExpression {

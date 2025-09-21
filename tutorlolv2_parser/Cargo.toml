@@ -1,0 +1,7 @@
+[package]
+name = "tutorlolv2_parser"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+synoptic = "2.2.9"

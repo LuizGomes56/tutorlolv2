@@ -14,6 +14,9 @@ strip = true
 debug = false
 incremental = false
 
+[dev-dependencies]
+tutorlolv2_exports = { path = "tutorlolv2_exports" }
+
 [dependencies]
 tutorlolv2_math = { path = "tutorlolv2_math" }
 tutorlolv2_generated = { path = "tutorlolv2_generated" }
