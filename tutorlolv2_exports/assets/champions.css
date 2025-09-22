@@ -48,6 +48,7 @@ body {
 }
 
 .string {
+    white-space: break-spaces;
     color: #CE9178
 }
 
