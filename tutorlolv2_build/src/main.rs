@@ -1,5 +1,7 @@
 mod scripts;
+
 use scripts::*;
+use tutorlolv2_parser::{highlight_rust, invoke_rustfmt};
 use tutorlolv2_shared::AbilityLike;
 
 const ONHIT_EFFECT: &'static str = r#"<pre><span class="control">intrinsic</span> <span class="constant">ONHIT_EFFECT</span> = {
@@ -110,7 +112,7 @@ async fn main() {
         }}
     }
 
-    let transform_and_join = |v: &[u32]| -> String {
+    let transform_and_join = |v: &Vec<u32>| -> String {
         v.iter()
             .filter_map(|value| {
                 items
@@ -135,18 +137,22 @@ async fn main() {
             .iter()
             .map(|(champion_id, _)| {
                 let positions = meta_items_map.get(champion_id).unwrap();
-                let top = transform_and_join(&positions.top);
-                let mid = transform_and_join(&positions.mid);
-                let jungle = transform_and_join(&positions.jungle);
-                let adc = transform_and_join(&positions.adc);
-                let support = transform_and_join(&positions.support);
+                let result = positions
+                    .make_iterable()
+                    .iter()
+                    .map(transform_and_join)
+                    .collect::<Vec<String>>();
                 recommended_items.push_str(&format!(
-                    "[&[{}],&[{}],&[{}],&[{}],&[{}]],",
-                    top, mid, jungle, adc, support
+                    "[{}],",
+                    result
+                        .iter()
+                        .map(|value| format!("&[{}]", value))
+                        .collect::<Vec<String>>()
+                        .join(",")
                 ));
                 format!(
-                    "CachedMetaItem{{top:&[{}],mid:&[{}],jungle:&[{}],adc:&[{}],support:&[{}]}}",
-                    top, mid, jungle, adc, support
+                    "CachedMetaItem{{top:&[{}],jungle:&[{}],mid:&[{}],adc:&[{}],support:&[{}]}}",
+                    result[0], result[1], result[2], result[3], result[4]
                 )
             })
             .collect::<Vec<String>>()
@@ -454,8 +460,8 @@ async fn main() {
             pub const ONHIT_EFFECT_OFFSET:(u32,u32)={};
             pub const UNCOMPRESSED_MEGA_BLOCK_SIZE:usize={};",
             exported_content,
-            record_offsets!(highlight(&invoke_rustfmt(&BASIC_ATTACK, 60))),
-            record_offsets!(highlight(&invoke_rustfmt(&CRITICAL_STRIKE, 60))),
+            record_offsets!(highlight_rust(&invoke_rustfmt(&BASIC_ATTACK, 60))),
+            record_offsets!(highlight_rust(&invoke_rustfmt(&CRITICAL_STRIKE, 60))),
             record_offsets!(ONHIT_EFFECT),
             current_offset,
         )
@@ -475,5 +481,5 @@ async fn main() {
         .as_bytes(),
     );
 
-    let _ = fs::write(cwd!("tutorlolv2_exports/export_code.txt"), bytes);
+    let _ = fs::write(cwd!("tutorlolv2_exports/export_code.rs"), bytes);
 }

@@ -1,0 +1,10 @@
+[package]
+name = "tutorlolv2_exports"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+bincode = { version = "2.0.1", default-features = false, features = ["derive"] }
+tutorlolv2_shared = { path = "../tutorlolv2_shared" }
+tutorlolv2_parser = { path = "../tutorlolv2_parser" }
+paste = "1.0.15"

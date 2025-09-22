@@ -8,10 +8,11 @@
 *.pdf
 *.svg
 target
+html
 internal
 safety_copy
 raw_img
-tutorlolv2_exports
+tutorlolv2_exports/src/export_code.rs
 sprite
 cache
 img
