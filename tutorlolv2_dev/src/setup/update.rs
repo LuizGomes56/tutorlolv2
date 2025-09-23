@@ -12,7 +12,7 @@ use crate::{
 use regex::Regex;
 use serde_json::Value;
 use std::{collections::HashMap, fs, path::Path};
-use tutorlolv2_generated::Attrs;
+use tutorlolv2_gen::Attrs;
 
 type MetaItemValue<T> = HashMap<String, HashMap<String, Vec<T>>>;
 

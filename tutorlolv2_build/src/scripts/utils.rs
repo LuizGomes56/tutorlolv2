@@ -56,16 +56,6 @@ macro_rules! cwd {
 }
 
 #[macro_export]
-macro_rules! compress_bytes {
-    ($bytes:expr) => {{
-        use std::io::Write;
-        let mut encoder = brotli2::write::BrotliEncoder::new(Vec::new(), 11);
-        encoder.write_all(&$bytes).unwrap();
-        encoder.finish().unwrap()
-    }};
-}
-
-#[macro_export]
 macro_rules! init_map {
     (file $type_name:ty, $path:literal) => {{
         let content = std::fs::read_to_string(cwd!($path)).unwrap();

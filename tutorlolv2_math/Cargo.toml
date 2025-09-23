@@ -6,6 +6,6 @@ edition = "2024"
 [dependencies]
 smallvec = { version = "1.15.1", features = ["impl_bincode"] }
 tinyset = "0.5.2"
-tutorlolv2_generated = { path = "../tutorlolv2_generated" }
+tutorlolv2_gen = { path = "../tutorlolv2_gen" }
 bincode = "2.0.1"
 serde = { version = "1.0", features = ["derive"] }

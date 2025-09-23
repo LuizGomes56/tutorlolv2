@@ -1,7 +1,7 @@
 #[cfg(feature = "dev")]
 pub mod dev;
+pub mod embed;
 pub mod games;
-pub mod img;
 
 #[macro_export]
 macro_rules! dev_response {

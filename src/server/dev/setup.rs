@@ -5,24 +5,13 @@ use actix_web::{
     web::Data,
 };
 use tutorlolv2_dev::setup::{
-    cache::{update_cdn_cache, update_riot_cache},
-    essentials::{
-        api::CdnEndpoint,
-        images::{
-            img_download_arts, img_download_instances, img_download_items, img_download_runes,
-        },
-    },
-    generators::{
-        champions::{GeneratorMode, create_generator_files},
-        items::assign_item_damages,
-    },
+    cache::*,
+    essentials::{api::CdnEndpoint, images::*},
+    generators::{champions::*, items::assign_item_damages},
     scraper::meta_items_scraper,
-    update::{
-        prettify_internal_items, setup_champion_names, setup_damaging_items,
-        setup_internal_champions, setup_internal_items, setup_internal_runes, setup_meta_items,
-        setup_project_folders,
-    },
+    update::*,
 };
+use tutorlolv2_exports::*;
 
 #[get("/project")]
 pub async fn setup_project(state: Data<AppState>) -> impl Responder {
@@ -63,6 +52,10 @@ pub async fn setup_project(state: Data<AppState>) -> impl Responder {
             let _ = create_generator_files(GeneratorMode::Partial).await;
             let _ = setup_internal_champions();
         });
+
+        let _ = spawn_blocking(generate_champion_html).await.ok();
+        let _ = spawn_blocking(generate_item_html).await.ok();
+        let _ = spawn_blocking(generate_rune_html).await.ok();
 
         // There's no need to await for image download conclusion
         // They are independent and may run in parallel

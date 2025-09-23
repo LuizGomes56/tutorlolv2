@@ -1,7 +1,7 @@
 use super::{SIZE_ABILITIES, Sizer, riot::RiotChampionStats};
 use bincode::{Decode, Encode};
 use smallvec::SmallVec;
-use tutorlolv2_generated::DamageType;
+use tutorlolv2_gen::DamageType;
 
 macro_rules! castable {
     (#[derive($($derives:tt),+)] pub struct $name:ident { $($fields:tt),+ }) => {

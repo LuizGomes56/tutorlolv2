@@ -3,7 +3,7 @@ use crate::{
     export_code::*,
     html::{BASE_CSS, HtmlExt},
 };
-use tutorlolv2_parser::{highlight_json, prettify_json};
+use tutorlolv2_fmt::{highlight_json, prettify_json};
 
 pub fn generate_champion_html() {
     for i in 0..CHAMPION_FORMULAS.len() {
@@ -70,10 +70,11 @@ pub fn generate_champion_html() {
                         .iter()
                         .map(|item_id| {
                             format!(
-                                r#"<a href="/items/{:?}.html" style="text-decoration: none; display: flex; cursor: pointer; align-items: center; gap: 12px; padding: 8px; border-radius: 6px; transition: all 0.2s ease; border: 1px solid transparent;" onmouseover="this.style.backgroundColor='#333'; this.style.borderColor='#555'; this.style.transform='translateY(-1px)';" onmouseout="this.style.backgroundColor='transparent'; this.style.borderColor='transparent'; this.style.transform='translateY(0)';">
+                                r#"<a href="{}/docs/items/{:?}.zst" style="text-decoration: none; display: flex; cursor: pointer; align-items: center; gap: 12px; padding: 8px; border-radius: 6px; transition: all 0.2s ease; border: 1px solid transparent;" onmouseover="this.style.backgroundColor='#333'; this.style.borderColor='#555'; this.style.transform='translateY(-1px)';" onmouseout="this.style.backgroundColor='transparent'; this.style.borderColor='transparent'; this.style.transform='translateY(0)';">
                                     <img style="width: 32px; height: 32px; border-radius: 4px; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);" src="{}/{}.avif" alt="{}">
                                     <span style="font-size: 0.9rem; color: #ddd; font-weight: 500;">{}</span>
                                 </a>"#,
+                                Url::BASE,
                                 item_id,
                                 Url::ITEMS,
                                 item_id.to_riot_id(),
@@ -127,6 +128,10 @@ pub fn generate_champion_html() {
 </html>"#,
         );
 
-        std::fs::write(format!("html/champions/{:?}.html", champion_id), html).unwrap();
+        std::fs::write(
+            format!("html/champions/{:?}.zst", champion_id),
+            html.finish(),
+        )
+        .unwrap();
     }
 }

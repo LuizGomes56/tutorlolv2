@@ -7,7 +7,7 @@ use crate::model::{
 };
 use smallvec::SmallVec;
 use tinyset::SetU32;
-use tutorlolv2_generated::{
+use tutorlolv2_gen::{
     CHAMPION_NAME_TO_ID, DAMAGING_ITEMS, DAMAGING_RUNES, INTERNAL_CHAMPIONS, ItemId, Position,
     RuneId,
 };

@@ -2,7 +2,7 @@ use super::*;
 use crate::model::{base::*, calculator::*};
 use smallvec::SmallVec;
 use tinyset::SetU32;
-use tutorlolv2_generated::{
+use tutorlolv2_gen::{
     AbilityLike, AdaptativeType, AttackType, Attrs, BASIC_ATTACK, CRITICAL_STRIKE, ChampionId,
     DAMAGING_ITEMS, DAMAGING_RUNES, EvalContext, INTERNAL_CHAMPIONS, INTERNAL_ITEMS, ItemId,
     RuneId,

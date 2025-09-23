@@ -19,5 +19,5 @@ img
 formulas
 read_only
 converted
-tutorlolv2_generated/src/data/*
-!tutorlolv2_generated/src/data/mod.rs
+tutorlolv2_gen/src/data/*
+!tutorlolv2_gen/src/data/mod.rs

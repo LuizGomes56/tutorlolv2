@@ -1,5 +1,5 @@
 [package]
-name = "tutorlolv2_parser"
+name = "tutorlolv2_fmt"
 version = "0.1.0"
 edition = "2024"
 
@@ -7,3 +7,6 @@ edition = "2024"
 serde = { version = "1.0.226", features = ["derive"] }
 serde_json = "1.0.145"
 synoptic = "2.2.9"
+brotli2 = "0.3.2"
+html5minify = "0.3.3"
+zstd = "0.13.3"

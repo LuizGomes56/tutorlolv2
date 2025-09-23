@@ -11,9 +11,8 @@ use actix_web::{
     web::{self, Data, scope},
 };
 use dotenvy::dotenv;
-use server::{games::*, img::*};
-use sqlx::postgres::PgPoolOptions;
-use sqlx::{Pool, Postgres};
+use server::{embed::*, games::*};
+use sqlx::{Pool, Postgres, postgres::PgPoolOptions};
 
 pub struct AppState {
     pub db: Pool<Postgres>,
@@ -108,19 +107,28 @@ async fn main() -> std::io::Result<()> {
             })
             .service(api_scope())
             .service(
-                scope("/img")
+                scope("")
                     .wrap(
                         DefaultHeaders::new()
                             .add((header::CACHE_CONTROL, "public, max-age=31536000, immutable")),
                     )
-                    .service(serve_dyn_centered())
-                    .service(serve_dyn_splash())
-                    .service(serve_dyn_other())
-                    .service(serve_abilities)
-                    .service(serve_champions)
-                    .service(serve_items)
-                    .service(serve_runes)
-                    .service(serve_stats),
+                    .service(
+                        scope("/docs")
+                            .service(serve_champions_docs)
+                            .service(serve_items_docs)
+                            .service(serve_runes_docs),
+                    )
+                    .service(
+                        scope("/img")
+                            .service(serve_dyn_centered())
+                            .service(serve_dyn_splash())
+                            .service(serve_dyn_other())
+                            .service(serve_abilities)
+                            .service(serve_champions)
+                            .service(serve_items)
+                            .service(serve_runes)
+                            .service(serve_stats),
+                    ),
             )
             .default_service(web::route().to(|| async {
                 HttpResponse::NotFound().body("Unimplemented route. Check methods and paths")

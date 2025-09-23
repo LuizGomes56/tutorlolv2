@@ -7,4 +7,4 @@ pub(crate) use bincode::{Decode, Encode};
 pub use champions::*;
 pub use items::*;
 pub use runes::*;
-pub(crate) use tutorlolv2_shared::*;
+pub(crate) use tutorlolv2_types::*;

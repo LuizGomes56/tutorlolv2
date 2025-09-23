@@ -1,8 +1,8 @@
 mod scripts;
 
 use scripts::*;
-use tutorlolv2_parser::{highlight_rust, invoke_rustfmt};
-use tutorlolv2_shared::AbilityLike;
+use tutorlolv2_fmt::{encode_brotli_11, highlight_rust, invoke_rustfmt};
+use tutorlolv2_types::AbilityLike;
 
 const ONHIT_EFFECT: &'static str = r#"<pre><span class="control">intrinsic</span> <span class="constant">ONHIT_EFFECT</span> = {
     <span class="variable">name</span>: <span class="string">"Onhit Effect"</span>,
@@ -235,7 +235,7 @@ async fn main() {
 
     let moved_champion_id_enum = champion_id_enum.clone();
     tokio::task::spawn_blocking(move || {
-        fs::write(cwd!("tutorlolv2_generated/src/data/champions.rs"), {
+        fs::write(cwd!("tutorlolv2_gen/src/data/champions.rs"), {
             let mut s = String::with_capacity(
                 USE_SUPER.len()
                     + internal_champions_content.len()
@@ -315,7 +315,7 @@ async fn main() {
     let moved_item_id_to_riot_id = item_id_to_riot_id.clone();
     let moved_item_id_enum = item_id_enum.clone();
     tokio::task::spawn_blocking(move || {
-        fs::write(cwd!("tutorlolv2_generated/src/data/items.rs"), {
+        fs::write(cwd!("tutorlolv2_gen/src/data/items.rs"), {
             const META_ITEM_STRUCT: &'static str = "pub struct CachedMetaItem {
                 pub jungle:&'static[ItemId],
                 pub top:&'static[ItemId],
@@ -410,7 +410,7 @@ async fn main() {
     let moved_rune_id_to_riot_id = rune_id_to_riot_id.clone();
     let moved_rune_id_enum = rune_id_enum.clone();
     tokio::task::spawn_blocking(move || {
-        fs::write(cwd!("tutorlolv2_generated/src/data/runes.rs"), {
+        fs::write(cwd!("tutorlolv2_gen/src/data/runes.rs"), {
             let mut s = String::with_capacity(
                 internal_runes.len()
                     + internal_runes_content.len()
@@ -468,9 +468,12 @@ async fn main() {
         .as_bytes(),
     );
 
-    let _ = fs::write(cwd!("tutorlolv2_exports/mega_block.txt"), &mega_block);
+    let _ = fs::write(
+        cwd!("tutorlolv2_exports/assets/mega_block.txt"),
+        &mega_block,
+    );
 
-    let mega_block_compressed = compress_bytes!(mega_block.as_bytes());
+    let mega_block_compressed = encode_brotli_11(mega_block.as_bytes());
 
     bytes.extend_from_slice(
         format!(
@@ -481,5 +484,5 @@ async fn main() {
         .as_bytes(),
     );
 
-    let _ = fs::write(cwd!("tutorlolv2_exports/export_code.rs"), bytes);
+    let _ = fs::write(cwd!("tutorlolv2_exports/src/export_code.rs"), bytes);
 }

@@ -52,6 +52,6 @@ pub fn generate_rune_html() {
 </html>"#,
         );
 
-        std::fs::write(format!("html/runes/{:?}.html", rune_id), html).unwrap();
+        std::fs::write(format!("html/runes/{:?}.zst", rune_id), html.finish()).unwrap();
     }
 }

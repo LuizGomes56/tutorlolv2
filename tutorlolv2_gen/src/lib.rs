@@ -3,4 +3,4 @@ pub mod data;
 
 pub use cache::*;
 pub use data::*;
-pub use tutorlolv2_shared::*;
+pub use tutorlolv2_types::*;

@@ -1,8 +1,9 @@
+#[allow(dead_code)]
 mod export_code;
 mod html_gen;
 
 use bincode::{Decode, Encode};
-use tutorlolv2_shared::*;
+use tutorlolv2_types::*;
 
 pub use html_gen::*;
 
@@ -14,6 +15,7 @@ macro_rules! impl_url {
             pub struct Url;
 
             impl Url {
+                pub const BASE: &'static str = "http://localhost:8082";
                 $(
                     pub const [<$kind:upper>]: &'static str =
                         concat!("http://localhost:8082/img/", stringify!($kind));

@@ -1,4 +1,4 @@
-use tutorlolv2_generated::Attrs;
+use tutorlolv2_gen::Attrs;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 

@@ -3,11 +3,11 @@ use crate::Transmutable;
 use crate::model::{SIZE_ABILITIES, SIZE_ITEMS_EXPECTED, base::*};
 use smallvec::SmallVec;
 use tinyset::SetU32;
-use tutorlolv2_generated::{
+use tutorlolv2_gen::{
     AbilityLike, AdaptativeType, AttackType, Attrs, CachedChampion, CachedItem, ChampionId,
     DamageExpression, DamageType, EvalContext, ItemId, RuneId, zero,
 };
-use tutorlolv2_generated::{
+use tutorlolv2_gen::{
     BASIC_ATTACK, CRITICAL_STRIKE, INTERNAL_ITEMS, INTERNAL_RUNES, SIMULATED_ITEMS,
 };
 
