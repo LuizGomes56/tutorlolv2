@@ -1,17 +1,10 @@
 use crate::{
     init::ENV_CONFIG,
     model::riot::{RiotCdnChampion, RiotCdnRune},
-    setup::essentials::{
-        api::riot_base_url,
-        helpers::{extract_file_name, read_json_file, write_to_file},
-    },
+    setup::essentials::{api::ddragon_base_url, ext::FilePathExt},
 };
 use reqwest::Client;
-use std::{
-    collections::HashMap,
-    fs::{self, ReadDir},
-    path::Path,
-};
+use std::{collections::HashMap, fs, path::Path};
 
 #[macro_export]
 macro_rules! target_dir {
@@ -26,14 +19,14 @@ macro_rules! target_dir {
 #[tutorlolv2_macros::trace_time]
 pub async fn img_download_instances(client: Client) {
     let files = fs::read_dir("cache/riot/champions").unwrap();
-    let base_uri = riot_base_url();
+    let base_uri = ddragon_base_url();
     for file in files {
         let outer_base_uri = base_uri.clone();
         let outer_client = client.clone();
 
         let path_buf = file.unwrap().path();
         let path_name = path_buf.to_str().unwrap();
-        let outer_result: RiotCdnChampion = read_json_file::<RiotCdnChampion>(path_name).unwrap();
+        let outer_result = path_name.read_json::<RiotCdnChampion>().unwrap();
         let spells = outer_result.spells;
         let mut inner_futures = Vec::new();
         let champion_dir = target_dir!("champions");
@@ -55,7 +48,8 @@ pub async fn img_download_instances(client: Client) {
             );
             if let Ok(champion_response) = client.get(&champion_icon_url).send().await {
                 let champion_bytes = champion_response.bytes().await.unwrap();
-                let _ = write_to_file(&champion_file_path, &champion_bytes)
+                let _ = champion_file_path
+                    .write_to_file(&champion_bytes)
                     .map_err(|e| println!("[ERROR] fn[img_download_instances]: {:#?}", e));
             }
         }
@@ -77,7 +71,8 @@ pub async fn img_download_instances(client: Client) {
             );
             if let Ok(passive_response) = outer_client.get(&passive_icon_url).send().await {
                 let passive_bytes = passive_response.bytes().await.unwrap();
-                let _ = write_to_file(&passive_file_path, &passive_bytes)
+                let _ = passive_file_path
+                    .write_to_file(&passive_bytes)
                     .map_err(|e| println!("[ERROR] fn[img_download_instances]: {:#?}", e));
             };
         }
@@ -106,7 +101,8 @@ pub async fn img_download_instances(client: Client) {
                     println!("[REQUESTING] fn[img_download_instances]: [Spell] {}", &url);
                     if let Ok(spell_response) = inner_client.get(&url).send().await {
                         let spell_bytes = spell_response.bytes().await.unwrap();
-                        let _ = write_to_file(&spell_file_path, &spell_bytes)
+                        let _ = spell_file_path
+                            .write_to_file(&spell_bytes)
                             .map_err(|e| println!("[ERROR] fn[img_download_instances]: {:#?}", e));
                     }
                 }
@@ -120,12 +116,12 @@ pub async fn img_download_instances(client: Client) {
 
 #[tutorlolv2_macros::trace_time]
 pub async fn img_download_arts(client: Client) {
-    let files: ReadDir = fs::read_dir("cache/riot/champions").unwrap();
+    let files = fs::read_dir("cache/riot/champions").unwrap();
     let base_uri = format!("{}/cdn", ENV_CONFIG.dd_dragon_endpoint);
     for file in files {
         let path_buf = file.unwrap().path();
         let path_name = path_buf.to_str().unwrap();
-        let outer_result: RiotCdnChampion = read_json_file::<RiotCdnChampion>(path_name).unwrap();
+        let outer_result = path_name.read_json::<RiotCdnChampion>().unwrap();
         let skins = outer_result.skins;
         let mut inner_futures = Vec::new();
         for skin in skins.into_iter() {
@@ -133,7 +129,7 @@ pub async fn img_download_arts(client: Client) {
             let inner_base_uri = base_uri.clone();
             let inner_client = client.clone();
             inner_futures.push(tokio::spawn(async move {
-                let label_vec: [&'static str; 2] = ["centered", "splash"];
+                let label_vec = ["centered", "splash"];
                 for label in label_vec {
                     let skin_number = skin.num;
                     let url = format!(
@@ -152,7 +148,8 @@ pub async fn img_download_arts(client: Client) {
                         println!("[REQUESTING] fn[img_download_arts]: [Arts] {}", &url);
                         if let Ok(label_response) = inner_client.get(&url).send().await {
                             let label_bytes = label_response.bytes().await.unwrap();
-                            let _ = write_to_file(&final_name, &label_bytes)
+                            let _ = final_name
+                                .write_to_file(&label_bytes)
                                 .map_err(|e| println!("[ERROR] fn[img_download_arts]: {:#?}", e));
                         }
                     }
@@ -167,7 +164,9 @@ pub async fn img_download_arts(client: Client) {
 
 #[tutorlolv2_macros::trace_time]
 pub async fn img_download_runes(client: Client) {
-    let runes_data = read_json_file::<Vec<RiotCdnRune>>("cache/riot/runes.json").unwrap();
+    let runes_data = "cache/riot/runes.json"
+        .read_json::<Vec<RiotCdnRune>>()
+        .unwrap();
     let mut rune_futures = Vec::new();
     let mut runes_map = HashMap::<usize, String>::default();
     for value in runes_data {
@@ -193,7 +192,8 @@ pub async fn img_download_runes(client: Client) {
                 println!("[REQUESTING] fn[img_download_runes]: [Rune] {}", &url);
                 if let Ok(rune_response) = cloned_client.get(&url).send().await {
                     let rune_bytes = rune_response.bytes().await.unwrap();
-                    let _ = write_to_file(&rune_file_path, &rune_bytes)
+                    let _ = rune_file_path
+                        .write_to_file(&rune_bytes)
                         .map_err(|e| println!("[ERROR] fn[img_download_runes]: {:#?}", e));
                 };
             }
@@ -207,15 +207,15 @@ pub async fn img_download_runes(client: Client) {
 #[tutorlolv2_macros::trace_time]
 pub async fn img_download_items(client: Client) {
     let files = fs::read_dir("cache/riot/items").unwrap();
-    let base_uri = riot_base_url();
+    let base_uri = ddragon_base_url();
     let mut item_futures = Vec::new();
     for file in files {
         let cloned_base_uri = base_uri.clone();
         let cloned_client = client.clone();
         item_futures.push(tokio::spawn(async move {
             let path_buf = file.unwrap().path();
-            let item_id = extract_file_name(&path_buf);
-            let item_dir: &'static str = target_dir!("items");
+            let item_id = path_buf.json_file_name();
+            let item_dir = target_dir!("items");
             let item_file_name = format!("{}.png", item_id);
             let item_file_path = format!("{}/{}", item_dir, item_file_name);
             if Path::new(&item_file_path).exists() {
@@ -231,7 +231,8 @@ pub async fn img_download_items(client: Client) {
                 );
                 if let Ok(item_response) = cloned_client.get(&item_icon_url).send().await {
                     let item_bytes = item_response.bytes().await.unwrap();
-                    let _ = write_to_file(&item_file_path, &item_bytes)
+                    let _ = item_file_path
+                        .write_to_file(&item_bytes)
                         .map_err(|e| println!("[ERROR] fn[img_download_items]: {:#?}", e));
                 };
             }

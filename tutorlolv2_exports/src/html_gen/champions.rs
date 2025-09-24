@@ -8,6 +8,7 @@ use tutorlolv2_fmt::{highlight_json, prettify_json};
 pub fn generate_champion_html() {
     for i in 0..CHAMPION_FORMULAS.len() {
         let champion_id = unsafe { std::mem::transmute::<_, ChampionId>(i as u8) };
+        println!("Generating {champion_id:#?} html");
         let mut html = String::new();
 
         html.push_str(&format!(

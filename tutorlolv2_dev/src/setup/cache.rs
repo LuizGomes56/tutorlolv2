@@ -5,7 +5,7 @@ use crate::{
     setup::{
         essentials::{
             api::{CdnEndpoint, fetch_cdn_api, fetch_languages, fetch_riot_api},
-            helpers::write_to_file,
+            ext::FilePathExt,
         },
         generators::champions::{order_cdn_champion_effects, order_cdn_item_effects},
     },
@@ -32,7 +32,7 @@ pub async fn update_cdn_cache(client: Client, instance: CdnEndpoint) {
                 let folder_name = format!("cache/cdn/{}", instance);
                 let path_name = format!("{}/{}.json", folder_name, key);
                 let strval = serde_json::to_string_pretty(&value).unwrap();
-                write_to_file(&path_name, strval.as_bytes()).unwrap();
+                path_name.write_to_file(strval.as_bytes()).unwrap();
             }
         }};
     }
@@ -64,9 +64,7 @@ pub async fn update_riot_cache(client: Client) {
 
         champions_futures.push(tokio::spawn(async move {
             let _permit = semaphore.acquire().await.unwrap();
-
             let path_name = format!("cache/riot/champions/{}.json", champion_id);
-
             let champion_data = fetch_riot_api::<RiotCdnStandard>(
                 client,
                 &format!("champion/{}", champion_id),
@@ -79,7 +77,7 @@ pub async fn update_riot_cache(client: Client) {
             let real_data = data_field.get(&champion_id).unwrap();
 
             let json_str = serde_json::to_string(real_data).unwrap();
-            write_to_file(&path_name, json_str.as_bytes()).unwrap();
+            path_name.write_to_file(json_str.as_bytes()).unwrap();
         }));
     }
 
@@ -93,7 +91,9 @@ pub async fn update_riot_cache(client: Client) {
     }
 
     let champions_pretty = serde_json::to_string_pretty(&champions_json).unwrap();
-    write_to_file("cache/riot/champions.json", champions_pretty.as_bytes()).unwrap();
+    "cache/riot/champions.json"
+        .write_to_file(champions_pretty.as_bytes())
+        .unwrap();
 
     let items_json =
         fetch_riot_api::<RiotCdnStandard>(client.clone(), "item", &ENV_CONFIG.lol_language)
@@ -106,7 +106,7 @@ pub async fn update_riot_cache(client: Client) {
         items_futures.push(task::spawn_blocking(move || {
             let path_name = format!("cache/riot/items/{}.json", item_id);
             let json_str = serde_json::to_string(&item_data).unwrap();
-            write_to_file(&path_name, json_str.as_bytes()).unwrap();
+            path_name.write_to_file(json_str.as_bytes()).unwrap();
         }));
     }
 
@@ -120,18 +120,19 @@ pub async fn update_riot_cache(client: Client) {
     }
 
     let items_pretty = serde_json::to_string_pretty(&items_json).unwrap();
-    write_to_file("cache/riot/items.json", items_pretty.as_bytes()).unwrap();
+    "cache/riot/items.json"
+        .write_to_file(items_pretty.as_bytes())
+        .unwrap();
 
     let runes_json =
         fetch_riot_api::<Value>(client.clone(), "runesReforged", &ENV_CONFIG.lol_language)
             .await
             .unwrap();
     let runes_pretty = serde_json::to_string_pretty(&runes_json).unwrap();
-    write_to_file("cache/riot/runes.json", runes_pretty.as_bytes()).unwrap();
+    "cache/riot/runes.json"
+        .write_to_file(runes_pretty.as_bytes())
+        .unwrap();
     update_language_cache(client.clone()).await;
-
-    // let champions_json_raw = std::fs::read_to_string("cache/riot/champions.json").unwrap();
-    // let champions_json = serde_json::from_str::<RiotCdnStandard>(&champions_json_raw).unwrap();
 
     if let Ok(raw_languages) = std::fs::read_to_string("internal/languages.json") {
         let mut languages_data = HashMap::<String, Vec<String>>::from_iter(
@@ -186,11 +187,10 @@ pub async fn update_riot_cache(client: Client) {
         }
 
         let languages_pretty = serde_json::to_string_pretty(&languages_data).unwrap();
-        write_to_file(
-            "internal/champion_languages.json",
-            languages_pretty.as_bytes(),
-        )
-        .unwrap();
+
+        "internal/champion_languages.json"
+            .write_to_file(languages_pretty.as_bytes())
+            .unwrap();
     }
 }
 
@@ -200,6 +200,7 @@ pub async fn update_language_cache(client: Client) {
         .await
         .expect("Failed to fetch languages");
     let lang_pretty = serde_json::to_string(&lang_json).expect("Failed to serialize languages");
-    write_to_file("internal/languages.json", lang_pretty.as_bytes())
+    "internal/languages.json"
+        .write_to_file(lang_pretty.as_bytes())
         .expect("Failed to write languages");
 }

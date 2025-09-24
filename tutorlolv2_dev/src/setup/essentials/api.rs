@@ -4,7 +4,7 @@ use serde::de::DeserializeOwned;
 use std::fmt::Display;
 
 /// DDragon base URL
-pub fn riot_base_url() -> String {
+pub fn ddragon_base_url() -> String {
     format!(
         "{}/cdn/{}",
         ENV_CONFIG.dd_dragon_endpoint, ENV_CONFIG.lol_version
@@ -48,11 +48,15 @@ pub async fn fetch_riot_api<T: DeserializeOwned>(
     path_name: &str,
     language: &str,
 ) -> Result<T, Box<dyn std::error::Error>> {
-    let url = format!("{}/data/{}/{}.json", riot_base_url(), language, path_name);
+    let url = format!(
+        "{}/data/{}/{}.json",
+        ddragon_base_url(),
+        language,
+        path_name
+    );
 
     let res = client.get(&url).send().await?;
-
-    let data: T = res.json::<T>().await?;
+    let data = res.json::<T>().await?;
     Ok(data)
 }
 

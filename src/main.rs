@@ -39,7 +39,8 @@ fn api_scope() -> impl HttpServiceFactory + 'static {
                     .service(setup_folders)
                     .service(setup_project)
                     .service(setup_items)
-                    .service(setup_runes),
+                    .service(setup_runes)
+                    .service(setup_docs),
             )
             .service(
                 scope("/update")
@@ -108,10 +109,6 @@ async fn main() -> std::io::Result<()> {
             .service(api_scope())
             .service(
                 scope("")
-                    .wrap(
-                        DefaultHeaders::new()
-                            .add((header::CACHE_CONTROL, "public, max-age=31536000, immutable")),
-                    )
                     .service(
                         scope("/docs")
                             .service(serve_champions_docs)
@@ -120,6 +117,10 @@ async fn main() -> std::io::Result<()> {
                     )
                     .service(
                         scope("/img")
+                            .wrap(DefaultHeaders::new().add((
+                                header::CACHE_CONTROL,
+                                "public, max-age=31536000, immutable",
+                            )))
                             .service(serve_dyn_centered())
                             .service(serve_dyn_splash())
                             .service(serve_dyn_other())

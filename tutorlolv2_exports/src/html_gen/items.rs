@@ -8,6 +8,7 @@ use tutorlolv2_fmt::{highlight_json, prettify_json};
 pub fn generate_item_html() {
     for i in 0..ITEM_FORMULAS.len() {
         let item_id = unsafe { std::mem::transmute::<_, ItemId>(i as u16) };
+        println!("Generating {item_id:#?} html");
         let mut html = String::new();
 
         html.push_str(&format!(

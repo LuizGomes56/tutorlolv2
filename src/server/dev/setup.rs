@@ -53,10 +53,6 @@ pub async fn setup_project(state: Data<AppState>) -> impl Responder {
             let _ = setup_internal_champions();
         });
 
-        let _ = spawn_blocking(generate_champion_html).await.ok();
-        let _ = spawn_blocking(generate_item_html).await.ok();
-        let _ = spawn_blocking(generate_rune_html).await.ok();
-
         // There's no need to await for image download conclusion
         // They are independent and may run in parallel
         spawn(img_download_arts(client.clone()));
@@ -66,6 +62,14 @@ pub async fn setup_project(state: Data<AppState>) -> impl Responder {
     });
 
     HttpResponse::Ok().body("Project setup started. Expected time to complete: 3-5 minutes")
+}
+
+#[get("/docs")]
+pub async fn setup_docs() -> impl Responder {
+    spawn_blocking(generate_champion_html);
+    spawn_blocking(generate_item_html);
+    spawn_blocking(generate_rune_html);
+    HttpResponse::Ok().body("Docs setup started. Expected time to complete: less than 1 minute")
 }
 
 #[get("/folders")]

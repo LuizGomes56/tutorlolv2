@@ -349,15 +349,13 @@ pub fn item_generator(args: TokenStream, input: TokenStream) -> TokenStream {
             .last()
             .unwrap();
 
-        let cdn_value = read_json_file::<CdnItem>(&format!("cache/cdn/items/{}.json", id))?;
-        let mut cur_value = read_json_file::<Item>(&format!("internal/items/{}.json", id))?;
+        let cdn_value = format!("cache/cdn/items/{}.json", id).read_json::<CdnItem>()?;
+        let mut cur_value = format!("internal/items/{}.json", id).read_json::<Item>()?;
 
         macro_rules! save_change {
-            () => {{
-                let path = format!("internal/items/{}.json", id);
-                let json = serde_json::to_string_pretty(&cur_value).unwrap();
-                write_to_file(&path, json.as_bytes())
-            }};
+            () => {
+                format!("internal/items/{}.json", id).write_to_file(serde_json::to_string_pretty(&cur_value).unwrap().as_bytes())
+            };
         };
 
         macro_rules! cap_parens {
