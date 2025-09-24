@@ -19,4 +19,16 @@ mod tests {
         items.join().unwrap();
         runes.join().unwrap();
     }
+
+    #[test]
+    fn __update() {
+        // cargo run -r
+        // Wait compilation, then wait 30 seconds for server to start
+        // call `localhost:8082/api/setup/project`
+        // wait conclusion by monitoring stdio until no message is sent for more than 30 seconds
+        // call `localhost:8082/api/images/compress` if necessary
+        // when compression is done and do `cd tutorlolv2_build && cargo run -r`
+        // wait process completion (when it exits)
+        // call `localhost:8082/api/setup/docs`
+    }
 }

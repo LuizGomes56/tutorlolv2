@@ -49,45 +49,44 @@ pub async fn download_all(state: Data<AppState>) -> impl Responder {
     download_image!(@inner "Started process")
 }
 
-macro_rules! convert_folder {
-    ($src:literal, $folder:expr) => {{
-        match tutorlolv2_avif::convert_folder_avif(&format!("{}/{}", $src, $folder)).await {
-            Ok(_) => println!("Conversão de '{}' concluída", $folder),
-            Err(e) => eprintln!("Erro na conversão de '{}': {:#?}", $folder, e),
-        }
-    }};
+pub async fn convert_folder(source: &str, folder: &str) -> Result<(), Box<dyn std::error::Error>> {
+    match tutorlolv2_avif::convert_folder_avif(&format!("{}/{}", source, folder)).await {
+        Ok(_) => println!("Conversão de '{}' concluída", folder),
+        Err(e) => eprintln!("Erro na conversão de '{}': {:#?}", folder, e),
+    }
+    Ok(())
 }
+
+pub const SPRITE_FOLDERS: [&'static str; 3] = ["abilities", "champions", "items"];
+pub const IMG_FOLDERS: [&'static str; 8] = [
+    "abilities",
+    "centered",
+    "champions",
+    "items",
+    "other",
+    "runes",
+    "splash",
+    "stats",
+];
 
 #[get("/sprite")]
 pub async fn generate_sprites() -> impl Responder {
     println!("{:#?}", generate_spritesheet());
     concat_sprite_jsons();
     let _ = clean_sprite_folder();
-    let folders = ["abilities", "champions", "items"];
+    img_convert_avif(SPRITE_FOLDERS).await;
+    download_image!(@inner "Started process")
+}
+
+pub async fn img_convert_avif<const N: usize>(folders: [&'static str; N]) {
     for folder in folders {
         println!("Converting folder: {}", folder);
-        convert_folder!("sprite", folder);
+        let _ = convert_folder("raw_img", folder).await;
     }
-    download_image!(@inner "Started process")
 }
 
 #[get("/compress")]
 pub async fn compress_images() -> impl Responder {
-    let folders = [
-        "abilities",
-        "centered",
-        "champions",
-        "items",
-        "other",
-        "runes",
-        "splash",
-        "stats",
-    ];
-
-    for folder in folders {
-        println!("Converting folder: {}", folder);
-        convert_folder!("raw_img", folder);
-    }
-
+    img_convert_avif(IMG_FOLDERS).await;
     HttpResponse::Ok().body("Executed fn[compress_images]")
 }

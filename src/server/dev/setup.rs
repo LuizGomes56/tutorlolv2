@@ -1,9 +1,13 @@
-use crate::{AppState, dev_response};
+use crate::{
+    AppState, dev_response,
+    server::dev::images::{IMG_FOLDERS, img_convert_avif},
+};
 use actix_web::{
     HttpResponse, Responder, get,
-    rt::{spawn, task::spawn_blocking},
+    rt::{spawn, task::spawn_blocking, time::sleep},
     web::Data,
 };
+use std::time::Duration;
 use tutorlolv2_dev::setup::{
     cache::*,
     essentials::{api::CdnEndpoint, images::*},
@@ -59,6 +63,9 @@ pub async fn setup_project(state: Data<AppState>) -> impl Responder {
         spawn(img_download_instances(client.clone()));
         spawn(img_download_items(client.clone()));
         spawn(img_download_runes(client));
+
+        sleep(Duration::from_secs(30)).await;
+        spawn(img_convert_avif(IMG_FOLDERS));
     });
 
     HttpResponse::Ok().body("Project setup started. Expected time to complete: 3-5 minutes")
