@@ -9,8 +9,8 @@ pub fn extract_range_values(input: &str) -> Option<(f64, f64)> {
     let first = caps.get(1)?.as_str().parse::<f64>().ok()?;
     let second = caps.get(3)?.as_str().parse::<f64>().ok()?;
 
-    let first_is_percent: bool = caps.get(2).is_some();
-    let second_is_percent: bool = caps.get(4).is_some();
+    let first_is_percent = caps.get(2).is_some();
+    let second_is_percent = caps.get(4).is_some();
 
     let denom1 = if first_is_percent { 100.0 } else { 1.0 };
     let denom2 = if second_is_percent { 100.0 } else { 1.0 };
@@ -41,7 +41,7 @@ pub fn extract_scaled_values(input: &str) -> String {
     }
     result
         .iter()
-        .map(|value: &String| replace_keys(value))
+        .map(|value| replace_keys(value))
         .collect::<Vec<String>>()
         .join(" + ")
 }
@@ -65,7 +65,7 @@ pub fn remove_parenthesized_additions(input: &str) -> String {
 
 /// Replaces common keys found in the API with the corresponding ones used internally
 pub fn replace_keys(s: &str) -> String {
-    let replacements: [(&'static str, &'static str); 40] = [
+    let replacements = [
         ("per 100", "0.01 *"),
         ("of damage dealt", "100.0"),
         ("of damage stored", "100.0"),
@@ -110,9 +110,7 @@ pub fn replace_keys(s: &str) -> String {
 
     replacements
         .iter()
-        .fold(s.to_string(), |acc: String, (old, new)| {
-            acc.replace(old, new)
-        })
+        .fold(s.to_string(), |acc, (old, new)| acc.replace(old, new))
 }
 
 pub fn extract_damagelike_expr(input: &str) -> String {

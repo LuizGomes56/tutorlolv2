@@ -1,7 +1,10 @@
+use tutorlolv2_fmt::{encode_zstd_9, minify_html};
+
 pub const BASE_CSS: &'static str = include_str!("../../assets/champions.css");
 
 pub trait HtmlExt {
     fn code_section(&mut self, comment: &str, code: &str);
+    fn finish(&mut self) -> Vec<u8>;
 }
 
 impl HtmlExt for String {
@@ -14,5 +17,9 @@ impl HtmlExt for String {
             comment,
             code
         ));
+    }
+
+    fn finish(&mut self) -> Vec<u8> {
+        encode_zstd_9(&minify_html(self))
     }
 }

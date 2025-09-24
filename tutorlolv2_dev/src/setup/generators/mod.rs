@@ -6,6 +6,6 @@ pub mod runes;
 
 use crate::{
     model::{champions::*, items::*},
-    setup::{essentials::helpers::*, generators::generator_runner::try_run_generator},
+    setup::{essentials::ext::*, generators::generator_runner::try_run_generator},
 };
 use extractors::*;

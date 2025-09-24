@@ -4,15 +4,12 @@ use crate::{
         items::{CdnItem, Item, PartialStats},
         riot::RiotCdnItem,
     },
-    setup::{
-        essentials::helpers::{extract_file_name, read_json_file, write_to_file},
-        generators::champions::run_generator_file,
-    },
+    setup::{essentials::ext::FilePathExt, generators::champions::run_generator_file},
 };
 use regex::Regex;
 use serde_json::Value;
 use std::{collections::HashMap, fs, path::Path};
-use tutorlolv2_generated::Attrs;
+use tutorlolv2_gen::Attrs;
 
 type MetaItemValue<T> = HashMap<String, HashMap<String, Vec<T>>>;
 
@@ -20,6 +17,14 @@ type MetaItemValue<T> = HashMap<String, HashMap<String, Vec<T>>>;
 /// The program is likely to panic when an update is called.
 pub fn setup_project_folders() {
     for dir in [
+        "html",
+        "html/champions",
+        "html/items",
+        "html/runes",
+        "sprite",
+        "sprite/abilities",
+        "sprite/champions",
+        "sprite/runes",
         "img",
         "img/champions",
         "img/runes",
@@ -91,7 +96,7 @@ pub fn setup_internal_items() {
         let entry = file.unwrap();
         let path_buf = entry.path();
         let path_str = path_buf.to_str().unwrap();
-        let cdn_item = read_json_file::<CdnItem>(path_str).unwrap();
+        let cdn_item = path_str.read_json::<CdnItem>().unwrap();
         let stats = &cdn_item.stats;
         let mut item_stats = PartialStats::default();
 
@@ -134,11 +139,9 @@ pub fn setup_internal_items() {
             purchasable: cdn_item.shop.purchasable,
         };
         let json = serde_json::to_string(&result).unwrap();
-        write_to_file(
-            &format!("internal/items/{}.json", cdn_item.id),
-            json.as_bytes(),
-        )
-        .unwrap();
+        format!("internal/items/{}.json", cdn_item.id)
+            .write_to_file(json.as_bytes())
+            .unwrap();
     }
 }
 
@@ -146,7 +149,7 @@ pub fn setup_internal_items() {
 // #![manual_impl]
 // #![unstable] "05/24/2024" | "14.5"
 pub fn setup_internal_runes() {
-    write_to_file("internal/runes.json", 
+    "internal/runes.json".write_to_file( 
 br#"{
     "8005": {
         "name": "Press The Attack",
@@ -238,7 +241,7 @@ pub fn setup_damaging_items() {
         let path_buf = entry.path();
         let path_str = path_buf.to_str().unwrap();
 
-        let result: CdnItem = read_json_file(path_str).unwrap();
+        let result = path_str.read_json::<CdnItem>().unwrap();
 
         if !result.shop.purchasable {
             continue;
@@ -271,7 +274,9 @@ pub fn setup_damaging_items() {
 
     let json = serde_json::to_string_pretty(&is_damaging).unwrap();
 
-    write_to_file("internal/damaging_items.json", json.as_bytes()).unwrap();
+    "internal/damaging_items.json"
+        .write_to_file(json.as_bytes())
+        .unwrap();
 }
 
 /// Uses champion display name and converts to their respective ids, saving to internal
@@ -279,22 +284,20 @@ pub fn setup_damaging_items() {
 pub fn setup_champion_names() {
     let files = fs::read_dir("cache/cdn/champions").unwrap();
 
-    let mut map: HashMap<String, String> = HashMap::<String, String>::default();
+    let mut map = HashMap::<String, String>::default();
 
     for file in files {
         let path_buf = file.unwrap().path();
-
         let path_str = path_buf.to_str().unwrap();
-
-        let result: CdnChampion = read_json_file(path_str).unwrap();
-
-        let name = extract_file_name(&path_buf);
+        let result = path_str.read_json::<CdnChampion>().unwrap();
+        let name = path_buf.json_file_name();
         map.insert(result.name, name.to_string());
     }
 
     let json = serde_json::to_string(&map).unwrap();
-
-    write_to_file("internal/champion_names.json", json.as_bytes()).unwrap();
+    "internal/champion_names.json"
+        .write_to_file(json.as_bytes())
+        .unwrap();
 }
 
 /// When MetaItems are recovered, each item is written in the array with its name instead of ID
@@ -302,16 +305,18 @@ pub fn setup_champion_names() {
 /// If one's ID is not found, it will remain unchanged
 #[tutorlolv2_macros::trace_time]
 pub fn setup_meta_items() {
-    let mut meta_items: MetaItemValue<Value> = read_json_file("internal/meta_items.json").unwrap();
+    let mut meta_items = "internal/meta_items.json"
+        .read_json::<MetaItemValue<Value>>()
+        .unwrap();
     let items_folder = fs::read_dir("internal/items").unwrap();
 
     for entry in items_folder {
         let entry = entry.unwrap();
         let path = entry.path();
-        let file_name = extract_file_name(&path);
+        let file_name = path.json_file_name();
         let item_id = file_name.parse::<usize>().unwrap();
         let path_str = path.to_str().unwrap();
-        let internal_item = read_json_file::<Item>(path_str).unwrap();
+        let internal_item = path_str.read_json::<Item>().unwrap();
 
         for (_, positions) in meta_items.iter_mut() {
             for (_, items) in positions.iter_mut() {
@@ -327,8 +332,9 @@ pub fn setup_meta_items() {
     }
 
     let json = serde_json::to_string_pretty(&meta_items).unwrap();
-
-    write_to_file("internal/meta_items.json", json.as_bytes()).unwrap();
+    "internal/meta_items.json"
+        .write_to_file(json.as_bytes())
+        .unwrap();
 }
 
 /// `internal/items` folder must exist, as well as dir `cache/riot/items`. Takes every file
@@ -341,7 +347,7 @@ pub async fn prettify_internal_items() {
     for file in files {
         let file_entry = file.unwrap();
         let path_buf = file_entry.path();
-        let name = extract_file_name(&path_buf);
+        let name = path_buf.json_file_name();
         let path_name = format!("cache/riot/items/{}.json", name);
         let internal_path = format!("internal/items/{}.json", name);
 
@@ -352,64 +358,42 @@ pub async fn prettify_internal_items() {
             continue;
         }
 
-        let mut current_content = read_json_file::<Item>(&internal_path).unwrap();
+        let mut current_content = internal_path.read_json::<Item>().unwrap();
         current_content.prettified_stats = prettified_stats;
 
         let json = serde_json::to_string(&current_content).unwrap();
 
-        write_to_file(&internal_path, json.as_bytes()).unwrap();
+        internal_path.write_to_file(json.as_bytes()).unwrap();
     }
 }
 
 /// Returns the value that will be added to key `prettified_stats` for each item.
 /// Depends on Riot API `item.json` and requires manual maintainance if a new XML tag is added
 fn pretiffy_items(path_name: &str) -> HashMap<String, Value> {
-    let data: RiotCdnItem = match read_json_file(path_name) {
+    let data = match path_name.read_json::<RiotCdnItem>() {
         Ok(data) => data,
         Err(e) => {
             println!("Failed to read {}: {:#?}", path_name, e);
             return HashMap::default();
         }
     };
-    let mut result: HashMap<_, Value> = HashMap::default();
+    let mut result = HashMap::<_, Value>::default();
 
     // #![manual_impl]
-    let tag_regex = match Regex::new(
+    let tag_regex = Regex::new(
         r#"<(attention|buffedStat|nerfedStat|ornnBonus)>(.*?)<\/(attention|buffedStat|nerfedStat|ornnBonus)>"#,
-    ) {
-        Ok(value) => value,
-        Err(e) => {
-            println!("[tag_regex] Error on Regex Creation: {:#?}", e);
-            return HashMap::default();
-        }
-    };
-    let line_regex = match Regex::new(r"(.*?)<br>") {
-        Ok(value) => value,
-        Err(e) => {
-            println!("[line_regex] Error on Regex Creation: {:#?}", e);
-            return HashMap::default();
-        }
-    };
-    let percent_prefix_regex = match Regex::new(r"^\s*\d+\s*%?\s*") {
-        Ok(value) => value,
-        Err(e) => {
-            println!("[percent_prefix_regex] Error on Regex Creation: {:#?}", e);
-            return HashMap::default();
-        }
-    };
-    let tag_strip_regex = match Regex::new(r"<\/?[^>]+(>|$)") {
-        Ok(value) => value,
-        Err(e) => {
-            println!("[tag_strip_regex] Error on Regex Creation: {:#?}", e);
-            return HashMap::default();
-        }
-    };
+    ).unwrap();
+    let line_regex = Regex::new(r"(.*?)<br>").unwrap();
+    let percent_prefix_regex = Regex::new(r"^\s*\d+\s*%?\s*").unwrap();
+    let tag_strip_regex = Regex::new(r"<\/?[^>]+(>|$)").unwrap();
 
-    let u: [&'static str; 4] = ["buffedStat", "nerfedStat", "attention", "ornnBonus"];
-    let k: [&'static str; 2] = ["Cooldown", "Healing"];
+    let u = ["buffedStat", "nerfedStat", "attention", "ornnBonus"];
+    let k = ["Cooldown", "Healing"];
 
-    let lines: Vec<_> = line_regex.captures_iter(&data.description).collect();
-    let mut line_index: usize = 0;
+    let lines = line_regex
+        .captures_iter(&data.description)
+        .collect::<Vec<_>>();
+    let mut line_index = 0usize;
 
     for caps in tag_regex.captures_iter(&data.description) {
         let t = &caps[1];

@@ -1,6 +1,6 @@
 use bincode::{Decode, Encode};
 use serde::{Deserialize, Serialize};
-use tutorlolv2_shared::*;
+use tutorlolv2_types::*;
 
 #[derive(Default)]
 pub struct EvalContext {

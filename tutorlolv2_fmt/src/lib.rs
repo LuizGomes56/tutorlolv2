@@ -1,10 +1,28 @@
+use html5minify::minify;
 use serde::Serialize;
 use serde_json::{Serializer, Value, ser::PrettyFormatter};
 use std::{
-    io::Write,
+    io::{Cursor, Write},
     process::{Command, Stdio},
 };
 use synoptic::{Highlighter, TokOpt};
+
+pub fn minify_html(html: &mut str) -> Vec<u8> {
+    let mut result = Vec::new();
+    let mut html_cursor = Cursor::new(html.as_bytes());
+    minify(&mut html_cursor, &mut result).unwrap();
+    result
+}
+
+pub fn encode_zstd_9(bytes: &[u8]) -> Vec<u8> {
+    zstd::encode_all(bytes, 9).unwrap()
+}
+
+pub fn encode_brotli_11(bytes: &[u8]) -> Vec<u8> {
+    let mut encoder = brotli2::write::BrotliEncoder::new(Vec::new(), 11);
+    encoder.write_all(bytes).unwrap();
+    encoder.finish().unwrap()
+}
 
 pub fn invoke_rustfmt(src: &str, width: usize) -> String {
     let mut child = Command::new("rustfmt")
@@ -89,7 +107,7 @@ pub fn highlight_json(input: &str) -> String {
 
     h.keyword("string", r#""(?:[^"\\]|\\.)*""#);
     h.keyword("number", r"-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?");
-    h.keyword("constant", r"\b(?:null|true|false)\b");
+    h.keyword("boolean", r"\b(?:null|true|false)\b");
 
     let lines = input.lines().map(str::to_string).collect::<Vec<String>>();
     h.run(&lines);

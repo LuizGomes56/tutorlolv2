@@ -5,6 +5,6 @@ edition = "2024"
 
 [dependencies]
 bincode = { version = "2.0.1", default-features = false, features = ["derive"] }
-tutorlolv2_shared = { path = "../tutorlolv2_shared" }
-tutorlolv2_parser = { path = "../tutorlolv2_parser" }
+tutorlolv2_types = { path = "../tutorlolv2_types" }
+tutorlolv2_fmt = { path = "../tutorlolv2_fmt" }
 paste = "1.0.15"

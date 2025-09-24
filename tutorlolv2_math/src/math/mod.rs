@@ -6,7 +6,7 @@ pub mod riot_formulas;
 use helpers::*;
 use riot_formulas::*;
 use std::{error::Error, fmt::Display};
-use tutorlolv2_generated::{ChampionId, ItemId, RuneId};
+use tutorlolv2_gen::{ChampionId, ItemId, RuneId};
 
 #[derive(Debug)]
 pub enum CalculationError {

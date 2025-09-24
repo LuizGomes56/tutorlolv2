@@ -4,8 +4,8 @@ use super::{
     functions::WrapSetU32,
 };
 use bincode::{Decode, Encode};
-use tutorlolv2_generated::{AbilityLike, AdaptativeType, ChampionId, ItemId, RuneId};
 use smallvec::SmallVec;
+use tutorlolv2_gen::{AbilityLike, AdaptativeType, ChampionId, ItemId, RuneId};
 
 #[derive(Encode)]
 pub struct OutputCurrentPlayer {

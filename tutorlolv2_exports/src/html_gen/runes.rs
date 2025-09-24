@@ -7,6 +7,7 @@ use crate::{
 pub fn generate_rune_html() {
     for i in 0..RUNE_FORMULAS.len() {
         let rune_id = unsafe { std::mem::transmute::<_, RuneId>(i as u8) };
+        println!("Generating {rune_id:#?} html");
         let mut html = String::new();
 
         html.push_str(&format!(
@@ -52,6 +53,6 @@ pub fn generate_rune_html() {
 </html>"#,
         );
 
-        std::fs::write(format!("html/runes/{:?}.html", rune_id), html).unwrap();
+        std::fs::write(format!("html/runes/{:?}.zst", rune_id), html.finish()).unwrap();
     }
 }

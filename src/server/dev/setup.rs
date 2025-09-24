@@ -1,28 +1,21 @@
-use crate::{AppState, dev_response};
+use crate::{
+    AppState, dev_response,
+    server::dev::images::{IMG_FOLDERS, img_convert_avif},
+};
 use actix_web::{
     HttpResponse, Responder, get,
-    rt::{spawn, task::spawn_blocking},
+    rt::{spawn, task::spawn_blocking, time::sleep},
     web::Data,
 };
+use std::time::Duration;
 use tutorlolv2_dev::setup::{
-    cache::{update_cdn_cache, update_riot_cache},
-    essentials::{
-        api::CdnEndpoint,
-        images::{
-            img_download_arts, img_download_instances, img_download_items, img_download_runes,
-        },
-    },
-    generators::{
-        champions::{GeneratorMode, create_generator_files},
-        items::assign_item_damages,
-    },
+    cache::*,
+    essentials::{api::CdnEndpoint, images::*},
+    generators::{champions::*, items::assign_item_damages},
     scraper::meta_items_scraper,
-    update::{
-        prettify_internal_items, setup_champion_names, setup_damaging_items,
-        setup_internal_champions, setup_internal_items, setup_internal_runes, setup_meta_items,
-        setup_project_folders,
-    },
+    update::*,
 };
+use tutorlolv2_exports::*;
 
 #[get("/project")]
 pub async fn setup_project(state: Data<AppState>) -> impl Responder {
@@ -70,9 +63,20 @@ pub async fn setup_project(state: Data<AppState>) -> impl Responder {
         spawn(img_download_instances(client.clone()));
         spawn(img_download_items(client.clone()));
         spawn(img_download_runes(client));
+
+        sleep(Duration::from_secs(30)).await;
+        spawn(img_convert_avif(IMG_FOLDERS));
     });
 
     HttpResponse::Ok().body("Project setup started. Expected time to complete: 3-5 minutes")
+}
+
+#[get("/docs")]
+pub async fn setup_docs() -> impl Responder {
+    spawn_blocking(generate_champion_html);
+    spawn_blocking(generate_item_html);
+    spawn_blocking(generate_rune_html);
+    HttpResponse::Ok().body("Docs setup started. Expected time to complete: less than 1 minute")
 }
 
 #[get("/folders")]

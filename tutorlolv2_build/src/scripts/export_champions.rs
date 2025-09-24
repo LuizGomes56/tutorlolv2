@@ -1,6 +1,6 @@
 use super::*;
 use std::cmp::Ordering;
-use tutorlolv2_shared::AbilityLike;
+use tutorlolv2_types::AbilityLike;
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]

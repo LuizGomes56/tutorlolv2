@@ -1,6 +1,6 @@
 use crate::model::base::Stats;
 use smallvec::SmallVec;
-use tutorlolv2_generated::{AdaptativeType, CachedChampionStats};
+use tutorlolv2_gen::{AdaptativeType, CachedChampionStats};
 
 pub struct MonsterResists {
     pub zero: (i8, i8),

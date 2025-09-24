@@ -4,7 +4,7 @@ use crate::setup::generators::{
     extractors::extract_scaled_values,
 };
 use std::collections::HashMap;
-pub use tutorlolv2_generated::{AbilityLike, AbilityName, Attrs, DamageType};
+pub use tutorlolv2_gen::{AbilityLike, AbilityName, Attrs, DamageType};
 
 pub mod aatrox;
 pub mod ahri;

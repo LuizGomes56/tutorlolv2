@@ -5,7 +5,7 @@ use super::{
 };
 use bincode::Encode;
 use smallvec::SmallVec;
-use tutorlolv2_generated::{
+use tutorlolv2_gen::{
     AbilityLike, AdaptativeType, ChampionId, DAMAGING_ITEMS, ItemId, Position, RuneId,
     SIMULATED_ITEMS,
 };
