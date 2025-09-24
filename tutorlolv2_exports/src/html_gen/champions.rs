@@ -4,6 +4,7 @@ use crate::{
     html::{BASE_CSS, HtmlExt},
 };
 use tutorlolv2_fmt::{highlight_json, prettify_json};
+use tutorlolv2_types::AbilityLike;
 
 pub fn generate_champion_html() {
     for i in 0..CHAMPION_FORMULAS.len() {
@@ -101,6 +102,23 @@ pub fn generate_champion_html() {
                 .get(offsets.0 as usize..offsets.1 as usize)
                 .unwrap()
         });
+
+        for (ability_like, offsets) in CHAMPION_ABILITIES[i] {
+            html.code_section(
+                match ability_like {
+                    AbilityLike::P(_) => ability_like.to_str_p(),
+                    AbilityLike::Q(_) => ability_like.to_str_q(),
+                    AbilityLike::W(_) => ability_like.to_str_w(),
+                    AbilityLike::E(_) => ability_like.to_str_e(),
+                    AbilityLike::R(_) => ability_like.to_str_r(),
+                },
+                {
+                    MEGA_BLOCK
+                        .get(offsets.0 as usize..offsets.1 as usize)
+                        .unwrap()
+                },
+            );
+        }
 
         html.code_section("Internal Generator Code", {
             let offsets = CHAMPION_GENERATOR[i];

@@ -35,7 +35,7 @@ pub fn generate_rune_html() {
         ));
 
         html.code_section("Rune Internal Code", {
-            let offsets = ITEM_FORMULAS[i];
+            let offsets = RUNE_FORMULAS[i];
             MEGA_BLOCK
                 .get(offsets.0 as usize..offsets.1 as usize)
                 .unwrap()

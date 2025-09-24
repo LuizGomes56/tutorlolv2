@@ -10,6 +10,7 @@ pub enum AbilityLike {
     R(AbilityName),
 }
 
+#[cfg(feature = "dev")]
 impl AbilityLike {
     pub fn from_str(s: &str) -> String {
         match s.chars().next() {
@@ -23,6 +24,7 @@ impl AbilityLike {
     }
 }
 
+#[cfg(feature = "dev")]
 macro_rules! impl_key {
     ($field:ident) => {
         paste::paste! {
@@ -126,10 +128,15 @@ macro_rules! impl_key {
     };
 }
 
+#[cfg(feature = "dev")]
 impl_key!(p);
+#[cfg(feature = "dev")]
 impl_key!(q);
+#[cfg(feature = "dev")]
 impl_key!(w);
+#[cfg(feature = "dev")]
 impl_key!(e);
+#[cfg(feature = "dev")]
 impl_key!(r);
 
 #[derive(Clone, Copy, Serialize, Encode)]
