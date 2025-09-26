@@ -39,7 +39,7 @@ pub async fn download_arts(state: Data<AppState>) -> impl Responder {
 pub async fn download_all(state: Data<AppState>) -> impl Responder {
     macro_rules! spawn_thread {
         ($func:ident) => {{
-            let _ = actix_web::rt::spawn($func(state.client.clone()));
+            actix_web::rt::spawn($func(state.client.clone()));
         }};
     }
     spawn_thread!(img_download_instances);
@@ -57,8 +57,8 @@ pub async fn convert_folder(source: &str, folder: &str) -> Result<(), Box<dyn st
     Ok(())
 }
 
-pub const SPRITE_FOLDERS: [&'static str; 3] = ["abilities", "champions", "items"];
-pub const IMG_FOLDERS: [&'static str; 8] = [
+pub const SPRITE_FOLDERS: [&str; 3] = ["abilities", "champions", "items"];
+pub const IMG_FOLDERS: [&str; 8] = [
     "abilities",
     "centered",
     "champions",

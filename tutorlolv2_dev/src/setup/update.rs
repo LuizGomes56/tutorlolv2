@@ -18,9 +18,15 @@ type MetaItemValue<T> = HashMap<String, HashMap<String, Vec<T>>>;
 pub fn setup_project_folders() {
     for dir in [
         "html",
-        "html/champions",
-        "html/items",
-        "html/runes",
+        "html/brotli/champions",
+        "html/brotli/items",
+        "html/brotli/runes",
+        "html/zstd/champions",
+        "html/zstd/items",
+        "html/zstd/runes",
+        "html/raw/champions",
+        "html/raw/items",
+        "html/raw/runes",
         "sprite",
         "sprite/abilities",
         "sprite/champions",

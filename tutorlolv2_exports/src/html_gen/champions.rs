@@ -1,9 +1,8 @@
 use crate::{
-    MEGA_BLOCK, Url,
+    Url,
     export_code::*,
-    html::{BASE_CSS, HtmlExt},
+    html::{BASE_CSS, HtmlExt, Source, offset_to_str},
 };
-use tutorlolv2_fmt::{highlight_json, prettify_json};
 use tutorlolv2_types::AbilityLike;
 
 pub fn generate_champion_html() {
@@ -18,16 +17,16 @@ pub fn generate_champion_html() {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{} - tutorlolv2 docs</title>
+    <title>{name} - tutorlolv2 docs</title>
     <style>{BASE_CSS}</style>
 </head>
 <body style="margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; line-height: 1.6; background-color: #121214; color: white; min-height: 100vh;">
     <div style="max-width: 1200px; margin: 0 auto; padding: 20px;">
         <header style="background: #202020; color: white; padding: 30px; border-radius: 15px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);">
             <div style="display: flex; align-items: center; gap: 20px;">
-                <img src="{}/{:?}.avif" alt="{}" style="width: 80px; height: 80px; border-radius: 50%; border: 4px solid rgba(255, 255, 255, 0.3); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);">
+                <img src="{}/{:?}.avif" alt="{name}" style="width: 80px; height: 80px; border-radius: 50%; border: 4px solid rgba(255, 255, 255, 0.3); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);">
                 <div style="flex: 1;">
-                    <h1 style="font-size: 2.5rem; font-weight: 700; margin: 0 0 10px 0; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">{}</h1>
+                    <h1 style="font-size: 2.5rem; font-weight: 700; margin: 0 0 10px 0; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">{name}</h1>
                     <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
                         <span style="font-size: 1rem; opacity: 0.9; font-weight: 500;">Positions:</span>
                         {}
@@ -37,16 +36,14 @@ pub fn generate_champion_html() {
         </header>
 
         <main style="display: flex; flex-direction: column; gap: 30px;">"#,
-            champion_id.as_str(),
             Url::CHAMPIONS,
             champion_id,
-            champion_id.as_str(),
-            champion_id.as_str(),
             CHAMPION_POSITIONS[i]
                 .iter()
                 .map(|position| format!(r#"<span style="background: rgba(255, 255, 255, 0.1); padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 500; border: 1px solid rgba(255, 255, 255, 0.2);">{:?}</span>"#, position))
                 .collect::<Vec<String>>()
-                .join("")
+                .join(""),
+            name = CHAMPION_ID_TO_NAME[champion_id as usize]
         ));
 
         html.push_str(
@@ -72,7 +69,7 @@ pub fn generate_champion_html() {
                         .iter()
                         .map(|item_id| {
                             format!(
-                                r#"<a href="{}/docs/items/{:?}.zst" style="text-decoration: none; display: flex; cursor: pointer; align-items: center; gap: 12px; padding: 8px; border-radius: 6px; transition: all 0.2s ease; border: 1px solid transparent;" onmouseover="this.style.backgroundColor='#333'; this.style.borderColor='#555'; this.style.transform='translateY(-1px)';" onmouseout="this.style.backgroundColor='transparent'; this.style.borderColor='transparent'; this.style.transform='translateY(0)';">
+                                r#"<a href="{}/docs/items/{:?}" style="text-decoration: none; display: flex; cursor: pointer; align-items: center; gap: 12px; padding: 8px; border-radius: 6px; transition: all 0.2s ease; border: 1px solid transparent;" onmouseover="this.style.backgroundColor='#333'; this.style.borderColor='#555'; this.style.transform='translateY(-1px)';" onmouseout="this.style.backgroundColor='transparent'; this.style.borderColor='transparent'; this.style.transform='translateY(0)';">
                                     <img style="width: 32px; height: 32px; border-radius: 4px; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);" src="{}/{}.avif" alt="{}">
                                     <span style="font-size: 0.9rem; color: #ddd; font-weight: 500;">{}</span>
                                 </a>"#,
@@ -96,61 +93,29 @@ pub fn generate_champion_html() {
             </section>"#,
         );
 
-        html.code_section("Champion Internal Code", {
-            let offsets = CHAMPION_FORMULAS[i];
-            MEGA_BLOCK
-                .get(offsets.0 as usize..offsets.1 as usize)
-                .unwrap()
-        });
+        html.code_section("Rust - Internal code", offset_to_str(CHAMPION_FORMULAS[i]));
 
         for (ability_like, offsets) in CHAMPION_ABILITIES[i] {
             html.code_section(
-                match ability_like {
+                &match ability_like {
                     AbilityLike::P(_) => ability_like.to_str_p(),
                     AbilityLike::Q(_) => ability_like.to_str_q(),
                     AbilityLike::W(_) => ability_like.to_str_w(),
                     AbilityLike::E(_) => ability_like.to_str_e(),
                     AbilityLike::R(_) => ability_like.to_str_r(),
-                },
-                {
-                    MEGA_BLOCK
-                        .get(offsets.0 as usize..offsets.1 as usize)
-                        .unwrap()
-                },
+                }
+                .replace("_", " "),
+                offset_to_str(*offsets),
             );
         }
 
-        html.code_section("Internal Generator Code", {
-            let offsets = CHAMPION_GENERATOR[i];
-            MEGA_BLOCK
-                .get(offsets.0 as usize..offsets.1 as usize)
-                .unwrap()
-        });
-
+        html.code_section("Rust - Generator", offset_to_str(CHAMPION_GENERATOR[i]));
         html.code_section(
-            "Generated JSON example",
-            &highlight_json(&prettify_json(
-                &std::fs::read_to_string(&format!("internal/champions/{:?}.json", champion_id))
-                    .unwrap_or_else(|_| "{}".to_string()),
-            )),
+            "JSON - Intermediate representation",
+            &format!("internal/champions/{:?}.json", champion_id).json_code(),
         );
 
-        html.push_str(
-            r#"
-        </main>
-
-        <footer style="text-align: center; padding: 20px; margin-top: 40px; color: #888; font-size: 0.9rem; border-top: 1px solid #333;">
-            <p style="margin: 0;">Documentation automatically generated - tutorlolv2</p>
-        </footer>
-    </div>
-</body>
-</html>"#,
-        );
-
-        std::fs::write(
-            format!("html/champions/{:?}.zst", champion_id),
-            html.finish(),
-        )
-        .unwrap();
+        html.footer();
+        html.finish(Source::Champions, champion_id);
     }
 }

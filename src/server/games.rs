@@ -1,7 +1,7 @@
 use crate::AppState;
 use actix_web::{
     HttpResponse, get,
-    http::header::{CONTENT_LENGTH, HeaderName},
+    http::header::HeaderName,
     post,
     web::{Bytes, Data},
 };
@@ -16,8 +16,7 @@ use uuid::Uuid;
 type Response = Result<HttpResponse, Box<dyn std::error::Error>>;
 
 const BINCODE_CONFIG: Configuration = bincode::config::standard();
-const OCTET_STREAM: (HeaderName, &'static str) =
-    (crate::header::CONTENT_TYPE, "application/octet-stream");
+const OCTET_STREAM: (HeaderName, &str) = (crate::header::CONTENT_TYPE, "application/octet-stream");
 
 fn respond(data: impl Sizer + Encode) -> Response {
     unsafe {
@@ -48,7 +47,7 @@ pub async fn calculator_handler(body: Bytes) -> Response {
 
 const CODE_LENGTH: usize = 6;
 const BODY_LENGTH: usize = 16 + CODE_LENGTH;
-static CHARS: &'static [u8; 62] = b"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+static CHARS: &[u8; 62] = b"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
 
 #[get("/create")]
 pub async fn create_game_handler(state: Data<AppState>) -> Response {
@@ -67,23 +66,23 @@ pub async fn create_game_handler(state: Data<AppState>) -> Response {
         buffer.get_unchecked_mut(..16).copy_from_slice(&game_id);
         buffer
             .get_unchecked_mut(16..)
-            .copy_from_slice(&game_code_bytes.get_unchecked(..));
+            .copy_from_slice(game_code_bytes.get_unchecked(..));
 
         sqlx::query("INSERT INTO games (game_id, game_code) VALUES ($1, $2)")
-            .bind(&game_id)
+            .bind(game_id)
             .bind(game_code)
             .execute(&state.db)
             .await?;
 
         Ok(HttpResponse::Ok()
             .insert_header(OCTET_STREAM)
-            .insert_header((CONTENT_LENGTH, BODY_LENGTH))
             .body(Bytes::from(Box::<[u8]>::from(buffer))))
     }
 }
 
 #[post("/get_by_code")]
 pub async fn get_by_code_handler(state: Data<AppState>, body: actix_web::web::Bytes) -> Response {
+    let game_code = std::str::from_utf8(body.as_ref())?;
     let data = sqlx::query_as::<_, (String,)>(
         "SELECT g.game_id, gd.game_data AS game 
         FROM games g
@@ -92,7 +91,7 @@ pub async fn get_by_code_handler(state: Data<AppState>, body: actix_web::web::By
         ORDER BY gd.game_time DESC 
         LIMIT 1",
     )
-    .bind(body.as_ref())
+    .bind(game_code)
     .fetch_one(&state.db)
     .await?;
 

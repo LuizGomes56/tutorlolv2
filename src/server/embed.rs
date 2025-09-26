@@ -6,15 +6,15 @@ use actix_web::{
 use rust_embed::Embed;
 
 #[derive(Embed)]
-#[folder = "html/champions"]
+#[folder = "html/zstd/champions"]
 struct ChampionsDocs;
 
 #[derive(Embed)]
-#[folder = "html/items"]
+#[folder = "html/zstd/items"]
 struct ItemsDocs;
 
 #[derive(Embed)]
-#[folder = "html/runes"]
+#[folder = "html/zstd/runes"]
 struct RunesDocs;
 
 #[derive(Embed)]

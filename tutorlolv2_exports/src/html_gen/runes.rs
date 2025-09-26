@@ -1,7 +1,7 @@
 use crate::{
-    MEGA_BLOCK, Url,
+    Url,
     export_code::*,
-    html::{BASE_CSS, HtmlExt},
+    html::{BASE_CSS, HtmlExt, Source, offset_to_str},
 };
 
 pub fn generate_rune_html() {
@@ -34,25 +34,8 @@ pub fn generate_rune_html() {
             name = RUNE_ID_TO_NAME[rune_id as usize],
         ));
 
-        html.code_section("Rune Internal Code", {
-            let offsets = RUNE_FORMULAS[i];
-            MEGA_BLOCK
-                .get(offsets.0 as usize..offsets.1 as usize)
-                .unwrap()
-        });
-
-        html.push_str(
-            r#"
-        </main>
-
-        <footer style="text-align: center; padding: 20px; margin-top: 40px; color: #888; font-size: 0.9rem; border-top: 1px solid #333;">
-            <p style="margin: 0;">Documentation automatically generated - tutorlolv2</p>
-        </footer>
-    </div>
-</body>
-</html>"#,
-        );
-
-        std::fs::write(format!("html/runes/{:?}.zst", rune_id), html.finish()).unwrap();
+        html.code_section("Rust - Internal code", offset_to_str(RUNE_FORMULAS[i]));
+        html.footer();
+        html.finish(Source::Runes, rune_id);
     }
 }

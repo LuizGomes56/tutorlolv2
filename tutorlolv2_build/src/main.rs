@@ -183,26 +183,12 @@ async fn main() {
     let champion_id_enum = format!(
         "#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode)]
         #[repr(u8)]
-        pub enum ChampionId {{{}}}
-        impl ChampionId {{
-            pub const fn as_str(&self)->&'static str{{match self{{{}}}}}
-        }}",
+        pub enum ChampionId {{{}}}",
         champions
             .iter()
             .map(|(key, _)| { remove_special_chars(key) })
             .collect::<Vec<String>>()
             .join(","),
-        champions
-            .iter()
-            .map(|(key, _)| {
-                format!(
-                    "Self::{} => \"{}\"",
-                    remove_special_chars(key),
-                    remove_special_chars(key)
-                )
-            })
-            .collect::<Vec<String>>()
-            .join(",")
     );
     for (champion_id, champion_detail) in champions.into_iter() {
         internal_champions.push_str(&format!("&{},", champion_id.to_uppercase()));

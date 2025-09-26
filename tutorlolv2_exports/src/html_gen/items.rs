@@ -1,9 +1,8 @@
 use crate::{
-    MEGA_BLOCK, Url,
+    Url,
     export_code::*,
-    html::{BASE_CSS, HtmlExt},
+    html::{BASE_CSS, HtmlExt, Source, offset_to_str},
 };
-use tutorlolv2_fmt::{highlight_json, prettify_json};
 
 pub fn generate_item_html() {
     for i in 0..ITEM_FORMULAS.len() {
@@ -35,33 +34,13 @@ pub fn generate_item_html() {
             name = ITEM_ID_TO_NAME[item_id as usize],
         ));
 
-        html.code_section("Item Internal Code", {
-            let offsets = ITEM_FORMULAS[i];
-            MEGA_BLOCK
-                .get(offsets.0 as usize..offsets.1 as usize)
-                .unwrap()
-        });
-
+        html.code_section("Rust - Internal code", offset_to_str(ITEM_FORMULAS[i]));
         html.code_section(
-            "Generated JSON example",
-            &highlight_json(&prettify_json(
-                &std::fs::read_to_string(&format!("internal/items/{}.json", item_id.to_riot_id()))
-                    .unwrap_or_else(|_| "{}".to_string()),
-            )),
+            "JSON - Intermediate representation",
+            &format!("internal/items/{}.json", item_id.to_riot_id()).json_code(),
         );
 
-        html.push_str(
-            r#"
-        </main>
-
-        <footer style="text-align: center; padding: 20px; margin-top: 40px; color: #888; font-size: 0.9rem; border-top: 1px solid #333;">
-            <p style="margin: 0;">Documentation automatically generated - tutorlolv2</p>
-        </footer>
-    </div>
-</body>
-</html>"#,
-        );
-
-        std::fs::write(format!("html/items/{:?}.zst", item_id), html.finish()).unwrap();
+        html.footer();
+        html.finish(Source::Items, item_id);
     }
 }

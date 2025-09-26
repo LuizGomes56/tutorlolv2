@@ -4,10 +4,9 @@ use crate::{
 };
 use actix_web::{
     HttpResponse, Responder, get,
-    rt::{spawn, task::spawn_blocking, time::sleep},
+    rt::{spawn, task::spawn_blocking},
     web::Data,
 };
-use std::time::Duration;
 use tutorlolv2_dev::setup::{
     cache::*,
     essentials::{api::CdnEndpoint, images::*},
@@ -19,53 +18,52 @@ use tutorlolv2_exports::*;
 
 #[get("/project")]
 pub async fn setup_project(state: Data<AppState>) -> impl Responder {
-    let _ = setup_project_folders();
+    setup_project_folders();
     let client = state.client.clone();
 
     spawn(async move {
-        let mut update_futures = Vec::new();
-
-        update_futures.push(spawn(update_riot_cache(client.clone())));
-        update_futures.push(spawn(update_cdn_cache(
-            client.clone(),
-            CdnEndpoint::Champions,
-        )));
-        update_futures.push(spawn(update_cdn_cache(client.clone(), CdnEndpoint::Items)));
-
-        for update_future in update_futures {
+        for update_future in [
+            spawn(update_riot_cache(client.clone())),
+            spawn(update_cdn_cache(client.clone(), CdnEndpoint::Champions)),
+            spawn(update_cdn_cache(client.clone(), CdnEndpoint::Items)),
+        ] {
             if let Err(e) = update_future.await {
                 println!("Error joining update future at fn[setup_project]: {:#?}", e);
             }
         }
 
-        let _ = spawn_blocking(setup_champion_names).await.ok();
-        let _ = spawn_blocking(setup_internal_items).await.ok();
-        let _ = spawn_blocking(setup_internal_runes).await.ok();
+        let _ = spawn_blocking(setup_champion_names).await;
+        let _ = spawn_blocking(setup_internal_items).await;
+        let _ = spawn_blocking(setup_internal_runes).await;
         let _ = prettify_internal_items().await;
 
-        let client_1 = client.clone();
-
-        spawn(async move {
-            let _ = meta_items_scraper(client_1).await;
-            let _ = setup_meta_items();
-            let _ = setup_damaging_items();
-            let _ = assign_item_damages();
-        });
-
+        {
+            let client = client.clone();
+            spawn(async move {
+                let _ = meta_items_scraper(client).await;
+                setup_meta_items();
+                setup_damaging_items();
+                let _ = assign_item_damages();
+            });
+        }
         spawn(async move {
             let _ = create_generator_files(GeneratorMode::Partial).await;
-            let _ = setup_internal_champions();
+            setup_internal_champions();
         });
 
         // There's no need to await for image download conclusion
         // They are independent and may run in parallel
-        spawn(img_download_arts(client.clone()));
-        spawn(img_download_instances(client.clone()));
-        spawn(img_download_items(client.clone()));
-        spawn(img_download_runes(client));
-
-        sleep(Duration::from_secs(30)).await;
-        spawn(img_convert_avif(IMG_FOLDERS));
+        spawn(async move {
+            for future in [
+                spawn(img_download_arts(client.clone())),
+                spawn(img_download_instances(client.clone())),
+                spawn(img_download_items(client.clone())),
+                spawn(img_download_runes(client)),
+            ] {
+                let _ = future.await;
+            }
+            let _ = spawn(img_convert_avif(IMG_FOLDERS)).await;
+        });
     });
 
     HttpResponse::Ok().body("Project setup started. Expected time to complete: 3-5 minutes")
