@@ -33,60 +33,48 @@ pub async fn run() {
 
     let mut internal_champions_content = String::with_capacity(1 << 16);
     let mut internal_champions = format!(
-        "pub static INTERNAL_CHAMPIONS: [&CachedChampion; {}] = [",
+        "pub static INTERNAL_CHAMPIONS:[&CachedChampion;{}]=[",
         champions.len()
     );
     let mut champion_positions = format!(
-        "pub static CHAMPION_POSITIONS: [&[Position]; {}] = [",
+        "pub static CHAMPION_POSITIONS:[&[Position];{}]=[",
         champions.len()
     );
     let mut champion_id_to_name = format!(
-        "pub static CHAMPION_ID_TO_NAME: [&str; {}] = [",
+        "pub static CHAMPION_ID_TO_NAME:[&str;{}]=[",
         champions.len()
     );
     let mut champion_formulas = format!(
-        "pub static CHAMPION_FORMULAS: [(u32, u32); {}] = [",
+        "pub static CHAMPION_FORMULAS:[(u32,u32);{}]=[",
         champions.len()
     );
     let mut champion_generator = format!(
-        "pub static CHAMPION_GENERATOR: [(u32, u32); {}] = [",
+        "pub static CHAMPION_GENERATOR:[(u32,u32);{}]=[",
         champions.len()
     );
     let mut champion_abilities = format!(
-        "pub static CHAMPION_ABILITIES: [&[(AbilityLike, (u32, u32))]; {}] = [",
+        "pub static CHAMPION_ABILITIES:[&[(AbilityLike,(u32,u32))];{}]=[",
         champions.len(),
     );
     let mut recommended_items = format!(
-        "pub static RECOMMENDED_ITEMS: [[&[ItemId]; 5]; {}] = [",
+        "pub static RECOMMENDED_ITEMS:[[&[ItemId];5];{}]=[",
         champions.len(),
     );
     let mut recommended_runes = format!(
-        "pub static RECOMMENDED_RUNES: [[&[RuneId]; 5]; {}] = [",
+        "pub static RECOMMENDED_RUNES:[[&[RuneId];5];{}]=[",
         champions.len(),
     );
-    let mut internal_items = format!(
-        "pub static INTERNAL_ITEMS: [&CachedItem; {}] = [",
-        items.len(),
-    );
+    let mut internal_items = format!("pub static INTERNAL_ITEMS:[&CachedItem;{}]=[", items.len(),);
     let mut internal_items_content = String::new();
     let mut internal_simulated_items =
-        String::from("pub static SIMULATED_ITEMS: phf::OrderedSet<u32> = phf::phf_ordered_set!(");
+        String::from("pub static SIMULATED_ITEMS:phf::OrderedSet<u32>=phf::phf_ordered_set!(");
     let mut internal_damaging_items =
-        String::from("pub static DAMAGING_ITEMS: phf::Set<u32> = phf::phf_set!(");
-    let mut item_id_to_name = format!("pub static ITEM_ID_TO_NAME: [&str; {}] = [", items.len(),);
-    let mut item_formulas = format!(
-        "pub static ITEM_FORMULAS: [(u32, u32); {}] = [",
-        items.len(),
-    );
-    let mut rune_id_to_name = format!("pub static RUNE_ID_TO_NAME: [&str; {}] = [", runes.len(),);
-    let mut rune_formulas = format!(
-        "pub static RUNE_FORMULAS: [(u32, u32); {}] = [",
-        runes.len(),
-    );
-    let mut internal_runes = format!(
-        "pub static INTERNAL_RUNES: [&CachedRune; {}] = [",
-        runes.len(),
-    );
+        String::from("pub static DAMAGING_ITEMS:phf::Set<u32>=phf::phf_set!(");
+    let mut item_id_to_name = format!("pub static ITEM_ID_TO_NAME:[&str;{}]=[", items.len(),);
+    let mut item_formulas = format!("pub static ITEM_FORMULAS:[(u32,u32);{}]=[", items.len(),);
+    let mut rune_id_to_name = format!("pub static RUNE_ID_TO_NAME:[&str;{}]=[", runes.len(),);
+    let mut rune_formulas = format!("pub static RUNE_FORMULAS:[(u32,u32);{}]=[", runes.len(),);
+    let mut internal_runes = format!("pub static INTERNAL_RUNES:[&CachedRune;{}]=[", runes.len(),);
     let mut internal_runes_content = String::new();
 
     let mut current_offset = 0usize;
@@ -165,8 +153,7 @@ pub async fn run() {
     );
     let champion_id_enum = format!(
         "#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode)]
-        #[repr(u8)]
-        pub enum ChampionId {{{}}}",
+        #[repr(u8)]pub enum ChampionId {{{}}}",
         champions
             .keys()
             .map(|key| remove_special_chars(key))
@@ -236,13 +223,10 @@ pub async fn run() {
             .join(","),
     );
     let item_id_enum = format!(
-        "#[derive(Debug,Copy,Clone,Ord,Eq,PartialOrd,PartialEq,Decode,Encode)]
-        #[repr(u16)]
-        pub enum ItemId {{{}}}
-        impl ItemId {{
-            pub fn to_riot_id(&self)->u32{{unsafe{{*ITEM_ID_TO_RIOT_ID.get_unchecked(*self as usize)}}}}
-            pub const fn from_riot_id(id:u32)->Self{{match id {{{}}}}}  
-        }}",
+        "#[derive(Debug,Copy,Clone,Ord,Eq,PartialOrd,PartialEq,Decode,Encode)]#[repr(u16)]
+        pub enum ItemId {{{}}}impl ItemId {{pub fn to_riot_id(&self)->u32
+        {{unsafe{{*ITEM_ID_TO_RIOT_ID.get_unchecked(*self as usize)}}}}
+        pub const fn from_riot_id(id:u32)->Self{{match id {{{}}}}}}}",
         items
             .iter()
             .map(|(_, value)| remove_special_chars(&value.item_name))
@@ -325,13 +309,9 @@ pub async fn run() {
             .join(","),
     );
     let rune_id_enum = format!(
-        "#[derive(Debug,Copy,Clone,Ord,Eq,PartialOrd,PartialEq,Decode,Encode)]
-        #[repr(u8)]
-        pub enum RuneId {{{}}}
-        impl RuneId {{
-            pub fn to_riot_id(&self)->u32{{unsafe{{*RUNE_ID_TO_RIOT_ID.get_unchecked(*self as usize)}}}}
-            pub const fn from_riot_id(id:u32)->Self{{match id{{{}}}}}
-        }}",
+        "#[derive(Debug,Copy,Clone,Ord,Eq,PartialOrd,PartialEq,Decode,Encode)]#[repr(u8)]pub enum RuneId {{{}}}
+        impl RuneId {{pub fn to_riot_id(&self)->u32{{unsafe{{*RUNE_ID_TO_RIOT_ID.get_unchecked(*self as usize)}}}}
+        pub const fn from_riot_id(id:u32)->Self{{match id{{{}}}}}}}",
         runes
             .iter()
             .map(|(_, value)| remove_special_chars(&value.rune_name))
@@ -412,13 +392,9 @@ pub async fn run() {
 
     bytes.extend_from_slice(
         format!(
-            "{}
-            #[derive(Debug,Copy,Clone,Decode)]
-            pub enum Position{{Top,Jungle,Middle,Bottom,Support}}
-            pub const BASIC_ATTACK_OFFSET:(u32,u32)={};
-            pub const CRITICAL_STRIKE_OFFSET:(u32,u32)={};
-            pub const ONHIT_EFFECT_OFFSET:(u32,u32)={};
-            pub const UNCOMPRESSED_MEGA_BLOCK_SIZE:usize={};",
+            "{}#[derive(Debug,Copy,Clone,Decode)]pub enum Position{{Top,Jungle,Middle,Bottom,Support}}
+            pub const BASIC_ATTACK_OFFSET:(u32,u32)={};pub const CRITICAL_STRIKE_OFFSET:(u32,u32)={};
+            pub const ONHIT_EFFECT_OFFSET:(u32,u32)={};pub const UNCOMPRESSED_MEGA_BLOCK_SIZE:usize={};",
             exported_content,
             record_offsets!(highlight_rust(&invoke_rustfmt(BASIC_ATTACK, 60))),
             record_offsets!(highlight_rust(&invoke_rustfmt(CRITICAL_STRIKE, 60))),

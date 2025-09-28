@@ -1,9 +1,80 @@
 use crate::{
     Url,
     export_code::*,
-    html::{BASE_CSS, HtmlExt, Source, offset_to_str},
+    html::{HtmlExt, Source, offset_to_str},
 };
+use std::fmt::Debug;
 use tutorlolv2_types::AbilityLike;
+
+trait EnumImport {
+    fn to_riot_id(&self) -> u32;
+    fn cast_usize(&self) -> usize;
+}
+
+macro_rules! impl_enum_import {
+    ($ty:ty) => {
+        impl EnumImport for $ty {
+            fn to_riot_id(&self) -> u32 {
+                self.to_riot_id()
+            }
+
+            fn cast_usize(&self) -> usize {
+                *self as usize
+            }
+        }
+    };
+}
+
+impl_enum_import!(ItemId);
+impl_enum_import!(RuneId);
+
+fn push_recommendation<
+    T: 'static + EnumImport + Debug,
+    const A: usize,
+    const B: usize,
+    const C: usize,
+>(
+    const_iterator: [[&[T]; A]; B],
+    html: &mut String,
+    url_kind: &'static str,
+    const_id_to_name: [&str; C],
+    i: usize,
+) {
+    let position_names = ["Top", "Jungle", "Middle", "ADC", "Support"];
+
+    for (index, static_const) in const_iterator[i].iter().enumerate() {
+        if !static_const.is_empty() {
+            html.push_str(&format!(
+                r#"
+                <div style="background: #2a2a2a; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); border: 1px solid #444;">
+                    <h3 style="font-size: 1.1rem; font-weight: 600; margin: 0 0 15px 0; color: white; text-align: center; background: #202020; padding: 8px; border-radius: 6px;">{}</h3>
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        {}
+                    </div>
+                </div>"#,
+                position_names.get(index).unwrap_or(&"Unknown"),
+                static_const
+                    .iter()
+                    .map(|static_id| {
+                        format!(
+                            r#"<a href="{}/docs/items/{:?}" style="text-decoration: none; display: flex; cursor: pointer; align-items: center; gap: 12px; padding: 8px; border-radius: 6px; transition: all 0.2s ease; border: 1px solid transparent;" onmouseover="this.style.backgroundColor='#333'; this.style.borderColor='#555'; this.style.transform='translateY(-1px)';" onmouseout="this.style.backgroundColor='transparent'; this.style.borderColor='transparent'; this.style.transform='translateY(0)';">
+                                <img style="width: 32px; height: 32px; border-radius: 4px; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);" src="{}/{}.avif" alt="{}">
+                                <span style="font-size: 0.9rem; color: #ddd; font-weight: 500;">{}</span>
+                            </a>"#,
+                            Url::BASE,
+                            static_id,
+                            url_kind,
+                            static_id.to_riot_id(),
+                            const_id_to_name.get(static_id.cast_usize()).unwrap_or(&"Unknown"),
+                            const_id_to_name.get(static_id.cast_usize()).unwrap_or(&"Unknown"),
+                        )
+                    })
+                    .collect::<Vec<String>>()
+                    .join("")
+            ));
+        }
+    }
+}
 
 pub fn generate_champion_html() {
     for i in 0..CHAMPION_FORMULAS.len() {
@@ -11,15 +82,10 @@ pub fn generate_champion_html() {
         println!("Generating {champion_id:#?} html");
         let mut html = String::new();
 
+        let name = CHAMPION_ID_TO_NAME[champion_id as usize];
+        html.header(name);
         html.push_str(&format!(
-            r#"<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{name} - tutorlolv2 docs</title>
-    <style>{BASE_CSS}</style>
-</head>
+            r#"
 <body style="margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; line-height: 1.6; background-color: #121214; color: white; min-height: 100vh;">
     <div style="max-width: 1200px; margin: 0 auto; padding: 20px;">
         <header style="background: #202020; color: white; padding: 30px; border-radius: 15px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);">
@@ -43,7 +109,6 @@ pub fn generate_champion_html() {
                 .map(|position| format!(r#"<span style="background: rgba(255, 255, 255, 0.1); padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 500; border: 1px solid rgba(255, 255, 255, 0.2);">{:?}</span>"#, position))
                 .collect::<Vec<String>>()
                 .join(""),
-            name = CHAMPION_ID_TO_NAME[champion_id as usize]
         ));
 
         html.push_str(
@@ -52,47 +117,25 @@ pub fn generate_champion_html() {
                 <h2 style="font-size: 1.5rem; font-weight: 600; margin: 0 0 20px 0; color: white; border-bottom: 2px solid #333; padding-bottom: 10px;">Recommended Items by Position</h2>
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">"#,
         );
-
-        let position_names = ["Top", "Jungle", "Middle", "ADC", "Support"];
-        for (index, recommended_items) in RECOMMENDED_ITEMS[i].iter().enumerate() {
-            if !recommended_items.is_empty() {
-                html.push_str(&format!(
-                    r#"
-                    <div style="background: #2a2a2a; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); border: 1px solid #444;">
-                        <h3 style="font-size: 1.1rem; font-weight: 600; margin: 0 0 15px 0; color: white; text-align: center; background: #202020; padding: 8px; border-radius: 6px;">{}</h3>
-                        <div style="display: flex; flex-direction: column; gap: 10px;">
-                            {}
-                        </div>
-                    </div>"#,
-                    position_names.get(index).unwrap_or(&"Unknown"),
-                    recommended_items
-                        .iter()
-                        .map(|item_id| {
-                            format!(
-                                r#"<a href="{}/docs/items/{:?}" style="text-decoration: none; display: flex; cursor: pointer; align-items: center; gap: 12px; padding: 8px; border-radius: 6px; transition: all 0.2s ease; border: 1px solid transparent;" onmouseover="this.style.backgroundColor='#333'; this.style.borderColor='#555'; this.style.transform='translateY(-1px)';" onmouseout="this.style.backgroundColor='transparent'; this.style.borderColor='transparent'; this.style.transform='translateY(0)';">
-                                    <img style="width: 32px; height: 32px; border-radius: 4px; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);" src="{}/{}.avif" alt="{}">
-                                    <span style="font-size: 0.9rem; color: #ddd; font-weight: 500;">{}</span>
-                                </a>"#,
-                                Url::BASE,
-                                item_id,
-                                Url::ITEMS,
-                                item_id.to_riot_id(),
-                                ITEM_ID_TO_NAME.get(*item_id as usize).unwrap_or(&"Unknown"),
-                                ITEM_ID_TO_NAME.get(*item_id as usize).unwrap_or(&"Unknown"),
-                            )
-                        })
-                        .collect::<Vec<String>>()
-                        .join("")
-                ));
-            }
-        }
-
+        push_recommendation(RECOMMENDED_ITEMS, &mut html, Url::ITEMS, ITEM_ID_TO_NAME, i);
         html.push_str(
             r#"
                 </div>
             </section>"#,
         );
 
+        html.push_str(
+            r#"
+            <section style="background: #1e1e1e; padding: 25px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); border: 1px solid #333;">
+                <h2 style="font-size: 1.5rem; font-weight: 600; margin: 0 0 20px 0; color: white; border-bottom: 2px solid #333; padding-bottom: 10px;">Recommended Runes by Position</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">"#,
+        );
+        push_recommendation(RECOMMENDED_RUNES, &mut html, Url::RUNES, RUNE_ID_TO_NAME, i);
+        html.push_str(
+            r#"
+                </div>
+            </section>"#,
+        );
         html.code_section("Rust - Internal code", offset_to_str(CHAMPION_FORMULAS[i]));
 
         for (ability_like, offsets) in CHAMPION_ABILITIES[i] {

@@ -135,7 +135,7 @@ pub fn export_items() -> Vec<(u32, ItemDetails)> {
                 .join(",");
 
             let constdecl = format!(
-                r#"pub static {}:CachedItem=CachedItem {{gold:{},prettified_stats:&[{}],damage_type:{},attributes:Attrs::{},ranged:{},melee:{},stats:CachedItemStats{{{}}},}};"#,
+                r#"pub static {}:CachedItem=CachedItem{{gold:{},prettified_stats:&[{}],damage_type:{},attributes:Attrs::{},ranged:{},melee:{},stats:CachedItemStats{{{}}}}};"#,
                 format_args!("{}_{}", item.name.to_screaming_snake_case(), item_id),
                 item.gold,
                 prettified_stats,
