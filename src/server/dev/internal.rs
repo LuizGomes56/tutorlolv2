@@ -5,9 +5,7 @@ use tutorlolv2_dev::setup::{
         champions::{GeneratorMode, create_generator_files},
         items::assign_item_damages,
     },
-    update::{
-        prettify_internal_items, setup_champion_names, setup_damaging_items, setup_meta_items,
-    },
+    update::{prettify_internal_items, setup_champion_names, setup_damaging_items},
 };
 
 #[get("/create_generator_files")]
@@ -33,9 +31,4 @@ pub async fn internal_assign_item_damages() -> impl Responder {
 #[get("/rewrite_champion_names")]
 pub async fn internal_rewrite_champion_names() -> impl Responder {
     dev_response!(setup_champion_names())
-}
-
-#[get("/create_meta_items")]
-pub async fn internal_create_meta_items() -> impl Responder {
-    dev_response!(setup_meta_items())
 }

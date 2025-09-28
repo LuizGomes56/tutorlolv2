@@ -47,7 +47,7 @@ fn api_scope() -> impl HttpServiceFactory + 'static {
                     .service(update_riot)
                     .service(update_champions)
                     .service(update_items)
-                    .service(update_meta_items)
+                    .service(update_scraped_data)
                     .service(update_version),
             )
             .service(
@@ -55,7 +55,6 @@ fn api_scope() -> impl HttpServiceFactory + 'static {
                     .service(internal_create_generator_files)
                     .service(internal_prettify_item_stats)
                     .service(internal_create_damaging_items)
-                    .service(internal_create_meta_items)
                     .service(internal_rewrite_champion_names)
                     .service(internal_assign_item_damages),
             )

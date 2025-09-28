@@ -16,7 +16,7 @@ pub use std::{
 pub use tutorlolv2_fmt::*;
 pub use utils::*;
 
-pub static CRITICAL_STRIKE: &'static str = r#"pub static CRITICAL_STRIKE: DamageExpression = DamageExpression {
+pub static CRITICAL_STRIKE: &str = r#"pub static CRITICAL_STRIKE: DamageExpression = DamageExpression {
     level: 0,
     attributes: Attrs::OnhitMax,
     damage_type: DamageType::Physical,
@@ -26,7 +26,7 @@ pub static CRITICAL_STRIKE: &'static str = r#"pub static CRITICAL_STRIKE: Damage
     maximum_damage: zero,
 };"#;
 
-pub static BASIC_ATTACK: &'static str = r#"pub static BASIC_ATTACK: DamageExpression = DamageExpression {
+pub static BASIC_ATTACK: &str = r#"pub static BASIC_ATTACK: DamageExpression = DamageExpression {
     level: 0,
     attributes: Attrs::OnhitMin,
     damage_type: DamageType::Physical,

@@ -25,6 +25,7 @@ pub struct RiotCdnInstance {
 #[derive(Deserialize)]
 pub struct RiotCdnRuneTree {
     pub icon: String,
+    pub name: String,
     pub id: usize,
 }
 

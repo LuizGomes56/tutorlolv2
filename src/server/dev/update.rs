@@ -4,7 +4,7 @@ use tutorlolv2_dev::setup::{
     cache::{update_cdn_cache, update_riot_cache},
     essentials::api::CdnEndpoint,
     schedule::update_env_version,
-    scraper::meta_items_scraper,
+    scraper::data_scraper,
 };
 
 #[get("/riot")]
@@ -22,9 +22,9 @@ pub async fn update_items(state: Data<AppState>) -> impl Responder {
     dev_response!(update_cdn_cache(state.client.clone(), CdnEndpoint::Items).await)
 }
 
-#[get("/meta_items")]
-pub async fn update_meta_items(state: Data<AppState>) -> impl Responder {
-    dev_response!(meta_items_scraper(state.client.clone()).await)
+#[get("/data_scraper")]
+pub async fn update_scraped_data(state: Data<AppState>) -> impl Responder {
+    dev_response!(data_scraper(state.client.clone()).await)
 }
 
 #[get("/version")]

@@ -4,14 +4,13 @@ use crate::{
         items::{CdnItem, Item, PartialStats},
         riot::RiotCdnItem,
     },
+    riot::RiotCdnRune,
     setup::{essentials::ext::FilePathExt, generators::champions::run_generator_file},
 };
 use regex::Regex;
 use serde_json::Value;
 use std::{collections::HashMap, fs, path::Path};
 use tutorlolv2_gen::Attrs;
-
-type MetaItemValue<T> = HashMap<String, HashMap<String, Vec<T>>>;
 
 /// Creates basic folders necessary to run the program. If one of these folders are not found,
 /// The program is likely to panic when an update is called.
@@ -48,6 +47,7 @@ pub fn setup_project_folders() {
         "raw_img/abilities",
         "raw_img/items",
         "cache",
+        "cache/scraper",
         "cache/cdn",
         "cache/cdn/champions",
         "cache/cdn/items",
@@ -151,79 +151,24 @@ pub fn setup_internal_items() {
     }
 }
 
-/// Pending. Must read CDN API files and interpret the damages of runes
-// #![manual_impl]
-// #![unstable] "05/24/2024" | "14.5"
-pub fn setup_internal_runes() {
-    "internal/runes.json".write_to_file( 
-br#"{
-    "8005": {
-        "name": "Press The Attack",
-        "damage_type": "ADAPTATIVE_DAMAGE",
-        "melee": "(40 + ((120 / 17) * (LEVEL - 1))) * ADAPTATIVE_DAMAGE",
-        "ranged": "(40 + ((120 / 17) * (LEVEL - 1))) * ADAPTATIVE_DAMAGE"
-    },
-    "8112": {
-        "name": "Electrocute",
-        "damage_type": "ADAPTATIVE_DAMAGE",
-        "melee": "(30 + ((190 / 17) * (LEVEL - 1)) + (0.1 * BONUS_AD) + (0.05 * AP)) * ADAPTATIVE_DAMAGE",
-        "ranged": "(30 + ((190 / 17) * (LEVEL - 1)) + (0.1 * BONUS_AD) + (0.05 * AP)) * ADAPTATIVE_DAMAGE"
-    },
-    "8124": {
-        "name": "Predator",
-        "damage_type": "ADAPTATIVE_DAMAGE",
-        "melee": "(20 + ((160 / 17) * (LEVEL - 1)) + ((0.25 * BONUS_AD + 0.15 * AP))) * ADAPTATIVE_DAMAGE",
-        "ranged": "(20 + ((160 / 17) * (LEVEL - 1)) + ((0.25 * BONUS_AD + 0.15 * AP))) * ADAPTATIVE_DAMAGE"
-    },
-    "8126": {
-        "name": "Cheap Shot",
-        "damage_type": "TRUE_DAMAGE",
-        "melee": "10 + ((35 / 17) * (LEVEL - 1))",
-        "ranged": "10 + ((35 / 17) * (LEVEL - 1))"
-    },
-    "8128": {
-        "name": "Dark Harvest",
-        "damage_type": "ADAPTATIVE_DAMAGE",
-        "melee": "(20 + ((60 / 17) * (LEVEL - 1)) + (0.1 * BONUS_AD) + (0.05 * AP)) * ADAPTATIVE_DAMAGE",
-        "ranged": "(20 + ((60 / 17) * (LEVEL - 1)) + (0.1 * BONUS_AD) + (0.05 * AP)) * ADAPTATIVE_DAMAGE"
-    },
-    "8143": {
-        "name": "Sudden Impact",
-        "damage_type": "TRUE_DAMAGE",
-        "melee": "20 + (60 / 17 * (LEVEL - 1))",
-        "ranged": "20 + (60 / 17 * (LEVEL - 1))"
-    },
-    "8214": {
-        "name": "Aery",
-        "damage_type": "ADAPTATIVE_DAMAGE",
-        "melee": "(10 + ((40 / 17) * (LEVEL - 1)) + (0.1 * BONUS_AD) + (0.05 * AP)) * ADAPTATIVE_DAMAGE",
-        "ranged": "(10 + ((40 / 17) * (LEVEL - 1)) + (0.1 * BONUS_AD) + (0.05 * AP)) * ADAPTATIVE_DAMAGE"
-    },
-    "8229": {
-        "name": "Comet",
-        "damage_type": "ADAPTATIVE_DAMAGE",
-        "melee": "(30 + ((100 / 17) * (LEVEL - 1)) + ((0.1 * BONUS_AD) + (0.05 * AP))) * ADAPTATIVE_DAMAGE",
-        "ranged": "(30 + ((100 / 17) * (LEVEL - 1)) + ((0.1 * BONUS_AD) + (0.05 * AP))) * ADAPTATIVE_DAMAGE"
-    },
-    "8237": {
-        "name": "Scorch",
-        "damage_type": "MAGIC_DAMAGE",
-        "melee": "(20 + ((20 / 17) * (LEVEL - 1))) * MAGIC_MULTIPLIER",
-        "ranged": "(20 + ((20 / 17) * (LEVEL - 1))) * MAGIC_MULTIPLIER"
-    },
-    "8437": {
-        "name": "Grasp",
-        "damage_type": "MAGIC_DAMAGE",
-        "melee": "(0.035 * MAX_HEALTH) * MAGIC_MULTIPLIER",
-        "ranged": "(0.021 * MAX_HEALTH) * MAGIC_MULTIPLIER"
-    },
-    "8439": {
-        "name": "Aftershock",
-        "damage_type": "ADAPTATIVE_DAMAGE",
-        "melee": "(25 + ((95 / 17) * (LEVEL - 1)) + (0.08 * BONUS_HEALTH)) * MAGIC_MULTIPLIER",
-        "ranged": "(25 + ((95 / 17) * (LEVEL - 1)) + (0.08 * BONUS_HEALTH)) * MAGIC_MULTIPLIER"
+#[tutorlolv2_macros::trace_time]
+pub fn setup_runes_json() {
+    let map = "cache/riot/runes.json"
+        .read_json::<Vec<RiotCdnRune>>()
+        .unwrap();
+    let mut result = HashMap::<String, usize>::new();
+
+    for tree in map.into_iter() {
+        for slot in tree.slots.into_iter() {
+            for riot_rune in slot.runes.into_iter() {
+                result.insert(riot_rune.name, riot_rune.id);
+            }
+        }
     }
-}"#).unwrap()
+
+    "internal/rune_names.json"
+        .write_to_file(serde_json::to_string(&result).unwrap().as_bytes())
+        .unwrap();
 }
 
 /// Not meant to be used frequently. Just a quick check for every
@@ -253,7 +198,7 @@ pub fn setup_damaging_items() {
             continue;
         }
 
-        let mut found_match: bool = false;
+        let mut found_match = false;
 
         for passive in &result.passives {
             if contains_damage_outside_template(&passive.effects) {
@@ -302,43 +247,6 @@ pub fn setup_champion_names() {
 
     let json = serde_json::to_string(&map).unwrap();
     "internal/champion_names.json"
-        .write_to_file(json.as_bytes())
-        .unwrap();
-}
-
-/// When MetaItems are recovered, each item is written in the array with its name instead of ID
-/// This function replaces those names with IDs without changing the rest of the content.
-/// If one's ID is not found, it will remain unchanged
-#[tutorlolv2_macros::trace_time]
-pub fn setup_meta_items() {
-    let mut meta_items = "internal/meta_items.json"
-        .read_json::<MetaItemValue<Value>>()
-        .unwrap();
-    let items_folder = fs::read_dir("internal/items").unwrap();
-
-    for entry in items_folder {
-        let entry = entry.unwrap();
-        let path = entry.path();
-        let file_name = path.json_file_name();
-        let item_id = file_name.parse::<usize>().unwrap();
-        let path_str = path.to_str().unwrap();
-        let internal_item = path_str.read_json::<Item>().unwrap();
-
-        for (_, positions) in meta_items.iter_mut() {
-            for (_, items) in positions.iter_mut() {
-                for item in items.iter_mut() {
-                    if let Value::String(s) = item {
-                        if s.to_lowercase() == internal_item.name.to_lowercase() {
-                            *item = Value::Number(item_id.into());
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    let json = serde_json::to_string_pretty(&meta_items).unwrap();
-    "internal/meta_items.json"
         .write_to_file(json.as_bytes())
         .unwrap();
 }

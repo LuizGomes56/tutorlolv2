@@ -11,7 +11,7 @@ use tutorlolv2_dev::setup::{
     cache::*,
     essentials::{api::CdnEndpoint, images::*},
     generators::{champions::*, items::assign_item_damages},
-    scraper::meta_items_scraper,
+    scraper::data_scraper,
     update::*,
 };
 use tutorlolv2_exports::*;
@@ -34,14 +34,13 @@ pub async fn setup_project(state: Data<AppState>) -> impl Responder {
 
         let _ = spawn_blocking(setup_champion_names).await;
         let _ = spawn_blocking(setup_internal_items).await;
-        let _ = spawn_blocking(setup_internal_runes).await;
+        let _ = spawn_blocking(setup_runes_json).await;
         let _ = prettify_internal_items().await;
 
         {
             let client = client.clone();
             spawn(async move {
-                let _ = meta_items_scraper(client).await;
-                setup_meta_items();
+                let _ = data_scraper(client).await;
                 setup_damaging_items();
                 let _ = assign_item_damages();
             });
@@ -94,5 +93,5 @@ pub async fn setup_items() -> impl Responder {
 
 #[get("/runes")]
 pub async fn setup_runes() -> impl Responder {
-    dev_response!(setup_internal_runes())
+    dev_response!(setup_runes_json())
 }

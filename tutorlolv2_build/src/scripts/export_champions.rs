@@ -102,7 +102,7 @@ pub fn format_stats(stats: &ChampionCdnStats) -> String {
     all_stats.join("")
 }
 
-pub fn sort_pqwer<T: Ord>(data: &mut Vec<(String, T)>) {
+pub fn sort_pqwer<T: Ord>(data: &mut [(String, T)]) {
     let priority = |ch: char| match ch {
         'P' => 0,
         'Q' => 1,
