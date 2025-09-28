@@ -1,10 +1,11 @@
 use crate::MEGA_BLOCK;
-use std::fmt::Debug;
+use std::fmt::{Debug, Display};
 use tutorlolv2_fmt::{encode_brotli_11, encode_zstd_9, highlight_json, minify_html, prettify_json};
 
 pub const BASE_CSS: &'static str = include_str!("../../assets/base.css");
 
 pub trait HtmlExt {
+    fn header(&mut self, name: impl Display);
     fn code_section(&mut self, comment: &str, code: &str);
     fn finish(&mut self, source: Source, name: impl Debug);
     fn json_code(&self) -> String;
@@ -22,6 +23,19 @@ pub enum Source {
 }
 
 impl HtmlExt for String {
+    fn header(&mut self, name: impl Display) {
+        self.push_str(&format!(
+            r#"<!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="utf-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>{name} - tutorlolv2 docs</title>
+                <style>{BASE_CSS}</style>
+            </head>"#
+        ));
+    }
+
     fn json_code(&self) -> String {
         highlight_json(&prettify_json(
             &std::fs::read_to_string(self).unwrap_or_else(|_| "{}".to_string()),
@@ -64,7 +78,7 @@ impl HtmlExt for String {
         // Get-ChildItem -Path .\html -Recurse -File -Force | Remove-Item -Force
         unsafe {
             // .html extension omitted
-            std::fs::write(format!("html/raw/{path}"), minified_html).unwrap_unchecked();
+            std::fs::write(format!("html/raw/{path}.html"), minified_html).unwrap_unchecked();
             // .br extension omitted
             std::fs::write(format!("html/brotli/{path}"), brotli_bytes).unwrap_unchecked();
             // .zst extension omitted

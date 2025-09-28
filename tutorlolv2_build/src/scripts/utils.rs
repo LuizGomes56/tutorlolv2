@@ -25,21 +25,21 @@ pub fn transform_expr(expr: &str) -> (String, bool) {
 
 #[derive(Deserialize)]
 pub struct Positions {
-    pub jungle: Vec<u32>,
-    pub top: Vec<u32>,
-    pub mid: Vec<u32>,
-    pub adc: Vec<u32>,
-    pub support: Vec<u32>,
+    pub jungle: (Vec<String>, Vec<String>),
+    pub top: (Vec<String>, Vec<String>),
+    pub mid: (Vec<String>, Vec<String>),
+    pub adc: (Vec<String>, Vec<String>),
+    pub support: (Vec<String>, Vec<String>),
 }
 
 impl Positions {
-    pub fn make_iterable(&self) -> [Vec<u32>; 5] {
+    pub fn make_iterable(&self) -> [(Vec<String>, Vec<String>); 5] {
         [
-            self.top.clone(),
-            self.jungle.clone(),
-            self.mid.clone(),
-            self.adc.clone(),
-            self.support.clone(),
+            (self.top.0.clone(), self.top.1.clone()),
+            (self.jungle.0.clone(), self.jungle.1.clone()),
+            (self.mid.0.clone(), self.mid.1.clone()),
+            (self.adc.0.clone(), self.adc.1.clone()),
+            (self.support.0.clone(), self.support.1.clone()),
         ]
     }
 }
@@ -63,7 +63,7 @@ macro_rules! init_map {
     }};
     (dir $type_name:ty, $path:literal) => {{
         let mut map = BTreeMap::<String, $type_name>::new();
-        if let Some(dir) = std::fs::read_dir(cwd!($path)).ok() {
+        if let Ok(dir) = std::fs::read_dir(cwd!($path)) {
             for entry in dir {
                 let path = entry.unwrap().path();
                 let file_stem = path.file_stem().unwrap();
@@ -78,16 +78,6 @@ macro_rules! init_map {
         }
         map
     }};
-}
-
-pub fn remove_special_chars(s: &str) -> String {
-    s.replace(" ", "")
-        .replace("-", "")
-        .replace(")", "")
-        .replace("(", "")
-        .replace("'", "")
-        .replace(".", "")
-        .replace(",", "")
 }
 
 pub fn is_valid_math_expression(expr: &str) -> bool {

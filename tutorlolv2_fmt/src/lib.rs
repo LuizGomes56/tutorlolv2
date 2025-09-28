@@ -24,6 +24,17 @@ pub fn encode_brotli_11(bytes: &[u8]) -> Vec<u8> {
     encoder.finish().unwrap()
 }
 
+pub fn remove_special_chars(s: &str) -> String {
+    s.replace(" ", "")
+        .replace("-", "")
+        .replace(")", "")
+        .replace("(", "")
+        .replace("'", "")
+        .replace(".", "")
+        .replace(",", "")
+        .replace(":", "")
+}
+
 pub fn invoke_rustfmt(src: &str, width: usize) -> String {
     let mut child = Command::new("rustfmt")
         .args(&[
@@ -54,7 +65,7 @@ pub fn highlight_rust(rust_code: &str) -> String {
     h.keyword("lifetime", r"'\w+");
     h.keyword(
         "keyword",
-        r"\b(pub|use|crate|mut|static|ref|dyn|unsafe|extern|type|super|mod|struct|const|enum|fn|let|impl|trait|where|loop|Self|self)\b",
+        r"\b(void|pub|use|crate|mut|static|ref|dyn|unsafe|extern|type|super|mod|struct|const|enum|fn|let|impl|trait|where|loop|Self|self)\b",
     );
     h.keyword(
         "control",

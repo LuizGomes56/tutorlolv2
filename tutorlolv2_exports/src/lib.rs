@@ -4,7 +4,6 @@ mod html_gen;
 
 use bincode::{Decode, Encode};
 use tutorlolv2_types::*;
-
 pub use html_gen::*;
 
 pub static MEGA_BLOCK: &'static str = include_str!("../assets/mega_block.txt");

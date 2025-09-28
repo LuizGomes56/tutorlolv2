@@ -1,7 +1,7 @@
 use crate::{
     Url,
     export_code::*,
-    html::{BASE_CSS, HtmlExt, Source, offset_to_str},
+    html::{HtmlExt, Source, offset_to_str},
 };
 
 pub fn generate_rune_html() {
@@ -10,15 +10,10 @@ pub fn generate_rune_html() {
         println!("Generating {rune_id:#?} html");
         let mut html = String::new();
 
+        let name = RUNE_ID_TO_NAME[rune_id as usize];
+        html.header(name);
         html.push_str(&format!(
-            r#"<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{name} - tutorlolv2 docs</title>
-    <style>{BASE_CSS}</style>
-</head>
+            r#"
 <body style="margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; line-height: 1.6; background-color: #121214; color: white; min-height: 100vh;">
     <div style="max-width: 1200px; margin: 0 auto; padding: 20px;">
         <header style="background: #202020; color: white; padding: 30px; border-radius: 15px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);">
@@ -31,7 +26,6 @@ pub fn generate_rune_html() {
         <main style="display: flex; flex-direction: column; gap: 30px;">"#,
             Url::RUNES,
             rune_id.to_riot_id(),
-            name = RUNE_ID_TO_NAME[rune_id as usize],
         ));
 
         html.code_section("Rust - Internal code", offset_to_str(RUNE_FORMULAS[i]));
