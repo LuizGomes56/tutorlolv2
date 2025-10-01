@@ -46,10 +46,10 @@ fn infer_champion_stats(
             add_stat!(@fire ability_power);
             add_stat!(@fire attack_damage);
             add_stat!(@earth armor);
-            add_stat!(@earth magic_resist, magic_resistance);
+            add_stat!(@earth magic_resist, magic_resist);
             add_stat!(max_health, health);
-            add_stat!(crit_chance, critical_strike_chance);
-            add_stat!(crit_damage, critical_strike_damage);
+            add_stat!(crit_chance, crit_chance);
+            add_stat!(crit_damage, crit_damage);
             add_stat!(max_mana, mana);
             add_stat!(attack_speed);
             add_stat!(current_mana, mana);

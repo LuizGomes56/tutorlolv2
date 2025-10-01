@@ -69,9 +69,9 @@ pub fn simulate_champion_stats(
 
     add_stat!(max_mana, mana);
     add_stat!(max_health, health);
-    add_stat!(magic_resist, magic_resistance);
-    add_stat!(crit_chance, critical_strike_chance);
-    add_stat!(crit_damage, critical_strike_damage);
+    add_stat!(magic_resist, magic_resist);
+    add_stat!(crit_chance, crit_chance);
+    add_stat!(crit_damage, crit_damage);
     add_stat!(ability_power);
     add_stat!(attack_damage);
     add_stat!(armor);
@@ -457,7 +457,7 @@ pub fn get_enemy_current_stats(
             add_value!(attack_damage);
             add_value!(health);
             add_value!(armor);
-            basic_stats.magic_resist += item.stats.magic_resistance;
+            basic_stats.magic_resist += item.stats.magic_resist;
             add_value!(mana);
         }
     }

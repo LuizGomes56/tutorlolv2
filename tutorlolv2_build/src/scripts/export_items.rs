@@ -11,11 +11,14 @@ pub struct PartialStats {
     pub magic_penetration_flat: Option<f64>,
     pub attack_damage: Option<f64>,
     pub attack_speed: Option<f64>,
-    pub critical_strike_chance: Option<f64>,
-    pub critical_strike_damage: Option<f64>,
+    #[serde(rename = "criticalStrikeChance")]
+    pub crit_chance: Option<f64>,
+    #[serde(rename = "criticalStrikeDamage")]
+    pub crit_damage: Option<f64>,
     pub health: Option<f64>,
     pub lifesteal: Option<f64>,
-    pub magic_resistance: Option<f64>,
+    #[serde(rename = "magicResistance")]
+    pub magic_resist: Option<f64>,
     pub mana: Option<f64>,
     pub movespeed: Option<f64>,
     pub omnivamp: Option<f64>,
@@ -91,11 +94,11 @@ pub fn format_stats(stats: &PartialStats) -> String {
     insert_stat!(magic_penetration_flat);
     insert_stat!(attack_damage);
     insert_stat!(attack_speed);
-    insert_stat!(critical_strike_chance);
-    insert_stat!(critical_strike_damage);
+    insert_stat!(crit_chance);
+    insert_stat!(crit_damage);
     insert_stat!(health);
     insert_stat!(lifesteal);
-    insert_stat!(magic_resistance);
+    insert_stat!(magic_resist);
     insert_stat!(mana);
     insert_stat!(movespeed);
     insert_stat!(omnivamp);
