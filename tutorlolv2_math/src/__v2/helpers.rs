@@ -28,8 +28,8 @@ pub fn get_simulated_stats(
     let mut result = MaybeUninit::<[RiotChampionStats; 118]>::uninit();
     let result_ptr = result.as_mut_ptr();
 
-    for (i, item_offset) in SIMULATED_ITEMS_ENUM.iter().enumerate() {
-        let item_id = unsafe { core::mem::transmute::<u16, ItemId>(*item_offset as u16) };
+    for (i, item_offset) in SIMULATED_ITEMS_ENUM.into_iter().enumerate() {
+        let item_id = unsafe { core::mem::transmute::<u16, ItemId>(item_offset) };
         let item_cache = unsafe { INTERNAL_ITEMS.get_unchecked(item_id as usize) };
         let mut new_stat = *stats;
 
@@ -56,10 +56,13 @@ pub fn get_simulated_stats(
         add_stat!(@armor_penetration_percent);
         add_stat!(@magic_penetration_percent);
 
-        new_stat.ability_power *= dragons.fire as f32 * FIRE_DRAGON_MULTIPLIER;
-        new_stat.attack_damage *= dragons.fire as f32 * FIRE_DRAGON_MULTIPLIER;
-        new_stat.magic_resist *= dragons.earth as f32 * EARTH_DRAGON_MULTIPLIER;
-        new_stat.armor *= dragons.earth as f32 * EARTH_DRAGON_MULTIPLIER;
+        let fire_mod = 1.0 + dragons.fire as f32 * FIRE_DRAGON_MULTIPLIER;
+        let earth_mod = 1.0 + dragons.earth as f32 * EARTH_DRAGON_MULTIPLIER;
+
+        new_stat.ability_power *= fire_mod;
+        new_stat.attack_damage *= fire_mod;
+        new_stat.magic_resist *= earth_mod;
+        new_stat.armor *= earth_mod;
 
         unsafe {
             core::ptr::addr_of_mut!((*result_ptr)[i]).write(new_stat);
@@ -120,10 +123,12 @@ pub fn get_items_data(
     items: &SetU32,
     attack_type: AttackType,
     level: u8,
+    size_counter: &mut usize,
 ) -> DamageKind<L_ITEM, ItemId> {
     let mut metadata = SmallVec::with_capacity(items.len());
     let mut damages = SmallVec::with_capacity(items.len());
     for item_number in items.iter() {
+        *size_counter += 2 + item_number.size();
         let item_id = unsafe { std::mem::transmute::<u16, ItemId>(item_number as u16) };
         let item = unsafe { INTERNAL_ITEMS.get_unchecked(item_number as usize) };
         let item_damage = match attack_type {
@@ -143,6 +148,7 @@ pub fn get_items_data(
     DamageKind { metadata, damages }
 }
 
+#[inline]
 pub fn items_to_set_u32(input: &[RiotItems]) -> SetU32 {
     input
         .iter()
@@ -168,7 +174,7 @@ pub fn get_enemy_current_stats(stats: &mut SimpleStatsF32, items: &SetU32, earth
         add_value!(armor);
         add_value!(magic_resist);
     }
-    let dragon_mod = earth_dragons as f32 * EARTH_DRAGON_MULTIPLIER;
+    let dragon_mod = 1.0 + earth_dragons as f32 * EARTH_DRAGON_MULTIPLIER;
     stats.armor *= dragon_mod;
     stats.magic_resist *= dragon_mod;
 }
@@ -287,6 +293,7 @@ pub fn get_enemy_state(state: EnemyState, shred: ResistShred, earth_dragons: u8)
     }
 }
 
+#[inline]
 fn has_item<const N: usize>(origin: &SetU32, check_for: [ItemId; N]) -> bool {
     check_for
         .into_iter()
@@ -410,16 +417,19 @@ pub fn eval_attacks(
     modifiers: DamageModifiers,
 ) -> Attacks {
     let basic_attack_damage =
-        (modifiers.physical_mod * ((BASIC_ATTACK.minimum_damage)(0, ctx))) as i32;
-    onhit_damage.minimum_damage += basic_attack_damage;
+        (modifiers.physical_mod * (BASIC_ATTACK.minimum_damage)(0, ctx)) as i32;
     let critical_strike_damage =
-        (modifiers.physical_mod * ((CRITICAL_STRIKE.minimum_damage)(0, ctx))) as i32;
+        (modifiers.physical_mod * (CRITICAL_STRIKE.minimum_damage)(0, ctx)) as i32;
+
+    onhit_damage.minimum_damage += basic_attack_damage;
     onhit_damage.maximum_damage += critical_strike_damage;
+
     *size_counter += basic_attack_damage.size()
         + critical_strike_damage.size()
         + onhit_damage.minimum_damage.size()
         + onhit_damage.maximum_damage.size()
         + 2;
+
     Attacks {
         basic_attack: RangeDamageI32 {
             minimum_damage: basic_attack_damage,

@@ -72,7 +72,7 @@ macro_rules! impl_size_counter {
     };
 }
 
-impl_size_counter!(u32, usize);
+impl_size_counter!(u16, u32, usize);
 
 #[inline(always)]
 pub const fn size_u(v: u32) -> usize {
@@ -100,6 +100,39 @@ impl SizeCounter for SimpleStatsI32 {
     #[inline(always)]
     fn size(&self) -> usize {
         self.armor.size() + self.health.size() + self.magic_resist.size()
+    }
+}
+
+impl SizeCounter for BasicStatsI32 {
+    #[inline(always)]
+    fn size(&self) -> usize {
+        self.armor.size()
+            + self.health.size()
+            + self.attack_damage.size()
+            + self.magic_resist.size()
+            + self.mana.size()
+    }
+}
+
+impl SizeCounter for StatsI32 {
+    #[inline(always)]
+    fn size(&self) -> usize {
+        self.ability_power.size()
+            + self.armor.size()
+            + self.armor_penetration_flat.size()
+            + self.armor_penetration_percent.size()
+            + self.attack_damage.size()
+            + self.attack_range.size()
+            + self.attack_speed.size()
+            + self.crit_chance.size()
+            + self.crit_damage.size()
+            + self.current_health.size()
+            + self.magic_penetration_flat.size()
+            + self.magic_penetration_percent.size()
+            + self.magic_resist.size()
+            + self.health.size()
+            + self.mana.size()
+            + self.current_mana.size()
     }
 }
 

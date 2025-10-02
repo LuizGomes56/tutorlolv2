@@ -14,7 +14,7 @@ pub const L_ABLT: usize = 7;
 pub const L_TEAM: usize = 5;
 pub const L_PLYR: usize = L_TEAM << 1;
 
-#[derive(Encode, PartialEq)]
+#[derive(Encode, PartialEq, Clone, Copy)]
 pub enum Team {
     Blue,
     Red,
@@ -188,12 +188,13 @@ pub struct Realtime<'a> {
 #[derive(Encode)]
 pub struct Scoreboard<'a> {
     pub riot_id: &'a str,
-    pub assists: u16,
+    pub assists: u8,
     pub creep_score: u16,
     pub deaths: u8,
     pub kills: u8,
     pub champion_id: ChampionId,
     pub position: Position,
+    pub team: Team,
 }
 
 #[derive(Encode)]

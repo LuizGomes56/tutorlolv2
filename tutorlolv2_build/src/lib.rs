@@ -69,7 +69,7 @@ pub async fn run() {
     let mut internal_simulated_items =
         String::from("pub static SIMULATED_ITEMS:phf::OrderedSet<u32>=phf::phf_ordered_set!(");
     let mut internal_simulated_items_enum = format!(
-        "pub static SIMULATED_ITEMS_ENUM:[u32;{}]=[",
+        "pub static SIMULATED_ITEMS_ENUM:[u16;{}]=[",
         items.iter().filter(|(_, v)| v.is_simulated).count()
     );
     let mut internal_damaging_items =
