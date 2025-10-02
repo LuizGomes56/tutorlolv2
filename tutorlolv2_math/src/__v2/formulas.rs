@@ -1,3 +1,4 @@
+use super::model::ResistValue;
 use tutorlolv2_gen::AdaptativeType;
 
 pub struct RiotFormulas;
@@ -27,10 +28,13 @@ impl RiotFormulas {
     }
 
     #[inline]
-    pub const fn real_resist(percent_pen: f32, flat_pen: f32, resist: f32) -> (f32, f32) {
+    pub const fn real_resist(percent_pen: f32, flat_pen: f32, resist: f32) -> ResistValue {
         let real_val = (percent_pen * resist - flat_pen).max(0.0);
         let modf_val = 100.0 / (100.0 + real_val);
-        (real_val, modf_val)
+        ResistValue {
+            real: real_val,
+            modifier: modf_val,
+        }
     }
 
     #[inline]

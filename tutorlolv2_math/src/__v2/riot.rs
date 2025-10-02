@@ -1,5 +1,7 @@
 use serde::{Deserialize, Serialize};
 use smallvec::SmallVec;
+use tinyset::SetU32;
+use tutorlolv2_gen::{DAMAGING_ITEMS, ItemId};
 
 use crate::__v2::model::{AbilityLevels, L_ITEM, L_PLYR};
 
@@ -19,6 +21,7 @@ pub struct RiotAbilities {
 }
 
 impl RiotAbilities {
+    #[inline(always)]
     pub fn get_levelings(&self) -> AbilityLevels {
         AbilityLevels {
             q: self.q.ability_level,
