@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-smallvec = { version = "1.15.1", features = ["impl_bincode"] }
+smallvec = { version = "1.15.1", features = ["serde", "impl_bincode"] }
 tinyset = "0.5.2"
 tutorlolv2_gen = { path = "../tutorlolv2_gen" }
 bincode = "2.0.1"

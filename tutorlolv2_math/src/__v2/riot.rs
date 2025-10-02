@@ -1,9 +1,6 @@
+use crate::__v2::model::{AbilityLevels, L_ITEM, L_PLYR};
 use serde::{Deserialize, Serialize};
 use smallvec::SmallVec;
-use tinyset::SetU32;
-use tutorlolv2_gen::{DAMAGING_ITEMS, ItemId};
-
-use crate::__v2::model::{AbilityLevels, L_ITEM, L_PLYR};
 
 #[derive(Serialize, Default, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -137,7 +134,6 @@ pub struct RiotRealtimeEvents<'a> {
 pub struct RiotRealtime<'a> {
     #[serde(borrow)]
     pub active_player: RiotActivePlayer<'a>,
-    #[serde(borrow)]
     pub all_players: SmallVec<[RiotAllPlayers<'a>; L_PLYR]>,
     #[serde(borrow)]
     pub events: RiotRealtimeEvents<'a>,

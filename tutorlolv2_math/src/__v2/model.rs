@@ -141,17 +141,17 @@ pub struct TypeMetadata<T> {
     pub meta: Meta,
 }
 
-#[derive(Encode)]
+#[derive(Encode, Clone, Copy)]
 pub struct Meta(pub u8);
 
 impl Meta {
-    pub fn from_bytes(damage_type: DamageType, attributes: Attrs) -> Self {
+    pub const fn from_bytes(damage_type: DamageType, attributes: Attrs) -> Self {
         Self(((damage_type as u8 & 0b0000_0111) << 5) | attributes as u8 & 0b0001_1111)
     }
-    pub fn damage_type(&self) -> DamageType {
+    pub const fn damage_type(&self) -> DamageType {
         unsafe { std::mem::transmute((self.0 >> 5) & 0b0000_0111) }
     }
-    pub fn attributes(&self) -> Attrs {
+    pub const fn attributes(&self) -> Attrs {
         unsafe { std::mem::transmute(self.0 & 0b0001_1111) }
     }
 }
@@ -167,6 +167,12 @@ pub struct DamageKind<const N: usize, T> {
 }
 
 #[derive(Encode)]
+pub struct ConstItemMetadata {
+    pub kind: ItemId,
+    pub meta: Meta,
+}
+
+#[derive(Encode)]
 pub struct Realtime<'a> {
     pub current_player: CurrentPlayer<'a>,
     pub enemies: SmallVec<[Enemy<'a>; L_TEAM]>,
@@ -174,7 +180,7 @@ pub struct Realtime<'a> {
     pub abilities: SmallVec<[TypeMetadata<AbilityLike>; L_ABLT]>,
     pub items: SmallVec<[TypeMetadata<ItemId>; L_ITEM]>,
     pub runes: SmallVec<[TypeMetadata<RuneId>; L_RUNE]>,
-    pub siml_items: [TypeMetadata<ItemId>; L_SIML],
+    pub siml_items: [ConstItemMetadata; L_SIML],
     pub game_time: u32,
     pub ability_levels: AbilityLevels,
 }

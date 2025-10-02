@@ -4,8 +4,29 @@ use std::mem::MaybeUninit;
 use tinyset::SetU32;
 use tutorlolv2_gen::{
     CHAMPION_NAME_TO_ID, DAMAGING_RUNES, INTERNAL_CHAMPIONS, INTERNAL_ITEMS, ItemId, Position,
-    RuneId, SIMULATED_ITEMS,
+    RuneId, SIMULATED_ITEMS_ENUM,
 };
+
+const SIMULATED_ITEMS_METADATA: [ConstItemMetadata; L_SIML] = {
+    let mut siml_items = MaybeUninit::<[ConstItemMetadata; L_SIML]>::uninit();
+    let siml_items_ptr = siml_items.as_mut_ptr();
+    let mut i = 0;
+    while i < L_SIML {
+        let item_id =
+            unsafe { core::mem::transmute::<u16, ItemId>(SIMULATED_ITEMS_ENUM[i] as u16) };
+        let item_cache = INTERNAL_ITEMS[item_id as usize];
+        unsafe {
+            core::ptr::addr_of_mut!((*siml_items_ptr)[i]).write(ConstItemMetadata {
+                kind: item_id,
+                meta: Meta::from_bytes(item_cache.damage_type, item_cache.attributes),
+            })
+        };
+        i += 1;
+    }
+    unsafe { siml_items.assume_init() }
+};
+
+const SIZE_SIMULATED_ITEMS_METADATA: usize = size_u(L_SIML as u32) + L_SIML << 1;
 
 pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
     let mut size_counter = 0;
@@ -182,6 +203,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
             let abilities_damage = eval_damage::<L_ABLT, _>(
                 &eval_ctx,
                 &mut onhit,
+                &mut size_counter,
                 &abilities_closures,
                 &abilities_metadata,
                 modifiers,
@@ -189,6 +211,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
             let items_damage = eval_damage::<L_ITEM, _>(
                 &eval_ctx,
                 &mut onhit,
+                &mut size_counter,
                 &items_closures,
                 &items_metadata,
                 modifiers,
@@ -196,13 +219,16 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
             let runes_damage = eval_damage::<L_RUNE, _>(
                 &eval_ctx,
                 &mut onhit,
+                &mut size_counter,
                 &runes_closures,
                 &runes_metadata,
                 modifiers,
             );
-            let attacks_damage = eval_attacks(&eval_ctx, onhit, modifiers);
+            let attacks_damage = eval_attacks(&eval_ctx, onhit, &mut size_counter, modifiers);
+
             let mut siml_results = MaybeUninit::<[Damages; 118]>::uninit();
             let siml_result_ptr = siml_results.as_mut_ptr();
+
             for (i, siml_stat) in simulated_stats.into_iter().enumerate() {
                 let siml_eval_ctx = get_eval_ctx(
                     SelfState {
@@ -230,6 +256,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
                 let siml_abilities_damage = eval_damage::<L_ABLT, _>(
                     &siml_eval_ctx,
                     &mut siml_onhit,
+                    &mut size_counter,
                     &abilities_closures,
                     &abilities_metadata,
                     modifiers,
@@ -237,6 +264,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
                 let siml_items_damage = eval_damage::<L_ITEM, _>(
                     &siml_eval_ctx,
                     &mut siml_onhit,
+                    &mut size_counter,
                     &items_closures,
                     &items_metadata,
                     modifiers,
@@ -244,11 +272,13 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
                 let siml_runes_damage = eval_damage::<L_RUNE, _>(
                     &siml_eval_ctx,
                     &mut siml_onhit,
+                    &mut size_counter,
                     &runes_closures,
                     &runes_metadata,
                     modifiers,
                 );
-                let siml_attacks_damage = eval_attacks(&siml_eval_ctx, siml_onhit, modifiers);
+                let siml_attacks_damage =
+                    eval_attacks(&siml_eval_ctx, siml_onhit, &mut size_counter, modifiers);
                 unsafe {
                     core::ptr::addr_of_mut!((*siml_result_ptr)[i]).write(Damages {
                         attacks: siml_attacks_damage,
@@ -258,6 +288,26 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
                     });
                 }
             }
+
+            let real_armor = full_state.armor_values.real as i32;
+            let real_magic_resist = full_state.magic_values.real as i32;
+            let e_base_stats_i32: SimpleStatsI32 = e_base_stats.into();
+            let e_bonus_stats_i32: SimpleStatsI32 = full_state.bonus_stats.into();
+            let e_current_stats_i32: SimpleStatsI32 = full_state.current_stats.into();
+
+            size_counter += 4
+                + size_u(L_SIML as u32)
+                + L_SIML
+                    * (abilities_closures.len().size()
+                        + items_closures.len().size()
+                        + runes_closures.len().size())
+                + e_base_stats_i32.size()
+                + e_bonus_stats_i32.size()
+                + e_current_stats_i32.size()
+                + real_armor.size()
+                + real_magic_resist.size()
+                + riot_id.size();
+
             Some(Enemy {
                 champion_id: *e_champion_id,
                 position: e_position,
@@ -270,15 +320,22 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
                     runes: runes_damage,
                 },
                 siml_items: unsafe { siml_results.assume_init() },
-                base_stats: e_base_stats.into(),
-                bonus_stats: full_state.bonus_stats.into(),
-                current_stats: full_state.current_stats.into(),
-                real_armor: full_state.armor_values.real as i32,
-                real_magic_resist: full_state.magic_values.real as i32,
+                base_stats: e_base_stats_i32,
+                bonus_stats: e_bonus_stats_i32,
+                current_stats: e_current_stats_i32,
+                real_armor,
+                real_magic_resist,
                 level: *e_level,
             })
         })
         .collect();
+
+    size_counter += SIZE_SIMULATED_ITEMS_METADATA
+        + abilities_metadata.len().size()
+        + items_metadata.len().size()
+        + runes_metadata.len().size()
+        + (abilities_metadata.len() << 2)
+        + (2 + items_metadata.len() << 2);
 
     Some(Realtime {
         current_player: CurrentPlayer {
@@ -297,23 +354,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
         abilities: abilities_metadata,
         items: items_metadata,
         runes: runes_metadata,
-        // TODO: Make constant or static
-        siml_items: {
-            let mut siml_items = MaybeUninit::<[TypeMetadata<ItemId>; L_SIML]>::uninit();
-            let siml_items_ptr = siml_items.as_mut_ptr();
-            for (i, item_offset) in SIMULATED_ITEMS.iter().enumerate() {
-                let item_id = unsafe { core::mem::transmute::<u16, ItemId>(*item_offset as u16) };
-                let item_cache = unsafe { INTERNAL_ITEMS.get_unchecked(item_id as usize) };
-                unsafe {
-                    core::ptr::addr_of_mut!((*siml_items_ptr)[i]).write(TypeMetadata {
-                        level: *level,
-                        kind: item_id,
-                        meta: Meta::from_bytes(item_cache.damage_type, item_cache.attributes),
-                    })
-                }
-            }
-            unsafe { siml_items.assume_init() }
-        },
+        siml_items: SIMULATED_ITEMS_METADATA,
         game_time: *game_time as u32,
         ability_levels,
     })

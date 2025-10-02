@@ -68,6 +68,10 @@ pub async fn run() {
     let mut internal_items_content = String::new();
     let mut internal_simulated_items =
         String::from("pub static SIMULATED_ITEMS:phf::OrderedSet<u32>=phf::phf_ordered_set!(");
+    let mut internal_simulated_items_enum = format!(
+        "pub static SIMULATED_ITEMS_ENUM:[u32;{}]=[",
+        items.iter().filter(|(_, v)| v.is_simulated).count()
+    );
     let mut internal_damaging_items =
         String::from("pub static DAMAGING_ITEMS:phf::Set<u32>=phf::phf_set!(");
     let mut item_id_to_name = format!("pub static ITEM_ID_TO_NAME:[&str;{}]=[", items.len(),);
@@ -243,7 +247,7 @@ pub async fn run() {
             .collect::<Vec<String>>()
             .join(","),
     );
-    for (item_id, item_detail) in items.into_iter() {
+    for (index, (item_id, item_detail)) in items.into_iter().enumerate() {
         internal_items_content.push_str(&item_detail.constdecl);
         internal_items.push_str(&format!(
             "&{}_{},",
@@ -252,6 +256,7 @@ pub async fn run() {
         ));
         if item_detail.is_simulated {
             internal_simulated_items.push_str(&format!("{}u32,", item_id));
+            internal_simulated_items_enum.push_str(&format!("{},", index));
         }
         if item_detail.is_damaging {
             internal_damaging_items.push_str(&format!("{}u32,", item_id));
@@ -262,6 +267,7 @@ pub async fn run() {
 
     internal_items.push_str("];");
     internal_simulated_items.push_str(");");
+    internal_simulated_items_enum.push_str("];");
     internal_damaging_items.push_str(");");
     item_id_to_name.push_str("];");
     item_formulas.push_str("];");
@@ -276,6 +282,7 @@ pub async fn run() {
                     + moved_item_id_to_riot_id.len()
                     + internal_items_content.len()
                     + internal_simulated_items.len()
+                    + internal_simulated_items_enum.len()
                     + internal_damaging_items.len()
                     + USE_SUPER.len(),
             );
@@ -285,6 +292,7 @@ pub async fn run() {
             s.push_str(&moved_item_id_to_riot_id);
             s.push_str(&internal_items_content);
             s.push_str(&internal_simulated_items);
+            s.push_str(&internal_simulated_items_enum);
             s.push_str(&internal_damaging_items);
             s
         })

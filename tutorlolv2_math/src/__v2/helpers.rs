@@ -4,8 +4,8 @@ use std::mem::MaybeUninit;
 use tinyset::SetU32;
 use tutorlolv2_gen::{
     AbilityLike, AdaptativeType, AttackType, Attrs, BASIC_ATTACK, CRITICAL_STRIKE,
-    CachedChampionAbility, CachedChampionStatsMap, ChampionId, DAMAGING_ITEMS, DamageExpression,
-    DamageType, EvalContext, INTERNAL_ITEMS, INTERNAL_RUNES, ItemId, RuneId, SIMULATED_ITEMS, zero,
+    CachedChampionAbility, CachedChampionStatsMap, ChampionId, DAMAGING_ITEMS, DamageType,
+    EvalContext, INTERNAL_ITEMS, INTERNAL_RUNES, ItemId, RuneId, SIMULATED_ITEMS_ENUM, zero,
 };
 
 /// By 06/07/2025 Earth dragons give +5% resists
@@ -28,7 +28,7 @@ pub fn get_simulated_stats(
     let mut result = MaybeUninit::<[RiotChampionStats; 118]>::uninit();
     let result_ptr = result.as_mut_ptr();
 
-    for (i, item_offset) in SIMULATED_ITEMS.iter().enumerate() {
+    for (i, item_offset) in SIMULATED_ITEMS_ENUM.iter().enumerate() {
         let item_id = unsafe { core::mem::transmute::<u16, ItemId>(*item_offset as u16) };
         let item_cache = unsafe { INTERNAL_ITEMS.get_unchecked(item_id as usize) };
         let mut new_stat = *stats;
@@ -361,6 +361,7 @@ pub fn get_eval_ctx(self_state: SelfState, e_state: &EnemyFullState) -> EvalCont
 pub fn eval_damage<const N: usize, T>(
     ctx: &EvalContext,
     onhit: &mut RangeDamageI32,
+    size_counter: &mut usize,
     closures: &[DamageClosure],
     metadata: &[TypeMetadata<T>],
     modifiers: DamageModifiers,
@@ -379,6 +380,7 @@ pub fn eval_damage<const N: usize, T>(
         };
         let minimum_damage = (modifier * (closure.minimum_damage)(metadata.level, ctx)) as i32;
         let maximum_damage = (modifier * (closure.maximum_damage)(metadata.level, ctx)) as i32;
+        *size_counter += minimum_damage.size() + maximum_damage.size();
         let sum = minimum_damage + minimum_damage;
         match attributes {
             Attrs::OnhitMin => {
@@ -404,6 +406,7 @@ pub fn eval_damage<const N: usize, T>(
 pub fn eval_attacks(
     ctx: &EvalContext,
     mut onhit_damage: RangeDamageI32,
+    size_counter: &mut usize,
     modifiers: DamageModifiers,
 ) -> Attacks {
     let basic_attack_damage =
@@ -412,6 +415,11 @@ pub fn eval_attacks(
     let critical_strike_damage =
         (modifiers.physical_mod * ((CRITICAL_STRIKE.minimum_damage)(0, ctx))) as i32;
     onhit_damage.maximum_damage += critical_strike_damage;
+    *size_counter += basic_attack_damage.size()
+        + critical_strike_damage.size()
+        + onhit_damage.minimum_damage.size()
+        + onhit_damage.maximum_damage.size()
+        + 2;
     Attacks {
         basic_attack: RangeDamageI32 {
             minimum_damage: basic_attack_damage,

@@ -1,4 +1,4 @@
-use super::model::ResistValue;
+use super::model::*;
 use tutorlolv2_gen::AdaptativeType;
 
 pub struct RiotFormulas;
@@ -44,5 +44,69 @@ impl RiotFormulas {
         } else {
             AdaptativeType::Magic
         }
+    }
+}
+
+#[inline(always)]
+pub const fn size_i(v: i32) -> usize {
+    let u = ((v << 1) ^ (v >> 31)) as u32;
+    if u < 251 {
+        1
+    } else if u < (1 << 16) {
+        3
+    } else {
+        5
+    }
+}
+
+macro_rules! impl_size_counter {
+    ($($ty:ty),*) => {
+        $(
+            impl SizeCounter for $ty {
+                #[inline(always)]
+                fn size(&self) -> usize {
+                    size_u(*self as u32)
+                }
+            }
+        )*
+    };
+}
+
+impl_size_counter!(u32, usize);
+
+#[inline(always)]
+pub const fn size_u(v: u32) -> usize {
+    if v <= 250 {
+        1
+    } else if v <= 0xFFFF {
+        3
+    } else {
+        5
+    }
+}
+
+pub trait SizeCounter {
+    fn size(&self) -> usize;
+}
+
+impl SizeCounter for i32 {
+    #[inline(always)]
+    fn size(&self) -> usize {
+        size_i(*self)
+    }
+}
+
+impl SizeCounter for SimpleStatsI32 {
+    #[inline(always)]
+    fn size(&self) -> usize {
+        self.armor.size() + self.health.size() + self.magic_resist.size()
+    }
+}
+
+impl SizeCounter for str {
+    #[inline(always)]
+    fn size(&self) -> usize {
+        let len = self.len();
+        len + (len as u32).size()
     }
 }

@@ -129,7 +129,6 @@ pub struct RiotRealtimeEvents<'a> {
 pub struct RiotRealtime<'a> {
     #[serde(borrow)]
     pub active_player: RiotActivePlayer<'a>,
-    #[serde(borrow)]
     pub all_players: SmallVec<[RiotAllPlayers<'a>; 10]>,
     #[serde(borrow)]
     pub events: RiotRealtimeEvents<'a>,
