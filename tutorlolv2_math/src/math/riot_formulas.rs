@@ -103,7 +103,7 @@ impl RiotFormulas {
             max_mana: assign_value!(mana),
             magic_penetration_flat: 0.0,
             magic_penetration_percent: 0.0,
-            magic_resist: assign_value!(magic_resistance),
+            magic_resist: assign_value!(magic_resist),
         }
     }
 }

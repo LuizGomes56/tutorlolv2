@@ -69,7 +69,7 @@ pub fn realtime_arena<'a>(
             armor: assign!(armor),
             health: assign!(health),
             attack_damage: assign!(attack_damage),
-            magic_resist: assign!(magic_resistance),
+            magic_resist: assign!(magic_resist),
             mana: assign!(mana),
         }
     };
@@ -201,7 +201,7 @@ pub fn realtime_arena<'a>(
             SimpleStatsF32 {
                 armor: assign!(armor),
                 health: assign!(health),
-                magic_resist: assign!(magic_resistance),
+                magic_resist: assign!(magic_resist),
             }
         };
 

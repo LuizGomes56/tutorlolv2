@@ -146,7 +146,7 @@ pub struct CachedChampionStats {
     pub health: CachedChampionStatsMap,
     pub mana: CachedChampionStatsMap,
     pub armor: CachedChampionStatsMap,
-    pub magic_resistance: CachedChampionStatsMap,
+    pub magic_resist: CachedChampionStatsMap,
     pub attack_damage: CachedChampionStatsMap,
     pub attack_speed: CachedChampionStatsMap,
     pub movespeed: f32,

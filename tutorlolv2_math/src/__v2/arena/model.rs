@@ -157,6 +157,12 @@ pub struct ConstItemMetadata {
     pub meta: Meta,
 }
 
+pub struct DamageEvalData<'a> {
+    pub abilities: DamageKind<'a, AbilityLike>,
+    pub items: DamageKind<'a, ItemId>,
+    pub runes: DamageKind<'a, RuneId>,
+}
+
 #[derive(Encode)]
 pub struct Realtime<'a> {
     pub current_player: CurrentPlayer<'a>,

@@ -66,7 +66,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
             armor: assign!(armor),
             health: assign!(health),
             attack_damage: assign!(attack_damage),
-            magic_resist: assign!(magic_resistance),
+            magic_resist: assign!(magic_resist),
             mana: assign!(mana),
         }
     };
@@ -186,7 +186,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
                 SimpleStatsF32 {
                     armor: assign!(armor),
                     health: assign!(health),
-                    magic_resist: assign!(magic_resistance),
+                    magic_resist: assign!(magic_resist),
                 }
             };
             let full_state = get_enemy_state(

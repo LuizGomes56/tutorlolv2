@@ -432,7 +432,7 @@ pub const fn get_base_stats(champion_cache: &&CachedChampion, level: u8) -> Basi
         armor: assign_value!(armor),
         health: assign_value!(health),
         attack_damage: assign_value!(attack_damage),
-        magic_resist: assign_value!(magic_resistance),
+        magic_resist: assign_value!(magic_resist),
         mana: assign_value!(mana),
     }
 }

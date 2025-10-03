@@ -15,7 +15,8 @@ pub struct ChampionCdnStats {
     pub health: ChampionCdnStatsMap,
     pub mana: ChampionCdnStatsMap,
     pub armor: ChampionCdnStatsMap,
-    pub magic_resistance: ChampionCdnStatsMap,
+    #[serde(rename = "magicResistance")]
+    pub magic_resist: ChampionCdnStatsMap,
     pub attack_damage: ChampionCdnStatsMap,
     pub attack_speed: ChampionCdnStatsMap,
     pub movespeed: ChampionCdnStatsMap,
@@ -87,7 +88,7 @@ pub fn format_stats(stats: &ChampionCdnStats) -> String {
     all_stats.push(insert_stat!(health));
     all_stats.push(insert_stat!(mana));
     all_stats.push(insert_stat!(armor));
-    all_stats.push(insert_stat!(magic_resistance));
+    all_stats.push(insert_stat!(magic_resist));
     all_stats.push(insert_stat!(attack_damage));
     all_stats.push(insert_stat!(attack_speed));
     all_stats.push(insert_stat!(lone movespeed));

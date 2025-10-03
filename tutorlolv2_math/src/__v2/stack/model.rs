@@ -1,5 +1,5 @@
 use crate::__v2::{
-    AbilityLevels, L_ABLT, L_ITEM, L_PLYR, L_RUNE, L_SIML, L_TEAM, riot::RiotChampionStats,
+    AbilityLevels, GameMap, L_ABLT, L_ITEM, L_PLYR, L_RUNE, L_SIML, L_TEAM, riot::RiotChampionStats,
 };
 use bincode::{Decode, Encode};
 use smallvec::SmallVec;
@@ -150,7 +150,7 @@ pub struct DamageClosure {
 
 pub struct DamageKind<const N: usize, T> {
     pub metadata: SmallVec<[TypeMetadata<T>; N]>,
-    pub damages: SmallVec<[DamageClosure; N]>,
+    pub closures: SmallVec<[DamageClosure; N]>,
 }
 
 #[derive(Encode)]
@@ -195,6 +195,7 @@ pub struct CurrentPlayer<'a> {
     pub adaptative_type: AdaptativeType,
     pub position: Position,
     pub champion_id: ChampionId,
+    pub game_map: GameMap,
 }
 
 #[derive(Clone, Copy)]
@@ -241,6 +242,12 @@ pub struct SimpleStatsF32 {
     pub armor: f32,
     pub health: f32,
     pub magic_resist: f32,
+}
+
+pub struct DamageEvalData {
+    pub abilities: DamageKind<L_ABLT, AbilityLike>,
+    pub items: DamageKind<L_ITEM, ItemId>,
+    pub runes: DamageKind<L_RUNE, RuneId>,
 }
 
 impl From<SimpleStatsF32> for SimpleStatsI32 {

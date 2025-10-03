@@ -318,7 +318,8 @@ pub async fn run() {
     );
     let rune_id_enum = format!(
         "#[derive(Debug,Copy,Clone,Ord,Eq,PartialOrd,PartialEq,Decode,Encode)]#[repr(u8)]pub enum RuneId {{{}}}
-        impl RuneId {{pub fn to_riot_id(&self)->u32{{unsafe{{*RUNE_ID_TO_RIOT_ID.get_unchecked(*self as usize)}}}}
+        impl RuneId {{pub const fn to_riot_id_const(&self) -> u32 {{RUNE_ID_TO_RIOT_ID[*self as usize]}}
+        pub fn to_riot_id(&self)->u32{{unsafe{{*RUNE_ID_TO_RIOT_ID.get_unchecked(*self as usize)}}}}
         pub const fn from_riot_id(id:u32)->Self{{match id{{{}}}}}}}",
         runes
             .iter()

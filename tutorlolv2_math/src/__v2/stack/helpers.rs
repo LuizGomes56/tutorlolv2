@@ -12,10 +12,32 @@ pub const EARTH_DRAGON_MULTIPLIER: f32 = 0.05;
 // #![manual_impl]
 pub const FIRE_DRAGON_MULTIPLIER: f32 = 0.03;
 
-#[inline(always)]
-pub fn get_base_stats(stats: &CachedChampionStatsMap, level: u8) -> f32 {
-    RiotFormulas::stat_growth(stats.flat, stats.per_level, level)
+#[macro_export]
+macro_rules! base_stats {
+    (@inner $stats:expr, $level:expr) => {
+        RiotFormulas::stat_growth($stats.flat, $stats.per_level, $level)
+    };
+    ($struct:ident($stats:expr, $level:expr) { $($field:ident),*}) => {
+        $struct {
+            $(
+                $field: base_stats!(@inner &$stats.$field, $level),
+            )*
+        }
+    };
 }
+
+#[macro_export]
+macro_rules! bonus_stats {
+    ($struct:ident($current_stats:expr, $base_stats:expr) { $($field:ident),*}) => {
+        $struct {
+            $(
+                $field: $current_stats.$field - $base_stats.$field,
+            )*
+        }
+    };
+}
+
+pub use {base_stats, bonus_stats};
 
 #[inline]
 pub fn get_simulated_stats(
@@ -94,7 +116,10 @@ pub fn get_abilities_data(
             meta: Meta::from_bytes(value.damage_type, value.attributes),
         });
     }
-    DamageKind { metadata, damages }
+    DamageKind {
+        metadata,
+        closures: damages,
+    }
 }
 
 #[inline]
@@ -114,7 +139,10 @@ pub fn get_runes_data(runes: &SetU32, level: u8) -> DamageKind<L_RUNE, RuneId> {
             meta: Meta::from_bytes(rune.damage_type, Attrs::None),
         });
     }
-    DamageKind { metadata, damages }
+    DamageKind {
+        metadata,
+        closures: damages,
+    }
 }
 
 #[inline]
@@ -142,7 +170,10 @@ pub fn get_items_data(
             meta: Meta::from_bytes(item.damage_type, item.attributes),
         });
     }
-    DamageKind { metadata, damages }
+    DamageKind {
+        metadata,
+        closures: damages,
+    }
 }
 
 #[inline]
@@ -255,18 +286,13 @@ pub fn get_enemy_state(state: EnemyState, shred: ResistShred, earth_dragons: u8)
         e_current_stats.magic_resist,
     );
 
-    let e_bonus_stats = {
-        macro_rules! subtract {
-            ($field:ident) => {
-                e_current_stats.$field - state.base_stats.$field
-            };
+    let e_bonus_stats = bonus_stats!(
+        SimpleStatsF32(e_current_stats, state.base_stats) {
+            armor,
+            health,
+            magic_resist
         }
-        SimpleStatsF32 {
-            armor: subtract!(armor),
-            health: subtract!(health),
-            magic_resist: subtract!(magic_resist),
-        }
-    };
+    );
 
     EnemyFullState {
         current_stats: e_current_stats,
@@ -379,22 +405,21 @@ pub fn get_eval_ctx(self_state: SelfState, e_state: &EnemyFullState) -> EvalCont
 pub fn eval_damage<const N: usize, T>(
     ctx: &EvalContext,
     onhit: &mut RangeDamageI32,
-    closures: &[DamageClosure],
-    metadata: &[TypeMetadata<T>],
+    damage_kind: &DamageKind<N, T>,
     modifiers: DamageModifiers,
 ) -> SmallVec<[RangeDamageI32; N]> {
-    let mut result = SmallVec::with_capacity(closures.len());
-    for i in 0..closures.len() {
-        let closure = unsafe { closures.get_unchecked(i) };
-        let metadata = unsafe { metadata.get_unchecked(i) };
+    let mut result = SmallVec::with_capacity(N);
+    for i in 0..N {
+        let closure = unsafe { damage_kind.closures.get_unchecked(i) };
+        let metadata = unsafe { damage_kind.metadata.get_unchecked(i) };
         let damage_type = metadata.meta.damage_type();
         let attributes = metadata.meta.attributes();
         let modifier = match damage_type {
             DamageType::Physical => modifiers.physical_mod,
             DamageType::Magic => modifiers.magic_mod,
             DamageType::True => modifiers.true_mod,
-            _ => modifiers.global_mod,
-        };
+            _ => 1.0,
+        } * modifiers.global_mod;
 
         let minimum_damage = (modifier * (closure.minimum_damage)(metadata.level, ctx)) as i32;
         let maximum_damage = (modifier * (closure.maximum_damage)(metadata.level, ctx)) as i32;
@@ -422,15 +447,9 @@ pub fn eval_damage<const N: usize, T>(
     result
 }
 
-pub fn eval_attacks(
-    ctx: &EvalContext,
-    mut onhit_damage: RangeDamageI32,
-    modifiers: DamageModifiers,
-) -> Attacks {
-    let basic_attack_damage =
-        (modifiers.physical_mod * (BASIC_ATTACK.minimum_damage)(0, ctx)) as i32;
-    let critical_strike_damage =
-        (modifiers.physical_mod * (CRITICAL_STRIKE.minimum_damage)(0, ctx)) as i32;
+pub fn eval_attacks(ctx: &EvalContext, mut onhit_damage: RangeDamageI32) -> Attacks {
+    let basic_attack_damage = (BASIC_ATTACK.minimum_damage)(0, ctx) as i32;
+    let critical_strike_damage = (CRITICAL_STRIKE.minimum_damage)(0, ctx) as i32;
 
     onhit_damage.minimum_damage += basic_attack_damage;
     onhit_damage.maximum_damage += critical_strike_damage;
@@ -445,5 +464,23 @@ pub fn eval_attacks(
             maximum_damage: critical_strike_damage,
         },
         onhit_damage,
+    }
+}
+
+pub fn get_damages(
+    eval_ctx: &EvalContext,
+    data: &DamageEvalData,
+    modifiers: DamageModifiers,
+) -> Damages {
+    let mut onhit = RangeDamageI32::default();
+    let abilities = eval_damage::<L_ABLT, _>(&eval_ctx, &mut onhit, &data.abilities, modifiers);
+    let items = eval_damage::<L_ITEM, _>(&eval_ctx, &mut onhit, &data.items, modifiers);
+    let runes = eval_damage::<L_RUNE, _>(&eval_ctx, &mut onhit, &data.runes, modifiers);
+    let attacks = eval_attacks(&eval_ctx, onhit);
+    Damages {
+        abilities,
+        items,
+        runes,
+        attacks,
     }
 }
