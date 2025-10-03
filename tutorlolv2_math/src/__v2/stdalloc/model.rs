@@ -1,18 +1,10 @@
-use super::riot::RiotChampionStats;
+use crate::__v2::{AbilityLevels, L_SIML, riot::RiotChampionStats};
 use bincode::{Decode, Encode};
-use smallvec::SmallVec;
 use tinyset::SetU32;
 use tutorlolv2_gen::{
     AbilityLike, AdaptativeType, Attrs, ChampionId, DamageType, EvalContext, ItemId, Position,
-    RuneId, SIMULATED_ITEMS,
+    RuneId,
 };
-
-pub const L_SIML: usize = SIMULATED_ITEMS.len();
-pub const L_RUNE: usize = 2;
-pub const L_ITEM: usize = 4;
-pub const L_ABLT: usize = 7;
-pub const L_TEAM: usize = 5;
-pub const L_PLYR: usize = L_TEAM << 1;
 
 #[derive(Encode, PartialEq, Clone, Copy)]
 pub enum Team {
@@ -113,14 +105,6 @@ pub struct BasicStatsI32 {
     pub mana: i32,
 }
 
-#[derive(Encode, Decode, Clone, Copy)]
-pub struct AbilityLevels {
-    pub q: u8,
-    pub w: u8,
-    pub e: u8,
-    pub r: u8,
-}
-
 #[derive(Decode, Default)]
 pub struct Dragons {
     pub earth: u8,
@@ -161,9 +145,9 @@ pub struct DamageClosure {
     pub maximum_damage: fn(u8, &EvalContext) -> f32,
 }
 
-pub struct DamageKind<'a, T> {
-    pub metadata: &'a [TypeMetadata<T>],
-    pub damages: &'a [DamageClosure],
+pub struct DamageKind<T> {
+    pub metadata: Vec<TypeMetadata<T>>,
+    pub damages: Vec<DamageClosure>,
 }
 
 #[derive(Encode)]
@@ -175,11 +159,11 @@ pub struct ConstItemMetadata {
 #[derive(Encode)]
 pub struct Realtime<'a> {
     pub current_player: CurrentPlayer<'a>,
-    pub enemies: &'a [Enemy<'a>],
-    pub scoreboard: &'a [Scoreboard<'a>],
-    pub abilities: &'a [TypeMetadata<AbilityLike>],
-    pub items: &'a [TypeMetadata<ItemId>],
-    pub runes: &'a [TypeMetadata<RuneId>],
+    pub enemies: Vec<Enemy<'a>>,
+    pub scoreboard: Vec<Scoreboard<'a>>,
+    pub abilities: Vec<TypeMetadata<AbilityLike>>,
+    pub items: Vec<TypeMetadata<ItemId>>,
+    pub runes: Vec<TypeMetadata<RuneId>>,
     pub siml_items: [ConstItemMetadata; L_SIML],
     pub game_time: u32,
     pub ability_levels: AbilityLevels,
@@ -276,8 +260,8 @@ pub struct SimpleStatsI32 {
 #[derive(Encode)]
 pub struct Enemy<'a> {
     pub riot_id: &'a str,
-    pub damages: Damages<'a>,
-    pub siml_items: [Damages<'a>; L_SIML],
+    pub damages: Damages,
+    pub siml_items: [Damages; L_SIML],
     pub base_stats: SimpleStatsI32,
     pub bonus_stats: SimpleStatsI32,
     pub current_stats: SimpleStatsI32,
@@ -290,11 +274,11 @@ pub struct Enemy<'a> {
 }
 
 #[derive(Encode)]
-pub struct Damages<'a> {
+pub struct Damages {
     pub attacks: Attacks,
-    pub abilities: &'a [RangeDamageI32],
-    pub items: &'a [RangeDamageI32],
-    pub runes: &'a [RangeDamageI32],
+    pub abilities: Vec<RangeDamageI32>,
+    pub items: Vec<RangeDamageI32>,
+    pub runes: Vec<RangeDamageI32>,
 }
 
 #[derive(Decode)]
@@ -314,8 +298,8 @@ pub enum StackException {
 #[derive(Decode)]
 pub struct InputGame {
     pub active_player: InputActivePlayer,
-    pub enemy_players: SmallVec<[InputEnemyPlayers; 1]>,
-    pub stack_exceptions: SmallVec<[StackException; 5]>,
+    pub enemy_players: Vec<InputEnemyPlayers>,
+    pub stack_exceptions: Vec<StackException>,
     pub ally_dragons: Dragons,
     pub enemy_earth_dragons: u8,
     pub _padding: u32,
@@ -324,14 +308,14 @@ pub struct InputGame {
 #[derive(Decode)]
 pub struct InputActivePlayer {
     pub champion_stats: StatsI32,
-    pub runes: SmallVec<[RuneId; L_RUNE]>,
+    pub runes: Vec<RuneId>,
     pub abilities: AbilityLevels,
     pub data: InputMinData,
 }
 
 #[derive(Decode)]
 pub struct InputMinData {
-    pub items: SmallVec<[ItemId; L_ITEM]>,
+    pub items: Vec<ItemId>,
     pub stacks: u32,
     pub level: u8,
     pub infer_stats: bool,
@@ -346,8 +330,8 @@ pub struct InputEnemyPlayers {
 }
 
 #[derive(Encode)]
-pub struct OutputEnemy<'a> {
-    pub damages: Damages<'a>,
+pub struct OutputEnemy {
+    pub damages: Damages,
     pub base_stats: SimpleStatsI32,
     pub bonus_stats: SimpleStatsI32,
     pub current_stats: SimpleStatsI32,
@@ -376,17 +360,17 @@ pub struct OutputCurrentPlayer {
 }
 
 #[derive(Encode)]
-pub struct MonsterDamage<'a> {
+pub struct MonsterDamage {
     pub attacks: Attacks,
-    pub abilities: &'a [RangeDamageI32],
-    pub items: &'a [RangeDamageI32],
+    pub abilities: Vec<RangeDamageI32>,
+    pub items: Vec<RangeDamageI32>,
 }
 
 #[derive(Encode)]
-pub struct OutputGame<'a> {
-    pub monster_damages: &'a [MonsterDamage<'a>],
+pub struct OutputGame {
+    pub monster_damages: Vec<MonsterDamage>,
     pub current_player: OutputCurrentPlayer,
-    pub enemies: &'a [OutputEnemy<'a>],
+    pub enemies: Vec<OutputEnemy>,
     pub tower_damages: [i32; 6],
 }
 

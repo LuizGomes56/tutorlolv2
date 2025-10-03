@@ -1,4 +1,4 @@
-use crate::__v2::model::{AbilityLevels, L_ITEM, L_PLYR};
+use crate::__v2::{AbilityLevels, L_ITEM, L_PLYR};
 use serde::{Deserialize, Serialize};
 use smallvec::SmallVec;
 

@@ -1,26 +1,36 @@
 // ! AI GENERATED
 
-use criterion::{BatchSize, BenchmarkId, Criterion, Throughput, criterion_group, criterion_main};
+use bumpalo::Bump;
+use criterion::{BenchmarkId, Criterion, criterion_group, criterion_main};
 use std::hint::black_box;
 use std::{fs, time::Duration};
-use tutorlolv2::__v2::riot::RiotRealtime;
 
-// NEW: bumpalo para a arena
-use bumpalo::Bump;
+/// Capacidade da arena (>= 2 MB). Usei 8 MB para folga nos casos grandes.
+const ARENA_CAP: usize = 8 * 1024 * 1024;
 
-fn bench_realtime_only(c: &mut Criterion) {
-    let bytes = fs::read("serde_test.json").expect("Não consegui ler serde_test.json");
-    let de = serde_json::from_slice(&bytes).expect("JSON inválido em serde_test.json");
-    let de2 = serde_json::from_slice(&bytes).expect("JSON inválido em serde_test.json");
+fn bench_realtime_for_file(c: &mut Criterion, path: &str, label: &str) {
+    let bytes = fs::read(path).unwrap_or_else(|_| panic!("Não consegui ler {path}"));
+    // Sem anotar tipo: o compilador infere pelo uso nas funções realtime()
+    let de = serde_json::from_slice(&bytes).expect("JSON inválido (de)");
+    let de2 = serde_json::from_slice(&bytes).expect("JSON inválido (de2)");
 
-    let mut group = c.benchmark_group("realtime_only");
-    group.sample_size(50);
-    group.measurement_time(Duration::from_secs(5));
+    // -------- stack / stdalloc / old --------
+    let mut group = c.benchmark_group(format!("realtime_only/{label}"));
+    group.sample_size(80); // mais amostras
+    group.measurement_time(Duration::from_secs(15)); // janelas maiores
 
-    group.bench_function(BenchmarkId::new("v2", "compute"), |b| {
+    group.bench_function(BenchmarkId::new("v2_stack", "compute"), |b| {
         b.iter(|| {
-            let rt = tutorlolv2_math::__v2::rt_stack::realtime(black_box(&de))
-                .expect("realtime v2 falhou");
+            let rt = tutorlolv2_math::__v2::stack::rt::realtime(black_box(&de))
+                .expect("realtime v2 (stack) falhou");
+            black_box(rt);
+        });
+    });
+
+    group.bench_function(BenchmarkId::new("v2_stdalloc", "compute"), |b| {
+        b.iter(|| {
+            let rt = tutorlolv2_math::__v2::stdalloc::rt::realtime(black_box(&de))
+                .expect("realtime v2 (stdalloc) falhou");
             black_box(rt);
         });
     });
@@ -32,162 +42,51 @@ fn bench_realtime_only(c: &mut Criterion) {
             black_box(rt);
         });
     });
-
     group.finish();
-}
 
-// NEW: apenas compute com arena
-fn bench_realtime_arena_only(c: &mut Criterion) {
-    let bytes = fs::read("serde_test.json").expect("Não consegui ler serde_test.json");
-    // Sem anotar tipo: o compilador infere para RiotRealtime pelo uso em realtime_arena
-    let game = serde_json::from_slice(&bytes).expect("JSON inválido em serde_test.json");
+    // -------- arena --------
+    // Parse único (sem type hint) e execução em arena por iteração
+    let game = serde_json::from_slice(&bytes).expect("JSON inválido (game)");
 
-    let mut group = c.benchmark_group("realtime_arena_only");
-    group.sample_size(50);
-    group.measurement_time(Duration::from_secs(5));
+    let mut group_arena = c.benchmark_group(format!("realtime_arena_only/{label}"));
+    group_arena.sample_size(80);
+    group_arena.measurement_time(Duration::from_secs(15));
 
-    group.bench_function(BenchmarkId::new("v2_arena", "compute"), |b| {
+    group_arena.bench_function(BenchmarkId::new("v2_arena", "compute"), |b| {
         b.iter(|| {
-            // Arena com pelo menos 2 MB
-            let arena = Bump::with_capacity(1024 * 1024);
-            let ptr =
-                tutorlolv2_math::__v2::rt_arena::realtime_arena(&arena, black_box(&game)).unwrap();
+            // Arena com pelo menos 2 MB (usamos 8 MB para exemplo.json)
+            let arena = Bump::with_capacity(ARENA_CAP);
+            let ptr = tutorlolv2_math::__v2::arena::rt::realtime_arena(&arena, black_box(&game))
+                .expect("realtime v2 (arena) falhou");
             black_box(ptr);
         });
     });
-
-    group.finish();
+    group_arena.finish();
 }
 
-fn bench_realtime_then_serialize(c: &mut Criterion) {
-    let bytes = fs::read("serde_test.json").expect("Não consegui ler serde_test.json");
-    let de = serde_json::from_slice(&bytes).expect("JSON inválido em serde_test.json");
-    let de2 = serde_json::from_slice(&bytes).expect("JSON inválido em serde_test.json");
-
-    let mut group = c.benchmark_group("realtime_then_serialize");
-    group.sample_size(40);
-    group.measurement_time(Duration::from_secs(5));
-
-    group.bench_function(BenchmarkId::new("v2", "serialize"), |b| {
-        b.iter_batched(
-            || {
-                tutorlolv2_math::__v2::rt_stack::realtime(black_box(&de))
-                    .expect("realtime v2 falhou")
-            },
-            |rt| {
-                let ser = bincode::encode_to_vec(&rt, bincode::config::standard())
-                    .expect("serialize v2 falhou");
-                black_box(ser.len());
-            },
-            BatchSize::SmallInput,
-        );
-    });
-
-    group.bench_function(BenchmarkId::new("old", "serialize"), |b| {
-        b.iter_batched(
-            || {
-                tutorlolv2_math::math::realtime::realtime(black_box(&de2))
-                    .expect("realtime old falhou")
-            },
-            |rt| {
-                let ser = bincode::encode_to_vec(&rt, bincode::config::standard())
-                    .expect("serialize old falhou");
-                black_box(ser.len());
-            },
-            BatchSize::SmallInput,
-        );
-    });
-
-    group.finish();
+fn bench_realtime_small(c: &mut Criterion) {
+    bench_realtime_for_file(c, "serde_test.json", "small");
 }
 
-// NEW: compute→serialize usando a arena
-fn bench_realtime_arena_then_serialize(c: &mut Criterion) {
-    let bytes = fs::read("serde_test.json").expect("Não consegui ler serde_test.json");
-    // Sem anotar tipo – inferido como RiotRealtime
-    let game = serde_json::from_slice(&bytes).expect("JSON inválido em serde_test.json");
-
-    let mut group = c.benchmark_group("realtime_arena_then_serialize");
-    group.sample_size(40);
-    group.measurement_time(Duration::from_secs(5));
-
-    use std::mem;
-
-    group.bench_function(BenchmarkId::new("v2_arena", "serialize"), |b| {
-        b.iter_batched(
-            || {
-                // Arena ≥ 2MB no HEAP
-                let arena_box = Box::new(bumpalo::Bump::with_capacity(2 * 1024 * 1024));
-                let arena_ptr: *mut bumpalo::Bump = Box::into_raw(arena_box);
-
-                // Recria referência só para chamar o realtime_arena
-                let arena_ref: &bumpalo::Bump = unsafe { &*arena_ptr };
-
-                // `game` inferido de serde_json::from_slice sem anotar tipo
-                let ptr =
-                    tutorlolv2_math::__v2::rt_arena::realtime_arena(arena_ref, black_box(&game))
-                        .unwrap();
-
-                // Opcional: “elevar” o lifetime do ponteiro para facilitar o tipo (somente porque a arena vai viver até o routine)
-                let ptr_static: *const tutorlolv2_math::__v2::model_arena::Realtime<'static> =
-                    unsafe { mem::transmute(ptr) };
-
-                // Passamos só ponteiros crus; nada aqui cai fora de escopo
-                (arena_ptr, ptr_static)
-            },
-            |(arena_ptr, rt_ptr)| {
-                // Arena volta a ser Box para liberar no fim do routine
-                let arena_box: Box<bumpalo::Bump> = unsafe { Box::from_raw(arena_ptr) };
-
-                // Usa o ponteiro para serializar (enquanto a arena está viva)
-                let rt_ref = unsafe { &*rt_ptr };
-                let ser = bincode::encode_to_vec(rt_ref, bincode::config::standard())
-                    .expect("serialize v2_arena falhou");
-
-                // usa arena_box para não sobrar warning de “unused”
-                black_box(ser.len());
-                black_box(&*arena_box as *const _);
-
-                // `arena_box` é dropado aqui → memória da arena liberada
-            },
-            BatchSize::SmallInput,
-        );
-    });
-
-    group.finish();
+fn bench_realtime_medium(c: &mut Criterion) {
+    bench_realtime_for_file(c, "example.json", "medium");
 }
 
-fn bench_parse_only(c: &mut Criterion) {
-    let bytes = fs::read("serde_test.json").expect("read serde_test.json");
-    let mut group = c.benchmark_group("parse_only");
-    group.sample_size(40);
-    group.measurement_time(Duration::from_secs(5));
-    group.throughput(Throughput::Bytes(bytes.len() as u64));
-
-    group.bench_function("serde_json_from_slice", |b| {
-        b.iter(|| {
-            // Sem anotar tipo aqui também
-            let v: RiotRealtime = serde_json::from_slice(black_box(&bytes)).unwrap();
-            black_box(v);
-        });
-    });
-
-    group.finish();
+fn bench_realtime_xxl(c: &mut Criterion) {
+    bench_realtime_for_file(c, "example2.json", "xxl");
 }
 
 criterion_group!(
     name = benches;
     config = {
         Criterion::default()
-            .warm_up_time(Duration::from_secs(3))
-            .measurement_time(Duration::from_secs(5))
+            .warm_up_time(Duration::from_secs(5))   // aquece mais
+            .measurement_time(Duration::from_secs(15))
             .without_plots()
     };
     targets =
-        bench_realtime_only,
-        bench_realtime_arena_only,            // NEW
-        bench_realtime_then_serialize,
-        bench_realtime_arena_then_serialize,  // NEW
-        bench_parse_only
+        bench_realtime_small,
+        bench_realtime_medium,
+        bench_realtime_xxl
 );
 criterion_main!(benches);

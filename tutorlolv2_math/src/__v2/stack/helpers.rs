@@ -1,4 +1,5 @@
-use super::{formulas::*, model::*, riot::*};
+use super::{formulas::*, model::*};
+use crate::__v2::{AbilityLevels, L_ABLT, L_ITEM, L_RUNE, L_SIML, riot::*};
 use smallvec::SmallVec;
 use std::mem::MaybeUninit;
 use tinyset::SetU32;
@@ -286,6 +287,20 @@ pub fn get_enemy_state(state: EnemyState, shred: ResistShred, earth_dragons: u8)
         ),
         // #![manual_impl]
         randuin: has_item(e_items, [ItemId::RanduinsOmen]),
+    }
+}
+
+#[inline]
+pub fn get_damage_modifiers(
+    enemy_modifiers: DamageModifiers,
+    armor_mod: f32,
+    magic_mod: f32,
+) -> DamageModifiers {
+    DamageModifiers {
+        physical_mod: armor_mod * enemy_modifiers.physical_mod,
+        magic_mod: magic_mod * enemy_modifiers.magic_mod,
+        true_mod: enemy_modifiers.true_mod,
+        global_mod: enemy_modifiers.global_mod,
     }
 }
 

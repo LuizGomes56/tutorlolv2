@@ -1,18 +1,13 @@
-use super::riot::RiotChampionStats;
+use crate::__v2::{
+    AbilityLevels, L_ABLT, L_ITEM, L_PLYR, L_RUNE, L_SIML, L_TEAM, riot::RiotChampionStats,
+};
 use bincode::{Decode, Encode};
 use smallvec::SmallVec;
 use tinyset::SetU32;
 use tutorlolv2_gen::{
     AbilityLike, AdaptativeType, Attrs, ChampionId, DamageType, EvalContext, ItemId, Position,
-    RuneId, SIMULATED_ITEMS,
+    RuneId,
 };
-
-pub const L_SIML: usize = SIMULATED_ITEMS.len();
-pub const L_RUNE: usize = 2;
-pub const L_ITEM: usize = 4;
-pub const L_ABLT: usize = 7;
-pub const L_TEAM: usize = 5;
-pub const L_PLYR: usize = L_TEAM << 1;
 
 #[derive(Encode, PartialEq, Clone, Copy)]
 pub enum Team {
@@ -111,14 +106,6 @@ pub struct BasicStatsI32 {
     pub attack_damage: i32,
     pub magic_resist: i32,
     pub mana: i32,
-}
-
-#[derive(Encode, Decode, Clone, Copy)]
-pub struct AbilityLevels {
-    pub q: u8,
-    pub w: u8,
-    pub e: u8,
-    pub r: u8,
 }
 
 #[derive(Decode, Default)]

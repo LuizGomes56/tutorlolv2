@@ -1,4 +1,5 @@
-use super::{formulas::*, helpers::*, model::*, riot::*};
+use super::{formulas::*, helpers::*, model::*};
+use crate::__v2::{L_ABLT, L_ITEM, L_RUNE, L_SIML, L_TEAM, riot::*};
 use smallvec::SmallVec;
 use std::mem::MaybeUninit;
 use tinyset::SetU32;
@@ -211,10 +212,10 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
             );
             let mut onhit = RangeDamageI32::default();
             let modifiers = DamageModifiers {
-                physical_mod: 1.0,
-                magic_mod: 1.0,
-                true_mod: 1.0,
-                global_mod: 1.0,
+                physical_mod: full_state.armor_values.modifier * full_state.modifiers.physical_mod,
+                magic_mod: full_state.magic_values.modifier * full_state.modifiers.magic_mod,
+                true_mod: full_state.modifiers.true_mod,
+                global_mod: full_state.modifiers.global_mod,
             };
             let abilities_damage = eval_damage::<L_ABLT, _>(
                 &eval_ctx,
