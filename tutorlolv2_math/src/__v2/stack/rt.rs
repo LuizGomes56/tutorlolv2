@@ -123,7 +123,8 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
     let (ally_dragons, enemy_earth_dragons) = get_dragons(&events, &all_players);
     let simulated_stats = get_simulated_stats(&champion_stats, ally_dragons);
     let ability_levels = abilities.get_levelings();
-    let current_player_position = Position::from_raw(current_player.position);
+    let current_player_position = Position::from_raw(current_player.position)
+        .unwrap_or(unsafe { *current_player_cache.positions.get_unchecked(0) });
 
     let eval_data = DamageEvalData {
         abilities: get_abilities_data(current_player_cache.abilities, ability_levels, *level),
@@ -166,7 +167,9 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
             } = player;
 
             let e_champion_id = CHAMPION_NAME_TO_ID.get(e_champion_name)?;
-            let e_position = Position::from_raw(e_raw_position);
+            let e_cache = unsafe { INTERNAL_CHAMPIONS.get_unchecked(*e_champion_id as usize) };
+            let e_position = Position::from_raw(e_raw_position)
+                .unwrap_or(unsafe { *e_cache.positions.get_unchecked(0) });
             let team = Team::from_raw(e_team);
 
             scoreboard.push(Scoreboard {
@@ -184,7 +187,6 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
                 return None;
             }
 
-            let e_cache = unsafe { INTERNAL_CHAMPIONS.get_unchecked(*e_champion_id as usize) };
             let e_items = items_to_set_u32(e_riot_items);
             let e_base_stats = base_stats!(SimpleStatsF32(&e_cache.stats, *e_level) {
                 health,

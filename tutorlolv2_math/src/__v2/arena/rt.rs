@@ -114,7 +114,8 @@ pub fn realtime_arena<'a>(
     let (ally_dragons, enemy_earth_dragons) = get_dragons(&events, &all_players);
     let simulated_stats = get_simulated_stats(&champion_stats, ally_dragons);
     let ability_levels = unsafe { std::mem::transmute(abilities.get_levelings()) };
-    let current_player_position = Position::from_raw(current_player.position);
+    let current_player_position = Position::from_raw(current_player.position)
+        .unwrap_or(unsafe { *current_player_cache.positions.get_unchecked(0) });
 
     let DamageKind {
         metadata: abilities_metadata,
@@ -150,14 +151,7 @@ pub fn realtime_arena<'a>(
     };
 
     let scoreboard = unsafe { alloc_uninit_slice(arena, all_players.len()) };
-    let enemies = unsafe {
-        alloc_uninit_slice(
-            arena,
-            all_players.len(), // .iter()
-                               // .filter(|player| Team::from_raw(player.team) != current_player_team)
-                               // .count(),
-        )
-    };
+    let enemies = unsafe { alloc_uninit_slice(arena, all_players.len()) };
 
     for (index, player) in all_players.into_iter().enumerate() {
         let RiotAllPlayers {
@@ -171,16 +165,18 @@ pub fn realtime_arena<'a>(
         } = player;
 
         let e_champion_id = CHAMPION_NAME_TO_ID.get(e_champion_name)?;
-        let e_position = Position::from_raw(e_raw_position);
+        let e_cache = unsafe { INTERNAL_CHAMPIONS.get_unchecked(*e_champion_id as usize) };
+
+        let e_position = Position::from_raw(e_raw_position)
+            .unwrap_or(unsafe { *e_cache.positions.get_unchecked(0) });
         let team = Team::from_raw(e_team);
-        let creep_score = e_scores.creep_score;
 
         scoreboard[index] = Scoreboard {
             riot_id,
             assists: e_scores.assists,
             deaths: e_scores.deaths,
             kills: e_scores.kills,
-            creep_score: creep_score,
+            creep_score: e_scores.creep_score,
             champion_id: *e_champion_id,
             position: e_position,
             team,
@@ -190,7 +186,6 @@ pub fn realtime_arena<'a>(
             continue;
         }
 
-        let e_cache = unsafe { INTERNAL_CHAMPIONS.get_unchecked(*e_champion_id as usize) };
         let e_items = items_to_set_u32(e_riot_items);
         let e_base_stats = {
             macro_rules! assign {

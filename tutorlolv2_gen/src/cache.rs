@@ -110,14 +110,14 @@ pub enum Position {
 }
 
 impl Position {
-    pub fn from_raw(raw: &str) -> Self {
+    pub fn from_raw(raw: &str) -> Option<Self> {
         match raw {
-            "TOP" => Position::Top,
-            "JUNGLE" => Position::Jungle,
-            "MIDDLE" => Position::Middle,
-            "BOTTOM" => Position::Bottom,
-            "SUPPORT" => Position::Support,
-            _ => Position::Top,
+            "TOP" => Some(Position::Top),
+            "JUNGLE" => Some(Position::Jungle),
+            "MIDDLE" => Some(Position::Middle),
+            "BOTTOM" => Some(Position::Bottom),
+            "SUPPORT" => Some(Position::Support),
+            _ => None,
         }
     }
 }
