@@ -25,11 +25,10 @@ const SIMULATED_ITEMS_METADATA: [ConstItemMetadata; L_SIML] = {
     unsafe { siml_items.assume_init() }
 };
 
-const SIZE_SIMULATED_ITEMS_METADATA: usize = size_u(L_SIML as u32) + L_SIML << 1;
+// If I decide to add a size counter
+// const SIZE_SIMULATED_ITEMS_METADATA: usize = size_u(L_SIML as u32) + L_SIML << 1;
 
-pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<(Realtime<'a>, usize)> {
-    let mut size_counter = 0;
-
+pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
     let RiotRealtime {
         active_player:
             RiotActivePlayer {
@@ -126,7 +125,6 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<(Realtime<'a>, usize)> {
         &current_player_items,
         current_player_cache.attack_type,
         *level,
-        &mut size_counter,
     );
 
     let DamageKind {
@@ -161,8 +159,6 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<(Realtime<'a>, usize)> {
             let e_position = Position::from_raw(e_raw_position);
             let team = Team::from_raw(e_team);
             let creep_score = e_scores.creep_score;
-
-            size_counter += 6 + riot_id.size() + creep_score.size();
 
             scoreboard.push(Scoreboard {
                 riot_id,
@@ -223,7 +219,6 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<(Realtime<'a>, usize)> {
             let abilities_damage = eval_damage::<L_ABLT, _>(
                 &eval_ctx,
                 &mut onhit,
-                &mut size_counter,
                 &abilities_closures,
                 &abilities_metadata,
                 modifiers,
@@ -231,7 +226,6 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<(Realtime<'a>, usize)> {
             let items_damage = eval_damage::<L_ITEM, _>(
                 &eval_ctx,
                 &mut onhit,
-                &mut size_counter,
                 &items_closures,
                 &items_metadata,
                 modifiers,
@@ -239,12 +233,11 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<(Realtime<'a>, usize)> {
             let runes_damage = eval_damage::<L_RUNE, _>(
                 &eval_ctx,
                 &mut onhit,
-                &mut size_counter,
                 &runes_closures,
                 &runes_metadata,
                 modifiers,
             );
-            let attacks_damage = eval_attacks(&eval_ctx, onhit, &mut size_counter, modifiers);
+            let attacks_damage = eval_attacks(&eval_ctx, onhit, modifiers);
 
             let mut siml_results = MaybeUninit::<[Damages; L_SIML]>::uninit();
             let siml_result_ptr = siml_results.as_mut_ptr();
@@ -276,7 +269,6 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<(Realtime<'a>, usize)> {
                 let siml_abilities_damage = eval_damage::<L_ABLT, _>(
                     &siml_eval_ctx,
                     &mut siml_onhit,
-                    &mut size_counter,
                     &abilities_closures,
                     &abilities_metadata,
                     modifiers,
@@ -284,7 +276,6 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<(Realtime<'a>, usize)> {
                 let siml_items_damage = eval_damage::<L_ITEM, _>(
                     &siml_eval_ctx,
                     &mut siml_onhit,
-                    &mut size_counter,
                     &items_closures,
                     &items_metadata,
                     modifiers,
@@ -292,13 +283,11 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<(Realtime<'a>, usize)> {
                 let siml_runes_damage = eval_damage::<L_RUNE, _>(
                     &siml_eval_ctx,
                     &mut siml_onhit,
-                    &mut size_counter,
                     &runes_closures,
                     &runes_metadata,
                     modifiers,
                 );
-                let siml_attacks_damage =
-                    eval_attacks(&siml_eval_ctx, siml_onhit, &mut size_counter, modifiers);
+                let siml_attacks_damage = eval_attacks(&siml_eval_ctx, siml_onhit, modifiers);
                 unsafe {
                     core::ptr::addr_of_mut!((*siml_result_ptr)[i]).write(Damages {
                         attacks: siml_attacks_damage,
@@ -308,25 +297,6 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<(Realtime<'a>, usize)> {
                     });
                 }
             }
-
-            let real_armor = full_state.armor_values.real as i32;
-            let real_magic_resist = full_state.magic_values.real as i32;
-            let e_base_stats_i32: SimpleStatsI32 = e_base_stats.into();
-            let e_bonus_stats_i32: SimpleStatsI32 = full_state.bonus_stats.into();
-            let e_current_stats_i32: SimpleStatsI32 = full_state.current_stats.into();
-
-            size_counter += 4
-                + size_u(L_SIML as u32)
-                + L_SIML
-                    * (abilities_closures.len().size()
-                        + items_closures.len().size()
-                        + runes_closures.len().size())
-                + e_base_stats_i32.size()
-                + e_bonus_stats_i32.size()
-                + e_current_stats_i32.size()
-                + real_armor.size()
-                + real_magic_resist.size()
-                + riot_id.size();
 
             Some(Enemy {
                 champion_id: *e_champion_id,
@@ -340,59 +310,37 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<(Realtime<'a>, usize)> {
                     runes: runes_damage,
                 },
                 siml_items: unsafe { siml_results.assume_init() },
-                base_stats: e_base_stats_i32,
-                bonus_stats: e_bonus_stats_i32,
-                current_stats: e_current_stats_i32,
-                real_armor,
-                real_magic_resist,
+                base_stats: e_base_stats.into(),
+                bonus_stats: full_state.bonus_stats.into(),
+                current_stats: full_state.current_stats.into(),
+                real_armor: full_state.armor_values.real as i32,
+                real_magic_resist: full_state.magic_values.real as i32,
                 level: *e_level,
             })
         })
-        .collect::<SmallVec<[Enemy<'_>; 5]>>();
+        .collect::<SmallVec<[Enemy<'_>; L_TEAM]>>();
 
-    let base_stats_i32: BasicStatsI32 = current_player_base_stats.into();
-    let bonus_stats_i32: BasicStatsI32 = current_player_bonus_stats.into();
-    let current_stats_i32: StatsI32 = champion_stats.into();
-
-    size_counter += 9
-        + SIZE_SIMULATED_ITEMS_METADATA
-        + abilities_metadata.len().size()
-        + items_metadata.len().size()
-        + runes_metadata.len().size()
-        + (abilities_metadata.len() << 2)
-        + (runes_metadata.len() * 3)
-        + (*game_time as u32).size()
-        + enemies.len().size()
-        + scoreboard.len().size()
-        + base_stats_i32.size()
-        + bonus_stats_i32.size()
-        + current_stats_i32.size()
-        + riot_id.size();
-
-    Some((
-        Realtime {
-            current_player: CurrentPlayer {
-                riot_id,
-                base_stats: base_stats_i32,
-                bonus_stats: bonus_stats_i32,
-                current_stats: current_stats_i32,
-                level: *level,
-                team: current_player_team,
-                adaptative_type,
-                position: current_player_position,
-                champion_id: *current_player_champion_id,
-            },
-            enemies,
-            scoreboard,
-            abilities: abilities_metadata,
-            items: items_metadata,
-            runes: runes_metadata,
-            siml_items: SIMULATED_ITEMS_METADATA,
-            game_time: *game_time as u32,
-            ability_levels,
+    Some(Realtime {
+        current_player: CurrentPlayer {
+            riot_id,
+            base_stats: current_player_base_stats.into(),
+            bonus_stats: current_player_bonus_stats.into(),
+            current_stats: champion_stats.into(),
+            level: *level,
+            team: current_player_team,
+            adaptative_type,
+            position: current_player_position,
+            champion_id: *current_player_champion_id,
         },
-        size_counter,
-    ))
+        enemies,
+        scoreboard,
+        abilities: abilities_metadata,
+        items: items_metadata,
+        runes: runes_metadata,
+        siml_items: SIMULATED_ITEMS_METADATA,
+        game_time: *game_time as u32,
+        ability_levels,
+    })
 }
 
 fn get_dragons(events: &[RealtimeEvent], players_map: &[RiotAllPlayers]) -> (Dragons, u8) {

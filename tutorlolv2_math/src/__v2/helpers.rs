@@ -2,11 +2,7 @@ use super::{formulas::*, model::*, riot::*};
 use smallvec::SmallVec;
 use std::mem::MaybeUninit;
 use tinyset::SetU32;
-use tutorlolv2_gen::{
-    AbilityLike, AdaptativeType, AttackType, Attrs, BASIC_ATTACK, CRITICAL_STRIKE,
-    CachedChampionAbility, CachedChampionStatsMap, ChampionId, DAMAGING_ITEMS, DamageType,
-    EvalContext, INTERNAL_ITEMS, INTERNAL_RUNES, ItemId, RuneId, SIMULATED_ITEMS_ENUM, zero,
-};
+use tutorlolv2_gen::*;
 
 /// By 06/07/2025 Earth dragons give +5% resists
 // #![manual_impl]
@@ -25,12 +21,11 @@ pub fn get_simulated_stats(
     stats: &RiotChampionStats,
     dragons: Dragons,
 ) -> [RiotChampionStats; L_SIML] {
-    let mut result = MaybeUninit::<[RiotChampionStats; 118]>::uninit();
+    let mut result = MaybeUninit::<[RiotChampionStats; L_SIML]>::uninit();
     let result_ptr = result.as_mut_ptr();
 
     for (i, item_offset) in SIMULATED_ITEMS_ENUM.into_iter().enumerate() {
-        let item_id = unsafe { core::mem::transmute::<u16, ItemId>(item_offset) };
-        let item_cache = unsafe { INTERNAL_ITEMS.get_unchecked(item_id as usize) };
+        let item_cache = unsafe { INTERNAL_ITEMS.get_unchecked(item_offset as usize) };
         let mut new_stat = *stats;
 
         macro_rules! add_stat {
@@ -72,6 +67,7 @@ pub fn get_simulated_stats(
     unsafe { result.assume_init() }
 }
 
+#[inline]
 pub fn get_abilities_data(
     ability_cache: &'static [(AbilityLike, CachedChampionAbility)],
     ability_levels: AbilityLevels,
@@ -100,6 +96,7 @@ pub fn get_abilities_data(
     DamageKind { metadata, damages }
 }
 
+#[inline]
 pub fn get_runes_data(runes: &SetU32, level: u8) -> DamageKind<L_RUNE, RuneId> {
     let mut metadata = SmallVec::with_capacity(runes.len());
     let mut damages = SmallVec::with_capacity(runes.len());
@@ -119,16 +116,15 @@ pub fn get_runes_data(runes: &SetU32, level: u8) -> DamageKind<L_RUNE, RuneId> {
     DamageKind { metadata, damages }
 }
 
+#[inline]
 pub fn get_items_data(
     items: &SetU32,
     attack_type: AttackType,
     level: u8,
-    size_counter: &mut usize,
 ) -> DamageKind<L_ITEM, ItemId> {
     let mut metadata = SmallVec::with_capacity(items.len());
     let mut damages = SmallVec::with_capacity(items.len());
     for item_number in items.iter() {
-        *size_counter += 2 + item_number.size();
         let item_id = unsafe { std::mem::transmute::<u16, ItemId>(item_number as u16) };
         let item = unsafe { INTERNAL_ITEMS.get_unchecked(item_number as usize) };
         let item_damage = match attack_type {
@@ -368,7 +364,6 @@ pub fn get_eval_ctx(self_state: SelfState, e_state: &EnemyFullState) -> EvalCont
 pub fn eval_damage<const N: usize, T>(
     ctx: &EvalContext,
     onhit: &mut RangeDamageI32,
-    size_counter: &mut usize,
     closures: &[DamageClosure],
     metadata: &[TypeMetadata<T>],
     modifiers: DamageModifiers,
@@ -385,9 +380,10 @@ pub fn eval_damage<const N: usize, T>(
             DamageType::True => modifiers.true_mod,
             _ => modifiers.global_mod,
         };
+
         let minimum_damage = (modifier * (closure.minimum_damage)(metadata.level, ctx)) as i32;
         let maximum_damage = (modifier * (closure.maximum_damage)(metadata.level, ctx)) as i32;
-        *size_counter += minimum_damage.size() + maximum_damage.size();
+
         let sum = minimum_damage + minimum_damage;
         match attributes {
             Attrs::OnhitMin => {
@@ -402,6 +398,7 @@ pub fn eval_damage<const N: usize, T>(
             }
             Attrs::None => {}
         };
+
         result.push(RangeDamageI32 {
             minimum_damage,
             maximum_damage,
@@ -413,7 +410,6 @@ pub fn eval_damage<const N: usize, T>(
 pub fn eval_attacks(
     ctx: &EvalContext,
     mut onhit_damage: RangeDamageI32,
-    size_counter: &mut usize,
     modifiers: DamageModifiers,
 ) -> Attacks {
     let basic_attack_damage =
@@ -423,12 +419,6 @@ pub fn eval_attacks(
 
     onhit_damage.minimum_damage += basic_attack_damage;
     onhit_damage.maximum_damage += critical_strike_damage;
-
-    *size_counter += basic_attack_damage.size()
-        + critical_strike_damage.size()
-        + onhit_damage.minimum_damage.size()
-        + onhit_damage.maximum_damage.size()
-        + 2;
 
     Attacks {
         basic_attack: RangeDamageI32 {
