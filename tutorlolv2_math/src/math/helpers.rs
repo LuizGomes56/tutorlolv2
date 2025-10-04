@@ -488,7 +488,7 @@ fn get_instance_damage(
             onhit_effects.minimum_damage += (minimum_damage + minimum_damage) as i32;
             onhit_effects.maximum_damage += (minimum_damage + minimum_damage) as i32;
         }
-        Attrs::None => {}
+        _ => {}
     };
     (minimum_damage, maximum_damage)
 }

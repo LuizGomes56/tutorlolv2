@@ -406,7 +406,7 @@ pub fn eval_damage<const N: usize, T>(
                 onhit.minimum_damage += sum;
                 onhit.maximum_damage += sum;
             }
-            Attrs::None => {}
+            _ => {}
         };
 
         result.push(RangeDamageI32 {

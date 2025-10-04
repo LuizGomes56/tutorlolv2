@@ -413,7 +413,7 @@ pub fn eval_damage<'a, T>(
                 onhit.minimum_damage += sum;
                 onhit.maximum_damage += sum;
             }
-            Attrs::None => {}
+            _ => {}
         };
 
         result[i] = RangeDamageI32 {

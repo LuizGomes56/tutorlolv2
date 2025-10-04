@@ -20,6 +20,10 @@ pub const L_ITEM: usize = 4;
 pub const L_ABLT: usize = 7;
 pub const L_TEAM: usize = 5;
 pub const L_PLYR: usize = L_TEAM << 1;
+pub const L_MSTR: usize = 7;
+pub const L_CENM: usize = 1;
+pub const L_TWRD: usize = 6;
+pub const L_STCK: usize = 3;
 
 #[derive(Encode)]
 pub enum GameMap {

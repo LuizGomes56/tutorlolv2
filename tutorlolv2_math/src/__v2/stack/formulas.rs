@@ -28,8 +28,17 @@ impl RiotFormulas {
     }
 
     #[inline]
-    pub const fn real_resist(percent_pen: f32, flat_pen: f32, resist: f32) -> ResistValue {
-        let real_val = (percent_pen * resist - flat_pen).max(0.0);
+    pub const fn real_resist(
+        percent_pen: f32,
+        flat_pen: f32,
+        resist: f32,
+        accept_negatives: bool,
+    ) -> ResistValue {
+        let real_val = (percent_pen * resist - flat_pen).max(if accept_negatives {
+            -f32::NEG_INFINITY
+        } else {
+            0.0
+        });
         let modf_val = 100.0 / (100.0 + real_val);
         ResistValue {
             real: real_val,

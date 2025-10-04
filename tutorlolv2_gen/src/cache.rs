@@ -86,6 +86,10 @@ pub enum Attrs {
     Onhit,
     OnhitMin,
     OnhitMax,
+    Area,
+    AreaOnhit,
+    AreaOnhitMin,
+    AreaOnhitMax,
 }
 
 #[derive(Copy, Clone)]

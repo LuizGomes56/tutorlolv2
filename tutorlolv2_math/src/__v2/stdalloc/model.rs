@@ -341,12 +341,23 @@ pub struct OutputEnemy {
     pub champion_id: ChampionId,
 }
 
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct DamageModifiers {
     pub physical_mod: f32,
     pub magic_mod: f32,
     pub true_mod: f32,
     pub global_mod: f32,
+}
+
+impl Default for DamageModifiers {
+    fn default() -> Self {
+        Self {
+            physical_mod: 1.0,
+            magic_mod: 1.0,
+            true_mod: 1.0,
+            global_mod: 1.0,
+        }
+    }
 }
 
 #[derive(Encode)]

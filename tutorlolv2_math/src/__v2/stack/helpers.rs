@@ -177,7 +177,31 @@ pub fn get_items_data(
 }
 
 #[inline]
-pub fn items_to_set_u32(input: &[RiotItems]) -> SetU32 {
+pub fn vec_runes_to_set_u32(input: &[RuneId]) -> SetU32 {
+    input
+        .iter()
+        .filter_map(|rune| {
+            DAMAGING_RUNES
+                .contains(&rune.to_riot_id())
+                .then_some(*rune as u32)
+        })
+        .collect::<SetU32>()
+}
+
+#[inline]
+pub fn vec_items_to_set_u32(input: &[ItemId]) -> SetU32 {
+    input
+        .iter()
+        .filter_map(|item| {
+            DAMAGING_ITEMS
+                .contains(&item.to_riot_id())
+                .then_some(*item as u32)
+        })
+        .collect::<SetU32>()
+}
+
+#[inline]
+pub fn riot_items_to_set_u32(input: &[RiotItems]) -> SetU32 {
     input
         .iter()
         .filter_map(|riot_item| {
@@ -207,7 +231,12 @@ pub fn get_enemy_current_stats(stats: &mut SimpleStatsF32, items: &SetU32, earth
     stats.magic_resist *= dragon_mod;
 }
 
-pub fn get_enemy_state(state: EnemyState, shred: ResistShred, earth_dragons: u8) -> EnemyFullState {
+pub fn get_enemy_state(
+    state: EnemyState,
+    shred: ResistShred,
+    earth_dragons: u8,
+    accept_negatives: bool,
+) -> EnemyFullState {
     let mut e_current_stats = state.base_stats;
     let e_items = &state.items;
     let stacks = state.stacks as f32;
@@ -279,11 +308,13 @@ pub fn get_enemy_state(state: EnemyState, shred: ResistShred, earth_dragons: u8)
         shred.armor_penetration_percent,
         shred.armor_penetration_flat,
         e_current_stats.armor,
+        accept_negatives,
     );
     let magic_values = RiotFormulas::real_resist(
         shred.magic_penetration_percent,
         shred.magic_penetration_flat,
         e_current_stats.magic_resist,
+        accept_negatives,
     );
 
     let e_bonus_stats = bonus_stats!(
@@ -337,7 +368,7 @@ fn has_item<const N: usize>(origin: &SetU32, check_for: [ItemId; N]) -> bool {
         .any(|item_id| origin.contains(item_id as u32))
 }
 
-pub fn get_eval_ctx(self_state: SelfState, e_state: &EnemyFullState) -> EvalContext {
+pub fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> EvalContext {
     EvalContext {
         chogath_stacks: 1.0,
         veigar_stacks: 1.0,
@@ -436,7 +467,7 @@ pub fn eval_damage<const N: usize, T>(
                 onhit.minimum_damage += sum;
                 onhit.maximum_damage += sum;
             }
-            Attrs::None => {}
+            _ => {}
         };
 
         result.push(RangeDamageI32 {
@@ -473,9 +504,18 @@ pub fn get_damages(
     modifiers: DamageModifiers,
 ) -> Damages {
     let mut onhit = RangeDamageI32::default();
-    let abilities = eval_damage::<L_ABLT, _>(&eval_ctx, &mut onhit, &data.abilities, modifiers);
-    let items = eval_damage::<L_ITEM, _>(&eval_ctx, &mut onhit, &data.items, modifiers);
-    let runes = eval_damage::<L_RUNE, _>(&eval_ctx, &mut onhit, &data.runes, modifiers);
+    macro_rules! eval_nonempty {
+        ($name:ident) => {
+            if data.$name.closures.is_empty() {
+                SmallVec::new()
+            } else {
+                eval_damage(&eval_ctx, &mut onhit, &data.$name, modifiers)
+            }
+        };
+    }
+    let abilities = eval_nonempty!(abilities);
+    let items = eval_nonempty!(items);
+    let runes = eval_nonempty!(runes);
     let attacks = eval_attacks(&eval_ctx, onhit);
     Damages {
         abilities,

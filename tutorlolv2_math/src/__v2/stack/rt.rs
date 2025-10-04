@@ -119,7 +119,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
         })
         .unwrap_or_default();
 
-    let current_player_items = items_to_set_u32(&current_player.items);
+    let current_player_items = riot_items_to_set_u32(&current_player.items);
     let (ally_dragons, enemy_earth_dragons) = get_dragons(&events, &all_players);
     let simulated_stats = get_simulated_stats(&champion_stats, ally_dragons);
     let ability_levels = abilities.get_levelings();
@@ -145,6 +145,12 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
     };
 
     let mut scoreboard = SmallVec::with_capacity(all_players.len());
+    let self_state = SelfState {
+        current_stats: *champion_stats,
+        bonus_stats: current_player_bonus_stats,
+        base_stats: current_player_base_stats,
+        level: *level,
+    };
 
     let enemies = all_players
         .into_iter()
@@ -166,8 +172,8 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
                 team: e_team,
             } = player;
 
-            let e_champion_id = CHAMPION_NAME_TO_ID.get(e_champion_name)?;
-            let e_cache = unsafe { INTERNAL_CHAMPIONS.get_unchecked(*e_champion_id as usize) };
+            let e_champion_id = *CHAMPION_NAME_TO_ID.get(e_champion_name)?;
+            let e_cache = unsafe { INTERNAL_CHAMPIONS.get_unchecked(e_champion_id as usize) };
             let e_position = Position::from_raw(e_raw_position)
                 .unwrap_or(unsafe { *e_cache.positions.get_unchecked(0) });
             let team = Team::from_raw(e_team);
@@ -178,7 +184,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
                 deaths: *deaths,
                 kills: *kills,
                 creep_score: *creep_score,
-                champion_id: *e_champion_id,
+                champion_id: e_champion_id,
                 position: e_position,
                 team,
             });
@@ -187,32 +193,27 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
                 return None;
             }
 
-            let e_items = items_to_set_u32(e_riot_items);
-            let e_base_stats = base_stats!(SimpleStatsF32(&e_cache.stats, *e_level) {
-                health,
-                armor,
-                magic_resist
-            });
+            let e_items = riot_items_to_set_u32(e_riot_items);
+            let e_base_stats = base_stats!(
+                SimpleStatsF32(&e_cache.stats, *e_level) {
+                    health,
+                    armor,
+                    magic_resist
+                }
+            );
             let full_state = get_enemy_state(
                 EnemyState {
                     base_stats: e_base_stats,
                     items: e_items,
                     stacks: 0,
-                    champion_id: *e_champion_id,
+                    champion_id: e_champion_id,
                     level: *e_level,
                 },
                 shred,
                 enemy_earth_dragons,
+                false,
             );
-            let eval_ctx = get_eval_ctx(
-                SelfState {
-                    current_stats: *champion_stats,
-                    bonus_stats: current_player_bonus_stats,
-                    base_stats: current_player_base_stats,
-                    level: *level,
-                },
-                &full_state,
-            );
+            let eval_ctx = get_eval_ctx(&self_state, &full_state);
             let modifiers = {
                 let map_modifier = match game_map {
                     GameMap::ARAM => {
@@ -249,18 +250,10 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
 
             for (i, siml_stat) in simulated_stats.into_iter().enumerate() {
                 let siml_eval_ctx = get_eval_ctx(
-                    SelfState {
+                    &SelfState {
                         current_stats: siml_stat,
-                        bonus_stats: bonus_stats!(
-                            BasicStatsF32(champion_stats, current_player_base_stats) {
-                                health,
-                                armor,
-                                magic_resist,
-                                mana,
-                                attack_damage
-                            }
-                        ),
-                        base_stats: current_player_base_stats,
+                        bonus_stats: self_state.bonus_stats,
+                        base_stats: self_state.base_stats,
                         level: *level,
                     },
                     &full_state,
@@ -272,7 +265,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
             }
 
             Some(Enemy {
-                champion_id: *e_champion_id,
+                champion_id: e_champion_id,
                 position: e_position,
                 team,
                 riot_id,
@@ -303,10 +296,10 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
         },
         enemies,
         scoreboard,
-        abilities: eval_data.abilities.metadata,
-        items: eval_data.items.metadata,
-        runes: eval_data.runes.metadata,
-        siml_items: SIMULATED_ITEMS_METADATA,
+        abilities_meta: eval_data.abilities.metadata,
+        items_meta: eval_data.items.metadata,
+        runes_meta: eval_data.runes.metadata,
+        siml_meta: SIMULATED_ITEMS_METADATA,
         game_time: *game_time as u32,
         ability_levels,
     })
