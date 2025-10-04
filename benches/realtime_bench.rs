@@ -4,6 +4,9 @@ use bumpalo::Bump;
 use criterion::{BenchmarkId, Criterion, criterion_group, criterion_main};
 use std::hint::black_box;
 use std::{fs, time::Duration};
+use tutorlolv2::__v2::AbilityLevels;
+use tutorlolv2::__v2::stack::calc::calculator;
+use tutorlolv2::__v2::stack::model::*;
 
 /// Capacidade da arena (>= 2 MB). Usei 8 MB para folga nos casos grandes.
 const ARENA_CAP: usize = 8 * 1024 * 1024;
@@ -80,13 +83,93 @@ criterion_group!(
     name = benches;
     config = {
         Criterion::default()
-            .warm_up_time(Duration::from_secs(5))   // aquece mais
+            .warm_up_time(Duration::from_secs(3))   // aquece mais
             .measurement_time(Duration::from_secs(15))
             .without_plots()
     };
     targets =
         bench_realtime_small,
         bench_realtime_medium,
-        bench_realtime_xxl
+        bench_realtime_xxl,
+        bench_calculator_stack
 );
 criterion_main!(benches);
+
+fn make_input_game() -> InputGame {
+    InputGame {
+        active_player: InputActivePlayer {
+            runes: Default::default(),
+            abilities: AbilityLevels {
+                q: 1,
+                w: 2,
+                e: 3,
+                r: 3,
+            },
+            data: InputMinData {
+                stats: StatsI32 {
+                    ability_power: 100,
+                    armor: 1000,
+                    armor_penetration_flat: 1,
+                    armor_penetration_percent: 1,
+                    attack_damage: 1,
+                    attack_range: 1,
+                    attack_speed: 1,
+                    crit_chance: 1,
+                    crit_damage: 1,
+                    current_health: 1,
+                    magic_penetration_flat: 1,
+                    magic_penetration_percent: 1,
+                    magic_resist: 1,
+                    health: 1,
+                    mana: 1,
+                    current_mana: 1,
+                },
+                items: Default::default(),
+                stacks: 1,
+                level: 18,
+                infer_stats: false,
+                attack_form: false,
+                champion_id: tutorlolv2::ChampionId::Aatrox,
+            },
+        },
+        enemy_earth_dragons: 1,
+        stack_exceptions: Default::default(),
+        enemy_players: [InputMinData {
+            attack_form: false,
+            stacks: 0,
+            stats: SimpleStatsI32 {
+                armor: 100,
+                health: 100,
+                magic_resist: 100,
+            },
+            items: Default::default(),
+            infer_stats: false,
+            level: 18,
+            champion_id: tutorlolv2::ChampionId::Ekko,
+        }]
+        .into(),
+        ally_dragons: Dragons { earth: 1, fire: 1 },
+    }
+}
+
+fn bench_calculator_stack(c: &mut Criterion) {
+    let mut group = c.benchmark_group("calculator_stack");
+
+    // Janela maior p/ reduzir ruído
+    group.sample_size(1000);
+    group.warm_up_time(Duration::from_secs(3));
+    group.measurement_time(Duration::from_secs(20));
+
+    group.bench_function("compute", |b| {
+        b.iter_batched(
+            make_input_game, // setup (fora do tempo medido)
+            |game| {
+                let out = calculator(black_box(game)); // rotina medida
+                black_box(out);
+            },
+            criterion::BatchSize::SmallInput,
+        );
+    });
+
+    group.finish();
+}
