@@ -1,5 +1,5 @@
-use super::{formulas::*, model::*};
-use crate::__v2::{AbilityLevels, L_ABLT, L_ITEM, L_RUNE, L_SIML, riot::*};
+use super::model::*;
+use crate::__v2::{AbilityLevels, L_ABLT, L_ITEM, L_RUNE, L_SIML, RiotFormulas, riot::*};
 use smallvec::SmallVec;
 use std::mem::MaybeUninit;
 use tinyset::SetU32;
@@ -11,11 +11,14 @@ pub const EARTH_DRAGON_MULTIPLIER: f32 = 0.05;
 /// By 06/07/2025 Fire dragons give +3% bonus attack stats
 // #![manual_impl]
 pub const FIRE_DRAGON_MULTIPLIER: f32 = 0.03;
+pub const LAST_STAND_CLOSURE: fn(f32) -> f32 =
+    |missing_health| 1.0 + (0.05 + 0.2 * (missing_health - 0.4)).clamp(0.0, 0.11);
+pub const COUP_DE_GRACE_AND_CUTDOWN_BONUS_DMG: f32 = 1.08;
 
 #[macro_export]
 macro_rules! base_stats {
     (@inner $stats:expr, $level:expr) => {
-        RiotFormulas::stat_growth($stats.flat, $stats.per_level, $level)
+        self::RiotFormulas::stat_growth($stats.flat, $stats.per_level, $level)
     };
     ($struct:ident($stats:expr, $level:expr) { $($field:ident),*}) => {
         $struct {
@@ -177,7 +180,7 @@ pub fn get_items_data(
 }
 
 #[inline]
-pub fn vec_runes_to_set_u32(input: &[RuneId]) -> SetU32 {
+pub fn runes_slice_to_set_u32(input: &[RuneId]) -> SetU32 {
     input
         .iter()
         .filter_map(|rune| {
@@ -189,7 +192,7 @@ pub fn vec_runes_to_set_u32(input: &[RuneId]) -> SetU32 {
 }
 
 #[inline]
-pub fn vec_items_to_set_u32(input: &[ItemId]) -> SetU32 {
+pub fn items_slice_to_set_u32(input: &[ItemId]) -> SetU32 {
     input
         .iter()
         .filter_map(|item| {
@@ -231,6 +234,7 @@ pub fn get_enemy_current_stats(stats: &mut SimpleStatsF32, items: &SetU32, earth
     stats.magic_resist *= dragon_mod;
 }
 
+#[inline]
 pub fn get_enemy_state(
     state: EnemyState,
     shred: ResistShred,
@@ -368,6 +372,7 @@ fn has_item<const N: usize>(origin: &SetU32, check_for: [ItemId; N]) -> bool {
         .any(|item_id| origin.contains(item_id as u32))
 }
 
+#[inline]
 pub fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> EvalContext {
     EvalContext {
         chogath_stacks: 1.0,
@@ -433,6 +438,7 @@ pub fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> EvalCon
     }
 }
 
+#[inline]
 pub fn eval_damage<const N: usize, T>(
     ctx: &EvalContext,
     onhit: &mut RangeDamageI32,
@@ -478,6 +484,7 @@ pub fn eval_damage<const N: usize, T>(
     result
 }
 
+#[inline]
 pub fn eval_attacks(ctx: &EvalContext, mut onhit_damage: RangeDamageI32) -> Attacks {
     let basic_attack_damage = (BASIC_ATTACK.minimum_damage)(0, ctx) as i32;
     let critical_strike_damage = (CRITICAL_STRIKE.minimum_damage)(0, ctx) as i32;
@@ -498,6 +505,7 @@ pub fn eval_attacks(ctx: &EvalContext, mut onhit_damage: RangeDamageI32) -> Atta
     }
 }
 
+#[inline]
 pub fn get_damages(
     eval_ctx: &EvalContext,
     data: &DamageEvalData,

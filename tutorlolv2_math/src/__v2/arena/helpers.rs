@@ -1,5 +1,5 @@
-use super::{formulas::*, model::*};
-use crate::__v2::{AbilityLevels, L_SIML, riot::*};
+use super::model::*;
+use crate::__v2::{AbilityLevels, L_SIML, RiotFormulas, riot::*};
 use bumpalo::Bump;
 use std::{alloc::Layout, mem::MaybeUninit};
 use tinyset::SetU32;
@@ -263,11 +263,13 @@ pub fn get_enemy_state(state: EnemyState, shred: ResistShred, earth_dragons: u8)
         shred.armor_penetration_percent,
         shred.armor_penetration_flat,
         e_current_stats.armor,
+        false,
     );
     let magic_values = RiotFormulas::real_resist(
         shred.magic_penetration_percent,
         shred.magic_penetration_flat,
         e_current_stats.magic_resist,
+        false,
     );
 
     let e_bonus_stats = {

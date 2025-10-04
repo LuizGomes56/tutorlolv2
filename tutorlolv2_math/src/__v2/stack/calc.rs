@@ -1,5 +1,5 @@
-use super::{formulas::*, helpers::*, model::*};
-use crate::__v2::{L_CENM, L_MSTR, L_TWRD, riot::*};
+use super::{helpers::*, model::*};
+use crate::__v2::{L_CENM, L_MSTR, L_TWRD, RiotFormulas, riot::*};
 use smallvec::SmallVec;
 use std::mem::MaybeUninit;
 use tinyset::SetU32;
@@ -38,7 +38,7 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
         ally_dragons,
     } = game;
 
-    let current_player_runes = vec_runes_to_set_u32(&current_player_raw_runes);
+    let current_player_runes = runes_slice_to_set_u32(&current_player_raw_runes);
     let champion_stats: RiotChampionStats = champion_stats_i32.into();
     let current_player_cache =
         unsafe { INTERNAL_CHAMPIONS.get_unchecked(current_player_champion_id as usize) };
@@ -68,7 +68,7 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
         champion_stats.ability_power as f32,
     );
 
-    let current_player_items = vec_items_to_set_u32(&current_player_items);
+    let current_player_items = items_slice_to_set_u32(&current_player_items);
 
     let eval_data = DamageEvalData {
         abilities: get_abilities_data(current_player_cache.abilities, ability_levels, level),
@@ -108,7 +108,7 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
             } = player;
 
             let e_cache = unsafe { INTERNAL_CHAMPIONS.get_unchecked(e_champion_id as usize) };
-            let e_items = vec_items_to_set_u32(&e_raw_items);
+            let e_items = items_slice_to_set_u32(&e_raw_items);
             let e_base_stats = base_stats!(
                 SimpleStatsF32(&e_cache.stats, e_level) {
                     health,
@@ -134,13 +134,12 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
                 let mut global_mod = full_state.modifiers.global_mod;
 
                 if current_player_raw_runes.contains(&RuneId::LastStand) {
-                    global_mod *=
-                        1.0 + (0.05 + 0.2 * (eval_ctx.missing_health - 0.4)).clamp(0.0, 0.11);
+                    global_mod *= LAST_STAND_CLOSURE(eval_ctx.missing_health);
                 }
                 if current_player_raw_runes.contains(&RuneId::CoupdeGrace)
                     || current_player_raw_runes.contains(&RuneId::CutDown)
                 {
-                    global_mod *= 1.08;
+                    global_mod *= COUP_DE_GRACE_AND_CUTDOWN_BONUS_DMG;
                 }
 
                 DamageModifiers {
@@ -201,31 +200,25 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
     let tower_damages_ptr = tower_damages_results.as_mut_ptr();
 
     for i in 0..L_TWRD {
+        let formula = |pen_percent, pen_flat| {
+            (current_player_base_stats.attack_damage
+                + current_player_bonus_stats.attack_damage
+                + champion_stats.ability_power
+                    * 0.6
+                    * (100.0 / (140.0 + (-25.0 + 50.0 * i as f32) * pen_percent - pen_flat)))
+                as i32
+        };
         unsafe {
             core::ptr::addr_of_mut!((*tower_damages_ptr)[i]).write(match adaptative_type {
-                AdaptativeType::Physical => {
-                    current_player_base_stats.attack_damage
-                        + current_player_bonus_stats.attack_damage
-                        + champion_stats.ability_power
-                            * 0.6
-                            * (100.0
-                                / (140.0
-                                    + (-25.0 + 50.0 * i as f32)
-                                        * champion_stats.armor_penetration_percent
-                                    - champion_stats.armor_penetration_flat))
-                }
-                AdaptativeType::Magic => {
-                    current_player_base_stats.attack_damage
-                        + current_player_bonus_stats.attack_damage
-                        + champion_stats.ability_power
-                            * 0.6
-                            * (100.0
-                                / (140.0
-                                    + (-25.0 + 50.0 * i as f32)
-                                        * champion_stats.magic_penetration_percent
-                                    - champion_stats.magic_penetration_flat))
-                }
-            } as i32);
+                AdaptativeType::Physical => formula(
+                    champion_stats.armor_penetration_percent,
+                    champion_stats.armor_penetration_flat,
+                ),
+                AdaptativeType::Magic => formula(
+                    champion_stats.magic_penetration_percent,
+                    champion_stats.magic_penetration_flat,
+                ),
+            });
         };
     }
 

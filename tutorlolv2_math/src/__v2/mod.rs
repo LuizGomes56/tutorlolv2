@@ -1,5 +1,5 @@
 use bincode::{Decode, Encode};
-use tutorlolv2_gen::SIMULATED_ITEMS;
+use tutorlolv2_gen::{AdaptativeType, SIMULATED_ITEMS};
 
 pub mod arena;
 pub mod riot;
@@ -46,7 +46,6 @@ pub enum GameMap {
 impl From<u8> for GameMap {
     fn from(value: u8) -> Self {
         match value {
-            1 | 2 | 11 => GameMap::SummonersRift,
             3 => GameMap::Tutorial,
             4 | 10 => GameMap::TwistedTreeline,
             8 => GameMap::Dominion,
@@ -60,7 +59,57 @@ impl From<u8> for GameMap {
             22 => GameMap::TFT,
             30 => GameMap::Arena,
             0xFF => GameMap::URF,
-            _ => GameMap::SummonersRift,
+            1 | 2 | 11 | _ => GameMap::SummonersRift,
+        }
+    }
+}
+
+pub struct ResistValue {
+    pub real: f32,
+    pub modifier: f32,
+}
+
+pub struct RiotFormulas;
+
+impl RiotFormulas {
+    #[inline]
+    pub const fn stat_growth(base: f32, growth_per_level: f32, level: u8) -> f32 {
+        base + growth_per_level * (level as f32 - 1.0) * (0.7025 + 0.0175 * (level as f32 - 1.0))
+    }
+
+    pub fn percent_value<const N: usize>(from_vec: [f32; N]) -> f32 {
+        from_vec
+            .iter()
+            .map(|value: &f32| 100.0 - value)
+            .product::<f32>()
+            / 10f32.powi((from_vec.len() << 1) as i32)
+    }
+
+    #[inline]
+    pub const fn real_resist(
+        percent_pen: f32,
+        flat_pen: f32,
+        resist: f32,
+        accept_negatives: bool,
+    ) -> ResistValue {
+        let real_val = (percent_pen * resist - flat_pen).max(if accept_negatives {
+            -f32::NEG_INFINITY
+        } else {
+            0.0
+        });
+        let modf_val = 100.0 / (100.0 + real_val);
+        ResistValue {
+            real: real_val,
+            modifier: modf_val,
+        }
+    }
+
+    #[inline]
+    pub const fn adaptative_type(attack_damage: f32, ability_power: f32) -> AdaptativeType {
+        if 0.35 * attack_damage >= 0.2 * ability_power {
+            AdaptativeType::Physical
+        } else {
+            AdaptativeType::Magic
         }
     }
 }

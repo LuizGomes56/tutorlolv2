@@ -1,5 +1,5 @@
-use super::{formulas::*, helpers::*, model::*};
-use crate::__v2::{GameMap, L_SIML, L_TEAM, riot::*};
+use super::{helpers::*, model::*};
+use crate::__v2::{GameMap, L_SIML, L_TEAM, RiotFormulas, riot::*};
 use smallvec::SmallVec;
 use std::mem::MaybeUninit;
 use tinyset::SetU32;
@@ -229,11 +229,10 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
                 let mut global_mod = map_modifier * full_state.modifiers.global_mod;
 
                 if rune_exceptions.has_last_stand {
-                    global_mod *=
-                        1.0 + (0.05 + 0.2 * (eval_ctx.missing_health - 0.4)).clamp(0.0, 0.11);
+                    global_mod *= LAST_STAND_CLOSURE(eval_ctx.missing_health);
                 }
                 if rune_exceptions.has_coup_de_grace || rune_exceptions.has_cut_down {
-                    global_mod *= 1.08;
+                    global_mod *= COUP_DE_GRACE_AND_CUTDOWN_BONUS_DMG;
                 }
 
                 DamageModifiers {

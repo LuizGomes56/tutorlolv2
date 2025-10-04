@@ -1,6 +1,6 @@
 use crate::__v2::{
     AbilityLevels, GameMap, L_ABLT, L_CENM, L_ITEM, L_MSTR, L_PLYR, L_RUNE, L_SIML, L_STCK, L_TEAM,
-    L_TWRD, riot::RiotChampionStats,
+    L_TWRD, ResistValue, riot::RiotChampionStats,
 };
 use bincode::{Decode, Encode};
 use smallvec::SmallVec;
@@ -213,11 +213,6 @@ pub struct EnemyState {
     pub stacks: u32,
     pub champion_id: ChampionId,
     pub level: u8,
-}
-
-pub struct ResistValue {
-    pub real: f32,
-    pub modifier: f32,
 }
 
 #[derive(Copy, Clone)]

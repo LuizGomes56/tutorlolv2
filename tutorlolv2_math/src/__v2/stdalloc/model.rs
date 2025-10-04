@@ -1,4 +1,4 @@
-use crate::__v2::{AbilityLevels, L_SIML, riot::RiotChampionStats};
+use crate::__v2::{AbilityLevels, L_SIML, ResistValue, riot::RiotChampionStats};
 use bincode::{Decode, Encode};
 use tinyset::SetU32;
 use tutorlolv2_gen::{
@@ -208,11 +208,6 @@ pub struct EnemyState {
     pub stacks: u32,
     pub champion_id: ChampionId,
     pub level: u8,
-}
-
-pub struct ResistValue {
-    pub real: f32,
-    pub modifier: f32,
 }
 
 pub struct SelfState {
