@@ -44,7 +44,6 @@ macro_rules! addif {
     };
 }
 
-#[inline]
 pub fn base_stats_sf32(
     stats: &CachedChampionStats,
     level: u8,
@@ -70,7 +69,6 @@ pub fn base_stats_sf32(
     }
 }
 
-#[inline]
 pub fn base_stats_bf32(
     stats: &CachedChampionStats,
     level: u8,
@@ -91,7 +89,12 @@ pub fn base_stats_bf32(
     }
 }
 
-#[inline]
+pub fn has_item<const N: usize>(origin: &SetU32, check_for: [ItemId; N]) -> bool {
+    check_for
+        .into_iter()
+        .any(|item_id| origin.contains(item_id as u32))
+}
+
 pub fn get_simulated_stats(
     stats: &RiotChampionStats,
     dragons: Dragons,
@@ -142,7 +145,6 @@ pub fn get_simulated_stats(
     unsafe { result.assume_init() }
 }
 
-#[inline]
 pub fn get_abilities_data(
     ability_cache: &'static [(AbilityLike, CachedChampionAbility)],
     ability_levels: AbilityLevels,
@@ -174,7 +176,6 @@ pub fn get_abilities_data(
     }
 }
 
-#[inline]
 pub fn get_runes_data(runes: &SetU32, level: u8) -> DamageKind<L_RUNE, RuneId> {
     let mut metadata = SmallVec::with_capacity(runes.len());
     let mut damages = SmallVec::with_capacity(runes.len());
@@ -197,7 +198,6 @@ pub fn get_runes_data(runes: &SetU32, level: u8) -> DamageKind<L_RUNE, RuneId> {
     }
 }
 
-#[inline]
 pub fn get_items_data(
     items: &SetU32,
     attack_type: AttackType,
@@ -228,7 +228,6 @@ pub fn get_items_data(
     }
 }
 
-#[inline]
 pub fn runes_slice_to_set_u32(input: &[RuneId]) -> SetU32 {
     input
         .iter()
@@ -240,7 +239,6 @@ pub fn runes_slice_to_set_u32(input: &[RuneId]) -> SetU32 {
         .collect::<SetU32>()
 }
 
-#[inline]
 pub fn items_slice_to_set_u32(input: &[ItemId]) -> SetU32 {
     input
         .iter()
@@ -252,7 +250,6 @@ pub fn items_slice_to_set_u32(input: &[ItemId]) -> SetU32 {
         .collect::<SetU32>()
 }
 
-#[inline]
 pub fn riot_items_to_set_u32(input: &[RiotItems]) -> SetU32 {
     input
         .iter()
@@ -265,7 +262,6 @@ pub fn riot_items_to_set_u32(input: &[RiotItems]) -> SetU32 {
         .collect::<SetU32>()
 }
 
-#[inline]
 pub fn get_enemy_current_stats(stats: &mut SimpleStatsF32, items: &SetU32, earth_dragons: u8) {
     for item_id in items.iter() {
         let item = unsafe { INTERNAL_ITEMS.get_unchecked(item_id as usize) };
@@ -283,7 +279,6 @@ pub fn get_enemy_current_stats(stats: &mut SimpleStatsF32, items: &SetU32, earth
     stats.magic_resist *= dragon_mod;
 }
 
-#[inline]
 pub fn get_enemy_state(
     state: EnemyState,
     shred: ResistShred,
@@ -400,7 +395,6 @@ pub fn get_enemy_state(
     }
 }
 
-#[inline]
 pub fn get_damage_modifiers(
     enemy_modifiers: DamageModifiers,
     armor_mod: f32,
@@ -414,14 +408,6 @@ pub fn get_damage_modifiers(
     }
 }
 
-#[inline]
-fn has_item<const N: usize>(origin: &SetU32, check_for: [ItemId; N]) -> bool {
-    check_for
-        .into_iter()
-        .any(|item_id| origin.contains(item_id as u32))
-}
-
-#[inline]
 pub fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> EvalContext {
     EvalContext {
         chogath_stacks: 1.0,
@@ -487,7 +473,6 @@ pub fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> EvalCon
     }
 }
 
-#[inline]
 pub fn eval_damage<const N: usize, T>(
     ctx: &EvalContext,
     onhit: &mut RangeDamageI32,
@@ -533,7 +518,6 @@ pub fn eval_damage<const N: usize, T>(
     result
 }
 
-#[inline]
 pub fn eval_attacks(ctx: &EvalContext, mut onhit_damage: RangeDamageI32) -> Attacks {
     let basic_attack_damage = (BASIC_ATTACK.minimum_damage)(0, ctx) as i32;
     let critical_strike_damage = (CRITICAL_STRIKE.minimum_damage)(0, ctx) as i32;
@@ -554,7 +538,6 @@ pub fn eval_attacks(ctx: &EvalContext, mut onhit_damage: RangeDamageI32) -> Atta
     }
 }
 
-#[inline]
 pub fn get_damages(
     eval_ctx: &EvalContext,
     data: &DamageEvalData,

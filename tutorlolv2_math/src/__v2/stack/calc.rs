@@ -7,14 +7,14 @@ use tutorlolv2_gen::{
     AdaptativeType, AttackType, ChampionId, INTERNAL_CHAMPIONS, INTERNAL_ITEMS, ItemId, RuneId,
 };
 
-const MONSTER_RESISTS: [(i8, i8); L_MSTR] = [
-    (0, 0),
-    (21, 30),
-    (120, 70),
-    (90, 75),
-    (100, -30),
-    (42, 42),
-    (20, 20),
+const MONSTER_RESISTS: [(f32, f32); L_MSTR] = [
+    (0f32, 0f32),
+    (21f32, 30f32),
+    (120f32, 70f32),
+    (90f32, 75f32),
+    (100f32, -30f32),
+    (42f32, 42f32),
+    (20f32, 20f32),
 ];
 
 pub struct AssignExceptionData<'a> {
@@ -359,14 +359,14 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
     };
 
     let shred = ResistShred {
-        armor_penetration_flat: champion_raw_stats.armor_penetration_flat,
-        armor_penetration_percent: champion_raw_stats.armor_penetration_percent,
-        magic_penetration_flat: champion_raw_stats.magic_penetration_flat,
-        magic_penetration_percent: champion_raw_stats.magic_penetration_percent,
+        armor_penetration_flat: champion_stats.armor_penetration_flat,
+        armor_penetration_percent: champion_stats.armor_penetration_percent,
+        magic_penetration_flat: champion_stats.magic_penetration_flat,
+        magic_penetration_percent: champion_stats.magic_penetration_percent,
     };
 
     let self_state = SelfState {
-        current_stats: champion_raw_stats.into(),
+        current_stats: champion_stats.into(),
         bonus_stats: current_player_bonus_stats,
         base_stats: current_player_base_stats,
         level,
@@ -448,9 +448,9 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
         let full_state = get_enemy_state(
             EnemyState {
                 base_stats: SimpleStatsF32 {
-                    armor: armor as f32,
+                    armor,
                     health: 1.0,
-                    magic_resist: magic_resist as f32,
+                    magic_resist,
                 },
                 items: SetU32::new(),
                 stacks: 0,
@@ -479,7 +479,7 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
         let formula = |pen_percent, pen_flat| {
             (current_player_base_stats.attack_damage
                 + current_player_bonus_stats.attack_damage
-                + champion_raw_stats.ability_power
+                + champion_stats.ability_power
                     * 0.6
                     * (100.0 / (140.0 + (-25.0 + 50.0 * i as f32) * pen_percent - pen_flat)))
                 as i32
@@ -487,12 +487,12 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
         unsafe {
             core::ptr::addr_of_mut!((*tower_damages_ptr)[i]).write(match adaptative_type {
                 AdaptativeType::Physical => formula(
-                    champion_raw_stats.armor_penetration_percent,
-                    champion_raw_stats.armor_penetration_flat,
+                    champion_stats.armor_penetration_percent,
+                    champion_stats.armor_penetration_flat,
                 ),
                 AdaptativeType::Magic => formula(
-                    champion_raw_stats.magic_penetration_percent,
-                    champion_raw_stats.magic_penetration_flat,
+                    champion_stats.magic_penetration_percent,
+                    champion_stats.magic_penetration_flat,
                 ),
             });
         };

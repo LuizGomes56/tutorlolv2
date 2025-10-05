@@ -89,9 +89,9 @@ criterion_group!(
             .without_plots()
     };
     targets =
-        bench_realtime_small,
-        bench_realtime_medium,
-        bench_realtime_xxl,
+        // bench_realtime_small,
+        // bench_realtime_medium,
+        // bench_realtime_xxl,
         bench_calculator_stack
 );
 criterion_main!(benches);
