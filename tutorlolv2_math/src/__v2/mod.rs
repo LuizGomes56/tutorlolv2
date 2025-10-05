@@ -77,7 +77,7 @@ impl RiotFormulas {
         base + growth_per_level * (level as f32 - 1.0) * (0.7025 + 0.0175 * (level as f32 - 1.0))
     }
 
-    pub fn percent_value<const N: usize>(from_vec: [f32; N]) -> f32 {
+    pub fn percent_value(from_vec: &[f32]) -> f32 {
         from_vec
             .iter()
             .map(|value: &f32| 100.0 - value)

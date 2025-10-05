@@ -4,8 +4,8 @@ use smallvec::SmallVec;
 use std::mem::MaybeUninit;
 use tinyset::SetU32;
 use tutorlolv2_gen::{
-    CHAMPION_NAME_TO_ID, DAMAGING_RUNES, INTERNAL_CHAMPIONS, INTERNAL_ITEMS, ItemId, Position,
-    RuneId, SIMULATED_ITEMS_ENUM,
+    CHAMPION_NAME_TO_ID, ChampionId, DAMAGING_RUNES, INTERNAL_CHAMPIONS, INTERNAL_ITEMS, ItemId,
+    Position, RuneId, SIMULATED_ITEMS_ENUM,
 };
 
 const LAST_STAND: u32 = RuneId::LastStand.to_riot_id_const();
@@ -65,19 +65,15 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
         .iter()
         .find(|player| player.riot_id == *riot_id)?;
 
-    let current_player_champion_id = CHAMPION_NAME_TO_ID.get(current_player.champion_name)?;
+    let current_player_champion_id = *CHAMPION_NAME_TO_ID.get(current_player.champion_name)?;
     let current_player_cache =
-        unsafe { INTERNAL_CHAMPIONS.get_unchecked(*current_player_champion_id as usize) };
+        unsafe { INTERNAL_CHAMPIONS.get_unchecked(current_player_champion_id as usize) };
 
-    let current_player_base_stats = base_stats!(
-        BasicStatsF32(&current_player_cache.stats, *level) {
-            armor,
-            health,
-            attack_damage,
-            magic_resist,
-            mana
-        }
-    );
+    let is_mega_gnar =
+        current_player_champion_id == ChampionId::Gnar && champion_stats.attack_range > 275.0;
+
+    let current_player_base_stats =
+        base_stats_bf32(&current_player_cache.stats, *level, is_mega_gnar);
 
     let current_player_bonus_stats = bonus_stats!(
         BasicStatsF32(champion_stats, current_player_base_stats) {
@@ -194,13 +190,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
             }
 
             let e_items = riot_items_to_set_u32(e_riot_items);
-            let e_base_stats = base_stats!(
-                SimpleStatsF32(&e_cache.stats, *e_level) {
-                    health,
-                    armor,
-                    magic_resist
-                }
-            );
+            let e_base_stats = base_stats_sf32(&e_cache.stats, *e_level, false);
             let full_state = get_enemy_state(
                 EnemyState {
                     base_stats: e_base_stats,
@@ -232,7 +222,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
                     global_mod *= LAST_STAND_CLOSURE(eval_ctx.missing_health);
                 }
                 if rune_exceptions.has_coup_de_grace || rune_exceptions.has_cut_down {
-                    global_mod *= COUP_DE_GRACE_AND_CUTDOWN_BONUS_DMG;
+                    global_mod *= COUP_DE_GRACE_AND_CUTDOWN_BONUS_DAMAGE;
                 }
 
                 DamageModifiers {
@@ -290,7 +280,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
             team: current_player_team,
             adaptative_type,
             position: current_player_position,
-            champion_id: *current_player_champion_id,
+            champion_id: current_player_champion_id,
             game_map,
         },
         enemies,

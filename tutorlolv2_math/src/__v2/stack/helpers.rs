@@ -5,6 +5,15 @@ use std::mem::MaybeUninit;
 use tinyset::SetU32;
 use tutorlolv2_gen::*;
 
+pub const COUP_DE_GRACE_AND_CUTDOWN_BONUS_DAMAGE: f32 = 1.08;
+pub const MEGA_GNAR_BASE_HEALTH_BONUS: f32 = 100.0;
+pub const MEGA_GNAR_BASE_HEALTH_BONUS_PER_LEVEL: f32 = 43.0;
+pub const MEGA_GNAR_BASE_ARMOR_BONUS: f32 = 3.5;
+pub const MEGA_GNAR_BASE_ARMOR_BONUS_PER_LEVEL: f32 = 3.0;
+pub const MEGA_GNAR_BASE_MAGIC_RESIST_BONUS: f32 = 3.5;
+pub const MEGA_GNAR_BASE_MAGIC_RESIST_BONUS_PER_LEVEL: f32 = 3.5;
+pub const MEGA_GNAR_BASE_ATTACK_DAMAGE_BONUS: f32 = 6.0;
+pub const MEGA_GNAR_BASE_ATTACK_DAMAGE_BONUS_PER_LEVEL: f32 = 2.5;
 /// By 06/07/2025 Earth dragons give +5% resists
 // #![manual_impl]
 pub const EARTH_DRAGON_MULTIPLIER: f32 = 0.05;
@@ -13,21 +22,8 @@ pub const EARTH_DRAGON_MULTIPLIER: f32 = 0.05;
 pub const FIRE_DRAGON_MULTIPLIER: f32 = 0.03;
 pub const LAST_STAND_CLOSURE: fn(f32) -> f32 =
     |missing_health| 1.0 + (0.05 + 0.2 * (missing_health - 0.4)).clamp(0.0, 0.11);
-pub const COUP_DE_GRACE_AND_CUTDOWN_BONUS_DMG: f32 = 1.08;
-
-#[macro_export]
-macro_rules! base_stats {
-    (@inner $stats:expr, $level:expr) => {
-        self::RiotFormulas::stat_growth($stats.flat, $stats.per_level, $level)
-    };
-    ($struct:ident($stats:expr, $level:expr) { $($field:ident),*}) => {
-        $struct {
-            $(
-                $field: base_stats!(@inner &$stats.$field, $level),
-            )*
-        }
-    };
-}
+pub const GET_FIRE_MULTIPLIER: fn(u8) -> f32 = |x| 1.0 + x as f32 * FIRE_DRAGON_MULTIPLIER;
+pub const GET_EARTH_MULTIPLIER: fn(u8) -> f32 = |x| 1.0 + x as f32 * EARTH_DRAGON_MULTIPLIER;
 
 #[macro_export]
 macro_rules! bonus_stats {
@@ -40,7 +36,60 @@ macro_rules! bonus_stats {
     };
 }
 
-pub use {base_stats, bonus_stats};
+pub use bonus_stats;
+
+macro_rules! addif {
+    ($is_mega_gnar:expr, $constname:ident) => {
+        if $is_mega_gnar { $constname } else { 0.0 }
+    };
+}
+
+#[inline]
+pub fn base_stats_sf32(
+    stats: &CachedChampionStats,
+    level: u8,
+    is_mega_gnar: bool,
+) -> SimpleStatsF32 {
+    SimpleStatsF32 {
+        health: RiotFormulas::stat_growth(
+            stats.health.flat + addif!(is_mega_gnar, MEGA_GNAR_BASE_HEALTH_BONUS),
+            stats.health.per_level + addif!(is_mega_gnar, MEGA_GNAR_BASE_HEALTH_BONUS_PER_LEVEL),
+            level,
+        ),
+        magic_resist: RiotFormulas::stat_growth(
+            stats.magic_resist.flat + addif!(is_mega_gnar, MEGA_GNAR_BASE_MAGIC_RESIST_BONUS),
+            stats.magic_resist.per_level
+                + addif!(is_mega_gnar, MEGA_GNAR_BASE_MAGIC_RESIST_BONUS_PER_LEVEL),
+            level,
+        ),
+        armor: RiotFormulas::stat_growth(
+            stats.armor.flat + addif!(is_mega_gnar, MEGA_GNAR_BASE_ARMOR_BONUS),
+            stats.armor.per_level + addif!(is_mega_gnar, MEGA_GNAR_BASE_ARMOR_BONUS_PER_LEVEL),
+            level,
+        ),
+    }
+}
+
+#[inline]
+pub fn base_stats_bf32(
+    stats: &CachedChampionStats,
+    level: u8,
+    is_mega_gnar: bool,
+) -> BasicStatsF32 {
+    let base_sf32 = base_stats_sf32(stats, level, is_mega_gnar);
+    BasicStatsF32 {
+        health: base_sf32.health,
+        magic_resist: base_sf32.magic_resist,
+        armor: base_sf32.armor,
+        attack_damage: RiotFormulas::stat_growth(
+            stats.attack_damage.flat + addif!(is_mega_gnar, MEGA_GNAR_BASE_ATTACK_DAMAGE_BONUS),
+            stats.attack_damage.per_level
+                + addif!(is_mega_gnar, MEGA_GNAR_BASE_ATTACK_DAMAGE_BONUS_PER_LEVEL),
+            level,
+        ),
+        mana: RiotFormulas::stat_growth(stats.mana.flat, stats.mana.per_level, level),
+    }
+}
 
 #[inline]
 pub fn get_simulated_stats(
@@ -59,7 +108,7 @@ pub fn get_simulated_stats(
                 new_stat.$field += item_cache.stats.$field;
             };
             (@$field:ident) => {
-                new_stat.$field = RiotFormulas::percent_value([new_stat.$field, stats.$field]);
+                new_stat.$field = RiotFormulas::percent_value(&[new_stat.$field, stats.$field]);
             };
         }
 
@@ -77,8 +126,8 @@ pub fn get_simulated_stats(
         add_stat!(@armor_penetration_percent);
         add_stat!(@magic_penetration_percent);
 
-        let fire_mod = 1.0 + dragons.fire as f32 * FIRE_DRAGON_MULTIPLIER;
-        let earth_mod = 1.0 + dragons.earth as f32 * EARTH_DRAGON_MULTIPLIER;
+        let fire_mod = GET_FIRE_MULTIPLIER(dragons.fire);
+        let earth_mod = GET_EARTH_MULTIPLIER(dragons.earth);
 
         new_stat.ability_power *= fire_mod;
         new_stat.attack_damage *= fire_mod;

@@ -33,7 +33,7 @@ pub fn get_simulated_stats(
                 new_stat.$field += item_cache.stats.$field;
             };
             (@$field:ident) => {
-                new_stat.$field = RiotFormulas::percent_value([new_stat.$field, stats.$field]);
+                new_stat.$field = RiotFormulas::percent_value(&[new_stat.$field, stats.$field]);
             };
         }
 

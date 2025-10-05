@@ -234,7 +234,7 @@ pub struct EnemyFullState {
     pub randuin: bool,
 }
 
-#[derive(Clone, Copy)]
+#[derive(Decode, Clone, Copy)]
 pub struct SimpleStatsF32 {
     pub armor: f32,
     pub health: f32,
@@ -305,7 +305,7 @@ pub enum StackException {
 #[derive(Decode)]
 pub struct InputGame {
     pub active_player: InputActivePlayer,
-    pub enemy_players: SmallVec<[InputMinData<SimpleStatsI32>; L_CENM]>,
+    pub enemy_players: SmallVec<[InputMinData<SimpleStatsF32>; L_CENM]>,
     pub stack_exceptions: SmallVec<[StackException; L_STCK]>,
     pub ally_dragons: Dragons,
     pub enemy_earth_dragons: u8,
@@ -316,7 +316,7 @@ pub struct InputGame {
 pub struct InputActivePlayer {
     pub runes: SmallVec<[RuneId; L_RUNE]>,
     pub abilities: AbilityLevels,
-    pub data: InputMinData<StatsI32>,
+    pub data: InputMinData<RiotChampionStats>,
 }
 
 #[derive(Decode)]
@@ -326,7 +326,7 @@ pub struct InputMinData<T> {
     pub stacks: u32,
     pub level: u8,
     pub infer_stats: bool,
-    pub attack_form: bool,
+    pub is_mega_gnar: bool,
     pub champion_id: ChampionId,
 }
 

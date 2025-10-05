@@ -5,6 +5,7 @@ use criterion::{BenchmarkId, Criterion, criterion_group, criterion_main};
 use std::hint::black_box;
 use std::{fs, time::Duration};
 use tutorlolv2::__v2::AbilityLevels;
+use tutorlolv2::__v2::riot::RiotChampionStats;
 use tutorlolv2::__v2::stack::calc::calculator;
 use tutorlolv2::__v2::stack::model::*;
 
@@ -106,41 +107,41 @@ fn make_input_game() -> InputGame {
                 r: 3,
             },
             data: InputMinData {
-                stats: StatsI32 {
-                    ability_power: 100,
-                    armor: 1000,
-                    armor_penetration_flat: 1,
-                    armor_penetration_percent: 1,
-                    attack_damage: 1,
-                    attack_range: 1,
-                    attack_speed: 1,
-                    crit_chance: 1,
-                    crit_damage: 1,
-                    current_health: 1,
-                    magic_penetration_flat: 1,
-                    magic_penetration_percent: 1,
-                    magic_resist: 1,
-                    health: 1,
-                    mana: 1,
-                    current_mana: 1,
+                stats: RiotChampionStats {
+                    ability_power: 100.0,
+                    armor: 1000.0,
+                    armor_penetration_flat: 1.0,
+                    armor_penetration_percent: 1.0,
+                    attack_damage: 1.0,
+                    attack_range: 1.0,
+                    attack_speed: 1.0,
+                    crit_chance: 1.0,
+                    crit_damage: 1.0,
+                    current_health: 1.0,
+                    magic_penetration_flat: 1.0,
+                    magic_penetration_percent: 1.0,
+                    magic_resist: 1.0,
+                    health: 1.0,
+                    mana: 1.0,
+                    current_mana: 1.0,
                 },
                 items: Default::default(),
                 stacks: 1,
                 level: 18,
                 infer_stats: false,
-                attack_form: false,
+                is_mega_gnar: false,
                 champion_id: tutorlolv2::ChampionId::Aatrox,
             },
         },
         enemy_earth_dragons: 1,
         stack_exceptions: Default::default(),
         enemy_players: [InputMinData {
-            attack_form: false,
+            is_mega_gnar: false,
             stacks: 0,
-            stats: SimpleStatsI32 {
-                armor: 100,
-                health: 100,
-                magic_resist: 100,
+            stats: SimpleStatsF32 {
+                armor: 100.0,
+                health: 100.0,
+                magic_resist: 100.0,
             },
             items: Default::default(),
             infer_stats: false,

@@ -57,6 +57,9 @@ pub fn export_runes() -> Vec<(u32, RuneDetails)> {
     undeclared_runes.insert("AbilityHaste".to_string(), 9994);
     undeclared_runes.insert("TenacityandSlowResist".to_string(), 9995);
     undeclared_runes.insert("MoveSpeed".to_string(), 9996);
+    undeclared_runes.insert("EyeballCollection".to_string(), 8120);
+    undeclared_runes.insert("GhostPoro".to_string(), 8136);
+    undeclared_runes.insert("ZombieWard".to_string(), 8138);
 
     for (rune_name, rune_id) in undeclared_runes {
         if runes.iter().any(|(id, _)| *id == rune_id) {
