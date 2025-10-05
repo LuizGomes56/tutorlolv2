@@ -1,18 +1,14 @@
-use super::riot::RiotChampionStats;
+use crate::__v2::{
+    AbilityLevels, GameMap, L_ABLT, L_CENM, L_ITEM, L_MSTR, L_PLYR, L_RUNE, L_SIML, L_STCK, L_TEAM,
+    L_TWRD, ResistValue, riot::RiotChampionStats,
+};
 use bincode::{Decode, Encode};
 use smallvec::SmallVec;
 use tinyset::SetU32;
 use tutorlolv2_gen::{
     AbilityLike, AdaptativeType, Attrs, ChampionId, DamageType, EvalContext, ItemId, Position,
-    RuneId, SIMULATED_ITEMS,
+    RuneId,
 };
-
-pub const L_SIML: usize = SIMULATED_ITEMS.len();
-pub const L_RUNE: usize = 2;
-pub const L_ITEM: usize = 4;
-pub const L_ABLT: usize = 7;
-pub const L_TEAM: usize = 5;
-pub const L_PLYR: usize = L_TEAM << 1;
 
 #[derive(Encode, PartialEq, Clone, Copy)]
 pub enum Team {
@@ -113,14 +109,6 @@ pub struct BasicStatsI32 {
     pub mana: i32,
 }
 
-#[derive(Encode, Decode, Clone, Copy)]
-pub struct AbilityLevels {
-    pub q: u8,
-    pub w: u8,
-    pub e: u8,
-    pub r: u8,
-}
-
 #[derive(Decode, Default)]
 pub struct Dragons {
     pub earth: u8,
@@ -163,7 +151,7 @@ pub struct DamageClosure {
 
 pub struct DamageKind<const N: usize, T> {
     pub metadata: SmallVec<[TypeMetadata<T>; N]>,
-    pub damages: SmallVec<[DamageClosure; N]>,
+    pub closures: SmallVec<[DamageClosure; N]>,
 }
 
 #[derive(Encode)]
@@ -177,10 +165,10 @@ pub struct Realtime<'a> {
     pub current_player: CurrentPlayer<'a>,
     pub enemies: SmallVec<[Enemy<'a>; L_TEAM]>,
     pub scoreboard: SmallVec<[Scoreboard<'a>; L_PLYR]>,
-    pub abilities: SmallVec<[TypeMetadata<AbilityLike>; L_ABLT]>,
-    pub items: SmallVec<[TypeMetadata<ItemId>; L_ITEM]>,
-    pub runes: SmallVec<[TypeMetadata<RuneId>; L_RUNE]>,
-    pub siml_items: [ConstItemMetadata; L_SIML],
+    pub abilities_meta: SmallVec<[TypeMetadata<AbilityLike>; L_ABLT]>,
+    pub items_meta: SmallVec<[TypeMetadata<ItemId>; L_ITEM]>,
+    pub runes_meta: SmallVec<[TypeMetadata<RuneId>; L_RUNE]>,
+    pub siml_meta: [ConstItemMetadata; L_SIML],
     pub game_time: u32,
     pub ability_levels: AbilityLevels,
 }
@@ -208,6 +196,7 @@ pub struct CurrentPlayer<'a> {
     pub adaptative_type: AdaptativeType,
     pub position: Position,
     pub champion_id: ChampionId,
+    pub game_map: GameMap,
 }
 
 #[derive(Clone, Copy)]
@@ -226,11 +215,7 @@ pub struct EnemyState {
     pub level: u8,
 }
 
-pub struct ResistValue {
-    pub real: f32,
-    pub modifier: f32,
-}
-
+#[derive(Copy, Clone)]
 pub struct SelfState {
     pub current_stats: RiotChampionStats,
     pub bonus_stats: BasicStatsF32,
@@ -249,11 +234,17 @@ pub struct EnemyFullState {
     pub randuin: bool,
 }
 
-#[derive(Clone, Copy)]
+#[derive(Decode, Clone, Copy)]
 pub struct SimpleStatsF32 {
     pub armor: f32,
     pub health: f32,
     pub magic_resist: f32,
+}
+
+pub struct DamageEvalData {
+    pub abilities: DamageKind<L_ABLT, AbilityLike>,
+    pub items: DamageKind<L_ITEM, ItemId>,
+    pub runes: DamageKind<L_RUNE, RuneId>,
 }
 
 impl From<SimpleStatsF32> for SimpleStatsI32 {
@@ -314,35 +305,29 @@ pub enum StackException {
 #[derive(Decode)]
 pub struct InputGame {
     pub active_player: InputActivePlayer,
-    pub enemy_players: SmallVec<[InputEnemyPlayers; 1]>,
-    pub stack_exceptions: SmallVec<[StackException; 5]>,
+    pub enemy_players: SmallVec<[InputMinData<SimpleStatsF32>; L_CENM]>,
+    pub stack_exceptions: SmallVec<[StackException; L_STCK]>,
     pub ally_dragons: Dragons,
     pub enemy_earth_dragons: u8,
-    pub _padding: u32,
+    // pub padding: u32 + u8,
 }
 
 #[derive(Decode)]
 pub struct InputActivePlayer {
-    pub champion_stats: StatsI32,
     pub runes: SmallVec<[RuneId; L_RUNE]>,
     pub abilities: AbilityLevels,
-    pub data: InputMinData,
+    pub data: InputMinData<RiotChampionStats>,
 }
 
 #[derive(Decode)]
-pub struct InputMinData {
+pub struct InputMinData<T> {
+    pub stats: T,
     pub items: SmallVec<[ItemId; L_ITEM]>,
     pub stacks: u32,
     pub level: u8,
     pub infer_stats: bool,
-    pub attack_form: bool,
+    pub is_mega_gnar: bool,
     pub champion_id: ChampionId,
-}
-
-#[derive(Decode)]
-pub struct InputEnemyPlayers {
-    pub stats: SimpleStatsI32,
-    pub data: InputMinData,
 }
 
 #[derive(Encode)]
@@ -384,10 +369,13 @@ pub struct MonsterDamage {
 
 #[derive(Encode)]
 pub struct OutputGame {
-    pub monster_damages: SmallVec<[MonsterDamage; 7]>,
+    pub monster_damages: [MonsterDamage; L_MSTR],
     pub current_player: OutputCurrentPlayer,
-    pub enemies: SmallVec<[OutputEnemy; 1]>,
-    pub tower_damages: [i32; 6],
+    pub enemies: SmallVec<[OutputEnemy; L_CENM]>,
+    pub tower_damages: [i32; L_TWRD],
+    pub abilities_meta: SmallVec<[TypeMetadata<AbilityLike>; L_ABLT]>,
+    pub items_meta: SmallVec<[TypeMetadata<ItemId>; L_ITEM]>,
+    pub runes_meta: SmallVec<[TypeMetadata<RuneId>; L_RUNE]>,
 }
 
 impl From<StatsI32> for RiotChampionStats {

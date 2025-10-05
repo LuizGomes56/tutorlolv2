@@ -1,4 +1,5 @@
-use crate::__v2::model::{AbilityLevels, L_ITEM, L_PLYR};
+use crate::__v2::{AbilityLevels, L_ITEM, L_PLYR};
+use bincode::Decode;
 use serde::{Deserialize, Serialize};
 use smallvec::SmallVec;
 
@@ -29,7 +30,7 @@ impl RiotAbilities {
     }
 }
 
-#[derive(Serialize, Default, Deserialize, Copy, Clone)]
+#[derive(Serialize, Default, Deserialize, Copy, Clone, Decode)]
 #[serde(rename_all = "camelCase")]
 pub struct RiotChampionStats {
     pub ability_power: f32,

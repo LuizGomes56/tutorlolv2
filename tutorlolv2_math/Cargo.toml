@@ -9,3 +9,4 @@ tinyset = "0.5.2"
 tutorlolv2_gen = { path = "../tutorlolv2_gen" }
 bincode = "2.0.1"
 serde = { version = "1.0", features = ["derive"] }
+bumpalo = "3.19.0"

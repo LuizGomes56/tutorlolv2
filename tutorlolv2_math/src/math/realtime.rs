@@ -48,8 +48,6 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
         .ok_or(CalculationError::CurrentPlayerNotFound)?;
 
     let current_player_team = Team::from_raw(current_player_raw_team);
-    let current_player_position = Position::from_raw(current_player_raw_position);
-
     let players_map = all_players
         .iter()
         .map(|player| {
@@ -71,6 +69,9 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
     let current_player_cache = INTERNAL_CHAMPIONS
         .get(*current_player_champion_id as usize)
         .ok_or(CalculationError::ChampionCacheNotFound)?;
+
+    let current_player_position = Position::from_raw(current_player_raw_position)
+        .unwrap_or(unsafe { *current_player_cache.positions.get_unchecked(0) });
 
     let current_player_base_stats = get_base_stats(current_player_cache, current_player_level);
     let current_player_basic_stats = BasicStats {
@@ -159,7 +160,6 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
                 ..
             } = player;
             let enemy_team = Team::from_raw(enemy_raw_team);
-            let enemy_position = Position::from_raw(enemy_raw_position);
             let enemy_champion_id = CHAMPION_NAME_TO_ID.get(&enemy_champion_name)?;
             let enemy_items = enemy_riot_items
                 .iter()
@@ -167,6 +167,8 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, CalculationE
                 .collect::<SmallVec<[_; SIZE_ITEMS_EXPECTED]>>();
             let enemy_level = player.level;
             let enemy_cache = INTERNAL_CHAMPIONS.get(*enemy_champion_id as usize)?;
+            let enemy_position = Position::from_raw(enemy_raw_position)
+                .unwrap_or(unsafe { *enemy_cache.positions.get_unchecked(0) });
             let enemy_base_stats = get_base_stats(enemy_cache, enemy_level);
 
             let full_stats = get_full_stats(
