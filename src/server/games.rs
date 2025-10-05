@@ -31,6 +31,25 @@ fn respond(data: impl Sizer + Encode) -> Response {
     }
 }
 
+fn respond_v2(data: impl Encode) -> Response {
+    let data = bincode::encode_to_vec(&data, BINCODE_CONFIG)?;
+    Ok(HttpResponse::Ok().insert_header(OCTET_STREAM).body(data))
+}
+
+#[post("/v2/realtime")]
+pub async fn realtime_v2_handler(body: Bytes) -> Response {
+    let game_data = serde_json::from_slice(&body)?;
+    let data = tutorlolv2_math::__v2::stack::rt::realtime(&game_data).ok_or("Err")?;
+    respond_v2(data)
+}
+
+#[post("/v2/calculator")]
+pub async fn calculator_v2_handler(body: Bytes) -> Response {
+    let (decoded, _) = bincode::decode_from_slice(&body, BINCODE_CONFIG)?;
+    let data = tutorlolv2_math::__v2::stack::calc::calculator(decoded).ok_or("Err")?;
+    respond_v2(data)
+}
+
 #[post("/realtime")]
 pub async fn realtime_handler(body: Bytes) -> Response {
     let game_data = serde_json::from_slice(&body)?;

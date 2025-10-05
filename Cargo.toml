@@ -22,7 +22,6 @@ debug = false
 
 [[bench]]
 name = "realtime_bench"
-# name = "test_rt"
 harness = false
 
 [dev-dependencies]
