@@ -17,18 +17,8 @@ const MONSTER_RESISTS: [(f32, f32); L_MSTR] = [
     (20f32, 20f32),
 ];
 
-pub struct AssignExceptionData<'a> {
-    pub ability_levels: AbilityLevels,
-    pub current_player_stats: &'a mut StatsF32,
-    pub current_player_bonus_stats: &'a mut BasicStatsF32,
-    pub enemy_players: &'a mut [InputMinData<SimpleStatsF32>],
-    pub attack_type: AttackType,
-    pub adaptative_type: AdaptativeType,
-    pub level: u8,
-}
-
-fn infer_champion_stats(items: &[ItemId], dragons: Dragons) -> StatsF32 {
-    let mut stats = StatsF32::default();
+fn infer_champion_stats(items: &[ItemId], dragons: Dragons) -> Stats<f32> {
+    let mut stats = Stats::<f32>::default();
 
     let mut armor_penetration = SmallVec::<[f32; 5]>::new();
     let mut magic_penetration = SmallVec::<[f32; 5]>::new();
@@ -71,6 +61,16 @@ fn infer_champion_stats(items: &[ItemId], dragons: Dragons) -> StatsF32 {
     stats.magic_penetration_percent = RiotFormulas::percent_value(&magic_penetration);
 
     stats
+}
+
+pub struct AssignExceptionData<'a> {
+    pub ability_levels: AbilityLevels,
+    pub current_player_stats: &'a mut Stats<f32>,
+    pub current_player_bonus_stats: &'a mut BasicStats<f32>,
+    pub enemy_players: &'a mut [InputMinData<SimpleStats<i32>>],
+    pub attack_type: AttackType,
+    pub adaptative_type: AdaptativeType,
+    pub level: u8,
 }
 
 fn assign_exceptions(data: AssignExceptionData, exceptions: SmallVec<[StackException; L_STCK]>) {
@@ -142,7 +142,7 @@ fn assign_exceptions(data: AssignExceptionData, exceptions: SmallVec<[StackExcep
                 macro_rules! exc_add {
                     ($field:ident, $stat:expr) => {
                         if let Some(e_st) = e_stats {
-                            e_st.stats.$field += $stat;
+                            e_st.stats.$field += $stat as i32;
                         } else {
                             current_player_stats.$field += $stat;
                             current_player_bonus_stats.$field += $stat;
@@ -289,7 +289,7 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
                 runes: current_player_raw_runes,
                 data:
                     InputMinData {
-                        stats: champion_raw_stats,
+                        stats: champion_raw_stats_i32,
                         level,
                         items: current_player_items,
                         infer_stats,
@@ -304,6 +304,8 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
         ally_dragons,
     } = game;
 
+    let champion_raw_stats: Stats<f32> = champion_raw_stats_i32.into();
+
     let current_player_runes = runes_slice_to_set_u32(&current_player_raw_runes);
     let current_player_cache =
         unsafe { INTERNAL_CHAMPIONS.get_unchecked(current_player_champion_id as usize) };
@@ -312,7 +314,7 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
         base_stats_bf32(&current_player_cache.stats, level, is_mega_gnar);
 
     let mut current_player_bonus_stats = bonus_stats!(
-        BasicStatsF32(champion_raw_stats, current_player_base_stats) {
+        BasicStats::<f32>(champion_raw_stats, current_player_base_stats) {
             armor,
             health,
             attack_damage,
@@ -379,12 +381,13 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
                 infer_stats: e_infer_stats,
                 items: e_raw_items,
                 stacks: e_stacks,
-                stats: e_stats,
+                stats: e_raw_stats,
                 level: e_level,
                 champion_id: e_champion_id,
                 is_mega_gnar: e_is_mega_gnar,
             } = player;
 
+            let e_stats: SimpleStats<f32> = e_raw_stats.into();
             let e_cache = unsafe { INTERNAL_CHAMPIONS.get_unchecked(e_champion_id as usize) };
             let e_items = items_slice_to_set_u32(&e_raw_items);
             let e_base_stats = base_stats_sf32(&e_cache.stats, e_level, e_is_mega_gnar);
@@ -447,7 +450,7 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
     for (index, (armor, magic_resist)) in MONSTER_RESISTS.into_iter().enumerate() {
         let full_state = get_enemy_state(
             EnemyState {
-                base_stats: SimpleStatsF32 {
+                base_stats: SimpleStats::<f32> {
                     armor,
                     health: 1.0,
                     magic_resist,

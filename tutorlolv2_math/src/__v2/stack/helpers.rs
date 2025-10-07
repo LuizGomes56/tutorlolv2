@@ -27,8 +27,8 @@ pub const GET_EARTH_MULTIPLIER: fn(u8) -> f32 = |x| 1.0 + x as f32 * EARTH_DRAGO
 
 #[macro_export]
 macro_rules! bonus_stats {
-    ($struct:ident($current_stats:expr, $base_stats:expr) { $($field:ident),*}) => {
-        $struct {
+    ($struct:ident::<$t:ty>($current_stats:expr, $base_stats:expr) { $($field:ident),*}) => {
+        $struct::<$t> {
             $(
                 $field: $current_stats.$field - $base_stats.$field,
             )*
@@ -44,12 +44,12 @@ macro_rules! addif {
     };
 }
 
-pub fn base_stats_sf32(
+pub const fn base_stats_sf32(
     stats: &CachedChampionStats,
     level: u8,
     is_mega_gnar: bool,
-) -> SimpleStatsF32 {
-    SimpleStatsF32 {
+) -> SimpleStats<f32> {
+    SimpleStats::<f32> {
         health: RiotFormulas::stat_growth(
             stats.health.flat + addif!(is_mega_gnar, MEGA_GNAR_BASE_HEALTH_BONUS),
             stats.health.per_level + addif!(is_mega_gnar, MEGA_GNAR_BASE_HEALTH_BONUS_PER_LEVEL),
@@ -69,13 +69,13 @@ pub fn base_stats_sf32(
     }
 }
 
-pub fn base_stats_bf32(
+pub const fn base_stats_bf32(
     stats: &CachedChampionStats,
     level: u8,
     is_mega_gnar: bool,
-) -> BasicStatsF32 {
+) -> BasicStats<f32> {
     let base_sf32 = base_stats_sf32(stats, level, is_mega_gnar);
-    BasicStatsF32 {
+    BasicStats::<f32> {
         health: base_sf32.health,
         magic_resist: base_sf32.magic_resist,
         armor: base_sf32.armor,
@@ -95,11 +95,8 @@ pub fn has_item<const N: usize>(origin: &SetU32, check_for: [ItemId; N]) -> bool
         .any(|item_id| origin.contains(item_id as u32))
 }
 
-pub fn get_simulated_stats(
-    stats: &StatsF32,
-    dragons: Dragons,
-) -> [StatsF32; L_SIML] {
-    let mut result = MaybeUninit::<[StatsF32; L_SIML]>::uninit();
+pub fn get_simulated_stats(stats: &Stats<f32>, dragons: Dragons) -> [Stats<f32>; L_SIML] {
+    let mut result = MaybeUninit::<[Stats<f32>; L_SIML]>::uninit();
     let result_ptr = result.as_mut_ptr();
 
     for (i, item_offset) in SIMULATED_ITEMS_ENUM.into_iter().enumerate() {
@@ -262,7 +259,7 @@ pub fn riot_items_to_set_u32(input: &[RiotItems]) -> SetU32 {
         .collect::<SetU32>()
 }
 
-pub fn get_enemy_current_stats(stats: &mut SimpleStatsF32, items: &SetU32, earth_dragons: u8) {
+pub fn get_enemy_current_stats(stats: &mut SimpleStats<f32>, items: &SetU32, earth_dragons: u8) {
     for item_id in items.iter() {
         let item = unsafe { INTERNAL_ITEMS.get_unchecked(item_id as usize) };
         macro_rules! add_value {
@@ -366,7 +363,7 @@ pub fn get_enemy_state(
     );
 
     let e_bonus_stats = bonus_stats!(
-        SimpleStatsF32(e_current_stats, state.base_stats) {
+        SimpleStats::<f32>(e_current_stats, state.base_stats) {
             armor,
             health,
             magic_resist
@@ -395,7 +392,7 @@ pub fn get_enemy_state(
     }
 }
 
-pub fn get_damage_modifiers(
+pub const fn get_damage_modifiers(
     enemy_modifiers: DamageModifiers,
     armor_mod: f32,
     magic_mod: f32,
@@ -408,7 +405,7 @@ pub fn get_damage_modifiers(
     }
 }
 
-pub fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> EvalContext {
+pub const fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> EvalContext {
     EvalContext {
         chogath_stacks: 1.0,
         veigar_stacks: 1.0,
@@ -475,10 +472,10 @@ pub fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> EvalCon
 
 pub fn eval_damage<const N: usize, T>(
     ctx: &EvalContext,
-    onhit: &mut RangeDamageI32,
+    onhit: &mut RangeDamage,
     damage_kind: &DamageKind<N, T>,
     modifiers: DamageModifiers,
-) -> SmallVec<[RangeDamageI32; N]> {
+) -> SmallVec<[RangeDamage; N]> {
     let mut result = SmallVec::with_capacity(N);
     for i in 0..N {
         let closure = unsafe { damage_kind.closures.get_unchecked(i) };
@@ -510,7 +507,7 @@ pub fn eval_damage<const N: usize, T>(
             _ => {}
         };
 
-        result.push(RangeDamageI32 {
+        result.push(RangeDamage {
             minimum_damage,
             maximum_damage,
         });
@@ -518,7 +515,7 @@ pub fn eval_damage<const N: usize, T>(
     result
 }
 
-pub fn eval_attacks(ctx: &EvalContext, mut onhit_damage: RangeDamageI32) -> Attacks {
+pub fn eval_attacks(ctx: &EvalContext, mut onhit_damage: RangeDamage) -> Attacks {
     let basic_attack_damage = (BASIC_ATTACK.minimum_damage)(0, ctx) as i32;
     let critical_strike_damage = (CRITICAL_STRIKE.minimum_damage)(0, ctx) as i32;
 
@@ -526,11 +523,11 @@ pub fn eval_attacks(ctx: &EvalContext, mut onhit_damage: RangeDamageI32) -> Atta
     onhit_damage.maximum_damage += critical_strike_damage;
 
     Attacks {
-        basic_attack: RangeDamageI32 {
+        basic_attack: RangeDamage {
             minimum_damage: basic_attack_damage,
             maximum_damage: 0,
         },
-        critical_strike: RangeDamageI32 {
+        critical_strike: RangeDamage {
             minimum_damage: 0,
             maximum_damage: critical_strike_damage,
         },
@@ -543,7 +540,7 @@ pub fn get_damages(
     data: &DamageEvalData,
     modifiers: DamageModifiers,
 ) -> Damages {
-    let mut onhit = RangeDamageI32::default();
+    let mut onhit = RangeDamage::default();
     macro_rules! eval_nonempty {
         ($name:ident) => {
             if data.$name.closures.is_empty() {

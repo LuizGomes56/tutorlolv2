@@ -30,15 +30,14 @@ const SIMULATED_ITEMS_METADATA: [ConstItemMetadata; L_SIML] = {
     unsafe { siml_items.assume_init() }
 };
 
-// If I decide to add a size counter
 // const SIZE_SIMULATED_ITEMS_METADATA: usize = size_u(L_SIML as u32) + L_SIML << 1;
 
 #[derive(Default)]
 struct RuneExceptions {
-    pub has_last_stand: bool,
-    pub has_coup_de_grace: bool,
-    pub has_cut_down: bool,
-    pub has_axiom_arcanist: bool,
+    has_last_stand: bool,
+    has_coup_de_grace: bool,
+    has_cut_down: bool,
+    has_axiom_arcanist: bool,
 }
 
 pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
@@ -76,7 +75,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
         base_stats_bf32(&current_player_cache.stats, *level, is_mega_gnar);
 
     let current_player_bonus_stats = bonus_stats!(
-        BasicStatsF32(champion_stats, current_player_base_stats) {
+        BasicStats::<f32>(champion_stats, current_player_base_stats) {
             armor,
             health,
             attack_damage,

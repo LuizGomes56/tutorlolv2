@@ -1,6 +1,6 @@
 use crate::__v2::{
     AbilityLevels, GameMap, L_ABLT, L_CENM, L_ITEM, L_MSTR, L_PLYR, L_RUNE, L_SIML, L_STCK, L_TEAM,
-    L_TWRD, ResistValue, riot::StatsF32,
+    L_TWRD, ResistValue, riot::Stats,
 };
 use bincode::{Decode, Encode};
 use smallvec::SmallVec;
@@ -25,53 +25,19 @@ impl From<&str> for Team {
     }
 }
 
-pub struct RangeDamageF32 {
-    pub minimum_damage: f32,
-    pub maximum_damage: f32,
-}
-
 #[derive(Encode, Default)]
-pub struct RangeDamageI32 {
+pub struct RangeDamage {
     pub minimum_damage: i32,
     pub maximum_damage: i32,
 }
 
-#[derive(Encode)]
-pub struct StatsI32 {
-    pub ability_power: i32,
-    pub armor: i32,
-    pub armor_penetration_flat: i32,
-    pub armor_penetration_percent: i32,
-    pub attack_damage: i32,
-    pub attack_range: i32,
-    pub attack_speed: i32,
-    pub crit_chance: i32,
-    pub crit_damage: i32,
-    pub current_health: i32,
-    pub magic_penetration_flat: i32,
-    pub magic_penetration_percent: i32,
-    pub magic_resist: i32,
-    pub health: i32,
-    pub mana: i32,
-    pub current_mana: i32,
-}
-
-#[derive(Clone, Copy)]
-pub struct BasicStatsF32 {
-    pub armor: f32,
-    pub health: f32,
-    pub attack_damage: f32,
-    pub magic_resist: f32,
-    pub mana: f32,
-}
-
-#[derive(Encode)]
-pub struct BasicStatsI32 {
-    pub armor: i32,
-    pub health: i32,
-    pub attack_damage: i32,
-    pub magic_resist: i32,
-    pub mana: i32,
+#[derive(Encode, Clone, Copy)]
+pub struct BasicStats<T> {
+    pub armor: T,
+    pub health: T,
+    pub attack_damage: T,
+    pub magic_resist: T,
+    pub mana: T,
 }
 
 #[derive(Decode, Default)]
@@ -82,9 +48,9 @@ pub struct Dragons {
 
 #[derive(Encode)]
 pub struct Attacks {
-    pub basic_attack: RangeDamageI32,
-    pub critical_strike: RangeDamageI32,
-    pub onhit_damage: RangeDamageI32,
+    pub basic_attack: RangeDamage,
+    pub critical_strike: RangeDamage,
+    pub onhit_damage: RangeDamage,
 }
 
 #[derive(Encode)]
@@ -153,9 +119,9 @@ pub struct Scoreboard<'a> {
 #[derive(Encode)]
 pub struct CurrentPlayer<'a> {
     pub riot_id: &'a str,
-    pub base_stats: BasicStatsI32,
-    pub bonus_stats: BasicStatsI32,
-    pub current_stats: StatsI32,
+    pub base_stats: BasicStats<i32>,
+    pub bonus_stats: BasicStats<i32>,
+    pub current_stats: Stats<i32>,
     pub level: u8,
     pub team: Team,
     pub adaptative_type: AdaptativeType,
@@ -173,7 +139,7 @@ pub struct ResistShred {
 }
 
 pub struct EnemyState {
-    pub base_stats: SimpleStatsF32,
+    pub base_stats: SimpleStats<f32>,
     pub items: SetU32,
     pub stacks: u32,
     pub champion_id: ChampionId,
@@ -182,15 +148,15 @@ pub struct EnemyState {
 
 #[derive(Copy, Clone)]
 pub struct SelfState {
-    pub current_stats: StatsF32,
-    pub bonus_stats: BasicStatsF32,
-    pub base_stats: BasicStatsF32,
+    pub current_stats: Stats<f32>,
+    pub bonus_stats: BasicStats<f32>,
+    pub base_stats: BasicStats<f32>,
     pub level: u8,
 }
 
 pub struct EnemyFullState {
-    pub current_stats: SimpleStatsF32,
-    pub bonus_stats: SimpleStatsF32,
+    pub current_stats: SimpleStats<f32>,
+    pub bonus_stats: SimpleStats<f32>,
     pub modifiers: DamageModifiers,
     pub armor_values: ResistValue,
     pub magic_values: ResistValue,
@@ -199,11 +165,11 @@ pub struct EnemyFullState {
     pub randuin: bool,
 }
 
-#[derive(Decode, Clone, Copy)]
-pub struct SimpleStatsF32 {
-    pub armor: f32,
-    pub health: f32,
-    pub magic_resist: f32,
+#[derive(Encode, Decode, Clone, Copy)]
+pub struct SimpleStats<T> {
+    pub armor: T,
+    pub health: T,
+    pub magic_resist: T,
 }
 
 pub struct DamageEvalData {
@@ -213,20 +179,13 @@ pub struct DamageEvalData {
 }
 
 #[derive(Encode)]
-pub struct SimpleStatsI32 {
-    pub armor: i32,
-    pub health: i32,
-    pub magic_resist: i32,
-}
-
-#[derive(Encode)]
 pub struct Enemy<'a> {
     pub riot_id: &'a str,
     pub damages: Damages,
     pub siml_items: [Damages; L_SIML],
-    pub base_stats: SimpleStatsI32,
-    pub bonus_stats: SimpleStatsI32,
-    pub current_stats: SimpleStatsI32,
+    pub base_stats: SimpleStats<i32>,
+    pub bonus_stats: SimpleStats<i32>,
+    pub current_stats: SimpleStats<i32>,
     pub real_armor: i32,
     pub real_magic_resist: i32,
     pub level: u8,
@@ -238,9 +197,9 @@ pub struct Enemy<'a> {
 #[derive(Encode)]
 pub struct Damages {
     pub attacks: Attacks,
-    pub abilities: SmallVec<[RangeDamageI32; L_ABLT]>,
-    pub items: SmallVec<[RangeDamageI32; L_ITEM]>,
-    pub runes: SmallVec<[RangeDamageI32; L_RUNE]>,
+    pub abilities: SmallVec<[RangeDamage; L_ABLT]>,
+    pub items: SmallVec<[RangeDamage; L_ITEM]>,
+    pub runes: SmallVec<[RangeDamage; L_RUNE]>,
 }
 
 #[derive(Decode)]
@@ -260,7 +219,7 @@ pub enum StackException {
 #[derive(Decode)]
 pub struct InputGame {
     pub active_player: InputActivePlayer,
-    pub enemy_players: SmallVec<[InputMinData<SimpleStatsF32>; L_CENM]>,
+    pub enemy_players: SmallVec<[InputMinData<SimpleStats<i32>>; L_CENM]>,
     pub stack_exceptions: SmallVec<[StackException; L_STCK]>,
     pub ally_dragons: Dragons,
     pub enemy_earth_dragons: u8,
@@ -271,7 +230,7 @@ pub struct InputGame {
 pub struct InputActivePlayer {
     pub runes: SmallVec<[RuneId; L_RUNE]>,
     pub abilities: AbilityLevels,
-    pub data: InputMinData<StatsF32>,
+    pub data: InputMinData<Stats<i32>>,
 }
 
 #[derive(Decode)]
@@ -288,9 +247,9 @@ pub struct InputMinData<T> {
 #[derive(Encode)]
 pub struct OutputEnemy {
     pub damages: Damages,
-    pub base_stats: SimpleStatsI32,
-    pub bonus_stats: SimpleStatsI32,
-    pub current_stats: SimpleStatsI32,
+    pub base_stats: SimpleStats<i32>,
+    pub bonus_stats: SimpleStats<i32>,
+    pub current_stats: SimpleStats<i32>,
     pub real_armor: i32,
     pub real_magic_resist: i32,
     pub level: u8,
@@ -307,9 +266,9 @@ pub struct DamageModifiers {
 
 #[derive(Encode)]
 pub struct OutputCurrentPlayer {
-    pub current_stats: StatsI32,
-    pub base_stats: BasicStatsI32,
-    pub bonus_stats: BasicStatsI32,
+    pub current_stats: Stats<i32>,
+    pub base_stats: BasicStats<i32>,
+    pub bonus_stats: BasicStats<i32>,
     pub level: u8,
     pub adaptative_type: AdaptativeType,
     pub champion_id: ChampionId,
@@ -318,8 +277,8 @@ pub struct OutputCurrentPlayer {
 #[derive(Encode)]
 pub struct MonsterDamage {
     pub attacks: Attacks,
-    pub abilities: SmallVec<[RangeDamageI32; L_ABLT]>,
-    pub items: SmallVec<[RangeDamageI32; L_ITEM]>,
+    pub abilities: SmallVec<[RangeDamage; L_ABLT]>,
+    pub items: SmallVec<[RangeDamage; L_ITEM]>,
 }
 
 #[derive(Encode)]
@@ -333,16 +292,44 @@ pub struct OutputGame {
     pub runes_meta: SmallVec<[TypeMetadata<RuneId>; L_RUNE]>,
 }
 
-macro_rules! transmute_from {
-    ($type1:ty, $type2:ty) => {
-        impl From<$type1> for $type2 {
-            fn from(value: $type1) -> Self {
-                unsafe { std::mem::transmute(value) }
+macro_rules! impl_cast_from {
+    ($stru:ident, $($fields:ident),*) => {
+        impl From<$stru<f32>> for $stru<i32> {
+            fn from(value: $stru<f32>) -> Self {
+                $stru {
+                    $($fields: value.$fields as i32),*
+                }
+            }
+        }
+
+        impl From<$stru<i32>> for $stru<f32> {
+            fn from(value: $stru<i32>) -> Self {
+                $stru {
+                    $($fields: value.$fields as f32),*
+                }
             }
         }
     };
 }
 
-transmute_from!(StatsF32, StatsI32);
-transmute_from!(BasicStatsF32, BasicStatsI32);
-transmute_from!(SimpleStatsF32, SimpleStatsI32);
+impl_cast_from!(
+    Stats,
+    ability_power,
+    armor,
+    armor_penetration_flat,
+    armor_penetration_percent,
+    attack_damage,
+    attack_range,
+    attack_speed,
+    crit_chance,
+    crit_damage,
+    current_health,
+    magic_penetration_flat,
+    magic_penetration_percent,
+    magic_resist,
+    health,
+    mana,
+    current_mana
+);
+impl_cast_from!(SimpleStats, health, armor, magic_resist);
+impl_cast_from!(BasicStats, armor, health, attack_damage, magic_resist, mana);

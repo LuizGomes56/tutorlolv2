@@ -1,10 +1,8 @@
 use bincode::{Decode, Encode};
 use tutorlolv2_gen::{AdaptativeType, SIMULATED_ITEMS};
 
-pub mod arena;
 pub mod riot;
 pub mod stack;
-pub mod stdalloc;
 
 #[derive(Encode, Decode, Clone, Copy)]
 pub struct AbilityLevels {
@@ -72,7 +70,6 @@ pub struct ResistValue {
 pub struct RiotFormulas;
 
 impl RiotFormulas {
-    #[inline]
     pub const fn stat_growth(base: f32, growth_per_level: f32, level: u8) -> f32 {
         base + growth_per_level * (level as f32 - 1.0) * (0.7025 + 0.0175 * (level as f32 - 1.0))
     }
@@ -85,7 +82,6 @@ impl RiotFormulas {
             / 10f32.powi((from_vec.len() << 1) as i32)
     }
 
-    #[inline]
     pub const fn real_resist(
         percent_pen: f32,
         flat_pen: f32,
@@ -93,7 +89,7 @@ impl RiotFormulas {
         accept_negatives: bool,
     ) -> ResistValue {
         let real_val = (percent_pen * resist - flat_pen).max(if accept_negatives {
-            -f32::NEG_INFINITY
+            f32::NEG_INFINITY
         } else {
             0.0
         });
@@ -104,7 +100,6 @@ impl RiotFormulas {
         }
     }
 
-    #[inline]
     pub const fn adaptative_type(attack_damage: f32, ability_power: f32) -> AdaptativeType {
         if 0.35 * attack_damage >= 0.2 * ability_power {
             AdaptativeType::Physical

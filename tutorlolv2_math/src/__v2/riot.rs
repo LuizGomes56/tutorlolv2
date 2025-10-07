@@ -1,5 +1,5 @@
 use crate::__v2::{AbilityLevels, L_ITEM, L_PLYR};
-use bincode::Decode;
+use bincode::{Decode, Encode};
 use serde::{Deserialize, Serialize};
 use smallvec::SmallVec;
 
@@ -30,29 +30,29 @@ impl RiotAbilities {
     }
 }
 
-#[derive(Serialize, Default, Deserialize, Copy, Clone, Decode)]
+#[derive(Encode, Decode, Serialize, Default, Deserialize, Copy, Clone)]
 #[serde(rename_all = "camelCase")]
-pub struct StatsF32 {
-    pub ability_power: f32,
-    pub armor: f32,
+pub struct Stats<T> {
+    pub ability_power: T,
+    pub armor: T,
     #[serde(rename = "physicalLethality")]
-    pub armor_penetration_flat: f32,
-    pub armor_penetration_percent: f32,
-    pub attack_damage: f32,
-    pub attack_range: f32,
-    pub attack_speed: f32,
-    pub crit_chance: f32,
-    pub crit_damage: f32,
-    pub current_health: f32,
-    pub magic_penetration_flat: f32,
-    pub magic_penetration_percent: f32,
-    pub magic_resist: f32,
+    pub armor_penetration_flat: T,
+    pub armor_penetration_percent: T,
+    pub attack_damage: T,
+    pub attack_range: T,
+    pub attack_speed: T,
+    pub crit_chance: T,
+    pub crit_damage: T,
+    pub current_health: T,
+    pub magic_penetration_flat: T,
+    pub magic_penetration_percent: T,
+    pub magic_resist: T,
     #[serde(rename = "maxHealth")]
-    pub health: f32,
+    pub health: T,
     #[serde(rename = "resourceMax")]
-    pub mana: f32,
+    pub mana: T,
     #[serde(rename = "resourceValue")]
-    pub current_mana: f32,
+    pub current_mana: T,
 }
 
 #[derive(Serialize, Default, Deserialize)]
@@ -71,7 +71,7 @@ pub struct RiotFullRunes {
 #[serde(rename_all = "camelCase")]
 pub struct RiotActivePlayer<'a> {
     pub abilities: RiotAbilities,
-    pub champion_stats: StatsF32,
+    pub champion_stats: Stats<f32>,
     pub full_runes: RiotFullRunes,
     pub level: u8,
     #[serde(borrow)]
