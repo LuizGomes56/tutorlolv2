@@ -96,10 +96,10 @@ pub fn has_item<const N: usize>(origin: &SetU32, check_for: [ItemId; N]) -> bool
 }
 
 pub fn get_simulated_stats(
-    stats: &RiotChampionStats,
+    stats: &StatsF32,
     dragons: Dragons,
-) -> [RiotChampionStats; L_SIML] {
-    let mut result = MaybeUninit::<[RiotChampionStats; L_SIML]>::uninit();
+) -> [StatsF32; L_SIML] {
+    let mut result = MaybeUninit::<[StatsF32; L_SIML]>::uninit();
     let result_ptr = result.as_mut_ptr();
 
     for (i, item_offset) in SIMULATED_ITEMS_ENUM.into_iter().enumerate() {

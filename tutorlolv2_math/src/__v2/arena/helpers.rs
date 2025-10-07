@@ -18,11 +18,8 @@ pub fn get_base_stats(stats: &CachedChampionStatsMap, level: u8) -> f32 {
 }
 
 #[inline]
-pub fn get_simulated_stats(
-    stats: &RiotChampionStats,
-    dragons: Dragons,
-) -> [RiotChampionStats; L_SIML] {
-    let mut result = MaybeUninit::<[RiotChampionStats; L_SIML]>::uninit();
+pub fn get_simulated_stats(stats: &StatsF32, dragons: Dragons) -> [StatsF32; L_SIML] {
+    let mut result = MaybeUninit::<[StatsF32; L_SIML]>::uninit();
     let result_ptr = result.as_mut_ptr();
 
     for (i, item_offset) in SIMULATED_ITEMS_ENUM.into_iter().enumerate() {

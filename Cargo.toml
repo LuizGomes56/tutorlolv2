@@ -14,24 +14,9 @@ strip = true
 debug = false
 incremental = false
 
-[profile.bench]
-opt-level = 3
-lto = true
-codegen-units = 1
-debug = false
-
-[[bench]]
-name = "realtime_bench"
-harness = false
-
 [dev-dependencies]
 tutorlolv2_exports = { path = "tutorlolv2_exports" }
 tutorlolv2_build = { path = "tutorlolv2_build" }
-criterion = { version = "0.7", features = ["html_reports"] }
-serde_json = "1"
-bincode = "2"
-tutorlolv2_math = { path = "tutorlolv2_math" }
-bumpalo = "3.19.0"
 
 [dependencies]
 tutorlolv2_math = { path = "tutorlolv2_math" }

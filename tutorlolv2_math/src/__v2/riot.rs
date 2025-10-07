@@ -32,7 +32,7 @@ impl RiotAbilities {
 
 #[derive(Serialize, Default, Deserialize, Copy, Clone, Decode)]
 #[serde(rename_all = "camelCase")]
-pub struct RiotChampionStats {
+pub struct StatsF32 {
     pub ability_power: f32,
     pub armor: f32,
     #[serde(rename = "physicalLethality")]
@@ -71,7 +71,7 @@ pub struct RiotFullRunes {
 #[serde(rename_all = "camelCase")]
 pub struct RiotActivePlayer<'a> {
     pub abilities: RiotAbilities,
-    pub champion_stats: RiotChampionStats,
+    pub champion_stats: StatsF32,
     pub full_runes: RiotFullRunes,
     pub level: u8,
     #[serde(borrow)]

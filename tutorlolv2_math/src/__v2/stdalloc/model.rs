@@ -1,4 +1,4 @@
-use crate::__v2::{AbilityLevels, L_SIML, ResistValue, riot::RiotChampionStats};
+use crate::__v2::{AbilityLevels, L_SIML, ResistValue, riot::StatsF32};
 use bincode::{Decode, Encode};
 use tinyset::SetU32;
 use tutorlolv2_gen::{
@@ -52,8 +52,8 @@ pub struct StatsI32 {
     pub current_mana: i32,
 }
 
-impl From<&RiotChampionStats> for StatsI32 {
-    fn from(value: &RiotChampionStats) -> Self {
+impl From<&StatsF32> for StatsI32 {
+    fn from(value: &StatsF32) -> Self {
         Self {
             ability_power: value.ability_power as i32,
             armor: value.armor as i32,
@@ -211,7 +211,7 @@ pub struct EnemyState {
 }
 
 pub struct SelfState {
-    pub current_stats: RiotChampionStats,
+    pub current_stats: StatsF32,
     pub bonus_stats: BasicStatsF32,
     pub base_stats: BasicStatsF32,
     pub level: u8,
@@ -380,7 +380,7 @@ pub struct OutputGame {
     pub tower_damages: [i32; 6],
 }
 
-impl From<StatsI32> for RiotChampionStats {
+impl From<StatsI32> for StatsF32 {
     fn from(value: StatsI32) -> Self {
         Self {
             ability_power: value.ability_power as f32,

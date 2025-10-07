@@ -1,6 +1,6 @@
 use crate::__v2::{
     AbilityLevels, GameMap, L_ABLT, L_CENM, L_ITEM, L_MSTR, L_PLYR, L_RUNE, L_SIML, L_STCK, L_TEAM,
-    L_TWRD, ResistValue, riot::RiotChampionStats,
+    L_TWRD, ResistValue, riot::StatsF32,
 };
 use bincode::{Decode, Encode};
 use smallvec::SmallVec;
@@ -16,9 +16,9 @@ pub enum Team {
     Red,
 }
 
-impl Team {
-    pub fn from_raw(raw: &str) -> Self {
-        match raw {
+impl From<&str> for Team {
+    fn from(value: &str) -> Self {
+        match value {
             "ORDER" => Team::Blue,
             _ => Team::Red,
         }
@@ -36,7 +36,7 @@ pub struct RangeDamageI32 {
     pub maximum_damage: i32,
 }
 
-#[derive(Encode, Decode)]
+#[derive(Encode)]
 pub struct StatsI32 {
     pub ability_power: i32,
     pub armor: i32,
@@ -56,29 +56,6 @@ pub struct StatsI32 {
     pub current_mana: i32,
 }
 
-impl From<&RiotChampionStats> for StatsI32 {
-    fn from(value: &RiotChampionStats) -> Self {
-        Self {
-            ability_power: value.ability_power as i32,
-            armor: value.armor as i32,
-            armor_penetration_flat: value.armor_penetration_flat as i32,
-            armor_penetration_percent: value.armor_penetration_percent as i32,
-            attack_damage: value.attack_damage as i32,
-            attack_range: value.attack_range as i32,
-            attack_speed: value.attack_speed as i32,
-            crit_chance: value.crit_chance as i32,
-            crit_damage: value.crit_damage as i32,
-            current_health: value.current_health as i32,
-            magic_penetration_flat: value.magic_penetration_flat as i32,
-            magic_penetration_percent: value.magic_penetration_percent as i32,
-            magic_resist: value.magic_resist as i32,
-            health: value.health as i32,
-            mana: value.mana as i32,
-            current_mana: value.current_mana as i32,
-        }
-    }
-}
-
 #[derive(Clone, Copy)]
 pub struct BasicStatsF32 {
     pub armor: f32,
@@ -86,18 +63,6 @@ pub struct BasicStatsF32 {
     pub attack_damage: f32,
     pub magic_resist: f32,
     pub mana: f32,
-}
-
-impl From<BasicStatsF32> for BasicStatsI32 {
-    fn from(value: BasicStatsF32) -> Self {
-        Self {
-            armor: value.armor as i32,
-            health: value.health as i32,
-            attack_damage: value.attack_damage as i32,
-            magic_resist: value.magic_resist as i32,
-            mana: value.mana as i32,
-        }
-    }
 }
 
 #[derive(Encode)]
@@ -217,7 +182,7 @@ pub struct EnemyState {
 
 #[derive(Copy, Clone)]
 pub struct SelfState {
-    pub current_stats: RiotChampionStats,
+    pub current_stats: StatsF32,
     pub bonus_stats: BasicStatsF32,
     pub base_stats: BasicStatsF32,
     pub level: u8,
@@ -247,17 +212,7 @@ pub struct DamageEvalData {
     pub runes: DamageKind<L_RUNE, RuneId>,
 }
 
-impl From<SimpleStatsF32> for SimpleStatsI32 {
-    fn from(value: SimpleStatsF32) -> Self {
-        Self {
-            armor: value.armor as i32,
-            health: value.health as i32,
-            magic_resist: value.magic_resist as i32,
-        }
-    }
-}
-
-#[derive(Encode, Decode)]
+#[derive(Encode)]
 pub struct SimpleStatsI32 {
     pub armor: i32,
     pub health: i32,
@@ -316,7 +271,7 @@ pub struct InputGame {
 pub struct InputActivePlayer {
     pub runes: SmallVec<[RuneId; L_RUNE]>,
     pub abilities: AbilityLevels,
-    pub data: InputMinData<RiotChampionStats>,
+    pub data: InputMinData<StatsF32>,
 }
 
 #[derive(Decode)]
@@ -378,25 +333,16 @@ pub struct OutputGame {
     pub runes_meta: SmallVec<[TypeMetadata<RuneId>; L_RUNE]>,
 }
 
-impl From<StatsI32> for RiotChampionStats {
-    fn from(value: StatsI32) -> Self {
-        Self {
-            ability_power: value.ability_power as f32,
-            armor: value.armor as f32,
-            armor_penetration_flat: value.armor_penetration_flat as f32,
-            armor_penetration_percent: value.armor_penetration_percent as f32,
-            attack_damage: value.attack_damage as f32,
-            attack_range: value.attack_range as f32,
-            attack_speed: value.attack_speed as f32,
-            crit_chance: value.crit_chance as f32,
-            crit_damage: value.crit_damage as f32,
-            current_health: value.current_health as f32,
-            magic_penetration_flat: value.magic_penetration_flat as f32,
-            magic_penetration_percent: value.magic_penetration_percent as f32,
-            magic_resist: value.magic_resist as f32,
-            health: value.health as f32,
-            mana: value.mana as f32,
-            current_mana: value.current_mana as f32,
+macro_rules! transmute_from {
+    ($type1:ty, $type2:ty) => {
+        impl From<$type1> for $type2 {
+            fn from(value: $type1) -> Self {
+                unsafe { std::mem::transmute(value) }
+            }
         }
-    }
+    };
 }
+
+transmute_from!(StatsF32, StatsI32);
+transmute_from!(BasicStatsF32, BasicStatsI32);
+transmute_from!(SimpleStatsF32, SimpleStatsI32);

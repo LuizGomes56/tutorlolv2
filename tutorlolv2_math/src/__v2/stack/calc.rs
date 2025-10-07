@@ -19,7 +19,7 @@ const MONSTER_RESISTS: [(f32, f32); L_MSTR] = [
 
 pub struct AssignExceptionData<'a> {
     pub ability_levels: AbilityLevels,
-    pub current_player_stats: &'a mut RiotChampionStats,
+    pub current_player_stats: &'a mut StatsF32,
     pub current_player_bonus_stats: &'a mut BasicStatsF32,
     pub enemy_players: &'a mut [InputMinData<SimpleStatsF32>],
     pub attack_type: AttackType,
@@ -27,8 +27,8 @@ pub struct AssignExceptionData<'a> {
     pub level: u8,
 }
 
-fn infer_champion_stats(items: &[ItemId], dragons: Dragons) -> RiotChampionStats {
-    let mut stats = RiotChampionStats::default();
+fn infer_champion_stats(items: &[ItemId], dragons: Dragons) -> StatsF32 {
+    let mut stats = StatsF32::default();
 
     let mut armor_penetration = SmallVec::<[f32; 5]>::new();
     let mut magic_penetration = SmallVec::<[f32; 5]>::new();
@@ -502,7 +502,7 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
         current_player: OutputCurrentPlayer {
             base_stats: current_player_base_stats.into(),
             bonus_stats: current_player_bonus_stats.into(),
-            current_stats: (&champion_raw_stats).into(),
+            current_stats: champion_stats.into(),
             level,
             adaptative_type,
             champion_id: current_player_champion_id,

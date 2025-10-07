@@ -132,7 +132,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
         runes: get_runes_data(&current_player_runes, *level),
     };
 
-    let current_player_team = Team::from_raw(current_player.team);
+    let current_player_team = Team::from(current_player.team);
     let shred = ResistShred {
         armor_penetration_flat: champion_stats.armor_penetration_flat,
         armor_penetration_percent: champion_stats.armor_penetration_percent,
@@ -172,7 +172,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
             let e_cache = unsafe { INTERNAL_CHAMPIONS.get_unchecked(e_champion_id as usize) };
             let e_position = Position::from_raw(e_raw_position)
                 .unwrap_or(unsafe { *e_cache.positions.get_unchecked(0) });
-            let team = Team::from_raw(e_team);
+            let team = Team::from(*e_team);
 
             scoreboard.push(Scoreboard {
                 riot_id,
@@ -206,11 +206,11 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
             let eval_ctx = get_eval_ctx(&self_state, &full_state);
             let modifiers = {
                 let map_modifier = match game_map {
-                    GameMap::ARAM => {
+                    GameMap::Aram => {
                         current_player_cache.stats.aram_damage_dealt
                             * e_cache.stats.aram_damage_taken
                     }
-                    GameMap::URF => {
+                    GameMap::Urf => {
                         current_player_cache.stats.urf_damage_dealt * e_cache.stats.urf_damage_taken
                     }
                     _ => 1.0,
@@ -275,7 +275,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
             riot_id,
             base_stats: current_player_base_stats.into(),
             bonus_stats: current_player_bonus_stats.into(),
-            current_stats: champion_stats.into(),
+            current_stats: (*champion_stats).into(),
             level: *level,
             team: current_player_team,
             adaptative_type,
