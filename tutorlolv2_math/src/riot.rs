@@ -1,4 +1,5 @@
-use super::{SIZE_ITEMS_EXPECTED, base::AbilityLevels};
+use crate::*;
+use bincode::{Decode, Encode};
 use serde::{Deserialize, Serialize};
 use smallvec::SmallVec;
 
@@ -18,6 +19,7 @@ pub struct RiotAbilities {
 }
 
 impl RiotAbilities {
+    #[inline(always)]
     pub fn get_levelings(&self) -> AbilityLevels {
         AbilityLevels {
             q: self.q.ability_level,
@@ -28,25 +30,29 @@ impl RiotAbilities {
     }
 }
 
-#[derive(Serialize, Default, Deserialize, Clone)]
+#[derive(Encode, Decode, Serialize, Default, Deserialize, Copy, Clone)]
 #[serde(rename_all = "camelCase")]
-pub struct RiotChampionStats {
-    pub ability_power: f32,
-    pub armor: f32,
-    pub physical_lethality: f32,
-    pub armor_penetration_percent: f32,
-    pub attack_damage: f32,
-    pub attack_range: f32,
-    pub attack_speed: f32,
-    pub crit_chance: f32,
-    pub crit_damage: f32,
-    pub current_health: f32,
-    pub magic_penetration_flat: f32,
-    pub magic_penetration_percent: f32,
-    pub magic_resist: f32,
-    pub max_health: f32,
-    pub resource_max: f32,
-    pub resource_value: f32,
+pub struct Stats<T> {
+    pub ability_power: T,
+    pub armor: T,
+    #[serde(rename = "physicalLethality")]
+    pub armor_penetration_flat: T,
+    pub armor_penetration_percent: T,
+    pub attack_damage: T,
+    pub attack_range: T,
+    pub attack_speed: T,
+    pub crit_chance: T,
+    pub crit_damage: T,
+    pub current_health: T,
+    pub magic_penetration_flat: T,
+    pub magic_penetration_percent: T,
+    pub magic_resist: T,
+    #[serde(rename = "maxHealth")]
+    pub health: T,
+    #[serde(rename = "resourceMax")]
+    pub mana: T,
+    #[serde(rename = "resourceValue")]
+    pub current_mana: T,
 }
 
 #[derive(Serialize, Default, Deserialize)]
@@ -65,7 +71,7 @@ pub struct RiotFullRunes {
 #[serde(rename_all = "camelCase")]
 pub struct RiotActivePlayer<'a> {
     pub abilities: RiotAbilities,
-    pub champion_stats: RiotChampionStats,
+    pub champion_stats: Stats<f32>,
     pub full_runes: RiotFullRunes,
     pub level: u8,
     #[serde(borrow)]
@@ -92,7 +98,7 @@ pub struct RiotItems {
 pub struct RiotAllPlayers<'a> {
     #[serde(borrow)]
     pub champion_name: &'a str,
-    pub items: SmallVec<[RiotItems; SIZE_ITEMS_EXPECTED]>,
+    pub items: SmallVec<[RiotItems; L_ITEM]>,
     pub level: u8,
     #[serde(borrow)]
     pub position: &'a str,
@@ -129,7 +135,7 @@ pub struct RiotRealtimeEvents<'a> {
 pub struct RiotRealtime<'a> {
     #[serde(borrow)]
     pub active_player: RiotActivePlayer<'a>,
-    pub all_players: SmallVec<[RiotAllPlayers<'a>; 10]>,
+    pub all_players: SmallVec<[RiotAllPlayers<'a>; L_PLYR]>,
     #[serde(borrow)]
     pub events: RiotRealtimeEvents<'a>,
     pub game_data: RiotRealtimeGameData,

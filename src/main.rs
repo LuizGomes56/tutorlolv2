@@ -23,8 +23,6 @@ pub struct AppState {
 fn api_scope() -> impl HttpServiceFactory + 'static {
     let api_routes = scope("/api").service(
         scope("/games")
-            .service(realtime_v2_handler)
-            .service(calculator_v2_handler)
             .service(realtime_handler)
             .service(calculator_handler)
             .service(create_game_handler)

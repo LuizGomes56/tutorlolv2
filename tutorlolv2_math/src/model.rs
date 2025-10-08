@@ -1,7 +1,4 @@
-use crate::__v2::{
-    AbilityLevels, GameMap, L_ABLT, L_CENM, L_ITEM, L_MSTR, L_PLYR, L_RUNE, L_SIML, L_STCK, L_TEAM,
-    L_TWRD, ResistValue, riot::Stats,
-};
+use crate::*;
 use bincode::{Decode, Encode};
 use smallvec::SmallVec;
 use tinyset::SetU32;
@@ -86,12 +83,6 @@ pub struct DamageKind<const N: usize, T> {
 }
 
 #[derive(Encode)]
-pub struct ConstItemMetadata {
-    pub kind: ItemId,
-    pub meta: Meta,
-}
-
-#[derive(Encode)]
 pub struct Realtime<'a> {
     pub current_player: CurrentPlayer<'a>,
     pub enemies: SmallVec<[Enemy<'a>; L_TEAM]>,
@@ -99,7 +90,7 @@ pub struct Realtime<'a> {
     pub abilities_meta: SmallVec<[TypeMetadata<AbilityLike>; L_ABLT]>,
     pub items_meta: SmallVec<[TypeMetadata<ItemId>; L_ITEM]>,
     pub runes_meta: SmallVec<[TypeMetadata<RuneId>; L_RUNE]>,
-    pub siml_meta: [ConstItemMetadata; L_SIML],
+    pub siml_meta: [TypeMetadata<ItemId>; L_SIML],
     pub game_time: u32,
     pub ability_levels: AbilityLevels,
 }
