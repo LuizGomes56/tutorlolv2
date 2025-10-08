@@ -1,5 +1,5 @@
 use super::{helpers::*, model::*};
-use crate::__v2::{GameMap, L_SIML, L_TEAM, RiotFormulas, riot::*};
+use crate::{GameMap, L_SIML, L_TEAM, RiotFormulas, riot::*};
 use smallvec::SmallVec;
 use std::mem::MaybeUninit;
 use tinyset::SetU32;
@@ -12,15 +12,16 @@ const LAST_STAND: u32 = RuneId::LastStand.to_riot_id_const();
 const COUP_DE_GRACE: u32 = RuneId::CoupdeGrace.to_riot_id_const();
 const CUT_DOWN: u32 = RuneId::CutDown.to_riot_id_const();
 const AXIOM_ARCANIST: u32 = RuneId::AxiomArcanist.to_riot_id_const();
-const SIMULATED_ITEMS_METADATA: [ConstItemMetadata; L_SIML] = {
-    let mut siml_items = MaybeUninit::<[ConstItemMetadata; L_SIML]>::uninit();
+const SIMULATED_ITEMS_METADATA: [TypeMetadata<ItemId>; L_SIML] = {
+    let mut siml_items = MaybeUninit::<[TypeMetadata<ItemId>; L_SIML]>::uninit();
     let siml_items_ptr = siml_items.as_mut_ptr();
     let mut i = 0;
     while i < L_SIML {
         let item_id = unsafe { core::mem::transmute::<u16, ItemId>(SIMULATED_ITEMS_ENUM[i]) };
         let item_cache = INTERNAL_ITEMS[item_id as usize];
         unsafe {
-            core::ptr::addr_of_mut!((*siml_items_ptr)[i]).write(ConstItemMetadata {
+            core::ptr::addr_of_mut!((*siml_items_ptr)[i]).write(TypeMetadata::<ItemId> {
+                level: 0,
                 kind: item_id,
                 meta: Meta::from_bytes(item_cache.damage_type, item_cache.attributes),
             })

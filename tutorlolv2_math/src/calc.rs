@@ -1,5 +1,5 @@
 use super::{helpers::*, model::*};
-use crate::__v2::{AbilityLevels, L_CENM, L_MSTR, L_STCK, L_TWRD, RiotFormulas, riot::*};
+use crate::{AbilityLevels, L_CENM, L_MSTR, L_STCK, L_TWRD, RiotFormulas, riot::*};
 use smallvec::SmallVec;
 use std::mem::MaybeUninit;
 use tinyset::SetU32;

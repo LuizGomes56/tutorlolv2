@@ -7,10 +7,7 @@ use actix_web::{
 };
 use bincode::{Encode, config::Configuration};
 use rand::random_range;
-use tutorlolv2_math::{
-    math::{calculator::calculator, realtime::realtime},
-    model::Sizer,
-};
+use tutorlolv2::{calculator, realtime};
 use uuid::Uuid;
 
 type Response = Result<HttpResponse, Box<dyn std::error::Error>>;
@@ -18,55 +15,41 @@ type Response = Result<HttpResponse, Box<dyn std::error::Error>>;
 const BINCODE_CONFIG: Configuration = bincode::config::standard();
 const OCTET_STREAM: (HeaderName, &str) = (crate::header::CONTENT_TYPE, "application/octet-stream");
 
-fn respond(data: impl Sizer + Encode) -> Response {
-    unsafe {
-        let size = data.size();
-        let mut buf = Box::<[u8]>::new_uninit_slice(size);
-        let raw = std::slice::from_raw_parts_mut(buf.as_mut_ptr() as *mut u8, size);
-        bincode::encode_into_slice(&data, raw, BINCODE_CONFIG)?;
-        let init = buf.assume_init();
-        Ok(HttpResponse::Ok()
-            .insert_header(OCTET_STREAM)
-            .body(Bytes::from(init)))
-    }
-}
+// fn respond(data: impl Sizer + Encode) -> Response {
+//     unsafe {
+//         let size = data.size();
+//         let mut buf = Box::<[u8]>::new_uninit_slice(size);
+//         let raw = std::slice::from_raw_parts_mut(buf.as_mut_ptr() as *mut u8, size);
+//         bincode::encode_into_slice(&data, raw, BINCODE_CONFIG)?;
+//         let init = buf.assume_init();
+//         Ok(HttpResponse::Ok()
+//             .insert_header(OCTET_STREAM)
+//             .body(Bytes::from(init)))
+//     }
+// }
 
-fn respond_v2(data: impl Encode) -> Response {
+fn respond(data: impl Encode) -> Response {
     let data = bincode::encode_to_vec(&data, BINCODE_CONFIG)?;
     Ok(HttpResponse::Ok().insert_header(OCTET_STREAM).body(data))
 }
 
-#[post("/v2/realtime")]
-pub async fn realtime_v2_handler(body: Bytes) -> Response {
-    let game_data = serde_json::from_slice(&body)?;
-    let data = tutorlolv2_math::__v2::stack::rt::realtime(&game_data).ok_or("Err")?;
-    respond_v2(data)
-}
-
-#[post("/v2/calculator")]
-pub async fn calculator_v2_handler(body: Bytes) -> Response {
-    let (decoded, _) = bincode::decode_from_slice(&body, BINCODE_CONFIG)?;
-    let data = tutorlolv2_math::__v2::stack::calc::calculator(decoded).ok_or("Err")?;
-    respond_v2(data)
-}
-
-#[post("/realtime")]
+#[post("realtime")]
 pub async fn realtime_handler(body: Bytes) -> Response {
     let game_data = serde_json::from_slice(&body)?;
-    let data = realtime(&game_data)?;
+    let data = realtime(&game_data).ok_or("Err")?;
     respond(data)
 }
 
-#[post("/calculator")]
+#[post("calculator")]
 pub async fn calculator_handler(body: Bytes) -> Response {
     let (decoded, _) = bincode::decode_from_slice(&body, BINCODE_CONFIG)?;
-    let data = calculator(decoded)?;
+    let data = calculator(decoded).ok_or("Err")?;
     respond(data)
 }
 
 const CODE_LENGTH: usize = 6;
 const BODY_LENGTH: usize = 16 + CODE_LENGTH;
-static CHARS: &[u8; 62] = b"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+static CODE_CHARS: &[u8; 62] = b"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
 
 #[get("/create")]
 pub async fn create_game_handler(state: Data<AppState>) -> Response {
@@ -74,7 +57,7 @@ pub async fn create_game_handler(state: Data<AppState>) -> Response {
 
     unsafe {
         for i in 0..CODE_LENGTH {
-            *game_code_bytes.get_unchecked_mut(i) = CHARS[random_range(0..CHARS.len())];
+            *game_code_bytes.get_unchecked_mut(i) = CODE_CHARS[random_range(0..CODE_CHARS.len())];
         }
 
         let game_code = std::str::from_utf8_unchecked(&game_code_bytes);
@@ -115,6 +98,6 @@ pub async fn get_by_code_handler(state: Data<AppState>, body: actix_web::web::By
     .await?;
 
     let riot_realtime = serde_json::from_str(&data.0)?;
-    let realtime_data = realtime(&riot_realtime)?;
+    let realtime_data = realtime(&riot_realtime).ok_or("Err")?;
     respond(realtime_data)
 }
