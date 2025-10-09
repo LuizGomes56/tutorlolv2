@@ -1,7 +1,7 @@
-use tutorlolv2_gen::Attrs;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::collections::HashMap;
+use tutorlolv2_gen::{Attrs, DamageType};
 
 #[derive(Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -96,7 +96,7 @@ pub struct Item {
     pub gold: u32,
     pub tier: u8,
     pub prettified_stats: HashMap<String, Value>,
-    pub damage_type: Option<String>,
+    pub damage_type: DamageType,
     pub stats: PartialStats,
     pub builds_from: Vec<u32>,
     pub ranged: Option<DamageObject>,

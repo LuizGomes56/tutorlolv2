@@ -4,6 +4,11 @@ use tutorlolv2_types::*;
 
 #[derive(Default)]
 pub struct EvalContext {
+    pub q_level: u8,
+    pub w_level: u8,
+    pub e_level: u8,
+    pub r_level: u8,
+    pub level: f32,
     pub chogath_stacks: f32,
     pub veigar_stacks: f32,
     pub nasus_stacks: f32,
@@ -13,7 +18,6 @@ pub struct EvalContext {
     pub kindred_stacks: f32,
     pub belveth_stacks: f32,
     pub adaptative_damage: f32,
-    pub level: f32,
     pub physical_multiplier: f32,
     pub magic_multiplier: f32,
     pub steelcaps_effect: f32,
@@ -55,7 +59,7 @@ pub struct EvalContext {
     pub ad: f32,
 }
 
-#[derive(Default, Copy, Clone, Encode, Decode)]
+#[derive(Default, Copy, Serialize, Deserialize, Clone, Encode, Decode)]
 pub enum DamageType {
     Physical,
     Magic,
@@ -64,6 +68,19 @@ pub enum DamageType {
     Adaptative,
     #[default]
     Unknown,
+}
+
+impl<T: AsRef<str>> From<T> for DamageType {
+    fn from(s: T) -> Self {
+        match s.as_ref() {
+            "PHYSICAL_DAMAGE" => DamageType::Physical,
+            "MAGIC_DAMAGE" => DamageType::Magic,
+            "MIXED_DAMAGE" => DamageType::Mixed,
+            "TRUE_DAMAGE" => DamageType::True,
+            "ADAPTATIVE_DAMAGE" => DamageType::Adaptative,
+            _ => DamageType::Unknown,
+        }
+    }
 }
 
 impl ToString for DamageType {
@@ -92,25 +109,58 @@ pub enum Attrs {
     AreaOnhitMax,
 }
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Serialize, Deserialize)]
 pub enum AttackType {
     Melee,
     Ranged,
 }
 
-#[derive(Encode, Copy, Clone)]
+impl<T: AsRef<str>> From<T> for AttackType {
+    fn from(s: T) -> Self {
+        match s.as_ref() {
+            "MELEE" => AttackType::Melee,
+            "RANGED" => AttackType::Ranged,
+            _ => AttackType::Melee,
+        }
+    }
+}
+
+impl<T: AsRef<str>> From<T> for AdaptativeType {
+    fn from(s: T) -> Self {
+        match s.as_ref() {
+            "PHYSICAL_DAMAGE" => AdaptativeType::Physical,
+            "MAGIC_DAMAGE" => AdaptativeType::Magic,
+            _ => AdaptativeType::Physical,
+        }
+    }
+}
+
+#[derive(Encode, Copy, Clone, Serialize, Deserialize)]
 pub enum AdaptativeType {
     Physical,
     Magic,
 }
 
-#[derive(Copy, Clone, Encode)]
+#[derive(Copy, Clone, Encode, Serialize, Deserialize)]
 pub enum Position {
     Top,
     Jungle,
     Middle,
     Bottom,
     Support,
+}
+
+impl<T: AsRef<str>> From<T> for Position {
+    fn from(s: T) -> Self {
+        match s.as_ref() {
+            "TOP" => Position::Top,
+            "JUNGLE" => Position::Jungle,
+            "MIDDLE" => Position::Middle,
+            "BOTTOM" => Position::Bottom,
+            "SUPPORT" => Position::Support,
+            _ => Position::Top,
+        }
+    }
 }
 
 impl Position {

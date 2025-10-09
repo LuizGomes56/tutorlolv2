@@ -52,29 +52,14 @@ pub struct Attacks {
 
 #[derive(Encode)]
 pub struct TypeMetadata<T> {
-    pub level: u8,
     pub kind: T,
-    pub meta: Meta,
-}
-
-#[derive(Encode, Clone, Copy)]
-pub struct Meta(pub u8);
-
-impl Meta {
-    pub const fn from_bytes(damage_type: DamageType, attributes: Attrs) -> Self {
-        Self(((damage_type as u8 & 0b0000_0111) << 5) | attributes as u8 & 0b0001_1111)
-    }
-    pub const fn damage_type(&self) -> DamageType {
-        unsafe { std::mem::transmute((self.0 >> 5) & 0b0000_0111) }
-    }
-    pub const fn attributes(&self) -> Attrs {
-        unsafe { std::mem::transmute(self.0 & 0b0001_1111) }
-    }
+    pub damage_type: DamageType,
+    pub attributes: Attrs,
 }
 
 pub struct DamageClosure {
-    pub minimum_damage: fn(u8, &EvalContext) -> f32,
-    pub maximum_damage: fn(u8, &EvalContext) -> f32,
+    pub minimum_damage: fn(&EvalContext) -> f32,
+    pub maximum_damage: fn(&EvalContext) -> f32,
 }
 
 pub struct DamageKind<const N: usize, T> {
@@ -139,6 +124,7 @@ pub struct EnemyState {
 
 #[derive(Copy, Clone)]
 pub struct SelfState {
+    pub ability_levels: AbilityLevels,
     pub current_stats: Stats<f32>,
     pub bonus_stats: BasicStats<f32>,
     pub base_stats: BasicStats<f32>,

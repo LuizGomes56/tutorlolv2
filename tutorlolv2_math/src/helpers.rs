@@ -25,6 +25,10 @@ pub const LAST_STAND_CLOSURE: fn(f32) -> f32 =
 pub const GET_FIRE_MULTIPLIER: fn(u8) -> f32 = |x| 1.0 + x as f32 * FIRE_DRAGON_MULTIPLIER;
 pub const GET_EARTH_MULTIPLIER: fn(u8) -> f32 = |x| 1.0 + x as f32 * EARTH_DRAGON_MULTIPLIER;
 
+pub const fn _zero(_: &EvalContext) -> f32 {
+    0.0
+}
+
 #[macro_export]
 macro_rules! bonus_stats {
     ($struct:ident::<$t:ty>($current_stats:expr, $base_stats:expr) { $($field:ident),*}) => {
@@ -144,64 +148,49 @@ pub fn get_simulated_stats(stats: &Stats<f32>, dragons: Dragons) -> [Stats<f32>;
 
 pub fn get_abilities_data(
     ability_cache: &'static [(AbilityLike, CachedChampionAbility)],
-    ability_levels: AbilityLevels,
-    level: u8,
 ) -> DamageKind<L_ABLT, AbilityLike> {
     let mut metadata = SmallVec::with_capacity(ability_cache.len());
-    let mut damages = SmallVec::with_capacity(ability_cache.len());
+    let mut closures = SmallVec::with_capacity(ability_cache.len());
     for (key, value) in ability_cache.iter() {
-        let level = match key {
-            AbilityLike::P(_) => level,
-            AbilityLike::Q(_) => ability_levels.q,
-            AbilityLike::W(_) => ability_levels.w,
-            AbilityLike::E(_) => ability_levels.e,
-            AbilityLike::R(_) => ability_levels.r,
-        };
-        damages.push(DamageClosure {
-            minimum_damage: value.minimum_damage,
-            maximum_damage: value.maximum_damage,
+        closures.push(DamageClosure {
+            minimum_damage: _zero,
+            maximum_damage: _zero,
+            // minimum_damage: value.minimum_damage,
+            // maximum_damage: value.maximum_damage,
         });
         metadata.push(TypeMetadata {
-            level,
             kind: *key,
-            meta: Meta::from_bytes(value.damage_type, value.attributes),
+            damage_type: value.damage_type,
+            attributes: value.attributes,
         });
     }
-    DamageKind {
-        metadata,
-        closures: damages,
-    }
+    DamageKind { metadata, closures }
 }
 
-pub fn get_runes_data(runes: &SetU32, level: u8) -> DamageKind<L_RUNE, RuneId> {
+pub fn get_runes_data(runes: &SetU32) -> DamageKind<L_RUNE, RuneId> {
     let mut metadata = SmallVec::with_capacity(runes.len());
-    let mut damages = SmallVec::with_capacity(runes.len());
+    let mut closures = SmallVec::with_capacity(runes.len());
     for rune_number in runes.iter() {
         let rune_id = unsafe { std::mem::transmute::<u8, RuneId>(rune_number as u8) };
         let rune = unsafe { INTERNAL_RUNES.get_unchecked(rune_number as usize) };
-        damages.push(DamageClosure {
-            minimum_damage: rune.ranged,
-            maximum_damage: zero,
+        closures.push(DamageClosure {
+            minimum_damage: _zero,
+            maximum_damage: _zero,
+            // minimum_damage: rune.ranged,
+            // maximum_damage: zero,
         });
         metadata.push(TypeMetadata {
-            level,
             kind: rune_id,
-            meta: Meta::from_bytes(rune.damage_type, Attrs::None),
+            damage_type: rune.damage_type,
+            attributes: Attrs::None,
         });
     }
-    DamageKind {
-        metadata,
-        closures: damages,
-    }
+    DamageKind { metadata, closures }
 }
 
-pub fn get_items_data(
-    items: &SetU32,
-    attack_type: AttackType,
-    level: u8,
-) -> DamageKind<L_ITEM, ItemId> {
+pub fn get_items_data(items: &SetU32, attack_type: AttackType) -> DamageKind<L_ITEM, ItemId> {
     let mut metadata = SmallVec::with_capacity(items.len());
-    let mut damages = SmallVec::with_capacity(items.len());
+    let mut closures = SmallVec::with_capacity(items.len());
     for item_number in items.iter() {
         let item_id = unsafe { std::mem::transmute::<u16, ItemId>(item_number as u16) };
         let item = unsafe { INTERNAL_ITEMS.get_unchecked(item_number as usize) };
@@ -209,20 +198,19 @@ pub fn get_items_data(
             AttackType::Ranged => &item.ranged,
             AttackType::Melee => &item.melee,
         };
-        damages.push(DamageClosure {
-            minimum_damage: item_damage.minimum_damage,
-            maximum_damage: item_damage.maximum_damage,
+        closures.push(DamageClosure {
+            minimum_damage: _zero,
+            maximum_damage: _zero,
+            // minimum_damage: item_damage.minimum_damage,
+            // maximum_damage: item_damage.maximum_damage,
         });
         metadata.push(TypeMetadata {
-            level,
             kind: item_id,
-            meta: Meta::from_bytes(item.damage_type, item.attributes),
+            damage_type: item.damage_type,
+            attributes: item.attributes,
         });
     }
-    DamageKind {
-        metadata,
-        closures: damages,
-    }
+    DamageKind { metadata, closures }
 }
 
 pub fn runes_slice_to_set_u32(input: &[RuneId]) -> SetU32 {
@@ -407,6 +395,11 @@ pub const fn get_damage_modifiers(
 
 pub const fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> EvalContext {
     EvalContext {
+        q_level: self_state.ability_levels.q,
+        w_level: self_state.ability_levels.w,
+        e_level: self_state.ability_levels.e,
+        r_level: self_state.ability_levels.r,
+        level: self_state.level as f32,
         chogath_stacks: 1.0,
         veigar_stacks: 1.0,
         nasus_stacks: 1.0,
@@ -422,7 +415,6 @@ pub const fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> E
             AdaptativeType::Physical => e_state.armor_values.modifier,
             AdaptativeType::Magic => e_state.magic_values.modifier,
         },
-        level: self_state.level as f32,
         physical_multiplier: e_state.armor_values.modifier,
         magic_multiplier: e_state.magic_values.modifier,
         // #![manual_impl]
@@ -480,8 +472,8 @@ pub fn eval_damage<const N: usize, T>(
     for i in 0..N {
         let closure = unsafe { damage_kind.closures.get_unchecked(i) };
         let metadata = unsafe { damage_kind.metadata.get_unchecked(i) };
-        let damage_type = metadata.meta.damage_type();
-        let attributes = metadata.meta.attributes();
+        let damage_type = metadata.damage_type;
+        let attributes = metadata.attributes;
         let modifier = match damage_type {
             DamageType::Physical => modifiers.physical_mod,
             DamageType::Magic => modifiers.magic_mod,
@@ -489,8 +481,8 @@ pub fn eval_damage<const N: usize, T>(
             _ => 1.0,
         } * modifiers.global_mod;
 
-        let minimum_damage = (modifier * (closure.minimum_damage)(metadata.level, ctx)) as i32;
-        let maximum_damage = (modifier * (closure.maximum_damage)(metadata.level, ctx)) as i32;
+        let minimum_damage = (modifier * (closure.minimum_damage)(ctx)) as i32;
+        let maximum_damage = (modifier * (closure.maximum_damage)(ctx)) as i32;
 
         let sum = minimum_damage + minimum_damage;
         match attributes {

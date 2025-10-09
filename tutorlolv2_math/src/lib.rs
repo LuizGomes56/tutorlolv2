@@ -1,17 +1,17 @@
 use bincode::{Decode, Encode};
 use tutorlolv2_gen::{AdaptativeType, SIMULATED_ITEMS};
 
-pub mod calc;
+pub mod calculator;
 pub mod helpers;
 pub mod model;
+pub mod realtime;
 pub mod riot;
-pub mod rt;
 
-pub use calc::*;
+pub use calculator::*;
 pub use helpers::*;
 pub use model::*;
+pub use realtime::*;
 pub use riot::*;
-pub use rt::*;
 
 #[derive(Encode, Decode, Clone, Copy)]
 pub struct AbilityLevels {

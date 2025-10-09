@@ -10,10 +10,7 @@ pub fn gen_blitzcrank(data: CdnChampion) -> Champion {
         Ability {
             name: target.name.clone(),
             attributes: Attrs::None,
-            damage_type: target
-                .damage_type
-                .clone()
-                .unwrap_or(DamageType::Unknown.to_string()),
+            damage_type: DamageType::from(target.damage_type.clone().unwrap_or_default()),
             minimum_damage: vec![
                 format!(
                     "AD + {}",

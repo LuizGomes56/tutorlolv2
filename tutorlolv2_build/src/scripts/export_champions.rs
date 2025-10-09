@@ -1,6 +1,5 @@
 use super::*;
 use std::cmp::Ordering;
-use tutorlolv2_types::AbilityLike;
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -30,24 +29,13 @@ pub struct ChampionCdnStats {
     pub urf_damage_dealt: ChampionCdnStatsMap,
 }
 
-#[derive(Copy, Clone, Deserialize, Default)]
+#[derive(Copy, Clone, Debug, Deserialize, Default)]
 pub enum Attrs {
     #[default]
     None,
     OnhitMax,
     OnhitMin,
     Onhit,
-}
-
-impl Attrs {
-    pub fn stringify(&self) -> &'static str {
-        match self {
-            Attrs::None => "None",
-            Attrs::OnhitMax => "OnhitMax",
-            Attrs::OnhitMin => "OnhitMin",
-            Attrs::Onhit => "Onhit",
-        }
-    }
 }
 
 #[derive(Deserialize)]
@@ -73,15 +61,14 @@ pub fn format_stats(stats: &ChampionCdnStats) -> String {
     macro_rules! insert_stat {
         ($field:ident) => {
             format!(
-                "{}: CachedChampionStatsMap {{
-                flat: {}f32,per_level: {}f32}},",
+                "{}:CachedChampionStatsMap{{flat:{}f32,per_level:{}f32}},",
                 stringify!($field),
                 stats.$field.flat,
                 stats.$field.per_level
             )
         };
         (lone $field:ident) => {
-            format!("{}: {}f32,", stringify!($field), stats.$field.flat,)
+            format!("{}:{}f32,", stringify!($field), stats.$field.flat)
         };
     }
     let mut all_stats = Vec::new();
@@ -103,7 +90,7 @@ pub fn format_stats(stats: &ChampionCdnStats) -> String {
     all_stats.join("")
 }
 
-pub fn sort_pqwer<T: Ord>(data: &mut [(String, T)]) {
+pub fn sort_pqwer(data: &mut [(String, String, String, String)]) {
     let priority = |ch: char| match ch {
         'P' => 0,
         'Q' => 1,
@@ -129,48 +116,73 @@ pub fn sort_pqwer<T: Ord>(data: &mut [(String, T)]) {
     });
 }
 
-fn format_abilities(abilities: &HashMap<String, Ability>) -> Vec<(String, String)> {
-    let mut formatted_map = Vec::new();
+fn get_abilities_decl(
+    champion_name: &str,
+    abilities: HashMap<String, Ability>,
+) -> Vec<(String, String, String, String)> {
+    let mut result = Vec::new();
+
     for (name, ability) in abilities {
-        let mut min_dmg = String::new();
-        let mut max_dmg = String::new();
-        macro_rules! format_dmg {
-            ($var:expr, $field:ident) => {
-                if ability.$field.is_empty() {
-                    $var.push_str("zero");
-                } else {
-                    let transformed: Vec<(String, bool)> = ability
-                        .$field
-                        .iter()
-                        .map(|dmg| {
-                            let expr = clean_math_expr(&dmg);
-                            transform_expr(&expr)
-                        })
-                        .collect();
-                    let needs_ctx = transformed.iter().any(|&(_, changed)| changed);
-                    let ctx_param = if needs_ctx { "ctx" } else { "_" };
-                    $var.push_str(&format!("|level, {}| {{match level {{", ctx_param));
-                    for (i, (expr, _)) in transformed.into_iter().enumerate() {
-                        $var.push_str(&format!("{} => {},", i + 1, expr.to_lowercase()));
-                    }
-                    $var.push_str("_ => 0.0,}}");
+        let mut minimum_damage = String::new();
+        let mut maximum_damage = String::new();
+
+        let formatter = |expr: &[String], target: &mut String| {
+            if expr.is_empty() {
+                "zero".to_string();
+            } else {
+                let transformed = expr
+                    .iter()
+                    .map(|dmg| transform_expr(&clean_math_expr(&dmg)))
+                    .collect::<Vec<(String, bool)>>();
+                let needs_ctx = transformed.iter().any(|&(_, changed)| changed);
+                let ctx_param = if needs_ctx { "ctx" } else { "_" };
+                target.push_str(&format!(
+                    "|{}| {{ match {}_level {{",
+                    name.chars().next().unwrap().to_lowercase(),
+                    ctx_param
+                ));
+                for (i, (new_expr, _)) in transformed.into_iter().enumerate() {
+                    target.push_str(&format!("{} => {},", i + 1, new_expr.to_lowercase()));
                 }
-            };
-        }
-        format_dmg!(min_dmg, minimum_damage);
-        format_dmg!(max_dmg, maximum_damage);
-        formatted_map.push((
-            name.clone(),
-            format!(
-                "static __phantom__: CachedChampionAbility = CachedChampionAbility {{damage_type: {},
-                attributes: Attrs::{},minimum_damage: {},
-                maximum_damage: {},}};",
-                format_damage_type(&ability.damage_type), ability.attributes.stringify(), min_dmg, max_dmg,
-            )
-        ));
+                target.push_str("_ => 0.0 }}");
+            }
+        };
+
+        formatter(&ability.minimum_damage, &mut minimum_damage);
+        formatter(&ability.maximum_damage, &mut maximum_damage);
+
+        let const_decl = format!(
+            "static {champion_name}_{name}: StaticAbility {{
+                damage_type: DamageType::{damage_type},
+                attributes: Attributes::{attributes:?},
+                minimum_damage: {minimum_damage},
+                maximum_damage: {maximum_damage}
+            }}",
+            damage_type = ability.damage_type,
+            attributes = ability.attributes,
+        );
+
+        let metadata = format!(
+            "TypeMetadata {{ 
+                kind: AbilityLike::{:?}, 
+                damage_type: DamageType::{damage_type}, 
+                attributes: Attributes::{attributes:?} 
+            }}",
+            name,
+            damage_type = ability.damage_type,
+            attributes = ability.attributes
+        );
+
+        let closures = format!(
+            "DamageClosure {{
+                minimum_damage: {minimum_damage},
+                maximum_damage: {maximum_damage}
+            }}",
+        );
+
+        result.push((name, metadata, closures, const_decl));
     }
-    sort_pqwer(&mut formatted_map);
-    formatted_map
+    result
 }
 
 pub struct ChampionDetails {
@@ -186,99 +198,75 @@ pub fn export_champions() -> BTreeMap<String, ChampionDetails> {
     init_map!(dir Champion, "internal/champions")
         .into_par_iter()
         .map(|(champion_id, champion)| {
-            let (highlighted_abilities, mut constdecl_abilities) =
-                format_abilities(&champion.abilities)
-                    .into_par_iter()
-                    .filter_map(|(ability_name, ability_formula)| {
-                        let rustfmt_val = invoke_rustfmt(&ability_formula, 80)
-                        .replace(
-                            "static __phantom__: CachedChampionAbility = CachedChampionAbility ",
-                            "",
-                        )
-                        .replace(";", "");
-                        if !rustfmt_val.is_empty() {
-                            let highlighted_val = clear_suffixes(&highlight_rust(&format!(
-                                "intrinsic {}_{} = {}",
-                                champion_id.to_uppercase(),
-                                ability_name.to_uppercase(),
-                                rustfmt_val
-                            )))
-                            .replacen(
-                                "class=\"type\"",
-                                "class=\"constant\"",
-                                1,
-                            );
-                            Some((
-                                (ability_name.clone(), highlighted_val),
-                                (ability_name, rustfmt_val),
-                            ))
-                        } else {
-                            None
-                        }
-                    })
-                    .collect::<(Vec<_>, Vec<_>)>();
+            let champion_name_upper = champion_id.to_uppercase();
+            let mut ability_data = get_abilities_decl(&champion_name_upper, champion.abilities)
+                .into_par_iter()
+                .filter_map(|(name, metadata, closures, ability_decl)| {
+                    let rustfmt_val = ability_decl.invoke_rustfmt(80);
+                    (!rustfmt_val.is_empty()).then_some((
+                        name,
+                        metadata,
+                        closures,
+                        rustfmt_val.highlight_rust().clear_suffixes(),
+                    ))
+                })
+                .collect::<Vec<(String, String, String, String)>>();
 
-            sort_pqwer(&mut constdecl_abilities);
+            sort_pqwer(&mut ability_data);
 
             let positions = champion
-                    .positions
-                    .iter()
-                    .map(|pos| {
-                        match pos.as_str() {
-                            "TOP" => "Position::Top",
-                            "JUNGLE" => "Position::Jungle",
-                            "MIDDLE" => "Position::Middle",
-                            "BOTTOM" => "Position::Bottom",
-                            _ => "Position::Support",
-                        }
-                    })
-                    .collect::<Vec<_>>()
-                    .join(",");
+                .positions
+                .into_iter()
+                .map(|pos| format!("Position::{}", pos))
+                .collect::<Vec<String>>()
+                .join(",");
 
             let constdecl = format!(
-                r#"pub static {}:CachedChampion=CachedChampion{{adaptative_type:{},attack_type:{},positions:&[{}],abilities:&[{}],stats:CachedChampionStats{{{}}}}};"#,
-                champion_id.to_uppercase(),
-                match champion.adaptative_type.as_str() {
-                    "PHYSICAL_DAMAGE" => "AdaptativeType::Physical",
-                    _ => "AdaptativeType::Magic",
-                },
-                match champion.attack_type.as_str() {
-                    "MELEE" => {
-                        "AttackType::Melee"
-                    }
-                    _ => {
-                        "AttackType::Ranged"
-                    }
-                },
-                positions,
-                constdecl_abilities
+                "pub static {champion_name_upper}: CachedChampion = CachedChampion {{
+                    adaptative_type: AdaptativeType::{adaptative_type},
+                    attack_type: AdaptativeType::{attack_type},
+                    positions: &[{positions}],
+                    metadata: &[{metadata}],
+                    closures: &[{closures}],
+                    stats: CachedChampionStats {{{stats}}}
+                }};",
+                adaptative_type = champion.adaptative_type,
+                attack_type = champion.attack_type,
+                metadata = ability_data
                     .iter()
-                    .map(|(ability_name, rustfmt_val)| {
-                        format!(
-                            "({},CachedChampionAbility{})",
-                            AbilityLike::from_str(ability_name),
-                            rustfmt_val
-                        )
-                    })
-                    .collect::<Vec<String>>()
+                    .map(|(_, metadata, _, _)| metadata)
+                    .collect::<Vec<_>>()
                     .join(","),
-                format_stats(&champion.stats),
+                closures = ability_data
+                    .iter()
+                    .map(|(_, _, closures, _)| closures)
+                    .collect::<Vec<_>>()
+                    .join(","),
+                stats = format_stats(&champion.stats),
             );
 
+            let generator = cwd!(format!("tutorlolv2_dev/src/generators/{}.rs", champion_id))
+                .read_as_path()
+                .invoke_rustfmt(80)
+                .highlight_rust();
+
             (
-                champion_id.clone(),
+                champion_id,
                 ChampionDetails {
                     champion_name: champion.name.to_string(),
-                    champion_formula: highlight_rust(&clear_suffixes(&invoke_rustfmt(&constdecl, 70))),
-                    generator: highlight_rust(&invoke_rustfmt(
-                        &fs::read_to_string(cwd!(format!("tutorlolv2_dev/src/generators/{}.rs", champion_id))).unwrap(),
-                        80,
-                    )),
-                    highlighted_abilities,
+                    champion_formula: constdecl
+                        .invoke_rustfmt(80)
+                        .clear_suffixes()
+                        .highlight_rust(),
+                    generator,
+                    highlighted_abilities: ability_data
+                        .into_iter()
+                        .map(|(name, _, _, ability_decl)| (name, ability_decl))
+                        .collect(),
                     constdecl,
                     positions,
                 },
             )
         })
-        .collect::<BTreeMap<String, ChampionDetails>>()
+        .collect()
 }

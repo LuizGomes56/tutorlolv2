@@ -321,15 +321,11 @@ pub fn item_generator(args: TokenStream, input: TokenStream) -> TokenStream {
 
     let set_damage_type = if let Some(variant) = dt_ident {
         quote! {
-            cur_value.damage_type = Some(
-                tutorlolv2_gen::DamageType::#variant.to_string()
-            );
+            cur_value.damage_type = tutorlolv2_gen::DamageType::#variant;
         }
     } else {
         quote! {
-            cur_value.damage_type = Some(
-                tutorlolv2_gen::DamageType::default().to_string()
-            );
+            cur_value.damage_type = tutorlolv2_gen::DamageType::default();
         }
     };
 

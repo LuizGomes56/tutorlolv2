@@ -27,7 +27,7 @@ pub fn gen_ahri(data: CdnChampion) -> Champion {
 
     let q_mut_ref = get!(mut Q::Void);
     q_mut_ref.maximum_damage = q_max;
-    q_mut_ref.damage_type = DamageType::Mixed.to_string();
+    q_mut_ref.damage_type = DamageType::Mixed;
 
     let r_max = merge_damage!(3, |(r,)| format!("3 * ({})", r), (R::Void, minimum_damage));
     get!(mut R::Void).maximum_damage = r_max;
