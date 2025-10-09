@@ -5,7 +5,7 @@ use std::mem::MaybeUninit;
 use tinyset::SetU32;
 use tutorlolv2_gen::{
     CHAMPION_NAME_TO_ID, ChampionId, DAMAGING_RUNES, INTERNAL_CHAMPIONS, INTERNAL_ITEMS, ItemId,
-    Position, RuneId, SIMULATED_ITEMS_ENUM,
+    Position, RuneId, SIMULATED_ITEMS_ENUM, TypeMetadata,
 };
 
 const LAST_STAND: u32 = RuneId::LastStand.to_riot_id_const();
@@ -21,17 +21,15 @@ const SIMULATED_ITEMS_METADATA: [TypeMetadata<ItemId>; L_SIML] = {
         let item_cache = INTERNAL_ITEMS[item_id as usize];
         unsafe {
             core::ptr::addr_of_mut!((*siml_items_ptr)[i]).write(TypeMetadata::<ItemId> {
-                level: 0,
                 kind: item_id,
-                meta: Meta::from_bytes(item_cache.damage_type, item_cache.attributes),
+                damage_type: item_cache.damage_type,
+                attributes: item_cache.attributes,
             })
         };
         i += 1;
     }
     unsafe { siml_items.assume_init() }
 };
-
-// const SIZE_SIMULATED_ITEMS_METADATA: usize = size_u(L_SIML as u32) + L_SIML << 1;
 
 #[derive(Default)]
 struct RuneExceptions {
@@ -121,15 +119,15 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
     let ability_levels = abilities.get_levelings();
     let current_player_position = Position::from_raw(current_player.position)
         .unwrap_or(unsafe { *current_player_cache.positions.get_unchecked(0) });
+    let current_player_cache_attack_type = current_player_cache.attack_type;
 
     let eval_data = DamageEvalData {
-        abilities: get_abilities_data(current_player_cache.abilities, ability_levels, *level),
-        items: get_items_data(
-            &current_player_items,
-            current_player_cache.attack_type,
-            *level,
-        ),
-        runes: get_runes_data(&current_player_runes, *level),
+        abilities: ConstDamageKind {
+            metadata: current_player_cache.metadata,
+            closures: current_player_cache.closures,
+        },
+        items: get_items_data(&current_player_items, current_player_cache_attack_type),
+        runes: get_runes_data(&current_player_runes, current_player_cache_attack_type),
     };
 
     let current_player_team = Team::from(current_player.team);
@@ -145,6 +143,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
         current_stats: *champion_stats,
         bonus_stats: current_player_bonus_stats,
         base_stats: current_player_base_stats,
+        ability_levels,
         level: *level,
     };
 
@@ -243,6 +242,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
                         current_stats: siml_stat,
                         bonus_stats: self_state.bonus_stats,
                         base_stats: self_state.base_stats,
+                        ability_levels: self_state.ability_levels,
                         level: *level,
                     },
                     &full_state,

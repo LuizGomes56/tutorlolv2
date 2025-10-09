@@ -36,7 +36,7 @@ pub struct Item {
     pub gold: u16,
     pub tier: u8,
     pub prettified_stats: BTreeMap<String, f64>,
-    pub damage_type: Option<String>,
+    pub damage_type: String,
     pub stats: PartialStats,
     pub ranged: Option<DamageObject>,
     pub melee: Option<DamageObject>,
@@ -44,33 +44,49 @@ pub struct Item {
     pub purchasable: bool,
 }
 
-pub fn format_damage_object(damage_object: &Option<DamageObject>) -> String {
-    macro_rules! assign_value {
-        ($field:ident) => {{
-            if let Some(damage_object) = damage_object {
-                if let Some(raw) = damage_object.$field.as_ref().map(String::as_str) {
-                    let expr = clean_math_expr(raw);
-                    let (expr, changed) = transform_expr(&expr);
-                    let ctx_param = if changed { "ctx" } else { "_" };
-                    let lvl_param = if expr.to_lowercase().contains("level") {
-                        "level"
-                    } else {
-                        "_"
-                    };
-                    format!("|{},{}|{}", lvl_param, ctx_param, expr.to_lowercase())
-                } else {
-                    String::from("zero")
-                }
-            } else {
-                String::from("zero")
-            }
-        }};
-    }
-    format!(
-        "CachedItemDamages{{minimum_damage:{},maximum_damage:{}}}",
-        assign_value!(minimum_damage),
-        assign_value!(maximum_damage),
-    )
+fn get_items_decl(item_name: &str, item: &Item) -> (String, String, String) {
+    let metadata = format!(
+        "TypeMetadata {{ 
+            kind: ItemId::{name}, 
+            damage_type: DamageType::{damage_type}, 
+            attributes: Attrs::{attributes:?} 
+        }}",
+        name = item_name.remove_special_chars(),
+        damage_type = item.damage_type,
+        attributes = item.attributes
+    );
+
+    let assign_value = |expr: &Option<String>| {
+        if let Some(raw) = expr.as_ref().map(String::as_str) {
+            let (new_expr, changed) = raw.clean_math_expr().transform_expr();
+            let ctx_param = if changed { "ctx" } else { "_" };
+            format!("|{}|{}", ctx_param, new_expr.to_lowercase())
+        } else {
+            String::from("zero")
+        }
+    };
+
+    let make_closure = |damage_object: &Option<DamageObject>| {
+        let (minimum_damage, maximum_damage) = if let Some(damage) = damage_object {
+            (
+                assign_value(&damage.minimum_damage),
+                assign_value(&damage.maximum_damage),
+            )
+        } else {
+            (String::from("zero"), String::from("zero"))
+        };
+        format!(
+            "DamageClosures {{
+                minimum_damage: {minimum_damage},
+                maximum_damage: {maximum_damage}
+            }}",
+        )
+    };
+
+    let range_closure = make_closure(&item.ranged);
+    let melee_closure = make_closure(&item.melee);
+
+    (metadata, range_closure, melee_closure)
 }
 
 pub fn format_stats(stats: &PartialStats) -> String {
@@ -122,46 +138,57 @@ pub fn export_items() -> Vec<(u32, ItemDetails)> {
             let prettified_stats = item
                 .prettified_stats
                 .iter()
-                .map(|(k, v)| format!("StatName::{}({})",
-                {
-                    let mut s = k.replace(" ", "");
-                    if s == "Lethality" {
-                        s = "ArmorPenetration".to_string();
-                    } 
-                    if s == "HealandShieldPower" {
-                        s = "HealAndShieldPower".to_string()
-                    }
-                    s
-                }, v
-            ))
+                .map(|(k, v)| {
+                    format!(
+                        "StatName::{}({})",
+                        {
+                            let mut s = k.replace(" ", "");
+                            if s == "Lethality" {
+                                s = "ArmorPenetration".to_string();
+                            }
+                            if s == "HealandShieldPower" {
+                                s = "HealAndShieldPower".to_string()
+                            }
+                            s
+                        },
+                        v
+                    )
+                })
                 .collect::<Vec<String>>()
                 .join(",");
 
+            let (metadata, range_closure, melee_closure) = get_items_decl(&item.name, &item);
+
             let constdecl = format!(
-                r#"pub static {}:CachedItem=CachedItem{{gold:{},prettified_stats:&[{}],damage_type:{},attributes:Attrs::{},ranged:{},melee:{},stats:CachedItemStats{{{}}}}};"#,
-                format_args!("{}_{}", item.name.to_screaming_snake_case(), item_id),
-                item.gold,
-                prettified_stats,
-                if item.damage_type.is_some() {
-                    format_damage_type(&item.damage_type.clone().unwrap_or_default())
-                } else {
-                    "DamageType::Unknown".to_string()
-                },
-                item.attributes.stringify(),
-                format_damage_object(&item.ranged),
-                format_damage_object(&item.melee),
-                format_stats(&item.stats),
+                "pub static {name}: CachedItem = CachedItem {{
+                    gold: {gold},
+                    prettified_stats: &[{prettified_stats}],
+                    damage_type: DamageType::{damage_type},
+                    attributes: Attrs::{attributes:?},
+                    metadata: {metadata},
+                    range_closure: {range_closure},
+                    melee_closure: {melee_closure},
+                    stats: CachedItemStats {{{stats}}}
+                }};",
+                name = format_args!("{}_{}", item.name.to_screaming_snake_case(), item_id),
+                gold = item.gold,
+                damage_type = item.damage_type,
+                attributes = item.attributes,
+                stats = format_stats(&item.stats),
             );
 
             (
                 item_id,
                 ItemDetails {
-                    item_name: item.name.clone(),
-                    item_formula: highlight_rust(&clear_suffixes(&invoke_rustfmt(&constdecl, 60)))
-                        .replacen("class=\"type\"", "class=\"constant\"", 1),
+                    item_formula: constdecl
+                        .invoke_rustfmt(70)
+                        .clear_suffixes()
+                        .highlight_rust()
+                        .replace_const(),
                     constdecl,
                     is_simulated: item.tier >= 3 && item.gold > 0 && item.purchasable,
                     is_damaging: item.ranged.is_some() || item.melee.is_some(),
+                    item_name: item.name,
                 },
             )
         })

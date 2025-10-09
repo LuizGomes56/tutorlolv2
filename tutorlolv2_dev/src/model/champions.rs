@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
-use tutorlolv2_gen::Attrs;
+use tutorlolv2_gen::{AdaptativeType, AttackType, Attrs, DamageType, Position};
 
 #[derive(Deserialize, Serialize)]
 pub struct Modifiers {
@@ -33,7 +33,7 @@ impl CdnAbility {
     pub fn format(&self, minimum_damage: Vec<String>, maximum_damage: Vec<String>) -> Ability {
         Ability {
             name: self.name.clone(),
-            damage_type: self.damage_type.clone().unwrap_or_default(),
+            damage_type: DamageType::from(self.damage_type.clone().unwrap_or_default()),
             attributes: Attrs::None,
             minimum_damage,
             maximum_damage,
@@ -80,9 +80,13 @@ impl CdnChampion {
         Champion {
             abilities,
             name: self.name,
-            adaptative_type: self.adaptive_type,
-            attack_type: self.attack_type,
-            positions: self.positions,
+            adaptative_type: AdaptativeType::from(self.adaptive_type),
+            attack_type: AttackType::from(self.attack_type),
+            positions: self
+                .positions
+                .into_iter()
+                .map(|pos| Position::from(pos))
+                .collect(),
             stats: self.stats,
         }
     }
@@ -91,7 +95,7 @@ impl CdnChampion {
 #[derive(Serialize, Deserialize, Clone)]
 pub struct Ability {
     pub name: String,
-    pub damage_type: String,
+    pub damage_type: DamageType,
     pub attributes: Attrs,
     pub minimum_damage: Vec<String>,
     pub maximum_damage: Vec<String>,
@@ -100,9 +104,9 @@ pub struct Ability {
 #[derive(Serialize, Deserialize)]
 pub struct Champion {
     pub name: String,
-    pub adaptative_type: String,
-    pub attack_type: String,
-    pub positions: Vec<String>,
+    pub adaptative_type: AdaptativeType,
+    pub attack_type: AttackType,
+    pub positions: Vec<Position>,
     pub stats: ChampionCdnStats,
     pub abilities: HashMap<String, Ability>,
 }

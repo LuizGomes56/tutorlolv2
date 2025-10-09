@@ -10,7 +10,7 @@ use crate::{
 use regex::Regex;
 use serde_json::Value;
 use std::{collections::HashMap, fs, path::Path};
-use tutorlolv2_gen::Attrs;
+use tutorlolv2_gen::{Attrs, DamageType};
 
 /// Creates basic folders necessary to run the program. If one of these folders are not found,
 /// The program is likely to panic when an update is called.
@@ -135,7 +135,7 @@ pub fn setup_internal_items() {
             prettified_stats: HashMap::default(),
             name: cdn_item.name,
             gold: cdn_item.shop.prices.total,
-            damage_type: None,
+            damage_type: DamageType::Unknown,
             attributes: Attrs::None,
             stats: item_stats,
             tier: cdn_item.tier,

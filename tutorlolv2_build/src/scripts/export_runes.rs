@@ -18,30 +18,56 @@ pub fn export_runes() -> Vec<(u32, RuneDetails)> {
     let mut runes = init_map!(file BTreeMap<u32, Rune>, "internal/runes.json")
         .into_par_iter()
         .map(|(rune_id, rune)| {
-            let ranged_expr = transform_expr(&clean_math_expr(&rune.ranged));
-            let melee_expr = transform_expr(&clean_math_expr(&rune.melee));
+            let range_expr = rune.ranged.clean_math_expr().transform_expr();
+            let melee_expr = rune.melee.clean_math_expr().transform_expr();
+            let damage_type = rune.damage_type;
+
+            let metadata = format!(
+                "TypeMetadata {{
+                    kind: RuneId::{},
+                    damage_type: DamageType::{damage_type},
+                    attributes: Attrs::None
+                }}",
+                rune.name.remove_special_chars(),
+            );
+
+            let make_closure = |expr: (String, bool)| {
+                format!(
+                    "DamageClosures {{
+                        minimum_damage: |{}| {},
+                        maximum_damage: zero,
+                    }}",
+                    if expr.1 { "ctx" } else { "_" },
+                    expr.0.to_lowercase()
+                )
+            };
+
+            let melee_closure = make_closure(melee_expr);
+            let range_closure = make_closure(range_expr);
+
             let constdecl = format!(
-                r#"pub static {}:CachedRune=CachedRune{{damage_type:{},ranged:{},melee:{}}};"#,
-                format_args!("{}_{}", rune.name.to_screaming_snake_case(), rune_id),
-                format_damage_type(&rune.damage_type),
-                format_args!(
-                    "|_,{}|{}",
-                    if ranged_expr.1 { "ctx" } else { "_" },
-                    ranged_expr.0.to_lowercase()
-                ),
-                format_args!(
-                    "|_,{}|{}",
-                    if melee_expr.1 { "ctx" } else { "_" },
-                    melee_expr.0.to_lowercase()
+                "pub static {name}: CachedRune = CachedRune {{
+                    damage_type: DamageType::{damage_type},
+                    metadata: {metadata},
+                    melee_closure: {melee_closure},
+                    range_closure: {range_closure},
+                }};",
+                name = format_args!(
+                    "{}_{}",
+                    rune.name.to_screaming_snake_case().remove_special_chars(),
+                    rune_id
                 ),
             );
 
             (
                 rune_id,
                 RuneDetails {
-                    rune_name: rune.name.clone(),
-                    rune_formula: highlight_rust(&clear_suffixes(&invoke_rustfmt(&constdecl, 80)))
-                        .replacen("class=\"type\"", "class=\"constant\"", 1),
+                    rune_name: rune.name,
+                    rune_formula: constdecl
+                        .invoke_rustfmt(80)
+                        .clear_suffixes()
+                        .highlight_rust()
+                        .replace_const(),
                     constdecl,
                 },
             )
@@ -50,35 +76,67 @@ pub fn export_runes() -> Vec<(u32, RuneDetails)> {
 
     let mut undeclared_runes = init_map!(file BTreeMap<String, u32>, "internal/rune_names.json");
 
-    undeclared_runes.insert("AdaptiveForce".to_string(), 9990);
-    undeclared_runes.insert("HealthScaling".to_string(), 9991);
-    undeclared_runes.insert("AttackSpeed".to_string(), 9992);
-    undeclared_runes.insert("Health".to_string(), 9993);
-    undeclared_runes.insert("AbilityHaste".to_string(), 9994);
-    undeclared_runes.insert("TenacityandSlowResist".to_string(), 9995);
-    undeclared_runes.insert("MoveSpeed".to_string(), 9996);
-    undeclared_runes.insert("EyeballCollection".to_string(), 8120);
-    undeclared_runes.insert("GhostPoro".to_string(), 8136);
-    undeclared_runes.insert("ZombieWard".to_string(), 8138);
+    [
+        ("AdaptiveForce", 9990),
+        ("HealthScaling", 9991),
+        ("AttackSpeed", 9992),
+        ("Health", 9993),
+        ("AbilityHaste", 9994),
+        ("TenacityandSlowResist", 9995),
+        ("MoveSpeed", 9996),
+        ("EyeballCollection", 8120),
+        ("GhostPoro", 8136),
+        ("ZombieWard", 8138),
+    ]
+    .into_iter()
+    .for_each(|(undeclared_name, undeclared_id)| {
+        undeclared_runes.insert(undeclared_name.to_string(), undeclared_id);
+    });
 
     for (rune_name, rune_id) in undeclared_runes {
         if runes.iter().any(|(id, _)| *id == rune_id) {
             continue;
         }
 
+        let void_metadata = format!(
+            "TypeMetadata {{
+                kind: RuneId::{name},
+                damage_type: DamageType::Unknown,
+                attributes: Attrs::None
+            }}",
+            name = rune_name.remove_special_chars(),
+        );
+
+        let void_closure = format!(
+            "DamageClosures {{
+                minimum_damage: zero,
+                maximum_damage: zero
+            }}",
+        );
+
         let constdecl = format!(
-            r#"pub static {}_{}:CachedRune=CachedRune{{damage_type:{},ranged:zero,melee:zero}};"#,
-            rune_name.to_screaming_snake_case(),
-            rune_id,
-            format_damage_type("_"),
+            "pub static {name}: CachedRune = CachedRune {{
+                damage_type: DamageType::Unknown,
+                metadata: {void_metadata},
+                melee_closure: {void_closure},
+                range_closure: {void_closure},    
+            }};",
+            name = format_args!(
+                "{}_{}",
+                rune_name.to_screaming_snake_case().remove_special_chars(),
+                rune_id
+            )
         );
 
         runes.push((
             rune_id,
             RuneDetails {
                 rune_name: rune_name.clone(),
-                rune_formula: highlight_rust(&clear_suffixes(&invoke_rustfmt(&constdecl, 80)))
-                    .replacen("class=\"type\"", "class=\"constant\"", 1),
+                rune_formula: constdecl
+                    .invoke_rustfmt(80)
+                    .clear_suffixes()
+                    .highlight_rust()
+                    .replace_const(),
                 constdecl,
             },
         ));

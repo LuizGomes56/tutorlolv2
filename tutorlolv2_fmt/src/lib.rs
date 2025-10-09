@@ -36,25 +36,26 @@ pub fn remove_special_chars(s: &str) -> String {
 }
 
 pub fn invoke_rustfmt(src: &str, width: usize) -> String {
-    let mut child = Command::new("rustfmt")
-        .args(&[
-            "--emit",
-            "stdout",
-            "--config",
-            &format!("max_width={width}"),
-        ])
-        .stdin(Stdio::piped())
-        .stdout(Stdio::piped())
-        .spawn()
-        .unwrap();
-    child
-        .stdin
-        .as_mut()
-        .unwrap()
-        .write_all(src.as_bytes())
-        .unwrap();
-    let output = child.wait_with_output().unwrap();
-    String::from_utf8_lossy(&output.stdout).into_owned()
+    let try_run = || -> Result<String, Box<dyn std::error::Error>> {
+        let mut child = Command::new("rustfmt")
+            .args(&[
+                "--emit",
+                "stdout",
+                "--config",
+                &format!("max_width={width}"),
+            ])
+            .stdin(Stdio::piped())
+            .stdout(Stdio::piped())
+            .spawn()?;
+        child
+            .stdin
+            .as_mut()
+            .ok_or("Failed to open stdin")?
+            .write_all(src.as_bytes())?;
+        let output = child.wait_with_output()?;
+        Ok(String::from_utf8_lossy(&output.stdout).into_owned())
+    };
+    try_run().unwrap_or(src.to_string())
 }
 
 pub fn highlight_rust(rust_code: &str) -> String {

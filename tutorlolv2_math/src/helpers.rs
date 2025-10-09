@@ -1,5 +1,5 @@
 use super::model::*;
-use crate::{AbilityLevels, L_ABLT, L_ITEM, L_RUNE, L_SIML, RiotFormulas, riot::*};
+use crate::{L_ITEM, L_RUNE, L_SIML, RiotFormulas, riot::*};
 use smallvec::SmallVec;
 use std::mem::MaybeUninit;
 use tinyset::SetU32;
@@ -38,35 +38,42 @@ macro_rules! bonus_stats {
 
 pub use bonus_stats;
 
-macro_rules! addif {
-    ($is_mega_gnar:expr, $constname:ident) => {
-        if $is_mega_gnar { $constname } else { 0.0 }
-    };
-}
-
 pub const fn base_stats_sf32(
     stats: &CachedChampionStats,
     level: u8,
     is_mega_gnar: bool,
 ) -> SimpleStats<f32> {
-    SimpleStats::<f32> {
-        health: RiotFormulas::stat_growth(
-            stats.health.flat + addif!(is_mega_gnar, MEGA_GNAR_BASE_HEALTH_BONUS),
-            stats.health.per_level + addif!(is_mega_gnar, MEGA_GNAR_BASE_HEALTH_BONUS_PER_LEVEL),
-            level,
-        ),
+    let growth_factor = RiotFormulas::growth(level);
+
+    let mut out = SimpleStats::<f32> {
+        health: RiotFormulas::stat_growth(stats.health.flat, stats.health.per_level, growth_factor),
         magic_resist: RiotFormulas::stat_growth(
-            stats.magic_resist.flat + addif!(is_mega_gnar, MEGA_GNAR_BASE_MAGIC_RESIST_BONUS),
-            stats.magic_resist.per_level
-                + addif!(is_mega_gnar, MEGA_GNAR_BASE_MAGIC_RESIST_BONUS_PER_LEVEL),
-            level,
+            stats.magic_resist.flat,
+            stats.magic_resist.per_level,
+            growth_factor,
         ),
-        armor: RiotFormulas::stat_growth(
-            stats.armor.flat + addif!(is_mega_gnar, MEGA_GNAR_BASE_ARMOR_BONUS),
-            stats.armor.per_level + addif!(is_mega_gnar, MEGA_GNAR_BASE_ARMOR_BONUS_PER_LEVEL),
-            level,
-        ),
+        armor: RiotFormulas::stat_growth(stats.armor.flat, stats.armor.per_level, growth_factor),
+    };
+
+    if is_mega_gnar {
+        out.health += RiotFormulas::stat_growth(
+            MEGA_GNAR_BASE_HEALTH_BONUS,
+            MEGA_GNAR_BASE_HEALTH_BONUS_PER_LEVEL,
+            growth_factor,
+        );
+        out.magic_resist += RiotFormulas::stat_growth(
+            MEGA_GNAR_BASE_MAGIC_RESIST_BONUS,
+            MEGA_GNAR_BASE_MAGIC_RESIST_BONUS_PER_LEVEL,
+            growth_factor,
+        );
+        out.armor += RiotFormulas::stat_growth(
+            MEGA_GNAR_BASE_ARMOR_BONUS,
+            MEGA_GNAR_BASE_ARMOR_BONUS_PER_LEVEL,
+            growth_factor,
+        );
     }
+
+    out
 }
 
 pub const fn base_stats_bf32(
@@ -74,19 +81,48 @@ pub const fn base_stats_bf32(
     level: u8,
     is_mega_gnar: bool,
 ) -> BasicStats<f32> {
-    let base_sf32 = base_stats_sf32(stats, level, is_mega_gnar);
-    BasicStats::<f32> {
-        health: base_sf32.health,
-        magic_resist: base_sf32.magic_resist,
-        armor: base_sf32.armor,
-        attack_damage: RiotFormulas::stat_growth(
-            stats.attack_damage.flat + addif!(is_mega_gnar, MEGA_GNAR_BASE_ATTACK_DAMAGE_BONUS),
-            stats.attack_damage.per_level
-                + addif!(is_mega_gnar, MEGA_GNAR_BASE_ATTACK_DAMAGE_BONUS_PER_LEVEL),
-            level,
+    let growth_factor = RiotFormulas::growth(level);
+
+    let mut out = BasicStats::<f32> {
+        health: RiotFormulas::stat_growth(stats.health.flat, stats.health.per_level, growth_factor),
+        magic_resist: RiotFormulas::stat_growth(
+            stats.magic_resist.flat,
+            stats.magic_resist.per_level,
+            growth_factor,
         ),
-        mana: RiotFormulas::stat_growth(stats.mana.flat, stats.mana.per_level, level),
+        armor: RiotFormulas::stat_growth(stats.armor.flat, stats.armor.per_level, growth_factor),
+        attack_damage: RiotFormulas::stat_growth(
+            stats.attack_damage.flat,
+            stats.attack_damage.per_level,
+            growth_factor,
+        ),
+        mana: RiotFormulas::stat_growth(stats.mana.flat, stats.mana.per_level, growth_factor),
+    };
+
+    if is_mega_gnar {
+        out.health += RiotFormulas::stat_growth(
+            MEGA_GNAR_BASE_HEALTH_BONUS,
+            MEGA_GNAR_BASE_HEALTH_BONUS_PER_LEVEL,
+            growth_factor,
+        );
+        out.magic_resist += RiotFormulas::stat_growth(
+            MEGA_GNAR_BASE_MAGIC_RESIST_BONUS,
+            MEGA_GNAR_BASE_MAGIC_RESIST_BONUS_PER_LEVEL,
+            growth_factor,
+        );
+        out.armor += RiotFormulas::stat_growth(
+            MEGA_GNAR_BASE_ARMOR_BONUS,
+            MEGA_GNAR_BASE_ARMOR_BONUS_PER_LEVEL,
+            growth_factor,
+        );
+        out.attack_damage += RiotFormulas::stat_growth(
+            MEGA_GNAR_BASE_ATTACK_DAMAGE_BONUS,
+            MEGA_GNAR_BASE_ATTACK_DAMAGE_BONUS_PER_LEVEL,
+            growth_factor,
+        );
     }
+
+    out
 }
 
 pub fn has_item<const N: usize>(origin: &SetU32, check_for: [ItemId; N]) -> bool {
@@ -142,87 +178,32 @@ pub fn get_simulated_stats(stats: &Stats<f32>, dragons: Dragons) -> [Stats<f32>;
     unsafe { result.assume_init() }
 }
 
-pub fn get_abilities_data(
-    ability_cache: &'static [(AbilityLike, CachedChampionAbility)],
-    ability_levels: AbilityLevels,
-    level: u8,
-) -> DamageKind<L_ABLT, AbilityLike> {
-    let mut metadata = SmallVec::with_capacity(ability_cache.len());
-    let mut damages = SmallVec::with_capacity(ability_cache.len());
-    for (key, value) in ability_cache.iter() {
-        let level = match key {
-            AbilityLike::P(_) => level,
-            AbilityLike::Q(_) => ability_levels.q,
-            AbilityLike::W(_) => ability_levels.w,
-            AbilityLike::E(_) => ability_levels.e,
-            AbilityLike::R(_) => ability_levels.r,
-        };
-        damages.push(DamageClosure {
-            minimum_damage: value.minimum_damage,
-            maximum_damage: value.maximum_damage,
-        });
-        metadata.push(TypeMetadata {
-            level,
-            kind: *key,
-            meta: Meta::from_bytes(value.damage_type, value.attributes),
-        });
-    }
-    DamageKind {
-        metadata,
-        closures: damages,
-    }
-}
-
-pub fn get_runes_data(runes: &SetU32, level: u8) -> DamageKind<L_RUNE, RuneId> {
+pub fn get_runes_data(runes: &SetU32, attack_type: AttackType) -> DamageKind<L_RUNE, RuneId> {
     let mut metadata = SmallVec::with_capacity(runes.len());
-    let mut damages = SmallVec::with_capacity(runes.len());
+    let mut closures = SmallVec::with_capacity(runes.len());
     for rune_number in runes.iter() {
-        let rune_id = unsafe { std::mem::transmute::<u8, RuneId>(rune_number as u8) };
         let rune = unsafe { INTERNAL_RUNES.get_unchecked(rune_number as usize) };
-        damages.push(DamageClosure {
-            minimum_damage: rune.ranged,
-            maximum_damage: zero,
+        closures.push(match attack_type {
+            AttackType::Ranged => rune.range_closure,
+            AttackType::Melee => rune.melee_closure,
         });
-        metadata.push(TypeMetadata {
-            level,
-            kind: rune_id,
-            meta: Meta::from_bytes(rune.damage_type, Attrs::None),
-        });
+        metadata.push(rune.metadata);
     }
-    DamageKind {
-        metadata,
-        closures: damages,
-    }
+    DamageKind { metadata, closures }
 }
 
-pub fn get_items_data(
-    items: &SetU32,
-    attack_type: AttackType,
-    level: u8,
-) -> DamageKind<L_ITEM, ItemId> {
+pub fn get_items_data(items: &SetU32, attack_type: AttackType) -> DamageKind<L_ITEM, ItemId> {
     let mut metadata = SmallVec::with_capacity(items.len());
-    let mut damages = SmallVec::with_capacity(items.len());
+    let mut closures = SmallVec::with_capacity(items.len());
     for item_number in items.iter() {
-        let item_id = unsafe { std::mem::transmute::<u16, ItemId>(item_number as u16) };
         let item = unsafe { INTERNAL_ITEMS.get_unchecked(item_number as usize) };
-        let item_damage = match attack_type {
-            AttackType::Ranged => &item.ranged,
-            AttackType::Melee => &item.melee,
-        };
-        damages.push(DamageClosure {
-            minimum_damage: item_damage.minimum_damage,
-            maximum_damage: item_damage.maximum_damage,
+        closures.push(match attack_type {
+            AttackType::Ranged => item.range_closure,
+            AttackType::Melee => item.melee_closure,
         });
-        metadata.push(TypeMetadata {
-            level,
-            kind: item_id,
-            meta: Meta::from_bytes(item.damage_type, item.attributes),
-        });
+        metadata.push(item.metadata);
     }
-    DamageKind {
-        metadata,
-        closures: damages,
-    }
+    DamageKind { metadata, closures }
 }
 
 pub fn runes_slice_to_set_u32(input: &[RuneId]) -> SetU32 {
@@ -407,6 +388,11 @@ pub const fn get_damage_modifiers(
 
 pub const fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> EvalContext {
     EvalContext {
+        q_level: self_state.ability_levels.q,
+        w_level: self_state.ability_levels.w,
+        e_level: self_state.ability_levels.e,
+        r_level: self_state.ability_levels.r,
+        level: self_state.level as f32,
         chogath_stacks: 1.0,
         veigar_stacks: 1.0,
         nasus_stacks: 1.0,
@@ -422,7 +408,6 @@ pub const fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> E
             AdaptativeType::Physical => e_state.armor_values.modifier,
             AdaptativeType::Magic => e_state.magic_values.modifier,
         },
-        level: self_state.level as f32,
         physical_multiplier: e_state.armor_values.modifier,
         magic_multiplier: e_state.magic_values.modifier,
         // #![manual_impl]
@@ -473,15 +458,17 @@ pub const fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> E
 pub fn eval_damage<const N: usize, T>(
     ctx: &EvalContext,
     onhit: &mut RangeDamage,
-    damage_kind: &DamageKind<N, T>,
+    metadata: &[TypeMetadata<T>],
+    closures: &[DamageClosures],
     modifiers: DamageModifiers,
 ) -> SmallVec<[RangeDamage; N]> {
-    let mut result = SmallVec::with_capacity(N);
-    for i in 0..N {
-        let closure = unsafe { damage_kind.closures.get_unchecked(i) };
-        let metadata = unsafe { damage_kind.metadata.get_unchecked(i) };
-        let damage_type = metadata.meta.damage_type();
-        let attributes = metadata.meta.attributes();
+    let len = metadata.len();
+    let mut result = SmallVec::with_capacity(len);
+    for i in 0..len {
+        let closure = unsafe { closures.get_unchecked(i) };
+        let metadata = unsafe { metadata.get_unchecked(i) };
+        let damage_type = metadata.damage_type;
+        let attributes = metadata.attributes;
         let modifier = match damage_type {
             DamageType::Physical => modifiers.physical_mod,
             DamageType::Magic => modifiers.magic_mod,
@@ -489,8 +476,8 @@ pub fn eval_damage<const N: usize, T>(
             _ => 1.0,
         } * modifiers.global_mod;
 
-        let minimum_damage = (modifier * (closure.minimum_damage)(metadata.level, ctx)) as i32;
-        let maximum_damage = (modifier * (closure.maximum_damage)(metadata.level, ctx)) as i32;
+        let minimum_damage = (modifier * (closure.minimum_damage)(ctx)) as i32;
+        let maximum_damage = (modifier * (closure.maximum_damage)(ctx)) as i32;
 
         let sum = minimum_damage + minimum_damage;
         match attributes {
@@ -516,8 +503,8 @@ pub fn eval_damage<const N: usize, T>(
 }
 
 pub fn eval_attacks(ctx: &EvalContext, mut onhit_damage: RangeDamage) -> Attacks {
-    let basic_attack_damage = (BASIC_ATTACK.minimum_damage)(0, ctx) as i32;
-    let critical_strike_damage = (CRITICAL_STRIKE.minimum_damage)(0, ctx) as i32;
+    let basic_attack_damage = (BASIC_ATTACK.minimum_damage)(ctx) as i32;
+    let critical_strike_damage = (CRITICAL_STRIKE.minimum_damage)(ctx) as i32;
 
     onhit_damage.minimum_damage += basic_attack_damage;
     onhit_damage.maximum_damage += critical_strike_damage;
@@ -546,7 +533,13 @@ pub fn get_damages(
             if data.$name.closures.is_empty() {
                 SmallVec::new()
             } else {
-                eval_damage(&eval_ctx, &mut onhit, &data.$name, modifiers)
+                eval_damage(
+                    &eval_ctx,
+                    &mut onhit,
+                    &data.$name.metadata,
+                    &data.$name.closures,
+                    modifiers,
+                )
             }
         };
     }

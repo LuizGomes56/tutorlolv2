@@ -349,15 +349,15 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
     }
 
     let current_player_items = items_slice_to_set_u32(&current_player_items);
+    let current_player_attack_type = current_player_cache.attack_type;
 
     let eval_data = DamageEvalData {
-        abilities: get_abilities_data(current_player_cache.abilities, ability_levels, level),
-        items: get_items_data(
-            &current_player_items,
-            current_player_cache.attack_type,
-            level,
-        ),
-        runes: get_runes_data(&current_player_runes, level),
+        abilities: ConstDamageKind {
+            metadata: current_player_cache.metadata,
+            closures: current_player_cache.closures,
+        },
+        items: get_items_data(&current_player_items, current_player_attack_type),
+        runes: get_runes_data(&current_player_runes, current_player_attack_type),
     };
 
     let shred = ResistShred {
@@ -371,6 +371,7 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
         current_stats: champion_stats.into(),
         bonus_stats: current_player_bonus_stats,
         base_stats: current_player_base_stats,
+        ability_levels,
         level,
     };
 

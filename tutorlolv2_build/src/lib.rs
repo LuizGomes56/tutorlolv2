@@ -1,7 +1,7 @@
 mod scripts;
 
 use scripts::*;
-use tutorlolv2_fmt::{encode_brotli_11, highlight_rust, invoke_rustfmt};
+use tutorlolv2_fmt::encode_brotli_11;
 use tutorlolv2_types::AbilityLike;
 
 const ONHIT_EFFECT: &str = r#"<pre><span class="control">intrinsic</span> <span class="constant">ONHIT_EFFECT</span> = {
@@ -146,7 +146,7 @@ pub async fn run() {
                         format!(
                             "\"{}\"=>ChampionId::{}",
                             champion_name_alias,
-                            remove_special_chars(key)
+                            key.remove_special_chars()
                         )
                     })
                     .collect::<Vec<String>>()
@@ -160,7 +160,7 @@ pub async fn run() {
         #[repr(u8)]pub enum ChampionId {{{}}}",
         champions
             .keys()
-            .map(|key| remove_special_chars(key))
+            .map(|key| key.remove_special_chars())
             .collect::<Vec<String>>()
             .join(","),
     );
@@ -233,7 +233,7 @@ pub async fn run() {
         pub const fn from_riot_id(id:u32)->Self{{match id {{{}}}}}}}",
         items
             .iter()
-            .map(|(_, value)| remove_special_chars(&value.item_name))
+            .map(|(_, value)| value.item_name.remove_special_chars())
             .collect::<Vec<String>>()
             .join(","),
         items
@@ -241,7 +241,7 @@ pub async fn run() {
             .map(|(item_id, value)| format!(
                 "{}=>Self::{}",
                 item_id,
-                remove_special_chars(&value.item_name)
+                value.item_name.remove_special_chars()
             ))
             .chain(std::iter::once("_=>Self::YourCut".to_string(),))
             .collect::<Vec<String>>()
@@ -323,7 +323,7 @@ pub async fn run() {
         pub const fn from_riot_id(id:u32)->Self{{match id{{{}}}}}}}",
         runes
             .iter()
-            .map(|(_, value)| remove_special_chars(&value.rune_name))
+            .map(|(_, value)| value.rune_name.remove_special_chars())
             .collect::<Vec<String>>()
             .join(","),
         runes
@@ -331,11 +331,11 @@ pub async fn run() {
             .map(|(rune_id, value)| format!(
                 "{}=>Self::{}",
                 rune_id,
-                remove_special_chars(&value.rune_name)
+                value.rune_name.remove_special_chars()
             ))
             .chain(std::iter::once(format!(
                 "_=>Self::{}",
-                remove_special_chars(&runes.first().unwrap().1.rune_name)
+                runes.first().unwrap().1.rune_name.remove_special_chars()
             )))
             .collect::<Vec<String>>()
             .join(","),
@@ -405,8 +405,8 @@ pub async fn run() {
             pub const BASIC_ATTACK_OFFSET:(u32,u32)={};pub const CRITICAL_STRIKE_OFFSET:(u32,u32)={};
             pub const ONHIT_EFFECT_OFFSET:(u32,u32)={};pub const UNCOMPRESSED_MEGA_BLOCK_SIZE:usize={};",
             exported_content,
-            record_offsets!(highlight_rust(&invoke_rustfmt(BASIC_ATTACK, 60))),
-            record_offsets!(highlight_rust(&invoke_rustfmt(CRITICAL_STRIKE, 60))),
+            record_offsets!(BASIC_ATTACK.invoke_rustfmt(60).highlight_rust()),
+            record_offsets!(CRITICAL_STRIKE.invoke_rustfmt(60).highlight_rust()),
             record_offsets!(ONHIT_EFFECT),
             current_offset,
         )

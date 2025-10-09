@@ -2,8 +2,15 @@ use bincode::{Decode, Encode};
 use serde::{Deserialize, Serialize};
 use tutorlolv2_types::*;
 
+use crate::{ItemId, RuneId};
+
 #[derive(Default)]
 pub struct EvalContext {
+    pub q_level: u8,
+    pub w_level: u8,
+    pub e_level: u8,
+    pub r_level: u8,
+    pub level: f32,
     pub chogath_stacks: f32,
     pub veigar_stacks: f32,
     pub nasus_stacks: f32,
@@ -13,7 +20,6 @@ pub struct EvalContext {
     pub kindred_stacks: f32,
     pub belveth_stacks: f32,
     pub adaptative_damage: f32,
-    pub level: f32,
     pub physical_multiplier: f32,
     pub magic_multiplier: f32,
     pub steelcaps_effect: f32,
@@ -55,7 +61,7 @@ pub struct EvalContext {
     pub ad: f32,
 }
 
-#[derive(Default, Copy, Clone, Encode, Decode)]
+#[derive(Default, Copy, Serialize, Deserialize, Clone, Encode, Decode)]
 pub enum DamageType {
     Physical,
     Magic,
@@ -66,17 +72,16 @@ pub enum DamageType {
     Unknown,
 }
 
-impl ToString for DamageType {
-    fn to_string(&self) -> String {
-        let res = match self {
-            DamageType::Physical => "PHYSICAL_DAMAGE",
-            DamageType::Magic => "MAGIC_DAMAGE",
-            DamageType::Mixed => "MIXED_DAMAGE",
-            DamageType::True => "TRUE_DAMAGE",
-            DamageType::Adaptative => "ADAPTATIVE_DAMAGE",
-            DamageType::Unknown => "UNKNOWN_DAMAGE",
-        };
-        res.to_string()
+impl<T: AsRef<str>> From<T> for DamageType {
+    fn from(s: T) -> Self {
+        match s.as_ref() {
+            "PHYSICAL_DAMAGE" => DamageType::Physical,
+            "MAGIC_DAMAGE" => DamageType::Magic,
+            "MIXED_DAMAGE" => DamageType::Mixed,
+            "TRUE_DAMAGE" => DamageType::True,
+            "ADAPTATIVE_DAMAGE" => DamageType::Adaptative,
+            _ => DamageType::Unknown,
+        }
     }
 }
 
@@ -92,25 +97,58 @@ pub enum Attrs {
     AreaOnhitMax,
 }
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Serialize, Deserialize)]
 pub enum AttackType {
     Melee,
     Ranged,
 }
 
-#[derive(Encode, Copy, Clone)]
+impl<T: AsRef<str>> From<T> for AttackType {
+    fn from(s: T) -> Self {
+        match s.as_ref() {
+            "MELEE" => AttackType::Melee,
+            "RANGED" => AttackType::Ranged,
+            _ => AttackType::Melee,
+        }
+    }
+}
+
+impl<T: AsRef<str>> From<T> for AdaptativeType {
+    fn from(s: T) -> Self {
+        match s.as_ref() {
+            "PHYSICAL_DAMAGE" => AdaptativeType::Physical,
+            "MAGIC_DAMAGE" => AdaptativeType::Magic,
+            _ => AdaptativeType::Physical,
+        }
+    }
+}
+
+#[derive(Encode, Copy, Clone, Serialize, Deserialize)]
 pub enum AdaptativeType {
     Physical,
     Magic,
 }
 
-#[derive(Copy, Clone, Encode)]
+#[derive(Copy, Clone, Encode, Serialize, Deserialize)]
 pub enum Position {
     Top,
     Jungle,
     Middle,
     Bottom,
     Support,
+}
+
+impl<T: AsRef<str>> From<T> for Position {
+    fn from(s: T) -> Self {
+        match s.as_ref() {
+            "TOP" => Position::Top,
+            "JUNGLE" => Position::Jungle,
+            "MIDDLE" => Position::Middle,
+            "BOTTOM" => Position::Bottom,
+            "SUPPORT" => Position::Support,
+            _ => Position::Top,
+        }
+    }
 }
 
 impl Position {
@@ -126,12 +164,26 @@ impl Position {
     }
 }
 
+#[derive(Copy, Clone, Encode)]
+pub struct TypeMetadata<T> {
+    pub kind: T,
+    pub damage_type: DamageType,
+    pub attributes: Attrs,
+}
+
+#[derive(Copy, Clone)]
+pub struct DamageClosures {
+    pub minimum_damage: fn(&EvalContext) -> f32,
+    pub maximum_damage: fn(&EvalContext) -> f32,
+}
+
 pub struct CachedChampion {
     pub adaptative_type: AdaptativeType,
     pub attack_type: AttackType,
     pub positions: &'static [Position],
     pub stats: CachedChampionStats,
-    pub abilities: &'static [(AbilityLike, CachedChampionAbility)],
+    pub metadata: &'static [TypeMetadata<AbilityLike>],
+    pub closures: &'static [DamageClosures],
 }
 
 pub struct CachedChampionAbility {
@@ -198,15 +250,17 @@ pub struct CachedItem {
     pub prettified_stats: &'static [StatName],
     pub damage_type: DamageType,
     pub stats: CachedItemStats,
-    pub ranged: CachedItemDamages,
-    pub melee: CachedItemDamages,
+    pub metadata: TypeMetadata<ItemId>,
+    pub range_closure: DamageClosures,
+    pub melee_closure: DamageClosures,
     pub attributes: Attrs,
 }
 
 pub struct CachedRune {
     pub damage_type: DamageType,
-    pub ranged: fn(u8, &EvalContext) -> f32,
-    pub melee: fn(u8, &EvalContext) -> f32,
+    pub metadata: TypeMetadata<RuneId>,
+    pub range_closure: DamageClosures,
+    pub melee_closure: DamageClosures,
 }
 
 pub struct CachedItemStats {
@@ -229,15 +283,14 @@ pub struct CachedItemStats {
 }
 
 #[inline(always)]
-pub const fn zero(_: u8, _: &EvalContext) -> f32 {
+pub const fn zero(_: &EvalContext) -> f32 {
     0.0
 }
 
 #[derive(Copy, Clone)]
 pub struct DamageExpression {
-    pub level: u8,
     pub attributes: Attrs,
     pub damage_type: DamageType,
-    pub minimum_damage: fn(u8, &EvalContext) -> f32,
-    pub maximum_damage: fn(u8, &EvalContext) -> f32,
+    pub minimum_damage: fn(&EvalContext) -> f32,
+    pub maximum_damage: fn(&EvalContext) -> f32,
 }

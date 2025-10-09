@@ -1,17 +1,17 @@
 use bincode::{Decode, Encode};
 use tutorlolv2_gen::{AdaptativeType, SIMULATED_ITEMS};
 
-pub mod calc;
+pub mod calculator;
 pub mod helpers;
 pub mod model;
+pub mod realtime;
 pub mod riot;
-pub mod rt;
 
-pub use calc::*;
+pub use calculator::*;
 pub use helpers::*;
 pub use model::*;
+pub use realtime::*;
 pub use riot::*;
-pub use rt::*;
 
 #[derive(Encode, Decode, Clone, Copy)]
 pub struct AbilityLevels {
@@ -79,8 +79,13 @@ pub struct ResistValue {
 pub struct RiotFormulas;
 
 impl RiotFormulas {
-    pub const fn stat_growth(base: f32, growth_per_level: f32, level: u8) -> f32 {
-        base + growth_per_level * (level as f32 - 1.0) * (0.7025 + 0.0175 * (level as f32 - 1.0))
+    const fn growth(level: u8) -> f32 {
+        let factor = level as f32 - 1.0;
+        factor * (0.7025 + 0.0175 * factor)
+    }
+
+    pub const fn stat_growth(base: f32, per_level: f32, growth_factor: f32) -> f32 {
+        base + per_level * growth_factor
     }
 
     pub fn percent_value(from_vec: &[f32]) -> f32 {
