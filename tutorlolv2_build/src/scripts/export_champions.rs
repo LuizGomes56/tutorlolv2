@@ -40,6 +40,7 @@ pub enum Attrs {
 
 #[derive(Deserialize)]
 pub struct Ability {
+    pub name: String,
     pub damage_type: String,
     #[serde(default)]
     pub attributes: Attrs,
@@ -128,19 +129,18 @@ fn get_abilities_decl(
 
         let formatter = |expr: &[String], target: &mut String| {
             if expr.is_empty() {
-                "zero".to_string();
+                target.push_str("zero");
             } else {
                 let transformed = expr
                     .iter()
                     .map(|dmg| transform_expr(&clean_math_expr(&dmg)))
                     .collect::<Vec<(String, bool)>>();
-                let needs_ctx = transformed.iter().any(|&(_, changed)| changed);
-                let ctx_param = if needs_ctx { "ctx" } else { "_" };
-                target.push_str(&format!(
-                    "|{}| {{ match {}_level {{",
-                    name.chars().next().unwrap().to_lowercase(),
-                    ctx_param
-                ));
+                let ability_type = name.chars().next().unwrap();
+                let ctx_matcher = match ability_type {
+                    'P' => "level as u8".into(),
+                    _ => format!("{}_level", ability_type.to_lowercase()),
+                };
+                target.push_str(&format!("|ctx| {{ match ctx.{ctx_matcher} {{"));
                 for (i, (new_expr, _)) in transformed.into_iter().enumerate() {
                     target.push_str(&format!("{} => {},", i + 1, new_expr.to_lowercase()));
                 }
@@ -152,29 +152,31 @@ fn get_abilities_decl(
         formatter(&ability.maximum_damage, &mut maximum_damage);
 
         let const_decl = format!(
-            "static {champion_name}_{name}: StaticAbility {{
+            "static {champion_name}_{name}: Intrinsic = Intrinsic {{
+                name: {ability_name:?},
                 damage_type: DamageType::{damage_type},
-                attributes: Attributes::{attributes:?},
+                attributes: Attrs::{attributes:?},
                 minimum_damage: {minimum_damage},
                 maximum_damage: {maximum_damage}
-            }}",
+            }};",
+            ability_name = ability.name,
             damage_type = ability.damage_type,
             attributes = ability.attributes,
         );
 
         let metadata = format!(
             "TypeMetadata {{ 
-                kind: AbilityLike::{:?}, 
+                kind: {kind}, 
                 damage_type: DamageType::{damage_type}, 
-                attributes: Attributes::{attributes:?} 
+                attributes: Attrs::{attributes:?} 
             }}",
-            name,
+            kind = AbilityLike::from_str(&name),
             damage_type = ability.damage_type,
             attributes = ability.attributes
         );
 
         let closures = format!(
-            "DamageClosure {{
+            "DamageClosures {{
                 minimum_damage: {minimum_damage},
                 maximum_damage: {maximum_damage}
             }}",
@@ -182,6 +184,7 @@ fn get_abilities_decl(
 
         result.push((name, metadata, closures, const_decl));
     }
+
     result
 }
 
@@ -207,7 +210,10 @@ pub fn export_champions() -> BTreeMap<String, ChampionDetails> {
                         name,
                         metadata,
                         closures,
-                        rustfmt_val.highlight_rust().clear_suffixes(),
+                        rustfmt_val
+                            .highlight_rust()
+                            .clear_suffixes()
+                            .replace_const(),
                     ))
                 })
                 .collect::<Vec<(String, String, String, String)>>();
@@ -224,7 +230,7 @@ pub fn export_champions() -> BTreeMap<String, ChampionDetails> {
             let constdecl = format!(
                 "pub static {champion_name_upper}: CachedChampion = CachedChampion {{
                     adaptative_type: AdaptativeType::{adaptative_type},
-                    attack_type: AdaptativeType::{attack_type},
+                    attack_type: AttackType::{attack_type},
                     positions: &[{positions}],
                     metadata: &[{metadata}],
                     closures: &[{closures}],

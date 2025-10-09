@@ -13,10 +13,15 @@ pub fn transform_expr(expr: &str) -> (String, bool) {
 
 #[derive(Deserialize)]
 pub struct Positions {
+    #[serde(default)]
     pub jungle: (Vec<String>, Vec<String>),
+    #[serde(default)]
     pub top: (Vec<String>, Vec<String>),
+    #[serde(default)]
     pub mid: (Vec<String>, Vec<String>),
+    #[serde(default)]
     pub adc: (Vec<String>, Vec<String>),
+    #[serde(default)]
     pub support: (Vec<String>, Vec<String>),
 }
 

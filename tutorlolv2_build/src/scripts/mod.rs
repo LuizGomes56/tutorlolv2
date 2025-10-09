@@ -17,20 +17,18 @@ pub use tutorlolv2_fmt::*;
 pub use utils::*;
 
 pub static CRITICAL_STRIKE: &str = r#"pub static CRITICAL_STRIKE: DamageExpression = DamageExpression {
-    level: 0,
     attributes: Attrs::OnhitMax,
     damage_type: DamageType::Physical,
-    minimum_damage: |_, ctx| {
+    minimum_damage: |ctx| {
         ctx.ad * ctx.crit_damage / 100.0
     },
     maximum_damage: zero,
 };"#;
 
 pub static BASIC_ATTACK: &str = r#"pub static BASIC_ATTACK: DamageExpression = DamageExpression {
-    level: 0,
     attributes: Attrs::OnhitMin,
     damage_type: DamageType::Physical,
-    minimum_damage: |_, ctx| ctx.ad,
+    minimum_damage: |ctx| ctx.ad,
     maximum_damage: zero,
 };"#;
 

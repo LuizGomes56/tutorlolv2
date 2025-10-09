@@ -3,8 +3,7 @@ use bincode::{Decode, Encode};
 use smallvec::SmallVec;
 use tinyset::SetU32;
 use tutorlolv2_gen::{
-    AbilityLike, AdaptativeType, Attrs, ChampionId, DamageType, EvalContext, ItemId, Position,
-    RuneId,
+    AbilityLike, AdaptativeType, ChampionId, DamageClosures, ItemId, Position, RuneId, TypeMetadata,
 };
 
 #[derive(Encode, PartialEq, Clone, Copy)]
@@ -50,21 +49,14 @@ pub struct Attacks {
     pub onhit_damage: RangeDamage,
 }
 
-#[derive(Encode)]
-pub struct TypeMetadata<T> {
-    pub kind: T,
-    pub damage_type: DamageType,
-    pub attributes: Attrs,
-}
-
-pub struct DamageClosure {
-    pub minimum_damage: fn(&EvalContext) -> f32,
-    pub maximum_damage: fn(&EvalContext) -> f32,
+pub struct ConstDamageKind<T: 'static> {
+    pub metadata: &'static [TypeMetadata<T>],
+    pub closures: &'static [DamageClosures],
 }
 
 pub struct DamageKind<const N: usize, T> {
     pub metadata: SmallVec<[TypeMetadata<T>; N]>,
-    pub closures: SmallVec<[DamageClosure; N]>,
+    pub closures: SmallVec<[DamageClosures; N]>,
 }
 
 #[derive(Encode)]
@@ -72,7 +64,7 @@ pub struct Realtime<'a> {
     pub current_player: CurrentPlayer<'a>,
     pub enemies: SmallVec<[Enemy<'a>; L_TEAM]>,
     pub scoreboard: SmallVec<[Scoreboard<'a>; L_PLYR]>,
-    pub abilities_meta: SmallVec<[TypeMetadata<AbilityLike>; L_ABLT]>,
+    pub abilities_meta: &'static [TypeMetadata<AbilityLike>],
     pub items_meta: SmallVec<[TypeMetadata<ItemId>; L_ITEM]>,
     pub runes_meta: SmallVec<[TypeMetadata<RuneId>; L_RUNE]>,
     pub siml_meta: [TypeMetadata<ItemId>; L_SIML],
@@ -150,7 +142,7 @@ pub struct SimpleStats<T> {
 }
 
 pub struct DamageEvalData {
-    pub abilities: DamageKind<L_ABLT, AbilityLike>,
+    pub abilities: ConstDamageKind<AbilityLike>,
     pub items: DamageKind<L_ITEM, ItemId>,
     pub runes: DamageKind<L_RUNE, RuneId>,
 }
@@ -264,7 +256,7 @@ pub struct OutputGame {
     pub current_player: OutputCurrentPlayer,
     pub enemies: SmallVec<[OutputEnemy; L_CENM]>,
     pub tower_damages: [i32; L_TWRD],
-    pub abilities_meta: SmallVec<[TypeMetadata<AbilityLike>; L_ABLT]>,
+    pub abilities_meta: &'static [TypeMetadata<AbilityLike>],
     pub items_meta: SmallVec<[TypeMetadata<ItemId>; L_ITEM]>,
     pub runes_meta: SmallVec<[TypeMetadata<RuneId>; L_RUNE]>,
 }

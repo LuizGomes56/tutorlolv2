@@ -24,16 +24,16 @@ pub fn export_runes() -> Vec<(u32, RuneDetails)> {
 
             let metadata = format!(
                 "TypeMetadata {{
-                    kind: RuneId::{rune_name},
+                    kind: RuneId::{},
                     damage_type: DamageType::{damage_type},
-                    attributes: Attributes::None
+                    attributes: Attrs::None
                 }}",
-                rune_name = rune.name.remove_special_chars(),
+                rune.name.remove_special_chars(),
             );
 
             let make_closure = |expr: (String, bool)| {
                 format!(
-                    "DamageClosure {{
+                    "DamageClosures {{
                         minimum_damage: |{}| {},
                         maximum_damage: zero,
                     }}",
@@ -52,7 +52,11 @@ pub fn export_runes() -> Vec<(u32, RuneDetails)> {
                     melee_closure: {melee_closure},
                     range_closure: {range_closure},
                 }};",
-                name = format_args!("{}_{}", rune.name.to_screaming_snake_case(), rune_id),
+                name = format_args!(
+                    "{}_{}",
+                    rune.name.to_screaming_snake_case().remove_special_chars(),
+                    rune_id
+                ),
             );
 
             (
@@ -96,14 +100,15 @@ pub fn export_runes() -> Vec<(u32, RuneDetails)> {
 
         let void_metadata = format!(
             "TypeMetadata {{
-                kind: RuneId::{rune_name},
+                kind: RuneId::{name},
                 damage_type: DamageType::Unknown,
-                attributes: Attributes::None
+                attributes: Attrs::None
             }}",
+            name = rune_name.remove_special_chars(),
         );
 
         let void_closure = format!(
-            "DamageClosure {{
+            "DamageClosures {{
                 minimum_damage: zero,
                 maximum_damage: zero
             }}",
@@ -116,7 +121,11 @@ pub fn export_runes() -> Vec<(u32, RuneDetails)> {
                 melee_closure: {void_closure},
                 range_closure: {void_closure},    
             }};",
-            name = format_args!("{}_{}", rune_name.to_screaming_snake_case(), rune_id)
+            name = format_args!(
+                "{}_{}",
+                rune_name.to_screaming_snake_case().remove_special_chars(),
+                rune_id
+            )
         );
 
         runes.push((

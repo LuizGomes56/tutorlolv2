@@ -79,8 +79,13 @@ pub struct ResistValue {
 pub struct RiotFormulas;
 
 impl RiotFormulas {
-    pub const fn stat_growth(base: f32, growth_per_level: f32, level: u8) -> f32 {
-        base + growth_per_level * (level as f32 - 1.0) * (0.7025 + 0.0175 * (level as f32 - 1.0))
+    const fn growth(level: u8) -> f32 {
+        let factor = level as f32 - 1.0;
+        factor * (0.7025 + 0.0175 * factor)
+    }
+
+    pub const fn stat_growth(base: f32, per_level: f32, growth_factor: f32) -> f32 {
+        base + per_level * growth_factor
     }
 
     pub fn percent_value(from_vec: &[f32]) -> f32 {

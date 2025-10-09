@@ -49,7 +49,7 @@ fn get_items_decl(item_name: &str, item: &Item) -> (String, String, String) {
         "TypeMetadata {{ 
             kind: ItemId::{name}, 
             damage_type: DamageType::{damage_type}, 
-            attributes: Attributes::{attributes:?} 
+            attributes: Attrs::{attributes:?} 
         }}",
         name = item_name.remove_special_chars(),
         damage_type = item.damage_type,
@@ -76,7 +76,7 @@ fn get_items_decl(item_name: &str, item: &Item) -> (String, String, String) {
             (String::from("zero"), String::from("zero"))
         };
         format!(
-            "DamageClosure {{
+            "DamageClosures {{
                 minimum_damage: {minimum_damage},
                 maximum_damage: {maximum_damage}
             }}",
@@ -165,7 +165,7 @@ pub fn export_items() -> Vec<(u32, ItemDetails)> {
                     prettified_stats: &[{prettified_stats}],
                     damage_type: DamageType::{damage_type},
                     attributes: Attrs::{attributes:?},
-                    metadata: {metadata}
+                    metadata: {metadata},
                     range_closure: {range_closure},
                     melee_closure: {melee_closure},
                     stats: CachedItemStats {{{stats}}}
