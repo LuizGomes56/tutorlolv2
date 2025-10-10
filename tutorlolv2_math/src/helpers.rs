@@ -1,29 +1,87 @@
 use super::model::*;
-use crate::{L_ITEM, L_RUNE, L_SIML, RiotFormulas, riot::*};
+use crate::{L_ITEM, L_RUNE, L_SIML, NUMBER_OF_CHAMPIONS, RiotFormulas, riot::*};
 use smallvec::SmallVec;
 use std::mem::MaybeUninit;
 use tinyset::SetU32;
 use tutorlolv2_gen::*;
 
 pub const COUP_DE_GRACE_AND_CUTDOWN_BONUS_DAMAGE: f32 = 1.08;
-pub const MEGA_GNAR_BASE_HEALTH_BONUS: f32 = 100.0;
-pub const MEGA_GNAR_BASE_HEALTH_BONUS_PER_LEVEL: f32 = 43.0;
-pub const MEGA_GNAR_BASE_ARMOR_BONUS: f32 = 3.5;
-pub const MEGA_GNAR_BASE_ARMOR_BONUS_PER_LEVEL: f32 = 3.0;
-pub const MEGA_GNAR_BASE_MAGIC_RESIST_BONUS: f32 = 3.5;
-pub const MEGA_GNAR_BASE_MAGIC_RESIST_BONUS_PER_LEVEL: f32 = 3.5;
-pub const MEGA_GNAR_BASE_ATTACK_DAMAGE_BONUS: f32 = 6.0;
-pub const MEGA_GNAR_BASE_ATTACK_DAMAGE_BONUS_PER_LEVEL: f32 = 2.5;
 /// By 06/07/2025 Earth dragons give +5% resists
-// #![manual_impl]
+/// #![manual_impl]
 pub const EARTH_DRAGON_MULTIPLIER: f32 = 0.05;
 /// By 06/07/2025 Fire dragons give +3% bonus attack stats
-// #![manual_impl]
+/// #![manual_impl]
 pub const FIRE_DRAGON_MULTIPLIER: f32 = 0.03;
 pub const LAST_STAND_CLOSURE: fn(f32) -> f32 =
     |missing_health| 1.0 + (0.05 + 0.2 * (missing_health - 0.4)).clamp(0.0, 0.11);
 pub const GET_FIRE_MULTIPLIER: fn(u8) -> f32 = |x| 1.0 + x as f32 * FIRE_DRAGON_MULTIPLIER;
 pub const GET_EARTH_MULTIPLIER: fn(u8) -> f32 = |x| 1.0 + x as f32 * EARTH_DRAGON_MULTIPLIER;
+pub const URF_MAX_LEVEL: usize = 30;
+/// Ordered as: health, armor, magic_resist, attack_damage, mana
+pub static BASE_STATS: [[[f32; 5]; URF_MAX_LEVEL]; NUMBER_OF_CHAMPIONS] = {
+    let mut base_stats = [[[0.0; 5]; URF_MAX_LEVEL]; NUMBER_OF_CHAMPIONS];
+    let mut champion_index = 0;
+    while champion_index < NUMBER_OF_CHAMPIONS {
+        let mut level = 0;
+        while level < URF_MAX_LEVEL {
+            let stats = &INTERNAL_CHAMPIONS[champion_index].stats;
+            let growth_factor = RiotFormulas::growth(level as u8 + 1);
+            macro_rules! get_stat {
+                ($field:ident) => {
+                    RiotFormulas::stat_growth(
+                        stats.$field.flat,
+                        stats.$field.per_level,
+                        growth_factor,
+                    )
+                };
+            }
+            let health = get_stat!(health);
+            let armor = get_stat!(armor);
+            let magic_resist = get_stat!(magic_resist);
+            let attack_damage = get_stat!(attack_damage);
+            let mana = get_stat!(mana);
+            base_stats[champion_index][level] = [health, armor, magic_resist, attack_damage, mana];
+            level += 1;
+        }
+        champion_index += 1;
+    }
+    base_stats
+};
+pub const MEGA_GNAR_HEALTH: CachedChampionStatsMap = CachedChampionStatsMap {
+    flat: 100.0,
+    per_level: 43.0,
+};
+pub const MEGA_GNAR_ARMOR: CachedChampionStatsMap = CachedChampionStatsMap {
+    flat: 3.5,
+    per_level: 3.0,
+};
+pub const MEGA_GNAR_MAGIC_RESIST: CachedChampionStatsMap = CachedChampionStatsMap {
+    flat: 3.5,
+    per_level: 3.5,
+};
+pub const MEGA_GNAR_ATTACK_DAMAGE: CachedChampionStatsMap = CachedChampionStatsMap {
+    flat: 6.0,
+    per_level: 2.5,
+};
+pub static MEGA_GNAR_BASE_STATS: [[f32; 5]; URF_MAX_LEVEL] = {
+    let mut base_stats = BASE_STATS[ChampionId::Gnar as usize];
+    let mut level = 0;
+    while level < URF_MAX_LEVEL {
+        let growth_factor = RiotFormulas::growth(level as u8 + 1);
+        macro_rules! get_stat {
+            ($field:ident) => {
+                RiotFormulas::stat_growth($field.flat, $field.per_level, growth_factor)
+            };
+        }
+        base_stats[level][0] += get_stat!(MEGA_GNAR_HEALTH);
+        base_stats[level][1] += get_stat!(MEGA_GNAR_ARMOR);
+        base_stats[level][2] += get_stat!(MEGA_GNAR_MAGIC_RESIST);
+        base_stats[level][3] += get_stat!(MEGA_GNAR_ATTACK_DAMAGE);
+        base_stats[level][4] = 0.0;
+        level += 1;
+    }
+    base_stats
+};
 
 #[macro_export]
 macro_rules! bonus_stats {
@@ -38,92 +96,69 @@ macro_rules! bonus_stats {
 
 pub use bonus_stats;
 
-pub const fn base_stats_sf32(
-    stats: &CachedChampionStats,
-    level: u8,
-    is_mega_gnar: bool,
-) -> SimpleStats<f32> {
-    let growth_factor = RiotFormulas::growth(level);
-
-    let mut out = SimpleStats::<f32> {
-        health: RiotFormulas::stat_growth(stats.health.flat, stats.health.per_level, growth_factor),
-        magic_resist: RiotFormulas::stat_growth(
-            stats.magic_resist.flat,
-            stats.magic_resist.per_level,
-            growth_factor,
-        ),
-        armor: RiotFormulas::stat_growth(stats.armor.flat, stats.armor.per_level, growth_factor),
-    };
-
-    if is_mega_gnar {
-        out.health += RiotFormulas::stat_growth(
-            MEGA_GNAR_BASE_HEALTH_BONUS,
-            MEGA_GNAR_BASE_HEALTH_BONUS_PER_LEVEL,
-            growth_factor,
-        );
-        out.magic_resist += RiotFormulas::stat_growth(
-            MEGA_GNAR_BASE_MAGIC_RESIST_BONUS,
-            MEGA_GNAR_BASE_MAGIC_RESIST_BONUS_PER_LEVEL,
-            growth_factor,
-        );
-        out.armor += RiotFormulas::stat_growth(
-            MEGA_GNAR_BASE_ARMOR_BONUS,
-            MEGA_GNAR_BASE_ARMOR_BONUS_PER_LEVEL,
-            growth_factor,
-        );
-    }
-
-    out
+/// Level must be in range 1..=30. Returns the index in BASE_STATS level array.
+pub const fn clamp_level(level: u8) -> usize {
+    let min = 1;
+    let max = 30;
+    ((if level < min {
+        min
+    } else if level > max {
+        max
+    } else {
+        level
+    }) - 1) as usize
 }
 
-pub const fn base_stats_bf32(
-    stats: &CachedChampionStats,
-    level: u8,
-    is_mega_gnar: bool,
-) -> BasicStats<f32> {
-    let growth_factor = RiotFormulas::growth(level);
-
-    let mut out = BasicStats::<f32> {
-        health: RiotFormulas::stat_growth(stats.health.flat, stats.health.per_level, growth_factor),
-        magic_resist: RiotFormulas::stat_growth(
-            stats.magic_resist.flat,
-            stats.magic_resist.per_level,
-            growth_factor,
-        ),
-        armor: RiotFormulas::stat_growth(stats.armor.flat, stats.armor.per_level, growth_factor),
-        attack_damage: RiotFormulas::stat_growth(
-            stats.attack_damage.flat,
-            stats.attack_damage.per_level,
-            growth_factor,
-        ),
-        mana: RiotFormulas::stat_growth(stats.mana.flat, stats.mana.per_level, growth_factor),
-    };
-
-    if is_mega_gnar {
-        out.health += RiotFormulas::stat_growth(
-            MEGA_GNAR_BASE_HEALTH_BONUS,
-            MEGA_GNAR_BASE_HEALTH_BONUS_PER_LEVEL,
-            growth_factor,
-        );
-        out.magic_resist += RiotFormulas::stat_growth(
-            MEGA_GNAR_BASE_MAGIC_RESIST_BONUS,
-            MEGA_GNAR_BASE_MAGIC_RESIST_BONUS_PER_LEVEL,
-            growth_factor,
-        );
-        out.armor += RiotFormulas::stat_growth(
-            MEGA_GNAR_BASE_ARMOR_BONUS,
-            MEGA_GNAR_BASE_ARMOR_BONUS_PER_LEVEL,
-            growth_factor,
-        );
-        out.attack_damage += RiotFormulas::stat_growth(
-            MEGA_GNAR_BASE_ATTACK_DAMAGE_BONUS,
-            MEGA_GNAR_BASE_ATTACK_DAMAGE_BONUS_PER_LEVEL,
-            growth_factor,
-        );
-    }
-
-    out
+pub const fn get_base_stats(champion_id: ChampionId, level: u8) -> &'static [f32; 5] {
+    &BASE_STATS[champion_id as usize][clamp_level(level)]
 }
+
+impl BasicStats<f32> {
+    #[inline]
+    pub const fn from_slice(stats: &[f32; 5]) -> Self {
+        let [health, armor, magic_resist, attack_damage, mana] = *stats;
+        Self {
+            health,
+            armor,
+            magic_resist,
+            attack_damage,
+            mana,
+        }
+    }
+}
+
+impl SimpleStats<f32> {
+    #[inline]
+    pub const fn from_slice(stats: &[f32; 5]) -> Self {
+        let [health, armor, magic_resist, _, _] = *stats;
+        Self {
+            health,
+            armor,
+            magic_resist,
+        }
+    }
+}
+
+macro_rules! impl_base_stats {
+    ($struct:ident) => {
+        impl $struct<f32> {
+            pub const fn base_stats(
+                champion_id: ChampionId,
+                level: u8,
+                is_mega_gnar: bool,
+            ) -> Self {
+                if is_mega_gnar {
+                    Self::from_slice(&MEGA_GNAR_BASE_STATS[clamp_level(level)])
+                } else {
+                    Self::from_slice(get_base_stats(champion_id, level))
+                }
+            }
+        }
+    };
+}
+
+impl_base_stats!(SimpleStats);
+impl_base_stats!(BasicStats);
 
 pub fn has_item<const N: usize>(origin: &SetU32, check_for: [ItemId; N]) -> bool {
     check_for
@@ -240,7 +275,12 @@ pub fn riot_items_to_set_u32(input: &[RiotItems]) -> SetU32 {
         .collect::<SetU32>()
 }
 
-pub fn get_enemy_current_stats(stats: &mut SimpleStats<f32>, items: &SetU32, earth_dragons: u8) {
+pub fn get_enemy_current_stats(
+    stats: &mut SimpleStats<f32>,
+    items: &SetU32,
+    earth_dragons: u8,
+    bonus_mana: &mut f32,
+) {
     for item_id in items.iter() {
         let item = unsafe { INTERNAL_ITEMS.get_unchecked(item_id as usize) };
         macro_rules! add_value {
@@ -251,6 +291,7 @@ pub fn get_enemy_current_stats(stats: &mut SimpleStats<f32>, items: &SetU32, ear
         add_value!(health);
         add_value!(armor);
         add_value!(magic_resist);
+        *bonus_mana += item.stats.mana;
     }
     let dragon_mod = 1.0 + earth_dragons as f32 * EARTH_DRAGON_MULTIPLIER;
     stats.armor *= dragon_mod;
@@ -266,10 +307,42 @@ pub fn get_enemy_state(
     let mut e_current_stats = state.base_stats;
     let e_items = &state.items;
     let stacks = state.stacks as f32;
+    let mut bonus_mana = 0.0;
 
-    get_enemy_current_stats(&mut e_current_stats, &e_items, earth_dragons);
+    get_enemy_current_stats(
+        &mut e_current_stats,
+        &e_items,
+        earth_dragons,
+        &mut bonus_mana,
+    );
 
     let mut e_modifiers = DamageModifiers::default();
+
+    for item_exception in state.item_exceptions.iter() {
+        let stacks = item_exception.stacks();
+
+        if let Some(item_id) = item_exception.get_item_id() {
+            match item_id {
+                ItemId::WintersApproach | ItemId::Fimbulwinter => {
+                    e_current_stats.health += 0.15 * bonus_mana
+                }
+                ItemId::Dragonheart => {
+                    let modifier = 1.0 + 0.04 * stacks as f32;
+                    e_current_stats.health *= modifier;
+                    e_current_stats.armor *= modifier;
+                    e_current_stats.magic_resist *= modifier
+                }
+                ItemId::DemonKingsCrown => {
+                    let modifier = 1.0 + 0.01 * stacks as f32;
+                    e_current_stats.health *= modifier;
+                    e_current_stats.armor *= modifier;
+                    e_current_stats.magic_resist *= modifier
+                }
+                ItemId::WarmogsArmor => e_current_stats.health *= 1.12,
+                _ => {}
+            }
+        }
+    }
 
     match state.champion_id {
         ChampionId::Swain => {

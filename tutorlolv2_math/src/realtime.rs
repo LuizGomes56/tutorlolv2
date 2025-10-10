@@ -8,10 +8,10 @@ use tutorlolv2_gen::{
     Position, RuneId, SIMULATED_ITEMS_ENUM, TypeMetadata,
 };
 
-const LAST_STAND: u32 = RuneId::LastStand.to_riot_id_const();
-const COUP_DE_GRACE: u32 = RuneId::CoupdeGrace.to_riot_id_const();
-const CUT_DOWN: u32 = RuneId::CutDown.to_riot_id_const();
-const AXIOM_ARCANIST: u32 = RuneId::AxiomArcanist.to_riot_id_const();
+const LAST_STAND: u32 = RuneId::LastStand.to_riot_id();
+const COUP_DE_GRACE: u32 = RuneId::CoupdeGrace.to_riot_id();
+const CUT_DOWN: u32 = RuneId::CutDown.to_riot_id();
+const AXIOM_ARCANIST: u32 = RuneId::AxiomArcanist.to_riot_id();
 const SIMULATED_ITEMS_METADATA: [TypeMetadata<ItemId>; L_SIML] = {
     let mut siml_items = MaybeUninit::<[TypeMetadata<ItemId>; L_SIML]>::uninit();
     let siml_items_ptr = siml_items.as_mut_ptr();
@@ -68,10 +68,10 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
         unsafe { INTERNAL_CHAMPIONS.get_unchecked(current_player_champion_id as usize) };
 
     let is_mega_gnar =
-        current_player_champion_id == ChampionId::Gnar && champion_stats.attack_range > 275.0;
+        current_player_champion_id == ChampionId::Gnar && champion_stats.attack_range >= 400.0;
 
     let current_player_base_stats =
-        base_stats_bf32(&current_player_cache.stats, *level, is_mega_gnar);
+        BasicStats::base_stats(current_player_champion_id, *level, is_mega_gnar);
 
     let current_player_bonus_stats = bonus_stats!(
         BasicStats::<f32>(champion_stats, current_player_base_stats) {
@@ -189,7 +189,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
             }
 
             let e_items = riot_items_to_set_u32(e_riot_items);
-            let e_base_stats = base_stats_sf32(&e_cache.stats, *e_level, false);
+            let e_base_stats = SimpleStats::base_stats(e_champion_id, *e_level, false);
             let full_state = get_enemy_state(
                 EnemyState {
                     base_stats: e_base_stats,
@@ -197,6 +197,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
                     stacks: 0,
                     champion_id: e_champion_id,
                     level: *e_level,
+                    item_exceptions: &[],
                 },
                 shred,
                 enemy_earth_dragons,

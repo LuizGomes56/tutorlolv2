@@ -106,12 +106,13 @@ pub struct ResistShred {
     pub magic_penetration_percent: f32,
 }
 
-pub struct EnemyState {
+pub struct EnemyState<'a> {
     pub base_stats: SimpleStats<f32>,
     pub items: SetU32,
     pub stacks: u32,
     pub champion_id: ChampionId,
     pub level: u8,
+    pub item_exceptions: &'a [ValueException],
 }
 
 #[derive(Copy, Clone)]
@@ -171,25 +172,66 @@ pub struct Damages {
     pub runes: SmallVec<[RangeDamage; L_RUNE]>,
 }
 
-#[derive(Decode)]
-pub struct StackExceptionKind<T> {
-    pub kind: T,
-    pub stacks: u16,
-    pub offset: u8,
-}
+#[derive(Decode, Copy, Clone)]
+#[repr(transparent)]
+pub struct ValueException(u32);
 
-#[derive(Decode)]
-pub enum StackException {
-    Item(StackExceptionKind<ItemId>),
-    Rune(StackExceptionKind<RuneId>),
-    Champion(StackExceptionKind<ChampionId>),
+impl ValueException {
+    pub const DISC_BITS: u32 = Self::find_disc_bits(NUMBER_OF_ITEMS as u32, NUMBER_OF_RUNES as u32);
+    pub const VAL_BITS: u32 = 32 - Self::DISC_BITS;
+    pub const VAL_MASK: u32 = (1u32 << Self::VAL_BITS) - 1;
+    pub const DISC_MASK: u32 = !Self::VAL_MASK;
+    pub const DISC_LOW_MASK: u32 = (1u32 << Self::DISC_BITS) - 1;
+
+    const fn find_disc_bits(a: u32, b: u32) -> u32 {
+        u32::BITS - if a > b { a } else { b }.leading_zeros()
+    }
+
+    pub const fn stacks(&self) -> u32 {
+        self.0 & Self::VAL_MASK
+    }
+
+    const fn enum_id(&self) -> u16 {
+        ((self.0 >> Self::VAL_BITS) & ((1u32 << Self::DISC_BITS) - 1)) as u16
+    }
+
+    pub const fn get_rune_id(&self) -> Option<RuneId> {
+        let disc = self.enum_id();
+        if disc < NUMBER_OF_RUNES as u16 {
+            unsafe { Some(std::mem::transmute::<u8, RuneId>(disc as u8)) }
+        } else {
+            None
+        }
+    }
+
+    pub const fn get_item_id(&self) -> Option<ItemId> {
+        let disc = self.enum_id();
+        if disc < NUMBER_OF_ITEMS as u16 {
+            unsafe { Some(std::mem::transmute::<u16, ItemId>(disc)) }
+        } else {
+            None
+        }
+    }
+
+    const fn truncate_value(v: u32) -> u32 {
+        v & Self::VAL_MASK
+    }
+
+    pub const fn pack_rune_id(r: RuneId, v: u32) -> Self {
+        let disc = (r as u32) & Self::DISC_LOW_MASK;
+        Self((disc << Self::VAL_BITS) | Self::truncate_value(v))
+    }
+
+    pub const fn pack_item_id(i: ItemId, v: u32) -> Self {
+        let disc = (i as u32) & Self::DISC_LOW_MASK;
+        Self((disc << Self::VAL_BITS) | Self::truncate_value(v))
+    }
 }
 
 #[derive(Decode)]
 pub struct InputGame {
     pub active_player: InputActivePlayer,
     pub enemy_players: SmallVec<[InputMinData<SimpleStats<i32>>; L_CENM]>,
-    pub stack_exceptions: SmallVec<[StackException; L_STCK]>,
     pub ally_dragons: Dragons,
     pub enemy_earth_dragons: u8,
     // pub padding: u32 + u8,
@@ -198,6 +240,7 @@ pub struct InputGame {
 #[derive(Decode)]
 pub struct InputActivePlayer {
     pub runes: SmallVec<[RuneId; L_RUNE]>,
+    pub rune_exceptions: SmallVec<[ValueException; L_RUNE]>,
     pub abilities: AbilityLevels,
     pub data: InputMinData<Stats<i32>>,
 }
@@ -206,6 +249,7 @@ pub struct InputActivePlayer {
 pub struct InputMinData<T> {
     pub stats: T,
     pub items: SmallVec<[ItemId; L_ITEM]>,
+    pub item_exceptions: SmallVec<[ValueException; L_ITEM]>,
     pub stacks: u32,
     pub level: u8,
     pub infer_stats: bool,

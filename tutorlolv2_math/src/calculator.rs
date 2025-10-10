@@ -1,5 +1,5 @@
 use super::{helpers::*, model::*};
-use crate::{AbilityLevels, L_CENM, L_MSTR, L_STCK, L_TWRD, RiotFormulas, riot::*};
+use crate::{AbilityLevels, L_CENM, L_ITEM, L_MSTR, L_RUNE, L_TWRD, RiotFormulas, riot::*};
 use smallvec::SmallVec;
 use std::mem::MaybeUninit;
 use tinyset::SetU32;
@@ -63,219 +63,247 @@ fn infer_champion_stats(items: &[ItemId], dragons: Dragons) -> Stats<f32> {
     stats
 }
 
-pub struct AssignExceptionData<'a> {
+pub struct ChampionExceptionData<'a> {
     pub ability_levels: AbilityLevels,
+    pub stacks: u32,
     pub current_player_stats: &'a mut Stats<f32>,
-    pub current_player_bonus_stats: &'a mut BasicStats<f32>,
-    pub enemy_players: &'a mut [InputMinData<SimpleStats<i32>>],
+}
+
+fn assign_champion_exceptions(champion_id: ChampionId, data: ChampionExceptionData) {
+    let ChampionExceptionData {
+        ability_levels,
+        stacks,
+        current_player_stats,
+    } = data;
+    match champion_id {
+        ChampionId::Veigar => current_player_stats.ability_power += stacks as f32,
+        ChampionId::Swain => current_player_stats.health += (12 * stacks) as f32,
+        ChampionId::Chogath => {
+            current_player_stats.health +=
+                (stacks * 80 + 40 * ability_levels.r.clamp(0, 3) as u32) as f32
+        }
+        ChampionId::Sion => current_player_stats.health += stacks as f32,
+        ChampionId::Darius => {
+            current_player_stats.armor_penetration_percent = RiotFormulas::percent_value(&[
+                current_player_stats.armor_penetration_percent,
+                (15 + 5 * ability_levels.e) as f32,
+            ])
+        }
+        ChampionId::Pantheon => {
+            current_player_stats.armor_penetration_percent = RiotFormulas::percent_value(&[
+                current_player_stats.armor_penetration_percent,
+                (10 * ability_levels.r) as f32,
+            ])
+        }
+        ChampionId::Nilah => {
+            current_player_stats.armor_penetration_percent = RiotFormulas::percent_value(&[
+                current_player_stats.armor_penetration_percent,
+                current_player_stats.crit_chance / 3.0,
+            ])
+        }
+        ChampionId::Mordekaiser => {
+            current_player_stats.magic_penetration_percent = RiotFormulas::percent_value(&[
+                current_player_stats.magic_penetration_percent,
+                2.5 + 2.5 * ability_levels.e as f32,
+            ])
+        }
+        _ => {}
+    };
+}
+
+pub struct RuneExceptionData<'a> {
+    pub current_player_stats: &'a mut Stats<f32>,
     pub attack_type: AttackType,
     pub adaptative_type: AdaptativeType,
     pub level: u8,
 }
 
-fn assign_exceptions(data: AssignExceptionData, exceptions: SmallVec<[StackException; L_STCK]>) {
-    let AssignExceptionData {
-        ability_levels,
+fn assign_rune_exceptions(data: RuneExceptionData, exceptions: SmallVec<[ValueException; L_RUNE]>) {
+    let RuneExceptionData {
         current_player_stats,
-        current_player_bonus_stats,
-        enemy_players,
         attack_type,
         adaptative_type,
         level,
     } = data;
 
-    macro_rules! add_self {
-        ($field:ident, $stat:expr) => {{
-            current_player_stats.$field += $stat;
-            current_player_bonus_stats.$field += $stat;
+    for rune_exception in exceptions {
+        let stacks = rune_exception.stacks();
+        if let Some(rune_id) = rune_exception.get_rune_id() {
+            match rune_id {
+                RuneId::LethalTempo => match attack_type {
+                    AttackType::Melee => {
+                        current_player_stats.attack_speed +=
+                            (stacks as f32) * (5.0 + 11.0 / 17.0 * (level - 1) as f32);
+                    }
+                    AttackType::Ranged => {
+                        current_player_stats.attack_speed +=
+                            (stacks as f32) * (3.6 + 4.4 / 17.0 * (level - 1) as f32);
+                    }
+                },
+                RuneId::Conqueror => {
+                    let formula: f32 = (stacks as f32) * (1.8 + 2.2 / 17.0 * (level - 1) as f32);
+                    match adaptative_type {
+                        AdaptativeType::Physical => {
+                            current_player_stats.attack_damage += (0.6 * formula) as f32;
+                        }
+                        AdaptativeType::Magic => {
+                            current_player_stats.ability_power += formula as f32;
+                        }
+                    }
+                }
+                RuneId::EyeballCollection | RuneId::GhostPoro | RuneId::ZombieWard => {
+                    match adaptative_type {
+                        AdaptativeType::Physical => {
+                            current_player_stats.attack_damage += match stacks {
+                                ..10 => 1.2 * (stacks as f32),
+                                10.. => 18.0,
+                            };
+                        }
+                        AdaptativeType::Magic => {
+                            current_player_stats.ability_power += match stacks {
+                                ..10 => (stacks << 1) as f32,
+                                10.. => 30.0,
+                            };
+                        }
+                    }
+                }
+                RuneId::Waterwalking => {
+                    current_player_stats.ability_power += (12 + level) as f32;
+                    current_player_stats.attack_damage += 7.2 + 0.6 * level as f32
+                }
+                RuneId::AbsoluteFocus => match adaptative_type {
+                    AdaptativeType::Physical => {
+                        current_player_stats.attack_damage +=
+                            1.8 + 16.2 / 17.0 * (level - 1) as f32;
+                    }
+                    AdaptativeType::Magic => {
+                        current_player_stats.ability_power +=
+                            3.0 + 27.0 / 17.0 * (level - 1) as f32;
+                    }
+                },
+                RuneId::GatheringStorm => {
+                    let formula = ((stacks * (stacks + 1)) << 2) as f32;
+                    match adaptative_type {
+                        AdaptativeType::Physical => {
+                            current_player_stats.attack_damage += 0.6 * formula;
+                        }
+                        AdaptativeType::Magic => {
+                            current_player_stats.ability_power += formula;
+                        }
+                    }
+                }
+                RuneId::AdaptiveForce => match adaptative_type {
+                    AdaptativeType::Physical => {
+                        current_player_stats.attack_damage += 5.4 * (stacks as f32);
+                    }
+                    AdaptativeType::Magic => {
+                        current_player_stats.ability_power += 9.0 * stacks as f32;
+                    }
+                },
+                RuneId::Health => current_player_stats.health += 65.0 * (stacks as f32),
+                RuneId::HealthScaling => {
+                    current_player_stats.health += 10.0 * level as f32 * (stacks as f32)
+                }
+                RuneId::AttackSpeed => current_player_stats.attack_speed += 10.0 * (stacks as f32),
+                _ => {}
+            }
+        }
+    }
+}
+
+pub struct ItemExceptionData<'a> {
+    pub current_player_stats: &'a mut Stats<f32>,
+    pub current_player_bonus_stats: &'a mut BasicStats<f32>,
+}
+
+fn assign_item_exceptions(data: ItemExceptionData, exceptions: SmallVec<[ValueException; L_ITEM]>) {
+    let ItemExceptionData {
+        current_player_stats,
+        current_player_bonus_stats,
+    } = data;
+
+    macro_rules! change_stat {
+        ($field:ident $op:tt $stat:expr) => {{
+            current_player_stats.$field $op $stat;
+            current_player_bonus_stats.$field $op $stat;
         }};
     }
 
-    for stack_exception in exceptions.into_iter() {
-        match stack_exception {
-            StackException::Champion(exception) => {
-                let stacks = exception.stacks;
+    for item_exception in exceptions.into_iter() {
+        let stacks = item_exception.stacks();
 
-                match exception.kind {
-                    ChampionId::Veigar => current_player_stats.ability_power += stacks as f32,
-                    ChampionId::Swain => current_player_stats.health += (12 * stacks) as f32,
-                    ChampionId::Chogath => {
-                        current_player_stats.health +=
-                            (stacks * 80 + 40 * ability_levels.r.clamp(0, 3) as u16) as f32
-                    }
-                    ChampionId::Sion => current_player_stats.health += stacks as f32,
-                    ChampionId::Darius => {
-                        current_player_stats.armor_penetration_percent =
-                            RiotFormulas::percent_value(&[
-                                current_player_stats.armor_penetration_percent,
-                                (15 + 5 * ability_levels.e) as f32,
-                            ])
-                    }
-                    ChampionId::Pantheon => {
-                        current_player_stats.armor_penetration_percent =
-                            RiotFormulas::percent_value(&[
-                                current_player_stats.armor_penetration_percent,
-                                (10 * ability_levels.r) as f32,
-                            ])
-                    }
-                    ChampionId::Nilah => {
-                        current_player_stats.armor_penetration_percent =
-                            RiotFormulas::percent_value(&[
-                                current_player_stats.armor_penetration_percent,
-                                current_player_stats.crit_chance / 3.0,
-                            ])
-                    }
-                    ChampionId::Mordekaiser => {
-                        current_player_stats.magic_penetration_percent =
-                            RiotFormulas::percent_value(&[
-                                current_player_stats.magic_penetration_percent,
-                                2.5 + 2.5 * ability_levels.e as f32,
-                            ])
-                    }
-                    _ => {}
-                }
-            }
-            StackException::Item(exception) => {
-                let stacks = exception.stacks;
-                let e_stats = enemy_players.get_mut(exception.offset as usize);
+        if let Some(item_id) = item_exception.get_item_id() {
+            match item_id {
+                ItemId::WarmogsArmor => current_player_stats.health *= 1.12,
+                ItemId::DarkSeal => current_player_stats.ability_power += (stacks << 2) as f32,
+                ItemId::Dragonheart => {
+                    let modifier = 1.0 + 0.04 * stacks as f32;
+                    current_player_stats.ability_power *= modifier;
+                    current_player_stats.attack_speed *= modifier;
 
-                macro_rules! exc_add {
-                    ($field:ident, $stat:expr) => {
-                        if let Some(e_st) = e_stats {
-                            e_st.stats.$field += $stat as i32;
-                        } else {
-                            current_player_stats.$field += $stat;
-                            current_player_bonus_stats.$field += $stat;
-                        }
-                    };
+                    change_stat!(attack_damage *= modifier);
+                    change_stat!(health *= modifier);
+                    change_stat!(armor *= modifier);
+                    change_stat!(magic_resist *= modifier)
                 }
+                ItemId::DemonKingsCrown => {
+                    let modifier = 1.0 + 0.01 * stacks as f32;
+                    current_player_stats.ability_power *= modifier;
+                    current_player_stats.attack_speed *= modifier;
 
-                match exception.kind {
-                    ItemId::DarkSeal => {
-                        current_player_stats.ability_power += (stacks.max(1) << 2) as f32
-                    }
-                    ItemId::MejaisSoulstealer => {
-                        current_player_stats.ability_power += (5 * stacks.max(1)) as f32
-                    }
-                    ItemId::RabadonsDeathcap => current_player_stats.ability_power *= 1.3,
-                    ItemId::WoogletsWitchcap => current_player_stats.ability_power *= 1.5,
-                    ItemId::ArchangelsStaff => {
-                        current_player_stats.ability_power += 0.01 * current_player_bonus_stats.mana
-                    }
-                    ItemId::SeraphsEmbrace => {
-                        current_player_stats.ability_power += 0.02 * current_player_bonus_stats.mana
-                    }
-                    ItemId::Riftmaker | ItemId::DemonicEmbrace => {
-                        current_player_stats.ability_power +=
-                            0.02 * (current_player_bonus_stats.health + current_player_stats.health)
-                    }
-                    ItemId::BlackCleaver => {
-                        current_player_stats.armor_penetration_percent =
-                            RiotFormulas::percent_value(&[
-                                current_player_stats.armor_penetration_percent,
-                                (6 * stacks) as f32,
-                            ])
-                    }
-                    ItemId::Hubris => add_self!(attack_damage, (15 + stacks.max(1) << 1) as f32),
-                    ItemId::OverlordsBloodmail => add_self!(
-                        attack_damage,
-                        0.025 * (current_player_bonus_stats.health + 500.0)
-                    ),
-                    ItemId::Manamune | ItemId::Muramana => {
-                        add_self!(attack_damage, 0.025 * current_player_bonus_stats.mana)
-                    }
-                    ItemId::WintersApproach => {
-                        exc_add!(health, 0.15 * (current_player_bonus_stats.health + 500.0))
-                    }
-                    ItemId::Fimbulwinter => {
-                        exc_add!(health, 0.15 * (current_player_bonus_stats.health + 860.0))
-                    }
-                    _ => {}
+                    change_stat!(attack_damage *= modifier);
+                    change_stat!(health *= modifier);
+                    change_stat!(armor *= modifier);
+                    change_stat!(magic_resist *= modifier)
                 }
-            }
-            StackException::Rune(exception) => {
-                let stacks = exception.stacks;
-                match exception.kind {
-                    RuneId::LethalTempo => match attack_type {
-                        AttackType::Melee => {
-                            current_player_stats.attack_speed +=
-                                (stacks as f32) * (5.0 + 11.0 / 17.0 * (level - 1) as f32);
-                        }
-                        AttackType::Ranged => {
-                            current_player_stats.attack_speed +=
-                                (stacks as f32) * (3.6 + 4.4 / 17.0 * (level - 1) as f32);
-                        }
-                    },
-                    RuneId::Conqueror => {
-                        let formula: f32 =
-                            (stacks as f32) * (1.8 + 2.2 / 17.0 * (level - 1) as f32);
-                        match adaptative_type {
-                            AdaptativeType::Physical => {
-                                current_player_stats.attack_damage += (0.6 * formula) as f32;
-                            }
-                            AdaptativeType::Magic => {
-                                current_player_stats.ability_power += formula as f32;
-                            }
-                        }
-                    }
-                    RuneId::EyeballCollection | RuneId::GhostPoro | RuneId::ZombieWard => {
-                        match adaptative_type {
-                            AdaptativeType::Physical => {
-                                current_player_stats.attack_damage += match stacks {
-                                    0..10 => 1.2 * (stacks as f32),
-                                    _ => 18.0,
-                                };
-                            }
-                            AdaptativeType::Magic => {
-                                current_player_stats.ability_power += match stacks {
-                                    0..10 => (stacks << 1) as f32,
-                                    _ => 30.0,
-                                };
-                            }
-                        }
-                    }
-                    RuneId::Waterwalking => {
-                        current_player_stats.ability_power += (12 + level) as f32;
-                        current_player_stats.attack_damage += 7.2 + 0.6 * level as f32
-                    }
-                    RuneId::AbsoluteFocus => match adaptative_type {
-                        AdaptativeType::Physical => {
-                            current_player_stats.attack_damage +=
-                                1.8 + 16.2 / 17.0 * (level - 1) as f32;
-                        }
-                        AdaptativeType::Magic => {
-                            current_player_stats.ability_power +=
-                                3.0 + 27.0 / 17.0 * (level - 1) as f32;
-                        }
-                    },
-                    RuneId::GatheringStorm => {
-                        let formula = ((stacks * (stacks + 1)) << 2) as f32;
-                        match adaptative_type {
-                            AdaptativeType::Physical => {
-                                current_player_stats.attack_damage += 0.6 * formula;
-                            }
-                            AdaptativeType::Magic => {
-                                current_player_stats.ability_power += formula;
-                            }
-                        }
-                    }
-                    RuneId::AdaptiveForce => match adaptative_type {
-                        AdaptativeType::Physical => {
-                            current_player_stats.attack_damage += 5.4 * (stacks as f32);
-                        }
-                        AdaptativeType::Magic => {
-                            current_player_stats.ability_power += 9.0 * stacks as f32;
-                        }
-                    },
-                    RuneId::Health => current_player_stats.health += 65.0 * (stacks as f32),
-                    RuneId::HealthScaling => {
-                        current_player_stats.health += 10.0 * level as f32 * (stacks as f32)
-                    }
-                    RuneId::AttackSpeed => {
-                        current_player_stats.attack_speed += 10.0 * (stacks as f32)
-                    }
-                    _ => {}
+                ItemId::RiteofRuin => current_player_stats.crit_chance += stacks as f32 * 2.5,
+                ItemId::ElixirofIron => change_stat!(health += 300.0),
+                ItemId::JuiceofVitality => {
+                    change_stat!(health += 300.0 + 0.1 * current_player_stats.health)
                 }
+                ItemId::JuiceofPower => {
+                    change_stat!(attack_damage += 18.0 + 0.1 * current_player_stats.attack_damage);
+                    current_player_stats.ability_power +=
+                        30.0 + 0.1 * current_player_stats.ability_power;
+                }
+                ItemId::MejaisSoulstealer => {
+                    current_player_stats.ability_power += (5 * stacks) as f32
+                }
+                ItemId::RabadonsDeathcap => current_player_stats.ability_power *= 1.3,
+                ItemId::WoogletsWitchcap => current_player_stats.ability_power *= 1.5,
+                ItemId::ArchangelsStaff => {
+                    current_player_stats.ability_power += 0.01 * current_player_bonus_stats.mana
+                }
+                ItemId::SeraphsEmbrace => {
+                    current_player_stats.ability_power += 0.02 * current_player_bonus_stats.mana
+                }
+                ItemId::Riftmaker | ItemId::DemonicEmbrace => {
+                    current_player_stats.ability_power +=
+                        0.02 * (current_player_bonus_stats.health + current_player_stats.health)
+                }
+                ItemId::BlackCleaver => {
+                    current_player_stats.armor_penetration_percent = RiotFormulas::percent_value(&[
+                        current_player_stats.armor_penetration_percent,
+                        (6 * stacks) as f32,
+                    ])
+                }
+                ItemId::BloodlettersCurse => {
+                    current_player_stats.magic_penetration_percent = RiotFormulas::percent_value(&[
+                        current_player_stats.magic_penetration_percent,
+                        (7.5 * stacks as f32) as f32,
+                    ])
+                }
+                ItemId::Hubris => change_stat!(attack_damage += (15 + stacks << 1) as f32),
+                ItemId::OverlordsBloodmail => {
+                    change_stat!(attack_damage += 0.025 * current_player_bonus_stats.health)
+                }
+                ItemId::Manamune | ItemId::Muramana => {
+                    change_stat!(attack_damage += 0.025 * current_player_bonus_stats.mana)
+                }
+                ItemId::WintersApproach | ItemId::Fimbulwinter => {
+                    change_stat!(health += 0.15 * current_player_bonus_stats.mana)
+                }
+                _ => {}
             }
         }
     }
@@ -287,6 +315,7 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
             InputActivePlayer {
                 abilities: ability_levels,
                 runes: current_player_raw_runes,
+                rune_exceptions,
                 data:
                     InputMinData {
                         stats: champion_raw_stats_i32,
@@ -295,12 +324,12 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
                         infer_stats,
                         champion_id: current_player_champion_id,
                         is_mega_gnar,
-                        ..
+                        stacks,
+                        item_exceptions,
                     },
             },
-        mut enemy_players,
+        enemy_players,
         enemy_earth_dragons,
-        stack_exceptions,
         ally_dragons,
     } = game;
 
@@ -311,7 +340,7 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
         unsafe { INTERNAL_CHAMPIONS.get_unchecked(current_player_champion_id as usize) };
 
     let current_player_base_stats =
-        base_stats_bf32(&current_player_cache.stats, level, is_mega_gnar);
+        BasicStats::base_stats(current_player_champion_id, level, is_mega_gnar);
 
     let mut current_player_bonus_stats = bonus_stats!(
         BasicStats::<f32>(champion_raw_stats, current_player_base_stats) {
@@ -333,31 +362,48 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
         false => infer_champion_stats(&current_player_items, ally_dragons),
     };
 
-    if !stack_exceptions.is_empty() {
-        assign_exceptions(
-            AssignExceptionData {
-                ability_levels,
+    let attack_type = current_player_cache.attack_type;
+
+    assign_champion_exceptions(
+        current_player_champion_id,
+        ChampionExceptionData {
+            ability_levels,
+            stacks,
+            current_player_stats: &mut champion_stats,
+        },
+    );
+
+    if !rune_exceptions.is_empty() {
+        assign_rune_exceptions(
+            RuneExceptionData {
                 current_player_stats: &mut champion_stats,
-                current_player_bonus_stats: &mut current_player_bonus_stats,
-                enemy_players: &mut enemy_players,
-                attack_type: current_player_cache.attack_type,
                 adaptative_type,
+                attack_type,
                 level,
             },
-            stack_exceptions,
+            rune_exceptions,
+        );
+    }
+
+    if !item_exceptions.is_empty() {
+        assign_item_exceptions(
+            ItemExceptionData {
+                current_player_stats: &mut champion_stats,
+                current_player_bonus_stats: &mut current_player_bonus_stats,
+            },
+            item_exceptions,
         );
     }
 
     let current_player_items = items_slice_to_set_u32(&current_player_items);
-    let current_player_attack_type = current_player_cache.attack_type;
 
     let eval_data = DamageEvalData {
         abilities: ConstDamageKind {
             metadata: current_player_cache.metadata,
             closures: current_player_cache.closures,
         },
-        items: get_items_data(&current_player_items, current_player_attack_type),
-        runes: get_runes_data(&current_player_runes, current_player_attack_type),
+        items: get_items_data(&current_player_items, attack_type),
+        runes: get_runes_data(&current_player_runes, attack_type),
     };
 
     let shred = ResistShred {
@@ -386,12 +432,12 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
                 level: e_level,
                 champion_id: e_champion_id,
                 is_mega_gnar: e_is_mega_gnar,
+                item_exceptions: e_item_exceptions,
             } = player;
 
             let e_stats: SimpleStats<f32> = e_raw_stats.into();
-            let e_cache = unsafe { INTERNAL_CHAMPIONS.get_unchecked(e_champion_id as usize) };
             let e_items = items_slice_to_set_u32(&e_raw_items);
-            let e_base_stats = base_stats_sf32(&e_cache.stats, e_level, e_is_mega_gnar);
+            let e_base_stats = SimpleStats::base_stats(e_champion_id, e_level, e_is_mega_gnar);
             let mut full_state = get_enemy_state(
                 EnemyState {
                     base_stats: e_base_stats,
@@ -399,6 +445,7 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
                     stacks: e_stacks,
                     champion_id: e_champion_id,
                     level: e_level,
+                    item_exceptions: &e_item_exceptions,
                 },
                 shred,
                 enemy_earth_dragons,
@@ -460,9 +507,10 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
                 stacks: 0,
                 champion_id: ChampionId::Aatrox,
                 level: 0,
+                item_exceptions: &[],
             },
             shred,
-            enemy_earth_dragons,
+            0,
             true,
         );
         let eval_ctx = get_eval_ctx(&self_state, &full_state);

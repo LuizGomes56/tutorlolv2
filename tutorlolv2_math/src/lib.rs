@@ -1,5 +1,7 @@
 use bincode::{Decode, Encode};
-use tutorlolv2_gen::{AdaptativeType, SIMULATED_ITEMS};
+use tutorlolv2_gen::{
+    AdaptativeType, INTERNAL_CHAMPIONS, INTERNAL_ITEMS, INTERNAL_RUNES, SIMULATED_ITEMS,
+};
 
 pub mod calculator;
 pub mod helpers;
@@ -23,14 +25,17 @@ pub struct AbilityLevels {
 
 pub const L_SIML: usize = SIMULATED_ITEMS.len();
 pub const L_RUNE: usize = 2;
-pub const L_ITEM: usize = 4;
+pub const L_ITEM: usize = 5;
 pub const L_ABLT: usize = 7;
 pub const L_TEAM: usize = 5;
 pub const L_PLYR: usize = L_TEAM << 1;
 pub const L_MSTR: usize = 7;
 pub const L_CENM: usize = 1;
 pub const L_TWRD: usize = 6;
-pub const L_STCK: usize = 3;
+
+pub const NUMBER_OF_CHAMPIONS: usize = INTERNAL_CHAMPIONS.len();
+pub const NUMBER_OF_ITEMS: usize = INTERNAL_ITEMS.len();
+pub const NUMBER_OF_RUNES: usize = INTERNAL_RUNES.len();
 
 #[derive(Encode)]
 pub enum GameMap {
@@ -65,8 +70,9 @@ impl From<u8> for GameMap {
             21 => GameMap::NexusBlitz,
             22 => GameMap::Tft,
             30 => GameMap::Arena,
+            // Unknown
             0xFF => GameMap::Urf,
-            1 | 2 | 11 | _ => GameMap::SummonersRift,
+            /* 1 | 2 | 11 | */ _ => GameMap::SummonersRift,
         }
     }
 }

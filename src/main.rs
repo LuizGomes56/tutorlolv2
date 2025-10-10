@@ -75,24 +75,6 @@ fn api_scope() -> impl HttpServiceFactory + 'static {
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    // std::thread::Builder::new()
-    //     .stack_size(1024 * (1024 << 1))
-    //     .spawn(move || {
-    //         let file = std::fs::read("serde_test.json").unwrap();
-    //         let de = serde_json::from_slice(&file).unwrap();
-    //         let start_time = std::time::Instant::now();
-    //         let (rt, size_hint) = tutorlolv2_math::__v2::rt::realtime(&de).unwrap();
-    //         println!("Time: {}", start_time.elapsed().as_nanos());
-    //         let ser = bincode::encode_to_vec(&rt, bincode::config::standard()).unwrap();
-    //         assert_eq!(size_hint, ser.len());
-    //         println!("Size: {}", ser.len());
-    //     })
-    //     .unwrap()
-    //     .join()
-    //     .unwrap();
-
-    // return Ok(());
-
     dotenv().ok();
 
     #[cfg(feature = "dev")]
