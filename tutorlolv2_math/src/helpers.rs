@@ -5,6 +5,7 @@ use std::mem::MaybeUninit;
 use tinyset::SetU32;
 use tutorlolv2_gen::*;
 
+pub const AXIOM_ARCANIST_BONUS_DAMAGE: f32 = 1.12;
 pub const COUP_DE_GRACE_AND_CUTDOWN_BONUS_DAMAGE: f32 = 1.08;
 /// By 06/07/2025 Earth dragons give +5% resists
 /// #![manual_impl]
@@ -263,24 +264,12 @@ pub fn items_slice_to_set_u32(input: &[ItemId]) -> SetU32 {
         .collect::<SetU32>()
 }
 
-pub fn riot_items_to_set_u32(input: &[RiotItems]) -> SetU32 {
-    input
-        .iter()
-        .filter_map(|riot_item| {
-            let item_id = riot_item.item_id;
-            DAMAGING_ITEMS
-                .contains(&item_id)
-                .then_some(ItemId::from_riot_id(item_id) as u32)
-        })
-        .collect::<SetU32>()
-}
-
 pub fn get_enemy_current_stats(
     stats: &mut SimpleStats<f32>,
     items: &SetU32,
     earth_dragons: u8,
-    bonus_mana: &mut f32,
-) {
+) -> f32 {
+    let mut bonus_mana = 0.0;
     for item_id in items.iter() {
         let item = unsafe { INTERNAL_ITEMS.get_unchecked(item_id as usize) };
         macro_rules! add_value {
@@ -291,11 +280,12 @@ pub fn get_enemy_current_stats(
         add_value!(health);
         add_value!(armor);
         add_value!(magic_resist);
-        *bonus_mana += item.stats.mana;
+        bonus_mana += item.stats.mana;
     }
     let dragon_mod = 1.0 + earth_dragons as f32 * EARTH_DRAGON_MULTIPLIER;
     stats.armor *= dragon_mod;
     stats.magic_resist *= dragon_mod;
+    bonus_mana
 }
 
 pub fn get_enemy_state(
@@ -307,14 +297,8 @@ pub fn get_enemy_state(
     let mut e_current_stats = state.base_stats;
     let e_items = &state.items;
     let stacks = state.stacks as f32;
-    let mut bonus_mana = 0.0;
 
-    get_enemy_current_stats(
-        &mut e_current_stats,
-        &e_items,
-        earth_dragons,
-        &mut bonus_mana,
-    );
+    let bonus_mana = get_enemy_current_stats(&mut e_current_stats, &e_items, earth_dragons);
 
     let mut e_modifiers = DamageModifiers::default();
 
@@ -446,19 +430,6 @@ pub fn get_enemy_state(
     }
 }
 
-pub const fn get_damage_modifiers(
-    enemy_modifiers: DamageModifiers,
-    armor_mod: f32,
-    magic_mod: f32,
-) -> DamageModifiers {
-    DamageModifiers {
-        physical_mod: armor_mod * enemy_modifiers.physical_mod,
-        magic_mod: magic_mod * enemy_modifiers.magic_mod,
-        true_mod: enemy_modifiers.true_mod,
-        global_mod: enemy_modifiers.global_mod,
-    }
-}
-
 pub const fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> EvalContext {
     EvalContext {
         q_level: self_state.ability_levels.q,
@@ -528,12 +499,30 @@ pub const fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> E
     }
 }
 
-pub fn eval_damage<const N: usize, T>(
+pub trait IsAbility {
+    fn apply_modifiers(&self, _: &mut f32, _: &AbilityModifiers) {}
+}
+
+impl IsAbility for ItemId {}
+impl IsAbility for RuneId {}
+impl IsAbility for AbilityLike {
+    fn apply_modifiers(&self, modifier: &mut f32, ability_modifiers: &AbilityModifiers) {
+        match self {
+            Self::Q(_) => *modifier *= ability_modifiers.q,
+            Self::W(_) => *modifier *= ability_modifiers.w,
+            Self::E(_) => *modifier *= ability_modifiers.e,
+            Self::R(_) => *modifier *= ability_modifiers.r,
+            _ => {}
+        }
+    }
+}
+
+pub fn eval_damage<const N: usize, T: IsAbility>(
     ctx: &EvalContext,
     onhit: &mut RangeDamage,
     metadata: &[TypeMetadata<T>],
     closures: &[DamageClosures],
-    modifiers: DamageModifiers,
+    modifiers: Modifiers,
 ) -> SmallVec<[RangeDamage; N]> {
     let len = metadata.len();
     let mut result = SmallVec::with_capacity(len);
@@ -542,12 +531,17 @@ pub fn eval_damage<const N: usize, T>(
         let metadata = unsafe { metadata.get_unchecked(i) };
         let damage_type = metadata.damage_type;
         let attributes = metadata.attributes;
-        let modifier = match damage_type {
-            DamageType::Physical => modifiers.physical_mod,
-            DamageType::Magic => modifiers.magic_mod,
-            DamageType::True => modifiers.true_mod,
+
+        let mut modifier = match damage_type {
+            DamageType::Physical => modifiers.damages.physical_mod,
+            DamageType::Magic => modifiers.damages.magic_mod,
+            DamageType::True => modifiers.damages.true_mod,
             _ => 1.0,
-        } * modifiers.global_mod;
+        } * modifiers.damages.global_mod;
+
+        metadata
+            .kind
+            .apply_modifiers(&mut modifier, &modifiers.abilities);
 
         let minimum_damage = (modifier * (closure.minimum_damage)(ctx)) as i32;
         let maximum_damage = (modifier * (closure.maximum_damage)(ctx)) as i32;
@@ -595,12 +589,9 @@ pub fn eval_attacks(ctx: &EvalContext, mut onhit_damage: RangeDamage) -> Attacks
     }
 }
 
-pub fn get_damages(
-    eval_ctx: &EvalContext,
-    data: &DamageEvalData,
-    modifiers: DamageModifiers,
-) -> Damages {
+pub fn get_damages(eval_ctx: &EvalContext, data: &DamageEvalData, modifiers: Modifiers) -> Damages {
     let mut onhit = RangeDamage::default();
+
     macro_rules! eval_nonempty {
         ($name:ident) => {
             if data.$name.closures.is_empty() {
@@ -616,10 +607,12 @@ pub fn get_damages(
             }
         };
     }
+
     let abilities = eval_nonempty!(abilities);
     let items = eval_nonempty!(items);
     let runes = eval_nonempty!(runes);
     let attacks = eval_attacks(&eval_ctx, onhit);
+
     Damages {
         abilities,
         items,

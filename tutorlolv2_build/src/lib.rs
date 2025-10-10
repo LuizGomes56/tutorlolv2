@@ -228,8 +228,7 @@ pub async fn run() {
     );
     let item_id_enum = format!(
         "#[derive(Debug,Copy,Clone,Ord,Eq,PartialOrd,PartialEq,Decode,Encode)]#[repr(u16)]
-        pub enum ItemId {{{}}}impl ItemId {{pub fn to_riot_id(&self)->u32
-        {{unsafe{{*ITEM_ID_TO_RIOT_ID.get_unchecked(*self as usize)}}}}
+        pub enum ItemId {{{}}}impl ItemId {{pub const fn to_riot_id(&self)->u32{{ITEM_ID_TO_RIOT_ID[*self as usize]}}
         pub const fn from_riot_id(id:u32)->Self{{match id {{{}}}}}}}",
         items
             .iter()
@@ -318,7 +317,7 @@ pub async fn run() {
     );
     let rune_id_enum = format!(
         "#[derive(Debug,Copy,Clone,Ord,Eq,PartialOrd,PartialEq,Decode,Encode)]#[repr(u8)]pub enum RuneId {{{}}}
-        impl RuneId {{pub const fn to_riot_id(&self) -> u32 {{RUNE_ID_TO_RIOT_ID[*self as usize]}}
+        impl RuneId {{pub const fn to_riot_id(&self)->u32{{RUNE_ID_TO_RIOT_ID[*self as usize]}}
         pub const fn from_riot_id(id:u32)->Self{{match id{{{}}}}}}}",
         runes
             .iter()

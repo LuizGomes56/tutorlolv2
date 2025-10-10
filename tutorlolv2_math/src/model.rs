@@ -269,12 +269,40 @@ pub struct OutputEnemy {
     pub champion_id: ChampionId,
 }
 
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct DamageModifiers {
     pub physical_mod: f32,
     pub magic_mod: f32,
     pub true_mod: f32,
     pub global_mod: f32,
+}
+
+#[derive(Clone, Copy)]
+pub struct Modifiers {
+    pub damages: DamageModifiers,
+    pub abilities: AbilityModifiers,
+}
+
+macro_rules! impl_default {
+    ($ty:ty, $initializer:literal) => {
+        impl Default for $ty {
+            fn default() -> Self {
+                unsafe { std::mem::transmute([$initializer; size_of::<$ty>() / size_of::<f32>()]) }
+            }
+        }
+    };
+}
+
+impl_default!(DamageModifiers, 1.0f32);
+impl_default!(AbilityModifiers, 1.0f32);
+impl_default!(Modifiers, 1.0f32);
+
+#[derive(Clone, Copy)]
+pub struct AbilityModifiers {
+    pub q: f32,
+    pub w: f32,
+    pub e: f32,
+    pub r: f32,
 }
 
 #[derive(Encode)]
