@@ -85,7 +85,7 @@ impl CdnChampion {
             positions: self
                 .positions
                 .into_iter()
-                .map(|pos| Position::from(pos))
+                .map(|pos| Position::from_raw(&pos).unwrap_or_default())
                 .collect(),
             stats: self.stats,
         }

@@ -198,8 +198,8 @@ pub fn get_simulated_stats(stats: &Stats<f32>, dragons: Dragons) -> [Stats<f32>;
         add_stat!(@armor_penetration_percent);
         add_stat!(@magic_penetration_percent);
 
-        let fire_mod = GET_FIRE_MULTIPLIER(dragons.ally_fire_dragons());
-        let earth_mod = GET_EARTH_MULTIPLIER(dragons.ally_earth_dragons());
+        let fire_mod = GET_FIRE_MULTIPLIER(dragons.ally_fire_dragons);
+        let earth_mod = GET_EARTH_MULTIPLIER(dragons.ally_earth_dragons);
 
         new_stat.ability_power *= fire_mod;
         new_stat.attack_damage *= fire_mod;
@@ -282,7 +282,7 @@ pub fn get_enemy_current_stats(
         add_value!(magic_resist);
         bonus_mana += item.stats.mana;
     }
-    let dragon_mod = 1.0 + earth_dragons as f32 * EARTH_DRAGON_MULTIPLIER;
+    let dragon_mod = GET_EARTH_MULTIPLIER(earth_dragons);
     stats.armor *= dragon_mod;
     stats.magic_resist *= dragon_mod;
     bonus_mana
@@ -506,17 +506,22 @@ impl IsAbility for ItemId {}
 impl IsAbility for RuneId {}
 impl IsAbility for AbilityLike {
     fn apply_modifiers(&self, modifier: &mut f32, ability_modifiers: &AbilityModifiers) {
+        let mut modify = |ability_name: AbilityName, value: f32| {
+            if ability_name as u8 <= AbilityName::_8Min as u8 {
+                *modifier *= value
+            }
+        };
         match self {
-            Self::Q(_) => *modifier *= ability_modifiers.q,
-            Self::W(_) => *modifier *= ability_modifiers.w,
-            Self::E(_) => *modifier *= ability_modifiers.e,
-            Self::R(_) => *modifier *= ability_modifiers.r,
+            Self::Q(v) => modify(*v, ability_modifiers.q),
+            Self::W(v) => modify(*v, ability_modifiers.w),
+            Self::E(v) => modify(*v, ability_modifiers.e),
+            Self::R(v) => modify(*v, ability_modifiers.r),
             _ => {}
         }
     }
 }
 
-pub fn eval_damage<const N: usize, T: IsAbility>(
+pub fn eval_damage<const N: usize, T: IsAbility + 'static>(
     ctx: &EvalContext,
     onhit: &mut RangeDamage,
     metadata: &[TypeMetadata<T>],

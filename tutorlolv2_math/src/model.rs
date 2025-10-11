@@ -91,6 +91,7 @@ pub struct CurrentPlayer<'a> {
     pub position: Position,
     pub champion_id: ChampionId,
     pub game_map: GameMap,
+    // pub _padding: u16,
 }
 
 #[derive(Clone, Copy)]
@@ -228,72 +229,11 @@ impl ValueException {
 }
 
 #[derive(Encode, Decode, Copy, Clone, Default)]
-#[repr(transparent)]
-pub struct Dragons(u64);
-
-impl Dragons {
-    const BITS_PER_FIELD: u32 = 16;
-    const MASK16: u64 = 0xFFFF;
-
-    const ENEMY_SHIFT: u32 = 0;
-    const ALLY_CHEM_SHIFT: u32 = Self::ENEMY_SHIFT + Self::BITS_PER_FIELD;
-    const ALLY_EARTH_SHIFT: u32 = Self::ALLY_CHEM_SHIFT + Self::BITS_PER_FIELD;
-    const ALLY_FIRE_SHIFT: u32 = Self::ALLY_EARTH_SHIFT + Self::BITS_PER_FIELD;
-
-    const ENEMY_MASK: u64 = Self::MASK16 << Self::ENEMY_SHIFT;
-    const ALLY_CHEM_MASK: u64 = Self::MASK16 << Self::ALLY_CHEM_SHIFT;
-    const ALLY_EARTH_MASK: u64 = Self::MASK16 << Self::ALLY_EARTH_SHIFT;
-    const ALLY_FIRE_MASK: u64 = Self::MASK16 << Self::ALLY_FIRE_SHIFT;
-
-    pub const fn new(
-        ally_fire: u16,
-        ally_earth: u16,
-        ally_chemtech: u16,
-        enemy_earth: u16,
-    ) -> Self {
-        let mut v = 0u64;
-        v |= ((ally_fire as u64) & Self::MASK16) << Self::ALLY_FIRE_SHIFT;
-        v |= ((ally_earth as u64) & Self::MASK16) << Self::ALLY_EARTH_SHIFT;
-        v |= ((ally_chemtech as u64) & Self::MASK16) << Self::ALLY_CHEM_SHIFT;
-        v |= ((enemy_earth as u64) & Self::MASK16) << Self::ENEMY_SHIFT;
-        Self(v)
-    }
-
-    pub const fn ally_fire_dragons(&self) -> u16 {
-        ((self.0 >> Self::ALLY_FIRE_SHIFT) & Self::MASK16) as u16
-    }
-
-    pub const fn ally_earth_dragons(&self) -> u16 {
-        ((self.0 >> Self::ALLY_EARTH_SHIFT) & Self::MASK16) as u16
-    }
-
-    pub const fn ally_chemtech_dragons(&self) -> u16 {
-        ((self.0 >> Self::ALLY_CHEM_SHIFT) & Self::MASK16) as u16
-    }
-
-    pub const fn enemy_earth_dragons(&self) -> u16 {
-        ((self.0 >> Self::ENEMY_SHIFT) & Self::MASK16) as u16
-    }
-
-    pub const fn truncate(v: u16) -> u64 {
-        (v as u64) & Self::MASK16
-    }
-
-    pub const fn pack_ally_fire_dragons(&mut self, v: u16) {
-        self.0 = (self.0 & !Self::ALLY_FIRE_MASK) | (Self::truncate(v) << Self::ALLY_FIRE_SHIFT);
-    }
-
-    pub const fn pack_ally_earth_dragons(&mut self, v: u16) {
-        self.0 = (self.0 & !Self::ALLY_EARTH_MASK) | (Self::truncate(v) << Self::ALLY_EARTH_SHIFT);
-    }
-
-    pub const fn pack_ally_chemtech_dragons(&mut self, v: u16) {
-        self.0 = (self.0 & !Self::ALLY_CHEM_MASK) | (Self::truncate(v) << Self::ALLY_CHEM_SHIFT);
-    }
-
-    pub const fn pack_enemy_earth_dragons(&mut self, v: u16) {
-        self.0 = (self.0 & !Self::ENEMY_MASK) | (Self::truncate(v) << Self::ENEMY_SHIFT);
-    }
+pub struct Dragons {
+    pub ally_fire_dragons: u16,
+    pub ally_earth_dragons: u16,
+    pub ally_chemtech_dragons: u16,
+    pub enemy_earth_dragons: u16,
 }
 
 #[derive(Decode)]

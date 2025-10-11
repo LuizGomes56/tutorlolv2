@@ -36,8 +36,8 @@ fn infer_champion_stats(items: &[ItemId], dragons: Dragons) -> Stats<f32> {
             };
         }
 
-        let fire = GET_FIRE_MULTIPLIER(dragons.ally_fire_dragons());
-        let earth = GET_EARTH_MULTIPLIER(dragons.ally_earth_dragons());
+        let fire = GET_FIRE_MULTIPLIER(dragons.ally_fire_dragons);
+        let earth = GET_EARTH_MULTIPLIER(dragons.ally_earth_dragons);
 
         add_stat!(@fire ability_power);
         add_stat!(@fire attack_damage);
@@ -69,7 +69,7 @@ pub struct ChampionExceptionData<'a> {
     pub current_player_stats: &'a mut Stats<f32>,
 }
 
-fn assign_champion_exceptions(champion_id: ChampionId, data: ChampionExceptionData) {
+fn assign_champion_exceptions(data: ChampionExceptionData, champion_id: ChampionId) {
     let ChampionExceptionData {
         ability_levels,
         stacks,
@@ -332,7 +332,7 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
         dragons,
     } = game;
 
-    let enemy_earth_dragons = dragons.enemy_earth_dragons();
+    let enemy_earth_dragons = dragons.enemy_earth_dragons;
     let mut ability_modifiers = AbilityModifiers::default();
     let champion_raw_stats: Stats<f32> = champion_raw_stats_i32.into();
 
@@ -366,12 +366,12 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
     let attack_type = current_player_cache.attack_type;
 
     assign_champion_exceptions(
-        current_player_champion_id,
         ChampionExceptionData {
             ability_levels,
             stacks,
             current_player_stats: &mut champion_stats,
         },
+        current_player_champion_id,
     );
 
     if !rune_exceptions.is_empty() {

@@ -111,7 +111,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
 
     let dragons = get_dragons(&events, &all_players);
 
-    let enemy_earth_dragons = dragons.enemy_earth_dragons();
+    let enemy_earth_dragons = dragons.enemy_earth_dragons;
     let simulated_stats = get_simulated_stats(&champion_stats, dragons);
     let ability_levels = abilities.get_levelings();
     let current_player_position = Position::from_raw(current_player.position)
@@ -278,10 +278,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
                 let siml_eval_ctx = get_eval_ctx(
                     &SelfState {
                         current_stats: siml_stat,
-                        bonus_stats: self_state.bonus_stats,
-                        base_stats: self_state.base_stats,
-                        ability_levels: self_state.ability_levels,
-                        level: *level,
+                        ..self_state
                     },
                     &full_state,
                 );
@@ -357,5 +354,10 @@ fn get_dragons(events: &[RealtimeEvent], players_map: &[RiotAllPlayers]) -> Drag
         }
     }
 
-    Dragons::new(ally_fire, ally_earth, ally_chemtech, enemy_earth)
+    Dragons {
+        ally_fire_dragons: ally_fire,
+        ally_earth_dragons: ally_earth,
+        ally_chemtech_dragons: ally_chemtech,
+        enemy_earth_dragons: enemy_earth,
+    }
 }

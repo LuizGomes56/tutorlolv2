@@ -9,15 +9,8 @@
 *.svg
 target
 html
-internal
 safety_copy
 raw_img
-tutorlolv2_exports/src/export_code.rs
 sprite
 cache
 img
-formulas
-read_only
-converted
-tutorlolv2_gen/src/data/*
-!tutorlolv2_gen/src/data/mod.rs
