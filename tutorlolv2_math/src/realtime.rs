@@ -109,8 +109,10 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
         })
         .collect::<SetU32>();
 
-    let (ally_dragons, enemy_earth_dragons) = get_dragons(&events, &all_players);
-    let simulated_stats = get_simulated_stats(&champion_stats, ally_dragons);
+    let dragons = get_dragons(&events, &all_players);
+
+    let enemy_earth_dragons = dragons.enemy_earth_dragons();
+    let simulated_stats = get_simulated_stats(&champion_stats, dragons);
     let ability_levels = abilities.get_levelings();
     let current_player_position = Position::from_raw(current_player.position)
         .unwrap_or(unsafe { *current_player_cache.positions.get_unchecked(0) });
@@ -237,9 +239,9 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
                     champion_id: e_champion_id,
                     level: *e_level,
                     item_exceptions: &[],
+                    earth_dragons: enemy_earth_dragons,
                 },
                 shred,
-                enemy_earth_dragons,
                 false,
             );
             let eval_ctx = get_eval_ctx(&self_state, &full_state);
@@ -327,12 +329,15 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
         siml_meta: SIMULATED_ITEMS_METADATA,
         game_time: *game_time as u32,
         ability_levels,
+        dragons,
     })
 }
 
-fn get_dragons(events: &[RealtimeEvent], players_map: &[RiotAllPlayers]) -> (Dragons, u8) {
-    let mut dragons = Dragons::default();
-    let mut enemy_earth_dragons = 0;
+fn get_dragons(events: &[RealtimeEvent], players_map: &[RiotAllPlayers]) -> Dragons {
+    let mut ally_fire = 0;
+    let mut ally_earth = 0;
+    let mut ally_chemtech = 0;
+    let mut enemy_earth = 0;
     for event in events {
         if let (Some(killer), Some(dragon)) =
             (event.killer_name.as_deref(), event.dragon_type.as_deref())
@@ -340,15 +345,17 @@ fn get_dragons(events: &[RealtimeEvent], players_map: &[RiotAllPlayers]) -> (Dra
             match dragon {
                 "Earth" => {
                     if players_map.iter().any(|player| player.riot_id == killer) {
-                        dragons.earth += 1;
+                        ally_earth += 1;
                     } else {
-                        enemy_earth_dragons += 1;
+                        enemy_earth += 1;
                     }
                 }
-                "Fire" => dragons.fire += 1,
+                "Fire" => ally_fire += 1,
+                "Chemtech" => ally_chemtech += 1,
                 _ => {}
             }
         }
     }
-    (dragons, enemy_earth_dragons)
+
+    Dragons::new(ally_fire, ally_earth, ally_chemtech, enemy_earth)
 }

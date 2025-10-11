@@ -1,6 +1,6 @@
 [package]
 name = "tutorlolv2"
-version = "0.4.5"
+version = "0.4.8"
 edition = "2024"
 authors = ["Luiz Gustavo Santana Dias Gomes"]
 repository = "https://github.com/LuizGomes56/tutorlolv2"

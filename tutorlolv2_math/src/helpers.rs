@@ -15,8 +15,8 @@ pub const EARTH_DRAGON_MULTIPLIER: f32 = 0.05;
 pub const FIRE_DRAGON_MULTIPLIER: f32 = 0.03;
 pub const LAST_STAND_CLOSURE: fn(f32) -> f32 =
     |missing_health| 1.0 + (0.05 + 0.2 * (missing_health - 0.4)).clamp(0.0, 0.11);
-pub const GET_FIRE_MULTIPLIER: fn(u8) -> f32 = |x| 1.0 + x as f32 * FIRE_DRAGON_MULTIPLIER;
-pub const GET_EARTH_MULTIPLIER: fn(u8) -> f32 = |x| 1.0 + x as f32 * EARTH_DRAGON_MULTIPLIER;
+pub const GET_FIRE_MULTIPLIER: fn(u16) -> f32 = |x| 1.0 + x as f32 * FIRE_DRAGON_MULTIPLIER;
+pub const GET_EARTH_MULTIPLIER: fn(u16) -> f32 = |x| 1.0 + x as f32 * EARTH_DRAGON_MULTIPLIER;
 pub const URF_MAX_LEVEL: usize = 30;
 /// Ordered as: health, armor, magic_resist, attack_damage, mana
 pub static BASE_STATS: [[[f32; 5]; URF_MAX_LEVEL]; NUMBER_OF_CHAMPIONS] = {
@@ -198,8 +198,8 @@ pub fn get_simulated_stats(stats: &Stats<f32>, dragons: Dragons) -> [Stats<f32>;
         add_stat!(@armor_penetration_percent);
         add_stat!(@magic_penetration_percent);
 
-        let fire_mod = GET_FIRE_MULTIPLIER(dragons.fire);
-        let earth_mod = GET_EARTH_MULTIPLIER(dragons.earth);
+        let fire_mod = GET_FIRE_MULTIPLIER(dragons.ally_fire_dragons());
+        let earth_mod = GET_EARTH_MULTIPLIER(dragons.ally_earth_dragons());
 
         new_stat.ability_power *= fire_mod;
         new_stat.attack_damage *= fire_mod;
@@ -267,7 +267,7 @@ pub fn items_slice_to_set_u32(input: &[ItemId]) -> SetU32 {
 pub fn get_enemy_current_stats(
     stats: &mut SimpleStats<f32>,
     items: &SetU32,
-    earth_dragons: u8,
+    earth_dragons: u16,
 ) -> f32 {
     let mut bonus_mana = 0.0;
     for item_id in items.iter() {
@@ -291,14 +291,13 @@ pub fn get_enemy_current_stats(
 pub fn get_enemy_state(
     state: EnemyState,
     shred: ResistShred,
-    earth_dragons: u8,
     accept_negatives: bool,
 ) -> EnemyFullState {
     let mut e_current_stats = state.base_stats;
     let e_items = &state.items;
     let stacks = state.stacks as f32;
 
-    let bonus_mana = get_enemy_current_stats(&mut e_current_stats, &e_items, earth_dragons);
+    let bonus_mana = get_enemy_current_stats(&mut e_current_stats, &e_items, state.earth_dragons);
 
     let mut e_modifiers = DamageModifiers::default();
 

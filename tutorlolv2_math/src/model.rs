@@ -36,12 +36,6 @@ pub struct BasicStats<T> {
     pub mana: T,
 }
 
-#[derive(Decode, Default)]
-pub struct Dragons {
-    pub earth: u8,
-    pub fire: u8,
-}
-
 #[derive(Encode)]
 pub struct Attacks {
     pub basic_attack: RangeDamage,
@@ -70,6 +64,7 @@ pub struct Realtime<'a> {
     pub siml_meta: [TypeMetadata<ItemId>; L_SIML],
     pub game_time: u32,
     pub ability_levels: AbilityLevels,
+    pub dragons: Dragons,
 }
 
 #[derive(Encode)]
@@ -111,8 +106,10 @@ pub struct EnemyState<'a> {
     pub items: SetU32,
     pub stacks: u32,
     pub champion_id: ChampionId,
+    pub earth_dragons: u16,
     pub level: u8,
     pub item_exceptions: &'a [ValueException],
+    // _padding: u32,
 }
 
 #[derive(Copy, Clone)]
@@ -122,6 +119,7 @@ pub struct SelfState {
     pub bonus_stats: BasicStats<f32>,
     pub base_stats: BasicStats<f32>,
     pub level: u8,
+    // _padding: u32 - u8
 }
 
 pub struct EnemyFullState {
@@ -133,6 +131,7 @@ pub struct EnemyFullState {
     pub steelcaps: bool,
     pub rocksolid: bool,
     pub randuin: bool,
+    // _padding: u8
 }
 
 #[derive(Encode, Decode, Clone, Copy)]
@@ -228,13 +227,80 @@ impl ValueException {
     }
 }
 
+#[derive(Encode, Decode, Copy, Clone, Default)]
+#[repr(transparent)]
+pub struct Dragons(u64);
+
+impl Dragons {
+    const BITS_PER_FIELD: u32 = 16;
+    const MASK16: u64 = 0xFFFF;
+
+    const ENEMY_SHIFT: u32 = 0;
+    const ALLY_CHEM_SHIFT: u32 = Self::ENEMY_SHIFT + Self::BITS_PER_FIELD;
+    const ALLY_EARTH_SHIFT: u32 = Self::ALLY_CHEM_SHIFT + Self::BITS_PER_FIELD;
+    const ALLY_FIRE_SHIFT: u32 = Self::ALLY_EARTH_SHIFT + Self::BITS_PER_FIELD;
+
+    const ENEMY_MASK: u64 = Self::MASK16 << Self::ENEMY_SHIFT;
+    const ALLY_CHEM_MASK: u64 = Self::MASK16 << Self::ALLY_CHEM_SHIFT;
+    const ALLY_EARTH_MASK: u64 = Self::MASK16 << Self::ALLY_EARTH_SHIFT;
+    const ALLY_FIRE_MASK: u64 = Self::MASK16 << Self::ALLY_FIRE_SHIFT;
+
+    pub const fn new(
+        ally_fire: u16,
+        ally_earth: u16,
+        ally_chemtech: u16,
+        enemy_earth: u16,
+    ) -> Self {
+        let mut v = 0u64;
+        v |= ((ally_fire as u64) & Self::MASK16) << Self::ALLY_FIRE_SHIFT;
+        v |= ((ally_earth as u64) & Self::MASK16) << Self::ALLY_EARTH_SHIFT;
+        v |= ((ally_chemtech as u64) & Self::MASK16) << Self::ALLY_CHEM_SHIFT;
+        v |= ((enemy_earth as u64) & Self::MASK16) << Self::ENEMY_SHIFT;
+        Self(v)
+    }
+
+    pub const fn ally_fire_dragons(&self) -> u16 {
+        ((self.0 >> Self::ALLY_FIRE_SHIFT) & Self::MASK16) as u16
+    }
+
+    pub const fn ally_earth_dragons(&self) -> u16 {
+        ((self.0 >> Self::ALLY_EARTH_SHIFT) & Self::MASK16) as u16
+    }
+
+    pub const fn ally_chemtech_dragons(&self) -> u16 {
+        ((self.0 >> Self::ALLY_CHEM_SHIFT) & Self::MASK16) as u16
+    }
+
+    pub const fn enemy_earth_dragons(&self) -> u16 {
+        ((self.0 >> Self::ENEMY_SHIFT) & Self::MASK16) as u16
+    }
+
+    pub const fn truncate(v: u16) -> u64 {
+        (v as u64) & Self::MASK16
+    }
+
+    pub const fn pack_ally_fire_dragons(&mut self, v: u16) {
+        self.0 = (self.0 & !Self::ALLY_FIRE_MASK) | (Self::truncate(v) << Self::ALLY_FIRE_SHIFT);
+    }
+
+    pub const fn pack_ally_earth_dragons(&mut self, v: u16) {
+        self.0 = (self.0 & !Self::ALLY_EARTH_MASK) | (Self::truncate(v) << Self::ALLY_EARTH_SHIFT);
+    }
+
+    pub const fn pack_ally_chemtech_dragons(&mut self, v: u16) {
+        self.0 = (self.0 & !Self::ALLY_CHEM_MASK) | (Self::truncate(v) << Self::ALLY_CHEM_SHIFT);
+    }
+
+    pub const fn pack_enemy_earth_dragons(&mut self, v: u16) {
+        self.0 = (self.0 & !Self::ENEMY_MASK) | (Self::truncate(v) << Self::ENEMY_SHIFT);
+    }
+}
+
 #[derive(Decode)]
 pub struct InputGame {
     pub active_player: InputActivePlayer,
     pub enemy_players: SmallVec<[InputMinData<SimpleStats<i32>>; L_CENM]>,
-    pub ally_dragons: Dragons,
-    pub enemy_earth_dragons: u8,
-    // pub padding: u32 + u8,
+    pub dragons: Dragons,
 }
 
 #[derive(Decode)]

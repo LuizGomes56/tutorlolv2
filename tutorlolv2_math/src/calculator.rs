@@ -36,8 +36,8 @@ fn infer_champion_stats(items: &[ItemId], dragons: Dragons) -> Stats<f32> {
             };
         }
 
-        let fire = GET_FIRE_MULTIPLIER(dragons.fire);
-        let earth = GET_EARTH_MULTIPLIER(dragons.earth);
+        let fire = GET_FIRE_MULTIPLIER(dragons.ally_fire_dragons());
+        let earth = GET_EARTH_MULTIPLIER(dragons.ally_earth_dragons());
 
         add_stat!(@fire ability_power);
         add_stat!(@fire attack_damage);
@@ -329,10 +329,10 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
                     },
             },
         enemy_players,
-        enemy_earth_dragons,
-        ally_dragons,
+        dragons,
     } = game;
 
+    let enemy_earth_dragons = dragons.enemy_earth_dragons();
     let mut ability_modifiers = AbilityModifiers::default();
     let champion_raw_stats: Stats<f32> = champion_raw_stats_i32.into();
 
@@ -360,7 +360,7 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
 
     let mut champion_stats = match infer_stats {
         true => champion_raw_stats,
-        false => infer_champion_stats(&current_player_raw_items, ally_dragons),
+        false => infer_champion_stats(&current_player_raw_items, dragons),
     };
 
     let attack_type = current_player_cache.attack_type;
@@ -482,9 +482,9 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
                     champion_id: e_champion_id,
                     level: e_level,
                     item_exceptions: &e_item_exceptions,
+                    earth_dragons: enemy_earth_dragons,
                 },
                 shred,
-                enemy_earth_dragons,
                 false,
             );
 
@@ -538,10 +538,10 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
                 stacks: 0,
                 champion_id: ChampionId::Aatrox,
                 level: 0,
+                earth_dragons: 0,
                 item_exceptions: &[],
             },
             shred,
-            0,
             true,
         );
         let eval_ctx = get_eval_ctx(&self_state, &full_state);
