@@ -36,8 +36,8 @@ fn infer_champion_stats(items: &[ItemId], dragons: Dragons) -> Stats<f32> {
             };
         }
 
-        let fire = GET_FIRE_MULTIPLIER(dragons.fire);
-        let earth = GET_EARTH_MULTIPLIER(dragons.earth);
+        let fire = GET_FIRE_MULTIPLIER(dragons.ally_fire_dragons);
+        let earth = GET_EARTH_MULTIPLIER(dragons.ally_earth_dragons);
 
         add_stat!(@fire ability_power);
         add_stat!(@fire attack_damage);
@@ -69,7 +69,7 @@ pub struct ChampionExceptionData<'a> {
     pub current_player_stats: &'a mut Stats<f32>,
 }
 
-fn assign_champion_exceptions(champion_id: ChampionId, data: ChampionExceptionData) {
+fn assign_champion_exceptions(data: ChampionExceptionData, champion_id: ChampionId) {
     let ChampionExceptionData {
         ability_levels,
         stacks,
@@ -320,7 +320,7 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
                     InputMinData {
                         stats: champion_raw_stats_i32,
                         level,
-                        items: current_player_items,
+                        items: current_player_raw_items,
                         infer_stats,
                         champion_id: current_player_champion_id,
                         is_mega_gnar,
@@ -329,10 +329,11 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
                     },
             },
         enemy_players,
-        enemy_earth_dragons,
-        ally_dragons,
+        dragons,
     } = game;
 
+    let enemy_earth_dragons = dragons.enemy_earth_dragons;
+    let mut ability_modifiers = AbilityModifiers::default();
     let champion_raw_stats: Stats<f32> = champion_raw_stats_i32.into();
 
     let current_player_runes = runes_slice_to_set_u32(&current_player_raw_runes);
@@ -359,18 +360,18 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
 
     let mut champion_stats = match infer_stats {
         true => champion_raw_stats,
-        false => infer_champion_stats(&current_player_items, ally_dragons),
+        false => infer_champion_stats(&current_player_raw_items, dragons),
     };
 
     let attack_type = current_player_cache.attack_type;
 
     assign_champion_exceptions(
-        current_player_champion_id,
         ChampionExceptionData {
             ability_levels,
             stacks,
             current_player_stats: &mut champion_stats,
         },
+        current_player_champion_id,
     );
 
     if !rune_exceptions.is_empty() {
@@ -395,7 +396,7 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
         );
     }
 
-    let current_player_items = items_slice_to_set_u32(&current_player_items);
+    let current_player_items = items_slice_to_set_u32(&current_player_raw_items);
 
     let eval_data = DamageEvalData {
         abilities: ConstDamageKind {
@@ -420,6 +421,41 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
         ability_levels,
         level,
     };
+
+    let mut base_modifiers = DamageModifiers::default();
+
+    for rune_id in current_player_raw_runes {
+        match rune_id {
+            RuneId::CoupdeGrace | RuneId::CutDown => {
+                base_modifiers.global_mod *= COUP_DE_GRACE_AND_CUTDOWN_BONUS_DAMAGE
+            }
+            RuneId::LastStand => {
+                base_modifiers.global_mod *= LAST_STAND_CLOSURE(
+                    1.0 - (self_state.current_stats.current_health
+                        / self_state.current_stats.health.max(1.0)),
+                )
+            }
+            RuneId::AxiomArcanist => ability_modifiers.r *= 1.12,
+            _ => {}
+        };
+    }
+
+    for item_id in current_player_raw_items {
+        match item_id {
+            ItemId::Shadowflame => {
+                base_modifiers.magic_mod *= 1.2;
+                base_modifiers.true_mod *= 1.2;
+            }
+            ItemId::Riftmaker => base_modifiers.global_mod *= 1.08,
+            ItemId::SpearofShojin => {
+                ability_modifiers.q *= 1.12;
+                ability_modifiers.w *= 1.12;
+                ability_modifiers.e *= 1.12;
+                ability_modifiers.r *= 1.12;
+            }
+            _ => {}
+        };
+    }
 
     let enemies = enemy_players
         .into_iter()
@@ -446,9 +482,9 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
                     champion_id: e_champion_id,
                     level: e_level,
                     item_exceptions: &e_item_exceptions,
+                    earth_dragons: enemy_earth_dragons,
                 },
                 shred,
-                enemy_earth_dragons,
                 false,
             );
 
@@ -457,26 +493,21 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
             }
 
             let eval_ctx = get_eval_ctx(&self_state, &full_state);
-            let modifiers = {
-                let mut global_mod = full_state.modifiers.global_mod;
 
-                if current_player_raw_runes.contains(&RuneId::LastStand) {
-                    global_mod *= LAST_STAND_CLOSURE(eval_ctx.missing_health);
-                }
-                if current_player_raw_runes.contains(&RuneId::CoupdeGrace)
-                    || current_player_raw_runes.contains(&RuneId::CutDown)
-                {
-                    global_mod *= COUP_DE_GRACE_AND_CUTDOWN_BONUS_DAMAGE;
-                }
-
-                DamageModifiers {
-                    physical_mod: full_state.armor_values.modifier
+            let modifiers = Modifiers {
+                abilities: ability_modifiers,
+                damages: DamageModifiers {
+                    physical_mod: base_modifiers.physical_mod
+                        * full_state.armor_values.modifier
                         * full_state.modifiers.physical_mod,
-                    magic_mod: full_state.magic_values.modifier * full_state.modifiers.magic_mod,
-                    true_mod: full_state.modifiers.true_mod,
-                    global_mod,
-                }
+                    magic_mod: base_modifiers.magic_mod
+                        * full_state.magic_values.modifier
+                        * full_state.modifiers.magic_mod,
+                    true_mod: base_modifiers.true_mod * full_state.modifiers.true_mod,
+                    global_mod: base_modifiers.global_mod * full_state.modifiers.global_mod,
+                },
             };
+
             let damages = get_damages(&eval_ctx, &eval_data, modifiers);
 
             Some(OutputEnemy {
@@ -507,14 +538,14 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
                 stacks: 0,
                 champion_id: ChampionId::Aatrox,
                 level: 0,
+                earth_dragons: 0,
                 item_exceptions: &[],
             },
             shred,
-            0,
             true,
         );
         let eval_ctx = get_eval_ctx(&self_state, &full_state);
-        let damages = get_damages(&eval_ctx, &eval_data, DamageModifiers::default());
+        let damages = get_damages(&eval_ctx, &eval_data, Modifiers::default());
         unsafe {
             core::ptr::addr_of_mut!((*monster_result_ptr)[index]).write(MonsterDamage {
                 attacks: damages.attacks,

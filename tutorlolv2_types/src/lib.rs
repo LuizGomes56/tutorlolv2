@@ -140,6 +140,7 @@ impl_key!(e);
 impl_key!(r);
 
 #[derive(Clone, Copy, Serialize, Encode)]
+#[repr(u8)]
 pub enum AbilityName {
     _1,
     _2,
@@ -152,17 +153,6 @@ pub enum AbilityName {
     Mega,
     Max,
     Min,
-    Minion,
-    Minion1,
-    Minion2,
-    Minion3,
-    MinionMax,
-    Monster,
-    Monster1,
-    Monster2,
-    Monster3,
-    Monster4,
-    MonsterMax,
     Void,
     _1Max,
     _2Max,
@@ -180,4 +170,15 @@ pub enum AbilityName {
     _6Min,
     _7Min,
     _8Min,
+    Minion,
+    Minion1,
+    Minion2,
+    Minion3,
+    MinionMax,
+    Monster,
+    Monster1,
+    Monster2,
+    Monster3,
+    Monster4,
+    MonsterMax,
 }

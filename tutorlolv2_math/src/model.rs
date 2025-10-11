@@ -36,12 +36,6 @@ pub struct BasicStats<T> {
     pub mana: T,
 }
 
-#[derive(Decode, Default)]
-pub struct Dragons {
-    pub earth: u8,
-    pub fire: u8,
-}
-
 #[derive(Encode)]
 pub struct Attacks {
     pub basic_attack: RangeDamage,
@@ -70,6 +64,7 @@ pub struct Realtime<'a> {
     pub siml_meta: [TypeMetadata<ItemId>; L_SIML],
     pub game_time: u32,
     pub ability_levels: AbilityLevels,
+    pub dragons: Dragons,
 }
 
 #[derive(Encode)]
@@ -96,6 +91,7 @@ pub struct CurrentPlayer<'a> {
     pub position: Position,
     pub champion_id: ChampionId,
     pub game_map: GameMap,
+    // pub _padding: u16,
 }
 
 #[derive(Clone, Copy)]
@@ -111,8 +107,10 @@ pub struct EnemyState<'a> {
     pub items: SetU32,
     pub stacks: u32,
     pub champion_id: ChampionId,
+    pub earth_dragons: u16,
     pub level: u8,
     pub item_exceptions: &'a [ValueException],
+    // _padding: u32,
 }
 
 #[derive(Copy, Clone)]
@@ -122,6 +120,7 @@ pub struct SelfState {
     pub bonus_stats: BasicStats<f32>,
     pub base_stats: BasicStats<f32>,
     pub level: u8,
+    // _padding: u32 - u8
 }
 
 pub struct EnemyFullState {
@@ -133,6 +132,7 @@ pub struct EnemyFullState {
     pub steelcaps: bool,
     pub rocksolid: bool,
     pub randuin: bool,
+    // _padding: u8
 }
 
 #[derive(Encode, Decode, Clone, Copy)]
@@ -228,13 +228,19 @@ impl ValueException {
     }
 }
 
+#[derive(Encode, Decode, Copy, Clone, Default)]
+pub struct Dragons {
+    pub ally_fire_dragons: u16,
+    pub ally_earth_dragons: u16,
+    pub ally_chemtech_dragons: u16,
+    pub enemy_earth_dragons: u16,
+}
+
 #[derive(Decode)]
 pub struct InputGame {
     pub active_player: InputActivePlayer,
     pub enemy_players: SmallVec<[InputMinData<SimpleStats<i32>>; L_CENM]>,
-    pub ally_dragons: Dragons,
-    pub enemy_earth_dragons: u8,
-    // pub padding: u32 + u8,
+    pub dragons: Dragons,
 }
 
 #[derive(Decode)]
@@ -269,12 +275,40 @@ pub struct OutputEnemy {
     pub champion_id: ChampionId,
 }
 
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct DamageModifiers {
     pub physical_mod: f32,
     pub magic_mod: f32,
     pub true_mod: f32,
     pub global_mod: f32,
+}
+
+#[derive(Clone, Copy)]
+pub struct Modifiers {
+    pub damages: DamageModifiers,
+    pub abilities: AbilityModifiers,
+}
+
+macro_rules! impl_default {
+    ($ty:ty, $initializer:literal) => {
+        impl Default for $ty {
+            fn default() -> Self {
+                unsafe { std::mem::transmute([$initializer; size_of::<$ty>() / size_of::<f32>()]) }
+            }
+        }
+    };
+}
+
+impl_default!(DamageModifiers, 1.0f32);
+impl_default!(AbilityModifiers, 1.0f32);
+impl_default!(Modifiers, 1.0f32);
+
+#[derive(Clone, Copy)]
+pub struct AbilityModifiers {
+    pub q: f32,
+    pub w: f32,
+    pub e: f32,
+    pub r: f32,
 }
 
 #[derive(Encode)]

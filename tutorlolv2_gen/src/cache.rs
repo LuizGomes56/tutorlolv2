@@ -129,26 +129,14 @@ pub enum AdaptativeType {
     Magic,
 }
 
-#[derive(Copy, Clone, Encode, Serialize, Deserialize)]
+#[derive(Copy, Clone, Encode, Serialize, Deserialize, Default)]
 pub enum Position {
+    #[default]
     Top,
     Jungle,
     Middle,
     Bottom,
     Support,
-}
-
-impl<T: AsRef<str>> From<T> for Position {
-    fn from(s: T) -> Self {
-        match s.as_ref() {
-            "TOP" => Position::Top,
-            "JUNGLE" => Position::Jungle,
-            "MIDDLE" => Position::Middle,
-            "BOTTOM" => Position::Bottom,
-            "SUPPORT" => Position::Support,
-            _ => Position::Top,
-        }
-    }
 }
 
 impl Position {

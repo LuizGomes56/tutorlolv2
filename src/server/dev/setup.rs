@@ -63,9 +63,11 @@ pub async fn setup_project(state: Data<AppState>) -> impl Responder {
             }
             let _ = spawn(img_convert_avif(IMG_FOLDERS)).await;
         });
-    });
+    })
+    .await
+    .expect("Could not finish setup tasks");
 
-    HttpResponse::Ok().body("Project setup started. Expected time to complete: 3-5 minutes")
+    HttpResponse::Ok().body("Setup done")
 }
 
 #[get("/docs")]
