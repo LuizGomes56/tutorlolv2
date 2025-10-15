@@ -6,35 +6,35 @@ use actix_web::{
 use rust_embed::Embed;
 
 #[derive(Embed)]
-#[folder = "html/zstd/champions"]
+#[folder = "../html/zstd/champions"]
 struct ChampionsDocs;
 
 #[derive(Embed)]
-#[folder = "html/zstd/items"]
+#[folder = "../html/zstd/items"]
 struct ItemsDocs;
 
 #[derive(Embed)]
-#[folder = "html/zstd/runes"]
+#[folder = "../html/zstd/runes"]
 struct RunesDocs;
 
 #[derive(Embed)]
-#[folder = "img/abilities"]
+#[folder = "../img/abilities"]
 struct Abilities;
 
 #[derive(Embed)]
-#[folder = "img/champions"]
+#[folder = "../img/champions"]
 struct Champions;
 
 #[derive(Embed)]
-#[folder = "img/items"]
+#[folder = "../img/items"]
 struct Items;
 
 #[derive(Embed)]
-#[folder = "img/runes"]
+#[folder = "../img/runes"]
 struct Runes;
 
 #[derive(Embed)]
-#[folder = "img/stats"]
+#[folder = "../img/stats"]
 struct Stats;
 
 macro_rules! serve_embed {

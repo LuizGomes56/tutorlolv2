@@ -8,5 +8,5 @@ pub fn gen_garen(data: CdnChampion) -> Champion {
     ability!(w, (0, 0, Void, Min));
     ability!(e, (0, 0, Min, Min), (3, 0, Max, Max));
     ability!(r, (0, 0, Void, Min));
-    merge_ability!(E::Min, E::Max);
+    // merge_ability!(E::Min, E::Max);
 }

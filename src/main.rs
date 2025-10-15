@@ -1,142 +1,209 @@
-mod server;
-
-#[cfg(feature = "dev")]
-use crate::server::dev::{images::*, internal::*, setup::*, statics::*, update::*};
-use actix_cors::Cors;
-use actix_web::{
-    App, HttpResponse, HttpServer,
-    dev::HttpServiceFactory,
-    http::header,
-    middleware::DefaultHeaders,
-    web::{self, Data, scope},
+use actix_web::rt::task::spawn_blocking;
+use std::{
+    process::{Child, Command, Stdio},
+    thread,
+    time::Duration,
 };
-use dotenvy::dotenv;
-use server::{embed::*, games::*};
-use sqlx::{Pool, Postgres, postgres::PgPoolOptions};
+use tutorlolv2_exports::*;
 
-pub struct AppState {
-    pub db: Pool<Postgres>,
-    #[cfg(feature = "dev")]
-    pub client: reqwest::Client,
+async fn generate_html() {
+    let champions = spawn_blocking(generate_champion_html);
+    let items = spawn_blocking(generate_item_html);
+    let runes = spawn_blocking(generate_rune_html);
+
+    champions.await.unwrap();
+    items.await.unwrap();
+    runes.await.unwrap();
 }
 
-fn api_scope() -> impl HttpServiceFactory + 'static {
-    let api_routes = scope("/api").service(
-        scope("/games")
-            .service(realtime_handler)
-            .service(calculator_handler)
-            .service(create_game_handler)
-            .service(get_by_code_handler),
+fn run(cwd: &str, prog: &str, args: &[&str]) {
+    let status = Command::new(prog)
+        .current_dir(cwd)
+        .args(args)
+        .status()
+        .expect("Command execution failed");
+    assert!(status.success(), "{prog} {:?} exited with error", args);
+}
+
+fn task(cwd: &str, prog: &str, args: &[&str]) -> Child {
+    Command::new(prog)
+        .current_dir(cwd)
+        .args(args)
+        .stdout(Stdio::inherit())
+        .stderr(Stdio::inherit())
+        .spawn()
+        .expect("Could not spawn child process")
+}
+
+fn kill(mut child: Child) {
+    let _ = child.kill();
+    let _ = child.wait();
+}
+
+fn http_get(url: &str) {
+    let status = Command::new("powershell")
+        .args([
+            "-NoProfile",
+            "-Command",
+            &format!("Invoke-WebRequest -UseBasicParsing '{}' | Out-Null", url),
+        ])
+        .status()
+        .expect("Could not run PowerShell");
+    assert!(status.success(), "Request GET {} failed", url);
+}
+
+fn short_wait() {
+    thread::sleep(Duration::from_millis(10000));
+}
+
+fn build_server() {
+    run("./tutorlolv2_server", "cargo", &["build", "-r"]);
+}
+
+fn run_server() -> Child {
+    task(
+        ".",
+        "./tutorlolv2_server/target/release/tutorlolv2_server.exe",
+        &[],
+    )
+}
+
+macro_rules! get {
+    ($path:literal) => {
+        http_get(concat!("http://localhost:8082/api", $path));
+    };
+}
+
+/// Updates local files only. Requires `lolstaticdata` to be installed and places in the parent directory.
+/// Same for `tutorlolv2_desktop_app`, containing `tutorlolv2_frontend` and the javascript build script.
+/// Pulls champions and items data and generates intermediary JSON files and call the subsequent tasks to
+/// process the output and generate Rust code to `tutorlolv2_gen`. Only works on Windows.
+fn update_local() {
+    // run(
+    //     "../lolstaticdata",
+    //     "python",
+    //     &["-m", "lolstaticdata.champions"],
+    // );
+    // run("../lolstaticdata", "python", &["-m", "lolstaticdata.items"]);
+
+    // run(
+    //     ".",
+    //     "powershell",
+    //     &[
+    //         "-NoProfile",
+    //         "-Command",
+    //         "$ErrorActionPreference='Stop'; New-Item -ItemType Directory -Force -Path .\\cache\\cdn, .\\cache\\cdn\\champions, .\\cache\\cdn\\items | Out-Null",
+    //     ],
+    // );
+
+    // run(
+    //     ".",
+    //     "powershell",
+    //     &[
+    //         "-NoProfile",
+    //         "-Command",
+    //         "$ErrorActionPreference='Stop'; Copy-Item ..\\lolstaticdata\\champions\\* -Destination .\\cache\\cdn\\champions -Recurse -Force",
+    //     ],
+    // );
+
+    // run(
+    //     ".",
+    //     "powershell",
+    //     &[
+    //         "-NoProfile",
+    //         "-Command",
+    //         "$ErrorActionPreference='Stop'; Copy-Item ..\\lolstaticdata\\items\\* -Destination .\\cache\\cdn\\items -Recurse -Force",
+    //     ],
+    // );
+
+    build_server();
+    let srv_0 = run_server();
+    short_wait();
+
+    get!("/setup/champions");
+    get!("/setup/items");
+    kill(srv_0);
+
+    run("tutorlolv2_build", "cargo", &["build", "-r"]);
+    run("tutorlolv2_build", "cargo", &["run", "-r"]);
+
+    let srv_1 = run_server();
+    short_wait();
+
+    get!("/setup/docs");
+    run(
+        "../tutorlolv2_desktop_app/tutorlolv2_frontend",
+        "node",
+        &["build_script.js"],
+    );
+    kill(srv_1);
+    build_server();
+    run(
+        "./tutorlolv2_server",
+        "cargo",
+        &["build", "-r", "--no-default-features"],
     );
 
-    #[cfg(feature = "dev")]
-    let api_routes = api_routes.service(
-        scope("")
-            .service(scope("/static").service(static_comptime))
-            .service(
-                scope("/setup")
-                    .service(setup_champions)
-                    .service(setup_folders)
-                    .service(setup_project)
-                    .service(setup_items)
-                    .service(setup_runes)
-                    .service(setup_docs),
-            )
-            .service(
-                scope("/update")
-                    .service(update_riot)
-                    .service(update_champions)
-                    .service(update_items)
-                    .service(update_scraped_data)
-                    .service(update_version),
-            )
-            .service(
-                scope("/internal")
-                    .service(internal_create_generator_files)
-                    .service(internal_prettify_item_stats)
-                    .service(internal_create_damaging_items)
-                    .service(internal_rewrite_champion_names)
-                    .service(internal_assign_item_damages),
-            )
-            .service(
-                scope("/images")
-                    .service(download_instances)
-                    .service(download_items)
-                    .service(download_arts)
-                    .service(download_runes)
-                    .service(download_all)
-                    .service(generate_sprites)
-                    .service(compress_images),
-            ),
+    println!("Local finished");
+}
+
+/// Planned code task execution (in sequence, sync)
+/// ```rs
+/// ::task("cargo build -r");
+/// ::task("cargo run -r");
+/// ::task("http://localhost:8082/api/update/version");
+/// ::task("kill");
+/// ::task("cargo run -r");
+/// ::task("http://localhost:8082/api/setup/project");
+/// ::task("http://localhost:8082/api/images/compress");
+/// ::task("kill");
+/// ::task("cd tutorlolv2_build");
+/// ::task("cargo build -r");
+/// ::task("cargo run -r");
+/// ::task("cd ..")
+/// ::task("http://localhost:8082/api/setup/docs");
+/// ::task("kill");
+/// ::echo("Setup finished");
+/// ```
+fn update() {
+    build_server();
+    let srv_0 = run_server();
+    short_wait();
+    get!("/update/version");
+    kill(srv_0);
+    let srv_1 = run_server();
+    short_wait();
+    get!("/setup/project");
+    get!("/images/compress");
+    kill(srv_1);
+    run("tutorlolv2_build", "cargo", &["build", "-r"]);
+    run("tutorlolv2_build", "cargo", &["run", "-r"]);
+
+    let srv_2 = run_server();
+    short_wait();
+    get!("/setup/docs");
+    kill(srv_2);
+    build_server();
+    run(
+        "./tutorlolv2_server",
+        "cargo",
+        &["build", "-r", "--no-default-features"],
     );
 
-    api_routes
+    println!("Setup finished");
 }
 
 #[actix_web::main]
-async fn main() -> std::io::Result<()> {
-    dotenv().ok();
-
-    #[cfg(feature = "dev")]
-    let client = reqwest::Client::new();
-    let dsn = std::env::var("DATABASE_URL").expect("DATABASE_URL is not set");
-    let host = std::env::var("HOST").expect("HOST is not set");
-    let pool = PgPoolOptions::new()
-        .max_connections(5)
-        .connect(&dsn)
-        .await
-        .expect("Error while attempting to connect to the database");
-
-    HttpServer::new(move || {
-        let cors = Cors::default()
-            .allow_any_origin()
-            // #![todo] Allow only frontend to send requests to this server.
-            // .allowed_origin("http://localhost:8080")
-            .allowed_methods(["GET", "POST"])
-            .allowed_headers([header::AUTHORIZATION, header::CONTENT_TYPE])
-            .max_age(3600);
-
-        App::new()
-            .wrap(cors)
-            .wrap(actix_web::middleware::Logger::default())
-            .app_data({
-                Data::new(AppState {
-                    db: pool.clone(),
-                    #[cfg(feature = "dev")]
-                    client: client.clone(),
-                })
-            })
-            .service(api_scope())
-            .service(
-                scope("")
-                    .service(
-                        scope("/docs")
-                            .service(serve_champions_docs)
-                            .service(serve_items_docs)
-                            .service(serve_runes_docs),
-                    )
-                    .service(
-                        scope("/img")
-                            .wrap(DefaultHeaders::new().add((
-                                header::CACHE_CONTROL,
-                                "public, max-age=31536000, immutable",
-                            )))
-                            .service(serve_dyn_centered())
-                            .service(serve_dyn_splash())
-                            .service(serve_dyn_other())
-                            .service(serve_abilities)
-                            .service(serve_champions)
-                            .service(serve_items)
-                            .service(serve_runes)
-                            .service(serve_stats),
-                    ),
-            )
-            .default_service(web::route().to(|| async {
-                HttpResponse::NotFound().body("Unimplemented route. Check methods and paths")
-            }))
-    })
-    .bind(host)
-    .expect("Some error has ocurred when starting the server")
-    .run()
-    .await
+async fn main() {
+    let args = std::env::args().collect::<Vec<String>>();
+    let command = args
+        .get(1)
+        .expect("Argument [1] possibilities: [-u, -l, -s, -h]");
+    match command.as_str() {
+        "-h" => generate_html().await,
+        "-u" => update(),
+        "-l" => update_local(),
+        "-s" => tutorlolv2_server::run().await.unwrap(),
+        _ => panic!("Unknown command"),
+    }
 }

@@ -7,7 +7,7 @@ use actix_web::{
 };
 use bincode::{Encode, config::Configuration};
 use rand::random_range;
-use tutorlolv2::{calculator, realtime};
+use tutorlolv2_math::{calculator, realtime};
 use uuid::Uuid;
 
 type Response = Result<HttpResponse, Box<dyn std::error::Error>>;
