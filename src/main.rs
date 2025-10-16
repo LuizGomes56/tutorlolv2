@@ -79,42 +79,42 @@ macro_rules! get {
 /// Pulls champions and items data and generates intermediary JSON files and call the subsequent tasks to
 /// process the output and generate Rust code to `tutorlolv2_gen`. Only works on Windows.
 fn update_local() {
-    // run(
-    //     "../lolstaticdata",
-    //     "python",
-    //     &["-m", "lolstaticdata.champions"],
-    // );
-    // run("../lolstaticdata", "python", &["-m", "lolstaticdata.items"]);
+    run(
+        "../lolstaticdata",
+        "python",
+        &["-m", "lolstaticdata.champions"],
+    );
+    run("../lolstaticdata", "python", &["-m", "lolstaticdata.items"]);
 
-    // run(
-    //     ".",
-    //     "powershell",
-    //     &[
-    //         "-NoProfile",
-    //         "-Command",
-    //         "$ErrorActionPreference='Stop'; New-Item -ItemType Directory -Force -Path .\\cache\\cdn, .\\cache\\cdn\\champions, .\\cache\\cdn\\items | Out-Null",
-    //     ],
-    // );
+    run(
+        ".",
+        "powershell",
+        &[
+            "-NoProfile",
+            "-Command",
+            "$ErrorActionPreference='Stop'; New-Item -ItemType Directory -Force -Path .\\cache\\cdn, .\\cache\\cdn\\champions, .\\cache\\cdn\\items | Out-Null",
+        ],
+    );
 
-    // run(
-    //     ".",
-    //     "powershell",
-    //     &[
-    //         "-NoProfile",
-    //         "-Command",
-    //         "$ErrorActionPreference='Stop'; Copy-Item ..\\lolstaticdata\\champions\\* -Destination .\\cache\\cdn\\champions -Recurse -Force",
-    //     ],
-    // );
+    run(
+        ".",
+        "powershell",
+        &[
+            "-NoProfile",
+            "-Command",
+            "$ErrorActionPreference='Stop'; Copy-Item ..\\lolstaticdata\\champions\\* -Destination .\\cache\\cdn\\champions -Recurse -Force",
+        ],
+    );
 
-    // run(
-    //     ".",
-    //     "powershell",
-    //     &[
-    //         "-NoProfile",
-    //         "-Command",
-    //         "$ErrorActionPreference='Stop'; Copy-Item ..\\lolstaticdata\\items\\* -Destination .\\cache\\cdn\\items -Recurse -Force",
-    //     ],
-    // );
+    run(
+        ".",
+        "powershell",
+        &[
+            "-NoProfile",
+            "-Command",
+            "$ErrorActionPreference='Stop'; Copy-Item ..\\lolstaticdata\\items\\* -Destination .\\cache\\cdn\\items -Recurse -Force",
+        ],
+    );
 
     build_server();
     let srv_0 = run_server();
@@ -195,15 +195,26 @@ fn update() {
 
 #[actix_web::main]
 async fn main() {
-    let args = std::env::args().collect::<Vec<String>>();
-    let command = args
+    match std::env::args()
+        .collect::<Vec<String>>()
         .get(1)
-        .expect("Argument [1] possibilities: [-u, -l, -s, -h]");
-    match command.as_str() {
-        "-h" => generate_html().await,
-        "-u" => update(),
-        "-l" => update_local(),
-        "-s" => tutorlolv2_server::run().await.unwrap(),
-        _ => panic!("Unknown command"),
+        .map(String::as_str)
+    {
+        Some("-h") => generate_html().await,
+        Some("-u") => update(),
+        Some("-l") => update_local(),
+        Some("-o") => {
+            run(
+                "./tutorlolv2_server",
+                "cargo",
+                &["build", "-r", "--no-default-features"],
+            );
+            run(
+                "./tutorlolv2_server",
+                "./target/release/tutorlolv2_server.exe",
+                &[],
+            )
+        }
+        _ => tutorlolv2_server::run().await.unwrap(),
     }
 }

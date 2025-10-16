@@ -17,5 +17,5 @@ pub fn gen_neeko(data: CdnChampion) -> Champion {
     ability!(w, (1, 0, Void, Min));
     ability!(e, (0, 0, Void, Min));
     ability!(r, (2, 0, Void, Min));
-    merge_ability!(Q::_1, Q::_1Max);
+    // merge_ability!(Q::_1, Q::_1Max);
 }
