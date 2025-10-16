@@ -1,6 +1,6 @@
 [package]
 name = "tutorlolv2"
-version = "0.4.8"
+version = "0.4.9"
 edition = "2024"
 authors = ["Luiz Gustavo Santana Dias Gomes"]
 repository = "https://github.com/LuizGomes56/tutorlolv2"
@@ -14,40 +14,18 @@ strip = true
 debug = false
 incremental = false
 
-[dev-dependencies]
-tutorlolv2_exports = { path = "tutorlolv2_exports" }
-tutorlolv2_build = { path = "tutorlolv2_build" }
-
 [dependencies]
-tutorlolv2_math = { path = "tutorlolv2_math" }
-tutorlolv2_gen = { path = "tutorlolv2_gen" }
-paste = "1.0.15"
-sqlx = { version = "0.8", features = [
-    "runtime-tokio-rustls",
-    "postgres",
-    "macros",
-], default-features = false }
-dotenvy = "0.15.7"
-uuid = { version = "1.18.1", default-features = false, features = ["v4"] }
-rand = { version = "0.9.2", default-features = false }
-bincode = "2.0.1"
-rust-embed = { version = "8.7.2", default-features = false }
 actix-web = { version = "4.11.0", default-features = false, features = [
     "http2",
     "macros",
 ] }
-actix-files = "0.6.8"
-actix-cors = "0.7.1"
-serde_json = "1.0.145"
-
-tutorlolv2_dev = { path = "./tutorlolv2_dev", optional = true }
-tutorlolv2_avif = { path = "./tutorlolv2_avif", optional = true }
-tutorlolv2_exports = { path = "./tutorlolv2_exports", optional = true }
-reqwest = { version = "0.12.1", features = [
-    "json",
-    "rustls-tls",
-], default-features = false, optional = true }
-
-[features]
-dev = ["tutorlolv2_dev", "tutorlolv2_avif", "tutorlolv2_exports", "reqwest"]
-default = ["dev"]
+tutorlolv2_avif = { path = "tutorlolv2_avif" }
+tutorlolv2_build = { path = "tutorlolv2_build" }
+tutorlolv2_dev = { path = "tutorlolv2_dev" }
+tutorlolv2_exports = { path = "tutorlolv2_exports" }
+tutorlolv2_fmt = { path = "tutorlolv2_fmt" }
+tutorlolv2_gen = { path = "tutorlolv2_gen" }
+tutorlolv2_macros = { path = "tutorlolv2_macros" }
+tutorlolv2_math = { path = "tutorlolv2_math" }
+tutorlolv2_server = { path = "tutorlolv2_server" }
+tutorlolv2_types = { path = "tutorlolv2_types" }
