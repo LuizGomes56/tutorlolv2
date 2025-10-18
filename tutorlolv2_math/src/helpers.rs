@@ -1,5 +1,5 @@
 use super::model::*;
-use crate::{L_ITEM, L_RUNE, L_SIML, NUMBER_OF_CHAMPIONS, RiotFormulas, riot::*};
+use crate::{L_ITEM, L_RUNE, L_SIML, NUMBER_OF_CHAMPIONS, NUMBER_OF_ITEMS, RiotFormulas, riot::*};
 use smallvec::SmallVec;
 use std::mem::MaybeUninit;
 use tinyset::SetU32;
@@ -228,27 +228,41 @@ pub fn get_runes_data(runes: &SetU32, attack_type: AttackType) -> DamageKind<L_R
     DamageKind { metadata, closures }
 }
 
-pub fn get_items_data(items: &SetU32, attack_type: AttackType) -> DamageKind<L_ITEM, ItemId> {
+pub fn get_items_data(
+    items: &SetU32,
+    attack_type: AttackType,
+) -> (
+    DamageKind<L_ITEM, ItemId>,
+    SmallVec<[(usize, usize); L_ITEM]>,
+) {
+    const _: () = {
+        let mut index = 0;
+        while index < NUMBER_OF_ITEMS {
+            let data = INTERNAL_ITEMS[index];
+            assert!(data.melee_closure.len() <= 2);
+            assert!(data.range_closure.len() <= 2);
+            index += 1;
+        }
+    };
+
     let mut metadata = SmallVec::with_capacity(items.len());
     let mut closures = SmallVec::with_capacity(items.len());
-    for item_number in items.iter() {
+    let mut multi_closure_indices = SmallVec::with_capacity(items.len());
+    for (index, item_number) in items.iter().enumerate() {
         let item = unsafe { INTERNAL_ITEMS.get_unchecked(item_number as usize) };
-        let mut written = 0;
-        let mut write_closure = |array: &[ConstClosure]| {
-            closures.extend_from_slice(array);
-            written = array.len();
+        let slice = match attack_type {
+            AttackType::Ranged => item.range_closure,
+            AttackType::Melee => item.melee_closure,
         };
-        match attack_type {
-            AttackType::Ranged => write_closure(item.range_closure),
-            AttackType::Melee => write_closure(item.range_closure),
+
+        if slice.len() > 1 {
+            multi_closure_indices.push((index, index + 1));
         }
-        // One item may have more than one closure assigned to its damage. In this case,
-        // the number of itens in metadata array should match the number of closures
-        for _ in 0..written {
-            metadata.push(item.metadata)
-        }
+
+        closures.extend_from_slice(slice);
+        metadata.push(item.metadata);
     }
-    DamageKind { metadata, closures }
+    (DamageKind { metadata, closures }, multi_closure_indices)
 }
 
 pub fn runes_slice_to_set_u32(input: &[RuneId]) -> SetU32 {

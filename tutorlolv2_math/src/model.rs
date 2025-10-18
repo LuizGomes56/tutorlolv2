@@ -62,6 +62,8 @@ pub struct Realtime<'a> {
     pub items_meta: SmallVec<[TypeMetadata<ItemId>; L_ITEM]>,
     pub runes_meta: SmallVec<[TypeMetadata<RuneId>; L_RUNE]>,
     pub siml_meta: [TypeMetadata<ItemId>; L_SIML],
+    pub abilities_to_merge: &'static [(usize, usize)],
+    pub items_to_merge: SmallVec<[(usize, usize); L_ITEM]>,
     pub game_time: u32,
     pub ability_levels: AbilityLevels,
     pub dragons: Dragons,
@@ -335,6 +337,8 @@ pub struct OutputGame {
     pub enemies: SmallVec<[OutputEnemy; L_CENM]>,
     pub tower_damages: [i32; L_TWRD],
     pub abilities_meta: &'static [TypeMetadata<AbilityLike>],
+    pub abilities_to_merge: &'static [(usize, usize)],
+    pub items_to_merge: SmallVec<[(usize, usize); L_ITEM]>,
     pub items_meta: SmallVec<[TypeMetadata<ItemId>; L_ITEM]>,
     pub runes_meta: SmallVec<[TypeMetadata<RuneId>; L_RUNE]>,
 }

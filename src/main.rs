@@ -221,17 +221,6 @@ async fn main() {
                 &[],
             )
         }
-        _ => {
-            run("./tutorlolv2_server", "cargo", &["build"]);
-            let srv_0 = task(
-                ".",
-                "./tutorlolv2_server/target/debug/tutorlolv2_server.exe",
-                &[],
-            );
-            short_wait();
-
-            get!("/setup/champions");
-            kill(srv_0);
-        } // _ => tutorlolv2_server::run().await.unwrap(),
+        _ => tutorlolv2_server::run().await.unwrap(),
     }
 }

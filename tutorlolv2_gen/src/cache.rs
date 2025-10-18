@@ -167,14 +167,15 @@ pub struct CachedChampion {
     pub positions: &'static [Position],
     pub stats: CachedChampionStats,
     pub metadata: &'static [TypeMetadata<AbilityLike>],
-    pub closures: &'static [fn(&EvalContext) -> f32],
+    pub closures: &'static [ConstClosure],
+    pub merge_data: &'static [(usize, usize)],
 }
 
 pub struct CachedChampionAbility {
     pub damage_type: DamageType,
     pub attributes: Attrs,
-    pub minimum_damage: fn(u8, &EvalContext) -> f32,
-    pub maximum_damage: fn(u8, &EvalContext) -> f32,
+    pub minimum_damage: ConstClosure,
+    pub maximum_damage: ConstClosure,
 }
 
 pub struct CachedChampionStatsMap {
@@ -201,8 +202,8 @@ pub struct CachedChampionStats {
 }
 
 pub struct CachedItemDamages {
-    pub minimum_damage: fn(u8, &EvalContext) -> f32,
-    pub maximum_damage: fn(u8, &EvalContext) -> f32,
+    pub minimum_damage: ConstClosure,
+    pub maximum_damage: ConstClosure,
 }
 
 pub enum StatName {

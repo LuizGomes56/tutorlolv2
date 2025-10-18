@@ -55,6 +55,7 @@ pub struct Champion {
     pub positions: Vec<String>,
     pub stats: ChampionCdnStats,
     pub abilities: HashMap<AbilityLike, Ability>,
+    pub merge_data: Vec<(AbilityLike, AbilityLike)>,
 }
 
 pub fn format_stats(stats: &ChampionCdnStats) -> String {
@@ -184,6 +185,24 @@ pub struct ChampionDetails {
     pub positions: String,
 }
 
+pub fn find_merge_indexes(
+    merge_data: &[(AbilityLike, AbilityLike)],
+    ability_data: &[(AbilityLike, String, String, String)],
+) -> Vec<(usize, usize)> {
+    let mut idx: HashMap<AbilityLike, usize> = HashMap::with_capacity(ability_data.len());
+    for (i, (al, _, _, _)) in ability_data.iter().enumerate() {
+        idx.entry(*al).or_insert(i);
+    }
+
+    let mut out = Vec::with_capacity(merge_data.len());
+    for &(a, b) in merge_data {
+        if let (Some(&ia), Some(&ib)) = (idx.get(&a), idx.get(&b)) {
+            out.push((ia, ib));
+        }
+    }
+    out
+}
+
 pub fn export_champions() -> BTreeMap<String, ChampionDetails> {
     init_map!(dir Champion, "internal/champions")
         .into_par_iter()
@@ -222,6 +241,7 @@ pub fn export_champions() -> BTreeMap<String, ChampionDetails> {
                     metadata: &[{metadata}],
                     closures: &[{closures}],
                     stats: CachedChampionStats {{{stats}}},
+                    merge_data: &[{merge_data}],
                 }};",
                 adaptative_type = champion.adaptative_type,
                 attack_type = champion.attack_type,
@@ -236,6 +256,11 @@ pub fn export_champions() -> BTreeMap<String, ChampionDetails> {
                     .collect::<Vec<_>>()
                     .join(","),
                 stats = format_stats(&champion.stats),
+                merge_data = find_merge_indexes(&champion.merge_data, &ability_data)
+                    .iter()
+                    .map(|(ia, ib)| format!("({}, {})", ia, ib))
+                    .collect::<Vec<_>>()
+                    .join(","),
             );
 
             let generator = cwd!(format!("tutorlolv2_dev/src/generators/{}.rs", champion_id))

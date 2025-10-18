@@ -5,7 +5,7 @@ use super::*;
 #[tutorlolv2_macros::generator]
 pub fn gen_aatrox(data: CdnChampion) -> Champion {
     passive!(Void, (0, 0), (None, Some("ENEMY_MAX_HEALTH")));
-    ability!(w, (0, 0, Void), (0, 1, Minion), (2, 0, Max));
+    ability!(w, (0, 0, Min), (0, 1, Minion), (2, 0, Max));
     ability!(
         q,
         (2, 0, _1),
@@ -15,7 +15,6 @@ pub fn gen_aatrox(data: CdnChampion) -> Champion {
         (5, 0, _3),
         (5, 1, _3Max)
     );
-    ability!(w, (0, 1, Void), (1, 0, Max));
 
     let default_ability = get!(Q::_1).clone();
 
@@ -37,6 +36,6 @@ pub fn gen_aatrox(data: CdnChampion) -> Champion {
         (Q::_1, Q::_1Max),
         (Q::_2, Q::_2Max),
         (Q::_3, Q::_3Max),
-        (W::Void, W::Max),
+        (W::Min, W::Max),
     ]
 }
