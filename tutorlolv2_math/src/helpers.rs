@@ -233,11 +233,20 @@ pub fn get_items_data(items: &SetU32, attack_type: AttackType) -> DamageKind<L_I
     let mut closures = SmallVec::with_capacity(items.len());
     for item_number in items.iter() {
         let item = unsafe { INTERNAL_ITEMS.get_unchecked(item_number as usize) };
-        closures.push(match attack_type {
-            AttackType::Ranged => item.range_closure.minimum_damage,
-            AttackType::Melee => item.melee_closure.minimum_damage,
-        });
-        metadata.push(item.metadata);
+        let mut written = 0;
+        let mut write_closure = |array: &[ConstClosure]| {
+            closures.extend_from_slice(array);
+            written = array.len();
+        };
+        match attack_type {
+            AttackType::Ranged => write_closure(item.range_closure),
+            AttackType::Melee => write_closure(item.range_closure),
+        }
+        // One item may have more than one closure assigned to its damage. In this case,
+        // the number of itens in metadata array should match the number of closures
+        for _ in 0..written {
+            metadata.push(item.metadata)
+        }
     }
     DamageKind { metadata, closures }
 }
@@ -507,7 +516,7 @@ impl IsAbility for RuneId {}
 impl IsAbility for AbilityLike {
     fn apply_modifiers(&self, modifier: &mut f32, ability_modifiers: &AbilityModifiers) {
         let mut modify = |ability_name: AbilityName, value: f32| {
-            if ability_name as u8 <= AbilityName::_8Min as u8 {
+            if ability_name <= AbilityName::_8Min {
                 *modifier *= value
             }
         };

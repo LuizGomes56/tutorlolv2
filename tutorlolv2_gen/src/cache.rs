@@ -97,7 +97,7 @@ pub enum Attrs {
     AreaOnhitMax,
 }
 
-#[derive(Copy, Clone, Serialize, Deserialize)]
+#[derive(Copy, Clone, Serialize, Deserialize, PartialEq)]
 pub enum AttackType {
     Melee,
     Ranged,
@@ -160,12 +160,6 @@ pub struct TypeMetadata<T> {
 }
 
 pub type ConstClosure = fn(&EvalContext) -> f32;
-
-#[derive(Copy, Clone)]
-pub struct DamageClosures {
-    pub minimum_damage: ConstClosure,
-    pub maximum_damage: ConstClosure,
-}
 
 pub struct CachedChampion {
     pub adaptative_type: AdaptativeType,
@@ -241,8 +235,8 @@ pub struct CachedItem {
     pub damage_type: DamageType,
     pub stats: CachedItemStats,
     pub metadata: TypeMetadata<ItemId>,
-    pub range_closure: DamageClosures,
-    pub melee_closure: DamageClosures,
+    pub range_closure: &'static [ConstClosure],
+    pub melee_closure: &'static [ConstClosure],
     pub attributes: Attrs,
 }
 

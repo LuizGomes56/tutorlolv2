@@ -60,27 +60,29 @@ fn get_items_decl(item_name: &str, item: &Item) -> (String, String, String) {
         if let Some(raw) = expr.as_ref().map(String::as_str) {
             let (new_expr, changed) = raw.clean_math_expr().transform_expr();
             let ctx_param = if changed { "ctx" } else { "_" };
-            format!("|{}|{}", ctx_param, new_expr.to_lowercase())
+            Some(format!("|{}|{}", ctx_param, new_expr.to_lowercase()))
         } else {
-            String::from("zero")
+            None
         }
     };
 
     let make_closure = |damage_object: &Option<DamageObject>| {
-        let (minimum_damage, maximum_damage) = if let Some(damage) = damage_object {
+        let data = if let Some(damage) = damage_object {
             (
                 assign_value(&damage.minimum_damage),
                 assign_value(&damage.maximum_damage),
             )
         } else {
-            (String::from("zero"), String::from("zero"))
+            (None, None)
         };
-        format!(
-            "DamageClosures {{
-                minimum_damage: {minimum_damage},
-                maximum_damage: {maximum_damage}
-            }}",
-        )
+        let mut closures = Vec::new();
+        if let Some(min) = data.0 {
+            closures.push(min);
+        };
+        if let Some(max) = data.1 {
+            closures.push(max);
+        };
+        format!("&[{}]", closures.join(","))
     };
 
     let range_closure = make_closure(&item.ranged);
