@@ -145,12 +145,12 @@ pub fn extract_passive_damage(
     indexes: (usize, usize),
     postfix: Option<&str>,
     scalings: Option<usize>,
-    keyname: &str,
-    map: &mut HashMap<String, Ability>,
+    keyname: AbilityLike,
+    map: &mut HashMap<AbilityLike, Ability>,
 ) {
     let (passive, passive_bounds) = extract_passive_bounds(&data, indexes);
 
-    let mut description: &String = &String::new();
+    let mut description = &String::new();
 
     if let Some(scalings) = scalings {
         description = &passive.effects[scalings].description;
@@ -159,7 +159,7 @@ pub fn extract_passive_damage(
     let mut damage = process_linear_range(passive_bounds, 18, postfix);
     assign_scalings(&description, &mut damage);
 
-    map.insert(String::from(keyname), passive.format(damage));
+    map.insert(keyname, passive.format(damage));
 }
 
 /// Helper function to remove the decimal point if it's not needed, or expand floats.
@@ -173,9 +173,10 @@ fn trim_f64(val: f64) -> String {
 
 /// Takes the default format of the API and assigns to target_vec the correct format
 /// Used internally.
-fn extract_ability(modifiers: &[Modifiers], target_vec: &mut Vec<String>) {
+fn extract_ability(modifiers: &[Modifiers]) -> Vec<String> {
+    let mut result = Vec::new();
     if modifiers.is_empty() {
-        return;
+        return result;
     }
     let length: usize = modifiers[0].values.len();
     for i in 0..length {
@@ -212,8 +213,9 @@ fn extract_ability(modifiers: &[Modifiers], target_vec: &mut Vec<String>) {
                 parts.push(final_string);
             }
         }
-        target_vec.push(parts.join(" + "));
+        result.push(parts.join(" + "));
     }
+    result
 }
 
 /// Lots of passive strings match with a pattern of (number) : (number) ... (+ Scalings)
@@ -266,21 +268,21 @@ pub fn extract_ability_damage(
     map: &mut HashMap<AbilityLike, Ability>,
     pattern: &[(usize, usize, AbilityLike)],
 ) {
-    let mut indexes = HashMap::default();
+    let mut indexes = HashMap::new();
 
     for (effect_index, leveling_index, keyname) in pattern.into_iter() {
         indexes
             .entry(*effect_index)
-            .or_insert(HashMap::default())
+            .or_insert(HashMap::new())
             .insert(*leveling_index, keyname);
     }
 
-    for (effect_index, leveling) in indexes {
-        for (leveling_index, keyname) in leveling {
+    for (effect_index, leveling) in indexes.into_iter() {
+        for (leveling_index, keyname) in leveling.into_iter() {
             if let Some(effects) = data.effects.get(effect_index) {
                 if let Some(level_entry) = effects.leveling.get(leveling_index) {
-                    let modifiers: &Vec<Modifiers> = &level_entry.modifiers;
-                    map.insert(keyname, data.format(modifiers));
+                    let modifiers = &level_entry.modifiers;
+                    map.insert(*keyname, data.format(extract_ability(&modifiers)));
                 }
             } else {
                 println!(

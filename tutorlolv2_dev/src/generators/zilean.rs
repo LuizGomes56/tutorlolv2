@@ -4,5 +4,5 @@ use super::*;
 
 #[tutorlolv2_macros::generator]
 pub fn gen_zilean(data: CdnChampion) -> Champion {
-    ability!(q, (1, 0, Void, Min));
+    ability!(q, (1, 0, Void));
 }

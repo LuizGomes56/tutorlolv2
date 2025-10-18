@@ -4,8 +4,8 @@ use super::*;
 
 #[tutorlolv2_macros::generator]
 pub fn gen_zeri(data: CdnChampion) -> Champion {
-    ability!(q, (0, 0, Min, Min), (0, 1, Max, Max));
-    ability!(w, (0, 0, Void, Min));
-    ability!(e, (1, 0, Min, Min), (1, 1, Max, Max));
-    ability!(r, (0, 0, Void, Min));
+    ability!(q, (0, 0, Min), (0, 1, Max));
+    ability!(w, (0, 0, Void));
+    ability!(e, (1, 0, Min), (1, 1, Max));
+    ability!(r, (0, 0, Void));
 }

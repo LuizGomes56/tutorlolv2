@@ -34,10 +34,7 @@ pub fn export_runes() -> Vec<(u32, RuneDetails)> {
 
             let make_closure = |expr: (String, bool)| {
                 format!(
-                    "DamageClosures {{
-                        minimum_damage: |{}| {},
-                        maximum_damage: zero,
-                    }}",
+                    "|{}| {}",
                     if expr.1 { "ctx" } else { "_" },
                     expr.0.to_lowercase()
                 )

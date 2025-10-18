@@ -4,8 +4,8 @@ use super::*;
 
 #[tutorlolv2_macros::generator]
 pub fn gen_caitlyn(data: CdnChampion) -> Champion {
-    ability!(q, (0, 0, Max, Max), (0, 1, Min, Min));
-    ability!(w, (2, 0, Void, Min));
-    ability!(e, (0, 0, Void, Min));
-    ability!(r, (2, 0, Void, Min));
+    ability!(q, (0, 0, Max), (0, 1, Min));
+    ability!(w, (2, 0, Void));
+    ability!(e, (0, 0, Void));
+    ability!(r, (2, 0, Void));
 }

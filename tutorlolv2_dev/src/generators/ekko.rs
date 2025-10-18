@@ -6,10 +6,10 @@ use super::*;
 pub fn gen_ekko(data: CdnChampion) -> Champion {
     ability!(
         q,
-        (0, 0, _1Min, Min),
-        (1, 0, _2Min, Min),
-        (1, 1, _3Max, Max)
+        (0, 0, _1Min),
+        (1, 0, _2Min),
+        (1, 1, _3Max)
     );
-    ability!(e, (0, 0, _1, Min));
-    ability!(r, (0, 1, _1Min, Min));
+    ability!(e, (0, 0, _1));
+    ability!(r, (0, 1, _1Min));
 }

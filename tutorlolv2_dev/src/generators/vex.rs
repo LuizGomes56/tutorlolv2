@@ -4,8 +4,8 @@ use super::*;
 
 #[tutorlolv2_macros::generator]
 pub fn gen_vex(data: CdnChampion) -> Champion {
-    ability!(q, (0, 0, Void, Min));
-    ability!(w, (0, 0, Void, Min));
-    ability!(e, (0, 0, Void, Min));
-    ability!(r, (0, 0, Minion, Min), (2, 0, Void, Min), (2, 1, Max, Max));
+    ability!(q, (0, 0, Void));
+    ability!(w, (0, 0, Void));
+    ability!(e, (0, 0, Void));
+    ability!(r, (0, 0, Minion), (2, 0, Void), (2, 1, Max));
 }

@@ -44,8 +44,7 @@ pub struct Ability {
     pub damage_type: String,
     #[serde(default)]
     pub attributes: Attrs,
-    pub minimum_damage: Vec<String>,
-    pub maximum_damage: Vec<String>,
+    pub damage: Vec<String>,
 }
 
 #[derive(Deserialize)]
@@ -55,7 +54,7 @@ pub struct Champion {
     pub attack_type: String,
     pub positions: Vec<String>,
     pub stats: ChampionCdnStats,
-    pub abilities: HashMap<String, Ability>,
+    pub abilities: HashMap<AbilityLike, Ability>,
 }
 
 pub fn format_stats(stats: &ChampionCdnStats) -> String {
@@ -119,46 +118,41 @@ pub fn sort_pqwer(data: &mut [(String, String, String, String)]) {
 
 fn get_abilities_decl(
     champion_name: &str,
-    abilities: HashMap<String, Ability>,
+    abilities: HashMap<AbilityLike, Ability>,
 ) -> Vec<(String, String, String, String)> {
     let mut result = Vec::new();
 
     for (name, ability) in abilities {
-        let mut minimum_damage = String::new();
-        let mut maximum_damage = String::new();
-
-        let formatter = |expr: &[String], target: &mut String| {
-            if expr.is_empty() {
-                target.push_str("zero");
-            } else {
-                let transformed = expr
-                    .iter()
-                    .map(|dmg| transform_expr(&clean_math_expr(&dmg)))
-                    .collect::<Vec<(String, bool)>>();
-                let ability_type = name.chars().next().unwrap();
-                let ctx_matcher = match ability_type {
-                    'P' => "level as u8".into(),
-                    _ => format!("{}_level", ability_type.to_lowercase()),
-                };
-                target.push_str(&format!("|ctx| {{ match ctx.{ctx_matcher} {{"));
-                for (i, (new_expr, _)) in transformed.into_iter().enumerate() {
-                    target.push_str(&format!("{} => {},", i + 1, new_expr.to_lowercase()));
-                }
-                target.push_str("_ => 0.0 }}");
+        let damage = if ability.damage.is_empty() {
+            String::from("zero")
+        } else {
+            let mut target = String::new();
+            let transformed = ability
+                .damage
+                .iter()
+                .map(|dmg| transform_expr(&clean_math_expr(&dmg)))
+                .collect::<Vec<(String, bool)>>();
+            let ability_type = name.chars();
+            let ctx_matcher = match ability_type {
+                'P' => "level as u8".into(),
+                _ => format!("{}_level", ability_type.to_lowercase()),
+            };
+            target.push_str(&format!("|ctx| {{ match ctx.{ctx_matcher} {{"));
+            for (i, (new_expr, _)) in transformed.into_iter().enumerate() {
+                target.push_str(&format!("{} => {},", i + 1, new_expr.to_lowercase()));
             }
+            target.push_str("_ => 0.0 }}");
+            target
         };
 
-        formatter(&ability.minimum_damage, &mut minimum_damage);
-        formatter(&ability.maximum_damage, &mut maximum_damage);
-
         let const_decl = format!(
-            "static {champion_name}_{name}: Intrinsic = Intrinsic {{
+            "static {champion_name}_{char_name}: Intrinsic = Intrinsic {{
                 name: {ability_name:?},
                 damage_type: DamageType::{damage_type},
                 attributes: Attrs::{attributes:?},
-                minimum_damage: {minimum_damage},
-                maximum_damage: {maximum_damage}
+                damage: {damage},
             }};",
+            char_name = format!("{}_{}", name.ability_like(), name.ability_name()).to_uppercase(),
             ability_name = ability.name,
             damage_type = ability.damage_type,
             attributes = ability.attributes,
@@ -170,19 +164,17 @@ fn get_abilities_decl(
                 damage_type: DamageType::{damage_type}, 
                 attributes: Attrs::{attributes:?} 
             }}",
-            kind = AbilityLike::from_str(&name),
+            kind = name.as_literal(),
             damage_type = ability.damage_type,
             attributes = ability.attributes
         );
 
-        let closures = format!(
-            "DamageClosures {{
-                minimum_damage: {minimum_damage},
-                maximum_damage: {maximum_damage}
-            }}",
-        );
-
-        result.push((name, metadata, closures, const_decl));
+        result.push((
+            name.to_string().remove_special_chars(),
+            metadata,
+            damage,
+            const_decl,
+        ));
     }
 
     result
@@ -253,13 +245,7 @@ pub fn export_champions() -> BTreeMap<String, ChampionDetails> {
                 zero_addr = {
                     ability_data
                         .iter()
-                        .map(|(_, _, closures, _)| {
-                            format!(
-                                "({}, {})",
-                                closures.contains("minimum_damage: zero"),
-                                closures.contains("maximum_damage: zero")
-                            )
-                        })
+                        .map(|(_, _, closures, _)| format!("{}", closures.contains("zero"),))
                         .collect::<Vec<String>>()
                         .join(",")
                 }

@@ -20,6 +20,6 @@ pub fn gen_blitzcrank(data: CdnChampion) -> Champion {
             ],
         }
     );
-    ability!(q, (0, 0, Void, Min));
-    ability!(r, (0, 0, Max, Max), (1, 0, Min, Min));
+    ability!(q, (0, 0, Void));
+    ability!(r, (0, 0, Max), (1, 0, Min));
 }

@@ -82,16 +82,16 @@ pub fn generator(_args: TokenStream, input: TokenStream) -> TokenStream {
         }
 
         macro_rules! merge_damage {
-            ($size:literal, $closure:expr, $($field1:ident::$field2:ident),+ $(,)?) => {
+            ($size:literal, $closure:expr, $($field1:ident::$field2:ident),*$(,)?) => {
                 paste::paste! {{
                     let mut result = Vec::<String>::with_capacity($size);
                     for i in 0..$size {
                         let args = ($(
-                            abilities.get((
-                                AbilityLike::[<$field1>](
+                            abilities.get(
+                                &AbilityLike::[<$field1>](
                                     AbilityName::$field2
                                 )
-                            ))
+                            )
                                 .unwrap()
                                 .damage[i]
                                 .clone(),
@@ -103,31 +103,25 @@ pub fn generator(_args: TokenStream, input: TokenStream) -> TokenStream {
             };
         }
 
-        /// ### `get!`
-        ///
-        /// It returns a (mutable or not) reference to the key `{STRING}` in the `HashMap`. Panics if not found
-        ///
-        /// ```
-        /// get!("Q"); // ref
-        /// get!(mut "Q_MIN"); // mut ref
-        /// ```
         macro_rules! get {
             ($field1:ident::$field2:ident) => {
                 paste::paste! {{
-                    match abilities.get(AbilityLike::[<$field1>](AbilityName::$field2)) {
+                    let key = AbilityLike::[<$field1>](AbilityName::$field2);
+                    match abilities.get(&key) {
                         Some(value) => value,
                         None => {
-                            panic!("macro [get!]: Error: key does not exist: {}", key);
+                            panic!("macro [get!]: Error: key does not exist: {:?}", key);
                         }
                     }
                 }}
             };
             (mut $field1:ident::$field2:ident) => {
                 paste::paste! {{
-                    match abilities.get_mut(AbilityLike::[<$field1>](AbilityName::$field2)) {
+                    let key = AbilityLike::[<$field1>](AbilityName::$field2);
+                    match abilities.get_mut(&key) {
                         Some(value) => value,
                         None => {
-                            panic!("macro [get!]: Error: key does not exist: {}", key);
+                            panic!("macro [get!]: Error: key does not exist: {:?}", key);
                         }
                     }
                 }}

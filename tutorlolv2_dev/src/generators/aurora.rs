@@ -6,12 +6,12 @@ use super::*;
 pub fn gen_aurora(data: CdnChampion) -> Champion {
     ability!(
         q,
-        (0, 0, _1, Min),
-        (1, 0, _1Max, Max),
-        (1, 1, _2, Min),
-        (1, 2, _2Max, Max),
-        (1, 3, _3, Min)
+        (0, 0, _1),
+        (1, 0, _1Max),
+        (1, 1, _2),
+        (1, 2, _2Max),
+        (1, 3, _3)
     );
-    ability!(e, (0, 0, Void, Min));
-    ability!(r, (0, 0, Void, Min));
+    ability!(e, (0, 0, Void));
+    ability!(r, (0, 0, Void));
 }

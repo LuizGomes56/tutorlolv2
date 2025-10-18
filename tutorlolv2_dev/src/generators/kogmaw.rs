@@ -4,8 +4,8 @@ use super::*;
 
 #[tutorlolv2_macros::generator]
 pub fn gen_kogmaw(data: CdnChampion) -> Champion {
-    ability!(q, (0, 0, _1Min, Min));
-    ability!(w, (0, 1, _1, Min));
-    ability!(e, (1, 0, _1Min, Min));
-    ability!(r, (0, 0, _1Max, Max), (0, 1, Minion1, Min));
+    ability!(q, (0, 0, _1Min));
+    ability!(w, (0, 1, _1));
+    ability!(e, (1, 0, _1Min));
+    ability!(r, (0, 0, _1Max), (0, 1, Minion1));
 }

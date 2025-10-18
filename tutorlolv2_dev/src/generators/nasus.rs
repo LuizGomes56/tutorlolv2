@@ -4,12 +4,12 @@ use super::*;
 
 #[tutorlolv2_macros::generator]
 pub fn gen_nasus(data: CdnChampion) -> Champion {
-    ability!(q, (0, 0, _1, Min));
+    ability!(q, (0, 0, _1));
     ability!(
         e,
-        (0, 0, _1Min, Min),
-        (1, 1, _2Min, Min),
-        (1, 2, _3Max, Max)
+        (0, 0, _1Min),
+        (1, 1, _2Min),
+        (1, 2, _3Max)
     );
-    ability!(r, (1, 0, _1Min, Min), (1, 1, _2Max, Max));
+    ability!(r, (1, 0, _1Min), (1, 1, _2Max));
 }

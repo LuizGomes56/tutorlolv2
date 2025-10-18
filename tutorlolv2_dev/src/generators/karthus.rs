@@ -4,7 +4,7 @@ use super::*;
 
 #[tutorlolv2_macros::generator]
 pub fn gen_karthus(data: CdnChampion) -> Champion {
-    ability!(q, (0, 0, Void, Min), (0, 1, Max, Min));
-    ability!(e, (2, 0, Void, Min), (2, 1, Max, Min));
-    ability!(r, (0, 0, Void, Min));
+    ability!(q, (0, 0, Void), (0, 1, Max));
+    ability!(e, (2, 0, Void), (2, 1, Max));
+    ability!(r, (0, 0, Void));
 }

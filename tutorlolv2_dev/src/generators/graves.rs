@@ -6,10 +6,10 @@ use super::*;
 pub fn gen_graves(data: CdnChampion) -> Champion {
     ability!(
         q,
-        (0, 0, _1Min, Min),
-        (1, 0, _2Min, Min),
-        (1, 1, _3Max, Max)
+        (0, 0, _1Min),
+        (1, 0, _2Min),
+        (1, 1, _3Max)
     );
-    ability!(w, (0, 0, _1Min, Min));
-    ability!(r, (0, 0, _1Min, Min), (1, 0, _2Min, Min));
+    ability!(w, (0, 0, _1Min));
+    ability!(r, (0, 0, _1Min), (1, 0, _2Min));
 }

@@ -6,11 +6,11 @@ use super::*;
 pub fn gen_shen(data: CdnChampion) -> Champion {
     ability!(
         q,
-        (1, 0, Monster1, Min),
-        (2, 0, _1, Min),
-        (2, 1, _2Max, Max),
-        (3, 0, _3, Min),
-        (3, 1, _4Max, Max)
+        (1, 0, Monster1),
+        (2, 0, _1),
+        (2, 1, _2Max),
+        (3, 0, _3),
+        (3, 1, _4Max)
     );
-    ability!(e, (0, 0, _1Min, Min));
+    ability!(e, (0, 0, _1Min));
 }

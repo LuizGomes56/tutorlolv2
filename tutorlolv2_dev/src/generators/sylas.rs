@@ -6,12 +6,12 @@ use super::*;
 pub fn gen_sylas(data: CdnChampion) -> Champion {
     ability!(
         q,
-        (0, 0, _1Min, Min),
-        (1, 0, _2Min, Min),
-        (1, 1, _3Min, Min),
-        (1, 2, _4Max, Max),
-        (1, 3, _5Max, Max)
+        (0, 0, _1Min),
+        (1, 0, _2Min),
+        (1, 1, _3Min),
+        (1, 2, _4Max),
+        (1, 3, _5Max)
     );
-    ability!(w, (0, 0, _1Min, Min));
-    ability!(e, (0, 0, _1Min, Min));
+    ability!(w, (0, 0, _1Min));
+    ability!(e, (0, 0, _1Min));
 }

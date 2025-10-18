@@ -6,13 +6,13 @@ use super::*;
 pub fn gen_skarner(data: CdnChampion) -> Champion {
     ability!(
         q,
-        (0, 1, _1, Min),
-        (0, 2, _2, Min),
-        (3, 0, Monster1, Min),
-        (0, 0, Monster2, Min),
-        (0, 1, _3Min, Min)
+        (0, 1, _1),
+        (0, 2, _2),
+        (3, 0, Monster1),
+        (0, 0, Monster2),
+        (0, 1, _3Min)
     );
-    ability!(w, (0, 0, _1Min, Min));
-    ability!(e, (1, 0, _1Min, Min));
-    ability!(r, (0, 0, _1Min, Min));
+    ability!(w, (0, 0, _1Min));
+    ability!(e, (1, 0, _1Min));
+    ability!(r, (0, 0, _1Min));
 }

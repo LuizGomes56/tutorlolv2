@@ -6,10 +6,10 @@ use super::*;
 pub fn gen_kaisa(data: CdnChampion) -> Champion {
     ability!(
         q,
-        (1, 0, _1Min, Min),
-        (2, 0, _2Max, Max),
-        (3, 0, _3Min, Min),
-        (3, 1, _4Max, Max)
+        (1, 0, _1Min),
+        (2, 0, _2Max),
+        (3, 0, _3Min),
+        (3, 1, _4Max)
     );
-    ability!(w, (0, 0, _1Min, Min));
+    ability!(w, (0, 0, _1Min));
 }

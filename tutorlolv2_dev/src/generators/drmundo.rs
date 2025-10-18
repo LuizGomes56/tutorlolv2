@@ -6,15 +6,15 @@ use super::*;
 pub fn gen_drmundo(data: CdnChampion) -> Champion {
     ability!(
         q,
-        (0, 0, _1Min, Min),
-        (2, 0, Monster1, Min),
-        (2, 1, Minion1, Min)
+        (0, 0, _1Min),
+        (2, 0, Monster1),
+        (2, 1, Minion1)
     );
     ability!(
         w,
-        (0, 0, _1Min, Min),
-        (0, 1, _2Max, Max),
-        (2, 0, _3Min, Min)
+        (0, 0, _1Min),
+        (0, 1, _2Max),
+        (2, 0, _3Min)
     );
-    ability!(e, (0, 0, _1, Min), (0, 1, _2, Min), (3, 0, _3, Min));
+    ability!(e, (0, 0, _1), (0, 1, _2), (3, 0, _3));
 }

@@ -4,17 +4,17 @@ use super::*;
 
 #[tutorlolv2_macros::generator]
 pub fn gen_ahri(data: CdnChampion) -> Champion {
-    ability!(q, (0, 0, Void, Min));
+    ability!(q, (0, 0, Void));
     ability!(
         w,
-        (1, 0, Void, Min),
-        (1, 1, _1, Min),
-        (1, 2, Max, Max),
-        (3, 0, Minion, Max),
-        (3, 1, MinionMax, Max)
+        (1, 0, Void),
+        (1, 1, _1),
+        (1, 2, Max),
+        (3, 0, Minion),
+        (3, 1, MinionMax)
     );
-    ability!(e, (0, 1, Void, Min));
-    ability!(r, (0, 0, Void, Min));
+    ability!(e, (0, 1, Void));
+    ability!(r, (0, 0, Void));
 
     let q_max = merge_damage!(
         5,
@@ -23,7 +23,7 @@ pub fn gen_ahri(data: CdnChampion) -> Champion {
     );
 
     insert!(Q::Max, get!(Q::Void).clone());
-    let q_mut_ref = get!(Q::Max);
+    let q_mut_ref = get!(mut Q::Max);
     q_mut_ref.damage = q_max;
     q_mut_ref.damage_type = DamageType::Mixed;
 

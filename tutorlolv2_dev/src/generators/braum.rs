@@ -4,6 +4,6 @@ use super::*;
 
 #[tutorlolv2_macros::generator]
 pub fn gen_braum(data: CdnChampion) -> Champion {
-    ability!(q, (0, 0, Void, Min));
-    ability!(r, (1, 0, Void, Min));
+    ability!(q, (0, 0, Void));
+    ability!(r, (1, 0, Void));
 }

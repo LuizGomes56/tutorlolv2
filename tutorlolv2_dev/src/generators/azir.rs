@@ -4,8 +4,8 @@ use super::*;
 
 #[tutorlolv2_macros::generator]
 pub fn gen_azir(data: CdnChampion) -> Champion {
-    ability!(q, (1, 0, Void, Min));
-    ability!(w, (3, 0, Void, Min));
-    ability!(e, (1, 0, Void, Min));
-    ability!(r, (1, 0, Void, Min));
+    ability!(q, (1, 0, Void));
+    ability!(w, (3, 0, Void));
+    ability!(e, (1, 0, Void));
+    ability!(r, (1, 0, Void));
 }

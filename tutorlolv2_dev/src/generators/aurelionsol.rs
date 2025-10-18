@@ -6,12 +6,12 @@ use super::*;
 pub fn gen_aurelionsol(data: CdnChampion) -> Champion {
     ability!(
         q,
-        (0, 0, _1, Min),
-        (0, 1, _2, Min),
-        (0, 2, _2Max, Max),
-        (5, 0, _3, Min)
+        (0, 0, _1),
+        (0, 1, _2),
+        (0, 2, _2Max),
+        (5, 0, _3)
     );
-    ability!(w, (0, 0, Void, Min));
-    ability!(e, (0, 0, Void, Min), (0, 1, Max, Max));
-    ability!(r, (0, 0, Void, Min), (0, 0, _1, Min), (1, 0, _2, Min));
+    ability!(w, (0, 0, Void));
+    ability!(e, (0, 0, Void), (0, 1, Max));
+    ability!(r, (0, 0, Void), (0, 0, _1), (1, 0, _2));
 }

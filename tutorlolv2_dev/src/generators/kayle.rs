@@ -4,7 +4,7 @@ use super::*;
 
 #[tutorlolv2_macros::generator]
 pub fn gen_kayle(data: CdnChampion) -> Champion {
-    ability!(q, (0, 0, Void, Min));
-    ability!(e, (0, 0, Void, Min), (2, 0, _1, Min));
-    ability!(r, (1, 0, Void, Min));
+    ability!(q, (0, 0, Void));
+    ability!(e, (0, 0, Void), (2, 0, _1));
+    ability!(r, (1, 0, Void));
 }

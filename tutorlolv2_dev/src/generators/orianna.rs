@@ -4,8 +4,8 @@ use super::*;
 
 #[tutorlolv2_macros::generator]
 pub fn gen_orianna(data: CdnChampion) -> Champion {
-    ability!(q, (0, 0, Min, Min), (0, 1, Max, Max));
-    ability!(w, (0, 0, Void, Min));
-    ability!(e, (0, 0, Void, Min));
-    ability!(r, (0, 0, Void, Min));
+    ability!(q, (0, 0, Min), (0, 1, Max));
+    ability!(w, (0, 0, Void));
+    ability!(e, (0, 0, Void));
+    ability!(r, (0, 0, Void));
 }

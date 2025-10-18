@@ -6,10 +6,10 @@ use super::*;
 pub fn gen_olaf(data: CdnChampion) -> Champion {
     ability!(
         q,
-        (0, 0, _1Min, Min),
-        (3, 0, Monster1, Min),
-        (3, 1, Monster2, Min)
+        (0, 0, _1Min),
+        (3, 0, Monster1),
+        (3, 1, Monster2)
     );
-    ability!(e, (0, 0, _1Min, Min));
-    ability!(r, (0, 0, _1, Min));
+    ability!(e, (0, 0, _1Min));
+    ability!(r, (0, 0, _1));
 }
