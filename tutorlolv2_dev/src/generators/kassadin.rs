@@ -14,5 +14,4 @@ pub fn gen_kassadin(data: CdnChampion) -> Champion {
         (1, 1, _3, Min),
         (1, 2, _1Max, Max)
     );
-    merge_ability!(R::_1, R::_1Max);
 }

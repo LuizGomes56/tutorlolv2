@@ -301,7 +301,9 @@ pub async fn run() {
         "pub static DAMAGING_RUNES:phf::Set<u32>=phf::phf_set!({});",
         runes
             .iter()
-            .map(|(rune_id, _)| format!("{}u32", rune_id))
+            .filter_map(
+                |(rune_id, rune_data)| (!rune_data.undeclared).then_some(format!("{}u32", rune_id))
+            )
             .collect::<Vec<String>>()
             .join(",")
     );

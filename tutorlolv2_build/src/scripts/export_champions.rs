@@ -234,7 +234,8 @@ pub fn export_champions() -> BTreeMap<String, ChampionDetails> {
                     positions: &[{positions}],
                     metadata: &[{metadata}],
                     closures: &[{closures}],
-                    stats: CachedChampionStats {{{stats}}}
+                    stats: CachedChampionStats {{{stats}}},
+                    zero_addr: &[{zero_addr}],
                 }};",
                 adaptative_type = champion.adaptative_type,
                 attack_type = champion.attack_type,
@@ -249,6 +250,19 @@ pub fn export_champions() -> BTreeMap<String, ChampionDetails> {
                     .collect::<Vec<_>>()
                     .join(","),
                 stats = format_stats(&champion.stats),
+                zero_addr = {
+                    ability_data
+                        .iter()
+                        .map(|(_, _, closures, _)| {
+                            format!(
+                                "({}, {})",
+                                closures.contains("minimum_damage: zero"),
+                                closures.contains("maximum_damage: zero")
+                            )
+                        })
+                        .collect::<Vec<String>>()
+                        .join(",")
+                }
             );
 
             let generator = cwd!(format!("tutorlolv2_dev/src/generators/{}.rs", champion_id))

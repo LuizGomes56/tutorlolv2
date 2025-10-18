@@ -168,13 +168,21 @@ pub fn export_items() -> Vec<(u32, ItemDetails)> {
                     metadata: {metadata},
                     range_closure: {range_closure},
                     melee_closure: {melee_closure},
-                    stats: CachedItemStats {{{stats}}}
+                    stats: CachedItemStats {{{stats}}},
+                    zero_addr: {zero_addr}
                 }};",
                 name = format_args!("{}_{}", item.name.to_screaming_snake_case(), item_id),
                 gold = item.gold,
                 damage_type = item.damage_type,
                 attributes = item.attributes,
                 stats = format_stats(&item.stats),
+                zero_addr = {
+                    let closure_min_range = range_closure.contains("minimum_damage: zero");
+                    let closure_max_range = range_closure.contains("maximum_damage: zero");
+                    let closure_min_melee = melee_closure.contains("minimum_damage: zero");
+                    let closure_max_melee = melee_closure.contains("maximum_damage: zero");
+                    format!("[({closure_min_range}, {closure_max_range}), ({closure_min_melee}, {closure_max_melee})]")
+                }
             );
 
             (

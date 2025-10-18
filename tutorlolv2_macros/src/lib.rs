@@ -4,7 +4,7 @@ use syn::{Ident, parse_macro_input, punctuated::Punctuated, token::Comma};
 
 /// ## Provides useful macros to extract data from CDN API
 ///
-/// Macros: `ability!`, `passive!`, `get!`, `insert!`, `merge_ability!`, `merge_damage!`
+/// Macros: `ability!`, `passive!`, `get!`, `insert!`, `merge_damage!`
 ///
 /// - Hover over each macro for more information
 #[proc_macro_attribute]
@@ -16,49 +16,27 @@ pub fn generator(_args: TokenStream, input: TokenStream) -> TokenStream {
     });
 
     let map_decl = quote! {
-        let mut abilities = HashMap::<String, Ability>::new();
+        let mut abilities = HashMap::<AbilityLike, Ability>::new();
 
-        /// ### `ability!`: fn `extract_ability_damage` in a more convenient way
-        ///
-        /// It can be used in two different ways. The most common one is:
-        ///
-        /// ```
-        /// ability!(q, (0, 0, "Q_MAX", MAXIMUM));
-        /// ability!(r, (0, 4, "R", MINIMUM));
-        /// ```
-        ///
-        /// Notice that it defaults that the ability being requested is unique.
-        /// It means that it replaces `arg1` with: `&data.abilities.$field[0]`.
-        /// Not recommended to use the first pattern for champions that have
-        /// two different effects in the same ability such as ***Hwei, Gnar, Elise, Nidalee, ...***
-        ///
-        /// Instead, you wanna use the second pattern:
-        ///
-        /// ```
-        /// ability!(q, 1, (0, 0, "Q_MAX", MAXIMUM));
-        /// ability!(r, 2, (0, 4, "R", MINIMUM));
-        /// ```
         macro_rules! ability {
-            ($field:ident, $idx:literal, $(($a:literal, $b:literal, $c:ident, $d:ident)),* $(,)?) => {
+            ($field:ident, $idx:literal, $(($a:literal, $b:literal, $c:ident)),* $(,)?) => {
                 paste::paste! {
                     let pattern = [$(
                         (
                             $a,
                             $b,
-                            AbilityLike::[<$field:upper>](AbilityName::$c).[<to_str_ $field>](),
-                            Target::$d
+                            AbilityLike::[<$field:upper>](AbilityName::$c),
                         )
                     ),*];
                     extract_ability_damage(&data.abilities.$field[$idx], &mut abilities, &pattern);
                 }
             };
-            ($field:ident, $(($a:literal, $b:literal, $c:ident, $d:ident)),* $(,)?) => {
+            ($field:ident, $(($a:literal, $b:literal, $c:ident)),* $(,)?) => {
                 paste::paste! {
                     let pattern = [$((
                             $a,
                             $b,
-                            AbilityLike::[<$field:upper>](AbilityName::$c).[<to_str_ $field>](),
-                            Target::$d
+                            AbilityLike::[<$field:upper>](AbilityName::$c),
                         )
                     ),*];
                     extract_ability_damage(&data.abilities.$field[0], &mut abilities, &pattern);
@@ -77,120 +55,34 @@ pub fn generator(_args: TokenStream, input: TokenStream) -> TokenStream {
         /// passive!("P", (0, 0), MAXIMUM, (Some(<usize>scalling), Some("POSTFIX")));
         /// ```
         macro_rules! passive {
-            ($key:ident, ($i:literal, $j:literal), $target:expr) => {
+            ($key:ident, ($i:literal, $j:literal)) => {
                 paste::paste! {
                     extract_passive_damage(
                         &data,
                         ($i, $j),
                         None,
                         None,
-                        &Target::$target,
-                        AbilityLike::P(AbilityName::$key).to_str_p(),
+                        AbilityLike::P(AbilityName::$key),
                         &mut abilities
                     );
                 }
             };
-            ($key:ident, ($i:literal, $j:literal), $target:expr, ($scaling:expr, $postfix:expr)) => {
+            ($key:ident, ($i:literal, $j:literal), ($scaling:expr, $postfix:expr)) => {
                 paste::paste! {
                     extract_passive_damage(
                         &data,
                         ($i, $j),
                         $postfix,
                         $scaling,
-                        &Target::$target,
-                        AbilityLike::P(AbilityName::$key).to_str_p(),
+                        AbilityLike::P(AbilityName::$key),
                         &mut abilities,
                     );
                 }
             };
         }
 
-        /// ### `merge_ability!`
-        ///
-        /// Has two variants. The one with only one argument takes the `{STRING}` and checks for
-        /// the key `{STRING}_MAX` in the `HashMap` and if found, moves the value from `"maximum_damage"` of it
-        /// into the original key, that should represent the `minimum_damage`. At the end, the key `{STRING}_MAX`
-        /// is removed from the `HashMap`.
-        ///
-        /// The other variant takes two arguments, the first one is the key that represent `minimum_damage`,
-        /// and the second one is the key that represent `maximum_damage`.
-        ///
-        /// ```
-        /// merge_ability!("Q");
-        /// merge_ability!("Q_MIN", "Q_MAX");
-        /// ```
-        macro_rules! merge_ability {
-            ($into_f:ident::$into:ident, $from_f:ident::$from:ident) => {
-                paste::paste! {
-                    let from_str = AbilityLike::$from_f(AbilityName::$from).[<to_str_ $from_f:lower>]();
-                    let into_str = AbilityLike::$into_f(AbilityName::$into).[<to_str_ $into_f:lower>]();
-                    let max_dmg = abilities.get(from_str);
-                    if let Some(value) = max_dmg {
-                        let max_damage = value.maximum_damage.clone();
-                        if let Some(mut_ref) = abilities.get_mut(into_str) {
-                            mut_ref.maximum_damage = max_damage;
-                            abilities.remove(from_str);
-                        } else {
-                            panic!("macro [merge_ability!]: Error: Destination key from arg#2 does not exist: {:?}", into_str);
-                        }
-                    } else {
-                        panic!("macro [merge_ability!]: Error: key from arg#1 does not exist: {:?}", from_str);
-                    }
-                }
-            };
-        }
-
-        /// ### `merge_damage!`
-        ///
-        /// Has two similar variants. Returns a `Vec<String>` with length = `$size` that is generated by
-        /// the closure passed as second argument. This closure can take infinite arguments, and
-        /// the value it returns will be inserted into the Vec. If key **R** is included, then the first
-        /// argument most likely has to be 3 or 4. Any number greater than that will cause a panic.
-        ///
-        ///
-        /// ```
-        /// let q_max = merge_damage!(
-        ///     5,
-        ///     || format!("({}) * MAGIC_MULTIPLIER + ({})", q, q),
-        ///     (q, minimum_damage)
-        /// );
-        /// let variant_1 = merge_damage!(
-        ///     3,
-        ///     || format!("({}) + ({}) + ({}) + ({})", q, w, e, r),
-        ///     (q, minimum_damage)
-        ///     (w, minimum_damage)
-        ///     (e, maximum_damage)
-        ///     (r, maximum_damage)
-        /// );
-        /// ```
-        ///
-        /// Note that `"q"` is a variable created in the tuple and that can be used inside the closure.
-        /// this variable will be uppercased and in each iteration `"q"` will be the same as
-        /// ```
-        /// abilities.get("Q").unwrap().minimum_damage[i].clone()
-        /// ```
-        ///
-        /// Variant number two is similar but the usage is:
-        ///
-        /// ```
-        /// let q_max = merge_damage!(
-        ///     5,
-        ///     |(q,)| format!("({}) * MAGIC_MULTIPLIER + ({})", q, q),
-        ///     ("Q", minimum_damage)
-        /// );
-        /// let variant_2 = merge_damage!(
-        ///     3,
-        ///     |(q, w, e, r)| format!("({}) + ({}) + ({}) + ({})", q, w, e, r),
-        ///     ("Q", minimum_damage)
-        ///     ("W", minimum_damage)
-        ///     ("E", maximum_damage)
-        ///     ("R", maximum_damage)
-        /// );
-        /// ```
-        ///
-        /// Variables are created inside the closure instead of outside it.
         macro_rules! merge_damage {
-            ($size:literal, $closure:expr, $(($field1:ident::$field2:ident, $field:ident)),+ $(,)?) => {
+            ($size:literal, $closure:expr, $($field1:ident::$field2:ident),+ $(,)?) => {
                 paste::paste! {{
                     let mut result = Vec::<String>::with_capacity($size);
                     for i in 0..$size {
@@ -199,10 +91,9 @@ pub fn generator(_args: TokenStream, input: TokenStream) -> TokenStream {
                                 AbilityLike::[<$field1>](
                                     AbilityName::$field2
                                 )
-                                .[<to_str_ $field1:lower>]()
                             ))
                                 .unwrap()
-                                .$field[i]
+                                .damage[i]
                                 .clone(),
                             )+);
                         result.push($closure(args));
@@ -223,8 +114,7 @@ pub fn generator(_args: TokenStream, input: TokenStream) -> TokenStream {
         macro_rules! get {
             ($field1:ident::$field2:ident) => {
                 paste::paste! {{
-                    let key = AbilityLike::[<$field1>](AbilityName::$field2).[<to_str_ $field1:lower>]();
-                    match abilities.get(key) {
+                    match abilities.get(AbilityLike::[<$field1>](AbilityName::$field2)) {
                         Some(value) => value,
                         None => {
                             panic!("macro [get!]: Error: key does not exist: {}", key);
@@ -234,8 +124,7 @@ pub fn generator(_args: TokenStream, input: TokenStream) -> TokenStream {
             };
             (mut $field1:ident::$field2:ident) => {
                 paste::paste! {{
-                    let key = AbilityLike::[<$field1>](AbilityName::$field2).[<to_str_ $field1:lower>]();
-                    match abilities.get_mut(key) {
+                    match abilities.get_mut(AbilityLike::[<$field1>](AbilityName::$field2)) {
                         Some(value) => value,
                         None => {
                             panic!("macro [get!]: Error: key does not exist: {}", key);
@@ -255,8 +144,7 @@ pub fn generator(_args: TokenStream, input: TokenStream) -> TokenStream {
         macro_rules! insert {
             ($field1:ident::$field2:ident, $value:expr) => {
                 paste::paste! {{
-                    let key = AbilityLike::[<$field1>](AbilityName::$field2).[<to_str_ $field1:lower>]();
-                    abilities.insert(key.to_string(), $value);
+                    abilities.insert(AbilityLike::[<$field1>](AbilityName::$field2), $value);
                 }}
             };
         }

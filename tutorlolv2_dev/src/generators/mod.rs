@@ -1,6 +1,6 @@
 pub use crate::model::champions::{Ability, CdnChampion, Champion};
 use crate::setup::generators::{
-    champions::{Target, extract_ability_damage, extract_passive_damage},
+    champions::{extract_ability_damage, extract_passive_damage},
     extractors::extract_scaled_values,
 };
 use std::collections::HashMap;

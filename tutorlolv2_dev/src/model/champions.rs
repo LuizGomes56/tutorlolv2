@@ -30,13 +30,12 @@ pub struct CdnAbility {
 }
 
 impl CdnAbility {
-    pub fn format(&self, minimum_damage: Vec<String>, maximum_damage: Vec<String>) -> Ability {
+    pub fn format(&self, damage: Vec<String>) -> Ability {
         Ability {
             name: self.name.clone(),
             damage_type: DamageType::from(self.damage_type.clone().unwrap_or_default()),
             attributes: Attrs::None,
-            minimum_damage,
-            maximum_damage,
+            damage,
         }
     }
 }
@@ -97,8 +96,7 @@ pub struct Ability {
     pub name: String,
     pub damage_type: DamageType,
     pub attributes: Attrs,
-    pub minimum_damage: Vec<String>,
-    pub maximum_damage: Vec<String>,
+    pub damage: Vec<String>,
 }
 
 #[derive(Serialize, Deserialize)]

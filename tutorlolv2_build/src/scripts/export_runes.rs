@@ -9,6 +9,7 @@ pub struct Rune {
 }
 
 pub struct RuneDetails {
+    pub undeclared: bool,
     pub rune_name: String,
     pub rune_formula: String,
     pub constdecl: String,
@@ -51,6 +52,7 @@ pub fn export_runes() -> Vec<(u32, RuneDetails)> {
                     metadata: {metadata},
                     melee_closure: {melee_closure},
                     range_closure: {range_closure},
+                    zero_addr: [(false, true), (false, true)],
                 }};",
                 name = format_args!(
                     "{}_{}",
@@ -62,6 +64,7 @@ pub fn export_runes() -> Vec<(u32, RuneDetails)> {
             (
                 rune_id,
                 RuneDetails {
+                    undeclared: false,
                     rune_name: rune.name,
                     rune_formula: constdecl
                         .invoke_rustfmt(80)
@@ -120,6 +123,7 @@ pub fn export_runes() -> Vec<(u32, RuneDetails)> {
                 metadata: {void_metadata},
                 melee_closure: {void_closure},
                 range_closure: {void_closure},    
+                zero_addr: [(true, true), (true, true)],
             }};",
             name = format_args!(
                 "{}_{}",
@@ -131,6 +135,7 @@ pub fn export_runes() -> Vec<(u32, RuneDetails)> {
         runes.push((
             rune_id,
             RuneDetails {
+                undeclared: true,
                 rune_name: rune_name.clone(),
                 rune_formula: constdecl
                     .invoke_rustfmt(80)

@@ -5,6 +5,25 @@ use std::mem::MaybeUninit;
 use tinyset::SetU32;
 use tutorlolv2_gen::*;
 
+pub const MAY_MERGE_ABILITY: usize = {
+    let mut result = 0;
+    let mut index = 0;
+    while index < NUMBER_OF_CHAMPIONS {
+        let data = &INTERNAL_CHAMPIONS[index];
+        let mut closure_counter = 0;
+        while closure_counter < data.closures.len() {
+            let closure_addr = data.zero_addr[closure_counter];
+            if true {
+                result += 1;
+            }
+            closure_counter += 1;
+        }
+        index += 1;
+    }
+    result
+};
+// pub const MERGE_ABILITIES: [(AbilityLike); MAY_MERGE_ABILITY] = {};
+
 pub const AXIOM_ARCANIST_BONUS_DAMAGE: f32 = 1.12;
 pub const COUP_DE_GRACE_AND_CUTDOWN_BONUS_DAMAGE: f32 = 1.08;
 /// By 06/07/2025 Earth dragons give +5% resists

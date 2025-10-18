@@ -1,3 +1,5 @@
+use tutorlolv2_gen::AbilityLike;
+
 use super::*;
 use std::{collections::HashMap, path::Path};
 
@@ -143,13 +145,9 @@ pub fn extract_passive_damage(
     indexes: (usize, usize),
     postfix: Option<&str>,
     scalings: Option<usize>,
-    target_vec: &Target,
     keyname: &str,
     map: &mut HashMap<String, Ability>,
 ) {
-    let mut minimum_damage: Vec<String> = Vec::<String>::new();
-    let mut maximum_damage: Vec<String> = Vec::<String>::new();
-
     let (passive, passive_bounds) = extract_passive_bounds(&data, indexes);
 
     let mut description: &String = &String::new();
@@ -158,21 +156,10 @@ pub fn extract_passive_damage(
         description = &passive.effects[scalings].description;
     }
 
-    match target_vec {
-        Target::Min => {
-            minimum_damage = process_linear_range(passive_bounds, 18, postfix);
-            assign_scalings(&description, &mut minimum_damage);
-        }
-        Target::Max => {
-            maximum_damage = process_linear_range(passive_bounds, 18, postfix);
-            assign_scalings(&description, &mut maximum_damage);
-        }
-    };
+    let mut damage = process_linear_range(passive_bounds, 18, postfix);
+    assign_scalings(&description, &mut damage);
 
-    map.insert(
-        String::from(keyname),
-        passive.format(minimum_damage, maximum_damage),
-    );
+    map.insert(String::from(keyname), passive.format(damage));
 }
 
 /// Helper function to remove the decimal point if it's not needed, or expand floats.
@@ -272,48 +259,28 @@ fn process_linear_range(bounds: (f64, f64), size: usize, postfix: Option<&str>) 
     result
 }
 
-/// Determines if it should be written in "minimum_damage" or "maximum_damage" field
-/// "maximum_damage" may not be filled if no "minimum_damage" exists.
-/// Doing so will cause the display to show "0 - {max_damage}"
-/// While "minimum_damage" without "maximum_damage" will show "{min_damage}"
-pub enum Target {
-    Min,
-    Max,
-}
-
-type IteratorExtractor<'a> = HashMap<usize, HashMap<usize, (String, &'a Target)>>;
-
 /// Takes a pattern of `[Index on Vec<Effect>], [Index on Vec<Leveling>], [(Keyname, Max/Min)]`
 /// And assigns to the map the correct format that will be used internally.
 pub fn extract_ability_damage(
     data: &CdnAbility,
-    map: &mut HashMap<String, Ability>,
-    pattern: &[(usize, usize, &str, Target)],
+    map: &mut HashMap<AbilityLike, Ability>,
+    pattern: &[(usize, usize, AbilityLike)],
 ) {
-    let mut indexes: IteratorExtractor = HashMap::default();
+    let mut indexes = HashMap::default();
 
-    for (effect_index, leveling_index, keyname, target_vector) in pattern.into_iter() {
+    for (effect_index, leveling_index, keyname) in pattern.into_iter() {
         indexes
             .entry(*effect_index)
             .or_insert(HashMap::default())
-            .insert(*leveling_index, (keyname.to_string(), target_vector));
+            .insert(*leveling_index, keyname);
     }
 
     for (effect_index, leveling) in indexes {
-        for (leveling_index, (keyname, target_vector)) in leveling {
-            let mut minimum_damage: Vec<String> = Vec::<String>::new();
-            let mut maximum_damage: Vec<String> = Vec::<String>::new();
-
+        for (leveling_index, keyname) in leveling {
             if let Some(effects) = data.effects.get(effect_index) {
                 if let Some(level_entry) = effects.leveling.get(leveling_index) {
                     let modifiers: &Vec<Modifiers> = &level_entry.modifiers;
-
-                    match target_vector {
-                        Target::Min => extract_ability(modifiers, &mut minimum_damage),
-                        Target::Max => extract_ability(modifiers, &mut maximum_damage),
-                    }
-
-                    map.insert(keyname, data.format(minimum_damage, maximum_damage));
+                    map.insert(keyname, data.format(modifiers));
                 }
             } else {
                 println!(

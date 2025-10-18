@@ -8,6 +8,4 @@ pub fn gen_zeri(data: CdnChampion) -> Champion {
     ability!(w, (0, 0, Void, Min));
     ability!(e, (1, 0, Min, Min), (1, 1, Max, Max));
     ability!(r, (0, 0, Void, Min));
-    merge_ability!(Q::Min, Q::Max);
-    merge_ability!(E::Min, E::Max);
 }

@@ -8,5 +8,4 @@ pub fn gen_orianna(data: CdnChampion) -> Champion {
     ability!(w, (0, 0, Void, Min));
     ability!(e, (0, 0, Void, Min));
     ability!(r, (0, 0, Void, Min));
-    merge_ability!(Q::Min, Q::Max);
 }

@@ -172,6 +172,7 @@ pub struct CachedChampion {
     pub stats: CachedChampionStats,
     pub metadata: &'static [TypeMetadata<AbilityLike>],
     pub closures: &'static [DamageClosures],
+    pub zero_addr: &'static [(bool, bool)],
 }
 
 pub struct CachedChampionAbility {
@@ -242,6 +243,7 @@ pub struct CachedItem {
     pub range_closure: DamageClosures,
     pub melee_closure: DamageClosures,
     pub attributes: Attrs,
+    pub zero_addr: [(bool, bool); 2],
 }
 
 pub struct CachedRune {
@@ -249,6 +251,7 @@ pub struct CachedRune {
     pub metadata: TypeMetadata<RuneId>,
     pub range_closure: DamageClosures,
     pub melee_closure: DamageClosures,
+    pub zero_addr: [(bool, bool); 2],
 }
 
 pub struct CachedItemStats {

@@ -15,6 +15,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static ABSOLUTE_FOCUS_8233: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -30,6 +31,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static ABSORB_LIFE_9101: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -45,6 +47,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static ADAPTIVE_FORCE_9990: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -60,6 +63,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static AERY_8214: CachedRune = CachedRune {
                     damage_type: DamageType::Adaptative,
                     metadata: TypeMetadata {
@@ -75,6 +79,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                         minimum_damage: |_| 0.0f32,
                         maximum_damage: zero,
                     },
+                    zero_addr: [(false, true), (false, true)],
                 };pub static AFTERSHOCK_8439: CachedRune = CachedRune {
                     damage_type: DamageType::Adaptative,
                     metadata: TypeMetadata {
@@ -90,6 +95,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                         minimum_damage: |ctx| (25f32 + 95f32 / 17f32 * (ctx.level - 1f32) + 0.08f32 * ctx.bonus_health) * ctx.magic_multiplier,
                         maximum_damage: zero,
                     },
+                    zero_addr: [(false, true), (false, true)],
                 };pub static APPROACH_VELOCITY_8410: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -105,6 +111,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static ATTACK_SPEED_9992: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -120,6 +127,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static AXIOM_ARCANIST_8224: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -135,6 +143,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static BISCUIT_DELIVERY_8345: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -150,6 +159,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static BONE_PLATING_8473: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -165,6 +175,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static CASH_BACK_8321: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -180,6 +191,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static CELERITY_8234: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -195,6 +207,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static CHEAP_SHOT_8126: CachedRune = CachedRune {
                     damage_type: DamageType::True,
                     metadata: TypeMetadata {
@@ -210,6 +223,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                         minimum_damage: |ctx| 10f32 + 35f32 / 17f32 * (ctx.level - 1f32),
                         maximum_damage: zero,
                     },
+                    zero_addr: [(false, true), (false, true)],
                 };pub static COMET_8229: CachedRune = CachedRune {
                     damage_type: DamageType::Adaptative,
                     metadata: TypeMetadata {
@@ -225,6 +239,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                         minimum_damage: |_| 0.0f32,
                         maximum_damage: zero,
                     },
+                    zero_addr: [(false, true), (false, true)],
                 };pub static CONDITIONING_8429: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -240,6 +255,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static CONQUEROR_8010: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -255,6 +271,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static COSMIC_INSIGHT_8347: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -270,6 +287,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static COUP_DE_GRACE_8014: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -285,6 +303,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static CUT_DOWN_8017: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -300,6 +319,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static DARK_HARVEST_8128: CachedRune = CachedRune {
                     damage_type: DamageType::Adaptative,
                     metadata: TypeMetadata {
@@ -315,6 +335,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                         minimum_damage: |_| 0.0f32,
                         maximum_damage: zero,
                     },
+                    zero_addr: [(false, true), (false, true)],
                 };pub static DEEP_WARD_8141: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -330,6 +351,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static DEMOLISH_8446: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -345,6 +367,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static ELECTROCUTE_8112: CachedRune = CachedRune {
                     damage_type: DamageType::Adaptative,
                     metadata: TypeMetadata {
@@ -360,6 +383,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                         minimum_damage: |_| 0.0f32,
                         maximum_damage: zero,
                     },
+                    zero_addr: [(false, true), (false, true)],
                 };pub static EYEBALL_COLLECTION_8120: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -375,6 +399,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static FIRST_STRIKE_8369: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -390,6 +415,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static FLEET_FOOTWORK_8021: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -405,6 +431,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static FONT_OF_LIFE_8463: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -420,6 +447,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static GATHERING_STORM_8236: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -435,6 +463,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static GHOST_PORO_8136: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -450,6 +479,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static GLACIAL_AUGMENT_8351: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -465,6 +495,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static GRASP_8437: CachedRune = CachedRune {
                     damage_type: DamageType::Magic,
                     metadata: TypeMetadata {
@@ -480,6 +511,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                         minimum_damage: |ctx| 0.021f32 * ctx.max_health * ctx.magic_multiplier,
                         maximum_damage: zero,
                     },
+                    zero_addr: [(false, true), (false, true)],
                 };pub static GRISLY_MEMENTOS_8140: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -495,6 +527,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static GUARDIAN_8465: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -510,6 +543,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static HAIL_OF_BLADES_9923: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -525,6 +559,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static HEALTH_9993: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -540,6 +575,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static HEALTH_SCALING_9991: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -555,6 +591,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static HEXTECH_FLASHTRAPTION_8306: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -570,6 +607,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static JACK_OF_ALL_TRADES_8316: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -585,6 +623,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static LAST_STAND_8299: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -600,6 +639,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static LEGEND_ALACRITY_9104: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -615,6 +655,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static LEGEND_BLOODLINE_9103: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -630,6 +671,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static LEGEND_HASTE_9105: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -645,6 +687,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static LETHAL_TEMPO_8008: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -660,6 +703,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static MAGICAL_FOOTWEAR_8304: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -675,6 +719,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static MANAFLOW_BAND_8226: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -690,6 +735,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static MOVE_SPEED_9996: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -705,6 +751,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static NIMBUS_CLOAK_8275: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -720,6 +767,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static OVERGROWTH_8451: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -735,6 +783,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static PHASE_RUSH_8230: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -750,6 +799,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static PREDATOR_8124: CachedRune = CachedRune {
                     damage_type: DamageType::Adaptative,
                     metadata: TypeMetadata {
@@ -765,6 +815,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                         minimum_damage: |_| 0.0f32,
                         maximum_damage: zero,
                     },
+                    zero_addr: [(false, true), (false, true)],
                 };pub static PRESENCE_OF_MIND_8009: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -780,6 +831,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static PRESS_THE_ATTACK_8005: CachedRune = CachedRune {
                     damage_type: DamageType::Adaptative,
                     metadata: TypeMetadata {
@@ -795,6 +847,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                         minimum_damage: |_| 0.0f32,
                         maximum_damage: zero,
                     },
+                    zero_addr: [(false, true), (false, true)],
                 };pub static RELENTLESS_HUNTER_8105: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -810,6 +863,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static REVITALIZE_8453: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -825,6 +879,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static SCORCH_8237: CachedRune = CachedRune {
                     damage_type: DamageType::Magic,
                     metadata: TypeMetadata {
@@ -840,6 +895,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                         minimum_damage: |ctx| (20f32 + 20f32 / 17f32 * (ctx.level - 1f32)) * ctx.magic_multiplier,
                         maximum_damage: zero,
                     },
+                    zero_addr: [(false, true), (false, true)],
                 };pub static SECOND_WIND_8444: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -855,6 +911,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static SHIELD_BASH_8401: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -870,6 +927,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static SIXTH_SENSE_8137: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -885,6 +943,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static SUDDEN_IMPACT_8143: CachedRune = CachedRune {
                     damage_type: DamageType::True,
                     metadata: TypeMetadata {
@@ -900,6 +959,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                         minimum_damage: |ctx| 20f32 + 60f32 / 17f32 * (ctx.level - 1f32),
                         maximum_damage: zero,
                     },
+                    zero_addr: [(false, true), (false, true)],
                 };pub static TASTE_OF_BLOOD_8139: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -915,6 +975,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static TENACITYAND_SLOW_RESIST_9995: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -930,6 +991,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static TIME_WARP_TONIC_8352: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -945,6 +1007,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static TRANSCENDENCE_8210: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -960,6 +1023,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static TREASURE_HUNTER_8135: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -975,6 +1039,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static TRIPLE_TONIC_8313: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -990,6 +1055,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static TRIUMPH_9111: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -1005,6 +1071,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static ULTIMATE_HUNTER_8106: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -1020,6 +1087,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static UNFLINCHING_8242: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -1035,6 +1103,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static UNSEALED_SPELLBOOK_8360: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -1050,6 +1119,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static WATERWALKING_8232: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -1065,6 +1135,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
+                zero_addr: [(true, true), (true, true)],
             };pub static ZOMBIE_WARD_8138: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -1080,4 +1151,5 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 minimum_damage: zero,
                 maximum_damage: zero
             },    
-            };pub static DAMAGING_RUNES:phf::Set<u32>=phf::phf_set!(9994u32,8233u32,9101u32,9990u32,8214u32,8439u32,8410u32,9992u32,8224u32,8345u32,8473u32,8321u32,8234u32,8126u32,8229u32,8429u32,8010u32,8347u32,8014u32,8017u32,8128u32,8141u32,8446u32,8112u32,8120u32,8369u32,8021u32,8463u32,8236u32,8136u32,8351u32,8437u32,8140u32,8465u32,9923u32,9993u32,9991u32,8306u32,8316u32,8299u32,9104u32,9103u32,9105u32,8008u32,8304u32,8226u32,9996u32,8275u32,8451u32,8230u32,8124u32,8009u32,8005u32,8105u32,8453u32,8237u32,8444u32,8401u32,8137u32,8143u32,8139u32,9995u32,8352u32,8210u32,8135u32,8313u32,9111u32,8106u32,8242u32,8360u32,8232u32,8138u32);
+                zero_addr: [(true, true), (true, true)],
+            };pub static DAMAGING_RUNES:phf::Set<u32>=phf::phf_set!(8214u32,8439u32,8126u32,8229u32,8128u32,8112u32,8437u32,8124u32,8005u32,8237u32,8143u32);

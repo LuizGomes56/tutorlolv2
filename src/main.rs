@@ -78,7 +78,7 @@ macro_rules! get {
 /// Same for `tutorlolv2_desktop_app`, containing `tutorlolv2_frontend` and the javascript build script.
 /// Pulls champions and items data and generates intermediary JSON files and call the subsequent tasks to
 /// process the output and generate Rust code to `tutorlolv2_gen`. Only works on Windows.
-fn update_local() {
+async fn update_local() {
     run(
         "../lolstaticdata",
         "python",
@@ -124,8 +124,7 @@ fn update_local() {
     get!("/setup/items");
     kill(srv_0);
 
-    run("tutorlolv2_build", "cargo", &["build", "-r"]);
-    run("tutorlolv2_build", "cargo", &["run", "-r"]);
+    build_script().await;
 
     let srv_1 = run_server();
     short_wait();
@@ -147,6 +146,10 @@ fn update_local() {
     println!("Local finished");
 }
 
+async fn build_script() {
+    tutorlolv2::build::run().await;
+}
+
 /// Planned code task execution (in sequence, sync)
 /// ```rs
 /// ::task("cargo build -r");
@@ -165,7 +168,7 @@ fn update_local() {
 /// ::task("kill");
 /// ::echo("Setup finished");
 /// ```
-fn update() {
+async fn update() {
     build_server();
     let srv_0 = run_server();
     short_wait();
@@ -176,8 +179,8 @@ fn update() {
     get!("/setup/project");
     get!("/images/compress");
     kill(srv_1);
-    run("tutorlolv2_build", "cargo", &["build", "-r"]);
-    run("tutorlolv2_build", "cargo", &["run", "-r"]);
+
+    build_script().await;
 
     let srv_2 = run_server();
     short_wait();
@@ -201,8 +204,8 @@ async fn main() {
         .map(String::as_str)
     {
         Some("-h") => generate_html().await,
-        Some("-u") => update(),
-        Some("-l") => update_local(),
+        Some("-u") => update().await,
+        Some("-l") => update_local().await,
         Some("-o") => {
             run(
                 "./tutorlolv2_server",
