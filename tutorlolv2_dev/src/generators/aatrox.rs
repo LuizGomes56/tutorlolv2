@@ -32,4 +32,11 @@ pub fn gen_aatrox(data: CdnChampion) -> Champion {
             ..default_ability
         }
     );
+
+    merge_with![
+        (Q::_1, Q::_1Max),
+        (Q::_2, Q::_2Max),
+        (Q::_3, Q::_3Max),
+        (W::Void, W::Max),
+    ]
 }

@@ -26,6 +26,16 @@ pub struct AbilityLevels {
 pub const NUMBER_OF_CHAMPIONS: usize = INTERNAL_CHAMPIONS.len();
 pub const NUMBER_OF_ITEMS: usize = INTERNAL_ITEMS.len();
 pub const NUMBER_OF_RUNES: usize = INTERNAL_RUNES.len();
+pub const NUMBER_OF_ABILITIES: usize = {
+    let mut i = 0;
+    let mut sum = 0;
+    while i < NUMBER_OF_CHAMPIONS {
+        let data = INTERNAL_CHAMPIONS[i];
+        sum += data.closures.len();
+        i += 1;
+    }
+    sum
+};
 pub const L_TEAM: usize = 5;
 pub const L_PLYR: usize = L_TEAM << 1;
 pub const L_MSTR: usize = 7;
@@ -34,16 +44,7 @@ pub const L_TWRD: usize = 6;
 pub const L_SIML: usize = SIMULATED_ITEMS.len();
 pub const L_RUNE: usize = 2;
 pub const L_ITEM: usize = 5;
-pub const L_ABLT: usize = {
-    let mut i = 0;
-    let mut sum = 0;
-    while i < NUMBER_OF_CHAMPIONS {
-        let data = INTERNAL_CHAMPIONS[i];
-        sum += data.closures.len();
-        i += 1;
-    }
-    sum / NUMBER_OF_CHAMPIONS
-};
+pub const L_ABLT: usize = NUMBER_OF_ABILITIES / NUMBER_OF_CHAMPIONS;
 
 #[derive(Encode)]
 pub enum GameMap {

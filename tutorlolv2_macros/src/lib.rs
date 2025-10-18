@@ -17,6 +17,7 @@ pub fn generator(_args: TokenStream, input: TokenStream) -> TokenStream {
 
     let map_decl = quote! {
         let mut abilities = HashMap::<AbilityLike, Ability>::new();
+        let mut merge_data = Vec::new();
 
         macro_rules! ability {
             ($field:ident, $idx:literal, $(($a:literal, $b:literal, $c:ident)),* $(,)?) => {
@@ -55,77 +56,67 @@ pub fn generator(_args: TokenStream, input: TokenStream) -> TokenStream {
         /// passive!("P", (0, 0), MAXIMUM, (Some(<usize>scalling), Some("POSTFIX")));
         /// ```
         macro_rules! passive {
-            ($key:ident, ($i:literal, $j:literal)) => {
-                paste::paste! {
-                    extract_passive_damage(
-                        &data,
-                        ($i, $j),
-                        None,
-                        None,
-                        AbilityLike::P(AbilityName::$key),
-                        &mut abilities
-                    );
-                }
-            };
-            ($key:ident, ($i:literal, $j:literal), ($scaling:expr, $postfix:expr)) => {
-                paste::paste! {
-                    extract_passive_damage(
-                        &data,
-                        ($i, $j),
-                        $postfix,
-                        $scaling,
-                        AbilityLike::P(AbilityName::$key),
-                        &mut abilities,
-                    );
-                }
-            };
+            ($key:ident, ($i:literal, $j:literal)) => {{
+                extract_passive_damage(
+                    &data,
+                    ($i, $j),
+                    None,
+                    None,
+                    AbilityLike::P(AbilityName::$key),
+                    &mut abilities
+                );
+            }};
+            ($key:ident, ($i:literal, $j:literal), ($scaling:expr, $postfix:expr)) => {{
+                extract_passive_damage(
+                    &data,
+                    ($i, $j),
+                    $postfix,
+                    $scaling,
+                    AbilityLike::P(AbilityName::$key),
+                    &mut abilities,
+                );
+            }};
         }
 
         macro_rules! merge_damage {
-            ($size:literal, $closure:expr, $($field1:ident::$field2:ident),*$(,)?) => {
-                paste::paste! {{
-                    let mut result = Vec::<String>::with_capacity($size);
-                    for i in 0..$size {
-                        let args = ($(
-                            abilities.get(
-                                &AbilityLike::[<$field1>](
-                                    AbilityName::$field2
-                                )
+            ($size:literal, $closure:expr, $($field1:ident::$field2:ident),*$(,)?) => {{
+                let mut result = Vec::<String>::with_capacity($size);
+                for i in 0..$size {
+                    let args = ($(
+                        abilities.get(
+                            &AbilityLike::$field1(
+                                AbilityName::$field2
                             )
-                                .unwrap()
-                                .damage[i]
-                                .clone(),
-                            )+);
-                        result.push($closure(args));
-                    }
-                    result
-                }}
-            };
+                        )
+                            .unwrap()
+                            .damage[i]
+                            .clone(),
+                        )+);
+                    result.push($closure(args));
+                }
+                result
+            }};
         }
 
         macro_rules! get {
-            ($field1:ident::$field2:ident) => {
-                paste::paste! {{
-                    let key = AbilityLike::[<$field1>](AbilityName::$field2);
-                    match abilities.get(&key) {
-                        Some(value) => value,
-                        None => {
-                            panic!("macro [get!]: Error: key does not exist: {:?}", key);
-                        }
+            ($field1:ident::$field2:ident) => {{
+                let key = AbilityLike::$field1(AbilityName::$field2);
+                match abilities.get(&key) {
+                    Some(value) => value,
+                    None => {
+                        panic!("macro [get!]: Error: key does not exist: {:?}", key);
                     }
-                }}
-            };
-            (mut $field1:ident::$field2:ident) => {
-                paste::paste! {{
-                    let key = AbilityLike::[<$field1>](AbilityName::$field2);
-                    match abilities.get_mut(&key) {
-                        Some(value) => value,
-                        None => {
-                            panic!("macro [get!]: Error: key does not exist: {:?}", key);
-                        }
+                }
+            }};
+            (mut $field1:ident::$field2:ident) => {{
+                let key = AbilityLike::$field1(AbilityName::$field2);
+                match abilities.get_mut(&key) {
+                    Some(value) => value,
+                    None => {
+                        panic!("macro [get!]: Error: key does not exist: {:?}", key);
                     }
-                }}
-            };
+                }
+            }};
         }
 
         /// ### `insert!`
@@ -136,19 +127,38 @@ pub fn generator(_args: TokenStream, input: TokenStream) -> TokenStream {
         /// insert!("Q", Ability {...});
         /// ```
         macro_rules! insert {
-            ($field1:ident::$field2:ident, $value:expr) => {
-                paste::paste! {{
-                    abilities.insert(AbilityLike::[<$field1>](AbilityName::$field2), $value);
-                }}
-            };
+            ($field1:ident::$field2:ident, $value:expr) => {{
+                abilities.insert(AbilityLike::$field1(AbilityName::$field2), $value);
+            }};
+        }
+
+        macro_rules! clone_to {
+            ($field3:ident::$field4:ident => $field1:ident::$field2:ident) => {{
+                abilities.insert(
+                    AbilityLike::$field1(AbilityName::$field2),
+                    get!($field3::$field4).clone(),
+                );
+                get!(mut $field1::$field2)
+            }};
+        }
+
+        macro_rules! merge_with {
+            ($(($f1:ident::$v1:ident, $f2:ident::$v2:ident)),+$(,)?) => {{
+                $(
+                    merge_data.push((
+                        AbilityLike::$f1(AbilityName::$v1),
+                        AbilityLike::$f2(AbilityName::$v2),
+                    ));
+                )+
+            }};
         }
     };
 
     let old_block = func.block;
     func.block = Box::new(syn::parse_quote!({
         #map_decl
-        #old_block
-        data.format(abilities)
+        #old_block;
+        data.format(abilities, merge_data)
     }));
 
     TokenStream::from(quote! {

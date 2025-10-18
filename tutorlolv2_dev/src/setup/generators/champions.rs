@@ -12,7 +12,10 @@ pub fn run_generator_file(path_name: &str) -> Result<(), Box<dyn std::error::Err
     let name_lower = name.to_lowercase();
     let champion = try_run_generator(&name_lower, result);
     if let Some(champion_data) = champion {
-        let string_value = serde_json::to_string_pretty(&champion_data)?;
+        let string_value = serde_json::to_string_pretty(&champion_data).map_err(|e| {
+            println!("Error: {e:#?}");
+            e
+        })?;
         format!("internal/champions/{}.json", name).write_to_file(string_value.as_bytes())?;
     } else {
         println!("Champion '{}' not found in transformation map", name);

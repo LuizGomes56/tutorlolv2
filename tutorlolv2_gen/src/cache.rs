@@ -159,10 +159,12 @@ pub struct TypeMetadata<T> {
     pub attributes: Attrs,
 }
 
+pub type ConstClosure = fn(&EvalContext) -> f32;
+
 #[derive(Copy, Clone)]
 pub struct DamageClosures {
-    pub minimum_damage: fn(&EvalContext) -> f32,
-    pub maximum_damage: fn(&EvalContext) -> f32,
+    pub minimum_damage: ConstClosure,
+    pub maximum_damage: ConstClosure,
 }
 
 pub struct CachedChampion {
@@ -171,8 +173,7 @@ pub struct CachedChampion {
     pub positions: &'static [Position],
     pub stats: CachedChampionStats,
     pub metadata: &'static [TypeMetadata<AbilityLike>],
-    pub closures: &'static [DamageClosures],
-    pub zero_addr: &'static [(bool, bool)],
+    pub closures: &'static [fn(&EvalContext) -> f32],
 }
 
 pub struct CachedChampionAbility {
@@ -243,15 +244,13 @@ pub struct CachedItem {
     pub range_closure: DamageClosures,
     pub melee_closure: DamageClosures,
     pub attributes: Attrs,
-    pub zero_addr: [(bool, bool); 2],
 }
 
 pub struct CachedRune {
     pub damage_type: DamageType,
     pub metadata: TypeMetadata<RuneId>,
-    pub range_closure: DamageClosures,
-    pub melee_closure: DamageClosures,
-    pub zero_addr: [(bool, bool); 2],
+    pub range_closure: ConstClosure,
+    pub melee_closure: ConstClosure,
 }
 
 pub struct CachedItemStats {
@@ -282,6 +281,6 @@ pub const fn zero(_: &EvalContext) -> f32 {
 pub struct DamageExpression {
     pub attributes: Attrs,
     pub damage_type: DamageType,
-    pub minimum_damage: fn(&EvalContext) -> f32,
-    pub maximum_damage: fn(&EvalContext) -> f32,
+    pub minimum_damage: ConstClosure,
+    pub maximum_damage: ConstClosure,
 }

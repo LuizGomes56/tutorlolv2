@@ -75,9 +75,12 @@ pub struct CdnChampion {
 }
 
 impl CdnChampion {
-    pub fn format(self, abilities: HashMap<AbilityLike, Ability>) -> Champion {
+    pub fn format(
+        self,
+        abilities: HashMap<AbilityLike, Ability>,
+        merge_data: Vec<(AbilityLike, AbilityLike)>,
+    ) -> Champion {
         Champion {
-            abilities,
             name: self.name,
             adaptative_type: AdaptativeType::from(self.adaptive_type),
             attack_type: AttackType::from(self.attack_type),
@@ -87,6 +90,8 @@ impl CdnChampion {
                 .map(|pos| Position::from_raw(&pos).unwrap_or_default())
                 .collect(),
             stats: self.stats,
+            abilities,
+            merge_data,
         }
     }
 }
@@ -107,6 +112,7 @@ pub struct Champion {
     pub positions: Vec<Position>,
     pub stats: ChampionCdnStats,
     pub abilities: HashMap<AbilityLike, Ability>,
+    pub merge_data: Vec<(AbilityLike, AbilityLike)>,
 }
 
 #[derive(Serialize, Deserialize)]

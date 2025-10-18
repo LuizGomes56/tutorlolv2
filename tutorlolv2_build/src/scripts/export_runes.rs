@@ -49,7 +49,6 @@ pub fn export_runes() -> Vec<(u32, RuneDetails)> {
                     metadata: {metadata},
                     melee_closure: {melee_closure},
                     range_closure: {range_closure},
-                    zero_addr: [(false, true), (false, true)],
                 }};",
                 name = format_args!(
                     "{}_{}",
@@ -107,20 +106,12 @@ pub fn export_runes() -> Vec<(u32, RuneDetails)> {
             name = rune_name.remove_special_chars(),
         );
 
-        let void_closure = format!(
-            "DamageClosures {{
-                minimum_damage: zero,
-                maximum_damage: zero
-            }}",
-        );
-
         let constdecl = format!(
             "pub static {name}: CachedRune = CachedRune {{
                 damage_type: DamageType::Unknown,
                 metadata: {void_metadata},
-                melee_closure: {void_closure},
-                range_closure: {void_closure},    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             }};",
             name = format_args!(
                 "{}_{}",

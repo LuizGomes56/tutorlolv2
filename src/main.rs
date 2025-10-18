@@ -74,11 +74,7 @@ macro_rules! get {
     };
 }
 
-/// Updates local files only. Requires `lolstaticdata` to be installed and places in the parent directory.
-/// Same for `tutorlolv2_desktop_app`, containing `tutorlolv2_frontend` and the javascript build script.
-/// Pulls champions and items data and generates intermediary JSON files and call the subsequent tasks to
-/// process the output and generate Rust code to `tutorlolv2_gen`. Only works on Windows.
-async fn update_local() {
+fn run_lolstaticdata() {
     run(
         "../lolstaticdata",
         "python",
@@ -115,7 +111,14 @@ async fn update_local() {
             "$ErrorActionPreference='Stop'; Copy-Item ..\\lolstaticdata\\items\\* -Destination .\\cache\\cdn\\items -Recurse -Force",
         ],
     );
+}
 
+/// Updates local files only. Requires `lolstaticdata` to be installed and places in the parent directory.
+/// Same for `tutorlolv2_desktop_app`, containing `tutorlolv2_frontend` and the javascript build script.
+/// Pulls champions and items data and generates intermediary JSON files and call the subsequent tasks to
+/// process the output and generate Rust code to `tutorlolv2_gen`. Only works on Windows.
+async fn update_local() {
+    run_lolstaticdata();
     build_server();
     let srv_0 = run_server();
     short_wait();
@@ -206,7 +209,7 @@ async fn main() {
         Some("-h") => generate_html().await,
         Some("-u") => update().await,
         Some("-l") => update_local().await,
-        Some("-o") => {
+        Some("-r") => {
             run(
                 "./tutorlolv2_server",
                 "cargo",
@@ -218,6 +221,17 @@ async fn main() {
                 &[],
             )
         }
-        _ => tutorlolv2_server::run().await.unwrap(),
+        _ => {
+            run("./tutorlolv2_server", "cargo", &["build"]);
+            let srv_0 = task(
+                ".",
+                "./tutorlolv2_server/target/debug/tutorlolv2_server.exe",
+                &[],
+            );
+            short_wait();
+
+            get!("/setup/champions");
+            kill(srv_0);
+        } // _ => tutorlolv2_server::run().await.unwrap(),
     }
 }

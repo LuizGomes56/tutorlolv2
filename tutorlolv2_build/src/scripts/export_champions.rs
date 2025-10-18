@@ -90,7 +90,7 @@ pub fn format_stats(stats: &ChampionCdnStats) -> String {
     all_stats.join("")
 }
 
-pub fn sort_pqwer(data: &mut [(String, String, String, String)]) {
+pub fn sort_pqwer(data: &mut [(AbilityLike, String, String, String)]) {
     let priority = |ch: char| match ch {
         'P' => 0,
         'Q' => 1,
@@ -101,8 +101,8 @@ pub fn sort_pqwer(data: &mut [(String, String, String, String)]) {
     };
 
     data.sort_by(|a, b| {
-        let a_first = a.0.chars().next().unwrap_or('Z');
-        let b_first = b.0.chars().next().unwrap_or('Z');
+        let a_first = a.0.as_char();
+        let b_first = b.0.as_char();
         let ord1 = priority(a_first).cmp(&priority(b_first));
         if ord1 != Ordering::Equal {
             return ord1;
@@ -119,7 +119,7 @@ pub fn sort_pqwer(data: &mut [(String, String, String, String)]) {
 fn get_abilities_decl(
     champion_name: &str,
     abilities: HashMap<AbilityLike, Ability>,
-) -> Vec<(String, String, String, String)> {
+) -> Vec<(AbilityLike, String, String, String)> {
     let mut result = Vec::new();
 
     for (name, ability) in abilities {
@@ -132,7 +132,7 @@ fn get_abilities_decl(
                 .iter()
                 .map(|dmg| transform_expr(&clean_math_expr(&dmg)))
                 .collect::<Vec<(String, bool)>>();
-            let ability_type = name.chars();
+            let ability_type = name.as_char();
             let ctx_matcher = match ability_type {
                 'P' => "level as u8".into(),
                 _ => format!("{}_level", ability_type.to_lowercase()),
@@ -169,12 +169,7 @@ fn get_abilities_decl(
             attributes = ability.attributes
         );
 
-        result.push((
-            name.to_string().remove_special_chars(),
-            metadata,
-            damage,
-            const_decl,
-        ));
+        result.push((name, metadata, damage, const_decl));
     }
 
     result
@@ -183,7 +178,7 @@ fn get_abilities_decl(
 pub struct ChampionDetails {
     pub champion_name: String,
     pub generator: String,
-    pub highlighted_abilities: Vec<(String, String)>,
+    pub highlighted_abilities: Vec<(AbilityLike, String)>,
     pub champion_formula: String,
     pub constdecl: String,
     pub positions: String,
@@ -208,7 +203,7 @@ pub fn export_champions() -> BTreeMap<String, ChampionDetails> {
                             .replace_const(),
                     ))
                 })
-                .collect::<Vec<(String, String, String, String)>>();
+                .collect::<Vec<(AbilityLike, String, String, String)>>();
 
             sort_pqwer(&mut ability_data);
 
@@ -227,7 +222,6 @@ pub fn export_champions() -> BTreeMap<String, ChampionDetails> {
                     metadata: &[{metadata}],
                     closures: &[{closures}],
                     stats: CachedChampionStats {{{stats}}},
-                    zero_addr: &[{zero_addr}],
                 }};",
                 adaptative_type = champion.adaptative_type,
                 attack_type = champion.attack_type,
@@ -242,13 +236,6 @@ pub fn export_champions() -> BTreeMap<String, ChampionDetails> {
                     .collect::<Vec<_>>()
                     .join(","),
                 stats = format_stats(&champion.stats),
-                zero_addr = {
-                    ability_data
-                        .iter()
-                        .map(|(_, _, closures, _)| format!("{}", closures.contains("zero"),))
-                        .collect::<Vec<String>>()
-                        .join(",")
-                }
             );
 
             let generator = cwd!(format!("tutorlolv2_dev/src/generators/{}.rs", champion_id))

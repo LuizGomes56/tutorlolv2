@@ -22,12 +22,18 @@ pub fn gen_ahri(data: CdnChampion) -> Champion {
         Q::Void,
     );
 
-    insert!(Q::Max, get!(Q::Void).clone());
-    let q_mut_ref = get!(mut Q::Max);
+    let q_mut_ref = clone_to!(Q::Void => Q::Max);
     q_mut_ref.damage = q_max;
     q_mut_ref.damage_type = DamageType::Mixed;
 
-    insert!(R::Max, get!(R::Void).clone());
+    clone_to!(R::Void => R::Max);
     let r_max = merge_damage!(3, |(r,)| format!("3 * ({})", r), R::Void);
-    get!(mut R::Void).damage = r_max;
+    get!(mut R::Max).damage = r_max;
+
+    merge_with![
+        (Q::Void, Q::Max),
+        (W::Void, W::Max),
+        (W::Minion, W::MinionMax),
+        (R::Void, R::Max)
+    ];
 }

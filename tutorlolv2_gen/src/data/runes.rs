@@ -7,15 +7,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static ABSOLUTE_FOCUS_8233: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -23,15 +16,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static ABSORB_LIFE_9101: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -39,15 +25,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static ADAPTIVE_FORCE_9990: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -55,15 +34,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static AERY_8214: CachedRune = CachedRune {
                     damage_type: DamageType::Adaptative,
                     metadata: TypeMetadata {
@@ -71,15 +43,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                     damage_type: DamageType::Adaptative,
                     attributes: Attrs::None
                 },
-                    melee_closure: DamageClosures {
-                        minimum_damage: |_| 0.0f32,
-                        maximum_damage: zero,
-                    },
-                    range_closure: DamageClosures {
-                        minimum_damage: |_| 0.0f32,
-                        maximum_damage: zero,
-                    },
-                    zero_addr: [(false, true), (false, true)],
+                    melee_closure: |_| 0.0f32,
+                    range_closure: |_| 0.0f32,
                 };pub static AFTERSHOCK_8439: CachedRune = CachedRune {
                     damage_type: DamageType::Adaptative,
                     metadata: TypeMetadata {
@@ -87,15 +52,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                     damage_type: DamageType::Adaptative,
                     attributes: Attrs::None
                 },
-                    melee_closure: DamageClosures {
-                        minimum_damage: |ctx| (25f32 + 95f32 / 17f32 * (ctx.level - 1f32) + 0.08f32 * ctx.bonus_health) * ctx.magic_multiplier,
-                        maximum_damage: zero,
-                    },
-                    range_closure: DamageClosures {
-                        minimum_damage: |ctx| (25f32 + 95f32 / 17f32 * (ctx.level - 1f32) + 0.08f32 * ctx.bonus_health) * ctx.magic_multiplier,
-                        maximum_damage: zero,
-                    },
-                    zero_addr: [(false, true), (false, true)],
+                    melee_closure: |ctx| (25f32 + 95f32 / 17f32 * (ctx.level - 1f32) + 0.08f32 * ctx.bonus_health) * ctx.magic_multiplier,
+                    range_closure: |ctx| (25f32 + 95f32 / 17f32 * (ctx.level - 1f32) + 0.08f32 * ctx.bonus_health) * ctx.magic_multiplier,
                 };pub static APPROACH_VELOCITY_8410: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -103,15 +61,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static ATTACK_SPEED_9992: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -119,15 +70,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static AXIOM_ARCANIST_8224: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -135,15 +79,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static BISCUIT_DELIVERY_8345: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -151,15 +88,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static BONE_PLATING_8473: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -167,15 +97,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static CASH_BACK_8321: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -183,15 +106,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static CELERITY_8234: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -199,15 +115,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static CHEAP_SHOT_8126: CachedRune = CachedRune {
                     damage_type: DamageType::True,
                     metadata: TypeMetadata {
@@ -215,15 +124,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                     damage_type: DamageType::True,
                     attributes: Attrs::None
                 },
-                    melee_closure: DamageClosures {
-                        minimum_damage: |ctx| 10f32 + 35f32 / 17f32 * (ctx.level - 1f32),
-                        maximum_damage: zero,
-                    },
-                    range_closure: DamageClosures {
-                        minimum_damage: |ctx| 10f32 + 35f32 / 17f32 * (ctx.level - 1f32),
-                        maximum_damage: zero,
-                    },
-                    zero_addr: [(false, true), (false, true)],
+                    melee_closure: |ctx| 10f32 + 35f32 / 17f32 * (ctx.level - 1f32),
+                    range_closure: |ctx| 10f32 + 35f32 / 17f32 * (ctx.level - 1f32),
                 };pub static COMET_8229: CachedRune = CachedRune {
                     damage_type: DamageType::Adaptative,
                     metadata: TypeMetadata {
@@ -231,15 +133,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                     damage_type: DamageType::Adaptative,
                     attributes: Attrs::None
                 },
-                    melee_closure: DamageClosures {
-                        minimum_damage: |_| 0.0f32,
-                        maximum_damage: zero,
-                    },
-                    range_closure: DamageClosures {
-                        minimum_damage: |_| 0.0f32,
-                        maximum_damage: zero,
-                    },
-                    zero_addr: [(false, true), (false, true)],
+                    melee_closure: |_| 0.0f32,
+                    range_closure: |_| 0.0f32,
                 };pub static CONDITIONING_8429: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -247,15 +142,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static CONQUEROR_8010: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -263,15 +151,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static COSMIC_INSIGHT_8347: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -279,15 +160,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static COUP_DE_GRACE_8014: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -295,15 +169,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static CUT_DOWN_8017: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -311,15 +178,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static DARK_HARVEST_8128: CachedRune = CachedRune {
                     damage_type: DamageType::Adaptative,
                     metadata: TypeMetadata {
@@ -327,15 +187,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                     damage_type: DamageType::Adaptative,
                     attributes: Attrs::None
                 },
-                    melee_closure: DamageClosures {
-                        minimum_damage: |_| 0.0f32,
-                        maximum_damage: zero,
-                    },
-                    range_closure: DamageClosures {
-                        minimum_damage: |_| 0.0f32,
-                        maximum_damage: zero,
-                    },
-                    zero_addr: [(false, true), (false, true)],
+                    melee_closure: |_| 0.0f32,
+                    range_closure: |_| 0.0f32,
                 };pub static DEEP_WARD_8141: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -343,15 +196,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static DEMOLISH_8446: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -359,15 +205,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static ELECTROCUTE_8112: CachedRune = CachedRune {
                     damage_type: DamageType::Adaptative,
                     metadata: TypeMetadata {
@@ -375,15 +214,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                     damage_type: DamageType::Adaptative,
                     attributes: Attrs::None
                 },
-                    melee_closure: DamageClosures {
-                        minimum_damage: |_| 0.0f32,
-                        maximum_damage: zero,
-                    },
-                    range_closure: DamageClosures {
-                        minimum_damage: |_| 0.0f32,
-                        maximum_damage: zero,
-                    },
-                    zero_addr: [(false, true), (false, true)],
+                    melee_closure: |_| 0.0f32,
+                    range_closure: |_| 0.0f32,
                 };pub static EYEBALL_COLLECTION_8120: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -391,15 +223,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static FIRST_STRIKE_8369: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -407,15 +232,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static FLEET_FOOTWORK_8021: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -423,15 +241,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static FONT_OF_LIFE_8463: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -439,15 +250,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static GATHERING_STORM_8236: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -455,15 +259,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static GHOST_PORO_8136: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -471,15 +268,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static GLACIAL_AUGMENT_8351: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -487,15 +277,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static GRASP_8437: CachedRune = CachedRune {
                     damage_type: DamageType::Magic,
                     metadata: TypeMetadata {
@@ -503,15 +286,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                     damage_type: DamageType::Magic,
                     attributes: Attrs::None
                 },
-                    melee_closure: DamageClosures {
-                        minimum_damage: |ctx| 0.035f32 * ctx.max_health * ctx.magic_multiplier,
-                        maximum_damage: zero,
-                    },
-                    range_closure: DamageClosures {
-                        minimum_damage: |ctx| 0.021f32 * ctx.max_health * ctx.magic_multiplier,
-                        maximum_damage: zero,
-                    },
-                    zero_addr: [(false, true), (false, true)],
+                    melee_closure: |ctx| 0.035f32 * ctx.max_health * ctx.magic_multiplier,
+                    range_closure: |ctx| 0.021f32 * ctx.max_health * ctx.magic_multiplier,
                 };pub static GRISLY_MEMENTOS_8140: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -519,15 +295,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static GUARDIAN_8465: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -535,15 +304,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static HAIL_OF_BLADES_9923: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -551,15 +313,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static HEALTH_9993: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -567,15 +322,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static HEALTH_SCALING_9991: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -583,15 +331,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static HEXTECH_FLASHTRAPTION_8306: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -599,15 +340,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static JACK_OF_ALL_TRADES_8316: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -615,15 +349,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static LAST_STAND_8299: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -631,15 +358,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static LEGEND_ALACRITY_9104: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -647,15 +367,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static LEGEND_BLOODLINE_9103: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -663,15 +376,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static LEGEND_HASTE_9105: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -679,15 +385,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static LETHAL_TEMPO_8008: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -695,15 +394,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static MAGICAL_FOOTWEAR_8304: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -711,15 +403,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static MANAFLOW_BAND_8226: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -727,15 +412,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static MOVE_SPEED_9996: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -743,15 +421,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static NIMBUS_CLOAK_8275: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -759,15 +430,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static OVERGROWTH_8451: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -775,15 +439,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static PHASE_RUSH_8230: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -791,15 +448,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static PREDATOR_8124: CachedRune = CachedRune {
                     damage_type: DamageType::Adaptative,
                     metadata: TypeMetadata {
@@ -807,15 +457,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                     damage_type: DamageType::Adaptative,
                     attributes: Attrs::None
                 },
-                    melee_closure: DamageClosures {
-                        minimum_damage: |_| 0.0f32,
-                        maximum_damage: zero,
-                    },
-                    range_closure: DamageClosures {
-                        minimum_damage: |_| 0.0f32,
-                        maximum_damage: zero,
-                    },
-                    zero_addr: [(false, true), (false, true)],
+                    melee_closure: |_| 0.0f32,
+                    range_closure: |_| 0.0f32,
                 };pub static PRESENCE_OF_MIND_8009: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -823,15 +466,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static PRESS_THE_ATTACK_8005: CachedRune = CachedRune {
                     damage_type: DamageType::Adaptative,
                     metadata: TypeMetadata {
@@ -839,15 +475,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                     damage_type: DamageType::Adaptative,
                     attributes: Attrs::None
                 },
-                    melee_closure: DamageClosures {
-                        minimum_damage: |_| 0.0f32,
-                        maximum_damage: zero,
-                    },
-                    range_closure: DamageClosures {
-                        minimum_damage: |_| 0.0f32,
-                        maximum_damage: zero,
-                    },
-                    zero_addr: [(false, true), (false, true)],
+                    melee_closure: |_| 0.0f32,
+                    range_closure: |_| 0.0f32,
                 };pub static RELENTLESS_HUNTER_8105: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -855,15 +484,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static REVITALIZE_8453: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -871,15 +493,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static SCORCH_8237: CachedRune = CachedRune {
                     damage_type: DamageType::Magic,
                     metadata: TypeMetadata {
@@ -887,15 +502,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                     damage_type: DamageType::Magic,
                     attributes: Attrs::None
                 },
-                    melee_closure: DamageClosures {
-                        minimum_damage: |ctx| (20f32 + 20f32 / 17f32 * (ctx.level - 1f32)) * ctx.magic_multiplier,
-                        maximum_damage: zero,
-                    },
-                    range_closure: DamageClosures {
-                        minimum_damage: |ctx| (20f32 + 20f32 / 17f32 * (ctx.level - 1f32)) * ctx.magic_multiplier,
-                        maximum_damage: zero,
-                    },
-                    zero_addr: [(false, true), (false, true)],
+                    melee_closure: |ctx| (20f32 + 20f32 / 17f32 * (ctx.level - 1f32)) * ctx.magic_multiplier,
+                    range_closure: |ctx| (20f32 + 20f32 / 17f32 * (ctx.level - 1f32)) * ctx.magic_multiplier,
                 };pub static SECOND_WIND_8444: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -903,15 +511,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static SHIELD_BASH_8401: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -919,15 +520,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static SIXTH_SENSE_8137: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -935,15 +529,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static SUDDEN_IMPACT_8143: CachedRune = CachedRune {
                     damage_type: DamageType::True,
                     metadata: TypeMetadata {
@@ -951,15 +538,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                     damage_type: DamageType::True,
                     attributes: Attrs::None
                 },
-                    melee_closure: DamageClosures {
-                        minimum_damage: |ctx| 20f32 + 60f32 / 17f32 * (ctx.level - 1f32),
-                        maximum_damage: zero,
-                    },
-                    range_closure: DamageClosures {
-                        minimum_damage: |ctx| 20f32 + 60f32 / 17f32 * (ctx.level - 1f32),
-                        maximum_damage: zero,
-                    },
-                    zero_addr: [(false, true), (false, true)],
+                    melee_closure: |ctx| 20f32 + 60f32 / 17f32 * (ctx.level - 1f32),
+                    range_closure: |ctx| 20f32 + 60f32 / 17f32 * (ctx.level - 1f32),
                 };pub static TASTE_OF_BLOOD_8139: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -967,15 +547,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static TENACITYAND_SLOW_RESIST_9995: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -983,15 +556,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static TIME_WARP_TONIC_8352: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -999,15 +565,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static TRANSCENDENCE_8210: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -1015,15 +574,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static TREASURE_HUNTER_8135: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -1031,15 +583,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static TRIPLE_TONIC_8313: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -1047,15 +592,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static TRIUMPH_9111: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -1063,15 +601,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static ULTIMATE_HUNTER_8106: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -1079,15 +610,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static UNFLINCHING_8242: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -1095,15 +619,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static UNSEALED_SPELLBOOK_8360: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -1111,15 +628,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static WATERWALKING_8232: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -1127,15 +637,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static ZOMBIE_WARD_8138: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -1143,13 +646,6 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 damage_type: DamageType::Unknown,
                 attributes: Attrs::None
             },
-                melee_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },
-                range_closure: DamageClosures {
-                minimum_damage: zero,
-                maximum_damage: zero
-            },    
-                zero_addr: [(true, true), (true, true)],
+                melee_closure: zero,
+                range_closure: zero,    
             };pub static DAMAGING_RUNES:phf::Set<u32>=phf::phf_set!(8214u32,8439u32,8126u32,8229u32,8128u32,8112u32,8437u32,8124u32,8005u32,8237u32,8143u32);

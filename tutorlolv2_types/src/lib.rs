@@ -1,15 +1,34 @@
+use std::str::FromStr;
+
 use bincode::Encode;
 use serde::{Deserialize, Serialize};
 
-#[derive(
-    Copy, Clone, Serialize, Deserialize, Encode, Debug, Eq, PartialEq, PartialOrd, Hash, Ord,
-)]
+#[derive(Copy, Clone, Encode, Debug, Eq, PartialEq, PartialOrd, Hash, Ord)]
 pub enum AbilityLike {
     P(AbilityName),
     Q(AbilityName),
     W(AbilityName),
     E(AbilityName),
     R(AbilityName),
+}
+
+impl Serialize for AbilityLike {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        serializer.serialize_str(&self.to_string())
+    }
+}
+
+impl<'de> Deserialize<'de> for AbilityLike {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        let s = String::deserialize(deserializer)?;
+        Ok(AbilityLike::from_str(&s))
+    }
 }
 
 impl ToString for AbilityLike {
@@ -19,13 +38,32 @@ impl ToString for AbilityLike {
 }
 
 impl AbilityLike {
-    pub fn chars(&self) -> char {
+    pub fn as_char(&self) -> char {
         match self {
             AbilityLike::P(_) => 'P',
             AbilityLike::Q(_) => 'Q',
             AbilityLike::W(_) => 'W',
             AbilityLike::E(_) => 'E',
             AbilityLike::R(_) => 'R',
+        }
+    }
+
+    pub fn from_str(value: &str) -> Self {
+        let first_char = value.chars().next().unwrap();
+        let ability_name = &value[2..value.len() - 1];
+
+        macro_rules! match_ability_name {
+            ($field:ident) => {
+                AbilityLike::$field(AbilityName::from_str(ability_name).unwrap())
+            };
+        }
+        match first_char {
+            'P' => match_ability_name!(P),
+            'Q' => match_ability_name!(Q),
+            'W' => match_ability_name!(W),
+            'E' => match_ability_name!(E),
+            'R' => match_ability_name!(R),
+            _ => panic!("Invalid AbilityLike"),
         }
     }
 
@@ -45,7 +83,7 @@ impl AbilityLike {
 
     pub fn get_ability_name(self_string: &str, parens: (usize, usize)) -> &str {
         let (first_paren, last_paren) = parens;
-        self_string.get(first_paren..last_paren).unwrap()
+        self_string.get(first_paren + 1..last_paren).unwrap()
     }
 
     pub fn get_ability_like(self_string: &str, parens: (usize, usize)) -> &str {
@@ -85,48 +123,69 @@ impl ToString for AbilityName {
     }
 }
 
-#[derive(
-    Clone, Copy, Serialize, Deserialize, Encode, Debug, Eq, PartialEq, Hash, PartialOrd, Ord,
-)]
-#[repr(u8)]
-pub enum AbilityName {
-    _1,
-    _2,
-    _3,
-    _4,
-    _5,
-    _6,
-    _7,
-    _8,
-    Mega,
-    Max,
-    Min,
-    Void,
-    _1Max,
-    _2Max,
-    _3Max,
-    _4Max,
-    _5Max,
-    _6Max,
-    _7Max,
-    _8Max,
-    _1Min,
-    _2Min,
-    _3Min,
-    _4Min,
-    _5Min,
-    _6Min,
-    _7Min,
-    _8Min,
-    Minion,
-    Minion1,
-    Minion2,
-    Minion3,
-    MinionMax,
-    Monster,
-    Monster1,
-    Monster2,
-    Monster3,
-    Monster4,
-    MonsterMax,
+macro_rules! enum_from_str {
+    // Captura qualquer quantidade de atributos e a visibilidade
+    ($(#[$meta:meta])* $vis:vis enum $E:ident { $($V:ident),* $(,)? }) => {
+        $(#[$meta])*
+        $vis enum $E {
+            $($V),*
+        }
+        impl ::core::str::FromStr for $E {
+            type Err = String;
+            fn from_str(s: &str) -> ::core::result::Result<Self, Self::Err> {
+                match s {
+                    $( ::core::stringify!($V) => Ok(Self::$V), )*
+                    _ => unreachable!("Invalid string for enum {}: {}", stringify!($E), s),
+                }
+            }
+        }
+    };
 }
+
+enum_from_str!(
+    #[derive(
+        Clone, Copy, Serialize, Deserialize, Encode, Debug, Eq, PartialEq, Hash, PartialOrd, Ord,
+    )]
+    #[repr(u8)]
+    pub enum AbilityName {
+        _1,
+        _2,
+        _3,
+        _4,
+        _5,
+        _6,
+        _7,
+        _8,
+        Mega,
+        Max,
+        Min,
+        Void,
+        _1Max,
+        _2Max,
+        _3Max,
+        _4Max,
+        _5Max,
+        _6Max,
+        _7Max,
+        _8Max,
+        _1Min,
+        _2Min,
+        _3Min,
+        _4Min,
+        _5Min,
+        _6Min,
+        _7Min,
+        _8Min,
+        Minion,
+        Minion1,
+        Minion2,
+        Minion3,
+        MinionMax,
+        Monster,
+        Monster1,
+        Monster2,
+        Monster3,
+        Monster4,
+        MonsterMax,
+    }
+);
