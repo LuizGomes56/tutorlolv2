@@ -2,7 +2,7 @@ use super::*;
 
 impl Generator for Mel {
     #[generator_v2]
-    fn generate(self: Box<Self>) -> MayFail<Champion> {
+    fn generate(mut self: Box<Self>) -> MayFail<Champion> {
         ability![Q, (0, 0, _1), (0, 1, _2), (0, 3, _3), (0, 4, _4)];
         ability![W, (1, 0, _1)];
         ability![

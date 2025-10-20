@@ -2,7 +2,7 @@ use super::*;
 
 impl Generator for Sion {
     #[generator_v2]
-    fn generate(self: Box<Self>) -> MayFail<Champion> {
+    fn generate(mut self: Box<Self>) -> MayFail<Champion> {
         ability![
             Q,
             (0, 0, _1),

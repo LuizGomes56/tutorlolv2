@@ -2,7 +2,7 @@ use super::*;
 
 impl Generator for Pantheon {
     #[generator_v2]
-    fn generate(self: Box<Self>) -> MayFail<Champion> {
+    fn generate(mut self: Box<Self>) -> MayFail<Champion> {
         ability![
             Q,
             (4, 0, _1),

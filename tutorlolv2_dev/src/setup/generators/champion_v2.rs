@@ -8,7 +8,6 @@ use crate::{
 use regex::Regex;
 use std::{
     collections::{BTreeMap, BTreeSet, HashMap},
-    ops::Deref,
     path::Path,
     str::FromStr,
 };
@@ -430,7 +429,7 @@ impl GeneratorFactory {
 
                 impl Generator for {champion_id:?} {{
                     #[generator_v2]
-                    fn generate(self: Box<Self>) -> MayFail<Champion> {{"
+                    fn generate(mut self: Box<Self>) -> MayFail<Champion> {{"
         );
 
         if let Ok(data) = std::fs::read_to_string(&path) {
@@ -453,51 +452,37 @@ impl GeneratorFactory {
         Ok(invoke_rustfmt(&generated_content, 80))
     }
 
-    pub async fn create_all() -> MayFail {
+    pub fn create_all() -> MayFail {
         if !Path::new(GENERATOR_FOLDER).exists() {
             std::fs::create_dir(GENERATOR_FOLDER).unwrap();
         }
 
-        let mut futures = Vec::new();
-
         for i in 0..NUMBER_OF_CHAMPIONS as u8 {
             let champion_id = unsafe { std::mem::transmute::<_, ChampionId>(i) };
-            futures.push(async move { Self::create(champion_id) });
-        }
-
-        for (i, future) in futures.into_iter().enumerate() {
-            if let Ok(data) = future.await {
-                let champion_id = unsafe { std::mem::transmute::<_, ChampionId>(i as u8) };
-                let file_name = format!("{champion_id:?}").to_lowercase();
-                format!("{GENERATOR_FOLDER}/{file_name}.rs").write_to_file(data.as_bytes())?;
-            };
+            let data = Self::create(champion_id)?;
+            let file_name = format!("{champion_id:?}").to_lowercase();
+            format!("{GENERATOR_FOLDER}/{file_name}.rs").write_to_file(data.as_bytes())?;
         }
 
         Ok(())
     }
 
-    pub async fn run_all(&self) {
-        let mut futures = Vec::new();
+    pub fn run_all(&self) {
         for i in 0..NUMBER_OF_CHAMPIONS {
-            futures.push(async move {
-                let champion_id = unsafe { std::mem::transmute::<_, ChampionId>(i as u8) };
-                let result = self.run(champion_id);
-                if let Ok(champion) = result {
-                    let json_string = serde_json::to_string_pretty(&champion).unwrap();
-                    format!("internal/champions/{champion_id:?}.json")
-                        .write_to_file(json_string.as_bytes())
-                        .unwrap();
-                }
-            });
-        }
-        for future in futures {
-            let _ = future.await;
+            let champion_id = unsafe { std::mem::transmute::<_, ChampionId>(i as u8) };
+            let result = self.run(champion_id);
+            if let Ok(champion) = result {
+                let json_string = serde_json::to_string_pretty(&champion).unwrap();
+                format!("internal/champions/{champion_id:?}.json")
+                    .write_to_file(json_string.as_bytes())
+                    .unwrap();
+            };
         }
     }
 
     pub fn run(&self, name: ChampionId) -> MayFail<Champion> {
         let data = format!("cache/cdn/champions/{name:?}.json").read_json::<CdnChampion>()?;
-        let function = self[&name];
+        let function = self.0[&name];
         let generator = function(data);
         Ok(generator.generate()?)
     }
@@ -652,13 +637,6 @@ impl GeneratorFactory {
         }
 
         Ok(true)
-    }
-}
-
-impl Deref for GeneratorFactory {
-    type Target = HashMap<ChampionId, fn(CdnChampion) -> Box<dyn Generator>>;
-    fn deref(&self) -> &Self::Target {
-        &self.0
     }
 }
 

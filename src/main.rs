@@ -240,12 +240,9 @@ async fn main() {
         Some("check-gen") => {
             GeneratorFactory::check_all_offsets();
         }
-        Some("run-gen") => {
-            let runner = GeneratorFactory::new();
-            runner.run_all().await;
-        }
+        Some("run-gen") => GeneratorFactory::new().run_all(),
         Some("make-gen") => {
-            let _ = GeneratorFactory::create_all().await;
+            let _ = GeneratorFactory::create_all();
         }
         Some("html-gen") => generate_html().await,
         Some("update") => update().await,

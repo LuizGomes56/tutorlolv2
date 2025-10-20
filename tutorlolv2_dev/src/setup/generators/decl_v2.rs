@@ -15,6 +15,17 @@ macro_rules! create_structs {
                     Box::new(Self(GeneratorData::new(data)))
                 }
             }
+            impl std::ops::Deref for $name {
+                type Target = GeneratorData;
+                fn deref(&self) -> &Self::Target {
+                    &self.0
+                }
+            }
+            impl std::ops::DerefMut for $name {
+                fn deref_mut(&mut self) -> &mut Self::Target {
+                    &mut self.0
+                }
+            }
         )*
     }
 }
