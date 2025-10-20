@@ -2,7 +2,7 @@ use super::*;
 
 impl Generator for Heimerdinger {
     #[generator_v2]
-    fn generate(self: Box<Self>) -> Champion {
+    fn generate(self: Box<Self>) -> MayFail<Champion> {
         ability!(
             W,
             (0, 0, _1),

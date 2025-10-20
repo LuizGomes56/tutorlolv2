@@ -26,7 +26,7 @@ pub fn generator_v2(_args: TokenStream, input: TokenStream) -> TokenStream {
         }
 
         #old_block;
-        this.finish()
+        Ok(this.finish())
     }));
 
     TokenStream::from(quote! {
@@ -54,24 +54,13 @@ pub fn generator(_args: TokenStream, input: TokenStream) -> TokenStream {
         macro_rules! ability {
             ($field:ident, $idx:literal, $(($a:literal, $b:literal, $c:ident)),* $(,)?) => {
                 paste::paste! {
-                    let pattern = [$(
-                        (
-                            $a,
-                            $b,
-                            AbilityLike::[<$field:upper>](AbilityName::$c),
-                        )
-                    ),*];
+                    let pattern = [$(($a, $b, AbilityLike::[<$field:upper>](AbilityName::$c))),*];
                     extract_ability_damage(&data.abilities.$field[$idx], &mut abilities, &pattern);
                 }
             };
             ($field:ident, $(($a:literal, $b:literal, $c:ident)),* $(,)?) => {
                 paste::paste! {
-                    let pattern = [$((
-                            $a,
-                            $b,
-                            AbilityLike::[<$field:upper>](AbilityName::$c),
-                        )
-                    ),*];
+                    let pattern = [$(($a, $b, AbilityLike::[<$field:upper>](AbilityName::$c))),*];
                     extract_ability_damage(&data.abilities.$field[0], &mut abilities, &pattern);
                 }
             };

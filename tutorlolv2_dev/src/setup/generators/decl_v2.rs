@@ -1,7 +1,9 @@
-use crate::{CdnChampion, Champion, setup::generators::champion_v2::GeneratorData};
+use crate::{
+    CdnChampion, Champion, generators_v2::MayFail, setup::generators::champion_v2::GeneratorData,
+};
 
 pub trait Generator {
-    fn generate(self: Box<Self>) -> Champion;
+    fn generate(self: Box<Self>) -> MayFail<Champion>;
 }
 
 macro_rules! create_structs {

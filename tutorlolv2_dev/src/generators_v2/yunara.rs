@@ -2,7 +2,7 @@ use super::*;
 
 impl Generator for Yunara {
     #[generator_v2]
-    fn generate(self: Box<Self>) -> Champion {
+    fn generate(self: Box<Self>) -> MayFail<Champion> {
         ability!(
             Q,
             (0, 0, _1),

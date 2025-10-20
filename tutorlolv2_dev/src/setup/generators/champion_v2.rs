@@ -1,16 +1,16 @@
 use crate::{
-    CdnChampion, // generators_v2::*,
+    CdnChampion,
     champions::{CdnAbility, Modifiers},
     essentials::ext::FilePathExt,
     generators::*,
-    setup::generators::decl_v2::Generator,
+    setup::generators::decl_v2::*,
 };
 use regex::Regex;
 use std::{collections::HashMap, ops::Deref, path::Path};
 use tutorlolv2_fmt::invoke_rustfmt;
 use tutorlolv2_gen::{ChampionId, INTERNAL_CHAMPIONS, Position};
 
-type MayFail<T = ()> = Result<T, Box<dyn std::error::Error>>;
+pub type MayFail<T = ()> = Result<T, Box<dyn std::error::Error>>;
 
 pub const NUMBER_OF_CHAMPIONS: usize = INTERNAL_CHAMPIONS.len();
 pub const CHAMPION_NAMES: [&str; NUMBER_OF_CHAMPIONS] = {
@@ -47,7 +47,7 @@ pub async fn create_generators() -> MayFail {
 
                 impl Generator for {champion_id:?} {{
                     #[generator_v2]
-                    fn generate(self: Box<Self>) -> Champion {{"
+                    fn generate(self: Box<Self>) -> MayFail<Champion> {{"
             );
 
             if let Ok(data) = std::fs::read_to_string(&path) {
@@ -258,40 +258,23 @@ pub struct GeneratorData {
     pub mergemap: Vec<(AbilityLike, AbilityLike)>,
 }
 
-pub struct GeneratorBuilder(HashMap<&'static str, fn(CdnChampion) -> Box<dyn Generator>>);
+pub struct GeneratorRunner(HashMap<ChampionId, fn(CdnChampion) -> Box<dyn Generator>>);
 
-impl GeneratorBuilder {
-    pub const CHAMPION_NAMES: [&str; NUMBER_OF_CHAMPIONS] = {
-        let mut i = 0;
-        let mut output = [""; NUMBER_OF_CHAMPIONS];
-        while i < NUMBER_OF_CHAMPIONS {
-            let data = INTERNAL_CHAMPIONS[i];
-            output[i] = data.name;
-            i += 1;
-        }
-        output
-    };
-
+impl GeneratorRunner {
     pub fn new() -> Self {
         let mut inner = HashMap::new();
 
         for i in 0..NUMBER_OF_CHAMPIONS {
-            let champion_name = Self::CHAMPION_NAMES[i];
+            let champion_id = unsafe { std::mem::transmute::<_, ChampionId>(i as u8) };
 
             macro_rules! match_arm {
                 ($($name:ident),+$(,)?) => {
-                    paste::paste! {
-                        match champion_name {
-                            $(
-                                stringify!($name) => $name::new,
-                            )+
-                            _ => unreachable!("Invalid champion generator being assigned"),
-                        }
+                    match champion_id {
+                        $(ChampionId::$name => $name::new,)+
                     }
                 };
             }
 
-            /*
             let function = match_arm!(
                 Aatrox,
                 Ahri,
@@ -465,31 +448,35 @@ impl GeneratorBuilder {
                 Zoe,
                 Zyra
             );
-            */
-            // inner.insert(champion_name, function);
+            inner.insert(champion_id, function);
         }
 
         Self(inner)
     }
 
     pub fn run_all(&self) {
-        for name in Self::CHAMPION_NAMES {
-            if let Err(e) = std::panic::catch_unwind(|| self.run(name)) {
-                println!("Failed to generate {name}: {e:#?}");
+        for i in 0..NUMBER_OF_CHAMPIONS {
+            let champion_id = unsafe { std::mem::transmute::<_, ChampionId>(i as u8) };
+            let result = self.run(champion_id);
+            if let Ok(champion) = result {
+                let json_string = serde_json::to_string_pretty(&champion).unwrap();
+                format!("internal/champions/{champion_id:?}.json")
+                    .write_to_file(json_string.as_bytes())
+                    .unwrap();
             }
         }
     }
 
-    pub fn run(&self, name: &str) -> MayFail<Champion> {
-        let data = format!("cache/cdn/champions/{name}.json").read_json::<CdnChampion>()?;
-        let function = self[name];
+    pub fn run(&self, name: ChampionId) -> MayFail<Champion> {
+        let data = format!("cache/cdn/champions/{name:?}.json").read_json::<CdnChampion>()?;
+        let function = self[&name];
         let generator = function(data);
-        Ok(generator.generate())
+        Ok(generator.generate()?)
     }
 }
 
-impl Deref for GeneratorBuilder {
-    type Target = HashMap<&'static str, fn(CdnChampion) -> Box<dyn Generator>>;
+impl Deref for GeneratorRunner {
+    type Target = HashMap<ChampionId, fn(CdnChampion) -> Box<dyn Generator>>;
     fn deref(&self) -> &Self::Target {
         &self.0
     }
@@ -643,12 +630,16 @@ impl GeneratorData {
                         );
                     } else {
                         println!(
-                            "Inexistent leveling index: {leveling_index} for ability: {ability:?}",
+                            "[{champion_name}] Inexistent leveling index: {leveling_index} for ability: {ability:?}",
+                            champion_name = self.data.name
                         );
                         continue;
                     }
                 } else {
-                    println!("Inexistent effect index: {effect_index} for ability: {ability:?}",);
+                    println!(
+                        "[{champion_name}] Inexistent effect index: {effect_index} for ability: {ability:?}",
+                        champion_name = self.data.name
+                    );
                     continue;
                 }
             }

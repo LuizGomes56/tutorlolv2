@@ -206,6 +206,10 @@ async fn main() {
         .get(1)
         .map(String::as_str)
     {
+        Some("-gr") => {
+            let runner = tutorlolv2_dev::setup::generators::champion_v2::GeneratorRunner::new();
+            runner.run_all();
+        }
         Some("-g") => {
             let _ = tutorlolv2_dev::setup::generators::champion_v2::create_generators().await;
         }
