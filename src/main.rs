@@ -1,8 +1,17 @@
 use actix_web::rt::task::spawn_blocking;
 use std::{
+    collections::HashMap,
     process::{Child, Command, Stdio},
     thread,
     time::Duration,
+};
+use tutorlolv2_dev::{
+    CdnChampion, DeserializeOwned, Serialize,
+    cache::save_cache,
+    essentials::{api::CdnEndpoint, ext::FilePathExt},
+    generators_v2::{GeneratorRunner, create_generators},
+    items::CdnItem,
+    setup::generators::champions::OrderJson,
 };
 use tutorlolv2_exports::*;
 
@@ -206,16 +215,38 @@ async fn main() {
         .get(1)
         .map(String::as_str)
     {
-        Some("-gr") => {
-            let runner = tutorlolv2_dev::setup::generators::champion_v2::GeneratorRunner::new();
+        Some("cdn-ord") => {
+            async fn ord_folder<T>(instance: CdnEndpoint)
+            where
+                T: DeserializeOwned + Serialize,
+                HashMap<String, T>: OrderJson<T>,
+            {
+                let mut map = HashMap::<String, T>::new();
+                let folder = format!("cache/cdn/{instance}");
+                let files = std::fs::read_dir(folder).unwrap();
+                for file in files {
+                    let path_name = file.unwrap().path();
+                    let name = path_name.file_stem().unwrap().to_str().unwrap().to_string();
+                    let data = path_name.read_json::<T>().unwrap();
+                    map.insert(name, data);
+                }
+
+                save_cache(map, instance).await;
+            }
+
+            ord_folder::<CdnChampion>(CdnEndpoint::Champions).await;
+            ord_folder::<CdnItem>(CdnEndpoint::Items).await;
+        }
+        Some("run-gen") => {
+            let runner = GeneratorRunner::new();
             runner.run_all();
         }
-        Some("-g") => {
-            let _ = tutorlolv2_dev::setup::generators::champion_v2::create_generators().await;
+        Some("make-gen") => {
+            let _ = create_generators().await;
         }
-        Some("-h") => generate_html().await,
-        Some("-u") => update().await,
-        Some("-l") => update_local().await,
+        Some("html-gen") => generate_html().await,
+        Some("update") => update().await,
+        Some("local") => update_local().await,
         Some("-r") => {
             run(
                 "./tutorlolv2_server",

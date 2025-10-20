@@ -1,3 +1,4 @@
+use serde::Serialize;
 use tutorlolv2_gen::AbilityLike;
 
 use super::*;
@@ -346,40 +347,47 @@ fn transform_ability(key: &str, abilities: &[CdnAbility]) -> Vec<String> {
     generator_keybinds
 }
 
-/// Order of Vec<Effect> from CDN API varies and to get a more consistent
-/// result after each update, keys will be ordered. This function must be
-/// called right after receiving the data after calling CDN API with "Champions"
-/// to avoid inconsistencies. This method is not perfect, manual adjustments
-/// may be required if a major change occurs.
-pub fn order_cdn_champion_effects(data: &mut HashMap<String, CdnChampion>) {
-    for (_, champion) in data.iter_mut() {
-        for ability_list in [
-            &mut champion.abilities.q,
-            &mut champion.abilities.w,
-            &mut champion.abilities.e,
-            &mut champion.abilities.r,
-            &mut champion.abilities.p,
-        ] {
-            for ability in ability_list {
-                ability
-                    .effects
-                    .sort_by(|a, b| a.description.cmp(&b.description));
-                for effect in &mut ability.effects {
-                    effect.leveling.sort_by(|a, b| {
-                        a.attribute
-                            .as_deref()
-                            .unwrap_or("")
-                            .cmp(b.attribute.as_deref().unwrap_or(""))
-                    });
+pub trait OrderJson<T: Serialize> {
+    fn into_iter_ord(self) -> impl Iterator<Item = (String, T)>;
+}
+
+impl OrderJson<CdnChampion> for HashMap<String, CdnChampion> {
+    fn into_iter_ord(self) -> impl Iterator<Item = (String, CdnChampion)> {
+        let mut vec_self = self.into_iter().collect::<Vec<_>>();
+        for (_, champion) in vec_self.iter_mut() {
+            for ability_list in [
+                &mut champion.abilities.q,
+                &mut champion.abilities.w,
+                &mut champion.abilities.e,
+                &mut champion.abilities.r,
+                &mut champion.abilities.p,
+            ] {
+                for ability in ability_list {
+                    ability
+                        .effects
+                        .sort_by(|a, b| a.description.cmp(&b.description));
+                    for effect in &mut ability.effects {
+                        effect.leveling.sort_by(|a, b| {
+                            a.attribute
+                                .as_deref()
+                                .unwrap_or("")
+                                .cmp(b.attribute.as_deref().unwrap_or(""))
+                        });
+                    }
                 }
             }
         }
+        vec_self.into_iter()
     }
 }
 
-pub fn order_cdn_item_effects(data: &mut HashMap<String, CdnItem>) {
-    for item in data.values_mut() {
-        item.active.sort_by(|a, b| a.effects.cmp(&b.effects));
-        item.passives.sort_by(|a, b| a.effects.cmp(&b.effects));
+impl OrderJson<CdnItem> for HashMap<String, CdnItem> {
+    fn into_iter_ord(self) -> impl Iterator<Item = (String, CdnItem)> {
+        let mut vec_self = self.into_iter().collect::<Vec<_>>();
+        for (_, item) in vec_self.iter_mut() {
+            item.active.sort_by(|a, b| a.effects.cmp(&b.effects));
+            item.passives.sort_by(|a, b| a.effects.cmp(&b.effects));
+        }
+        vec_self.into_iter()
     }
 }

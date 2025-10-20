@@ -7,11 +7,11 @@ use crate::{
             api::{CdnEndpoint, fetch_cdn_api, fetch_languages, fetch_riot_api},
             ext::FilePathExt,
         },
-        generators::champions::{order_cdn_champion_effects, order_cdn_item_effects},
+        generators::champions::OrderJson,
     },
 };
 use reqwest::Client;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::{collections::HashMap, sync::Arc};
 use tokio::{
@@ -19,31 +19,34 @@ use tokio::{
     task::{self, JoinHandle},
 };
 
+pub async fn save_cache<T: Serialize>(result: impl OrderJson<T>, instance: CdnEndpoint) {
+    for (key, value) in result.into_iter_ord() {
+        let folder_name = format!("cache/cdn/{}", instance);
+        let path_name = format!("{}/{}.json", folder_name, key);
+        let json_string = serde_json::to_string_pretty(&value).unwrap();
+        path_name.write_to_file(json_string.as_bytes()).unwrap();
+    }
+}
+
 /// Takes an instance parameter and uses CDN API to get its data and save to file system.
 #[tutorlolv2_macros::trace_time]
 pub async fn update_cdn_cache(client: Client, instance: CdnEndpoint) {
-    macro_rules! ord_and_save {
-        ($type_v:ty, $func:ident) => {{
-            let mut result = fetch_cdn_api::<HashMap<String, $type_v>>(client, instance)
-                .await
-                .unwrap();
-            $func(&mut result);
-            for (key, value) in result {
-                let folder_name = format!("cache/cdn/{}", instance);
-                let path_name = format!("{}/{}.json", folder_name, key);
-                let strval = serde_json::to_string_pretty(&value).unwrap();
-                path_name.write_to_file(strval.as_bytes()).unwrap();
-            }
-        }};
+    macro_rules! order_and_save {
+        ($ty:ty) => {
+            save_cache(
+                fetch_cdn_api::<HashMap<String, $ty>>(client, instance)
+                    .await
+                    .unwrap(),
+                instance,
+            )
+            .await
+        };
     }
+
     match instance {
-        CdnEndpoint::Champions => {
-            ord_and_save!(CdnChampion, order_cdn_champion_effects);
-        }
-        CdnEndpoint::Items => {
-            ord_and_save!(CdnItem, order_cdn_item_effects);
-        }
-    };
+        CdnEndpoint::Champions => order_and_save!(CdnChampion),
+        CdnEndpoint::Items => order_and_save!(CdnItem),
+    }
 }
 
 /// Updates files in `cache/riot` with the corresponding ones in the patch determined by `LOL_VERSION`
