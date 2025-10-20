@@ -6,7 +6,12 @@ use crate::{
     setup::generators::decl_v2::*,
 };
 use regex::Regex;
-use std::{collections::HashMap, ops::Deref, path::Path, str::FromStr};
+use std::{
+    collections::{BTreeMap, BTreeSet, HashMap},
+    ops::Deref,
+    path::Path,
+    str::FromStr,
+};
 use tutorlolv2_fmt::invoke_rustfmt;
 use tutorlolv2_gen::{ChampionId, INTERNAL_CHAMPIONS, Position};
 
@@ -201,7 +206,7 @@ impl RegExtractor for str {
 pub struct GeneratorData {
     pub data: CdnChampion,
     pub hashmap: HashMap<AbilityLike, Ability>,
-    pub mergemap: Vec<(AbilityLike, AbilityLike)>,
+    pub mergevec: Vec<(AbilityLike, AbilityLike)>,
 }
 
 pub struct GeneratorFactory(HashMap<ChampionId, fn(CdnChampion) -> Box<dyn Generator>>);
@@ -402,7 +407,7 @@ impl GeneratorFactory {
 
     pub fn create(champion_id: ChampionId) -> MayFail<String> {
         let file_name = format!("{champion_id:?}").to_lowercase();
-        let path = format!("{GENERATOR_FOLDER}/{file_name}.rs",);
+        let path = format!("{GENERATOR_FOLDER}/{file_name}.rs");
 
         let bind_macro = |ability_char: char, cdn_offsets: &[CdnOffset]| -> String {
             let mut offsets = Vec::new();
@@ -460,8 +465,12 @@ impl GeneratorFactory {
             futures.push(async move { Self::create(champion_id) });
         }
 
-        for future in futures {
-            let _ = future.await;
+        for (i, future) in futures.into_iter().enumerate() {
+            if let Ok(data) = future.await {
+                let champion_id = unsafe { std::mem::transmute::<_, ChampionId>(i as u8) };
+                let file_name = format!("{champion_id:?}").to_lowercase();
+                format!("{GENERATOR_FOLDER}/{file_name}.rs").write_to_file(data.as_bytes())?;
+            };
         }
 
         Ok(())
@@ -493,16 +502,116 @@ impl GeneratorFactory {
         Ok(generator.generate()?)
     }
 
-    fn parse_offsets(src: &str) -> HashMap<char, (usize, usize)> {
-        let mut i = 0;
-        let mut out = HashMap::new();
+    pub fn parse_offsets(src: &str) -> MayFail<HashMap<char, Vec<(usize, usize)>>> {
+        let macro_re = Regex::new(r"(?s)ability!\s*\[\s*([A-Za-z])\s*,(.*?)\]")?;
+        let tuple_re = Regex::new(r"\(\s*(\d+)\s*,\s*(\d+)\s*,")?;
 
-        while let Some(rel) = src[i..].find("ability!(") {
-            let start = i + rel;
-            let open_paren = start + "ability!".len();
+        let mut out = HashMap::<char, Vec<(usize, usize)>>::new();
+
+        for caps in macro_re.captures_iter(src) {
+            let ability = caps[1].chars().next().ok_or("First capture has no chars")?;
+            let body = &caps[2];
+
+            let mut tuples = Vec::new();
+            for t in tuple_re.captures_iter(body) {
+                let e = t[1].parse::<usize>()?;
+                let l = t[2].parse::<usize>()?;
+                tuples.push((e, l));
+            }
+            if !tuples.is_empty() {
+                out.entry(ability).or_default().extend(tuples);
+            }
         }
 
-        out
+        Ok(out)
+    }
+
+    fn to_sorted_btree(
+        m: &HashMap<char, Vec<(usize, usize)>>,
+    ) -> BTreeMap<char, Vec<(usize, usize)>> {
+        let mut norm = BTreeMap::new();
+        for (&k, v) in m {
+            if v.is_empty() {
+                continue;
+            }
+            let mut vv = v.clone();
+            vv.sort_unstable();
+            norm.insert(k, vv);
+        }
+        norm
+    }
+
+    fn print_diffs(
+        old: &BTreeMap<char, Vec<(usize, usize)>>,
+        new: &BTreeMap<char, Vec<(usize, usize)>>,
+    ) {
+        let keys = old
+            .keys()
+            .chain(new.keys())
+            .copied()
+            .collect::<BTreeSet<char>>();
+
+        println!("Offsets are not equal (diff by ability):");
+        for k in keys {
+            let old_values = old.get(&k).cloned().unwrap_or_default();
+            let new_values = new.get(&k).cloned().unwrap_or_default();
+            if old_values == new_values {
+                continue;
+            }
+
+            let counts = |v: &[(usize, usize)]| -> BTreeMap<(usize, usize), usize> {
+                let mut c = BTreeMap::new();
+                for &p in v {
+                    *c.entry(p).or_insert(0) += 1;
+                }
+                c
+            };
+
+            let old_count = counts(&old_values);
+            let new_count = counts(&new_values);
+
+            let mut missing = Vec::new();
+            let mut extra = Vec::new();
+
+            for (p, &oq) in &old_count {
+                let nq = *new_count.get(p).unwrap_or(&0);
+                if nq < oq {
+                    for _ in 0..(oq - nq) {
+                        missing.push(*p);
+                    }
+                }
+            }
+            for (p, &nq) in &new_count {
+                let oq = *old_count.get(p).unwrap_or(&0);
+                if nq > oq {
+                    for _ in 0..(nq - oq) {
+                        extra.push(*p);
+                    }
+                }
+            }
+
+            println!("  Ability '{}':", k);
+            println!("      expected(old): {old_values:?}");
+            println!("      found(new):    {new_values:?}");
+            if !missing.is_empty() {
+                println!("      missing in new:   {missing:?}");
+            }
+            if !extra.is_empty() {
+                println!("      extra in new:     {extra:?}");
+            }
+        }
+    }
+
+    pub fn compare_offsets(src: &str, new: &HashMap<char, Vec<(usize, usize)>>) -> MayFail<bool> {
+        let old_raw = Self::parse_offsets(src)?;
+        let old = Self::to_sorted_btree(&old_raw);
+        let new = Self::to_sorted_btree(new);
+        if old == new {
+            Ok(true)
+        } else {
+            Self::print_diffs(&old, &new);
+            Ok(false)
+        }
     }
 
     pub fn check_all_offsets() {
@@ -538,6 +647,10 @@ impl GeneratorFactory {
 
         let old_content = std::fs::read_to_string(format!("{GENERATOR_FOLDER}/{name:?}.rs"))?;
 
+        if !Self::compare_offsets(&old_content, &new_offsets)? {
+            return Ok(false);
+        }
+
         Ok(true)
     }
 }
@@ -560,7 +673,7 @@ impl GeneratorData {
         Self {
             data,
             hashmap: HashMap::new(),
-            mergemap: Vec::new(),
+            mergevec: Vec::new(),
         }
     }
 
@@ -577,7 +690,7 @@ impl GeneratorData {
                 .collect(),
             stats: self.data.stats,
             abilities: self.hashmap,
-            merge_data: self.mergemap,
+            merge_data: self.mergevec,
         }
     }
 

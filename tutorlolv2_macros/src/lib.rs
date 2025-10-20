@@ -80,7 +80,7 @@ pub fn generator_v2(_args: TokenStream, input: TokenStream) -> TokenStream {
         macro_rules! merge {
             ($($f1:ident::$v1:ident <= $f2:ident::$v2:ident),+$(,)?) => {{
                 $(
-                    this.mergemap.push((
+                    this.mergevec.push((
                         AbilityLike::$f1(AbilityName::$v1),
                         AbilityLike::$f2(AbilityName::$v2),
                     ));
@@ -104,25 +104,23 @@ pub fn generator_v2(_args: TokenStream, input: TokenStream) -> TokenStream {
         #old_block;
 
         if !this
-            .mergemap
+            .mergevec
             .iter()
-            .any(|(a, b)| !(this.hashmap.contains_key(a) && this.hashmap.contains_key(b)))
+            .all(|(a, b)| this.hashmap.contains_key(a) && this.hashmap.contains_key(b))
         {
-            println!("{} merge map generated is not consistent.", this.data.name);
-            println!("Current merge map: {:#?}", this.mergemap);
             println!(
-                "Current hashmap keys: {:#?}",
+                "{} merge vec generated is not consistent. merge vec: {:?}, Keys: {:?}",
+                this.data.name,
+                this.mergevec,
                 this.hashmap.keys().collect::<Vec<_>>()
             );
-            return Err("Found inconsistent merge map".into());
+            return Err("Found inconsistent merge vec".into());
         }
 
         Ok(this.finish())
     }));
 
-    TokenStream::from(quote! {
-        #func
-    })
+    TokenStream::from(quote!(#func))
 }
 
 /// ## Provides useful macros to extract data from CDN API

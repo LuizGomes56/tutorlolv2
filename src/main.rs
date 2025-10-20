@@ -237,6 +237,9 @@ async fn main() {
             ord_folder::<CdnChampion>(CdnEndpoint::Champions).await;
             ord_folder::<CdnItem>(CdnEndpoint::Items).await;
         }
+        Some("check-gen") => {
+            GeneratorFactory::check_all_offsets();
+        }
         Some("run-gen") => {
             let runner = GeneratorFactory::new();
             runner.run_all().await;
