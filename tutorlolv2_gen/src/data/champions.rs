@@ -1,5 +1,6 @@
 use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode)]
         #[repr(u8)]pub enum ChampionId {Aatrox,Ahri,Akali,Akshan,Alistar,Ambessa,Amumu,Anivia,Annie,Aphelios,Ashe,AurelionSol,Aurora,Azir,Bard,Belveth,Blitzcrank,Brand,Braum,Briar,Caitlyn,Camille,Cassiopeia,Chogath,Corki,Darius,Diana,DrMundo,Draven,Ekko,Elise,Evelynn,Ezreal,Fiddlesticks,Fiora,Fizz,Galio,Gangplank,Garen,Gnar,Gragas,Graves,Gwen,Hecarim,Heimerdinger,Hwei,Illaoi,Irelia,Ivern,Janna,JarvanIV,Jax,Jayce,Jhin,Jinx,KSante,Kaisa,Kalista,Karma,Karthus,Kassadin,Katarina,Kayle,Kayn,Kennen,Khazix,Kindred,Kled,KogMaw,Leblanc,LeeSin,Leona,Lillia,Lissandra,Lucian,Lulu,Lux,Malphite,Malzahar,Maokai,MasterYi,Mel,Milio,MissFortune,MonkeyKing,Mordekaiser,Morgana,Naafiri,Nami,Nasus,Nautilus,Neeko,Nidalee,Nilah,Nocturne,Nunu,Olaf,Orianna,Ornn,Pantheon,Poppy,Pyke,Qiyana,Quinn,Rakan,Rammus,RekSai,Rell,Renata,Renekton,Rengar,Riven,Rumble,Ryze,Samira,Sejuani,Senna,Seraphine,Sett,Shaco,Shen,Shyvana,Singed,Sion,Sivir,Skarner,Smolder,Sona,Soraka,Swain,Sylas,Syndra,TahmKench,Taliyah,Talon,Taric,Teemo,Thresh,Tristana,Trundle,Tryndamere,TwistedFate,Twitch,Udyr,Urgot,Varus,Vayne,Veigar,Velkoz,Vex,Vi,Viego,Viktor,Vladimir,Volibear,Warwick,Xayah,Xerath,XinZhao,Yasuo,Yone,Yorick,Yunara,Yuumi,Zac,Zed,Zeri,Ziggs,Zilean,Zoe,Zyra}pub static AATROX: CachedChampion = CachedChampion {
+                    name: "Aatrox",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Top],
@@ -52,6 +53,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:650f32,per_level:114f32},mana:CachedChampionStatsMap{flat:0f32,per_level:0f32},armor:CachedChampionStatsMap{flat:38f32,per_level:4.8f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:60f32,per_level:5f32},attack_speed:CachedChampionStatsMap{flat:0.651f32,per_level:2.5f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.651000022888183f32,attack_range:175f32,aram_damage_taken:1f32,aram_damage_dealt:1.05f32,urf_damage_taken:0.7f32,urf_damage_dealt:1.15f32,},
                     merge_data: &[(1, 5),(2, 6),(3, 7),(9, 8)],
                 };pub static AHRI: CachedChampion = CachedChampion {
+                    name: "Ahri",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle],
@@ -100,6 +102,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:590f32,per_level:104f32},mana:CachedChampionStatsMap{flat:418f32,per_level:25f32},armor:CachedChampionStatsMap{flat:21f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:53f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.668f32,per_level:2.2f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:550f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1.05f32,urf_damage_dealt:0.9f32,},
                     merge_data: &[(1, 0),(4, 3),(5, 6),(9, 8)],
                 };pub static AKALI: CachedChampion = CachedChampion {
+                    name: "Akali",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Middle,Position::Top],
@@ -136,6 +139,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:600f32,per_level:119f32},mana:CachedChampionStatsMap{flat:200f32,per_level:0f32},armor:CachedChampionStatsMap{flat:23f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:37f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:62f32,per_level:3.3f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:3.2f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:125f32,aram_damage_taken:0.95f32,aram_damage_dealt:1f32,urf_damage_taken:0.9f32,urf_damage_dealt:1f32,},
                     merge_data: &[(6, 5)],
                 };pub static AKSHAN: CachedChampion = CachedChampion {
+                    name: "Akshan",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle],
@@ -152,6 +156,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:630f32,per_level:107f32},mana:CachedChampionStatsMap{flat:350f32,per_level:40f32},armor:CachedChampionStatsMap{flat:26f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:52f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.638f32,per_level:4f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.4f32,attack_range:500f32,aram_damage_taken:0.95f32,aram_damage_dealt:1.05f32,urf_damage_taken:1f32,urf_damage_dealt:1.05f32,},
                     merge_data: &[],
                 };pub static ALISTAR: CachedChampion = CachedChampion {
+                    name: "Alistar",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Support],
@@ -180,6 +185,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:685f32,per_level:120f32},mana:CachedChampionStatsMap{flat:350f32,per_level:40f32},armor:CachedChampionStatsMap{flat:40f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:62f32,per_level:3.75f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2.125f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:125f32,aram_damage_taken:1.05f32,aram_damage_dealt:0.95f32,urf_damage_taken:0.95f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static AMBESSA: CachedChampion = CachedChampion {
+                    name: "Ambessa",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Top],
@@ -216,6 +222,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:630f32,per_level:110f32},mana:CachedChampionStatsMap{flat:200f32,per_level:0f32},armor:CachedChampionStatsMap{flat:35f32,per_level:4.9f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:63f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2.5f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:125f32,aram_damage_taken:1.05f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static AMUMU: CachedChampion = CachedChampion {
+                    name: "Amumu",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle,Position::Support],
@@ -244,6 +251,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:685f32,per_level:94f32},mana:CachedChampionStatsMap{flat:285f32,per_level:40f32},armor:CachedChampionStatsMap{flat:33f32,per_level:4f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:57f32,per_level:3.8f32},attack_speed:CachedChampionStatsMap{flat:0.736f32,per_level:2.18f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.638000011444091f32,attack_range:125f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:0.9f32,urf_damage_dealt:1.1f32,},
                     merge_data: &[],
                 };pub static ANIVIA: CachedChampion = CachedChampion {
+                    name: "Anivia",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle],
@@ -268,6 +276,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:550f32,per_level:92f32},mana:CachedChampionStatsMap{flat:495f32,per_level:45f32},armor:CachedChampionStatsMap{flat:21f32,per_level:4.5f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:51f32,per_level:3.2f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:1.68f32},movespeed:325f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:600f32,aram_damage_taken:1f32,aram_damage_dealt:1.05f32,urf_damage_taken:0.92f32,urf_damage_dealt:1.15f32,},
                     merge_data: &[],
                 };pub static ANNIE: CachedChampion = CachedChampion {
+                    name: "Annie",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle],
@@ -292,6 +301,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:560f32,per_level:96f32},mana:CachedChampionStatsMap{flat:418f32,per_level:25f32},armor:CachedChampionStatsMap{flat:23f32,per_level:4f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:50f32,per_level:2.65f32},attack_speed:CachedChampionStatsMap{flat:0.61f32,per_level:1.36f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:625f32,aram_damage_taken:1.05f32,aram_damage_dealt:0.95f32,urf_damage_taken:1.1f32,urf_damage_dealt:0.9f32,},
                     merge_data: &[],
                 };pub static APHELIOS: CachedChampion = CachedChampion {
+                    name: "Aphelios",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom],
@@ -300,6 +310,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:600f32,per_level:102f32},mana:CachedChampionStatsMap{flat:348f32,per_level:42f32},armor:CachedChampionStatsMap{flat:26f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:55f32,per_level:2.3f32},attack_speed:CachedChampionStatsMap{flat:0.665f32,per_level:2.1f32},movespeed:325f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.658f32,attack_range:550f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1.05f32,},
                     merge_data: &[],
                 };pub static ASHE: CachedChampion = CachedChampion {
+                    name: "Ashe",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom,Position::Support],
@@ -316,6 +327,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:610f32,per_level:101f32},mana:CachedChampionStatsMap{flat:280f32,per_level:35f32},armor:CachedChampionStatsMap{flat:26f32,per_level:4.6f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:59f32,per_level:3.45f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:3.33f32},movespeed:325f32,critical_strike_damage:100f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.657999992370605f32,attack_range:600f32,aram_damage_taken:1f32,aram_damage_dealt:1.05f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static AURELIONSOL: CachedChampion = CachedChampion {
+                    name: "Aurelion Sol",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle],
@@ -352,6 +364,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:600f32,per_level:90f32},mana:CachedChampionStatsMap{flat:530f32,per_level:40f32},armor:CachedChampionStatsMap{flat:22f32,per_level:4f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:58f32,per_level:3.2f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:1.5f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:550f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:0.9f32,urf_damage_dealt:1.1f32,},
                     merge_data: &[],
                 };pub static AURORA: CachedChampion = CachedChampion {
+                    name: "Aurora",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle,Position::Top],
@@ -372,6 +385,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:607f32,per_level:110f32},mana:CachedChampionStatsMap{flat:475f32,per_level:30f32},armor:CachedChampionStatsMap{flat:23f32,per_level:4.5f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:53f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.668f32,per_level:2f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.668f32,attack_range:550f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static AZIR: CachedChampion = CachedChampion {
+                    name: "Azir",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle],
@@ -384,6 +398,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:575f32,per_level:119f32},mana:CachedChampionStatsMap{flat:320f32,per_level:40f32},armor:CachedChampionStatsMap{flat:25f32,per_level:5f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:56f32,per_level:3.5f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:5f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.694f32,attack_range:525f32,aram_damage_taken:0.95f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static BARD: CachedChampion = CachedChampion {
+                    name: "Bard",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Support],
@@ -396,6 +411,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:630f32,per_level:103f32},mana:CachedChampionStatsMap{flat:350f32,per_level:50f32},armor:CachedChampionStatsMap{flat:34f32,per_level:5f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:52f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:2f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.658f32,attack_range:500f32,aram_damage_taken:0.85f32,aram_damage_dealt:1.15f32,urf_damage_taken:0.85f32,urf_damage_dealt:1.15f32,},
                     merge_data: &[],
                 };pub static BELVETH: CachedChampion = CachedChampion {
+                    name: "Bel'Veth",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle],
@@ -420,6 +436,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:610f32,per_level:99f32},mana:CachedChampionStatsMap{flat:0f32,per_level:0f32},armor:CachedChampionStatsMap{flat:32f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:60f32,per_level:1.5f32},attack_speed:CachedChampionStatsMap{flat:0.85f32,per_level:0f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.85f32,attack_range:150f32,aram_damage_taken:0.95f32,aram_damage_dealt:1.05f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static BLITZCRANK: CachedChampion = CachedChampion {
+                    name: "Blitzcrank",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Support],
@@ -444,6 +461,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:600f32,per_level:109f32},mana:CachedChampionStatsMap{flat:267f32,per_level:40f32},armor:CachedChampionStatsMap{flat:37f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:62f32,per_level:3.5f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:1.13f32},movespeed:325f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:125f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static BRAND: CachedChampion = CachedChampion {
+                    name: "Brand",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Jungle,Position::Middle,Position::Support],
@@ -460,6 +478,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:570f32,per_level:105f32},mana:CachedChampionStatsMap{flat:469f32,per_level:21f32},armor:CachedChampionStatsMap{flat:27f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:57f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.681f32,per_level:2f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:550f32,aram_damage_taken:1.1f32,aram_damage_dealt:0.95f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static BRAUM: CachedChampion = CachedChampion {
+                    name: "Braum",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Support],
@@ -476,6 +495,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:610f32,per_level:112f32},mana:CachedChampionStatsMap{flat:311f32,per_level:45f32},armor:CachedChampionStatsMap{flat:35f32,per_level:5f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:55f32,per_level:3.2f32},attack_speed:CachedChampionStatsMap{flat:0.644f32,per_level:3.5f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.643999993801116f32,attack_range:125f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:0.82f32,urf_damage_dealt:1.05f32,},
                     merge_data: &[],
                 };pub static BRIAR: CachedChampion = CachedChampion {
+                    name: "Briar",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle],
@@ -508,6 +528,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:625f32,per_level:95f32},mana:CachedChampionStatsMap{flat:0f32,per_level:0f32},armor:CachedChampionStatsMap{flat:30f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:60f32,per_level:2.5f32},attack_speed:CachedChampionStatsMap{flat:0.644f32,per_level:2f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.669f32,attack_range:125f32,aram_damage_taken:1f32,aram_damage_dealt:1.05f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static CAITLYN: CachedChampion = CachedChampion {
+                    name: "Caitlyn",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom],
@@ -536,6 +557,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:580f32,per_level:107f32},mana:CachedChampionStatsMap{flat:315f32,per_level:40f32},armor:CachedChampionStatsMap{flat:27f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:62f32,per_level:3.8f32},attack_speed:CachedChampionStatsMap{flat:0.681f32,per_level:4f32},movespeed:325f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:650f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static CAMILLE: CachedChampion = CachedChampion {
+                    name: "Camille",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Support,Position::Top],
@@ -568,6 +590,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:650f32,per_level:99f32},mana:CachedChampionStatsMap{flat:339f32,per_level:52f32},armor:CachedChampionStatsMap{flat:35f32,per_level:4.5f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:68f32,per_level:3.8f32},attack_speed:CachedChampionStatsMap{flat:0.644f32,per_level:2.5f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.643999993801116f32,attack_range:125f32,aram_damage_taken:0.95f32,aram_damage_dealt:1.05f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static CASSIOPEIA: CachedChampion = CachedChampion {
+                    name: "Cassiopeia",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle],
@@ -604,6 +627,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:630f32,per_level:104f32},mana:CachedChampionStatsMap{flat:450f32,per_level:40f32},armor:CachedChampionStatsMap{flat:18f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:53f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.647f32,per_level:1.5f32},movespeed:328f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.647000014781951f32,attack_range:550f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1.05f32,urf_damage_dealt:0.95f32,},
                     merge_data: &[],
                 };pub static CHOGATH: CachedChampion = CachedChampion {
+                    name: "Cho'Gath",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Top],
@@ -636,6 +660,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:644f32,per_level:94f32},mana:CachedChampionStatsMap{flat:270f32,per_level:60f32},armor:CachedChampionStatsMap{flat:38f32,per_level:4.5f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:69f32,per_level:4.2f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:1.44f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:125f32,aram_damage_taken:1.1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static CORKI: CachedChampion = CachedChampion {
+                    name: "Corki",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle],
@@ -664,6 +689,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:610f32,per_level:100f32},mana:CachedChampionStatsMap{flat:350f32,per_level:40f32},armor:CachedChampionStatsMap{flat:27f32,per_level:4.5f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:52f32,per_level:2f32},attack_speed:CachedChampionStatsMap{flat:0.644f32,per_level:2.8f32},movespeed:325f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.644f32,attack_range:550f32,aram_damage_taken:0.9f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static DARIUS: CachedChampion = CachedChampion {
+                    name: "Darius",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Top],
@@ -696,6 +722,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:652f32,per_level:114f32},mana:CachedChampionStatsMap{flat:263f32,per_level:58f32},armor:CachedChampionStatsMap{flat:37f32,per_level:5.2f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:64f32,per_level:5f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:1f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:175f32,aram_damage_taken:1f32,aram_damage_dealt:1.05f32,urf_damage_taken:0.85f32,urf_damage_dealt:1.05f32,},
                     merge_data: &[],
                 };pub static DIANA: CachedChampion = CachedChampion {
+                    name: "Diana",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle,Position::Middle],
@@ -732,6 +759,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:640f32,per_level:109f32},mana:CachedChampionStatsMap{flat:375f32,per_level:25f32},armor:CachedChampionStatsMap{flat:31f32,per_level:4.3f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:57f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.694f32,attack_range:150f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static DRMUNDO: CachedChampion = CachedChampion {
+                    name: "Dr. Mundo",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Top],
@@ -760,6 +788,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:640f32,per_level:103f32},mana:CachedChampionStatsMap{flat:0f32,per_level:0f32},armor:CachedChampionStatsMap{flat:32f32,per_level:3.7f32},magic_resist:CachedChampionStatsMap{flat:29f32,per_level:2.3f32},attack_damage:CachedChampionStatsMap{flat:61f32,per_level:2.5f32},attack_speed:CachedChampionStatsMap{flat:0.67f32,per_level:3.3f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:125f32,aram_damage_taken:1.05f32,aram_damage_dealt:0.9f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static DRAVEN: CachedChampion = CachedChampion {
+                    name: "Draven",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom],
@@ -784,6 +813,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:675f32,per_level:104f32},mana:CachedChampionStatsMap{flat:361f32,per_level:39f32},armor:CachedChampionStatsMap{flat:29f32,per_level:4.5f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:62f32,per_level:3.6f32},attack_speed:CachedChampionStatsMap{flat:0.679f32,per_level:2.7f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.67900002002716f32,attack_range:550f32,aram_damage_taken:0.95f32,aram_damage_dealt:1.05f32,urf_damage_taken:1.05f32,urf_damage_dealt:0.95f32,},
                     merge_data: &[],
                 };pub static EKKO: CachedChampion = CachedChampion {
+                    name: "Ekko",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle,Position::Middle],
@@ -804,6 +834,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:655f32,per_level:99f32},mana:CachedChampionStatsMap{flat:280f32,per_level:70f32},armor:CachedChampionStatsMap{flat:32f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:58f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.688f32,per_level:3.3f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:125f32,aram_damage_taken:1f32,aram_damage_dealt:1.1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static ELISE: CachedChampion = CachedChampion {
+                    name: "Elise",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Jungle],
@@ -824,6 +855,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:620f32,per_level:109f32},mana:CachedChampionStatsMap{flat:324f32,per_level:50f32},armor:CachedChampionStatsMap{flat:30f32,per_level:4.5f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:55f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:1.75f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:550f32,aram_damage_taken:0.9f32,aram_damage_dealt:1.05f32,urf_damage_taken:0.95f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static EVELYNN: CachedChampion = CachedChampion {
+                    name: "Evelynn",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle],
@@ -852,6 +884,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:642f32,per_level:98f32},mana:CachedChampionStatsMap{flat:315f32,per_level:42f32},armor:CachedChampionStatsMap{flat:37f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:61f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.667f32,per_level:2.1f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.666999995708465f32,attack_range:125f32,aram_damage_taken:0.9f32,aram_damage_dealt:1.1f32,urf_damage_taken:0.95f32,urf_damage_dealt:1.05f32,},
                     merge_data: &[],
                 };pub static EZREAL: CachedChampion = CachedChampion {
+                    name: "Ezreal",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom],
@@ -880,6 +913,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:600f32,per_level:102f32},mana:CachedChampionStatsMap{flat:375f32,per_level:70f32},armor:CachedChampionStatsMap{flat:24f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:60f32,per_level:2.75f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2.5f32},movespeed:325f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:550f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:0.95f32,},
                     merge_data: &[],
                 };pub static FIDDLESTICKS: CachedChampion = CachedChampion {
+                    name: "Fiddlesticks",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Jungle],
@@ -908,6 +942,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:650f32,per_level:106f32},mana:CachedChampionStatsMap{flat:500f32,per_level:28f32},armor:CachedChampionStatsMap{flat:34f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:55f32,per_level:2.65f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2.11f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:480f32,aram_damage_taken:1.05f32,aram_damage_dealt:0.95f32,urf_damage_taken:0.85f32,urf_damage_dealt:1.1f32,},
                     merge_data: &[],
                 };pub static FIORA: CachedChampion = CachedChampion {
+                    name: "Fiora",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Top],
@@ -920,6 +955,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:620f32,per_level:99f32},mana:CachedChampionStatsMap{flat:300f32,per_level:60f32},armor:CachedChampionStatsMap{flat:33f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:66f32,per_level:3.3f32},attack_speed:CachedChampionStatsMap{flat:0.69f32,per_level:3.2f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.689999997615814f32,attack_range:150f32,aram_damage_taken:0.95f32,aram_damage_dealt:1f32,urf_damage_taken:1.1f32,urf_damage_dealt:0.9f32,},
                     merge_data: &[],
                 };pub static FIZZ: CachedChampion = CachedChampion {
+                    name: "Fizz",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Middle],
@@ -960,6 +996,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:640f32,per_level:106f32},mana:CachedChampionStatsMap{flat:317f32,per_level:52f32},armor:CachedChampionStatsMap{flat:22f32,per_level:4.6f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:58f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:3.1f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.657999992370605f32,attack_range:175f32,aram_damage_taken:0.95f32,aram_damage_dealt:1.05f32,urf_damage_taken:1.1f32,urf_damage_dealt:0.9f32,},
                     merge_data: &[],
                 };pub static GALIO: CachedChampion = CachedChampion {
+                    name: "Galio",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Middle,Position::Support],
@@ -988,6 +1025,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:600f32,per_level:126f32},mana:CachedChampionStatsMap{flat:410f32,per_level:40f32},armor:CachedChampionStatsMap{flat:24f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:59f32,per_level:3.5f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:1.5f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:150f32,aram_damage_taken:1.05f32,aram_damage_dealt:0.9f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static GANGPLANK: CachedChampion = CachedChampion {
+                    name: "Gangplank",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Top],
@@ -1024,6 +1062,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:630f32,per_level:114f32},mana:CachedChampionStatsMap{flat:280f32,per_level:60f32},armor:CachedChampionStatsMap{flat:31f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:64f32,per_level:4.2f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:3.2f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.69f32,attack_range:125f32,aram_damage_taken:1f32,aram_damage_dealt:1.05f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static GAREN: CachedChampion = CachedChampion {
+                    name: "Garen",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Top],
@@ -1044,6 +1083,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:690f32,per_level:98f32},mana:CachedChampionStatsMap{flat:0f32,per_level:0f32},armor:CachedChampionStatsMap{flat:38f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:1.55f32},attack_damage:CachedChampionStatsMap{flat:69f32,per_level:4.5f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:3.65f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:175f32,aram_damage_taken:0.95f32,aram_damage_dealt:1f32,urf_damage_taken:0.95f32,urf_damage_dealt:1.1f32,},
                     merge_data: &[],
                 };pub static GNAR: CachedChampion = CachedChampion {
+                    name: "Gnar",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Top],
@@ -1072,6 +1112,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:540f32,per_level:79f32},mana:CachedChampionStatsMap{flat:100f32,per_level:0f32},armor:CachedChampionStatsMap{flat:32f32,per_level:3.7f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:60f32,per_level:3.2f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:6f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:175f32,aram_damage_taken:0.95f32,aram_damage_dealt:1.05f32,urf_damage_taken:0.9f32,urf_damage_dealt:1.1f32,},
                     merge_data: &[],
                 };pub static GRAGAS: CachedChampion = CachedChampion {
+                    name: "Gragas",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle,Position::Middle,Position::Top],
@@ -1116,6 +1157,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:640f32,per_level:115f32},mana:CachedChampionStatsMap{flat:400f32,per_level:47f32},armor:CachedChampionStatsMap{flat:38f32,per_level:5f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:64f32,per_level:3.5f32},attack_speed:CachedChampionStatsMap{flat:0.675f32,per_level:2.05f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:125f32,aram_damage_taken:0.95f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static GRAVES: CachedChampion = CachedChampion {
+                    name: "Graves",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Jungle],
@@ -1148,6 +1190,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:625f32,per_level:106f32},mana:CachedChampionStatsMap{flat:325f32,per_level:40f32},armor:CachedChampionStatsMap{flat:33f32,per_level:4.6f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:68f32,per_level:4f32},attack_speed:CachedChampionStatsMap{flat:0.475f32,per_level:3f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.490000009536743f32,attack_range:425f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static GWEN: CachedChampion = CachedChampion {
+                    name: "Gwen",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle,Position::Top],
@@ -1184,6 +1227,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:600f32,per_level:110f32},mana:CachedChampionStatsMap{flat:330f32,per_level:40f32},armor:CachedChampionStatsMap{flat:33f32,per_level:4.9f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:63f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.69f32,per_level:2.5f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.69f32,attack_range:150f32,aram_damage_taken:1f32,aram_damage_dealt:1.02f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static HECARIM: CachedChampion = CachedChampion {
+                    name: "Hecarim",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle],
@@ -1212,6 +1256,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:625f32,per_level:106f32},mana:CachedChampionStatsMap{flat:280f32,per_level:40f32},armor:CachedChampionStatsMap{flat:32f32,per_level:5.45f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:66f32,per_level:3.7f32},attack_speed:CachedChampionStatsMap{flat:0.67f32,per_level:2.5f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.6700000166893f32,attack_range:175f32,aram_damage_taken:0.9f32,aram_damage_dealt:1.05f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static HEIMERDINGER: CachedChampion = CachedChampion {
+                    name: "Heimerdinger",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle,Position::Support,Position::Top],
@@ -1252,6 +1297,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:558f32,per_level:101f32},mana:CachedChampionStatsMap{flat:385f32,per_level:20f32},armor:CachedChampionStatsMap{flat:19f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:56f32,per_level:2.7f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:1.36f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:550f32,aram_damage_taken:1.1f32,aram_damage_dealt:0.9f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static HWEI: CachedChampion = CachedChampion {
+                    name: "Hwei",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle,Position::Support],
@@ -1268,6 +1314,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:580f32,per_level:109f32},mana:CachedChampionStatsMap{flat:480f32,per_level:30f32},armor:CachedChampionStatsMap{flat:21f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:54f32,per_level:3.3f32},attack_speed:CachedChampionStatsMap{flat:0.69f32,per_level:2.5f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.658f32,attack_range:550f32,aram_damage_taken:1f32,aram_damage_dealt:0.95f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static ILLAOI: CachedChampion = CachedChampion {
+                    name: "Illaoi",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Top],
@@ -1280,6 +1327,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:656f32,per_level:115f32},mana:CachedChampionStatsMap{flat:350f32,per_level:50f32},armor:CachedChampionStatsMap{flat:35f32,per_level:5f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:65f32,per_level:5f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2.5f32},movespeed:350f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:125f32,aram_damage_taken:1.05f32,aram_damage_dealt:0.95f32,urf_damage_taken:0.9f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static IRELIA: CachedChampion = CachedChampion {
+                    name: "Irelia",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Middle,Position::Top],
@@ -1300,6 +1348,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:630f32,per_level:115f32},mana:CachedChampionStatsMap{flat:350f32,per_level:50f32},armor:CachedChampionStatsMap{flat:36f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:65f32,per_level:3.5f32},attack_speed:CachedChampionStatsMap{flat:0.656f32,per_level:2.5f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.656000018119812f32,attack_range:200f32,aram_damage_taken:1f32,aram_damage_dealt:1.05f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static IVERN: CachedChampion = CachedChampion {
+                    name: "Ivern",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Jungle],
@@ -1320,6 +1369,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:630f32,per_level:99f32},mana:CachedChampionStatsMap{flat:450f32,per_level:60f32},armor:CachedChampionStatsMap{flat:27f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:50f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.644f32,per_level:3.4f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.643999993801116f32,attack_range:475f32,aram_damage_taken:1f32,aram_damage_dealt:0.95f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static JANNA: CachedChampion = CachedChampion {
+                    name: "Janna",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Support],
@@ -1344,6 +1394,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:570f32,per_level:90f32},mana:CachedChampionStatsMap{flat:360f32,per_level:50f32},armor:CachedChampionStatsMap{flat:28f32,per_level:4.5f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:47f32,per_level:2.5f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:3f32},movespeed:325f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:550f32,aram_damage_taken:1.05f32,aram_damage_dealt:0.95f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static JARVANIV: CachedChampion = CachedChampion {
+                    name: "Jarvan IV",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle],
@@ -1364,6 +1415,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:640f32,per_level:104f32},mana:CachedChampionStatsMap{flat:300f32,per_level:55f32},armor:CachedChampionStatsMap{flat:36f32,per_level:4.6f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:64f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:2.5f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.657999992370605f32,attack_range:175f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static JAX: CachedChampion = CachedChampion {
+                    name: "Jax",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle,Position::Top],
@@ -1388,6 +1440,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:650f32,per_level:103f32},mana:CachedChampionStatsMap{flat:339f32,per_level:52f32},armor:CachedChampionStatsMap{flat:36f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:68f32,per_level:4.25f32},attack_speed:CachedChampionStatsMap{flat:0.638f32,per_level:3.4f32},movespeed:350f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.638000011444091f32,attack_range:125f32,aram_damage_taken:0.97f32,aram_damage_dealt:1.05f32,urf_damage_taken:1.15f32,urf_damage_dealt:0.9f32,},
                     merge_data: &[],
                 };pub static JAYCE: CachedChampion = CachedChampion {
+                    name: "Jayce",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle,Position::Top],
@@ -1412,6 +1465,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:590f32,per_level:109f32},mana:CachedChampionStatsMap{flat:375f32,per_level:45f32},armor:CachedChampionStatsMap{flat:22f32,per_level:5f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:59f32,per_level:4.25f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:3f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.657999992370605f32,attack_range:125f32,aram_damage_taken:1f32,aram_damage_dealt:1.05f32,urf_damage_taken:1.05f32,urf_damage_dealt:0.92f32,},
                     merge_data: &[],
                 };pub static JHIN: CachedChampion = CachedChampion {
+                    name: "Jhin",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom],
@@ -1448,6 +1502,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:655f32,per_level:107f32},mana:CachedChampionStatsMap{flat:300f32,per_level:50f32},armor:CachedChampionStatsMap{flat:24f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:59f32,per_level:4.4f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:3f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:0.86f32,attack_speed_ratio:0f32,attack_range:550f32,aram_damage_taken:1.05f32,aram_damage_dealt:0.95f32,urf_damage_taken:1f32,urf_damage_dealt:1.01f32,},
                     merge_data: &[],
                 };pub static JINX: CachedChampion = CachedChampion {
+                    name: "Jinx",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom],
@@ -1480,6 +1535,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:630f32,per_level:105f32},mana:CachedChampionStatsMap{flat:260f32,per_level:50f32},armor:CachedChampionStatsMap{flat:26f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:59f32,per_level:3.25f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:1.4f32},movespeed:325f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:525f32,aram_damage_taken:1.05f32,aram_damage_dealt:0.9f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static KSANTE: CachedChampion = CachedChampion {
+                    name: "K'Sante",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Top],
@@ -1500,6 +1556,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:625f32,per_level:120f32},mana:CachedChampionStatsMap{flat:320f32,per_level:60f32},armor:CachedChampionStatsMap{flat:36f32,per_level:5.2f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:2.1f32},attack_damage:CachedChampionStatsMap{flat:64f32,per_level:3.5f32},attack_speed:CachedChampionStatsMap{flat:0.688f32,per_level:2.5f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:150f32,aram_damage_taken:1f32,aram_damage_dealt:1.05f32,urf_damage_taken:1f32,urf_damage_dealt:1.05f32,},
                     merge_data: &[],
                 };pub static KAISA: CachedChampion = CachedChampion {
+                    name: "Kai'Sa",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom],
@@ -1520,6 +1577,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:640f32,per_level:102f32},mana:CachedChampionStatsMap{flat:345f32,per_level:40f32},armor:CachedChampionStatsMap{flat:27f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:59f32,per_level:2.6f32},attack_speed:CachedChampionStatsMap{flat:0.644f32,per_level:1.8f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.643999993801116f32,attack_range:525f32,aram_damage_taken:0.9f32,aram_damage_dealt:1f32,urf_damage_taken:1.1f32,urf_damage_dealt:0.9f32,},
                     merge_data: &[],
                 };pub static KALISTA: CachedChampion = CachedChampion {
+                    name: "Kalista",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom],
@@ -1548,6 +1606,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:560f32,per_level:114f32},mana:CachedChampionStatsMap{flat:300f32,per_level:45f32},armor:CachedChampionStatsMap{flat:24f32,per_level:5.2f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:57f32,per_level:4.25f32},attack_speed:CachedChampionStatsMap{flat:0.694f32,per_level:4.5f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.694000005722045f32,attack_range:525f32,aram_damage_taken:0.9f32,aram_damage_dealt:1.1f32,urf_damage_taken:0.9f32,urf_damage_dealt:1.1f32,},
                     merge_data: &[],
                 };pub static KARMA: CachedChampion = CachedChampion {
+                    name: "Karma",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle,Position::Support,Position::Top],
@@ -1568,6 +1627,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:630f32,per_level:109f32},mana:CachedChampionStatsMap{flat:374f32,per_level:40f32},armor:CachedChampionStatsMap{flat:28f32,per_level:5f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:51f32,per_level:3.3f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2.3f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:525f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static KARTHUS: CachedChampion = CachedChampion {
+                    name: "Karthus",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Jungle],
@@ -1588,6 +1648,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:620f32,per_level:110f32},mana:CachedChampionStatsMap{flat:467f32,per_level:31f32},armor:CachedChampionStatsMap{flat:21f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:46f32,per_level:3.25f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2.11f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:450f32,aram_damage_taken:1.05f32,aram_damage_dealt:0.93f32,urf_damage_taken:1f32,urf_damage_dealt:0.9f32,},
                     merge_data: &[],
                 };pub static KASSADIN: CachedChampion = CachedChampion {
+                    name: "Kassadin",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Middle],
@@ -1616,6 +1677,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:646f32,per_level:119f32},mana:CachedChampionStatsMap{flat:400f32,per_level:87f32},armor:CachedChampionStatsMap{flat:21f32,per_level:4f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:59f32,per_level:3.9f32},attack_speed:CachedChampionStatsMap{flat:0.64f32,per_level:3.7f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.639999985694885f32,attack_range:150f32,aram_damage_taken:0.95f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static KATARINA: CachedChampion = CachedChampion {
+                    name: "Katarina",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Middle],
@@ -1632,6 +1694,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:672f32,per_level:108f32},mana:CachedChampionStatsMap{flat:0f32,per_level:0f32},armor:CachedChampionStatsMap{flat:32f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:58f32,per_level:3.2f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:2.74f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.657999992370605f32,attack_range:125f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:0.95f32,urf_damage_dealt:1.1f32,},
                     merge_data: &[],
                 };pub static KAYLE: CachedChampion = CachedChampion {
+                    name: "Kayle",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Top],
@@ -1652,6 +1715,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:670f32,per_level:92f32},mana:CachedChampionStatsMap{flat:330f32,per_level:50f32},armor:CachedChampionStatsMap{flat:26f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:22f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:50f32,per_level:2.5f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:1.5f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.666999995708465f32,attack_range:175f32,aram_damage_taken:1.1f32,aram_damage_dealt:0.95f32,urf_damage_taken:1.1f32,urf_damage_dealt:0.85f32,},
                     merge_data: &[],
                 };pub static KAYN: CachedChampion = CachedChampion {
+                    name: "Kayn",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle],
@@ -1688,6 +1752,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:655f32,per_level:103f32},mana:CachedChampionStatsMap{flat:410f32,per_level:50f32},armor:CachedChampionStatsMap{flat:38f32,per_level:4.5f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:68f32,per_level:3.3f32},attack_speed:CachedChampionStatsMap{flat:0.669f32,per_level:2.7f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.669000029563903f32,attack_range:175f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static KENNEN: CachedChampion = CachedChampion {
+                    name: "Kennen",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Top],
@@ -1716,6 +1781,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:580f32,per_level:98f32},mana:CachedChampionStatsMap{flat:200f32,per_level:0f32},armor:CachedChampionStatsMap{flat:29f32,per_level:4.95f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:48f32,per_level:3.75f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:3.4f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.689999997615814f32,attack_range:550f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:0.95f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static KHAZIX: CachedChampion = CachedChampion {
+                    name: "Kha'Zix",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle],
@@ -1732,6 +1798,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:643f32,per_level:99f32},mana:CachedChampionStatsMap{flat:327f32,per_level:40f32},armor:CachedChampionStatsMap{flat:32f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:60f32,per_level:3.1f32},attack_speed:CachedChampionStatsMap{flat:0.668f32,per_level:2.7f32},movespeed:350f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.667999982833862f32,attack_range:125f32,aram_damage_taken:0.9f32,aram_damage_dealt:1.1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static KINDRED: CachedChampion = CachedChampion {
+                    name: "Kindred",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Jungle],
@@ -1744,6 +1811,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:595f32,per_level:104f32},mana:CachedChampionStatsMap{flat:300f32,per_level:35f32},armor:CachedChampionStatsMap{flat:29f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:65f32,per_level:3.25f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:3.5f32},movespeed:325f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:500f32,aram_damage_taken:0.9f32,aram_damage_dealt:1.1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static KLED: CachedChampion = CachedChampion {
+                    name: "Kled",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Top],
@@ -1780,6 +1848,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:410f32,per_level:84f32},mana:CachedChampionStatsMap{flat:100f32,per_level:0f32},armor:CachedChampionStatsMap{flat:35f32,per_level:5.2f32},magic_resist:CachedChampionStatsMap{flat:28f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:65f32,per_level:3.5f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:3.5f32},movespeed:305f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:250f32,aram_damage_taken:1f32,aram_damage_dealt:1.05f32,urf_damage_taken:0.9f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static KOGMAW: CachedChampion = CachedChampion {
+                    name: "Kog'Maw",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom],
@@ -1808,6 +1877,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:635f32,per_level:99f32},mana:CachedChampionStatsMap{flat:325f32,per_level:40f32},armor:CachedChampionStatsMap{flat:24f32,per_level:4.45f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:61f32,per_level:3.1f32},attack_speed:CachedChampionStatsMap{flat:0.665f32,per_level:2.65f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.665000021457672f32,attack_range:500f32,aram_damage_taken:1.1f32,aram_damage_dealt:0.92f32,urf_damage_taken:1.05f32,urf_damage_dealt:0.85f32,},
                     merge_data: &[],
                 };pub static LEBLANC: CachedChampion = CachedChampion {
+                    name: "LeBlanc",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle],
@@ -1860,6 +1930,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:598f32,per_level:111f32},mana:CachedChampionStatsMap{flat:400f32,per_level:25f32},armor:CachedChampionStatsMap{flat:22f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:55f32,per_level:2.2f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:2.35f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.4f32,attack_range:525f32,aram_damage_taken:0.9f32,aram_damage_dealt:1.1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static LEESIN: CachedChampion = CachedChampion {
+                    name: "Lee Sin",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle],
@@ -1884,6 +1955,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:645f32,per_level:108f32},mana:CachedChampionStatsMap{flat:200f32,per_level:0f32},armor:CachedChampionStatsMap{flat:36f32,per_level:4.5f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:66f32,per_level:3.7f32},attack_speed:CachedChampionStatsMap{flat:0.651f32,per_level:3f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.651000022888183f32,attack_range:125f32,aram_damage_taken:0.95f32,aram_damage_dealt:1.05f32,urf_damage_taken:1f32,urf_damage_dealt:1.05f32,},
                     merge_data: &[],
                 };pub static LEONA: CachedChampion = CachedChampion {
+                    name: "Leona",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Support],
@@ -1912,6 +1984,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:646f32,per_level:101f32},mana:CachedChampionStatsMap{flat:302f32,per_level:40f32},armor:CachedChampionStatsMap{flat:43f32,per_level:4.8f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:60f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2.9f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:125f32,aram_damage_taken:1.05f32,aram_damage_dealt:0.95f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static LILLIA: CachedChampion = CachedChampion {
+                    name: "Lillia",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle],
@@ -1940,6 +2013,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:605f32,per_level:105f32},mana:CachedChampionStatsMap{flat:410f32,per_level:50f32},armor:CachedChampionStatsMap{flat:22f32,per_level:4.5f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:1.55f32},attack_damage:CachedChampionStatsMap{flat:61f32,per_level:3.1f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2.7f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:325f32,aram_damage_taken:1.05f32,aram_damage_dealt:0.95f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static LISSANDRA: CachedChampion = CachedChampion {
+                    name: "Lissandra",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle],
@@ -1964,6 +2038,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:620f32,per_level:110f32},mana:CachedChampionStatsMap{flat:475f32,per_level:30f32},armor:CachedChampionStatsMap{flat:22f32,per_level:4.9f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:55f32,per_level:2.7f32},attack_speed:CachedChampionStatsMap{flat:0.656f32,per_level:1.5f32},movespeed:325f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:550f32,aram_damage_taken:1.05f32,aram_damage_dealt:0.95f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static LUCIAN: CachedChampion = CachedChampion {
+                    name: "Lucian",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom],
@@ -2004,6 +2079,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:641f32,per_level:100f32},mana:CachedChampionStatsMap{flat:320f32,per_level:43f32},armor:CachedChampionStatsMap{flat:28f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:60f32,per_level:2.9f32},attack_speed:CachedChampionStatsMap{flat:0.638f32,per_level:3.3f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.638000011444091f32,attack_range:500f32,aram_damage_taken:0.95f32,aram_damage_dealt:1.05f32,urf_damage_taken:1.05f32,urf_damage_dealt:0.95f32,},
                     merge_data: &[],
                 };pub static LULU: CachedChampion = CachedChampion {
+                    name: "Lulu",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Support],
@@ -2040,6 +2116,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:565f32,per_level:92f32},mana:CachedChampionStatsMap{flat:350f32,per_level:55f32},armor:CachedChampionStatsMap{flat:26f32,per_level:4.6f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:47f32,per_level:2.6f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2.25f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:550f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static LUX: CachedChampion = CachedChampion {
+                    name: "Lux",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle,Position::Support],
@@ -2060,6 +2137,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:580f32,per_level:99f32},mana:CachedChampionStatsMap{flat:480f32,per_level:23.5f32},armor:CachedChampionStatsMap{flat:21f32,per_level:5.2f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:54f32,per_level:3.3f32},attack_speed:CachedChampionStatsMap{flat:0.669f32,per_level:3f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:550f32,aram_damage_taken:1.1f32,aram_damage_dealt:0.9f32,urf_damage_taken:1f32,urf_damage_dealt:0.95f32,},
                     merge_data: &[],
                 };pub static MALPHITE: CachedChampion = CachedChampion {
+                    name: "Malphite",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Middle,Position::Support,Position::Top],
@@ -2088,6 +2166,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:665f32,per_level:104f32},mana:CachedChampionStatsMap{flat:280f32,per_level:60f32},armor:CachedChampionStatsMap{flat:40f32,per_level:4.95f32},magic_resist:CachedChampionStatsMap{flat:28f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:62f32,per_level:4f32},attack_speed:CachedChampionStatsMap{flat:0.736f32,per_level:3.4f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.638000011444091f32,attack_range:125f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:0.95f32,},
                     merge_data: &[],
                 };pub static MALZAHAR: CachedChampion = CachedChampion {
+                    name: "Malzahar",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle],
@@ -2116,6 +2195,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:580f32,per_level:101f32},mana:CachedChampionStatsMap{flat:375f32,per_level:28f32},armor:CachedChampionStatsMap{flat:18f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:55f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:1.5f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:500f32,aram_damage_taken:1.1f32,aram_damage_dealt:0.9f32,urf_damage_taken:1.08f32,urf_damage_dealt:0.92f32,},
                     merge_data: &[],
                 };pub static MAOKAI: CachedChampion = CachedChampion {
+                    name: "Maokai",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle,Position::Support],
@@ -2148,6 +2228,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:665f32,per_level:109f32},mana:CachedChampionStatsMap{flat:375f32,per_level:43f32},armor:CachedChampionStatsMap{flat:35f32,per_level:5.2f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:64f32,per_level:3.3f32},attack_speed:CachedChampionStatsMap{flat:0.8f32,per_level:2.125f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.694999992847442f32,attack_range:125f32,aram_damage_taken:1.1f32,aram_damage_dealt:0.85f32,urf_damage_taken:1.05f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static MASTERYI: CachedChampion = CachedChampion {
+                    name: "Master Yi",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle],
@@ -2160,6 +2241,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:655f32,per_level:105f32},mana:CachedChampionStatsMap{flat:251f32,per_level:42f32},armor:CachedChampionStatsMap{flat:33f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:65f32,per_level:2.8f32},attack_speed:CachedChampionStatsMap{flat:0.679f32,per_level:2.5f32},movespeed:355f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.67900002002716f32,attack_range:175f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:0.9f32,},
                     merge_data: &[],
                 };pub static MEL: CachedChampion = CachedChampion {
+                    name: "Mel",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle,Position::Support],
@@ -2212,6 +2294,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:630f32,per_level:93f32},mana:CachedChampionStatsMap{flat:480f32,per_level:28f32},armor:CachedChampionStatsMap{flat:21f32,per_level:5.2f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:54f32,per_level:3.3f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2.5f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.4f32,attack_range:550f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:0.9f32,},
                     merge_data: &[],
                 };pub static MILIO: CachedChampion = CachedChampion {
+                    name: "Milio",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Support],
@@ -2220,6 +2303,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:560f32,per_level:88f32},mana:CachedChampionStatsMap{flat:365f32,per_level:43f32},armor:CachedChampionStatsMap{flat:26f32,per_level:4.6f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:48f32,per_level:3.2f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:3f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:525f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static MISSFORTUNE: CachedChampion = CachedChampion {
+                    name: "Miss Fortune",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom],
@@ -2244,6 +2328,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:640f32,per_level:103f32},mana:CachedChampionStatsMap{flat:300f32,per_level:40f32},armor:CachedChampionStatsMap{flat:25f32,per_level:4f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:55f32,per_level:2.4f32},attack_speed:CachedChampionStatsMap{flat:0.656f32,per_level:3f32},movespeed:325f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.656000018119812f32,attack_range:550f32,aram_damage_taken:1.05f32,aram_damage_dealt:0.95f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static MONKEYKING: CachedChampion = CachedChampion {
+                    name: "Wukong",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle,Position::Top],
@@ -2272,6 +2357,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:610f32,per_level:99f32},mana:CachedChampionStatsMap{flat:330f32,per_level:65f32},armor:CachedChampionStatsMap{flat:31f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:28f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:66f32,per_level:3.5f32},attack_speed:CachedChampionStatsMap{flat:0.69f32,per_level:3f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.657999992370605f32,attack_range:175f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1.1f32,urf_damage_dealt:0.9f32,},
                     merge_data: &[],
                 };pub static MORDEKAISER: CachedChampion = CachedChampion {
+                    name: "Mordekaiser",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Top],
@@ -2292,6 +2378,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:645f32,per_level:104f32},mana:CachedChampionStatsMap{flat:0f32,per_level:0f32},armor:CachedChampionStatsMap{flat:37f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:61f32,per_level:4f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:1f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:175f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:0.85f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static MORGANA: CachedChampion = CachedChampion {
+                    name: "Morgana",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle,Position::Support],
@@ -2312,6 +2399,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:630f32,per_level:104f32},mana:CachedChampionStatsMap{flat:340f32,per_level:60f32},armor:CachedChampionStatsMap{flat:25f32,per_level:5f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:56f32,per_level:3.5f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:1.53f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:450f32,aram_damage_taken:1.1f32,aram_damage_dealt:0.95f32,urf_damage_taken:1.05f32,urf_damage_dealt:0.9f32,},
                     merge_data: &[],
                 };pub static NAAFIRI: CachedChampion = CachedChampion {
+                    name: "Naafiri",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Middle],
@@ -2372,6 +2460,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:610f32,per_level:105f32},mana:CachedChampionStatsMap{flat:400f32,per_level:55f32},armor:CachedChampionStatsMap{flat:28f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:55f32,per_level:2f32},attack_speed:CachedChampionStatsMap{flat:0.663f32,per_level:2.1f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:125f32,aram_damage_taken:1f32,aram_damage_dealt:1.1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static NAMI: CachedChampion = CachedChampion {
+                    name: "Nami",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Support],
@@ -2404,6 +2493,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:560f32,per_level:88f32},mana:CachedChampionStatsMap{flat:365f32,per_level:43f32},armor:CachedChampionStatsMap{flat:29f32,per_level:5.2f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:54f32,per_level:3.1f32},attack_speed:CachedChampionStatsMap{flat:0.644f32,per_level:2.61f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.643999993801116f32,attack_range:550f32,aram_damage_taken:1.05f32,aram_damage_dealt:0.95f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static NASUS: CachedChampion = CachedChampion {
+                    name: "Nasus",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Top],
@@ -2436,6 +2526,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:631f32,per_level:104f32},mana:CachedChampionStatsMap{flat:326f32,per_level:62f32},armor:CachedChampionStatsMap{flat:34f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:67f32,per_level:4f32},attack_speed:CachedChampionStatsMap{flat:0.638f32,per_level:3.48f32},movespeed:350f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.638000011444091f32,attack_range:125f32,aram_damage_taken:1.05f32,aram_damage_dealt:0.9f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static NAUTILUS: CachedChampion = CachedChampion {
+                    name: "Nautilus",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Support],
@@ -2476,6 +2567,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:646f32,per_level:100f32},mana:CachedChampionStatsMap{flat:400f32,per_level:47f32},armor:CachedChampionStatsMap{flat:39f32,per_level:4.95f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:61f32,per_level:3.3f32},attack_speed:CachedChampionStatsMap{flat:0.706f32,per_level:1f32},movespeed:325f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.611999988555908f32,attack_range:175f32,aram_damage_taken:1.1f32,aram_damage_dealt:0.95f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static NEEKO: CachedChampion = CachedChampion {
+                    name: "Neeko",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle,Position::Support],
@@ -2508,6 +2600,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:610f32,per_level:104f32},mana:CachedChampionStatsMap{flat:450f32,per_level:30f32},armor:CachedChampionStatsMap{flat:21f32,per_level:5.2f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:48f32,per_level:2.5f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:3.5f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.67f32,attack_range:550f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static NIDALEE: CachedChampion = CachedChampion {
+                    name: "Nidalee",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Jungle],
@@ -2536,6 +2629,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:610f32,per_level:109f32},mana:CachedChampionStatsMap{flat:295f32,per_level:45f32},armor:CachedChampionStatsMap{flat:32f32,per_level:5f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.45f32},attack_damage:CachedChampionStatsMap{flat:58f32,per_level:3.5f32},attack_speed:CachedChampionStatsMap{flat:0.638f32,per_level:3.22f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.638000011444091f32,attack_range:525f32,aram_damage_taken:1f32,aram_damage_dealt:1.1f32,urf_damage_taken:0.95f32,urf_damage_dealt:1.1f32,},
                     merge_data: &[],
                 };pub static NILAH: CachedChampion = CachedChampion {
+                    name: "Nilah",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Bottom],
@@ -2564,6 +2658,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:570f32,per_level:101f32},mana:CachedChampionStatsMap{flat:350f32,per_level:35f32},armor:CachedChampionStatsMap{flat:27f32,per_level:4.5f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:60f32,per_level:2f32},attack_speed:CachedChampionStatsMap{flat:0.697f32,per_level:2.25f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.67f32,attack_range:225f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static NOCTURNE: CachedChampion = CachedChampion {
+                    name: "Nocturne",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle],
@@ -2580,6 +2675,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:655f32,per_level:109f32},mana:CachedChampionStatsMap{flat:275f32,per_level:35f32},armor:CachedChampionStatsMap{flat:38f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:1.55f32},attack_damage:CachedChampionStatsMap{flat:62f32,per_level:2.6f32},attack_speed:CachedChampionStatsMap{flat:0.721f32,per_level:2.7f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.721f32,attack_range:125f32,aram_damage_taken:0.9f32,aram_damage_dealt:1.1f32,urf_damage_taken:1f32,urf_damage_dealt:0.95f32,},
                     merge_data: &[],
                 };pub static NUNU: CachedChampion = CachedChampion {
+                    name: "Nunu & Willump",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle],
@@ -2624,6 +2720,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:610f32,per_level:90f32},mana:CachedChampionStatsMap{flat:280f32,per_level:42f32},armor:CachedChampionStatsMap{flat:29f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:61f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2.25f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:125f32,aram_damage_taken:0.9f32,aram_damage_dealt:1.1f32,urf_damage_taken:0.95f32,urf_damage_dealt:1.08f32,},
                     merge_data: &[],
                 };pub static OLAF: CachedChampion = CachedChampion {
+                    name: "Olaf",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Top],
@@ -2644,6 +2741,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:645f32,per_level:119f32},mana:CachedChampionStatsMap{flat:316f32,per_level:50f32},armor:CachedChampionStatsMap{flat:35f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:68f32,per_level:4.7f32},attack_speed:CachedChampionStatsMap{flat:0.694f32,per_level:2.7f32},movespeed:350f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.694000005722045f32,attack_range:125f32,aram_damage_taken:1f32,aram_damage_dealt:1.05f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static ORIANNA: CachedChampion = CachedChampion {
+                    name: "Orianna",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle],
@@ -2672,6 +2770,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:585f32,per_level:110f32},mana:CachedChampionStatsMap{flat:418f32,per_level:25f32},armor:CachedChampionStatsMap{flat:20f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:26f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:44f32,per_level:2.6f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:3.5f32},movespeed:325f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.657999992370605f32,attack_range:525f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1.1f32,urf_damage_dealt:0.9f32,},
                     merge_data: &[],
                 };pub static ORNN: CachedChampion = CachedChampion {
+                    name: "Ornn",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Top],
@@ -2708,6 +2807,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:660f32,per_level:109f32},mana:CachedChampionStatsMap{flat:341f32,per_level:65f32},armor:CachedChampionStatsMap{flat:33f32,per_level:5.2f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:69f32,per_level:3.5f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:175f32,aram_damage_taken:1.05f32,aram_damage_dealt:0.9f32,urf_damage_taken:0.95f32,urf_damage_dealt:1.05f32,},
                     merge_data: &[],
                 };pub static PANTHEON: CachedChampion = CachedChampion {
+                    name: "Pantheon",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle,Position::Middle,Position::Support,Position::Top],
@@ -2728,6 +2828,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:650f32,per_level:109f32},mana:CachedChampionStatsMap{flat:317f32,per_level:31f32},armor:CachedChampionStatsMap{flat:40f32,per_level:4.95f32},magic_resist:CachedChampionStatsMap{flat:28f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:64f32,per_level:3.3f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:2.95f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.658f32,attack_range:175f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static POPPY: CachedChampion = CachedChampion {
+                    name: "Poppy",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle,Position::Top],
@@ -2768,6 +2869,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:610f32,per_level:110f32},mana:CachedChampionStatsMap{flat:280f32,per_level:40f32},armor:CachedChampionStatsMap{flat:35f32,per_level:5f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:60f32,per_level:4f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:2.5f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:125f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static PYKE: CachedChampion = CachedChampion {
+                    name: "Pyke",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Support],
@@ -2780,6 +2882,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:670f32,per_level:110f32},mana:CachedChampionStatsMap{flat:415f32,per_level:50f32},armor:CachedChampionStatsMap{flat:43f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:62f32,per_level:2f32},attack_speed:CachedChampionStatsMap{flat:0.667f32,per_level:2.5f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.666999995708465f32,attack_range:150f32,aram_damage_taken:0.9f32,aram_damage_dealt:1.1f32,urf_damage_taken:0.95f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static QIYANA: CachedChampion = CachedChampion {
+                    name: "Qiyana",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Middle],
@@ -2808,6 +2911,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:590f32,per_level:124f32},mana:CachedChampionStatsMap{flat:375f32,per_level:60f32},armor:CachedChampionStatsMap{flat:31f32,per_level:4.5f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:64f32,per_level:3.1f32},attack_speed:CachedChampionStatsMap{flat:0.688f32,per_level:2.1f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:150f32,aram_damage_taken:0.9f32,aram_damage_dealt:1.15f32,urf_damage_taken:0.9f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static QUINN: CachedChampion = CachedChampion {
+                    name: "Quinn",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Top],
@@ -2824,6 +2928,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:565f32,per_level:107f32},mana:CachedChampionStatsMap{flat:269f32,per_level:35f32},armor:CachedChampionStatsMap{flat:28f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:59f32,per_level:2.7f32},attack_speed:CachedChampionStatsMap{flat:0.668f32,per_level:3.1f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.667999982833862f32,attack_range:525f32,aram_damage_taken:0.9f32,aram_damage_dealt:1.1f32,urf_damage_taken:0.95f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static RAKAN: CachedChampion = CachedChampion {
+                    name: "Rakan",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Support],
@@ -2844,6 +2949,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:610f32,per_level:99f32},mana:CachedChampionStatsMap{flat:315f32,per_level:50f32},armor:CachedChampionStatsMap{flat:30f32,per_level:4.9f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:62f32,per_level:3.5f32},attack_speed:CachedChampionStatsMap{flat:0.635f32,per_level:3f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.634999990463256f32,attack_range:300f32,aram_damage_taken:0.95f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static RAMMUS: CachedChampion = CachedChampion {
+                    name: "Rammus",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle],
@@ -2864,6 +2970,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:675f32,per_level:100f32},mana:CachedChampionStatsMap{flat:310f32,per_level:33f32},armor:CachedChampionStatsMap{flat:35f32,per_level:4.5f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:65f32,per_level:2.75f32},attack_speed:CachedChampionStatsMap{flat:0.7f32,per_level:2.215f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:125f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:0.85f32,urf_damage_dealt:1.1f32,},
                     merge_data: &[],
                 };pub static REKSAI: CachedChampion = CachedChampion {
+                    name: "Rek'Sai",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle],
@@ -2888,6 +2995,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:600f32,per_level:99f32},mana:CachedChampionStatsMap{flat:100f32,per_level:0f32},armor:CachedChampionStatsMap{flat:35f32,per_level:4.5f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:62f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.667f32,per_level:2f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.666999995708465f32,attack_range:175f32,aram_damage_taken:0.9f32,aram_damage_dealt:1.05f32,urf_damage_taken:0.93f32,urf_damage_dealt:1.07f32,},
                     merge_data: &[],
                 };pub static RELL: CachedChampion = CachedChampion {
+                    name: "Rell",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Support],
@@ -2916,6 +3024,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:620f32,per_level:104f32},mana:CachedChampionStatsMap{flat:320f32,per_level:40f32},armor:CachedChampionStatsMap{flat:30f32,per_level:4f32},magic_resist:CachedChampionStatsMap{flat:28f32,per_level:1.8f32},attack_damage:CachedChampionStatsMap{flat:55f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2f32},movespeed:315f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:175f32,aram_damage_taken:1f32,aram_damage_dealt:0.95f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static RENATA: CachedChampion = CachedChampion {
+                    name: "Renata Glasc",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Support],
@@ -2932,6 +3041,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:545f32,per_level:94f32},mana:CachedChampionStatsMap{flat:350f32,per_level:50f32},armor:CachedChampionStatsMap{flat:27f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:49f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2.11f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:550f32,aram_damage_taken:1.05f32,aram_damage_dealt:0.95f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static RENEKTON: CachedChampion = CachedChampion {
+                    name: "Renekton",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Top],
@@ -2968,6 +3078,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:660f32,per_level:111f32},mana:CachedChampionStatsMap{flat:100f32,per_level:0f32},armor:CachedChampionStatsMap{flat:35f32,per_level:5.2f32},magic_resist:CachedChampionStatsMap{flat:28f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:69f32,per_level:4.15f32},attack_speed:CachedChampionStatsMap{flat:0.665f32,per_level:2.75f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.665000021457672f32,attack_range:125f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:0.95f32,urf_damage_dealt:0.95f32,},
                     merge_data: &[],
                 };pub static RENGAR: CachedChampion = CachedChampion {
+                    name: "Rengar",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle,Position::Top],
@@ -2984,6 +3095,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:590f32,per_level:104f32},mana:CachedChampionStatsMap{flat:4f32,per_level:0f32},armor:CachedChampionStatsMap{flat:34f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:68f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.667f32,per_level:3f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.666999995708465f32,attack_range:125f32,aram_damage_taken:0.92f32,aram_damage_dealt:1.05f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static RIVEN: CachedChampion = CachedChampion {
+                    name: "Riven",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Top],
@@ -2996,6 +3108,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:630f32,per_level:100f32},mana:CachedChampionStatsMap{flat:0f32,per_level:0f32},armor:CachedChampionStatsMap{flat:33f32,per_level:4.4f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:64f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:3.5f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:125f32,aram_damage_taken:0.92f32,aram_damage_dealt:1.05f32,urf_damage_taken:0.95f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static RUMBLE: CachedChampion = CachedChampion {
+                    name: "Rumble",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Middle,Position::Top],
@@ -3056,6 +3169,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:655f32,per_level:105f32},mana:CachedChampionStatsMap{flat:150f32,per_level:0f32},armor:CachedChampionStatsMap{flat:36f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:28f32,per_level:1.55f32},attack_damage:CachedChampionStatsMap{flat:64f32,per_level:3.2f32},attack_speed:CachedChampionStatsMap{flat:0.644f32,per_level:1.85f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.643999993801116f32,attack_range:125f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static RYZE: CachedChampion = CachedChampion {
+                    name: "Ryze",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle],
@@ -3072,6 +3186,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:645f32,per_level:124f32},mana:CachedChampionStatsMap{flat:300f32,per_level:70f32},armor:CachedChampionStatsMap{flat:22f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:58f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:2.11f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:550f32,aram_damage_taken:0.95f32,aram_damage_dealt:1.05f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static SAMIRA: CachedChampion = CachedChampion {
+                    name: "Samira",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom],
@@ -3088,6 +3203,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:630f32,per_level:108f32},mana:CachedChampionStatsMap{flat:349f32,per_level:38f32},armor:CachedChampionStatsMap{flat:26f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:57f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:3.3f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.658f32,attack_range:500f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:0.95f32,},
                     merge_data: &[],
                 };pub static SEJUANI: CachedChampion = CachedChampion {
+                    name: "Sejuani",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle],
@@ -3116,6 +3232,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:630f32,per_level:114f32},mana:CachedChampionStatsMap{flat:400f32,per_level:40f32},armor:CachedChampionStatsMap{flat:34f32,per_level:5.45f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:66f32,per_level:4f32},attack_speed:CachedChampionStatsMap{flat:0.688f32,per_level:3.5f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:150f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static SENNA: CachedChampion = CachedChampion {
+                    name: "Senna",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom,Position::Support],
@@ -3136,6 +3253,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:530f32,per_level:89f32},mana:CachedChampionStatsMap{flat:350f32,per_level:45f32},armor:CachedChampionStatsMap{flat:25f32,per_level:4f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:50f32,per_level:0f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2.6f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.4f32,attack_range:600f32,aram_damage_taken:1.05f32,aram_damage_dealt:0.92f32,urf_damage_taken:1f32,urf_damage_dealt:1.1f32,},
                     merge_data: &[],
                 };pub static SERAPHINE: CachedChampion = CachedChampion {
+                    name: "Seraphine",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom,Position::Support],
@@ -3164,6 +3282,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:570f32,per_level:95f32},mana:CachedChampionStatsMap{flat:360f32,per_level:40f32},armor:CachedChampionStatsMap{flat:26f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:50f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.669f32,per_level:2f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:525f32,aram_damage_taken:1.2f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:0.92f32,},
                     merge_data: &[],
                 };pub static SETT: CachedChampion = CachedChampion {
+                    name: "Sett",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Top],
@@ -3192,6 +3311,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:670f32,per_level:114f32},mana:CachedChampionStatsMap{flat:0f32,per_level:0f32},armor:CachedChampionStatsMap{flat:33f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:28f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:60f32,per_level:4f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:1.75f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:125f32,aram_damage_taken:1.1f32,aram_damage_dealt:1f32,urf_damage_taken:0.92f32,urf_damage_dealt:1.05f32,},
                     merge_data: &[],
                 };pub static SHACO: CachedChampion = CachedChampion {
+                    name: "Shaco",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle,Position::Support],
@@ -3224,6 +3344,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:630f32,per_level:99f32},mana:CachedChampionStatsMap{flat:297f32,per_level:40f32},armor:CachedChampionStatsMap{flat:30f32,per_level:4f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:63f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.694f32,per_level:3f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.694000005722045f32,attack_range:125f32,aram_damage_taken:1f32,aram_damage_dealt:1.05f32,urf_damage_taken:1.1f32,urf_damage_dealt:0.9f32,},
                     merge_data: &[],
                 };pub static SHEN: CachedChampion = CachedChampion {
+                    name: "Shen",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Support,Position::Top],
@@ -3248,6 +3369,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:610f32,per_level:99f32},mana:CachedChampionStatsMap{flat:400f32,per_level:0f32},armor:CachedChampionStatsMap{flat:34f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:64f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.751f32,per_level:3f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.651000022888183f32,attack_range:125f32,aram_damage_taken:1.05f32,aram_damage_dealt:0.95f32,urf_damage_taken:1.05f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static SHYVANA: CachedChampion = CachedChampion {
+                    name: "Shyvana",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle],
@@ -3272,6 +3394,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:665f32,per_level:104f32},mana:CachedChampionStatsMap{flat:100f32,per_level:0f32},armor:CachedChampionStatsMap{flat:38f32,per_level:4.55f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:1.5f32},attack_damage:CachedChampionStatsMap{flat:66f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:2.5f32},movespeed:350f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.657999992370605f32,attack_range:125f32,aram_damage_taken:0.95f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:0.85f32,},
                     merge_data: &[],
                 };pub static SINGED: CachedChampion = CachedChampion {
+                    name: "Singed",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Top],
@@ -3284,6 +3407,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:650f32,per_level:96f32},mana:CachedChampionStatsMap{flat:330f32,per_level:45f32},armor:CachedChampionStatsMap{flat:34f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:63f32,per_level:3.4f32},attack_speed:CachedChampionStatsMap{flat:0.7f32,per_level:1.9f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:125f32,aram_damage_taken:1.08f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:0.9f32,},
                     merge_data: &[],
                 };pub static SION: CachedChampion = CachedChampion {
+                    name: "Sion",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Top],
@@ -3308,6 +3432,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:655f32,per_level:87f32},mana:CachedChampionStatsMap{flat:400f32,per_level:52f32},armor:CachedChampionStatsMap{flat:36f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:68f32,per_level:4f32},attack_speed:CachedChampionStatsMap{flat:0.679f32,per_level:1.3f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.67900002002716f32,attack_range:175f32,aram_damage_taken:1.1f32,aram_damage_dealt:0.9f32,urf_damage_taken:0.92f32,urf_damage_dealt:1.1f32,},
                     merge_data: &[],
                 };pub static SIVIR: CachedChampion = CachedChampion {
+                    name: "Sivir",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom],
@@ -3344,6 +3469,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:600f32,per_level:104f32},mana:CachedChampionStatsMap{flat:340f32,per_level:45f32},armor:CachedChampionStatsMap{flat:30f32,per_level:4.45f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:60f32,per_level:2.5f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:500f32,aram_damage_taken:1.05f32,aram_damage_dealt:0.93f32,urf_damage_taken:1.05f32,urf_damage_dealt:0.85f32,},
                     merge_data: &[],
                 };pub static SKARNER: CachedChampion = CachedChampion {
+                    name: "Skarner",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle,Position::Top],
@@ -3372,6 +3498,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:630f32,per_level:110f32},mana:CachedChampionStatsMap{flat:320f32,per_level:40f32},armor:CachedChampionStatsMap{flat:33f32,per_level:4.5f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:63f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:150f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1.1f32,},
                     merge_data: &[],
                 };pub static SMOLDER: CachedChampion = CachedChampion {
+                    name: "Smolder",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom,Position::Middle,Position::Top],
@@ -3432,6 +3559,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:575f32,per_level:100f32},mana:CachedChampionStatsMap{flat:300f32,per_level:40f32},armor:CachedChampionStatsMap{flat:24f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:60f32,per_level:2.3f32},attack_speed:CachedChampionStatsMap{flat:0.638f32,per_level:4f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.638f32,attack_range:550f32,aram_damage_taken:1.02f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static SONA: CachedChampion = CachedChampion {
+                    name: "Sona",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Support],
@@ -3456,6 +3584,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:550f32,per_level:91f32},mana:CachedChampionStatsMap{flat:340f32,per_level:45f32},armor:CachedChampionStatsMap{flat:26f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:49f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.644f32,per_level:2.3f32},movespeed:325f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.643999993801116f32,attack_range:550f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:0.9f32,},
                     merge_data: &[],
                 };pub static SORAKA: CachedChampion = CachedChampion {
+                    name: "Soraka",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Support],
@@ -3476,6 +3605,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:605f32,per_level:88f32},mana:CachedChampionStatsMap{flat:425f32,per_level:40f32},armor:CachedChampionStatsMap{flat:32f32,per_level:5f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:50f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2.14f32},movespeed:325f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:550f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:0.92f32,urf_damage_dealt:1.05f32,},
                     merge_data: &[],
                 };pub static SWAIN: CachedChampion = CachedChampion {
+                    name: "Swain",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom,Position::Middle,Position::Support],
@@ -3508,6 +3638,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:595f32,per_level:99f32},mana:CachedChampionStatsMap{flat:400f32,per_level:29f32},armor:CachedChampionStatsMap{flat:25f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:31f32,per_level:1.55f32},attack_damage:CachedChampionStatsMap{flat:58f32,per_level:2.7f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2.11f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:525f32,aram_damage_taken:1.15f32,aram_damage_dealt:0.95f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static SYLAS: CachedChampion = CachedChampion {
+                    name: "Sylas",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Middle,Position::Top],
@@ -3540,6 +3671,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:600f32,per_level:122f32},mana:CachedChampionStatsMap{flat:400f32,per_level:70f32},armor:CachedChampionStatsMap{flat:29f32,per_level:5.2f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.55f32},attack_damage:CachedChampionStatsMap{flat:61f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.645f32,per_level:3.5f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.644999980926513f32,attack_range:175f32,aram_damage_taken:1f32,aram_damage_dealt:1.05f32,urf_damage_taken:1f32,urf_damage_dealt:0.95f32,},
                     merge_data: &[],
                 };pub static SYNDRA: CachedChampion = CachedChampion {
+                    name: "Syndra",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle],
@@ -3572,6 +3704,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:563f32,per_level:100f32},mana:CachedChampionStatsMap{flat:480f32,per_level:40f32},armor:CachedChampionStatsMap{flat:25f32,per_level:4f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:54f32,per_level:2.9f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:2f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:550f32,aram_damage_taken:1f32,aram_damage_dealt:1.05f32,urf_damage_taken:1.1f32,urf_damage_dealt:0.9f32,},
                     merge_data: &[],
                 };pub static TAHMKENCH: CachedChampion = CachedChampion {
+                    name: "Tahm Kench",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Support,Position::Top],
@@ -3584,6 +3717,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:640f32,per_level:103f32},mana:CachedChampionStatsMap{flat:325f32,per_level:50f32},armor:CachedChampionStatsMap{flat:39f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:56f32,per_level:3.2f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:2.5f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.657999992370605f32,attack_range:175f32,aram_damage_taken:1.05f32,aram_damage_dealt:1f32,urf_damage_taken:0.85f32,urf_damage_dealt:1.2f32,},
                     merge_data: &[],
                 };pub static TALIYAH: CachedChampion = CachedChampion {
+                    name: "Taliyah",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Jungle,Position::Middle],
@@ -3620,6 +3754,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:550f32,per_level:104f32},mana:CachedChampionStatsMap{flat:470f32,per_level:30f32},armor:CachedChampionStatsMap{flat:18f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:28f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:58f32,per_level:3.3f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:1.36f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:525f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static TALON: CachedChampion = CachedChampion {
+                    name: "Talon",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle],
@@ -3652,6 +3787,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:658f32,per_level:109f32},mana:CachedChampionStatsMap{flat:400f32,per_level:37f32},armor:CachedChampionStatsMap{flat:30f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:36f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:68f32,per_level:3.1f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2.9f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:125f32,aram_damage_taken:0.95f32,aram_damage_dealt:1.05f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static TARIC: CachedChampion = CachedChampion {
+                    name: "Taric",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Middle,Position::Support],
@@ -3664,6 +3800,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:645f32,per_level:99f32},mana:CachedChampionStatsMap{flat:300f32,per_level:60f32},armor:CachedChampionStatsMap{flat:40f32,per_level:4.3f32},magic_resist:CachedChampionStatsMap{flat:28f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:55f32,per_level:3.5f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:150f32,aram_damage_taken:1.1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static TEEMO: CachedChampion = CachedChampion {
+                    name: "Teemo",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Jungle,Position::Support,Position::Top],
@@ -3700,6 +3837,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:615f32,per_level:104f32},mana:CachedChampionStatsMap{flat:334f32,per_level:25f32},armor:CachedChampionStatsMap{flat:24f32,per_level:4.95f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:54f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.69f32,per_level:3.38f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.689999997615814f32,attack_range:500f32,aram_damage_taken:1.1f32,aram_damage_dealt:0.95f32,urf_damage_taken:1f32,urf_damage_dealt:0.9f32,},
                     merge_data: &[],
                 };pub static THRESH: CachedChampion = CachedChampion {
+                    name: "Thresh",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Support],
@@ -3724,6 +3862,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:620f32,per_level:120f32},mana:CachedChampionStatsMap{flat:274f32,per_level:44f32},armor:CachedChampionStatsMap{flat:33f32,per_level:0f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.55f32},attack_damage:CachedChampionStatsMap{flat:56f32,per_level:2.2f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:3.5f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:450f32,aram_damage_taken:1.05f32,aram_damage_dealt:1f32,urf_damage_taken:0.87f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static TRISTANA: CachedChampion = CachedChampion {
+                    name: "Tristana",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom,Position::Middle],
@@ -3748,6 +3887,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:640f32,per_level:102f32},mana:CachedChampionStatsMap{flat:300f32,per_level:32f32},armor:CachedChampionStatsMap{flat:30f32,per_level:4f32},magic_resist:CachedChampionStatsMap{flat:28f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:60f32,per_level:2.5f32},attack_speed:CachedChampionStatsMap{flat:0.656f32,per_level:1.5f32},movespeed:325f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.694f32,attack_range:550f32,aram_damage_taken:0.95f32,aram_damage_dealt:1.05f32,urf_damage_taken:1.05f32,urf_damage_dealt:0.9f32,},
                     merge_data: &[],
                 };pub static TRUNDLE: CachedChampion = CachedChampion {
+                    name: "Trundle",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle,Position::Top],
@@ -3780,6 +3920,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:650f32,per_level:110f32},mana:CachedChampionStatsMap{flat:340f32,per_level:45f32},armor:CachedChampionStatsMap{flat:37f32,per_level:3.9f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:68f32,per_level:4f32},attack_speed:CachedChampionStatsMap{flat:0.67f32,per_level:2.9f32},movespeed:350f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.6700000166893f32,attack_range:175f32,aram_damage_taken:1.05f32,aram_damage_dealt:1f32,urf_damage_taken:0.95f32,urf_damage_dealt:0.95f32,},
                     merge_data: &[],
                 };pub static TRYNDAMERE: CachedChampion = CachedChampion {
+                    name: "Tryndamere",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Top],
@@ -3800,6 +3941,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:696f32,per_level:108f32},mana:CachedChampionStatsMap{flat:100f32,per_level:0f32},armor:CachedChampionStatsMap{flat:33f32,per_level:4.8f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:66f32,per_level:4f32},attack_speed:CachedChampionStatsMap{flat:0.67f32,per_level:3.4f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.694f32,attack_range:175f32,aram_damage_taken:0.9f32,aram_damage_dealt:1.1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static TWISTEDFATE: CachedChampion = CachedChampion {
+                    name: "Twisted Fate",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom,Position::Middle,Position::Top],
@@ -3820,6 +3962,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:604f32,per_level:108f32},mana:CachedChampionStatsMap{flat:333f32,per_level:39f32},armor:CachedChampionStatsMap{flat:24f32,per_level:4.35f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:52f32,per_level:2.5f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2.5f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.651000022888183f32,attack_range:525f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:0.95f32,},
                     merge_data: &[],
                 };pub static TWITCH: CachedChampion = CachedChampion {
+                    name: "Twitch",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom,Position::Support],
@@ -3836,6 +3979,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:630f32,per_level:104f32},mana:CachedChampionStatsMap{flat:300f32,per_level:40f32},armor:CachedChampionStatsMap{flat:27f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:59f32,per_level:3.1f32},attack_speed:CachedChampionStatsMap{flat:0.679f32,per_level:3.38f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.67900002002716f32,attack_range:550f32,aram_damage_taken:0.95f32,aram_damage_dealt:1f32,urf_damage_taken:1.1f32,urf_damage_dealt:0.85f32,},
                     merge_data: &[],
                 };pub static UDYR: CachedChampion = CachedChampion {
+                    name: "Udyr",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle,Position::Top],
@@ -3864,6 +4008,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:664f32,per_level:92f32},mana:CachedChampionStatsMap{flat:271f32,per_level:50f32},armor:CachedChampionStatsMap{flat:31f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:62f32,per_level:4f32},attack_speed:CachedChampionStatsMap{flat:0.65f32,per_level:3f32},movespeed:350f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.6499999761581421f32,attack_range:125f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:0.92f32,urf_damage_dealt:1.1f32,},
                     merge_data: &[],
                 };pub static URGOT: CachedChampion = CachedChampion {
+                    name: "Urgot",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Top],
@@ -3884,6 +4029,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:655f32,per_level:102f32},mana:CachedChampionStatsMap{flat:340f32,per_level:45f32},armor:CachedChampionStatsMap{flat:36f32,per_level:5f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:63f32,per_level:4f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:3.75f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:350f32,aram_damage_taken:1.05f32,aram_damage_dealt:1f32,urf_damage_taken:0.85f32,urf_damage_dealt:1.15f32,},
                     merge_data: &[],
                 };pub static VARUS: CachedChampion = CachedChampion {
+                    name: "Varus",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom],
@@ -3936,6 +4082,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:600f32,per_level:105f32},mana:CachedChampionStatsMap{flat:320f32,per_level:40f32},armor:CachedChampionStatsMap{flat:24f32,per_level:4.6f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:59f32,per_level:3.4f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:3.5f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.657999992370605f32,attack_range:575f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static VAYNE: CachedChampion = CachedChampion {
+                    name: "Vayne",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom,Position::Top],
@@ -3972,6 +4119,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:550f32,per_level:103f32},mana:CachedChampionStatsMap{flat:232f32,per_level:35f32},armor:CachedChampionStatsMap{flat:23f32,per_level:4.6f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:60f32,per_level:2.35f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:3.3f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.657999992370605f32,attack_range:550f32,aram_damage_taken:0.95f32,aram_damage_dealt:1f32,urf_damage_taken:1.05f32,urf_damage_dealt:0.95f32,},
                     merge_data: &[],
                 };pub static VEIGAR: CachedChampion = CachedChampion {
+                    name: "Veigar",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle,Position::Support],
@@ -3996,6 +4144,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:580f32,per_level:108f32},mana:CachedChampionStatsMap{flat:490f32,per_level:26f32},armor:CachedChampionStatsMap{flat:18f32,per_level:5.2f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:52f32,per_level:2.7f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2.24f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:550f32,aram_damage_taken:1.1f32,aram_damage_dealt:0.93f32,urf_damage_taken:1f32,urf_damage_dealt:0.9f32,},
                     merge_data: &[],
                 };pub static VELKOZ: CachedChampion = CachedChampion {
+                    name: "Vel'Koz",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle,Position::Support],
@@ -4024,6 +4173,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:590f32,per_level:102f32},mana:CachedChampionStatsMap{flat:469f32,per_level:21f32},armor:CachedChampionStatsMap{flat:22f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:55f32,per_level:3.1416f32},attack_speed:CachedChampionStatsMap{flat:0.643f32,per_level:1.59f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:525f32,aram_damage_taken:1.05f32,aram_damage_dealt:0.95f32,urf_damage_taken:1f32,urf_damage_dealt:0.95f32,},
                     merge_data: &[],
                 };pub static VEX: CachedChampion = CachedChampion {
+                    name: "Vex",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle],
@@ -4056,6 +4206,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:590f32,per_level:104f32},mana:CachedChampionStatsMap{flat:490f32,per_level:32f32},armor:CachedChampionStatsMap{flat:23f32,per_level:4.45f32},magic_resist:CachedChampionStatsMap{flat:28f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:54f32,per_level:2.75f32},attack_speed:CachedChampionStatsMap{flat:0.669f32,per_level:1f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:550f32,aram_damage_taken:1f32,aram_damage_dealt:0.95f32,urf_damage_taken:1f32,urf_damage_dealt:0.9f32,},
                     merge_data: &[],
                 };pub static VI: CachedChampion = CachedChampion {
+                    name: "Vi",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle],
@@ -4076,6 +4227,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:655f32,per_level:99f32},mana:CachedChampionStatsMap{flat:295f32,per_level:65f32},armor:CachedChampionStatsMap{flat:30f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:63f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.644f32,per_level:2f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.643999993801116f32,attack_range:125f32,aram_damage_taken:0.95f32,aram_damage_dealt:1.05f32,urf_damage_taken:1.05f32,urf_damage_dealt:0.95f32,},
                     merge_data: &[],
                 };pub static VIEGO: CachedChampion = CachedChampion {
+                    name: "Viego",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle],
@@ -4104,6 +4256,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:630f32,per_level:109f32},mana:CachedChampionStatsMap{flat:0f32,per_level:0f32},armor:CachedChampionStatsMap{flat:34f32,per_level:4.6f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:57f32,per_level:3.5f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:2.25f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.658f32,attack_range:200f32,aram_damage_taken:1f32,aram_damage_dealt:1.05f32,urf_damage_taken:0.9f32,urf_damage_dealt:1.05f32,},
                     merge_data: &[],
                 };pub static VIKTOR: CachedChampion = CachedChampion {
+                    name: "Viktor",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle],
@@ -4132,6 +4285,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:600f32,per_level:100f32},mana:CachedChampionStatsMap{flat:405f32,per_level:45f32},armor:CachedChampionStatsMap{flat:23f32,per_level:4.4f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:53f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:2.11f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.657999992370605f32,attack_range:525f32,aram_damage_taken:1.05f32,aram_damage_dealt:0.95f32,urf_damage_taken:1f32,urf_damage_dealt:0.95f32,},
                     merge_data: &[],
                 };pub static VLADIMIR: CachedChampion = CachedChampion {
+                    name: "Vladimir",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle,Position::Top],
@@ -4160,6 +4314,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:607f32,per_level:110f32},mana:CachedChampionStatsMap{flat:2f32,per_level:0f32},armor:CachedChampionStatsMap{flat:27f32,per_level:4.5f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:55f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:2f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.657999992370605f32,attack_range:450f32,aram_damage_taken:1.05f32,aram_damage_dealt:1f32,urf_damage_taken:1.05f32,urf_damage_dealt:0.92f32,},
                     merge_data: &[],
                 };pub static VOLIBEAR: CachedChampion = CachedChampion {
+                    name: "Volibear",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle,Position::Top],
@@ -4180,6 +4335,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:650f32,per_level:104f32},mana:CachedChampionStatsMap{flat:350f32,per_level:70f32},armor:CachedChampionStatsMap{flat:31f32,per_level:5.2f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:60f32,per_level:3.5f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.7f32,attack_range:150f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1.1f32,urf_damage_dealt:0.95f32,},
                     merge_data: &[],
                 };pub static WARWICK: CachedChampion = CachedChampion {
+                    name: "Warwick",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle,Position::Top],
@@ -4204,6 +4360,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:620f32,per_level:99f32},mana:CachedChampionStatsMap{flat:280f32,per_level:35f32},armor:CachedChampionStatsMap{flat:33f32,per_level:4.4f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:65f32,per_level:2.5f32},attack_speed:CachedChampionStatsMap{flat:0.638f32,per_level:2f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.638000011444091f32,attack_range:125f32,aram_damage_taken:0.95f32,aram_damage_dealt:1.05f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static XAYAH: CachedChampion = CachedChampion {
+                    name: "Xayah",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom],
@@ -4232,6 +4389,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:630f32,per_level:107f32},mana:CachedChampionStatsMap{flat:340f32,per_level:40f32},armor:CachedChampionStatsMap{flat:25f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:60f32,per_level:3.5f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:3.9f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.658f32,attack_range:525f32,aram_damage_taken:1f32,aram_damage_dealt:1.05f32,urf_damage_taken:1.1f32,urf_damage_dealt:0.85f32,},
                     merge_data: &[],
                 };pub static XERATH: CachedChampion = CachedChampion {
+                    name: "Xerath",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle,Position::Support],
@@ -4268,6 +4426,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:596f32,per_level:106f32},mana:CachedChampionStatsMap{flat:400f32,per_level:22f32},armor:CachedChampionStatsMap{flat:22f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:55f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:1.36f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:525f32,aram_damage_taken:1.05f32,aram_damage_dealt:0.93f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static XINZHAO: CachedChampion = CachedChampion {
+                    name: "Xin Zhao",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle],
@@ -4300,6 +4459,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:620f32,per_level:106f32},mana:CachedChampionStatsMap{flat:274f32,per_level:55f32},armor:CachedChampionStatsMap{flat:35f32,per_level:4.4f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:63f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.645f32,per_level:3.5f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.644999980926513f32,attack_range:175f32,aram_damage_taken:1f32,aram_damage_dealt:0.95f32,urf_damage_taken:1.1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static YASUO: CachedChampion = CachedChampion {
+                    name: "Yasuo",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Bottom,Position::Middle,Position::Top],
@@ -4316,6 +4476,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:590f32,per_level:110f32},mana:CachedChampionStatsMap{flat:100f32,per_level:0f32},armor:CachedChampionStatsMap{flat:32f32,per_level:4.6f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:60f32,per_level:2.5f32},attack_speed:CachedChampionStatsMap{flat:0.697f32,per_level:3.5f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.6700000166893f32,attack_range:175f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:0.9f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static YONE: CachedChampion = CachedChampion {
+                    name: "Yone",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Middle,Position::Top],
@@ -4352,6 +4513,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:620f32,per_level:105f32},mana:CachedChampionStatsMap{flat:500f32,per_level:0f32},armor:CachedChampionStatsMap{flat:33f32,per_level:4.6f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:60f32,per_level:2f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:3.5f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:175f32,aram_damage_taken:0.97f32,aram_damage_dealt:1.05f32,urf_damage_taken:0.9f32,urf_damage_dealt:1.1f32,},
                     merge_data: &[],
                 };pub static YORICK: CachedChampion = CachedChampion {
+                    name: "Yorick",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Top],
@@ -4376,6 +4538,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:650f32,per_level:114f32},mana:CachedChampionStatsMap{flat:300f32,per_level:60f32},armor:CachedChampionStatsMap{flat:36f32,per_level:4.5f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:62f32,per_level:5f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:175f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static YUNARA: CachedChampion = CachedChampion {
+                    name: "Yunara",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom],
@@ -4400,6 +4563,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:590f32,per_level:110f32},mana:CachedChampionStatsMap{flat:275f32,per_level:45f32},armor:CachedChampionStatsMap{flat:25f32,per_level:4.4f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:55f32,per_level:2.5f32},attack_speed:CachedChampionStatsMap{flat:0.65f32,per_level:2f32},movespeed:325f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.65f32,attack_range:575f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static YUUMI: CachedChampion = CachedChampion {
+                    name: "Yuumi",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Support],
@@ -4428,6 +4592,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:500f32,per_level:69f32},mana:CachedChampionStatsMap{flat:440f32,per_level:45f32},armor:CachedChampionStatsMap{flat:25f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:25f32,per_level:1.1f32},attack_damage:CachedChampionStatsMap{flat:49f32,per_level:3.1f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:1f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:425f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:0.9f32,urf_damage_dealt:0.75f32,},
                     merge_data: &[],
                 };pub static ZAC: CachedChampion = CachedChampion {
+                    name: "Zac",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle,Position::Support,Position::Top],
@@ -4456,6 +4621,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:685f32,per_level:109f32},mana:CachedChampionStatsMap{flat:0f32,per_level:0f32},armor:CachedChampionStatsMap{flat:33f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:60f32,per_level:3.4f32},attack_speed:CachedChampionStatsMap{flat:0.736f32,per_level:1.6f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.638000011444091f32,attack_range:175f32,aram_damage_taken:0.96f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static ZED: CachedChampion = CachedChampion {
+                    name: "Zed",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle,Position::Middle],
@@ -4480,6 +4646,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:654f32,per_level:99f32},mana:CachedChampionStatsMap{flat:200f32,per_level:0f32},armor:CachedChampionStatsMap{flat:32f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:29f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:63f32,per_level:3.4f32},attack_speed:CachedChampionStatsMap{flat:0.651f32,per_level:3.3f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.651000022888183f32,attack_range:125f32,aram_damage_taken:0.95f32,aram_damage_dealt:1.05f32,urf_damage_taken:1.1f32,urf_damage_dealt:0.85f32,},
                     merge_data: &[],
                 };pub static ZERI: CachedChampion = CachedChampion {
+                    name: "Zeri",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom],
@@ -4512,6 +4679,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:600f32,per_level:110f32},mana:CachedChampionStatsMap{flat:250f32,per_level:45f32},armor:CachedChampionStatsMap{flat:24f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:56f32,per_level:2f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:2f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:500f32,aram_damage_taken:0.95f32,aram_damage_dealt:1.1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static ZIGGS: CachedChampion = CachedChampion {
+                    name: "Ziggs",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom,Position::Middle],
@@ -4548,6 +4716,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:606f32,per_level:106f32},mana:CachedChampionStatsMap{flat:480f32,per_level:23.5f32},armor:CachedChampionStatsMap{flat:21f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:55f32,per_level:3.1f32},attack_speed:CachedChampionStatsMap{flat:0.656f32,per_level:2f32},movespeed:325f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.656000018119812f32,attack_range:550f32,aram_damage_taken:1.2f32,aram_damage_dealt:0.92f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static ZILEAN: CachedChampion = CachedChampion {
+                    name: "Zilean",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Support],
@@ -4560,6 +4729,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:574f32,per_level:96f32},mana:CachedChampionStatsMap{flat:452f32,per_level:50f32},armor:CachedChampionStatsMap{flat:24f32,per_level:5f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:52f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:2.13f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:550f32,aram_damage_taken:0.95f32,aram_damage_dealt:1.05f32,urf_damage_taken:0.9f32,urf_damage_dealt:1.05f32,},
                     merge_data: &[],
                 };pub static ZOE: CachedChampion = CachedChampion {
+                    name: "Zoe",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle],
@@ -4596,6 +4766,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:630f32,per_level:106f32},mana:CachedChampionStatsMap{flat:425f32,per_level:25f32},armor:CachedChampionStatsMap{flat:21f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:58f32,per_level:3.3f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:2.5f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:550f32,aram_damage_taken:0.95f32,aram_damage_dealt:1.1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
                     merge_data: &[],
                 };pub static ZYRA: CachedChampion = CachedChampion {
+                    name: "Zyra",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Support],

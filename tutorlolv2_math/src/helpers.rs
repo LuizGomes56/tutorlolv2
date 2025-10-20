@@ -257,6 +257,7 @@ pub fn get_items_data(
 
         if slice.len() > 1 {
             multi_closure_indices.push((index, index + 1));
+            metadata.push(item.metadata);
         }
 
         closures.extend_from_slice(slice);

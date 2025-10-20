@@ -44,9 +44,9 @@ pub async fn create_generator_files(mode: GeneratorMode) -> Result<(), Box<dyn s
 
     let mut futures = Vec::new();
     let bind_function = |ability_name: &str, coords: Vec<String>| {
-        "\tability!(\n\t\t$1,\n\t\t$2\n\t);\n"
+        "ability!($1,$2);"
             .replace("$1", ability_name)
-            .replace("$2", &coords.join(",\n\t\t"))
+            .replace("$2", &coords.join(","))
     };
 
     for (_, champion_id) in champion_names {
@@ -337,11 +337,8 @@ fn transform_ability(key: &str, abilities: &[CdnAbility]) -> Vec<String> {
                 let final_key = format!("{}{}", base_key, suffix);
 
                 generator_keybinds.push(format!(
-                    "({}, {}, \"{}\", {})",
-                    effect_index,
-                    leveling_index,
-                    final_key,
-                    if suffix.contains("MAX") { "Max" } else { "Min" }
+                    "({}, {}, \"{}\")",
+                    effect_index, leveling_index, final_key,
                 ));
             }
         }

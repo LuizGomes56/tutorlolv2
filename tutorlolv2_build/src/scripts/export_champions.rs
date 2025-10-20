@@ -235,6 +235,7 @@ pub fn export_champions() -> BTreeMap<String, ChampionDetails> {
 
             let constdecl = format!(
                 "pub static {champion_name_upper}: CachedChampion = CachedChampion {{
+                    name: {true_champion_name:?},
                     adaptative_type: AdaptativeType::{adaptative_type},
                     attack_type: AttackType::{attack_type},
                     positions: &[{positions}],
@@ -243,6 +244,7 @@ pub fn export_champions() -> BTreeMap<String, ChampionDetails> {
                     stats: CachedChampionStats {{{stats}}},
                     merge_data: &[{merge_data}],
                 }};",
+                true_champion_name = champion.name,
                 adaptative_type = champion.adaptative_type,
                 attack_type = champion.attack_type,
                 metadata = ability_data

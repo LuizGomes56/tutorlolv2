@@ -162,6 +162,7 @@ pub struct TypeMetadata<T> {
 pub type ConstClosure = fn(&EvalContext) -> f32;
 
 pub struct CachedChampion {
+    pub name: &'static str,
     pub adaptative_type: AdaptativeType,
     pub attack_type: AttackType,
     pub positions: &'static [Position],

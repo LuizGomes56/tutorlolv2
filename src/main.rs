@@ -206,6 +206,9 @@ async fn main() {
         .get(1)
         .map(String::as_str)
     {
+        Some("-g") => {
+            let _ = tutorlolv2_dev::setup::generators::champion_v2::create_generators().await;
+        }
         Some("-h") => generate_html().await,
         Some("-u") => update().await,
         Some("-l") => update_local().await,

@@ -2,6 +2,38 @@ use proc_macro::TokenStream;
 use quote::quote;
 use syn::{Ident, parse_macro_input, punctuated::Punctuated, token::Comma};
 
+#[proc_macro_attribute]
+pub fn generator_v2(_args: TokenStream, input: TokenStream) -> TokenStream {
+    let mut func = parse_macro_input!(input as syn::ItemFn);
+
+    func.attrs.push(syn::parse_quote! {
+        #[allow(unused_macros)]
+    });
+
+    let old_block = func.block;
+    func.block = Box::new(syn::parse_quote!({
+        let inner = *self;
+        let mut this = inner.0;
+        macro_rules! ability {
+            ($field:ident, $idx:literal, $(($a:literal, $b:literal, $c:ident)),* $(,)?) => {{
+                let pattern = [$(($a, $b, AbilityLike::$field(AbilityName::$c))),*];
+                this.extract_ability_damage(AbilityLike::$field(AbilityName::Void), $idx, &pattern);
+            }};
+            ($field:ident, $(($a:literal, $b:literal, $c:ident)),* $(,)?) => {{
+                let pattern = [$(($a, $b, AbilityLike::$field(AbilityName::$c))),*];
+                this.extract_ability_damage(AbilityLike::$field(AbilityName::Void), 0, &pattern);
+            }};
+        }
+
+        #old_block;
+        this.finish()
+    }));
+
+    TokenStream::from(quote! {
+        #func
+    })
+}
+
 /// ## Provides useful macros to extract data from CDN API
 ///
 /// Macros: `ability!`, `passive!`, `get!`, `insert!`, `merge_damage!`
