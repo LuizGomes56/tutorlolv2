@@ -16,5 +16,27 @@ impl Generator for Aatrox {
         );
         ability!(W, (0, 0, _1), (0, 1, _2), (2, 0, _3));
         ability!(R, (2, 0, _1));
+
+        let default_ability = get!(Q::_1).clone();
+
+        insert!(
+            Q::Max,
+            Ability {
+                damage: merge_damage!(
+                    |q1, q2, q3| format!("({}) + ({}) + ({})", q1, q2, q3),
+                    Q::_1,
+                    Q::_2,
+                    Q::_3,
+                ),
+                ..default_ability
+            }
+        );
+
+        merge![
+            Q::_1 <= Q::_2,
+            Q::_3 <= Q::_4,
+            Q::_5 <= Q::_6,
+            W::_1 <= W::_2,
+        ];
     }
 }

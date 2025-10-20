@@ -14,6 +14,7 @@ pub fn generator_v2(_args: TokenStream, input: TokenStream) -> TokenStream {
     func.block = Box::new(syn::parse_quote!({
         let inner = *self;
         let mut this = inner.0;
+
         macro_rules! ability {
             ($field:ident, $idx:literal, $(($a:literal, $b:literal, $c:ident)),* $(,)?) => {{
                 let pattern = [$(($a, $b, AbilityLike::$field(AbilityName::$c))),*];
@@ -25,7 +26,97 @@ pub fn generator_v2(_args: TokenStream, input: TokenStream) -> TokenStream {
             }};
         }
 
+        macro_rules! merge_damage {
+            ($closure:expr, $($field1:ident::$field2:ident),+$(,)?) => {{
+                let mut sizes = Vec::<usize>::new();
+                $(
+                    {
+                        let key = AbilityLike::$field1(AbilityName::$field2);
+                        let arg = this.hashmap
+                            .get(&key)
+                            .ok_or(format!("Failed to find field: {key:?}"))?;
+                        sizes.push(arg.damage.len());
+                    }
+                )+
+                assert!(
+                    sizes.windows(2).all(|w| w[0] == w[1]),
+                    "Can't compare abilities with different sizes"
+                );
+                assert!(sizes.len() > 0, "Closure must take at least one argument");
+                let mut result = Vec::<String>::with_capacity(sizes[0]);
+                for i in 0..sizes[0] {
+                    result.push(($closure)(
+                        $(
+                            this.hashmap
+                                .get(&AbilityLike::$field1(AbilityName::$field2))
+                                .unwrap()
+                                .damage[i]
+                                .clone()
+                        ),+
+                    ));
+                }
+                result
+            }};
+        }
+
+        macro_rules! get {
+            ($field1:ident::$field2:ident) => {{
+                let key = AbilityLike::$field1(AbilityName::$field2);
+                this.hashmap
+                    .get(&key)
+                    .ok_or(format!("Failed to find field: {key:?}"))?
+            }};
+        }
+
+        macro_rules! get_mut {
+            ($field1:ident::$field2:ident) => {{
+                let key = AbilityLike::$field1(AbilityName::$field2);
+                this.hashmap
+                    .get_mut(&key)
+                    .ok_or(format!("Failed to find field: {key:?}"))?
+            }};
+        }
+
+        macro_rules! merge {
+            ($($f1:ident::$v1:ident <= $f2:ident::$v2:ident),+$(,)?) => {{
+                $(
+                    this.mergemap.push((
+                        AbilityLike::$f1(AbilityName::$v1),
+                        AbilityLike::$f2(AbilityName::$v2),
+                    ));
+                )+
+            }};
+        }
+
+        macro_rules! clone_to {
+            ($field3:ident::$field4:ident => $field1:ident::$field2:ident) => {{
+                insert!($field1::$field2, get!($field3::$field4).clone());
+                get_mut!($field1::$field2)
+            }};
+        }
+
+        macro_rules! insert {
+            ($field1:ident::$field2:ident, $value:expr) => {{
+                this.hashmap.insert(AbilityLike::$field1(AbilityName::$field2), $value);
+            }};
+        }
+
         #old_block;
+
+        if !this
+            .mergemap
+            .iter()
+            .any(|(a, b)| !(this.hashmap.contains_key(a) && this.hashmap.contains_key(b)))
+        {
+            println!("{} merge map generated is not consistent.", this.data.name);
+            println!("Current merge map: {:#?}", this.mergemap);
+            println!(
+                "Current hashmap keys: {:#?}",
+                this.hashmap.keys().collect::<Vec<_>>()
+            );
+            return Err("Found inconsistent merge map".into());
+        }
+
         Ok(this.finish())
     }));
 
