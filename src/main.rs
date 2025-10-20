@@ -9,7 +9,7 @@ use tutorlolv2_dev::{
     CdnChampion, DeserializeOwned, Serialize,
     cache::save_cache,
     essentials::{api::CdnEndpoint, ext::FilePathExt},
-    generators_v2::{GeneratorRunner, create_generators},
+    generators_v2::GeneratorFactory,
     items::CdnItem,
     setup::generators::champions::OrderJson,
 };
@@ -238,11 +238,11 @@ async fn main() {
             ord_folder::<CdnItem>(CdnEndpoint::Items).await;
         }
         Some("run-gen") => {
-            let runner = GeneratorRunner::new();
-            runner.run_all();
+            let runner = GeneratorFactory::new();
+            runner.run_all().await;
         }
         Some("make-gen") => {
-            let _ = create_generators().await;
+            let _ = GeneratorFactory::create_all().await;
         }
         Some("html-gen") => generate_html().await,
         Some("update") => update().await,

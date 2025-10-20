@@ -6,7 +6,7 @@ use crate::{
     setup::generators::decl_v2::*,
 };
 use regex::Regex;
-use std::{collections::HashMap, ops::Deref, path::Path};
+use std::{collections::HashMap, ops::Deref, path::Path, str::FromStr};
 use tutorlolv2_fmt::invoke_rustfmt;
 use tutorlolv2_gen::{ChampionId, INTERNAL_CHAMPIONS, Position};
 
@@ -24,61 +24,7 @@ pub const CHAMPION_NAMES: [&str; NUMBER_OF_CHAMPIONS] = {
     output
 };
 
-pub async fn create_generators() -> MayFail {
-    let generator_target = "tutorlolv2_dev/src/generators_v2";
-
-    if !Path::new(generator_target).exists() {
-        std::fs::create_dir(generator_target).unwrap();
-    }
-
-    let mut futures = Vec::new();
-    let bind_macro = |ability_name: &str, offsets: &[String]| -> String {
-        format!("ability!({}, {});", ability_name, offsets.join(","))
-    };
-
-    for i in 0..NUMBER_OF_CHAMPIONS as u8 {
-        futures.push(async move {
-            let champion_id = unsafe { std::mem::transmute::<_, ChampionId>(i) };
-            let file_name = format!("{champion_id:?}").to_lowercase();
-            let path = format!("{generator_target}/{file_name}.rs",);
-
-            let mut generated_content = format!(
-                "use super::*;
-
-                impl Generator for {champion_id:?} {{
-                    #[generator_v2]
-                    fn generate(self: Box<Self>) -> MayFail<Champion> {{"
-            );
-
-            if let Ok(data) = std::fs::read_to_string(&path) {
-                if data.contains("#![stable]") {
-                    return;
-                }
-            }
-
-            let cdn_champion = format!("cache/cdn/champions/{champion_id:?}.json")
-                .read_json::<CdnChampion>()
-                .unwrap();
-
-            for (ability_char, ability_vec) in cdn_champion.abilities.into_iter() {
-                let offsets = GeneratorData::get_ability_offsets(ability_vec);
-                if offsets.len() > 0 {
-                    generated_content.push_str(&bind_macro(ability_char, &offsets));
-                }
-            }
-
-            generated_content.push_str("}}");
-            let formatted = invoke_rustfmt(&generated_content, 80);
-            path.write_to_file(formatted.trim().as_bytes()).unwrap();
-        });
-    }
-
-    for future in futures {
-        let _ = future.await;
-    }
-
-    Ok(())
-}
+const GENERATOR_FOLDER: &str = "tutorlolv2_dev/src/generators_v2";
 
 trait F64Ext {
     fn trim(&self) -> String;
@@ -258,9 +204,9 @@ pub struct GeneratorData {
     pub mergemap: Vec<(AbilityLike, AbilityLike)>,
 }
 
-pub struct GeneratorRunner(HashMap<ChampionId, fn(CdnChampion) -> Box<dyn Generator>>);
+pub struct GeneratorFactory(HashMap<ChampionId, fn(CdnChampion) -> Box<dyn Generator>>);
 
-impl GeneratorRunner {
+impl GeneratorFactory {
     pub fn new() -> Self {
         let mut inner = HashMap::new();
 
@@ -454,16 +400,89 @@ impl GeneratorRunner {
         Self(inner)
     }
 
-    pub fn run_all(&self) {
-        for i in 0..NUMBER_OF_CHAMPIONS {
-            let champion_id = unsafe { std::mem::transmute::<_, ChampionId>(i as u8) };
-            let result = self.run(champion_id);
-            if let Ok(champion) = result {
-                let json_string = serde_json::to_string_pretty(&champion).unwrap();
-                format!("internal/champions/{champion_id:?}.json")
-                    .write_to_file(json_string.as_bytes())
-                    .unwrap();
+    pub fn create(champion_id: ChampionId) -> MayFail<String> {
+        let file_name = format!("{champion_id:?}").to_lowercase();
+        let path = format!("{GENERATOR_FOLDER}/{file_name}.rs",);
+
+        let bind_macro = |ability_char: char, cdn_offsets: &[CdnOffset]| -> String {
+            let mut offsets = Vec::new();
+            for cdn_offset in cdn_offsets {
+                offsets.push(format!(
+                    "({effect_index}, {leveling_index}, {enum_binding:?})",
+                    effect_index = cdn_offset.effect,
+                    leveling_index = cdn_offset.leveling,
+                    enum_binding = cdn_offset.binding
+                ));
             }
+            format!(
+                "ability![{ability_char}, {offsets}];",
+                offsets = offsets.join(","),
+            )
+        };
+
+        let mut generated_content = format!(
+            "use super::*;
+
+                impl Generator for {champion_id:?} {{
+                    #[generator_v2]
+                    fn generate(self: Box<Self>) -> MayFail<Champion> {{"
+        );
+
+        if let Ok(data) = std::fs::read_to_string(&path) {
+            if data.contains("#![stable]") {
+                return Ok(data);
+            }
+        }
+
+        let cdn_champion =
+            format!("cache/cdn/champions/{champion_id:?}.json").read_json::<CdnChampion>()?;
+
+        for (ability_char, ability_vec) in cdn_champion.abilities.into_iter() {
+            let cdn_offsets = GeneratorData::get_ability_offsets(ability_vec);
+            if cdn_offsets.len() > 0 {
+                generated_content.push_str(&bind_macro(ability_char, &cdn_offsets));
+            }
+        }
+
+        generated_content.push_str("}}");
+        Ok(invoke_rustfmt(&generated_content, 80))
+    }
+
+    pub async fn create_all() -> MayFail {
+        if !Path::new(GENERATOR_FOLDER).exists() {
+            std::fs::create_dir(GENERATOR_FOLDER).unwrap();
+        }
+
+        let mut futures = Vec::new();
+
+        for i in 0..NUMBER_OF_CHAMPIONS as u8 {
+            let champion_id = unsafe { std::mem::transmute::<_, ChampionId>(i) };
+            futures.push(async move { Self::create(champion_id) });
+        }
+
+        for future in futures {
+            let _ = future.await;
+        }
+
+        Ok(())
+    }
+
+    pub async fn run_all(&self) {
+        let mut futures = Vec::new();
+        for i in 0..NUMBER_OF_CHAMPIONS {
+            futures.push(async move {
+                let champion_id = unsafe { std::mem::transmute::<_, ChampionId>(i as u8) };
+                let result = self.run(champion_id);
+                if let Ok(champion) = result {
+                    let json_string = serde_json::to_string_pretty(&champion).unwrap();
+                    format!("internal/champions/{champion_id:?}.json")
+                        .write_to_file(json_string.as_bytes())
+                        .unwrap();
+                }
+            });
+        }
+        for future in futures {
+            let _ = future.await;
         }
     }
 
@@ -473,13 +492,67 @@ impl GeneratorRunner {
         let generator = function(data);
         Ok(generator.generate()?)
     }
+
+    fn parse_offsets(src: &str) -> HashMap<char, (usize, usize)> {
+        let mut i = 0;
+        let mut out = HashMap::new();
+
+        while let Some(rel) = src[i..].find("ability!(") {
+            let start = i + rel;
+            let open_paren = start + "ability!".len();
+        }
+
+        out
+    }
+
+    pub fn check_all_offsets() {
+        for i in 0..NUMBER_OF_CHAMPIONS {
+            let champion_id = unsafe { std::mem::transmute::<_, ChampionId>(i as u8) };
+            match Self::check_offsets(champion_id) {
+                Err(e) => {
+                    println!("Error checking {champion_id:?} offsets: {e:?}");
+                }
+                Ok(false) => {
+                    println!("{champion_id:?} has incorrect offsets");
+                }
+                Ok(true) => {
+                    println!("{champion_id:?} passed offsets check");
+                }
+            };
+        }
+    }
+
+    pub fn check_offsets(name: ChampionId) -> MayFail<bool> {
+        let cdn_champion =
+            format!("cache/cdn/champions/{name:?}.json").read_json::<CdnChampion>()?;
+
+        let mut new_offsets = HashMap::<char, Vec<(usize, usize)>>::new();
+
+        for (ability_char, ability_vec) in cdn_champion.abilities.into_iter() {
+            let cdn_offsets = GeneratorData::get_ability_offsets(ability_vec);
+            new_offsets.insert(
+                ability_char,
+                cdn_offsets.iter().map(|o| (o.effect, o.leveling)).collect(),
+            );
+        }
+
+        let old_content = std::fs::read_to_string(format!("{GENERATOR_FOLDER}/{name:?}.rs"))?;
+
+        Ok(true)
+    }
 }
 
-impl Deref for GeneratorRunner {
+impl Deref for GeneratorFactory {
     type Target = HashMap<ChampionId, fn(CdnChampion) -> Box<dyn Generator>>;
     fn deref(&self) -> &Self::Target {
         &self.0
     }
+}
+
+pub struct CdnOffset {
+    pub effect: usize,
+    pub leveling: usize,
+    pub binding: AbilityName,
 }
 
 impl GeneratorData {
@@ -524,8 +597,8 @@ impl GeneratorData {
         &cdn_abilities[ability_offset]
     }
 
-    pub fn get_ability_offsets(abilities: Vec<CdnAbility>) -> Vec<String> {
-        let mut macro_offsets = Vec::<String>::new();
+    pub fn get_ability_offsets(abilities: Vec<CdnAbility>) -> Vec<CdnOffset> {
+        let mut macro_offsets = Vec::<CdnOffset>::new();
         let mut bindings = 1;
 
         for ability in abilities.into_iter() {
@@ -541,16 +614,19 @@ impl GeneratorData {
                         continue;
                     }
 
-                    let offset = format!(
-                        "({effect_index}, {leveling_index}, _{enum_binding})",
-                        enum_binding = match bindings {
-                            ..9 => format!("{bindings}"),
-                            _ => format!("{}Min", bindings - 8),
-                        }
-                    );
-
-                    bindings += 1;
+                    let offset = CdnOffset {
+                        effect: effect_index,
+                        leveling: leveling_index,
+                        binding: {
+                            let enum_match = match bindings {
+                                ..9 => format!("_{}", bindings.to_string()),
+                                _ => format!("_{}Min", bindings - 8),
+                            };
+                            AbilityName::from_str(&enum_match).unwrap()
+                        },
+                    };
                     macro_offsets.push(offset);
+                    bindings += 1;
                 }
             }
         }

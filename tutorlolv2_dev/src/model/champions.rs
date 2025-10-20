@@ -51,13 +51,13 @@ pub struct Abilities {
 }
 
 impl Abilities {
-    pub fn into_iter(self) -> impl Iterator<Item = (&'static str, Vec<CdnAbility>)> {
+    pub fn into_iter(self) -> impl Iterator<Item = (char, Vec<CdnAbility>)> {
         [
-            ("P", self.p),
-            ("Q", self.q),
-            ("W", self.w),
-            ("E", self.e),
-            ("R", self.r),
+            ('P', self.p),
+            ('Q', self.q),
+            ('W', self.w),
+            ('E', self.e),
+            ('R', self.r),
         ]
         .into_iter()
     }
