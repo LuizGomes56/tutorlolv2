@@ -46,7 +46,7 @@ pub trait StringExt {
 
 impl StringExt for str {
     fn transform_expr(&self) -> (String, bool) {
-        transform_expr(self)
+        add_f32_postfix(self)
     }
     fn clean_math_expr(&self) -> String {
         clean_math_expr(self)

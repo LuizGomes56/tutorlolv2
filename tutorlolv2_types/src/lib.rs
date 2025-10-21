@@ -1,7 +1,8 @@
-use std::str::FromStr;
-
 use bincode::Encode;
 use serde::{Deserialize, Serialize};
+use std::str::FromStr;
+
+pub use paste::paste;
 
 #[derive(Copy, Clone, Encode, Debug, Eq, PartialEq, PartialOrd, Hash, Ord)]
 pub enum AbilityLike {
@@ -124,7 +125,6 @@ impl ToString for AbilityName {
 }
 
 macro_rules! enum_from_str {
-    // Captura qualquer quantidade de atributos e a visibilidade
     ($(#[$meta:meta])* $vis:vis enum $E:ident { $($V:ident),* $(,)? }) => {
         $(#[$meta])*
         $vis enum $E {

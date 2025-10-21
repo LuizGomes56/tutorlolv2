@@ -2,6 +2,7 @@ pub use crate::{
     model::champions::{Ability, CdnChampion, Champion},
     setup::generators::{champion_v2::*, decl_v2::*},
 };
+use tutorlolv2_gen::EvalIdent;
 pub use tutorlolv2_gen::{AbilityLike, AbilityName, Attrs, DamageType};
 pub use tutorlolv2_macros::generator_v2;
 

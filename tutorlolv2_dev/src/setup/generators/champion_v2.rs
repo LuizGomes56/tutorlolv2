@@ -8,11 +8,12 @@ use crate::{
 use regex::Regex;
 use std::{
     collections::{BTreeMap, BTreeSet, HashMap},
+    fmt::Display,
     path::Path,
     str::FromStr,
 };
 use tutorlolv2_fmt::invoke_rustfmt;
-use tutorlolv2_gen::{ChampionId, INTERNAL_CHAMPIONS, Position};
+use tutorlolv2_gen::{ChampionId, EvalIdent, INTERNAL_CHAMPIONS, Position};
 
 pub type MayFail<T = ()> = Result<T, Box<dyn std::error::Error>>;
 
@@ -54,58 +55,79 @@ pub trait RegExtractor {
     fn process_linear_scalings(
         bounds: (f64, f64),
         size: usize,
-        postfix: Option<&str>,
+        postfix: Option<EvalIdent>,
     ) -> Vec<String>;
 }
 
 impl RegExtractor for str {
     fn replace_keys(&self) -> String {
-        let replacements = [
-            ("per 100", "0.01 *"),
-            ("of damage dealt", "100.0"),
-            ("of damage stored", "100.0"),
-            ("per Soul collected", " * THRESH_STACKS"),
-            ("of expended Grit", "0.0"),
-            ("of primary target's bonus health", "ENEMY_BONUS_HEALTH"),
-            ("of his bonus health", "BONUS_HEALTH"),
-            ("Pantheon's bonus health", "BONUS_HEALTH"),
-            ("critical strike chance", "CRIT_CHANCE"),
-            ("of the original damage", "100.0"),
-            ("per Overwhelm stack on the target", "1.0"),
-            ("of Ivern's AP", "AP"),
-            ("of Sona's AP", "AP"),
-            ("per Feast stack", "CHOGATH_STACKS"),
-            ("of Siphoning Strike stacks", "NASUS_STACKS"),
-            ("Stardust", "AURELION_SOL_STACKS"),
-            ("per mark", "KINDRED_STACKS"),
-            ("bonus armor", "BONUS_ARMOR"),
-            ("bonus mana", "BONUS_MANA"),
-            ("bonus AD", "BONUS_AD"),
-            ("bonus armor", "BONUS_ARMOR"),
-            ("bonus magic resistance", "BONUS_MAGIC_RESIST"),
-            ("bonus health", "BONUS_HEALTH"),
-            ("bonus movement speed", "BONUS_MOVE_SPEED"),
-            ("armor", "ARMOR"),
-            ("of the target's maximum health", "ENEMY_MAX_HEALTH"),
-            ("of target's maximum health", "ENEMY_MAX_HEALTH"),
-            ("of Zac's maximum health", "MAX_HEALTH"),
-            ("of Braum's maximum health", "MAX_HEALTH"),
-            ("of her maximum health", "MAX_HEALTH"),
-            ("of his maximum health", "MAX_HEALTH"),
-            ("of maximum health", "MAX_HEALTH"),
-            ("maximum health", "MAX_HEALTH"),
-            ("of the target's current health", "ENEMY_CURRENT_HEALTH"),
-            ("of target's current health", "ENEMY_CURRENT_HEALTH"),
-            ("target's current health", "ENEMY_CURRENT_HEALTH"),
-            ("of the target's missing health", "ENEMY_MISSING_HEALTH"),
-            ("of target's missing health", "ENEMY_MISSING_HEALTH"),
-            ("target's missing health", "ENEMY_MISSING_HEALTH"),
-            ("maximum mana", "MAX_MANA"),
-        ];
+        let mut replacements = Vec::<(&'static str, Box<dyn Display>)>::new();
+
+        fn push_tuple(
+            vector: &mut Vec<(&'static str, Box<dyn Display>)>,
+            from: &'static str,
+            to: impl Display + 'static,
+        ) {
+            vector.push((from, Box::new(to)));
+        }
+
+        macro_rules! tuple_rep {
+            ($($from:literal => $to:expr),*$(,)?) => {
+                $(
+                    push_tuple(&mut replacements, $from, $to);
+                )*
+            };
+        }
+        tuple_rep! {
+            "per 100" => "0.01 *",
+            "of damage dealt" => "100.0",
+            "of damage stored" => "100.0",
+            "of expended Grit" => "0.0",
+            "of the original damage" => "100.0",
+            "per Overwhelm stack on the target" => "1.0",
+            "per Soul collected" => format!("*{}", EvalIdent::ThreshStacks),
+            "of primary target's bonus health" => EvalIdent::EnemyBonusHealth,
+            "of his bonus health" => EvalIdent::BonusHealth,
+            "Pantheon's bonus health" => EvalIdent::BonusHealth,
+            "critical strike chance" => EvalIdent::CritChance,
+            "of Ivern's AP" => EvalIdent::Ap,
+            "of Sona's AP" => EvalIdent::Ap,
+            "per Feast stack" => EvalIdent::ChogathStacks,
+            "of Siphoning Strike stacks" => EvalIdent::NasusStacks,
+            "Stardust" => EvalIdent::AurelionSolStacks,
+            "per mark" => EvalIdent::KindredStacks,
+            "bonus mana" => EvalIdent::BonusMana,
+            "bonus AD" => EvalIdent::BonusAd,
+            "bonus armor" => EvalIdent::BonusArmor,
+            "bonus magic resistance" => EvalIdent::BonusMagicResist,
+            "bonus health" => EvalIdent::BonusHealth,
+            "bonus movement speed" => EvalIdent::BonusMoveSpeed,
+            "armor" => EvalIdent::Armor,
+            "of the target's maximum health" => EvalIdent::EnemyMaxHealth,
+            "of target's maximum health" => EvalIdent::EnemyMaxHealth,
+            "of Zac's maximum health" => EvalIdent::MaxHealth,
+            "of Braum's maximum health" => EvalIdent::MaxHealth,
+            "of her maximum health" => EvalIdent::MaxHealth,
+            "of his maximum health" => EvalIdent::MaxHealth,
+            "of maximum health" => EvalIdent::MaxHealth,
+            "maximum health" => EvalIdent::MaxHealth,
+            "of the target's current health" => EvalIdent::CurrentHealth,
+            "of target's current health" => EvalIdent::CurrentHealth,
+            "target's current health" => EvalIdent::CurrentHealth,
+            "of the target's missing health" => EvalIdent::MissingHealth,
+            "of target's missing health" => EvalIdent::MissingHealth,
+            "target's missing health" => EvalIdent::MissingHealth,
+            "maximum mana" => EvalIdent::MaxMana,
+            "AP" => EvalIdent::Ap,
+            "AD" => EvalIdent::Ad,
+            "\u{00D7}" => "*",
+        };
 
         replacements
-            .iter()
-            .fold(self.to_string(), |acc, (old, new)| acc.replace(old, new))
+            .into_iter()
+            .fold(self.to_string(), |acc, (old, new)| {
+                acc.replace(old, &(*new).to_string())
+            })
     }
 
     fn remove_parenthesis(&self) -> String {
@@ -186,7 +208,7 @@ impl RegExtractor for str {
     fn process_linear_scalings(
         bounds: (f64, f64),
         size: usize,
-        postfix: Option<&str>,
+        postfix: Option<EvalIdent>,
     ) -> Vec<String> {
         let mut result = Vec::<String>::new();
         let (start, end) = bounds;
@@ -495,6 +517,11 @@ impl GeneratorFactory {
 
         for caps in macro_re.captures_iter(src) {
             let ability = caps[1].chars().next().ok_or("First capture has no chars")?;
+
+            if !matches!(ability, 'Q' | 'W' | 'E' | 'R') {
+                continue;
+            }
+
             let body = &caps[2];
 
             let mut tuples = Vec::new();
@@ -841,7 +868,7 @@ impl GeneratorData {
         &mut self,
         ability: AbilityLike,
         offsets: (usize, usize),
-        postfix: Option<&str>,
+        postfix: Option<EvalIdent>,
         scalings: Option<usize>,
     ) {
         let (passive, passive_bounds) = self.extract_passive_bounds(offsets);

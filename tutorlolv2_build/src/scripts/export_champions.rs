@@ -131,8 +131,8 @@ fn get_abilities_decl(
             let transformed = ability
                 .damage
                 .iter()
-                .map(|dmg| transform_expr(&clean_math_expr(&dmg)))
-                .collect::<Vec<(String, bool)>>();
+                .map(|dmg| dmg.clean_math_expr().transform_expr())
+                .collect::<Vec<(_, bool)>>();
             let ability_type = name.as_char();
             let ctx_matcher = match ability_type {
                 'P' => "level as u8".into(),

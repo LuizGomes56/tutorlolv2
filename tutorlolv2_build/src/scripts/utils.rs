@@ -2,13 +2,11 @@ use regex::{Captures, Regex};
 use serde::Deserialize;
 use std::fmt;
 
-pub fn transform_expr(expr: &str) -> (String, bool) {
+pub fn add_f32_postfix<'a>(expr: &'a str) -> (String, bool) {
     let re_num = Regex::new(r"\b(\d+(\.\d+)?)\b").unwrap();
-    let with_f32 = re_num.replace_all(expr, |caps: &Captures| format!("{}f32", &caps[1]));
-    let re_up = Regex::new(r"\b([A-Z][A-Z0-9_]*)\b").unwrap();
-    let count_ctx = re_up.find_iter(with_f32.as_ref()).count();
-    let result = re_up.replace_all(&with_f32, |caps: &Captures| format!("ctx.{}", &caps[1]));
-    (result.into_owned(), count_ctx > 0)
+    let postfixed = re_num.replace_all(expr, |caps: &Captures| format!("{}f32", &caps[1]));
+    let uses_ctx = postfixed.contains("ctx.");
+    (postfixed.into_owned(), uses_ctx)
 }
 
 #[derive(Deserialize)]
@@ -73,30 +71,44 @@ macro_rules! init_map {
     }};
 }
 
-pub fn is_valid_math_expression(expr: &str) -> bool {
+pub fn is_valid_math_expression(input: &str) -> bool {
+    let expr = input.trim();
+    if expr.is_empty() {
+        return false;
+    }
     if expr.chars().any(|c| c.is_ascii_lowercase()) {
         return false;
     }
-    let expr = expr.replace(' ', "");
+
+    let expr_ns = expr
+        .chars()
+        .filter(|c| !c.is_whitespace())
+        .collect::<String>();
     let valid_token_re = Regex::new(r"^[\d\.\+\-\*/\(\)A-Z_]+$").unwrap();
-    if !valid_token_re.is_match(&expr) {
+    if !valid_token_re.is_match(&expr_ns) {
         return false;
     }
 
-    let mut stack = vec![];
-    for c in expr.chars() {
+    let trailing_op = Regex::new(r"[+\-*/]$").unwrap();
+    if trailing_op.is_match(&expr_ns) {
+        return false;
+    }
+
+    let mut depth = 0;
+    for c in expr_ns.chars() {
         match c {
-            '(' => stack.push(c),
+            '(' => depth += 1,
             ')' => {
-                if stack.pop().is_none() {
+                if depth == 0 {
                     return false;
                 }
+                depth -= 1;
             }
             _ => {}
         }
     }
 
-    stack.is_empty()
+    depth == 0
 }
 
 #[derive(Debug, Clone)]
@@ -188,9 +200,28 @@ fn parse_primary(tokens: &[String], pos: &mut usize) -> Expr {
     }
 }
 
-fn tokenize(expr: &str) -> Vec<String> {
-    let re = Regex::new(r"[A-Z_]+|\d+\.\d+|\d+|[\+\-\*/\(\)]").unwrap();
-    re.find_iter(expr).map(|m| m.as_str().to_string()).collect()
+pub fn tokenize(expr: &str) -> Vec<String> {
+    let re = Regex::new(
+        r"(?x)
+        (?P<ctx>ctx \s* \. \s* (?P<ident>[a-z_][a-z0-9_]*))
+        |
+        (?P<float>\d+\.\d+)
+        |
+        (?P<int>\d+)
+        |
+        (?P<op>[+\-*/()])",
+    )
+    .unwrap();
+
+    re.captures_iter(expr)
+        .map(|caps| {
+            if let Some(id) = caps.name("ident") {
+                format!("ctx.{}", id.as_str())
+            } else {
+                caps.get(0).unwrap().as_str().to_string()
+            }
+        })
+        .collect()
 }
 
 pub fn clean_math_expr(expr: &str) -> String {

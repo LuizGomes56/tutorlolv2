@@ -1,16 +1,63 @@
 use proc_macro::TokenStream;
-use quote::quote;
+use proc_macro2::{Delimiter, TokenStream as TokenStream2, TokenTree};
+use quote::{ToTokens, quote};
 use syn::{Ident, parse_macro_input, punctuated::Punctuated, token::Comma};
+
+fn check_macro_invocation(ts: &TokenStream2) -> Option<proc_macro2::Span> {
+    let mut last_ident_is_ability = false;
+    let mut last_was_bang = false;
+
+    for tt in ts.clone() {
+        match tt {
+            TokenTree::Ident(id) => {
+                last_ident_is_ability = id == "ability";
+                last_was_bang = false;
+            }
+            TokenTree::Punct(p) => {
+                last_was_bang = p.as_char() == '!';
+            }
+            TokenTree::Group(g) => {
+                if last_ident_is_ability && last_was_bang {
+                    match g.delimiter() {
+                        Delimiter::Bracket => {}
+                        Delimiter::Parenthesis | Delimiter::Brace | Delimiter::None => {
+                            return Some(g.span());
+                        }
+                    }
+                }
+                if let Some(sp) = check_macro_invocation(&g.stream()) {
+                    return Some(sp);
+                }
+                last_ident_is_ability = false;
+                last_was_bang = false;
+            }
+            _ => {
+                last_was_bang = false;
+            }
+        }
+    }
+    None
+}
 
 #[proc_macro_attribute]
 pub fn generator_v2(_args: TokenStream, input: TokenStream) -> TokenStream {
     let mut func = parse_macro_input!(input as syn::ItemFn);
+
+    if let Some(sp) = check_macro_invocation(&func.block.to_token_stream()) {
+        let err = syn::Error::new(
+            sp,
+            "macro ability! must be invoked as `ability![...]`. Delimiters `(` or `{` are not supported",
+        )
+        .to_compile_error();
+        return TokenStream::from(quote!(#err));
+    }
 
     func.attrs.push(syn::parse_quote! {
         #[allow(unused_macros)]
     });
 
     let old_block = func.block;
+
     func.block = Box::new(syn::parse_quote!({
         macro_rules! ability {
             ($field:ident, $idx:literal, $(($a:literal, $b:literal, $c:ident)),* $(,)?) => {{
@@ -20,6 +67,18 @@ pub fn generator_v2(_args: TokenStream, input: TokenStream) -> TokenStream {
             ($field:ident, $(($a:literal, $b:literal, $c:ident)),* $(,)?) => {{
                 let pattern = [$(($a, $b, AbilityLike::$field(AbilityName::$c))),*];
                 self.extract_ability_damage(AbilityLike::$field(AbilityName::Void), 0, &pattern);
+            }};
+            ($field1:ident::$field2:ident, ($offset1:literal, $offset2:literal)) => {{
+                self.extract_passive_damage(AbilityLike::$field1(AbilityName::$field2), ($offset1, $offset2), None, None);
+            }};
+            ($field1:ident::$field2:ident, ($offset1:literal, $offset2:literal), $postfix:ident) => {{
+                self.extract_passive_damage(AbilityLike::$field1(AbilityName::$field2), ($offset1, $offset2), Some(EvalIdent::$postfix), None);
+            }};
+            ($field1:ident::$field2:ident, ($offset1:literal, $offset2:literal), $scalings:literal) => {{
+                self.extract_passive_damage(AbilityLike::$field1(AbilityName::$field2), ($offset1, $offset2), None, Some($scalings));
+            }};
+            ($field1:ident::$field2:ident, ($offset1:literal, $offset2:literal), $postfix:ident, $scalings:literal) => {{
+                self.extract_passive_damage(AbilityLike::$field1(AbilityName::$field2), ($offset1, $offset2), Some(EvalIdent::$postfix), Some($scalings));
             }};
         }
 
@@ -89,7 +148,8 @@ pub fn generator_v2(_args: TokenStream, input: TokenStream) -> TokenStream {
 
         macro_rules! insert {
             ($field1:ident::$field2:ident, $value:expr) => {{
-                self.hashmap.insert(AbilityLike::$field1(AbilityName::$field2), $value);
+                let temp = $value;
+                self.hashmap.insert(AbilityLike::$field1(AbilityName::$field2), temp);
             }};
         }
 
