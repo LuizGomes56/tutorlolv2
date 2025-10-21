@@ -501,7 +501,12 @@ impl GeneratorFactory {
                         .unwrap();
                 }
                 Err(e) => {
-                    println!("Error generating {champion_id:?}: {e:?}");
+                    println!("Error generating {champion_id:?}: {e:?}. Performing offset check.");
+                    match Self::check_offsets(champion_id) {
+                        Ok(true) => println!("{champion_id:?} have an issue unrelated to offsets"),
+                        Ok(false) => println!("{champion_id:?} likely has incorrect offsets"),
+                        Err(e) => println!("Error checking offsets for {champion_id:?}: {e:?}"),
+                    }
                 }
             };
         }

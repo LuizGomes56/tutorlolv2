@@ -2150,11 +2150,19 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                 damage_type: DamageType::Magic, 
                 attributes: Attrs::None 
             },TypeMetadata { 
+                kind: AbilityLike::R(AbilityName::_3), 
+                damage_type: DamageType::Magic, 
+                attributes: Attrs::None 
+            },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_4), 
                 damage_type: DamageType::Magic, 
                 attributes: Attrs::None 
+            },TypeMetadata { 
+                kind: AbilityLike::R(AbilityName::_5), 
+                damage_type: DamageType::Magic, 
+                attributes: Attrs::None 
             }],
-                    closures: &[|ctx| { match ctx.q_level {1 => 80f32 + 0.4f32 * ctx.ap,2 => 115f32 + 0.4f32 * ctx.ap,3 => 150f32 + 0.4f32 * ctx.ap,4 => 185f32 + 0.4f32 * ctx.ap,5 => 220f32 + 0.4f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 20f32 + 0.4f32 * ctx.ad + 0.25f32 * ctx.ap,2 => 30f32 + 0.4f32 * ctx.ad + 0.25f32 * ctx.ap,3 => 40f32 + 0.4f32 * ctx.ad + 0.25f32 * ctx.ap,4 => 50f32 + 0.4f32 * ctx.ad + 0.25f32 * ctx.ap,5 => 60f32 + 0.4f32 * ctx.ad + 0.25f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 25f32 + 0.19f32 * ctx.ap,2 => 37.5f32 + 0.19f32 * ctx.ap,3 => 50f32 + 0.19f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 375f32 + 2.85f32 * ctx.ap,2 => 562.5f32 + 2.85f32 * ctx.ap,3 => 750f32 + 2.85f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 0.25f32,2 => 0.3f32,3 => 0.35f32,_ => 0.0 }}],
+                    closures: &[|ctx| { match ctx.q_level {1 => 80f32 + 0.4f32 * ctx.ap,2 => 115f32 + 0.4f32 * ctx.ap,3 => 150f32 + 0.4f32 * ctx.ap,4 => 185f32 + 0.4f32 * ctx.ap,5 => 220f32 + 0.4f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 20f32 + 0.4f32 * ctx.ad + 0.25f32 * ctx.ap,2 => 30f32 + 0.4f32 * ctx.ad + 0.25f32 * ctx.ap,3 => 40f32 + 0.4f32 * ctx.ad + 0.25f32 * ctx.ap,4 => 50f32 + 0.4f32 * ctx.ad + 0.25f32 * ctx.ap,5 => 60f32 + 0.4f32 * ctx.ad + 0.25f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 25f32 + 0.19f32 * ctx.ap,2 => 37.5f32 + 0.19f32 * ctx.ap,3 => 50f32 + 0.19f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 375f32 + 2.85f32 * ctx.ap,2 => 562.5f32 + 2.85f32 * ctx.ap,3 => 750f32 + 2.85f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 2.4f32 * ctx.bonus_ad + 7.5f32 * 0.01f32,2 => 2.4f32 * ctx.bonus_ad + 7.5f32 * 0.01f32,3 => 2.4f32 * ctx.bonus_ad + 7.5f32 * 0.01f32,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 0.25f32,2 => 0.3f32,3 => 0.35f32,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 0.16f32 * ctx.bonus_ad + 0.5f32 * 0.01f32,2 => 0.16f32 * ctx.bonus_ad + 0.5f32 * 0.01f32,3 => 0.16f32 * ctx.bonus_ad + 0.5f32 * 0.01f32,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:672f32,per_level:108f32},mana:CachedChampionStatsMap{flat:0f32,per_level:0f32},armor:CachedChampionStatsMap{flat:32f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:58f32,per_level:3.2f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:2.74f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.657999992370605f32,attack_range:125f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:0.95f32,urf_damage_dealt:1.1f32,},
                     merge_data: &[],
                 };pub static KAYLE: CachedChampion = CachedChampion {
