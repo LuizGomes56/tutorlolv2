@@ -5,6 +5,7 @@
 use super::*;
 use regex::Regex;
 use serde::Deserialize;
+use tutorlolv2_gen::EvalIdent;
 
 type TestResult = Result<(), Box<dyn std::error::Error>>;
 
@@ -175,7 +176,10 @@ fn item_3153() -> TestResult {
     let get_dmg = |number: f64| {
         let power = 1;
         format!(
-            "ENEMY_HEALTH - (({number} * ENEMY_HEALTH * (1 - {number} * PHYSICAL_MULTIPLIER).powf({power}) - AD + AD * (1 - {number} * PHYSICAL_MULTIPLIER).powf({power})) / {number})"
+            "{ENEMY_HEALTH} - (({number} * {ENEMY_HEALTH} * (1 - {number} * {PHYSICAL_MULTIPLIER}).powf({power}) - {AD} + {AD} * (1 - {number} * {PHYSICAL_MULTIPLIER}).powf({power})) / {number})",
+            ENEMY_HEALTH = EvalIdent::EnemyHealth,
+            PHYSICAL_MULTIPLIER = EvalIdent::PhysicalMultiplier,
+            AD = EvalIdent::Ad
         )
     };
     let melee_dmg = get_dmg(numbers[0]);
@@ -245,9 +249,10 @@ fn item_3094() -> TestResult {}
 fn item_3100() -> TestResult {
     let damage = extract_damagelike_expr(&cdn_value.passives[0].effects);
     let dmg = format!(
-        "{} + {} * BASE_AD",
+        "{} + {} * {}",
         cap_parens!(damage, 0),
-        cap_percent!(damage, 1) / 100.0
+        cap_percent!(damage, 1) / 100.0,
+        EvalIdent::BaseAd
     );
     write_dmg!(dmg);
 }
@@ -256,7 +261,11 @@ fn item_3100() -> TestResult {
 #[tutorlolv2_macros::item_generator(True)]
 fn item_3107() -> TestResult {
     let damage = extract_damagelike_expr(&cdn_value.active[0].effects);
-    let dmg = format!("{} * ENEMY_MAX_HEALTH", cap_percent!(damage, 0) / 100.0);
+    let dmg = format!(
+        "{} * {}",
+        cap_percent!(damage, 0) / 100.0,
+        EvalIdent::EnemyMaxHealth
+    );
     write_dmg!(dmg);
 }
 

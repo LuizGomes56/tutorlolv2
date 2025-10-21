@@ -17,18 +17,6 @@ use tutorlolv2_gen::{ChampionId, EvalIdent, INTERNAL_CHAMPIONS, Position};
 
 pub type MayFail<T = ()> = Result<T, Box<dyn std::error::Error>>;
 
-pub const NUMBER_OF_CHAMPIONS: usize = INTERNAL_CHAMPIONS.len();
-pub const CHAMPION_NAMES: [&str; NUMBER_OF_CHAMPIONS] = {
-    let mut i = 0;
-    let mut output = [""; NUMBER_OF_CHAMPIONS];
-    while i < NUMBER_OF_CHAMPIONS {
-        let data = INTERNAL_CHAMPIONS[i];
-        output[i] = data.name;
-        i += 1;
-    }
-    output
-};
-
 const GENERATOR_FOLDER: &str = "tutorlolv2_dev/src/generators_v2";
 
 trait F64Ext {
@@ -233,193 +221,15 @@ pub struct GeneratorData {
 pub struct GeneratorFactory(HashMap<ChampionId, fn(CdnChampion) -> Box<dyn Generator>>);
 
 impl GeneratorFactory {
+    pub const NUMBER_OF_CHAMPIONS: usize = INTERNAL_CHAMPIONS.len();
+
     pub fn new() -> Self {
         let mut inner = HashMap::new();
 
-        for i in 0..NUMBER_OF_CHAMPIONS {
+        for i in 0..Self::NUMBER_OF_CHAMPIONS {
             let champion_id = unsafe { std::mem::transmute::<_, ChampionId>(i as u8) };
+            let function = tutorlolv2_macros::generator_fns!(champion_id, "../internal/champions");
 
-            macro_rules! match_arm {
-                ($($name:ident),+$(,)?) => {
-                    match champion_id {
-                        $(ChampionId::$name => $name::new,)+
-                    }
-                };
-            }
-
-            let function = match_arm!(
-                Aatrox,
-                Ahri,
-                Akali,
-                Akshan,
-                Alistar,
-                Ambessa,
-                Amumu,
-                Anivia,
-                Annie,
-                Aphelios,
-                Ashe,
-                AurelionSol,
-                Aurora,
-                Azir,
-                Bard,
-                Belveth,
-                Blitzcrank,
-                Brand,
-                Braum,
-                Briar,
-                Caitlyn,
-                Camille,
-                Cassiopeia,
-                Chogath,
-                Corki,
-                Darius,
-                Diana,
-                Draven,
-                DrMundo,
-                Ekko,
-                Elise,
-                Evelynn,
-                Ezreal,
-                Fiddlesticks,
-                Fiora,
-                Fizz,
-                Galio,
-                Gangplank,
-                Garen,
-                Gnar,
-                Gragas,
-                Graves,
-                Gwen,
-                Hecarim,
-                Heimerdinger,
-                Hwei,
-                Illaoi,
-                Irelia,
-                Ivern,
-                Janna,
-                JarvanIV,
-                Jax,
-                Jayce,
-                Jhin,
-                Jinx,
-                Kaisa,
-                Kalista,
-                Karma,
-                Karthus,
-                Kassadin,
-                Katarina,
-                Kayle,
-                Kayn,
-                Kennen,
-                Khazix,
-                Kindred,
-                Kled,
-                KogMaw,
-                KSante,
-                Leblanc,
-                LeeSin,
-                Leona,
-                Lillia,
-                Lissandra,
-                Lucian,
-                Lulu,
-                Lux,
-                Malphite,
-                Malzahar,
-                Maokai,
-                MasterYi,
-                Mel,
-                Milio,
-                MissFortune,
-                MonkeyKing,
-                Mordekaiser,
-                Morgana,
-                Naafiri,
-                Nami,
-                Nasus,
-                Nautilus,
-                Neeko,
-                Nidalee,
-                Nilah,
-                Nocturne,
-                Nunu,
-                Olaf,
-                Orianna,
-                Ornn,
-                Pantheon,
-                Poppy,
-                Pyke,
-                Qiyana,
-                Quinn,
-                Rakan,
-                Rammus,
-                RekSai,
-                Rell,
-                Renata,
-                Renekton,
-                Rengar,
-                Riven,
-                Rumble,
-                Ryze,
-                Samira,
-                Sejuani,
-                Senna,
-                Seraphine,
-                Sett,
-                Shaco,
-                Shen,
-                Shyvana,
-                Singed,
-                Sion,
-                Sivir,
-                Skarner,
-                Smolder,
-                Sona,
-                Soraka,
-                Swain,
-                Sylas,
-                Syndra,
-                TahmKench,
-                Taliyah,
-                Talon,
-                Taric,
-                Teemo,
-                Thresh,
-                Tristana,
-                Trundle,
-                Tryndamere,
-                TwistedFate,
-                Twitch,
-                Udyr,
-                Urgot,
-                Varus,
-                Vayne,
-                Veigar,
-                Velkoz,
-                Vex,
-                Vi,
-                Viego,
-                Viktor,
-                Vladimir,
-                Volibear,
-                Warwick,
-                Xayah,
-                Xerath,
-                XinZhao,
-                Yasuo,
-                Yone,
-                Yorick,
-                Yunara,
-                Yuumi,
-                Zac,
-                Zed,
-                Zeri,
-                Ziggs,
-                Zilean,
-                Zoe,
-                Zyra
-            );
             inner.insert(champion_id, function);
         }
 
@@ -479,7 +289,7 @@ impl GeneratorFactory {
             std::fs::create_dir(GENERATOR_FOLDER).unwrap();
         }
 
-        for i in 0..NUMBER_OF_CHAMPIONS as u8 {
+        for i in 0..Self::NUMBER_OF_CHAMPIONS as u8 {
             let champion_id = unsafe { std::mem::transmute::<_, ChampionId>(i) };
             let data = Self::create(champion_id)?;
             let file_name = format!("{champion_id:?}").to_lowercase();
@@ -490,7 +300,7 @@ impl GeneratorFactory {
     }
 
     pub fn run_all(&self) {
-        for i in 0..NUMBER_OF_CHAMPIONS {
+        for i in 0..Self::NUMBER_OF_CHAMPIONS {
             let champion_id = unsafe { std::mem::transmute::<_, ChampionId>(i as u8) };
             let result = self.run(champion_id);
             match result {
@@ -637,7 +447,7 @@ impl GeneratorFactory {
     }
 
     pub fn check_all_offsets() {
-        for i in 0..NUMBER_OF_CHAMPIONS {
+        for i in 0..Self::NUMBER_OF_CHAMPIONS {
             let champion_id = unsafe { std::mem::transmute::<_, ChampionId>(i as u8) };
             match Self::check_offsets(champion_id) {
                 Err(e) => {

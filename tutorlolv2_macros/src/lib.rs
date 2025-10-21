@@ -1,7 +1,152 @@
 use proc_macro::TokenStream;
-use proc_macro2::{Delimiter, TokenStream as TokenStream2, TokenTree};
+use proc_macro2::{Delimiter, Span, TokenStream as TokenStream2, TokenTree};
 use quote::{ToTokens, quote};
-use syn::{Ident, parse_macro_input, punctuated::Punctuated, token::Comma};
+use std::fs;
+use syn::{
+    Expr, Ident, LitStr, Token, parse::Parse, parse_macro_input, punctuated::Punctuated,
+    token::Comma,
+};
+
+struct Args {
+    scrutinee: Expr,
+    _comma: Token![,],
+    abs_dir: LitStr,
+}
+
+impl Parse for Args {
+    fn parse(input: syn::parse::ParseStream<'_>) -> syn::Result<Self> {
+        Ok(Self {
+            scrutinee: input.parse()?,
+            _comma: input.parse()?,
+            abs_dir: input.parse()?,
+        })
+    }
+}
+
+#[proc_macro]
+pub fn generate_structs(input: TokenStream) -> TokenStream {
+    let dir_lit = parse_macro_input!(input as LitStr);
+    let input_dir = dir_lit.value();
+    let dir = format!("{}/{}", env!("CARGO_MANIFEST_DIR"), input_dir);
+
+    let entries = match fs::read_dir(&dir) {
+        Ok(rd) => rd,
+        Err(_) => {
+            return syn::Error::new(dir_lit.span(), "failed to read directory")
+                .to_compile_error()
+                .into();
+        }
+    };
+
+    let mut names: Vec<String> = Vec::new();
+    let mut file_paths: Vec<String> = Vec::new();
+
+    for ent in entries.flatten() {
+        let path = ent.path();
+        if path.is_file() && path.extension().and_then(|e| e.to_str()) == Some("json") {
+            if let (Some(stem), Some(pstr)) =
+                (path.file_stem().and_then(|s| s.to_str()), path.to_str())
+            {
+                names.push(stem.to_string());
+                file_paths.push(pstr.to_string());
+            }
+        }
+    }
+
+    if names.is_empty() {
+        return syn::Error::new(dir_lit.span(), "no .json files found in directory")
+            .to_compile_error()
+            .into();
+    }
+
+    names.sort();
+
+    let idents: Vec<Ident> = names
+        .iter()
+        .map(|n| Ident::new(n, Span::call_site()))
+        .collect();
+
+    let structs = idents.iter().map(|name| {
+        quote! {
+            pub struct #name(pub GeneratorData);
+
+            impl #name {
+                pub fn new(data: CdnChampion) -> Box<dyn Generator> {
+                    Box::new(Self(GeneratorData::new(data)))
+                }
+            }
+
+            impl ::core::ops::Deref for #name {
+                type Target = GeneratorData;
+                fn deref(&self) -> &Self::Target { &self.0 }
+            }
+
+            impl ::core::ops::DerefMut for #name {
+                fn deref_mut(&mut self) -> &mut Self::Target { &mut self.0 }
+            }
+        }
+    });
+
+    TokenStream::from(quote! {
+        #( #structs )*
+    })
+}
+
+#[proc_macro]
+pub fn generator_fns(input: TokenStream) -> TokenStream {
+    let Args {
+        scrutinee, abs_dir, ..
+    } = parse_macro_input!(input as Args);
+    let input_dir = abs_dir.value();
+    let dir = format!("{}/{}", env!("CARGO_MANIFEST_DIR"), input_dir);
+
+    let entries = match fs::read_dir(&dir) {
+        Ok(rd) => rd,
+        Err(e) => {
+            return syn::Error::new(abs_dir.span(), format!("failed to read directory: {e:?}"))
+                .to_compile_error()
+                .into();
+        }
+    };
+
+    let mut names: Vec<String> = Vec::new();
+    let mut file_paths: Vec<String> = Vec::new();
+
+    for ent in entries.flatten() {
+        let path = ent.path();
+        if path.is_file() && path.extension().and_then(|e| e.to_str()) == Some("json") {
+            if let (Some(stem), Some(pstr)) =
+                (path.file_stem().and_then(|s| s.to_str()), path.to_str())
+            {
+                names.push(stem.to_string());
+                file_paths.push(pstr.to_string());
+            }
+        }
+    }
+
+    if names.is_empty() {
+        return syn::Error::new(abs_dir.span(), "no .json files found in directory")
+            .to_compile_error()
+            .into();
+    }
+
+    names.sort();
+
+    let idents: Vec<Ident> = names
+        .iter()
+        .map(|n| Ident::new(n, Span::call_site()))
+        .collect();
+
+    let arms = idents.iter().map(|id| {
+        quote! { ChampionId::#id => #id::new, }
+    });
+
+    TokenStream::from(quote! {{
+        match #scrutinee {
+            #( #arms )*
+        }
+    }})
+}
 
 fn check_macro_invocation(ts: &TokenStream2) -> Option<proc_macro2::Span> {
     let mut last_ident_is_ability = false;
