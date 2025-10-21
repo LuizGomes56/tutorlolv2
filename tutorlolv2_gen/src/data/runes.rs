@@ -52,8 +52,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                     damage_type: DamageType::Adaptative,
                     attributes: Attrs::None
                 },
-                    melee_closure: |ctx| (25f32 + 95f32 / 17f32 * (ctx.level - 1f32) + 0.08f32 * ctx.bonus_health) * ctx.magic_multiplier,
-                    range_closure: |ctx| (25f32 + 95f32 / 17f32 * (ctx.level - 1f32) + 0.08f32 * ctx.bonus_health) * ctx.magic_multiplier,
+                    melee_closure: |_| 0.0f32,
+                    range_closure: |_| 0.0f32,
                 };pub static APPROACH_VELOCITY_8410: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -124,8 +124,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                     damage_type: DamageType::True,
                     attributes: Attrs::None
                 },
-                    melee_closure: |ctx| 10f32 + 35f32 / 17f32 * (ctx.level - 1f32),
-                    range_closure: |ctx| 10f32 + 35f32 / 17f32 * (ctx.level - 1f32),
+                    melee_closure: |_| 0.0f32,
+                    range_closure: |_| 0.0f32,
                 };pub static COMET_8229: CachedRune = CachedRune {
                     damage_type: DamageType::Adaptative,
                     metadata: TypeMetadata {
@@ -286,8 +286,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                     damage_type: DamageType::Magic,
                     attributes: Attrs::None
                 },
-                    melee_closure: |ctx| 0.035f32 * ctx.max_health * ctx.magic_multiplier,
-                    range_closure: |ctx| 0.021f32 * ctx.max_health * ctx.magic_multiplier,
+                    melee_closure: |_| 0.0f32,
+                    range_closure: |_| 0.0f32,
                 };pub static GRISLY_MEMENTOS_8140: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -502,8 +502,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                     damage_type: DamageType::Magic,
                     attributes: Attrs::None
                 },
-                    melee_closure: |ctx| (20f32 + 20f32 / 17f32 * (ctx.level - 1f32)) * ctx.magic_multiplier,
-                    range_closure: |ctx| (20f32 + 20f32 / 17f32 * (ctx.level - 1f32)) * ctx.magic_multiplier,
+                    melee_closure: |_| 0.0f32,
+                    range_closure: |_| 0.0f32,
                 };pub static SECOND_WIND_8444: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {
@@ -538,8 +538,8 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                     damage_type: DamageType::True,
                     attributes: Attrs::None
                 },
-                    melee_closure: |ctx| 20f32 + 60f32 / 17f32 * (ctx.level - 1f32),
-                    range_closure: |ctx| 20f32 + 60f32 / 17f32 * (ctx.level - 1f32),
+                    melee_closure: |_| 0.0f32,
+                    range_closure: |_| 0.0f32,
                 };pub static TASTE_OF_BLOOD_8139: CachedRune = CachedRune {
                 damage_type: DamageType::Unknown,
                 metadata: TypeMetadata {

@@ -76,29 +76,38 @@ pub fn is_valid_math_expression(input: &str) -> bool {
     if expr.is_empty() {
         return false;
     }
-    if expr.chars().any(|c| c.is_ascii_lowercase()) {
-        return false;
-    }
 
     let expr_ns = expr
         .chars()
         .filter(|c| !c.is_whitespace())
         .collect::<String>();
-    let valid_token_re = Regex::new(r"^[\d\.\+\-\*/\(\)A-Z_]+$").unwrap();
-    if !valid_token_re.is_match(&expr_ns) {
+
+    let token_re = Regex::new(r"(?:ctx\.[a-z_][a-z0-9_]*)|\d+\.\d+|\d+|[+\-*/()]").unwrap();
+
+    let tokens = token_re
+        .find_iter(&expr_ns)
+        .map(|m| m.as_str())
+        .collect::<Vec<&str>>();
+    if tokens.is_empty() {
         return false;
     }
 
-    let trailing_op = Regex::new(r"[+\-*/]$").unwrap();
-    if trailing_op.is_match(&expr_ns) {
+    if tokens.concat() != expr_ns {
         return false;
     }
 
-    let mut depth = 0;
-    for c in expr_ns.chars() {
-        match c {
-            '(' => depth += 1,
-            ')' => {
+    if matches!(
+        tokens.last().copied(),
+        Some("+") | Some("-") | Some("*") | Some("/") | Some("(")
+    ) {
+        return false;
+    }
+
+    let mut depth = 0_i32;
+    for t in &tokens {
+        match *t {
+            "(" => depth += 1,
+            ")" => {
                 if depth == 0 {
                     return false;
                 }
@@ -200,28 +209,9 @@ fn parse_primary(tokens: &[String], pos: &mut usize) -> Expr {
     }
 }
 
-pub fn tokenize(expr: &str) -> Vec<String> {
-    let re = Regex::new(
-        r"(?x)
-        (?P<ctx>ctx \s* \. \s* (?P<ident>[a-z_][a-z0-9_]*))
-        |
-        (?P<float>\d+\.\d+)
-        |
-        (?P<int>\d+)
-        |
-        (?P<op>[+\-*/()])",
-    )
-    .unwrap();
-
-    re.captures_iter(expr)
-        .map(|caps| {
-            if let Some(id) = caps.name("ident") {
-                format!("ctx.{}", id.as_str())
-            } else {
-                caps.get(0).unwrap().as_str().to_string()
-            }
-        })
-        .collect()
+fn tokenize(expr: &str) -> Vec<String> {
+    let re = Regex::new(r"ctx\.[a-z_]+|[A-Z_]+|\d+\.\d+|\d+|[\+\-\*/\(\)]").unwrap();
+    re.find_iter(expr).map(|m| m.as_str().to_string()).collect()
 }
 
 pub fn clean_math_expr(expr: &str) -> String {

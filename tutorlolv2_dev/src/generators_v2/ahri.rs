@@ -17,21 +17,24 @@ impl Generator for Ahri {
         ability![E, (0, 0, _1)];
         ability![R, (0, 0, _1)];
 
-        let q_max = merge_damage!(|q| format!("({}) * MAGIC_MULTIPLIER + ({})", q, q), Q::Void,);
+        // let q_max = merge_damage!(
+        //     |q| format!("({q}) * {} + ({q})", EvalIdent::MagicMultiplier),
+        //     Q::Void,
+        // );
 
-        let q_mut_ref = clone_to![Q::Void => Q::Max];
-        q_mut_ref.damage = q_max;
-        q_mut_ref.damage_type = DamageType::Mixed;
+        // let q_mut_ref = clone_to![Q::Void => Q::Max];
+        // q_mut_ref.damage = q_max;
+        // q_mut_ref.damage_type = DamageType::Mixed;
 
-        clone_to![R::Void => R::Max];
-        let r_max = merge_damage!(|r| format!("3 * ({})", r), R::Void);
-        get_mut![R::Max].damage = r_max;
+        // clone_to![R::Void => R::Max];
+        // let r_max = merge_damage!(|r| format!("3 * ({r})"), R::Void);
+        // get_mut![R::Max].damage = r_max;
 
-        merge![
-            Q::Void <= Q::Max,
-            W::Void <= W::Max,
-            W::Minion <= W::MinionMax,
-            R::Void <= R::Max
-        ];
+        // merge![
+        //     Q::Void <= Q::Max,
+        //     W::Void <= W::Max,
+        //     W::Minion <= W::MinionMax,
+        //     R::Void <= R::Max
+        // ];
     }
 }

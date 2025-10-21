@@ -493,11 +493,16 @@ impl GeneratorFactory {
         for i in 0..NUMBER_OF_CHAMPIONS {
             let champion_id = unsafe { std::mem::transmute::<_, ChampionId>(i as u8) };
             let result = self.run(champion_id);
-            if let Ok(champion) = result {
-                let json_string = serde_json::to_string_pretty(&champion).unwrap();
-                format!("internal/champions/{champion_id:?}.json")
-                    .write_to_file(json_string.as_bytes())
-                    .unwrap();
+            match result {
+                Ok(champion) => {
+                    let json_string = serde_json::to_string_pretty(&champion).unwrap();
+                    format!("internal/champions/{champion_id:?}.json")
+                        .write_to_file(json_string.as_bytes())
+                        .unwrap();
+                }
+                Err(e) => {
+                    println!("Error generating {champion_id:?}: {e:?}");
+                }
             };
         }
     }
