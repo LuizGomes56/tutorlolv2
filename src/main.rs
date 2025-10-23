@@ -240,7 +240,7 @@ async fn main() {
         Some("check-gen") => {
             GeneratorFactory::check_all_offsets();
         }
-        Some("run-gen") => GeneratorFactory::new().run_all(),
+        Some("run-gen") => GeneratorFactory::run_all(),
         Some("make-gen") => {
             let _ = GeneratorFactory::create_all();
         }

@@ -92,6 +92,7 @@ pub struct PartialStats {
 
 #[derive(Deserialize, Serialize)]
 pub struct Item {
+    pub id: u32,
     pub name: String,
     pub gold: u32,
     pub tier: u8,

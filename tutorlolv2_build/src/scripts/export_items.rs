@@ -32,6 +32,7 @@ pub struct DamageObject {
 
 #[derive(Deserialize)]
 pub struct Item {
+    pub id: u32,
     pub name: String,
     pub gold: u16,
     pub tier: u8,
@@ -134,27 +135,23 @@ pub struct ItemDetails {
 pub fn export_items() -> Vec<(u32, ItemDetails)> {
     let mut items = init_map!(dir Item, "internal/items")
         .into_par_iter()
-        .map(|(item_id_str, item)| {
-            let item_id = item_id_str.parse::<u32>().unwrap();
+        .map(|(_, item)| {
+            let item_id = item.id;
 
             let prettified_stats = item
                 .prettified_stats
                 .iter()
                 .map(|(k, v)| {
-                    format!(
-                        "StatName::{}({})",
-                        {
-                            let mut s = k.replace(" ", "");
-                            if s == "Lethality" {
-                                s = "ArmorPenetration".to_string();
-                            }
-                            if s == "HealandShieldPower" {
-                                s = "HealAndShieldPower".to_string()
-                            }
-                            s
-                        },
-                        v
-                    )
+                    format!("StatName::{}({v})", {
+                        let mut s = k.replace(" ", "");
+                        if s == "Lethality" {
+                            s = "ArmorPenetration".to_string();
+                        }
+                        if s == "HealandShieldPower" {
+                            s = "HealAndShieldPower".to_string()
+                        }
+                        s
+                    })
                 })
                 .collect::<Vec<String>>()
                 .join(",");

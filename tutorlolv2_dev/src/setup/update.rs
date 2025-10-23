@@ -10,7 +10,7 @@ use crate::{
 use regex::Regex;
 use serde_json::Value;
 use std::{collections::HashMap, fs, path::Path};
-use tutorlolv2_gen::{Attrs, DamageType};
+use tutorlolv2_gen::{Attrs, DamageType, ItemId};
 
 /// Creates basic folders necessary to run the program. If one of these folders are not found,
 /// The program is likely to panic when an update is called.
@@ -132,6 +132,7 @@ pub fn setup_internal_items() {
         item_stats.magic_penetration_percent = stats.magic_penetration.percent;
 
         let result = Item {
+            id: cdn_item.id,
             prettified_stats: HashMap::default(),
             name: cdn_item.name,
             gold: cdn_item.shop.prices.total,
@@ -145,9 +146,12 @@ pub fn setup_internal_items() {
             purchasable: cdn_item.shop.purchasable,
         };
         let json = serde_json::to_string(&result).unwrap();
-        format!("internal/items/{}.json", cdn_item.id)
-            .write_to_file(json.as_bytes())
-            .unwrap();
+        format!(
+            "internal/items/{:?}.json",
+            ItemId::from_riot_id(cdn_item.id)
+        )
+        .write_to_file(json.as_bytes())
+        .unwrap();
     }
 }
 
@@ -175,7 +179,7 @@ pub fn setup_runes_json() {
 /// patch to identify if a new damaging item was added
 #[tutorlolv2_macros::trace_time]
 pub fn setup_damaging_items() {
-    let re: Regex = Regex::new(r"\{\{[^}]*\}\}").unwrap();
+    let re = Regex::new(r"\{\{[^}]*\}\}").unwrap();
 
     let contains_damage_outside_template = |text: &str| -> bool {
         let cleaned = re.replace_all(text, "");
@@ -262,8 +266,11 @@ pub async fn prettify_internal_items() {
         let file_entry = file.unwrap();
         let path_buf = file_entry.path();
         let name = path_buf.json_file_name();
-        let path_name = format!("cache/riot/items/{}.json", name);
-        let internal_path = format!("internal/items/{}.json", name);
+        let path_name = format!("cache/riot/items/{name}.json");
+        let internal_path = format!(
+            "internal/items/{:?}.json",
+            ItemId::from_riot_id(name.parse().unwrap())
+        );
 
         let prettified_stats = pretiffy_items(&path_name);
 

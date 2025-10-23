@@ -2,9 +2,8 @@
 //! Generate fields "melee" and "ranged" for each item in "internal/items/*.json".
 //! Sort fields by their name to avoid same problem involving ordering effects
 
-use crate::generators_v2::RegExtractor;
-
 use super::*;
+use crate::generators_v2::gen_utils::RegExtractor;
 use regex::Regex;
 use serde::Deserialize;
 use tutorlolv2_gen::EvalIdent;
@@ -168,7 +167,7 @@ fn item_3115() -> TestResult {
 /// [Context](https://tutorlol.com/formulas)
 #[tutorlolv2_macros::item_generator(Physical)]
 fn item_3153() -> TestResult {
-    let damagelike_expr = extract_damagelike_expr(&cdn_value.passives[0].effects);
+    let damagelike_expr = cdn_value.passives[0].effects.get_damage();
     let numbers = Regex::new(r"(\d+)%")
         .unwrap()
         .captures_iter(&damagelike_expr)

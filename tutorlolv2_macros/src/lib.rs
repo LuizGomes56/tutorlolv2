@@ -1,151 +1,147 @@
 use proc_macro::TokenStream;
-use proc_macro2::{Delimiter, Span, TokenStream as TokenStream2, TokenTree};
+use proc_macro2::{Delimiter, Group, Span, TokenStream as TokenStream2, TokenTree};
 use quote::{ToTokens, quote};
 use std::fs;
 use syn::{
-    Expr, Ident, LitStr, Token, parse::Parse, parse_macro_input, punctuated::Punctuated,
-    token::Comma,
+    Ident, LitStr, Token, parse::Parse, parse_macro_input, punctuated::Punctuated, token::Comma,
 };
 
-struct Args {
-    scrutinee: Expr,
+struct ExpandDirArgs {
+    dir: LitStr,
     _comma: Token![,],
-    abs_dir: LitStr,
+    _bar1: Token![|],
+    placeholder: Placeholder,
+    _bar2: Token![|],
+    template: TokenStream2,
 }
 
-impl Parse for Args {
+enum Placeholder {
+    Simple(Ident),
+    Array(Ident),
+}
+
+impl Parse for ExpandDirArgs {
     fn parse(input: syn::parse::ParseStream<'_>) -> syn::Result<Self> {
+        let dir: LitStr = input.parse()?;
+        let _comma: Token![,] = input.parse()?;
+        let _bar1: Token![|] = input.parse()?;
+
+        let placeholder = if input.peek(syn::token::Bracket) {
+            let content;
+            let _ = syn::bracketed!(content in input);
+            let name: Ident = content.parse()?;
+            if !content.is_empty() {
+                return Err(syn::Error::new(
+                    content.span(),
+                    "expected single ident inside []",
+                ));
+            }
+            Placeholder::Array(name)
+        } else {
+            Placeholder::Simple(input.parse()?)
+        };
+
+        let _bar2: Token![|] = input.parse()?;
+        let template: TokenStream2 = input.parse()?;
+
         Ok(Self {
-            scrutinee: input.parse()?,
-            _comma: input.parse()?,
-            abs_dir: input.parse()?,
+            dir,
+            _comma,
+            _bar1,
+            placeholder,
+            _bar2,
+            template,
         })
     }
 }
 
 #[proc_macro]
-pub fn generate_structs(input: TokenStream) -> TokenStream {
-    let dir_lit = parse_macro_input!(input as LitStr);
-    let input_dir = dir_lit.value();
-    let dir = format!("{}/{}", env!("CARGO_MANIFEST_DIR"), input_dir);
+pub fn expand_dir(input: TokenStream) -> TokenStream {
+    let ExpandDirArgs {
+        dir,
+        placeholder,
+        template,
+        ..
+    } = parse_macro_input!(input as ExpandDirArgs);
+    let dir_str = format!("{}/{}", env!("CARGO_MANIFEST_DIR"), dir.value());
 
-    let entries = match fs::read_dir(&dir) {
+    let entries = match fs::read_dir(&dir_str) {
         Ok(rd) => rd,
         Err(_) => {
-            return syn::Error::new(dir_lit.span(), "failed to read directory")
+            return syn::Error::new(dir.span(), "failed to read directory")
                 .to_compile_error()
                 .into();
         }
     };
 
-    let mut names: Vec<String> = Vec::new();
-    let mut file_paths: Vec<String> = Vec::new();
-
+    let mut stems = Vec::new();
     for ent in entries.flatten() {
         let path = ent.path();
         if path.is_file() && path.extension().and_then(|e| e.to_str()) == Some("json") {
-            if let (Some(stem), Some(pstr)) =
-                (path.file_stem().and_then(|s| s.to_str()), path.to_str())
-            {
-                names.push(stem.to_string());
-                file_paths.push(pstr.to_string());
+            if let Some(stem) = path.file_stem().and_then(|s| s.to_str()) {
+                stems.push(stem.to_string());
             }
         }
     }
-
-    if names.is_empty() {
-        return syn::Error::new(dir_lit.span(), "no .json files found in directory")
+    if stems.is_empty() {
+        return syn::Error::new(dir.span(), "no .json files found in directory")
             .to_compile_error()
             .into();
     }
+    stems.sort();
 
-    names.sort();
+    let (ph_ident, is_array) = match &placeholder {
+        Placeholder::Simple(id) => (id, false),
+        Placeholder::Array(id) => (id, true),
+    };
 
-    let idents: Vec<Ident> = names
+    let tpl = unwrap_outer_group(template);
+
+    let pieces = stems
         .iter()
-        .map(|n| Ident::new(n, Span::call_site()))
-        .collect();
+        .map(|name| {
+            let id = Ident::new(name, Span::call_site());
+            subst_ident(tpl.clone(), ph_ident, &id)
+        })
+        .collect::<Vec<_>>();
 
-    let structs = idents.iter().map(|name| {
-        quote! {
-            pub struct #name(pub GeneratorData);
+    let out = if is_array {
+        quote! { [#( #pieces ),*] }
+    } else {
+        quote! { #( #pieces )* }
+    };
 
-            impl #name {
-                pub fn new(data: CdnChampion) -> Box<dyn Generator> {
-                    Box::new(Self(GeneratorData::new(data)))
-                }
-            }
-
-            impl ::core::ops::Deref for #name {
-                type Target = GeneratorData;
-                fn deref(&self) -> &Self::Target { &self.0 }
-            }
-
-            impl ::core::ops::DerefMut for #name {
-                fn deref_mut(&mut self) -> &mut Self::Target { &mut self.0 }
-            }
-        }
-    });
-
-    TokenStream::from(quote! {
-        #( #structs )*
-    })
+    TokenStream::from(out)
 }
 
-#[proc_macro]
-pub fn generator_fns(input: TokenStream) -> TokenStream {
-    let Args {
-        scrutinee, abs_dir, ..
-    } = parse_macro_input!(input as Args);
-    let input_dir = abs_dir.value();
-    let dir = format!("{}/{}", env!("CARGO_MANIFEST_DIR"), input_dir);
+fn unwrap_outer_group(ts: TokenStream2) -> TokenStream2 {
+    let mut it = ts.clone().into_iter();
+    if let (Some(TokenTree::Group(g)), None) = (it.next(), it.next()) {
+        return g.stream();
+    }
+    ts
+}
 
-    let entries = match fs::read_dir(&dir) {
-        Ok(rd) => rd,
-        Err(e) => {
-            return syn::Error::new(abs_dir.span(), format!("failed to read directory: {e:?}"))
-                .to_compile_error()
-                .into();
-        }
-    };
-
-    let mut names: Vec<String> = Vec::new();
-    let mut file_paths: Vec<String> = Vec::new();
-
-    for ent in entries.flatten() {
-        let path = ent.path();
-        if path.is_file() && path.extension().and_then(|e| e.to_str()) == Some("json") {
-            if let (Some(stem), Some(pstr)) =
-                (path.file_stem().and_then(|s| s.to_str()), path.to_str())
-            {
-                names.push(stem.to_string());
-                file_paths.push(pstr.to_string());
+fn subst_ident(ts: TokenStream2, from: &Ident, to: &Ident) -> TokenStream2 {
+    ts.into_iter()
+        .map(|tt| match tt {
+            TokenTree::Ident(id) if id == *from => TokenTree::Ident(to.clone()),
+            TokenTree::Group(g) => {
+                let inner = subst_ident(g.stream(), from, to);
+                let mut ng = Group::new(g.delimiter(), inner);
+                ng.set_span(g.span());
+                TokenTree::Group(ng).into()
             }
-        }
-    }
+            other => other.into(),
+        })
+        .collect()
+}
 
-    if names.is_empty() {
-        return syn::Error::new(abs_dir.span(), "no .json files found in directory")
-            .to_compile_error()
-            .into();
-    }
-
-    names.sort();
-
-    let idents: Vec<Ident> = names
-        .iter()
-        .map(|n| Ident::new(n, Span::call_site()))
-        .collect();
-
-    let arms = idents.iter().map(|id| {
-        quote! { ChampionId::#id => #id::new, }
-    });
-
-    TokenStream::from(quote! {{
-        match #scrutinee {
-            #( #arms )*
-        }
-    }})
+#[proc_macro_attribute]
+pub fn item_gen_v2(_args: TokenStream, input: TokenStream) -> TokenStream {
+    let mut func = parse_macro_input!(input as syn::ItemFn);
+    func.block = Box::new(syn::parse_quote!({ todo!() }));
+    TokenStream::from(quote!(#func))
 }
 
 fn check_macro_invocation(ts: &TokenStream2) -> Option<proc_macro2::Span> {
