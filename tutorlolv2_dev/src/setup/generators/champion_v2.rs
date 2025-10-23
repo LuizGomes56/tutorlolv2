@@ -34,6 +34,9 @@ impl F64Ext for f64 {
 }
 
 pub trait RegExtractor {
+    fn capture_percent(&self, number: usize) -> MayFail<f64>;
+    fn capture_numbers(&self) -> Vec<String>;
+    fn capture_parens(&self, number: usize) -> MayFail<String>;
     fn replace_keys(&self) -> String;
     fn remove_parenthesis(&self) -> String;
     fn get_scalings(&self) -> String;
@@ -48,6 +51,37 @@ pub trait RegExtractor {
 }
 
 impl RegExtractor for str {
+    fn capture_parens(&self, number: usize) -> MayFail<String> {
+        Ok(
+            Regex::new(&format!(r"^(?:.*?(\([^()]*\))){{{}}}", number + 1))
+                .unwrap()
+                .captures(self)
+                .and_then(|cap| cap.get(1).map(|m| m.as_str()))
+                .ok_or(format!(
+                    "There are no parenthesis in #{} for '{}'",
+                    number, self
+                ))?
+                .to_string(),
+        )
+    }
+
+    fn capture_percent(&self, number: usize) -> MayFail<f64> {
+        Ok(Regex::new(&format!(r"^(?:.*?(\d+)%){{{}}}", number + 1))?
+            .captures(self)
+            .and_then(|cap| cap.get(1).map(|m| m.as_str()))
+            .ok_or(format!("No percent value in #{} for '{}'", number, self))?
+            .parse::<f64>()
+            .map_err(|e| format!("Unable to convert all numbers to f64: {e:?}"))?)
+    }
+
+    fn capture_numbers(&self) -> Vec<String> {
+        Regex::new(r"\d+")
+            .unwrap()
+            .find_iter(self)
+            .map(|m| m.as_str().to_string())
+            .collect::<Vec<String>>()
+    }
+
     fn replace_keys(&self) -> String {
         let mut replacements = Vec::<(&'static str, Box<dyn Display>)>::new();
 
@@ -218,22 +252,16 @@ pub struct GeneratorData {
     pub mergevec: Vec<(AbilityLike, AbilityLike)>,
 }
 
-pub struct GeneratorFactory(HashMap<ChampionId, fn(CdnChampion) -> Box<dyn Generator>>);
+pub struct GeneratorFactory([fn(CdnChampion) -> Box<dyn Generator>; Self::NUMBER_OF_CHAMPIONS]);
 
 impl GeneratorFactory {
     pub const NUMBER_OF_CHAMPIONS: usize = INTERNAL_CHAMPIONS.len();
 
     pub fn new() -> Self {
-        let mut inner = HashMap::new();
-
-        for i in 0..Self::NUMBER_OF_CHAMPIONS {
-            let champion_id = unsafe { std::mem::transmute::<_, ChampionId>(i as u8) };
-            let function = tutorlolv2_macros::generator_fns!(champion_id, "../internal/champions");
-
-            inner.insert(champion_id, function);
-        }
-
-        Self(inner)
+        Self(std::array::from_fn(|i| {
+            let champion_id = unsafe { std::mem::transmute::<u8, ChampionId>(i as u8) };
+            tutorlolv2_macros::generator_fns!(champion_id, "../internal/champions")
+        }))
     }
 
     pub fn create(champion_id: ChampionId) -> MayFail<String> {
@@ -322,9 +350,14 @@ impl GeneratorFactory {
         }
     }
 
-    pub fn run(&self, name: ChampionId) -> MayFail<Champion> {
-        let data = format!("cache/cdn/champions/{name:?}.json").read_json::<CdnChampion>()?;
-        let function = self.0[&name];
+    pub fn get(&self, champion_id: ChampionId) -> fn(CdnChampion) -> Box<dyn Generator> {
+        self.0[champion_id as usize]
+    }
+
+    pub fn run(&self, champion_id: ChampionId) -> MayFail<Champion> {
+        let data =
+            format!("cache/cdn/champions/{champion_id:?}.json").read_json::<CdnChampion>()?;
+        let function = self.get(champion_id);
         let generator = function(data);
         Ok(generator.generate()?)
     }

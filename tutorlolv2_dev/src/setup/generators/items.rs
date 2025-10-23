@@ -2,6 +2,8 @@
 //! Generate fields "melee" and "ranged" for each item in "internal/items/*.json".
 //! Sort fields by their name to avoid same problem involving ordering effects
 
+use crate::generators_v2::RegExtractor;
+
 use super::*;
 use regex::Regex;
 use serde::Deserialize;
@@ -159,8 +161,7 @@ pub fn assign_item_damages() -> TestResult {
 /// Nashor's Tooth
 #[tutorlolv2_macros::item_generator(Magic, Onhit)]
 fn item_3115() -> TestResult {
-    let damage = extract_damagelike_expr(&cdn_value.passives[0].effects);
-    write_dmg!(damage);
+    write_dmg!(cdn_value.passives[0].effects.get_damage());
 }
 
 /// Blade of the Ruined King
@@ -173,7 +174,7 @@ fn item_3153() -> TestResult {
         .captures_iter(&damagelike_expr)
         .map(|cap| cap.get(1).unwrap().as_str().parse::<f64>().unwrap() / 100.0)
         .collect::<Vec<f64>>();
-    let get_dmg = |number: f64| {
+    let get_dmg = |number| {
         let power = 1;
         format!(
             "{ENEMY_HEALTH} - (({number} * {ENEMY_HEALTH} * (1 - {number} * {PHYSICAL_MULTIPLIER}).powf({power}) - {AD} + {AD} * (1 - {number} * {PHYSICAL_MULTIPLIER}).powf({power})) / {number})",
@@ -247,11 +248,16 @@ fn item_3094() -> TestResult {}
 /// Lich Bane
 #[tutorlolv2_macros::item_generator(Magic, OnhitMax)]
 fn item_3100() -> TestResult {
-    let damage = extract_damagelike_expr(&cdn_value.passives[0].effects);
+    let damage = cdn_value
+        .passives
+        .get(0)
+        .ok_or("Index 0 is for cdn_value.passives is no longer valid")?
+        .effects
+        .get_damage();
     let dmg = format!(
         "{} + {} * {}",
-        cap_parens!(damage, 0),
-        cap_percent!(damage, 1) / 100.0,
+        damage.capture_parens(0)?,
+        damage.capture_percent(1)? / 100.0,
         EvalIdent::BaseAd
     );
     write_dmg!(dmg);
@@ -263,7 +269,7 @@ fn item_3107() -> TestResult {
     let damage = extract_damagelike_expr(&cdn_value.active[0].effects);
     let dmg = format!(
         "{} * {}",
-        cap_percent!(damage, 0) / 100.0,
+        damage.capture_percent(0)? / 100.0,
         EvalIdent::EnemyMaxHealth
     );
     write_dmg!(dmg);

@@ -550,45 +550,6 @@ pub fn item_generator(args: TokenStream, input: TokenStream) -> TokenStream {
         let cdn_value = format!("cache/cdn/items/{}.json", id).read_json::<CdnItem>()?;
         let mut cur_value = format!("internal/items/{}.json", id).read_json::<Item>()?;
 
-        macro_rules! save_change {
-            () => {
-                format!("internal/items/{}.json", id).write_to_file(serde_json::to_string_pretty(&cur_value).unwrap().as_bytes())
-            };
-        };
-
-        macro_rules! cap_parens {
-            ($expr:expr, $n:expr) => {{
-                let pattern = format!(r"^(?:.*?(\([^()]*\))){{{}}}", $n + 1);
-                let re = Regex::new(&pattern)
-                    .expect("Falha ao compilar a regex de parênteses");
-                re.captures(&$expr)
-                    .and_then(|cap| cap.get(1).map(|m| m.as_str()))
-                    .expect(&format!("Não existe parênteses #{} em '{}'", $n, $expr))
-            }};
-        };
-
-        macro_rules! cap_numbers {
-            ($expr:expr) => {{
-                let re = ::regex::Regex::new(r"\d+")
-                    .expect("Falha ao compilar regex de números");
-                re.find_iter(&$expr)
-                    .map(|m| m.as_str().to_string())
-                    .collect::<Vec<String>>()
-            }};
-        };
-
-        macro_rules! cap_percent {
-            ($expr:expr, $n:expr) => {{
-                let pattern = format!(r"^(?:.*?(\d+)%){{{}}}", $n + 1);
-                let re = Regex::new(&pattern)
-                    .expect("Falha ao compilar a regex de percentuais");
-                re.captures(&$expr)
-                    .and_then(|cap| cap.get(1).map(|m| m.as_str()))
-                    .expect(&format!("Não existe percentual #{} em '{}'", $n, $expr))
-                    .parse::<f64>().unwrap()
-            }};
-        };
-
         macro_rules! write_dmg {
             (@ranged $ranged:expr, @melee $melee:expr) => {{
                 cur_value.ranged = Some(DamageObject {
@@ -630,7 +591,7 @@ pub fn item_generator(args: TokenStream, input: TokenStream) -> TokenStream {
     func.block = Box::new(syn::parse_quote!({
         #expand_decl
         #old_block
-        save_change!()
+        format!("internal/items/{}.json", id).write_to_file(serde_json::to_string_pretty(&cur_value).unwrap().as_bytes())
     }));
 
     TokenStream::from(quote! {
