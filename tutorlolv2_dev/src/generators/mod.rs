@@ -6,7 +6,5 @@ pub mod gen_runes;
 pub mod gen_utils;
 
 pub trait Generator<T> {
-    fn generate(self: Box<Self>) -> MayFail<T>;
+    fn generate(self: Box<Self>) -> crate::MayFail<T>;
 }
-
-pub type MayFail<T = ()> = Result<T, Box<dyn std::error::Error>>;

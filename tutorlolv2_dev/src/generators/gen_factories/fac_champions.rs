@@ -1,8 +1,8 @@
 use crate::{
+    JsonRead, JsonWrite, MayFail,
     champions::{Ability, Champion, MerakiAbility, MerakiChampion, Modifiers},
-    ext::FilePathExt,
     generators::{
-        Generator, MayFail,
+        Generator,
         gen_decl::decl_champions::*,
         gen_utils::{F64Ext, RegExtractor},
     },
@@ -18,7 +18,7 @@ use tutorlolv2_gen::{
     AbilityLike, AbilityName, ChampionId, EvalIdent, INTERNAL_CHAMPIONS, Position,
 };
 
-const GENERATOR_FOLDER: &str = "tutorlolv2_dev/src/generators_v2/gen_champions";
+const GENERATOR_FOLDER: &str = "tutorlolv2_dev/src/generators/gen_champions";
 
 pub struct ChampionData {
     pub data: MerakiChampion,
@@ -69,8 +69,7 @@ impl ChampionFactory {
         }
 
         let meraki_champion =
-            format!("cache/cdn/champions/{champion_id:?}.json").read_json::<MerakiChampion>()?;
-
+            MerakiChampion::from_file(format!("cache/cdn/champions/{champion_id:?}.json"))?;
         for (ability_char, ability_vec) in meraki_champion.abilities.into_iter() {
             let meraki_offsets = ChampionData::get_ability_offsets(ability_vec);
             if meraki_offsets.len() > 0 {
@@ -91,7 +90,10 @@ impl ChampionFactory {
             let champion_id = unsafe { std::mem::transmute::<_, ChampionId>(i) };
             let data = Self::create(champion_id)?;
             let file_name = format!("{champion_id:?}").to_lowercase();
-            format!("{GENERATOR_FOLDER}/{file_name}.rs").write_to_file(data.as_bytes())?;
+            std::fs::write(
+                format!("{GENERATOR_FOLDER}/{file_name}.rs"),
+                data.as_bytes(),
+            )?;
         }
 
         Ok(())
@@ -103,9 +105,8 @@ impl ChampionFactory {
             let result = Self::run(champion_id);
             match result {
                 Ok(champion) => {
-                    let json_string = serde_json::to_string_pretty(&champion).unwrap();
-                    format!("internal/champions/{champion_id:?}.json")
-                        .write_to_file(json_string.as_bytes())
+                    champion
+                        .into_file(format!("internal/champions/{champion_id:?}.json"))
                         .unwrap();
                 }
                 Err(e) => {
@@ -121,8 +122,7 @@ impl ChampionFactory {
     }
 
     pub fn run(champion_id: ChampionId) -> MayFail<Champion> {
-        let data =
-            format!("cache/cdn/champions/{champion_id:?}.json").read_json::<MerakiChampion>()?;
+        let data = MerakiChampion::from_file(format!("cache/cdn/champions/{champion_id:?}.json"))?;
         let function = Self::GENERATOR_FUNCTIONS[champion_id as usize];
         let generator = function(data);
         Ok(generator.generate()?)
@@ -222,10 +222,10 @@ impl ChampionFactory {
             }
 
             println!("  Ability '{}':", k);
-            println!("      expected(old): {old_values:?}");
-            println!("      found(new):    {new_values:?}");
+            println!("      found(old):     {old_values:?}");
+            println!("      expected(new):  {new_values:?}");
             if !missing.is_empty() {
-                println!("      missing in new:   {missing:?}");
+                println!("  missing in new: {missing:?}");
             }
             if !extra.is_empty() {
                 println!("      extra in new:     {extra:?}");
@@ -264,7 +264,7 @@ impl ChampionFactory {
 
     pub fn check_offsets(name: ChampionId) -> MayFail<bool> {
         let meraki_champion =
-            format!("cache/cdn/champions/{name:?}.json").read_json::<MerakiChampion>()?;
+            MerakiChampion::from_file(format!("cache/cdn/champions/{name:?}.json"))?;
 
         let mut new_offsets = HashMap::<char, Vec<(usize, usize)>>::new();
 

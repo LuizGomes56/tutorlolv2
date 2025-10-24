@@ -6,10 +6,9 @@ use std::{
     time::Duration,
 };
 use tutorlolv2_dev::{
-    DeserializeOwned, Serialize,
+    DeserializeOwned, JsonRead, Serialize,
     champions::MerakiChampion,
     client::{OrderJson, save_cache},
-    ext::FilePathExt,
     generators::gen_factories::fac_champions::ChampionFactory,
     items::MerakiItem,
 };
@@ -83,6 +82,7 @@ macro_rules! get {
     };
 }
 
+/// Requires `lolstaticdata` to be installed and placed in the parent directory
 fn run_lolstaticdata() {
     run(
         "../lolstaticdata",
@@ -122,12 +122,11 @@ fn run_lolstaticdata() {
     );
 }
 
-/// Updates local files only. Requires `lolstaticdata` to be installed and places in the parent directory.
-/// Same for `tutorlolv2_desktop_app`, containing `tutorlolv2_frontend` and the javascript build script.
+/// Updates local files only. Requires `tutorlolv2_desktop_app` to be installed and places in the parent directory,
+/// containing `tutorlolv2_frontend` and the javascript build script.
 /// Pulls champions and items data and generates intermediary JSON files and call the subsequent tasks to
 /// process the output and generate Rust code to `tutorlolv2_gen`. Only works on Windows.
-async fn update_local() {
-    run_lolstaticdata();
+fn update_local() {
     build_server();
     let srv_0 = run_server();
     short_wait();
@@ -136,7 +135,7 @@ async fn update_local() {
     get!("/setup/items");
     kill(srv_0);
 
-    build_script().await;
+    build_script();
 
     let srv_1 = run_server();
     short_wait();
@@ -158,8 +157,9 @@ async fn update_local() {
     println!("Local finished");
 }
 
-async fn build_script() {
-    tutorlolv2::build::run().await;
+fn build_script() {
+    run("./tutorlolv2_build", "cargo", &["build", "-r"]);
+    run("./tutorlolv2_build", "cargo", &["run", "-r"])
 }
 
 /// Planned code task execution (in sequence, sync)
@@ -180,7 +180,7 @@ async fn build_script() {
 /// ::task("kill");
 /// ::echo("Setup finished");
 /// ```
-async fn update() {
+fn update() {
     build_server();
     let srv_0 = run_server();
     short_wait();
@@ -192,7 +192,7 @@ async fn update() {
     get!("/images/compress");
     kill(srv_1);
 
-    build_script().await;
+    build_script();
 
     let srv_2 = run_server();
     short_wait();
@@ -215,6 +215,7 @@ async fn main() {
         .get(1)
         .map(String::as_str)
     {
+        Some("build") => build_script(),
         Some("cdn-ord") => {
             async fn ord_folder<T>(endpoint: &str)
             where
@@ -227,7 +228,7 @@ async fn main() {
                 for file in files {
                     let path_name = file.unwrap().path();
                     let name = path_name.file_stem().unwrap().to_str().unwrap().to_string();
-                    let data = path_name.read_json::<T>().unwrap();
+                    let data = T::from_file(path_name).unwrap();
                     map.insert(name, data);
                 }
 
@@ -243,8 +244,9 @@ async fn main() {
             let _ = ChampionFactory::create_all();
         }
         Some("html-gen") => generate_html().await,
-        Some("update") => update().await,
-        Some("local") => update_local().await,
+        Some("update") => update(),
+        Some("lolstaticdata") => run_lolstaticdata(),
+        Some("local") => update_local(),
         Some("-r") => {
             run(
                 "./tutorlolv2_server",

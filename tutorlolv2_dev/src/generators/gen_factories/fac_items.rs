@@ -1,6 +1,6 @@
 use crate::{
-    ext::FilePathExt,
-    generators::{Generator, MayFail, gen_decl::decl_items::*},
+    JsonRead, JsonWrite, MayFail,
+    generators::{Generator, gen_decl::decl_items::*},
     items::{Item, MerakiItem},
     riot::RiotCdnItem,
 };
@@ -36,8 +36,7 @@ impl ItemFactory {
             let result = Self::run(item_id);
             match result {
                 Ok(item) => {
-                    format!("internal/items/{item_id:?}.json")
-                        .write_json(&item)
+                    item.into_file(format!("internal/items/{item_id:?}.json"))
                         .unwrap();
                 }
                 Err(e) => {
@@ -48,9 +47,9 @@ impl ItemFactory {
     }
 
     pub fn run(item_id: ItemId) -> MayFail<Item> {
-        let meraki_data = format!("cache/cdn/items/{item_id:?}.json").read_json::<MerakiItem>()?;
-        let riot_data = format!("cache/riot/items/{item_id:?}.json").read_json::<RiotCdnItem>()?;
-        let current_data = format!("internal/items/{item_id:?}.json").read_json::<Item>()?;
+        let meraki_data = MerakiItem::from_file(format!("cache/cdn/items/{item_id:?}.json"))?;
+        let riot_data = RiotCdnItem::from_file(format!("cache/riot/items/{item_id:?}.json"))?;
+        let current_data = Item::from_file(format!("internal/items/{item_id:?}.json"))?;
 
         let function = Self::GENERATOR_FUNCTIONS[item_id as usize];
         let generator = function(ItemData::new(meraki_data, riot_data, current_data));

@@ -1,5 +1,6 @@
 pub(self) use crate::{
-    generators::{Generator, MayFail, gen_decl::decl_champions::*},
+    MayFail,
+    generators::{Generator, gen_decl::decl_champions::*},
     model::champions::{Ability, Champion},
 };
 use tutorlolv2_gen::EvalIdent;

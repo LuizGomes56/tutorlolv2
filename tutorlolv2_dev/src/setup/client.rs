@@ -1,11 +1,10 @@
 use crate::{
-    MayFail,
+    JsonRead, JsonWrite, MayFail,
     champions::MerakiChampion,
     init::ENV_CONFIG,
     items::MerakiItem,
     model::riot::{RiotCdnChampion, RiotCdnRune},
     riot::RiotCdnStandard,
-    setup::ext::FilePathExt,
 };
 use reqwest::Client;
 use scraper::{Html, Selector};
@@ -14,6 +13,7 @@ use serde_json::Value;
 use std::{
     collections::HashMap,
     io::{BufRead, BufReader, Write},
+    path::Path,
     sync::Arc,
 };
 use tokio::{sync::Semaphore, task::JoinHandle};
@@ -48,17 +48,17 @@ impl HttpClient {
         Self(Client::new())
     }
 
-    pub async fn download(&self, url: impl AsRef<str>, save_to: impl AsRef<str>) {
+    pub async fn download(&self, url: impl AsRef<str>, save_to: impl AsRef<Path>) {
         let url = url.as_ref();
         let save_to = save_to.as_ref();
-        if save_to.exists_file() {
-            println!("[ALREADY_EXISTS] [Passive] {save_to}");
+        if save_to.exists() {
+            println!("[ALREADY_EXISTS] [Passive] {save_to:?}");
         } else {
             println!("[DOWNLOADING] [Passive] {url}");
             match self.get(url).send().await {
                 Ok(response) => {
                     let bytes = response.bytes().await.unwrap();
-                    let _ = save_to.write_to_file(&bytes);
+                    let _ = std::fs::write(save_to, &bytes);
                 }
                 Err(err) => println!("[ERROR] {err}"),
             }
@@ -73,7 +73,7 @@ impl HttpClient {
     }
 
     pub async fn download_general_img(&self) -> MayFail {
-        let riot_champions = "cache/riot/champions".read_dir_json::<RiotCdnChampion>()?;
+        let riot_champions = RiotCdnChampion::from_dir("cache/riot/champions")?;
         let ddragon_url = Self::ddragon_url();
         let champion_dir = target_dir!("champions");
         let abilities_dir = target_dir!("abilities");
@@ -114,7 +114,7 @@ impl HttpClient {
     }
 
     pub async fn download_items_img(&self) -> MayFail {
-        let riot_items = "cache/riot/items".read_dir_json::<()>()?;
+        let riot_items = <() as JsonRead>::from_dir("cache/riot/items")?;
         let ddragon_url = Self::ddragon_url();
         let mut futures = Vec::new();
         for (item_id, _) in riot_items {
@@ -136,7 +136,7 @@ impl HttpClient {
     }
 
     pub async fn download_arts_img(&self) -> MayFail {
-        let riot_champions = "cache/riot/champions".read_dir_json::<RiotCdnChampion>()?;
+        let riot_champions = RiotCdnChampion::from_dir("cache/riot/champions")?;
         let base_url = format!("{}/cdn", ENV_CONFIG.dd_dragon_endpoint);
         for (champion_id, champion) in riot_champions {
             let mut futures = Vec::new();
@@ -162,7 +162,7 @@ impl HttpClient {
     }
 
     pub async fn download_runes_img(&self) -> MayFail {
-        let riot_runes = "cache/riot/runes.json".read_json::<Vec<RiotCdnRune>>()?;
+        let riot_runes = Vec::<RiotCdnRune>::from_file("cache/riot/runes.json")?;
         let mut futures = Vec::new();
         let mut icon_map = Vec::<(usize, String)>::new();
         for value in riot_runes {
@@ -175,7 +175,7 @@ impl HttpClient {
         }
         for (rune_id, rune_icon) in icon_map {
             let url = format!("{}/{rune_icon}", ENV_CONFIG.riot_image_endpoint);
-            let file_path = format!("{}/{}.png", target_dir!("runes"), rune_id);
+            let file_path = format!("{}/{rune_id}.png", target_dir!("runes"));
             let client = self.clone();
             futures.push(tokio::spawn(async move {
                 let _ = client.download(url, file_path);
@@ -263,8 +263,11 @@ impl HttpClient {
                     .await
                     .unwrap();
 
-                format!("cache/riot/champions/{champion_id}.json")
-                    .write_json(champion_data.data.get(&champion_id).unwrap())
+                champion_data
+                    .data
+                    .get(&champion_id)
+                    .unwrap()
+                    .into_file(format!("cache/riot/champions/{champion_id}.json"))
                     .unwrap();
             }));
         }
@@ -275,7 +278,7 @@ impl HttpClient {
             }
         }
 
-        "cache/riot/champions.json".write_json(&champions_json)?;
+        champions_json.into_file("cache/riot/champions.json")?;
 
         let items_json = self
             .fetch_riot_api::<RiotCdnStandard>("item", &ENV_CONFIG.lol_language)
@@ -285,8 +288,8 @@ impl HttpClient {
 
         for (item_id, item_data) in items_json.data.clone() {
             items_futures.push(tokio::task::spawn_blocking(move || {
-                format!("cache/riot/items/{item_id}.json")
-                    .write_json(&item_data)
+                item_data
+                    .into_file(format!("cache/riot/items/{item_id}.json"))
                     .unwrap();
             }));
         }
@@ -297,16 +300,17 @@ impl HttpClient {
             }
         }
 
-        "cache/riot/items.json".write_json(&items_json)?;
+        items_json.into_file("cache/riot/items.json")?;
 
         let runes_json = self
             .fetch_riot_api::<Value>("runesReforged", &ENV_CONFIG.lol_language)
             .await?;
-        "cache/riot/runes.json".write_json(&runes_json)?;
+
+        runes_json.into_file("cache/riot/runes.json")?;
 
         self.update_language_cache().await?;
 
-        let languages = "internal/languages.json".read_json::<Vec<String>>()?;
+        let languages = Vec::<String>::from_file("internal/languages.json")?;
         let mut languages_data = HashMap::<String, Vec<String>>::from_iter(
             champions_json
                 .data
@@ -355,14 +359,13 @@ impl HttpClient {
             }
         }
 
-        "internal/champion_languages.json".write_json(&languages_data)?;
-
-        Ok(())
+        languages_data.into_file("internal/champion_languages.json")
     }
 
     pub async fn update_language_cache(&self) -> MayFail {
-        let lang_json = self.fetch_languages().await?;
-        "internal/languages.json".write_json(&lang_json)
+        self.fetch_languages()
+            .await?
+            .into_file("internal/languages.json")
     }
 
     pub async fn update_meraki_cache(&self, endpoint: &str) -> MayFail {
@@ -384,8 +387,7 @@ impl HttpClient {
     }
 
     pub async fn call_scraper(&self) -> MayFail {
-        let champion_names =
-            "internal/champion_names.json".read_json::<HashMap<String, String>>()?;
+        let champion_names = HashMap::<String, String>::from_file("internal/champion_names.json")?;
         let mut collected_results = HashMap::<String, HashMap<String, _>>::default();
 
         for (_, name) in champion_names {
@@ -448,19 +450,19 @@ impl HttpClient {
 
             let mut collected_result = HashMap::<String, (Vec<String>, Vec<String>)>::default();
             for result in futures_vec {
-                println!("Fetching meta items for {}", name);
+                println!("Fetching meta items for {name}");
                 match result.await {
                     Ok(Ok(data)) => {
                         collected_result.extend(data);
                     }
-                    Ok(Err(e)) => eprintln!("Error requesting: {:#?}", e),
-                    Err(e) => eprintln!("Error awaiting future: {:?}", e),
+                    Ok(Err(e)) => eprintln!("Error requesting: {e:#?}"),
+                    Err(e) => eprintln!("Error awaiting future: {e:?}"),
                 }
             }
             collected_results.insert(name, collected_result);
         }
 
-        "internal/scraped_data.json".write_json(&collected_results)
+        collected_results.into_file("internal/scraped_data.json")
     }
 }
 
@@ -536,7 +538,7 @@ impl OrderJson<MerakiItem> for HashMap<String, MerakiItem> {
 
 pub fn save_cache<T: Serialize>(result: impl OrderJson<T>, endpoint: &str) -> MayFail {
     for (key, value) in result.into_iter_ord() {
-        format!("cache/cdn/{endpoint}/{key}.json").write_json(&value)?;
+        value.into_file(format!("cache/cdn/{endpoint}/{key}.json"))?;
     }
     Ok(())
 }

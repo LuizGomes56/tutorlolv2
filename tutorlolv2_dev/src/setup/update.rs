@@ -1,6 +1,5 @@
 use crate::{
-    ext::FilePathExt,
-    generators::MayFail,
+    JsonRead, JsonWrite, MayFail,
     model::{
         champions::MerakiChampion,
         items::{Item, MerakiItem},
@@ -69,8 +68,8 @@ pub fn setup_project_folders() {
 /// Replaces the content found in the files to a shorter and adapted version,
 /// initializes items as default, and Damaging stats must be added separately.
 pub fn setup_internal_items() -> MayFail {
-    let meraki_items = "cache/cdn/items".read_dir_json::<MerakiItem>()?;
-    let mut riot_items = "cache/riot/items".read_dir_json::<RiotCdnItem>()?;
+    let meraki_items = MerakiItem::from_dir("cache/cdn/items")?;
+    let mut riot_items = RiotCdnItem::from_dir("cache/riot/items")?;
 
     struct ItemCache {
         meraki_item: MerakiItem,
@@ -132,14 +131,14 @@ pub fn setup_internal_items() -> MayFail {
             melee: Default::default(),
             purchasable: meraki_item.shop.purchasable && riot_item.gold.purchasable,
         };
-        format!("internal/items/{item_id:?}.json").write_json(&result)?;
+        result.into_file(format!("internal/items/{item_id:?}.json"))?;
     }
 
     Ok(())
 }
 
 pub fn setup_runes_json() -> MayFail {
-    let map = "cache/riot/runes.json".read_json::<Vec<RiotCdnRune>>()?;
+    let map = Vec::<RiotCdnRune>::from_file("cache/riot/runes.json")?;
     let mut result = HashMap::<String, usize>::new();
 
     for tree in map.into_iter() {
@@ -149,8 +148,7 @@ pub fn setup_runes_json() -> MayFail {
             }
         }
     }
-
-    "internal/rune_names.json".write_json(&result)
+    result.into_file("internal/rune_names.json")
 }
 
 /// Not meant to be used frequently. Just a quick check for every
@@ -164,7 +162,7 @@ pub fn setup_damaging_items() -> MayFail {
     };
 
     let mut is_damaging = Vec::new();
-    let meraki_items = "cache/cdn/items".read_dir_json::<MerakiItem>()?;
+    let meraki_items = MerakiItem::from_dir("cache/cdn/items")?;
 
     for (_, result) in meraki_items {
         if !result.shop.purchasable {
@@ -195,33 +193,34 @@ pub fn setup_damaging_items() -> MayFail {
     }
 
     is_damaging.sort();
-    "internal/damaging_items.json".write_json(&is_damaging)
+    is_damaging.into_file("internal/damaging_items.json")
 }
 
 /// Uses champion display name and converts to their respective ids, saving to internal
 pub fn setup_champion_names() -> MayFail {
-    let meraki_champions = "cache/cdn/champions".read_dir_json::<MerakiChampion>()?;
+    let meraki_champions = MerakiChampion::from_dir("cache/cdn/champions")?;
     let mut map = HashMap::<String, String>::default();
 
     for (name, meraki_champion) in meraki_champions {
         map.insert(meraki_champion.name, name);
     }
 
-    "internal/champion_names.json".write_json(&map)
+    map.into_file("internal/champion_names.json")
 }
 
 pub async fn prettify_internal_items() -> MayFail {
-    for (riot_id, riot_item) in "cache/riot/items.json".read_dir_json::<RiotCdnItem>()? {
+    for (riot_id, riot_item) in RiotCdnItem::from_dir("cache/riot/items.json")? {
         let internal_path = format!(
             "internal/items/{:?}.json",
             ItemId::from_riot_id(riot_id.parse()?)
         );
-        let mut internal_item = internal_path.read_json::<Item>()?;
+
+        let mut internal_item = Item::from_file(&internal_path)?;
 
         let prettified_stats = pretiffy_items(&riot_item);
         internal_item.prettified_stats = prettified_stats;
 
-        internal_path.write_json(&internal_item)?;
+        internal_item.into_file(internal_path)?;
     }
     Ok(())
 }

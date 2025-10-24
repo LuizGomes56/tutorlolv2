@@ -1,4 +1,4 @@
-use crate::generators::MayFail;
+use crate::MayFail;
 use regex::Regex;
 use std::fmt::Display;
 use tutorlolv2_gen::EvalIdent;
