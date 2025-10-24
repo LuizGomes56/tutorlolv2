@@ -53,7 +53,6 @@ fn api_scope() -> impl HttpServiceFactory + 'static {
                     .service(internal_create_generator_files)
                     .service(internal_prettify_item_stats)
                     .service(internal_create_damaging_items)
-                    .service(internal_rewrite_champion_names)
                     .service(internal_assign_item_damages),
             )
             .service(
@@ -73,6 +72,13 @@ fn api_scope() -> impl HttpServiceFactory + 'static {
 
 pub async fn run() -> std::io::Result<()> {
     dotenv().ok();
+
+    tutorlolv2_dev::client::HttpClient::new()
+        .combo_scraper()
+        .await
+        .unwrap();
+
+    return Ok(());
 
     let dsn = std::env::var("DATABASE_URL").expect("DATABASE_URL is not set");
     let host = std::env::var("HOST").expect("HOST is not set");

@@ -38,11 +38,7 @@ impl Positions {
 #[macro_export]
 macro_rules! cwd {
     ($path:expr) => {
-        format!(
-            "{}/../{}",
-            std::env::current_dir().unwrap().to_str().unwrap(),
-            $path
-        )
+        format!("../{}", $path)
     };
 }
 
@@ -210,8 +206,11 @@ fn parse_primary(tokens: &[String], pos: &mut usize) -> Expr {
 }
 
 fn tokenize(expr: &str) -> Vec<String> {
-    let re = Regex::new(r"ctx\.[a-z_]+|[A-Z_]+|\d+\.\d+|\d+|[\+\-\*/\(\)]").unwrap();
-    re.find_iter(expr).map(|m| m.as_str().to_string()).collect()
+    Regex::new(r"ctx\.[a-z_]+|[A-Z_]+|\d+\.\d+|\d+|[\+\-\*/\(\)]")
+        .unwrap()
+        .find_iter(expr)
+        .map(|m| m.as_str().to_string())
+        .collect()
 }
 
 pub fn clean_math_expr(expr: &str) -> String {
@@ -246,24 +245,28 @@ pub fn clear_suffixes(input: &str) -> String {
         .to_string()
 }
 
-pub trait JoinNumVec {
-    fn join(&self, sep: &str) -> String;
-}
-
-macro_rules! join_num_vec_trait_impl {
-    ($t:ty) => {
-        impl<T: ToString + Copy> JoinNumVec for $t {
-            fn join(&self, sep: &str) -> String {
-                self.iter()
-                    .map(|s| s.to_string())
-                    .collect::<Vec<String>>()
-                    .join(sep)
+pub trait Joinable<U>: AsRef<[U]>
+where
+    U: ToString,
+{
+    fn join(&self, sep: &str) -> String {
+        let slice = self.as_ref();
+        let mut out = String::new();
+        for (i, v) in slice.iter().enumerate() {
+            if i > 0 {
+                out.push_str(sep);
             }
+            out.push_str(&v.to_string());
         }
-    };
+        out
+    }
 }
 
-join_num_vec_trait_impl!(Vec<T>);
-join_num_vec_trait_impl!(&[T]);
+impl<U, S> Joinable<U> for S
+where
+    S: AsRef<[U]>,
+    U: ToString,
+{
+}
 
 pub const USE_SUPER: &str = "use super::*;";

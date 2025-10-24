@@ -1,9 +1,11 @@
 use crate::{
-    JsonRead, JsonWrite, MayFail,
+    FileWrite, JsonRead, JsonWrite, MayFail,
     champions::MerakiChampion,
+    get_file_names,
     init::ENV_CONFIG,
     items::MerakiItem,
     model::riot::{RiotCdnChampion, RiotCdnRune},
+    read_file,
     riot::RiotCdnStandard,
 };
 use reqwest::Client;
@@ -48,19 +50,23 @@ impl HttpClient {
         Self(Client::new())
     }
 
-    pub async fn download(&self, url: impl AsRef<str>, save_to: impl AsRef<Path>) {
+    pub async fn download(&self, url: impl AsRef<str>, save_to: impl AsRef<Path>) -> MayFail {
         let url = url.as_ref();
         let save_to = save_to.as_ref();
         if save_to.exists() {
-            println!("[ALREADY_EXISTS] [Passive] {save_to:?}");
+            println!("[ALREADY_EXISTS] {save_to:?}");
+            Ok(())
         } else {
-            println!("[DOWNLOADING] [Passive] {url}");
+            println!("[DOWNLOADING] {url}");
             match self.get(url).send().await {
                 Ok(response) => {
-                    let bytes = response.bytes().await.unwrap();
-                    let _ = std::fs::write(save_to, &bytes);
+                    let bytes = response.bytes().await?;
+                    bytes.write_file(save_to)
                 }
-                Err(err) => println!("[ERROR] {err}"),
+                Err(e) => {
+                    println!("[ERROR] {e}");
+                    Err(e.to_string().into())
+                }
             }
         }
     }
@@ -114,14 +120,14 @@ impl HttpClient {
     }
 
     pub async fn download_items_img(&self) -> MayFail {
-        let riot_items = <() as JsonRead>::from_dir("cache/riot/items")?;
+        let riot_items = get_file_names("cache/riot/items")?;
         let ddragon_url = Self::ddragon_url();
         let mut futures = Vec::new();
-        for (item_id, _) in riot_items {
+        for item_id in riot_items {
             let ddragon_url = ddragon_url.clone();
             let client = self.clone();
             futures.push(tokio::spawn(async move {
-                client
+                let _ = client
                     .download(
                         format!("{ddragon_url}/img/item/{item_id}.png"),
                         format!("{}/{item_id}.png", target_dir!("items")),
@@ -150,7 +156,7 @@ impl HttpClient {
                         let url = format!("{base_url}/img/champion/{label}/{file_name}",);
                         let label_dir = format!("{}/{label}", target_dir!());
                         let save_to = format!("{label_dir}/{file_name}");
-                        client.download(url, save_to).await;
+                        let _ = client.download(url, save_to).await;
                     }
                 }));
             }
@@ -200,7 +206,8 @@ impl HttpClient {
         endpoint: &str,
         language: &str,
     ) -> MayFail<T> {
-        let url = format!("{}/data/{language}/{endpoint}.json", Self::ddragon_url(),);
+        let url = format!("{}/data/{language}/{endpoint}.json", Self::ddragon_url());
+        println!("fetch_riot_api: {url}");
         let result = self.get(&url).send().await?;
         let data = result.json::<T>().await?;
         Ok(data)
@@ -386,30 +393,66 @@ impl HttpClient {
         }
     }
 
+    pub async fn combo_scraper(&self) -> MayFail {
+        let champion_ids = get_file_names("cache/riot/champions")?;
+
+        for champion_id in champion_ids {
+            let path = format!("cache/scraper/combos/{champion_id}.html");
+            self.download(
+                format!("{}/{champion_id}/combos", ENV_CONFIG.meta_endpoint),
+                &path,
+            )
+            .await?;
+
+            let bytes = read_file(path)?;
+            let html = Html::parse_document(&String::from_utf8(bytes)?);
+
+            let mut result = HashMap::<String, Vec<Vec<String>>>::new();
+
+            let combo_section = Selector::parse("div.m-1o7d3sk")?;
+            let combo_span = Selector::parse("span.m-1pm4585.e1o1aytf0")?;
+
+            for combo_div in html.select(&combo_section) {
+                for combo_span in combo_div.select(&combo_span) {
+                    let mut combo_strings = Vec::new();
+                    if let Some(text) = combo_span.text().next() {
+                        combo_strings.push(text.to_string());
+                    };
+                    let _ = result
+                        .entry(champion_id.clone())
+                        .or_insert(vec![])
+                        .push(combo_strings);
+                }
+            }
+
+            result.into_file(format!("internal/scraper/combos/{champion_id}.json"))?;
+        }
+        Ok(())
+    }
+
     pub async fn call_scraper(&self) -> MayFail {
-        let champion_names = HashMap::<String, String>::from_file("internal/champion_names.json")?;
+        let champion_ids = get_file_names("cache/riot/champions")?;
         let mut collected_results = HashMap::<String, HashMap<String, _>>::default();
 
-        for (_, name) in champion_names {
+        for champion_id in champion_ids {
             let mut futures_vec = Vec::<JoinHandle<Result<_, String>>>::new();
             for position in ["top", "jungle", "mid", "adc", "support"] {
-                let champion_name = name.to_lowercase().clone();
+                let name = champion_id.to_lowercase().clone();
                 let client = self.clone();
                 futures_vec.push(tokio::spawn(async move {
-                    let url = format!(
-                        "{}/{champion_name}/build/{position}",
-                        ENV_CONFIG.meta_endpoint
-                    );
+                    let path = format!("cache/scraper/builds/{position}/{name}.html");
 
-                    let res = client.get(&url).send().await.unwrap();
-                    let mut result = HashMap::<String, (Vec<String>, Vec<String>)>::default();
+                    let _ = client
+                        .download(
+                            format!("{}/{name}/build/{position}", ENV_CONFIG.meta_endpoint),
+                            &path,
+                        )
+                        .await;
 
-                    let html = res.text().await.unwrap();
-                    let _ = tokio::fs::write(
-                        format!("cache/scraper/{champion_name}_{position}.html"),
-                        &html,
-                    )
-                    .await;
+                    let mut result = HashMap::<String, _>::default();
+
+                    let html = String::from_utf8(read_file(path).unwrap()).unwrap();
+
                     let document = Html::parse_document(&html);
                     let full_build =
                         Selector::parse(".m-1q4a7cx:nth-of-type(4) > div > div img").unwrap();
@@ -450,19 +493,17 @@ impl HttpClient {
 
             let mut collected_result = HashMap::<String, (Vec<String>, Vec<String>)>::default();
             for result in futures_vec {
-                println!("Fetching meta items for {name}");
+                println!("Fetching meta items for {champion_id}");
                 match result.await {
-                    Ok(Ok(data)) => {
-                        collected_result.extend(data);
-                    }
+                    Ok(Ok(data)) => collected_result.extend(data),
                     Ok(Err(e)) => eprintln!("Error requesting: {e:#?}"),
                     Err(e) => eprintln!("Error awaiting future: {e:?}"),
                 }
             }
-            collected_results.insert(name, collected_result);
+            collected_results.insert(champion_id, collected_result);
         }
 
-        collected_results.into_file("internal/scraped_data.json")
+        collected_results.into_file("internal/scraper/data.json")
     }
 }
 
@@ -538,7 +579,7 @@ impl OrderJson<MerakiItem> for HashMap<String, MerakiItem> {
 
 pub fn save_cache<T: Serialize>(result: impl OrderJson<T>, endpoint: &str) -> MayFail {
     for (key, value) in result.into_iter_ord() {
-        value.into_file(format!("cache/cdn/{endpoint}/{key}.json"))?;
+        value.into_file(format!("cache/meraki/{endpoint}/{key}.json"))?;
     }
     Ok(())
 }

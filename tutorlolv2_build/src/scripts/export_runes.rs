@@ -51,9 +51,8 @@ pub fn export_runes() -> Vec<(u32, RuneDetails)> {
                     range_closure: {range_closure},
                 }};",
                 name = format_args!(
-                    "{}_{}",
+                    "{}_{rune_id}",
                     rune.name.to_screaming_snake_case().remove_special_chars(),
-                    rune_id
                 ),
             );
 
@@ -114,9 +113,8 @@ pub fn export_runes() -> Vec<(u32, RuneDetails)> {
                 range_closure: zero,    
             }};",
             name = format_args!(
-                "{}_{}",
+                "{}_{rune_id}",
                 rune_name.to_screaming_snake_case().remove_special_chars(),
-                rune_id
             )
         );
 

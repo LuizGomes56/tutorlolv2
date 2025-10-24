@@ -15,7 +15,7 @@ use tutorlolv2_exports::*;
 
 #[get("/project")]
 pub async fn setup_project() -> impl Responder {
-    setup_project_folders();
+    let _ = setup_project_folders();
 
     spawn(async move {
         for future in [
@@ -27,19 +27,18 @@ pub async fn setup_project() -> impl Responder {
         }
 
         let _ = setup_runes_json();
-        let _ = setup_champion_names();
         let _ = setup_internal_items();
         let _ = prettify_internal_items().await;
 
         spawn(async move {
             let _ = HTTP_CLIENT.call_scraper().await;
             let _ = setup_damaging_items();
-            ItemFactory::run_all();
+            let _ = ItemFactory::run_all();
         });
 
         spawn(async move {
             let _ = ChampionFactory::create_all();
-            ChampionFactory::run_all();
+            let _ = ChampionFactory::run_all();
         });
 
         for future in [

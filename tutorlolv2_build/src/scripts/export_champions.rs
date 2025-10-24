@@ -229,7 +229,7 @@ pub fn export_champions() -> BTreeMap<String, ChampionDetails> {
             let positions = champion
                 .positions
                 .into_iter()
-                .map(|pos| format!("Position::{}", pos))
+                .map(|pos| format!("Position::{pos}"))
                 .collect::<Vec<String>>()
                 .join(",");
 
@@ -260,12 +260,12 @@ pub fn export_champions() -> BTreeMap<String, ChampionDetails> {
                 stats = format_stats(&champion.stats),
                 merge_data = find_merge_indexes(&champion.merge_data, &ability_data)
                     .iter()
-                    .map(|(ia, ib)| format!("({}, {})", ia, ib))
+                    .map(|(ia, ib)| format!("({ia}, {ib})"))
                     .collect::<Vec<_>>()
                     .join(","),
             );
 
-            let generator = cwd!(format!("tutorlolv2_dev/src/generators/{}.rs", champion_id))
+            let generator = cwd!(format!("tutorlolv2_dev/src/generators/{champion_id}.rs"))
                 .read_as_path()
                 .invoke_rustfmt(80)
                 .highlight_rust();

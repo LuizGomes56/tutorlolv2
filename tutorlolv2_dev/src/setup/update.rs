@@ -1,7 +1,6 @@
 use crate::{
     JsonRead, JsonWrite, MayFail,
     model::{
-        champions::MerakiChampion,
         items::{Item, MerakiItem},
         riot::RiotCdnItem,
     },
@@ -13,7 +12,7 @@ use tutorlolv2_gen::{Attrs, DamageType, GameMap, ItemId};
 
 /// Creates basic folders necessary to run the program. If one of these folders are not found,
 /// The program is likely to panic when an update is called.
-pub fn setup_project_folders() {
+pub fn setup_project_folders() -> MayFail {
     for dir in [
         "html",
         "html/brotli/champions",
@@ -47,29 +46,42 @@ pub fn setup_project_folders() {
         "raw_img/items",
         "cache",
         "cache/scraper",
-        "cache/cdn",
-        "cache/cdn/champions",
-        "cache/cdn/items",
+        "cache/scraper/combos",
+        "cache/scraper/builds",
+        "cache/scraper/builds/top",
+        "cache/scraper/builds/jungle",
+        "cache/scraper/builds/mid",
+        "cache/scraper/builds/adc",
+        "cache/scraper/builds/support",
+        "cache/meraki",
+        "cache/meraki/champions",
+        "cache/meraki/items",
         "cache/riot",
         "cache/riot/champions",
         "cache/riot/items",
         "internal",
         "internal/items",
         "internal/champions",
+        "internal/scraper",
+        "internal/scraper/combos",
     ] {
         let path = Path::new(dir);
 
         if !path.exists() {
-            fs::create_dir_all(path).unwrap();
+            fs::create_dir_all(path)?;
         }
     }
+    Ok(())
 }
 
 /// Replaces the content found in the files to a shorter and adapted version,
 /// initializes items as default, and Damaging stats must be added separately.
 pub fn setup_internal_items() -> MayFail {
-    let meraki_items = MerakiItem::from_dir("cache/cdn/items")?;
+    let meraki_items = MerakiItem::from_dir("cache/meraki/items")?;
     let mut riot_items = RiotCdnItem::from_dir("cache/riot/items")?;
+
+    println!("Found {} riot items", riot_items.len());
+    println!("Found {} meraki items", meraki_items.len());
 
     struct ItemCache {
         meraki_item: MerakiItem,
@@ -90,6 +102,12 @@ pub fn setup_internal_items() -> MayFail {
             })
         })
         .collect::<HashMap<_, _>>();
+
+    println!("Found {} common items", common_items.len());
+
+    if common_items.is_empty() {
+        panic!("No common items found");
+    }
 
     for (_, item) in common_items {
         let item_id = ItemId::from_riot_id(item.meraki_item.id);
@@ -162,7 +180,7 @@ pub fn setup_damaging_items() -> MayFail {
     };
 
     let mut is_damaging = Vec::new();
-    let meraki_items = MerakiItem::from_dir("cache/cdn/items")?;
+    let meraki_items = MerakiItem::from_dir("cache/meraki/items")?;
 
     for (_, result) in meraki_items {
         if !result.shop.purchasable {
@@ -196,20 +214,8 @@ pub fn setup_damaging_items() -> MayFail {
     is_damaging.into_file("internal/damaging_items.json")
 }
 
-/// Uses champion display name and converts to their respective ids, saving to internal
-pub fn setup_champion_names() -> MayFail {
-    let meraki_champions = MerakiChampion::from_dir("cache/cdn/champions")?;
-    let mut map = HashMap::<String, String>::default();
-
-    for (name, meraki_champion) in meraki_champions {
-        map.insert(meraki_champion.name, name);
-    }
-
-    map.into_file("internal/champion_names.json")
-}
-
 pub async fn prettify_internal_items() -> MayFail {
-    for (riot_id, riot_item) in RiotCdnItem::from_dir("cache/riot/items.json")? {
+    for (riot_id, riot_item) in RiotCdnItem::from_dir("cache/riot/items")? {
         let internal_path = format!(
             "internal/items/{:?}.json",
             ItemId::from_riot_id(riot_id.parse()?)

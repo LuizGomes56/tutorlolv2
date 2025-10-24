@@ -30,24 +30,16 @@ impl ItemFactory {
         Self::NUMBER_OF_ITEMS] =
         tutorlolv2_macros::expand_dir!("../internal/items", |[Name]| Name::new);
 
-    pub fn run_all() {
+    pub fn run_all() -> MayFail {
         for i in 0..Self::NUMBER_OF_ITEMS {
             let item_id = unsafe { std::mem::transmute::<_, ItemId>(i as u16) };
-            let result = Self::run(item_id);
-            match result {
-                Ok(item) => {
-                    item.into_file(format!("internal/items/{item_id:?}.json"))
-                        .unwrap();
-                }
-                Err(e) => {
-                    println!("Error generating {item_id:?}: {e:?}.");
-                }
-            };
+            Self::run(item_id)?.into_file(format!("internal/items/{item_id:?}.json"))?;
         }
+        Ok(())
     }
 
     pub fn run(item_id: ItemId) -> MayFail<Item> {
-        let meraki_data = MerakiItem::from_file(format!("cache/cdn/items/{item_id:?}.json"))?;
+        let meraki_data = MerakiItem::from_file(format!("cache/meraki/items/{item_id:?}.json"))?;
         let riot_data = RiotCdnItem::from_file(format!("cache/riot/items/{item_id:?}.json"))?;
         let current_data = Item::from_file(format!("internal/items/{item_id:?}.json"))?;
 

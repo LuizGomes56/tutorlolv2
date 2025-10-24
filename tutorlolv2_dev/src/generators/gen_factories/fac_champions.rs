@@ -69,7 +69,7 @@ impl ChampionFactory {
         }
 
         let meraki_champion =
-            MerakiChampion::from_file(format!("cache/cdn/champions/{champion_id:?}.json"))?;
+            MerakiChampion::from_file(format!("cache/meraki/champions/{champion_id:?}.json"))?;
         for (ability_char, ability_vec) in meraki_champion.abilities.into_iter() {
             let meraki_offsets = ChampionData::get_ability_offsets(ability_vec);
             if meraki_offsets.len() > 0 {
@@ -99,30 +99,29 @@ impl ChampionFactory {
         Ok(())
     }
 
-    pub fn run_all() {
+    pub fn run_all() -> MayFail {
         for i in 0..Self::NUMBER_OF_CHAMPIONS {
             let champion_id = unsafe { std::mem::transmute::<_, ChampionId>(i as u8) };
             let result = Self::run(champion_id);
             match result {
                 Ok(champion) => {
-                    champion
-                        .into_file(format!("internal/champions/{champion_id:?}.json"))
-                        .unwrap();
+                    champion.into_file(format!("internal/champions/{champion_id:?}.json"))?;
                 }
                 Err(e) => {
                     println!("Error generating {champion_id:?}: {e:?}. Performing offset check.");
-                    match Self::check_offsets(champion_id) {
-                        Ok(true) => println!("{champion_id:?} have an issue unrelated to offsets"),
-                        Ok(false) => println!("{champion_id:?} likely has incorrect offsets"),
-                        Err(e) => println!("Error checking offsets for {champion_id:?}: {e:?}"),
+                    match Self::check_offsets(champion_id)? {
+                        true => println!("{champion_id:?} have an issue unrelated to offsets"),
+                        false => println!("{champion_id:?} likely has incorrect offsets"),
                     }
                 }
             };
         }
+        Ok(())
     }
 
     pub fn run(champion_id: ChampionId) -> MayFail<Champion> {
-        let data = MerakiChampion::from_file(format!("cache/cdn/champions/{champion_id:?}.json"))?;
+        let data =
+            MerakiChampion::from_file(format!("cache/meraki/champions/{champion_id:?}.json"))?;
         let function = Self::GENERATOR_FUNCTIONS[champion_id as usize];
         let generator = function(data);
         Ok(generator.generate()?)
@@ -264,7 +263,7 @@ impl ChampionFactory {
 
     pub fn check_offsets(name: ChampionId) -> MayFail<bool> {
         let meraki_champion =
-            MerakiChampion::from_file(format!("cache/cdn/champions/{name:?}.json"))?;
+            MerakiChampion::from_file(format!("cache/meraki/champions/{name:?}.json"))?;
 
         let mut new_offsets = HashMap::<char, Vec<(usize, usize)>>::new();
 

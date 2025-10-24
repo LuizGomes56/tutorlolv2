@@ -222,24 +222,17 @@ async fn main() {
                 T: DeserializeOwned + Serialize,
                 HashMap<String, T>: OrderJson<T>,
             {
-                let mut map = HashMap::<String, T>::new();
-                let folder = format!("cache/cdn/{endpoint}");
-                let files = std::fs::read_dir(folder).unwrap();
-                for file in files {
-                    let path_name = file.unwrap().path();
-                    let name = path_name.file_stem().unwrap().to_str().unwrap().to_string();
-                    let data = T::from_file(path_name).unwrap();
-                    map.insert(name, data);
-                }
-
-                let _ = save_cache(map, endpoint);
+                let _ = save_cache(
+                    T::from_dir(format!("cache/meraki/{endpoint}")).unwrap(),
+                    endpoint,
+                );
             }
 
             ord_folder::<MerakiChampion>("champions").await;
             ord_folder::<MerakiItem>("items").await;
         }
         Some("check-gen") => ChampionFactory::check_all_offsets(),
-        Some("run-gen") => ChampionFactory::run_all(),
+        Some("run-gen") => ChampionFactory::run_all().unwrap(),
         Some("make-gen") => {
             let _ = ChampionFactory::create_all();
         }
@@ -247,18 +240,6 @@ async fn main() {
         Some("update") => update(),
         Some("lolstaticdata") => run_lolstaticdata(),
         Some("local") => update_local(),
-        Some("-r") => {
-            run(
-                "./tutorlolv2_server",
-                "cargo",
-                &["build", "-r", "--no-default-features"],
-            );
-            run(
-                "./tutorlolv2_server",
-                "./target/release/tutorlolv2_server.exe",
-                &[],
-            )
-        }
         _ => tutorlolv2_server::run().await.unwrap(),
     }
 }
