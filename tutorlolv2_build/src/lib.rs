@@ -227,7 +227,7 @@ pub async fn run() {
             .join(","),
     );
     let item_id_enum = format!(
-        "#[derive(Debug,Copy,Clone,Ord,Eq,PartialOrd,PartialEq,Decode,Encode)]#[repr(u16)]
+        "#[derive(Serialize,Deserialize,Debug,Copy,Clone,Ord,Eq,PartialOrd,PartialEq,Decode,Encode)]#[repr(u16)]
         pub enum ItemId {{{}}}impl ItemId {{pub const fn to_riot_id(&self)->u32{{ITEM_ID_TO_RIOT_ID[*self as usize]}}
         pub const fn from_riot_id(id:u32)->Self{{match id {{{}}}}}}}",
         items

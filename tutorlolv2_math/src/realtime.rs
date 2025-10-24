@@ -1,10 +1,10 @@
 use super::{helpers::*, model::*};
-use crate::{GameMap, L_SIML, L_TEAM, RiotFormulas, riot::*};
+use crate::{L_SIML, L_TEAM, RiotFormulas, riot::*};
 use smallvec::SmallVec;
 use std::mem::MaybeUninit;
 use tinyset::SetU32;
 use tutorlolv2_gen::{
-    CHAMPION_NAME_TO_ID, ChampionId, DAMAGING_ITEMS, DAMAGING_RUNES, INTERNAL_CHAMPIONS,
+    CHAMPION_NAME_TO_ID, ChampionId, DAMAGING_ITEMS, DAMAGING_RUNES, GameMap, INTERNAL_CHAMPIONS,
     INTERNAL_ITEMS, ItemId, Position, RuneId, SIMULATED_ITEMS_ENUM, TypeMetadata,
 };
 

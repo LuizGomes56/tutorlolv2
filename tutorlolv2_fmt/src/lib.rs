@@ -24,6 +24,37 @@ pub fn encode_brotli_11(bytes: &[u8]) -> Vec<u8> {
     encoder.finish().unwrap()
 }
 
+pub fn to_pascal_case(input: &str) -> String {
+    let mut words = Vec::new();
+    let mut cur = String::new();
+
+    for ch in input.chars() {
+        if ch.is_alphanumeric() {
+            cur.push(ch);
+        } else if !cur.is_empty() {
+            words.push(cur);
+            cur = String::new();
+        }
+    }
+    if !cur.is_empty() {
+        words.push(cur);
+    }
+
+    let mut out = String::new();
+    for w in words {
+        let mut it = w.chars();
+        if let Some(first) = it.next() {
+            for uc in first.to_uppercase() {
+                out.push(uc);
+            }
+            for lc in it.flat_map(|c| c.to_lowercase()) {
+                out.push(lc);
+            }
+        }
+    }
+    out
+}
+
 pub fn remove_special_chars(s: &str) -> String {
     s.replace(" ", "")
         .replace("-", "")

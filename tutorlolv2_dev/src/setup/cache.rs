@@ -1,13 +1,10 @@
 use crate::{
-    generators::CdnChampion,
+    champions::CdnChampion,
     init::ENV_CONFIG,
     model::{items::CdnItem, riot::RiotCdnStandard},
-    setup::{
-        essentials::{
-            api::{CdnEndpoint, fetch_cdn_api, fetch_languages, fetch_riot_api},
-            ext::FilePathExt,
-        },
-        generators::champions::OrderJson,
+    setup::essentials::{
+        api::{CdnEndpoint, fetch_cdn_api, fetch_languages, fetch_riot_api},
+        ext::FilePathExt,
     },
 };
 use reqwest::Client;
@@ -18,6 +15,51 @@ use tokio::{
     sync::Semaphore,
     task::{self, JoinHandle},
 };
+
+pub trait OrderJson<T: Serialize> {
+    fn into_iter_ord(self) -> impl Iterator<Item = (String, T)>;
+}
+
+impl OrderJson<CdnChampion> for HashMap<String, CdnChampion> {
+    fn into_iter_ord(self) -> impl Iterator<Item = (String, CdnChampion)> {
+        let mut vec_self = self.into_iter().collect::<Vec<_>>();
+        for (_, champion) in vec_self.iter_mut() {
+            for ability_list in [
+                &mut champion.abilities.q,
+                &mut champion.abilities.w,
+                &mut champion.abilities.e,
+                &mut champion.abilities.r,
+                &mut champion.abilities.p,
+            ] {
+                for ability in ability_list {
+                    ability
+                        .effects
+                        .sort_by(|a, b| a.description.cmp(&b.description));
+                    for effect in &mut ability.effects {
+                        effect.leveling.sort_by(|a, b| {
+                            a.attribute
+                                .as_deref()
+                                .unwrap_or("")
+                                .cmp(b.attribute.as_deref().unwrap_or(""))
+                        });
+                    }
+                }
+            }
+        }
+        vec_self.into_iter()
+    }
+}
+
+impl OrderJson<CdnItem> for HashMap<String, CdnItem> {
+    fn into_iter_ord(self) -> impl Iterator<Item = (String, CdnItem)> {
+        let mut vec_self = self.into_iter().collect::<Vec<_>>();
+        for (_, item) in vec_self.iter_mut() {
+            item.active.sort_by(|a, b| a.effects.cmp(&b.effects));
+            item.passives.sort_by(|a, b| a.effects.cmp(&b.effects));
+        }
+        vec_self.into_iter()
+    }
+}
 
 pub async fn save_cache<T: Serialize>(result: impl OrderJson<T>, instance: CdnEndpoint) {
     for (key, value) in result.into_iter_ord() {

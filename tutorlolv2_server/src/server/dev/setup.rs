@@ -7,12 +7,14 @@ use actix_web::{
     rt::{spawn, task::spawn_blocking},
     web::Data,
 };
-use tutorlolv2_dev::setup::{
-    cache::*,
-    essentials::{api::CdnEndpoint, images::*},
-    generators::{champions::*, items::assign_item_damages},
-    scraper::data_scraper,
-    update::*,
+use tutorlolv2_dev::{
+    gen_factories::{fac_champions::ChampionFactory, fac_items::ItemFactory},
+    setup::{
+        cache::*,
+        essentials::{api::CdnEndpoint, images::*},
+        scraper::data_scraper,
+        update::*,
+    },
 };
 use tutorlolv2_exports::*;
 
@@ -32,8 +34,8 @@ pub async fn setup_project(state: Data<AppState>) -> impl Responder {
             }
         }
 
-        let _ = spawn_blocking(setup_champion_names).await;
-        let _ = spawn_blocking(setup_internal_items).await;
+        let _ = spawn_blocking(move || setup_champion_names().ok()).await;
+        let _ = spawn_blocking(move || setup_internal_items().ok()).await;
         let _ = spawn_blocking(setup_runes_json).await;
         let _ = prettify_internal_items().await;
 
@@ -41,12 +43,12 @@ pub async fn setup_project(state: Data<AppState>) -> impl Responder {
             let client = client.clone();
             spawn(async move {
                 let _ = data_scraper(client).await;
-                setup_damaging_items();
-                let _ = assign_item_damages();
+                let _ = setup_damaging_items();
+                ItemFactory::run_all();
             });
         }
         spawn(async move {
-            let _ = create_generator_files(GeneratorMode::Partial).await;
+            let _ = ChampionFactory::create_all();
             setup_internal_champions();
         });
 

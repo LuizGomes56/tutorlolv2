@@ -141,18 +141,7 @@ pub fn export_items() -> Vec<(u32, ItemDetails)> {
             let prettified_stats = item
                 .prettified_stats
                 .iter()
-                .map(|(k, v)| {
-                    format!("StatName::{}({v})", {
-                        let mut s = k.replace(" ", "");
-                        if s == "Lethality" {
-                            s = "ArmorPenetration".to_string();
-                        }
-                        if s == "HealandShieldPower" {
-                            s = "HealAndShieldPower".to_string()
-                        }
-                        s
-                    })
-                })
+                .map(|(k, v)| format!("StatName::{}({v})", k.to_pascal_case()))
                 .collect::<Vec<String>>()
                 .join(",");
 

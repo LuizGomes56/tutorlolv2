@@ -53,17 +53,15 @@ impl AbilityLike {
         let first_char = value.chars().next().unwrap();
         let ability_name = &value[2..value.len() - 1];
 
-        macro_rules! match_ability_name {
-            ($field:ident) => {
-                AbilityLike::$field(AbilityName::from_str(ability_name).unwrap())
-            };
-        }
+        let match_ability_name = |field: fn(AbilityName) -> AbilityLike| {
+            field(AbilityName::from_str(ability_name).unwrap())
+        };
         match first_char {
-            'P' => match_ability_name!(P),
-            'Q' => match_ability_name!(Q),
-            'W' => match_ability_name!(W),
-            'E' => match_ability_name!(E),
-            'R' => match_ability_name!(R),
+            'P' => match_ability_name(AbilityLike::P),
+            'Q' => match_ability_name(AbilityLike::Q),
+            'W' => match_ability_name(AbilityLike::W),
+            'E' => match_ability_name(AbilityLike::E),
+            'R' => match_ability_name(AbilityLike::R),
             _ => panic!("Invalid AbilityLike"),
         }
     }
@@ -135,7 +133,7 @@ macro_rules! enum_from_str {
             fn from_str(s: &str) -> ::core::result::Result<Self, Self::Err> {
                 match s {
                     $( ::core::stringify!($V) => Ok(Self::$V), )*
-                    _ => unreachable!("Invalid string for enum {}: {}", stringify!($E), s),
+                    _ => unreachable!("Invalid string for enum {}: {s}", stringify!($E)),
                 }
             }
         }

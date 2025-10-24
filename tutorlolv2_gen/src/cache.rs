@@ -189,6 +189,46 @@ impl Position {
     }
 }
 
+#[derive(Encode, Deserialize, Serialize)]
+pub enum GameMap {
+    SummonersRift,
+    Tutorial,
+    TwistedTreeline,
+    Dominion,
+    Aram,
+    DarkStar,
+    Invasion,
+    Project,
+    StarGuardian,
+    Odyssey,
+    NexusBlitz,
+    Tft,
+    Arena,
+    Urf,
+}
+
+impl From<u8> for GameMap {
+    fn from(value: u8) -> Self {
+        match value {
+            3 => GameMap::Tutorial,
+            4 | 10 => GameMap::TwistedTreeline,
+            8 => GameMap::Dominion,
+            12 | 14 => GameMap::Aram,
+            13 => GameMap::Invasion,
+            16 => GameMap::DarkStar,
+            18 => GameMap::StarGuardian,
+            19 => GameMap::Project,
+            20 => GameMap::Odyssey,
+            21 => GameMap::NexusBlitz,
+            22 => GameMap::Tft,
+            30 => GameMap::Arena,
+            // Unknown
+            0xFF => GameMap::Urf,
+            /* 1 | 2 | 11 | */ _ => GameMap::SummonersRift,
+        }
+    }
+}
+
 #[derive(Copy, Clone, Encode)]
 pub struct TypeMetadata<T> {
     pub kind: T,
@@ -244,6 +284,7 @@ pub struct CachedItemDamages {
     pub maximum_damage: ConstClosure,
 }
 
+#[derive(Serialize, Deserialize)]
 pub enum StatName {
     AbilityHaste(u16),
     AbilityPower(u16),

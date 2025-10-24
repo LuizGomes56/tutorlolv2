@@ -3,7 +3,8 @@ use bincode::{Decode, Encode};
 use smallvec::SmallVec;
 use tinyset::SetU32;
 use tutorlolv2_gen::{
-    AbilityLike, AdaptativeType, ChampionId, ConstClosure, ItemId, Position, RuneId, TypeMetadata,
+    AbilityLike, AdaptativeType, ChampionId, ConstClosure, GameMap, ItemId, Position, RuneId,
+    TypeMetadata,
 };
 
 #[derive(Encode, PartialEq, Clone, Copy)]

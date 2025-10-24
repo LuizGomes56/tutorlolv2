@@ -6,12 +6,12 @@ use std::{
     time::Duration,
 };
 use tutorlolv2_dev::{
-    CdnChampion, DeserializeOwned, Serialize,
-    cache::save_cache,
+    DeserializeOwned, Serialize,
+    cache::{OrderJson, save_cache},
+    champions::CdnChampion,
     essentials::{api::CdnEndpoint, ext::FilePathExt},
-    generators_v2::GeneratorFactory,
+    generators::gen_factories::fac_champions::ChampionFactory,
     items::CdnItem,
-    setup::generators::champions::OrderJson,
 };
 use tutorlolv2_exports::*;
 
@@ -237,12 +237,10 @@ async fn main() {
             ord_folder::<CdnChampion>(CdnEndpoint::Champions).await;
             ord_folder::<CdnItem>(CdnEndpoint::Items).await;
         }
-        Some("check-gen") => {
-            GeneratorFactory::check_all_offsets();
-        }
-        Some("run-gen") => GeneratorFactory::run_all(),
+        Some("check-gen") => ChampionFactory::check_all_offsets(),
+        Some("run-gen") => ChampionFactory::run_all(),
         Some("make-gen") => {
-            let _ = GeneratorFactory::create_all();
+            let _ = ChampionFactory::create_all();
         }
         Some("html-gen") => generate_html().await,
         Some("update") => update().await,
