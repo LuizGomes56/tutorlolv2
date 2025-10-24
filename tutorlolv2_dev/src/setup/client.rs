@@ -453,12 +453,14 @@ impl HttpClient {
                 let client = self.clone();
 
                 futures_vec.push(tokio::spawn(async move {
-                    let path = format!("cache/scraper/builds/{position}/{champion_id}.html");
+                    let path = format!("scraper/builds/{position}/{champion_id}");
+                    let cache_path = format!("cache/{path}.html");
+                    let internal_path = format!("internal/{path}.json");
 
                     let _ = client
                         .download(
                             format!("{}/{name}/build/{position}", ENV_CONFIG.meta_endpoint),
-                            &path,
+                            &cache_path,
                         )
                         .await;
 
@@ -466,7 +468,7 @@ impl HttpClient {
                         let run_task = || -> MayFail {
                             let mut result = HashMap::<String, _>::default();
 
-                            let html = String::from_utf8(read_file(&path)?)?;
+                            let html = String::from_utf8(read_file(&cache_path)?)?;
 
                             let document = Html::parse_document(&html);
                             let full_build =
@@ -505,7 +507,7 @@ impl HttpClient {
                             push_alt_attr(&mut items, &situational_build);
 
                             result.insert(String::from(position), (items, runes));
-                            result.into_file(path)
+                            result.into_file(internal_path)
                         };
                         match run_task() {
                             Ok(_) => (),
@@ -553,7 +555,9 @@ impl HttpClient {
 
         for champion_id in champion_ids {
             for position in ["top", "jungle", "mid", "adc", "support"] {
-                let data = wait_ready(format!("internal/scraper/builds/{position}/{champion_id}"))?;
+                let data = wait_ready(format!(
+                    "internal/scraper/builds/{position}/{champion_id}.json"
+                ))?;
                 results.insert(champion_id.clone(), data);
             }
         }
