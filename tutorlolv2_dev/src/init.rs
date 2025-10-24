@@ -41,7 +41,5 @@ impl EnvConfig {
     }
 }
 
-/// Environment variables are only loaded when needed
-/// Likely to be used when "dev-routes" feature is enabled
 pub static ENV_CONFIG: Lazy<EnvConfig> = Lazy::new(EnvConfig::new);
 pub static HTTP_CLIENT: Lazy<HttpClient> = Lazy::new(HttpClient::new);

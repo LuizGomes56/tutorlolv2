@@ -383,7 +383,7 @@ impl HttpClient {
         }
     }
 
-    pub async fn data_scraper(&self) -> MayFail {
+    pub async fn call_scraper(&self) -> MayFail {
         let champion_names =
             "internal/champion_names.json".read_json::<HashMap<String, String>>()?;
         let mut collected_results = HashMap::<String, HashMap<String, _>>::default();

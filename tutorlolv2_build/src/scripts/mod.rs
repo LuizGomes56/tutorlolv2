@@ -33,7 +33,6 @@ pub static BASIC_ATTACK: &str = r#"pub static BASIC_ATTACK: DamageExpression = D
 };"#;
 
 pub trait StringExt {
-    fn to_pascal_case(&self) -> String;
     fn highlight_rust(&self) -> String;
     fn clear_suffixes(&self) -> String;
     fn invoke_rustfmt(&self, width: usize) -> String;
@@ -69,9 +68,6 @@ impl StringExt for str {
     }
     fn remove_special_chars(&self) -> String {
         tutorlolv2_fmt::remove_special_chars(self)
-    }
-    fn to_pascal_case(&self) -> String {
-        tutorlolv2_fmt::to_pascal_case(self)
     }
     fn to_screaming_snake_case(&self) -> String {
         fn is_boundary(c: char) -> bool {

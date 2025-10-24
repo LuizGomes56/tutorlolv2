@@ -19,7 +19,7 @@ pub async fn update_items() -> impl Responder {
 
 #[get("/data_scraper")]
 pub async fn update_scraped_data() -> impl Responder {
-    dev_response!(HTTP_CLIENT.data_scraper().await)
+    dev_response!(HTTP_CLIENT.call_scraper().await)
 }
 
 #[get("/version")]

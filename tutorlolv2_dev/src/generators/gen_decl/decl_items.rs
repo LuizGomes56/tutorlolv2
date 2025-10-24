@@ -1,19 +1,19 @@
 use crate::{
-    generators::Generator,
-    items::{MerakiItem, Item},
+    generators::{Generator, gen_factories::fac_items::ItemData},
+    items::Item,
 };
 
 tutorlolv2_macros::expand_dir!("../internal/items", |Name| {
-    pub struct Name(pub MerakiItem);
+    pub struct Name(pub ItemData);
 
     impl Name {
-        pub fn new(data: MerakiItem) -> Box<dyn Generator<Item>> {
+        pub fn new(data: ItemData) -> Box<dyn Generator<Item>> {
             Box::new(Self(data))
         }
     }
 
     impl ::core::ops::Deref for Name {
-        type Target = MerakiItem;
+        type Target = ItemData;
         fn deref(&self) -> &Self::Target {
             &self.0
         }

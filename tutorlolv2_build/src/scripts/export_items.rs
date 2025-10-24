@@ -2,45 +2,46 @@ use super::*;
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct PartialStats {
-    pub ability_power: Option<f64>,
-    pub armor: Option<f64>,
-    pub armor_penetration_percent: Option<f64>,
-    pub armor_penetration_flat: Option<f64>,
-    pub magic_penetration_percent: Option<f64>,
-    pub magic_penetration_flat: Option<f64>,
-    pub attack_damage: Option<f64>,
-    pub attack_speed: Option<f64>,
+pub struct ItemStats {
+    pub ability_power: f64,
+    pub armor: f64,
+    pub armor_penetration_percent: f64,
+    pub armor_penetration_flat: f64,
+    pub magic_penetration_percent: f64,
+    pub magic_penetration_flat: f64,
+    pub attack_damage: f64,
+    pub attack_speed: f64,
     #[serde(rename = "criticalStrikeChance")]
-    pub crit_chance: Option<f64>,
+    pub crit_chance: f64,
     #[serde(rename = "criticalStrikeDamage")]
-    pub crit_damage: Option<f64>,
-    pub health: Option<f64>,
-    pub lifesteal: Option<f64>,
+    pub crit_damage: f64,
+    pub health: f64,
+    pub lifesteal: f64,
     #[serde(rename = "magicResistance")]
-    pub magic_resist: Option<f64>,
-    pub mana: Option<f64>,
-    pub movespeed: Option<f64>,
-    pub omnivamp: Option<f64>,
+    pub magic_resist: f64,
+    pub mana: f64,
+    pub movespeed: f64,
+    pub omnivamp: f64,
 }
 
 #[derive(Deserialize)]
 pub struct DamageObject {
-    pub minimum_damage: Option<String>,
-    pub maximum_damage: Option<String>,
+    pub minimum_damage: String,
+    pub maximum_damage: String,
 }
 
 #[derive(Deserialize)]
+
 pub struct Item {
-    pub id: u32,
+    pub riot_id: u32,
     pub name: String,
-    pub gold: u16,
+    pub price: u32,
     pub tier: u8,
-    pub prettified_stats: BTreeMap<String, f64>,
+    pub prettified_stats: Vec<String>,
     pub damage_type: String,
-    pub stats: PartialStats,
-    pub ranged: Option<DamageObject>,
-    pub melee: Option<DamageObject>,
+    pub stats: ItemStats,
+    pub ranged: DamageObject,
+    pub melee: DamageObject,
     pub attributes: Attrs,
     pub purchasable: bool,
 }
@@ -57,25 +58,21 @@ fn get_items_decl(item_name: &str, item: &Item) -> (String, String, String) {
         attributes = item.attributes
     );
 
-    let assign_value = |expr: &Option<String>| {
-        if let Some(raw) = expr.as_ref().map(String::as_str) {
-            let (new_expr, changed) = raw.clean_math_expr().transform_expr();
-            let ctx_param = if changed { "ctx" } else { "_" };
-            Some(format!("|{}|{}", ctx_param, new_expr.to_lowercase()))
-        } else {
+    let assign_value = |expr: &str| {
+        if expr.is_empty() || expr == "zero" {
             None
+        } else {
+            let (new_expr, changed) = expr.clean_math_expr().transform_expr();
+            let ctx_param = if changed { "ctx" } else { "_" };
+            Some(format!("|{ctx_param}|{}", new_expr.to_lowercase()))
         }
     };
 
-    let make_closure = |damage_object: &Option<DamageObject>| {
-        let data = if let Some(damage) = damage_object {
-            (
-                assign_value(&damage.minimum_damage),
-                assign_value(&damage.maximum_damage),
-            )
-        } else {
-            (None, None)
-        };
+    let make_closure = |damage_object: &DamageObject| {
+        let data = (
+            assign_value(&damage_object.minimum_damage),
+            assign_value(&damage_object.maximum_damage),
+        );
         let mut closures = Vec::new();
         if let Some(min) = data.0 {
             closures.push(min);
@@ -92,16 +89,12 @@ fn get_items_decl(item_name: &str, item: &Item) -> (String, String, String) {
     (metadata, range_closure, melee_closure)
 }
 
-pub fn format_stats(stats: &PartialStats) -> String {
+pub fn format_stats(stats: &ItemStats) -> String {
     let mut all_stats = Vec::new();
 
     macro_rules! insert_stat {
         ($field:ident) => {
-            all_stats.push(format!(
-                "{}:{}f32,",
-                stringify!($field),
-                stats.$field.unwrap_or(0.0)
-            ));
+            all_stats.push(format!("{}:{}f32,", stringify!($field), stats.$field));
         };
     }
 
@@ -136,14 +129,9 @@ pub fn export_items() -> Vec<(u32, ItemDetails)> {
     let mut items = init_map!(dir Item, "internal/items")
         .into_par_iter()
         .map(|(_, item)| {
-            let item_id = item.id;
+            let item_id = item.riot_id;
 
-            let prettified_stats = item
-                .prettified_stats
-                .iter()
-                .map(|(k, v)| format!("StatName::{}({v})", k.to_pascal_case()))
-                .collect::<Vec<String>>()
-                .join(",");
+            let prettified_stats = item.prettified_stats.join(",");
 
             let (metadata, range_closure, melee_closure) = get_items_decl(&item.name, &item);
 
@@ -158,8 +146,8 @@ pub fn export_items() -> Vec<(u32, ItemDetails)> {
                     melee_closure: {melee_closure},
                     stats: CachedItemStats {{{stats}}},
                 }};",
-                name = format_args!("{}_{}", item.name.to_screaming_snake_case(), item_id),
-                gold = item.gold,
+                name = format_args!("{}_{item_id}", item.name.to_screaming_snake_case()),
+                gold = item.price,
                 damage_type = item.damage_type,
                 attributes = item.attributes,
                 stats = format_stats(&item.stats),
@@ -174,8 +162,14 @@ pub fn export_items() -> Vec<(u32, ItemDetails)> {
                         .highlight_rust()
                         .replace_const(),
                     constdecl,
-                    is_simulated: item.tier >= 3 && item.gold > 0 && item.purchasable,
-                    is_damaging: item.ranged.is_some() || item.melee.is_some(),
+                    is_simulated: item.tier >= 3 && item.price > 0 && item.purchasable,
+                    is_damaging: {
+                        let is_damaging = |expr: &str| expr != "zero" && !expr.is_empty();
+                        is_damaging(&item.ranged.minimum_damage)
+                            || is_damaging(&item.ranged.maximum_damage)
+                            || is_damaging(&item.melee.minimum_damage)
+                            || is_damaging(&item.melee.maximum_damage)
+                    },
                     item_name: item.name,
                 },
             )

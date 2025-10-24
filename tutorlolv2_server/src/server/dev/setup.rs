@@ -18,28 +18,39 @@ pub async fn setup_project() -> impl Responder {
     setup_project_folders();
 
     spawn(async move {
-        let _ = HTTP_CLIENT.update_riot_cache().await;
-        let _ = HTTP_CLIENT.update_meraki_cache("champions").await;
-        let _ = HTTP_CLIENT.update_meraki_cache("items").await;
+        for future in [
+            spawn(async move { HTTP_CLIENT.update_riot_cache().await }),
+            spawn(async move { HTTP_CLIENT.update_meraki_cache("champions").await }),
+            spawn(async move { HTTP_CLIENT.update_meraki_cache("items").await }),
+        ] {
+            let _ = future.await;
+        }
 
-        let _ = spawn_blocking(move || setup_champion_names().ok()).await;
-        let _ = spawn_blocking(move || setup_internal_items().ok()).await;
         let _ = setup_runes_json();
+        let _ = setup_champion_names();
+        let _ = setup_internal_items();
         let _ = prettify_internal_items().await;
 
-        let _ = HTTP_CLIENT.data_scraper().await;
-        let _ = setup_damaging_items();
-        ItemFactory::run_all();
+        spawn(async move {
+            let _ = HTTP_CLIENT.call_scraper().await;
+            let _ = setup_damaging_items();
+            ItemFactory::run_all();
+        });
 
         spawn(async move {
             let _ = ChampionFactory::create_all();
             ChampionFactory::run_all();
         });
 
-        let _ = HTTP_CLIENT.download_arts_img().await;
-        let _ = HTTP_CLIENT.download_general_img().await;
-        let _ = HTTP_CLIENT.download_items_img().await;
-        let _ = HTTP_CLIENT.download_runes_img().await;
+        for future in [
+            spawn(async move { HTTP_CLIENT.download_arts_img().await }),
+            spawn(async move { HTTP_CLIENT.download_general_img().await }),
+            spawn(async move { HTTP_CLIENT.download_items_img().await }),
+            spawn(async move { HTTP_CLIENT.download_runes_img().await }),
+        ] {
+            let _ = future.await;
+        }
+
         let _ = spawn(img_convert_avif(IMG_FOLDERS)).await;
     })
     .await
