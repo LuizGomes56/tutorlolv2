@@ -1,7 +1,7 @@
 use super::*;
 
 impl Generator<Champion> for Tryndamere {
-    #[generator_v2]
+    #[champion_generator]
     fn generate(mut self: Box<Self>) -> MayFail<Champion> {
         ability![Q, (1, 1, _1)];
         ability![W, (1, 0, _1)];

@@ -1,6 +1,3 @@
-pub mod cache;
-pub mod essentials;
-pub mod exceptions;
-pub mod schedule;
-pub mod scraper;
+pub mod client;
+pub mod ext;
 pub mod update;

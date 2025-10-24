@@ -4,7 +4,7 @@ pub(self) use crate::{
 };
 use tutorlolv2_gen::EvalIdent;
 pub(self) use tutorlolv2_gen::{AbilityLike, AbilityName, Attrs, DamageType};
-pub(self) use tutorlolv2_macros::generator_v2;
+pub(self) use tutorlolv2_macros::champion_generator;
 
 tutorlolv2_macros::expand_dir!("../internal/champions", |Name| {
     paste::paste! {

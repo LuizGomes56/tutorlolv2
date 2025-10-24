@@ -1,19 +1,19 @@
 use crate::{
     generators::Generator,
-    items::{CdnItem, Item},
+    items::{MerakiItem, Item},
 };
 
 tutorlolv2_macros::expand_dir!("../internal/items", |Name| {
-    pub struct Name(pub CdnItem);
+    pub struct Name(pub MerakiItem);
 
     impl Name {
-        pub fn new(data: CdnItem) -> Box<dyn Generator<Item>> {
+        pub fn new(data: MerakiItem) -> Box<dyn Generator<Item>> {
             Box::new(Self(data))
         }
     }
 
     impl ::core::ops::Deref for Name {
-        type Target = CdnItem;
+        type Target = MerakiItem;
         fn deref(&self) -> &Self::Target {
             &self.0
         }

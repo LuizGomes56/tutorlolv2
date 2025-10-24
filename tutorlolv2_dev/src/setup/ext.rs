@@ -1,4 +1,5 @@
-use serde::de::DeserializeOwned;
+use crate::generators::MayFail;
+use serde::{Serialize, de::DeserializeOwned};
 use std::{
     collections::HashMap,
     fs::{self, File},
@@ -6,16 +7,19 @@ use std::{
     path::Path,
 };
 
-use crate::generators::MayFail;
-
 pub trait FilePathExt {
+    fn write_json(&self, data: &impl Serialize) -> MayFail;
     fn read_dir_json<T: DeserializeOwned>(&self) -> MayFail<HashMap<String, T>>;
     fn json_file_name(&self) -> &str;
     fn read_json<T: DeserializeOwned>(&self) -> MayFail<T>;
     fn write_to_file(&self, bytes: &[u8]) -> MayFail;
+    fn exists_file(&self) -> bool;
 }
 
 impl<T: AsRef<Path>> FilePathExt for T {
+    fn exists_file(&self) -> bool {
+        self.as_ref().exists()
+    }
     fn read_dir_json<U: DeserializeOwned>(&self) -> MayFail<HashMap<String, U>> {
         let mut map = HashMap::new();
         for entry in fs::read_dir(self.as_ref())? {
@@ -43,6 +47,15 @@ impl<T: AsRef<Path>> FilePathExt for T {
         println!("read_from_file: {:?}", path);
         let data = fs::read_to_string(path)?;
         serde_json::from_str(&data).map_err(|e| format!("Failed to parse {:?}: {}", path, e).into())
+    }
+
+    fn write_json(&self, data: &impl Serialize) -> MayFail {
+        let path = self.as_ref();
+        println!("write_to_file: {path:?}");
+        let json = serde_json::to_string_pretty(&data)?;
+        let mut file = File::create(path)?;
+        file.write_all(json.as_bytes())?;
+        Ok(())
     }
 
     fn write_to_file(&self, bytes: &[u8]) -> MayFail {

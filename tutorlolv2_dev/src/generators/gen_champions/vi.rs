@@ -1,7 +1,7 @@
 use super::*;
 
 impl Generator<Champion> for Vi {
-    #[generator_v2]
+    #[champion_generator]
     fn generate(mut self: Box<Self>) -> MayFail<Champion> {
         ability![Q, (1, 0, _1), (1, 1, _2)];
         ability![W, (1, 0, _1)];

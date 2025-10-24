@@ -1,7 +1,7 @@
 use super::*;
 
 impl Generator<Champion> for Ornn {
-    #[generator_v2]
+    #[champion_generator]
     fn generate(mut self: Box<Self>) -> MayFail<Champion> {
         ability![Q, (0, 0, _1)];
         ability![

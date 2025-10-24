@@ -1,5 +1,7 @@
 use once_cell::sync::Lazy;
 
+use crate::client::HttpClient;
+
 macro_rules! env_var {
     ($name:literal) => {
         std::env::var($name).expect(&concat!("[env] ", $name, " is not set"))
@@ -12,7 +14,7 @@ macro_rules! env_var {
 /// HOST=127.0.0.1:*
 /// LOL_VERSION=*
 /// LOL_LANGUAGE=en_US
-/// CDN_ENDPOINT=https://cdn.merakianalytics.com/riot/lol/resources/latest/en-US
+/// MERAKI_ENDPOINT=https://cdn.merakianalytics.com/riot/lol/resources/latest/en-US
 /// DD_DRAGON_ENDPOINT=https://ddragon.leagueoflegends.com
 /// RIOT_IMAGE_ENDPOINT=https://ddragon.canisback.com/img
 /// META_ENDPOINT=*
@@ -20,7 +22,7 @@ macro_rules! env_var {
 pub struct EnvConfig {
     pub lol_version: String,
     pub lol_language: String,
-    pub cdn_endpoint: String,
+    pub meraki_endpoint: String,
     pub dd_dragon_endpoint: String,
     pub riot_image_endpoint: String,
     pub meta_endpoint: String,
@@ -31,7 +33,7 @@ impl EnvConfig {
         EnvConfig {
             lol_version: env_var!("LOL_VERSION"),
             lol_language: env_var!("LOL_LANGUAGE"),
-            cdn_endpoint: env_var!("CDN_ENDPOINT"),
+            meraki_endpoint: env_var!("MERAKI_ENDPOINT"),
             dd_dragon_endpoint: env_var!("DD_DRAGON_ENDPOINT"),
             riot_image_endpoint: env_var!("RIOT_IMAGE_ENDPOINT"),
             meta_endpoint: env_var!("META_ENDPOINT"),
@@ -42,3 +44,4 @@ impl EnvConfig {
 /// Environment variables are only loaded when needed
 /// Likely to be used when "dev-routes" feature is enabled
 pub static ENV_CONFIG: Lazy<EnvConfig> = Lazy::new(EnvConfig::new);
+pub static HTTP_CLIENT: Lazy<HttpClient> = Lazy::new(HttpClient::new);

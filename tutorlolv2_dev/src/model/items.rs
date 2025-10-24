@@ -11,7 +11,7 @@ pub struct Effect {
 
 #[derive(Serialize, Deserialize, Default)]
 #[serde(rename_all = "camelCase")]
-pub struct ItemsCdnStatsMap {
+pub struct MerakiItemStatsMap {
     pub flat: f64,
     pub percent: f64,
 }
@@ -19,25 +19,25 @@ pub struct ItemsCdnStatsMap {
 #[derive(Serialize, Deserialize, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct ItemStats {
-    pub ability_power: ItemsCdnStatsMap,
-    pub armor: ItemsCdnStatsMap,
-    pub armor_penetration: ItemsCdnStatsMap,
-    pub magic_penetration: ItemsCdnStatsMap,
-    pub attack_damage: ItemsCdnStatsMap,
-    pub attack_speed: ItemsCdnStatsMap,
-    pub critical_strike_chance: ItemsCdnStatsMap,
-    pub critical_strike_damage: ItemsCdnStatsMap,
-    pub health: ItemsCdnStatsMap,
-    pub lifesteal: ItemsCdnStatsMap,
-    pub magic_resistance: ItemsCdnStatsMap,
-    pub mana: ItemsCdnStatsMap,
-    pub movespeed: ItemsCdnStatsMap,
-    pub omnivamp: ItemsCdnStatsMap,
+    pub ability_power: MerakiItemStatsMap,
+    pub armor: MerakiItemStatsMap,
+    pub armor_penetration: MerakiItemStatsMap,
+    pub magic_penetration: MerakiItemStatsMap,
+    pub attack_damage: MerakiItemStatsMap,
+    pub attack_speed: MerakiItemStatsMap,
+    pub critical_strike_chance: MerakiItemStatsMap,
+    pub critical_strike_damage: MerakiItemStatsMap,
+    pub health: MerakiItemStatsMap,
+    pub lifesteal: MerakiItemStatsMap,
+    pub magic_resistance: MerakiItemStatsMap,
+    pub mana: MerakiItemStatsMap,
+    pub movespeed: MerakiItemStatsMap,
+    pub omnivamp: MerakiItemStatsMap,
 }
 
 #[derive(Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct CdnItem {
+pub struct MerakiItem {
     pub active: Vec<Effect>,
     pub builds_from: Vec<u32>,
     pub builds_into: Vec<u32>,

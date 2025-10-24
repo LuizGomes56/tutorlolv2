@@ -1,5 +1,5 @@
 use crate::{
-    champions::{CdnChampion, Champion},
+    champions::{MerakiChampion, Champion},
     generators::{Generator, gen_factories::fac_champions::ChampionData},
 };
 
@@ -7,7 +7,7 @@ tutorlolv2_macros::expand_dir!("../internal/champions", |Name| {
     pub struct Name(pub ChampionData);
 
     impl Name {
-        pub fn new(data: CdnChampion) -> Box<dyn Generator<Champion>> {
+        pub fn new(data: MerakiChampion) -> Box<dyn Generator<Champion>> {
             Box::new(Self(ChampionData::new(data)))
         }
     }

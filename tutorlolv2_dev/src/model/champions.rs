@@ -22,14 +22,14 @@ pub struct Effect {
 
 #[derive(Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
-pub struct CdnAbility {
+pub struct MerakiAbility {
     pub cooldown: Option<ModifierLike>,
     pub damage_type: Option<String>,
     pub effects: Vec<Effect>,
     pub name: String,
 }
 
-impl CdnAbility {
+impl MerakiAbility {
     pub fn format(&self, damage: Vec<String>) -> Ability {
         Ability {
             name: self.name.clone(),
@@ -43,15 +43,15 @@ impl CdnAbility {
 #[derive(Deserialize, Serialize)]
 #[serde(rename_all = "UPPERCASE")]
 pub struct Abilities {
-    pub p: Vec<CdnAbility>,
-    pub q: Vec<CdnAbility>,
-    pub w: Vec<CdnAbility>,
-    pub e: Vec<CdnAbility>,
-    pub r: Vec<CdnAbility>,
+    pub p: Vec<MerakiAbility>,
+    pub q: Vec<MerakiAbility>,
+    pub w: Vec<MerakiAbility>,
+    pub e: Vec<MerakiAbility>,
+    pub r: Vec<MerakiAbility>,
 }
 
 impl Abilities {
-    pub fn into_iter(self) -> impl Iterator<Item = (char, Vec<CdnAbility>)> {
+    pub fn into_iter(self) -> impl Iterator<Item = (char, Vec<MerakiAbility>)> {
         [
             ('P', self.p),
             ('Q', self.q),
@@ -61,30 +61,20 @@ impl Abilities {
         ]
         .into_iter()
     }
-    pub fn into_iterator(&self) -> impl Iterator<Item = (&'static str, &Vec<CdnAbility>)> {
-        [
-            ("q", &self.q),
-            ("w", &self.w),
-            ("e", &self.e),
-            ("r", &self.r),
-            ("p", &self.p),
-        ]
-        .into_iter()
-    }
 }
 
 #[derive(Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
-pub struct CdnChampion {
+pub struct MerakiChampion {
     pub name: String,
     pub attack_type: String,
     pub adaptive_type: String,
-    pub stats: ChampionCdnStats,
+    pub stats: MerakiChampionStats,
     pub abilities: Abilities,
     pub positions: Vec<String>,
 }
 
-impl CdnChampion {
+impl MerakiChampion {
     pub fn format(
         self,
         abilities: HashMap<AbilityLike, Ability>,
@@ -120,34 +110,34 @@ pub struct Champion {
     pub adaptative_type: AdaptativeType,
     pub attack_type: AttackType,
     pub positions: Vec<Position>,
-    pub stats: ChampionCdnStats,
+    pub stats: MerakiChampionStats,
     pub abilities: HashMap<AbilityLike, Ability>,
     pub merge_data: Vec<(AbilityLike, AbilityLike)>,
 }
 
 #[derive(Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct ChampionCdnStatsMap {
+pub struct MerakiChampionStatsMap {
     pub flat: f64,
     pub per_level: f64,
 }
 
 #[derive(Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct ChampionCdnStats {
-    pub health: ChampionCdnStatsMap,
-    pub mana: ChampionCdnStatsMap,
-    pub armor: ChampionCdnStatsMap,
-    pub magic_resistance: ChampionCdnStatsMap,
-    pub attack_damage: ChampionCdnStatsMap,
-    pub attack_speed: ChampionCdnStatsMap,
-    pub movespeed: ChampionCdnStatsMap,
-    pub critical_strike_damage: ChampionCdnStatsMap,
-    pub critical_strike_damage_modifier: ChampionCdnStatsMap,
-    pub attack_speed_ratio: ChampionCdnStatsMap,
-    pub attack_range: ChampionCdnStatsMap,
-    pub aram_damage_taken: ChampionCdnStatsMap,
-    pub aram_damage_dealt: ChampionCdnStatsMap,
-    pub urf_damage_taken: ChampionCdnStatsMap,
-    pub urf_damage_dealt: ChampionCdnStatsMap,
+pub struct MerakiChampionStats {
+    pub health: MerakiChampionStatsMap,
+    pub mana: MerakiChampionStatsMap,
+    pub armor: MerakiChampionStatsMap,
+    pub magic_resistance: MerakiChampionStatsMap,
+    pub attack_damage: MerakiChampionStatsMap,
+    pub attack_speed: MerakiChampionStatsMap,
+    pub movespeed: MerakiChampionStatsMap,
+    pub critical_strike_damage: MerakiChampionStatsMap,
+    pub critical_strike_damage_modifier: MerakiChampionStatsMap,
+    pub attack_speed_ratio: MerakiChampionStatsMap,
+    pub attack_range: MerakiChampionStatsMap,
+    pub aram_damage_taken: MerakiChampionStatsMap,
+    pub aram_damage_dealt: MerakiChampionStatsMap,
+    pub urf_damage_taken: MerakiChampionStatsMap,
+    pub urf_damage_dealt: MerakiChampionStatsMap,
 }

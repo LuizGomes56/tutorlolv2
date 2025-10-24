@@ -1,21 +1,21 @@
 use crate::{
-    essentials::ext::FilePathExt,
+    ext::FilePathExt,
     generators::{Generator, MayFail, gen_decl::decl_items::*},
-    items::{CdnItem, Item},
+    items::{Item, MerakiItem},
     riot::RiotCdnItem,
 };
 use tutorlolv2_gen::{INTERNAL_ITEMS, ItemId};
 
 pub struct ItemData {
-    pub cdn_data: CdnItem,
+    pub meraki_data: MerakiItem,
     pub riot_data: RiotCdnItem,
     // pub new_data: Item,
 }
 
 impl ItemData {
-    pub fn new(cdn_data: CdnItem, riot_data: RiotCdnItem) -> Self {
+    pub fn new(meraki_data: MerakiItem, riot_data: RiotCdnItem) -> Self {
         Self {
-            cdn_data,
+            meraki_data,
             riot_data,
             // new_data: Item::default(),
         }
@@ -26,7 +26,7 @@ pub struct ItemFactory;
 
 impl ItemFactory {
     pub const NUMBER_OF_ITEMS: usize = INTERNAL_ITEMS.len();
-    pub const GENERATOR_FUNCTIONS: [fn(CdnItem) -> Box<dyn Generator<Item>>;
+    pub const GENERATOR_FUNCTIONS: [fn(MerakiItem) -> Box<dyn Generator<Item>>;
         Self::NUMBER_OF_ITEMS] =
         tutorlolv2_macros::expand_dir!("../internal/items", |[Name]| Name::new);
 
@@ -36,9 +36,8 @@ impl ItemFactory {
             let result = Self::run(item_id);
             match result {
                 Ok(item) => {
-                    let json_string = serde_json::to_string_pretty(&item).unwrap();
                     format!("internal/items/{item_id:?}.json")
-                        .write_to_file(json_string.as_bytes())
+                        .write_json(&item)
                         .unwrap();
                 }
                 Err(e) => {
@@ -49,7 +48,7 @@ impl ItemFactory {
     }
 
     pub fn run(item_id: ItemId) -> MayFail<Item> {
-        let data = format!("cache/cdn/items/{item_id:?}.json").read_json::<CdnItem>()?;
+        let data = format!("cache/cdn/items/{item_id:?}.json").read_json::<MerakiItem>()?;
         let function = Self::GENERATOR_FUNCTIONS[item_id as usize];
         let generator = function(data);
         Ok(generator.generate()?)

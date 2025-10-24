@@ -1,7 +1,7 @@
 use super::*;
 
 impl Generator<Champion> for Jinx {
-    #[generator_v2]
+    #[champion_generator]
     fn generate(mut self: Box<Self>) -> MayFail<Champion> {
         ability![W, (0, 0, _1)];
         ability![E, (0, 0, _1)];

@@ -1,6 +1,6 @@
 use crate::{
-    champions::{Ability, CdnAbility, CdnChampion, Champion, Modifiers},
-    essentials::ext::FilePathExt,
+    champions::{Ability, Champion, MerakiAbility, MerakiChampion, Modifiers},
+    ext::FilePathExt,
     generators::{
         Generator, MayFail,
         gen_decl::decl_champions::*,
@@ -21,7 +21,7 @@ use tutorlolv2_gen::{
 const GENERATOR_FOLDER: &str = "tutorlolv2_dev/src/generators_v2/gen_champions";
 
 pub struct ChampionData {
-    pub data: CdnChampion,
+    pub data: MerakiChampion,
     pub hashmap: HashMap<AbilityLike, Ability>,
     pub mergevec: Vec<(AbilityLike, AbilityLike)>,
 }
@@ -30,7 +30,7 @@ pub struct ChampionFactory;
 
 impl ChampionFactory {
     pub const NUMBER_OF_CHAMPIONS: usize = INTERNAL_CHAMPIONS.len();
-    pub const GENERATOR_FUNCTIONS: [fn(CdnChampion) -> Box<dyn Generator<Champion>>;
+    pub const GENERATOR_FUNCTIONS: [fn(MerakiChampion) -> Box<dyn Generator<Champion>>;
         Self::NUMBER_OF_CHAMPIONS] =
         tutorlolv2_macros::expand_dir!("../internal/champions", |[Name]| Name::new);
 
@@ -38,14 +38,14 @@ impl ChampionFactory {
         let file_name = format!("{champion_id:?}").to_lowercase();
         let path = format!("{GENERATOR_FOLDER}/{file_name}.rs");
 
-        let bind_macro = |ability_char: char, cdn_offsets: &[CdnOffset]| -> String {
+        let bind_macro = |ability_char: char, meraki_offsets: &[MerakiOffset]| -> String {
             let mut offsets = Vec::new();
-            for cdn_offset in cdn_offsets {
+            for meraki_offset in meraki_offsets {
                 offsets.push(format!(
                     "({effect_index}, {leveling_index}, {enum_binding:?})",
-                    effect_index = cdn_offset.effect,
-                    leveling_index = cdn_offset.leveling,
-                    enum_binding = cdn_offset.binding
+                    effect_index = meraki_offset.effect,
+                    leveling_index = meraki_offset.leveling,
+                    enum_binding = meraki_offset.binding
                 ));
             }
             format!(
@@ -68,13 +68,13 @@ impl ChampionFactory {
             }
         }
 
-        let cdn_champion =
-            format!("cache/cdn/champions/{champion_id:?}.json").read_json::<CdnChampion>()?;
+        let meraki_champion =
+            format!("cache/cdn/champions/{champion_id:?}.json").read_json::<MerakiChampion>()?;
 
-        for (ability_char, ability_vec) in cdn_champion.abilities.into_iter() {
-            let cdn_offsets = ChampionData::get_ability_offsets(ability_vec);
-            if cdn_offsets.len() > 0 {
-                generated_content.push_str(&bind_macro(ability_char, &cdn_offsets));
+        for (ability_char, ability_vec) in meraki_champion.abilities.into_iter() {
+            let meraki_offsets = ChampionData::get_ability_offsets(ability_vec);
+            if meraki_offsets.len() > 0 {
+                generated_content.push_str(&bind_macro(ability_char, &meraki_offsets));
             }
         }
 
@@ -122,7 +122,7 @@ impl ChampionFactory {
 
     pub fn run(champion_id: ChampionId) -> MayFail<Champion> {
         let data =
-            format!("cache/cdn/champions/{champion_id:?}.json").read_json::<CdnChampion>()?;
+            format!("cache/cdn/champions/{champion_id:?}.json").read_json::<MerakiChampion>()?;
         let function = Self::GENERATOR_FUNCTIONS[champion_id as usize];
         let generator = function(data);
         Ok(generator.generate()?)
@@ -263,16 +263,19 @@ impl ChampionFactory {
     }
 
     pub fn check_offsets(name: ChampionId) -> MayFail<bool> {
-        let cdn_champion =
-            format!("cache/cdn/champions/{name:?}.json").read_json::<CdnChampion>()?;
+        let meraki_champion =
+            format!("cache/cdn/champions/{name:?}.json").read_json::<MerakiChampion>()?;
 
         let mut new_offsets = HashMap::<char, Vec<(usize, usize)>>::new();
 
-        for (ability_char, ability_vec) in cdn_champion.abilities.into_iter() {
-            let cdn_offsets = ChampionData::get_ability_offsets(ability_vec);
+        for (ability_char, ability_vec) in meraki_champion.abilities.into_iter() {
+            let meraki_offsets = ChampionData::get_ability_offsets(ability_vec);
             new_offsets.insert(
                 ability_char,
-                cdn_offsets.iter().map(|o| (o.effect, o.leveling)).collect(),
+                meraki_offsets
+                    .iter()
+                    .map(|o| (o.effect, o.leveling))
+                    .collect(),
             );
         }
 
@@ -286,14 +289,14 @@ impl ChampionFactory {
     }
 }
 
-pub struct CdnOffset {
+pub struct MerakiOffset {
     pub effect: usize,
     pub leveling: usize,
     pub binding: AbilityName,
 }
 
 impl ChampionData {
-    pub fn new(data: CdnChampion) -> Self {
+    pub fn new(data: MerakiChampion) -> Self {
         Self {
             data,
             hashmap: HashMap::new(),
@@ -318,24 +321,24 @@ impl ChampionData {
         }
     }
 
-    pub fn get_cdn_ability<'a>(
+    pub fn get_meraki_ability<'a>(
         &'a self,
         ability: AbilityLike,
         ability_offset: usize,
-    ) -> &'a CdnAbility {
+    ) -> &'a MerakiAbility {
         let abilities = &self.data.abilities;
-        let cdn_abilities = match ability {
+        let meraki_abilities = match ability {
             AbilityLike::P(_) => &abilities.p,
             AbilityLike::Q(_) => &abilities.q,
             AbilityLike::W(_) => &abilities.w,
             AbilityLike::E(_) => &abilities.e,
             AbilityLike::R(_) => &abilities.r,
         };
-        &cdn_abilities[ability_offset]
+        &meraki_abilities[ability_offset]
     }
 
-    pub fn get_ability_offsets(abilities: Vec<CdnAbility>) -> Vec<CdnOffset> {
-        let mut macro_offsets = Vec::<CdnOffset>::new();
+    pub fn get_ability_offsets(abilities: Vec<MerakiAbility>) -> Vec<MerakiOffset> {
+        let mut macro_offsets = Vec::<MerakiOffset>::new();
         let mut bindings = 1;
 
         for ability in abilities.into_iter() {
@@ -351,7 +354,7 @@ impl ChampionData {
                         continue;
                     }
 
-                    let offset = CdnOffset {
+                    let offset = MerakiOffset {
                         effect: effect_index,
                         leveling: leveling_index,
                         binding: {
@@ -433,13 +436,13 @@ impl ChampionData {
 
         for (effect_index, leveling) in indexes.into_iter() {
             for (leveling_index, keyname) in leveling.into_iter() {
-                let cdn_ability = self.get_cdn_ability(ability, ability_offset);
-                if let Some(effects) = cdn_ability.effects.get(effect_index) {
+                let meraki_ability = self.get_meraki_ability(ability, ability_offset);
+                if let Some(effects) = meraki_ability.effects.get(effect_index) {
                     if let Some(level_entry) = effects.leveling.get(leveling_index) {
                         let modifiers = &level_entry.modifiers;
                         self.hashmap.insert(
                             *keyname,
-                            cdn_ability.format(Self::extract_ability(&modifiers)),
+                            meraki_ability.format(Self::extract_ability(&modifiers)),
                         );
                     } else {
                         println!(
@@ -459,7 +462,7 @@ impl ChampionData {
         }
     }
 
-    pub fn extract_passive_bounds(&self, offsets: (usize, usize)) -> (&CdnAbility, (f64, f64)) {
+    pub fn extract_passive_bounds(&self, offsets: (usize, usize)) -> (&MerakiAbility, (f64, f64)) {
         let (ability_index, effect_index) = offsets;
 
         let passive = self

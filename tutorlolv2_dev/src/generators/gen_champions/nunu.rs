@@ -1,7 +1,7 @@
 use super::*;
 
 impl Generator<Champion> for Nunu {
-    #[generator_v2]
+    #[champion_generator]
     fn generate(mut self: Box<Self>) -> MayFail<Champion> {
         ability![Q, (1, 1, _1), (2, 2, _2)];
         ability![W, (2, 0, _1), (2, 1, _2), (4, 0, _3), (4, 1, _4)];

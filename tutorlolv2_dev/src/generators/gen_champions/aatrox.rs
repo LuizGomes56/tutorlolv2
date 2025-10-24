@@ -3,7 +3,7 @@ use super::*;
 // #![stable]
 
 impl Generator<Champion> for Aatrox {
-    #[generator_v2]
+    #[champion_generator]
     fn generate(mut self: Box<Self>) -> MayFail<Champion> {
         ability![P::Void, (0, 0), EnemyBonusHealth];
         ability![

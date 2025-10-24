@@ -7,11 +7,11 @@ use std::{
 };
 use tutorlolv2_dev::{
     DeserializeOwned, Serialize,
-    cache::{OrderJson, save_cache},
-    champions::CdnChampion,
-    essentials::{api::CdnEndpoint, ext::FilePathExt},
+    champions::MerakiChampion,
+    client::{OrderJson, save_cache},
+    ext::FilePathExt,
     generators::gen_factories::fac_champions::ChampionFactory,
-    items::CdnItem,
+    items::MerakiItem,
 };
 use tutorlolv2_exports::*;
 
@@ -216,13 +216,13 @@ async fn main() {
         .map(String::as_str)
     {
         Some("cdn-ord") => {
-            async fn ord_folder<T>(instance: CdnEndpoint)
+            async fn ord_folder<T>(endpoint: &str)
             where
                 T: DeserializeOwned + Serialize,
                 HashMap<String, T>: OrderJson<T>,
             {
                 let mut map = HashMap::<String, T>::new();
-                let folder = format!("cache/cdn/{instance}");
+                let folder = format!("cache/cdn/{endpoint}");
                 let files = std::fs::read_dir(folder).unwrap();
                 for file in files {
                     let path_name = file.unwrap().path();
@@ -231,11 +231,11 @@ async fn main() {
                     map.insert(name, data);
                 }
 
-                save_cache(map, instance).await;
+                let _ = save_cache(map, endpoint);
             }
 
-            ord_folder::<CdnChampion>(CdnEndpoint::Champions).await;
-            ord_folder::<CdnItem>(CdnEndpoint::Items).await;
+            ord_folder::<MerakiChampion>("champions").await;
+            ord_folder::<MerakiItem>("items").await;
         }
         Some("check-gen") => ChampionFactory::check_all_offsets(),
         Some("run-gen") => ChampionFactory::run_all(),
