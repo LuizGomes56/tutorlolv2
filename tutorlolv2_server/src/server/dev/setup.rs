@@ -29,17 +29,13 @@ pub async fn setup_project() -> impl Responder {
         let _ = setup_runes_json();
         let _ = setup_internal_items();
         let _ = prettify_internal_items().await;
+        let _ = setup_damaging_items();
+        let _ = ItemFactory::run_all();
+        let _ = ChampionFactory::create_all();
+        let _ = ChampionFactory::run_all();
 
-        spawn(async move {
-            let _ = HTTP_CLIENT.call_scraper().await;
-            let _ = setup_damaging_items();
-            let _ = ItemFactory::run_all();
-        });
-
-        spawn(async move {
-            let _ = ChampionFactory::create_all();
-            let _ = ChampionFactory::run_all();
-        });
+        spawn(async move { HTTP_CLIENT.call_scraper().await });
+        spawn(async move { HTTP_CLIENT.combo_scraper().await });
 
         for future in [
             spawn(async move { HTTP_CLIENT.download_arts_img().await }),

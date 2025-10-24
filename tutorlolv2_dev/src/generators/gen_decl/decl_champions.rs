@@ -1,5 +1,5 @@
 use crate::{
-    champions::{MerakiChampion, Champion},
+    champions::{Champion, MerakiChampion},
     generators::{Generator, gen_factories::fac_champions::ChampionData},
 };
 

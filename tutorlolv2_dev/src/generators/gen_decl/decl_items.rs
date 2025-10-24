@@ -1,13 +1,10 @@
-use crate::{
-    generators::{Generator, gen_factories::fac_items::ItemData},
-    items::Item,
-};
+use crate::generators::{Generator, gen_factories::fac_items::ItemData};
 
 tutorlolv2_macros::expand_dir!("../internal/items", |Name| {
     pub struct Name(pub ItemData);
 
     impl Name {
-        pub fn new(data: ItemData) -> Box<dyn Generator<Item>> {
+        pub fn new(data: ItemData) -> Box<dyn Generator<ItemData>> {
             Box::new(Self(data))
         }
     }

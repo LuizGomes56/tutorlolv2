@@ -1,6 +1,8 @@
 use super::*;
 
-impl Generator<Item> for SpearofShojin {
-            #[item_generator]
-            fn generate(mut self: Box<Self>) -> MayFail<Item> {}
-        }
+impl Generator<ItemData> for SpearofShojin {
+    #[item_generator]
+    fn generate(self: Box<Self>) -> MayFail<ItemData> {
+        /* No implementation */
+    }
+}

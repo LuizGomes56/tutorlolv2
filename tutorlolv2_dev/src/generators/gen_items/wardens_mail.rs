@@ -1,6 +1,8 @@
 use super::*;
 
-impl Generator<Item> for WardensMail {
-            #[item_generator]
-            fn generate(mut self: Box<Self>) -> MayFail<Item> {}
-        }
+impl Generator<ItemData> for WardensMail {
+    #[item_generator]
+    fn generate(self: Box<Self>) -> MayFail<ItemData> {
+        /* No implementation */
+    }
+}

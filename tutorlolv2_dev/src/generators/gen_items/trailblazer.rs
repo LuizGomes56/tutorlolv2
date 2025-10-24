@@ -1,6 +1,8 @@
 use super::*;
 
-impl Generator<Item> for Trailblazer {
-            #[item_generator]
-            fn generate(mut self: Box<Self>) -> MayFail<Item> {}
-        }
+impl Generator<ItemData> for Trailblazer {
+    #[item_generator]
+    fn generate(self: Box<Self>) -> MayFail<ItemData> {
+        /* No implementation */
+    }
+}

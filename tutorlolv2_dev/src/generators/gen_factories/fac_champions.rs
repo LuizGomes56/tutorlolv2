@@ -58,7 +58,7 @@ impl ChampionFactory {
             "use super::*;
 
                 impl Generator<Champion> for {champion_id:?} {{
-                    #[generator_v2]
+                    #[champion_generator]
                     fn generate(mut self: Box<Self>) -> MayFail<Champion> {{"
         );
 

@@ -138,7 +138,11 @@ fn subst_ident(ts: TokenStream2, from: &Ident, to: &Ident) -> TokenStream2 {
 #[proc_macro_attribute]
 pub fn item_generator(_args: TokenStream, input: TokenStream) -> TokenStream {
     let mut func = parse_macro_input!(input as syn::ItemFn);
-    func.block = Box::new(syn::parse_quote!({ todo!() }));
+    func.block = Box::new(syn::parse_quote!({
+        let inner = *self;
+        let mut this = inner.0;
+        Ok(this)
+    }));
     TokenStream::from(quote!(#func))
 }
 

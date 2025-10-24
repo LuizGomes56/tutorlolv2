@@ -58,12 +58,20 @@ pub fn setup_project_folders() -> MayFail {
         "cache/meraki/items",
         "cache/riot",
         "cache/riot/champions",
+        "cache/riot/champions_lang",
+        "cache/riot/raw_champions",
         "cache/riot/items",
         "internal",
         "internal/items",
         "internal/champions",
         "internal/scraper",
         "internal/scraper/combos",
+        "internal/scraper/builds",
+        "internal/scraper/builds/top",
+        "internal/scraper/builds/jungle",
+        "internal/scraper/builds/mid",
+        "internal/scraper/builds/adc",
+        "internal/scraper/builds/support",
     ] {
         let path = Path::new(dir);
 

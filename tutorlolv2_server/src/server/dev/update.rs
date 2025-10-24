@@ -17,6 +17,11 @@ pub async fn update_items() -> impl Responder {
     dev_response!(HTTP_CLIENT.update_meraki_cache("items").await)
 }
 
+#[get("/combo_scraper")]
+pub async fn update_combo_scraper() -> impl Responder {
+    dev_response!(HTTP_CLIENT.combo_scraper().await)
+}
+
 #[get("/data_scraper")]
 pub async fn update_scraped_data() -> impl Responder {
     dev_response!(HTTP_CLIENT.call_scraper().await)

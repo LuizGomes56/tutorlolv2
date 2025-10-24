@@ -1,6 +1,8 @@
 use super::*;
 
-impl Generator<Item> for AtmasReckoning {
+impl Generator<ItemData> for AtmasReckoning {
     #[item_generator]
-    fn generate(mut self: Box<Self>) -> MayFail<Item> {}
+    fn generate(self: Box<Self>) -> MayFail<ItemData> {
+        /* No implementation */
+    }
 }

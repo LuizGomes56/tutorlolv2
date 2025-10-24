@@ -46,6 +46,7 @@ fn api_scope() -> impl HttpServiceFactory + 'static {
                     .service(update_champions)
                     .service(update_items)
                     .service(update_scraped_data)
+                    .service(update_combo_scraper)
                     .service(update_version),
             )
             .service(
@@ -72,13 +73,6 @@ fn api_scope() -> impl HttpServiceFactory + 'static {
 
 pub async fn run() -> std::io::Result<()> {
     dotenv().ok();
-
-    tutorlolv2_dev::client::HttpClient::new()
-        .combo_scraper()
-        .await
-        .unwrap();
-
-    return Ok(());
 
     let dsn = std::env::var("DATABASE_URL").expect("DATABASE_URL is not set");
     let host = std::env::var("HOST").expect("HOST is not set");

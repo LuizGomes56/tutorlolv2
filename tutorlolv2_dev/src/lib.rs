@@ -16,7 +16,7 @@ pub type MayFail<T = ()> = Result<T, Box<dyn std::error::Error>>;
 pub trait JsonRead: DeserializeOwned {
     fn from_file(path: impl AsRef<Path>) -> MayFail<Self> {
         let resolved_path = resolve_path(path)?;
-        println!("Reading {:?}", resolved_path.as_ref());
+        println!("Trying to read {:?}", resolved_path.as_ref());
         let data = std::fs::read(resolved_path)?;
         Ok(serde_json::from_slice(&data)?)
     }
@@ -61,7 +61,7 @@ pub fn resolve_path(path: impl AsRef<Path>) -> MayFail<impl AsRef<Path>> {
 pub trait JsonWrite: Serialize {
     fn into_file(&self, path: impl AsRef<Path>) -> MayFail {
         let resolved_path = resolve_path(path)?;
-        println!("Writing {:?}", resolved_path.as_ref());
+        println!("Trying to write {:?}", resolved_path.as_ref());
         let data = serde_json::to_string_pretty(self)?;
         Ok(std::fs::write(resolved_path, data.as_bytes())?)
     }

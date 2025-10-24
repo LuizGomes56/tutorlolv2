@@ -13,7 +13,7 @@ impl Generator<Champion> for Pantheon {
             (5, 1, _6)
         ];
         ability![W, (0, 0, _1)];
-        ability![E, (4, 0, _1)];
+        ability![E, (3, 0, _1)];
         ability![R, (3, 0, _1), (3, 1, _2)];
     }
 }
