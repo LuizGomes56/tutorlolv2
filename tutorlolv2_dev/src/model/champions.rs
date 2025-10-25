@@ -90,7 +90,7 @@ impl MerakiChampion {
                 .map(|pos| Position::from_raw(&pos).unwrap_or_default())
                 .collect(),
             stats: self.stats,
-            abilities,
+            abilities: abilities.into_iter().collect(),
             merge_data,
         }
     }
@@ -111,7 +111,7 @@ pub struct Champion {
     pub attack_type: AttackType,
     pub positions: Vec<Position>,
     pub stats: MerakiChampionStats,
-    pub abilities: HashMap<AbilityLike, Ability>,
+    pub abilities: Vec<(AbilityLike, Ability)>,
     pub merge_data: Vec<(AbilityLike, AbilityLike)>,
 }
 

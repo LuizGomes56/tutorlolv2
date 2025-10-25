@@ -64,7 +64,7 @@ impl StringExt for str {
         self.replacen("class=\"type\"", "class=\"constant\"", 1)
     }
     fn read_as_path(&self) -> String {
-        std::fs::read_to_string(self).unwrap()
+        std::fs::read_to_string(cwd!(self)).unwrap()
     }
     fn remove_special_chars(&self) -> String {
         tutorlolv2_fmt::remove_special_chars(self)
@@ -127,11 +127,4 @@ impl StringExt for str {
         }
         out
     }
-}
-
-#[derive(Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct MerakiStatMap {
-    pub flat: f64,
-    pub per_level: f64,
 }

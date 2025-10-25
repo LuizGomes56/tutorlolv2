@@ -139,7 +139,7 @@ pub fn generate_champion_html() {
 
         for (ability_like, offsets) in CHAMPION_ABILITIES[i] {
             html.code_section(
-                &ability_like.to_string().replace("_", " "),
+                &format!("{ability_like:?}").replace("_", " "),
                 offset_to_str(*offsets),
             );
         }

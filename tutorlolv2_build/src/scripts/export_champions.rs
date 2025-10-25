@@ -3,23 +3,30 @@ use std::cmp::Ordering;
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
+pub struct MerakiChampionStatMap {
+    pub flat: f64,
+    pub per_level: f64,
+}
+
+#[derive(Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct MerakiChampionStats {
-    pub health: MerakiStatMap,
-    pub mana: MerakiStatMap,
-    pub armor: MerakiStatMap,
+    pub health: MerakiChampionStatMap,
+    pub mana: MerakiChampionStatMap,
+    pub armor: MerakiChampionStatMap,
     #[serde(rename = "magicResistance")]
-    pub magic_resist: MerakiStatMap,
-    pub attack_damage: MerakiStatMap,
-    pub attack_speed: MerakiStatMap,
-    pub movespeed: MerakiStatMap,
-    pub critical_strike_damage: MerakiStatMap,
-    pub critical_strike_damage_modifier: MerakiStatMap,
-    pub attack_speed_ratio: MerakiStatMap,
-    pub attack_range: MerakiStatMap,
-    pub aram_damage_taken: MerakiStatMap,
-    pub aram_damage_dealt: MerakiStatMap,
-    pub urf_damage_taken: MerakiStatMap,
-    pub urf_damage_dealt: MerakiStatMap,
+    pub magic_resist: MerakiChampionStatMap,
+    pub attack_damage: MerakiChampionStatMap,
+    pub attack_speed: MerakiChampionStatMap,
+    pub movespeed: MerakiChampionStatMap,
+    pub critical_strike_damage: MerakiChampionStatMap,
+    pub critical_strike_damage_modifier: MerakiChampionStatMap,
+    pub attack_speed_ratio: MerakiChampionStatMap,
+    pub attack_range: MerakiChampionStatMap,
+    pub aram_damage_taken: MerakiChampionStatMap,
+    pub aram_damage_dealt: MerakiChampionStatMap,
+    pub urf_damage_taken: MerakiChampionStatMap,
+    pub urf_damage_dealt: MerakiChampionStatMap,
 }
 
 #[derive(Copy, Clone, Debug, Deserialize, Default)]
@@ -47,7 +54,7 @@ pub struct Champion {
     pub attack_type: String,
     pub positions: Vec<String>,
     pub stats: MerakiChampionStats,
-    pub abilities: HashMap<AbilityLike, Ability>,
+    pub abilities: Vec<(AbilityLike, Ability)>,
     pub merge_data: Vec<(AbilityLike, AbilityLike)>,
 }
 
@@ -112,7 +119,7 @@ pub fn sort_pqwer(data: &mut [(AbilityLike, String, String, String)]) {
 
 fn get_abilities_decl(
     champion_name: &str,
-    abilities: HashMap<AbilityLike, Ability>,
+    abilities: Vec<(AbilityLike, Ability)>,
 ) -> Vec<(AbilityLike, String, String, String)> {
     let mut result = Vec::new();
 
@@ -270,7 +277,7 @@ pub fn export_champions() -> BTreeMap<String, ChampionDetails> {
                     .join(","),
             );
 
-            let generator = cwd!(format!("tutorlolv2_dev/src/generators/{champion_id}.rs"))
+            let generator = format!("tutorlolv2_dev/src/generators/gen_champions/{champion_id}.rs")
                 .read_as_path()
                 .invoke_rustfmt(80)
                 .highlight_rust();

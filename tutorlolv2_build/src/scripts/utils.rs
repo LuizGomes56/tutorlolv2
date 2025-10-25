@@ -84,6 +84,7 @@ pub fn is_valid_math_expression(input: &str) -> bool {
         .find_iter(&expr_ns)
         .map(|m| m.as_str())
         .collect::<Vec<&str>>();
+
     if tokens.is_empty() {
         return false;
     }
@@ -91,14 +92,28 @@ pub fn is_valid_math_expression(input: &str) -> bool {
     if tokens.concat() != expr_ns {
         return false;
     }
-
     if matches!(
         tokens.last().copied(),
         Some("+") | Some("-") | Some("*") | Some("/") | Some("(")
     ) {
         return false;
     }
-
+    if matches!(
+        tokens.first().copied(),
+        Some("+") | Some("-") | Some("*") | Some("/") | Some(")")
+    ) {
+        return false;
+    }
+    let is_op = |t: &str| matches!(t, "+" | "-" | "*" | "/");
+    for w in tokens.windows(2) {
+        let (a, b) = (w[0], w[1]);
+        if is_op(a) && b == ")" {
+            return false;
+        }
+        if a == "(" && is_op(b) {
+            return false;
+        }
+    }
     let mut depth = 0_i32;
     for t in &tokens {
         match *t {

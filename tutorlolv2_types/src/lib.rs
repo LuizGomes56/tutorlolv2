@@ -6,19 +6,13 @@ pub use paste::paste;
 #[derive(
     Serialize, Deserialize, Copy, Clone, Encode, Debug, Eq, PartialEq, PartialOrd, Hash, Ord,
 )]
-#[serde(tag = "ability", content = "name")]
+#[serde(tag = "type", content = "name")]
 pub enum AbilityLike {
     P(AbilityName),
     Q(AbilityName),
     W(AbilityName),
     E(AbilityName),
     R(AbilityName),
-}
-
-impl ToString for AbilityLike {
-    fn to_string(&self) -> String {
-        format!("{:?}", self)
-    }
 }
 
 impl AbilityLike {

@@ -3,26 +3,31 @@ use tutorlolv2_types::StatName;
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
+pub struct MerakiItemStatMap {
+    pub flat: f64,
+    pub percent: f64,
+}
+
+#[derive(Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct ItemStats {
-    pub ability_power: MerakiStatMap,
-    pub armor: MerakiStatMap,
-    pub armor_penetration_percent: MerakiStatMap,
-    pub armor_penetration_flat: MerakiStatMap,
-    pub magic_penetration_percent: MerakiStatMap,
-    pub magic_penetration_flat: MerakiStatMap,
-    pub attack_damage: MerakiStatMap,
-    pub attack_speed: MerakiStatMap,
+    pub ability_power: MerakiItemStatMap,
+    pub armor: MerakiItemStatMap,
+    pub armor_penetration: MerakiItemStatMap,
+    pub magic_penetration: MerakiItemStatMap,
+    pub attack_damage: MerakiItemStatMap,
+    pub attack_speed: MerakiItemStatMap,
     #[serde(rename = "criticalStrikeChance")]
-    pub crit_chance: MerakiStatMap,
+    pub crit_chance: MerakiItemStatMap,
     #[serde(rename = "criticalStrikeDamage")]
-    pub crit_damage: MerakiStatMap,
-    pub health: MerakiStatMap,
-    pub lifesteal: MerakiStatMap,
+    pub crit_damage: MerakiItemStatMap,
+    pub health: MerakiItemStatMap,
+    pub lifesteal: MerakiItemStatMap,
     #[serde(rename = "magicResistance")]
-    pub magic_resist: MerakiStatMap,
-    pub mana: MerakiStatMap,
-    pub movespeed: MerakiStatMap,
-    pub omnivamp: MerakiStatMap,
+    pub magic_resist: MerakiItemStatMap,
+    pub mana: MerakiItemStatMap,
+    pub movespeed: MerakiItemStatMap,
+    pub omnivamp: MerakiItemStatMap,
 }
 
 #[derive(Deserialize)]
@@ -97,13 +102,27 @@ pub fn format_stats(stats: &ItemStats) -> String {
         ($field:ident) => {
             all_stats.push(format!("{}:{}f32,", stringify!($field), stats.$field.flat));
         };
+        (% $field:ident) => {
+            all_stats.push(format!(
+                "{}_percent:{}f32,",
+                stringify!($field),
+                stats.$field.flat
+            ));
+        };
+        (+ $field:ident) => {
+            all_stats.push(format!(
+                "{}_flat:{}f32,",
+                stringify!($field),
+                stats.$field.percent
+            ));
+        };
     }
     insert_stat!(ability_power);
     insert_stat!(armor);
-    insert_stat!(armor_penetration_percent);
-    insert_stat!(armor_penetration_flat);
-    insert_stat!(magic_penetration_percent);
-    insert_stat!(magic_penetration_flat);
+    insert_stat!(% armor_penetration);
+    insert_stat!(+ armor_penetration);
+    insert_stat!(% magic_penetration);
+    insert_stat!(+ magic_penetration);
     insert_stat!(attack_damage);
     insert_stat!(attack_speed);
     insert_stat!(crit_chance);

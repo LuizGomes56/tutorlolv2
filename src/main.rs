@@ -9,6 +9,7 @@ use tutorlolv2_dev::{
     DeserializeOwned, JsonRead, Serialize,
     champions::MerakiChampion,
     client::{OrderJson, save_cache},
+    gen_factories::fac_items::ItemFactory,
     generators::gen_factories::fac_champions::ChampionFactory,
     items::MerakiItem,
 };
@@ -131,13 +132,18 @@ fn update_local() {
     let srv_0 = run_server();
     short_wait();
 
-    get!("/setup/champions");
-    get!("/setup/items");
+    get!("/update/version");
     kill(srv_0);
+
+    let srv_1 = run_server();
+    short_wait();
+
+    get!("/setup/project");
+    kill(srv_1);
 
     build_script();
 
-    let srv_1 = run_server();
+    let srv_2 = run_server();
     short_wait();
 
     get!("/setup/docs");
@@ -146,13 +152,8 @@ fn update_local() {
         "node",
         &["build_script.js"],
     );
-    kill(srv_1);
+    kill(srv_2);
     build_server();
-    run(
-        "./tutorlolv2_server",
-        "cargo",
-        &["build", "-r", "--no-default-features"],
-    );
 
     println!("Local finished");
 }
@@ -232,6 +233,7 @@ async fn main() {
             ord_folder::<MerakiItem>("items").await;
         }
         Some("check-gen") => ChampionFactory::check_all_offsets(),
+        Some("item-gen") => ItemFactory::run_all().unwrap(),
         Some("run-gen") => ChampionFactory::run_all().unwrap(),
         Some("make-gen") => {
             let _ = ChampionFactory::create_all();

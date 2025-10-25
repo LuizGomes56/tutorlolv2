@@ -314,7 +314,7 @@ impl ChampionData {
                 .map(|pos| Position::from_raw(&pos).unwrap_or_default())
                 .collect(),
             stats: self.data.stats,
-            abilities: self.hashmap,
+            abilities: self.hashmap.into_iter().collect(),
             merge_data: self.mergevec,
         }
     }
@@ -357,8 +357,8 @@ impl ChampionData {
                         leveling: leveling_index,
                         binding: {
                             let enum_match = match bindings {
-                                ..9 => format!("_{}", bindings.to_string()),
-                                _ => format!("_{}Min", bindings - 8),
+                                ..9 => format!("\"_{}\"", bindings.to_string()),
+                                _ => format!("\"_{}Min\"", bindings - 8),
                             };
                             serde_json::from_str::<AbilityName>(&enum_match).unwrap()
                         },
