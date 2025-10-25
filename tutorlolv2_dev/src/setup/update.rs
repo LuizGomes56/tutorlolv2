@@ -8,7 +8,7 @@ use crate::{
 };
 use regex::Regex;
 use std::{collections::HashMap, fs, path::Path};
-use tutorlolv2_gen::{Attrs, DamageType, GameMap, ItemId};
+use tutorlolv2_gen::{Attrs, DamageType, GameMap, ItemId, StatName};
 
 /// Creates basic folders necessary to run the program. If one of these folders are not found,
 /// The program is likely to panic when an update is called.
@@ -224,15 +224,17 @@ pub fn setup_damaging_items() -> MayFail {
 
 pub async fn prettify_internal_items() -> MayFail {
     for (riot_id, riot_item) in RiotCdnItem::from_dir("cache/riot/items")? {
-        let internal_path = format!(
-            "internal/items/{:?}.json",
-            ItemId::from_riot_id(riot_id.parse()?)
-        );
+        let item_id = ItemId::from_riot_id(riot_id.parse()?);
+
+        if item_id == ItemId::YourCut {
+            continue;
+        }
+
+        let internal_path = format!("internal/items/{item_id:?}.json",);
 
         let mut internal_item = Item::from_file(&internal_path)?;
 
-        let prettified_stats = pretiffy_items(&riot_item);
-        internal_item.prettified_stats = prettified_stats;
+        internal_item.prettified_stats = pretiffy_items(&riot_item)?;
 
         internal_item.into_file(internal_path)?;
     }
@@ -241,15 +243,15 @@ pub async fn prettify_internal_items() -> MayFail {
 
 /// Returns the value that will be added to key `prettified_stats` for each item.
 /// Depends on Riot API `item.json` and requires manual maintainance if a new XML tag is added
-fn pretiffy_items(data: &RiotCdnItem) -> Vec<String> {
-    let mut result = HashMap::<_, f64>::default();
+fn pretiffy_items(data: &RiotCdnItem) -> MayFail<Vec<StatName>> {
+    let mut result = HashMap::<_, _>::default();
 
     let tag_regex = Regex::new(
         r#"<(attention|buffedStat|nerfedStat|ornnBonus)>(.*?)<\/(attention|buffedStat|nerfedStat|ornnBonus)>"#,
-    ).unwrap();
-    let line_regex = Regex::new(r"(.*?)<br>").unwrap();
-    let percent_prefix_regex = Regex::new(r"^\s*\d+\s*%?\s*").unwrap();
-    let tag_strip_regex = Regex::new(r"<\/?[^>]+(>|$)").unwrap();
+    )?;
+    let line_regex = Regex::new(r"(.*?)<br>")?;
+    let percent_prefix_regex = Regex::new(r"^\s*\d+\s*%?\s*")?;
+    let tag_strip_regex = Regex::new(r"<\/?[^>]+(>|$)")?;
 
     let tags = ["buffedStat", "nerfedStat", "attention", "ornnBonus"];
 
@@ -276,7 +278,7 @@ fn pretiffy_items(data: &RiotCdnItem) -> Vec<String> {
             if let Some(n_val) = &n {
                 let j = percent_prefix_regex.replace(n_val, "").trim().to_string();
                 if !j.is_empty() {
-                    match v.parse::<f64>() {
+                    match v.parse::<usize>() {
                         Ok(num) => result.insert(j, num),
                         Err(_) => continue,
                     };
@@ -285,13 +287,14 @@ fn pretiffy_items(data: &RiotCdnItem) -> Vec<String> {
         }
     }
 
-    result
+    let json = result
         .into_iter()
         .map(|(key, value)| {
-            format!(
-                "StatName::{}({value})",
-                tutorlolv2_fmt::to_pascal_case(&key)
-            )
+            let name = tutorlolv2_fmt::to_pascal_case(&key);
+            format!(r#"{{ "name": "{name}", "value": {value} }}"#)
         })
-        .collect()
+        .collect::<Vec<_>>()
+        .join(",");
+
+    Ok(serde_json::from_str::<Vec<StatName>>(&format!("[{json}]"))?)
 }

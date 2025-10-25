@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use tutorlolv2_gen::{Attrs, DamageType, GameMap, ItemId};
+use tutorlolv2_gen::{Attrs, DamageType, GameMap, ItemId, StatName};
 
 #[derive(Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -85,7 +85,7 @@ pub struct Item {
     pub sell: u32,
     pub tier: u8,
     pub maps: Vec<(GameMap, bool)>,
-    pub prettified_stats: Vec<String>,
+    pub prettified_stats: Vec<StatName>,
     pub damage_type: DamageType,
     pub stats: ItemStats,
     pub builds_from_riot_ids: Vec<u32>,

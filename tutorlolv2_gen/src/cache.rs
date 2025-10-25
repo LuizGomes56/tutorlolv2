@@ -284,31 +284,6 @@ pub struct CachedItemDamages {
     pub maximum_damage: ConstClosure,
 }
 
-#[derive(Serialize, Deserialize)]
-pub enum StatName {
-    AbilityHaste(u16),
-    AbilityPower(u16),
-    Armor(u16),
-    ArmorPenetration(u16),
-    MagicPenetration(u16),
-    AttackDamage(u16),
-    AttackSpeed(u16),
-    GoldPer10Seconds(u16),
-    AdaptiveForce(u16),
-    CriticalStrikeChance(u16),
-    CriticalStrikeDamage(u16),
-    Health(u16),
-    LifeSteal(u16),
-    MagicResist(u16),
-    Mana(u16),
-    MoveSpeed(u16),
-    Omnivamp(u16),
-    BaseHealthRegen(u16),
-    BaseManaRegen(u16),
-    Tenacity(u16),
-    HealAndShieldPower(u16),
-}
-
 pub struct CachedItem {
     pub gold: u16,
     pub prettified_stats: &'static [StatName],

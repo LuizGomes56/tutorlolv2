@@ -171,10 +171,10 @@ pub async fn run() {
         record_offsets!(champion_generator, champion_detail.generator);
 
         champion_abilities.push_str("&[");
-        for (ability_name, ability_formula) in &champion_detail.highlighted_abilities {
+        for (ability_like, ability_formula) in &champion_detail.highlighted_abilities {
             let (start, end) = record_offsets!(@record ability_formula);
             champion_abilities
-                .push_str(&format!("({},({start},{end})),", ability_name.as_literal(),));
+                .push_str(&format!("({},({start},{end})),", ability_like.as_literal(),));
         }
         champion_abilities.push_str("],");
         internal_champions_content.push_str(&champion_detail.constdecl);

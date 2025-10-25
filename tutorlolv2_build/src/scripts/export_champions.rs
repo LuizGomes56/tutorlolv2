@@ -3,30 +3,23 @@ use std::cmp::Ordering;
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct ChampionCdnStatsMap {
-    pub flat: f64,
-    pub per_level: f64,
-}
-
-#[derive(Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct ChampionCdnStats {
-    pub health: ChampionCdnStatsMap,
-    pub mana: ChampionCdnStatsMap,
-    pub armor: ChampionCdnStatsMap,
+pub struct MerakiChampionStats {
+    pub health: MerakiStatMap,
+    pub mana: MerakiStatMap,
+    pub armor: MerakiStatMap,
     #[serde(rename = "magicResistance")]
-    pub magic_resist: ChampionCdnStatsMap,
-    pub attack_damage: ChampionCdnStatsMap,
-    pub attack_speed: ChampionCdnStatsMap,
-    pub movespeed: ChampionCdnStatsMap,
-    pub critical_strike_damage: ChampionCdnStatsMap,
-    pub critical_strike_damage_modifier: ChampionCdnStatsMap,
-    pub attack_speed_ratio: ChampionCdnStatsMap,
-    pub attack_range: ChampionCdnStatsMap,
-    pub aram_damage_taken: ChampionCdnStatsMap,
-    pub aram_damage_dealt: ChampionCdnStatsMap,
-    pub urf_damage_taken: ChampionCdnStatsMap,
-    pub urf_damage_dealt: ChampionCdnStatsMap,
+    pub magic_resist: MerakiStatMap,
+    pub attack_damage: MerakiStatMap,
+    pub attack_speed: MerakiStatMap,
+    pub movespeed: MerakiStatMap,
+    pub critical_strike_damage: MerakiStatMap,
+    pub critical_strike_damage_modifier: MerakiStatMap,
+    pub attack_speed_ratio: MerakiStatMap,
+    pub attack_range: MerakiStatMap,
+    pub aram_damage_taken: MerakiStatMap,
+    pub aram_damage_dealt: MerakiStatMap,
+    pub urf_damage_taken: MerakiStatMap,
+    pub urf_damage_dealt: MerakiStatMap,
 }
 
 #[derive(Copy, Clone, Debug, Deserialize, Default)]
@@ -53,12 +46,12 @@ pub struct Champion {
     pub adaptative_type: String,
     pub attack_type: String,
     pub positions: Vec<String>,
-    pub stats: ChampionCdnStats,
+    pub stats: MerakiChampionStats,
     pub abilities: HashMap<AbilityLike, Ability>,
     pub merge_data: Vec<(AbilityLike, AbilityLike)>,
 }
 
-pub fn format_stats(stats: &ChampionCdnStats) -> String {
+pub fn format_stats(stats: &MerakiChampionStats) -> String {
     macro_rules! insert_stat {
         ($field:ident) => {
             format!(
@@ -153,7 +146,19 @@ fn get_abilities_decl(
                 attributes: Attrs::{attributes:?},
                 damage: {damage},
             }};",
-            char_name = format!("{}_{}", name.ability_like(), name.ability_name()).to_uppercase(),
+            char_name = format!(
+                "{char_disc}{name_disc}",
+                char_disc = name.as_char(),
+                name_disc = {
+                    let ability_name = format!("{:?}", name.ability_name());
+                    if !ability_name.starts_with("_") {
+                        format!("_{ability_name}")
+                    } else {
+                        ability_name
+                    }
+                }
+            )
+            .to_uppercase(),
             ability_name = ability.name,
             damage_type = ability.damage_type,
             attributes = ability.attributes,

@@ -128,3 +128,10 @@ impl StringExt for str {
         out
     }
 }
+
+#[derive(Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct MerakiStatMap {
+    pub flat: f64,
+    pub per_level: f64,
+}

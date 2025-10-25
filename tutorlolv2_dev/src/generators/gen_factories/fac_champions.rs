@@ -11,7 +11,6 @@ use regex::Regex;
 use std::{
     collections::{BTreeMap, BTreeSet, HashMap},
     path::Path,
-    str::FromStr,
 };
 use tutorlolv2_fmt::invoke_rustfmt;
 use tutorlolv2_gen::{
@@ -57,9 +56,9 @@ impl ChampionFactory {
         let mut generated_content = format!(
             "use super::*;
 
-                impl Generator<Champion> for {champion_id:?} {{
-                    #[champion_generator]
-                    fn generate(mut self: Box<Self>) -> MayFail<Champion> {{"
+            impl Generator<Champion> for {champion_id:?} {{
+                #[champion_generator]
+                fn generate(mut self: Box<Self>) -> MayFail<Champion> {{"
         );
 
         if let Ok(data) = std::fs::read_to_string(&path) {
@@ -361,7 +360,7 @@ impl ChampionData {
                                 ..9 => format!("_{}", bindings.to_string()),
                                 _ => format!("_{}Min", bindings - 8),
                             };
-                            AbilityName::from_str(&enum_match).unwrap()
+                            serde_json::from_str::<AbilityName>(&enum_match).unwrap()
                         },
                     };
                     macro_offsets.push(offset);
