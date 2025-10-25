@@ -1,4 +1,3 @@
-use actix_web::rt::task::spawn_blocking;
 use std::{
     collections::HashMap,
     process::{Child, Command, Stdio},
@@ -13,17 +12,6 @@ use tutorlolv2_dev::{
     generators::gen_factories::fac_champions::ChampionFactory,
     items::MerakiItem,
 };
-use tutorlolv2_exports::*;
-
-async fn generate_html() {
-    let champions = spawn_blocking(generate_champion_html);
-    let items = spawn_blocking(generate_item_html);
-    let runes = spawn_blocking(generate_rune_html);
-
-    champions.await.unwrap();
-    items.await.unwrap();
-    runes.await.unwrap();
-}
 
 fn run(cwd: &str, prog: &str, args: &[&str]) {
     let status = Command::new(prog)
@@ -238,7 +226,12 @@ async fn main() {
         Some("make-gen") => {
             let _ = ChampionFactory::create_all();
         }
-        Some("html-gen") => generate_html().await,
+        Some("html-gen") => {
+            build_server();
+            let srv_0 = run_server();
+            get!("/setup/docs");
+            kill(srv_0);
+        }
         Some("update") => update(),
         Some("lolstaticdata") => run_lolstaticdata(),
         Some("local") => update_local(),
