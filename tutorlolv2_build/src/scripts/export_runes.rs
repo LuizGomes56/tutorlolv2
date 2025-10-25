@@ -9,6 +9,7 @@ pub struct Rune {
 }
 
 pub struct RuneDetails {
+    pub undeclared: bool,
     pub rune_name: String,
     pub rune_formula: String,
     pub constdecl: String,
@@ -33,10 +34,7 @@ pub fn export_runes() -> Vec<(u32, RuneDetails)> {
 
             let make_closure = |expr: (String, bool)| {
                 format!(
-                    "DamageClosures {{
-                        minimum_damage: |{}| {},
-                        maximum_damage: zero,
-                    }}",
+                    "|{}| {}",
                     if expr.1 { "ctx" } else { "_" },
                     expr.0.to_lowercase()
                 )
@@ -53,15 +51,15 @@ pub fn export_runes() -> Vec<(u32, RuneDetails)> {
                     range_closure: {range_closure},
                 }};",
                 name = format_args!(
-                    "{}_{}",
+                    "{}_{rune_id}",
                     rune.name.to_screaming_snake_case().remove_special_chars(),
-                    rune_id
                 ),
             );
 
             (
                 rune_id,
                 RuneDetails {
+                    undeclared: false,
                     rune_name: rune.name,
                     rune_formula: constdecl
                         .invoke_rustfmt(80)
@@ -107,30 +105,23 @@ pub fn export_runes() -> Vec<(u32, RuneDetails)> {
             name = rune_name.remove_special_chars(),
         );
 
-        let void_closure = format!(
-            "DamageClosures {{
-                minimum_damage: zero,
-                maximum_damage: zero
-            }}",
-        );
-
         let constdecl = format!(
             "pub static {name}: CachedRune = CachedRune {{
                 damage_type: DamageType::Unknown,
                 metadata: {void_metadata},
-                melee_closure: {void_closure},
-                range_closure: {void_closure},    
+                melee_closure: zero,
+                range_closure: zero,    
             }};",
             name = format_args!(
-                "{}_{}",
+                "{}_{rune_id}",
                 rune_name.to_screaming_snake_case().remove_special_chars(),
-                rune_id
             )
         );
 
         runes.push((
             rune_id,
             RuneDetails {
+                undeclared: true,
                 rune_name: rune_name.clone(),
                 rune_formula: constdecl
                     .invoke_rustfmt(80)

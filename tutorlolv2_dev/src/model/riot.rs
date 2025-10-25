@@ -3,8 +3,18 @@ use serde_json::Value;
 use std::collections::HashMap;
 
 #[derive(Deserialize)]
+pub struct RiotCdnItemGold {
+    pub base: u32,
+    pub sell: u32,
+    pub total: u32,
+    pub purchasable: bool,
+}
+
+#[derive(Deserialize)]
 pub struct RiotCdnItem {
     pub description: String,
+    pub gold: RiotCdnItemGold,
+    pub maps: HashMap<u8, bool>,
 }
 
 #[derive(Serialize, Deserialize)]

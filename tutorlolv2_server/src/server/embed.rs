@@ -56,7 +56,7 @@ macro_rules! serve_embed {
         paste::paste! {
             #[doc = "Serve files from `" $path "`"]
             #[get($path)]
-            pub async fn [<serve_ $name>] (path: Path<String>) -> impl Responder {
+            pub async fn [<serve_ $name>](path: Path<String>) -> impl Responder {
                 match [<$name:camel>]::get(&path) {
                     Some(file) => HttpResponse::Ok()
                         .content_type($content_type)

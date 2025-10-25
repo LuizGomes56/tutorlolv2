@@ -44,8 +44,7 @@ pub struct Ability {
     pub damage_type: String,
     #[serde(default)]
     pub attributes: Attrs,
-    pub minimum_damage: Vec<String>,
-    pub maximum_damage: Vec<String>,
+    pub damage: Vec<String>,
 }
 
 #[derive(Deserialize)]
@@ -55,7 +54,8 @@ pub struct Champion {
     pub attack_type: String,
     pub positions: Vec<String>,
     pub stats: ChampionCdnStats,
-    pub abilities: HashMap<String, Ability>,
+    pub abilities: HashMap<AbilityLike, Ability>,
+    pub merge_data: Vec<(AbilityLike, AbilityLike)>,
 }
 
 pub fn format_stats(stats: &ChampionCdnStats) -> String {
@@ -91,7 +91,7 @@ pub fn format_stats(stats: &ChampionCdnStats) -> String {
     all_stats.join("")
 }
 
-pub fn sort_pqwer(data: &mut [(String, String, String, String)]) {
+pub fn sort_pqwer(data: &mut [(AbilityLike, String, String, String)]) {
     let priority = |ch: char| match ch {
         'P' => 0,
         'Q' => 1,
@@ -102,8 +102,8 @@ pub fn sort_pqwer(data: &mut [(String, String, String, String)]) {
     };
 
     data.sort_by(|a, b| {
-        let a_first = a.0.chars().next().unwrap_or('Z');
-        let b_first = b.0.chars().next().unwrap_or('Z');
+        let a_first = a.0.as_char();
+        let b_first = b.0.as_char();
         let ord1 = priority(a_first).cmp(&priority(b_first));
         if ord1 != Ordering::Equal {
             return ord1;
@@ -119,46 +119,41 @@ pub fn sort_pqwer(data: &mut [(String, String, String, String)]) {
 
 fn get_abilities_decl(
     champion_name: &str,
-    abilities: HashMap<String, Ability>,
-) -> Vec<(String, String, String, String)> {
+    abilities: HashMap<AbilityLike, Ability>,
+) -> Vec<(AbilityLike, String, String, String)> {
     let mut result = Vec::new();
 
     for (name, ability) in abilities {
-        let mut minimum_damage = String::new();
-        let mut maximum_damage = String::new();
-
-        let formatter = |expr: &[String], target: &mut String| {
-            if expr.is_empty() {
-                target.push_str("zero");
-            } else {
-                let transformed = expr
-                    .iter()
-                    .map(|dmg| transform_expr(&clean_math_expr(&dmg)))
-                    .collect::<Vec<(String, bool)>>();
-                let ability_type = name.chars().next().unwrap();
-                let ctx_matcher = match ability_type {
-                    'P' => "level as u8".into(),
-                    _ => format!("{}_level", ability_type.to_lowercase()),
-                };
-                target.push_str(&format!("|ctx| {{ match ctx.{ctx_matcher} {{"));
-                for (i, (new_expr, _)) in transformed.into_iter().enumerate() {
-                    target.push_str(&format!("{} => {},", i + 1, new_expr.to_lowercase()));
-                }
-                target.push_str("_ => 0.0 }}");
+        let damage = if ability.damage.is_empty() {
+            String::from("zero")
+        } else {
+            let mut target = String::new();
+            let transformed = ability
+                .damage
+                .iter()
+                .map(|dmg| dmg.clean_math_expr().transform_expr())
+                .collect::<Vec<(_, bool)>>();
+            let ability_type = name.as_char();
+            let ctx_matcher = match ability_type {
+                'P' => "level as u8".into(),
+                _ => format!("{}_level", ability_type.to_lowercase()),
+            };
+            target.push_str(&format!("|ctx| {{ match ctx.{ctx_matcher} {{"));
+            for (i, (new_expr, _)) in transformed.into_iter().enumerate() {
+                target.push_str(&format!("{} => {},", i + 1, new_expr.to_lowercase()));
             }
+            target.push_str("_ => 0.0 }}");
+            target
         };
 
-        formatter(&ability.minimum_damage, &mut minimum_damage);
-        formatter(&ability.maximum_damage, &mut maximum_damage);
-
         let const_decl = format!(
-            "static {champion_name}_{name}: Intrinsic = Intrinsic {{
+            "static {champion_name}_{char_name}: Intrinsic = Intrinsic {{
                 name: {ability_name:?},
                 damage_type: DamageType::{damage_type},
                 attributes: Attrs::{attributes:?},
-                minimum_damage: {minimum_damage},
-                maximum_damage: {maximum_damage}
+                damage: {damage},
             }};",
+            char_name = format!("{}_{}", name.ability_like(), name.ability_name()).to_uppercase(),
             ability_name = ability.name,
             damage_type = ability.damage_type,
             attributes = ability.attributes,
@@ -170,19 +165,12 @@ fn get_abilities_decl(
                 damage_type: DamageType::{damage_type}, 
                 attributes: Attrs::{attributes:?} 
             }}",
-            kind = AbilityLike::from_str(&name),
+            kind = name.as_literal(),
             damage_type = ability.damage_type,
             attributes = ability.attributes
         );
 
-        let closures = format!(
-            "DamageClosures {{
-                minimum_damage: {minimum_damage},
-                maximum_damage: {maximum_damage}
-            }}",
-        );
-
-        result.push((name, metadata, closures, const_decl));
+        result.push((name, metadata, damage, const_decl));
     }
 
     result
@@ -191,10 +179,28 @@ fn get_abilities_decl(
 pub struct ChampionDetails {
     pub champion_name: String,
     pub generator: String,
-    pub highlighted_abilities: Vec<(String, String)>,
+    pub highlighted_abilities: Vec<(AbilityLike, String)>,
     pub champion_formula: String,
     pub constdecl: String,
     pub positions: String,
+}
+
+pub fn find_merge_indexes(
+    merge_data: &[(AbilityLike, AbilityLike)],
+    ability_data: &[(AbilityLike, String, String, String)],
+) -> Vec<(usize, usize)> {
+    let mut idx: HashMap<AbilityLike, usize> = HashMap::with_capacity(ability_data.len());
+    for (i, (al, _, _, _)) in ability_data.iter().enumerate() {
+        idx.entry(*al).or_insert(i);
+    }
+
+    let mut out = Vec::with_capacity(merge_data.len());
+    for &(a, b) in merge_data {
+        if let (Some(&ia), Some(&ib)) = (idx.get(&a), idx.get(&b)) {
+            out.push((ia, ib));
+        }
+    }
+    out
 }
 
 pub fn export_champions() -> BTreeMap<String, ChampionDetails> {
@@ -216,26 +222,29 @@ pub fn export_champions() -> BTreeMap<String, ChampionDetails> {
                             .replace_const(),
                     ))
                 })
-                .collect::<Vec<(String, String, String, String)>>();
+                .collect::<Vec<(AbilityLike, String, String, String)>>();
 
             sort_pqwer(&mut ability_data);
 
             let positions = champion
                 .positions
                 .into_iter()
-                .map(|pos| format!("Position::{}", pos))
+                .map(|pos| format!("Position::{pos}"))
                 .collect::<Vec<String>>()
                 .join(",");
 
             let constdecl = format!(
                 "pub static {champion_name_upper}: CachedChampion = CachedChampion {{
+                    name: {true_champion_name:?},
                     adaptative_type: AdaptativeType::{adaptative_type},
                     attack_type: AttackType::{attack_type},
                     positions: &[{positions}],
                     metadata: &[{metadata}],
                     closures: &[{closures}],
-                    stats: CachedChampionStats {{{stats}}}
+                    stats: CachedChampionStats {{{stats}}},
+                    merge_data: &[{merge_data}],
                 }};",
+                true_champion_name = champion.name,
                 adaptative_type = champion.adaptative_type,
                 attack_type = champion.attack_type,
                 metadata = ability_data
@@ -249,9 +258,14 @@ pub fn export_champions() -> BTreeMap<String, ChampionDetails> {
                     .collect::<Vec<_>>()
                     .join(","),
                 stats = format_stats(&champion.stats),
+                merge_data = find_merge_indexes(&champion.merge_data, &ability_data)
+                    .iter()
+                    .map(|(ia, ib)| format!("({ia}, {ib})"))
+                    .collect::<Vec<_>>()
+                    .join(","),
             );
 
-            let generator = cwd!(format!("tutorlolv2_dev/src/generators/{}.rs", champion_id))
+            let generator = cwd!(format!("tutorlolv2_dev/src/generators/{champion_id}.rs"))
                 .read_as_path()
                 .invoke_rustfmt(80)
                 .highlight_rust();

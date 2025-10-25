@@ -86,11 +86,11 @@ pub async fn run() {
     macro_rules! record_offsets {
         ($value:expr) => {{
             let (start, end) = record_offsets!(@record $value);
-            format!("({},{})", start, end)
+            format!("({start},{end})")
         }};
         ($field:ident, $value:expr) => {{
             let (start, end) = record_offsets!(@record $value);
-            $field.push_str(&format!("({},{}),", start, end));
+            $field.push_str(&format!("({start},{end}),"));
         }};
         (@record $value:expr) => {{
             let start = current_offset;
@@ -102,7 +102,7 @@ pub async fn run() {
     }
 
     let scraped_data_map =
-        init_map!(file BTreeMap<String, Positions>, "internal/scraped_data.json");
+        init_map!(file BTreeMap<String, Positions>, "internal/scraper/data.json");
 
     for champion_id in champions.keys() {
         let positions = scraped_data_map.get(champion_id).unwrap();
@@ -112,7 +112,7 @@ pub async fn run() {
             let insert_array = |array: &[String], enum_kind: &str| {
                 array
                     .iter()
-                    .map(|element| format!("{}::{}", enum_kind, element).to_string())
+                    .map(|element| format!("{enum_kind}::{element}"))
                     .collect::<Vec<String>>()
                     .join(",")
             };
@@ -124,7 +124,7 @@ pub async fn run() {
                 "[{}],",
                 array
                     .iter()
-                    .map(|element| format!("&[{}]", element).to_string())
+                    .map(|element| format!("&[{element}]").to_string())
                     .collect::<Vec<String>>()
                     .join(","),
             ))
@@ -144,8 +144,7 @@ pub async fn run() {
                     .iter()
                     .map(|champion_name_alias| {
                         format!(
-                            "\"{}\"=>ChampionId::{}",
-                            champion_name_alias,
+                            "\"{champion_name_alias}\"=>ChampionId::{}",
                             key.remove_special_chars()
                         )
                     })
@@ -174,12 +173,8 @@ pub async fn run() {
         champion_abilities.push_str("&[");
         for (ability_name, ability_formula) in &champion_detail.highlighted_abilities {
             let (start, end) = record_offsets!(@record ability_formula);
-            champion_abilities.push_str(&format!(
-                "({},({},{})),",
-                AbilityLike::from_str(ability_name),
-                start,
-                end
-            ));
+            champion_abilities
+                .push_str(&format!("({},({start},{end})),", ability_name.as_literal(),));
         }
         champion_abilities.push_str("],");
         internal_champions_content.push_str(&champion_detail.constdecl);
@@ -227,7 +222,7 @@ pub async fn run() {
             .join(","),
     );
     let item_id_enum = format!(
-        "#[derive(Debug,Copy,Clone,Ord,Eq,PartialOrd,PartialEq,Decode,Encode)]#[repr(u16)]
+        "#[derive(Serialize,Deserialize,Debug,Copy,Clone,Ord,Eq,PartialOrd,PartialEq,Decode,Encode)]#[repr(u16)]
         pub enum ItemId {{{}}}impl ItemId {{pub const fn to_riot_id(&self)->u32{{ITEM_ID_TO_RIOT_ID[*self as usize]}}
         pub const fn from_riot_id(id:u32)->Self{{match id {{{}}}}}}}",
         items
@@ -238,8 +233,7 @@ pub async fn run() {
         items
             .iter()
             .map(|(item_id, value)| format!(
-                "{}=>Self::{}",
-                item_id,
+                "{item_id}=>Self::{}",
                 value.item_name.remove_special_chars()
             ))
             .chain(std::iter::once("_=>Self::YourCut".to_string(),))
@@ -249,16 +243,15 @@ pub async fn run() {
     for (index, (item_id, item_detail)) in items.into_iter().enumerate() {
         internal_items_content.push_str(&item_detail.constdecl);
         internal_items.push_str(&format!(
-            "&{}_{},",
+            "&{}_{item_id},",
             item_detail.item_name.to_screaming_snake_case(),
-            item_id
         ));
         if item_detail.is_simulated {
-            internal_simulated_items.push_str(&format!("{}u32,", item_id));
-            internal_simulated_items_enum.push_str(&format!("{},", index));
+            internal_simulated_items.push_str(&format!("{item_id}u32,"));
+            internal_simulated_items_enum.push_str(&format!("{index},"));
         }
         if item_detail.is_damaging {
-            internal_damaging_items.push_str(&format!("{}u32,", item_id));
+            internal_damaging_items.push_str(&format!("{item_id}u32,"));
         }
         record_offsets!(item_formulas, item_detail.item_formula);
         item_id_to_name.push_str(&format!("\"{}\",", item_detail.item_name));
@@ -301,7 +294,9 @@ pub async fn run() {
         "pub static DAMAGING_RUNES:phf::Set<u32>=phf::phf_set!({});",
         runes
             .iter()
-            .map(|(rune_id, _)| format!("{}u32", rune_id))
+            .filter_map(
+                |(rune_id, rune_data)| (!rune_data.undeclared).then_some(format!("{}u32", rune_id))
+            )
             .collect::<Vec<String>>()
             .join(",")
     );
@@ -327,8 +322,7 @@ pub async fn run() {
         runes
             .iter()
             .map(|(rune_id, value)| format!(
-                "{}=>Self::{}",
-                rune_id,
+                "{rune_id}=>Self::{}",
                 value.rune_name.remove_special_chars()
             ))
             .chain(std::iter::once(format!(
@@ -340,9 +334,8 @@ pub async fn run() {
     );
     for (rune_id, rune_detail) in runes.into_iter() {
         internal_runes.push_str(&format!(
-            "&{}_{},",
+            "&{}_{rune_id},",
             rune_detail.rune_name.to_screaming_snake_case(),
-            rune_id
         ));
         internal_runes_content.push_str(&rune_detail.constdecl);
         rune_id_to_name.push_str(&format!("\"{}\",", rune_detail.rune_name));
@@ -399,14 +392,12 @@ pub async fn run() {
 
     bytes.extend_from_slice(
         format!(
-            "{}#[derive(Debug,Copy,Clone,Decode)]pub enum Position{{Top,Jungle,Middle,Bottom,Support}}
+            "{exported_content}#[derive(Debug,Copy,Clone,Decode)]pub enum Position{{Top,Jungle,Middle,Bottom,Support}}
             pub const BASIC_ATTACK_OFFSET:(u32,u32)={};pub const CRITICAL_STRIKE_OFFSET:(u32,u32)={};
-            pub const ONHIT_EFFECT_OFFSET:(u32,u32)={};pub const UNCOMPRESSED_MEGA_BLOCK_SIZE:usize={};",
-            exported_content,
+            pub const ONHIT_EFFECT_OFFSET:(u32,u32)={};pub const UNCOMPRESSED_MEGA_BLOCK_SIZE:usize={current_offset};",
             record_offsets!(BASIC_ATTACK.invoke_rustfmt(60).highlight_rust()),
             record_offsets!(CRITICAL_STRIKE.invoke_rustfmt(60).highlight_rust()),
             record_offsets!(ONHIT_EFFECT),
-            current_offset,
         )
         .as_bytes(),
     );

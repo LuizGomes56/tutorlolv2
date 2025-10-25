@@ -1,10 +1,10 @@
 use super::{helpers::*, model::*};
-use crate::{GameMap, L_SIML, L_TEAM, RiotFormulas, riot::*};
+use crate::{L_SIML, L_TEAM, RiotFormulas, riot::*};
 use smallvec::SmallVec;
 use std::mem::MaybeUninit;
 use tinyset::SetU32;
 use tutorlolv2_gen::{
-    CHAMPION_NAME_TO_ID, ChampionId, DAMAGING_ITEMS, DAMAGING_RUNES, INTERNAL_CHAMPIONS,
+    CHAMPION_NAME_TO_ID, ChampionId, DAMAGING_ITEMS, DAMAGING_RUNES, GameMap, INTERNAL_CHAMPIONS,
     INTERNAL_ITEMS, ItemId, Position, RuneId, SIMULATED_ITEMS_ENUM, TypeMetadata,
 };
 
@@ -171,12 +171,14 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
         })
         .unwrap_or_default();
 
+    let (items_data, items_to_merge) =
+        get_items_data(&current_player_items, current_player_cache_attack_type);
     let eval_data = DamageEvalData {
         abilities: ConstDamageKind {
             metadata: current_player_cache.metadata,
             closures: current_player_cache.closures,
         },
-        items: get_items_data(&current_player_items, current_player_cache_attack_type),
+        items: items_data,
         runes: get_runes_data(&current_player_runes, current_player_cache_attack_type),
     };
 
@@ -324,6 +326,8 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
         items_meta: eval_data.items.metadata,
         runes_meta: eval_data.runes.metadata,
         siml_meta: SIMULATED_ITEMS_METADATA,
+        abilities_to_merge: current_player_cache.merge_data,
+        items_to_merge: items_to_merge,
         game_time: *game_time as u32,
         ability_levels,
         dragons,

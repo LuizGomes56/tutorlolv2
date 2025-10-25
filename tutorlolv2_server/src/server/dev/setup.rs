@@ -1,68 +1,52 @@
 use crate::{
-    AppState, dev_response,
+    dev_response,
     server::dev::images::{IMG_FOLDERS, img_convert_avif},
 };
 use actix_web::{
     HttpResponse, Responder, get,
     rt::{spawn, task::spawn_blocking},
-    web::Data,
 };
-use tutorlolv2_dev::setup::{
-    cache::*,
-    essentials::{api::CdnEndpoint, images::*},
-    generators::{champions::*, items::assign_item_damages},
-    scraper::data_scraper,
-    update::*,
+use tutorlolv2_dev::{
+    HTTP_CLIENT,
+    gen_factories::{fac_champions::ChampionFactory, fac_items::ItemFactory},
+    setup::update::*,
 };
 use tutorlolv2_exports::*;
 
 #[get("/project")]
-pub async fn setup_project(state: Data<AppState>) -> impl Responder {
-    setup_project_folders();
-    let client = state.client.clone();
+pub async fn setup_project() -> impl Responder {
+    let _ = setup_project_folders();
 
     spawn(async move {
-        for update_future in [
-            spawn(update_riot_cache(client.clone())),
-            spawn(update_cdn_cache(client.clone(), CdnEndpoint::Champions)),
-            spawn(update_cdn_cache(client.clone(), CdnEndpoint::Items)),
+        for future in [
+            spawn(async move { HTTP_CLIENT.update_riot_cache().await }),
+            spawn(async move { HTTP_CLIENT.update_meraki_cache("champions").await }),
+            spawn(async move { HTTP_CLIENT.update_meraki_cache("items").await }),
         ] {
-            if let Err(e) = update_future.await {
-                println!("Error joining update future at fn[setup_project]: {:#?}", e);
-            }
+            let _ = future.await;
         }
 
-        let _ = spawn_blocking(setup_champion_names).await;
-        let _ = spawn_blocking(setup_internal_items).await;
-        let _ = spawn_blocking(setup_runes_json).await;
+        let _ = setup_runes_json();
+        let _ = setup_internal_items();
         let _ = prettify_internal_items().await;
+        let _ = setup_damaging_items();
+        let _ = ItemFactory::run_all();
+        let _ = ChampionFactory::create_all();
+        let _ = ChampionFactory::run_all();
 
-        {
-            let client = client.clone();
-            spawn(async move {
-                let _ = data_scraper(client).await;
-                setup_damaging_items();
-                let _ = assign_item_damages();
-            });
+        spawn(async move { HTTP_CLIENT.call_scraper().await });
+        spawn(async move { HTTP_CLIENT.combo_scraper().await });
+
+        for future in [
+            spawn(async move { HTTP_CLIENT.download_arts_img().await }),
+            spawn(async move { HTTP_CLIENT.download_general_img().await }),
+            spawn(async move { HTTP_CLIENT.download_items_img().await }),
+            spawn(async move { HTTP_CLIENT.download_runes_img().await }),
+        ] {
+            let _ = future.await;
         }
-        spawn(async move {
-            let _ = create_generator_files(GeneratorMode::Partial).await;
-            setup_internal_champions();
-        });
 
-        // There's no need to await for image download conclusion
-        // They are independent and may run in parallel
-        spawn(async move {
-            for future in [
-                spawn(img_download_arts(client.clone())),
-                spawn(img_download_instances(client.clone())),
-                spawn(img_download_items(client.clone())),
-                spawn(img_download_runes(client)),
-            ] {
-                let _ = future.await;
-            }
-            let _ = spawn(img_convert_avif(IMG_FOLDERS)).await;
-        });
+        let _ = spawn(img_convert_avif(IMG_FOLDERS)).await;
     })
     .await
     .expect("Could not finish setup tasks");
@@ -85,7 +69,7 @@ pub async fn setup_folders() -> impl Responder {
 
 #[get("/champions")]
 pub async fn setup_champions() -> impl Responder {
-    dev_response!(setup_internal_champions())
+    dev_response!(ChampionFactory::run_all())
 }
 
 #[get("/items")]

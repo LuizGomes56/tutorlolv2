@@ -31,7 +31,7 @@ pub fn generate_item_html() {
         html.code_section("Rust - Internal code", offset_to_str(ITEM_FORMULAS[i]));
         html.code_section(
             "JSON - Intermediate representation",
-            &format!("internal/items/{}.json", item_id.to_riot_id()).json_code(),
+            &format!("internal/items/{item_id:?}.json").json_code(),
         );
 
         html.footer();

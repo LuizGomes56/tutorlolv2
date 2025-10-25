@@ -2,13 +2,11 @@ use regex::{Captures, Regex};
 use serde::Deserialize;
 use std::fmt;
 
-pub fn transform_expr(expr: &str) -> (String, bool) {
+pub fn add_f32_postfix<'a>(expr: &'a str) -> (String, bool) {
     let re_num = Regex::new(r"\b(\d+(\.\d+)?)\b").unwrap();
-    let with_f32 = re_num.replace_all(expr, |caps: &Captures| format!("{}f32", &caps[1]));
-    let re_up = Regex::new(r"\b([A-Z][A-Z0-9_]*)\b").unwrap();
-    let count_ctx = re_up.find_iter(with_f32.as_ref()).count();
-    let result = re_up.replace_all(&with_f32, |caps: &Captures| format!("ctx.{}", &caps[1]));
-    (result.into_owned(), count_ctx > 0)
+    let postfixed = re_num.replace_all(expr, |caps: &Captures| format!("{}f32", &caps[1]));
+    let uses_ctx = postfixed.contains("ctx.");
+    (postfixed.into_owned(), uses_ctx)
 }
 
 #[derive(Deserialize)]
@@ -40,11 +38,7 @@ impl Positions {
 #[macro_export]
 macro_rules! cwd {
     ($path:expr) => {
-        format!(
-            "{}/../{}",
-            std::env::current_dir().unwrap().to_str().unwrap(),
-            $path
-        )
+        format!("../{}", $path)
     };
 }
 
@@ -73,30 +67,53 @@ macro_rules! init_map {
     }};
 }
 
-pub fn is_valid_math_expression(expr: &str) -> bool {
-    if expr.chars().any(|c| c.is_ascii_lowercase()) {
-        return false;
-    }
-    let expr = expr.replace(' ', "");
-    let valid_token_re = Regex::new(r"^[\d\.\+\-\*/\(\)A-Z_]+$").unwrap();
-    if !valid_token_re.is_match(&expr) {
+pub fn is_valid_math_expression(input: &str) -> bool {
+    let expr = input.trim();
+    if expr.is_empty() {
         return false;
     }
 
-    let mut stack = vec![];
-    for c in expr.chars() {
-        match c {
-            '(' => stack.push(c),
-            ')' => {
-                if stack.pop().is_none() {
+    let expr_ns = expr
+        .chars()
+        .filter(|c| !c.is_whitespace())
+        .collect::<String>();
+
+    let token_re = Regex::new(r"(?:ctx\.[a-z_][a-z0-9_]*)|\d+\.\d+|\d+|[+\-*/()]").unwrap();
+
+    let tokens = token_re
+        .find_iter(&expr_ns)
+        .map(|m| m.as_str())
+        .collect::<Vec<&str>>();
+    if tokens.is_empty() {
+        return false;
+    }
+
+    if tokens.concat() != expr_ns {
+        return false;
+    }
+
+    if matches!(
+        tokens.last().copied(),
+        Some("+") | Some("-") | Some("*") | Some("/") | Some("(")
+    ) {
+        return false;
+    }
+
+    let mut depth = 0_i32;
+    for t in &tokens {
+        match *t {
+            "(" => depth += 1,
+            ")" => {
+                if depth == 0 {
                     return false;
                 }
+                depth -= 1;
             }
             _ => {}
         }
     }
 
-    stack.is_empty()
+    depth == 0
 }
 
 #[derive(Debug, Clone)]
@@ -189,8 +206,11 @@ fn parse_primary(tokens: &[String], pos: &mut usize) -> Expr {
 }
 
 fn tokenize(expr: &str) -> Vec<String> {
-    let re = Regex::new(r"[A-Z_]+|\d+\.\d+|\d+|[\+\-\*/\(\)]").unwrap();
-    re.find_iter(expr).map(|m| m.as_str().to_string()).collect()
+    Regex::new(r"ctx\.[a-z_]+|[A-Z_]+|\d+\.\d+|\d+|[\+\-\*/\(\)]")
+        .unwrap()
+        .find_iter(expr)
+        .map(|m| m.as_str().to_string())
+        .collect()
 }
 
 pub fn clean_math_expr(expr: &str) -> String {
@@ -225,24 +245,28 @@ pub fn clear_suffixes(input: &str) -> String {
         .to_string()
 }
 
-pub trait JoinNumVec {
-    fn join(&self, sep: &str) -> String;
-}
-
-macro_rules! join_num_vec_trait_impl {
-    ($t:ty) => {
-        impl<T: ToString + Copy> JoinNumVec for $t {
-            fn join(&self, sep: &str) -> String {
-                self.iter()
-                    .map(|s| s.to_string())
-                    .collect::<Vec<String>>()
-                    .join(sep)
+pub trait Joinable<U>: AsRef<[U]>
+where
+    U: ToString,
+{
+    fn join(&self, sep: &str) -> String {
+        let slice = self.as_ref();
+        let mut out = String::new();
+        for (i, v) in slice.iter().enumerate() {
+            if i > 0 {
+                out.push_str(sep);
             }
+            out.push_str(&v.to_string());
         }
-    };
+        out
+    }
 }
 
-join_num_vec_trait_impl!(Vec<T>);
-join_num_vec_trait_impl!(&[T]);
+impl<U, S> Joinable<U> for S
+where
+    S: AsRef<[U]>,
+    U: ToString,
+{
+}
 
 pub const USE_SUPER: &str = "use super::*;";

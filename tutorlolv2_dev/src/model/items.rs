@@ -1,48 +1,46 @@
 use serde::{Deserialize, Serialize};
-use serde_json::Value;
-use std::collections::HashMap;
-use tutorlolv2_gen::{Attrs, DamageType};
+use tutorlolv2_gen::{Attrs, DamageType, GameMap, ItemId};
 
 #[derive(Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Effect {
     pub effects: String,
-    // pub name: Option<String>,
-    // pub unique: bool,
+    pub name: Option<String>,
+    pub unique: bool,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Default)]
 #[serde(rename_all = "camelCase")]
-pub struct ItemsCdnStatsMap {
+pub struct MerakiItemStatsMap {
     pub flat: f64,
     pub percent: f64,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct ItemStats {
-    pub ability_power: ItemsCdnStatsMap,
-    pub armor: ItemsCdnStatsMap,
-    pub armor_penetration: ItemsCdnStatsMap,
-    pub magic_penetration: ItemsCdnStatsMap,
-    pub attack_damage: ItemsCdnStatsMap,
-    pub attack_speed: ItemsCdnStatsMap,
-    pub critical_strike_chance: ItemsCdnStatsMap,
-    pub critical_strike_damage: ItemsCdnStatsMap,
-    pub health: ItemsCdnStatsMap,
-    pub lifesteal: ItemsCdnStatsMap,
-    pub magic_resistance: ItemsCdnStatsMap,
-    pub mana: ItemsCdnStatsMap,
-    pub movespeed: ItemsCdnStatsMap,
-    pub omnivamp: ItemsCdnStatsMap,
+    pub ability_power: MerakiItemStatsMap,
+    pub armor: MerakiItemStatsMap,
+    pub armor_penetration: MerakiItemStatsMap,
+    pub magic_penetration: MerakiItemStatsMap,
+    pub attack_damage: MerakiItemStatsMap,
+    pub attack_speed: MerakiItemStatsMap,
+    pub critical_strike_chance: MerakiItemStatsMap,
+    pub critical_strike_damage: MerakiItemStatsMap,
+    pub health: MerakiItemStatsMap,
+    pub lifesteal: MerakiItemStatsMap,
+    pub magic_resistance: MerakiItemStatsMap,
+    pub mana: MerakiItemStatsMap,
+    pub movespeed: MerakiItemStatsMap,
+    pub omnivamp: MerakiItemStatsMap,
 }
 
 #[derive(Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct CdnItem {
+pub struct MerakiItem {
     pub active: Vec<Effect>,
     pub builds_from: Vec<u32>,
-    // pub builds_into: Vec<usize>,
+    pub builds_into: Vec<u32>,
     pub name: String,
     pub tier: u8,
     pub passives: Vec<Effect>,
@@ -63,44 +61,39 @@ pub struct Shop {
     pub prices: ItemPrices,
 }
 
-#[derive(Deserialize, Serialize, Clone)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct DamageObject {
-    pub minimum_damage: Option<String>,
-    pub maximum_damage: Option<String>,
+    pub minimum_damage: String,
+    pub maximum_damage: String,
 }
 
-#[derive(Deserialize, Serialize, Default)]
-#[serde(rename_all = "camelCase")]
-pub struct PartialStats {
-    pub ability_power: f64,
-    pub armor: f64,
-    pub armor_penetration_percent: f64,
-    pub armor_penetration_flat: f64,
-    pub magic_penetration_percent: f64,
-    pub magic_penetration_flat: f64,
-    pub attack_damage: f64,
-    pub attack_speed: f64,
-    pub critical_strike_chance: f64,
-    pub critical_strike_damage: f64,
-    pub health: f64,
-    pub lifesteal: f64,
-    pub magic_resistance: f64,
-    pub mana: f64,
-    pub movespeed: f64,
-    pub omnivamp: f64,
+impl Default for DamageObject {
+    fn default() -> Self {
+        Self {
+            minimum_damage: "zero".to_string(),
+            maximum_damage: "zero".to_string(),
+        }
+    }
 }
 
 #[derive(Deserialize, Serialize)]
 pub struct Item {
+    pub riot_id: u32,
+    pub item_id: ItemId,
     pub name: String,
-    pub gold: u32,
+    pub price: u32,
+    pub sell: u32,
     pub tier: u8,
-    pub prettified_stats: HashMap<String, Value>,
+    pub maps: Vec<(GameMap, bool)>,
+    pub prettified_stats: Vec<String>,
     pub damage_type: DamageType,
-    pub stats: PartialStats,
-    pub builds_from: Vec<u32>,
-    pub ranged: Option<DamageObject>,
-    pub melee: Option<DamageObject>,
+    pub stats: ItemStats,
+    pub builds_from_riot_ids: Vec<u32>,
+    pub builds_from_item_ids: Vec<ItemId>,
+    pub builds_into_riot_ids: Vec<u32>,
+    pub builds_into_item_ids: Vec<ItemId>,
+    pub ranged: DamageObject,
+    pub melee: DamageObject,
     pub attributes: Attrs,
     pub purchasable: bool,
 }

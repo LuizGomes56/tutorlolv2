@@ -3,7 +3,8 @@ use bincode::{Decode, Encode};
 use smallvec::SmallVec;
 use tinyset::SetU32;
 use tutorlolv2_gen::{
-    AbilityLike, AdaptativeType, ChampionId, DamageClosures, ItemId, Position, RuneId, TypeMetadata,
+    AbilityLike, AdaptativeType, ChampionId, ConstClosure, GameMap, ItemId, Position, RuneId,
+    TypeMetadata,
 };
 
 #[derive(Encode, PartialEq, Clone, Copy)]
@@ -38,19 +39,19 @@ pub struct BasicStats<T> {
 
 #[derive(Encode)]
 pub struct Attacks {
-    pub basic_attack: RangeDamage,
-    pub critical_strike: RangeDamage,
+    pub basic_attack: i32,
+    pub critical_strike: i32,
     pub onhit_damage: RangeDamage,
 }
 
 pub struct ConstDamageKind<T: 'static> {
     pub metadata: &'static [TypeMetadata<T>],
-    pub closures: &'static [DamageClosures],
+    pub closures: &'static [ConstClosure],
 }
 
 pub struct DamageKind<const N: usize, T> {
     pub metadata: SmallVec<[TypeMetadata<T>; N]>,
-    pub closures: SmallVec<[DamageClosures; N]>,
+    pub closures: SmallVec<[ConstClosure; N]>,
 }
 
 #[derive(Encode)]
@@ -62,6 +63,8 @@ pub struct Realtime<'a> {
     pub items_meta: SmallVec<[TypeMetadata<ItemId>; L_ITEM]>,
     pub runes_meta: SmallVec<[TypeMetadata<RuneId>; L_RUNE]>,
     pub siml_meta: [TypeMetadata<ItemId>; L_SIML],
+    pub abilities_to_merge: &'static [(usize, usize)],
+    pub items_to_merge: SmallVec<[(usize, usize); L_ITEM]>,
     pub game_time: u32,
     pub ability_levels: AbilityLevels,
     pub dragons: Dragons,
@@ -167,9 +170,9 @@ pub struct Enemy<'a> {
 #[derive(Encode)]
 pub struct Damages {
     pub attacks: Attacks,
-    pub abilities: SmallVec<[RangeDamage; L_ABLT]>,
-    pub items: SmallVec<[RangeDamage; L_ITEM]>,
-    pub runes: SmallVec<[RangeDamage; L_RUNE]>,
+    pub abilities: SmallVec<[i32; L_ABLT]>,
+    pub items: SmallVec<[i32; L_ITEM]>,
+    pub runes: SmallVec<[i32; L_RUNE]>,
 }
 
 #[derive(Decode, Copy, Clone)]
@@ -324,8 +327,8 @@ pub struct OutputCurrentPlayer {
 #[derive(Encode)]
 pub struct MonsterDamage {
     pub attacks: Attacks,
-    pub abilities: SmallVec<[RangeDamage; L_ABLT]>,
-    pub items: SmallVec<[RangeDamage; L_ITEM]>,
+    pub abilities: SmallVec<[i32; L_ABLT]>,
+    pub items: SmallVec<[i32; L_ITEM]>,
 }
 
 #[derive(Encode)]
@@ -335,6 +338,8 @@ pub struct OutputGame {
     pub enemies: SmallVec<[OutputEnemy; L_CENM]>,
     pub tower_damages: [i32; L_TWRD],
     pub abilities_meta: &'static [TypeMetadata<AbilityLike>],
+    pub abilities_to_merge: &'static [(usize, usize)],
+    pub items_to_merge: SmallVec<[(usize, usize); L_ITEM]>,
     pub items_meta: SmallVec<[TypeMetadata<ItemId>; L_ITEM]>,
     pub runes_meta: SmallVec<[TypeMetadata<RuneId>; L_RUNE]>,
 }

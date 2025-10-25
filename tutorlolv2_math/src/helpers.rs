@@ -1,5 +1,5 @@
 use super::model::*;
-use crate::{L_ITEM, L_RUNE, L_SIML, NUMBER_OF_CHAMPIONS, RiotFormulas, riot::*};
+use crate::{L_ITEM, L_RUNE, L_SIML, NUMBER_OF_CHAMPIONS, NUMBER_OF_ITEMS, RiotFormulas, riot::*};
 use smallvec::SmallVec;
 use std::mem::MaybeUninit;
 use tinyset::SetU32;
@@ -228,18 +228,42 @@ pub fn get_runes_data(runes: &SetU32, attack_type: AttackType) -> DamageKind<L_R
     DamageKind { metadata, closures }
 }
 
-pub fn get_items_data(items: &SetU32, attack_type: AttackType) -> DamageKind<L_ITEM, ItemId> {
+pub fn get_items_data(
+    items: &SetU32,
+    attack_type: AttackType,
+) -> (
+    DamageKind<L_ITEM, ItemId>,
+    SmallVec<[(usize, usize); L_ITEM]>,
+) {
+    const _: () = {
+        let mut index = 0;
+        while index < NUMBER_OF_ITEMS {
+            let data = INTERNAL_ITEMS[index];
+            assert!(data.melee_closure.len() <= 2);
+            assert!(data.range_closure.len() <= 2);
+            index += 1;
+        }
+    };
+
     let mut metadata = SmallVec::with_capacity(items.len());
     let mut closures = SmallVec::with_capacity(items.len());
-    for item_number in items.iter() {
+    let mut multi_closure_indices = SmallVec::with_capacity(items.len());
+    for (index, item_number) in items.iter().enumerate() {
         let item = unsafe { INTERNAL_ITEMS.get_unchecked(item_number as usize) };
-        closures.push(match attack_type {
+        let slice = match attack_type {
             AttackType::Ranged => item.range_closure,
             AttackType::Melee => item.melee_closure,
-        });
+        };
+
+        if slice.len() > 1 {
+            multi_closure_indices.push((index, index + 1));
+            metadata.push(item.metadata);
+        }
+
+        closures.extend_from_slice(slice);
         metadata.push(item.metadata);
     }
-    DamageKind { metadata, closures }
+    (DamageKind { metadata, closures }, multi_closure_indices)
 }
 
 pub fn runes_slice_to_set_u32(input: &[RuneId]) -> SetU32 {
@@ -507,7 +531,7 @@ impl IsAbility for RuneId {}
 impl IsAbility for AbilityLike {
     fn apply_modifiers(&self, modifier: &mut f32, ability_modifiers: &AbilityModifiers) {
         let mut modify = |ability_name: AbilityName, value: f32| {
-            if ability_name as u8 <= AbilityName::_8Min as u8 {
+            if ability_name <= AbilityName::_8Min {
                 *modifier *= value
             }
         };
@@ -525,9 +549,9 @@ pub fn eval_damage<const N: usize, T: IsAbility + 'static>(
     ctx: &EvalContext,
     onhit: &mut RangeDamage,
     metadata: &[TypeMetadata<T>],
-    closures: &[DamageClosures],
+    closures: &[ConstClosure],
     modifiers: Modifiers,
-) -> SmallVec<[RangeDamage; N]> {
+) -> SmallVec<[i32; N]> {
     let len = metadata.len();
     let mut result = SmallVec::with_capacity(len);
     for i in 0..len {
@@ -547,48 +571,37 @@ pub fn eval_damage<const N: usize, T: IsAbility + 'static>(
             .kind
             .apply_modifiers(&mut modifier, &modifiers.abilities);
 
-        let minimum_damage = (modifier * (closure.minimum_damage)(ctx)) as i32;
-        let maximum_damage = (modifier * (closure.maximum_damage)(ctx)) as i32;
+        let damage = (modifier * closure(ctx)) as i32;
 
-        let sum = minimum_damage + minimum_damage;
         match attributes {
             Attrs::OnhitMin => {
-                onhit.minimum_damage += sum;
+                onhit.minimum_damage += damage;
             }
             Attrs::OnhitMax => {
-                onhit.maximum_damage += sum;
+                onhit.maximum_damage += damage;
             }
             Attrs::Onhit => {
-                onhit.minimum_damage += sum;
-                onhit.maximum_damage += sum;
+                onhit.minimum_damage += damage;
+                onhit.maximum_damage += damage;
             }
             _ => {}
         };
 
-        result.push(RangeDamage {
-            minimum_damage,
-            maximum_damage,
-        });
+        result.push(damage);
     }
     result
 }
 
 pub fn eval_attacks(ctx: &EvalContext, mut onhit_damage: RangeDamage) -> Attacks {
-    let basic_attack_damage = (BASIC_ATTACK.minimum_damage)(ctx) as i32;
-    let critical_strike_damage = (CRITICAL_STRIKE.minimum_damage)(ctx) as i32;
+    let basic_attack = (BASIC_ATTACK.minimum_damage)(ctx) as i32;
+    let critical_strike = (CRITICAL_STRIKE.minimum_damage)(ctx) as i32;
 
-    onhit_damage.minimum_damage += basic_attack_damage;
-    onhit_damage.maximum_damage += critical_strike_damage;
+    onhit_damage.minimum_damage += basic_attack;
+    onhit_damage.maximum_damage += critical_strike;
 
     Attacks {
-        basic_attack: RangeDamage {
-            minimum_damage: basic_attack_damage,
-            maximum_damage: 0,
-        },
-        critical_strike: RangeDamage {
-            minimum_damage: 0,
-            maximum_damage: critical_strike_damage,
-        },
+        basic_attack,
+        critical_strike,
         onhit_damage,
     }
 }
@@ -596,25 +609,27 @@ pub fn eval_attacks(ctx: &EvalContext, mut onhit_damage: RangeDamage) -> Attacks
 pub fn get_damages(eval_ctx: &EvalContext, data: &DamageEvalData, modifiers: Modifiers) -> Damages {
     let mut onhit = RangeDamage::default();
 
-    macro_rules! eval_nonempty {
-        ($name:ident) => {
-            if data.$name.closures.is_empty() {
-                SmallVec::new()
-            } else {
-                eval_damage(
-                    &eval_ctx,
-                    &mut onhit,
-                    &data.$name.metadata,
-                    &data.$name.closures,
-                    modifiers,
-                )
-            }
-        };
-    }
-
-    let abilities = eval_nonempty!(abilities);
-    let items = eval_nonempty!(items);
-    let runes = eval_nonempty!(runes);
+    let abilities = eval_damage(
+        &eval_ctx,
+        &mut onhit,
+        &data.abilities.metadata,
+        &data.abilities.closures,
+        modifiers,
+    );
+    let items = eval_damage(
+        &eval_ctx,
+        &mut onhit,
+        &data.items.metadata,
+        &data.items.closures,
+        modifiers,
+    );
+    let runes = eval_damage(
+        &eval_ctx,
+        &mut onhit,
+        &data.runes.metadata,
+        &data.runes.closures,
+        modifiers,
+    );
     let attacks = eval_attacks(&eval_ctx, onhit);
 
     Damages {

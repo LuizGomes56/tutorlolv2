@@ -46,7 +46,7 @@ pub trait StringExt {
 
 impl StringExt for str {
     fn transform_expr(&self) -> (String, bool) {
-        transform_expr(self)
+        add_f32_postfix(self)
     }
     fn clean_math_expr(&self) -> String {
         clean_math_expr(self)
@@ -67,21 +67,12 @@ impl StringExt for str {
         std::fs::read_to_string(self).unwrap()
     }
     fn remove_special_chars(&self) -> String {
-        self.replace(" ", "")
-            .replace("-", "")
-            .replace(")", "")
-            .replace("(", "")
-            .replace("'", "")
-            .replace(".", "")
-            .replace(",", "")
-            .replace(":", "")
+        tutorlolv2_fmt::remove_special_chars(self)
     }
     fn to_screaming_snake_case(&self) -> String {
-        #[inline]
         fn is_boundary(c: char) -> bool {
             c.is_ascii_whitespace() || (c.is_ascii_punctuation() && c != '\'')
         }
-        #[inline]
         fn is_ignorable(c: char) -> bool {
             c == '\''
         }

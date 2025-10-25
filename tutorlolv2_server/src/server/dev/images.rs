@@ -1,58 +1,57 @@
-use crate::AppState;
-use actix_web::{HttpResponse, Responder, get, web::Data};
+use actix_web::{HttpResponse, Responder, get};
 use tutorlolv2_avif::{clean_sprite_folder, concat_sprite_jsons, generate_spritesheet};
-use tutorlolv2_dev::setup::essentials::images::{
-    img_download_arts, img_download_instances, img_download_items, img_download_runes,
-};
+use tutorlolv2_dev::HTTP_CLIENT;
 
 macro_rules! download_image {
     (@inner $msg:expr) => {{
         HttpResponse::Ok().body($msg)
     }};
-    ($state:expr, $call:expr) => {{
-        $call($state.client.clone()).await;
+    ($call:ident) => {{
+        let _ = HTTP_CLIENT.$call().await;
         download_image!(@inner format!("Executed fn[{}]", stringify!($call)))
     }};
 }
 
 #[get("/instances")]
-pub async fn download_instances(state: Data<AppState>) -> impl Responder {
-    download_image!(state, img_download_instances)
+pub async fn download_instances() -> impl Responder {
+    download_image!(download_general_img)
 }
 
 #[get("/items")]
-pub async fn download_items(state: Data<AppState>) -> impl Responder {
-    download_image!(state, img_download_items)
+pub async fn download_items() -> impl Responder {
+    download_image!(download_items_img)
 }
 
 #[get("/runes")]
-pub async fn download_runes(state: Data<AppState>) -> impl Responder {
-    download_image!(state, img_download_runes)
+pub async fn download_runes() -> impl Responder {
+    download_image!(download_runes_img)
 }
 
 #[get("/arts")]
-pub async fn download_arts(state: Data<AppState>) -> impl Responder {
-    download_image!(state, img_download_arts)
+pub async fn download_arts() -> impl Responder {
+    download_image!(download_arts_img)
 }
 
 #[get("/all")]
-pub async fn download_all(state: Data<AppState>) -> impl Responder {
+pub async fn download_all() -> impl Responder {
     macro_rules! spawn_thread {
-        ($func:ident) => {{
-            actix_web::rt::spawn($func(state.client.clone()));
+        ($call:ident) => {{
+            actix_web::rt::spawn(async move {
+                let _ = HTTP_CLIENT.$call().await;
+            });
         }};
     }
-    spawn_thread!(img_download_instances);
-    spawn_thread!(img_download_items);
-    spawn_thread!(img_download_runes);
-    spawn_thread!(img_download_arts);
+    spawn_thread!(download_general_img);
+    spawn_thread!(download_items_img);
+    spawn_thread!(download_runes_img);
+    spawn_thread!(download_arts_img);
     download_image!(@inner "Started process")
 }
 
 pub async fn convert_folder(source: &str, folder: &str) -> Result<(), Box<dyn std::error::Error>> {
-    match tutorlolv2_avif::convert_folder_avif(&format!("{}/{}", source, folder)).await {
-        Ok(_) => println!("Conversão de '{}' concluída", folder),
-        Err(e) => eprintln!("Erro na conversão de '{}': {:#?}", folder, e),
+    match tutorlolv2_avif::convert_folder_avif(&format!("{source}/{folder}")).await {
+        Ok(_) => println!("Convertion of '{folder}' finished"),
+        Err(e) => eprintln!("Error converting '{folder}': {e:#?}"),
     }
     Ok(())
 }

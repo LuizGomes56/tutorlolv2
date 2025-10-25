@@ -1,7 +1,10 @@
 use bincode::Encode;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
+use std::str::FromStr;
 
-#[derive(Copy, Clone, Serialize, Encode)]
+pub use paste::paste;
+
+#[derive(Copy, Clone, Encode, Debug, Eq, PartialEq, PartialOrd, Hash, Ord)]
 pub enum AbilityLike {
     P(AbilityName),
     Q(AbilityName),
@@ -10,175 +13,177 @@ pub enum AbilityLike {
     R(AbilityName),
 }
 
-#[cfg(feature = "dev")]
-impl AbilityLike {
-    pub fn from_str(s: &str) -> String {
-        match s.chars().next() {
-            Some('P') => AbilityLike::from_str_p(&s).to_string(),
-            Some('Q') => AbilityLike::from_str_q(&s).to_string(),
-            Some('W') => AbilityLike::from_str_w(&s).to_string(),
-            Some('E') => AbilityLike::from_str_e(&s).to_string(),
-            Some('R') => AbilityLike::from_str_r(&s).to_string(),
-            _ => s.to_string(),
-        }
+impl Serialize for AbilityLike {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        serializer.serialize_str(&self.to_string())
     }
 }
 
-#[cfg(feature = "dev")]
-macro_rules! impl_key {
-    ($field:ident) => {
-        paste::paste! {
-            impl AbilityLike {
-                pub fn [<from_str_ $field>](s: &str) -> &'static str {
-                    match s {
-                        concat!(stringify!([<$field:upper>]), "1") => concat!("AbilityLike::", stringify!([<$field:upper>]), "(AbilityName::_1)"),
-                        concat!(stringify!([<$field:upper>]), "2") => concat!("AbilityLike::", stringify!([<$field:upper>]), "(AbilityName::_2)"),
-                        concat!(stringify!([<$field:upper>]), "3") => concat!("AbilityLike::", stringify!([<$field:upper>]), "(AbilityName::_3)"),
-                        concat!(stringify!([<$field:upper>]), "4") => concat!("AbilityLike::", stringify!([<$field:upper>]), "(AbilityName::_4)"),
-                        concat!(stringify!([<$field:upper>]), "5") => concat!("AbilityLike::", stringify!([<$field:upper>]), "(AbilityName::_5)"),
-                        concat!(stringify!([<$field:upper>]), "6") => concat!("AbilityLike::", stringify!([<$field:upper>]), "(AbilityName::_6)"),
-                        concat!(stringify!([<$field:upper>]), "7") => concat!("AbilityLike::", stringify!([<$field:upper>]), "(AbilityName::_7)"),
-                        concat!(stringify!([<$field:upper>]), "8") => concat!("AbilityLike::", stringify!([<$field:upper>]), "(AbilityName::_8)"),
-                        concat!(stringify!([<$field:upper>]), "_MEGA") => concat!("AbilityLike::", stringify!([<$field:upper>]), "(AbilityName::Mega)"),
-                        concat!(stringify!([<$field:upper>]), "_MAX") => concat!("AbilityLike::", stringify!([<$field:upper>]), "(AbilityName::Max)"),
-                        concat!(stringify!([<$field:upper>]), "_MIN") => concat!("AbilityLike::", stringify!([<$field:upper>]), "(AbilityName::Min)"),
-                        concat!(stringify!([<$field:upper>]), "_MINION") => concat!("AbilityLike::", stringify!([<$field:upper>]), "(AbilityName::Minion)"),
-                        concat!(stringify!([<$field:upper>]), "_MINION_1") => concat!("AbilityLike::", stringify!([<$field:upper>]), "(AbilityName::Minion1)"),
-                        concat!(stringify!([<$field:upper>]), "_MINION_2") => concat!("AbilityLike::", stringify!([<$field:upper>]), "(AbilityName::Minion2)"),
-                        concat!(stringify!([<$field:upper>]), "_MINION_3") => concat!("AbilityLike::", stringify!([<$field:upper>]), "(AbilityName::Minion3)"),
-                        concat!(stringify!([<$field:upper>]), "_MINION_MAX") => concat!("AbilityLike::", stringify!([<$field:upper>]), "(AbilityName::MinionMax)"),
-                        concat!(stringify!([<$field:upper>]), "_MONSTER") => concat!("AbilityLike::", stringify!([<$field:upper>]), "(AbilityName::Monster)"),
-                        concat!(stringify!([<$field:upper>]), "_MONSTER_1") => concat!("AbilityLike::", stringify!([<$field:upper>]), "(AbilityName::Monster1)"),
-                        concat!(stringify!([<$field:upper>]), "_MONSTER_2") => concat!("AbilityLike::", stringify!([<$field:upper>]), "(AbilityName::Monster2)"),
-                        concat!(stringify!([<$field:upper>]), "_MONSTER_3") => concat!("AbilityLike::", stringify!([<$field:upper>]), "(AbilityName::Monster3)"),
-                        concat!(stringify!([<$field:upper>]), "_MONSTER_4") => concat!("AbilityLike::", stringify!([<$field:upper>]), "(AbilityName::Monster4)"),
-                        concat!(stringify!([<$field:upper>]), "_MONSTER_MAX") => concat!("AbilityLike::", stringify!([<$field:upper>]), "(AbilityName::MonsterMax)"),
-                        stringify!([<$field:upper>]) => concat!("AbilityLike::", stringify!([<$field:upper>]), "(AbilityName::Void)"),
-                        concat!(stringify!([<$field:upper>]), "_MAX_1") => concat!("AbilityLike::", stringify!([<$field:upper>]), "(AbilityName::_1Max)"),
-                        concat!(stringify!([<$field:upper>]), "_MAX_2") => concat!("AbilityLike::", stringify!([<$field:upper>]), "(AbilityName::_2Max)"),
-                        concat!(stringify!([<$field:upper>]), "_MAX_3") => concat!("AbilityLike::", stringify!([<$field:upper>]), "(AbilityName::_3Max)"),
-                        concat!(stringify!([<$field:upper>]), "_MAX_4") => concat!("AbilityLike::", stringify!([<$field:upper>]), "(AbilityName::_4Max)"),
-                        concat!(stringify!([<$field:upper>]), "_MAX_5") => concat!("AbilityLike::", stringify!([<$field:upper>]), "(AbilityName::_5Max)"),
-                        concat!(stringify!([<$field:upper>]), "_MAX_6") => concat!("AbilityLike::", stringify!([<$field:upper>]), "(AbilityName::_6Max)"),
-                        concat!(stringify!([<$field:upper>]), "_MAX_7") => concat!("AbilityLike::", stringify!([<$field:upper>]), "(AbilityName::_7Max)"),
-                        concat!(stringify!([<$field:upper>]), "_MAX_8") => concat!("AbilityLike::", stringify!([<$field:upper>]), "(AbilityName::_8Max)"),
-                        concat!(stringify!([<$field:upper>]), "_MIN_1") => concat!("AbilityLike::", stringify!([<$field:upper>]), "(AbilityName::_1Min)"),
-                        concat!(stringify!([<$field:upper>]), "_MIN_2") => concat!("AbilityLike::", stringify!([<$field:upper>]), "(AbilityName::_2Min)"),
-                        concat!(stringify!([<$field:upper>]), "_MIN_3") => concat!("AbilityLike::", stringify!([<$field:upper>]), "(AbilityName::_3Min)"),
-                        concat!(stringify!([<$field:upper>]), "_MIN_4") => concat!("AbilityLike::", stringify!([<$field:upper>]), "(AbilityName::_4Min)"),
-                        concat!(stringify!([<$field:upper>]), "_MIN_5") => concat!("AbilityLike::", stringify!([<$field:upper>]), "(AbilityName::_5Min)"),
-                        concat!(stringify!([<$field:upper>]), "_MIN_6") => concat!("AbilityLike::", stringify!([<$field:upper>]), "(AbilityName::_6Min)"),
-                        concat!(stringify!([<$field:upper>]), "_MIN_7") => concat!("AbilityLike::", stringify!([<$field:upper>]), "(AbilityName::_7Min)"),
-                        concat!(stringify!([<$field:upper>]), "_MIN_8") => concat!("AbilityLike::", stringify!([<$field:upper>]), "(AbilityName::_8Min)"),
-                        _ => concat!("AbilityLike::", stringify!([<$field:upper>]), "(AbilityName::Void)")
-                    }
-                }
-                pub fn [<to_str_ $field>](&self) -> &'static str {
-                    match self {
-                        AbilityLike::[<$field:upper>](v) => {
-                            match v {
-                                AbilityName::_1 => concat!(stringify!([<$field:upper>]), "1"),
-                                AbilityName::_2 => concat!(stringify!([<$field:upper>]), "2"),
-                                AbilityName::_3 => concat!(stringify!([<$field:upper>]), "3"),
-                                AbilityName::_4 => concat!(stringify!([<$field:upper>]), "4"),
-                                AbilityName::_5 => concat!(stringify!([<$field:upper>]), "5"),
-                                AbilityName::_6 => concat!(stringify!([<$field:upper>]), "6"),
-                                AbilityName::_7 => concat!(stringify!([<$field:upper>]), "7"),
-                                AbilityName::_8 => concat!(stringify!([<$field:upper>]), "8"),
-                                AbilityName::Mega => concat!(stringify!([<$field:upper>]), "_MEGA"),
-                                AbilityName::Max => concat!(stringify!([<$field:upper>]), "_MAX"),
-                                AbilityName::Min => concat!(stringify!([<$field:upper>]), "_MIN"),
-                                AbilityName::Minion => concat!(stringify!([<$field:upper>]), "_MINION"),
-                                AbilityName::Minion1 => concat!(stringify!([<$field:upper>]), "_MINION_1"),
-                                AbilityName::Minion2 => concat!(stringify!([<$field:upper>]), "_MINION_2"),
-                                AbilityName::Minion3 => concat!(stringify!([<$field:upper>]), "_MINION_3"),
-                                AbilityName::MinionMax => concat!(stringify!([<$field:upper>]), "_MINION_MAX"),
-                                AbilityName::Monster => concat!(stringify!([<$field:upper>]), "_MONSTER"),
-                                AbilityName::Monster1 => concat!(stringify!([<$field:upper>]), "_MONSTER_1"),
-                                AbilityName::Monster2 => concat!(stringify!([<$field:upper>]), "_MONSTER_2"),
-                                AbilityName::Monster3 => concat!(stringify!([<$field:upper>]), "_MONSTER_3"),
-                                AbilityName::Monster4 => concat!(stringify!([<$field:upper>]), "_MONSTER_4"),
-                                AbilityName::MonsterMax => concat!(stringify!([<$field:upper>]), "_MONSTER_MAX"),
-                                AbilityName::Void => stringify!([<$field:upper>]),
-                                AbilityName::_1Max => concat!(stringify!([<$field:upper>]), "_MAX_1"),
-                                AbilityName::_2Max => concat!(stringify!([<$field:upper>]), "_MAX_2"),
-                                AbilityName::_3Max => concat!(stringify!([<$field:upper>]), "_MAX_3"),
-                                AbilityName::_4Max => concat!(stringify!([<$field:upper>]), "_MAX_4"),
-                                AbilityName::_5Max => concat!(stringify!([<$field:upper>]), "_MAX_5"),
-                                AbilityName::_6Max => concat!(stringify!([<$field:upper>]), "_MAX_6"),
-                                AbilityName::_7Max => concat!(stringify!([<$field:upper>]), "_MAX_7"),
-                                AbilityName::_8Max => concat!(stringify!([<$field:upper>]), "_MAX_8"),
-                                AbilityName::_1Min => concat!(stringify!([<$field:upper>]), "_MIN_1"),
-                                AbilityName::_2Min => concat!(stringify!([<$field:upper>]), "_MIN_2"),
-                                AbilityName::_3Min => concat!(stringify!([<$field:upper>]), "_MIN_3"),
-                                AbilityName::_4Min => concat!(stringify!([<$field:upper>]), "_MIN_4"),
-                                AbilityName::_5Min => concat!(stringify!([<$field:upper>]), "_MIN_5"),
-                                AbilityName::_6Min => concat!(stringify!([<$field:upper>]), "_MIN_6"),
-                                AbilityName::_7Min => concat!(stringify!([<$field:upper>]), "_MIN_7"),
-                                AbilityName::_8Min => concat!(stringify!([<$field:upper>]), "_MIN_8"),
-                            }
-                        },
-                        _ => {
-                            "UNDEFINED"
-                        }
-                    }
+impl<'de> Deserialize<'de> for AbilityLike {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        let s = String::deserialize(deserializer)?;
+        Ok(AbilityLike::from_str(&s))
+    }
+}
+
+impl ToString for AbilityLike {
+    fn to_string(&self) -> String {
+        format!("{:?}", self)
+    }
+}
+
+impl AbilityLike {
+    pub fn as_char(&self) -> char {
+        match self {
+            AbilityLike::P(_) => 'P',
+            AbilityLike::Q(_) => 'Q',
+            AbilityLike::W(_) => 'W',
+            AbilityLike::E(_) => 'E',
+            AbilityLike::R(_) => 'R',
+        }
+    }
+
+    pub fn from_str(value: &str) -> Self {
+        let first_char = value.chars().next().unwrap();
+        let ability_name = &value[2..value.len() - 1];
+
+        let match_ability_name = |field: fn(AbilityName) -> AbilityLike| {
+            field(AbilityName::from_str(ability_name).unwrap())
+        };
+        match first_char {
+            'P' => match_ability_name(AbilityLike::P),
+            'Q' => match_ability_name(AbilityLike::Q),
+            'W' => match_ability_name(AbilityLike::W),
+            'E' => match_ability_name(AbilityLike::E),
+            'R' => match_ability_name(AbilityLike::R),
+            _ => panic!("Invalid AbilityLike"),
+        }
+    }
+
+    fn get_first_and_last_paren(self_string: &str) -> (usize, usize) {
+        let mut first_paren = 0;
+        let mut last_paren = 0;
+        for (i, ch) in self_string.chars().enumerate() {
+            if ch == '(' {
+                first_paren = i;
+            }
+            if ch == ')' {
+                last_paren = i;
+            }
+        }
+        (first_paren, last_paren)
+    }
+
+    pub fn get_ability_name(self_string: &str, parens: (usize, usize)) -> &str {
+        let (first_paren, last_paren) = parens;
+        self_string.get(first_paren + 1..last_paren).unwrap()
+    }
+
+    pub fn get_ability_like(self_string: &str, parens: (usize, usize)) -> &str {
+        let (first_paren, _) = parens;
+        self_string.get(0..first_paren).unwrap()
+    }
+
+    pub fn ability_name(&self) -> String {
+        let self_string = self.to_string();
+        let parens = Self::get_first_and_last_paren(&self_string);
+        let ability_name = Self::get_ability_name(&self_string, parens);
+        ability_name.to_string()
+    }
+
+    pub fn ability_like(&self) -> String {
+        let self_string = self.to_string();
+        let parens = Self::get_first_and_last_paren(&self_string);
+        let ability_like = Self::get_ability_like(&self_string, parens);
+        ability_like.to_string()
+    }
+
+    pub fn as_literal(&self) -> String {
+        let self_string = self.to_string();
+        let parens = Self::get_first_and_last_paren(&self_string);
+        let ability_name = Self::get_ability_name(&self_string, parens);
+        let ability_like = Self::get_ability_like(&self_string, parens);
+        format!(
+            "AbilityLike::{}(AbilityName::{})",
+            ability_like, ability_name
+        )
+    }
+}
+
+impl ToString for AbilityName {
+    fn to_string(&self) -> String {
+        format!("{:?}", self)
+    }
+}
+
+macro_rules! enum_from_str {
+    ($(#[$meta:meta])* $vis:vis enum $E:ident { $($V:ident),* $(,)? }) => {
+        $(#[$meta])*
+        $vis enum $E {
+            $($V),*
+        }
+        impl ::core::str::FromStr for $E {
+            type Err = String;
+            fn from_str(s: &str) -> ::core::result::Result<Self, Self::Err> {
+                match s {
+                    $( ::core::stringify!($V) => Ok(Self::$V), )*
+                    _ => unreachable!("Invalid string for enum {}: {s}", stringify!($E)),
                 }
             }
         }
     };
 }
 
-#[cfg(feature = "dev")]
-impl_key!(p);
-#[cfg(feature = "dev")]
-impl_key!(q);
-#[cfg(feature = "dev")]
-impl_key!(w);
-#[cfg(feature = "dev")]
-impl_key!(e);
-#[cfg(feature = "dev")]
-impl_key!(r);
-
-#[derive(Clone, Copy, Serialize, Encode)]
-#[repr(u8)]
-pub enum AbilityName {
-    _1,
-    _2,
-    _3,
-    _4,
-    _5,
-    _6,
-    _7,
-    _8,
-    Mega,
-    Max,
-    Min,
-    Void,
-    _1Max,
-    _2Max,
-    _3Max,
-    _4Max,
-    _5Max,
-    _6Max,
-    _7Max,
-    _8Max,
-    _1Min,
-    _2Min,
-    _3Min,
-    _4Min,
-    _5Min,
-    _6Min,
-    _7Min,
-    _8Min,
-    Minion,
-    Minion1,
-    Minion2,
-    Minion3,
-    MinionMax,
-    Monster,
-    Monster1,
-    Monster2,
-    Monster3,
-    Monster4,
-    MonsterMax,
-}
+enum_from_str!(
+    #[derive(
+        Clone, Copy, Serialize, Deserialize, Encode, Debug, Eq, PartialEq, Hash, PartialOrd, Ord,
+    )]
+    #[repr(u8)]
+    pub enum AbilityName {
+        _1,
+        _2,
+        _3,
+        _4,
+        _5,
+        _6,
+        _7,
+        _8,
+        Mega,
+        Max,
+        Min,
+        Void,
+        _1Max,
+        _2Max,
+        _3Max,
+        _4Max,
+        _5Max,
+        _6Max,
+        _7Max,
+        _8Max,
+        _1Min,
+        _2Min,
+        _3Min,
+        _4Min,
+        _5Min,
+        _6Min,
+        _7Min,
+        _8Min,
+        Minion,
+        Minion1,
+        Minion2,
+        Minion3,
+        MinionMax,
+        Monster,
+        Monster1,
+        Monster2,
+        Monster3,
+        Monster4,
+        MonsterMax,
+    }
+);

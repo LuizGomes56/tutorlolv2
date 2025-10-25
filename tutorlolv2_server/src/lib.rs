@@ -16,8 +16,6 @@ use sqlx::{Pool, Postgres, postgres::PgPoolOptions};
 
 pub struct AppState {
     pub db: Pool<Postgres>,
-    #[cfg(feature = "dev")]
-    pub client: reqwest::Client,
 }
 
 fn api_scope() -> impl HttpServiceFactory + 'static {
@@ -48,6 +46,7 @@ fn api_scope() -> impl HttpServiceFactory + 'static {
                     .service(update_champions)
                     .service(update_items)
                     .service(update_scraped_data)
+                    .service(update_combo_scraper)
                     .service(update_version),
             )
             .service(
@@ -55,7 +54,6 @@ fn api_scope() -> impl HttpServiceFactory + 'static {
                     .service(internal_create_generator_files)
                     .service(internal_prettify_item_stats)
                     .service(internal_create_damaging_items)
-                    .service(internal_rewrite_champion_names)
                     .service(internal_assign_item_damages),
             )
             .service(
@@ -76,8 +74,6 @@ fn api_scope() -> impl HttpServiceFactory + 'static {
 pub async fn run() -> std::io::Result<()> {
     dotenv().ok();
 
-    #[cfg(feature = "dev")]
-    let client = reqwest::Client::new();
     let dsn = std::env::var("DATABASE_URL").expect("DATABASE_URL is not set");
     let host = std::env::var("HOST").expect("HOST is not set");
     let pool = PgPoolOptions::new()
@@ -98,13 +94,7 @@ pub async fn run() -> std::io::Result<()> {
         App::new()
             .wrap(cors)
             .wrap(actix_web::middleware::Logger::default())
-            .app_data({
-                Data::new(AppState {
-                    db: pool.clone(),
-                    #[cfg(feature = "dev")]
-                    client: client.clone(),
-                })
-            })
+            .app_data(Data::new(AppState { db: pool.clone() }))
             .service(api_scope())
             .service(
                 scope("")

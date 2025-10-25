@@ -4,7 +4,6 @@ use crate::{
     html::{HtmlExt, Source, offset_to_str},
 };
 use std::fmt::Debug;
-use tutorlolv2_types::AbilityLike;
 
 trait EnumImport {
     fn to_riot_id(&self) -> u32;
@@ -140,14 +139,7 @@ pub fn generate_champion_html() {
 
         for (ability_like, offsets) in CHAMPION_ABILITIES[i] {
             html.code_section(
-                &match ability_like {
-                    AbilityLike::P(_) => ability_like.to_str_p(),
-                    AbilityLike::Q(_) => ability_like.to_str_q(),
-                    AbilityLike::W(_) => ability_like.to_str_w(),
-                    AbilityLike::E(_) => ability_like.to_str_e(),
-                    AbilityLike::R(_) => ability_like.to_str_r(),
-                }
-                .replace("_", " "),
+                &ability_like.to_string().replace("_", " "),
                 offset_to_str(*offsets),
             );
         }
