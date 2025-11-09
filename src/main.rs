@@ -58,11 +58,13 @@ fn build_server() {
 }
 
 fn run_server() -> Child {
-    task(
+    let server = task(
         ".",
         "./tutorlolv2_server/target/release/tutorlolv2_server.exe",
         &[],
-    )
+    );
+    short_wait();
+    server
 }
 
 macro_rules! get {
@@ -118,13 +120,11 @@ fn run_lolstaticdata() {
 fn update_local() {
     build_server();
     let srv_0 = run_server();
-    short_wait();
 
     get!("/update/version");
     kill(srv_0);
 
     let srv_1 = run_server();
-    short_wait();
 
     get!("/setup/project");
     kill(srv_1);
@@ -132,7 +132,6 @@ fn update_local() {
     build_script();
 
     let srv_2 = run_server();
-    short_wait();
 
     get!("/setup/docs");
     run(
@@ -172,11 +171,10 @@ fn build_script() {
 fn update() {
     build_server();
     let srv_0 = run_server();
-    short_wait();
     get!("/update/version");
     kill(srv_0);
+
     let srv_1 = run_server();
-    short_wait();
     get!("/setup/project");
     get!("/images/compress");
     kill(srv_1);
@@ -184,9 +182,9 @@ fn update() {
     build_script();
 
     let srv_2 = run_server();
-    short_wait();
     get!("/setup/docs");
     kill(srv_2);
+
     build_server();
     run(
         "./tutorlolv2_server",

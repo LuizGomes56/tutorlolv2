@@ -92,7 +92,7 @@ pub fn format_stats(stats: &MerakiChampionStats) -> String {
 }
 
 pub fn sort_pqwer(data: &mut [(AbilityLike, String, String, String)]) {
-    let priority = |ch: char| match ch {
+    let priority = |ch| match ch {
         'P' => 0,
         'Q' => 1,
         'W' => 2,
@@ -192,6 +192,7 @@ pub struct ChampionDetails {
     pub champion_name: String,
     pub generator: String,
     pub highlighted_abilities: Vec<(AbilityLike, String)>,
+    pub combos: Vec<Vec<AbilityLike>>,
     pub champion_formula: String,
     pub constdecl: String,
     pub positions: String,
@@ -202,7 +203,7 @@ pub fn find_merge_indexes(
     ability_data: &[(AbilityLike, String, String, String)],
 ) -> Vec<(usize, usize)> {
     let mut idx: HashMap<AbilityLike, usize> = HashMap::with_capacity(ability_data.len());
-    for (i, (al, _, _, _)) in ability_data.iter().enumerate() {
+    for (i, (al, ..)) in ability_data.iter().enumerate() {
         idx.entry(*al).or_insert(i);
     }
 
@@ -261,7 +262,7 @@ pub fn export_champions() -> BTreeMap<String, ChampionDetails> {
                 attack_type = champion.attack_type,
                 metadata = ability_data
                     .iter()
-                    .map(|(_, metadata, _, _)| metadata)
+                    .map(|(_, metadata, ..)| metadata)
                     .collect::<Vec<_>>()
                     .join(","),
                 closures = ability_data
@@ -282,6 +283,29 @@ pub fn export_champions() -> BTreeMap<String, ChampionDetails> {
                 .invoke_rustfmt(80)
                 .highlight_rust();
 
+            let raw_combos = serde_json::from_str::<Vec<Vec<String>>>(
+                &format!("internal/scraper/combos/{champion_id}.json").read_as_path(),
+            )
+            .unwrap();
+
+            let mut champion_combos = Vec::<Vec<AbilityLike>>::new();
+
+            let ability_names = ability_data
+                .iter()
+                .map(|(name, ..)| name)
+                .collect::<Vec<_>>();
+            for combos in raw_combos {
+                let mut result = Vec::new();
+                for combo in combos {
+                    for &&ability_name in &ability_names {
+                        if combo == ability_name.as_char().to_string() {
+                            result.push(ability_name);
+                        }
+                    }
+                }
+                champion_combos.push(result);
+            }
+
             (
                 champion_id,
                 ChampionDetails {
@@ -291,6 +315,7 @@ pub fn export_champions() -> BTreeMap<String, ChampionDetails> {
                         .clear_suffixes()
                         .highlight_rust(),
                     generator,
+                    combos: champion_combos,
                     highlighted_abilities: ability_data
                         .into_iter()
                         .map(|(name, _, _, ability_decl)| (name, ability_decl))

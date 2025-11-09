@@ -5878,4 +5878,4 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
         ctx.ad * ctx.crit_damage / 100.0
     },
     maximum_damage: zero,
-};
+};pub static CHAMPION_COMBOS:[&[&[AbilityLike]];0]=[];

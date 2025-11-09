@@ -31,40 +31,29 @@ pub async fn run() {
     let items = items_handle.await.unwrap();
     let runes = runes_handle.await.unwrap();
 
+    let champions_len = champions.len();
+    let items_len = items.len();
+    let runes_len = runes.len();
+
     let mut internal_champions_content = String::with_capacity(1 << 16);
-    let mut internal_champions = format!(
-        "pub static INTERNAL_CHAMPIONS:[&CachedChampion;{}]=[",
-        champions.len()
-    );
-    let mut champion_positions = format!(
-        "pub static CHAMPION_POSITIONS:[&[Position];{}]=[",
-        champions.len()
-    );
-    let mut champion_id_to_name = format!(
-        "pub static CHAMPION_ID_TO_NAME:[&str;{}]=[",
-        champions.len()
-    );
-    let mut champion_formulas = format!(
-        "pub static CHAMPION_FORMULAS:[(u32,u32);{}]=[",
-        champions.len()
-    );
-    let mut champion_generator = format!(
-        "pub static CHAMPION_GENERATOR:[(u32,u32);{}]=[",
-        champions.len()
-    );
-    let mut champion_abilities = format!(
-        "pub static CHAMPION_ABILITIES:[&[(AbilityLike,(u32,u32))];{}]=[",
-        champions.len(),
-    );
-    let mut recommended_items = format!(
-        "pub static RECOMMENDED_ITEMS:[[&[ItemId];5];{}]=[",
-        champions.len(),
-    );
-    let mut recommended_runes = format!(
-        "pub static RECOMMENDED_RUNES:[[&[RuneId];5];{}]=[",
-        champions.len(),
-    );
-    let mut internal_items = format!("pub static INTERNAL_ITEMS:[&CachedItem;{}]=[", items.len(),);
+    let mut internal_champions =
+        format!("pub static INTERNAL_CHAMPIONS:[&CachedChampion;{champions_len}]=[");
+    let mut champion_positions =
+        format!("pub static CHAMPION_POSITIONS:[&[Position];{champions_len}]=[");
+    let mut champion_id_to_name =
+        format!("pub static CHAMPION_ID_TO_NAME:[&str;{champions_len}]=[");
+    let mut champion_formulas =
+        format!("pub static CHAMPION_FORMULAS:[(u32,u32);{champions_len}]=[");
+    let mut champion_generator =
+        format!("pub static CHAMPION_GENERATOR:[(u32,u32);{champions_len}]=[");
+    let mut champion_abilities =
+        format!("pub static CHAMPION_ABILITIES:[&[(AbilityLike,(u32,u32))];{champions_len}]=[");
+    let mut champion_combos = format!("pub static CHAMPION_COMBOS:[&[&[AbilityLike]];0]=[");
+    let mut recommended_items =
+        format!("pub static RECOMMENDED_ITEMS:[[&[ItemId];5];{champions_len}]=[");
+    let mut recommended_runes =
+        format!("pub static RECOMMENDED_RUNES:[[&[RuneId];5];{champions_len}]=[");
+    let mut internal_items = format!("pub static INTERNAL_ITEMS:[&CachedItem;{items_len}]=[");
     let mut internal_items_content = String::new();
     let mut internal_simulated_items =
         String::from("pub static SIMULATED_ITEMS:phf::OrderedSet<u32>=phf::phf_ordered_set!(");
@@ -74,11 +63,11 @@ pub async fn run() {
     );
     let mut internal_damaging_items =
         String::from("pub static DAMAGING_ITEMS:phf::Set<u32>=phf::phf_set!(");
-    let mut item_id_to_name = format!("pub static ITEM_ID_TO_NAME:[&str;{}]=[", items.len(),);
-    let mut item_formulas = format!("pub static ITEM_FORMULAS:[(u32,u32);{}]=[", items.len(),);
-    let mut rune_id_to_name = format!("pub static RUNE_ID_TO_NAME:[&str;{}]=[", runes.len(),);
-    let mut rune_formulas = format!("pub static RUNE_FORMULAS:[(u32,u32);{}]=[", runes.len(),);
-    let mut internal_runes = format!("pub static INTERNAL_RUNES:[&CachedRune;{}]=[", runes.len(),);
+    let mut item_id_to_name = format!("pub static ITEM_ID_TO_NAME:[&str;{items_len}]=[");
+    let mut item_formulas = format!("pub static ITEM_FORMULAS:[(u32,u32);{items_len}]=[");
+    let mut rune_id_to_name = format!("pub static RUNE_ID_TO_NAME:[&str;{runes_len}]=[");
+    let mut rune_formulas = format!("pub static RUNE_FORMULAS:[(u32,u32);{runes_len}]=[");
+    let mut internal_runes = format!("pub static INTERNAL_RUNES:[&CachedRune;{runes_len}]=[");
     let mut internal_runes_content = String::new();
 
     let mut current_offset = 0usize;
@@ -178,8 +167,27 @@ pub async fn run() {
         }
         champion_abilities.push_str("],");
         internal_champions_content.push_str(&champion_detail.constdecl);
+        // champion_combos.push_str(&format!(
+        //     "&[{}]",
+        //     champion_detail
+        //         .combos
+        //         .iter()
+        //         .map(|combos| {
+        //             format!(
+        //                 "&[{}]",
+        //                 combos
+        //                     .iter()
+        //                     .map(AbilityLike::as_literal)
+        //                     .collect::<Vec<String>>()
+        //                     .join(",")
+        //             )
+        //         })
+        //         .collect::<Vec<String>>()
+        //         .join(",")
+        // ));
     }
 
+    champion_combos.push_str("];");
     recommended_items.push_str("];");
     recommended_runes.push_str("];");
     champion_positions.push_str("];");
@@ -199,7 +207,8 @@ pub async fn run() {
                     + moved_champion_id_enum.len()
                     + BASIC_ATTACK.len()
                     + CRITICAL_STRIKE.len()
-                    + champion_name_to_id_phf.len(),
+                    + champion_name_to_id_phf.len()
+                    + champion_combos.len(),
             );
             s.push_str(USE_SUPER);
             s.push_str(&moved_champion_id_enum);
@@ -208,6 +217,7 @@ pub async fn run() {
             s.push_str(&internal_champions);
             s.push_str(BASIC_ATTACK);
             s.push_str(CRITICAL_STRIKE);
+            s.push_str(&champion_combos);
             s
         })
     });
