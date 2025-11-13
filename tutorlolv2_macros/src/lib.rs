@@ -274,7 +274,7 @@ pub fn champion_generator(_args: TokenStream, input: TokenStream) -> TokenStream
         }
 
         macro_rules! merge {
-            ($($f1:ident::$v1:ident <= $f2:ident::$v2:ident),+$(,)?) => {{
+            ($($f1:ident::$v1:ident - $f2:ident::$v2:ident),+$(,)?) => {{
                 $(
                     self.mergevec.push((
                         AbilityLike::$f1(AbilityName::$v1),

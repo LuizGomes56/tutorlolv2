@@ -1,6 +1,6 @@
 use super::*;
 
-// #![stable]
+// #![preserve]
 
 impl Generator<Champion> for Aatrox {
     #[champion_generator]
@@ -35,11 +35,6 @@ impl Generator<Champion> for Aatrox {
             }
         );
 
-        merge![
-            Q::_1 <= Q::_2,
-            Q::_3 <= Q::_4,
-            Q::_5 <= Q::_6,
-            W::_1 <= W::_2,
-        ];
+        merge![Q::_1 - Q::_2, Q::_3 - Q::_4, Q::_5 - Q::_6, W::_1 - W::_2,];
     }
 }
