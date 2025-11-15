@@ -264,6 +264,23 @@ pub fn champion_generator(_args: TokenStream, input: TokenStream) -> TokenStream
             }};
         }
 
+        macro_rules! attr {
+            ($field1:ident::$field2:ident, $attr:ident) => {{
+                get_mut![$field1::$field2].attributes = Attrs::$attr;
+            }};
+            ($attr:ident, $($field1:ident::$field2:ident),+$(,)?) => {{
+                $(
+                    get_mut![$field1::$field2].attributes = Attrs::$attr;
+                )+
+            }};
+        }
+
+        macro_rules! damage_type {
+            ($field1:ident::$field2:ident, $damage_type:ident) => {{
+                get_mut![$field1::$field2].damage_type = DamageType::$damage_type;
+            }}
+        }
+
         macro_rules! get_mut {
             ($field1:ident::$field2:ident) => {{
                 let key = AbilityLike::$field1(AbilityName::$field2);

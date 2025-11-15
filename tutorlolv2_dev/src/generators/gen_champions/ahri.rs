@@ -1,40 +1,27 @@
 use super::*;
 
 // #![stable]
+// #![allow_missing_offsets]
 
 impl Generator<Champion> for Ahri {
     #[champion_generator]
     fn generate(mut self: Box<Self>) -> MayFail<Champion> {
-        ability![Q, (0, 0, _1), (0, 1, _2)];
-        ability![
-            W,
-            (1, 0, _1),
-            (1, 1, _2),
-            (1, 2, _3),
-            (3, 0, _4),
-            (3, 1, _5)
-        ];
-        ability![E, (0, 0, _1)];
-        ability![R, (0, 0, _1)];
+        ability![Q, (0, 0, Min)];
+        ability![W, (1, 0, Min), (1, 1, _1), (1, 2, Max)];
+        ability![E, (0, 1, Void)];
+        ability![R, (0, 0, Min)];
 
-        // let q_max = merge_damage!(
-        //     |q| format!("({q}) * {} + ({q})", EvalIdent::MagicMultiplier),
-        //     Q::Void,
-        // );
+        clone_to![Q::Min => Q::Max].damage = merge_damage!(
+            |q| format!("({q}) * {mul} + ({q})", mul = EvalIdent::MagicMultiplier),
+            Q::Min,
+        );
 
-        // let q_mut_ref = clone_to![Q::Void => Q::Max];
-        // q_mut_ref.damage = q_max;
-        // q_mut_ref.damage_type = DamageType::Mixed;
+        clone_to![R::Min => R::Max].damage = merge_damage!(|r| format!("3 * ({r})"), R::Min);
 
-        // clone_to![R::Void => R::Max];
-        // let r_max = merge_damage!(|r| format!("3 * ({r})"), R::Void);
-        // get_mut![R::Max].damage = r_max;
+        damage_type![Q::Min, Magic];
+        damage_type![Q::Max, Mixed];
+        attr![Area, Q::Min, Q::Max];
 
-        // merge![
-        //     Q::Void <= Q::Max,
-        //     W::Void <= W::Max,
-        //     W::Minion <= W::MinionMax,
-        //     R::Void <= R::Max
-        // ];
+        merge![Q::Min - Q::Max, W::Min - W::Max, R::Min - R::Max];
     }
 }
