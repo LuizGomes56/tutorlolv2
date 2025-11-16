@@ -319,6 +319,49 @@ pub fn champion_generator(_args: TokenStream, input: TokenStream) -> TokenStream
 
         #old_block;
 
+        self.hashmap
+            .iter()
+            .filter(|(_, value)| value.damage_type == DamageType::Unknown)
+            .for_each(|(key, _)| {
+                println!(
+                    "[{name}]: Key {key:?} has unknown damage type",
+                    name = self.data.name
+                );
+            });
+
+        let keys = self.hashmap.keys().cloned().collect::<Vec<_>>();
+        for key in keys {
+            let index = key.ability_name() as u8;
+
+            const MIN_I: u8 = AbilityName::Min as u8;
+            const MIN_J: u8 = AbilityName::_8Min as u8;
+            const MAX_I: u8 = AbilityName::Max as u8;
+            const MAX_J: u8 = AbilityName::_8Max as u8;
+
+            let min_range = MIN_I..=MIN_J;
+            const MAX_MATCH: u8 = 1 + MAX_J - MAX_I;
+
+            let make = key.from_fn();
+
+            if min_range.contains(&index) {
+                let mut found = false;
+                let ability_name =
+                    unsafe { std::mem::transmute::<_, AbilityName>(index + MAX_MATCH) };
+                let ability_like = make(ability_name);
+                if self.hashmap.contains_key(&ability_like) {
+                    self.mergevec.push((key, ability_like));
+                    found = true;
+                }
+
+                if !found {
+                    println!(
+                        "[{name}]: Found a min key: {key:?} with no max matches",
+                        name = self.data.name
+                    );
+                }
+            }
+        }
+
         if !self
             .mergevec
             .iter()

@@ -531,7 +531,8 @@ impl IsAbility for RuneId {}
 impl IsAbility for AbilityLike {
     fn apply_modifiers(&self, modifier: &mut f32, ability_modifiers: &AbilityModifiers) {
         let mut modify = |ability_name: AbilityName, value: f32| {
-            if ability_name <= AbilityName::_8Min {
+            // Any ability that is not Monster or Minion damage should have the modifier applied
+            if ability_name <= AbilityName::Mega {
                 *modifier *= value
             }
         };

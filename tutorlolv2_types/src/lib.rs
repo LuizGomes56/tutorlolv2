@@ -26,6 +26,16 @@ impl AbilityLike {
         }
     }
 
+    pub fn from_fn(&self) -> fn(AbilityName) -> Self {
+        match self {
+            AbilityLike::P(_) => AbilityLike::P,
+            AbilityLike::Q(_) => AbilityLike::Q,
+            AbilityLike::W(_) => AbilityLike::W,
+            AbilityLike::E(_) => AbilityLike::E,
+            AbilityLike::R(_) => AbilityLike::R,
+        }
+    }
+
     pub fn ability_name(&self) -> AbilityName {
         match self {
             AbilityLike::P(v) => *v,
@@ -50,6 +60,7 @@ impl AbilityLike {
 )]
 #[repr(u8)]
 pub enum AbilityName {
+    Void,
     _1,
     _2,
     _3,
@@ -58,18 +69,7 @@ pub enum AbilityName {
     _6,
     _7,
     _8,
-    Mega,
-    Max,
     Min,
-    Void,
-    _1Max,
-    _2Max,
-    _3Max,
-    _4Max,
-    _5Max,
-    _6Max,
-    _7Max,
-    _8Max,
     _1Min,
     _2Min,
     _3Min,
@@ -78,6 +78,16 @@ pub enum AbilityName {
     _6Min,
     _7Min,
     _8Min,
+    Max,
+    _1Max,
+    _2Max,
+    _3Max,
+    _4Max,
+    _5Max,
+    _6Max,
+    _7Max,
+    _8Max,
+    Mega,
     Minion,
     Minion1,
     Minion2,

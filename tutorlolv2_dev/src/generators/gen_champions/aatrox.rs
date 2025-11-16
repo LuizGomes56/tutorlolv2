@@ -56,13 +56,5 @@ impl Generator<Champion> for Aatrox {
                 ..default_ability
             }
         );
-
-        merge![
-            Q::_1Min - Q::_1Max,
-            Q::_2Min - Q::_2Max,
-            Q::_3Min - Q::_3Max,
-            Q::Min - Q::Max,
-            W::Min - W::Max
-        ];
     }
 }

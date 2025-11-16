@@ -21,7 +21,5 @@ impl Generator<Champion> for Ahri {
         damage_type![Q::Min, Magic];
         damage_type![Q::Max, Mixed];
         attr![Area => [Q::Min, Q::Max]];
-
-        merge![Q::Min - Q::Max, W::Min - W::Max, R::Min - R::Max];
     }
 }

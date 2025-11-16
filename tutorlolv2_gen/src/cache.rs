@@ -98,7 +98,7 @@ create_eval_ident!(
     )
 );
 
-#[derive(Default, Copy, Serialize, Deserialize, Clone, Encode, Decode)]
+#[derive(Default, Copy, Serialize, Deserialize, Clone, Encode, Decode, PartialEq)]
 pub enum DamageType {
     Physical,
     Magic,

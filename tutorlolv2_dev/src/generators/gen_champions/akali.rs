@@ -14,7 +14,5 @@ impl Generator<Champion> for Akali {
             Area => [Q::Void, R::_1, R::_2Min, R::_2Max],
             Onhit => [P::Void]
         ];
-
-        merge![E::_1Min - E::_1Max, R::_2Min - R::_2Max];
     }
 }
