@@ -19,13 +19,14 @@ impl Generator<Champion> for Aatrox {
         ability![W, (0, 1, Min), (1, 0, Max)];
 
         attr![
-            Area,
-            Q::_1Min,
-            Q::_1Max,
-            Q::_2Min,
-            Q::_2Max,
-            Q::_3Min,
-            Q::_3Max,
+            Area => [
+                Q::_1Min,
+                Q::_1Max,
+                Q::_2Min,
+                Q::_2Max,
+                Q::_3Min,
+                Q::_3Max,
+            ]
         ];
 
         let default_ability = get![Q::_1Min].clone();

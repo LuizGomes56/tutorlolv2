@@ -205,7 +205,7 @@ impl RegExtractor for str {
         let base = self.replace(paren_part, "").trim().to_string();
         let scaled = paren_part.get_scalings();
         if !scaled.is_empty() {
-            format!("{} + {}", base, scaled)
+            format!("{base} + {scaled}")
         } else {
             base
         }

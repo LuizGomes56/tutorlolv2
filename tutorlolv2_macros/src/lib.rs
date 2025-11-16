@@ -265,14 +265,15 @@ pub fn champion_generator(_args: TokenStream, input: TokenStream) -> TokenStream
         }
 
         macro_rules! attr {
-            ($field1:ident::$field2:ident, $attr:ident) => {{
-                get_mut![$field1::$field2].attributes = Attrs::$attr;
-            }};
-            ($attr:ident, $($field1:ident::$field2:ident),+$(,)?) => {{
-                $(
-                    get_mut![$field1::$field2].attributes = Attrs::$attr;
-                )+
-            }};
+            ($($attr:ident => [$($field1:ident::$field2:ident),+$(,)?]),+$(,)?) => {
+                {
+                    $(
+                        $(
+                            get_mut![$field1::$field2].attributes = Attrs::$attr;
+                        )+
+                    )+
+                }
+            };
         }
 
         macro_rules! damage_type {
@@ -324,7 +325,7 @@ pub fn champion_generator(_args: TokenStream, input: TokenStream) -> TokenStream
             .all(|(a, b)| self.hashmap.contains_key(a) && self.hashmap.contains_key(b))
         {
             println!(
-                "{} merge vec generated is not consistent. merge vec: {:?}, Keys: {:?}",
+                "{}: inconsistent data inserted in macro `merge!`.\nmerge_vec: {:?},\n`hashmap_keys: {:?}",
                 self.data.name,
                 self.mergevec,
                 self.hashmap.keys().collect::<Vec<_>>()

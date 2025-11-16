@@ -460,7 +460,7 @@ impl ChampionData {
         }
     }
 
-    pub fn extract_passive_bounds(&self, offsets: (usize, usize)) -> (&MerakiAbility, (f64, f64)) {
+    pub fn get_passive_description(&self, offsets: (usize, usize)) -> (&MerakiAbility, &str) {
         let (ability_index, effect_index) = offsets;
 
         let passive = self
@@ -468,20 +468,16 @@ impl ChampionData {
             .abilities
             .p
             .get(ability_index)
-            .expect("Self::extract_passive_bounds: ability_index is invalid.");
+            .expect("Self::get_passive_description: ability_index is invalid.");
 
-        let passive_effects = passive
-            .effects
-            .get(effect_index)
-            .expect("Self::extract_passive_bounds: effect_index is invalid.")
-            .description
-            .clone();
-
-        let passive_bounds = passive_effects
-            .get_interval()
-            .expect("Couldn't extract numeric values for passive.");
-
-        (passive, passive_bounds)
+        (
+            passive,
+            &passive
+                .effects
+                .get(effect_index)
+                .expect("Self::get_passive_description: effect_index is invalid.")
+                .description,
+        )
     }
 
     pub fn extract_passive_damage(
@@ -491,22 +487,23 @@ impl ChampionData {
         postfix: Option<EvalIdent>,
         scalings: Option<usize>,
     ) {
-        let (passive, passive_bounds) = self.extract_passive_bounds(offsets);
-        let mut description = &String::new();
-        if let Some(scalings) = scalings {
-            description = &passive.effects[scalings].description;
-        }
+        let (passive, passive_description) = self.get_passive_description(offsets);
 
-        let mut damage =
-            <str as RegExtractor>::process_linear_scalings(passive_bounds, 18, postfix);
-        if description.is_empty() {
-            return;
-        }
+        let description = match scalings {
+            Some(scalings) => &passive.effects[scalings].description,
+            None => passive_description,
+        };
+
+        let passive_bounds = description
+            .get_interval()
+            .expect("Couldn't extract numeric values for passive.");
+
+        let mut damage = str::process_linear_scalings(passive_bounds, 18, postfix);
 
         let scalings = description.get_scalings();
         if scalings.len() > 0 {
-            damage.iter_mut().for_each(|dmg: &mut String| {
-                *dmg = format!("{} + {}", dmg, scalings);
+            damage.iter_mut().for_each(|dmg| {
+                *dmg = format!("{dmg} + {scalings}");
             });
         }
 
