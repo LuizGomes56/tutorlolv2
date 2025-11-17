@@ -138,17 +138,23 @@ fn subst_ident(ts: TokenStream2, from: &Ident, to: &Ident) -> TokenStream2 {
 #[proc_macro_attribute]
 pub fn item_generator(_args: TokenStream, input: TokenStream) -> TokenStream {
     let mut func = parse_macro_input!(input as syn::ItemFn);
-    let old_block = func.block;
-    func.block = Box::new(syn::parse_quote!({
-        #old_block
 
-        let inner = *self;
-        let mut this = inner.0;
-        Ok(this)
+    func.attrs.push(syn::parse_quote! {
+        #[allow(unused_macros)]
+    });
+
+    let old_block = func.block;
+
+    func.block = Box::new(syn::parse_quote!({
+        #old_block;
+
+        Ok(self.0)
     }));
     TokenStream::from(quote!(#func))
 }
 
+/// Verifies if the macro `ability!` was called with the `[` and `]` delimiters. If it
+/// was not, returns the region where an unexpected delimiter was called
 fn check_macro_invocation(ts: &TokenStream2) -> Option<proc_macro2::Span> {
     let mut last_ident_is_ability = false;
     let mut last_was_bang = false;
@@ -185,6 +191,27 @@ fn check_macro_invocation(ts: &TokenStream2) -> Option<proc_macro2::Span> {
     None
 }
 
+/// Provides useful macros to manipulate the `meraki` json files and create a new object
+/// that will be serialized to a json, which is an intermediary representation for the
+/// `tutorlolv2_build` script, that will transform them into Rust code, that will be then
+/// compiled to machine code, removing any overhead for those operations since they're known
+/// at compile time.
+///
+/// ### Provided macros:
+/// `ability`, `merge_damage`, `get`, `attr`, `damage_type`, `get_mut`, `merge`, `clone_to`, `insert`
+///
+/// Each one already has its own documentation. Hover over it to check their details.
+///
+/// Note: None of these macros are magic, they're mostly syntax sugar to avoid writing the full enum
+/// definition for Abilities, which is `AbilityLike::$(AbilityName::$)`. Most of them simply call
+/// `self.$function` directly, positioning the arguments correctly. There are no proc-macros involved.
+/// Macro `ability!` is forced to be called with `[` and `]` delimiters so the offset checker can detect
+/// easily those bounds and verify if they have changed or not.
+///
+/// Automatically adds minimum and maximum damages to the `self.mergevec`, checks if they're consistent,
+/// and that all keys provided in the mergevec exist in the `self.hashmap` definition, and emits a warning
+/// if an ability has unknown damage type. Finally, makes the function return automatically, so the function
+/// definition returns an empty type, but when the macro is expanded, the correct return type is assigned.
 #[proc_macro_attribute]
 pub fn champion_generator(_args: TokenStream, input: TokenStream) -> TokenStream {
     let mut func = parse_macro_input!(input as syn::ItemFn);
@@ -205,6 +232,90 @@ pub fn champion_generator(_args: TokenStream, input: TokenStream) -> TokenStream
     let old_block = func.block;
 
     func.block = Box::new(syn::parse_quote!({
+        /// Calls the `self.extract_ability_damage`, and `self.extract_passive_damage` for the given abilities.
+        /// This macro can be used in several different ways, and must be invoked as `ability![...]`, with
+        /// square brackets as delimiters, otherwise compilation will fail. The first argument is always a char
+        /// that can be: `P`, `Q`, `W`, `E`, `R`, and the next arguments are tuples with 3 elements:
+        /// `(a, b, c)`, where `a` is the index within the array `effects`, `b` is the index within the array
+        /// `levelings`, and `c` is the name of the ability that will be assigned to the hashmap.
+        /// If the macro receives a number as second argument, it means that you're accessing the ability array
+        /// at the given `index`, not just the first ability. This index in particular should be used only with
+        /// champions that transform, such as `Elise`, `Gnar`, `Jayce`, ...
+        ///
+        /// ### Examples of usage for regular abilities:
+        /// ```rs
+        /// ability![Q, (0, 0, Min), (0, 1, Max)];
+        ///
+        /// // Instead of searching at ability in index zero, it does for index 1
+        /// ability![W, 1, (0, 1, _1Min), (0, 2, _1Max)];
+        /// ```
+        ///
+        /// It means that the structure in the `meraki` file is something like:
+        /// ```jsonc
+        /// {
+        ///     "abilities": [
+        ///         {
+        ///             "effects": [
+        ///                 {
+        ///                     "levelings": [
+        ///                         // The next two objects are accessed and their damages are recovered,
+        ///                         // based on the second argument of the tuple provided (0 and 1)
+        ///                         { ... },
+        ///                         { ... },
+        ///                         // Any other unaccessed levelings
+        ///                         { ... }
+        ///                     ]
+        ///                 },
+        ///                 // Both tuples have first argument `0`, so this effect is ignored
+        ///                 { ... }
+        ///             ]
+        ///         },
+        ///         // It is unreachable, since the second argument is a tuple, not an index.
+        ///         // meaning that only the first ability is taken
+        ///         { ... }
+        ///     ]
+        /// }
+        /// ```
+        ///
+        /// At the end, the following keys will be added to `self.hashmap`:
+        /// `AbilityLike::Q(AbilityName::Min)` and `AbilityLike::Q(AbilityName::Max)`.
+        ///
+        /// Note that they're `Min` and `Max` pair, so they will be automatically added to `self.mergevec`
+        /// at the end of the execution of the function, so they will be displayed in the frontend application
+        /// in the format `Min` - `Max`
+        ///
+        /// ### Extracting passive damage
+        ///
+        /// Examples of usage:
+        ///
+        /// ```rs
+        /// ability![P::Void, (0, 0)];
+        /// ability![P::Min, (0, 0), 2];
+        /// ability![P::Max, (0, 0), EnemyHealth];
+        /// ability![P::Monster, (0, 0), EnemyHealth, 2];
+        /// ```
+        ///
+        /// Passives similar ways of calling, byt they have two extra arguments:
+        /// `scalings` refer to where the objects like `(+ 80% AP)` or `(+ 20% current AD)` are located in the
+        /// description fields, in the `effect` offset. If this argument is not provided, the function will
+        /// try to find them in the offsets provided in the tuple, which in many cases will work.
+        ///
+        /// `postfix` multiplies an `EvalIdent` at the end of any expression captured by the `extract_passive_damage`
+        /// function. So if it is found that the passive text is: `10 : 180 + (+ 80% AP)` for example, the final
+        /// result with Postfix `EvalIdent::EnemyHealth` will be:
+        /// ```json
+        /// [
+        ///     "(10 + (0.8 * ctx.ap)) * ctx.enemy_health",
+        ///     // There are 18 levels, and X : Y is a range of them, so from 10 to 180 means that
+        ///     // every level, the base damage increases by 10, starting at 10 and ending at 180
+        ///     "(20 + (0.8 * ctx.ap)) * ctx.enemy_health",
+        ///     "(30 + (0.8 * ctx.ap)) * ctx.enemy_health",
+        ///     ...
+        ///     // Damage at level 18. If in execution the level is > 18 as in URF mode, it will
+        ///     // default the damage to zero
+        ///     "(180 + (0.8 * ctx.ap)) * ctx.enemy_health",
+        /// ]
+        /// ```
         macro_rules! ability {
             ($field:ident, $idx:literal, $(($a:literal, $b:literal, $c:ident)),* $(,)?) => {{
                 let pattern = [$(($a, $b, AbilityLike::$field(AbilityName::$c))),*];
@@ -228,6 +339,54 @@ pub fn champion_generator(_args: TokenStream, input: TokenStream) -> TokenStream
             }};
         }
 
+        /// Takes in a closure and any number of arguments that will be passed to that given closure.
+        /// During the execution of the closure, all fields passed as arguments should be present in
+        /// `self.hashmap`, otherwise the function will fail. Also, all arguments should have the same
+        /// length for their `damage` as values in the hashmap. For example:
+        /// ```ts
+        /// self.hashmap = {
+        ///     "Q::_1": {
+        ///         "damage": [10, 20, 30]
+        ///     },
+        ///     "Q::_2": {
+        ///         "damage": [50, 60, 80]
+        ///     }
+        /// }
+        /// ```
+        ///
+        /// Through the example, we can do:
+        /// ```rs
+        /// let damage = merge_damage!(
+        ///     |q1, q2| format!("{q1} * {q2}"),
+        ///     Q::_1,
+        ///     Q::_2,
+        /// );
+        /// insert!(
+        ///     Q::Max,
+        ///     Ability {
+        ///         damage,
+        ///         ..
+        ///     }
+        /// )
+        /// ```
+        ///
+        /// The result will be:
+        /// ```ts
+        /// self.hashmap = {
+        ///     "Q::_1": {
+        ///         "damage": [10, 20, 30]
+        ///     },
+        ///     "Q::_2": {
+        ///         "damage": [50, 60, 80]
+        ///     },
+        ///     "Q::Max": {
+        ///         "damage": ["10 * 50", "20 * 60", "30 * 80"]
+        ///     }
+        /// }
+        /// ```
+        ///
+        /// Note that arguments are defined by position, not by name, and that the
+        /// closure should always return a string, which will be the assigned damage at the end.
         macro_rules! merge_damage {
             ($closure:expr, $($field1:ident::$field2:ident),+$(,)?) => {{
                 let mut sizes = Vec::<usize>::new();
@@ -255,6 +414,11 @@ pub fn champion_generator(_args: TokenStream, input: TokenStream) -> TokenStream
             }};
         }
 
+        /// Gets an item from the `self.hashmap` object, and fails if it does not exist.
+        /// Example:
+        /// ```rs
+        /// let q_void: &Ability = get![Q::Void];
+        /// ```
         macro_rules! get {
             ($field1:ident::$field2:ident) => {{
                 let key = AbilityLike::$field1(AbilityName::$field2);
@@ -264,6 +428,18 @@ pub fn champion_generator(_args: TokenStream, input: TokenStream) -> TokenStream
             }};
         }
 
+        /// Assigns an attribute to a single key in the `self.hashmap`, or a group of them.
+        /// Example:
+        /// ```rs
+        /// attr![
+        ///     AreaOnhit => [Q::Min, E::Max, R::Void, W::_1],
+        ///     Area => [Q::Max],
+        ///     // Not all possibilities need to be covered, only those that will be assigned
+        ///     Onhit => [W::_2, R::Max],
+        ///     // Unnecessary. Everything has `None` by default
+        ///     None => [],
+        /// ];
+        /// ```
         macro_rules! attr {
             ($($attr:ident => [$($field1:ident::$field2:ident),+$(,)?]),+$(,)?) => {
                 {
@@ -276,12 +452,24 @@ pub fn champion_generator(_args: TokenStream, input: TokenStream) -> TokenStream
             };
         }
 
+        /// Assigns a damage type for some expression already in the `self.hashmap` object.
+        /// Example:
+        /// ```rs
+        /// damage_type![R::Max, Adaptative];
+        /// damage_type![W::_3Max, Magic];
+        /// damage_type![E::_1, Physical];
+        /// ```
         macro_rules! damage_type {
             ($field1:ident::$field2:ident, $damage_type:ident) => {{
                 get_mut![$field1::$field2].damage_type = DamageType::$damage_type;
             }}
         }
 
+        /// Gets a mutable reference to an item from the `self.hashmap` object, and fails if it does not exist.
+        /// Example:
+        /// ```rs
+        /// let q_void: &mut Ability = get_mut![Q::Void];
+        /// ```
         macro_rules! get_mut {
             ($field1:ident::$field2:ident) => {{
                 let key = AbilityLike::$field1(AbilityName::$field2);
@@ -291,6 +479,16 @@ pub fn champion_generator(_args: TokenStream, input: TokenStream) -> TokenStream
             }};
         }
 
+        /// Merges the minimum and maximum damage of two items that should be contained in the `self.hashmap`,
+        /// the result is added to `self.mergevec`.
+        /// Example:
+        /// ```rs
+        /// merge![
+        ///     (Q::Min, Q::Max),
+        ///     (W::_2Min, W::_2),
+        ///     (R::_4, R::_1Min),
+        /// ]
+        /// ```
         macro_rules! merge {
             ($($f1:ident::$v1:ident - $f2:ident::$v2:ident),+$(,)?) => {{
                 $(
@@ -302,6 +500,17 @@ pub fn champion_generator(_args: TokenStream, input: TokenStream) -> TokenStream
             }};
         }
 
+        /// Takes in two fields and returns a mutable reference to a new cloned value, that was
+        /// already inserted to `self.hashmap`. The first enum is from where it is being cloned,
+        /// and the second one is the new name it will have, and will be identical.
+        /// Example:
+        /// ```rs
+        /// // Creates `Q::Max` and adds it to the hashmap
+        /// let q_max_mut_ref: &mut Ability = clone_to![Q::_1Min => Q::Max];
+        /// // If no changes were made, Q::Max have the same value as Q::_1Min because it was
+        /// // cloned from there
+        /// assert_eq!(q_max_mut_ref, get_mut![Q::_1Min]);
+        /// ```
         macro_rules! clone_to {
             ($field3:ident::$field4:ident => $field1:ident::$field2:ident) => {{
                 let clone_from = get!($field3::$field4).clone();
@@ -310,6 +519,13 @@ pub fn champion_generator(_args: TokenStream, input: TokenStream) -> TokenStream
             }};
         }
 
+        /// Takes in an enum and a value that should be of type `Ability`, and inserts
+        /// to `self.hashmap`.
+        /// Example:
+        /// ```rs
+        /// let new_ability = Ability { ..default_ability };
+        /// insert!(Q::_2, new_ability);
+        /// ```
         macro_rules! insert {
             ($field1:ident::$field2:ident, $value:expr) => {{
                 let temp = $value;
@@ -319,6 +535,8 @@ pub fn champion_generator(_args: TokenStream, input: TokenStream) -> TokenStream
 
         #old_block;
 
+        // Verifies if any ability found has unknown damage and emits a warning
+        // to the console so it can be fixed by the next time the generator runs
         self.hashmap
             .iter()
             .filter(|(_, value)| value.damage_type == DamageType::Unknown)
@@ -329,6 +547,12 @@ pub fn champion_generator(_args: TokenStream, input: TokenStream) -> TokenStream
                 );
             });
 
+        // Checks for minimum damage and maximum damage keys within the hashmap.
+        // If it finds any key that is labeled as minimum damage, it will look
+        // for keys that represent maximum damage. If it finds one, it will be
+        // added to the mergevec, so it can be displayed in the tables as
+        // `minimum damage - maximum damage`. If it doesn't find a maximum match,
+        // a warning is emitted to the console and the key is skipped.
         let keys = self.hashmap.keys().cloned().collect::<Vec<_>>();
         for key in keys {
             let index = key.ability_name() as u8;
@@ -362,6 +586,9 @@ pub fn champion_generator(_args: TokenStream, input: TokenStream) -> TokenStream
             }
         }
 
+        // Verifies if the mergevec makes sense. It means that the generated hashmap should
+        // contain all keys that are present in the mergevec. If it doesn't, the function
+        // returns a fail and prints a message to the console.
         if !self
             .mergevec
             .iter()
@@ -376,10 +603,7 @@ pub fn champion_generator(_args: TokenStream, input: TokenStream) -> TokenStream
             return Err("Found inconsistent merge vec".into());
         }
 
-        let inner = *self;
-        let mut this = inner.0;
-
-        Ok(this.finish())
+        Ok(self.0.finish())
     }));
 
     TokenStream::from(quote!(#func))

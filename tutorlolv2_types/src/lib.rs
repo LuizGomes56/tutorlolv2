@@ -15,6 +15,19 @@ pub enum AbilityLike {
     R(AbilityName),
 }
 
+impl From<usize> for AbilityLike {
+    fn from(value: usize) -> Self {
+        match value {
+            0 => AbilityLike::P(AbilityName::Void),
+            1 => AbilityLike::Q(AbilityName::Void),
+            2 => AbilityLike::W(AbilityName::Void),
+            3 => AbilityLike::E(AbilityName::Void),
+            4 => AbilityLike::R(AbilityName::Void),
+            _ => unreachable!(),
+        }
+    }
+}
+
 impl AbilityLike {
     pub fn as_char(&self) -> char {
         match self {
@@ -55,11 +68,45 @@ impl AbilityLike {
     }
 }
 
-#[derive(
-    Clone, Copy, Serialize, Deserialize, Encode, Debug, Eq, PartialEq, Hash, PartialOrd, Ord,
-)]
-#[repr(u8)]
-pub enum AbilityName {
+macro_rules! ability_name {
+    ($($field:ident),+$(,)?) => {
+        #[derive(Clone, Copy, Serialize, Deserialize, Encode, Debug, Eq, PartialEq, Hash, PartialOrd, Ord)]
+        #[repr(u8)]
+        pub enum AbilityName { $($field),+ }
+
+        $(
+            #[allow(non_upper_case_globals)]
+            pub const $field: AbilityName = AbilityName::$field;
+        )+
+
+        pub enum P { $($field),+ }
+        impl Into<AbilityLike> for P { fn into(self) -> AbilityLike { match self {
+            $(P::$field => AbilityLike::P(AbilityName::$field)),+ } }
+        }
+
+        pub enum Q { $($field),+ }
+        impl Into<AbilityLike> for Q { fn into(self) -> AbilityLike { match self {
+            $(Q::$field => AbilityLike::Q(AbilityName::$field)),+ } }
+        }
+
+        pub enum W { $($field),+ }
+        impl Into<AbilityLike> for W { fn into(self) -> AbilityLike { match self {
+            $(W::$field => AbilityLike::W(AbilityName::$field)),+ } }
+        }
+
+        pub enum E { $($field),+ }
+        impl Into<AbilityLike> for E { fn into(self) -> AbilityLike { match self {
+            $(E::$field => AbilityLike::E(AbilityName::$field)),+ } }
+        }
+
+        pub enum R { $($field),+ }
+        impl Into<AbilityLike> for R { fn into(self) -> AbilityLike { match self {
+            $(R::$field => AbilityLike::R(AbilityName::$field)),+ } }
+        }
+    };
+}
+
+ability_name! {
     Void,
     _1,
     _2,

@@ -219,7 +219,7 @@ impl ChampionFactory {
                 }
             }
 
-            println!("  Ability '{}':", k);
+            println!("  Ability '{k}':");
             println!("      found(old):     {old_values:?}");
             println!("      expected(new):  {new_values:?}");
             if !missing.is_empty() {
@@ -357,7 +357,7 @@ impl ChampionData {
                         leveling: leveling_index,
                         binding: {
                             let enum_match = match bindings {
-                                ..9 => format!("\"_{}\"", bindings.to_string()),
+                                ..9 => format!("\"_{bindings}\""),
                                 _ => format!("\"_{}Min\"", bindings - 8),
                             };
                             serde_json::from_str::<AbilityName>(&enum_match).unwrap()
@@ -394,7 +394,7 @@ impl ChampionData {
                         if coef == 1.0 && !suffix.is_empty() {
                             suffix
                         } else if !suffix.is_empty() {
-                            format!("({} * {})", coef.trim(), suffix)
+                            format!("({} * {suffix})", coef.trim())
                         } else {
                             format!("{}", coef.trim())
                         }
@@ -407,7 +407,7 @@ impl ChampionData {
                     let final_string = if scallings.is_empty() {
                         formatted_string
                     } else {
-                        format!("{} + {}", formatted_string, scallings)
+                        format!("{formatted_string} + {scallings}")
                     };
                     parts.push(final_string);
                 }
@@ -415,6 +415,52 @@ impl ChampionData {
             result.push(parts.join(" + "));
         }
         result
+    }
+
+    const fn modify_pattern<const N: usize>(
+        ability: usize,
+        pattern: [(usize, usize, AbilityName); N],
+    ) -> [(usize, usize, AbilityLike); N] {
+        let mut offsets = [(0, 0, AbilityLike::P(AbilityName::Void)); N];
+        let i = 0;
+        while i < N {
+            let offset = pattern[i];
+            let (a, b, c) = offset;
+            offsets[i] = (
+                a,
+                b,
+                match ability {
+                    0 => AbilityLike::P(c),
+                    1 => AbilityLike::Q(c),
+                    2 => AbilityLike::W(c),
+                    3 => AbilityLike::E(c),
+                    4 => AbilityLike::R(c),
+                    _ => unreachable!(),
+                },
+            )
+        }
+        offsets
+    }
+
+    pub fn insert(&mut self, key: impl Into<AbilityLike>, ability: Ability) {
+        self.hashmap.insert(key.into(), ability);
+    }
+
+    pub fn get(&self, key: impl Into<AbilityLike>) -> MayFail<&Ability> {
+        let field = key.into();
+        Ok(self
+            .hashmap
+            .get(&field)
+            .ok_or(format!("Failed to find field: {field:?}"))?)
+    }
+
+    pub fn ability<const N: usize>(
+        &mut self,
+        key: usize,
+        pattern: [(usize, usize, AbilityName); N],
+    ) {
+        let offsets = Self::modify_pattern(key, pattern);
+        self.extract_ability_damage(key.into(), 0, &offsets);
     }
 
     pub fn extract_ability_damage(
