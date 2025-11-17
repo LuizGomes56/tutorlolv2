@@ -4,6 +4,7 @@ version = "0.2.0"
 edition = "2024"
 
 [dependencies]
+tutorlolv2_types = { path = "../tutorlolv2_types" }
 tutorlolv2_gen = { path = "../tutorlolv2_gen" }
 tutorlolv2_macros = { path = "../tutorlolv2_macros" }
 tutorlolv2_fmt = { path = "../tutorlolv2_fmt" }

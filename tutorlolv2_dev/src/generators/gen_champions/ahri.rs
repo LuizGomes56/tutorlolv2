@@ -11,10 +11,8 @@ impl Generator<Champion> for Ahri {
         ability![E, (0, 1, Void)];
         ability![R, (0, 0, Min)];
 
-        clone_to![Q::Min => Q::Max].damage = merge_damage!(
-            |q| format!("({q}) * {mul} + ({q})", mul = EvalIdent::MagicMultiplier),
-            Q::Min,
-        );
+        clone_to![Q::Min => Q::Max].damage =
+            merge_damage!(|q| format!("({q}) * {MagicMultiplier} + ({q})"), Q::Min,);
 
         clone_to![R::Min => R::Max].damage = merge_damage!(|r| format!("3 * ({r})"), R::Min);
 

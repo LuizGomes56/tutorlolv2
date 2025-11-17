@@ -1,6 +1,7 @@
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
-use tutorlolv2_gen::{AbilityLike, AdaptativeType, AttackType, Attrs, DamageType, Position};
+use tutorlolv2_gen::{AdaptativeType, AttackType, Attrs, DamageType, Position};
+use tutorlolv2_types::AbilityLike;
 
 #[derive(Deserialize, Serialize)]
 pub struct Modifiers {

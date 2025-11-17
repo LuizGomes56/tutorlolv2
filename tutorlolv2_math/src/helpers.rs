@@ -4,6 +4,7 @@ use smallvec::SmallVec;
 use std::mem::MaybeUninit;
 use tinyset::SetU32;
 use tutorlolv2_gen::*;
+use tutorlolv2_types::{AbilityLike, AbilityName};
 
 pub const AXIOM_ARCANIST_BONUS_DAMAGE: f32 = 1.12;
 pub const COUP_DE_GRACE_AND_CUTDOWN_BONUS_DAMAGE: f32 = 1.08;

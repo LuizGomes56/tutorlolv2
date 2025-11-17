@@ -10,12 +10,12 @@ use crate::{
 use regex::Regex;
 use std::{
     collections::{BTreeMap, BTreeSet, HashMap},
+    mem::MaybeUninit,
     path::Path,
 };
 use tutorlolv2_fmt::invoke_rustfmt;
-use tutorlolv2_gen::{
-    AbilityLike, AbilityName, ChampionId, EvalIdent, INTERNAL_CHAMPIONS, Position,
-};
+use tutorlolv2_gen::{Attrs, ChampionId, EvalIdent, INTERNAL_CHAMPIONS, Position};
+use tutorlolv2_types::{AbilityLike, AbilityName};
 
 const GENERATOR_FOLDER: &str = "tutorlolv2_dev/src/generators/gen_champions";
 
@@ -418,7 +418,7 @@ impl ChampionData {
     }
 
     const fn modify_pattern<const N: usize>(
-        ability: usize,
+        ability: AbilityLike,
         pattern: [(usize, usize, AbilityName); N],
     ) -> [(usize, usize, AbilityLike); N] {
         let mut offsets = [(0, 0, AbilityLike::P(AbilityName::Void)); N];
@@ -426,18 +426,7 @@ impl ChampionData {
         while i < N {
             let offset = pattern[i];
             let (a, b, c) = offset;
-            offsets[i] = (
-                a,
-                b,
-                match ability {
-                    0 => AbilityLike::P(c),
-                    1 => AbilityLike::Q(c),
-                    2 => AbilityLike::W(c),
-                    3 => AbilityLike::E(c),
-                    4 => AbilityLike::R(c),
-                    _ => unreachable!(),
-                },
-            )
+            offsets[i] = (a, b, ability.from_ability_name(c))
         }
         offsets
     }
@@ -446,21 +435,40 @@ impl ChampionData {
         self.hashmap.insert(key.into(), ability);
     }
 
+    pub fn get_mut(&mut self, key: impl Into<AbilityLike>) -> MayFail<&mut Ability> {
+        let field = key.into();
+        Ok(self
+            .hashmap
+            .get_mut(&field)
+            .ok_or("[get_mut] Failed to find field: {key:?}".to_string())?)
+    }
+
     pub fn get(&self, key: impl Into<AbilityLike>) -> MayFail<&Ability> {
         let field = key.into();
         Ok(self
             .hashmap
             .get(&field)
-            .ok_or(format!("Failed to find field: {field:?}"))?)
+            .ok_or(format!("[get] Failed to find field: {field:?}"))?)
     }
 
     pub fn ability<const N: usize>(
         &mut self,
-        key: usize,
+        key: AbilityLike,
         pattern: [(usize, usize, AbilityName); N],
     ) {
         let offsets = Self::modify_pattern(key, pattern);
         self.extract_ability_damage(key.into(), 0, &offsets);
+    }
+
+    pub fn attr<const N: usize>(
+        &mut self,
+        attr: Attrs,
+        set: [impl Into<AbilityLike>; N],
+    ) -> MayFail {
+        for key in set {
+            self.get_mut(key.into())?.attributes = attr;
+        }
+        Ok(())
     }
 
     pub fn extract_ability_damage(
@@ -526,9 +534,13 @@ impl ChampionData {
         )
     }
 
-    pub fn extract_passive_damage(
+    pub fn end(self) -> MayFail<Champion> {
+        Ok(self.finish())
+    }
+
+    pub fn passive(
         &mut self,
-        ability: AbilityLike,
+        ability: impl Into<AbilityLike>,
         offsets: (usize, usize),
         postfix: Option<EvalIdent>,
         scalings: Option<usize>,
@@ -553,6 +565,35 @@ impl ChampionData {
             });
         }
 
-        self.hashmap.insert(ability, passive.format(damage));
+        self.hashmap.insert(ability.into(), passive.format(damage));
+    }
+
+    pub fn merge_damage<const N: usize>(
+        &self,
+        closure: fn([String; N]) -> String,
+        args: [impl Into<AbilityLike> + Copy; N],
+    ) -> MayFail<Vec<String>> {
+        let mut sizes = Vec::<usize>::new();
+        for arg in args {
+            let result = self.get(arg.into())?;
+            sizes.push(result.damage.len());
+        }
+        assert!(sizes.len() > 0, "Closure must take at least one argument");
+        assert!(
+            sizes.windows(2).all(|w| w[0] == w[1]),
+            "Can't compare abilities with different sizes"
+        );
+        let mut result = Vec::<String>::with_capacity(sizes[0]);
+        for i in 0..sizes[0] {
+            let mut closure_args = MaybeUninit::<[String; N]>::uninit();
+            let args_ptr = closure_args.as_mut_ptr();
+            for arg in args {
+                unsafe {
+                    *(*args_ptr).get_unchecked_mut(i) = self.get(arg.into())?.damage[i].clone();
+                }
+            }
+            result.push(closure(unsafe { closure_args.assume_init() }));
+        }
+        Ok(result)
     }
 }

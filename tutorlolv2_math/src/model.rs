@@ -3,9 +3,9 @@ use bincode::{Decode, Encode};
 use smallvec::SmallVec;
 use tinyset::SetU32;
 use tutorlolv2_gen::{
-    AbilityLike, AdaptativeType, ChampionId, ConstClosure, GameMap, ItemId, Position, RuneId,
-    TypeMetadata,
+    AdaptativeType, ChampionId, ConstClosure, GameMap, ItemId, Position, RuneId, TypeMetadata,
 };
+use tutorlolv2_types::AbilityLike;
 
 #[derive(Encode, PartialEq, Clone, Copy)]
 pub enum Team {

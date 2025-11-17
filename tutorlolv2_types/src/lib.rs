@@ -1,6 +1,9 @@
 use bincode::Encode;
 use serde::{Deserialize, Serialize};
 
+pub mod ability_name;
+
+pub use ability_name::*;
 pub use paste::paste;
 
 #[derive(
@@ -15,21 +18,8 @@ pub enum AbilityLike {
     R(AbilityName),
 }
 
-impl From<usize> for AbilityLike {
-    fn from(value: usize) -> Self {
-        match value {
-            0 => AbilityLike::P(AbilityName::Void),
-            1 => AbilityLike::Q(AbilityName::Void),
-            2 => AbilityLike::W(AbilityName::Void),
-            3 => AbilityLike::E(AbilityName::Void),
-            4 => AbilityLike::R(AbilityName::Void),
-            _ => unreachable!(),
-        }
-    }
-}
-
 impl AbilityLike {
-    pub fn as_char(&self) -> char {
+    pub const fn as_char(&self) -> char {
         match self {
             AbilityLike::P(_) => 'P',
             AbilityLike::Q(_) => 'Q',
@@ -39,7 +29,7 @@ impl AbilityLike {
         }
     }
 
-    pub fn from_fn(&self) -> fn(AbilityName) -> Self {
+    pub const fn from_fn(&self) -> fn(AbilityName) -> Self {
         match self {
             AbilityLike::P(_) => AbilityLike::P,
             AbilityLike::Q(_) => AbilityLike::Q,
@@ -49,7 +39,17 @@ impl AbilityLike {
         }
     }
 
-    pub fn ability_name(&self) -> AbilityName {
+    pub const fn from_ability_name(&self, ability_name: AbilityName) -> Self {
+        match self {
+            AbilityLike::P(_) => AbilityLike::P(ability_name),
+            AbilityLike::Q(_) => AbilityLike::Q(ability_name),
+            AbilityLike::W(_) => AbilityLike::W(ability_name),
+            AbilityLike::E(_) => AbilityLike::E(ability_name),
+            AbilityLike::R(_) => AbilityLike::R(ability_name),
+        }
+    }
+
+    pub const fn ability_name(&self) -> AbilityName {
         match self {
             AbilityLike::P(v) => *v,
             AbilityLike::Q(v) => *v,
@@ -66,86 +66,6 @@ impl AbilityLike {
             self.ability_name()
         )
     }
-}
-
-macro_rules! ability_name {
-    ($($field:ident),+$(,)?) => {
-        #[derive(Clone, Copy, Serialize, Deserialize, Encode, Debug, Eq, PartialEq, Hash, PartialOrd, Ord)]
-        #[repr(u8)]
-        pub enum AbilityName { $($field),+ }
-
-        $(
-            #[allow(non_upper_case_globals)]
-            pub const $field: AbilityName = AbilityName::$field;
-        )+
-
-        pub enum P { $($field),+ }
-        impl Into<AbilityLike> for P { fn into(self) -> AbilityLike { match self {
-            $(P::$field => AbilityLike::P(AbilityName::$field)),+ } }
-        }
-
-        pub enum Q { $($field),+ }
-        impl Into<AbilityLike> for Q { fn into(self) -> AbilityLike { match self {
-            $(Q::$field => AbilityLike::Q(AbilityName::$field)),+ } }
-        }
-
-        pub enum W { $($field),+ }
-        impl Into<AbilityLike> for W { fn into(self) -> AbilityLike { match self {
-            $(W::$field => AbilityLike::W(AbilityName::$field)),+ } }
-        }
-
-        pub enum E { $($field),+ }
-        impl Into<AbilityLike> for E { fn into(self) -> AbilityLike { match self {
-            $(E::$field => AbilityLike::E(AbilityName::$field)),+ } }
-        }
-
-        pub enum R { $($field),+ }
-        impl Into<AbilityLike> for R { fn into(self) -> AbilityLike { match self {
-            $(R::$field => AbilityLike::R(AbilityName::$field)),+ } }
-        }
-    };
-}
-
-ability_name! {
-    Void,
-    _1,
-    _2,
-    _3,
-    _4,
-    _5,
-    _6,
-    _7,
-    _8,
-    Min,
-    _1Min,
-    _2Min,
-    _3Min,
-    _4Min,
-    _5Min,
-    _6Min,
-    _7Min,
-    _8Min,
-    Max,
-    _1Max,
-    _2Max,
-    _3Max,
-    _4Max,
-    _5Max,
-    _6Max,
-    _7Max,
-    _8Max,
-    Mega,
-    Minion,
-    Minion1,
-    Minion2,
-    Minion3,
-    MinionMax,
-    Monster,
-    Monster1,
-    Monster2,
-    Monster3,
-    Monster4,
-    MonsterMax,
 }
 
 #[derive(Serialize, Deserialize, Debug, Copy, Clone)]
