@@ -9,7 +9,7 @@ pub mod gen_utils;
 /// JSON file to be read by the `tutorlolv2_build` script and generate Rust code,
 /// to be compiled to avoid execution overhead for parsing strings and doing
 /// calculations that were known at compile-time. Structs that implement this
-/// trait often have to be decorated with `#[champion_generator]` or #[item_generator]
+/// trait often have to be decorated with `#[champion_generator]` or `#[item_generator]`
 /// proc-macros.
 ///
 /// Since every item and champion receives its own struct, they're placed

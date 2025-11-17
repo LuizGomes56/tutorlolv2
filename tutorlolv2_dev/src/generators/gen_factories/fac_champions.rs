@@ -14,7 +14,7 @@ use std::{
     path::Path,
 };
 use tutorlolv2_fmt::invoke_rustfmt;
-use tutorlolv2_gen::{Attrs, ChampionId, EvalIdent, INTERNAL_CHAMPIONS, Position};
+use tutorlolv2_gen::{Attrs, ChampionId, DamageType, EvalIdent, INTERNAL_CHAMPIONS, Position};
 use tutorlolv2_types::{AbilityLike, AbilityName};
 
 const GENERATOR_FOLDER: &str = "tutorlolv2_dev/src/generators/gen_champions";
@@ -48,7 +48,7 @@ impl ChampionFactory {
                 ));
             }
             format!(
-                "ability![{ability_char}, {offsets}];",
+                "self.ability({ability_char}, [{offsets}]);",
                 offsets = offsets.join(","),
             )
         };
@@ -57,7 +57,6 @@ impl ChampionFactory {
             "use super::*;
 
             impl Generator<Champion> for {champion_id:?} {{
-                #[champion_generator]
                 fn generate(mut self: Box<Self>) -> MayFail<Champion> {{"
         );
 
@@ -76,7 +75,7 @@ impl ChampionFactory {
             }
         }
 
-        generated_content.push_str("}}");
+        generated_content.push_str("self.0.end()}}");
         Ok(invoke_rustfmt(&generated_content, 80))
     }
 
@@ -540,7 +539,7 @@ impl ChampionData {
 
     pub fn passive(
         &mut self,
-        ability: impl Into<AbilityLike>,
+        ability: AbilityName,
         offsets: (usize, usize),
         postfix: Option<EvalIdent>,
         scalings: Option<usize>,
@@ -565,7 +564,24 @@ impl ChampionData {
             });
         }
 
-        self.hashmap.insert(ability.into(), passive.format(damage));
+        self.hashmap
+            .insert(AbilityLike::P(ability), passive.format(damage));
+    }
+
+    pub fn clone_to(
+        &mut self,
+        from: impl Into<AbilityLike>,
+        into: impl Into<AbilityLike>,
+    ) -> MayFail<&mut Ability> {
+        let clone_from = self.get(from.into())?.clone();
+        let into_key = into.into();
+        self.insert(into_key, clone_from);
+        self.get_mut(into_key)
+    }
+
+    pub fn damage_type(&mut self, key: impl Into<AbilityLike>, damage_type: DamageType) -> MayFail {
+        self.get_mut(key.into())?.damage_type = damage_type;
+        Ok(())
     }
 
     pub fn merge_damage<const N: usize>(

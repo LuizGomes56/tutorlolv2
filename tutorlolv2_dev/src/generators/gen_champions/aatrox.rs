@@ -5,7 +5,7 @@ use super::*;
 
 impl Generator<Champion> for Aatrox {
     fn generate(mut self: Box<Self>) -> MayFail<Champion> {
-        self.passive(P::Void, (0, 0), Some(EnemyBonusHealth), None);
+        self.passive(Void, (0, 0), Some(EnemyBonusHealth), None);
         self.ability(
             Q,
             [
@@ -17,7 +17,6 @@ impl Generator<Champion> for Aatrox {
                 (5, 1, _3Max),
             ],
         );
-
         self.ability(W, [(0, 1, Min), (1, 0, Max)]);
 
         self.attr(
