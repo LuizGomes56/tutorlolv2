@@ -8,9 +8,7 @@ pub mod gen_utils;
 /// Base generator trait, that returns a type that will be serialized into a
 /// JSON file to be read by the `tutorlolv2_build` script and generate Rust code,
 /// to be compiled to avoid execution overhead for parsing strings and doing
-/// calculations that were known at compile-time. Structs that implement this
-/// trait often have to be decorated with `#[champion_generator]` or `#[item_generator]`
-/// proc-macros.
+/// calculations that were known at compile-time.
 ///
 /// Since every item and champion receives its own struct, they're placed
 /// in a `Box<Self>` because their execution is done with dynamic dispatch, so all of

@@ -27,7 +27,7 @@ pub fn export_runes() -> Vec<(u32, RuneDetails)> {
                 "TypeMetadata {{
                     kind: RuneId::{},
                     damage_type: DamageType::{damage_type},
-                    attributes: Attrs::None
+                    attributes: Attrs::Undefined
                 }}",
                 rune.name.remove_special_chars(),
             );
@@ -100,7 +100,7 @@ pub fn export_runes() -> Vec<(u32, RuneDetails)> {
             "TypeMetadata {{
                 kind: RuneId::{name},
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             }}",
             name = rune_name.remove_special_chars(),
         );

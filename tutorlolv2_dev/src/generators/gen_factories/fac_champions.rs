@@ -10,7 +10,6 @@ use crate::{
 use regex::Regex;
 use std::{
     collections::{BTreeMap, BTreeSet, HashMap},
-    mem::MaybeUninit,
     path::Path,
 };
 use tutorlolv2_fmt::invoke_rustfmt;
@@ -75,7 +74,7 @@ impl ChampionFactory {
             }
         }
 
-        generated_content.push_str("self.0.end()}}");
+        generated_content.push_str("self.end()}}");
         Ok(invoke_rustfmt(&generated_content, 80))
     }
 
@@ -421,11 +420,12 @@ impl ChampionData {
         pattern: [(usize, usize, AbilityName); N],
     ) -> [(usize, usize, AbilityLike); N] {
         let mut offsets = [(0, 0, AbilityLike::P(AbilityName::Void)); N];
-        let i = 0;
+        let mut i = 0;
         while i < N {
             let offset = pattern[i];
             let (a, b, c) = offset;
-            offsets[i] = (a, b, ability.from_ability_name(c))
+            offsets[i] = (a, b, ability.from_ability_name(c));
+            i += 1;
         }
         offsets
     }
@@ -533,15 +533,78 @@ impl ChampionData {
         )
     }
 
-    pub fn end(self) -> MayFail<Champion> {
+    pub fn end(mut self) -> MayFail<Champion> {
+        let name = &self.data.name;
+
+        // Verifies if any ability found has unknown damage and emits a warning
+        // to the console so it can be fixed by the next time the generator runs
+        self.hashmap
+            .iter()
+            .filter(|(_, value)| value.damage_type == DamageType::Unknown)
+            .for_each(|(key, _)| {
+                println!("[{name}]: Key {key:?} has unknown damage type",);
+            });
+
+        // Checks for minimum damage and maximum damage keys within the hashmap.
+        // If it finds any key that is labeled as minimum damage, it will look
+        // for keys that represent maximum damage. If it finds one, it will be
+        // added to the mergevec, so it can be displayed in the tables as
+        // `minimum damage - maximum damage`. If it doesn't find a maximum match,
+        // a warning is emitted to the console and the key is skipped.
+        let keys = self.hashmap.keys().cloned().collect::<Vec<_>>();
+        for key in keys {
+            let index = key.ability_name() as u8;
+
+            const MIN_I: u8 = AbilityName::Min as u8;
+            const MIN_J: u8 = AbilityName::_8Min as u8;
+            const MAX_I: u8 = AbilityName::Max as u8;
+            const MAX_J: u8 = AbilityName::_8Max as u8;
+
+            let min_range = MIN_I..=MIN_J;
+            const MAX_MATCH: u8 = 1 + MAX_J - MAX_I;
+
+            let make = key.from_fn();
+
+            if min_range.contains(&index) {
+                let mut found = false;
+                let ability_name =
+                    unsafe { std::mem::transmute::<_, AbilityName>(index + MAX_MATCH) };
+                let ability_like = make(ability_name);
+                if self.hashmap.contains_key(&ability_like) {
+                    self.mergevec.push((key, ability_like));
+                    found = true;
+                }
+
+                if !found {
+                    println!("[{name}]: Found a min key: {key:?} with no max matches",);
+                }
+            }
+        }
+
+        // Verifies if the mergevec makes sense. It means that the generated hashmap should
+        // contain all keys that are present in the mergevec. If it doesn't, the function
+        // returns a fail and prints a message to the console.
+        if !self
+            .mergevec
+            .iter()
+            .all(|(a, b)| self.hashmap.contains_key(a) && self.hashmap.contains_key(b))
+        {
+            println!(
+                "{name}: inconsistent data inserted in macro `merge!`.\nmerge_vec: {:?},\n`hashmap_keys: {:?}",
+                self.mergevec,
+                self.hashmap.keys().collect::<Vec<_>>()
+            );
+            return Err("Found inconsistent merge vec".into());
+        }
+
         Ok(self.finish())
     }
 
     pub fn passive(
         &mut self,
-        ability: AbilityName,
+        name: AbilityName,
         offsets: (usize, usize),
-        postfix: Option<EvalIdent>,
+        postfix: Option<String>,
         scalings: Option<usize>,
     ) {
         let (passive, passive_description) = self.get_passive_description(offsets);
@@ -565,9 +628,12 @@ impl ChampionData {
         }
 
         self.hashmap
-            .insert(AbilityLike::P(ability), passive.format(damage));
+            .insert(AbilityLike::P(name), passive.format(damage));
     }
 
+    /// Takes in two fields and returns a mutable reference to a new cloned value, that was
+    /// already inserted to `self.hashmap`. The first enum is from where it is being cloned,
+    /// and the second one is the new name it will have, and will be identical.
     pub fn clone_to(
         &mut self,
         from: impl Into<AbilityLike>,
@@ -594,21 +660,19 @@ impl ChampionData {
             let result = self.get(arg.into())?;
             sizes.push(result.damage.len());
         }
-        assert!(sizes.len() > 0, "Closure must take at least one argument");
+        assert!(!sizes.is_empty(), "Closure must take at least one argument");
         assert!(
             sizes.windows(2).all(|w| w[0] == w[1]),
             "Can't compare abilities with different sizes"
         );
-        let mut result = Vec::<String>::with_capacity(sizes[0]);
-        for i in 0..sizes[0] {
-            let mut closure_args = MaybeUninit::<[String; N]>::uninit();
-            let args_ptr = closure_args.as_mut_ptr();
-            for arg in args {
-                unsafe {
-                    *(*args_ptr).get_unchecked_mut(i) = self.get(arg.into())?.damage[i].clone();
-                }
+        let len = sizes[0];
+        let mut result = Vec::<String>::with_capacity(len);
+        for i in 0..len {
+            let mut closure_args = std::array::from_fn(|_| String::new());
+            for (j, &arg) in args.iter().enumerate() {
+                closure_args[j] = self.get(arg.into())?.damage[i].clone();
             }
-            result.push(closure(unsafe { closure_args.assume_init() }));
+            result.push(closure(closure_args));
         }
         Ok(result)
     }

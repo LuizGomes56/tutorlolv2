@@ -35,7 +35,7 @@ impl MerakiAbility {
         Ability {
             name: self.name.clone(),
             damage_type: DamageType::from(self.damage_type.clone().unwrap_or_default()),
-            attributes: Attrs::None,
+            attributes: Attrs::Undefined,
             damage,
         }
     }

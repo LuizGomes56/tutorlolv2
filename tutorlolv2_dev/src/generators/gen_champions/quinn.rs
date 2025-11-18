@@ -1,9 +1,9 @@
 use super::*;
 
 impl Generator<Champion> for Quinn {
-    #[champion_generator]
     fn generate(mut self: Box<Self>) -> MayFail<Champion> {
-        ability![Q, (0, 0, _1)];
-        ability![E, (0, 0, _1)];
+        self.ability(Q, [(0, 0, _1)]);
+        self.ability(E, [(0, 0, _1)]);
+        self.end()
     }
 }

@@ -7,47 +7,47 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_3), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_4), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_5), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_6), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_7), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_8), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::Max), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 10f32 + 0.6f32 * ctx.ad,2 => 25f32 + 0.675f32 * ctx.ad,3 => 40f32 + 0.75f32 * ctx.ad,4 => 55f32 + 0.825f32 * ctx.ad,5 => 70f32 + 0.9f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 17f32 + 1.02f32 * ctx.ad,2 => 42.5f32 + 1.1475f32 * ctx.ad,3 => 68f32 + 1.275f32 * ctx.ad,4 => 93.5f32 + 1.4025f32 * ctx.ad,5 => 119f32 + 1.53f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 12.5f32 + 0.75f32 * ctx.ad,2 => 31.25f32 + 0.84375f32 * ctx.ad,3 => 50f32 + 0.9375f32 * ctx.ad,4 => 68.75f32 + 1.03125f32 * ctx.ad,5 => 87.5f32 + 1.125f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 21.25f32 + 1.275f32 * ctx.ad,2 => 53.125f32 + 1.434375f32 * ctx.ad,3 => 85f32 + 1.59375f32 * ctx.ad,4 => 116.875f32 + 1.753125f32 * ctx.ad,5 => 148.75f32 + 1.9125f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 37.5f32 + 2.25f32 * ctx.ad,2 => 93.75f32 + 2.53125f32 * ctx.ad,3 => 150f32 + 2.8125f32 * ctx.ad,4 => 206.25f32 + 3.09375f32 * ctx.ad,5 => 262.5f32 + 3.375f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 63.75f32 + 3.825f32 * ctx.ad,2 => 159.375f32 + 4.303125f32 * ctx.ad,3 => 255f32 + 4.78125f32 * ctx.ad,4 => 350.625f32 + 5.259375f32 * ctx.ad,5 => 446.25f32 + 5.7375f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 15f32 + 0.9f32 * ctx.ad,2 => 37.5f32 + 1.0125f32 * ctx.ad,3 => 60f32 + 1.125f32 * ctx.ad,4 => 82.5f32 + 1.2375f32 * ctx.ad,5 => 105f32 + 1.35f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 25.5f32 + 1.53f32 * ctx.ad,2 => 63.75f32 + 1.72125f32 * ctx.ad,3 => 102f32 + 1.9125f32 * ctx.ad,4 => 140.25f32 + 2.10375f32 * ctx.ad,5 => 178.5f32 + 2.295f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 10f32 + 0.6f32 * ctx.ad + (17f32 + 1.02f32 * ctx.ad) + (12.5f32 + 0.75f32 * ctx.ad),2 => 25f32 + 0.675f32 * ctx.ad + (42.5f32 + 1.1475f32 * ctx.ad) + (31.25f32 + 0.84375f32 * ctx.ad),3 => 40f32 + 0.75f32 * ctx.ad + (68f32 + 1.275f32 * ctx.ad) + (50f32 + 0.9375f32 * ctx.ad),4 => 55f32 + 0.825f32 * ctx.ad + (93.5f32 + 1.4025f32 * ctx.ad) + (68.75f32 + 1.03125f32 * ctx.ad),5 => 70f32 + 0.9f32 * ctx.ad + (119f32 + 1.53f32 * ctx.ad) + (87.5f32 + 1.125f32 * ctx.ad),_ => 0.0 }},|ctx| { match ctx.w_level {1 => 60f32 + 0.8f32 * ctx.ad,2 => 80f32 + 0.8f32 * ctx.ad,3 => 100f32 + 0.8f32 * ctx.ad,4 => 120f32 + 0.8f32 * ctx.ad,5 => 140f32 + 0.8f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 30f32 + 0.4f32 * ctx.ad,2 => 40f32 + 0.4f32 * ctx.ad,3 => 50f32 + 0.4f32 * ctx.ad,4 => 60f32 + 0.4f32 * ctx.ad,5 => 70f32 + 0.4f32 * ctx.ad,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:650f32,per_level:114f32},mana:CachedChampionStatsMap{flat:0f32,per_level:0f32},armor:CachedChampionStatsMap{flat:38f32,per_level:4.8f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:60f32,per_level:5f32},attack_speed:CachedChampionStatsMap{flat:0.651f32,per_level:2.5f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.651000022888183f32,attack_range:175f32,aram_damage_taken:1f32,aram_damage_dealt:1.05f32,urf_damage_taken:0.7f32,urf_damage_dealt:1.15f32,},
@@ -60,39 +60,39 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_4), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_5), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 40f32 + 0.5f32 * ctx.ap,2 => 65f32 + 0.5f32 * ctx.ap,3 => 90f32 + 0.5f32 * ctx.ap,4 => 115f32 + 0.5f32 * ctx.ap,5 => 140f32 + 0.5f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 80f32 + ctx.ap,2 => 130f32 + ctx.ap,3 => 180f32 + ctx.ap,4 => 230f32 + ctx.ap,5 => 280f32 + ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 40f32 + 0.4f32 * ctx.ap,2 => 60f32 + 0.4f32 * ctx.ap,3 => 80f32 + 0.4f32 * ctx.ap,4 => 100f32 + 0.4f32 * ctx.ap,5 => 120f32 + 0.4f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 12f32 + 0.12f32 * ctx.ap,2 => 18f32 + 0.12f32 * ctx.ap,3 => 24f32 + 0.12f32 * ctx.ap,4 => 30f32 + 0.12f32 * ctx.ap,5 => 36f32 + 0.12f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 64f32 + 0.64f32 * ctx.ap,2 => 96f32 + 0.64f32 * ctx.ap,3 => 128f32 + 0.64f32 * ctx.ap,4 => 160f32 + 0.64f32 * ctx.ap,5 => 192f32 + 0.64f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 80f32 + 0.8f32 * ctx.ap,2 => 120f32 + 0.8f32 * ctx.ap,3 => 160f32 + 0.8f32 * ctx.ap,4 => 200f32 + 0.8f32 * ctx.ap,5 => 240f32 + 0.8f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 24f32 + 0.24f32 * ctx.ap,2 => 36f32 + 0.24f32 * ctx.ap,3 => 48f32 + 0.24f32 * ctx.ap,4 => 60f32 + 0.24f32 * ctx.ap,5 => 72f32 + 0.24f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 0.0f32,2 => 0.0f32,3 => 0.0f32,4 => 0.0f32,5 => 0.0f32,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 60f32 + 0.35f32 * ctx.ap,2 => 90f32 + 0.35f32 * ctx.ap,3 => 120f32 + 0.35f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:590f32,per_level:104f32},mana:CachedChampionStatsMap{flat:418f32,per_level:25f32},armor:CachedChampionStatsMap{flat:21f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:53f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.668f32,per_level:2.2f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:550f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1.05f32,urf_damage_dealt:0.9f32,},
@@ -105,31 +105,31 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 45f32 + 0.65f32 * ctx.ad + 0.6f32 * ctx.ap,2 => 70f32 + 0.65f32 * ctx.ad + 0.6f32 * ctx.ap,3 => 95f32 + 0.65f32 * ctx.ad + 0.6f32 * ctx.ap,4 => 120f32 + 0.65f32 * ctx.ad + 0.6f32 * ctx.ap,5 => 145f32 + 0.65f32 * ctx.ad + 0.6f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 21f32 + 0.3f32 * ctx.ad + 0.33f32 * ctx.ap,2 => 42f32 + 0.3f32 * ctx.ad + 0.33f32 * ctx.ap,3 => 63f32 + 0.3f32 * ctx.ad + 0.33f32 * ctx.ap,4 => 84f32 + 0.3f32 * ctx.ad + 0.33f32 * ctx.ap,5 => 105f32 + 0.3f32 * ctx.ad + 0.33f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 49f32 + 0.7f32 * ctx.ad + 0.77f32 * ctx.ap,2 => 98f32 + 0.7f32 * ctx.ad + 0.77f32 * ctx.ap,3 => 147f32 + 0.7f32 * ctx.ad + 0.77f32 * ctx.ap,4 => 196f32 + 0.7f32 * ctx.ad + 0.77f32 * ctx.ap,5 => 245f32 + 0.7f32 * ctx.ad + 0.77f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 70f32 + ctx.ad + 1.1f32 * ctx.ap,2 => 140f32 + ctx.ad + 1.1f32 * ctx.ap,3 => 210f32 + ctx.ad + 1.1f32 * ctx.ap,4 => 280f32 + ctx.ad + 1.1f32 * ctx.ap,5 => 350f32 + ctx.ad + 1.1f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 110f32 + 0.5f32 * ctx.bonus_ad + 0.3f32 * ctx.ap,2 => 220f32 + 0.5f32 * ctx.bonus_ad + 0.3f32 * ctx.ap,3 => 330f32 + 0.5f32 * ctx.bonus_ad + 0.3f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 210f32 + 0.9f32 * ctx.ap,2 => 420f32 + 0.9f32 * ctx.ap,3 => 630f32 + 0.9f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 70f32 + 0.3f32 * ctx.ap,2 => 140f32 + 0.3f32 * ctx.ap,3 => 210f32 + 0.3f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:600f32,per_level:119f32},mana:CachedChampionStatsMap{flat:200f32,per_level:0f32},armor:CachedChampionStatsMap{flat:23f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:37f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:62f32,per_level:3.3f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:3.2f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:125f32,aram_damage_taken:0.95f32,aram_damage_dealt:1f32,urf_damage_taken:0.9f32,urf_damage_dealt:1f32,},
@@ -142,35 +142,35 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_3), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_3), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_4), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 5f32 + 0.8f32 * ctx.ad,2 => 25f32 + 0.8f32 * ctx.ad,3 => 45f32 + 0.8f32 * ctx.ad,4 => 65f32 + 0.8f32 * ctx.ad,5 => 85f32 + 0.8f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 0.4f32,2 => 0.5f32,3 => 0.6f32,4 => 0.7f32,5 => 0.8f32,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 10f32 + 1.6f32 * ctx.ad,2 => 50f32 + 1.6f32 * ctx.ad,3 => 90f32 + 1.6f32 * ctx.ad,4 => 130f32 + 1.6f32 * ctx.ad,5 => 170f32 + 1.6f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 0.0f32,2 => 0.0f32,3 => 0.0f32,4 => 0.0f32,5 => 0.0f32,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 0.0f32,2 => 0.0f32,3 => 0.0f32,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 0.0f32,2 => 0.0f32,3 => 0.0f32,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 0.0f32,2 => 0.0f32,3 => 0.0f32,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 0.0f32,2 => 0.0f32,3 => 0.0f32,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:630f32,per_level:107f32},mana:CachedChampionStatsMap{flat:350f32,per_level:40f32},armor:CachedChampionStatsMap{flat:26f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:52f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.638f32,per_level:4f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.4f32,attack_range:500f32,aram_damage_taken:0.95f32,aram_damage_dealt:1.05f32,urf_damage_taken:1f32,urf_damage_dealt:1.05f32,},
@@ -183,23 +183,23 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 60f32 + 0.8f32 * ctx.ap,2 => 100f32 + 0.8f32 * ctx.ap,3 => 140f32 + 0.8f32 * ctx.ap,4 => 180f32 + 0.8f32 * ctx.ap,5 => 220f32 + 0.8f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 55f32 + ctx.ap,2 => 110f32 + ctx.ap,3 => 165f32 + ctx.ap,4 => 220f32 + ctx.ap,5 => 275f32 + ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 8f32 + 0.07f32 * ctx.ap,2 => 11f32 + 0.07f32 * ctx.ap,3 => 14f32 + 0.07f32 * ctx.ap,4 => 17f32 + 0.07f32 * ctx.ap,5 => 20f32 + 0.07f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 80f32 + 0.7f32 * ctx.ap,2 => 110f32 + 0.7f32 * ctx.ap,3 => 140f32 + 0.7f32 * ctx.ap,4 => 170f32 + 0.7f32 * ctx.ap,5 => 200f32 + 0.7f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 0.55f32,2 => 0.65f32,3 => 0.75f32,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:685f32,per_level:120f32},mana:CachedChampionStatsMap{flat:350f32,per_level:40f32},armor:CachedChampionStatsMap{flat:40f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:62f32,per_level:3.75f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2.125f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:125f32,aram_damage_taken:1.05f32,aram_damage_dealt:0.95f32,urf_damage_taken:0.95f32,urf_damage_dealt:1f32,},
@@ -212,31 +212,31 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_3), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_4), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 40f32 + 0.6f32 * ctx.bonus_ad + 0.02f32 * ctx.enemy_max_health + 0.03f32 * 0.01f32 * ctx.bonus_ad,2 => 60f32 + 0.6f32 * ctx.bonus_ad + 0.03f32 * ctx.enemy_max_health + 0.03f32 * 0.01f32 * ctx.bonus_ad,3 => 80f32 + 0.6f32 * ctx.bonus_ad + 0.04f32 * ctx.enemy_max_health + 0.03f32 * 0.01f32 * ctx.bonus_ad,4 => 100f32 + 0.6f32 * ctx.bonus_ad + 0.05f32 * ctx.enemy_max_health + 0.03f32 * 0.01f32 * ctx.bonus_ad,5 => 120f32 + 0.6f32 * ctx.bonus_ad + 0.06f32 * ctx.enemy_max_health + 0.03f32 * 0.01f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 20f32 + 0.3f32 * ctx.bonus_ad + 0.01f32 * ctx.enemy_max_health + 0.015f32 * 0.01f32 * ctx.bonus_ad,2 => 30f32 + 0.3f32 * ctx.bonus_ad + 0.015f32 * ctx.enemy_max_health + 0.015f32 * 0.01f32 * ctx.bonus_ad,3 => 40f32 + 0.3f32 * ctx.bonus_ad + 0.02f32 * ctx.enemy_max_health + 0.015f32 * 0.01f32 * ctx.bonus_ad,4 => 50f32 + 0.3f32 * ctx.bonus_ad + 0.025f32 * ctx.enemy_max_health + 0.015f32 * 0.01f32 * ctx.bonus_ad,5 => 60f32 + 0.3f32 * ctx.bonus_ad + 0.03f32 * ctx.enemy_max_health + 0.015f32 * 0.01f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 50f32 + 0.5f32 * ctx.bonus_ad,2 => 75f32 + 0.5f32 * ctx.bonus_ad,3 => 100f32 + 0.5f32 * ctx.bonus_ad,4 => 125f32 + 0.5f32 * ctx.bonus_ad,5 => 150f32 + 0.5f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 75f32 + 0.75f32 * ctx.bonus_ad,2 => 112.5f32 + 0.75f32 * ctx.bonus_ad,3 => 150f32 + 0.75f32 * ctx.bonus_ad,4 => 187.5f32 + 0.75f32 * ctx.bonus_ad,5 => 225f32 + 0.75f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 40f32 + 0.4f32 * ctx.bonus_ad,2 => 60f32 + 0.45f32 * ctx.bonus_ad,3 => 80f32 + 0.5f32 * ctx.bonus_ad,4 => 100f32 + 0.55f32 * ctx.bonus_ad,5 => 120f32 + 0.6f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 80f32 + 0.8f32 * ctx.bonus_ad,2 => 120f32 + 0.9f32 * ctx.bonus_ad,3 => 160f32 + ctx.bonus_ad,4 => 200f32 + 1.1f32 * ctx.bonus_ad,5 => 240f32 + 1.2f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 150f32 + 0.8f32 * ctx.bonus_ad,2 => 250f32 + 0.8f32 * ctx.bonus_ad,3 => 350f32 + 0.8f32 * ctx.bonus_ad,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:630f32,per_level:110f32},mana:CachedChampionStatsMap{flat:200f32,per_level:0f32},armor:CachedChampionStatsMap{flat:35f32,per_level:4.9f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:63f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2.5f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:125f32,aram_damage_taken:1.05f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -249,23 +249,23 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 70f32 + 0.85f32 * ctx.ap,2 => 95f32 + 0.85f32 * ctx.ap,3 => 120f32 + 0.85f32 * ctx.ap,4 => 145f32 + 0.85f32 * ctx.ap,5 => 170f32 + 0.85f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 5f32 + 0.005f32 * ctx.enemy_max_health + 0.0025f32 * 0.01f32 * ctx.ap,2 => 5f32 + 0.00625f32 * ctx.enemy_max_health + 0.0025f32 * 0.01f32 * ctx.ap,3 => 5f32 + 0.0075f32 * ctx.enemy_max_health + 0.0025f32 * 0.01f32 * ctx.ap,4 => 5f32 + 0.00875f32 * ctx.enemy_max_health + 0.0025f32 * 0.01f32 * ctx.ap,5 => 5f32 + 0.01f32 * ctx.enemy_max_health + 0.0025f32 * 0.01f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 65f32 + 0.5f32 * ctx.ap,2 => 95f32 + 0.5f32 * ctx.ap,3 => 125f32 + 0.5f32 * ctx.ap,4 => 155f32 + 0.5f32 * ctx.ap,5 => 185f32 + 0.5f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 0.0f32,2 => 0.0f32,3 => 0.0f32,4 => 0.0f32,5 => 0.0f32,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 200f32 + 0.8f32 * ctx.ap,2 => 300f32 + 0.8f32 * ctx.ap,3 => 400f32 + 0.8f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:685f32,per_level:94f32},mana:CachedChampionStatsMap{flat:285f32,per_level:40f32},armor:CachedChampionStatsMap{flat:33f32,per_level:4f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:57f32,per_level:3.8f32},attack_speed:CachedChampionStatsMap{flat:0.736f32,per_level:2.18f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.638000011444091f32,attack_range:125f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:0.9f32,urf_damage_dealt:1.1f32,},
@@ -278,31 +278,31 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 50f32 + 0.25f32 * ctx.ap,2 => 70f32 + 0.25f32 * ctx.ap,3 => 90f32 + 0.25f32 * ctx.ap,4 => 110f32 + 0.25f32 * ctx.ap,5 => 130f32 + 0.25f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 60f32 + 0.45f32 * ctx.ap,2 => 95f32 + 0.45f32 * ctx.ap,3 => 130f32 + 0.45f32 * ctx.ap,4 => 165f32 + 0.45f32 * ctx.ap,5 => 200f32 + 0.45f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 110f32 + 0.7f32 * ctx.ap,2 => 165f32 + 0.7f32 * ctx.ap,3 => 220f32 + 0.7f32 * ctx.ap,4 => 275f32 + 0.7f32 * ctx.ap,5 => 330f32 + 0.7f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 100f32 + 1.1f32 * ctx.ap,2 => 150f32 + 1.1f32 * ctx.ap,3 => 200f32 + 1.1f32 * ctx.ap,4 => 250f32 + 1.1f32 * ctx.ap,5 => 300f32 + 1.1f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 50f32 + 0.55f32 * ctx.ap,2 => 75f32 + 0.55f32 * ctx.ap,3 => 100f32 + 0.55f32 * ctx.ap,4 => 125f32 + 0.55f32 * ctx.ap,5 => 150f32 + 0.55f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 15f32 + 0.0625f32 * ctx.ap,2 => 22.5f32 + 0.0625f32 * ctx.ap,3 => 30f32 + 0.0625f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 45f32 + 0.1875f32 * ctx.ap,2 => 67.5f32 + 0.1875f32 * ctx.ap,3 => 90f32 + 0.1875f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:550f32,per_level:92f32},mana:CachedChampionStatsMap{flat:495f32,per_level:45f32},armor:CachedChampionStatsMap{flat:21f32,per_level:4.5f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:51f32,per_level:3.2f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:1.68f32},movespeed:325f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:600f32,aram_damage_taken:1f32,aram_damage_dealt:1.05f32,urf_damage_taken:0.92f32,urf_damage_dealt:1.15f32,},
@@ -315,19 +315,19 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 80f32 + 0.8f32 * ctx.ap,2 => 120f32 + 0.8f32 * ctx.ap,3 => 160f32 + 0.8f32 * ctx.ap,4 => 200f32 + 0.8f32 * ctx.ap,5 => 240f32 + 0.8f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 70f32 + 0.8f32 * ctx.ap,2 => 115f32 + 0.8f32 * ctx.ap,3 => 160f32 + 0.8f32 * ctx.ap,4 => 205f32 + 0.8f32 * ctx.ap,5 => 250f32 + 0.8f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 25f32 + 0.4f32 * ctx.ap,2 => 35f32 + 0.4f32 * ctx.ap,3 => 45f32 + 0.4f32 * ctx.ap,4 => 55f32 + 0.4f32 * ctx.ap,5 => 65f32 + 0.4f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 150f32 + 0.75f32 * ctx.ap,2 => 275f32 + 0.75f32 * ctx.ap,3 => 400f32 + 0.75f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:560f32,per_level:96f32},mana:CachedChampionStatsMap{flat:418f32,per_level:25f32},armor:CachedChampionStatsMap{flat:23f32,per_level:4f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:50f32,per_level:2.65f32},attack_speed:CachedChampionStatsMap{flat:0.61f32,per_level:1.36f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:625f32,aram_damage_taken:1.05f32,aram_damage_dealt:0.95f32,urf_damage_taken:1.1f32,urf_damage_dealt:0.9f32,},
@@ -340,7 +340,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::P(AbilityName::_1), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.level as u8 {1 => 5f32,2 => 10f32,3 => 15f32,4 => 20f32,5 => 25f32,6 => 30f32,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:600f32,per_level:102f32},mana:CachedChampionStatsMap{flat:348f32,per_level:42f32},armor:CachedChampionStatsMap{flat:26f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:55f32,per_level:2.3f32},attack_speed:CachedChampionStatsMap{flat:0.665f32,per_level:2.1f32},movespeed:325f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.658f32,attack_range:550f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1.05f32,},
@@ -353,19 +353,19 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 0.22f32 * ctx.ad,2 => 0.235f32 * ctx.ad,3 => 0.25f32 * ctx.ad,4 => 0.265f32 * ctx.ad,5 => 0.28f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 1.1f32 * ctx.ad,2 => 1.175f32 * ctx.ad,3 => 1.25f32 * ctx.ad,4 => 1.325f32 * ctx.ad,5 => 1.4f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 60f32 + 1.1f32 * ctx.bonus_ad,2 => 95f32 + 1.1f32 * ctx.bonus_ad,3 => 130f32 + 1.1f32 * ctx.bonus_ad,4 => 165f32 + 1.1f32 * ctx.bonus_ad,5 => 200f32 + 1.1f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 200f32 + 1.2f32 * ctx.ap,2 => 400f32 + 1.2f32 * ctx.ap,3 => 600f32 + 1.2f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:610f32,per_level:101f32},mana:CachedChampionStatsMap{flat:280f32,per_level:35f32},armor:CachedChampionStatsMap{flat:26f32,per_level:4.6f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:59f32,per_level:2.95f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:3.33f32},movespeed:325f32,critical_strike_damage:100f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.657999992370605f32,attack_range:600f32,aram_damage_taken:1f32,aram_damage_dealt:1.05f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -378,35 +378,35 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_4), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 5.625f32 + 0.06875f32 * ctx.ap,2 => 7.5f32 + 0.06875f32 * ctx.ap,3 => 9.375f32 + 0.06875f32 * ctx.ap,4 => 11.25f32 + 0.06875f32 * ctx.ap,5 => 13.125f32 + 0.06875f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 2.8125f32 + 0.034375f32 * ctx.ap,2 => 3.75f32 + 0.034375f32 * ctx.ap,3 => 4.6875f32 + 0.034375f32 * ctx.ap,4 => 5.625f32 + 0.034375f32 * ctx.ap,5 => 6.5625f32 + 0.034375f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 146.25f32 + 1.7875f32 * ctx.ap,2 => 195f32 + 1.7875f32 * ctx.ap,3 => 243.75f32 + 1.7875f32 * ctx.ap,4 => 292.5f32 + 1.7875f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 0.0f32,2 => 0.0f32,3 => 0.0f32,4 => 0.0f32,5 => 0.0f32,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 1.08f32,2 => 1.09f32,3 => 1.1f32,4 => 1.11f32,5 => 1.12f32,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 2.5f32 + 0.03f32 * ctx.ap,2 => 3.75f32 + 0.03f32 * ctx.ap,3 => 5f32 + 0.03f32 * ctx.ap,4 => 6.25f32 + 0.03f32 * ctx.ap,5 => 7.5f32 + 0.03f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 50f32 + 0.6f32 * ctx.ap,2 => 75f32 + 0.6f32 * ctx.ap,3 => 100f32 + 0.6f32 * ctx.ap,4 => 125f32 + 0.6f32 * ctx.ap,5 => 150f32 + 0.6f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 150f32 + 0.75f32 * ctx.ap,2 => 250f32 + 0.75f32 * ctx.ap,3 => 350f32 + 0.75f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:600f32,per_level:90f32},mana:CachedChampionStatsMap{flat:530f32,per_level:40f32},armor:CachedChampionStatsMap{flat:22f32,per_level:4f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:58f32,per_level:3.2f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:1.5f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:550f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:0.9f32,urf_damage_dealt:1.1f32,},
@@ -419,31 +419,31 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_4), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_5), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 45f32 + 0.4f32 * ctx.ap,2 => 70f32 + 0.4f32 * ctx.ap,3 => 95f32 + 0.4f32 * ctx.ap,4 => 120f32 + 0.4f32 * ctx.ap,5 => 145f32 + 0.4f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 67.5f32 + 0.6f32 * ctx.ap,2 => 105f32 + 0.6f32 * ctx.ap,3 => 142.5f32 + 0.6f32 * ctx.ap,4 => 180f32 + 0.6f32 * ctx.ap,5 => 217.5f32 + 0.6f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 45f32 + 0.4f32 * ctx.ap,2 => 70f32 + 0.4f32 * ctx.ap,3 => 95f32 + 0.4f32 * ctx.ap,4 => 120f32 + 0.4f32 * ctx.ap,5 => 145f32 + 0.4f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 13.5f32 + 0.12f32 * ctx.ap,2 => 21f32 + 0.12f32 * ctx.ap,3 => 28.5f32 + 0.12f32 * ctx.ap,4 => 36f32 + 0.12f32 * ctx.ap,5 => 43.5f32 + 0.12f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 9f32 + 0.08f32 * ctx.ap,2 => 14f32 + 0.08f32 * ctx.ap,3 => 19f32 + 0.08f32 * ctx.ap,4 => 24f32 + 0.08f32 * ctx.ap,5 => 29f32 + 0.08f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 70f32 + 0.7f32 * ctx.ap,2 => 110f32 + 0.7f32 * ctx.ap,3 => 150f32 + 0.7f32 * ctx.ap,4 => 190f32 + 0.7f32 * ctx.ap,5 => 230f32 + 0.7f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 175f32 + 0.7f32 * ctx.ap,2 => 275f32 + 0.7f32 * ctx.ap,3 => 375f32 + 0.7f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:607f32,per_level:110f32},mana:CachedChampionStatsMap{flat:475f32,per_level:30f32},armor:CachedChampionStatsMap{flat:23f32,per_level:4.5f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:53f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.668f32,per_level:2f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.668f32,attack_range:550f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -456,19 +456,19 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 60f32 + 0.35f32 * ctx.ap,2 => 80f32 + 0.35f32 * ctx.ap,3 => 100f32 + 0.35f32 * ctx.ap,4 => 120f32 + 0.35f32 * ctx.ap,5 => 140f32 + 0.35f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 0f32 + 50f32 + 0.45f32 * ctx.ap,2 => 2.6470588235294117f32 + 65f32 + 0.5f32 * ctx.ap,3 => 5.294117647058823f32 + 80f32 + 0.55f32 * ctx.ap,4 => 7.9411764705882355f32 + 95f32 + 0.6f32 * ctx.ap,5 => 10.588235294117649f32 + 110f32 + 0.65f32 * ctx.ap,6 => 13.235294117647058f32,7 => 15.882352941176473f32,8 => 18.52941176470588f32,9 => 21.176470588235293f32,10 => 23.823529411764707f32,11 => 26.470588235294116f32,12 => 29.11764705882353f32,13 => 31.764705882352946f32,14 => 34.411764705882355f32,15 => 37.05882352941176f32,16 => 39.705882352941174f32,17 => 42.35294117647059f32,18 => 45f32,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 60f32 + 0.4f32 * ctx.ap,2 => 100f32 + 0.4f32 * ctx.ap,3 => 140f32 + 0.4f32 * ctx.ap,4 => 180f32 + 0.4f32 * ctx.ap,5 => 220f32 + 0.4f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 200f32 + 0.75f32 * ctx.ap,2 => 400f32 + 0.75f32 * ctx.ap,3 => 600f32 + 0.75f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:575f32,per_level:119f32},mana:CachedChampionStatsMap{flat:320f32,per_level:40f32},armor:CachedChampionStatsMap{flat:25f32,per_level:5f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:56f32,per_level:3.5f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:5.5f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.694f32,attack_range:525f32,aram_damage_taken:0.95f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -481,7 +481,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 80f32 + 0.8f32 * ctx.ap,2 => 120f32 + 0.8f32 * ctx.ap,3 => 160f32 + 0.8f32 * ctx.ap,4 => 200f32 + 0.8f32 * ctx.ap,5 => 240f32 + 0.8f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:630f32,per_level:103f32},mana:CachedChampionStatsMap{flat:350f32,per_level:50f32},armor:CachedChampionStatsMap{flat:34f32,per_level:5f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:52f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:2f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.658f32,attack_range:500f32,aram_damage_taken:0.85f32,aram_damage_dealt:1.15f32,urf_damage_taken:0.85f32,urf_damage_dealt:1.15f32,},
@@ -494,55 +494,55 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_3), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_4), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_3), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_4), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_5), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::True, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::True, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_3), 
                 damage_type: DamageType::True, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 0f32 + ctx.ad,2 => 5f32 + ctx.ad,3 => 10f32 + ctx.ad,4 => 15f32 + ctx.ad,5 => 20f32 + ctx.ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 0.6f32,2 => 0.7f32,3 => 0.8f32,4 => 0.9f32,5 => 1f32,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 55f32,2 => 65f32,3 => 75f32,4 => 85f32,5 => 95f32,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 55f32 + ctx.ad,2 => 70f32 + ctx.ad,3 => 85f32 + ctx.ad,4 => 100f32 + ctx.ad,5 => 115f32 + ctx.ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 70f32 + ctx.bonus_ad + 1.25f32 * ctx.ap,2 => 110f32 + ctx.bonus_ad + 1.25f32 * ctx.ap,3 => 150f32 + ctx.bonus_ad + 1.25f32 * ctx.ap,4 => 190f32 + ctx.bonus_ad + 1.25f32 * ctx.ap,5 => 230f32 + ctx.bonus_ad + 1.25f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 0.35f32,2 => 0.4f32,3 => 0.45f32,4 => 0.5f32,5 => 0.55f32,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 36f32 + 0.48f32 * ctx.ad,2 => 42f32 + 0.48f32 * ctx.ad,3 => 48f32 + 0.48f32 * ctx.ad,4 => 54f32 + 0.48f32 * ctx.ad,5 => 60f32 + 0.48f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 9f32 + 0.12f32 * ctx.ad,2 => 10.5f32 + 0.12f32 * ctx.ad,3 => 12f32 + 0.12f32 * ctx.ad,4 => 13.5f32 + 0.12f32 * ctx.ad,5 => 15f32 + 0.12f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 24f32 + 0.32f32 * ctx.ad,2 => 28f32 + 0.32f32 * ctx.ad,3 => 32f32 + 0.32f32 * ctx.ad,4 => 36f32 + 0.32f32 * ctx.ad,5 => 40f32 + 0.32f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 6f32 + 0.08f32 * ctx.ad,2 => 7f32 + 0.08f32 * ctx.ad,3 => 8f32 + 0.08f32 * ctx.ad,4 => 9f32 + 0.08f32 * ctx.ad,5 => 10f32 + 0.08f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 150f32 + ctx.ap + 0.25f32 * ctx.missing_health,2 => 200f32 + ctx.ap + 0.25f32 * ctx.missing_health,3 => 250f32 + ctx.ap + 0.25f32 * ctx.missing_health,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 6f32 + 0.12f32 * ctx.bonus_ad,2 => 8f32 + 0.12f32 * ctx.bonus_ad,3 => 10f32 + 0.12f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 30f32 + 0.6f32 * ctx.bonus_ad,2 => 40f32 + 0.6f32 * ctx.bonus_ad,3 => 50f32 + 0.6f32 * ctx.bonus_ad,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:610f32,per_level:99f32},mana:CachedChampionStatsMap{flat:0f32,per_level:0f32},armor:CachedChampionStatsMap{flat:32f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:60f32,per_level:1.5f32},attack_speed:CachedChampionStatsMap{flat:0.85f32,per_level:0f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.85f32,attack_range:150f32,aram_damage_taken:0.95f32,aram_damage_dealt:1.05f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -555,15 +555,15 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 110f32 + 1.2f32 * ctx.ap,2 => 160f32 + 1.2f32 * ctx.ap,3 => 210f32 + 1.2f32 * ctx.ap,4 => 260f32 + 1.2f32 * ctx.ap,5 => 310f32 + 1.2f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 275f32 + ctx.ap,2 => 400f32 + ctx.ap,3 => 525f32 + ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 50f32 + 0.3f32 * ctx.ap + 0.02f32 * ctx.max_mana,2 => 100f32 + 0.4f32 * ctx.ap + 0.02f32 * ctx.max_mana,3 => 150f32 + 0.5f32 * ctx.ap + 0.02f32 * ctx.max_mana,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:600f32,per_level:109f32},mana:CachedChampionStatsMap{flat:267f32,per_level:40f32},armor:CachedChampionStatsMap{flat:37f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:62f32,per_level:3.5f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:1.13f32},movespeed:325f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:125f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -576,27 +576,27 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 70f32 + 0.65f32 * ctx.ap,2 => 100f32 + 0.65f32 * ctx.ap,3 => 130f32 + 0.65f32 * ctx.ap,4 => 160f32 + 0.65f32 * ctx.ap,5 => 190f32 + 0.65f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 93.75f32 + 0.75f32 * ctx.ap,2 => 150f32 + 0.75f32 * ctx.ap,3 => 206.25f32 + 0.75f32 * ctx.ap,4 => 262.5f32 + 0.75f32 * ctx.ap,5 => 318.75f32 + 0.75f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 75f32 + 0.6f32 * ctx.ap,2 => 120f32 + 0.6f32 * ctx.ap,3 => 165f32 + 0.6f32 * ctx.ap,4 => 210f32 + 0.6f32 * ctx.ap,5 => 255f32 + 0.6f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 55f32 + 0.6f32 * ctx.ap,2 => 80f32 + 0.6f32 * ctx.ap,3 => 105f32 + 0.6f32 * ctx.ap,4 => 130f32 + 0.6f32 * ctx.ap,5 => 155f32 + 0.6f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 100f32 + 0.25f32 * ctx.ap,2 => 175f32 + 0.25f32 * ctx.ap,3 => 250f32 + 0.25f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 300f32 + 0.75f32 * ctx.ap,2 => 525f32 + 0.75f32 * ctx.ap,3 => 750f32 + 0.75f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:570f32,per_level:105f32},mana:CachedChampionStatsMap{flat:469f32,per_level:21f32},armor:CachedChampionStatsMap{flat:27f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:57f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.681f32,per_level:2f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:550f32,aram_damage_taken:1.1f32,aram_damage_dealt:0.95f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -609,15 +609,15 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 75f32 + 0.025f32 * ctx.max_health,2 => 125f32 + 0.025f32 * ctx.max_health,3 => 175f32 + 0.025f32 * ctx.max_health,4 => 225f32 + 0.025f32 * ctx.max_health,5 => 275f32 + 0.025f32 * ctx.max_health,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 0.35f32,2 => 0.4f32,3 => 0.45f32,4 => 0.5f32,5 => 0.55f32,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 150f32 + 0.6f32 * ctx.ap,2 => 300f32 + 0.6f32 * ctx.ap,3 => 450f32 + 0.6f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:610f32,per_level:112f32},mana:CachedChampionStatsMap{flat:311f32,per_level:45f32},armor:CachedChampionStatsMap{flat:35f32,per_level:5f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:55f32,per_level:3.2f32},attack_speed:CachedChampionStatsMap{flat:0.644f32,per_level:3.5f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.643999993801116f32,attack_range:125f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:0.82f32,urf_damage_dealt:1.05f32,},
@@ -630,31 +630,31 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_4), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 60f32 + 0.8f32 * ctx.bonus_ad + 0.6f32 * ctx.ap,2 => 90f32 + 0.8f32 * ctx.bonus_ad + 0.6f32 * ctx.ap,3 => 120f32 + 0.8f32 * ctx.bonus_ad + 0.6f32 * ctx.ap,4 => 150f32 + 0.8f32 * ctx.bonus_ad + 0.6f32 * ctx.ap,5 => 180f32 + 0.8f32 * ctx.bonus_ad + 0.6f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 0.6f32 * ctx.ad,2 => 0.7f32 * ctx.ad,3 => 0.8f32 * ctx.ad,4 => 0.9f32 * ctx.ad,5 => ctx.ad,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 140f32 + 2.4f32 * ctx.bonus_ad + 2.4f32 * ctx.ap,2 => 215f32 + 2.4f32 * ctx.bonus_ad + 2.4f32 * ctx.ap,3 => 290f32 + 2.4f32 * ctx.bonus_ad + 2.4f32 * ctx.ap,4 => 365f32 + 2.4f32 * ctx.bonus_ad + 2.4f32 * ctx.ap,5 => 440f32 + 2.4f32 * ctx.bonus_ad + 2.4f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 220f32 + 3.4f32 * ctx.bonus_ad + 3.4f32 * ctx.ap,2 => 330f32 + 3.4f32 * ctx.bonus_ad + 3.4f32 * ctx.ap,3 => 440f32 + 3.4f32 * ctx.bonus_ad + 3.4f32 * ctx.ap,4 => 550f32 + 3.4f32 * ctx.bonus_ad + 3.4f32 * ctx.ap,5 => 660f32 + 3.4f32 * ctx.bonus_ad + 3.4f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 80f32 + ctx.bonus_ad + ctx.ap,2 => 115f32 + ctx.bonus_ad + ctx.ap,3 => 150f32 + ctx.bonus_ad + ctx.ap,4 => 185f32 + ctx.bonus_ad + ctx.ap,5 => 220f32 + ctx.bonus_ad + ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 2f32 + 0.025f32 * ctx.bonus_ad + 0.025f32 * ctx.ap,2 => 2.875f32 + 0.025f32 * ctx.bonus_ad + 0.025f32 * ctx.ap,3 => 3.75f32 + 0.025f32 * ctx.bonus_ad + 0.025f32 * ctx.ap,4 => 4.625f32 + 0.025f32 * ctx.bonus_ad + 0.025f32 * ctx.ap,5 => 5.5f32 + 0.025f32 * ctx.bonus_ad + 0.025f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 150f32 + 0.5f32 * ctx.bonus_ad + 1.2f32 * ctx.ap,2 => 250f32 + 0.5f32 * ctx.bonus_ad + 1.2f32 * ctx.ap,3 => 350f32 + 0.5f32 * ctx.bonus_ad + 1.2f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:625f32,per_level:95f32},mana:CachedChampionStatsMap{flat:0f32,per_level:0f32},armor:CachedChampionStatsMap{flat:30f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:60f32,per_level:2.5f32},attack_speed:CachedChampionStatsMap{flat:0.644f32,per_level:2f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.669f32,attack_range:125f32,aram_damage_taken:0.95f32,aram_damage_dealt:1.05f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -667,23 +667,23 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 50f32 + 1.25f32 * ctx.ad,2 => 90f32 + 1.45f32 * ctx.ad,3 => 130f32 + 1.65f32 * ctx.ad,4 => 170f32 + 1.85f32 * ctx.ad,5 => 210f32 + 2.05f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 30f32 + 0.75f32 * ctx.ad,2 => 54f32 + 0.87f32 * ctx.ad,3 => 78f32 + 0.99f32 * ctx.ad,4 => 102f32 + 1.11f32 * ctx.ad,5 => 126f32 + 1.23f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 35f32 + 0.3f32 * ctx.bonus_ad,2 => 80f32 + 0.3f32 * ctx.bonus_ad,3 => 125f32 + 0.3f32 * ctx.bonus_ad,4 => 170f32 + 0.3f32 * ctx.bonus_ad,5 => 215f32 + 0.3f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 80f32 + 0.8f32 * ctx.ap,2 => 130f32 + 0.8f32 * ctx.ap,3 => 180f32 + 0.8f32 * ctx.ap,4 => 230f32 + 0.8f32 * ctx.ap,5 => 280f32 + 0.8f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 300f32 + ctx.bonus_ad,2 => 475f32 + ctx.bonus_ad,3 => 650f32 + ctx.bonus_ad,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:580f32,per_level:107f32},mana:CachedChampionStatsMap{flat:315f32,per_level:40f32},armor:CachedChampionStatsMap{flat:27f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:60f32,per_level:3.8f32},attack_speed:CachedChampionStatsMap{flat:0.681f32,per_level:4f32},movespeed:325f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:650f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -696,31 +696,31 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_3), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_4), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 0.2f32 * ctx.ad,2 => 0.25f32 * ctx.ad,3 => 0.3f32 * ctx.ad,4 => 0.35f32 * ctx.ad,5 => 0.4f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 0.4f32 * ctx.ad,2 => 0.5f32 * ctx.ad,3 => 0.6f32 * ctx.ad,4 => 0.7f32 * ctx.ad,5 => 0.8f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 50f32 + 0.6f32 * ctx.bonus_ad,2 => 75f32 + 0.6f32 * ctx.bonus_ad,3 => 100f32 + 0.6f32 * ctx.bonus_ad,4 => 125f32 + 0.6f32 * ctx.bonus_ad,5 => 150f32 + 0.6f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 0.06f32 * ctx.enemy_max_health + 0.025f32 * 0.01f32 * ctx.bonus_ad,2 => 0.065f32 * ctx.enemy_max_health + 0.025f32 * 0.01f32 * ctx.bonus_ad,3 => 0.07f32 * ctx.enemy_max_health + 0.025f32 * 0.01f32 * ctx.bonus_ad,4 => 0.075f32 * ctx.enemy_max_health + 0.025f32 * 0.01f32 * ctx.bonus_ad,5 => 0.08f32 * ctx.enemy_max_health + 0.025f32 * 0.01f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 0.03f32 * ctx.enemy_max_health + 0.0125f32 * 0.01f32 * ctx.bonus_ad,2 => 0.0325f32 * ctx.enemy_max_health + 0.0125f32 * 0.01f32 * ctx.bonus_ad,3 => 0.035f32 * ctx.enemy_max_health + 0.0125f32 * 0.01f32 * ctx.bonus_ad,4 => 0.0375f32 * ctx.enemy_max_health + 0.0125f32 * 0.01f32 * ctx.bonus_ad,5 => 0.04f32 * ctx.enemy_max_health + 0.0125f32 * 0.01f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 25f32 + 0.3f32 * ctx.bonus_ad,2 => 37.5f32 + 0.3f32 * ctx.bonus_ad,3 => 50f32 + 0.3f32 * ctx.bonus_ad,4 => 62.5f32 + 0.3f32 * ctx.bonus_ad,5 => 75f32 + 0.3f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 0.04f32 * ctx.current_health,2 => 0.06f32 * ctx.current_health,3 => 0.08f32 * ctx.current_health,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:650f32,per_level:99f32},mana:CachedChampionStatsMap{flat:339f32,per_level:52f32},armor:CachedChampionStatsMap{flat:35f32,per_level:5f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:68f32,per_level:3.8f32},attack_speed:CachedChampionStatsMap{flat:0.644f32,per_level:2.5f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.643999993801116f32,attack_range:125f32,aram_damage_taken:0.95f32,aram_damage_dealt:1.05f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -733,31 +733,31 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 10.71f32 + 0.0929f32 * ctx.ap,2 => 15.71f32 + 0.0929f32 * ctx.ap,3 => 20.71f32 + 0.0929f32 * ctx.ap,4 => 25.71f32 + 0.0929f32 * ctx.ap,5 => 30.71f32 + 0.0929f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 75f32 + 0.65f32 * ctx.ap,2 => 110f32 + 0.65f32 * ctx.ap,3 => 145f32 + 0.65f32 * ctx.ap,4 => 180f32 + 0.65f32 * ctx.ap,5 => 215f32 + 0.65f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 20f32 + 0.1f32 * ctx.ap,2 => 25f32 + 0.1f32 * ctx.ap,3 => 30f32 + 0.1f32 * ctx.ap,4 => 35f32 + 0.1f32 * ctx.ap,5 => 40f32 + 0.1f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 100f32 + 0.5f32 * ctx.ap,2 => 125f32 + 0.5f32 * ctx.ap,3 => 150f32 + 0.5f32 * ctx.ap,4 => 175f32 + 0.5f32 * ctx.ap,5 => 200f32 + 0.5f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 20f32 + 0.55f32 * ctx.ap,2 => 40f32 + 0.55f32 * ctx.ap,3 => 60f32 + 0.55f32 * ctx.ap,4 => 80f32 + 0.55f32 * ctx.ap,5 => 100f32 + 0.55f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 52f32 + 20f32 + 0.65f32 * ctx.ap,2 => 56f32 + 40f32 + 0.65f32 * ctx.ap,3 => 60f32 + 60f32 + 0.65f32 * ctx.ap,4 => 64f32 + 80f32 + 0.65f32 * ctx.ap,5 => 68f32 + 100f32 + 0.65f32 * ctx.ap,6 => 72f32,7 => 76f32,8 => 80f32,9 => 84f32,10 => 88f32,11 => 92f32,12 => 96f32,13 => 100f32,14 => 104f32,15 => 108f32,16 => 112f32,17 => 116f32,18 => 120f32,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 150f32 + 0.5f32 * ctx.ap,2 => 250f32 + 0.5f32 * ctx.ap,3 => 350f32 + 0.5f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:630f32,per_level:104f32},mana:CachedChampionStatsMap{flat:400f32,per_level:40f32},armor:CachedChampionStatsMap{flat:18f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:53f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.647f32,per_level:1.5f32},movespeed:328f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.647000014781951f32,attack_range:550f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1.05f32,urf_damage_dealt:0.95f32,},
@@ -770,27 +770,27 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::True, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::True, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 80f32 + ctx.ap,2 => 135f32 + ctx.ap,3 => 190f32 + ctx.ap,4 => 245f32 + ctx.ap,5 => 300f32 + ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 80f32 + 0.7f32 * ctx.ap,2 => 130f32 + 0.7f32 * ctx.ap,3 => 180f32 + 0.7f32 * ctx.ap,4 => 230f32 + 0.7f32 * ctx.ap,5 => 280f32 + 0.7f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 20f32 + 0.3f32 * ctx.ap + 0.025f32 * ctx.enemy_max_health + 0.005f32 * ctx.chogath_stacks,2 => 40f32 + 0.3f32 * ctx.ap + 0.0285f32 * ctx.enemy_max_health + 0.005f32 * ctx.chogath_stacks,3 => 60f32 + 0.3f32 * ctx.ap + 0.032f32 * ctx.enemy_max_health + 0.005f32 * ctx.chogath_stacks,4 => 80f32 + 0.3f32 * ctx.ap + 0.0355f32 * ctx.enemy_max_health + 0.005f32 * ctx.chogath_stacks,5 => 100f32 + 0.3f32 * ctx.ap + 0.039f32 * ctx.enemy_max_health + 0.005f32 * ctx.chogath_stacks,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 60f32 + 0.9f32 * ctx.ap + 0.075f32 * ctx.enemy_max_health + 0.015f32 * ctx.chogath_stacks,2 => 120f32 + 0.9f32 * ctx.ap + 0.0855f32 * ctx.enemy_max_health + 0.015f32 * ctx.chogath_stacks,3 => 180f32 + 0.9f32 * ctx.ap + 0.096f32 * ctx.enemy_max_health + 0.015f32 * ctx.chogath_stacks,4 => 240f32 + 0.9f32 * ctx.ap + 0.1065f32 * ctx.enemy_max_health + 0.015f32 * ctx.chogath_stacks,5 => 300f32 + 0.9f32 * ctx.ap + 0.11699999999999999f32 * ctx.enemy_max_health + 0.015f32 * ctx.chogath_stacks,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 300f32 + 0.5f32 * ctx.ap + 0.1f32 * ctx.bonus_health,2 => 475f32 + 0.5f32 * ctx.ap + 0.1f32 * ctx.bonus_health,3 => 650f32 + 0.5f32 * ctx.ap + 0.1f32 * ctx.bonus_health,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 1200f32 + 0.5f32 * ctx.ap + 0.1f32 * ctx.bonus_health,2 => 1200f32 + 0.5f32 * ctx.ap + 0.1f32 * ctx.bonus_health,3 => 1200f32 + 0.5f32 * ctx.ap + 0.1f32 * ctx.bonus_health,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:644f32,per_level:94f32},mana:CachedChampionStatsMap{flat:270f32,per_level:60f32},armor:CachedChampionStatsMap{flat:38f32,per_level:4.5f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:69f32,per_level:4.2f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:1.44f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:125f32,aram_damage_taken:1.1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -803,31 +803,31 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 70f32 + 1.3f32 * ctx.bonus_ad + ctx.ap,2 => 115f32 + 1.3f32 * ctx.bonus_ad + ctx.ap,3 => 160f32 + 1.3f32 * ctx.bonus_ad + ctx.ap,4 => 205f32 + 1.3f32 * ctx.bonus_ad + ctx.ap,5 => 250f32 + 1.3f32 * ctx.bonus_ad + ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 40f32 + 0.4f32 * ctx.bonus_ad + 0.3f32 * ctx.ap,2 => 55f32 + 0.4f32 * ctx.bonus_ad + 0.3f32 * ctx.ap,3 => 70f32 + 0.4f32 * ctx.bonus_ad + 0.3f32 * ctx.ap,4 => 85f32 + 0.4f32 * ctx.bonus_ad + 0.3f32 * ctx.ap,5 => 100f32 + 0.4f32 * ctx.bonus_ad + 0.3f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 200f32 + 2f32 * ctx.bonus_ad + 1.5f32 * ctx.ap,2 => 275f32 + 2f32 * ctx.bonus_ad + 1.5f32 * ctx.ap,3 => 350f32 + 2f32 * ctx.bonus_ad + 1.5f32 * ctx.ap,4 => 425f32 + 2f32 * ctx.bonus_ad + 1.5f32 * ctx.ap,5 => 500f32 + 2f32 * ctx.bonus_ad + 1.5f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 5f32 + 0.15f32 * ctx.bonus_ad,2 => 8.125f32 + 0.15f32 * ctx.bonus_ad,3 => 11.25f32 + 0.15f32 * ctx.bonus_ad,4 => 14.375f32 + 0.15f32 * ctx.bonus_ad,5 => 17.5f32 + 0.15f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 80f32 + 2.4f32 * ctx.bonus_ad,2 => 130f32 + 2.4f32 * ctx.bonus_ad,3 => 180f32 + 2.4f32 * ctx.bonus_ad,4 => 230f32 + 2.4f32 * ctx.bonus_ad,5 => 280f32 + 2.4f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 90f32 + 0.85f32 * ctx.bonus_ad,2 => 170f32 + 0.85f32 * ctx.bonus_ad,3 => 250f32 + 0.85f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 180f32 + 1.7f32 * ctx.bonus_ad,2 => 340f32 + 1.7f32 * ctx.bonus_ad,3 => 500f32 + 1.7f32 * ctx.bonus_ad,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:610f32,per_level:100f32},mana:CachedChampionStatsMap{flat:350f32,per_level:40f32},armor:CachedChampionStatsMap{flat:27f32,per_level:4.5f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:52f32,per_level:2f32},attack_speed:CachedChampionStatsMap{flat:0.644f32,per_level:2.8f32},movespeed:325f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.644f32,attack_range:550f32,aram_damage_taken:0.9f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -840,27 +840,27 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::True, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::True, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_3), 
                 damage_type: DamageType::True, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 50f32 + ctx.ad,2 => 80f32 + 1.1f32 * ctx.ad,3 => 110f32 + 1.2f32 * ctx.ad,4 => 140f32 + 1.3f32 * ctx.ad,5 => 170f32 + 1.4f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 17.5f32 + 0.35f32 * ctx.ad,2 => 28f32 + 0.385f32 * ctx.ad,3 => 38.5f32 + 0.42f32 * ctx.ad,4 => 49f32 + 0.455f32 * ctx.ad,5 => 59.5f32 + 0.49f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 0.4f32 * ctx.ad,2 => 0.45f32 * ctx.ad,3 => 0.5f32 * ctx.ad,4 => 0.55f32 * ctx.ad,5 => 0.6f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 25f32 + 0.15f32 * ctx.bonus_ad,2 => 50f32 + 0.15f32 * ctx.bonus_ad,3 => 75f32 + 0.15f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 250f32 + 1.5f32 * ctx.bonus_ad,2 => 500f32 + 1.5f32 * ctx.bonus_ad,3 => 750f32 + 1.5f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 125f32 + 0.75f32 * ctx.bonus_ad,2 => 250f32 + 0.75f32 * ctx.bonus_ad,3 => 375f32 + 0.75f32 * ctx.bonus_ad,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:652f32,per_level:114f32},mana:CachedChampionStatsMap{flat:263f32,per_level:58f32},armor:CachedChampionStatsMap{flat:37f32,per_level:5.2f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:64f32,per_level:5f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:1f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:175f32,aram_damage_taken:1f32,aram_damage_dealt:1.05f32,urf_damage_taken:0.85f32,urf_damage_dealt:1.05f32,},
@@ -873,31 +873,31 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 70f32 + 0.7f32 * ctx.ap,2 => 105f32 + 0.7f32 * ctx.ap,3 => 140f32 + 0.7f32 * ctx.ap,4 => 175f32 + 0.7f32 * ctx.ap,5 => 210f32 + 0.7f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 20f32 + 0.18f32 * ctx.ap,2 => 32f32 + 0.18f32 * ctx.ap,3 => 44f32 + 0.18f32 * ctx.ap,4 => 56f32 + 0.18f32 * ctx.ap,5 => 68f32 + 0.18f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 60f32 + 0.54f32 * ctx.ap,2 => 96f32 + 0.54f32 * ctx.ap,3 => 132f32 + 0.54f32 * ctx.ap,4 => 168f32 + 0.54f32 * ctx.ap,5 => 204f32 + 0.54f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 50f32 + 0.6f32 * ctx.ap,2 => 70f32 + 0.6f32 * ctx.ap,3 => 90f32 + 0.6f32 * ctx.ap,4 => 110f32 + 0.6f32 * ctx.ap,5 => 130f32 + 0.6f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 35f32 + 0.15f32 * ctx.ap,2 => 60f32 + 0.15f32 * ctx.ap,3 => 85f32 + 0.15f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 200f32 + 0.6f32 * ctx.ap,2 => 300f32 + 0.6f32 * ctx.ap,3 => 400f32 + 0.6f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 340f32 + 1.2f32 * ctx.ap,2 => 540f32 + 1.2f32 * ctx.ap,3 => 740f32 + 1.2f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:640f32,per_level:109f32},mana:CachedChampionStatsMap{flat:375f32,per_level:25f32},armor:CachedChampionStatsMap{flat:31f32,per_level:4.3f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:57f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.694f32,attack_range:150f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -910,39 +910,39 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_3), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 0.2f32 * ctx.current_health,2 => 0.225f32 * ctx.current_health,3 => 0.25f32 * ctx.current_health,4 => 0.275f32 * ctx.current_health,5 => 0.3f32 * ctx.current_health,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 350f32,2 => 425f32,3 => 500f32,4 => 575f32,5 => 650f32,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 80f32,2 => 130f32,3 => 180f32,4 => 230f32,5 => 280f32,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 5f32,2 => 8.75f32,3 => 12.5f32,4 => 16.25f32,5 => 20f32,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 80f32,2 => 140f32,3 => 200f32,4 => 260f32,5 => 320f32,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 20f32 + 0.07f32 * ctx.bonus_health,2 => 35f32 + 0.07f32 * ctx.bonus_health,3 => 50f32 + 0.07f32 * ctx.bonus_health,4 => 65f32 + 0.07f32 * ctx.bonus_health,5 => 80f32 + 0.07f32 * ctx.bonus_health,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 7f32 + 0.098f32 * ctx.bonus_health,2 => 21f32 + 0.098f32 * ctx.bonus_health,3 => 35f32 + 0.098f32 * ctx.bonus_health,4 => 49f32 + 0.098f32 * ctx.bonus_health,5 => 63f32 + 0.098f32 * ctx.bonus_health,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 5f32 + 0.07f32 * ctx.bonus_health,2 => 15f32 + 0.07f32 * ctx.bonus_health,3 => 25f32 + 0.07f32 * ctx.bonus_health,4 => 35f32 + 0.07f32 * ctx.bonus_health,5 => 45f32 + 0.07f32 * ctx.bonus_health,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 0.02f32 * ctx.max_health,2 => 0.022000000000000002f32 * ctx.max_health,3 => 0.024f32 * ctx.max_health,4 => 0.026000000000000002f32 * ctx.max_health,5 => 0.027999999999999997f32 * ctx.max_health,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:640f32,per_level:103f32},mana:CachedChampionStatsMap{flat:0f32,per_level:0f32},armor:CachedChampionStatsMap{flat:32f32,per_level:3.7f32},magic_resist:CachedChampionStatsMap{flat:29f32,per_level:2.3f32},attack_damage:CachedChampionStatsMap{flat:61f32,per_level:2.5f32},attack_speed:CachedChampionStatsMap{flat:0.67f32,per_level:3.3f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:125f32,aram_damage_taken:1.05f32,aram_damage_dealt:0.9f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -955,27 +955,27 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_3), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_4), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 40f32 + 0.75f32 * ctx.bonus_ad,2 => 45f32 + 0.85f32 * ctx.bonus_ad,3 => 50f32 + 0.95f32 * ctx.bonus_ad,4 => 55f32 + 1.05f32 * ctx.bonus_ad,5 => 60f32 + 1.15f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 75f32 + 0.5f32 * ctx.bonus_ad,2 => 110f32 + 0.5f32 * ctx.bonus_ad,3 => 145f32 + 0.5f32 * ctx.bonus_ad,4 => 180f32 + 0.5f32 * ctx.bonus_ad,5 => 215f32 + 0.5f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 175f32 + 1.1f32 * ctx.bonus_ad,2 => 275f32 + 1.3f32 * ctx.bonus_ad,3 => 375f32 + 1.5f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 350f32 + 2.2f32 * ctx.bonus_ad,2 => 550f32 + 2.6f32 * ctx.bonus_ad,3 => 750f32 + 3f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 70f32 + 0.44f32 * ctx.bonus_ad,2 => 110f32 + 0.52f32 * ctx.bonus_ad,3 => 150f32 + 0.6f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 140f32 + 0.88f32 * ctx.bonus_ad,2 => 220f32 + 1.04f32 * ctx.bonus_ad,3 => 300f32 + 1.2f32 * ctx.bonus_ad,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:675f32,per_level:104f32},mana:CachedChampionStatsMap{flat:361f32,per_level:39f32},armor:CachedChampionStatsMap{flat:29f32,per_level:4.5f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:62f32,per_level:3.6f32},attack_speed:CachedChampionStatsMap{flat:0.679f32,per_level:2.7f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.67900002002716f32,attack_range:550f32,aram_damage_taken:0.95f32,aram_damage_dealt:1.05f32,urf_damage_taken:1.05f32,urf_damage_dealt:0.95f32,},
@@ -988,23 +988,23 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 80f32 + 0.3f32 * ctx.ap,2 => 95f32 + 0.3f32 * ctx.ap,3 => 110f32 + 0.3f32 * ctx.ap,4 => 125f32 + 0.3f32 * ctx.ap,5 => 140f32 + 0.3f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 40f32 + 0.6f32 * ctx.ap,2 => 65f32 + 0.6f32 * ctx.ap,3 => 90f32 + 0.6f32 * ctx.ap,4 => 115f32 + 0.6f32 * ctx.ap,5 => 140f32 + 0.6f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 120f32 + 0.9f32 * ctx.ap,2 => 160f32 + 0.9f32 * ctx.ap,3 => 200f32 + 0.9f32 * ctx.ap,4 => 240f32 + 0.9f32 * ctx.ap,5 => 280f32 + 0.9f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 50f32 + 0.4f32 * ctx.ap,2 => 75f32 + 0.4f32 * ctx.ap,3 => 100f32 + 0.4f32 * ctx.ap,4 => 125f32 + 0.4f32 * ctx.ap,5 => 150f32 + 0.4f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 200f32 + 1.75f32 * ctx.ap,2 => 350f32 + 1.75f32 * ctx.ap,3 => 500f32 + 1.75f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:655f32,per_level:99f32},mana:CachedChampionStatsMap{flat:280f32,per_level:70f32},armor:CachedChampionStatsMap{flat:32f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:58f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.688f32,per_level:3.3f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:125f32,aram_damage_taken:1f32,aram_damage_dealt:1.1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -1017,15 +1017,15 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_4), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 75f32,2 => 100f32,3 => 125f32,4 => 150f32,5 => 175f32,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 40f32 + 0.04f32 * ctx.current_health + 0.03f32 * 0.01f32 * ctx.ap,2 => 70f32 + 0.04f32 * ctx.current_health + 0.03f32 * 0.01f32 * ctx.ap,3 => 100f32 + 0.04f32 * ctx.current_health + 0.03f32 * 0.01f32 * ctx.ap,4 => 130f32 + 0.04f32 * ctx.current_health + 0.03f32 * 0.01f32 * ctx.ap,5 => 160f32 + 0.04f32 * ctx.current_health + 0.03f32 * 0.01f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 60f32 + 0.75f32 * ctx.ap,2 => 100f32 + 0.75f32 * ctx.ap,3 => 140f32 + 0.75f32 * ctx.ap,4 => 180f32 + 0.75f32 * ctx.ap,5 => 220f32 + 0.75f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:620f32,per_level:109f32},mana:CachedChampionStatsMap{flat:324f32,per_level:50f32},armor:CachedChampionStatsMap{flat:30f32,per_level:4.5f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:55f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:1.75f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:550f32,aram_damage_taken:0.9f32,aram_damage_dealt:1.05f32,urf_damage_taken:0.95f32,urf_damage_dealt:1f32,},
@@ -1038,43 +1038,43 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_4), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_5), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_6), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 25f32 + 0.25f32 * ctx.ap,2 => 30f32 + 0.25f32 * ctx.ap,3 => 35f32 + 0.25f32 * ctx.ap,4 => 40f32 + 0.25f32 * ctx.ap,5 => 45f32 + 0.25f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 15f32 + 0.25f32 * ctx.ap,2 => 25f32 + 0.25f32 * ctx.ap,3 => 35f32 + 0.25f32 * ctx.ap,4 => 45f32 + 0.25f32 * ctx.ap,5 => 55f32 + 0.25f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 45f32 + 0.75f32 * ctx.ap,2 => 75f32 + 0.75f32 * ctx.ap,3 => 105f32 + 0.75f32 * ctx.ap,4 => 135f32 + 0.75f32 * ctx.ap,5 => 165f32 + 0.75f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 25f32 + 0.25f32 * ctx.ap,2 => 30f32 + 0.25f32 * ctx.ap,3 => 35f32 + 0.25f32 * ctx.ap,4 => 40f32 + 0.25f32 * ctx.ap,5 => 45f32 + 0.25f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 75f32 + 0.75f32 * ctx.ap,2 => 90f32 + 0.75f32 * ctx.ap,3 => 105f32 + 0.75f32 * ctx.ap,4 => 120f32 + 0.75f32 * ctx.ap,5 => 135f32 + 0.75f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 145f32 + 1.75f32 * ctx.ap,2 => 195f32 + 1.75f32 * ctx.ap,3 => 245f32 + 1.75f32 * ctx.ap,4 => 295f32 + 1.75f32 * ctx.ap,5 => 345f32 + 1.75f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 250f32 + 0.6f32 * ctx.ap,2 => 300f32 + 0.6f32 * ctx.ap,3 => 350f32 + 0.6f32 * ctx.ap,4 => 400f32 + 0.6f32 * ctx.ap,5 => 450f32 + 0.6f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 60f32 + 0.03f32 * ctx.enemy_max_health + 0.015f32 * 0.01f32 * ctx.ap,2 => 90f32 + 0.03f32 * ctx.enemy_max_health + 0.015f32 * 0.01f32 * ctx.ap,3 => 120f32 + 0.03f32 * ctx.enemy_max_health + 0.015f32 * 0.01f32 * ctx.ap,4 => 150f32 + 0.03f32 * ctx.enemy_max_health + 0.015f32 * 0.01f32 * ctx.ap,5 => 180f32 + 0.03f32 * ctx.enemy_max_health + 0.015f32 * 0.01f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 125f32 + 0.75f32 * ctx.ap,2 => 250f32 + 0.75f32 * ctx.ap,3 => 375f32 + 0.75f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 300f32 + 1.8f32 * ctx.ap,2 => 600f32 + 1.8f32 * ctx.ap,3 => 900f32 + 1.8f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:642f32,per_level:98f32},mana:CachedChampionStatsMap{flat:315f32,per_level:42f32},armor:CachedChampionStatsMap{flat:37f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:61f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.667f32,per_level:2.1f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.666999995708465f32,attack_range:125f32,aram_damage_taken:0.9f32,aram_damage_dealt:1.1f32,urf_damage_taken:0.95f32,urf_damage_dealt:1.05f32,},
@@ -1087,23 +1087,23 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 20f32 + 1.3f32 * ctx.ad + 0.15f32 * ctx.ap,2 => 45f32 + 1.3f32 * ctx.ad + 0.15f32 * ctx.ap,3 => 70f32 + 1.3f32 * ctx.ad + 0.15f32 * ctx.ap,4 => 95f32 + 1.3f32 * ctx.ad + 0.15f32 * ctx.ap,5 => 120f32 + 1.3f32 * ctx.ad + 0.15f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 80f32 + ctx.bonus_ad + 0.7f32 * ctx.ap,2 => 135f32 + ctx.bonus_ad + 0.75f32 * ctx.ap,3 => 190f32 + ctx.bonus_ad + 0.8f32 * ctx.ap,4 => 245f32 + ctx.bonus_ad + 0.85f32 * ctx.ap,5 => 300f32 + ctx.bonus_ad + 0.9f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 80f32 + 0.5f32 * ctx.bonus_ad + 0.75f32 * ctx.ap,2 => 130f32 + 0.5f32 * ctx.bonus_ad + 0.75f32 * ctx.ap,3 => 180f32 + 0.5f32 * ctx.bonus_ad + 0.75f32 * ctx.ap,4 => 230f32 + 0.5f32 * ctx.bonus_ad + 0.75f32 * ctx.ap,5 => 280f32 + 0.5f32 * ctx.bonus_ad + 0.75f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 350f32 + ctx.bonus_ad + 0.9f32 * ctx.ap,2 => 550f32 + ctx.bonus_ad + 0.9f32 * ctx.ap,3 => 750f32 + ctx.bonus_ad + 0.9f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 175f32 + 0.5f32 * ctx.bonus_ad + 0.45f32 * ctx.ap,2 => 275f32 + 0.5f32 * ctx.bonus_ad + 0.45f32 * ctx.ap,3 => 375f32 + 0.5f32 * ctx.bonus_ad + 0.45f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:600f32,per_level:102f32},mana:CachedChampionStatsMap{flat:375f32,per_level:70f32},armor:CachedChampionStatsMap{flat:24f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:60f32,per_level:2.75f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2.5f32},movespeed:325f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:550f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:0.95f32,},
@@ -1116,47 +1116,47 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_4), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_4), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 0.04f32 * ctx.current_health + 0.03f32 * 0.01f32 * ctx.ap,2 => 0.045f32 * ctx.current_health + 0.03f32 * 0.01f32 * ctx.ap,3 => 0.05f32 * ctx.current_health + 0.03f32 * 0.01f32 * ctx.ap,4 => 0.055f32 * ctx.current_health + 0.03f32 * 0.01f32 * ctx.ap,5 => 0.06f32 * ctx.current_health + 0.03f32 * 0.01f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 40f32,2 => 60f32,3 => 80f32,4 => 100f32,5 => 120f32,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 0.08f32 * ctx.current_health + 0.06f32 * 0.01f32 * ctx.ap,2 => 0.09f32 * ctx.current_health + 0.06f32 * 0.01f32 * ctx.ap,3 => 0.1f32 * ctx.current_health + 0.06f32 * 0.01f32 * ctx.ap,4 => 0.11f32 * ctx.current_health + 0.06f32 * 0.01f32 * ctx.ap,5 => 0.12f32 * ctx.current_health + 0.06f32 * 0.01f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 80f32,2 => 120f32,3 => 160f32,4 => 200f32,5 => 240f32,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 15f32 + 0.1125f32 * ctx.ap,2 => 22.5f32 + 0.1125f32 * ctx.ap,3 => 30f32 + 0.1125f32 * ctx.ap,4 => 37.5f32 + 0.1125f32 * ctx.ap,5 => 45f32 + 0.1125f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 60f32 + 0.45f32 * ctx.ap,2 => 90f32 + 0.45f32 * ctx.ap,3 => 120f32 + 0.45f32 * ctx.ap,4 => 150f32 + 0.45f32 * ctx.ap,5 => 180f32 + 0.45f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 15f32 + 0.1125f32 * ctx.ap + 0.12f32 * ctx.missing_health,2 => 22.5f32 + 0.1125f32 * ctx.ap + 0.145f32 * ctx.missing_health,3 => 30f32 + 0.1125f32 * ctx.ap + 0.17f32 * ctx.missing_health,4 => 37.5f32 + 0.1125f32 * ctx.ap + 0.195f32 * ctx.missing_health,5 => 45f32 + 0.1125f32 * ctx.ap + 0.22f32 * ctx.missing_health,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 120f32 + 0.9f32 * ctx.ap + 0.12f32 * ctx.missing_health,2 => 180f32 + 0.9f32 * ctx.ap + 0.145f32 * ctx.missing_health,3 => 240f32 + 0.9f32 * ctx.ap + 0.17f32 * ctx.missing_health,4 => 300f32 + 0.9f32 * ctx.ap + 0.195f32 * ctx.missing_health,5 => 360f32 + 0.9f32 * ctx.ap + 0.22f32 * ctx.missing_health,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 70f32 + 0.5f32 * ctx.ap,2 => 105f32 + 0.5f32 * ctx.ap,3 => 140f32 + 0.5f32 * ctx.ap,4 => 175f32 + 0.5f32 * ctx.ap,5 => 210f32 + 0.5f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 37.5f32 + 0.125f32 * ctx.ap,2 => 62.5f32 + 0.125f32 * ctx.ap,3 => 87.5f32 + 0.125f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 750f32 + 2.5f32 * ctx.ap,2 => 1250f32 + 2.5f32 * ctx.ap,3 => 1750f32 + 2.5f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:650f32,per_level:106f32},mana:CachedChampionStatsMap{flat:500f32,per_level:28f32},armor:CachedChampionStatsMap{flat:34f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:55f32,per_level:2.65f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2.11f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:480f32,aram_damage_taken:1.05f32,aram_damage_dealt:0.95f32,urf_damage_taken:0.85f32,urf_damage_dealt:1.1f32,},
@@ -1169,15 +1169,15 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 70f32 + 0.9f32 * ctx.bonus_ad,2 => 80f32 + 0.95f32 * ctx.bonus_ad,3 => 90f32 + ctx.bonus_ad,4 => 100f32 + 1.05f32 * ctx.bonus_ad,5 => 110f32 + 1.1f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 110f32 + ctx.ap,2 => 150f32 + ctx.ap,3 => 190f32 + ctx.ap,4 => 230f32 + ctx.ap,5 => 270f32 + ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 1.6f32,2 => 1.7f32,3 => 1.8f32,4 => 1.9f32,5 => 2f32,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:620f32,per_level:99f32},mana:CachedChampionStatsMap{flat:300f32,per_level:60f32},armor:CachedChampionStatsMap{flat:33f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:66f32,per_level:3.3f32},attack_speed:CachedChampionStatsMap{flat:0.69f32,per_level:3.2f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.689999997615814f32,attack_range:150f32,aram_damage_taken:0.95f32,aram_damage_dealt:1f32,urf_damage_taken:1.1f32,urf_damage_dealt:0.9f32,},
@@ -1190,39 +1190,39 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_4), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 10f32 + 0.55f32 * ctx.ap,2 => 25f32 + 0.55f32 * ctx.ap,3 => 40f32 + 0.55f32 * ctx.ap,4 => 55f32 + 0.55f32 * ctx.ap,5 => 70f32 + 0.55f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 50f32 + 0.45f32 * ctx.ap,2 => 70f32 + 0.45f32 * ctx.ap,3 => 90f32 + 0.45f32 * ctx.ap,4 => 110f32 + 0.45f32 * ctx.ap,5 => 130f32 + 0.45f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 10f32 + 0.35f32 * ctx.ap,2 => 15f32 + 0.35f32 * ctx.ap,3 => 20f32 + 0.35f32 * ctx.ap,4 => 25f32 + 0.35f32 * ctx.ap,5 => 30f32 + 0.35f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 3.33f32 + 0.05f32 * ctx.ap,2 => 5f32 + 0.05f32 * ctx.ap,3 => 6.67f32 + 0.05f32 * ctx.ap,4 => 8.33f32 + 0.05f32 * ctx.ap,5 => 10f32 + 0.05f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 20f32 + 0.3f32 * ctx.ap,2 => 30f32 + 0.3f32 * ctx.ap,3 => 40f32 + 0.3f32 * ctx.ap,4 => 50f32 + 0.3f32 * ctx.ap,5 => 60f32 + 0.3f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 80f32 + 0.95f32 * ctx.ap,2 => 130f32 + 0.95f32 * ctx.ap,3 => 180f32 + 0.95f32 * ctx.ap,4 => 230f32 + 0.95f32 * ctx.ap,5 => 280f32 + 0.95f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 225f32 + ctx.ap,2 => 325f32 + ctx.ap,3 => 425f32 + ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 300f32 + 1.2f32 * ctx.ap,2 => 400f32 + 1.2f32 * ctx.ap,3 => 500f32 + 1.2f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 150f32 + 0.8f32 * ctx.ap,2 => 250f32 + 0.8f32 * ctx.ap,3 => 350f32 + 0.8f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:640f32,per_level:106f32},mana:CachedChampionStatsMap{flat:317f32,per_level:52f32},armor:CachedChampionStatsMap{flat:22f32,per_level:4.6f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:58f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:3.1f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.657999992370605f32,attack_range:175f32,aram_damage_taken:0.95f32,aram_damage_dealt:1.05f32,urf_damage_taken:1.1f32,urf_damage_dealt:0.9f32,},
@@ -1235,35 +1235,35 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_4), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 70f32 + 0.7f32 * ctx.ap,2 => 105f32 + 0.7f32 * ctx.ap,3 => 140f32 + 0.7f32 * ctx.ap,4 => 175f32 + 0.7f32 * ctx.ap,5 => 210f32 + 0.7f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 0.25f32 + 0.04f32 * 0.01f32 * ctx.ap + 0.08f32 * 0.01f32 * ctx.bonus_magic_resist + 0.01f32 * 0.01f32 * ctx.bonus_health,2 => 0.3f32 + 0.04f32 * 0.01f32 * ctx.ap + 0.08f32 * 0.01f32 * ctx.bonus_magic_resist + 0.01f32 * 0.01f32 * ctx.bonus_health,3 => 0.35f32 + 0.04f32 * 0.01f32 * ctx.ap + 0.08f32 * 0.01f32 * ctx.bonus_magic_resist + 0.01f32 * 0.01f32 * ctx.bonus_health,4 => 0.4f32 + 0.04f32 * 0.01f32 * ctx.ap + 0.08f32 * 0.01f32 * ctx.bonus_magic_resist + 0.01f32 * 0.01f32 * ctx.bonus_health,5 => 0.45f32 + 0.04f32 * 0.01f32 * ctx.ap + 0.08f32 * 0.01f32 * ctx.bonus_magic_resist + 0.01f32 * 0.01f32 * ctx.bonus_health,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 0.125f32 + 0.015f32 * 0.01f32 * ctx.ap + 0.04f32 * 0.01f32 * ctx.bonus_magic_resist + 0.005f32 * 0.01f32 * ctx.bonus_health,2 => 0.15f32 + 0.015f32 * 0.01f32 * ctx.ap + 0.04f32 * 0.01f32 * ctx.bonus_magic_resist + 0.005f32 * 0.01f32 * ctx.bonus_health,3 => 0.175f32 + 0.015f32 * 0.01f32 * ctx.ap + 0.04f32 * 0.01f32 * ctx.bonus_magic_resist + 0.005f32 * 0.01f32 * ctx.bonus_health,4 => 0.2f32 + 0.015f32 * 0.01f32 * ctx.ap + 0.04f32 * 0.01f32 * ctx.bonus_magic_resist + 0.005f32 * 0.01f32 * ctx.bonus_health,5 => 0.225f32 + 0.015f32 * 0.01f32 * ctx.ap + 0.04f32 * 0.01f32 * ctx.bonus_magic_resist + 0.005f32 * 0.01f32 * ctx.bonus_health,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 60f32 + 0.9f32 * ctx.ap,2 => 90f32 + 0.9f32 * ctx.ap,3 => 120f32 + 0.9f32 * ctx.ap,4 => 150f32 + 0.9f32 * ctx.ap,5 => 180f32 + 0.9f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 20f32 + 0.3f32 * ctx.ap,2 => 30f32 + 0.3f32 * ctx.ap,3 => 40f32 + 0.3f32 * ctx.ap,4 => 50f32 + 0.3f32 * ctx.ap,5 => 60f32 + 0.3f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 90f32 + 0.9f32 * ctx.ap,2 => 130f32 + 0.9f32 * ctx.ap,3 => 170f32 + 0.9f32 * ctx.ap,4 => 210f32 + 0.9f32 * ctx.ap,5 => 250f32 + 0.9f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 72f32 + 0.72f32 * ctx.ap,2 => 104f32 + 0.72f32 * ctx.ap,3 => 136f32 + 0.72f32 * ctx.ap,4 => 168f32 + 0.72f32 * ctx.ap,5 => 200f32 + 0.72f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 150f32 + 0.7f32 * ctx.ap,2 => 250f32 + 0.7f32 * ctx.ap,3 => 350f32 + 0.7f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:600f32,per_level:126f32},mana:CachedChampionStatsMap{flat:410f32,per_level:40f32},armor:CachedChampionStatsMap{flat:24f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:59f32,per_level:3.5f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:1.5f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:150f32,aram_damage_taken:1.05f32,aram_damage_dealt:0.9f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -1276,39 +1276,39 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_4), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_5), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_6), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_7), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 10f32 + ctx.ad,2 => 40f32 + ctx.ad,3 => 70f32 + ctx.ad,4 => 100f32 + ctx.ad,5 => 130f32 + ctx.ad,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 75f32,2 => 105f32,3 => 135f32,4 => 165f32,5 => 195f32,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 120f32 + 0.3f32 * ctx.ap,2 => 210f32 + 0.3f32 * ctx.ap,3 => 300f32 + 0.3f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 40f32 + 0.1f32 * ctx.ap,2 => 70f32 + 0.1f32 * ctx.ap,3 => 100f32 + 0.1f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 480f32 + 1.2f32 * ctx.ap,2 => 840f32 + 1.2f32 * ctx.ap,3 => 1200f32 + 1.2f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 600f32 + 1.5f32 * ctx.ap,2 => 1050f32 + 1.5f32 * ctx.ap,3 => 1500f32 + 1.5f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 120f32 + 0.3f32 * ctx.ap,2 => 210f32 + 0.3f32 * ctx.ap,3 => 300f32 + 0.3f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 840f32 + 2.1f32 * ctx.ap,2 => 1470f32 + 2.1f32 * ctx.ap,3 => 2100f32 + 2.1f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 720f32 + 1.8f32 * ctx.ap,2 => 1260f32 + 1.8f32 * ctx.ap,3 => 1800f32 + 1.8f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:630f32,per_level:114f32},mana:CachedChampionStatsMap{flat:280f32,per_level:60f32},armor:CachedChampionStatsMap{flat:31f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:64f32,per_level:4.2f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:3.2f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.69f32,attack_range:125f32,aram_damage_taken:1f32,aram_damage_dealt:1.05f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -1321,23 +1321,23 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::True, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 30f32 + 0.5f32 * ctx.ad,2 => 60f32 + 0.5f32 * ctx.ad,3 => 90f32 + 0.5f32 * ctx.ad,4 => 120f32 + 0.5f32 * ctx.ad,5 => 150f32 + 0.5f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 0.25f32,2 => 0.29f32,3 => 0.33f32,4 => 0.37f32,5 => 0.41f32,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 4f32 + 0.36f32 * ctx.ad,2 => 7f32 + 0.39f32 * ctx.ad,3 => 10f32 + 0.42f32 * ctx.ad,4 => 13f32 + 0.45f32 * ctx.ad,5 => 16f32 + 0.48f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 5f32 + 0.45f32 * ctx.ad,2 => 8.75f32 + 0.4875f32 * ctx.ad,3 => 12.5f32 + 0.525f32 * ctx.ad,4 => 16.25f32 + 0.5625f32 * ctx.ad,5 => 20f32 + 0.6f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 150f32 + 0.25f32 * ctx.missing_health,2 => 250f32 + 0.3f32 * ctx.missing_health,3 => 350f32 + 0.35f32 * ctx.missing_health,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:690f32,per_level:98f32},mana:CachedChampionStatsMap{flat:0f32,per_level:0f32},armor:CachedChampionStatsMap{flat:38f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:1.55f32},attack_damage:CachedChampionStatsMap{flat:69f32,per_level:4.5f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:3.65f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:175f32,aram_damage_taken:0.95f32,aram_damage_dealt:1f32,urf_damage_taken:0.95f32,urf_damage_dealt:1.1f32,},
@@ -1350,31 +1350,31 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_3), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 2.5f32 + 0.625f32 * ctx.ad,2 => 22.5f32 + 0.625f32 * ctx.ad,3 => 42.5f32 + 0.625f32 * ctx.ad,4 => 62.5f32 + 0.625f32 * ctx.ad,5 => 82.5f32 + 0.625f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 5f32 + 1.25f32 * ctx.ad,2 => 45f32 + 1.25f32 * ctx.ad,3 => 85f32 + 1.25f32 * ctx.ad,4 => 125f32 + 1.25f32 * ctx.ad,5 => 165f32 + 1.25f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 0f32 + 0.06f32 * ctx.enemy_max_health + ctx.ap,2 => 10f32 + 0.08f32 * ctx.enemy_max_health + ctx.ap,3 => 20f32 + 0.1f32 * ctx.enemy_max_health + ctx.ap,4 => 30f32 + 0.12f32 * ctx.enemy_max_health + ctx.ap,5 => 40f32 + 0.14f32 * ctx.enemy_max_health + ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 50f32 + 0.06f32 * ctx.max_health,2 => 85f32 + 0.06f32 * ctx.max_health,3 => 120f32 + 0.06f32 * ctx.max_health,4 => 155f32 + 0.06f32 * ctx.max_health,5 => 190f32 + 0.06f32 * ctx.max_health,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 0.4f32,2 => 0.45f32,3 => 0.5f32,4 => 0.55f32,5 => 0.6f32,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 300f32 + 0.75f32 * ctx.bonus_ad + 1.5f32 * ctx.ap,2 => 450f32 + 0.75f32 * ctx.bonus_ad + 1.5f32 * ctx.ap,3 => 600f32 + 0.75f32 * ctx.bonus_ad + 1.5f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 200f32 + 0.5f32 * ctx.bonus_ad + ctx.ap,2 => 300f32 + 0.5f32 * ctx.bonus_ad + ctx.ap,3 => 400f32 + 0.5f32 * ctx.bonus_ad + ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:540f32,per_level:79f32},mana:CachedChampionStatsMap{flat:100f32,per_level:0f32},armor:CachedChampionStatsMap{flat:32f32,per_level:3.7f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:60f32,per_level:3.2f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:6f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:175f32,aram_damage_taken:0.95f32,aram_damage_dealt:1.05f32,urf_damage_taken:0.9f32,urf_damage_dealt:1.1f32,},
@@ -1387,39 +1387,39 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_4), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 120f32 + 1.2f32 * ctx.ap,2 => 180f32 + 1.2f32 * ctx.ap,3 => 240f32 + 1.2f32 * ctx.ap,4 => 300f32 + 1.2f32 * ctx.ap,5 => 360f32 + 1.2f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 84f32 + 0.84f32 * ctx.ap,2 => 126f32 + 0.84f32 * ctx.ap,3 => 168f32 + 0.84f32 * ctx.ap,4 => 210f32 + 0.84f32 * ctx.ap,5 => 252f32 + 0.84f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 80f32 + 0.8f32 * ctx.ap,2 => 120f32 + 0.8f32 * ctx.ap,3 => 160f32 + 0.8f32 * ctx.ap,4 => 200f32 + 0.8f32 * ctx.ap,5 => 240f32 + 0.8f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 56f32 + 0.56f32 * ctx.ap,2 => 84f32 + 0.56f32 * ctx.ap,3 => 112f32 + 0.56f32 * ctx.ap,4 => 140f32 + 0.56f32 * ctx.ap,5 => 168f32 + 0.56f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 0.1f32 + 0.04f32 * 0.01f32 * ctx.ap,2 => 0.12f32 + 0.04f32 * 0.01f32 * ctx.ap,3 => 0.14f32 + 0.04f32 * 0.01f32 * ctx.ap,4 => 0.16f32 + 0.04f32 * 0.01f32 * ctx.ap,5 => 0.18f32 + 0.04f32 * 0.01f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 20f32 + 0.07f32 * ctx.enemy_max_health + 0.7f32 * ctx.ap,2 => 50f32 + 0.07f32 * ctx.enemy_max_health + 0.7f32 * ctx.ap,3 => 80f32 + 0.07f32 * ctx.enemy_max_health + 0.7f32 * ctx.ap,4 => 110f32 + 0.07f32 * ctx.enemy_max_health + 0.7f32 * ctx.ap,5 => 140f32 + 0.07f32 * ctx.enemy_max_health + 0.7f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 320f32 + 0.7f32 * ctx.ap,2 => 350f32 + 0.7f32 * ctx.ap,3 => 380f32 + 0.7f32 * ctx.ap,4 => 410f32 + 0.7f32 * ctx.ap,5 => 440f32 + 0.7f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 80f32 + 0.6f32 * ctx.ap,2 => 125f32 + 0.6f32 * ctx.ap,3 => 170f32 + 0.6f32 * ctx.ap,4 => 215f32 + 0.6f32 * ctx.ap,5 => 260f32 + 0.6f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 200f32 + 0.8f32 * ctx.ap,2 => 300f32 + 0.8f32 * ctx.ap,3 => 400f32 + 0.8f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:640f32,per_level:115f32},mana:CachedChampionStatsMap{flat:400f32,per_level:47f32},armor:CachedChampionStatsMap{flat:38f32,per_level:5f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:64f32,per_level:3.5f32},attack_speed:CachedChampionStatsMap{flat:0.675f32,per_level:2.05f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:125f32,aram_damage_taken:0.95f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -1432,27 +1432,27 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_3), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 45f32 + 0.8f32 * ctx.bonus_ad,2 => 65f32 + 0.8f32 * ctx.bonus_ad,3 => 85f32 + 0.8f32 * ctx.bonus_ad,4 => 105f32 + 0.8f32 * ctx.bonus_ad,5 => 125f32 + 0.8f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 85f32 + 0.4f32 * ctx.bonus_ad,2 => 120f32 + 0.65f32 * ctx.bonus_ad,3 => 155f32 + 0.9f32 * ctx.bonus_ad,4 => 190f32 + 1.15f32 * ctx.bonus_ad,5 => 225f32 + 1.4f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 130f32 + 1.2f32 * ctx.bonus_ad,2 => 185f32 + 1.45f32 * ctx.bonus_ad,3 => 240f32 + 1.7f32 * ctx.bonus_ad,4 => 295f32 + 1.95f32 * ctx.bonus_ad,5 => 350f32 + 2.2f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 60f32 + 0.6f32 * ctx.ap,2 => 110f32 + 0.6f32 * ctx.ap,3 => 160f32 + 0.6f32 * ctx.ap,4 => 210f32 + 0.6f32 * ctx.ap,5 => 260f32 + 0.6f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 275f32 + 1.5f32 * ctx.bonus_ad,2 => 425f32 + 1.5f32 * ctx.bonus_ad,3 => 575f32 + 1.5f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 200f32 + 1.2f32 * ctx.bonus_ad,2 => 320f32 + 1.2f32 * ctx.bonus_ad,3 => 440f32 + 1.2f32 * ctx.bonus_ad,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:625f32,per_level:106f32},mana:CachedChampionStatsMap{flat:325f32,per_level:40f32},armor:CachedChampionStatsMap{flat:33f32,per_level:4.6f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:68f32,per_level:4f32},attack_speed:CachedChampionStatsMap{flat:0.475f32,per_level:3f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.490000009536743f32,attack_range:425f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -1465,59 +1465,59 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_3), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_4), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_5), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_6), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_7), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_8), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_4), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_5), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 10f32 + 0.02f32 * ctx.ap + 0.01f32 * ctx.enemy_max_health + 0.0055000000000000005f32 * 0.01f32 * ctx.ap,2 => 15f32 + 0.02f32 * ctx.ap + 0.01f32 * ctx.enemy_max_health + 0.0055000000000000005f32 * 0.01f32 * ctx.ap,3 => 20f32 + 0.02f32 * ctx.ap + 0.01f32 * ctx.enemy_max_health + 0.0055000000000000005f32 * 0.01f32 * ctx.ap,4 => 25f32 + 0.02f32 * ctx.ap + 0.01f32 * ctx.enemy_max_health + 0.0055000000000000005f32 * 0.01f32 * ctx.ap,5 => 30f32 + 0.02f32 * ctx.ap + 0.01f32 * ctx.enemy_max_health + 0.0055000000000000005f32 * 0.01f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 10f32 + 0.02f32 * ctx.ap,2 => 15f32 + 0.02f32 * ctx.ap,3 => 20f32 + 0.02f32 * ctx.ap,4 => 25f32 + 0.02f32 * ctx.ap,5 => 30f32 + 0.02f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 60f32 + 0.35f32 * ctx.ap + 0.01f32 * ctx.enemy_max_health + 0.0055000000000000005f32 * 0.01f32 * ctx.ap,2 => 85f32 + 0.35f32 * ctx.ap + 0.01f32 * ctx.enemy_max_health + 0.0055000000000000005f32 * 0.01f32 * ctx.ap,3 => 110f32 + 0.35f32 * ctx.ap + 0.01f32 * ctx.enemy_max_health + 0.0055000000000000005f32 * 0.01f32 * ctx.ap,4 => 135f32 + 0.35f32 * ctx.ap + 0.01f32 * ctx.enemy_max_health + 0.0055000000000000005f32 * 0.01f32 * ctx.ap,5 => 160f32 + 0.35f32 * ctx.ap + 0.01f32 * ctx.enemy_max_health + 0.0055000000000000005f32 * 0.01f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 60f32 + 0.35f32 * ctx.ap,2 => 85f32 + 0.35f32 * ctx.ap,3 => 110f32 + 0.35f32 * ctx.ap,4 => 135f32 + 0.35f32 * ctx.ap,5 => 160f32 + 0.35f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 110f32 + 0.45f32 * ctx.ap + 0.06f32 * ctx.enemy_max_health + 0.033f32 * 0.01f32 * ctx.ap,2 => 160f32 + 0.45f32 * ctx.ap + 0.06f32 * ctx.enemy_max_health + 0.033f32 * 0.01f32 * ctx.ap,3 => 210f32 + 0.45f32 * ctx.ap + 0.06f32 * ctx.enemy_max_health + 0.033f32 * 0.01f32 * ctx.ap,4 => 260f32 + 0.45f32 * ctx.ap + 0.06f32 * ctx.enemy_max_health + 0.033f32 * 0.01f32 * ctx.ap,5 => 310f32 + 0.45f32 * ctx.ap + 0.06f32 * ctx.enemy_max_health + 0.033f32 * 0.01f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 110f32 + 0.45f32 * ctx.ap,2 => 160f32 + 0.45f32 * ctx.ap,3 => 210f32 + 0.45f32 * ctx.ap,4 => 260f32 + 0.45f32 * ctx.ap,5 => 310f32 + 0.45f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 70f32 + 0.37f32 * ctx.ap + 0.02f32 * ctx.enemy_max_health + 0.011000000000000001f32 * 0.01f32 * ctx.ap,2 => 100f32 + 0.37f32 * ctx.ap + 0.02f32 * ctx.enemy_max_health + 0.011000000000000001f32 * 0.01f32 * ctx.ap,3 => 130f32 + 0.37f32 * ctx.ap + 0.02f32 * ctx.enemy_max_health + 0.011000000000000001f32 * 0.01f32 * ctx.ap,4 => 160f32 + 0.37f32 * ctx.ap + 0.02f32 * ctx.enemy_max_health + 0.011000000000000001f32 * 0.01f32 * ctx.ap,5 => 190f32 + 0.37f32 * ctx.ap + 0.02f32 * ctx.enemy_max_health + 0.011000000000000001f32 * 0.01f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 70f32 + 0.37f32 * ctx.ap,2 => 100f32 + 0.37f32 * ctx.ap,3 => 130f32 + 0.37f32 * ctx.ap,4 => 160f32 + 0.37f32 * ctx.ap,5 => 190f32 + 0.37f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 8f32 + 0.25f32 * ctx.ap,2 => 11f32 + 0.25f32 * ctx.ap,3 => 14f32 + 0.25f32 * ctx.ap,4 => 17f32 + 0.25f32 * ctx.ap,5 => 20f32 + 0.25f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 30f32 + 0.08f32 * ctx.ap + 0.01f32 * ctx.enemy_max_health + 0.0055000000000000005f32 * 0.01f32 * ctx.ap,2 => 60f32 + 0.08f32 * ctx.ap + 0.01f32 * ctx.enemy_max_health + 0.0055000000000000005f32 * 0.01f32 * ctx.ap,3 => 90f32 + 0.08f32 * ctx.ap + 0.01f32 * ctx.enemy_max_health + 0.0055000000000000005f32 * 0.01f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 30f32 + 0.08f32 * ctx.ap,2 => 60f32 + 0.08f32 * ctx.ap,3 => 90f32 + 0.08f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 270f32 + 0.72f32 * ctx.ap + 0.09f32 * ctx.enemy_max_health + 0.0495f32 * 0.01f32 * ctx.ap,2 => 540f32 + 0.72f32 * ctx.ap + 0.09f32 * ctx.enemy_max_health + 0.0495f32 * 0.01f32 * ctx.ap,3 => 810f32 + 0.72f32 * ctx.ap + 0.09f32 * ctx.enemy_max_health + 0.0495f32 * 0.01f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 90f32 + 0.24f32 * ctx.ap + 0.03f32 * ctx.enemy_max_health + 0.0165f32 * 0.01f32 * ctx.ap,2 => 180f32 + 0.24f32 * ctx.ap + 0.03f32 * ctx.enemy_max_health + 0.0165f32 * 0.01f32 * ctx.ap,3 => 270f32 + 0.24f32 * ctx.ap + 0.03f32 * ctx.enemy_max_health + 0.0165f32 * 0.01f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 150f32 + 0.4f32 * ctx.ap + 0.05f32 * ctx.enemy_max_health + 0.0275f32 * 0.01f32 * ctx.ap,2 => 300f32 + 0.4f32 * ctx.ap + 0.05f32 * ctx.enemy_max_health + 0.0275f32 * 0.01f32 * ctx.ap,3 => 450f32 + 0.4f32 * ctx.ap + 0.05f32 * ctx.enemy_max_health + 0.0275f32 * 0.01f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:600f32,per_level:110f32},mana:CachedChampionStatsMap{flat:330f32,per_level:40f32},armor:CachedChampionStatsMap{flat:36f32,per_level:4.9f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:63f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.69f32,per_level:2.25f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.69f32,attack_range:150f32,aram_damage_taken:1f32,aram_damage_dealt:1.02f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -1530,31 +1530,31 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 36f32 + 0.54f32 * ctx.bonus_ad,2 => 51f32 + 0.54f32 * ctx.bonus_ad,3 => 66f32 + 0.54f32 * ctx.bonus_ad,4 => 81f32 + 0.54f32 * ctx.bonus_ad,5 => 96f32 + 0.54f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 60f32 + 0.9f32 * ctx.bonus_ad,2 => 85f32 + 0.9f32 * ctx.bonus_ad,3 => 110f32 + 0.9f32 * ctx.bonus_ad,4 => 135f32 + 0.9f32 * ctx.bonus_ad,5 => 160f32 + 0.9f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 20f32 + 0.2f32 * ctx.ap,2 => 30f32 + 0.2f32 * ctx.ap,3 => 40f32 + 0.2f32 * ctx.ap,4 => 50f32 + 0.2f32 * ctx.ap,5 => 60f32 + 0.2f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 100f32 + ctx.ap,2 => 150f32 + ctx.ap,3 => 200f32 + ctx.ap,4 => 250f32 + ctx.ap,5 => 300f32 + ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 60f32 + ctx.bonus_ad,2 => 90f32 + ctx.bonus_ad,3 => 120f32 + ctx.bonus_ad,4 => 150f32 + ctx.bonus_ad,5 => 180f32 + ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 30f32 + 0.5f32 * ctx.bonus_ad,2 => 45f32 + 0.5f32 * ctx.bonus_ad,3 => 60f32 + 0.5f32 * ctx.bonus_ad,4 => 75f32 + 0.5f32 * ctx.bonus_ad,5 => 90f32 + 0.5f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 150f32 + ctx.ap,2 => 250f32 + ctx.ap,3 => 350f32 + ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:625f32,per_level:106f32},mana:CachedChampionStatsMap{flat:280f32,per_level:40f32},armor:CachedChampionStatsMap{flat:32f32,per_level:5.45f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:66f32,per_level:3.7f32},attack_speed:CachedChampionStatsMap{flat:0.67f32,per_level:2.5f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.6700000166893f32,attack_range:175f32,aram_damage_taken:0.9f32,aram_damage_dealt:1.05f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -1567,35 +1567,35 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_4), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_5), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_6), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_7), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_8), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.w_level {1 => 160f32 + 1.99f32 * ctx.ap,2 => 245f32,3 => 330f32,4 => 415f32,5 => 500f32,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 80f32 + 1.03f32 * ctx.ap,2 => 125f32,3 => 170f32,4 => 215f32,5 => 260f32,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 10f32 + 0.12f32 * ctx.ap,2 => 15f32,3 => 20f32,4 => 25f32,5 => 30f32,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 30f32 + 0.36f32 * ctx.ap,2 => 45f32,3 => 60f32,4 => 75f32,5 => 90f32,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 120f32 + 1.44f32 * ctx.ap,2 => 180f32,3 => 240f32,4 => 300f32,5 => 360f32,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 40f32 + 0.48f32 * ctx.ap,2 => 60f32,3 => 80f32,4 => 100f32,5 => 120f32,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 40f32 + 0.55f32 * ctx.ap,2 => 65f32,3 => 90f32,4 => 115f32,5 => 140f32,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 60f32 + 0.6f32 * ctx.ap,2 => 100f32,3 => 140f32,4 => 180f32,5 => 220f32,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:558f32,per_level:101f32},mana:CachedChampionStatsMap{flat:385f32,per_level:20f32},armor:CachedChampionStatsMap{flat:19f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:56f32,per_level:2.7f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:1.36f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:550f32,aram_damage_taken:1.1f32,aram_damage_dealt:0.9f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -1608,19 +1608,19 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_4), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.r_level {1 => 2.5f32 + 0.0125f32 * ctx.ap,2 => 5f32 + 0.0125f32 * ctx.ap,3 => 7.5f32 + 0.0125f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 30f32 + 0.15f32 * ctx.ap,2 => 60f32 + 0.15f32 * ctx.ap,3 => 90f32 + 0.15f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 200f32 + 0.8f32 * ctx.ap,2 => 325f32 + 0.8f32 * ctx.ap,3 => 450f32 + 0.8f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 230f32 + 0.95f32 * ctx.ap,2 => 385f32 + 0.95f32 * ctx.ap,3 => 540f32 + 0.95f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:580f32,per_level:109f32},mana:CachedChampionStatsMap{flat:480f32,per_level:30f32},armor:CachedChampionStatsMap{flat:21f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:54f32,per_level:3.3f32},attack_speed:CachedChampionStatsMap{flat:0.69f32,per_level:2.5f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.658f32,attack_range:550f32,aram_damage_taken:1f32,aram_damage_dealt:0.95f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -1633,23 +1633,23 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Mixed, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 0.1f32,2 => 0.15f32,3 => 0.2f32,4 => 0.25f32,5 => 0.3f32,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 0.03f32 * ctx.enemy_max_health + 0.04f32 * 0.01f32 * ctx.ad,2 => 0.035f32 * ctx.enemy_max_health + 0.04f32 * 0.01f32 * ctx.ad,3 => 0.04f32 * ctx.enemy_max_health + 0.04f32 * 0.01f32 * ctx.ad,4 => 0.045f32 * ctx.enemy_max_health + 0.04f32 * 0.01f32 * ctx.ad,5 => 0.05f32 * ctx.enemy_max_health + 0.04f32 * 0.01f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 20f32,2 => 30f32,3 => 40f32,4 => 50f32,5 => 60f32,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 0.25f32 + 0.08f32 * 0.01f32 * ctx.ad,2 => 0.3f32 + 0.08f32 * 0.01f32 * ctx.ad,3 => 0.35f32 + 0.08f32 * 0.01f32 * ctx.ad,4 => 0.4f32 + 0.08f32 * 0.01f32 * ctx.ad,5 => 0.45f32 + 0.08f32 * 0.01f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 150f32 + 0.5f32 * ctx.bonus_ad,2 => 250f32 + 0.5f32 * ctx.bonus_ad,3 => 350f32 + 0.5f32 * ctx.bonus_ad,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:656f32,per_level:115f32},mana:CachedChampionStatsMap{flat:350f32,per_level:50f32},armor:CachedChampionStatsMap{flat:35f32,per_level:5f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:65f32,per_level:5f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2.5f32},movespeed:350f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:125f32,aram_damage_taken:1.05f32,aram_damage_dealt:0.95f32,urf_damage_taken:0.9f32,urf_damage_dealt:1f32,},
@@ -1662,23 +1662,23 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 5f32 + 0.7f32 * ctx.ad,2 => 25f32 + 0.7f32 * ctx.ad,3 => 45f32 + 0.7f32 * ctx.ad,4 => 65f32 + 0.7f32 * ctx.ad,5 => 85f32 + 0.7f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 30f32 + 1.2f32 * ctx.ad + 1.2f32 * ctx.ap,2 => 60f32 + 1.2f32 * ctx.ad + 1.2f32 * ctx.ap,3 => 90f32 + 1.2f32 * ctx.ad + 1.2f32 * ctx.ap,4 => 120f32 + 1.2f32 * ctx.ad + 1.2f32 * ctx.ap,5 => 150f32 + 1.2f32 * ctx.ad + 1.2f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 10f32 + 0.4f32 * ctx.ad + 0.4f32 * ctx.ap,2 => 20f32 + 0.4f32 * ctx.ad + 0.4f32 * ctx.ap,3 => 30f32 + 0.4f32 * ctx.ad + 0.4f32 * ctx.ap,4 => 40f32 + 0.4f32 * ctx.ad + 0.4f32 * ctx.ap,5 => 50f32 + 0.4f32 * ctx.ad + 0.4f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 70f32 + 0.8f32 * ctx.ap,2 => 110f32 + 0.8f32 * ctx.ap,3 => 150f32 + 0.8f32 * ctx.ap,4 => 190f32 + 0.8f32 * ctx.ap,5 => 230f32 + 0.8f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 125f32 + 0.7f32 * ctx.ap,2 => 200f32 + 0.7f32 * ctx.ap,3 => 275f32 + 0.7f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:630f32,per_level:115f32},mana:CachedChampionStatsMap{flat:350f32,per_level:50f32},armor:CachedChampionStatsMap{flat:36f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:65f32,per_level:3.5f32},attack_speed:CachedChampionStatsMap{flat:0.656f32,per_level:2.5f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.656000018119812f32,attack_range:200f32,aram_damage_taken:1f32,aram_damage_dealt:1.05f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -1691,19 +1691,19 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 80f32 + 0.7f32 * ctx.ap,2 => 125f32 + 0.7f32 * ctx.ap,3 => 170f32 + 0.7f32 * ctx.ap,4 => 215f32 + 0.7f32 * ctx.ap,5 => 260f32 + 0.7f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 20f32 + 0.2f32 * ctx.ap,2 => 27.5f32 + 0.2f32 * ctx.ap,3 => 35f32 + 0.2f32 * ctx.ap,4 => 42.5f32 + 0.2f32 * ctx.ap,5 => 50f32 + 0.2f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 10f32 + 0.1f32 * ctx.ap,2 => 15f32 + 0.1f32 * ctx.ap,3 => 20f32 + 0.1f32 * ctx.ap,4 => 25f32 + 0.1f32 * ctx.ap,5 => 30f32 + 0.1f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 70f32 + 0.8f32 * ctx.ap,2 => 90f32 + 0.8f32 * ctx.ap,3 => 110f32 + 0.8f32 * ctx.ap,4 => 130f32 + 0.8f32 * ctx.ap,5 => 150f32 + 0.8f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:630f32,per_level:99f32},mana:CachedChampionStatsMap{flat:450f32,per_level:60f32},armor:CachedChampionStatsMap{flat:27f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:50f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.644f32,per_level:3.4f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.643999993801116f32,attack_range:475f32,aram_damage_taken:1f32,aram_damage_dealt:0.95f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -1716,23 +1716,23 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 10f32 + 0.1f32 * ctx.ap,2 => 15f32 + 0.1f32 * ctx.ap,3 => 20f32 + 0.1f32 * ctx.ap,4 => 25f32 + 0.1f32 * ctx.ap,5 => 30f32 + 0.1f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 85f32 + 0.8f32 * ctx.ap,2 => 135f32 + 0.8f32 * ctx.ap,3 => 185f32 + 0.8f32 * ctx.ap,4 => 235f32 + 0.8f32 * ctx.ap,5 => 285f32 + 0.8f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 55f32 + 0.5f32 * ctx.ap,2 => 90f32 + 0.5f32 * ctx.ap,3 => 125f32 + 0.5f32 * ctx.ap,4 => 160f32 + 0.5f32 * ctx.ap,5 => 195f32 + 0.5f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 55f32 + 0.5f32 * ctx.ap + 0.3f32 * ctx.bonus_move_speed,2 => 85f32 + 0.5f32 * ctx.ap + 0.3f32 * ctx.bonus_move_speed,3 => 115f32 + 0.5f32 * ctx.ap + 0.3f32 * ctx.bonus_move_speed,4 => 145f32 + 0.5f32 * ctx.ap + 0.3f32 * ctx.bonus_move_speed,5 => 175f32 + 0.5f32 * ctx.ap + 0.3f32 * ctx.bonus_move_speed,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 10f32 + 0.1f32 * ctx.ap,2 => 15f32 + 0.1f32 * ctx.ap,3 => 20f32 + 0.1f32 * ctx.ap,4 => 25f32 + 0.1f32 * ctx.ap,5 => 30f32 + 0.1f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:570f32,per_level:90f32},mana:CachedChampionStatsMap{flat:360f32,per_level:50f32},armor:CachedChampionStatsMap{flat:28f32,per_level:4.5f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:47f32,per_level:2.5f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:3f32},movespeed:325f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:550f32,aram_damage_taken:1.05f32,aram_damage_dealt:0.95f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -1745,15 +1745,15 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 90f32 + 1.45f32 * ctx.bonus_ad,2 => 130f32 + 1.45f32 * ctx.bonus_ad,3 => 170f32 + 1.45f32 * ctx.bonus_ad,4 => 210f32 + 1.45f32 * ctx.bonus_ad,5 => 250f32 + 1.45f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 80f32 + 0.8f32 * ctx.ap,2 => 120f32 + 0.8f32 * ctx.ap,3 => 160f32 + 0.8f32 * ctx.ap,4 => 200f32 + 0.8f32 * ctx.ap,5 => 240f32 + 0.8f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 200f32 + 1.8f32 * ctx.bonus_ad,2 => 325f32 + 1.8f32 * ctx.bonus_ad,3 => 450f32 + 1.8f32 * ctx.bonus_ad,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:640f32,per_level:104f32},mana:CachedChampionStatsMap{flat:300f32,per_level:55f32},armor:CachedChampionStatsMap{flat:36f32,per_level:5.2f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:64f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:2.5f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.657999992370605f32,attack_range:175f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -1766,27 +1766,27 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 65f32 + ctx.bonus_ad,2 => 105f32 + ctx.bonus_ad,3 => 145f32 + ctx.bonus_ad,4 => 185f32 + ctx.bonus_ad,5 => 225f32 + ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 50f32 + 0.6f32 * ctx.ap,2 => 85f32 + 0.6f32 * ctx.ap,3 => 120f32 + 0.6f32 * ctx.ap,4 => 155f32 + 0.6f32 * ctx.ap,5 => 190f32 + 0.6f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 80f32 + 1.4f32 * ctx.ap + 0.07f32 * ctx.enemy_max_health,2 => 140f32 + 1.4f32 * ctx.ap + 0.07f32 * ctx.enemy_max_health,3 => 200f32 + 1.4f32 * ctx.ap + 0.07f32 * ctx.enemy_max_health,4 => 260f32 + 1.4f32 * ctx.ap + 0.07f32 * ctx.enemy_max_health,5 => 320f32 + 1.4f32 * ctx.ap + 0.07f32 * ctx.enemy_max_health,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 40f32 + 0.7f32 * ctx.ap + 0.035f32 * ctx.enemy_max_health,2 => 70f32 + 0.7f32 * ctx.ap + 0.035f32 * ctx.enemy_max_health,3 => 100f32 + 0.7f32 * ctx.ap + 0.035f32 * ctx.enemy_max_health,4 => 130f32 + 0.7f32 * ctx.ap + 0.035f32 * ctx.enemy_max_health,5 => 160f32 + 0.7f32 * ctx.ap + 0.035f32 * ctx.enemy_max_health,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 100f32 + ctx.ap,2 => 175f32 + ctx.ap,3 => 250f32 + ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 75f32 + 0.6f32 * ctx.ap,2 => 130f32 + 0.6f32 * ctx.ap,3 => 185f32 + 0.6f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:665f32,per_level:103f32},mana:CachedChampionStatsMap{flat:339f32,per_level:52f32},armor:CachedChampionStatsMap{flat:36f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:68f32,per_level:4.25f32},attack_speed:CachedChampionStatsMap{flat:0.638f32,per_level:3.4f32},movespeed:350f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.638000011444091f32,attack_range:125f32,aram_damage_taken:0.97f32,aram_damage_dealt:1.05f32,urf_damage_taken:1.15f32,urf_damage_dealt:0.9f32,},
@@ -1799,23 +1799,23 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 60f32 + 1.35f32 * ctx.bonus_ad,2 => 105f32 + 1.35f32 * ctx.bonus_ad,3 => 150f32 + 1.35f32 * ctx.bonus_ad,4 => 195f32 + 1.35f32 * ctx.bonus_ad,5 => 240f32 + 1.35f32 * ctx.bonus_ad,6 => 285f32 + 1.35f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 140f32 + ctx.ap,2 => 200f32 + ctx.ap,3 => 260f32 + ctx.ap,4 => 320f32 + ctx.ap,5 => 380f32 + ctx.ap,6 => 440f32 + ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 35f32 + 0.25f32 * ctx.ap,2 => 50f32 + 0.25f32 * ctx.ap,3 => 65f32 + 0.25f32 * ctx.ap,4 => 80f32 + 0.25f32 * ctx.ap,5 => 95f32 + 0.25f32 * ctx.ap,6 => 110f32 + 0.25f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 0.08f32 * ctx.enemy_max_health + ctx.bonus_ad,2 => 0.10800000000000001f32 * ctx.enemy_max_health + ctx.bonus_ad,3 => 0.136f32 * ctx.enemy_max_health + ctx.bonus_ad,4 => 0.16399999999999998f32 * ctx.enemy_max_health + ctx.bonus_ad,5 => 0.192f32 * ctx.enemy_max_health + ctx.bonus_ad,6 => 0.22f32 * ctx.enemy_max_health + ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 200f32,2 => 300f32,3 => 400f32,4 => 500f32,5 => 600f32,6 => 700f32,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:590f32,per_level:109f32},mana:CachedChampionStatsMap{flat:375f32,per_level:45f32},armor:CachedChampionStatsMap{flat:22f32,per_level:5f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:59f32,per_level:4.25f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:3f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.657999992370605f32,attack_range:125f32,aram_damage_taken:1f32,aram_damage_dealt:1.05f32,urf_damage_taken:1.05f32,urf_damage_dealt:0.92f32,},
@@ -1828,47 +1828,47 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_3), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_3), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_4), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 44f32 + 0.44f32 * ctx.ad + 0.6f32 * ctx.ap,2 => 69f32 + 0.515f32 * ctx.ad + 0.6f32 * ctx.ap,3 => 94f32 + 0.59f32 * ctx.ad + 0.6f32 * ctx.ap,4 => 119f32 + 0.665f32 * ctx.ad + 0.6f32 * ctx.ap,5 => 144f32 + 0.74f32 * ctx.ad + 0.6f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 15.4f32 + 0.154f32 * ctx.ad + 0.21f32 * ctx.ap,2 => 24.15f32 + 0.18025f32 * ctx.ad + 0.21f32 * ctx.ap,3 => 32.9f32 + 0.2065f32 * ctx.ad + 0.21f32 * ctx.ap,4 => 41.65f32 + 0.23274999999999998f32 * ctx.ad + 0.21f32 * ctx.ap,5 => 50.4f32 + 0.259f32 * ctx.ad + 0.21f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 90.2f32 + 0.902f32 * ctx.ad + 1.23f32 * ctx.ap,2 => 141.45f32 + 1.05575f32 * ctx.ad + 1.23f32 * ctx.ap,3 => 192.7f32 + 1.2095f32 * ctx.ad + 1.23f32 * ctx.ap,4 => 243.95f32 + 1.3632499999999999f32 * ctx.ad + 1.23f32 * ctx.ap,5 => 295.2f32 + 1.517f32 * ctx.ad + 1.23f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 45f32 + 0.375f32 * ctx.ad,2 => 71.25f32 + 0.375f32 * ctx.ad,3 => 97.5f32 + 0.375f32 * ctx.ad,4 => 123.75f32 + 0.375f32 * ctx.ad,5 => 150f32 + 0.375f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 60f32 + 0.5f32 * ctx.ad,2 => 95f32 + 0.5f32 * ctx.ad,3 => 130f32 + 0.5f32 * ctx.ad,4 => 165f32 + 0.5f32 * ctx.ad,5 => 200f32 + 0.5f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 20f32 + 1.2f32 * ctx.ad + ctx.ap,2 => 80f32 + 1.2f32 * ctx.ad + ctx.ap,3 => 140f32 + 1.2f32 * ctx.ad + ctx.ap,4 => 200f32 + 1.2f32 * ctx.ad + ctx.ap,5 => 260f32 + 1.2f32 * ctx.ad + ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 13f32 + 0.78f32 * ctx.ad + 0.65f32 * ctx.ap,2 => 52f32 + 0.78f32 * ctx.ad + 0.65f32 * ctx.ap,3 => 91f32 + 0.78f32 * ctx.ad + 0.65f32 * ctx.ap,4 => 130f32 + 0.78f32 * ctx.ad + 0.65f32 * ctx.ap,5 => 169f32 + 0.78f32 * ctx.ad + 0.65f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 256f32 + ctx.ad,2 => 512f32 + ctx.ad,3 => 768f32 + ctx.ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 64f32 + 0.25f32 * ctx.ad,2 => 128f32 + 0.25f32 * ctx.ad,3 => 192f32 + 0.25f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 512f32 + 2f32 * ctx.ad,2 => 1024f32 + 2f32 * ctx.ad,3 => 1536f32 + 2f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 128f32 + 0.5f32 * ctx.ad,2 => 256f32 + 0.5f32 * ctx.ad,3 => 384f32 + 0.5f32 * ctx.ad,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:655f32,per_level:107f32},mana:CachedChampionStatsMap{flat:300f32,per_level:50f32},armor:CachedChampionStatsMap{flat:24f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:59f32,per_level:4.4f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:3f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:0.86f32,attack_speed_ratio:0f32,attack_range:550f32,aram_damage_taken:1.05f32,aram_damage_dealt:0.95f32,urf_damage_taken:1f32,urf_damage_dealt:1.01f32,},
@@ -1881,27 +1881,27 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_3), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_4), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.w_level {1 => 10f32 + 1.4f32 * ctx.ad,2 => 60f32 + 1.4f32 * ctx.ad,3 => 110f32 + 1.4f32 * ctx.ad,4 => 160f32 + 1.4f32 * ctx.ad,5 => 210f32 + 1.4f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 70f32 + ctx.ap,2 => 120f32 + ctx.ap,3 => 170f32 + ctx.ap,4 => 220f32 + ctx.ap,5 => 270f32 + ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 240f32 + 1.24f32 * ctx.bonus_ad + 0.2f32 * ctx.missing_health,2 => 360f32 + 1.24f32 * ctx.bonus_ad + 0.24f32 * ctx.missing_health,3 => 480f32 + 1.24f32 * ctx.bonus_ad + 0.28f32 * ctx.missing_health,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 24f32 + 0.124f32 * ctx.bonus_ad + 0.2f32 * ctx.missing_health,2 => 36f32 + 0.124f32 * ctx.bonus_ad + 0.24f32 * ctx.missing_health,3 => 48f32 + 0.124f32 * ctx.bonus_ad + 0.28f32 * ctx.missing_health,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 300f32 + 1.55f32 * ctx.bonus_ad + 0.25f32 * ctx.missing_health,2 => 450f32 + 1.55f32 * ctx.bonus_ad + 0.3f32 * ctx.missing_health,3 => 600f32 + 1.55f32 * ctx.bonus_ad + 0.35f32 * ctx.missing_health,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 30f32 + 0.155f32 * ctx.bonus_ad + 0.25f32 * ctx.missing_health,2 => 45f32 + 0.155f32 * ctx.bonus_ad + 0.3f32 * ctx.missing_health,3 => 60f32 + 0.155f32 * ctx.bonus_ad + 0.35f32 * ctx.missing_health,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:630f32,per_level:105f32},mana:CachedChampionStatsMap{flat:260f32,per_level:50f32},armor:CachedChampionStatsMap{flat:26f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:59f32,per_level:3.25f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:1.4f32},movespeed:325f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:525f32,aram_damage_taken:1.05f32,aram_damage_dealt:0.9f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -1914,39 +1914,39 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_3), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_4), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_5), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_3), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 0.0f32,2 => 0.0f32,3 => 0.0f32,4 => 0.0f32,5 => 0.0f32,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 0.0f32,2 => 0.0f32,3 => 0.0f32,4 => 0.0f32,5 => 0.0f32,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 0.0f32,2 => 0.0f32,3 => 0.0f32,4 => 0.0f32,5 => 0.0f32,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 0.0f32,2 => 0.0f32,3 => 0.0f32,4 => 0.0f32,5 => 0.0f32,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 180f32,2 => 260f32,3 => 340f32,4 => 420f32,5 => 500f32,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 0.0f32,2 => 0.0f32,3 => 0.0f32,4 => 0.0f32,5 => 0.0f32,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 80f32,2 => 115f32,3 => 150f32,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 80f32 + 0.05f32 * ctx.bonus_health,2 => 115f32 + 0.05f32 * ctx.bonus_health,3 => 150f32 + 0.05f32 * ctx.bonus_health,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 160f32 + 0.05f32 * ctx.bonus_health,2 => 230f32 + 0.05f32 * ctx.bonus_health,3 => 300f32 + 0.05f32 * ctx.bonus_health,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:625f32,per_level:120f32},mana:CachedChampionStatsMap{flat:320f32,per_level:60f32},armor:CachedChampionStatsMap{flat:36f32,per_level:5.2f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:2.1f32},attack_damage:CachedChampionStatsMap{flat:64f32,per_level:3.5f32},attack_speed:CachedChampionStatsMap{flat:0.688f32,per_level:2.5f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:150f32,aram_damage_taken:1f32,aram_damage_dealt:1.05f32,urf_damage_taken:1f32,urf_damage_dealt:1.05f32,},
@@ -1959,23 +1959,23 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_3), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_4), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 40f32 + 0.55f32 * ctx.bonus_ad + 0.2f32 * ctx.ap,2 => 55f32 + 0.55f32 * ctx.bonus_ad + 0.2f32 * ctx.ap,3 => 70f32 + 0.55f32 * ctx.bonus_ad + 0.2f32 * ctx.ap,4 => 85f32 + 0.55f32 * ctx.bonus_ad + 0.2f32 * ctx.ap,5 => 100f32 + 0.55f32 * ctx.bonus_ad + 0.2f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 150f32 + 2.0625f32 * ctx.bonus_ad + 0.75f32 * ctx.ap,2 => 206.25f32 + 2.0625f32 * ctx.bonus_ad + 0.75f32 * ctx.ap,3 => 262.5f32 + 2.0625f32 * ctx.bonus_ad + 0.75f32 * ctx.ap,4 => 318.75f32 + 2.0625f32 * ctx.bonus_ad + 0.75f32 * ctx.ap,5 => 375f32 + 2.0625f32 * ctx.bonus_ad + 0.75f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 10f32 + 0.1375f32 * ctx.bonus_ad + 0.05f32 * ctx.ap,2 => 13.75f32 + 0.1375f32 * ctx.bonus_ad + 0.05f32 * ctx.ap,3 => 17.5f32 + 0.1375f32 * ctx.bonus_ad + 0.05f32 * ctx.ap,4 => 21.25f32 + 0.1375f32 * ctx.bonus_ad + 0.05f32 * ctx.ap,5 => 25f32 + 0.1375f32 * ctx.bonus_ad + 0.05f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 90f32 + 1.2375f32 * ctx.bonus_ad + 0.45f32 * ctx.ap,2 => 123.75f32 + 1.2375f32 * ctx.bonus_ad + 0.45f32 * ctx.ap,3 => 157.5f32 + 1.2375f32 * ctx.bonus_ad + 0.45f32 * ctx.ap,4 => 191.25f32 + 1.2375f32 * ctx.bonus_ad + 0.45f32 * ctx.ap,5 => 225f32 + 1.2375f32 * ctx.bonus_ad + 0.45f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 30f32 + 1.3f32 * ctx.ad + 0.45f32 * ctx.ap,2 => 55f32 + 1.3f32 * ctx.ad + 0.45f32 * ctx.ap,3 => 80f32 + 1.3f32 * ctx.ad + 0.45f32 * ctx.ap,4 => 105f32 + 1.3f32 * ctx.ad + 0.45f32 * ctx.ap,5 => 130f32 + 1.3f32 * ctx.ad + 0.45f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:640f32,per_level:102f32},mana:CachedChampionStatsMap{flat:345f32,per_level:40f32},armor:CachedChampionStatsMap{flat:27f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:59f32,per_level:2.6f32},attack_speed:CachedChampionStatsMap{flat:0.644f32,per_level:1.8f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.643999993801116f32,attack_range:525f32,aram_damage_taken:0.9f32,aram_damage_dealt:1f32,urf_damage_taken:1.1f32,urf_damage_dealt:0.9f32,},
@@ -1988,23 +1988,23 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 10f32 + 1.05f32 * ctx.ad,2 => 75f32 + 1.05f32 * ctx.ad,3 => 140f32 + 1.05f32 * ctx.ad,4 => 205f32 + 1.05f32 * ctx.ad,5 => 270f32 + 1.05f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 0.1f32 * ctx.enemy_max_health,2 => 0.12f32 * ctx.enemy_max_health,3 => 0.14f32 * ctx.enemy_max_health,4 => 0.16f32 * ctx.enemy_max_health,5 => 0.18f32 * ctx.enemy_max_health,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 100f32,2 => 125f32,3 => 150f32,4 => 175f32,5 => 200f32,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 7f32 + 0.2f32 * ctx.ad + 0.2f32 * ctx.ap,2 => 14f32 + 0.25f32 * ctx.ad + 0.2f32 * ctx.ap,3 => 21f32 + 0.3f32 * ctx.ad + 0.2f32 * ctx.ap,4 => 28f32 + 0.35f32 * ctx.ad + 0.2f32 * ctx.ap,5 => 35f32 + 0.4f32 * ctx.ad + 0.2f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 5f32 + 0.7f32 * ctx.ad + 0.2f32 * ctx.ap,2 => 15f32 + 0.7f32 * ctx.ad + 0.2f32 * ctx.ap,3 => 25f32 + 0.7f32 * ctx.ad + 0.2f32 * ctx.ap,4 => 35f32 + 0.7f32 * ctx.ad + 0.2f32 * ctx.ap,5 => 45f32 + 0.7f32 * ctx.ad + 0.2f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:560f32,per_level:114f32},mana:CachedChampionStatsMap{flat:300f32,per_level:45f32},armor:CachedChampionStatsMap{flat:24f32,per_level:5.2f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:57f32,per_level:4f32},attack_speed:CachedChampionStatsMap{flat:0.694f32,per_level:4.5f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.694000005722045f32,attack_range:525f32,aram_damage_taken:0.9f32,aram_damage_dealt:1.1f32,urf_damage_taken:0.9f32,urf_damage_dealt:1.1f32,},
@@ -2017,15 +2017,15 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 60f32 + 0.7f32 * ctx.ap,2 => 110f32,3 => 160f32,4 => 210f32,5 => 260f32,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 40f32 + 0.45f32 * ctx.ap,2 => 65f32,3 => 90f32,4 => 115f32,5 => 140f32,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 80f32 + 0.9f32 * ctx.ap,2 => 130f32,3 => 180f32,4 => 230f32,5 => 280f32,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:630f32,per_level:109f32},mana:CachedChampionStatsMap{flat:374f32,per_level:40f32},armor:CachedChampionStatsMap{flat:28f32,per_level:5f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:51f32,per_level:3.3f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2.3f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:525f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -2038,23 +2038,23 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 80f32 + 0.7f32 * ctx.ap,2 => 118f32 + 0.7f32 * ctx.ap,3 => 156f32 + 0.7f32 * ctx.ap,4 => 194f32 + 0.7f32 * ctx.ap,5 => 232f32 + 0.7f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 40f32 + 0.35f32 * ctx.ap,2 => 59f32 + 0.35f32 * ctx.ap,3 => 78f32 + 0.35f32 * ctx.ap,4 => 97f32 + 0.35f32 * ctx.ap,5 => 116f32 + 0.35f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 30f32 + 0.2f32 * ctx.ap,2 => 50f32 + 0.2f32 * ctx.ap,3 => 70f32 + 0.2f32 * ctx.ap,4 => 90f32 + 0.2f32 * ctx.ap,5 => 110f32 + 0.2f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 7.5f32 + 0.05f32 * ctx.ap,2 => 12.5f32 + 0.05f32 * ctx.ap,3 => 17.5f32 + 0.05f32 * ctx.ap,4 => 22.5f32 + 0.05f32 * ctx.ap,5 => 27.5f32 + 0.05f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 200f32 + 0.7f32 * ctx.ap,2 => 350f32 + 0.7f32 * ctx.ap,3 => 500f32 + 0.7f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:620f32,per_level:110f32},mana:CachedChampionStatsMap{flat:467f32,per_level:31f32},armor:CachedChampionStatsMap{flat:21f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:46f32,per_level:3.25f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2.11f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:450f32,aram_damage_taken:1.05f32,aram_damage_dealt:0.93f32,urf_damage_taken:1f32,urf_damage_dealt:0.9f32,},
@@ -2067,31 +2067,31 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_4), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 65f32 + 0.6f32 * ctx.ap,2 => 95f32 + 0.6f32 * ctx.ap,3 => 125f32 + 0.6f32 * ctx.ap,4 => 155f32 + 0.6f32 * ctx.ap,5 => 185f32 + 0.6f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 50f32 + 0.8f32 * ctx.ap,2 => 75f32 + 0.8f32 * ctx.ap,3 => 100f32 + 0.8f32 * ctx.ap,4 => 125f32 + 0.8f32 * ctx.ap,5 => 150f32 + 0.8f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 70f32 + 0.65f32 * ctx.ap,2 => 100f32 + 0.65f32 * ctx.ap,3 => 130f32 + 0.65f32 * ctx.ap,4 => 160f32 + 0.65f32 * ctx.ap,5 => 190f32 + 0.65f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 70f32 + 0.5f32 * ctx.ap + 0.02f32 * ctx.max_mana,2 => 90f32 + 0.5f32 * ctx.ap + 0.02f32 * ctx.max_mana,3 => 110f32 + 0.5f32 * ctx.ap + 0.02f32 * ctx.max_mana,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 35f32 + 0.07f32 * ctx.ap + 0.01f32 * ctx.max_mana,2 => 45f32 + 0.07f32 * ctx.ap + 0.01f32 * ctx.max_mana,3 => 55f32 + 0.07f32 * ctx.ap + 0.01f32 * ctx.max_mana,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 140f32 + 0.28f32 * ctx.ap + 0.04f32 * ctx.max_mana,2 => 180f32 + 0.28f32 * ctx.ap + 0.04f32 * ctx.max_mana,3 => 220f32 + 0.28f32 * ctx.ap + 0.04f32 * ctx.max_mana,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 210f32 + 0.78f32 * ctx.ap + 0.06f32 * ctx.max_mana,2 => 270f32 + 0.78f32 * ctx.ap + 0.06f32 * ctx.max_mana,3 => 330f32 + 0.78f32 * ctx.ap + 0.06f32 * ctx.max_mana,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:646f32,per_level:119f32},mana:CachedChampionStatsMap{flat:400f32,per_level:87f32},armor:CachedChampionStatsMap{flat:21f32,per_level:4f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:59f32,per_level:3.9f32},attack_speed:CachedChampionStatsMap{flat:0.64f32,per_level:3.7f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.639999985694885f32,attack_range:150f32,aram_damage_taken:0.95f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -2104,31 +2104,31 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_4), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_5), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 80f32 + 0.4f32 * ctx.ap,2 => 115f32 + 0.4f32 * ctx.ap,3 => 150f32 + 0.4f32 * ctx.ap,4 => 185f32 + 0.4f32 * ctx.ap,5 => 220f32 + 0.4f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 20f32 + 0.4f32 * ctx.ad + 0.25f32 * ctx.ap,2 => 30f32 + 0.4f32 * ctx.ad + 0.25f32 * ctx.ap,3 => 40f32 + 0.4f32 * ctx.ad + 0.25f32 * ctx.ap,4 => 50f32 + 0.4f32 * ctx.ad + 0.25f32 * ctx.ap,5 => 60f32 + 0.4f32 * ctx.ad + 0.25f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 25f32 + 0.19f32 * ctx.ap,2 => 37.5f32 + 0.19f32 * ctx.ap,3 => 50f32 + 0.19f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 375f32 + 2.85f32 * ctx.ap,2 => 562.5f32 + 2.85f32 * ctx.ap,3 => 750f32 + 2.85f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 0.0f32,2 => 0.0f32,3 => 0.0f32,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 0.25f32,2 => 0.3f32,3 => 0.35f32,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 0.0f32,2 => 0.0f32,3 => 0.0f32,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:672f32,per_level:108f32},mana:CachedChampionStatsMap{flat:0f32,per_level:0f32},armor:CachedChampionStatsMap{flat:28f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:58f32,per_level:3.2f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:2.74f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.657999992370605f32,attack_range:125f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:0.95f32,urf_damage_dealt:1.1f32,},
@@ -2141,19 +2141,19 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 60f32 + 0.6f32 * ctx.bonus_ad + 0.5f32 * ctx.ap,2 => 100f32 + 0.6f32 * ctx.bonus_ad + 0.5f32 * ctx.ap,3 => 140f32 + 0.6f32 * ctx.bonus_ad + 0.5f32 * ctx.ap,4 => 180f32 + 0.6f32 * ctx.bonus_ad + 0.5f32 * ctx.ap,5 => 220f32 + 0.6f32 * ctx.bonus_ad + 0.5f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 0.08f32 * ctx.missing_health + 0.015f32 * 0.01f32 * ctx.ap,2 => 0.085f32 * ctx.missing_health + 0.015f32 * 0.01f32 * ctx.ap,3 => 0.09f32 * ctx.missing_health + 0.015f32 * 0.01f32 * ctx.ap,4 => 0.095f32 * ctx.missing_health + 0.015f32 * 0.01f32 * ctx.ap,5 => 0.1f32 * ctx.missing_health + 0.015f32 * 0.01f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 15f32 + 0.1f32 * ctx.bonus_ad + 0.2f32 * ctx.ap,2 => 20f32 + 0.1f32 * ctx.bonus_ad + 0.2f32 * ctx.ap,3 => 25f32 + 0.1f32 * ctx.bonus_ad + 0.2f32 * ctx.ap,4 => 30f32 + 0.1f32 * ctx.bonus_ad + 0.2f32 * ctx.ap,5 => 35f32 + 0.1f32 * ctx.bonus_ad + 0.2f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 200f32 + ctx.bonus_ad + 0.7f32 * ctx.ap,2 => 300f32 + ctx.bonus_ad + 0.7f32 * ctx.ap,3 => 400f32 + ctx.bonus_ad + 0.7f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:670f32,per_level:92f32},mana:CachedChampionStatsMap{flat:330f32,per_level:50f32},armor:CachedChampionStatsMap{flat:26f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:22f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:50f32,per_level:2.5f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:1.5f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.666999995708465f32,attack_range:175f32,aram_damage_taken:1.1f32,aram_damage_dealt:0.95f32,urf_damage_taken:1.1f32,urf_damage_dealt:0.85f32,},
@@ -2166,35 +2166,35 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_3), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_4), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_5), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_6), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 75f32 + 0.85f32 * ctx.bonus_ad,2 => 100f32 + 0.85f32 * ctx.bonus_ad,3 => 125f32 + 0.85f32 * ctx.bonus_ad,4 => 150f32 + 0.85f32 * ctx.bonus_ad,5 => 175f32 + 0.85f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 150f32 + 1.7f32 * ctx.bonus_ad,2 => 200f32 + 1.7f32 * ctx.bonus_ad,3 => 250f32 + 1.7f32 * ctx.bonus_ad,4 => 300f32 + 1.7f32 * ctx.bonus_ad,5 => 350f32 + 1.7f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 115f32 + 0.85f32 * ctx.bonus_ad,2 => 140f32 + 0.85f32 * ctx.bonus_ad,3 => 165f32 + 0.85f32 * ctx.bonus_ad,4 => 190f32 + 0.85f32 * ctx.bonus_ad,5 => 215f32 + 0.85f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 230f32 + 1.7f32 * ctx.bonus_ad,2 => 280f32 + 1.7f32 * ctx.bonus_ad,3 => 330f32 + 1.7f32 * ctx.bonus_ad,4 => 380f32 + 1.7f32 * ctx.bonus_ad,5 => 430f32 + 1.7f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 200f32,2 => 250f32,3 => 300f32,4 => 350f32,5 => 400f32,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 400f32,2 => 500f32,3 => 600f32,4 => 700f32,5 => 800f32,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 85f32 + 1.1f32 * ctx.bonus_ad,2 => 130f32 + 1.1f32 * ctx.bonus_ad,3 => 175f32 + 1.1f32 * ctx.bonus_ad,4 => 220f32 + 1.1f32 * ctx.bonus_ad,5 => 265f32 + 1.1f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 150f32 + 1.5f32 * ctx.bonus_ad,2 => 250f32 + 1.5f32 * ctx.bonus_ad,3 => 350f32 + 1.5f32 * ctx.bonus_ad,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:655f32,per_level:103f32},mana:CachedChampionStatsMap{flat:410f32,per_level:50f32},armor:CachedChampionStatsMap{flat:38f32,per_level:4.5f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:68f32,per_level:3.3f32},attack_speed:CachedChampionStatsMap{flat:0.669f32,per_level:2.7f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.669000029563903f32,attack_range:175f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -2207,31 +2207,31 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 75f32 + 0.75f32 * ctx.ap,2 => 125f32 + 0.75f32 * ctx.ap,3 => 175f32 + 0.75f32 * ctx.ap,4 => 225f32 + 0.75f32 * ctx.ap,5 => 275f32 + 0.75f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 70f32 + 0.8f32 * ctx.ap,2 => 95f32 + 0.8f32 * ctx.ap,3 => 120f32 + 0.8f32 * ctx.ap,4 => 145f32 + 0.8f32 * ctx.ap,5 => 170f32 + 0.8f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 35f32 + 0.8f32 * ctx.bonus_ad + 0.35f32 * ctx.ap,2 => 45f32 + 0.9f32 * ctx.bonus_ad + 0.35f32 * ctx.ap,3 => 55f32 + ctx.bonus_ad + 0.35f32 * ctx.ap,4 => 65f32 + 1.1f32 * ctx.bonus_ad + 0.35f32 * ctx.ap,5 => 75f32 + 1.2f32 * ctx.bonus_ad + 0.35f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 80f32 + 0.8f32 * ctx.ap,2 => 120f32 + 0.8f32 * ctx.ap,3 => 160f32 + 0.8f32 * ctx.ap,4 => 200f32 + 0.8f32 * ctx.ap,5 => 240f32 + 0.8f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 52f32 + 0.52f32 * ctx.ap,2 => 78f32 + 0.52f32 * ctx.ap,3 => 104f32 + 0.52f32 * ctx.ap,4 => 130f32 + 0.52f32 * ctx.ap,5 => 156f32 + 0.52f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 300f32 + 1.6875f32 * ctx.ap,2 => 562.5f32 + 1.6875f32 * ctx.ap,3 => 825f32 + 1.6875f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 40f32 + 0.225f32 * ctx.ap,2 => 75f32 + 0.225f32 * ctx.ap,3 => 110f32 + 0.225f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:580f32,per_level:98f32},mana:CachedChampionStatsMap{flat:200f32,per_level:0f32},armor:CachedChampionStatsMap{flat:29f32,per_level:4.95f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:48f32,per_level:3.75f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:3.4f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.689999997615814f32,attack_range:550f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:0.95f32,urf_damage_dealt:1f32,},
@@ -2244,19 +2244,19 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 168f32 + 2.31f32 * ctx.bonus_ad,2 => 220.5f32 + 2.31f32 * ctx.bonus_ad,3 => 273f32 + 2.31f32 * ctx.bonus_ad,4 => 325.5f32 + 2.31f32 * ctx.bonus_ad,5 => 378f32 + 2.31f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 80f32 + 1.1f32 * ctx.bonus_ad,2 => 105f32 + 1.1f32 * ctx.bonus_ad,3 => 130f32 + 1.1f32 * ctx.bonus_ad,4 => 155f32 + 1.1f32 * ctx.bonus_ad,5 => 180f32 + 1.1f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 85f32 + ctx.bonus_ad,2 => 115f32 + ctx.bonus_ad,3 => 145f32 + ctx.bonus_ad,4 => 175f32 + ctx.bonus_ad,5 => 205f32 + ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 65f32 + 0.4f32 * ctx.bonus_ad,2 => 100f32 + 0.4f32 * ctx.bonus_ad,3 => 135f32 + 0.4f32 * ctx.bonus_ad,4 => 170f32 + 0.4f32 * ctx.bonus_ad,5 => 205f32 + 0.4f32 * ctx.bonus_ad,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:643f32,per_level:99f32},mana:CachedChampionStatsMap{flat:327f32,per_level:40f32},armor:CachedChampionStatsMap{flat:32f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:60f32,per_level:3.1f32},attack_speed:CachedChampionStatsMap{flat:0.668f32,per_level:2.7f32},movespeed:350f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.667999982833862f32,attack_range:125f32,aram_damage_taken:0.9f32,aram_damage_dealt:1.1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -2269,23 +2269,23 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 40f32 + 0.75f32 * ctx.bonus_ad,2 => 65f32 + 0.75f32 * ctx.bonus_ad,3 => 90f32 + 0.75f32 * ctx.bonus_ad,4 => 115f32 + 0.75f32 * ctx.bonus_ad,5 => 140f32 + 0.75f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 25f32 + 0.2f32 * ctx.bonus_ad + 0.2f32 * ctx.ap + 0.015f32 * ctx.current_health + 0.01f32 * ctx.kindred_stacks,2 => 30f32 + 0.2f32 * ctx.bonus_ad + 0.2f32 * ctx.ap + 0.015f32 * ctx.current_health + 0.01f32 * ctx.kindred_stacks,3 => 35f32 + 0.2f32 * ctx.bonus_ad + 0.2f32 * ctx.ap + 0.015f32 * ctx.current_health + 0.01f32 * ctx.kindred_stacks,4 => 40f32 + 0.2f32 * ctx.bonus_ad + 0.2f32 * ctx.ap + 0.015f32 * ctx.current_health + 0.01f32 * ctx.kindred_stacks,5 => 45f32 + 0.2f32 * ctx.bonus_ad + 0.2f32 * ctx.ap + 0.015f32 * ctx.current_health + 0.01f32 * ctx.kindred_stacks,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 37.5f32 + 0.3f32 * ctx.bonus_ad + 0.3f32 * ctx.ap + 0.0225f32 * ctx.current_health + 0.015f32 * ctx.kindred_stacks,2 => 45f32 + 0.3f32 * ctx.bonus_ad + 0.3f32 * ctx.ap + 0.0225f32 * ctx.current_health + 0.015f32 * ctx.kindred_stacks,3 => 52.5f32 + 0.3f32 * ctx.bonus_ad + 0.3f32 * ctx.ap + 0.0225f32 * ctx.current_health + 0.015f32 * ctx.kindred_stacks,4 => 60f32 + 0.3f32 * ctx.bonus_ad + 0.3f32 * ctx.ap + 0.0225f32 * ctx.current_health + 0.015f32 * ctx.kindred_stacks,5 => 67.5f32 + 0.3f32 * ctx.bonus_ad + 0.3f32 * ctx.ap + 0.0225f32 * ctx.current_health + 0.015f32 * ctx.kindred_stacks,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 0.0f32,2 => 0.0f32,3 => 0.0f32,4 => 0.0f32,5 => 0.0f32,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 0.0f32,2 => 0.0f32,3 => 0.0f32,4 => 0.0f32,5 => 0.0f32,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:595f32,per_level:104f32},mana:CachedChampionStatsMap{flat:300f32,per_level:35f32},armor:CachedChampionStatsMap{flat:29f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:65f32,per_level:3.25f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:3.5f32},movespeed:325f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:500f32,aram_damage_taken:0.9f32,aram_damage_dealt:1.1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -2298,47 +2298,47 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_4), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_5), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_6), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_7), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 30f32 + 0.6f32 * ctx.bonus_ad,2 => 55f32 + 0.6f32 * ctx.bonus_ad,3 => 80f32 + 0.6f32 * ctx.bonus_ad,4 => 105f32 + 0.6f32 * ctx.bonus_ad,5 => 130f32 + 0.6f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 90f32 + 1.8f32 * ctx.bonus_ad,2 => 165f32 + 1.8f32 * ctx.bonus_ad,3 => 240f32 + 1.8f32 * ctx.bonus_ad,4 => 315f32 + 1.8f32 * ctx.bonus_ad,5 => 390f32 + 1.8f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 45f32 + 0.9f32 * ctx.bonus_ad,2 => 82.5f32 + 0.9f32 * ctx.bonus_ad,3 => 120f32 + 0.9f32 * ctx.bonus_ad,4 => 157.5f32 + 0.9f32 * ctx.bonus_ad,5 => 195f32 + 0.9f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 60f32 + 1.2f32 * ctx.bonus_ad,2 => 110f32 + 1.2f32 * ctx.bonus_ad,3 => 160f32 + 1.2f32 * ctx.bonus_ad,4 => 210f32 + 1.2f32 * ctx.bonus_ad,5 => 260f32 + 1.2f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 0.3f32,2 => 0.35f32,3 => 0.4f32,4 => 0.45f32,5 => 0.5f32,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 62f32 + 0f32,2 => 63.75f32 + 15f32,3 => 65.5f32 + 30f32,4 => 67.25f32 + 45f32,5 => 69f32 + 60f32,6 => 70.75f32,7 => 72.5f32,8 => 74.25f32,9 => 76f32,10 => 77.75f32,11 => 79.5f32,12 => 81.25f32,13 => 83f32,14 => 84.75f32,15 => 86.5f32,16 => 88.25f32,17 => 90f32,18 => 91.75f32,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 20f32 + 0.045f32 * ctx.enemy_max_health + 0.02f32 * 0.01f32 * ctx.bonus_ad + 0.004f32 * 0.01f32 * ctx.bonus_health,2 => 30f32 + 0.05f32 * ctx.enemy_max_health + 0.02f32 * 0.01f32 * ctx.bonus_ad + 0.004f32 * 0.01f32 * ctx.bonus_health,3 => 40f32 + 0.055f32 * ctx.enemy_max_health + 0.02f32 * 0.01f32 * ctx.bonus_ad + 0.004f32 * 0.01f32 * ctx.bonus_health,4 => 50f32 + 0.06f32 * ctx.enemy_max_health + 0.02f32 * 0.01f32 * ctx.bonus_ad + 0.004f32 * 0.01f32 * ctx.bonus_health,5 => 60f32 + 0.065f32 * ctx.enemy_max_health + 0.02f32 * 0.01f32 * ctx.bonus_ad + 0.004f32 * 0.01f32 * ctx.bonus_health,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 35f32 + 0.55f32 * ctx.bonus_ad,2 => 60f32 + 0.55f32 * ctx.bonus_ad,3 => 85f32 + 0.55f32 * ctx.bonus_ad,4 => 110f32 + 0.55f32 * ctx.bonus_ad,5 => 135f32 + 0.55f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 70f32 + 1.1f32 * ctx.bonus_ad,2 => 120f32 + 1.1f32 * ctx.bonus_ad,3 => 170f32 + 1.1f32 * ctx.bonus_ad,4 => 220f32 + 1.1f32 * ctx.bonus_ad,5 => 270f32 + 1.1f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 0.12f32 * ctx.enemy_max_health + 0.09f32 * 0.01f32 * ctx.bonus_ad,2 => 0.18f32 * ctx.enemy_max_health + 0.09f32 * 0.01f32 * ctx.bonus_ad,3 => 0.24f32 * ctx.enemy_max_health + 0.09f32 * 0.01f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 0.04f32 * ctx.enemy_max_health + 0.03f32 * 0.01f32 * ctx.bonus_ad,2 => 0.06f32 * ctx.enemy_max_health + 0.03f32 * 0.01f32 * ctx.bonus_ad,3 => 0.08f32 * ctx.enemy_max_health + 0.03f32 * 0.01f32 * ctx.bonus_ad,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:410f32,per_level:84f32},mana:CachedChampionStatsMap{flat:100f32,per_level:0f32},armor:CachedChampionStatsMap{flat:35f32,per_level:5.2f32},magic_resist:CachedChampionStatsMap{flat:28f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:65f32,per_level:3.5f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:3.5f32},movespeed:305f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:250f32,aram_damage_taken:1f32,aram_damage_dealt:1.05f32,urf_damage_taken:0.9f32,urf_damage_dealt:1f32,},
@@ -2351,23 +2351,23 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 80f32 + 0.8f32 * ctx.ap,2 => 125f32 + 0.8f32 * ctx.ap,3 => 170f32 + 0.8f32 * ctx.ap,4 => 215f32 + 0.8f32 * ctx.ap,5 => 260f32 + 0.8f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 0.03f32 * ctx.enemy_max_health + 0.01f32 * 0.01f32 * ctx.ap,2 => 0.0375f32 * ctx.enemy_max_health + 0.01f32 * 0.01f32 * ctx.ap,3 => 0.045f32 * ctx.enemy_max_health + 0.01f32 * 0.01f32 * ctx.ap,4 => 0.0525f32 * ctx.enemy_max_health + 0.01f32 * 0.01f32 * ctx.ap,5 => 0.06f32 * ctx.enemy_max_health + 0.01f32 * 0.01f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 70f32 + 0.65f32 * ctx.ap,2 => 110f32 + 0.65f32 * ctx.ap,3 => 150f32 + 0.65f32 * ctx.ap,4 => 190f32 + 0.65f32 * ctx.ap,5 => 230f32 + 0.65f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 200f32 + 1.5f32 * ctx.bonus_ad + 0.7f32 * ctx.ap,2 => 280f32 + 1.5f32 * ctx.bonus_ad + 0.7f32 * ctx.ap,3 => 360f32 + 1.5f32 * ctx.bonus_ad + 0.7f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 100f32 + 0.75f32 * ctx.bonus_ad + 0.35f32 * ctx.ap,2 => 140f32 + 0.75f32 * ctx.bonus_ad + 0.35f32 * ctx.ap,3 => 180f32 + 0.75f32 * ctx.bonus_ad + 0.35f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:635f32,per_level:99f32},mana:CachedChampionStatsMap{flat:325f32,per_level:40f32},armor:CachedChampionStatsMap{flat:24f32,per_level:4.45f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:61f32,per_level:3.1f32},attack_speed:CachedChampionStatsMap{flat:0.665f32,per_level:2.65f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.665000021457672f32,attack_range:500f32,aram_damage_taken:1.1f32,aram_damage_dealt:0.92f32,urf_damage_taken:1.05f32,urf_damage_dealt:0.85f32,},
@@ -2380,55 +2380,55 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_4), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_5), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_6), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_7), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 65f32 + 0.4f32 * ctx.ap,2 => 90f32 + 0.4f32 * ctx.ap,3 => 115f32 + 0.4f32 * ctx.ap,4 => 140f32 + 0.4f32 * ctx.ap,5 => 165f32 + 0.4f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 130f32 + 0.8f32 * ctx.ap,2 => 180f32 + 0.8f32 * ctx.ap,3 => 230f32 + 0.8f32 * ctx.ap,4 => 280f32 + 0.8f32 * ctx.ap,5 => 330f32 + 0.8f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 75f32 + 0.7f32 * ctx.ap,2 => 115f32 + 0.7f32 * ctx.ap,3 => 155f32 + 0.7f32 * ctx.ap,4 => 195f32 + 0.7f32 * ctx.ap,5 => 235f32 + 0.7f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 50f32 + 0.4f32 * ctx.ap,2 => 70f32 + 0.4f32 * ctx.ap,3 => 90f32 + 0.4f32 * ctx.ap,4 => 110f32 + 0.4f32 * ctx.ap,5 => 130f32 + 0.4f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 80f32 + 0.85f32 * ctx.ap,2 => 120f32 + 0.85f32 * ctx.ap,3 => 160f32 + 0.85f32 * ctx.ap,4 => 200f32 + 0.85f32 * ctx.ap,5 => 240f32 + 0.85f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 130f32 + 1.25f32 * ctx.ap,2 => 190f32 + 1.25f32 * ctx.ap,3 => 250f32 + 1.25f32 * ctx.ap,4 => 310f32 + 1.25f32 * ctx.ap,5 => 370f32 + 1.25f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 150f32 + 0.75f32 * ctx.ap,2 => 300f32 + 0.75f32 * ctx.ap,3 => 450f32 + 0.75f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 70f32 + 0.4f32 * ctx.ap,2 => 140f32 + 0.4f32 * ctx.ap,3 => 210f32 + 0.4f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 140f32 + 0.85f32 * ctx.ap,2 => 280f32 + 0.85f32 * ctx.ap,3 => 420f32 + 0.85f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 210f32 + 1.25f32 * ctx.ap,2 => 420f32 + 1.25f32 * ctx.ap,3 => 630f32 + 1.25f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 140f32 + 0.8f32 * ctx.ap,2 => 280f32 + 0.8f32 * ctx.ap,3 => 420f32 + 0.8f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 70f32 + 0.4f32 * ctx.ap,2 => 140f32 + 0.4f32 * ctx.ap,3 => 210f32 + 0.4f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 210f32 + 1.2f32 * ctx.ap,2 => 420f32 + 1.2f32 * ctx.ap,3 => 630f32 + 1.2f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:598f32,per_level:111f32},mana:CachedChampionStatsMap{flat:400f32,per_level:25f32},armor:CachedChampionStatsMap{flat:22f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:55f32,per_level:2.2f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:2.35f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.4f32,attack_range:525f32,aram_damage_taken:0.9f32,aram_damage_dealt:1.1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -2441,19 +2441,19 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 55f32 + 1.15f32 * ctx.bonus_ad,2 => 80f32 + 1.15f32 * ctx.bonus_ad,3 => 105f32 + 1.15f32 * ctx.bonus_ad,4 => 130f32 + 1.15f32 * ctx.bonus_ad,5 => 155f32 + 1.15f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 35f32 + ctx.ad,2 => 60f32 + ctx.ad,3 => 85f32 + ctx.ad,4 => 110f32 + ctx.ad,5 => 135f32 + ctx.ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 175f32 + 2f32 * ctx.bonus_ad,2 => 400f32 + 2f32 * ctx.bonus_ad,3 => 625f32 + 2f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 175f32 + 2f32 * ctx.bonus_ad + 0.12f32 * ctx.enemy_bonus_health,2 => 400f32 + 2f32 * ctx.bonus_ad + 0.15f32 * ctx.enemy_bonus_health,3 => 625f32 + 2f32 * ctx.bonus_ad + 0.18f32 * ctx.enemy_bonus_health,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:645f32,per_level:108f32},mana:CachedChampionStatsMap{flat:200f32,per_level:0f32},armor:CachedChampionStatsMap{flat:36f32,per_level:4.9f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:66f32,per_level:3.7f32},attack_speed:CachedChampionStatsMap{flat:0.651f32,per_level:3f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.651000022888183f32,attack_range:125f32,aram_damage_taken:0.95f32,aram_damage_dealt:1.05f32,urf_damage_taken:1f32,urf_damage_dealt:1.05f32,},
@@ -2466,23 +2466,23 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 10f32 + 0.3f32 * ctx.ap,2 => 35f32 + 0.3f32 * ctx.ap,3 => 60f32 + 0.3f32 * ctx.ap,4 => 85f32 + 0.3f32 * ctx.ap,5 => 110f32 + 0.3f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 8f32,2 => 12f32,3 => 16f32,4 => 20f32,5 => 24f32,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 55f32 + 0.4f32 * ctx.ap,2 => 85f32 + 0.4f32 * ctx.ap,3 => 115f32 + 0.4f32 * ctx.ap,4 => 145f32 + 0.4f32 * ctx.ap,5 => 175f32 + 0.4f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 50f32 + 0.4f32 * ctx.ap,2 => 90f32 + 0.4f32 * ctx.ap,3 => 130f32 + 0.4f32 * ctx.ap,4 => 170f32 + 0.4f32 * ctx.ap,5 => 210f32 + 0.4f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 150f32 + 0.8f32 * ctx.ap,2 => 225f32 + 0.8f32 * ctx.ap,3 => 300f32 + 0.8f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:646f32,per_level:101f32},mana:CachedChampionStatsMap{flat:302f32,per_level:40f32},armor:CachedChampionStatsMap{flat:43f32,per_level:4.8f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:60f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2.9f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:125f32,aram_damage_taken:1.05f32,aram_damage_dealt:0.95f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -2495,35 +2495,35 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_4), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 35f32 + 0.35f32 * ctx.ap,2 => 45f32 + 0.35f32 * ctx.ap,3 => 55f32 + 0.35f32 * ctx.ap,4 => 65f32 + 0.35f32 * ctx.ap,5 => 75f32 + 0.35f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 70f32 + 0.7f32 * ctx.ap,2 => 90f32 + 0.7f32 * ctx.ap,3 => 110f32 + 0.7f32 * ctx.ap,4 => 130f32 + 0.7f32 * ctx.ap,5 => 150f32 + 0.7f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 240f32 + 1.05f32 * ctx.ap,2 => 300f32 + 1.05f32 * ctx.ap,3 => 360f32 + 1.05f32 * ctx.ap,4 => 420f32 + 1.05f32 * ctx.ap,5 => 480f32 + 1.05f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 80f32 + 0.35f32 * ctx.ap,2 => 100f32 + 0.35f32 * ctx.ap,3 => 120f32 + 0.35f32 * ctx.ap,4 => 140f32 + 0.35f32 * ctx.ap,5 => 160f32 + 0.35f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 120f32 + 0.525f32 * ctx.ap,2 => 150f32 + 0.525f32 * ctx.ap,3 => 180f32 + 0.525f32 * ctx.ap,4 => 210f32 + 0.525f32 * ctx.ap,5 => 240f32 + 0.525f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 40f32 + 0.175f32 * ctx.ap,2 => 50f32 + 0.175f32 * ctx.ap,3 => 60f32 + 0.175f32 * ctx.ap,4 => 70f32 + 0.175f32 * ctx.ap,5 => 80f32 + 0.175f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 60f32 + 0.5f32 * ctx.ap,2 => 85f32 + 0.5f32 * ctx.ap,3 => 110f32 + 0.5f32 * ctx.ap,4 => 135f32 + 0.5f32 * ctx.ap,5 => 160f32 + 0.5f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 100f32 + 0.4f32 * ctx.ap,2 => 150f32 + 0.4f32 * ctx.ap,3 => 200f32 + 0.4f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:605f32,per_level:105f32},mana:CachedChampionStatsMap{flat:410f32,per_level:50f32},armor:CachedChampionStatsMap{flat:22f32,per_level:4.5f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:1.55f32},attack_damage:CachedChampionStatsMap{flat:61f32,per_level:3.1f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2.7f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:325f32,aram_damage_taken:1.05f32,aram_damage_dealt:0.95f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -2536,19 +2536,19 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 80f32 + 0.75f32 * ctx.ap,2 => 115f32 + 0.75f32 * ctx.ap,3 => 150f32 + 0.75f32 * ctx.ap,4 => 185f32 + 0.75f32 * ctx.ap,5 => 220f32 + 0.75f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 70f32 + 0.7f32 * ctx.ap,2 => 105f32 + 0.7f32 * ctx.ap,3 => 140f32 + 0.7f32 * ctx.ap,4 => 175f32 + 0.7f32 * ctx.ap,5 => 210f32 + 0.7f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 70f32 + 0.6f32 * ctx.ap,2 => 105f32 + 0.6f32 * ctx.ap,3 => 140f32 + 0.6f32 * ctx.ap,4 => 175f32 + 0.6f32 * ctx.ap,5 => 210f32 + 0.6f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 150f32 + 0.75f32 * ctx.ap,2 => 250f32 + 0.75f32 * ctx.ap,3 => 350f32 + 0.75f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:620f32,per_level:110f32},mana:CachedChampionStatsMap{flat:475f32,per_level:30f32},armor:CachedChampionStatsMap{flat:22f32,per_level:4.9f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:55f32,per_level:2.7f32},attack_speed:CachedChampionStatsMap{flat:0.656f32,per_level:1.5f32},movespeed:325f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:550f32,aram_damage_taken:1.05f32,aram_damage_dealt:0.95f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -2561,35 +2561,35 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_3), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_4), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_5), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_6), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 85f32 + 0.6f32 * ctx.bonus_ad,2 => 115f32 + 0.75f32 * ctx.bonus_ad,3 => 145f32 + 0.9f32 * ctx.bonus_ad,4 => 175f32 + 1.05f32 * ctx.bonus_ad,5 => 205f32 + 1.2f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 75f32 + 0.9f32 * ctx.ap,2 => 110f32 + 0.9f32 * ctx.ap,3 => 145f32 + 0.9f32 * ctx.ap,4 => 180f32 + 0.9f32 * ctx.ap,5 => 215f32 + 0.9f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 75f32 + 1.25f32 * ctx.ad + 0.75f32 * ctx.ap,2 => 150f32 + 1.25f32 * ctx.ad + 0.75f32 * ctx.ap,3 => 225f32 + 1.25f32 * ctx.ad + 0.75f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 150f32 + 2.5f32 * ctx.ad + 1.5f32 * ctx.ap,2 => 300f32 + 2.5f32 * ctx.ad + 1.5f32 * ctx.ap,3 => 450f32 + 2.5f32 * ctx.ad + 1.5f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 30f32 + 0.5f32 * ctx.ad + 0.3f32 * ctx.ap,2 => 60f32 + 0.5f32 * ctx.ad + 0.3f32 * ctx.ap,3 => 90f32 + 0.5f32 * ctx.ad + 0.3f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 15f32 + 0.25f32 * ctx.ad + 0.15f32 * ctx.ap,2 => 30f32 + 0.25f32 * ctx.ad + 0.15f32 * ctx.ap,3 => 45f32 + 0.25f32 * ctx.ad + 0.15f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 660f32 + 0.3f32 * ctx.crit_chance + 11f32 * ctx.ad + 6.6f32 * ctx.ap + 0.5f32 * ctx.ad + 0.3f32 * ctx.ap,2 => 1320f32 + 0.6f32 * ctx.crit_chance + 11f32 * ctx.ad + 6.6f32 * ctx.ap + 0.5f32 * ctx.ad + 0.3f32 * ctx.ap,3 => 1980f32 + 0.9f32 * ctx.crit_chance + 11f32 * ctx.ad + 6.6f32 * ctx.ap + 0.5f32 * ctx.ad + 0.3f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 330f32 + 0.15f32 * ctx.crit_chance + 5.5f32 * ctx.ad + 3.3f32 * ctx.ap + 0.25f32 * ctx.ad + 0.15f32 * ctx.ap,2 => 660f32 + 0.3f32 * ctx.crit_chance + 5.5f32 * ctx.ad + 3.3f32 * ctx.ap + 0.25f32 * ctx.ad + 0.15f32 * ctx.ap,3 => 990f32 + 0.45f32 * ctx.crit_chance + 5.5f32 * ctx.ad + 3.3f32 * ctx.ap + 0.25f32 * ctx.ad + 0.15f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:641f32,per_level:100f32},mana:CachedChampionStatsMap{flat:320f32,per_level:43f32},armor:CachedChampionStatsMap{flat:28f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:60f32,per_level:2.9f32},attack_speed:CachedChampionStatsMap{flat:0.638f32,per_level:3.3f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.638000011444091f32,attack_range:500f32,aram_damage_taken:0.95f32,aram_damage_dealt:1.05f32,urf_damage_taken:1.05f32,urf_damage_dealt:0.95f32,},
@@ -2602,31 +2602,31 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_4), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_5), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_6), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 60f32 + 0.5f32 * ctx.ap,2 => 95f32 + 0.5f32 * ctx.ap,3 => 130f32 + 0.5f32 * ctx.ap,4 => 165f32 + 0.5f32 * ctx.ap,5 => 200f32 + 0.5f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 42f32 + 0.35f32 * ctx.ap,2 => 66.5f32 + 0.35f32 * ctx.ap,3 => 91f32 + 0.35f32 * ctx.ap,4 => 115.5f32 + 0.35f32 * ctx.ap,5 => 140f32 + 0.35f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 30f32 + 0.25f32 * ctx.ap,2 => 47.5f32 + 0.25f32 * ctx.ap,3 => 65f32 + 0.25f32 * ctx.ap,4 => 82.5f32 + 0.25f32 * ctx.ap,5 => 100f32 + 0.25f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 21f32 + 0.175f32 * ctx.ap,2 => 33.25f32 + 0.175f32 * ctx.ap,3 => 45.5f32 + 0.175f32 * ctx.ap,4 => 57.75f32 + 0.175f32 * ctx.ap,5 => 70f32 + 0.175f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 90f32 + 0.75f32 * ctx.ap,2 => 142.5f32 + 0.75f32 * ctx.ap,3 => 195f32 + 0.75f32 * ctx.ap,4 => 247.5f32 + 0.75f32 * ctx.ap,5 => 300f32 + 0.75f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 63f32 + 0.525f32 * ctx.ap,2 => 99.75f32 + 0.525f32 * ctx.ap,3 => 136.5f32 + 0.525f32 * ctx.ap,4 => 173.25f32 + 0.525f32 * ctx.ap,5 => 210f32 + 0.525f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 80f32 + 0.5f32 * ctx.ap,2 => 120f32 + 0.5f32 * ctx.ap,3 => 160f32 + 0.5f32 * ctx.ap,4 => 200f32 + 0.5f32 * ctx.ap,5 => 240f32 + 0.5f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:565f32,per_level:92f32},mana:CachedChampionStatsMap{flat:350f32,per_level:55f32},armor:CachedChampionStatsMap{flat:26f32,per_level:4.6f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:47f32,per_level:2.6f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2.25f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:550f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -2639,15 +2639,15 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 80f32 + 0.65f32 * ctx.ap,2 => 120f32 + 0.65f32 * ctx.ap,3 => 160f32 + 0.65f32 * ctx.ap,4 => 200f32 + 0.65f32 * ctx.ap,5 => 240f32 + 0.65f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 65f32 + 0.8f32 * ctx.ap,2 => 115f32 + 0.8f32 * ctx.ap,3 => 165f32 + 0.8f32 * ctx.ap,4 => 215f32 + 0.8f32 * ctx.ap,5 => 265f32 + 0.8f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 300f32 + 1.2f32 * ctx.ap,2 => 400f32 + 1.2f32 * ctx.ap,3 => 500f32 + 1.2f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:580f32,per_level:99f32},mana:CachedChampionStatsMap{flat:480f32,per_level:23.5f32},armor:CachedChampionStatsMap{flat:21f32,per_level:5.2f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:54f32,per_level:3.3f32},attack_speed:CachedChampionStatsMap{flat:0.669f32,per_level:3f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:550f32,aram_damage_taken:1.1f32,aram_damage_dealt:0.9f32,urf_damage_taken:1f32,urf_damage_dealt:0.95f32,},
@@ -2660,23 +2660,23 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 70f32 + 0.6f32 * ctx.ap,2 => 120f32 + 0.6f32 * ctx.ap,3 => 170f32 + 0.6f32 * ctx.ap,4 => 220f32 + 0.6f32 * ctx.ap,5 => 270f32 + 0.6f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 30f32 + 0.2f32 * ctx.ap + 0.15f32 * ctx.armor,2 => 40f32 + 0.2f32 * ctx.ap + 0.15f32 * ctx.armor,3 => 50f32 + 0.2f32 * ctx.ap + 0.15f32 * ctx.armor,4 => 60f32 + 0.2f32 * ctx.ap + 0.15f32 * ctx.armor,5 => 70f32 + 0.2f32 * ctx.ap + 0.15f32 * ctx.armor,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 15f32 + 0.3f32 * ctx.ap + 0.15f32 * ctx.armor,2 => 25f32 + 0.3f32 * ctx.ap + 0.15f32 * ctx.armor,3 => 35f32 + 0.3f32 * ctx.ap + 0.15f32 * ctx.armor,4 => 45f32 + 0.3f32 * ctx.ap + 0.15f32 * ctx.armor,5 => 55f32 + 0.3f32 * ctx.ap + 0.15f32 * ctx.armor,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 70f32 + 0.6f32 * ctx.ap + 0.4f32 * ctx.armor,2 => 110f32 + 0.6f32 * ctx.ap + 0.4f32 * ctx.armor,3 => 150f32 + 0.6f32 * ctx.ap + 0.4f32 * ctx.armor,4 => 190f32 + 0.6f32 * ctx.ap + 0.4f32 * ctx.armor,5 => 230f32 + 0.6f32 * ctx.ap + 0.4f32 * ctx.armor,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 200f32 + 0.9f32 * ctx.ap,2 => 300f32 + 0.9f32 * ctx.ap,3 => 400f32 + 0.9f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:665f32,per_level:104f32},mana:CachedChampionStatsMap{flat:280f32,per_level:60f32},armor:CachedChampionStatsMap{flat:37f32,per_level:4.95f32},magic_resist:CachedChampionStatsMap{flat:28f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:62f32,per_level:4f32},attack_speed:CachedChampionStatsMap{flat:0.736f32,per_level:3.4f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.638000011444091f32,attack_range:125f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:0.95f32,},
@@ -2689,39 +2689,39 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_4), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 70f32 + 0.55f32 * ctx.ap,2 => 105f32 + 0.55f32 * ctx.ap,3 => 140f32 + 0.55f32 * ctx.ap,4 => 175f32 + 0.55f32 * ctx.ap,5 => 210f32 + 0.55f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 5f32 + 12f32 + 0.4f32 * ctx.bonus_ad + 0.2f32 * ctx.ap,2 => 8.5f32 + 14f32 + 0.4f32 * ctx.bonus_ad + 0.2f32 * ctx.ap,3 => 12f32 + 16f32 + 0.4f32 * ctx.bonus_ad + 0.2f32 * ctx.ap,4 => 15.5f32 + 18f32 + 0.4f32 * ctx.bonus_ad + 0.2f32 * ctx.ap,5 => 19f32 + 20f32 + 0.4f32 * ctx.bonus_ad + 0.2f32 * ctx.ap,6 => 22.5f32,7 => 26f32,8 => 29.5f32,9 => 33f32,10 => 36.5f32,11 => 40f32,12 => 43.5f32,13 => 47f32,14 => 50.5f32,15 => 54f32,16 => 57.5f32,17 => 61f32,18 => 64.5f32,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 15f32 + 36f32 + 1.2f32 * ctx.bonus_ad + 0.6f32 * ctx.ap,2 => 25.5f32 + 42f32 + 1.2f32 * ctx.bonus_ad + 0.6f32 * ctx.ap,3 => 36f32 + 48f32 + 1.2f32 * ctx.bonus_ad + 0.6f32 * ctx.ap,4 => 46.5f32 + 54f32 + 1.2f32 * ctx.bonus_ad + 0.6f32 * ctx.ap,5 => 57f32 + 60f32 + 1.2f32 * ctx.bonus_ad + 0.6f32 * ctx.ap,6 => 67.5f32,7 => 78f32,8 => 88.5f32,9 => 99f32,10 => 109.5f32,11 => 120f32,12 => 130.5f32,13 => 141f32,14 => 151.5f32,15 => 162f32,16 => 172.5f32,17 => 183f32,18 => 193.5f32,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 5f32 + 0.05f32 * ctx.ap,2 => 7.1875f32 + 0.05f32 * ctx.ap,3 => 9.375f32 + 0.05f32 * ctx.ap,4 => 11.5625f32 + 0.05f32 * ctx.ap,5 => 13.75f32 + 0.05f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 80f32 + 0.8f32 * ctx.ap,2 => 115f32 + 0.8f32 * ctx.ap,3 => 150f32 + 0.8f32 * ctx.ap,4 => 185f32 + 0.8f32 * ctx.ap,5 => 220f32 + 0.8f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 12.5f32 + 0.08f32 * ctx.ap,2 => 20f32 + 0.08f32 * ctx.ap,3 => 27.5f32 + 0.08f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 125f32 + 0.8f32 * ctx.ap,2 => 200f32 + 0.8f32 * ctx.ap,3 => 275f32 + 0.8f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 0.01f32 * ctx.enemy_max_health + 0.0025f32 * 0.01f32 * ctx.ap,2 => 0.015f32 * ctx.enemy_max_health + 0.0025f32 * 0.01f32 * ctx.ap,3 => 0.02f32 * ctx.enemy_max_health + 0.0025f32 * 0.01f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 0.1f32 * ctx.enemy_max_health + 0.025f32 * 0.01f32 * ctx.ap,2 => 0.15f32 * ctx.enemy_max_health + 0.025f32 * 0.01f32 * ctx.ap,3 => 0.2f32 * ctx.enemy_max_health + 0.025f32 * 0.01f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:580f32,per_level:101f32},mana:CachedChampionStatsMap{flat:375f32,per_level:28f32},armor:CachedChampionStatsMap{flat:18f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:55f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:1.5f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:500f32,aram_damage_taken:1.1f32,aram_damage_dealt:0.9f32,urf_damage_taken:1.08f32,urf_damage_dealt:0.92f32,},
@@ -2734,35 +2734,35 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 120f32,2 => 130f32,3 => 140f32,4 => 150f32,5 => 160f32,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 65f32 + 0.02f32 * ctx.enemy_max_health + 0.4f32 * ctx.ap,2 => 110f32 + 0.025f32 * ctx.enemy_max_health + 0.4f32 * ctx.ap,3 => 155f32 + 0.03f32 * ctx.enemy_max_health + 0.4f32 * ctx.ap,4 => 200f32 + 0.035f32 * ctx.enemy_max_health + 0.4f32 * ctx.ap,5 => 245f32 + 0.04f32 * ctx.enemy_max_health + 0.4f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 185f32 + 0.02f32 * ctx.enemy_max_health + 0.4f32 * ctx.ap,2 => 240f32 + 0.025f32 * ctx.enemy_max_health + 0.4f32 * ctx.ap,3 => 295f32 + 0.03f32 * ctx.enemy_max_health + 0.4f32 * ctx.ap,4 => 350f32 + 0.035f32 * ctx.enemy_max_health + 0.4f32 * ctx.ap,5 => 405f32 + 0.04f32 * ctx.enemy_max_health + 0.4f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 60f32 + 0.4f32 * ctx.ap,2 => 85f32 + 0.4f32 * ctx.ap,3 => 110f32 + 0.4f32 * ctx.ap,4 => 135f32 + 0.4f32 * ctx.ap,5 => 160f32 + 0.4f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 33.33f32 + 0.0333f32 * ctx.bonus_health + 0.16670000000000001f32 * ctx.ap,2 => 50f32 + 0.0333f32 * ctx.bonus_health + 0.16670000000000001f32 * ctx.ap,3 => 66.67f32 + 0.0333f32 * ctx.bonus_health + 0.16670000000000001f32 * ctx.ap,4 => 83.33f32 + 0.0333f32 * ctx.bonus_health + 0.16670000000000001f32 * ctx.ap,5 => 100f32 + 0.0333f32 * ctx.bonus_health + 0.16670000000000001f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 100f32 + 0.1f32 * ctx.bonus_health + 0.5f32 * ctx.ap,2 => 150f32 + 0.1f32 * ctx.bonus_health + 0.5f32 * ctx.ap,3 => 200f32 + 0.1f32 * ctx.bonus_health + 0.5f32 * ctx.ap,4 => 250f32 + 0.1f32 * ctx.bonus_health + 0.5f32 * ctx.ap,5 => 300f32 + 0.1f32 * ctx.bonus_health + 0.5f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 50f32 + 0.05f32 * ctx.bonus_health + 0.25f32 * ctx.ap,2 => 75f32 + 0.05f32 * ctx.bonus_health + 0.25f32 * ctx.ap,3 => 100f32 + 0.05f32 * ctx.bonus_health + 0.25f32 * ctx.ap,4 => 125f32 + 0.05f32 * ctx.bonus_health + 0.25f32 * ctx.ap,5 => 150f32 + 0.05f32 * ctx.bonus_health + 0.25f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 150f32 + 0.75f32 * ctx.ap,2 => 225f32 + 0.75f32 * ctx.ap,3 => 300f32 + 0.75f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:665f32,per_level:109f32},mana:CachedChampionStatsMap{flat:375f32,per_level:43f32},armor:CachedChampionStatsMap{flat:35f32,per_level:5.2f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:64f32,per_level:3.3f32},attack_speed:CachedChampionStatsMap{flat:0.8f32,per_level:2.125f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.694999992847442f32,attack_range:125f32,aram_damage_taken:1.1f32,aram_damage_dealt:0.85f32,urf_damage_taken:1.05f32,urf_damage_dealt:1f32,},
@@ -2775,43 +2775,43 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_3), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_4), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_5), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_6), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_7), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::True, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 80f32 + 0.7f32 * ctx.ad,2 => 125f32 + 0.7f32 * ctx.ad,3 => 170f32 + 0.7f32 * ctx.ad,4 => 215f32 + 0.7f32 * ctx.ad,5 => 260f32 + 0.7f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 140f32 + 1.225f32 * ctx.ad,2 => 218.75f32 + 1.225f32 * ctx.ad,3 => 297.5f32 + 1.225f32 * ctx.ad,4 => 376.25f32 + 1.225f32 * ctx.ad,5 => 455f32 + 1.225f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 35f32 + 1.225f32 * ctx.ad,2 => 70f32 + 1.225f32 * ctx.ad,3 => 105f32 + 1.225f32 * ctx.ad,4 => 140f32 + 1.225f32 * ctx.ad,5 => 175f32 + 1.225f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 60f32,2 => 85f32,3 => 110f32,4 => 135f32,5 => 160f32,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 20f32 + 0.7f32 * ctx.ad,2 => 40f32 + 0.7f32 * ctx.ad,3 => 60f32 + 0.7f32 * ctx.ad,4 => 80f32 + 0.7f32 * ctx.ad,5 => 100f32 + 0.7f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 5f32 + 0.175f32 * ctx.ad,2 => 10f32 + 0.175f32 * ctx.ad,3 => 15f32 + 0.175f32 * ctx.ad,4 => 20f32 + 0.175f32 * ctx.ad,5 => 25f32 + 0.175f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 20f32 + 0.175f32 * ctx.ad,2 => 31.25f32 + 0.175f32 * ctx.ad,3 => 42.5f32 + 0.175f32 * ctx.ad,4 => 53.75f32 + 0.175f32 * ctx.ad,5 => 65f32 + 0.175f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 0.45f32,2 => 0.475f32,3 => 0.5f32,4 => 0.525f32,5 => 0.55f32,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 0.225f32,2 => 0.2375f32,3 => 0.25f32,4 => 0.2625f32,5 => 0.275f32,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 20f32 + 0.35f32 * ctx.bonus_ad,2 => 25f32 + 0.35f32 * ctx.bonus_ad,3 => 30f32 + 0.35f32 * ctx.bonus_ad,4 => 35f32 + 0.35f32 * ctx.bonus_ad,5 => 40f32 + 0.35f32 * ctx.bonus_ad,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:669f32,per_level:105f32},mana:CachedChampionStatsMap{flat:251f32,per_level:42f32},armor:CachedChampionStatsMap{flat:33f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:65f32,per_level:2.8f32},attack_speed:CachedChampionStatsMap{flat:0.679f32,per_level:2.5f32},movespeed:355f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.67900002002716f32,attack_range:175f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:0.9f32,},
@@ -2824,59 +2824,59 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_4), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_4), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_5), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_6), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 13f32 + 0.085f32 * ctx.ap,2 => 15.5f32 + 0.085f32 * ctx.ap,3 => 18f32 + 0.085f32 * ctx.ap,4 => 20.5f32 + 0.085f32 * ctx.ap,5 => 23f32 + 0.085f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 9.75f32 + 0.06375f32 * ctx.ap,2 => 11.625f32 + 0.06375f32 * ctx.ap,3 => 13.5f32 + 0.06375f32 * ctx.ap,4 => 15.375f32 + 0.06375f32 * ctx.ap,5 => 17.25f32 + 0.06375f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 78f32 + 0.51f32 * ctx.ap,2 => 108.5f32 + 0.595f32 * ctx.ap,3 => 144f32 + 0.68f32 * ctx.ap,4 => 184.5f32 + 0.765f32 * ctx.ap,5 => 230f32 + 0.85f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 58.5f32 + 0.3825f32 * ctx.ap,2 => 81.375f32 + 0.44625f32 * ctx.ap,3 => 108f32 + 0.51f32 * ctx.ap,4 => 138.375f32 + 0.57375f32 * ctx.ap,5 => 172.5f32 + 0.6375f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 0.4f32 * 100.0f32 + 0.05f32 * 0.01f32 * ctx.ap,2 => 0.45f32 * 100.0f32 + 0.05f32 * 0.01f32 * ctx.ap,3 => 0.5f32 * 100.0f32 + 0.05f32 * 0.01f32 * ctx.ap,4 => 0.55f32 * 100.0f32 + 0.05f32 * 0.01f32 * ctx.ap,5 => 0.6f32 * 100.0f32 + 0.05f32 * 0.01f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 60f32 + 0.6f32 * ctx.ap,2 => 105f32 + 0.6f32 * ctx.ap,3 => 150f32 + 0.6f32 * ctx.ap,4 => 195f32 + 0.6f32 * ctx.ap,5 => 240f32 + 0.6f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 8f32 + 0.04f32 * ctx.ap,2 => 16f32 + 0.04f32 * ctx.ap,3 => 24f32 + 0.04f32 * ctx.ap,4 => 32f32 + 0.04f32 * ctx.ap,5 => 40f32 + 0.04f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 1f32 + 0.005f32 * ctx.ap,2 => 2f32 + 0.005f32 * ctx.ap,3 => 3f32 + 0.005f32 * ctx.ap,4 => 4f32 + 0.005f32 * ctx.ap,5 => 5f32 + 0.005f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 30f32 + 0.3f32 * ctx.ap,2 => 52.5f32 + 0.3f32 * ctx.ap,3 => 75f32 + 0.3f32 * ctx.ap,4 => 97.5f32 + 0.3f32 * ctx.ap,5 => 120f32 + 0.3f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 16f32 + 0.08f32 * ctx.ap,2 => 32f32 + 0.08f32 * ctx.ap,3 => 48f32 + 0.08f32 * ctx.ap,4 => 64f32 + 0.08f32 * ctx.ap,5 => 80f32 + 0.08f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 2f32 + 0.01f32 * ctx.ap,2 => 4f32 + 0.01f32 * ctx.ap,3 => 6f32 + 0.01f32 * ctx.ap,4 => 8f32 + 0.01f32 * ctx.ap,5 => 10f32 + 0.01f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 100f32 + 0.3f32 * ctx.ap + 4f32,2 => 150f32 + 0.3f32 * ctx.ap + 7f32,3 => 200f32 + 0.3f32 * ctx.ap + 10f32,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 10f32,2 => 20f32,3 => 30f32,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 1f32,2 => 2f32,3 => 3f32,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:630f32,per_level:93f32},mana:CachedChampionStatsMap{flat:480f32,per_level:28f32},armor:CachedChampionStatsMap{flat:21f32,per_level:5.2f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:54f32,per_level:3.3f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2.5f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.4f32,attack_range:550f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:0.9f32,},
@@ -2889,7 +2889,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 80f32 + 1.2f32 * ctx.ap,2 => 140f32 + 1.2f32 * ctx.ap,3 => 200f32 + 1.2f32 * ctx.ap,4 => 260f32 + 1.2f32 * ctx.ap,5 => 320f32 + 1.2f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:560f32,per_level:88f32},mana:CachedChampionStatsMap{flat:365f32,per_level:43f32},armor:CachedChampionStatsMap{flat:26f32,per_level:4.6f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:48f32,per_level:3.2f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:3f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:525f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -2902,19 +2902,19 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 20f32 + ctx.ad + 0.35f32 * ctx.ap,2 => 45f32 + ctx.ad + 0.35f32 * ctx.ap,3 => 70f32 + ctx.ad + 0.35f32 * ctx.ap,4 => 95f32 + ctx.ad + 0.35f32 * ctx.ap,5 => 120f32 + ctx.ad + 0.35f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 8.75f32 + 0.15f32 * ctx.ap,2 => 12.5f32 + 0.15f32 * ctx.ap,3 => 16.25f32 + 0.15f32 * ctx.ap,4 => 20f32 + 0.15f32 * ctx.ap,5 => 23.75f32 + 0.15f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 70f32 + 1.2f32 * ctx.ap,2 => 100f32 + 1.2f32 * ctx.ap,3 => 130f32 + 1.2f32 * ctx.ap,4 => 160f32 + 1.2f32 * ctx.ap,5 => 190f32 + 1.2f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 10.5f32 * ctx.ad + 3.5f32 * ctx.ap,2 => 12f32 * ctx.ad + 4f32 * ctx.ap,3 => 13.5f32 * ctx.ad + 4.5f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:640f32,per_level:103f32},mana:CachedChampionStatsMap{flat:300f32,per_level:40f32},armor:CachedChampionStatsMap{flat:25f32,per_level:4f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:53f32,per_level:2.4f32},attack_speed:CachedChampionStatsMap{flat:0.656f32,per_level:3f32},movespeed:325f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.656000018119812f32,attack_range:550f32,aram_damage_taken:1.05f32,aram_damage_dealt:0.95f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -2927,27 +2927,27 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_3), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 20f32 + 0.55f32 * ctx.bonus_ad,2 => 45f32 + 0.55f32 * ctx.bonus_ad,3 => 70f32 + 0.55f32 * ctx.bonus_ad,4 => 95f32 + 0.55f32 * ctx.bonus_ad,5 => 120f32 + 0.55f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 0.35f32,2 => 0.4f32,3 => 0.45f32,4 => 0.5f32,5 => 0.55f32,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 80f32 + ctx.ap,2 => 110f32 + ctx.ap,3 => 140f32 + ctx.ap,4 => 170f32 + ctx.ap,5 => 200f32 + ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 0.01f32 * ctx.enemy_max_health + 0.34375f32 * ctx.ad,2 => 0.015f32 * ctx.enemy_max_health + 0.34375f32 * ctx.ad,3 => 0.02f32 * ctx.enemy_max_health + 0.34375f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 0.08f32 * ctx.enemy_max_health + 2.75f32 * ctx.ad,2 => 0.12f32 * ctx.enemy_max_health + 2.75f32 * ctx.ad,3 => 0.16f32 * ctx.enemy_max_health + 2.75f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 0.16f32 * ctx.enemy_max_health + 5.5f32 * ctx.ad,2 => 0.24f32 * ctx.enemy_max_health + 5.5f32 * ctx.ad,3 => 0.32f32 * ctx.enemy_max_health + 5.5f32 * ctx.ad,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:610f32,per_level:99f32},mana:CachedChampionStatsMap{flat:330f32,per_level:65f32},armor:CachedChampionStatsMap{flat:31f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:28f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:66f32,per_level:3.5f32},attack_speed:CachedChampionStatsMap{flat:0.69f32,per_level:3f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.657999992370605f32,attack_range:175f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1.1f32,urf_damage_dealt:0.9f32,},
@@ -2960,15 +2960,15 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 0.3f32,2 => 0.35f32,3 => 0.4f32,4 => 0.45f32,5 => 0.5f32,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 0f32 + 80f32 + 0.7f32 * ctx.ap,2 => 2.6470588235294117f32 + 115f32 + 0.7f32 * ctx.ap,3 => 5.294117647058823f32 + 150f32 + 0.7f32 * ctx.ap,4 => 7.9411764705882355f32 + 185f32 + 0.7f32 * ctx.ap,5 => 10.588235294117649f32 + 220f32 + 0.7f32 * ctx.ap,6 => 13.235294117647058f32,7 => 15.882352941176473f32,8 => 18.52941176470588f32,9 => 21.176470588235293f32,10 => 23.823529411764707f32,11 => 26.470588235294116f32,12 => 29.11764705882353f32,13 => 31.764705882352946f32,14 => 34.411764705882355f32,15 => 37.05882352941176f32,16 => 39.705882352941174f32,17 => 42.35294117647059f32,18 => 45f32,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 60f32 + 0.4f32 * ctx.ap,2 => 75f32 + 0.4f32 * ctx.ap,3 => 90f32 + 0.4f32 * ctx.ap,4 => 105f32 + 0.4f32 * ctx.ap,5 => 120f32 + 0.4f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:645f32,per_level:104f32},mana:CachedChampionStatsMap{flat:0f32,per_level:0f32},armor:CachedChampionStatsMap{flat:37f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:61f32,per_level:4f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:1f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:175f32,aram_damage_taken:1.02f32,aram_damage_dealt:0.95f32,urf_damage_taken:0.85f32,urf_damage_dealt:1f32,},
@@ -2981,31 +2981,31 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_4), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 80f32 + 0.9f32 * ctx.ap,2 => 135f32 + 0.9f32 * ctx.ap,3 => 190f32 + 0.9f32 * ctx.ap,4 => 245f32 + 0.9f32 * ctx.ap,5 => 300f32 + 0.9f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 16.2f32 + 0.22949999999999998f32 * ctx.ap,2 => 31.05f32 + 0.22949999999999998f32 * ctx.ap,3 => 45.9f32 + 0.22949999999999998f32 * ctx.ap,4 => 60.75f32 + 0.22949999999999998f32 * ctx.ap,5 => 75.6f32 + 0.22949999999999998f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 162f32 + 2.295f32 * ctx.ap,2 => 310.5f32 + 2.295f32 * ctx.ap,3 => 459f32 + 2.295f32 * ctx.ap,4 => 607.5f32 + 2.295f32 * ctx.ap,5 => 756f32 + 2.295f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 6f32 + 0.085f32 * ctx.ap,2 => 11.5f32 + 0.085f32 * ctx.ap,3 => 17f32 + 0.085f32 * ctx.ap,4 => 22.5f32 + 0.085f32 * ctx.ap,5 => 28f32 + 0.085f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 60f32 + 0.85f32 * ctx.ap,2 => 115f32 + 0.85f32 * ctx.ap,3 => 170f32 + 0.85f32 * ctx.ap,4 => 225f32 + 0.85f32 * ctx.ap,5 => 280f32 + 0.85f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 200f32 + 0.8f32 * ctx.ap,2 => 275f32 + 0.8f32 * ctx.ap,3 => 350f32 + 0.8f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 400f32 + 1.6f32 * ctx.ap,2 => 550f32 + 1.6f32 * ctx.ap,3 => 700f32 + 1.6f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:630f32,per_level:104f32},mana:CachedChampionStatsMap{flat:340f32,per_level:60f32},armor:CachedChampionStatsMap{flat:25f32,per_level:5f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:56f32,per_level:3.5f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:1.53f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:450f32,aram_damage_taken:1.1f32,aram_damage_dealt:0.95f32,urf_damage_taken:1.05f32,urf_damage_dealt:0.9f32,},
@@ -3018,55 +3018,55 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_3), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_4), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_5), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_6), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_7), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_8), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_3), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 3.5f32 + 0.08f32 * ctx.bonus_ad,2 => 6f32 + 0.08f32 * ctx.bonus_ad,3 => 8.5f32 + 0.08f32 * ctx.bonus_ad,4 => 11f32 + 0.08f32 * ctx.bonus_ad,5 => 13.5f32 + 0.08f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 35f32 + 0.2f32 * ctx.bonus_ad,2 => 40f32 + 0.2f32 * ctx.bonus_ad,3 => 45f32 + 0.2f32 * ctx.bonus_ad,4 => 50f32 + 0.2f32 * ctx.bonus_ad,5 => 55f32 + 0.2f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 35f32 + 0.8f32 * ctx.bonus_ad,2 => 60f32 + 0.8f32 * ctx.bonus_ad,3 => 85f32 + 0.8f32 * ctx.bonus_ad,4 => 110f32 + 0.8f32 * ctx.bonus_ad,5 => 135f32 + 0.8f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 70f32 + ctx.bonus_ad,2 => 100f32 + ctx.bonus_ad,3 => 130f32 + ctx.bonus_ad,4 => 160f32 + ctx.bonus_ad,5 => 190f32 + ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 60f32 + 1.4f32 * ctx.bonus_ad,2 => 90f32 + 1.4f32 * ctx.bonus_ad,3 => 120f32 + 1.4f32 * ctx.bonus_ad,4 => 150f32 + 1.4f32 * ctx.bonus_ad,5 => 180f32 + 1.4f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 130f32 + 2.4f32 * ctx.bonus_ad,2 => 190f32 + 2.4f32 * ctx.bonus_ad,3 => 250f32 + 2.4f32 * ctx.bonus_ad,4 => 310f32 + 2.4f32 * ctx.bonus_ad,5 => 370f32 + 2.4f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 30f32 + 0.4f32 * ctx.bonus_ad,2 => 45f32 + 0.4f32 * ctx.bonus_ad,3 => 60f32 + 0.4f32 * ctx.bonus_ad,4 => 75f32 + 0.4f32 * ctx.bonus_ad,5 => 90f32 + 0.4f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 100f32 + 1.4f32 * ctx.bonus_ad,2 => 145f32 + 1.4f32 * ctx.bonus_ad,3 => 190f32 + 1.4f32 * ctx.bonus_ad,4 => 235f32 + 1.4f32 * ctx.bonus_ad,5 => 280f32 + 1.4f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 15f32 + 0.4f32 * ctx.bonus_ad,2 => 25f32 + 0.4f32 * ctx.bonus_ad,3 => 35f32 + 0.4f32 * ctx.bonus_ad,4 => 45f32 + 0.4f32 * ctx.bonus_ad,5 => 55f32 + 0.4f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 60f32 + 0.8f32 * ctx.bonus_ad,2 => 85f32 + 0.8f32 * ctx.bonus_ad,3 => 110f32 + 0.8f32 * ctx.bonus_ad,4 => 135f32 + 0.8f32 * ctx.bonus_ad,5 => 160f32 + 0.8f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 75f32 + 1.2f32 * ctx.bonus_ad,2 => 110f32 + 1.2f32 * ctx.bonus_ad,3 => 145f32 + 1.2f32 * ctx.bonus_ad,4 => 180f32 + 1.2f32 * ctx.bonus_ad,5 => 215f32 + 1.2f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 150f32 + 1.2f32 * ctx.bonus_ad,2 => 250f32 + 1.2f32 * ctx.bonus_ad,3 => 350f32 + 1.2f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 15f32 + 0.12f32 * ctx.bonus_ad,2 => 25f32 + 0.12f32 * ctx.bonus_ad,3 => 35f32 + 0.12f32 * ctx.bonus_ad,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:610f32,per_level:105f32},mana:CachedChampionStatsMap{flat:400f32,per_level:55f32},armor:CachedChampionStatsMap{flat:28f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:55f32,per_level:2f32},attack_speed:CachedChampionStatsMap{flat:0.663f32,per_level:2.1f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:125f32,aram_damage_taken:1f32,aram_damage_dealt:1.1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -3079,27 +3079,27 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 90f32 + 0.5f32 * ctx.ap,2 => 145f32 + 0.5f32 * ctx.ap,3 => 200f32 + 0.5f32 * ctx.ap,4 => 255f32 + 0.5f32 * ctx.ap,5 => 310f32 + 0.5f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 60f32 + 0.5f32 * ctx.ap,2 => 95f32 + 0.5f32 * ctx.ap,3 => 130f32 + 0.5f32 * ctx.ap,4 => 165f32 + 0.5f32 * ctx.ap,5 => 200f32 + 0.5f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 48f32 + 0.4f32 * ctx.ap,2 => 76f32 + 0.4f32 * ctx.ap,3 => 104f32 + 0.4f32 * ctx.ap,4 => 132f32 + 0.4f32 * ctx.ap,5 => 160f32 + 0.4f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 20f32 + 0.2f32 * ctx.ap,2 => 30f32 + 0.2f32 * ctx.ap,3 => 40f32 + 0.2f32 * ctx.ap,4 => 50f32 + 0.2f32 * ctx.ap,5 => 60f32 + 0.2f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 60f32 + 0.6f32 * ctx.ap,2 => 90f32 + 0.6f32 * ctx.ap,3 => 120f32 + 0.6f32 * ctx.ap,4 => 150f32 + 0.6f32 * ctx.ap,5 => 180f32 + 0.6f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 150f32 + 0.6f32 * ctx.ap,2 => 250f32 + 0.6f32 * ctx.ap,3 => 350f32 + 0.6f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:560f32,per_level:88f32},mana:CachedChampionStatsMap{flat:365f32,per_level:43f32},armor:CachedChampionStatsMap{flat:29f32,per_level:5.2f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:54f32,per_level:3.1f32},attack_speed:CachedChampionStatsMap{flat:0.644f32,per_level:2.61f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.643999993801116f32,attack_range:550f32,aram_damage_taken:1.05f32,aram_damage_dealt:0.95f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -3112,27 +3112,27 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 35f32 + ctx.nasus_stacks,2 => 55f32 + ctx.nasus_stacks,3 => 75f32 + ctx.nasus_stacks,4 => 95f32 + ctx.nasus_stacks,5 => 115f32 + ctx.nasus_stacks,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 50f32 + 0.6f32 * ctx.ap,2 => 80f32 + 0.6f32 * ctx.ap,3 => 110f32 + 0.6f32 * ctx.ap,4 => 140f32 + 0.6f32 * ctx.ap,5 => 170f32 + 0.6f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 10f32 + 0.12f32 * ctx.ap,2 => 16f32 + 0.12f32 * ctx.ap,3 => 22f32 + 0.12f32 * ctx.ap,4 => 28f32 + 0.12f32 * ctx.ap,5 => 34f32 + 0.12f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 100f32 + 1.2f32 * ctx.ap,2 => 160f32 + 1.2f32 * ctx.ap,3 => 220f32 + 1.2f32 * ctx.ap,4 => 280f32 + 1.2f32 * ctx.ap,5 => 340f32 + 1.2f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 0.015f32 * ctx.enemy_max_health + 0.005f32 * 0.01f32 * ctx.ap,2 => 0.02f32 * ctx.enemy_max_health + 0.005f32 * 0.01f32 * ctx.ap,3 => 0.025f32 * ctx.enemy_max_health + 0.005f32 * 0.01f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 0.45f32 * ctx.enemy_max_health + 0.15f32 * 0.01f32 * ctx.ap,2 => 0.6f32 * ctx.enemy_max_health + 0.15f32 * 0.01f32 * ctx.ap,3 => 0.75f32 * ctx.enemy_max_health + 0.15f32 * 0.01f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:631f32,per_level:104f32},mana:CachedChampionStatsMap{flat:326f32,per_level:62f32},armor:CachedChampionStatsMap{flat:34f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:67f32,per_level:4f32},attack_speed:CachedChampionStatsMap{flat:0.638f32,per_level:3.48f32},movespeed:350f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.638000011444091f32,attack_range:125f32,aram_damage_taken:1.05f32,aram_damage_dealt:0.9f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -3145,43 +3145,43 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_4), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_5), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_6), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 85f32 + 0.9f32 * ctx.ap,2 => 130f32 + 0.9f32 * ctx.ap,3 => 175f32 + 0.9f32 * ctx.ap,4 => 220f32 + 0.9f32 * ctx.ap,5 => 265f32 + 0.9f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 30f32 + 0.4f32 * ctx.ap,2 => 40f32 + 0.4f32 * ctx.ap,3 => 50f32 + 0.4f32 * ctx.ap,4 => 60f32 + 0.4f32 * ctx.ap,5 => 70f32 + 0.4f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 55f32 + 0.5f32 * ctx.ap,2 => 90f32 + 0.5f32 * ctx.ap,3 => 125f32 + 0.5f32 * ctx.ap,4 => 160f32 + 0.5f32 * ctx.ap,5 => 195f32 + 0.5f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 110f32 + ctx.ap,2 => 180f32 + ctx.ap,3 => 250f32 + ctx.ap,4 => 320f32 + ctx.ap,5 => 390f32 + ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 27.5f32 + 0.25f32 * ctx.ap,2 => 45f32 + 0.25f32 * ctx.ap,3 => 62.5f32 + 0.25f32 * ctx.ap,4 => 80f32 + 0.25f32 * ctx.ap,5 => 97.5f32 + 0.25f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 165f32 + 1.5f32 * ctx.ap,2 => 270f32 + 1.5f32 * ctx.ap,3 => 375f32 + 1.5f32 * ctx.ap,4 => 480f32 + 1.5f32 * ctx.ap,5 => 585f32 + 1.5f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 82.5f32 + 0.75f32 * ctx.ap,2 => 135f32 + 0.75f32 * ctx.ap,3 => 187.5f32 + 0.75f32 * ctx.ap,4 => 240f32 + 0.75f32 * ctx.ap,5 => 292.5f32 + 0.75f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 41.25f32 + 0.375f32 * ctx.ap,2 => 67.5f32 + 0.375f32 * ctx.ap,3 => 93.75f32 + 0.375f32 * ctx.ap,4 => 120f32 + 0.375f32 * ctx.ap,5 => 146.25f32 + 0.375f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 125f32 + 0.4f32 * ctx.ap,2 => 175f32 + 0.4f32 * ctx.ap,3 => 225f32 + 0.4f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 150f32 + 0.8f32 * ctx.ap,2 => 275f32 + 0.8f32 * ctx.ap,3 => 400f32 + 0.8f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:646f32,per_level:100f32},mana:CachedChampionStatsMap{flat:400f32,per_level:47f32},armor:CachedChampionStatsMap{flat:39f32,per_level:4.95f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:61f32,per_level:3.3f32},attack_speed:CachedChampionStatsMap{flat:0.706f32,per_level:1f32},movespeed:325f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.611999988555908f32,attack_range:175f32,aram_damage_taken:1.1f32,aram_damage_dealt:0.95f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -3194,31 +3194,31 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_4), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 60f32 + 0.6f32 * ctx.ap,2 => 110f32 + 0.6f32 * ctx.ap,3 => 160f32 + 0.6f32 * ctx.ap,4 => 210f32 + 0.6f32 * ctx.ap,5 => 260f32 + 0.6f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 35f32,2 => 50f32,3 => 65f32,4 => 80f32,5 => 95f32,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 35f32 + 0.25f32 * ctx.ap,2 => 60f32 + 0.25f32 * ctx.ap,3 => 85f32 + 0.25f32 * ctx.ap,4 => 110f32 + 0.25f32 * ctx.ap,5 => 135f32 + 0.25f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 130f32 + 1.1f32 * ctx.ap,2 => 230f32 + 1.1f32 * ctx.ap,3 => 330f32 + 1.1f32 * ctx.ap,4 => 430f32 + 1.1f32 * ctx.ap,5 => 530f32 + 1.1f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 30f32 + 0.6f32 * ctx.ap,2 => 65f32 + 0.6f32 * ctx.ap,3 => 100f32 + 0.6f32 * ctx.ap,4 => 135f32 + 0.6f32 * ctx.ap,5 => 170f32 + 0.6f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 70f32 + 0.65f32 * ctx.ap,2 => 105f32 + 0.65f32 * ctx.ap,3 => 140f32 + 0.65f32 * ctx.ap,4 => 175f32 + 0.65f32 * ctx.ap,5 => 210f32 + 0.65f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 150f32 + 1.2f32 * ctx.ap,2 => 350f32 + 1.2f32 * ctx.ap,3 => 550f32 + 1.2f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:610f32,per_level:104f32},mana:CachedChampionStatsMap{flat:450f32,per_level:30f32},armor:CachedChampionStatsMap{flat:21f32,per_level:5.2f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:48f32,per_level:2.5f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:3.5f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.67f32,attack_range:550f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -3231,23 +3231,23 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_4), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 227.5f32 + 1.625f32 * ctx.ap,2 => 292.5f32,3 => 357.5f32,4 => 422.5f32,5 => 487.5f32,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 70f32 + 0.5f32 * ctx.ap,2 => 90f32,3 => 110f32,4 => 130f32,5 => 150f32,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 40f32 + 0.2f32 * ctx.ap,2 => 80f32,3 => 120f32,4 => 160f32,5 => 200f32,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 10f32 + 0.05f32 * ctx.ap,2 => 20f32,3 => 30f32,4 => 40f32,5 => 50f32,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 0.3f32,2 => 0.4f32,3 => 0.5f32,4 => 0.6f32,5 => 0.7f32,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:610f32,per_level:109f32},mana:CachedChampionStatsMap{flat:295f32,per_level:45f32},armor:CachedChampionStatsMap{flat:32f32,per_level:5f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.45f32},attack_damage:CachedChampionStatsMap{flat:58f32,per_level:3.5f32},attack_speed:CachedChampionStatsMap{flat:0.638f32,per_level:3.22f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.638000011444091f32,attack_range:525f32,aram_damage_taken:1f32,aram_damage_dealt:1.1f32,urf_damage_taken:0.95f32,urf_damage_dealt:1.1f32,},
@@ -3260,31 +3260,31 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_3), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_4), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 10f32 + 1.8f32 * ctx.ad,2 => 20f32 + 1.9f32 * ctx.ad,3 => 30f32 + 2f32 * ctx.ad,4 => 40f32 + 2.1f32 * ctx.ad,5 => 50f32 + 2.2f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 5f32 + 0.9f32 * ctx.ad,2 => 10f32 + 0.95f32 * ctx.ad,3 => 15f32 + ctx.ad,4 => 20f32 + 1.05f32 * ctx.ad,5 => 25f32 + 1.1f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 60f32 + 0.2f32 * ctx.bonus_ad,2 => 70f32 + 0.2f32 * ctx.bonus_ad,3 => 80f32 + 0.2f32 * ctx.bonus_ad,4 => 90f32 + 0.2f32 * ctx.bonus_ad,5 => 100f32 + 0.2f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 125f32 + ctx.bonus_ad,2 => 225f32 + ctx.bonus_ad,3 => 325f32 + ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 185f32 + 1.4f32 * ctx.bonus_ad,2 => 325f32 + 1.4f32 * ctx.bonus_ad,3 => 465f32 + 1.4f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 15f32 + 0.1f32 * ctx.bonus_ad,2 => 25f32 + 0.1f32 * ctx.bonus_ad,3 => 35f32 + 0.1f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 60f32 + 0.4f32 * ctx.bonus_ad,2 => 100f32 + 0.4f32 * ctx.bonus_ad,3 => 140f32 + 0.4f32 * ctx.bonus_ad,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:570f32,per_level:101f32},mana:CachedChampionStatsMap{flat:350f32,per_level:35f32},armor:CachedChampionStatsMap{flat:27f32,per_level:4.5f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:60f32,per_level:2f32},attack_speed:CachedChampionStatsMap{flat:0.697f32,per_level:2.25f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.67f32,attack_range:225f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -3297,23 +3297,23 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 65f32 + 0.85f32 * ctx.bonus_ad,2 => 110f32 + 0.85f32 * ctx.bonus_ad,3 => 155f32 + 0.85f32 * ctx.bonus_ad,4 => 200f32 + 0.85f32 * ctx.bonus_ad,5 => 245f32 + 0.85f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 20f32,2 => 30f32,3 => 40f32,4 => 50f32,5 => 60f32,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 20f32 + 0.25f32 * ctx.ap,2 => 31.25f32 + 0.25f32 * ctx.ap,3 => 42.5f32 + 0.25f32 * ctx.ap,4 => 53.75f32 + 0.25f32 * ctx.ap,5 => 65f32 + 0.25f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 80f32 + ctx.ap,2 => 125f32 + ctx.ap,3 => 170f32 + ctx.ap,4 => 215f32 + ctx.ap,5 => 260f32 + ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 150f32 + 1.2f32 * ctx.bonus_ad,2 => 275f32 + 1.2f32 * ctx.bonus_ad,3 => 400f32 + 1.2f32 * ctx.bonus_ad,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:655f32,per_level:109f32},mana:CachedChampionStatsMap{flat:275f32,per_level:35f32},armor:CachedChampionStatsMap{flat:38f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:1.55f32},attack_damage:CachedChampionStatsMap{flat:62f32,per_level:2.6f32},attack_speed:CachedChampionStatsMap{flat:0.721f32,per_level:2.7f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.721f32,attack_range:125f32,aram_damage_taken:0.9f32,aram_damage_dealt:1.1f32,urf_damage_taken:1f32,urf_damage_dealt:0.95f32,},
@@ -3326,47 +3326,47 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_4), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_4), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 60f32 + 0.65f32 * ctx.ap + 0.05f32 * ctx.bonus_health,2 => 100f32 + 0.65f32 * ctx.ap + 0.05f32 * ctx.bonus_health,3 => 140f32 + 0.65f32 * ctx.ap + 0.05f32 * ctx.bonus_health,4 => 180f32 + 0.65f32 * ctx.ap + 0.05f32 * ctx.bonus_health,5 => 220f32 + 0.65f32 * ctx.ap + 0.05f32 * ctx.bonus_health,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 400f32,2 => 600f32,3 => 800f32,4 => 1000f32,5 => 1200f32,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 180f32 + 1.5f32 * ctx.ap,2 => 225f32 + 1.5f32 * ctx.ap,3 => 270f32 + 1.5f32 * ctx.ap,4 => 315f32 + 1.5f32 * ctx.ap,5 => 360f32 + 1.5f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 36f32 + 0.3f32 * ctx.ap,2 => 45f32 + 0.3f32 * ctx.ap,3 => 54f32 + 0.3f32 * ctx.ap,4 => 63f32 + 0.3f32 * ctx.ap,5 => 72f32 + 0.3f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 59.94f32 + 0.49950000000000006f32 * ctx.ap,2 => 74.925f32 + 0.49950000000000006f32 * ctx.ap,3 => 89.91f32 + 0.49950000000000006f32 * ctx.ap,4 => 104.895f32 + 0.49950000000000006f32 * ctx.ap,5 => 119.88f32 + 0.49950000000000006f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 11.988f32 + 0.0999f32 * ctx.ap,2 => 14.985f32 + 0.0999f32 * ctx.ap,3 => 17.982f32 + 0.0999f32 * ctx.ap,4 => 20.979f32 + 0.0999f32 * ctx.ap,5 => 23.976f32 + 0.0999f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 16f32 + 0.15f32 * ctx.ap,2 => 24f32 + 0.15f32 * ctx.ap,3 => 32f32 + 0.15f32 * ctx.ap,4 => 40f32 + 0.15f32 * ctx.ap,5 => 48f32 + 0.15f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 48f32 + 0.45f32 * ctx.ap,2 => 72f32 + 0.45f32 * ctx.ap,3 => 96f32 + 0.45f32 * ctx.ap,4 => 120f32 + 0.45f32 * ctx.ap,5 => 144f32 + 0.45f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 20f32 + 0.8f32 * ctx.ap,2 => 30f32 + 0.8f32 * ctx.ap,3 => 40f32 + 0.8f32 * ctx.ap,4 => 50f32 + 0.8f32 * ctx.ap,5 => 60f32 + 0.8f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 144f32 + 1.35f32 * ctx.ap,2 => 216f32 + 1.35f32 * ctx.ap,3 => 288f32 + 1.35f32 * ctx.ap,4 => 360f32 + 1.35f32 * ctx.ap,5 => 432f32 + 1.35f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 625f32 + 3f32 * ctx.ap,2 => 950f32 + 3f32 * ctx.ap,3 => 1275f32 + 3f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:610f32,per_level:90f32},mana:CachedChampionStatsMap{flat:280f32,per_level:42f32},armor:CachedChampionStatsMap{flat:29f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:61f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2.25f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:125f32,aram_damage_taken:0.9f32,aram_damage_dealt:1.1f32,urf_damage_taken:0.95f32,urf_damage_dealt:1.08f32,},
@@ -3379,23 +3379,23 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_3), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::True, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 60f32 + ctx.bonus_ad,2 => 110f32 + ctx.bonus_ad,3 => 160f32 + ctx.bonus_ad,4 => 210f32 + ctx.bonus_ad,5 => 260f32 + ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 10f32,2 => 25f32,3 => 40f32,4 => 55f32,5 => 70f32,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 70f32 + ctx.bonus_ad,2 => 135f32 + ctx.bonus_ad,3 => 200f32 + ctx.bonus_ad,4 => 265f32 + ctx.bonus_ad,5 => 330f32 + ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 70f32 + 0.5f32 * ctx.ad,2 => 115f32 + 0.5f32 * ctx.ad,3 => 160f32 + 0.5f32 * ctx.ad,4 => 205f32 + 0.5f32 * ctx.ad,5 => 250f32 + 0.5f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 10f32 + 0.25f32 * ctx.ad,2 => 20f32 + 0.25f32 * ctx.ad,3 => 30f32 + 0.25f32 * ctx.ad,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:645f32,per_level:119f32},mana:CachedChampionStatsMap{flat:316f32,per_level:50f32},armor:CachedChampionStatsMap{flat:35f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:68f32,per_level:4.7f32},attack_speed:CachedChampionStatsMap{flat:0.694f32,per_level:2.7f32},movespeed:350f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.694000005722045f32,attack_range:125f32,aram_damage_taken:1f32,aram_damage_dealt:1.05f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -3408,23 +3408,23 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 60f32 + 0.55f32 * ctx.ap,2 => 90f32 + 0.55f32 * ctx.ap,3 => 120f32 + 0.55f32 * ctx.ap,4 => 150f32 + 0.55f32 * ctx.ap,5 => 180f32 + 0.55f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 42f32 + 0.385f32 * ctx.ap,2 => 63f32 + 0.385f32 * ctx.ap,3 => 84f32 + 0.385f32 * ctx.ap,4 => 105f32 + 0.385f32 * ctx.ap,5 => 126f32 + 0.385f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 70f32 + 0.7f32 * ctx.ap,2 => 120f32 + 0.7f32 * ctx.ap,3 => 170f32 + 0.7f32 * ctx.ap,4 => 220f32 + 0.7f32 * ctx.ap,5 => 270f32 + 0.7f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 60f32 + 0.3f32 * ctx.ap,2 => 90f32 + 0.3f32 * ctx.ap,3 => 120f32 + 0.3f32 * ctx.ap,4 => 150f32 + 0.3f32 * ctx.ap,5 => 180f32 + 0.3f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 250f32 + 0.95f32 * ctx.ap,2 => 400f32 + 0.95f32 * ctx.ap,3 => 550f32 + 0.95f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:585f32,per_level:110f32},mana:CachedChampionStatsMap{flat:418f32,per_level:25f32},armor:CachedChampionStatsMap{flat:20f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:26f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:44f32,per_level:2.6f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:3.5f32},movespeed:325f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.657999992370605f32,attack_range:525f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1.1f32,urf_damage_dealt:0.9f32,},
@@ -3437,43 +3437,43 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_4), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_5), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_6), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 20f32 + 1.1f32 * ctx.ad,2 => 45f32 + 1.1f32 * ctx.ad,3 => 70f32 + 1.1f32 * ctx.ad,4 => 95f32 + 1.1f32 * ctx.ad,5 => 120f32 + 1.1f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 16f32,2 => 26f32,3 => 36f32,4 => 46f32,5 => 56f32,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 31f32,2 => 36f32,3 => 41f32,4 => 46f32,5 => 51f32,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 80f32,2 => 130f32,3 => 180f32,4 => 230f32,5 => 280f32,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 155f32,2 => 180f32,3 => 205f32,4 => 230f32,5 => 255f32,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 0.024f32 * ctx.enemy_max_health,2 => 0.026000000000000002f32 * ctx.enemy_max_health,3 => 0.027999999999999997f32 * ctx.enemy_max_health,4 => 0.03f32 * ctx.enemy_max_health,5 => 0.032f32 * ctx.enemy_max_health,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 0.12f32 * ctx.enemy_max_health,2 => 0.13f32 * ctx.enemy_max_health,3 => 0.14f32 * ctx.enemy_max_health,4 => 0.15f32 * ctx.enemy_max_health,5 => 0.16f32 * ctx.enemy_max_health,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 0.0f32,2 => 0.0f32,3 => 0.0f32,4 => 0.0f32,5 => 0.0f32,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 125f32 + 0.2f32 * ctx.ap,2 => 175f32 + 0.2f32 * ctx.ap,3 => 225f32 + 0.2f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 250f32 + 0.4f32 * ctx.ap,2 => 350f32 + 0.4f32 * ctx.ap,3 => 450f32 + 0.4f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:660f32,per_level:109f32},mana:CachedChampionStatsMap{flat:341f32,per_level:65f32},armor:CachedChampionStatsMap{flat:33f32,per_level:5.2f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:69f32,per_level:3.5f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:175f32,aram_damage_taken:1.05f32,aram_damage_dealt:0.9f32,urf_damage_taken:0.95f32,urf_damage_dealt:1.05f32,},
@@ -3486,43 +3486,43 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_3), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_4), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_5), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_6), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 70f32 + 1.15f32 * ctx.bonus_ad + 0.5f32 * ctx.ap,2 => 100f32 + 1.15f32 * ctx.bonus_ad + 0.5f32 * ctx.ap,3 => 130f32 + 1.15f32 * ctx.bonus_ad + 0.5f32 * ctx.ap,4 => 160f32 + 1.15f32 * ctx.bonus_ad + 0.5f32 * ctx.ap,5 => 190f32 + 1.15f32 * ctx.bonus_ad + 0.5f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 35f32 + 0.575f32 * ctx.bonus_ad + 0.25f32 * ctx.ap,2 => 50f32 + 0.575f32 * ctx.bonus_ad + 0.25f32 * ctx.ap,3 => 65f32 + 0.575f32 * ctx.bonus_ad + 0.25f32 * ctx.ap,4 => 80f32 + 0.575f32 * ctx.bonus_ad + 0.25f32 * ctx.ap,5 => 95f32 + 0.575f32 * ctx.bonus_ad + 0.25f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 155f32 + 2.3f32 * ctx.bonus_ad + ctx.ap,2 => 230f32 + 2.3f32 * ctx.bonus_ad + ctx.ap,3 => 305f32 + 2.3f32 * ctx.bonus_ad + ctx.ap,4 => 380f32 + 2.3f32 * ctx.bonus_ad + ctx.ap,5 => 455f32 + 2.3f32 * ctx.bonus_ad + ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 77.5f32 + 1.15f32 * ctx.bonus_ad + 0.5f32 * ctx.ap,2 => 115f32 + 1.15f32 * ctx.bonus_ad + 0.5f32 * ctx.ap,3 => 152.5f32 + 1.15f32 * ctx.bonus_ad + 0.5f32 * ctx.ap,4 => 190f32 + 1.15f32 * ctx.bonus_ad + 0.5f32 * ctx.ap,5 => 227.5f32 + 1.15f32 * ctx.bonus_ad + 0.5f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 155f32 + 2.3f32 * ctx.bonus_ad,2 => 230f32 + 2.3f32 * ctx.bonus_ad,3 => 305f32 + 2.3f32 * ctx.bonus_ad,4 => 380f32 + 2.3f32 * ctx.bonus_ad,5 => 455f32 + 2.3f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 70f32 + 1.15f32 * ctx.bonus_ad,2 => 100f32 + 1.15f32 * ctx.bonus_ad,3 => 130f32 + 1.15f32 * ctx.bonus_ad,4 => 160f32 + 1.15f32 * ctx.bonus_ad,5 => 190f32 + 1.15f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 0.06f32 * ctx.enemy_max_health + 0.015f32 * 0.01f32 * ctx.ap + 0.004f32 * 0.01f32 * ctx.bonus_health,2 => 0.065f32 * ctx.enemy_max_health + 0.015f32 * 0.01f32 * ctx.ap + 0.004f32 * 0.01f32 * ctx.bonus_health,3 => 0.07f32 * ctx.enemy_max_health + 0.015f32 * 0.01f32 * ctx.ap + 0.004f32 * 0.01f32 * ctx.bonus_health,4 => 0.075f32 * ctx.enemy_max_health + 0.015f32 * 0.01f32 * ctx.ap + 0.004f32 * 0.01f32 * ctx.bonus_health,5 => 0.08f32 * ctx.enemy_max_health + 0.015f32 * 0.01f32 * ctx.ap + 0.004f32 * 0.01f32 * ctx.bonus_health,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 55f32 + 1.5f32 * ctx.bonus_ad,2 => 105f32 + 1.5f32 * ctx.bonus_ad,3 => 155f32 + 1.5f32 * ctx.bonus_ad,4 => 205f32 + 1.5f32 * ctx.bonus_ad,5 => 255f32 + 1.5f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 300f32 + ctx.ap,2 => 500f32 + ctx.ap,3 => 700f32 + ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 150f32 + 0.5f32 * ctx.ap,2 => 250f32 + 0.5f32 * ctx.ap,3 => 350f32 + 0.5f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:650f32,per_level:109f32},mana:CachedChampionStatsMap{flat:317f32,per_level:31f32},armor:CachedChampionStatsMap{flat:40f32,per_level:4.95f32},magic_resist:CachedChampionStatsMap{flat:28f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:64f32,per_level:3.3f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:2.95f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.658f32,attack_range:175f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -3535,43 +3535,43 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_3), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_4), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_5), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 75f32,2 => 105f32,3 => 135f32,4 => 165f32,5 => 195f32,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 105f32 + ctx.bonus_ad,2 => 160f32 + ctx.bonus_ad,3 => 215f32 + ctx.bonus_ad,4 => 270f32 + ctx.bonus_ad,5 => 325f32 + ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 30f32 + ctx.bonus_ad + 0.09f32 * ctx.enemy_max_health,2 => 55f32 + ctx.bonus_ad + 0.09f32 * ctx.enemy_max_health,3 => 80f32 + ctx.bonus_ad + 0.09f32 * ctx.enemy_max_health,4 => 105f32 + ctx.bonus_ad + 0.09f32 * ctx.enemy_max_health,5 => 130f32 + ctx.bonus_ad + 0.09f32 * ctx.enemy_max_health,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 210f32 + 2f32 * ctx.bonus_ad,2 => 320f32 + 2f32 * ctx.bonus_ad,3 => 430f32 + 2f32 * ctx.bonus_ad,4 => 540f32 + 2f32 * ctx.bonus_ad,5 => 650f32 + 2f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 60f32 + 2f32 * ctx.bonus_ad + 0.18f32 * ctx.enemy_max_health,2 => 110f32 + 2f32 * ctx.bonus_ad + 0.18f32 * ctx.enemy_max_health,3 => 160f32 + 2f32 * ctx.bonus_ad + 0.18f32 * ctx.enemy_max_health,4 => 210f32 + 2f32 * ctx.bonus_ad + 0.18f32 * ctx.enemy_max_health,5 => 260f32 + 2f32 * ctx.bonus_ad + 0.18f32 * ctx.enemy_max_health,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 70f32 + 0.7f32 * ctx.ap,2 => 110f32 + 0.7f32 * ctx.ap,3 => 150f32 + 0.7f32 * ctx.ap,4 => 190f32 + 0.7f32 * ctx.ap,5 => 230f32 + 0.7f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 40f32 + 0.6f32 * ctx.bonus_ad,2 => 60f32 + 0.6f32 * ctx.bonus_ad,3 => 80f32 + 0.6f32 * ctx.bonus_ad,4 => 100f32 + 0.6f32 * ctx.bonus_ad,5 => 120f32 + 0.6f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 80f32 + 1.2f32 * ctx.bonus_ad,2 => 120f32 + 1.2f32 * ctx.bonus_ad,3 => 160f32 + 1.2f32 * ctx.bonus_ad,4 => 200f32 + 1.2f32 * ctx.bonus_ad,5 => 240f32 + 1.2f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 200f32 + 0.9f32 * ctx.bonus_ad,2 => 300f32 + 0.9f32 * ctx.bonus_ad,3 => 400f32 + 0.9f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 100f32 + 0.45f32 * ctx.bonus_ad,2 => 150f32 + 0.45f32 * ctx.bonus_ad,3 => 200f32 + 0.45f32 * ctx.bonus_ad,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:610f32,per_level:110f32},mana:CachedChampionStatsMap{flat:280f32,per_level:40f32},armor:CachedChampionStatsMap{flat:35f32,per_level:5f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:60f32,per_level:4f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:2.5f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:125f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -3584,11 +3584,11 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 100f32 + 0.75f32 * ctx.bonus_ad,2 => 150f32 + 0.75f32 * ctx.bonus_ad,3 => 200f32 + 0.75f32 * ctx.bonus_ad,4 => 250f32 + 0.75f32 * ctx.bonus_ad,5 => 300f32 + 0.75f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 100f32 + ctx.bonus_ad,2 => 150f32 + ctx.bonus_ad,3 => 200f32 + ctx.bonus_ad,4 => 250f32 + ctx.bonus_ad,5 => 300f32 + ctx.bonus_ad,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:670f32,per_level:110f32},mana:CachedChampionStatsMap{flat:415f32,per_level:50f32},armor:CachedChampionStatsMap{flat:43f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:62f32,per_level:2f32},attack_speed:CachedChampionStatsMap{flat:0.667f32,per_level:2.5f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.666999995708465f32,attack_range:150f32,aram_damage_taken:0.9f32,aram_damage_dealt:1.1f32,urf_damage_taken:0.95f32,urf_damage_dealt:1f32,},
@@ -3601,27 +3601,27 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 60f32 + 0.9f32 * ctx.bonus_ad,2 => 90f32 + 0.9f32 * ctx.bonus_ad,3 => 120f32 + 0.9f32 * ctx.bonus_ad,4 => 150f32 + 0.9f32 * ctx.bonus_ad,5 => 180f32 + 0.9f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 45f32 + 0.675f32 * ctx.bonus_ad,2 => 67.5f32 + 0.675f32 * ctx.bonus_ad,3 => 90f32 + 0.675f32 * ctx.bonus_ad,4 => 112.5f32 + 0.675f32 * ctx.bonus_ad,5 => 135f32 + 0.675f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 8f32 + 0.2f32 * ctx.bonus_ad + 0.45f32 * ctx.ap,2 => 16f32 + 0.2f32 * ctx.bonus_ad + 0.45f32 * ctx.ap,3 => 24f32 + 0.2f32 * ctx.bonus_ad + 0.45f32 * ctx.ap,4 => 32f32 + 0.2f32 * ctx.bonus_ad + 0.45f32 * ctx.ap,5 => 40f32 + 0.2f32 * ctx.bonus_ad + 0.45f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 50f32 + 0.5f32 * ctx.bonus_ad,2 => 90f32 + 0.5f32 * ctx.bonus_ad,3 => 130f32 + 0.5f32 * ctx.bonus_ad,4 => 170f32 + 0.5f32 * ctx.bonus_ad,5 => 210f32 + 0.5f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 500f32 + 1.25f32 * ctx.bonus_ad,2 => 750f32 + 1.25f32 * ctx.bonus_ad,3 => 1000f32 + 1.25f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 100f32 + 1.25f32 * ctx.bonus_ad + 0.1f32 * ctx.enemy_max_health,2 => 200f32 + 1.25f32 * ctx.bonus_ad + 0.1f32 * ctx.enemy_max_health,3 => 300f32 + 1.25f32 * ctx.bonus_ad + 0.1f32 * ctx.enemy_max_health,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:590f32,per_level:124f32},mana:CachedChampionStatsMap{flat:375f32,per_level:60f32},armor:CachedChampionStatsMap{flat:31f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:66f32,per_level:3.1f32},attack_speed:CachedChampionStatsMap{flat:0.688f32,per_level:2.1f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:150f32,aram_damage_taken:0.9f32,aram_damage_dealt:1.15f32,urf_damage_taken:0.9f32,urf_damage_dealt:1f32,},
@@ -3634,11 +3634,11 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 65f32 + 0.8f32 * ctx.bonus_ad + 0.5f32 * ctx.ap,2 => 100f32 + 0.9f32 * ctx.bonus_ad + 0.5f32 * ctx.ap,3 => 135f32 + ctx.bonus_ad + 0.5f32 * ctx.ap,4 => 170f32 + 1.1f32 * ctx.bonus_ad + 0.5f32 * ctx.ap,5 => 205f32 + 1.2f32 * ctx.bonus_ad + 0.5f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 40f32 + 0.2f32 * ctx.bonus_ad,2 => 65f32 + 0.2f32 * ctx.bonus_ad,3 => 90f32 + 0.2f32 * ctx.bonus_ad,4 => 115f32 + 0.2f32 * ctx.bonus_ad,5 => 140f32 + 0.2f32 * ctx.bonus_ad,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:565f32,per_level:107f32},mana:CachedChampionStatsMap{flat:269f32,per_level:35f32},armor:CachedChampionStatsMap{flat:28f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:59f32,per_level:2.7f32},attack_speed:CachedChampionStatsMap{flat:0.668f32,per_level:3.1f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.667999982833862f32,attack_range:525f32,aram_damage_taken:0.9f32,aram_damage_dealt:1.1f32,urf_damage_taken:0.95f32,urf_damage_dealt:1f32,},
@@ -3651,15 +3651,15 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 70f32 + 0.7f32 * ctx.ap,2 => 115f32 + 0.7f32 * ctx.ap,3 => 160f32 + 0.7f32 * ctx.ap,4 => 205f32 + 0.7f32 * ctx.ap,5 => 250f32 + 0.7f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 70f32 + 0.8f32 * ctx.ap,2 => 120f32 + 0.8f32 * ctx.ap,3 => 170f32 + 0.8f32 * ctx.ap,4 => 220f32 + 0.8f32 * ctx.ap,5 => 270f32 + 0.8f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 100f32 + 0.5f32 * ctx.ap,2 => 200f32 + 0.5f32 * ctx.ap,3 => 300f32 + 0.5f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:610f32,per_level:99f32},mana:CachedChampionStatsMap{flat:315f32,per_level:50f32},armor:CachedChampionStatsMap{flat:30f32,per_level:4.9f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:62f32,per_level:3.5f32},attack_speed:CachedChampionStatsMap{flat:0.635f32,per_level:3f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.634999990463256f32,attack_range:300f32,aram_damage_taken:0.95f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -3672,15 +3672,15 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 80f32 + ctx.ap,2 => 120f32 + ctx.ap,3 => 160f32 + ctx.ap,4 => 200f32 + ctx.ap,5 => 240f32 + ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 80f32 + 0.7f32 * ctx.ap,2 => 100f32 + 0.7f32 * ctx.ap,3 => 120f32 + 0.7f32 * ctx.ap,4 => 140f32 + 0.7f32 * ctx.ap,5 => 160f32 + 0.7f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 150f32 + 0.6f32 * ctx.ap,2 => 250f32 + 0.6f32 * ctx.ap,3 => 350f32 + 0.6f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:675f32,per_level:100f32},mana:CachedChampionStatsMap{flat:310f32,per_level:33f32},armor:CachedChampionStatsMap{flat:35f32,per_level:4.5f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:65f32,per_level:2.75f32},attack_speed:CachedChampionStatsMap{flat:0.7f32,per_level:2.215f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:125f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:0.85f32,urf_damage_dealt:1.1f32,},
@@ -3693,23 +3693,23 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 0.3f32 * ctx.ad,2 => 0.35f32 * ctx.ad,3 => 0.4f32 * ctx.ad,4 => 0.45f32 * ctx.ad,5 => 0.5f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 5f32,2 => 10f32,3 => 15f32,4 => 20f32,5 => 25f32,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 80f32 + 0.64f32 * ctx.bonus_ad,2 => 108f32 + 0.64f32 * ctx.bonus_ad,3 => 136f32 + 0.64f32 * ctx.bonus_ad,4 => 164f32 + 0.64f32 * ctx.bonus_ad,5 => 192f32 + 0.64f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 100f32 + 0.8f32 * ctx.bonus_ad,2 => 135f32 + 0.8f32 * ctx.bonus_ad,3 => 170f32 + 0.8f32 * ctx.bonus_ad,4 => 205f32 + 0.8f32 * ctx.bonus_ad,5 => 240f32 + 0.8f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 150f32 + ctx.bonus_ad + 0.15f32 * ctx.enemy_max_health,2 => 250f32 + ctx.bonus_ad + 0.2f32 * ctx.enemy_max_health,3 => 350f32 + ctx.bonus_ad + 0.25f32 * ctx.enemy_max_health,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:600f32,per_level:99f32},mana:CachedChampionStatsMap{flat:100f32,per_level:0f32},armor:CachedChampionStatsMap{flat:35f32,per_level:4.5f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:58f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.667f32,per_level:2f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.666999995708465f32,attack_range:175f32,aram_damage_taken:0.9f32,aram_damage_dealt:1.05f32,urf_damage_taken:0.93f32,urf_damage_dealt:1.07f32,},
@@ -3722,23 +3722,23 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 60f32 + 0.6f32 * ctx.ap,2 => 100f32 + 0.6f32 * ctx.ap,3 => 140f32 + 0.6f32 * ctx.ap,4 => 180f32 + 0.6f32 * ctx.ap,5 => 220f32 + 0.6f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 60f32 + 0.6f32 * ctx.ap,2 => 90f32 + 0.6f32 * ctx.ap,3 => 120f32 + 0.6f32 * ctx.ap,4 => 150f32 + 0.6f32 * ctx.ap,5 => 180f32 + 0.6f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 0.05f32 * ctx.enemy_max_health + 0.03f32 * 0.01f32 * ctx.ap,2 => 0.055f32 * ctx.enemy_max_health + 0.03f32 * 0.01f32 * ctx.ap,3 => 0.06f32 * ctx.enemy_max_health + 0.03f32 * 0.01f32 * ctx.ap,4 => 0.065f32 * ctx.enemy_max_health + 0.03f32 * 0.01f32 * ctx.ap,5 => 0.07f32 * ctx.enemy_max_health + 0.03f32 * 0.01f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 15f32 + 0.1375f32 * ctx.ap,2 => 25f32 + 0.1375f32 * ctx.ap,3 => 35f32 + 0.1375f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 120f32 + 1.1f32 * ctx.ap,2 => 200f32 + 1.1f32 * ctx.ap,3 => 280f32 + 1.1f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:620f32,per_level:104f32},mana:CachedChampionStatsMap{flat:320f32,per_level:40f32},armor:CachedChampionStatsMap{flat:30f32,per_level:4f32},magic_resist:CachedChampionStatsMap{flat:28f32,per_level:1.8f32},attack_damage:CachedChampionStatsMap{flat:55f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2f32},movespeed:315f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:175f32,aram_damage_taken:1f32,aram_damage_dealt:0.95f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -3751,11 +3751,11 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 80f32 + 0.8f32 * ctx.ap,2 => 125f32 + 0.8f32 * ctx.ap,3 => 170f32 + 0.8f32 * ctx.ap,4 => 215f32 + 0.8f32 * ctx.ap,5 => 260f32 + 0.8f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 65f32 + 0.55f32 * ctx.ap,2 => 95f32 + 0.55f32 * ctx.ap,3 => 125f32 + 0.55f32 * ctx.ap,4 => 155f32 + 0.55f32 * ctx.ap,5 => 185f32 + 0.55f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:545f32,per_level:94f32},mana:CachedChampionStatsMap{flat:350f32,per_level:50f32},armor:CachedChampionStatsMap{flat:27f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:49f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2.11f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:550f32,aram_damage_taken:1.05f32,aram_damage_dealt:0.95f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -3768,35 +3768,35 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_3), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 90f32 + 1.4f32 * ctx.bonus_ad,2 => 135f32 + 1.4f32 * ctx.bonus_ad,3 => 180f32 + 1.4f32 * ctx.bonus_ad,4 => 225f32 + 1.4f32 * ctx.bonus_ad,5 => 270f32 + 1.4f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 60f32 + ctx.bonus_ad,2 => 90f32 + ctx.bonus_ad,3 => 120f32 + ctx.bonus_ad,4 => 150f32 + ctx.bonus_ad,5 => 180f32 + ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 5f32 + 0.75f32 * ctx.ad,2 => 20f32 + 0.75f32 * ctx.ad,3 => 35f32 + 0.75f32 * ctx.ad,4 => 50f32 + 0.75f32 * ctx.ad,5 => 65f32 + 0.75f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 10f32 + 1.5f32 * ctx.ad,2 => 40f32 + 1.5f32 * ctx.ad,3 => 70f32 + 1.5f32 * ctx.ad,4 => 100f32 + 1.5f32 * ctx.ad,5 => 130f32 + 1.5f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 15f32 + 2.25f32 * ctx.ad,2 => 60f32 + 2.25f32 * ctx.ad,3 => 105f32 + 2.25f32 * ctx.ad,4 => 150f32 + 2.25f32 * ctx.ad,5 => 195f32 + 2.25f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 40f32 + 0.9f32 * ctx.bonus_ad,2 => 70f32 + 0.9f32 * ctx.bonus_ad,3 => 100f32 + 0.9f32 * ctx.bonus_ad,4 => 130f32 + 0.9f32 * ctx.bonus_ad,5 => 160f32 + 0.9f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 30f32 + 0.05f32 * ctx.bonus_ad + 0.05f32 * ctx.ap,2 => 75f32 + 0.05f32 * ctx.bonus_ad + 0.05f32 * ctx.ap,3 => 120f32 + 0.05f32 * ctx.bonus_ad + 0.05f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 900f32 + 1.5f32 * ctx.bonus_ad + 1.5f32 * ctx.ap,2 => 2250f32 + 1.5f32 * ctx.bonus_ad + 1.5f32 * ctx.ap,3 => 3600f32 + 1.5f32 * ctx.bonus_ad + 1.5f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:660f32,per_level:111f32},mana:CachedChampionStatsMap{flat:100f32,per_level:0f32},armor:CachedChampionStatsMap{flat:35f32,per_level:5.2f32},magic_resist:CachedChampionStatsMap{flat:28f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:69f32,per_level:4.15f32},attack_speed:CachedChampionStatsMap{flat:0.665f32,per_level:2.75f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.665000021457672f32,attack_range:125f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:0.95f32,urf_damage_dealt:0.95f32,},
@@ -3809,15 +3809,15 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 30f32 + 0f32 * ctx.ad,2 => 60f32 + 0.0375f32 * ctx.ad,3 => 90f32 + 0.075f32 * ctx.ad,4 => 120f32 + 0.1125f32 * ctx.ad,5 => 150f32 + 0.15f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 50f32 + 0.8f32 * ctx.ap,2 => 80f32 + 0.8f32 * ctx.ap,3 => 110f32 + 0.8f32 * ctx.ap,4 => 140f32 + 0.8f32 * ctx.ap,5 => 170f32 + 0.8f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 55f32 + 0.8f32 * ctx.bonus_ad,2 => 100f32 + 0.8f32 * ctx.bonus_ad,3 => 145f32 + 0.8f32 * ctx.bonus_ad,4 => 190f32 + 0.8f32 * ctx.bonus_ad,5 => 235f32 + 0.8f32 * ctx.bonus_ad,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:590f32,per_level:104f32},mana:CachedChampionStatsMap{flat:4f32,per_level:0f32},armor:CachedChampionStatsMap{flat:34f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:68f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.667f32,per_level:3f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.666999995708465f32,attack_range:125f32,aram_damage_taken:0.92f32,aram_damage_dealt:1.05f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -3830,15 +3830,15 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 45f32 + 0.65f32 * ctx.bonus_ad,2 => 75f32 + 0.7f32 * ctx.bonus_ad,3 => 105f32 + 0.75f32 * ctx.bonus_ad,4 => 135f32 + 0.8f32 * ctx.bonus_ad,5 => 165f32 + 0.85f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 135f32 + 1.95f32 * ctx.bonus_ad,2 => 225f32 + 2.1f32 * ctx.bonus_ad,3 => 315f32 + 2.25f32 * ctx.bonus_ad,4 => 405f32 + 2.4f32 * ctx.bonus_ad,5 => 495f32 + 2.55f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 65f32 + ctx.bonus_ad,2 => 95f32 + ctx.bonus_ad,3 => 125f32 + ctx.bonus_ad,4 => 155f32 + ctx.bonus_ad,5 => 185f32 + ctx.bonus_ad,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:630f32,per_level:100f32},mana:CachedChampionStatsMap{flat:0f32,per_level:0f32},armor:CachedChampionStatsMap{flat:33f32,per_level:4.4f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:64f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:3.5f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:125f32,aram_damage_taken:0.92f32,aram_damage_dealt:1.05f32,urf_damage_taken:0.95f32,urf_damage_dealt:1f32,},
@@ -3851,63 +3851,63 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_4), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_5), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_6), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_7), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_8), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_4), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 5f32 + 0.0917f32 * ctx.ap + 0.005f32 * ctx.enemy_max_health,2 => 7.5f32 + 0.0917f32 * ctx.ap + 0.00567f32 * ctx.enemy_max_health,3 => 10f32 + 0.0917f32 * ctx.ap + 0.00633f32 * ctx.enemy_max_health,4 => 12.5f32 + 0.0917f32 * ctx.ap + 0.006999999999999999f32 * ctx.enemy_max_health,5 => 15f32 + 0.0917f32 * ctx.ap + 0.00767f32 * ctx.enemy_max_health,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 3.5f32 + 0.06417f32 * ctx.ap + 0.0034999999999999996f32 * ctx.enemy_max_health,2 => 5.25f32 + 0.06417f32 * ctx.ap + 0.0039700000000000004f32 * ctx.enemy_max_health,3 => 7f32 + 0.06417f32 * ctx.ap + 0.00443f32 * ctx.enemy_max_health,4 => 8.75f32 + 0.06417f32 * ctx.ap + 0.0049f32 * ctx.enemy_max_health,5 => 10.5f32 + 0.06417f32 * ctx.ap + 0.005370000000000001f32 * ctx.enemy_max_health,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 60f32 + 1.1f32 * ctx.ap + 0.06f32 * ctx.enemy_max_health,2 => 90f32 + 1.1f32 * ctx.ap + 0.068f32 * ctx.enemy_max_health,3 => 120f32 + 1.1f32 * ctx.ap + 0.076f32 * ctx.enemy_max_health,4 => 150f32 + 1.1f32 * ctx.ap + 0.084f32 * ctx.enemy_max_health,5 => 180f32 + 1.1f32 * ctx.ap + 0.092f32 * ctx.enemy_max_health,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 42f32 + 0.77f32 * ctx.ap + 0.042f32 * ctx.enemy_max_health,2 => 63f32 + 0.77f32 * ctx.ap + 0.047599999999999996f32 * ctx.enemy_max_health,3 => 84f32 + 0.77f32 * ctx.ap + 0.053200000000000004f32 * ctx.enemy_max_health,4 => 105f32 + 0.77f32 * ctx.ap + 0.0588f32 * ctx.enemy_max_health,5 => 126f32 + 0.77f32 * ctx.ap + 0.0644f32 * ctx.enemy_max_health,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 7.5f32 + 0.1375f32 * ctx.ap + 0.0075f32 * ctx.enemy_max_health,2 => 11.25f32 + 0.1375f32 * ctx.ap + 0.0085f32 * ctx.enemy_max_health,3 => 15f32 + 0.1375f32 * ctx.ap + 0.0095f32 * ctx.enemy_max_health,4 => 18.75f32 + 0.1375f32 * ctx.ap + 0.0105f32 * ctx.enemy_max_health,5 => 22.5f32 + 0.1375f32 * ctx.ap + 0.0115f32 * ctx.enemy_max_health,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 5.25f32 + 0.09625f32 * ctx.ap + 0.00525f32 * ctx.enemy_max_health,2 => 7.875f32 + 0.09625f32 * ctx.ap + 0.0059499999999999996f32 * ctx.enemy_max_health,3 => 10.5f32 + 0.09625f32 * ctx.ap + 0.0066500000000000005f32 * ctx.enemy_max_health,4 => 13.125f32 + 0.09625f32 * ctx.ap + 0.00735f32 * ctx.enemy_max_health,5 => 15.75f32 + 0.09625f32 * ctx.ap + 0.00805f32 * ctx.enemy_max_health,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 90f32 + 1.65f32 * ctx.ap + 0.09f32 * ctx.enemy_max_health,2 => 135f32 + 1.65f32 * ctx.ap + 0.102f32 * ctx.enemy_max_health,3 => 180f32 + 1.65f32 * ctx.ap + 0.114f32 * ctx.enemy_max_health,4 => 225f32 + 1.65f32 * ctx.ap + 0.126f32 * ctx.enemy_max_health,5 => 270f32 + 1.65f32 * ctx.ap + 0.138f32 * ctx.enemy_max_health,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 63f32 + 1.155f32 * ctx.ap + 0.063f32 * ctx.enemy_max_health,2 => 94.5f32 + 1.155f32 * ctx.ap + 0.07139999999999999f32 * ctx.enemy_max_health,3 => 126f32 + 1.155f32 * ctx.ap + 0.07980000000000001f32 * ctx.enemy_max_health,4 => 157.5f32 + 1.155f32 * ctx.ap + 0.0882f32 * ctx.enemy_max_health,5 => 189f32 + 1.155f32 * ctx.ap + 0.0966f32 * ctx.enemy_max_health,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 55f32 + 0.5f32 * ctx.ap,2 => 80f32 + 0.5f32 * ctx.ap,3 => 105f32 + 0.5f32 * ctx.ap,4 => 130f32 + 0.5f32 * ctx.ap,5 => 155f32 + 0.5f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 110f32 + ctx.ap,2 => 160f32 + ctx.ap,3 => 210f32 + ctx.ap,4 => 260f32 + ctx.ap,5 => 310f32 + ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 82.5f32 + 0.75f32 * ctx.ap,2 => 120f32 + 0.75f32 * ctx.ap,3 => 157.5f32 + 0.75f32 * ctx.ap,4 => 195f32 + 0.75f32 * ctx.ap,5 => 232.5f32 + 0.75f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 165f32 + 1.5f32 * ctx.ap,2 => 240f32 + 1.5f32 * ctx.ap,3 => 315f32 + 1.5f32 * ctx.ap,4 => 390f32 + 1.5f32 * ctx.ap,5 => 465f32 + 1.5f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 70f32 + 0.175f32 * ctx.ap,2 => 105f32 + 0.175f32 * ctx.ap,3 => 140f32 + 0.175f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 700f32 + 1.75f32 * ctx.ap,2 => 1050f32 + 1.75f32 * ctx.ap,3 => 1400f32 + 1.75f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 140f32 + 0.35f32 * ctx.ap,2 => 210f32 + 0.35f32 * ctx.ap,3 => 280f32 + 0.35f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:655f32,per_level:105f32},mana:CachedChampionStatsMap{flat:150f32,per_level:0f32},armor:CachedChampionStatsMap{flat:36f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:28f32,per_level:1.55f32},attack_damage:CachedChampionStatsMap{flat:64f32,per_level:3.2f32},attack_speed:CachedChampionStatsMap{flat:0.644f32,per_level:1.85f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.643999993801116f32,attack_range:125f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -3920,19 +3920,19 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 75f32 + 0.55f32 * ctx.ap + 0.02f32 * ctx.bonus_mana,2 => 95f32 + 0.55f32 * ctx.ap + 0.02f32 * ctx.bonus_mana,3 => 115f32 + 0.55f32 * ctx.ap + 0.02f32 * ctx.bonus_mana,4 => 135f32 + 0.55f32 * ctx.ap + 0.02f32 * ctx.bonus_mana,5 => 155f32 + 0.55f32 * ctx.ap + 0.02f32 * ctx.bonus_mana,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 60f32 + 0.7f32 * ctx.ap + 0.04f32 * ctx.bonus_mana,2 => 90f32 + 0.7f32 * ctx.ap + 0.04f32 * ctx.bonus_mana,3 => 120f32 + 0.7f32 * ctx.ap + 0.04f32 * ctx.bonus_mana,4 => 150f32 + 0.7f32 * ctx.ap + 0.04f32 * ctx.bonus_mana,5 => 180f32 + 0.7f32 * ctx.ap + 0.04f32 * ctx.bonus_mana,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 60f32 + 0.5f32 * ctx.ap + 0.02f32 * ctx.bonus_mana,2 => 90f32 + 0.5f32 * ctx.ap + 0.02f32 * ctx.bonus_mana,3 => 120f32 + 0.5f32 * ctx.ap + 0.02f32 * ctx.bonus_mana,4 => 150f32 + 0.5f32 * ctx.ap + 0.02f32 * ctx.bonus_mana,5 => 180f32 + 0.5f32 * ctx.ap + 0.02f32 * ctx.bonus_mana,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 0.5f32,2 => 0.75f32,3 => 1f32,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:645f32,per_level:124f32},mana:CachedChampionStatsMap{flat:300f32,per_level:70f32},armor:CachedChampionStatsMap{flat:22f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:58f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:2.11f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:550f32,aram_damage_taken:0.95f32,aram_damage_dealt:1.05f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -3945,35 +3945,35 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_3), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_4), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 5f32 + 0.95f32 * ctx.ad,2 => 10f32 + 1.025f32 * ctx.ad,3 => 15f32 + 1.1f32 * ctx.ad,4 => 20f32 + 1.175f32 * ctx.ad,5 => 25f32 + 1.25f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 20f32 + 0.5f32 * ctx.bonus_ad,2 => 35f32 + 0.5f32 * ctx.bonus_ad,3 => 50f32 + 0.5f32 * ctx.bonus_ad,4 => 65f32 + 0.5f32 * ctx.bonus_ad,5 => 80f32 + 0.5f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 40f32 + ctx.bonus_ad,2 => 70f32 + ctx.bonus_ad,3 => 100f32 + ctx.bonus_ad,4 => 130f32 + ctx.bonus_ad,5 => 160f32 + ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 50f32 + 0.2f32 * ctx.bonus_ad,2 => 60f32 + 0.2f32 * ctx.bonus_ad,3 => 70f32 + 0.2f32 * ctx.bonus_ad,4 => 80f32 + 0.2f32 * ctx.bonus_ad,5 => 90f32 + 0.2f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 1.25f32 + 0.1125f32 * ctx.ad,2 => 3.75f32 + 0.1125f32 * ctx.ad,3 => 6.25f32 + 0.1125f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 5f32 + 0.45f32 * ctx.ad,2 => 15f32 + 0.45f32 * ctx.ad,3 => 25f32 + 0.45f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 12.5f32 + 1.125f32 * ctx.ad,2 => 37.5f32 + 1.125f32 * ctx.ad,3 => 62.5f32 + 1.125f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 50f32 + 4.5f32 * ctx.ad,2 => 150f32 + 4.5f32 * ctx.ad,3 => 250f32 + 4.5f32 * ctx.ad,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:630f32,per_level:108f32},mana:CachedChampionStatsMap{flat:349f32,per_level:38f32},armor:CachedChampionStatsMap{flat:26f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:57f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:3.3f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.658f32,attack_range:500f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:0.95f32,},
@@ -3986,31 +3986,31 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_3), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 90f32 + 0.6f32 * ctx.ap,2 => 140f32 + 0.6f32 * ctx.ap,3 => 190f32 + 0.6f32 * ctx.ap,4 => 240f32 + 0.6f32 * ctx.ap,5 => 290f32 + 0.6f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 5f32 + 0.2f32 * ctx.ap + 0.04f32 * ctx.max_health,2 => 15f32 + 0.2f32 * ctx.ap + 0.04f32 * ctx.max_health,3 => 25f32 + 0.2f32 * ctx.ap + 0.04f32 * ctx.max_health,4 => 35f32 + 0.2f32 * ctx.ap + 0.04f32 * ctx.max_health,5 => 45f32 + 0.2f32 * ctx.ap + 0.04f32 * ctx.max_health,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 5f32 + 0.6f32 * ctx.ap + 0.08f32 * ctx.max_health,2 => 25f32 + 0.6f32 * ctx.ap + 0.08f32 * ctx.max_health,3 => 45f32 + 0.6f32 * ctx.ap + 0.08f32 * ctx.max_health,4 => 65f32 + 0.6f32 * ctx.ap + 0.08f32 * ctx.max_health,5 => 85f32 + 0.6f32 * ctx.ap + 0.08f32 * ctx.max_health,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 10f32 + 0.8f32 * ctx.ap + 0.12f32 * ctx.max_health,2 => 40f32 + 0.8f32 * ctx.ap + 0.12f32 * ctx.max_health,3 => 70f32 + 0.8f32 * ctx.ap + 0.12f32 * ctx.max_health,4 => 100f32 + 0.8f32 * ctx.ap + 0.12f32 * ctx.max_health,5 => 130f32 + 0.8f32 * ctx.ap + 0.12f32 * ctx.max_health,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 55f32 + 0.6f32 * ctx.ap,2 => 105f32 + 0.6f32 * ctx.ap,3 => 155f32 + 0.6f32 * ctx.ap,4 => 205f32 + 0.6f32 * ctx.ap,5 => 255f32 + 0.6f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 125f32 + 0.4f32 * ctx.ap,2 => 150f32 + 0.4f32 * ctx.ap,3 => 175f32 + 0.4f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 200f32 + 0.8f32 * ctx.ap,2 => 300f32 + 0.8f32 * ctx.ap,3 => 400f32 + 0.8f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:630f32,per_level:114f32},mana:CachedChampionStatsMap{flat:400f32,per_level:40f32},armor:CachedChampionStatsMap{flat:34f32,per_level:5.45f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:66f32,per_level:4f32},attack_speed:CachedChampionStatsMap{flat:0.688f32,per_level:3.5f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:150f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -4023,15 +4023,15 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 30f32 + 0.4f32 * ctx.bonus_ad,2 => 60f32 + 0.4f32 * ctx.bonus_ad,3 => 90f32 + 0.4f32 * ctx.bonus_ad,4 => 120f32 + 0.4f32 * ctx.bonus_ad,5 => 150f32 + 0.4f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 70f32 + 0.7f32 * ctx.bonus_ad,2 => 115f32 + 0.7f32 * ctx.bonus_ad,3 => 160f32 + 0.7f32 * ctx.bonus_ad,4 => 205f32 + 0.7f32 * ctx.bonus_ad,5 => 250f32 + 0.7f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 250f32 + 1.15f32 * ctx.bonus_ad + 0.7f32 * ctx.ap,2 => 400f32 + 1.15f32 * ctx.bonus_ad + 0.7f32 * ctx.ap,3 => 550f32 + 1.15f32 * ctx.bonus_ad + 0.7f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:530f32,per_level:89f32},mana:CachedChampionStatsMap{flat:350f32,per_level:45f32},armor:CachedChampionStatsMap{flat:25f32,per_level:4f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:50f32,per_level:0f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.4f32,attack_range:600f32,aram_damage_taken:1.05f32,aram_damage_dealt:0.92f32,urf_damage_taken:1f32,urf_damage_dealt:1.1f32,},
@@ -4044,23 +4044,23 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 60f32 + 0.5f32 * ctx.ap,2 => 85f32 + 0.5f32 * ctx.ap,3 => 110f32 + 0.5f32 * ctx.ap,4 => 135f32 + 0.5f32 * ctx.ap,5 => 160f32 + 0.5f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 105f32 + 0.875f32 * ctx.ap,2 => 148.75f32 + 0.875f32 * ctx.ap,3 => 192.5f32 + 0.875f32 * ctx.ap,4 => 236.25f32 + 0.875f32 * ctx.ap,5 => 280f32 + 0.875f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 70f32 + 0.5f32 * ctx.ap,2 => 100f32 + 0.5f32 * ctx.ap,3 => 130f32 + 0.5f32 * ctx.ap,4 => 160f32 + 0.5f32 * ctx.ap,5 => 190f32 + 0.5f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 49f32 + 0.35f32 * ctx.ap,2 => 70f32 + 0.35f32 * ctx.ap,3 => 91f32 + 0.35f32 * ctx.ap,4 => 112f32 + 0.35f32 * ctx.ap,5 => 133f32 + 0.35f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 150f32 + 0.4f32 * ctx.ap,2 => 200f32 + 0.4f32 * ctx.ap,3 => 250f32 + 0.4f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:570f32,per_level:90f32},mana:CachedChampionStatsMap{flat:360f32,per_level:25f32},armor:CachedChampionStatsMap{flat:26f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:50f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.669f32,per_level:2f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:525f32,aram_damage_taken:1.2f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:0.92f32,},
@@ -4073,31 +4073,31 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 0.0f32,2 => 0.0f32,3 => 0.0f32,4 => 0.0f32,5 => 0.0f32,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 0.0f32,2 => 0.0f32,3 => 0.0f32,4 => 0.0f32,5 => 0.0f32,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 80f32 + 0.25f32 * 0.0f32 + 0.25f32 * 0.01f32 * ctx.bonus_ad,2 => 100f32 + 0.25f32 * 0.0f32 + 0.25f32 * 0.01f32 * ctx.bonus_ad,3 => 120f32 + 0.25f32 * 0.0f32 + 0.25f32 * 0.01f32 * ctx.bonus_ad,4 => 140f32 + 0.25f32 * 0.0f32 + 0.25f32 * 0.01f32 * ctx.bonus_ad,5 => 160f32 + 0.25f32 * 0.0f32 + 0.25f32 * 0.01f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 150f32 + 0.6f32 * ctx.ad,2 => 170f32 + 0.6f32 * ctx.ad,3 => 190f32 + 0.6f32 * ctx.ad,4 => 210f32 + 0.6f32 * ctx.ad,5 => 230f32 + 0.6f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 50f32 + 0.6f32 * ctx.ad,2 => 70f32 + 0.6f32 * ctx.ad,3 => 90f32 + 0.6f32 * ctx.ad,4 => 110f32 + 0.6f32 * ctx.ad,5 => 130f32 + 0.6f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 200f32 + 1.2f32 * ctx.bonus_ad + 0.4f32 * ctx.enemy_bonus_health,2 => 300f32 + 1.2f32 * ctx.bonus_ad + 0.5f32 * ctx.enemy_bonus_health,3 => 400f32 + 1.2f32 * ctx.bonus_ad + 0.6f32 * ctx.enemy_bonus_health,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 50f32 + 0.3f32 * ctx.bonus_ad + 0.1f32 * ctx.enemy_bonus_health,2 => 75f32 + 0.3f32 * ctx.bonus_ad + 0.125f32 * ctx.enemy_bonus_health,3 => 100f32 + 0.3f32 * ctx.bonus_ad + 0.15f32 * ctx.enemy_bonus_health,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:670f32,per_level:114f32},mana:CachedChampionStatsMap{flat:0f32,per_level:0f32},armor:CachedChampionStatsMap{flat:33f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:28f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:60f32,per_level:4f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:1.75f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:125f32,aram_damage_taken:1.1f32,aram_damage_dealt:1f32,urf_damage_taken:0.92f32,urf_damage_dealt:1.05f32,},
@@ -4110,47 +4110,47 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_4), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_5), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 25f32 + 0.65f32 * ctx.bonus_ad,2 => 35f32 + 0.65f32 * ctx.bonus_ad,3 => 45f32 + 0.65f32 * ctx.bonus_ad,4 => 55f32 + 0.65f32 * ctx.bonus_ad,5 => 65f32 + 0.65f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 20f32,2 => 35f32,3 => 50f32,4 => 65f32,5 => 80f32,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 25f32 + 0.18f32 * ctx.ap,2 => 40f32 + 0.18f32 * ctx.ap,3 => 55f32 + 0.18f32 * ctx.ap,4 => 70f32 + 0.18f32 * ctx.ap,5 => 85f32 + 0.18f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 45f32 + 0.18f32 * ctx.ap,2 => 75f32 + 0.18f32 * ctx.ap,3 => 105f32 + 0.18f32 * ctx.ap,4 => 135f32 + 0.18f32 * ctx.ap,5 => 165f32 + 0.18f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 10f32 + 0.12f32 * ctx.ap,2 => 15f32 + 0.12f32 * ctx.ap,3 => 20f32 + 0.12f32 * ctx.ap,4 => 25f32 + 0.12f32 * ctx.ap,5 => 30f32 + 0.12f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 30f32 + 0.12f32 * ctx.ap,2 => 50f32 + 0.12f32 * ctx.ap,3 => 70f32 + 0.12f32 * ctx.ap,4 => 90f32 + 0.12f32 * ctx.ap,5 => 110f32 + 0.12f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 105f32 + 1.2f32 * ctx.bonus_ad + 0.9f32 * ctx.ap,2 => 142.5f32 + 1.2f32 * ctx.bonus_ad + 0.9f32 * ctx.ap,3 => 180f32 + 1.2f32 * ctx.bonus_ad + 0.9f32 * ctx.ap,4 => 217.5f32 + 1.2f32 * ctx.bonus_ad + 0.9f32 * ctx.ap,5 => 255f32 + 1.2f32 * ctx.bonus_ad + 0.9f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 70f32 + 0.8f32 * ctx.bonus_ad + 0.6f32 * ctx.ap,2 => 95f32 + 0.8f32 * ctx.bonus_ad + 0.6f32 * ctx.ap,3 => 120f32 + 0.8f32 * ctx.bonus_ad + 0.6f32 * ctx.ap,4 => 145f32 + 0.8f32 * ctx.bonus_ad + 0.6f32 * ctx.ap,5 => 170f32 + 0.8f32 * ctx.bonus_ad + 0.6f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 25f32 + 0.15f32 * ctx.ap,2 => 50f32 + 0.15f32 * ctx.ap,3 => 75f32 + 0.15f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 10f32 + 0.1f32 * ctx.ap,2 => 20f32 + 0.1f32 * ctx.ap,3 => 30f32 + 0.1f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 150f32 + 0.7f32 * ctx.ap,2 => 225f32 + 0.7f32 * ctx.ap,3 => 300f32 + 0.7f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:630f32,per_level:99f32},mana:CachedChampionStatsMap{flat:297f32,per_level:40f32},armor:CachedChampionStatsMap{flat:30f32,per_level:4f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:63f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.694f32,per_level:3f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.694000005722045f32,attack_range:125f32,aram_damage_taken:1f32,aram_damage_dealt:1.05f32,urf_damage_taken:1.1f32,urf_damage_dealt:0.9f32,},
@@ -4163,27 +4163,27 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_4), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_5), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 120f32,2 => 140f32,3 => 160f32,4 => 180f32,5 => 200f32,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 10f32 + 0.05f32 * ctx.enemy_max_health + 0.02f32 * 0.01f32 * ctx.ap,2 => 11.764705882352942f32 + 0.055f32 * ctx.enemy_max_health + 0.02f32 * 0.01f32 * ctx.ap,3 => 13.529411764705882f32 + 0.06f32 * ctx.enemy_max_health + 0.02f32 * 0.01f32 * ctx.ap,4 => 15.294117647058822f32 + 0.065f32 * ctx.enemy_max_health + 0.02f32 * 0.01f32 * ctx.ap,5 => 17.058823529411764f32 + 0.07f32 * ctx.enemy_max_health + 0.02f32 * 0.01f32 * ctx.ap,6 => 18.823529411764707f32,7 => 20.588235294117645f32,8 => 22.352941176470587f32,9 => 24.11764705882353f32,10 => 25.88235294117647f32,11 => 27.647058823529413f32,12 => 29.41176470588235f32,13 => 31.176470588235293f32,14 => 32.94117647058823f32,15 => 34.705882352941174f32,16 => 36.47058823529411f32,17 => 38.23529411764706f32,18 => 40f32,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 30f32 + 0.15f32 * ctx.enemy_max_health + 0.06f32 * 0.01f32 * ctx.ap,2 => 35.294117647058826f32 + 0.165f32 * ctx.enemy_max_health + 0.06f32 * 0.01f32 * ctx.ap,3 => 40.588235294117645f32 + 0.18f32 * ctx.enemy_max_health + 0.06f32 * 0.01f32 * ctx.ap,4 => 45.88235294117647f32 + 0.195f32 * ctx.enemy_max_health + 0.06f32 * 0.01f32 * ctx.ap,5 => 51.17647058823529f32 + 0.21f32 * ctx.enemy_max_health + 0.06f32 * 0.01f32 * ctx.ap,6 => 56.47058823529411f32,7 => 61.76470588235294f32,8 => 67.05882352941177f32,9 => 72.35294117647058f32,10 => 77.64705882352942f32,11 => 82.94117647058823f32,12 => 88.23529411764706f32,13 => 93.52941176470588f32,14 => 98.82352941176472f32,15 => 104.11764705882352f32,16 => 109.41176470588236f32,17 => 114.70588235294116f32,18 => 120f32,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 10f32 + 0.02f32 * ctx.enemy_max_health + 0.015f32 * 0.01f32 * ctx.ap,2 => 11.764705882352942f32 + 0.025f32 * ctx.enemy_max_health + 0.015f32 * 0.01f32 * ctx.ap,3 => 13.529411764705882f32 + 0.03f32 * ctx.enemy_max_health + 0.015f32 * 0.01f32 * ctx.ap,4 => 15.294117647058822f32 + 0.035f32 * ctx.enemy_max_health + 0.015f32 * 0.01f32 * ctx.ap,5 => 17.058823529411764f32 + 0.04f32 * ctx.enemy_max_health + 0.015f32 * 0.01f32 * ctx.ap,6 => 18.823529411764707f32,7 => 20.588235294117645f32,8 => 22.352941176470587f32,9 => 24.11764705882353f32,10 => 25.88235294117647f32,11 => 27.647058823529413f32,12 => 29.41176470588235f32,13 => 31.176470588235293f32,14 => 32.94117647058823f32,15 => 34.705882352941174f32,16 => 36.47058823529411f32,17 => 38.23529411764706f32,18 => 40f32,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 30f32 + 0.06f32 * ctx.enemy_max_health + 0.045f32 * 0.01f32 * ctx.ap,2 => 35.294117647058826f32 + 0.075f32 * ctx.enemy_max_health + 0.045f32 * 0.01f32 * ctx.ap,3 => 40.588235294117645f32 + 0.09f32 * ctx.enemy_max_health + 0.045f32 * 0.01f32 * ctx.ap,4 => 45.88235294117647f32 + 0.105f32 * ctx.enemy_max_health + 0.045f32 * 0.01f32 * ctx.ap,5 => 51.17647058823529f32 + 0.12f32 * ctx.enemy_max_health + 0.045f32 * 0.01f32 * ctx.ap,6 => 56.47058823529411f32,7 => 61.76470588235294f32,8 => 67.05882352941177f32,9 => 72.35294117647058f32,10 => 77.64705882352942f32,11 => 82.94117647058823f32,12 => 88.23529411764706f32,13 => 93.52941176470588f32,14 => 98.82352941176472f32,15 => 104.11764705882352f32,16 => 109.41176470588236f32,17 => 114.70588235294116f32,18 => 120f32,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 60f32 + 0.11f32 * ctx.bonus_health,2 => 85f32 + 0.11f32 * ctx.bonus_health,3 => 110f32 + 0.11f32 * ctx.bonus_health,4 => 135f32 + 0.11f32 * ctx.bonus_health,5 => 160f32 + 0.11f32 * ctx.bonus_health,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:610f32,per_level:99f32},mana:CachedChampionStatsMap{flat:400f32,per_level:0f32},armor:CachedChampionStatsMap{flat:34f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:64f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.751f32,per_level:3f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.651000022888183f32,attack_range:125f32,aram_damage_taken:1.05f32,aram_damage_dealt:0.95f32,urf_damage_taken:1.05f32,urf_damage_dealt:1f32,},
@@ -4196,27 +4196,27 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 0.2f32 * ctx.ad + 0.25f32 * ctx.ap,2 => 0.4f32 * ctx.ad + 0.25f32 * ctx.ap,3 => 0.6f32 * ctx.ad + 0.25f32 * ctx.ap,4 => 0.8f32 * ctx.ad + 0.25f32 * ctx.ap,5 => ctx.ad + 0.25f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 10f32 + 0.1f32 * ctx.bonus_ad,2 => 15f32 + 0.1f32 * ctx.bonus_ad,3 => 20f32 + 0.1f32 * ctx.bonus_ad,4 => 25f32 + 0.1f32 * ctx.bonus_ad,5 => 30f32 + 0.1f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 5f32 + 0.05f32 * ctx.bonus_ad,2 => 7f32 + 0.05f32 * ctx.bonus_ad,3 => 9f32 + 0.05f32 * ctx.bonus_ad,4 => 11f32 + 0.05f32 * ctx.bonus_ad,5 => 13f32 + 0.05f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 85f32 + 0.5f32 * ctx.bonus_ad + 0.7f32 * ctx.ap,2 => 125f32 + 0.5f32 * ctx.bonus_ad + 0.7f32 * ctx.ap,3 => 165f32 + 0.5f32 * ctx.bonus_ad + 0.7f32 * ctx.ap,4 => 205f32 + 0.5f32 * ctx.bonus_ad + 0.7f32 * ctx.ap,5 => 245f32 + 0.5f32 * ctx.bonus_ad + 0.7f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 75f32 + 85f32 + ctx.bonus_ad + 0.9f32 * ctx.ap,2 => 78.52941176470588f32 + 125f32 + ctx.bonus_ad + 0.9f32 * ctx.ap,3 => 82.05882352941177f32 + 165f32 + ctx.bonus_ad + 0.9f32 * ctx.ap,4 => 85.58823529411765f32 + 205f32 + ctx.bonus_ad + 0.9f32 * ctx.ap,5 => 89.11764705882354f32 + 245f32 + ctx.bonus_ad + 0.9f32 * ctx.ap,6 => 92.64705882352942f32,7 => 96.17647058823528f32,8 => 99.70588235294116f32,9 => 103.23529411764706f32,10 => 106.76470588235294f32,11 => 110.29411764705884f32,12 => 113.8235294117647f32,13 => 117.35294117647058f32,14 => 120.88235294117646f32,15 => 124.41176470588236f32,16 => 127.94117647058825f32,17 => 131.47058823529412f32,18 => 135f32,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 150f32 + ctx.ap,2 => 250f32 + ctx.ap,3 => 350f32 + ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:665f32,per_level:104f32},mana:CachedChampionStatsMap{flat:100f32,per_level:0f32},armor:CachedChampionStatsMap{flat:38f32,per_level:4.55f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:1.5f32},attack_damage:CachedChampionStatsMap{flat:66f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:2.5f32},movespeed:350f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.657999992370605f32,attack_range:125f32,aram_damage_taken:0.95f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:0.85f32,},
@@ -4229,15 +4229,15 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 5f32 + 0.10625f32 * ctx.ap,2 => 7.5f32 + 0.10625f32 * ctx.ap,3 => 10f32 + 0.10625f32 * ctx.ap,4 => 12.5f32 + 0.10625f32 * ctx.ap,5 => 15f32 + 0.10625f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 40f32 + 0.85f32 * ctx.ap,2 => 60f32 + 0.85f32 * ctx.ap,3 => 80f32 + 0.85f32 * ctx.ap,4 => 100f32 + 0.85f32 * ctx.ap,5 => 120f32 + 0.85f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 50f32 + 0.06f32 * ctx.enemy_max_health + 0.55f32 * ctx.ap,2 => 60f32 + 0.065f32 * ctx.enemy_max_health + 0.55f32 * ctx.ap,3 => 70f32 + 0.07f32 * ctx.enemy_max_health + 0.55f32 * ctx.ap,4 => 80f32 + 0.075f32 * ctx.enemy_max_health + 0.55f32 * ctx.ap,5 => 90f32 + 0.08f32 * ctx.enemy_max_health + 0.55f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:650f32,per_level:96f32},mana:CachedChampionStatsMap{flat:330f32,per_level:45f32},armor:CachedChampionStatsMap{flat:34f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:63f32,per_level:3.4f32},attack_speed:CachedChampionStatsMap{flat:0.7f32,per_level:1.9f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:125f32,aram_damage_taken:1.08f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:0.9f32,},
@@ -4250,47 +4250,47 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_3), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_4), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_5), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_6), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_7), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 1.25f32,2 => 1.5833000000000002f32,3 => 1.75f32,4 => 1.85f32,5 => 1.9166999999999998f32,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 90f32 + 1.2f32 * ctx.ad,2 => 155f32 + 1.5f32 * ctx.ad,3 => 220f32 + 1.8f32 * ctx.ad,4 => 285f32 + 2.1f32 * ctx.ad,5 => 350f32 + 2.4f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 40f32 + 0.4f32 * ctx.ad,2 => 60f32 + 0.5f32 * ctx.ad,3 => 80f32 + 0.6f32 * ctx.ad,4 => 100f32 + 0.7f32 * ctx.ad,5 => 120f32 + 0.8f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 54f32 + 0.72f32 * ctx.ad,2 => 93f32 + 0.9f32 * ctx.ad,3 => 132f32 + 1.08f32 * ctx.ad,4 => 171f32 + 1.26f32 * ctx.ad,5 => 210f32 + 1.44f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 135f32 + 1.8f32 * ctx.ad,2 => 232.5f32 + 2.25f32 * ctx.ad,3 => 330f32 + 2.7f32 * ctx.ad,4 => 427.5f32 + 3.15f32 * ctx.ad,5 => 525f32 + 3.6f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 24f32 + 0.24f32 * ctx.ad,2 => 36f32 + 0.3f32 * ctx.ad,3 => 48f32 + 0.36f32 * ctx.ad,4 => 60f32 + 0.42f32 * ctx.ad,5 => 72f32 + 0.48f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 60f32 + 0.6f32 * ctx.ad,2 => 90f32 + 0.75f32 * ctx.ad,3 => 120f32 + 0.9f32 * ctx.ad,4 => 150f32 + 1.05f32 * ctx.ad,5 => 180f32 + 1.2f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 40f32 + 0.4f32 * ctx.ap + 0.14f32 * ctx.enemy_max_health,2 => 65f32 + 0.4f32 * ctx.ap + 0.14f32 * ctx.enemy_max_health,3 => 90f32 + 0.4f32 * ctx.ap + 0.14f32 * ctx.enemy_max_health,4 => 115f32 + 0.4f32 * ctx.ap + 0.14f32 * ctx.enemy_max_health,5 => 140f32 + 0.4f32 * ctx.ap + 0.14f32 * ctx.enemy_max_health,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 65f32 + 0.55f32 * ctx.ap,2 => 100f32 + 0.55f32 * ctx.ap,3 => 135f32 + 0.55f32 * ctx.ap,4 => 170f32 + 0.55f32 * ctx.ap,5 => 205f32 + 0.55f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 400f32 + 0.8f32 * ctx.bonus_ad,2 => 800f32 + 0.8f32 * ctx.bonus_ad,3 => 1200f32 + 0.8f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 150f32 + 0.4f32 * ctx.bonus_ad,2 => 300f32 + 0.4f32 * ctx.bonus_ad,3 => 450f32 + 0.4f32 * ctx.bonus_ad,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:655f32,per_level:87f32},mana:CachedChampionStatsMap{flat:400f32,per_level:52f32},armor:CachedChampionStatsMap{flat:36f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:68f32,per_level:4f32},attack_speed:CachedChampionStatsMap{flat:0.679f32,per_level:1.3f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.67900002002716f32,attack_range:175f32,aram_damage_taken:1.1f32,aram_damage_dealt:0.9f32,urf_damage_taken:0.92f32,urf_damage_dealt:1.1f32,},
@@ -4303,31 +4303,31 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_3), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_3), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_4), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 60f32 + ctx.bonus_ad + 0.6f32 * ctx.ap,2 => 85f32 + ctx.bonus_ad + 0.6f32 * ctx.ap,3 => 110f32 + ctx.bonus_ad + 0.6f32 * ctx.ap,4 => 135f32 + ctx.bonus_ad + 0.6f32 * ctx.ap,5 => 160f32 + ctx.bonus_ad + 0.6f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 24f32 + 0.4f32 * ctx.bonus_ad + 0.24f32 * ctx.ap,2 => 34f32 + 0.4f32 * ctx.bonus_ad + 0.24f32 * ctx.ap,3 => 44f32 + 0.4f32 * ctx.bonus_ad + 0.24f32 * ctx.ap,4 => 54f32 + 0.4f32 * ctx.bonus_ad + 0.24f32 * ctx.ap,5 => 64f32 + 0.4f32 * ctx.bonus_ad + 0.24f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 120f32 + 2f32 * ctx.bonus_ad + 1.2f32 * ctx.ap,2 => 170f32 + 2f32 * ctx.bonus_ad + 1.2f32 * ctx.ap,3 => 220f32 + 2f32 * ctx.bonus_ad + 1.2f32 * ctx.ap,4 => 270f32 + 2f32 * ctx.bonus_ad + 1.2f32 * ctx.ap,5 => 320f32 + 2f32 * ctx.bonus_ad + 1.2f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 0.7f32 * ctx.ad,2 => 0.74375f32 * ctx.ad,3 => 0.7875f32 * ctx.ad,4 => 0.83125f32 * ctx.ad,5 => 0.875f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 0.4f32 * ctx.ad,2 => 0.425f32 * ctx.ad,3 => 0.45f32 * ctx.ad,4 => 0.475f32 * ctx.ad,5 => 0.5f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 0.455f32 * ctx.ad,2 => 0.4834375f32 * ctx.ad,3 => 0.511875f32 * ctx.ad,4 => 0.5403125f32 * ctx.ad,5 => 0.56875f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 0.26f32 * ctx.ad,2 => 0.27625f32 * ctx.ad,3 => 0.2925f32 * ctx.ad,4 => 0.30875f32 * ctx.ad,5 => 0.325f32 * ctx.ad,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:600f32,per_level:104f32},mana:CachedChampionStatsMap{flat:340f32,per_level:45f32},armor:CachedChampionStatsMap{flat:30f32,per_level:4.45f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:60f32,per_level:2.5f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:500f32,aram_damage_taken:1.05f32,aram_damage_dealt:0.93f32,urf_damage_taken:1.05f32,urf_damage_dealt:0.85f32,},
@@ -4340,31 +4340,31 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_3), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_4), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_5), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 30f32 + 2.4f32 * ctx.bonus_ad + 0.09f32 * ctx.bonus_health,2 => 60f32 + 2.4f32 * ctx.bonus_ad + 0.09f32 * ctx.bonus_health,3 => 90f32 + 2.4f32 * ctx.bonus_ad + 0.09f32 * ctx.bonus_health,4 => 120f32 + 2.4f32 * ctx.bonus_ad + 0.09f32 * ctx.bonus_health,5 => 150f32 + 2.4f32 * ctx.bonus_ad + 0.09f32 * ctx.bonus_health,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 150f32,2 => 200f32,3 => 250f32,4 => 300f32,5 => 350f32,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 0.2f32,2 => 0.25f32,3 => 0.3f32,4 => 0.35f32,5 => 0.4f32,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 10f32 + 0.8f32 * ctx.bonus_ad + 0.03f32 * ctx.bonus_health,2 => 20f32 + 0.8f32 * ctx.bonus_ad + 0.03f32 * ctx.bonus_health,3 => 30f32 + 0.8f32 * ctx.bonus_ad + 0.03f32 * ctx.bonus_health,4 => 40f32 + 0.8f32 * ctx.bonus_ad + 0.03f32 * ctx.bonus_health,5 => 50f32 + 0.8f32 * ctx.bonus_ad + 0.03f32 * ctx.bonus_health,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 50f32 + 0.8f32 * ctx.ap,2 => 70f32 + 0.8f32 * ctx.ap,3 => 90f32 + 0.8f32 * ctx.ap,4 => 110f32 + 0.8f32 * ctx.ap,5 => 130f32 + 0.8f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 30f32 + 0.06f32 * ctx.max_health,2 => 60f32 + 0.06f32 * ctx.max_health,3 => 90f32 + 0.06f32 * ctx.max_health,4 => 120f32 + 0.06f32 * ctx.max_health,5 => 150f32 + 0.06f32 * ctx.max_health,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 150f32 + ctx.ap,2 => 250f32 + ctx.ap,3 => 350f32 + ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:630f32,per_level:110f32},mana:CachedChampionStatsMap{flat:320f32,per_level:40f32},armor:CachedChampionStatsMap{flat:33f32,per_level:4.5f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:63f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:150f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1.1f32,},
@@ -4377,55 +4377,55 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_3), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_4), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_5), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_6), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_3), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 139.75f32 + 2.795f32 * ctx.bonus_ad,2 => 172f32 + 2.795f32 * ctx.bonus_ad,3 => 204.25f32 + 2.795f32 * ctx.bonus_ad,4 => 236.5f32 + 2.795f32 * ctx.bonus_ad,5 => 268.75f32 + 2.795f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 113.75f32 + 2.275f32 * ctx.bonus_ad,2 => 140f32 + 2.275f32 * ctx.bonus_ad,3 => 166.25f32 + 2.275f32 * ctx.bonus_ad,4 => 192.5f32 + 2.275f32 * ctx.bonus_ad,5 => 218.75f32 + 2.275f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 65f32 + 1.3f32 * ctx.bonus_ad,2 => 80f32 + 1.3f32 * ctx.bonus_ad,3 => 95f32 + 1.3f32 * ctx.bonus_ad,4 => 110f32 + 1.3f32 * ctx.bonus_ad,5 => 125f32 + 1.3f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 56.875f32 + 1.1375f32 * ctx.bonus_ad,2 => 70f32 + 1.1375f32 * ctx.bonus_ad,3 => 83.125f32 + 1.1375f32 * ctx.bonus_ad,4 => 96.25f32 + 1.1375f32 * ctx.bonus_ad,5 => 109.375f32 + 1.1375f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 69.875f32 + 1.3975f32 * ctx.bonus_ad,2 => 86f32 + 1.3975f32 * ctx.bonus_ad,3 => 102.125f32 + 1.3975f32 * ctx.bonus_ad,4 => 118.25f32 + 1.3975f32 * ctx.bonus_ad,5 => 134.375f32 + 1.3975f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 32.5f32 + 0.65f32 * ctx.bonus_ad,2 => 40f32 + 0.65f32 * ctx.bonus_ad,3 => 47.5f32 + 0.65f32 * ctx.bonus_ad,4 => 55f32 + 0.65f32 * ctx.bonus_ad,5 => 62.5f32 + 0.65f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 10f32 + 0.65f32 * ctx.bonus_ad + 0.8f32 * ctx.ap,2 => 35f32 + 0.65f32 * ctx.bonus_ad + 0.8f32 * ctx.ap,3 => 60f32 + 0.65f32 * ctx.bonus_ad + 0.8f32 * ctx.ap,4 => 85f32 + 0.65f32 * ctx.bonus_ad + 0.8f32 * ctx.ap,5 => 110f32 + 0.65f32 * ctx.bonus_ad + 0.8f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 60f32 + 0.6f32 * ctx.bonus_ad,2 => 70f32 + 0.6f32 * ctx.bonus_ad,3 => 80f32 + 0.6f32 * ctx.bonus_ad,4 => 90f32 + 0.6f32 * ctx.bonus_ad,5 => 100f32 + 0.6f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 70f32 + 1.25f32 * ctx.bonus_ad + 0.8f32 * ctx.ap,2 => 105f32 + 1.25f32 * ctx.bonus_ad + 0.8f32 * ctx.ap,3 => 140f32 + 1.25f32 * ctx.bonus_ad + 0.8f32 * ctx.ap,4 => 175f32 + 1.25f32 * ctx.bonus_ad + 0.8f32 * ctx.ap,5 => 210f32 + 1.25f32 * ctx.bonus_ad + 0.8f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 50f32 + 1.5f32 * ctx.ad,2 => 75f32 + 1.5f32 * ctx.ad,3 => 100f32 + 1.5f32 * ctx.ad,4 => 125f32 + 1.5f32 * ctx.ad,5 => 150f32 + 1.5f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 10f32 + 0.3f32 * ctx.ad,2 => 15f32 + 0.3f32 * ctx.ad,3 => 20f32 + 0.3f32 * ctx.ad,4 => 25f32 + 0.3f32 * ctx.ad,5 => 30f32 + 0.3f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 300f32 + 1.65f32 * ctx.bonus_ad + 1.5f32 * ctx.ap,2 => 450f32 + 1.65f32 * ctx.bonus_ad + 1.5f32 * ctx.ap,3 => 600f32 + 1.65f32 * ctx.bonus_ad + 1.5f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 200f32 + 1.1f32 * ctx.bonus_ad + ctx.ap,2 => 300f32 + 1.1f32 * ctx.bonus_ad + ctx.ap,3 => 400f32 + 1.1f32 * ctx.bonus_ad + ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:575f32,per_level:100f32},mana:CachedChampionStatsMap{flat:300f32,per_level:40f32},armor:CachedChampionStatsMap{flat:24f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:60f32,per_level:2.3f32},attack_speed:CachedChampionStatsMap{flat:0.638f32,per_level:4f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.638f32,attack_range:550f32,aram_damage_taken:1.02f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -4438,19 +4438,19 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 50f32 + 0.4f32 * ctx.ap,2 => 85f32,3 => 120f32,4 => 155f32,5 => 190f32,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 10f32 + 0.1f32 * ctx.ap,2 => 15f32,3 => 20f32,4 => 25f32,5 => 30f32,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 25f32,2 => 45f32,3 => 65f32,4 => 85f32,5 => 105f32,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 150f32 + 0.5f32 * ctx.ap,2 => 250f32 + 0.5f32 * ctx.ap,3 => 350f32 + 0.5f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:550f32,per_level:91f32},mana:CachedChampionStatsMap{flat:340f32,per_level:45f32},armor:CachedChampionStatsMap{flat:26f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:49f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.644f32,per_level:2.3f32},movespeed:325f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.643999993801116f32,attack_range:550f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:0.9f32,},
@@ -4463,15 +4463,15 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 85f32 + 0.35f32 * ctx.ap,2 => 120f32 + 0.35f32 * ctx.ap,3 => 155f32 + 0.35f32 * ctx.ap,4 => 190f32 + 0.35f32 * ctx.ap,5 => 225f32 + 0.35f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 70f32 + 0.4f32 * ctx.ap,2 => 95f32 + 0.4f32 * ctx.ap,3 => 120f32 + 0.4f32 * ctx.ap,4 => 145f32 + 0.4f32 * ctx.ap,5 => 170f32 + 0.4f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 140f32 + 0.8f32 * ctx.ap,2 => 190f32 + 0.8f32 * ctx.ap,3 => 240f32 + 0.8f32 * ctx.ap,4 => 290f32 + 0.8f32 * ctx.ap,5 => 340f32 + 0.8f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:605f32,per_level:88f32},mana:CachedChampionStatsMap{flat:425f32,per_level:40f32},armor:CachedChampionStatsMap{flat:32f32,per_level:5f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:50f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2.14f32},movespeed:325f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:550f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:0.92f32,urf_damage_dealt:1.05f32,},
@@ -4484,31 +4484,31 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 15f32 + 0.1125f32 * ctx.ap,2 => 22.5f32 + 0.1125f32 * ctx.ap,3 => 30f32 + 0.1125f32 * ctx.ap,4 => 37.5f32 + 0.1125f32 * ctx.ap,5 => 45f32 + 0.1125f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 60f32 + 0.45f32 * ctx.ap,2 => 90f32 + 0.45f32 * ctx.ap,3 => 120f32 + 0.45f32 * ctx.ap,4 => 150f32 + 0.45f32 * ctx.ap,5 => 180f32 + 0.45f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 120f32 + 0.9f32 * ctx.ap,2 => 180f32 + 0.9f32 * ctx.ap,3 => 240f32 + 0.9f32 * ctx.ap,4 => 300f32 + 0.9f32 * ctx.ap,5 => 360f32 + 0.9f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 70f32 + 0.6f32 * ctx.ap,2 => 105f32 + 0.6f32 * ctx.ap,3 => 140f32 + 0.6f32 * ctx.ap,4 => 175f32 + 0.6f32 * ctx.ap,5 => 210f32 + 0.6f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 35f32 + 0.3f32 * ctx.ap,2 => 52.5f32 + 0.3f32 * ctx.ap,3 => 70f32 + 0.3f32 * ctx.ap,4 => 87.5f32 + 0.3f32 * ctx.ap,5 => 105f32 + 0.3f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 80f32 + 0.7f32 * ctx.ap,2 => 120f32 + 0.7f32 * ctx.ap,3 => 160f32 + 0.7f32 * ctx.ap,4 => 200f32 + 0.7f32 * ctx.ap,5 => 240f32 + 0.7f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 7.5f32 + 0.025f32 * ctx.ap,2 => 12.5f32 + 0.025f32 * ctx.ap,3 => 17.5f32 + 0.025f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:595f32,per_level:99f32},mana:CachedChampionStatsMap{flat:400f32,per_level:29f32},armor:CachedChampionStatsMap{flat:25f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:31f32,per_level:1.55f32},attack_damage:CachedChampionStatsMap{flat:58f32,per_level:2.7f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2.11f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:525f32,aram_damage_taken:1.15f32,aram_damage_dealt:0.95f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -4521,27 +4521,27 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_4), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_5), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 40f32 + 0.4f32 * ctx.ap,2 => 60f32 + 0.4f32 * ctx.ap,3 => 80f32 + 0.4f32 * ctx.ap,4 => 100f32 + 0.4f32 * ctx.ap,5 => 120f32 + 0.4f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 60f32 + 0.8f32 * ctx.ap,2 => 115f32 + 0.8f32 * ctx.ap,3 => 170f32 + 0.8f32 * ctx.ap,4 => 225f32 + 0.8f32 * ctx.ap,5 => 280f32 + 0.8f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 24f32 + 0.32f32 * ctx.ap,2 => 46f32 + 0.32f32 * ctx.ap,3 => 68f32 + 0.32f32 * ctx.ap,4 => 90f32 + 0.32f32 * ctx.ap,5 => 112f32 + 0.32f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 100f32 + 1.2f32 * ctx.ap,2 => 175f32 + 1.2f32 * ctx.ap,3 => 250f32 + 1.2f32 * ctx.ap,4 => 325f32 + 1.2f32 * ctx.ap,5 => 400f32 + 1.2f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 64f32 + 0.72f32 * ctx.ap,2 => 106f32 + 0.72f32 * ctx.ap,3 => 148f32 + 0.72f32 * ctx.ap,4 => 190f32 + 0.72f32 * ctx.ap,5 => 232f32 + 0.72f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 75f32 + 0.6f32 * ctx.ap,2 => 110f32 + 0.6f32 * ctx.ap,3 => 145f32 + 0.6f32 * ctx.ap,4 => 180f32 + 0.6f32 * ctx.ap,5 => 215f32 + 0.6f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:600f32,per_level:122f32},mana:CachedChampionStatsMap{flat:400f32,per_level:70f32},armor:CachedChampionStatsMap{flat:29f32,per_level:5.2f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.55f32},attack_damage:CachedChampionStatsMap{flat:61f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.645f32,per_level:3.5f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.644999980926513f32,attack_range:175f32,aram_damage_taken:1f32,aram_damage_dealt:1.05f32,urf_damage_taken:1f32,urf_damage_dealt:0.95f32,},
@@ -4554,35 +4554,35 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 75f32 + 0.6f32 * ctx.ap,2 => 110f32 + 0.6f32 * ctx.ap,3 => 145f32 + 0.6f32 * ctx.ap,4 => 180f32 + 0.6f32 * ctx.ap,5 => 215f32 + 0.6f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 70f32 + 0.65f32 * ctx.ap,2 => 105f32 + 0.65f32 * ctx.ap,3 => 140f32 + 0.65f32 * ctx.ap,4 => 175f32 + 0.65f32 * ctx.ap,5 => 210f32 + 0.65f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 8.4f32 + 0.092f32 * ctx.ap,2 => 12.6f32 + 0.099f32 * ctx.ap,3 => 16.8f32 + 0.106f32 * ctx.ap,4 => 21f32 + 0.113f32 * ctx.ap,5 => 25.2f32 + 0.12f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 78.4f32 + 0.742f32 * ctx.ap,2 => 117.6f32 + 0.7490000000000001f32 * ctx.ap,3 => 156.8f32 + 0.7559999999999999f32 * ctx.ap,4 => 196f32 + 0.763f32 * ctx.ap,5 => 235.2f32 + 0.77f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 60f32 + 0.6f32 * ctx.ap,2 => 95f32 + 0.6f32 * ctx.ap,3 => 130f32 + 0.6f32 * ctx.ap,4 => 165f32 + 0.6f32 * ctx.ap,5 => 200f32 + 0.6f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 90f32 + 0.2f32 * ctx.ap,2 => 130f32 + 0.2f32 * ctx.ap,3 => 170f32 + 0.2f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 630f32 + 1.4f32 * ctx.ap,2 => 910f32 + 1.4f32 * ctx.ap,3 => 1190f32 + 1.4f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 270f32 + 0.6f32 * ctx.ap,2 => 390f32 + 0.6f32 * ctx.ap,3 => 510f32 + 0.6f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:563f32,per_level:104f32},mana:CachedChampionStatsMap{flat:480f32,per_level:40f32},armor:CachedChampionStatsMap{flat:25f32,per_level:4.6f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:54f32,per_level:2.9f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:2f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:550f32,aram_damage_taken:1f32,aram_damage_dealt:1.05f32,urf_damage_taken:1.1f32,urf_damage_dealt:0.9f32,},
@@ -4595,19 +4595,19 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 0.0f32,2 => 0.0f32,3 => 0.0f32,4 => 0.0f32,5 => 0.0f32,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 100f32 + 1.5f32 * ctx.ap,2 => 135f32 + 1.5f32 * ctx.ap,3 => 170f32 + 1.5f32 * ctx.ap,4 => 205f32 + 1.5f32 * ctx.ap,5 => 240f32 + 1.5f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 0.15f32,2 => 0.23f32,3 => 0.31f32,4 => 0.39f32,5 => 0.47f32,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 0.42f32,2 => 0.44f32,3 => 0.46f32,4 => 0.48f32,5 => 0.5f32,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:640f32,per_level:103f32},mana:CachedChampionStatsMap{flat:325f32,per_level:50f32},armor:CachedChampionStatsMap{flat:39f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:56f32,per_level:3.2f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:2.5f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.657999992370605f32,attack_range:175f32,aram_damage_taken:1.05f32,aram_damage_dealt:1f32,urf_damage_taken:0.85f32,urf_damage_dealt:1.2f32,},
@@ -4620,31 +4620,31 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_4), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 56f32 + 0.5f32 * ctx.ap,2 => 74.5f32 + 0.5f32 * ctx.ap,3 => 93f32 + 0.5f32 * ctx.ap,4 => 111.5f32 + 0.5f32 * ctx.ap,5 => 130f32 + 0.5f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 22.4f32 + 0.2f32 * ctx.ap,2 => 29.8f32 + 0.2f32 * ctx.ap,3 => 37.2f32 + 0.2f32 * ctx.ap,4 => 44.6f32 + 0.2f32 * ctx.ap,5 => 52f32 + 0.2f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 145.6f32 + 1.3f32 * ctx.ap,2 => 193.7f32 + 1.3f32 * ctx.ap,3 => 241.8f32 + 1.3f32 * ctx.ap,4 => 289.9f32 + 1.3f32 * ctx.ap,5 => 338f32 + 1.3f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 100.8f32 + 0.9f32 * ctx.ap,2 => 134.1f32 + 0.9f32 * ctx.ap,3 => 167.4f32 + 0.9f32 * ctx.ap,4 => 200.7f32 + 0.9f32 * ctx.ap,5 => 234f32 + 0.9f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 60f32 + 0.6f32 * ctx.ap,2 => 105f32 + 0.6f32 * ctx.ap,3 => 150f32 + 0.6f32 * ctx.ap,4 => 195f32 + 0.6f32 * ctx.ap,5 => 240f32 + 0.6f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 62.5f32 + 0.75f32 * ctx.ap,2 => 112.5f32 + 0.75f32 * ctx.ap,3 => 162.5f32 + 0.75f32 * ctx.ap,4 => 212.5f32 + 0.75f32 * ctx.ap,5 => 262.5f32 + 0.75f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 25f32 + 0.3f32 * ctx.ap,2 => 45f32 + 0.3f32 * ctx.ap,3 => 65f32 + 0.3f32 * ctx.ap,4 => 85f32 + 0.3f32 * ctx.ap,5 => 105f32 + 0.3f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:550f32,per_level:104f32},mana:CachedChampionStatsMap{flat:470f32,per_level:30f32},armor:CachedChampionStatsMap{flat:18f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:28f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:58f32,per_level:3.3f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:1.36f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:525f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -4657,31 +4657,31 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_3), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 97.5f32 + 1.5f32 * ctx.bonus_ad,2 => 127.5f32 + 1.5f32 * ctx.bonus_ad,3 => 157.5f32 + 1.5f32 * ctx.bonus_ad,4 => 187.5f32 + 1.5f32 * ctx.bonus_ad,5 => 217.5f32 + 1.5f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 65f32 + ctx.bonus_ad,2 => 85f32 + ctx.bonus_ad,3 => 105f32 + ctx.bonus_ad,4 => 125f32 + ctx.bonus_ad,5 => 145f32 + ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 50f32 + 0.4f32 * ctx.bonus_ad,2 => 60f32 + 0.4f32 * ctx.bonus_ad,3 => 70f32 + 0.4f32 * ctx.bonus_ad,4 => 80f32 + 0.4f32 * ctx.bonus_ad,5 => 90f32 + 0.4f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 60f32 + 0.9f32 * ctx.bonus_ad,2 => 90f32 + 0.9f32 * ctx.bonus_ad,3 => 120f32 + 0.9f32 * ctx.bonus_ad,4 => 150f32 + 0.9f32 * ctx.bonus_ad,5 => 180f32 + 0.9f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 110f32 + 1.3f32 * ctx.bonus_ad,2 => 150f32 + 1.3f32 * ctx.bonus_ad,3 => 190f32 + 1.3f32 * ctx.bonus_ad,4 => 230f32 + 1.3f32 * ctx.bonus_ad,5 => 270f32 + 1.3f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 90f32 + ctx.bonus_ad,2 => 135f32 + ctx.bonus_ad,3 => 180f32 + ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 180f32 + 2f32 * ctx.bonus_ad,2 => 270f32 + 2f32 * ctx.bonus_ad,3 => 360f32 + 2f32 * ctx.bonus_ad,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:658f32,per_level:109f32},mana:CachedChampionStatsMap{flat:400f32,per_level:37f32},armor:CachedChampionStatsMap{flat:30f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:36f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:68f32,per_level:3.1f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2.9f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:125f32,aram_damage_taken:0.95f32,aram_damage_dealt:1.05f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -4694,7 +4694,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.e_level {1 => 0.0f32,2 => 0.0f32,3 => 0.0f32,4 => 0.0f32,5 => 0.0f32,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:645f32,per_level:99f32},mana:CachedChampionStatsMap{flat:300f32,per_level:60f32},armor:CachedChampionStatsMap{flat:40f32,per_level:4.3f32},magic_resist:CachedChampionStatsMap{flat:28f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:55f32,per_level:3.5f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:150f32,aram_damage_taken:1.1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -4707,39 +4707,39 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_4), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_5), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_6), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 80f32 + 0.7f32 * ctx.ap,2 => 125f32 + 0.7f32 * ctx.ap,3 => 170f32 + 0.7f32 * ctx.ap,4 => 215f32 + 0.7f32 * ctx.ap,5 => 260f32 + 0.7f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 9f32 + 0.3f32 * ctx.ap,2 => 23f32 + 0.3f32 * ctx.ap,3 => 37f32 + 0.3f32 * ctx.ap,4 => 51f32 + 0.3f32 * ctx.ap,5 => 65f32 + 0.3f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 6f32 + 0.1f32 * ctx.ap,2 => 12f32 + 0.1f32 * ctx.ap,3 => 18f32 + 0.1f32 * ctx.ap,4 => 24f32 + 0.1f32 * ctx.ap,5 => 30f32 + 0.1f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 24f32 + 0.4f32 * ctx.ap,2 => 48f32 + 0.4f32 * ctx.ap,3 => 72f32 + 0.4f32 * ctx.ap,4 => 96f32 + 0.4f32 * ctx.ap,5 => 120f32 + 0.4f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 13.05f32 + 0.435f32 * ctx.ap,2 => 33.35f32 + 0.435f32 * ctx.ap,3 => 53.65f32 + 0.435f32 * ctx.ap,4 => 73.95f32 + 0.435f32 * ctx.ap,5 => 94.25f32 + 0.435f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 8.7f32 + 0.145f32 * ctx.ap,2 => 17.4f32 + 0.145f32 * ctx.ap,3 => 26.1f32 + 0.145f32 * ctx.ap,4 => 34.8f32 + 0.145f32 * ctx.ap,5 => 43.5f32 + 0.145f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 34.8f32 + 0.58f32 * ctx.ap,2 => 69.6f32 + 0.58f32 * ctx.ap,3 => 104.4f32 + 0.58f32 * ctx.ap,4 => 139.2f32 + 0.58f32 * ctx.ap,5 => 174f32 + 0.58f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 50f32 + 0.125f32 * ctx.ap,2 => 81.25f32 + 0.125f32 * ctx.ap,3 => 112.5f32 + 0.125f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 200f32 + 0.5f32 * ctx.ap,2 => 325f32 + 0.5f32 * ctx.ap,3 => 450f32 + 0.5f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:615f32,per_level:104f32},mana:CachedChampionStatsMap{flat:334f32,per_level:25f32},armor:CachedChampionStatsMap{flat:24f32,per_level:4.95f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:54f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.69f32,per_level:3.38f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.689999997615814f32,attack_range:500f32,aram_damage_taken:1.1f32,aram_damage_dealt:0.95f32,urf_damage_taken:1f32,urf_damage_dealt:0.9f32,},
@@ -4752,23 +4752,23 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 100f32 + 0.9f32 * ctx.ap,2 => 150f32 + 0.9f32 * ctx.ap,3 => 200f32 + 0.9f32 * ctx.ap,4 => 250f32 + 0.9f32 * ctx.ap,5 => 300f32 + 0.9f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 75f32 + 0.7f32 * ctx.ap,2 => 120f32 + 0.7f32 * ctx.ap,3 => 165f32 + 0.7f32 * ctx.ap,4 => 210f32 + 0.7f32 * ctx.ap,5 => 255f32 + 0.7f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 1.7f32 * ctx.thresh_stacks + 0.9f32 * ctx.ad,2 => 1.7f32 * ctx.thresh_stacks + 1.2f32 * ctx.ad,3 => 1.7f32 * ctx.thresh_stacks + 1.5f32 * ctx.ad,4 => 1.7f32 * ctx.thresh_stacks + 1.8f32 * ctx.ad,5 => 1.7f32 * ctx.thresh_stacks + 2.1f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 1.7f32 * ctx.thresh_stacks + 0f32 * ctx.ad,2 => 1.7f32 * ctx.thresh_stacks + 0f32 * ctx.ad,3 => 1.7f32 * ctx.thresh_stacks + 0f32 * ctx.ad,4 => 1.7f32 * ctx.thresh_stacks + 0f32 * ctx.ad,5 => 1.7f32 * ctx.thresh_stacks + 0f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 250f32 + ctx.ap,2 => 400f32 + ctx.ap,3 => 550f32 + ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:620f32,per_level:120f32},mana:CachedChampionStatsMap{flat:274f32,per_level:44f32},armor:CachedChampionStatsMap{flat:33f32,per_level:0f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.55f32},attack_damage:CachedChampionStatsMap{flat:56f32,per_level:2.2f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:3.5f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:450f32,aram_damage_taken:1.05f32,aram_damage_dealt:1f32,urf_damage_taken:0.87f32,urf_damage_dealt:1f32,},
@@ -4781,31 +4781,31 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_3), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_4), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_5), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.w_level {1 => 70f32 + ctx.bonus_ad + 0.5f32 * ctx.ap,2 => 105f32 + ctx.bonus_ad + 0.5f32 * ctx.ap,3 => 140f32 + ctx.bonus_ad + 0.5f32 * ctx.ap,4 => 175f32 + ctx.bonus_ad + 0.5f32 * ctx.ap,5 => 210f32 + ctx.bonus_ad + 0.5f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 60f32 + ctx.bonus_ad + 0.5f32 * ctx.ap,2 => 70f32 + 1.1f32 * ctx.bonus_ad + 0.5f32 * ctx.ap,3 => 80f32 + 1.2f32 * ctx.bonus_ad + 0.5f32 * ctx.ap,4 => 90f32 + 1.3f32 * ctx.bonus_ad + 0.5f32 * ctx.ap,5 => 100f32 + 1.4f32 * ctx.bonus_ad + 0.5f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 45f32 + 0.25f32 * ctx.ap,2 => 60f32 + 0.25f32 * ctx.ap,3 => 75f32 + 0.25f32 * ctx.ap,4 => 90f32 + 0.25f32 * ctx.ap,5 => 105f32 + 0.25f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 15f32 + 0.25f32 * ctx.bonus_ad + 0.125f32 * ctx.ap,2 => 17.5f32 + 0.275f32 * ctx.bonus_ad + 0.125f32 * ctx.ap,3 => 20f32 + 0.3f32 * ctx.bonus_ad + 0.125f32 * ctx.ap,4 => 22.5f32 + 0.325f32 * ctx.bonus_ad + 0.125f32 * ctx.ap,5 => 25f32 + 0.35f32 * ctx.bonus_ad + 0.125f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 60f32 + ctx.bonus_ad + 0.5f32 * ctx.ap,2 => 70f32 + 1.1f32 * ctx.bonus_ad + 0.5f32 * ctx.ap,3 => 80f32 + 1.2f32 * ctx.bonus_ad + 0.5f32 * ctx.ap,4 => 90f32 + 1.3f32 * ctx.bonus_ad + 0.5f32 * ctx.ap,5 => 100f32 + 1.4f32 * ctx.bonus_ad + 0.5f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 120f32 + 2f32 * ctx.bonus_ad + ctx.ap,2 => 140f32 + 2.2f32 * ctx.bonus_ad + ctx.ap,3 => 160f32 + 2.4f32 * ctx.bonus_ad + ctx.ap,4 => 180f32 + 2.6f32 * ctx.bonus_ad + ctx.ap,5 => 200f32 + 2.8f32 * ctx.bonus_ad + ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 225f32 + 0.7f32 * ctx.bonus_ad + ctx.ap,2 => 275f32 + 0.7f32 * ctx.bonus_ad + ctx.ap,3 => 325f32 + 0.7f32 * ctx.bonus_ad + ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:640f32,per_level:102f32},mana:CachedChampionStatsMap{flat:300f32,per_level:32f32},armor:CachedChampionStatsMap{flat:30f32,per_level:4f32},magic_resist:CachedChampionStatsMap{flat:28f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:60f32,per_level:2.5f32},attack_speed:CachedChampionStatsMap{flat:0.656f32,per_level:1.5f32},movespeed:325f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.694f32,attack_range:550f32,aram_damage_taken:0.95f32,aram_damage_dealt:1.05f32,urf_damage_taken:1.05f32,urf_damage_dealt:0.9f32,},
@@ -4818,27 +4818,27 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_3), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 10f32 + 0.15f32 * ctx.ad,2 => 30f32 + 0.25f32 * ctx.ad,3 => 50f32 + 0.35f32 * ctx.ad,4 => 70f32 + 0.45f32 * ctx.ad,5 => 90f32 + 0.55f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 10f32,2 => 12.5f32,3 => 15f32,4 => 17.5f32,5 => 20f32,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 20f32,2 => 25f32,3 => 30f32,4 => 35f32,5 => 40f32,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 0.2f32 * ctx.enemy_max_health + 0.02f32 * 0.01f32 * ctx.ap,2 => 0.25f32 * ctx.enemy_max_health + 0.02f32 * 0.01f32 * ctx.ap,3 => 0.3f32 * ctx.enemy_max_health + 0.02f32 * 0.01f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 0.1f32 * ctx.enemy_max_health + 0.01f32 * 0.01f32 * ctx.ap,2 => 0.125f32 * ctx.enemy_max_health + 0.01f32 * 0.01f32 * ctx.ap,3 => 0.15f32 * ctx.enemy_max_health + 0.01f32 * 0.01f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 0.025f32 * ctx.enemy_max_health + 0.0025f32 * 0.01f32 * ctx.ap,2 => 0.03125f32 * ctx.enemy_max_health + 0.0025f32 * 0.01f32 * ctx.ap,3 => 0.0375f32 * ctx.enemy_max_health + 0.0025f32 * 0.01f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:650f32,per_level:110f32},mana:CachedChampionStatsMap{flat:340f32,per_level:45f32},armor:CachedChampionStatsMap{flat:37f32,per_level:3.9f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:68f32,per_level:4f32},attack_speed:CachedChampionStatsMap{flat:0.67f32,per_level:2.9f32},movespeed:350f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.6700000166893f32,attack_range:175f32,aram_damage_taken:1.05f32,aram_damage_dealt:1f32,urf_damage_taken:0.95f32,urf_damage_dealt:0.95f32,},
@@ -4851,15 +4851,15 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 5f32,2 => 10f32,3 => 15f32,4 => 20f32,5 => 25f32,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 20f32,2 => 35f32,3 => 50f32,4 => 65f32,5 => 80f32,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 75f32 + 1.3f32 * ctx.bonus_ad + 0.8f32 * ctx.ap,2 => 105f32 + 1.3f32 * ctx.bonus_ad + 0.8f32 * ctx.ap,3 => 135f32 + 1.3f32 * ctx.bonus_ad + 0.8f32 * ctx.ap,4 => 165f32 + 1.3f32 * ctx.bonus_ad + 0.8f32 * ctx.ap,5 => 195f32 + 1.3f32 * ctx.bonus_ad + 0.8f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:696f32,per_level:108f32},mana:CachedChampionStatsMap{flat:100f32,per_level:0f32},armor:CachedChampionStatsMap{flat:33f32,per_level:4.8f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:66f32,per_level:4f32},attack_speed:CachedChampionStatsMap{flat:0.67f32,per_level:3.4f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.694f32,attack_range:175f32,aram_damage_taken:0.9f32,aram_damage_dealt:1.1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -4872,23 +4872,23 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 60f32 + 0.5f32 * ctx.bonus_ad + 0.85f32 * ctx.ap,2 => 105f32 + 0.5f32 * ctx.bonus_ad + 0.85f32 * ctx.ap,3 => 150f32 + 0.5f32 * ctx.bonus_ad + 0.85f32 * ctx.ap,4 => 195f32 + 0.5f32 * ctx.bonus_ad + 0.85f32 * ctx.ap,5 => 240f32 + 0.5f32 * ctx.bonus_ad + 0.85f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 40f32 + ctx.ad + ctx.ap,2 => 60f32 + ctx.ad + ctx.ap,3 => 80f32 + ctx.ad + ctx.ap,4 => 100f32 + ctx.ad + ctx.ap,5 => 120f32 + ctx.ad + ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 15f32 + ctx.ad + 0.5f32 * ctx.ap,2 => 22.5f32 + ctx.ad + 0.5f32 * ctx.ap,3 => 30f32 + ctx.ad + 0.5f32 * ctx.ap,4 => 37.5f32 + ctx.ad + 0.5f32 * ctx.ap,5 => 45f32 + ctx.ad + 0.5f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 30f32 + ctx.ad + 0.7f32 * ctx.ap,2 => 45f32 + ctx.ad + 0.7f32 * ctx.ap,3 => 60f32 + ctx.ad + 0.7f32 * ctx.ap,4 => 75f32 + ctx.ad + 0.7f32 * ctx.ap,5 => 90f32 + ctx.ad + 0.7f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 65f32 + 0.2f32 * ctx.bonus_ad + 0.4f32 * ctx.ap,2 => 90f32 + 0.2f32 * ctx.bonus_ad + 0.4f32 * ctx.ap,3 => 115f32 + 0.2f32 * ctx.bonus_ad + 0.4f32 * ctx.ap,4 => 140f32 + 0.2f32 * ctx.bonus_ad + 0.4f32 * ctx.ap,5 => 165f32 + 0.2f32 * ctx.bonus_ad + 0.4f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:604f32,per_level:108f32},mana:CachedChampionStatsMap{flat:333f32,per_level:39f32},armor:CachedChampionStatsMap{flat:24f32,per_level:4.35f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:52f32,per_level:2.5f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2.5f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.651000022888183f32,attack_range:525f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:0.95f32,},
@@ -4901,23 +4901,23 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_3), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_4), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.e_level {1 => 20f32,2 => 30f32,3 => 40f32,4 => 50f32,5 => 60f32,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 110f32 + 2.1f32 * ctx.bonus_ad + 2.1f32 * ctx.ap,2 => 150f32 + 2.1f32 * ctx.bonus_ad + 2.1f32 * ctx.ap,3 => 190f32 + 2.1f32 * ctx.bonus_ad + 2.1f32 * ctx.ap,4 => 230f32 + 2.1f32 * ctx.bonus_ad + 2.1f32 * ctx.ap,5 => 270f32 + 2.1f32 * ctx.bonus_ad + 2.1f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 35f32 + 0.35f32 * ctx.bonus_ad + 0.35f32 * ctx.ap,2 => 50f32 + 0.35f32 * ctx.bonus_ad + 0.35f32 * ctx.ap,3 => 65f32 + 0.35f32 * ctx.bonus_ad + 0.35f32 * ctx.ap,4 => 80f32 + 0.35f32 * ctx.bonus_ad + 0.35f32 * ctx.ap,5 => 95f32 + 0.35f32 * ctx.bonus_ad + 0.35f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 15f32 + 0.35f32 * ctx.bonus_ad,2 => 20f32 + 0.35f32 * ctx.bonus_ad,3 => 25f32 + 0.35f32 * ctx.bonus_ad,4 => 30f32 + 0.35f32 * ctx.bonus_ad,5 => 35f32 + 0.35f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 30f32,2 => 45f32,3 => 60f32,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:630f32,per_level:104f32},mana:CachedChampionStatsMap{flat:300f32,per_level:40f32},armor:CachedChampionStatsMap{flat:27f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:59f32,per_level:3.1f32},attack_speed:CachedChampionStatsMap{flat:0.679f32,per_level:3.38f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.67900002002716f32,attack_range:550f32,aram_damage_taken:0.95f32,aram_damage_dealt:1f32,urf_damage_taken:1.1f32,urf_damage_dealt:0.85f32,},
@@ -4930,23 +4930,23 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_3), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 0.03f32 * ctx.enemy_max_health + 0.04f32 * 0.01f32 * ctx.bonus_ad,2 => 0.04f32 * ctx.enemy_max_health + 0.04f32 * 0.01f32 * ctx.bonus_ad,3 => 0.05f32 * ctx.enemy_max_health + 0.04f32 * 0.01f32 * ctx.bonus_ad,4 => 0.06f32 * ctx.enemy_max_health + 0.04f32 * 0.01f32 * ctx.bonus_ad,5 => 0.07f32 * ctx.enemy_max_health + 0.04f32 * 0.01f32 * ctx.bonus_ad,6 => 0.08f32 * ctx.enemy_max_health + 0.04f32 * 0.01f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 0.06f32 * ctx.enemy_max_health + 0.08f32 * 0.01f32 * ctx.bonus_ad,2 => 0.08f32 * ctx.enemy_max_health + 0.08f32 * 0.01f32 * ctx.bonus_ad,3 => 0.1f32 * ctx.enemy_max_health + 0.08f32 * 0.01f32 * ctx.bonus_ad,4 => 0.12f32 * ctx.enemy_max_health + 0.08f32 * 0.01f32 * ctx.bonus_ad,5 => 0.14f32 * ctx.enemy_max_health + 0.08f32 * 0.01f32 * ctx.bonus_ad,6 => 0.16f32 * ctx.enemy_max_health + 0.08f32 * 0.01f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 5f32 + 0.25f32 * ctx.bonus_ad,2 => 11f32 + 0.25f32 * ctx.bonus_ad,3 => 17f32 + 0.25f32 * ctx.bonus_ad,4 => 23f32 + 0.25f32 * ctx.bonus_ad,5 => 29f32 + 0.25f32 * ctx.bonus_ad,6 => 35f32 + 0.25f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 10f32 + 0.175f32 * ctx.ap,2 => 18f32 + 0.175f32 * ctx.ap,3 => 26f32 + 0.175f32 * ctx.ap,4 => 34f32 + 0.175f32 * ctx.ap,5 => 42f32 + 0.175f32 * ctx.ap,6 => 50f32 + 0.175f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 80f32 + 1.4f32 * ctx.ap,2 => 144f32 + 1.4f32 * ctx.ap,3 => 208f32 + 1.4f32 * ctx.ap,4 => 272f32 + 1.4f32 * ctx.ap,5 => 336f32 + 1.4f32 * ctx.ap,6 => 400f32 + 1.4f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:664f32,per_level:92f32},mana:CachedChampionStatsMap{flat:271f32,per_level:50f32},armor:CachedChampionStatsMap{flat:31f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:62f32,per_level:4f32},attack_speed:CachedChampionStatsMap{flat:0.65f32,per_level:3f32},movespeed:350f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.6499999761581421f32,attack_range:125f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:0.92f32,urf_damage_dealt:1.1f32,},
@@ -4959,19 +4959,19 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 25f32 + 0.7f32 * ctx.ad,2 => 70f32 + 0.7f32 * ctx.ad,3 => 115f32 + 0.7f32 * ctx.ad,4 => 160f32 + 0.7f32 * ctx.ad,5 => 205f32 + 0.7f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 12f32 + 0.2f32 * ctx.ad,2 => 12f32 + 0.235f32 * ctx.ad,3 => 12f32 + 0.27f32 * ctx.ad,4 => 12f32 + 0.305f32 * ctx.ad,5 => 12f32 + 0.34f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 90f32 + ctx.bonus_ad,2 => 120f32 + ctx.bonus_ad,3 => 150f32 + ctx.bonus_ad,4 => 180f32 + ctx.bonus_ad,5 => 210f32 + ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 100f32 + 0.5f32 * ctx.bonus_ad,2 => 225f32 + 0.5f32 * ctx.bonus_ad,3 => 350f32 + 0.5f32 * ctx.bonus_ad,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:655f32,per_level:102f32},mana:CachedChampionStatsMap{flat:340f32,per_level:45f32},armor:CachedChampionStatsMap{flat:36f32,per_level:5f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:63f32,per_level:4f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:3.75f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:350f32,aram_damage_taken:1.05f32,aram_damage_dealt:1f32,urf_damage_taken:0.85f32,urf_damage_dealt:1.15f32,},
@@ -4984,55 +4984,55 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_3), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_4), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_4), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_5), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_6), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_7), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 90f32 + 1.3f32 * ctx.bonus_ad,2 => 160f32 + 1.4f32 * ctx.bonus_ad,3 => 230f32 + 1.5f32 * ctx.bonus_ad,4 => 300f32 + 1.6f32 * ctx.bonus_ad,5 => 370f32 + 1.7f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 29.7f32 + 0.429f32 * ctx.bonus_ad,2 => 52.8f32 + 0.462f32 * ctx.bonus_ad,3 => 75.9f32 + 0.495f32 * ctx.bonus_ad,4 => 99f32 + 0.528f32 * ctx.bonus_ad,5 => 122.1f32 + 0.561f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 60f32 + 0.8667f32 * ctx.bonus_ad,2 => 106.67f32 + 0.9333f32 * ctx.bonus_ad,3 => 153.33f32 + ctx.bonus_ad,4 => 200f32 + 1.0667f32 * ctx.bonus_ad,5 => 246.67f32 + 1.1333f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 19.8f32 + 0.28600000000000003f32 * ctx.bonus_ad,2 => 35.2f32 + 0.308f32 * ctx.bonus_ad,3 => 50.6f32 + 0.33f32 * ctx.bonus_ad,4 => 66f32 + 0.35200000000000004f32 * ctx.bonus_ad,5 => 81.4f32 + 0.374f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 0.09f32 * ctx.missing_health,2 => 0.12f32 * ctx.missing_health,3 => 0.15f32 * ctx.missing_health,4 => 0.18f32 * ctx.missing_health,5 => 0.21f32 * ctx.missing_health,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 0.06f32 * ctx.missing_health,2 => 0.08f32 * ctx.missing_health,3 => 0.1f32 * ctx.missing_health,4 => 0.12f32 * ctx.missing_health,5 => 0.14f32 * ctx.missing_health,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 0.09f32 * ctx.enemy_max_health + 0.045f32 * 0.01f32 * ctx.ap,2 => 0.105f32 * ctx.enemy_max_health + 0.045f32 * 0.01f32 * ctx.ap,3 => 0.12f32 * ctx.enemy_max_health + 0.045f32 * 0.01f32 * ctx.ap,4 => 0.135f32 * ctx.enemy_max_health + 0.045f32 * 0.01f32 * ctx.ap,5 => 0.15f32 * ctx.enemy_max_health + 0.045f32 * 0.01f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 0.03f32 * ctx.enemy_max_health + 0.015f32 * 0.01f32 * ctx.ap,2 => 0.035f32 * ctx.enemy_max_health + 0.015f32 * 0.01f32 * ctx.ap,3 => 0.04f32 * ctx.enemy_max_health + 0.015f32 * 0.01f32 * ctx.ap,4 => 0.045f32 * ctx.enemy_max_health + 0.015f32 * 0.01f32 * ctx.ap,5 => 0.05f32 * ctx.enemy_max_health + 0.015f32 * 0.01f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 0.135f32 * ctx.enemy_max_health + 0.0675f32 * 0.01f32 * ctx.ap,2 => 0.1575f32 * ctx.enemy_max_health + 0.0675f32 * 0.01f32 * ctx.ap,3 => 0.18f32 * ctx.enemy_max_health + 0.0675f32 * 0.01f32 * ctx.ap,4 => 0.2025f32 * ctx.enemy_max_health + 0.0675f32 * 0.01f32 * ctx.ap,5 => 0.225f32 * ctx.enemy_max_health + 0.0675f32 * 0.01f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 0.045f32 * ctx.enemy_max_health + 0.0225f32 * 0.01f32 * ctx.ap,2 => 0.0525f32 * ctx.enemy_max_health + 0.0225f32 * 0.01f32 * ctx.ap,3 => 0.06f32 * ctx.enemy_max_health + 0.0225f32 * 0.01f32 * ctx.ap,4 => 0.0675f32 * ctx.enemy_max_health + 0.0225f32 * 0.01f32 * ctx.ap,5 => 0.075f32 * ctx.enemy_max_health + 0.0225f32 * 0.01f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 6f32 + 0.35f32 * ctx.ap,2 => 12f32 + 0.35f32 * ctx.ap,3 => 18f32 + 0.35f32 * ctx.ap,4 => 24f32 + 0.35f32 * ctx.ap,5 => 30f32 + 0.35f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 60f32 + ctx.bonus_ad,2 => 100f32 + ctx.bonus_ad,3 => 140f32 + ctx.bonus_ad,4 => 180f32 + ctx.bonus_ad,5 => 220f32 + ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 150f32 + ctx.ap,2 => 250f32 + ctx.ap,3 => 350f32 + ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:600f32,per_level:105f32},mana:CachedChampionStatsMap{flat:320f32,per_level:40f32},armor:CachedChampionStatsMap{flat:24f32,per_level:4.6f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:59f32,per_level:3.4f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:3.5f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.657999992370605f32,attack_range:575f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -5045,31 +5045,31 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::True, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::True, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_3), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 0.75f32 * ctx.ad + 0.5f32 * ctx.ap,2 => 0.85f32 * ctx.ad + 0.5f32 * ctx.ap,3 => 0.95f32 * ctx.ad + 0.5f32 * ctx.ap,4 => 1.05f32 * ctx.ad + 0.5f32 * ctx.ap,5 => 1.15f32 * ctx.ad + 0.5f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 0.06f32 * ctx.enemy_max_health,2 => 0.07f32 * ctx.enemy_max_health,3 => 0.08f32 * ctx.enemy_max_health,4 => 0.09f32 * ctx.enemy_max_health,5 => 0.1f32 * ctx.enemy_max_health,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 50f32,2 => 65f32,3 => 80f32,4 => 95f32,5 => 110f32,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 50f32 + 0.5f32 * ctx.bonus_ad,2 => 85f32 + 0.5f32 * ctx.bonus_ad,3 => 120f32 + 0.5f32 * ctx.bonus_ad,4 => 155f32 + 0.5f32 * ctx.bonus_ad,5 => 190f32 + 0.5f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 75f32 + 0.75f32 * ctx.bonus_ad,2 => 127.5f32 + 0.75f32 * ctx.bonus_ad,3 => 180f32 + 0.75f32 * ctx.bonus_ad,4 => 232.5f32 + 0.75f32 * ctx.bonus_ad,5 => 285f32 + 0.75f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 125f32 + 1.25f32 * ctx.bonus_ad,2 => 212.5f32 + 1.25f32 * ctx.bonus_ad,3 => 300f32 + 1.25f32 * ctx.bonus_ad,4 => 387.5f32 + 1.25f32 * ctx.bonus_ad,5 => 475f32 + 1.25f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 35f32,2 => 50f32,3 => 65f32,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:550f32,per_level:103f32},mana:CachedChampionStatsMap{flat:232f32,per_level:35f32},armor:CachedChampionStatsMap{flat:23f32,per_level:4.6f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:60f32,per_level:2.35f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:3.3f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.657999992370605f32,attack_range:550f32,aram_damage_taken:0.95f32,aram_damage_dealt:1f32,urf_damage_taken:1.05f32,urf_damage_dealt:0.95f32,},
@@ -5082,19 +5082,19 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 80f32 + 0.5f32 * ctx.ap,2 => 120f32 + 0.55f32 * ctx.ap,3 => 160f32 + 0.6f32 * ctx.ap,4 => 200f32 + 0.65f32 * ctx.ap,5 => 240f32 + 0.7f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 85f32 + 0.6f32 * ctx.ap,2 => 140f32 + 0.7f32 * ctx.ap,3 => 195f32 + 0.8f32 * ctx.ap,4 => 250f32 + 0.9f32 * ctx.ap,5 => 305f32 + ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 350f32 + 1.3f32 * ctx.ap,2 => 500f32 + 1.4f32 * ctx.ap,3 => 650f32 + 1.5f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 175f32 + 0.65f32 * ctx.ap,2 => 250f32 + 0.7f32 * ctx.ap,3 => 325f32 + 0.75f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:580f32,per_level:108f32},mana:CachedChampionStatsMap{flat:490f32,per_level:26f32},armor:CachedChampionStatsMap{flat:18f32,per_level:5.2f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:52f32,per_level:2.7f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2.24f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:550f32,aram_damage_taken:1.1f32,aram_damage_dealt:0.93f32,urf_damage_taken:1f32,urf_damage_dealt:0.9f32,},
@@ -5107,31 +5107,31 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 80f32 + 0.9f32 * ctx.ap,2 => 120f32 + 0.9f32 * ctx.ap,3 => 160f32 + 0.9f32 * ctx.ap,4 => 200f32 + 0.9f32 * ctx.ap,5 => 240f32 + 0.9f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 30f32 + 0.2f32 * ctx.ap,2 => 50f32 + 0.2f32 * ctx.ap,3 => 70f32 + 0.2f32 * ctx.ap,4 => 90f32 + 0.2f32 * ctx.ap,5 => 110f32 + 0.2f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 45f32 + 0.25f32 * ctx.ap,2 => 75f32 + 0.25f32 * ctx.ap,3 => 105f32 + 0.25f32 * ctx.ap,4 => 135f32 + 0.25f32 * ctx.ap,5 => 165f32 + 0.25f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 75f32 + 0.45f32 * ctx.ap,2 => 125f32 + 0.45f32 * ctx.ap,3 => 175f32 + 0.45f32 * ctx.ap,4 => 225f32 + 0.45f32 * ctx.ap,5 => 275f32 + 0.45f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 70f32 + 0.3f32 * ctx.ap,2 => 100f32 + 0.3f32 * ctx.ap,3 => 130f32 + 0.3f32 * ctx.ap,4 => 160f32 + 0.3f32 * ctx.ap,5 => 190f32 + 0.3f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 34.62f32 + 0.0962f32 * ctx.ap,2 => 48.08f32 + 0.0962f32 * ctx.ap,3 => 61.54f32 + 0.0962f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 450f32 + 1.25f32 * ctx.ap,2 => 625f32 + 1.25f32 * ctx.ap,3 => 800f32 + 1.25f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:590f32,per_level:102f32},mana:CachedChampionStatsMap{flat:469f32,per_level:21f32},armor:CachedChampionStatsMap{flat:22f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:55f32,per_level:3.1416f32},attack_speed:CachedChampionStatsMap{flat:0.643f32,per_level:1.59f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:525f32,aram_damage_taken:1.05f32,aram_damage_dealt:0.95f32,urf_damage_taken:1f32,urf_damage_dealt:0.95f32,},
@@ -5144,27 +5144,27 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 70f32 + 0.7f32 * ctx.ap,2 => 115f32 + 0.7f32 * ctx.ap,3 => 160f32 + 0.7f32 * ctx.ap,4 => 205f32 + 0.7f32 * ctx.ap,5 => 250f32 + 0.7f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 80f32 + 0.3f32 * ctx.ap,2 => 120f32 + 0.3f32 * ctx.ap,3 => 160f32 + 0.3f32 * ctx.ap,4 => 200f32 + 0.3f32 * ctx.ap,5 => 240f32 + 0.3f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 50f32 + 0.4f32 * ctx.ap,2 => 70f32 + 0.45f32 * ctx.ap,3 => 90f32 + 0.5f32 * ctx.ap,4 => 110f32 + 0.55f32 * ctx.ap,5 => 130f32 + 0.6f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 75f32 + 0.2f32 * ctx.ap,2 => 125f32 + 0.2f32 * ctx.ap,3 => 175f32 + 0.2f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 150f32 + 0.5f32 * ctx.ap,2 => 250f32 + 0.5f32 * ctx.ap,3 => 350f32 + 0.5f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 225f32 + 0.7f32 * ctx.ap,2 => 375f32 + 0.7f32 * ctx.ap,3 => 525f32 + 0.7f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:590f32,per_level:104f32},mana:CachedChampionStatsMap{flat:490f32,per_level:32f32},armor:CachedChampionStatsMap{flat:23f32,per_level:4.45f32},magic_resist:CachedChampionStatsMap{flat:28f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:54f32,per_level:2.75f32},attack_speed:CachedChampionStatsMap{flat:0.669f32,per_level:1f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:550f32,aram_damage_taken:1f32,aram_damage_dealt:0.95f32,urf_damage_taken:1f32,urf_damage_dealt:0.9f32,},
@@ -5177,23 +5177,23 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 100f32 + 1.5f32 * ctx.bonus_ad,2 => 150f32 + 1.5f32 * ctx.bonus_ad,3 => 200f32 + 1.5f32 * ctx.bonus_ad,4 => 250f32 + 1.5f32 * ctx.bonus_ad,5 => 300f32 + 1.5f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 40f32 + 0.6f32 * ctx.bonus_ad,2 => 60f32 + 0.6f32 * ctx.bonus_ad,3 => 80f32 + 0.6f32 * ctx.bonus_ad,4 => 100f32 + 0.6f32 * ctx.bonus_ad,5 => 120f32 + 0.6f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 0.04f32 * ctx.enemy_max_health + 0.035f32 * 0.01f32 * ctx.bonus_ad,2 => 0.05f32 * ctx.enemy_max_health + 0.035f32 * 0.01f32 * ctx.bonus_ad,3 => 0.06f32 * ctx.enemy_max_health + 0.035f32 * 0.01f32 * ctx.bonus_ad,4 => 0.07f32 * ctx.enemy_max_health + 0.035f32 * 0.01f32 * ctx.bonus_ad,5 => 0.08f32 * ctx.enemy_max_health + 0.035f32 * 0.01f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 10f32 + 1.1f32 * ctx.ad + ctx.ap,2 => 30f32 + 1.1f32 * ctx.ad + ctx.ap,3 => 50f32 + 1.1f32 * ctx.ad + ctx.ap,4 => 70f32 + 1.1f32 * ctx.ad + ctx.ap,5 => 90f32 + 1.1f32 * ctx.ad + ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 150f32 + 0.9f32 * ctx.bonus_ad,2 => 250f32 + 0.9f32 * ctx.bonus_ad,3 => 350f32 + 0.9f32 * ctx.bonus_ad,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:655f32,per_level:99f32},mana:CachedChampionStatsMap{flat:295f32,per_level:65f32},armor:CachedChampionStatsMap{flat:30f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:63f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.644f32,per_level:2f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.643999993801116f32,attack_range:125f32,aram_damage_taken:0.95f32,aram_damage_dealt:1.05f32,urf_damage_taken:1.05f32,urf_damage_dealt:0.95f32,},
@@ -5206,35 +5206,35 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_3), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_4), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_5), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_6), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 60f32 + 1.4f32 * ctx.ad,2 => 90f32 + 1.4f32 * ctx.ad,3 => 120f32 + 1.4f32 * ctx.ad,4 => 150f32 + 1.4f32 * ctx.ad,5 => 180f32 + 1.4f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 30f32 + 1.4f32 * ctx.ad,2 => 60f32 + 1.4f32 * ctx.ad,3 => 90f32 + 1.4f32 * ctx.ad,4 => 120f32 + 1.4f32 * ctx.ad,5 => 150f32 + 1.4f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 30f32 + 0.7f32 * ctx.ad,2 => 45f32 + 0.7f32 * ctx.ad,3 => 60f32 + 0.7f32 * ctx.ad,4 => 75f32 + 0.7f32 * ctx.ad,5 => 90f32 + 0.7f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 15f32 + 0.7f32 * ctx.ad,2 => 30f32 + 0.7f32 * ctx.ad,3 => 45f32 + 0.7f32 * ctx.ad,4 => 60f32 + 0.7f32 * ctx.ad,5 => 75f32 + 0.7f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 0.02f32 * ctx.current_health,2 => 0.03f32 * ctx.current_health,3 => 0.04f32 * ctx.current_health,4 => 0.05f32 * ctx.current_health,5 => 0.06f32 * ctx.current_health,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 10f32,2 => 15f32,3 => 20f32,4 => 25f32,5 => 30f32,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 80f32 + ctx.ap,2 => 135f32 + ctx.ap,3 => 190f32 + ctx.ap,4 => 245f32 + ctx.ap,5 => 300f32 + ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 0.12f32 * ctx.missing_health + 0.05f32 * 0.01f32 * ctx.bonus_ad,2 => 0.16f32 * ctx.missing_health + 0.05f32 * 0.01f32 * ctx.bonus_ad,3 => 0.2f32 * ctx.missing_health + 0.05f32 * 0.01f32 * ctx.bonus_ad,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:630f32,per_level:109f32},mana:CachedChampionStatsMap{flat:0f32,per_level:0f32},armor:CachedChampionStatsMap{flat:34f32,per_level:4.6f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:57f32,per_level:3.5f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:2.5f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.658f32,attack_range:200f32,aram_damage_taken:1f32,aram_damage_dealt:1.05f32,urf_damage_taken:0.9f32,urf_damage_dealt:1.05f32,},
@@ -5247,39 +5247,39 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 60f32 + 0.4f32 * ctx.ap,2 => 75f32 + 0.4f32 * ctx.ap,3 => 90f32 + 0.4f32 * ctx.ap,4 => 105f32 + 0.4f32 * ctx.ap,5 => 120f32 + 0.4f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 20f32 + ctx.ad + 0.5f32 * ctx.ap,2 => 45f32 + ctx.ad + 0.5f32 * ctx.ap,3 => 70f32 + ctx.ad + 0.5f32 * ctx.ap,4 => 95f32 + ctx.ad + 0.5f32 * ctx.ap,5 => 120f32 + ctx.ad + 0.5f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 80f32 + ctx.ad + 0.9f32 * ctx.ap,2 => 120f32 + ctx.ad + 0.9f32 * ctx.ap,3 => 160f32 + ctx.ad + 0.9f32 * ctx.ap,4 => 200f32 + ctx.ad + 0.9f32 * ctx.ap,5 => 240f32 + ctx.ad + 0.9f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 70f32 + 0.5f32 * ctx.ap,2 => 110f32 + 0.5f32 * ctx.ap,3 => 150f32 + 0.5f32 * ctx.ap,4 => 190f32 + 0.5f32 * ctx.ap,5 => 230f32 + 0.5f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 20f32 + 0.8f32 * ctx.ap,2 => 50f32 + 0.8f32 * ctx.ap,3 => 80f32 + 0.8f32 * ctx.ap,4 => 110f32 + 0.8f32 * ctx.ap,5 => 140f32 + 0.8f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 90f32 + 1.3f32 * ctx.ap,2 => 160f32 + 1.3f32 * ctx.ap,3 => 230f32 + 1.3f32 * ctx.ap,4 => 300f32 + 1.3f32 * ctx.ap,5 => 370f32 + 1.3f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 100f32 + 0.5f32 * ctx.ap,2 => 175f32 + 0.5f32 * ctx.ap,3 => 250f32 + 0.5f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 65f32 + 0.35f32 * ctx.ap,2 => 105f32 + 0.35f32 * ctx.ap,3 => 145f32 + 0.35f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 490f32 + 2.6f32 * ctx.ap,2 => 805f32 + 2.6f32 * ctx.ap,3 => 1120f32 + 2.6f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:600f32,per_level:100f32},mana:CachedChampionStatsMap{flat:405f32,per_level:45f32},armor:CachedChampionStatsMap{flat:23f32,per_level:4.4f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:53f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:2.11f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.657999992370605f32,attack_range:525f32,aram_damage_taken:1.05f32,aram_damage_dealt:0.95f32,urf_damage_taken:1f32,urf_damage_dealt:0.95f32,},
@@ -5292,31 +5292,31 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 80f32 + 0.6f32 * ctx.ap,2 => 100f32 + 0.6f32 * ctx.ap,3 => 120f32 + 0.6f32 * ctx.ap,4 => 140f32 + 0.6f32 * ctx.ap,5 => 160f32 + 0.6f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 148f32 + 1.11f32 * ctx.ap,2 => 185f32 + 1.11f32 * ctx.ap,3 => 222f32 + 1.11f32 * ctx.ap,4 => 259f32 + 1.11f32 * ctx.ap,5 => 296f32 + 1.11f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 20f32 + 0.0375f32 * ctx.bonus_health,2 => 33.75f32 + 0.0375f32 * ctx.bonus_health,3 => 47.5f32 + 0.0375f32 * ctx.bonus_health,4 => 61.25f32 + 0.0375f32 * ctx.bonus_health,5 => 75f32 + 0.0375f32 * ctx.bonus_health,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 80f32 + 0.15f32 * ctx.bonus_health,2 => 135f32 + 0.15f32 * ctx.bonus_health,3 => 190f32 + 0.15f32 * ctx.bonus_health,4 => 245f32 + 0.15f32 * ctx.bonus_health,5 => 300f32 + 0.15f32 * ctx.bonus_health,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 60f32 + 0.06f32 * ctx.max_health + 0.8f32 * ctx.ap,2 => 90f32 + 0.06f32 * ctx.max_health + 0.8f32 * ctx.ap,3 => 120f32 + 0.06f32 * ctx.max_health + 0.8f32 * ctx.ap,4 => 150f32 + 0.06f32 * ctx.max_health + 0.8f32 * ctx.ap,5 => 180f32 + 0.06f32 * ctx.max_health + 0.8f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 30f32 + 0.015f32 * ctx.max_health + 0.35f32 * ctx.ap,2 => 45f32 + 0.015f32 * ctx.max_health + 0.35f32 * ctx.ap,3 => 60f32 + 0.015f32 * ctx.max_health + 0.35f32 * ctx.ap,4 => 75f32 + 0.015f32 * ctx.max_health + 0.35f32 * ctx.ap,5 => 90f32 + 0.015f32 * ctx.max_health + 0.35f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 150f32 + 0.7f32 * ctx.ap,2 => 250f32 + 0.7f32 * ctx.ap,3 => 350f32 + 0.7f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:607f32,per_level:110f32},mana:CachedChampionStatsMap{flat:2f32,per_level:0f32},armor:CachedChampionStatsMap{flat:27f32,per_level:4.5f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:55f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:2f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.657999992370605f32,attack_range:450f32,aram_damage_taken:1.05f32,aram_damage_dealt:1f32,urf_damage_taken:1.05f32,urf_damage_dealt:0.92f32,},
@@ -5329,19 +5329,19 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 10f32 + 1.2f32 * ctx.bonus_ad,2 => 30f32 + 1.2f32 * ctx.bonus_ad,3 => 50f32 + 1.2f32 * ctx.bonus_ad,4 => 70f32 + 1.2f32 * ctx.bonus_ad,5 => 90f32 + 1.2f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 5f32 + ctx.ad + 0.06f32 * ctx.bonus_health,2 => 30f32 + ctx.ad + 0.06f32 * ctx.bonus_health,3 => 55f32 + ctx.ad + 0.06f32 * ctx.bonus_health,4 => 80f32 + ctx.ad + 0.06f32 * ctx.bonus_health,5 => 105f32 + ctx.ad + 0.06f32 * ctx.bonus_health,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 80f32 + 0.8f32 * ctx.ap + 0.11f32 * ctx.enemy_max_health,2 => 110f32 + 0.8f32 * ctx.ap + 0.12f32 * ctx.enemy_max_health,3 => 140f32 + 0.8f32 * ctx.ap + 0.13f32 * ctx.enemy_max_health,4 => 170f32 + 0.8f32 * ctx.ap + 0.14f32 * ctx.enemy_max_health,5 => 200f32 + 0.8f32 * ctx.ap + 0.15f32 * ctx.enemy_max_health,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 300f32 + 2.5f32 * ctx.bonus_ad + 1.25f32 * ctx.ap,2 => 500f32 + 2.5f32 * ctx.bonus_ad + 1.25f32 * ctx.ap,3 => 700f32 + 2.5f32 * ctx.bonus_ad + 1.25f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:650f32,per_level:104f32},mana:CachedChampionStatsMap{flat:350f32,per_level:70f32},armor:CachedChampionStatsMap{flat:31f32,per_level:5.2f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:60f32,per_level:3.5f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.7f32,attack_range:150f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1.1f32,urf_damage_dealt:0.95f32,},
@@ -5354,19 +5354,19 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 0.06f32 * ctx.enemy_max_health + 1.2f32 * ctx.ad + ctx.ap,2 => 0.07f32 * ctx.enemy_max_health + 1.2f32 * ctx.ad + ctx.ap,3 => 0.08f32 * ctx.enemy_max_health + 1.2f32 * ctx.ad + ctx.ap,4 => 0.09f32 * ctx.enemy_max_health + 1.2f32 * ctx.ad + ctx.ap,5 => 0.1f32 * ctx.enemy_max_health + 1.2f32 * ctx.ad + ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 150f32 + 1.2f32 * ctx.ad + ctx.ap,2 => 165f32 + 1.2f32 * ctx.ad + ctx.ap,3 => 180f32 + 1.2f32 * ctx.ad + ctx.ap,4 => 195f32 + 1.2f32 * ctx.ad + ctx.ap,5 => 210f32 + 1.2f32 * ctx.ad + ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 0.35f32,2 => 0.4f32,3 => 0.45f32,4 => 0.5f32,5 => 0.55f32,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 175f32 + 1.67f32 * ctx.bonus_ad,2 => 350f32 + 1.67f32 * ctx.bonus_ad,3 => 525f32 + 1.67f32 * ctx.bonus_ad,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:620f32,per_level:99f32},mana:CachedChampionStatsMap{flat:280f32,per_level:35f32},armor:CachedChampionStatsMap{flat:33f32,per_level:4.4f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:60f32,per_level:2.75f32},attack_speed:CachedChampionStatsMap{flat:0.638f32,per_level:2.3f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.638000011444091f32,attack_range:125f32,aram_damage_taken:0.95f32,aram_damage_dealt:1.05f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -5379,31 +5379,31 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_3), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_4), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 45f32 + 0.5f32 * ctx.bonus_ad,2 => 60f32 + 0.5f32 * ctx.bonus_ad,3 => 75f32 + 0.5f32 * ctx.bonus_ad,4 => 90f32 + 0.5f32 * ctx.bonus_ad,5 => 105f32 + 0.5f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 90f32 + ctx.bonus_ad,2 => 120f32 + ctx.bonus_ad,3 => 150f32 + ctx.bonus_ad,4 => 180f32 + ctx.bonus_ad,5 => 210f32 + ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 22.5f32 + 0.25f32 * ctx.bonus_ad,2 => 30f32 + 0.25f32 * ctx.bonus_ad,3 => 37.5f32 + 0.25f32 * ctx.bonus_ad,4 => 45f32 + 0.25f32 * ctx.bonus_ad,5 => 52.5f32 + 0.25f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 45f32 + 0.5f32 * ctx.bonus_ad,2 => 60f32 + 0.5f32 * ctx.bonus_ad,3 => 75f32 + 0.5f32 * ctx.bonus_ad,4 => 90f32 + 0.5f32 * ctx.bonus_ad,5 => 105f32 + 0.5f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 27.5f32 + 0.3f32 * ctx.bonus_ad,2 => 32.5f32 + 0.3f32 * ctx.bonus_ad,3 => 37.5f32 + 0.3f32 * ctx.bonus_ad,4 => 42.5f32 + 0.3f32 * ctx.bonus_ad,5 => 47.5f32 + 0.3f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 55f32 + 0.6f32 * ctx.bonus_ad,2 => 65f32 + 0.6f32 * ctx.bonus_ad,3 => 75f32 + 0.6f32 * ctx.bonus_ad,4 => 85f32 + 0.6f32 * ctx.bonus_ad,5 => 95f32 + 0.6f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 200f32 + ctx.bonus_ad,2 => 300f32 + ctx.bonus_ad,3 => 400f32 + ctx.bonus_ad,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:630f32,per_level:107f32},mana:CachedChampionStatsMap{flat:340f32,per_level:40f32},armor:CachedChampionStatsMap{flat:25f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:60f32,per_level:3.5f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:3.9f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.658f32,attack_range:525f32,aram_damage_taken:1f32,aram_damage_dealt:1.05f32,urf_damage_taken:1.1f32,urf_damage_dealt:0.85f32,},
@@ -5416,31 +5416,31 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 75f32 + 0.9f32 * ctx.ap,2 => 115f32 + 0.9f32 * ctx.ap,3 => 155f32 + 0.9f32 * ctx.ap,4 => 195f32 + 0.9f32 * ctx.ap,5 => 235f32 + 0.9f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 50f32 + 0.65f32 * ctx.ap,2 => 85f32 + 0.65f32 * ctx.ap,3 => 120f32 + 0.65f32 * ctx.ap,4 => 155f32 + 0.65f32 * ctx.ap,5 => 190f32 + 0.65f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 83.35f32 + 1.08355f32 * ctx.ap,2 => 141.695f32 + 1.08355f32 * ctx.ap,3 => 200.04f32 + 1.08355f32 * ctx.ap,4 => 258.385f32 + 1.08355f32 * ctx.ap,5 => 316.73f32 + 1.08355f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 70f32 + 0.45f32 * ctx.ap,2 => 100f32 + 0.45f32 * ctx.ap,3 => 130f32 + 0.45f32 * ctx.ap,4 => 160f32 + 0.45f32 * ctx.ap,5 => 190f32 + 0.45f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 20f32 + 0.05f32 * ctx.ap,2 => 25f32 + 0.05f32 * ctx.ap,3 => 30f32 + 0.05f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 170f32 + 0.45f32 * ctx.ap,2 => 220f32 + 0.45f32 * ctx.ap,3 => 270f32 + 0.45f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 680f32 + 1.8f32 * ctx.ap,2 => 1100f32 + 2.25f32 * ctx.ap,3 => 1620f32 + 2.7f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:596f32,per_level:106f32},mana:CachedChampionStatsMap{flat:400f32,per_level:22f32},armor:CachedChampionStatsMap{flat:22f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:55f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:1.36f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:525f32,aram_damage_taken:1.05f32,aram_damage_dealt:0.93f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -5453,31 +5453,31 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_3), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 20f32 + 0.4f32 * ctx.bonus_ad,2 => 35f32 + 0.4f32 * ctx.bonus_ad,3 => 50f32 + 0.4f32 * ctx.bonus_ad,4 => 65f32 + 0.4f32 * ctx.bonus_ad,5 => 80f32 + 0.4f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 60f32 + 1.2f32 * ctx.bonus_ad,2 => 105f32 + 1.2f32 * ctx.bonus_ad,3 => 150f32 + 1.2f32 * ctx.bonus_ad,4 => 195f32 + 1.2f32 * ctx.bonus_ad,5 => 240f32 + 1.2f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 30f32 + 0.3f32 * ctx.ad,2 => 40f32 + 0.3f32 * ctx.ad,3 => 50f32 + 0.3f32 * ctx.ad,4 => 60f32 + 0.3f32 * ctx.ad,5 => 70f32 + 0.3f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 50f32 + 0.9f32 * ctx.ad + 0.65f32 * ctx.ap,2 => 85f32 + 0.9f32 * ctx.ad + 0.65f32 * ctx.ap,3 => 120f32 + 0.9f32 * ctx.ad + 0.65f32 * ctx.ap,4 => 155f32 + 0.9f32 * ctx.ad + 0.65f32 * ctx.ap,5 => 190f32 + 0.9f32 * ctx.ad + 0.65f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 80f32 + 1.2f32 * ctx.ad + 0.65f32 * ctx.ap,2 => 125f32 + 1.2f32 * ctx.ad + 0.65f32 * ctx.ap,3 => 170f32 + 1.2f32 * ctx.ad + 0.65f32 * ctx.ap,4 => 215f32 + 1.2f32 * ctx.ad + 0.65f32 * ctx.ap,5 => 260f32 + 1.2f32 * ctx.ad + 0.65f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 50f32 + 0.6f32 * ctx.ap,2 => 75f32 + 0.6f32 * ctx.ap,3 => 100f32 + 0.6f32 * ctx.ap,4 => 125f32 + 0.6f32 * ctx.ap,5 => 150f32 + 0.6f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 75f32 + ctx.bonus_ad + 1.1f32 * ctx.ap + 0.15f32 * ctx.current_health,2 => 175f32 + ctx.bonus_ad + 1.1f32 * ctx.ap + 0.15f32 * ctx.current_health,3 => 275f32 + ctx.bonus_ad + 1.1f32 * ctx.ap + 0.15f32 * ctx.current_health,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:640f32,per_level:106f32},mana:CachedChampionStatsMap{flat:274f32,per_level:55f32},armor:CachedChampionStatsMap{flat:35f32,per_level:4.4f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:63f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.645f32,per_level:3.5f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.644999980926513f32,attack_range:175f32,aram_damage_taken:1f32,aram_damage_dealt:0.95f32,urf_damage_taken:1.1f32,urf_damage_dealt:1f32,},
@@ -5490,27 +5490,27 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_4), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 20f32 + 1.05f32 * ctx.ad,2 => 45f32 + 1.05f32 * ctx.ad,3 => 70f32 + 1.05f32 * ctx.ad,4 => 95f32 + 1.05f32 * ctx.ad,5 => 120f32 + 1.05f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 70f32 + 0.2f32 * ctx.bonus_ad + 0.6f32 * ctx.ap,2 => 85f32 + 0.2f32 * ctx.bonus_ad + 0.6f32 * ctx.ap,3 => 100f32 + 0.2f32 * ctx.bonus_ad + 0.6f32 * ctx.ap,4 => 115f32 + 0.2f32 * ctx.bonus_ad + 0.6f32 * ctx.ap,5 => 130f32 + 0.2f32 * ctx.bonus_ad + 0.6f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 17.5f32 + 0.05f32 * ctx.bonus_ad + 0.15f32 * ctx.ap,2 => 21.25f32 + 0.05f32 * ctx.bonus_ad + 0.15f32 * ctx.ap,3 => 25f32 + 0.05f32 * ctx.bonus_ad + 0.15f32 * ctx.ap,4 => 28.75f32 + 0.05f32 * ctx.bonus_ad + 0.15f32 * ctx.ap,5 => 32.5f32 + 0.05f32 * ctx.bonus_ad + 0.15f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 70f32 + 0.2f32 * ctx.bonus_ad + 0.6f32 * ctx.ap,2 => 85f32 + 0.2f32 * ctx.bonus_ad + 0.6f32 * ctx.ap,3 => 100f32 + 0.2f32 * ctx.bonus_ad + 0.6f32 * ctx.ap,4 => 115f32 + 0.2f32 * ctx.bonus_ad + 0.6f32 * ctx.ap,5 => 130f32 + 0.2f32 * ctx.bonus_ad + 0.6f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 140f32 + 0.4f32 * ctx.bonus_ad + 1.2f32 * ctx.ap,2 => 170f32 + 0.4f32 * ctx.bonus_ad + 1.2f32 * ctx.ap,3 => 200f32 + 0.4f32 * ctx.bonus_ad + 1.2f32 * ctx.ap,4 => 230f32 + 0.4f32 * ctx.bonus_ad + 1.2f32 * ctx.ap,5 => 260f32 + 0.4f32 * ctx.bonus_ad + 1.2f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 200f32 + 1.5f32 * ctx.bonus_ad,2 => 350f32 + 1.5f32 * ctx.bonus_ad,3 => 500f32 + 1.5f32 * ctx.bonus_ad,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:590f32,per_level:110f32},mana:CachedChampionStatsMap{flat:100f32,per_level:0f32},armor:CachedChampionStatsMap{flat:32f32,per_level:4.6f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:60f32,per_level:2.5f32},attack_speed:CachedChampionStatsMap{flat:0.697f32,per_level:3.5f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.6700000166893f32,attack_range:175f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:0.9f32,urf_damage_dealt:1f32,},
@@ -5523,35 +5523,35 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_3), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::True, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_3), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 20f32 + 1.05f32 * ctx.ad,2 => 45f32 + 1.05f32 * ctx.ad,3 => 70f32 + 1.05f32 * ctx.ad,4 => 95f32 + 1.05f32 * ctx.ad,5 => 120f32 + 1.05f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 5f32 + 0.04f32 * ctx.enemy_max_health,2 => 10f32 + 0.045f32 * ctx.enemy_max_health,3 => 15f32 + 0.05f32 * ctx.enemy_max_health,4 => 20f32 + 0.055f32 * ctx.enemy_max_health,5 => 25f32 + 0.06f32 * ctx.enemy_max_health,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 5f32 + 0.04f32 * ctx.enemy_max_health,2 => 10f32 + 0.045f32 * ctx.enemy_max_health,3 => 15f32 + 0.05f32 * ctx.enemy_max_health,4 => 20f32 + 0.055f32 * ctx.enemy_max_health,5 => 25f32 + 0.06f32 * ctx.enemy_max_health,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 10f32 + 0.08f32 * ctx.enemy_max_health,2 => 20f32 + 0.09f32 * ctx.enemy_max_health,3 => 30f32 + 0.1f32 * ctx.enemy_max_health,4 => 40f32 + 0.11f32 * ctx.enemy_max_health,5 => 50f32 + 0.12f32 * ctx.enemy_max_health,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 0.25f32 * 100.0f32,2 => 0.275f32 * 100.0f32,3 => 0.3f32 * 100.0f32,4 => 0.325f32 * 100.0f32,5 => 0.35f32 * 100.0f32,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 100f32 + 0.4f32 * ctx.bonus_ad,2 => 200f32 + 0.4f32 * ctx.bonus_ad,3 => 300f32 + 0.4f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 100f32 + 0.4f32 * ctx.bonus_ad,2 => 200f32 + 0.4f32 * ctx.bonus_ad,3 => 300f32 + 0.4f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 200f32 + 0.8f32 * ctx.bonus_ad,2 => 400f32 + 0.8f32 * ctx.bonus_ad,3 => 600f32 + 0.8f32 * ctx.bonus_ad,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:620f32,per_level:105f32},mana:CachedChampionStatsMap{flat:500f32,per_level:0f32},armor:CachedChampionStatsMap{flat:33f32,per_level:4.6f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:60f32,per_level:2f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:3.5f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:175f32,aram_damage_taken:0.97f32,aram_damage_dealt:1.05f32,urf_damage_taken:0.9f32,urf_damage_dealt:1.1f32,},
@@ -5564,19 +5564,19 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 30f32 + 0.5f32 * ctx.ad,2 => 50f32 + 0.5f32 * ctx.ad,3 => 70f32 + 0.5f32 * ctx.ad,4 => 90f32 + 0.5f32 * ctx.ad,5 => 110f32 + 0.5f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 50f32 + ctx.ap,2 => 75f32 + ctx.ap,3 => 100f32 + ctx.ap,4 => 125f32 + ctx.ap,5 => 150f32 + ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 0.06f32 * ctx.enemy_max_health + 0.03f32 * 0.01f32 * ctx.ap,2 => 0.065f32 * ctx.enemy_max_health + 0.03f32 * 0.01f32 * ctx.ap,3 => 0.07f32 * ctx.enemy_max_health + 0.03f32 * 0.01f32 * ctx.ap,4 => 0.075f32 * ctx.enemy_max_health + 0.03f32 * 0.01f32 * ctx.ap,5 => 0.08f32 * ctx.enemy_max_health + 0.03f32 * 0.01f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 70f32 + ctx.ap,2 => 105f32 + ctx.ap,3 => 140f32 + ctx.ap,4 => 175f32 + ctx.ap,5 => 210f32 + ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:650f32,per_level:114f32},mana:CachedChampionStatsMap{flat:300f32,per_level:60f32},armor:CachedChampionStatsMap{flat:36f32,per_level:4.5f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:62f32,per_level:5f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:2f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:175f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -5589,39 +5589,39 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_3), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_4), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_5), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 5f32 + 0.2f32 * ctx.ap,2 => 10f32 + 0.2f32 * ctx.ap,3 => 15f32 + 0.2f32 * ctx.ap,4 => 20f32 + 0.2f32 * ctx.ap,5 => 25f32 + 0.2f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 12.5f32 + 0.5f32 * ctx.ap,2 => 25f32 + 0.5f32 * ctx.ap,3 => 37.5f32 + 0.5f32 * ctx.ap,4 => 50f32 + 0.5f32 * ctx.ap,5 => 62.5f32 + 0.5f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 10f32 + 0.4f32 * ctx.ap,2 => 20f32 + 0.4f32 * ctx.ap,3 => 30f32 + 0.4f32 * ctx.ap,4 => 40f32 + 0.4f32 * ctx.ap,5 => 50f32 + 0.4f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 25f32 + ctx.ap,2 => 50f32 + ctx.ap,3 => 75f32 + ctx.ap,4 => 100f32 + ctx.ap,5 => 125f32 + ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 5f32 + 0.2f32 * ctx.ap,2 => 10f32 + 0.2f32 * ctx.ap,3 => 15f32 + 0.2f32 * ctx.ap,4 => 20f32 + 0.2f32 * ctx.ap,5 => 25f32 + 0.2f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 5f32 + 0.85f32 * ctx.ad + 0.5f32 * ctx.ap,2 => 30f32 + 0.85f32 * ctx.ad + 0.5f32 * ctx.ap,3 => 55f32 + 0.85f32 * ctx.ad + 0.5f32 * ctx.ap,4 => 80f32 + 0.85f32 * ctx.ad + 0.5f32 * ctx.ap,5 => 105f32 + 0.85f32 * ctx.ad + 0.5f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 1.25f32 + 0.1f32 * ctx.ad + 0.0625f32 * ctx.ap,2 => 5f32 + 0.1f32 * ctx.ad + 0.0625f32 * ctx.ap,3 => 8.75f32 + 0.1f32 * ctx.ad + 0.0625f32 * ctx.ap,4 => 12.5f32 + 0.1f32 * ctx.ad + 0.0625f32 * ctx.ap,5 => 16.25f32 + 0.1f32 * ctx.ad + 0.0625f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 5f32 + 0.4f32 * ctx.ad + 0.25f32 * ctx.ap,2 => 20f32 + 0.4f32 * ctx.ad + 0.25f32 * ctx.ap,3 => 35f32 + 0.4f32 * ctx.ad + 0.25f32 * ctx.ap,4 => 50f32 + 0.4f32 * ctx.ad + 0.25f32 * ctx.ap,5 => 65f32 + 0.4f32 * ctx.ad + 0.25f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 50f32,2 => 200f32,3 => 350f32,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:600f32,per_level:110f32},mana:CachedChampionStatsMap{flat:275f32,per_level:45f32},armor:CachedChampionStatsMap{flat:25f32,per_level:4.4f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:56f32,per_level:2.5f32},attack_speed:CachedChampionStatsMap{flat:0.65f32,per_level:2f32},movespeed:325f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.65f32,attack_range:575f32,aram_damage_taken:1f32,aram_damage_dealt:0f32,urf_damage_taken:0f32,urf_damage_dealt:0f32,},
@@ -5634,27 +5634,27 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 60f32 + 0.2f32 * ctx.ap,2 => 95f32 + 0.2f32 * ctx.ap,3 => 130f32 + 0.2f32 * ctx.ap,4 => 165f32 + 0.2f32 * ctx.ap,5 => 200f32 + 0.2f32 * ctx.ap,6 => 235f32 + 0.2f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 80f32 + 0.3f32 * ctx.ap,2 => 140f32 + 0.3f32 * ctx.ap,3 => 200f32 + 0.3f32 * ctx.ap,4 => 260f32 + 0.3f32 * ctx.ap,5 => 320f32 + 0.3f32 * ctx.ap,6 => 380f32 + 0.3f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 10f32 + 0.05f32 * ctx.ap,2 => 12f32 + 0.05f32 * ctx.ap,3 => 14f32 + 0.05f32 * ctx.ap,4 => 16f32 + 0.05f32 * ctx.ap,5 => 18f32 + 0.05f32 * ctx.ap,6 => 20f32 + 0.05f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 75f32 + 0.25f32 * ctx.ap,2 => 125f32 + 0.25f32 * ctx.ap,3 => 175f32 + 0.25f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 18.75f32 + 0.0625f32 * ctx.ap,2 => 31.25f32 + 0.0625f32 * ctx.ap,3 => 43.75f32 + 0.0625f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 150f32 + 0.5f32 * ctx.ap,2 => 250f32 + 0.5f32 * ctx.ap,3 => 350f32 + 0.5f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:500f32,per_level:69f32},mana:CachedChampionStatsMap{flat:440f32,per_level:45f32},armor:CachedChampionStatsMap{flat:25f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:25f32,per_level:1.1f32},attack_damage:CachedChampionStatsMap{flat:49f32,per_level:3.1f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:1f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:425f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:0.9f32,urf_damage_dealt:0.75f32,},
@@ -5667,35 +5667,35 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 40f32 + 0.3f32 * ctx.ap + 0.03f32 * ctx.max_health,2 => 55f32 + 0.3f32 * ctx.ap + 0.03f32 * ctx.max_health,3 => 70f32 + 0.3f32 * ctx.ap + 0.03f32 * ctx.max_health,4 => 85f32 + 0.3f32 * ctx.ap + 0.03f32 * ctx.max_health,5 => 100f32 + 0.3f32 * ctx.ap + 0.03f32 * ctx.max_health,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 80f32 + 0.6f32 * ctx.ap + 0.06f32 * ctx.max_health,2 => 110f32 + 0.6f32 * ctx.ap + 0.06f32 * ctx.max_health,3 => 140f32 + 0.6f32 * ctx.ap + 0.06f32 * ctx.max_health,4 => 170f32 + 0.6f32 * ctx.ap + 0.06f32 * ctx.max_health,5 => 200f32 + 0.6f32 * ctx.ap + 0.06f32 * ctx.max_health,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 240f32,2 => 250f32,3 => 260f32,4 => 270f32,5 => 280f32,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 40f32 + 0.04f32 * ctx.enemy_max_health + 0.03f32 * 0.01f32 * ctx.ap,2 => 50f32 + 0.05f32 * ctx.enemy_max_health + 0.03f32 * 0.01f32 * ctx.ap,3 => 60f32 + 0.06f32 * ctx.enemy_max_health + 0.03f32 * 0.01f32 * ctx.ap,4 => 70f32 + 0.07f32 * ctx.enemy_max_health + 0.03f32 * 0.01f32 * ctx.ap,5 => 80f32 + 0.08f32 * ctx.enemy_max_health + 0.03f32 * 0.01f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 60f32 + 0.8f32 * ctx.ap,2 => 105f32 + 0.8f32 * ctx.ap,3 => 150f32 + 0.8f32 * ctx.ap,4 => 195f32 + 0.8f32 * ctx.ap,5 => 240f32 + 0.8f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 70f32 + 0.2f32 * ctx.ap,2 => 105f32 + 0.2f32 * ctx.ap,3 => 140f32 + 0.2f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 350f32 + ctx.ap,2 => 525f32 + ctx.ap,3 => 700f32 + ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 140f32 + 0.4f32 * ctx.ap,2 => 210f32 + 0.4f32 * ctx.ap,3 => 280f32 + 0.4f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:685f32,per_level:109f32},mana:CachedChampionStatsMap{flat:0f32,per_level:0f32},armor:CachedChampionStatsMap{flat:33f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:60f32,per_level:3.4f32},attack_speed:CachedChampionStatsMap{flat:0.736f32,per_level:1.6f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.638000011444091f32,attack_range:175f32,aram_damage_taken:0.96f32,aram_damage_dealt:1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -5708,19 +5708,19 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 80f32 + ctx.bonus_ad,2 => 120f32 + ctx.bonus_ad,3 => 160f32 + ctx.bonus_ad,4 => 200f32 + ctx.bonus_ad,5 => 240f32 + ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 48f32 + 0.6f32 * ctx.bonus_ad,2 => 72f32 + 0.6f32 * ctx.bonus_ad,3 => 96f32 + 0.6f32 * ctx.bonus_ad,4 => 120f32 + 0.6f32 * ctx.bonus_ad,5 => 144f32 + 0.6f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 70f32 + 0.8f32 * ctx.bonus_ad,2 => 95f32 + 0.8f32 * ctx.bonus_ad,3 => 120f32 + 0.8f32 * ctx.bonus_ad,4 => 145f32 + 0.8f32 * ctx.bonus_ad,5 => 170f32 + 0.8f32 * ctx.bonus_ad,_ => 0.0 }},|ctx| { match ctx.r_level {1 => ctx.ad + 0.25f32 * 100.0f32,2 => ctx.ad + 0.4f32 * 100.0f32,3 => ctx.ad + 0.55f32 * 100.0f32,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:654f32,per_level:99f32},mana:CachedChampionStatsMap{flat:200f32,per_level:0f32},armor:CachedChampionStatsMap{flat:32f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:29f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:63f32,per_level:3.4f32},attack_speed:CachedChampionStatsMap{flat:0.651f32,per_level:3.3f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.651000022888183f32,attack_range:125f32,aram_damage_taken:0.95f32,aram_damage_dealt:1.05f32,urf_damage_taken:1.1f32,urf_damage_dealt:0.85f32,},
@@ -5733,27 +5733,27 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Unknown, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 2.14f32 + 0.14859999999999998f32 * ctx.ad,2 => 2.43f32 + 0.1543f32 * ctx.ad,3 => 2.71f32 + 0.16f32 * ctx.ad,4 => 3f32 + 0.16570000000000001f32 * ctx.ad,5 => 3.29f32 + 0.1714f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 15f32 + 1.04f32 * ctx.ad,2 => 17f32 + 1.08f32 * ctx.ad,3 => 19f32 + 1.12f32 * ctx.ad,4 => 21f32 + 1.16f32 * ctx.ad,5 => 23f32 + 1.2f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 30f32 + 1.3f32 * ctx.ad + 0.25f32 * ctx.ap,2 => 70f32 + 1.3f32 * ctx.ad + 0.25f32 * ctx.ap,3 => 110f32 + 1.3f32 * ctx.ad + 0.25f32 * ctx.ap,4 => 150f32 + 1.3f32 * ctx.ad + 0.25f32 * ctx.ap,5 => 190f32 + 1.3f32 * ctx.ad + 0.25f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 20f32 + 0.12f32 * ctx.bonus_ad + 0.2f32 * ctx.ap,2 => 22f32 + 0.12f32 * ctx.bonus_ad + 0.2f32 * ctx.ap,3 => 24f32 + 0.12f32 * ctx.bonus_ad + 0.2f32 * ctx.ap,4 => 26f32 + 0.12f32 * ctx.bonus_ad + 0.2f32 * ctx.ap,5 => 28f32 + 0.12f32 * ctx.bonus_ad + 0.2f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 0.8f32,2 => 0.85f32,3 => 0.9f32,4 => 0.95f32,5 => 1f32,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 200f32 + ctx.bonus_ad + 1.1f32 * ctx.ap,2 => 300f32 + ctx.bonus_ad + 1.1f32 * ctx.ap,3 => 400f32 + ctx.bonus_ad + 1.1f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:600f32,per_level:110f32},mana:CachedChampionStatsMap{flat:250f32,per_level:45f32},armor:CachedChampionStatsMap{flat:24f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:56f32,per_level:2f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:2f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:500f32,aram_damage_taken:0.95f32,aram_damage_dealt:1.1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -5766,31 +5766,31 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 80f32 + 0.6f32 * ctx.ap,2 => 130f32 + 0.65f32 * ctx.ap,3 => 180f32 + 0.7f32 * ctx.ap,4 => 230f32 + 0.75f32 * ctx.ap,5 => 280f32 + 0.8f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 70f32 + 0.5f32 * ctx.ap,2 => 105f32 + 0.5f32 * ctx.ap,3 => 140f32 + 0.5f32 * ctx.ap,4 => 175f32 + 0.5f32 * ctx.ap,5 => 210f32 + 0.5f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 30f32 + 0.25f32 * ctx.ap,2 => 70f32 + 0.3f32 * ctx.ap,3 => 110f32 + 0.35f32 * ctx.ap,4 => 150f32 + 0.4f32 * ctx.ap,5 => 190f32 + 0.45f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 150f32 + 1.25f32 * ctx.ap,2 => 350f32 + 1.5f32 * ctx.ap,3 => 550f32 + 1.75f32 * ctx.ap,4 => 750f32 + 2f32 * ctx.ap,5 => 950f32 + 2.25f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 12f32 + 0.1f32 * ctx.ap,2 => 28f32 + 0.12f32 * ctx.ap,3 => 44f32 + 0.14f32 * ctx.ap,4 => 60f32 + 0.16f32 * ctx.ap,5 => 76f32 + 0.18f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 300f32 + ctx.ap,2 => 500f32 + ctx.ap,3 => 700f32 + ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 195f32 + 0.65f32 * ctx.ap,2 => 325f32 + 0.65f32 * ctx.ap,3 => 455f32 + 0.65f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:606f32,per_level:106f32},mana:CachedChampionStatsMap{flat:480f32,per_level:23.5f32},armor:CachedChampionStatsMap{flat:21f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:55f32,per_level:3.1f32},attack_speed:CachedChampionStatsMap{flat:0.656f32,per_level:2f32},movespeed:325f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.656000018119812f32,attack_range:550f32,aram_damage_taken:1.2f32,aram_damage_dealt:0.87f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -5803,7 +5803,7 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 75f32 + 0.9f32 * ctx.ap,2 => 115f32 + 0.9f32 * ctx.ap,3 => 165f32 + 0.9f32 * ctx.ap,4 => 230f32 + 0.9f32 * ctx.ap,5 => 300f32 + 0.9f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:574f32,per_level:96f32},mana:CachedChampionStatsMap{flat:452f32,per_level:50f32},armor:CachedChampionStatsMap{flat:24f32,per_level:5f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:52f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:2.13f32},movespeed:335f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:550f32,aram_damage_taken:0.95f32,aram_damage_dealt:1.05f32,urf_damage_taken:0.9f32,urf_damage_dealt:1.05f32,},
@@ -5816,31 +5816,31 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_2), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_3), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 5f32 + 125f32 + 1.5f32 * ctx.ap,2 => 12.058823529411764f32 + 200f32 + 1.5f32 * ctx.ap,3 => 19.11764705882353f32 + 275f32 + 1.5f32 * ctx.ap,4 => 26.176470588235293f32 + 350f32 + 1.5f32 * ctx.ap,5 => 33.23529411764706f32 + 425f32 + 1.5f32 * ctx.ap,6 => 40.294117647058826f32,7 => 47.35294117647059f32,8 => 54.41176470588235f32,9 => 61.47058823529411f32,10 => 68.52941176470588f32,11 => 75.58823529411765f32,12 => 82.6470588235294f32,13 => 89.70588235294117f32,14 => 96.76470588235294f32,15 => 103.8235294117647f32,16 => 110.88235294117646f32,17 => 117.94117647058825f32,18 => 125f32,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 2f32 + 50f32 + 0.6f32 * ctx.ap,2 => 4.8235294117647065f32 + 80f32 + 0.6f32 * ctx.ap,3 => 7.647058823529412f32 + 110f32 + 0.6f32 * ctx.ap,4 => 10.470588235294118f32 + 140f32 + 0.6f32 * ctx.ap,5 => 13.294117647058824f32 + 170f32 + 0.6f32 * ctx.ap,6 => 16.11764705882353f32,7 => 18.941176470588236f32,8 => 21.764705882352946f32,9 => 24.58823529411765f32,10 => 27.411764705882355f32,11 => 30.23529411764706f32,12 => 33.05882352941177f32,13 => 35.88235294117647f32,14 => 38.70588235294118f32,15 => 41.52941176470589f32,16 => 44.352941176470594f32,17 => 47.1764705882353f32,18 => 50f32,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 20f32 + 0.15f32 * ctx.ap,2 => 30f32 + 0.15f32 * ctx.ap,3 => 40f32 + 0.15f32 * ctx.ap,4 => 50f32 + 0.15f32 * ctx.ap,5 => 60f32 + 0.15f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 60f32 + 0.45f32 * ctx.ap,2 => 90f32 + 0.45f32 * ctx.ap,3 => 120f32 + 0.45f32 * ctx.ap,4 => 150f32 + 0.45f32 * ctx.ap,5 => 180f32 + 0.45f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 70f32 + 0.45f32 * ctx.ap,2 => 110f32 + 0.45f32 * ctx.ap,3 => 150f32 + 0.45f32 * ctx.ap,4 => 190f32 + 0.45f32 * ctx.ap,5 => 230f32 + 0.45f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 70f32 + 0.45f32 * ctx.ap,2 => 110f32 + 0.45f32 * ctx.ap,3 => 150f32 + 0.45f32 * ctx.ap,4 => 190f32 + 0.45f32 * ctx.ap,5 => 230f32 + 0.45f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 140f32 + 0.9f32 * ctx.ap,2 => 220f32 + 0.9f32 * ctx.ap,3 => 300f32 + 0.9f32 * ctx.ap,4 => 380f32 + 0.9f32 * ctx.ap,5 => 460f32 + 0.9f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:630f32,per_level:106f32},mana:CachedChampionStatsMap{flat:425f32,per_level:25f32},armor:CachedChampionStatsMap{flat:21f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:58f32,per_level:3.3f32},attack_speed:CachedChampionStatsMap{flat:0.658f32,per_level:2.5f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:550f32,aram_damage_taken:0.95f32,aram_damage_dealt:1.1f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},
@@ -5853,15 +5853,15 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     metadata: &[TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::E(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::None 
+                attributes: Attrs::Undefined 
             }],
                     closures: &[|ctx| { match ctx.q_level {1 => 60f32 + 0.65f32 * ctx.ap,2 => 100f32 + 0.65f32 * ctx.ap,3 => 140f32 + 0.65f32 * ctx.ap,4 => 180f32 + 0.65f32 * ctx.ap,5 => 220f32 + 0.65f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 60f32 + 0.6f32 * ctx.ap,2 => 95f32 + 0.6f32 * ctx.ap,3 => 130f32 + 0.6f32 * ctx.ap,4 => 165f32 + 0.6f32 * ctx.ap,5 => 200f32 + 0.6f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 180f32 + 0.7f32 * ctx.ap,2 => 265f32 + 0.7f32 * ctx.ap,3 => 350f32 + 0.7f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:574f32,per_level:93f32},mana:CachedChampionStatsMap{flat:418f32,per_level:25f32},armor:CachedChampionStatsMap{flat:29f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:53f32,per_level:3.2f32},attack_speed:CachedChampionStatsMap{flat:0.681f32,per_level:2.11f32},movespeed:340f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:575f32,aram_damage_taken:1.05f32,aram_damage_dealt:0.9f32,urf_damage_taken:1f32,urf_damage_dealt:1f32,},

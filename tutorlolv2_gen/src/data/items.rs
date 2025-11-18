@@ -4,11 +4,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2650,
                     prettified_stats: &[StatName::Health(350),StatName::AbilityHaste(15),StatName::MagicResist(45)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::AbyssalMask, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -17,11 +17,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 1100,
                     prettified_stats: &[StatName::AbilityHaste(10),StatName::MagicResist(25),StatName::Armor(25)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::AegisoftheLegion, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -30,11 +30,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 900,
                     prettified_stats: &[StatName::MoveSpeed(4),StatName::AbilityPower(30)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::AetherWisp, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -43,11 +43,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 400,
                     prettified_stats: &[StatName::AbilityPower(20)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::AmplifyingTome, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -56,11 +56,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2500,
                     prettified_stats: &[StatName::AbilityHaste(20),StatName::Health(650)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::AnathemasChains, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -69,11 +69,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::AntiTowerSocks, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -82,11 +82,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::ArcaneSweeperTrinket, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -95,11 +95,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2900,
                     prettified_stats: &[StatName::AbilityPower(70),StatName::Mana(600),StatName::AbilityHaste(25)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::ArchangelsStaff, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -108,11 +108,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2200,
                     prettified_stats: &[StatName::AbilityPower(45),StatName::HealAndShieldPower(10),StatName::BaseManaRegen(125),StatName::MoveSpeed(4)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::ArdentCenser, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -121,11 +121,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 1700,
                     prettified_stats: &[StatName::MoveSpeed(50),StatName::Armor(40)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::ArmoredAdvance, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -134,11 +134,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2500,
                     prettified_stats: &[StatName::Health(700),StatName::CriticalStrikeChance(20)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::AtmasReckoning, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -147,11 +147,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 3000,
                     prettified_stats: &[StatName::AbilityHaste(20),StatName::AttackDamage(55),StatName::Lethality(18)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::AxiomArc, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -160,11 +160,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 1300,
                     prettified_stats: &[StatName::AttackDamage(40)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::BFSword, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -173,11 +173,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 900,
                     prettified_stats: &[StatName::Health(150),StatName::AbilityHaste(5)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::BamisCinder, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -186,11 +186,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 900,
                     prettified_stats: &[StatName::AbilityHaste(10),StatName::BaseManaRegen(100),StatName::AbilityPower(20)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::BandleglassMirror, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -199,11 +199,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 3000,
                     prettified_stats: &[StatName::AbilityPower(105),StatName::MagicResist(40)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::BansheesVeil, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -212,11 +212,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::BaseTurretReinforcedArmorTurretItem, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -225,11 +225,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 1100,
                     prettified_stats: &[StatName::MoveSpeed(45),StatName::AttackSpeed(25)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::BerserkersGreaves, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -238,11 +238,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 3000,
                     prettified_stats: &[StatName::AttackDamage(40),StatName::AbilityHaste(20),StatName::Health(400)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::BlackCleaver, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -251,11 +251,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[StatName::AbilityHaste(25),StatName::Health(900)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::BlackHoleGauntlet, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -264,11 +264,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::BlackSpear, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -277,11 +277,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2800,
                     prettified_stats: &[StatName::Mana(600),StatName::AbilityHaste(20),StatName::AbilityPower(80)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::BlackfireTorch, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -290,11 +290,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 3200,
                     prettified_stats: &[StatName::AttackDamage(40),StatName::LifeSteal(10),StatName::AttackSpeed(25)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::BladeoftheRuinedKing, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -303,11 +303,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 850,
                     prettified_stats: &[StatName::AbilityPower(45)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::BlastingWand, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -316,11 +316,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 1100,
                     prettified_stats: &[StatName::MagicPenetration(13),StatName::AbilityPower(25)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::BlightingJewel, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -329,11 +329,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2900,
                     prettified_stats: &[StatName::Health(400),StatName::AbilityHaste(15),StatName::AbilityPower(65)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::BloodlettersCurse, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -342,11 +342,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 400,
                     prettified_stats: &[StatName::Health(200),StatName::BaseHealthRegen(75),StatName::BaseManaRegen(75),StatName::GoldPer10Seconds(5)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Bloodsong, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -355,11 +355,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 3400,
                     prettified_stats: &[StatName::AttackDamage(80),StatName::LifeSteal(15)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Bloodthirster, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -368,11 +368,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 300,
                     prettified_stats: &[StatName::MoveSpeed(25)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Boots, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -381,11 +381,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 1000,
                     prettified_stats: &[StatName::MoveSpeed(55)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::BootsofSwiftness, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -394,11 +394,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 400,
                     prettified_stats: &[StatName::BaseHealthRegen(75),StatName::Health(200),StatName::GoldPer10Seconds(5),StatName::BaseManaRegen(75)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::BountyofWorlds, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -407,11 +407,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 800,
                     prettified_stats: &[StatName::Armor(30)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::BrambleVest, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -420,11 +420,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 300,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::CappaJuice, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -433,11 +433,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 1300,
                     prettified_stats: &[StatName::Mana(375),StatName::Health(350)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::CatalystofAeons, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -446,11 +446,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 1050,
                     prettified_stats: &[StatName::AttackDamage(20),StatName::AbilityHaste(10)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::CaulfieldsWarhammer, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -459,11 +459,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 400,
                     prettified_stats: &[StatName::Health(200),StatName::BaseHealthRegen(75),StatName::BaseManaRegen(75),StatName::GoldPer10Seconds(5)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::CelestialOpposition, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -472,11 +472,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 800,
                     prettified_stats: &[StatName::Armor(40)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::ChainVest, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -485,11 +485,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 1750,
                     prettified_stats: &[StatName::MagicResist(35),StatName::Tenacity(30),StatName::MoveSpeed(50)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::ChainlacedCrushers, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -498,11 +498,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 3100,
                     prettified_stats: &[StatName::Health(450),StatName::AttackDamage(45),StatName::AbilityHaste(15)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::ChempunkChainsword, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -511,11 +511,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 600,
                     prettified_stats: &[StatName::CriticalStrikeChance(15)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::CloakofAgility, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -524,11 +524,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[StatName::Health(300),StatName::MagicResist(100)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::CloakofStarryNight, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -537,11 +537,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 300,
                     prettified_stats: &[StatName::Armor(15)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::ClothArmor, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -550,11 +550,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 75,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::ControlWard, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -563,11 +563,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 3000,
                     prettified_stats: &[StatName::AbilityHaste(25),StatName::MoveSpeed(4),StatName::AbilityPower(70),StatName::Health(350)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::CosmicDrive, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -576,11 +576,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 1400,
                     prettified_stats: &[StatName::MoveSpeed(50),StatName::AbilityHaste(25)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::CrimsonLucidity, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -589,11 +589,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[StatName::AbilityPower(85),StatName::Mana(600),StatName::Health(300),StatName::AbilityHaste(25)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::CrownoftheShatteredQueen, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -602,11 +602,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[StatName::MagicResist(30),StatName::AbilityPower(80),StatName::Armor(30)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Cruelty, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -615,11 +615,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 3000,
                     prettified_stats: &[StatName::MagicPenetration(30),StatName::AbilityHaste(20),StatName::AbilityPower(75)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Cryptbloom, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -628,11 +628,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 800,
                     prettified_stats: &[StatName::Health(200),StatName::BaseHealthRegen(100)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::CrystallineBracer, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -641,11 +641,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 450,
                     prettified_stats: &[StatName::AttackDamage(7)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Cull, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -654,11 +654,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 250,
                     prettified_stats: &[StatName::AttackSpeed(10)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Dagger, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -667,11 +667,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 350,
                     prettified_stats: &[StatName::Health(50),StatName::AbilityPower(15)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::DarkSeal, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -680,11 +680,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[StatName::AttackSpeed(50),StatName::MoveSpeed(5),StatName::Armor(55)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::DarksteelTalons, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -693,11 +693,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2500,
                     prettified_stats: &[StatName::BaseManaRegen(100),StatName::AbilityPower(45),StatName::HealAndShieldPower(16)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Dawncore, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -706,11 +706,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2900,
                     prettified_stats: &[StatName::Armor(55),StatName::Health(350),StatName::MoveSpeed(4)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::DeadMansPlate, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -719,11 +719,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 3300,
                     prettified_stats: &[StatName::AbilityHaste(15),StatName::AttackDamage(60),StatName::Armor(50)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::DeathsDance, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -732,11 +732,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::DeathsDaughter, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -745,11 +745,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[StatName::MoveSpeed(6),StatName::AdaptiveForce(80),StatName::AttackSpeed(50)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Decapitator, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -758,11 +758,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::DemonKingsCrown, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -771,11 +771,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[StatName::AbilityPower(80),StatName::Health(700)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::DemonicEmbrace, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -784,11 +784,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[StatName::MagicPenetration(12),StatName::AbilityPower(90),StatName::Mana(600),StatName::AbilityHaste(20)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::DetonationOrb, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -797,11 +797,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[StatName::AdaptiveForce(75),StatName::AttackSpeed(30)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::DiamondTippedSpear, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -810,11 +810,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[StatName::AbilityHaste(20),StatName::Health(350),StatName::AttackDamage(55)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::DivineSunderer, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -823,11 +823,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 450,
                     prettified_stats: &[StatName::Health(80),StatName::AttackDamage(10),StatName::LifeSteal(3)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::DoransBlade, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -836,11 +836,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 400,
                     prettified_stats: &[StatName::Health(90),StatName::AbilityPower(18)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::DoransRing, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -849,11 +849,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 450,
                     prettified_stats: &[StatName::Health(110)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::DoransShield, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -862,11 +862,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Dragonheart, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -875,11 +875,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 400,
                     prettified_stats: &[StatName::BaseHealthRegen(75),StatName::Health(200),StatName::BaseManaRegen(75),StatName::GoldPer10Seconds(5)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::DreamMaker, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -888,11 +888,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[StatName::AbilityHaste(20),StatName::AttackDamage(50),StatName::Lethality(20)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::DuskbladeofDraktharr, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -901,11 +901,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2200,
                     prettified_stats: &[StatName::AbilityHaste(20),StatName::Health(200),StatName::AbilityPower(35),StatName::BaseManaRegen(125)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::EchoesofHelia, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -914,11 +914,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2900,
                     prettified_stats: &[StatName::AttackDamage(60),StatName::AbilityHaste(15)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Eclipse, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -927,11 +927,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 3000,
                     prettified_stats: &[StatName::Health(250),StatName::Lethality(15),StatName::AttackDamage(50)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::EdgeofNight, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -940,11 +940,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[StatName::AbilityHaste(25),StatName::MagicResist(50),StatName::Armor(50)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::EleisasMiracle, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -953,11 +953,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::ElixirofAvarice, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -966,11 +966,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::ElixirofForce, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -979,11 +979,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 500,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::ElixirofIron, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -992,11 +992,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::ElixirofSkill, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1005,11 +1005,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 500,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::ElixirofSorcery, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1018,11 +1018,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 500,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::ElixirofWrath, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1031,11 +1031,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[StatName::AbilityPower(70),StatName::HealAndShieldPower(18),StatName::AbilityHaste(30),StatName::BaseManaRegen(125)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::EmpyreanPromise, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1044,11 +1044,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::EnhancedLuckyDice, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1057,11 +1057,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2900,
                     prettified_stats: &[StatName::CriticalStrikeChance(25),StatName::AttackDamage(60),StatName::AbilityHaste(15)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::EssenceReaver, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1070,11 +1070,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[StatName::AbilityPower(100),StatName::Mana(600),StatName::AbilityHaste(25),StatName::Health(250)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Everfrost, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1083,11 +1083,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 800,
                     prettified_stats: &[StatName::AttackDamage(15)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::ExecutionersCalling, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1096,11 +1096,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 3000,
                     prettified_stats: &[StatName::Health(450),StatName::AttackDamage(40),StatName::AttackSpeed(20)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::ExperimentalHexplate, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1109,11 +1109,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::EyeoftheHerald, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1122,11 +1122,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 200,
                     prettified_stats: &[StatName::BaseManaRegen(50)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::FaerieCharm, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1135,11 +1135,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::FarsightAlteration, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1148,11 +1148,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 900,
                     prettified_stats: &[StatName::AbilityPower(30)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::FatedAshes, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1161,11 +1161,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 850,
                     prettified_stats: &[StatName::AbilityHaste(10),StatName::AbilityPower(25)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::FiendishCodex, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1174,11 +1174,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2400,
                     prettified_stats: &[StatName::Health(550),StatName::Mana(860),StatName::AbilityHaste(15)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Fimbulwinter, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1187,11 +1187,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::FireatWill, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1200,11 +1200,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[StatName::AbilityHaste(20),StatName::AdaptiveForce(70),StatName::Health(500)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Flesheater, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1213,11 +1213,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 600,
                     prettified_stats: &[StatName::HealAndShieldPower(8),StatName::BaseManaRegen(50)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::ForbiddenIdol, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1226,11 +1226,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[StatName::CriticalStrikeChance(25),StatName::AbilityHaste(30),StatName::Health(900)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::ForceofEntropy, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1239,11 +1239,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2800,
                     prettified_stats: &[StatName::Health(400),StatName::MagicResist(55),StatName::MoveSpeed(4)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::ForceofNature, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1252,11 +1252,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 1400,
                     prettified_stats: &[StatName::MoveSpeed(55)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::ForeverForward, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1265,11 +1265,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2500,
                     prettified_stats: &[StatName::Mana(400),StatName::Armor(75),StatName::AbilityHaste(20)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::FrozenHeart, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1278,11 +1278,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[StatName::MoveSpeed(15),StatName::AttackDamage(55),StatName::AttackSpeed(45)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Fulmination, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1291,11 +1291,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[StatName::AttackSpeed(30),StatName::AttackDamage(65),StatName::MoveSpeed(6),StatName::CriticalStrikeChance(25)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Galeforce, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1304,11 +1304,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[StatName::AbilityHaste(40),StatName::MoveSpeed(8),StatName::AttackSpeed(70)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::GamblersBlade, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1317,11 +1317,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[StatName::AbilityHaste(15),StatName::MagicResist(65),StatName::MoveSpeed(10),StatName::Armor(65)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::GargoyleStoneplate, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1330,11 +1330,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 500,
                     prettified_stats: &[StatName::MoveSpeed(70)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Ghostcrawlers, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1343,11 +1343,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 900,
                     prettified_stats: &[StatName::Health(350)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::GiantsBelt, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1356,11 +1356,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 900,
                     prettified_stats: &[StatName::AbilityHaste(10),StatName::Mana(300),StatName::Armor(25)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::GlacialBuckler, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1369,11 +1369,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 250,
                     prettified_stats: &[StatName::AbilityHaste(5)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::GlowingMote, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1382,11 +1382,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[StatName::AttackDamage(55),StatName::Health(400),StatName::Omnivamp(10),StatName::AbilityHaste(20)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Goredrinker, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1395,11 +1395,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 3200,
                     prettified_stats: &[StatName::Armor(45),StatName::AttackDamage(55)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::GuardianAngel, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1408,11 +1408,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 500,
                     prettified_stats: &[StatName::AbilityPower(20),StatName::HealAndShieldPower(15),StatName::AbilityHaste(20)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::GuardiansAmulet, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1421,11 +1421,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 950,
                     prettified_stats: &[StatName::Health(150),StatName::AbilityHaste(15),StatName::AttackDamage(30)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::GuardiansBlade, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1434,11 +1434,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 500,
                     prettified_stats: &[StatName::AttackDamage(25),StatName::Lethality(11),StatName::AbilityHaste(10)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::GuardiansDirk, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1447,11 +1447,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 950,
                     prettified_stats: &[StatName::AttackDamage(25),StatName::LifeSteal(5),StatName::Health(150)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::GuardiansHammer, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1460,11 +1460,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 950,
                     prettified_stats: &[StatName::Health(150)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::GuardiansHorn, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1473,11 +1473,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 950,
                     prettified_stats: &[StatName::Health(150),StatName::AbilityPower(50)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::GuardiansOrb, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1486,11 +1486,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 500,
                     prettified_stats: &[StatName::AbilityHaste(15),StatName::AbilityPower(35),StatName::Health(300)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::GuardiansShroud, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1499,11 +1499,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 3000,
                     prettified_stats: &[StatName::AttackSpeed(25),StatName::AttackDamage(30),StatName::AbilityPower(30)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::GuinsoosRageblade, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1512,11 +1512,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Gusto, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1525,11 +1525,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 450,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::GustwalkerHatchling, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1538,11 +1538,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[StatName::CriticalStrikeChance(25),StatName::AttackSpeed(40),StatName::AttackDamage(45)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Hamstringer, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1551,11 +1551,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 1300,
                     prettified_stats: &[StatName::Health(200),StatName::AbilityPower(30)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::HauntingGuise, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1564,11 +1564,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 50,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::HealthPotion, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1577,11 +1577,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 1200,
                     prettified_stats: &[StatName::AttackDamage(20),StatName::AttackSpeed(20)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::HearthboundAxe, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1590,11 +1590,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 3000,
                     prettified_stats: &[StatName::BaseHealthRegen(100),StatName::Health(900)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Heartsteel, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1603,11 +1603,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2500,
                     prettified_stats: &[StatName::Lethality(12),StatName::AttackDamage(35)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::HellfireHatchet, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1616,11 +1616,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[StatName::AttackDamage(60),StatName::AbilityHaste(30),StatName::Omnivamp(15)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::HemomancersHelm, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1629,11 +1629,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[StatName::AttackSpeed(75),StatName::Health(500)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::HexboltCompanion, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1642,11 +1642,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 1300,
                     prettified_stats: &[StatName::AttackDamage(25),StatName::MagicResist(25)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Hexdrinker, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1655,11 +1655,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 1100,
                     prettified_stats: &[StatName::AbilityPower(45)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::HextechAlternator, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1668,11 +1668,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2500,
                     prettified_stats: &[StatName::AttackDamage(45),StatName::AbilityPower(90),StatName::Omnivamp(15)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::HextechGunblade, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1681,11 +1681,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2650,
                     prettified_stats: &[StatName::AbilityPower(70),StatName::AbilityHaste(20),StatName::Health(300)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::HextechRocketbelt, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1694,11 +1694,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2800,
                     prettified_stats: &[StatName::MagicResist(40),StatName::Health(400),StatName::AbilityHaste(10),StatName::BaseHealthRegen(100)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::HollowRadiance, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1707,11 +1707,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2800,
                     prettified_stats: &[StatName::AbilityPower(125),StatName::AbilityHaste(25)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::HorizonFocus, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1720,11 +1720,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 3000,
                     prettified_stats: &[StatName::AttackDamage(60),StatName::Lethality(18),StatName::AbilityHaste(10)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Hubris, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1733,11 +1733,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 3000,
                     prettified_stats: &[StatName::MoveSpeed(4),StatName::AttackDamage(40),StatName::Health(500)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Hullbreaker, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1746,11 +1746,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2900,
                     prettified_stats: &[StatName::Health(300),StatName::Armor(50),StatName::AbilityHaste(15)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::IcebornGauntlet, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1759,11 +1759,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 3000,
                     prettified_stats: &[StatName::AttackDamage(55),StatName::CriticalStrikeChance(25)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::ImmortalShieldbow, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1772,11 +1772,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2250,
                     prettified_stats: &[StatName::BaseManaRegen(125),StatName::AbilityHaste(20),StatName::AbilityPower(60)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::ImperialMandate, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1785,11 +1785,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 3450,
                     prettified_stats: &[StatName::CriticalStrikeDamage(40),StatName::AttackDamage(65),StatName::CriticalStrikeChance(25)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::InfinityEdge, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1798,11 +1798,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[StatName::AbilityPower(70),StatName::Health(200),StatName::AbilityHaste(20)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::InnervatingLocket, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1811,11 +1811,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 900,
                     prettified_stats: &[StatName::MoveSpeed(45),StatName::AbilityHaste(10)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::IonianBootsofLucidity, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1824,11 +1824,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 3200,
                     prettified_stats: &[StatName::Armor(45),StatName::Health(350),StatName::MagicResist(45)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::JakShoTheProtean, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1837,11 +1837,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 500,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::JuiceofHaste, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1850,11 +1850,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 500,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::JuiceofPower, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1863,11 +1863,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 500,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::JuiceofVitality, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1876,11 +1876,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2900,
                     prettified_stats: &[StatName::MagicResist(80),StatName::Health(400),StatName::BaseHealthRegen(100)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::KaenicRookern, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1889,11 +1889,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 800,
                     prettified_stats: &[StatName::Health(200),StatName::AbilityHaste(10)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Kindlegem, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1902,11 +1902,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[StatName::AdaptiveForce(70),StatName::Health(400),StatName::AbilityHaste(30)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::KinkouJitte, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1915,11 +1915,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2300,
                     prettified_stats: &[StatName::Health(200),StatName::BaseHealthRegen(100),StatName::AbilityHaste(10),StatName::Armor(40)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::KnightsVow, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1928,11 +1928,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 3000,
                     prettified_stats: &[StatName::AttackDamage(45),StatName::AttackSpeed(40),StatName::MoveSpeed(4)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::KrakenSlayer, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1941,11 +1941,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::LaneSwapDetector, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1954,11 +1954,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 1450,
                     prettified_stats: &[StatName::AttackDamage(20),StatName::ArmorPenetration(18)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::LastWhisper, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1967,11 +1967,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2000,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::LegendaryAssassinItem, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1980,11 +1980,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2000,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::LegendaryFighterItem, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -1993,11 +1993,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2000,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::LegendaryMageItem, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2006,11 +2006,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2000,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::LegendaryMarksmanItem, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2019,11 +2019,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2000,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::LegendarySupportItem, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2032,11 +2032,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2000,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::LegendaryTankItem, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2045,11 +2045,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 3000,
                     prettified_stats: &[StatName::AbilityPower(60),StatName::Health(300)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::LiandrysTorment, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2058,11 +2058,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2900,
                     prettified_stats: &[StatName::AbilityHaste(10),StatName::AbilityPower(100),StatName::MoveSpeed(4)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::LichBane, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2071,11 +2071,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 1600,
                     prettified_stats: &[StatName::AttackDamage(25),StatName::MoveSpeed(4),StatName::Lethality(5)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Lifeline, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2084,11 +2084,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[StatName::MagicResist(30),StatName::Armor(30),StatName::MoveSpeed(8),StatName::Health(500)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::LightningRod, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2097,11 +2097,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2200,
                     prettified_stats: &[StatName::Armor(25),StatName::AbilityHaste(10),StatName::Health(200),StatName::MagicResist(25)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::LocketoftheIronSolari, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2110,11 +2110,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 350,
                     prettified_stats: &[StatName::AttackDamage(10)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::LongSword, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2123,11 +2123,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 3100,
                     prettified_stats: &[StatName::AttackDamage(35),StatName::ArmorPenetration(40),StatName::CriticalStrikeChance(25)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::LordDominiksRegards, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2136,11 +2136,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 1200,
                     prettified_stats: &[StatName::AbilityHaste(10),StatName::AbilityPower(40),StatName::Mana(300)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::LostChapter, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2149,11 +2149,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::LuckyDice, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2162,11 +2162,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2750,
                     prettified_stats: &[StatName::AbilityPower(100),StatName::Mana(600),StatName::AbilityHaste(10)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::LudensCompanion, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2175,11 +2175,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2700,
                     prettified_stats: &[StatName::AbilityPower(90),StatName::Mana(600),StatName::AbilityHaste(15)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Malignance, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2188,11 +2188,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2900,
                     prettified_stats: &[StatName::AbilityHaste(15),StatName::AttackDamage(35),StatName::Mana(500)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Manamune, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2201,11 +2201,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 3100,
                     prettified_stats: &[StatName::AbilityHaste(15),StatName::AttackDamage(60),StatName::MagicResist(40)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::MawofMalmortius, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2214,11 +2214,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 1500,
                     prettified_stats: &[StatName::Health(100),StatName::AbilityPower(20)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::MejaisSoulstealer, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2227,11 +2227,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 3200,
                     prettified_stats: &[StatName::MagicResist(35),StatName::AttackDamage(50),StatName::LifeSteal(10)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::MercurialScimitar, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2240,11 +2240,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 1250,
                     prettified_stats: &[StatName::MagicResist(20),StatName::MoveSpeed(45),StatName::Tenacity(30)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::MercurysTreads, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2253,11 +2253,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2300,
                     prettified_stats: &[StatName::Health(250),StatName::BaseManaRegen(100),StatName::AbilityHaste(15),StatName::HealAndShieldPower(12)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::MikaelsBlessing, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2266,11 +2266,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[StatName::AttackSpeed(60),StatName::AdaptiveForce(65),StatName::MoveSpeed(6)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::MirageBlade, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2279,11 +2279,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[StatName::Health(400),StatName::Tenacity(30),StatName::AbilityPower(85)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::MoonflairSpellblade, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2292,11 +2292,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2200,
                     prettified_stats: &[StatName::Health(200),StatName::AbilityHaste(20),StatName::AbilityPower(25),StatName::BaseManaRegen(125)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::MoonstoneRenewer, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2305,11 +2305,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2850,
                     prettified_stats: &[StatName::AbilityHaste(15),StatName::AbilityPower(75),StatName::Health(350)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Morellonomicon, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2318,11 +2318,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 3300,
                     prettified_stats: &[StatName::AttackDamage(35),StatName::ArmorPenetration(35),StatName::CriticalStrikeChance(25)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::MortalReminder, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2331,11 +2331,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 450,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::MosstomperSeedling, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2344,11 +2344,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2900,
                     prettified_stats: &[StatName::AttackDamage(35),StatName::Mana(860),StatName::AbilityHaste(15)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Muramana, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2370,11 +2370,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2650,
                     prettified_stats: &[StatName::MoveSpeed(4),StatName::AttackSpeed(40),StatName::CriticalStrikeChance(25)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::NavoriFlickerblade, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2383,11 +2383,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 1200,
                     prettified_stats: &[StatName::AbilityPower(65)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::NeedlesslyLargeRod, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2396,11 +2396,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 850,
                     prettified_stats: &[StatName::MagicResist(45)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::NegatronCloak, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2409,11 +2409,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[StatName::AbilityPower(90),StatName::Health(300),StatName::AbilityHaste(25)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::NightHarvester, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2422,11 +2422,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 1300,
                     prettified_stats: &[StatName::AttackDamage(15),StatName::CriticalStrikeChance(20)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Noonquiver, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2435,11 +2435,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 400,
                     prettified_stats: &[StatName::MagicResist(20)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::NullMagicMantle, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2448,11 +2448,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 800,
                     prettified_stats: &[StatName::AbilityPower(25)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::OblivionOrb, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2461,11 +2461,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::OhmwreckerTurretItem, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2474,11 +2474,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2700,
                     prettified_stats: &[StatName::Lethality(18),StatName::AttackDamage(55)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Opportunity, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2487,11 +2487,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::OracleLens, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2500,11 +2500,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Overcharged, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2513,11 +2513,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 3300,
                     prettified_stats: &[StatName::Health(550),StatName::AttackDamage(30)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::OverlordsBloodmail, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2526,11 +2526,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2500,
                     prettified_stats: &[StatName::MoveSpeed(5),StatName::ArmorPenetration(22),StatName::AbilityPower(60),StatName::MagicPenetration(30)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Perplexity, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2539,11 +2539,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 1100,
                     prettified_stats: &[StatName::Health(200),StatName::AttackDamage(15)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Phage, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2552,11 +2552,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2650,
                     prettified_stats: &[StatName::MoveSpeed(10),StatName::AttackSpeed(65),StatName::CriticalStrikeChance(25)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::PhantomDancer, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2565,11 +2565,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::PhreakishGusto, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2578,11 +2578,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 875,
                     prettified_stats: &[StatName::AttackDamage(25)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Pickaxe, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2591,11 +2591,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 1200,
                     prettified_stats: &[StatName::Armor(25),StatName::MoveSpeed(45)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::PlatedSteelcaps, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2604,11 +2604,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::PoroSnax, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2617,11 +2617,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 4000,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::PrismaticItem, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2630,11 +2630,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 3200,
                     prettified_stats: &[StatName::AttackDamage(55),StatName::AbilityHaste(10),StatName::Lethality(18)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::ProfaneHydra, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2643,11 +2643,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[StatName::AbilityHaste(20),StatName::Lethality(20),StatName::AttackDamage(60)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::ProwlersClaw, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2656,11 +2656,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[StatName::BaseManaRegen(150),StatName::AttackSpeed(30),StatName::HealAndShieldPower(15),StatName::AbilityHaste(40)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Puppeteer, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2669,11 +2669,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[StatName::AdaptiveForce(85),StatName::Health(400),StatName::AbilityHaste(15)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::PyromancersCloak, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2682,11 +2682,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 1300,
                     prettified_stats: &[StatName::MagicResist(30)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::QuicksilverSash, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2695,11 +2695,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 3500,
                     prettified_stats: &[StatName::AbilityPower(130)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::RabadonsDeathcap, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2708,11 +2708,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[StatName::Armor(35),StatName::HealAndShieldPower(12),StatName::Health(400),StatName::MagicResist(35)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::RadiantVirtue, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2721,11 +2721,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::RaiseMorale, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2734,11 +2734,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2700,
                     prettified_stats: &[StatName::Health(350),StatName::Armor(75)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::RanduinsOmen, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2747,11 +2747,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2650,
                     prettified_stats: &[StatName::AttackSpeed(35),StatName::MoveSpeed(4),StatName::CriticalStrikeChance(25)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::RapidFirecannon, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2760,11 +2760,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 3300,
                     prettified_stats: &[StatName::AbilityHaste(15),StatName::AttackDamage(65),StatName::LifeSteal(12)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::RavenousHydra, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2773,11 +2773,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[StatName::Health(300),StatName::AttackSpeed(40),StatName::AbilityPower(80)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::RealityFracture, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2786,11 +2786,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[StatName::MoveSpeed(5),StatName::AdaptiveForce(40),StatName::AttackSpeed(50)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::ReapersToll, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2799,11 +2799,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 775,
                     prettified_stats: &[StatName::AttackDamage(15),StatName::MoveSpeed(4)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Rectrix, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2812,11 +2812,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 700,
                     prettified_stats: &[StatName::AttackSpeed(15)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::RecurveBow, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2825,11 +2825,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2300,
                     prettified_stats: &[StatName::Health(200),StatName::AbilityHaste(15),StatName::HealAndShieldPower(10),StatName::BaseManaRegen(100)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Redemption, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2838,11 +2838,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 150,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::RefillablePotion, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2851,11 +2851,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[StatName::MoveSpeed(8),StatName::AttackDamage(60),StatName::Lethality(15)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Regicide, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2864,11 +2864,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::ReinforcedArmorTurretItem, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2877,11 +2877,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 300,
                     prettified_stats: &[StatName::BaseHealthRegen(100)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::RejuvenationBead, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2890,11 +2890,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[StatName::MagicResist(35),StatName::Armor(35),StatName::AttackSpeed(40)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Reverberation, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2903,11 +2903,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 3100,
                     prettified_stats: &[StatName::AbilityPower(70),StatName::Health(350),StatName::AbilityHaste(15)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Riftmaker, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2916,11 +2916,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2500,
                     prettified_stats: &[StatName::AbilityPower(50),StatName::AbilityHaste(15),StatName::CriticalStrikeChance(25)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::RiteofRuin, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2929,11 +2929,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2600,
                     prettified_stats: &[StatName::Health(350),StatName::Mana(500),StatName::AbilityPower(45)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::RodofAges, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2942,11 +2942,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 400,
                     prettified_stats: &[StatName::Health(150)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::RubyCrystal, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2955,11 +2955,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2650,
                     prettified_stats: &[StatName::MoveSpeed(4),StatName::CriticalStrikeChance(25),StatName::AttackSpeed(40)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::RunaansHurricane, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2968,11 +2968,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[StatName::AbilityHaste(20),StatName::MoveSpeed(4),StatName::AbilityPower(80)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Runecarver, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2981,11 +2981,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 400,
                     prettified_stats: &[StatName::GoldPer10Seconds(5),StatName::Health(100),StatName::BaseHealthRegen(50),StatName::BaseManaRegen(50)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::RunicCompass, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -2994,11 +2994,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2600,
                     prettified_stats: &[StatName::Health(400),StatName::AbilityPower(65)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::RylaisCrystalScepter, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3007,11 +3007,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[StatName::AbilityPower(80),StatName::AbilityHaste(20),StatName::HealAndShieldPower(15)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::SanguineGift, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3020,11 +3020,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 300,
                     prettified_stats: &[StatName::Mana(300)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::SapphireCrystal, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3033,11 +3033,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::ScarecrowEffigy, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3046,11 +3046,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 450,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::ScorchclawPup, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3059,11 +3059,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 600,
                     prettified_stats: &[StatName::AttackSpeed(20)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::ScoutsSlingshot, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3072,11 +3072,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 1600,
                     prettified_stats: &[StatName::Armor(25),StatName::AbilityPower(40)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::SeekersArmguard, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3085,11 +3085,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2900,
                     prettified_stats: &[StatName::Mana(1000),StatName::AbilityHaste(25),StatName::AbilityPower(70)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::SeraphsEmbrace, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3098,11 +3098,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2500,
                     prettified_stats: &[StatName::Lethality(15),StatName::AttackDamage(55)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::SerpentsFang, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3111,11 +3111,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 1000,
                     prettified_stats: &[StatName::AttackDamage(20),StatName::Lethality(10)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::SerratedDirk, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3124,11 +3124,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 3000,
                     prettified_stats: &[StatName::ArmorPenetration(35),StatName::AttackDamage(45),StatName::AbilityHaste(15)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::SeryldasGrudge, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3137,11 +3137,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 3200,
                     prettified_stats: &[StatName::AbilityPower(110),StatName::MagicPenetration(15)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Shadowflame, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3150,11 +3150,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 1600,
                     prettified_stats: &[StatName::Armor(25),StatName::AbilityPower(40)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::ShatteredArmguard, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3163,11 +3163,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 900,
                     prettified_stats: &[StatName::AbilityHaste(10)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Sheen, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3176,11 +3176,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[StatName::Health(300),StatName::Armor(100)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::ShieldofMoltenStone, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3189,11 +3189,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2200,
                     prettified_stats: &[StatName::BaseManaRegen(125),StatName::AbilityPower(50),StatName::MoveSpeed(4),StatName::AbilityHaste(15)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::ShurelyasBattlesong, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3202,11 +3202,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[StatName::MoveSpeed(25)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::SlightlyMagicalBoots, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3215,11 +3215,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 400,
                     prettified_stats: &[StatName::Health(200),StatName::GoldPer10Seconds(5),StatName::BaseHealthRegen(75),StatName::BaseManaRegen(75)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::SolsticeSleigh, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3228,11 +3228,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 1100,
                     prettified_stats: &[StatName::MoveSpeed(45),StatName::MagicPenetration(12)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::SorcerersShoes, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3241,11 +3241,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 3100,
                     prettified_stats: &[StatName::AttackDamage(45),StatName::Health(450)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::SpearofShojin, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3254,11 +3254,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2800,
                     prettified_stats: &[StatName::AttackDamage(55),StatName::Lethality(21)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::SpectralCutlass, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3267,11 +3267,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 1250,
                     prettified_stats: &[StatName::MagicResist(35),StatName::Health(200),StatName::BaseHealthRegen(100)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::SpectresCowl, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3280,11 +3280,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 1600,
                     prettified_stats: &[StatName::MagicPenetration(7),StatName::MoveSpeed(50)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::SpellslingersShoes, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3293,11 +3293,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2700,
                     prettified_stats: &[StatName::Health(400),StatName::AbilityHaste(10),StatName::MagicResist(50),StatName::BaseHealthRegen(100)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::SpiritVisage, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3306,11 +3306,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2250,
                     prettified_stats: &[StatName::HealAndShieldPower(10),StatName::AbilityHaste(15),StatName::AbilityPower(35),StatName::BaseManaRegen(125)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::StaffofFlowingWater, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3319,11 +3319,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 750,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::StatBonus, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3332,11 +3332,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2700,
                     prettified_stats: &[StatName::AttackDamage(45),StatName::MoveSpeed(4),StatName::AttackSpeed(30)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::StatikkShiv, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3345,11 +3345,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::StealthWard, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3358,11 +3358,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 1100,
                     prettified_stats: &[StatName::AttackDamage(15),StatName::Armor(30)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::SteelSigil, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3371,11 +3371,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 3200,
                     prettified_stats: &[StatName::Tenacity(20),StatName::Health(400)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::SteraksGage, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3384,11 +3384,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2500,
                     prettified_stats: &[StatName::AttackDamage(45),StatName::AttackSpeed(25),StatName::CriticalStrikeChance(25)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Stormrazor, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3397,11 +3397,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2800,
                     prettified_stats: &[StatName::MoveSpeed(6),StatName::MagicPenetration(15),StatName::AbilityPower(90)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Stormsurge, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3410,11 +3410,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 3300,
                     prettified_stats: &[StatName::AttackDamage(40),StatName::AttackSpeed(25),StatName::Health(450)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Stridebreaker, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3423,11 +3423,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 3100,
                     prettified_stats: &[StatName::Health(400),StatName::AbilityHaste(10),StatName::AttackDamage(40)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::SunderedSky, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3436,11 +3436,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2700,
                     prettified_stats: &[StatName::Health(350),StatName::Armor(50),StatName::AbilityHaste(10)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::SunfireAegis, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3449,11 +3449,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::SuperMechArmor, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3462,11 +3462,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::SuperMechPowerField, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3475,11 +3475,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 1500,
                     prettified_stats: &[StatName::MoveSpeed(65)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Swiftmarch, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3488,11 +3488,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2500,
                     prettified_stats: &[StatName::Health(200),StatName::AbilityHaste(15),StatName::HealAndShieldPower(12),StatName::AbilityPower(45)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::SwordofBlossomingDawn, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3501,11 +3501,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[StatName::AdaptiveForce(110),StatName::CriticalStrikeChance(50)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::SwordoftheDivine, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3514,11 +3514,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 900,
                     prettified_stats: &[StatName::MoveSpeed(40)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::SymbioticSoles, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3527,11 +3527,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 900,
                     prettified_stats: &[StatName::MoveSpeed(45)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::SynchronizedSouls, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3540,11 +3540,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::TalismanofAscension, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3553,11 +3553,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 400,
                     prettified_stats: &[StatName::Mana(240)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::TearoftheGoddess, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3566,11 +3566,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 3000,
                     prettified_stats: &[StatName::AttackDamage(30),StatName::AttackSpeed(35)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Terminus, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3579,11 +3579,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 1337,
                     prettified_stats: &[StatName::AttackDamage(25),StatName::Lethality(5),StatName::AbilityHaste(10)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::TheBrutalizer, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3592,11 +3592,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 3000,
                     prettified_stats: &[StatName::AttackDamage(50),StatName::Lethality(10),StatName::CriticalStrikeChance(25)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::TheCollector, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3605,11 +3605,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[StatName::BaseHealthRegen(100),StatName::AttackDamage(90),StatName::AbilityPower(125),StatName::Health(250),StatName::MagicResist(30),StatName::CriticalStrikeChance(25),StatName::Armor(30),StatName::BaseManaRegen(100),StatName::MoveSpeed(10),StatName::AttackSpeed(60),StatName::AbilityHaste(20),StatName::LifeSteal(10),StatName::Mana(250)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::TheGoldenSpatula, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3618,11 +3618,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2450,
                     prettified_stats: &[StatName::Armor(75),StatName::Health(150)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Thornmail, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3631,11 +3631,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 1200,
                     prettified_stats: &[StatName::AttackDamage(20)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Tiamat, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3644,11 +3644,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 3300,
                     prettified_stats: &[StatName::AttackDamage(40),StatName::Health(600)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::TitanicHydra, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3657,11 +3657,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::TotalBiscuitofEverlastingWill, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3670,11 +3670,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2400,
                     prettified_stats: &[StatName::MoveSpeed(4),StatName::Armor(40),StatName::Health(250)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Trailblazer, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3683,11 +3683,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 3333,
                     prettified_stats: &[StatName::Health(333),StatName::AbilityHaste(15),StatName::AttackSpeed(30),StatName::AttackDamage(36)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::TrinityForce, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3696,11 +3696,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 1150,
                     prettified_stats: &[StatName::AttackDamage(15),StatName::Health(250)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Tunneler, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3709,11 +3709,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[StatName::Health(600),StatName::AdaptiveForce(80)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::TurboChemtank, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3722,11 +3722,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::TurretPlating, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3735,11 +3735,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[StatName::AbilityPower(100),StatName::AttackDamage(70)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::TwilightsEdge, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3748,11 +3748,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::TwinMask, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3761,11 +3761,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2500,
                     prettified_stats: &[StatName::Lethality(15),StatName::AttackDamage(55),StatName::AbilityHaste(10)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::UmbralGlaive, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3774,11 +3774,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2800,
                     prettified_stats: &[StatName::Armor(25),StatName::MagicResist(25),StatName::AbilityHaste(10),StatName::Health(400)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::UnendingDespair, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3787,11 +3787,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 900,
                     prettified_stats: &[StatName::AttackDamage(15),StatName::LifeSteal(7)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::VampiricScepter, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3800,11 +3800,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 1600,
                     prettified_stats: &[StatName::AbilityPower(40),StatName::MagicResist(25)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::VerdantBarrier, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3813,11 +3813,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2300,
                     prettified_stats: &[StatName::Health(250),StatName::Armor(25),StatName::MagicResist(30),StatName::AbilityHaste(20)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::VigilantWardstone, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3826,11 +3826,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 3000,
                     prettified_stats: &[StatName::MagicPenetration(40),StatName::AbilityPower(95)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::VoidStaff, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3839,11 +3839,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 3000,
                     prettified_stats: &[StatName::AttackDamage(55),StatName::AbilityHaste(10),StatName::Lethality(18)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::VoltaicCyclosword, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3852,11 +3852,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::WardensEye, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3865,11 +3865,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 1000,
                     prettified_stats: &[StatName::Armor(40)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::WardensMail, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3878,11 +3878,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 3100,
                     prettified_stats: &[StatName::Health(1000),StatName::BaseHealthRegen(100)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::WarmogsArmor, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3891,11 +3891,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 1100,
                     prettified_stats: &[StatName::Health(150),StatName::AbilityHaste(10),StatName::Armor(10),StatName::MagicResist(15)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::WatchfulWardstone, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3904,11 +3904,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 800,
                     prettified_stats: &[StatName::MoveSpeed(4),StatName::Health(200)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::WingedMoonplate, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3917,11 +3917,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2400,
                     prettified_stats: &[StatName::AbilityHaste(15),StatName::Health(550),StatName::Mana(500)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::WintersApproach, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3930,11 +3930,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2800,
                     prettified_stats: &[StatName::AttackSpeed(50),StatName::Tenacity(20),StatName::MagicResist(45)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::WitsEnd, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3943,11 +3943,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[StatName::AbilityPower(300),StatName::Armor(50),StatName::AbilityHaste(20)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::WoogletsWitchcap, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3956,11 +3956,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2500,
                     prettified_stats: &[StatName::AbilityPower(50),StatName::HealAndShieldPower(25),StatName::AbilityHaste(25)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::WordlessPromise, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3969,11 +3969,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 400,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::WorldAtlas, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3982,11 +3982,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2800,
                     prettified_stats: &[StatName::Lethality(18),StatName::MoveSpeed(4),StatName::AttackDamage(55)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::YoumuusGhostblade, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -3995,11 +3995,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 0,
                     prettified_stats: &[],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::YourCut, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -4008,11 +4008,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 3000,
                     prettified_stats: &[StatName::CriticalStrikeChance(0),StatName::AttackDamage(55),StatName::AttackSpeed(35)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::YunTalWildarrows, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -4021,11 +4021,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 400,
                     prettified_stats: &[StatName::BaseHealthRegen(75),StatName::GoldPer10Seconds(5),StatName::Health(200),StatName::BaseManaRegen(75)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::ZazZaksRealmspike, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -4034,11 +4034,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 1200,
                     prettified_stats: &[StatName::AttackSpeed(15),StatName::MoveSpeed(4),StatName::CriticalStrikeChance(15)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Zeal, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -4047,11 +4047,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2200,
                     prettified_stats: &[StatName::Health(300),StatName::MagicResist(25),StatName::Armor(25),StatName::AbilityHaste(10)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::ZekesConvergence, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -4060,11 +4060,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 2500,
                     prettified_stats: &[StatName::AttackSpeed(40),StatName::MoveSpeed(50)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::Zephyr, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],
@@ -4073,11 +4073,11 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     gold: 3250,
                     prettified_stats: &[StatName::Armor(50),StatName::AbilityPower(105)],
                     damage_type: DamageType::Unknown,
-                    attributes: Attrs::None,
+                    attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
             kind: ItemId::ZhonyasHourglass, 
             damage_type: DamageType::Unknown, 
-            attributes: Attrs::None 
+            attributes: Attrs::Undefined 
         },
                     range_closure: &[],
                     melee_closure: &[],

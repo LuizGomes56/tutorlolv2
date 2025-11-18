@@ -30,7 +30,7 @@ pub trait RegExtractor {
     fn process_linear_scalings(
         bounds: (f64, f64),
         size: usize,
-        postfix: Option<EvalIdent>,
+        postfix: Option<String>,
     ) -> Vec<String>;
 }
 
@@ -53,7 +53,7 @@ impl RegExtractor for str {
         Ok(Regex::new(&format!(r"^(?:.*?(\d+)%){{{}}}", number + 1))?
             .captures(self)
             .and_then(|cap| cap.get(1).map(|m| m.as_str()))
-            .ok_or(format!("No percent value in #{} for '{}'", number, self))?
+            .ok_or(format!("No percent value in #{number} for '{self}'"))?
             .parse::<f64>()
             .map_err(|e| format!("Unable to convert all numbers to f64: {e:?}"))?)
     }
@@ -214,14 +214,14 @@ impl RegExtractor for str {
     fn process_linear_scalings(
         bounds: (f64, f64),
         size: usize,
-        postfix: Option<EvalIdent>,
+        postfix: Option<String>,
     ) -> Vec<String> {
         let mut result = Vec::<String>::new();
         let (start, end) = bounds;
         for i in 0..size {
             let value = start + (((end - start) * (i as f64)) / (size as f64 - 1.0));
-            if let Some(postfix) = postfix {
-                result.push(format!("({value} + {postfix})"));
+            if let Some(ref postfix) = postfix {
+                result.push(format!("({value}{postfix})"));
                 continue;
             }
             result.push(value.to_string());

@@ -151,7 +151,7 @@ pub fn setup_internal_items() -> MayFail {
             name: meraki_item.name,
             price: meraki_item.shop.prices.total,
             damage_type: DamageType::Unknown,
-            attributes: Attrs::None,
+            attributes: Attrs::Undefined,
             stats: meraki_item.stats,
             tier: meraki_item.tier,
             ranged: Default::default(),

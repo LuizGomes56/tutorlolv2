@@ -1,43 +1,7 @@
-use crate::{ItemId, RuneId, eval::EvalContext};
-use bincode::{Decode, Encode};
+use crate::{Attrs, DamageType, ItemId, RuneId, eval::EvalContext};
+use bincode::Encode;
 use serde::{Deserialize, Serialize};
 use tutorlolv2_types::*;
-
-#[derive(Default, Copy, Serialize, Deserialize, Clone, Encode, Decode, PartialEq)]
-pub enum DamageType {
-    Physical,
-    Magic,
-    Mixed,
-    True,
-    Adaptative,
-    #[default]
-    Unknown,
-}
-
-impl<T: AsRef<str>> From<T> for DamageType {
-    fn from(s: T) -> Self {
-        match s.as_ref() {
-            "PHYSICAL_DAMAGE" => DamageType::Physical,
-            "MAGIC_DAMAGE" => DamageType::Magic,
-            "MIXED_DAMAGE" => DamageType::Mixed,
-            "TRUE_DAMAGE" => DamageType::True,
-            "ADAPTATIVE_DAMAGE" => DamageType::Adaptative,
-            _ => DamageType::Unknown,
-        }
-    }
-}
-
-#[derive(Copy, Clone, Encode, Serialize, Deserialize)]
-pub enum Attrs {
-    None,
-    Onhit,
-    OnhitMin,
-    OnhitMax,
-    Area,
-    AreaOnhit,
-    AreaOnhitMin,
-    AreaOnhitMax,
-}
 
 #[derive(Copy, Clone, Serialize, Deserialize, PartialEq)]
 pub enum AttackType {
