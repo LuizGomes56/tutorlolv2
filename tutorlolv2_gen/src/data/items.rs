@@ -2,7 +2,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
         pub enum ItemId {AbyssalMask,AegisoftheLegion,AetherWisp,AmplifyingTome,AnathemasChains,AntiTowerSocks,ArcaneSweeperTrinket,ArchangelsStaff,ArdentCenser,ArmoredAdvance,AtmasReckoning,AxiomArc,BFSword,BamisCinder,BandleglassMirror,BansheesVeil,BaseTurretReinforcedArmorTurretItem,BerserkersGreaves,BlackCleaver,BlackHoleGauntlet,BlackSpear,BlackfireTorch,BladeoftheRuinedKing,BlastingWand,BlightingJewel,BloodlettersCurse,Bloodsong,Bloodthirster,Boots,BootsofSwiftness,BountyofWorlds,BrambleVest,CappaJuice,CatalystofAeons,CaulfieldsWarhammer,CelestialOpposition,ChainVest,ChainlacedCrushers,ChempunkChainsword,CloakofAgility,CloakofStarryNight,ClothArmor,ControlWard,CosmicDrive,CrimsonLucidity,CrownoftheShatteredQueen,Cruelty,Cryptbloom,CrystallineBracer,Cull,Dagger,DarkSeal,DarksteelTalons,Dawncore,DeadMansPlate,DeathsDance,DeathsDaughter,Decapitator,DemonKingsCrown,DemonicEmbrace,DetonationOrb,DiamondTippedSpear,DivineSunderer,DoransBlade,DoransRing,DoransShield,Dragonheart,DreamMaker,DuskbladeofDraktharr,EchoesofHelia,Eclipse,EdgeofNight,EleisasMiracle,ElixirofAvarice,ElixirofForce,ElixirofIron,ElixirofSkill,ElixirofSorcery,ElixirofWrath,EmpyreanPromise,EnhancedLuckyDice,EssenceReaver,Everfrost,ExecutionersCalling,ExperimentalHexplate,EyeoftheHerald,FaerieCharm,FarsightAlteration,FatedAshes,FiendishCodex,Fimbulwinter,FireatWill,Flesheater,ForbiddenIdol,ForceofEntropy,ForceofNature,ForeverForward,FrozenHeart,Fulmination,Galeforce,GamblersBlade,GargoyleStoneplate,Ghostcrawlers,GiantsBelt,GlacialBuckler,GlowingMote,Goredrinker,GuardianAngel,GuardiansAmulet,GuardiansBlade,GuardiansDirk,GuardiansHammer,GuardiansHorn,GuardiansOrb,GuardiansShroud,GuinsoosRageblade,Gusto,GustwalkerHatchling,Hamstringer,HauntingGuise,HealthPotion,HearthboundAxe,Heartsteel,HellfireHatchet,HemomancersHelm,HexboltCompanion,Hexdrinker,HextechAlternator,HextechGunblade,HextechRocketbelt,HollowRadiance,HorizonFocus,Hubris,Hullbreaker,IcebornGauntlet,ImmortalShieldbow,ImperialMandate,InfinityEdge,InnervatingLocket,IonianBootsofLucidity,JakShoTheProtean,JuiceofHaste,JuiceofPower,JuiceofVitality,KaenicRookern,Kindlegem,KinkouJitte,KnightsVow,KrakenSlayer,LaneSwapDetector,LastWhisper,LegendaryAssassinItem,LegendaryFighterItem,LegendaryMageItem,LegendaryMarksmanItem,LegendarySupportItem,LegendaryTankItem,LiandrysTorment,LichBane,Lifeline,LightningRod,LocketoftheIronSolari,LongSword,LordDominiksRegards,LostChapter,LuckyDice,LudensCompanion,Malignance,Manamune,MawofMalmortius,MejaisSoulstealer,MercurialScimitar,MercurysTreads,MikaelsBlessing,MirageBlade,MoonflairSpellblade,MoonstoneRenewer,Morellonomicon,MortalReminder,MosstomperSeedling,Muramana,NashorsTooth,NavoriFlickerblade,NeedlesslyLargeRod,NegatronCloak,NightHarvester,Noonquiver,NullMagicMantle,OblivionOrb,OhmwreckerTurretItem,Opportunity,OracleLens,Overcharged,OverlordsBloodmail,Perplexity,Phage,PhantomDancer,PhreakishGusto,Pickaxe,PlatedSteelcaps,PoroSnax,PrismaticItem,ProfaneHydra,ProwlersClaw,Puppeteer,PyromancersCloak,QuicksilverSash,RabadonsDeathcap,RadiantVirtue,RaiseMorale,RanduinsOmen,RapidFirecannon,RavenousHydra,RealityFracture,ReapersToll,Rectrix,RecurveBow,Redemption,RefillablePotion,Regicide,ReinforcedArmorTurretItem,RejuvenationBead,Reverberation,Riftmaker,RiteofRuin,RodofAges,RubyCrystal,RunaansHurricane,Runecarver,RunicCompass,RylaisCrystalScepter,SanguineGift,SapphireCrystal,ScarecrowEffigy,ScorchclawPup,ScoutsSlingshot,SeekersArmguard,SeraphsEmbrace,SerpentsFang,SerratedDirk,SeryldasGrudge,Shadowflame,ShatteredArmguard,Sheen,ShieldofMoltenStone,ShurelyasBattlesong,SlightlyMagicalBoots,SolsticeSleigh,SorcerersShoes,SpearofShojin,SpectralCutlass,SpectresCowl,SpellslingersShoes,SpiritVisage,StaffofFlowingWater,StatBonus,StatikkShiv,StealthWard,SteelSigil,SteraksGage,Stormrazor,Stormsurge,Stridebreaker,SunderedSky,SunfireAegis,SuperMechArmor,SuperMechPowerField,Swiftmarch,SwordofBlossomingDawn,SwordoftheDivine,SymbioticSoles,SynchronizedSouls,TalismanofAscension,TearoftheGoddess,Terminus,TheBrutalizer,TheCollector,TheGoldenSpatula,Thornmail,Tiamat,TitanicHydra,TotalBiscuitofEverlastingWill,Trailblazer,TrinityForce,Tunneler,TurboChemtank,TurretPlating,TwilightsEdge,TwinMask,UmbralGlaive,UnendingDespair,VampiricScepter,VerdantBarrier,VigilantWardstone,VoidStaff,VoltaicCyclosword,WardensEye,WardensMail,WarmogsArmor,WatchfulWardstone,WingedMoonplate,WintersApproach,WitsEnd,WoogletsWitchcap,WordlessPromise,WorldAtlas,YoumuusGhostblade,YourCut,YunTalWildarrows,ZazZaksRealmspike,Zeal,ZekesConvergence,Zephyr,ZhonyasHourglass}impl ItemId {pub const fn to_riot_id(&self)->u32{ITEM_ID_TO_RIOT_ID[*self as usize]}
         pub const fn from_riot_id(id:u32)->Self{match id {8020=>Self::AbyssalMask,3105=>Self::AegisoftheLegion,3113=>Self::AetherWisp,1052=>Self::AmplifyingTome,228001=>Self::AnathemasChains,1508=>Self::AntiTowerSocks,3348=>Self::ArcaneSweeperTrinket,3003=>Self::ArchangelsStaff,3504=>Self::ArdentCenser,3174=>Self::ArmoredAdvance,223039=>Self::AtmasReckoning,6696=>Self::AxiomArc,1038=>Self::BFSword,6660=>Self::BamisCinder,4642=>Self::BandleglassMirror,3102=>Self::BansheesVeil,1506=>Self::BaseTurretReinforcedArmorTurretItem,3006=>Self::BerserkersGreaves,3071=>Self::BlackCleaver,447122=>Self::BlackHoleGauntlet,3599=>Self::BlackSpear,2503=>Self::BlackfireTorch,3153=>Self::BladeoftheRuinedKing,1026=>Self::BlastingWand,4630=>Self::BlightingJewel,8010=>Self::BloodlettersCurse,3877=>Self::Bloodsong,3072=>Self::Bloodthirster,1001=>Self::Boots,3009=>Self::BootsofSwiftness,3867=>Self::BountyofWorlds,3076=>Self::BrambleVest,2141=>Self::CappaJuice,3803=>Self::CatalystofAeons,3133=>Self::CaulfieldsWarhammer,3869=>Self::CelestialOpposition,1031=>Self::ChainVest,3173=>Self::ChainlacedCrushers,6609=>Self::ChempunkChainsword,1018=>Self::CloakofAgility,443059=>Self::CloakofStarryNight,1029=>Self::ClothArmor,2055=>Self::ControlWard,4629=>Self::CosmicDrive,3171=>Self::CrimsonLucidity,444644=>Self::CrownoftheShatteredQueen,447109=>Self::Cruelty,3137=>Self::Cryptbloom,3801=>Self::CrystallineBracer,1083=>Self::Cull,1042=>Self::Dagger,1082=>Self::DarkSeal,443054=>Self::DarksteelTalons,6621=>Self::Dawncore,3742=>Self::DeadMansPlate,6333=>Self::DeathsDance,3902=>Self::DeathsDaughter,447107=>Self::Decapitator,443056=>Self::DemonKingsCrown,444637=>Self::DemonicEmbrace,447113=>Self::DetonationOrb,447120=>Self::DiamondTippedSpear,446632=>Self::DivineSunderer,1055=>Self::DoransBlade,1056=>Self::DoransRing,1054=>Self::DoransShield,447106=>Self::Dragonheart,3870=>Self::DreamMaker,446691=>Self::DuskbladeofDraktharr,6620=>Self::EchoesofHelia,6692=>Self::Eclipse,3814=>Self::EdgeofNight,443063=>Self::EleisasMiracle,2151=>Self::ElixirofAvarice,2152=>Self::ElixirofForce,2138=>Self::ElixirofIron,2150=>Self::ElixirofSkill,2139=>Self::ElixirofSorcery,2140=>Self::ElixirofWrath,447105=>Self::EmpyreanPromise,2146=>Self::EnhancedLuckyDice,3508=>Self::EssenceReaver,446656=>Self::Everfrost,3123=>Self::ExecutionersCalling,3073=>Self::ExperimentalHexplate,3513=>Self::EyeoftheHerald,1004=>Self::FaerieCharm,3363=>Self::FarsightAlteration,2508=>Self::FatedAshes,3108=>Self::FiendishCodex,3121=>Self::Fimbulwinter,3901=>Self::FireatWill,447112=>Self::Flesheater,3114=>Self::ForbiddenIdol,443061=>Self::ForceofEntropy,4401=>Self::ForceofNature,3176=>Self::ForeverForward,3110=>Self::FrozenHeart,443055=>Self::Fulmination,446671=>Self::Galeforce,447101=>Self::GamblersBlade,443193=>Self::GargoyleStoneplate,223005=>Self::Ghostcrawlers,1011=>Self::GiantsBelt,3024=>Self::GlacialBuckler,2022=>Self::GlowingMote,226630=>Self::Goredrinker,3026=>Self::GuardianAngel,2049=>Self::GuardiansAmulet,3177=>Self::GuardiansBlade,223185=>Self::GuardiansDirk,3184=>Self::GuardiansHammer,2051=>Self::GuardiansHorn,3112=>Self::GuardiansOrb,2050=>Self::GuardiansShroud,3124=>Self::GuinsoosRageblade,1509=>Self::Gusto,1102=>Self::GustwalkerHatchling,443069=>Self::Hamstringer,3147=>Self::HauntingGuise,2003=>Self::HealthPotion,3051=>Self::HearthboundAxe,3084=>Self::Heartsteel,4017=>Self::HellfireHatchet,447103=>Self::HemomancersHelm,443081=>Self::HexboltCompanion,3155=>Self::Hexdrinker,3145=>Self::HextechAlternator,223146=>Self::HextechGunblade,3152=>Self::HextechRocketbelt,6664=>Self::HollowRadiance,4628=>Self::HorizonFocus,6697=>Self::Hubris,3181=>Self::Hullbreaker,6662=>Self::IcebornGauntlet,6673=>Self::ImmortalShieldbow,4005=>Self::ImperialMandate,3031=>Self::InfinityEdge,447104=>Self::InnervatingLocket,3158=>Self::IonianBootsofLucidity,6665=>Self::JakShoTheProtean,2144=>Self::JuiceofHaste,2142=>Self::JuiceofPower,2143=>Self::JuiceofVitality,2504=>Self::KaenicRookern,3067=>Self::Kindlegem,447116=>Self::KinkouJitte,3109=>Self::KnightsVow,6672=>Self::KrakenSlayer,1501=>Self::LaneSwapDetector,3035=>Self::LastWhisper,220003=>Self::LegendaryAssassinItem,220001=>Self::LegendaryFighterItem,220004=>Self::LegendaryMageItem,220002=>Self::LegendaryMarksmanItem,220006=>Self::LegendarySupportItem,220005=>Self::LegendaryTankItem,6653=>Self::LiandrysTorment,3100=>Self::LichBane,4003=>Self::Lifeline,447119=>Self::LightningRod,3190=>Self::LocketoftheIronSolari,1036=>Self::LongSword,3036=>Self::LordDominiksRegards,3802=>Self::LostChapter,2145=>Self::LuckyDice,6655=>Self::LudensCompanion,3118=>Self::Malignance,3004=>Self::Manamune,3156=>Self::MawofMalmortius,3041=>Self::MejaisSoulstealer,3139=>Self::MercurialScimitar,3111=>Self::MercurysTreads,3222=>Self::MikaelsBlessing,447100=>Self::MirageBlade,447110=>Self::MoonflairSpellblade,6617=>Self::MoonstoneRenewer,3165=>Self::Morellonomicon,3033=>Self::MortalReminder,1103=>Self::MosstomperSeedling,3042=>Self::Muramana,3115=>Self::NashorsTooth,6675=>Self::NavoriFlickerblade,1058=>Self::NeedlesslyLargeRod,1057=>Self::NegatronCloak,444636=>Self::NightHarvester,6670=>Self::Noonquiver,1033=>Self::NullMagicMantle,3916=>Self::OblivionOrb,1500=>Self::OhmwreckerTurretItem,6701=>Self::Opportunity,3364=>Self::OracleLens,1507=>Self::Overcharged,2501=>Self::OverlordsBloodmail,4015=>Self::Perplexity,3044=>Self::Phage,3046=>Self::PhantomDancer,1510=>Self::PhreakishGusto,1037=>Self::Pickaxe,3047=>Self::PlatedSteelcaps,2052=>Self::PoroSnax,220007=>Self::PrismaticItem,6698=>Self::ProfaneHydra,446693=>Self::ProwlersClaw,447123=>Self::Puppeteer,447118=>Self::PyromancersCloak,3140=>Self::QuicksilverSash,3089=>Self::RabadonsDeathcap,446667=>Self::RadiantVirtue,3903=>Self::RaiseMorale,3143=>Self::RanduinsOmen,3094=>Self::RapidFirecannon,3074=>Self::RavenousHydra,447102=>Self::RealityFracture,443090=>Self::ReapersToll,6690=>Self::Rectrix,1043=>Self::RecurveBow,3107=>Self::Redemption,2031=>Self::RefillablePotion,447115=>Self::Regicide,1502=>Self::ReinforcedArmorTurretItem,1006=>Self::RejuvenationBead,447114=>Self::Reverberation,4633=>Self::Riftmaker,3430=>Self::RiteofRuin,6657=>Self::RodofAges,1028=>Self::RubyCrystal,3085=>Self::RunaansHurricane,447108=>Self::Runecarver,3866=>Self::RunicCompass,3116=>Self::RylaisCrystalScepter,443062=>Self::SanguineGift,1027=>Self::SapphireCrystal,3330=>Self::ScarecrowEffigy,1101=>Self::ScorchclawPup,3144=>Self::ScoutsSlingshot,2420=>Self::SeekersArmguard,3040=>Self::SeraphsEmbrace,6695=>Self::SerpentsFang,3134=>Self::SerratedDirk,6694=>Self::SeryldasGrudge,4645=>Self::Shadowflame,2421=>Self::ShatteredArmguard,3057=>Self::Sheen,443058=>Self::ShieldofMoltenStone,2065=>Self::ShurelyasBattlesong,2422=>Self::SlightlyMagicalBoots,3876=>Self::SolsticeSleigh,3020=>Self::SorcerersShoes,3161=>Self::SpearofShojin,224004=>Self::SpectralCutlass,3211=>Self::SpectresCowl,3175=>Self::SpellslingersShoes,3065=>Self::SpiritVisage,6616=>Self::StaffofFlowingWater,220000=>Self::StatBonus,3087=>Self::StatikkShiv,3340=>Self::StealthWard,2019=>Self::SteelSigil,3053=>Self::SteraksGage,223095=>Self::Stormrazor,4646=>Self::Stormsurge,6631=>Self::Stridebreaker,6610=>Self::SunderedSky,3068=>Self::SunfireAegis,1511=>Self::SuperMechArmor,1512=>Self::SuperMechPowerField,3170=>Self::Swiftmarch,4011=>Self::SwordofBlossomingDawn,443060=>Self::SwordoftheDivine,3010=>Self::SymbioticSoles,3013=>Self::SynchronizedSouls,443064=>Self::TalismanofAscension,3070=>Self::TearoftheGoddess,3302=>Self::Terminus,2020=>Self::TheBrutalizer,6676=>Self::TheCollector,224403=>Self::TheGoldenSpatula,3075=>Self::Thornmail,3077=>Self::Tiamat,3748=>Self::TitanicHydra,2010=>Self::TotalBiscuitofEverlastingWill,3002=>Self::Trailblazer,3078=>Self::TrinityForce,2021=>Self::Tunneler,443079=>Self::TurboChemtank,1515=>Self::TurretPlating,447121=>Self::TwilightsEdge,443080=>Self::TwinMask,3179=>Self::UmbralGlaive,2502=>Self::UnendingDespair,1053=>Self::VampiricScepter,4632=>Self::VerdantBarrier,4643=>Self::VigilantWardstone,3135=>Self::VoidStaff,6699=>Self::VoltaicCyclosword,1503=>Self::WardensEye,3082=>Self::WardensMail,3083=>Self::WarmogsArmor,4638=>Self::WatchfulWardstone,3066=>Self::WingedMoonplate,3119=>Self::WintersApproach,3091=>Self::WitsEnd,228002=>Self::WoogletsWitchcap,4016=>Self::WordlessPromise,3865=>Self::WorldAtlas,3142=>Self::YoumuusGhostblade,3400=>Self::YourCut,3032=>Self::YunTalWildarrows,3871=>Self::ZazZaksRealmspike,3086=>Self::Zeal,3050=>Self::ZekesConvergence,3172=>Self::Zephyr,3157=>Self::ZhonyasHourglass,_=>Self::YourCut}}}pub static ITEM_ID_TO_RIOT_ID:[u32;314]=[8020,3105,3113,1052,228001,1508,3348,3003,3504,3174,223039,6696,1038,6660,4642,3102,1506,3006,3071,447122,3599,2503,3153,1026,4630,8010,3877,3072,1001,3009,3867,3076,2141,3803,3133,3869,1031,3173,6609,1018,443059,1029,2055,4629,3171,444644,447109,3137,3801,1083,1042,1082,443054,6621,3742,6333,3902,447107,443056,444637,447113,447120,446632,1055,1056,1054,447106,3870,446691,6620,6692,3814,443063,2151,2152,2138,2150,2139,2140,447105,2146,3508,446656,3123,3073,3513,1004,3363,2508,3108,3121,3901,447112,3114,443061,4401,3176,3110,443055,446671,447101,443193,223005,1011,3024,2022,226630,3026,2049,3177,223185,3184,2051,3112,2050,3124,1509,1102,443069,3147,2003,3051,3084,4017,447103,443081,3155,3145,223146,3152,6664,4628,6697,3181,6662,6673,4005,3031,447104,3158,6665,2144,2142,2143,2504,3067,447116,3109,6672,1501,3035,220003,220001,220004,220002,220006,220005,6653,3100,4003,447119,3190,1036,3036,3802,2145,6655,3118,3004,3156,3041,3139,3111,3222,447100,447110,6617,3165,3033,1103,3042,3115,6675,1058,1057,444636,6670,1033,3916,1500,6701,3364,1507,2501,4015,3044,3046,1510,1037,3047,2052,220007,6698,446693,447123,447118,3140,3089,446667,3903,3143,3094,3074,447102,443090,6690,1043,3107,2031,447115,1502,1006,447114,4633,3430,6657,1028,3085,447108,3866,3116,443062,1027,3330,1101,3144,2420,3040,6695,3134,6694,4645,2421,3057,443058,2065,2422,3876,3020,3161,224004,3211,3175,3065,6616,220000,3087,3340,2019,3053,223095,4646,6631,6610,3068,1511,1512,3170,4011,443060,3010,3013,443064,3070,3302,2020,6676,224403,3075,3077,3748,2010,3002,3078,2021,443079,1515,447121,443080,3179,2502,1053,4632,4643,3135,6699,1503,3082,3083,4638,3066,3119,3091,228002,4016,3865,3142,3400,3032,3871,3086,3050,3172,3157];pub static ABYSSAL_MASK_8020: CachedItem = CachedItem {
                     gold: 2650,
-                    prettified_stats: &[StatName::Health(350),StatName::AbilityHaste(15),StatName::MagicResist(45)],
+                    prettified_stats: &[StatName::Health(350),StatName::MagicResist(45),StatName::AbilityHaste(15)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -15,7 +15,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:350f32,lifesteal:0f32,magic_resist:45f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static AEGIS_OF_THE_LEGION_3105: CachedItem = CachedItem {
                     gold: 1100,
-                    prettified_stats: &[StatName::AbilityHaste(10),StatName::MagicResist(25),StatName::Armor(25)],
+                    prettified_stats: &[StatName::Armor(25),StatName::MagicResist(25),StatName::AbilityHaste(10)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -28,7 +28,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:25f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:25f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static AETHER_WISP_3113: CachedItem = CachedItem {
                     gold: 900,
-                    prettified_stats: &[StatName::MoveSpeed(4),StatName::AbilityPower(30)],
+                    prettified_stats: &[StatName::AbilityPower(30),StatName::MoveSpeed(4)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -93,7 +93,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static ARCHANGELS_STAFF_3003: CachedItem = CachedItem {
                     gold: 2900,
-                    prettified_stats: &[StatName::AbilityPower(70),StatName::Mana(600),StatName::AbilityHaste(25)],
+                    prettified_stats: &[StatName::Mana(600),StatName::AbilityPower(70),StatName::AbilityHaste(25)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -106,7 +106,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:70f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:600f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static ARDENT_CENSER_3504: CachedItem = CachedItem {
                     gold: 2200,
-                    prettified_stats: &[StatName::AbilityPower(45),StatName::HealAndShieldPower(10),StatName::BaseManaRegen(125),StatName::MoveSpeed(4)],
+                    prettified_stats: &[StatName::HealAndShieldPower(10),StatName::MoveSpeed(4),StatName::BaseManaRegen(125),StatName::AbilityPower(45)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -119,7 +119,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:45f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static ARMORED_ADVANCE_3174: CachedItem = CachedItem {
                     gold: 1700,
-                    prettified_stats: &[StatName::MoveSpeed(50),StatName::Armor(40)],
+                    prettified_stats: &[StatName::Armor(40),StatName::MoveSpeed(50)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -145,7 +145,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:700f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static AXIOM_ARC_6696: CachedItem = CachedItem {
                     gold: 3000,
-                    prettified_stats: &[StatName::AbilityHaste(20),StatName::AttackDamage(55),StatName::Lethality(18)],
+                    prettified_stats: &[StatName::Lethality(18),StatName::AttackDamage(55),StatName::AbilityHaste(20)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -184,7 +184,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:150f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static BANDLEGLASS_MIRROR_4642: CachedItem = CachedItem {
                     gold: 900,
-                    prettified_stats: &[StatName::AbilityHaste(10),StatName::BaseManaRegen(100),StatName::AbilityPower(20)],
+                    prettified_stats: &[StatName::BaseManaRegen(100),StatName::AbilityHaste(10),StatName::AbilityPower(20)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -197,7 +197,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:20f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static BANSHEES_VEIL_3102: CachedItem = CachedItem {
                     gold: 3000,
-                    prettified_stats: &[StatName::AbilityPower(105),StatName::MagicResist(40)],
+                    prettified_stats: &[StatName::MagicResist(40),StatName::AbilityPower(105)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -236,7 +236,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:25f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:45f32,omnivamp:0f32,},
                 };pub static BLACK_CLEAVER_3071: CachedItem = CachedItem {
                     gold: 3000,
-                    prettified_stats: &[StatName::AttackDamage(40),StatName::AbilityHaste(20),StatName::Health(400)],
+                    prettified_stats: &[StatName::AbilityHaste(20),StatName::Health(400),StatName::AttackDamage(40)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -249,7 +249,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:40f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:400f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static BLACK_HOLE_GAUNTLET_447122: CachedItem = CachedItem {
                     gold: 0,
-                    prettified_stats: &[StatName::AbilityHaste(25),StatName::Health(900)],
+                    prettified_stats: &[StatName::Health(900),StatName::AbilityHaste(25)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -275,7 +275,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static BLACKFIRE_TORCH_2503: CachedItem = CachedItem {
                     gold: 2800,
-                    prettified_stats: &[StatName::Mana(600),StatName::AbilityHaste(20),StatName::AbilityPower(80)],
+                    prettified_stats: &[StatName::AbilityHaste(20),StatName::Mana(600),StatName::AbilityPower(80)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -296,8 +296,8 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
-                    range_closure: &[],
-                    melee_closure: &[],
+                    range_closure: &[|ctx|ctx.enemy_current_health - (0.06f32 * ctx.enemy_current_health * (1f32 - 0.06f32 * ctx.physical_multiplier) - ctx.ad + ctx.ad * (1f32 - 0.06f32 * ctx.physical_multiplier)) / 0.06f32],
+                    melee_closure: &[|ctx|ctx.enemy_current_health - (0.09f32 * ctx.enemy_current_health * (1f32 - 0.09f32 * ctx.physical_multiplier) - ctx.ad + ctx.ad * (1f32 - 0.09f32 * ctx.physical_multiplier)) / 0.09f32],
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:40f32,attack_speed:25f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static BLASTING_WAND_1026: CachedItem = CachedItem {
                     gold: 850,
@@ -340,7 +340,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:65f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:400f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static BLOODSONG_3877: CachedItem = CachedItem {
                     gold: 400,
-                    prettified_stats: &[StatName::Health(200),StatName::BaseHealthRegen(75),StatName::BaseManaRegen(75),StatName::GoldPer10Seconds(5)],
+                    prettified_stats: &[StatName::GoldPer10Seconds(5),StatName::BaseHealthRegen(75),StatName::BaseManaRegen(75),StatName::Health(200)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -392,7 +392,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:55f32,omnivamp:0f32,},
                 };pub static BOUNTY_OF_WORLDS_3867: CachedItem = CachedItem {
                     gold: 400,
-                    prettified_stats: &[StatName::BaseHealthRegen(75),StatName::Health(200),StatName::GoldPer10Seconds(5),StatName::BaseManaRegen(75)],
+                    prettified_stats: &[StatName::BaseHealthRegen(75),StatName::BaseManaRegen(75),StatName::GoldPer10Seconds(5),StatName::Health(200)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -431,7 +431,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static CATALYST_OF_AEONS_3803: CachedItem = CachedItem {
                     gold: 1300,
-                    prettified_stats: &[StatName::Mana(375),StatName::Health(350)],
+                    prettified_stats: &[StatName::Health(300),StatName::Mana(375)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -444,7 +444,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:350f32,lifesteal:0f32,magic_resist:0f32,mana:375f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static CAULFIELDS_WARHAMMER_3133: CachedItem = CachedItem {
                     gold: 1050,
-                    prettified_stats: &[StatName::AttackDamage(20),StatName::AbilityHaste(10)],
+                    prettified_stats: &[StatName::AbilityHaste(10),StatName::AttackDamage(20)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -483,7 +483,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:40f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static CHAINLACED_CRUSHERS_3173: CachedItem = CachedItem {
                     gold: 1750,
-                    prettified_stats: &[StatName::MagicResist(35),StatName::Tenacity(30),StatName::MoveSpeed(50)],
+                    prettified_stats: &[StatName::Tenacity(30),StatName::MoveSpeed(50),StatName::MagicResist(35)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -522,7 +522,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static CLOAK_OF_STARRY_NIGHT_443059: CachedItem = CachedItem {
                     gold: 0,
-                    prettified_stats: &[StatName::Health(300),StatName::MagicResist(100)],
+                    prettified_stats: &[StatName::MagicResist(100),StatName::Health(300)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -574,7 +574,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:70f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:350f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static CRIMSON_LUCIDITY_3171: CachedItem = CachedItem {
                     gold: 1400,
-                    prettified_stats: &[StatName::MoveSpeed(50),StatName::AbilityHaste(25)],
+                    prettified_stats: &[StatName::AbilityHaste(25),StatName::MoveSpeed(50)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -587,7 +587,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:50f32,omnivamp:0f32,},
                 };pub static CROWN_OF_THE_SHATTERED_QUEEN_444644: CachedItem = CachedItem {
                     gold: 0,
-                    prettified_stats: &[StatName::AbilityPower(85),StatName::Mana(600),StatName::Health(300),StatName::AbilityHaste(25)],
+                    prettified_stats: &[StatName::Mana(600),StatName::AbilityHaste(25),StatName::Health(300),StatName::AbilityPower(85)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -600,7 +600,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:85f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:300f32,lifesteal:0f32,magic_resist:0f32,mana:600f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static CRUELTY_447109: CachedItem = CachedItem {
                     gold: 0,
-                    prettified_stats: &[StatName::MagicResist(30),StatName::AbilityPower(80),StatName::Armor(30)],
+                    prettified_stats: &[StatName::Armor(30),StatName::MagicResist(30),StatName::AbilityPower(80)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -613,7 +613,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:80f32,armor:30f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:30f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static CRYPTBLOOM_3137: CachedItem = CachedItem {
                     gold: 3000,
-                    prettified_stats: &[StatName::MagicPenetration(30),StatName::AbilityHaste(20),StatName::AbilityPower(75)],
+                    prettified_stats: &[StatName::AbilityPower(75),StatName::AbilityHaste(20),StatName::MagicPenetration(30)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -626,7 +626,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:75f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:30f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static CRYSTALLINE_BRACER_3801: CachedItem = CachedItem {
                     gold: 800,
-                    prettified_stats: &[StatName::Health(200),StatName::BaseHealthRegen(100)],
+                    prettified_stats: &[StatName::BaseHealthRegen(100),StatName::Health(200)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -678,7 +678,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:15f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:50f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static DARKSTEEL_TALONS_443054: CachedItem = CachedItem {
                     gold: 0,
-                    prettified_stats: &[StatName::AttackSpeed(50),StatName::MoveSpeed(5),StatName::Armor(55)],
+                    prettified_stats: &[StatName::Armor(55),StatName::AttackSpeed(50),StatName::MoveSpeed(5)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -691,7 +691,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:55f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:50f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static DAWNCORE_6621: CachedItem = CachedItem {
                     gold: 2500,
-                    prettified_stats: &[StatName::BaseManaRegen(100),StatName::AbilityPower(45),StatName::HealAndShieldPower(16)],
+                    prettified_stats: &[StatName::AbilityPower(45),StatName::HealAndShieldPower(16),StatName::BaseManaRegen(100)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -704,7 +704,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:45f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static DEAD_MANS_PLATE_3742: CachedItem = CachedItem {
                     gold: 2900,
-                    prettified_stats: &[StatName::Armor(55),StatName::Health(350),StatName::MoveSpeed(4)],
+                    prettified_stats: &[StatName::Armor(55),StatName::MoveSpeed(4),StatName::Health(350)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -743,7 +743,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static DECAPITATOR_447107: CachedItem = CachedItem {
                     gold: 0,
-                    prettified_stats: &[StatName::MoveSpeed(6),StatName::AdaptiveForce(80),StatName::AttackSpeed(50)],
+                    prettified_stats: &[StatName::AdaptiveForce(80),StatName::AttackSpeed(50),StatName::MoveSpeed(6)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -769,7 +769,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static DEMONIC_EMBRACE_444637: CachedItem = CachedItem {
                     gold: 0,
-                    prettified_stats: &[StatName::AbilityPower(80),StatName::Health(700)],
+                    prettified_stats: &[StatName::Health(700),StatName::AbilityPower(80)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -782,7 +782,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:80f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:700f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static DETONATION_ORB_447113: CachedItem = CachedItem {
                     gold: 0,
-                    prettified_stats: &[StatName::MagicPenetration(12),StatName::AbilityPower(90),StatName::Mana(600),StatName::AbilityHaste(20)],
+                    prettified_stats: &[StatName::AbilityPower(90),StatName::MagicPenetration(12),StatName::Mana(600),StatName::AbilityHaste(20)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -795,7 +795,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:90f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:12f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:600f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static DIAMOND_TIPPED_SPEAR_447120: CachedItem = CachedItem {
                     gold: 0,
-                    prettified_stats: &[StatName::AdaptiveForce(75),StatName::AttackSpeed(30)],
+                    prettified_stats: &[StatName::AttackSpeed(30),StatName::AdaptiveForce(75)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -808,7 +808,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:30f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static DIVINE_SUNDERER_446632: CachedItem = CachedItem {
                     gold: 0,
-                    prettified_stats: &[StatName::AbilityHaste(20),StatName::Health(350),StatName::AttackDamage(55)],
+                    prettified_stats: &[StatName::AttackDamage(55),StatName::Health(350),StatName::AbilityHaste(20)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -821,7 +821,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:55f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:350f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static DORANS_BLADE_1055: CachedItem = CachedItem {
                     gold: 450,
-                    prettified_stats: &[StatName::Health(80),StatName::AttackDamage(10),StatName::LifeSteal(3)],
+                    prettified_stats: &[StatName::Health(80),StatName::AttackDamage(10)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -834,7 +834,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:10f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:80f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static DORANS_RING_1056: CachedItem = CachedItem {
                     gold: 400,
-                    prettified_stats: &[StatName::Health(90),StatName::AbilityPower(18)],
+                    prettified_stats: &[StatName::AbilityPower(18),StatName::Health(90)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -873,7 +873,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static DREAM_MAKER_3870: CachedItem = CachedItem {
                     gold: 400,
-                    prettified_stats: &[StatName::BaseHealthRegen(75),StatName::Health(200),StatName::BaseManaRegen(75),StatName::GoldPer10Seconds(5)],
+                    prettified_stats: &[StatName::GoldPer10Seconds(5),StatName::BaseHealthRegen(75),StatName::Health(200),StatName::BaseManaRegen(75)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -886,7 +886,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:200f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static DUSKBLADE_OF_DRAKTHARR_446691: CachedItem = CachedItem {
                     gold: 0,
-                    prettified_stats: &[StatName::AbilityHaste(20),StatName::AttackDamage(50),StatName::Lethality(20)],
+                    prettified_stats: &[StatName::Lethality(20),StatName::AbilityHaste(20),StatName::AttackDamage(50)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -899,7 +899,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:50f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static ECHOES_OF_HELIA_6620: CachedItem = CachedItem {
                     gold: 2200,
-                    prettified_stats: &[StatName::AbilityHaste(20),StatName::Health(200),StatName::AbilityPower(35),StatName::BaseManaRegen(125)],
+                    prettified_stats: &[StatName::AbilityHaste(20),StatName::BaseManaRegen(125),StatName::Health(200),StatName::AbilityPower(35)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -912,7 +912,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:35f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:200f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static ECLIPSE_6692: CachedItem = CachedItem {
                     gold: 2900,
-                    prettified_stats: &[StatName::AttackDamage(60),StatName::AbilityHaste(15)],
+                    prettified_stats: &[StatName::AbilityHaste(15),StatName::AttackDamage(60)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -938,7 +938,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:50f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:250f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static ELEISAS_MIRACLE_443063: CachedItem = CachedItem {
                     gold: 0,
-                    prettified_stats: &[StatName::AbilityHaste(25),StatName::MagicResist(50),StatName::Armor(50)],
+                    prettified_stats: &[StatName::MagicResist(50),StatName::AbilityHaste(25),StatName::Armor(50)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -1029,7 +1029,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static EMPYREAN_PROMISE_447105: CachedItem = CachedItem {
                     gold: 0,
-                    prettified_stats: &[StatName::AbilityPower(70),StatName::HealAndShieldPower(18),StatName::AbilityHaste(30),StatName::BaseManaRegen(125)],
+                    prettified_stats: &[StatName::HealAndShieldPower(18),StatName::AbilityPower(70),StatName::AbilityHaste(30),StatName::BaseManaRegen(125)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -1055,7 +1055,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static ESSENCE_REAVER_3508: CachedItem = CachedItem {
                     gold: 2900,
-                    prettified_stats: &[StatName::CriticalStrikeChance(25),StatName::AttackDamage(60),StatName::AbilityHaste(15)],
+                    prettified_stats: &[StatName::AbilityHaste(15),StatName::AttackDamage(60),StatName::CriticalStrikeChance(25)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -1068,7 +1068,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:60f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static EVERFROST_446656: CachedItem = CachedItem {
                     gold: 0,
-                    prettified_stats: &[StatName::AbilityPower(100),StatName::Mana(600),StatName::AbilityHaste(25),StatName::Health(250)],
+                    prettified_stats: &[StatName::AbilityHaste(25),StatName::AbilityPower(100),StatName::Health(250),StatName::Mana(600)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -1094,7 +1094,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:15f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static EXPERIMENTAL_HEXPLATE_3073: CachedItem = CachedItem {
                     gold: 3000,
-                    prettified_stats: &[StatName::Health(450),StatName::AttackDamage(40),StatName::AttackSpeed(20)],
+                    prettified_stats: &[StatName::AttackDamage(40),StatName::AttackSpeed(20),StatName::Health(450)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -1172,7 +1172,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:25f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static FIMBULWINTER_3121: CachedItem = CachedItem {
                     gold: 2400,
-                    prettified_stats: &[StatName::Health(550),StatName::Mana(860),StatName::AbilityHaste(15)],
+                    prettified_stats: &[StatName::AbilityHaste(15),StatName::Health(550),StatName::Mana(860)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -1198,7 +1198,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static FLESHEATER_447112: CachedItem = CachedItem {
                     gold: 0,
-                    prettified_stats: &[StatName::AbilityHaste(20),StatName::AdaptiveForce(70),StatName::Health(500)],
+                    prettified_stats: &[StatName::AbilityHaste(20),StatName::Health(500),StatName::AdaptiveForce(70)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -1211,7 +1211,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:500f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static FORBIDDEN_IDOL_3114: CachedItem = CachedItem {
                     gold: 600,
-                    prettified_stats: &[StatName::HealAndShieldPower(8),StatName::BaseManaRegen(50)],
+                    prettified_stats: &[StatName::BaseManaRegen(50),StatName::HealAndShieldPower(8)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -1224,7 +1224,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static FORCE_OF_ENTROPY_443061: CachedItem = CachedItem {
                     gold: 0,
-                    prettified_stats: &[StatName::CriticalStrikeChance(25),StatName::AbilityHaste(30),StatName::Health(900)],
+                    prettified_stats: &[StatName::AbilityHaste(30),StatName::CriticalStrikeChance(25),StatName::Health(900)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -1237,7 +1237,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:900f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static FORCE_OF_NATURE_4401: CachedItem = CachedItem {
                     gold: 2800,
-                    prettified_stats: &[StatName::Health(400),StatName::MagicResist(55),StatName::MoveSpeed(4)],
+                    prettified_stats: &[StatName::MoveSpeed(4),StatName::Health(400),StatName::MagicResist(55)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -1263,7 +1263,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:55f32,omnivamp:0f32,},
                 };pub static FROZEN_HEART_3110: CachedItem = CachedItem {
                     gold: 2500,
-                    prettified_stats: &[StatName::Mana(400),StatName::Armor(75),StatName::AbilityHaste(20)],
+                    prettified_stats: &[StatName::AbilityHaste(20),StatName::Armor(75),StatName::Mana(400)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -1276,7 +1276,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:75f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:400f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static FULMINATION_443055: CachedItem = CachedItem {
                     gold: 0,
-                    prettified_stats: &[StatName::MoveSpeed(15),StatName::AttackDamage(55),StatName::AttackSpeed(45)],
+                    prettified_stats: &[StatName::AttackSpeed(45),StatName::MoveSpeed(15),StatName::AttackDamage(55)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -1289,7 +1289,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:55f32,attack_speed:45f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static GALEFORCE_446671: CachedItem = CachedItem {
                     gold: 0,
-                    prettified_stats: &[StatName::AttackSpeed(30),StatName::AttackDamage(65),StatName::MoveSpeed(6),StatName::CriticalStrikeChance(25)],
+                    prettified_stats: &[StatName::CriticalStrikeChance(25),StatName::AttackSpeed(30),StatName::MoveSpeed(6),StatName::AttackDamage(65)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -1302,7 +1302,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:65f32,attack_speed:30f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static GAMBLERS_BLADE_447101: CachedItem = CachedItem {
                     gold: 0,
-                    prettified_stats: &[StatName::AbilityHaste(40),StatName::MoveSpeed(8),StatName::AttackSpeed(70)],
+                    prettified_stats: &[StatName::AttackSpeed(70),StatName::AbilityHaste(40),StatName::MoveSpeed(8)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -1315,7 +1315,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:70f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static GARGOYLE_STONEPLATE_443193: CachedItem = CachedItem {
                     gold: 0,
-                    prettified_stats: &[StatName::AbilityHaste(15),StatName::MagicResist(65),StatName::MoveSpeed(10),StatName::Armor(65)],
+                    prettified_stats: &[StatName::Armor(65),StatName::AbilityHaste(15),StatName::MoveSpeed(10),StatName::MagicResist(65)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -1354,7 +1354,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:350f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static GLACIAL_BUCKLER_3024: CachedItem = CachedItem {
                     gold: 900,
-                    prettified_stats: &[StatName::AbilityHaste(10),StatName::Mana(300),StatName::Armor(25)],
+                    prettified_stats: &[StatName::Armor(25),StatName::AbilityHaste(10),StatName::Mana(300)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -1380,7 +1380,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static GOREDRINKER_226630: CachedItem = CachedItem {
                     gold: 0,
-                    prettified_stats: &[StatName::AttackDamage(55),StatName::Health(400),StatName::Omnivamp(10),StatName::AbilityHaste(20)],
+                    prettified_stats: &[StatName::AttackDamage(55),StatName::AbilityHaste(20),StatName::Health(400),StatName::Omnivamp(10)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -1406,7 +1406,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:45f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:55f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static GUARDIANS_AMULET_2049: CachedItem = CachedItem {
                     gold: 500,
-                    prettified_stats: &[StatName::AbilityPower(20),StatName::HealAndShieldPower(15),StatName::AbilityHaste(20)],
+                    prettified_stats: &[StatName::AbilityHaste(20),StatName::HealAndShieldPower(15),StatName::AbilityPower(20)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -1419,7 +1419,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:20f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static GUARDIANS_BLADE_3177: CachedItem = CachedItem {
                     gold: 950,
-                    prettified_stats: &[StatName::Health(150),StatName::AbilityHaste(15),StatName::AttackDamage(30)],
+                    prettified_stats: &[StatName::AttackDamage(30),StatName::Health(150),StatName::AbilityHaste(15)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -1432,7 +1432,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:30f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:150f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static GUARDIANS_DIRK_223185: CachedItem = CachedItem {
                     gold: 500,
-                    prettified_stats: &[StatName::AttackDamage(25),StatName::Lethality(11),StatName::AbilityHaste(10)],
+                    prettified_stats: &[StatName::Lethality(11),StatName::AbilityHaste(10),StatName::AttackDamage(25)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -1445,7 +1445,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:25f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static GUARDIANS_HAMMER_3184: CachedItem = CachedItem {
                     gold: 950,
-                    prettified_stats: &[StatName::AttackDamage(25),StatName::LifeSteal(5),StatName::Health(150)],
+                    prettified_stats: &[StatName::Health(150),StatName::AttackDamage(25),StatName::LifeSteal(5)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -1471,7 +1471,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:150f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static GUARDIANS_ORB_3112: CachedItem = CachedItem {
                     gold: 950,
-                    prettified_stats: &[StatName::Health(150),StatName::AbilityPower(50)],
+                    prettified_stats: &[StatName::AbilityPower(50),StatName::Health(150)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -1497,7 +1497,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:35f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:300f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static GUINSOOS_RAGEBLADE_3124: CachedItem = CachedItem {
                     gold: 3000,
-                    prettified_stats: &[StatName::AttackSpeed(25),StatName::AttackDamage(30),StatName::AbilityPower(30)],
+                    prettified_stats: &[StatName::AbilityPower(30),StatName::AttackSpeed(25),StatName::AttackDamage(30)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -1536,7 +1536,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static HAMSTRINGER_443069: CachedItem = CachedItem {
                     gold: 0,
-                    prettified_stats: &[StatName::CriticalStrikeChance(25),StatName::AttackSpeed(40),StatName::AttackDamage(45)],
+                    prettified_stats: &[StatName::AttackDamage(45),StatName::AttackSpeed(40),StatName::CriticalStrikeChance(25)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -1601,7 +1601,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:900f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static HELLFIRE_HATCHET_4017: CachedItem = CachedItem {
                     gold: 2500,
-                    prettified_stats: &[StatName::Lethality(12),StatName::AttackDamage(35)],
+                    prettified_stats: &[StatName::AttackDamage(35),StatName::Lethality(12)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -1614,7 +1614,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:35f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static HEMOMANCERS_HELM_447103: CachedItem = CachedItem {
                     gold: 0,
-                    prettified_stats: &[StatName::AttackDamage(60),StatName::AbilityHaste(30),StatName::Omnivamp(15)],
+                    prettified_stats: &[StatName::AbilityHaste(30),StatName::Omnivamp(15),StatName::AttackDamage(60)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -1640,7 +1640,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:75f32,crit_chance:0f32,crit_damage:0f32,health:500f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static HEXDRINKER_3155: CachedItem = CachedItem {
                     gold: 1300,
-                    prettified_stats: &[StatName::AttackDamage(25),StatName::MagicResist(25)],
+                    prettified_stats: &[StatName::MagicResist(25),StatName::AttackDamage(25)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -1679,7 +1679,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:90f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:45f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static HEXTECH_ROCKETBELT_3152: CachedItem = CachedItem {
                     gold: 2650,
-                    prettified_stats: &[StatName::AbilityPower(70),StatName::AbilityHaste(20),StatName::Health(300)],
+                    prettified_stats: &[StatName::AbilityHaste(20),StatName::AbilityPower(70),StatName::Health(300)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -1692,7 +1692,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:70f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:300f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static HOLLOW_RADIANCE_6664: CachedItem = CachedItem {
                     gold: 2800,
-                    prettified_stats: &[StatName::MagicResist(40),StatName::Health(400),StatName::AbilityHaste(10),StatName::BaseHealthRegen(100)],
+                    prettified_stats: &[StatName::MagicResist(40),StatName::Health(400),StatName::BaseHealthRegen(100),StatName::AbilityHaste(10)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -1705,7 +1705,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:400f32,lifesteal:0f32,magic_resist:40f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static HORIZON_FOCUS_4628: CachedItem = CachedItem {
                     gold: 2800,
-                    prettified_stats: &[StatName::AbilityPower(125),StatName::AbilityHaste(25)],
+                    prettified_stats: &[StatName::AbilityHaste(25),StatName::AbilityPower(125)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -1731,7 +1731,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:60f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static HULLBREAKER_3181: CachedItem = CachedItem {
                     gold: 3000,
-                    prettified_stats: &[StatName::MoveSpeed(4),StatName::AttackDamage(40),StatName::Health(500)],
+                    prettified_stats: &[StatName::Health(500),StatName::AttackDamage(40),StatName::MoveSpeed(4)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -1744,7 +1744,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:40f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:500f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static ICEBORN_GAUNTLET_6662: CachedItem = CachedItem {
                     gold: 2900,
-                    prettified_stats: &[StatName::Health(300),StatName::Armor(50),StatName::AbilityHaste(15)],
+                    prettified_stats: &[StatName::AbilityHaste(15),StatName::Health(300),StatName::Armor(50)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -1757,7 +1757,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:50f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:300f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static IMMORTAL_SHIELDBOW_6673: CachedItem = CachedItem {
                     gold: 3000,
-                    prettified_stats: &[StatName::AttackDamage(55),StatName::CriticalStrikeChance(25)],
+                    prettified_stats: &[StatName::CriticalStrikeChance(25),StatName::AttackDamage(55)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -1783,7 +1783,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:60f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static INFINITY_EDGE_3031: CachedItem = CachedItem {
                     gold: 3450,
-                    prettified_stats: &[StatName::CriticalStrikeDamage(40),StatName::AttackDamage(65),StatName::CriticalStrikeChance(25)],
+                    prettified_stats: &[StatName::AttackDamage(65),StatName::CriticalStrikeDamage(40),StatName::CriticalStrikeChance(25)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -1796,7 +1796,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:65f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static INNERVATING_LOCKET_447104: CachedItem = CachedItem {
                     gold: 0,
-                    prettified_stats: &[StatName::AbilityPower(70),StatName::Health(200),StatName::AbilityHaste(20)],
+                    prettified_stats: &[StatName::AbilityPower(70),StatName::AbilityHaste(20),StatName::Health(200)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -1822,7 +1822,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:45f32,omnivamp:0f32,},
                 };pub static JAK_SHO_THE_PROTEAN_6665: CachedItem = CachedItem {
                     gold: 3200,
-                    prettified_stats: &[StatName::Armor(45),StatName::Health(350),StatName::MagicResist(45)],
+                    prettified_stats: &[StatName::Health(350),StatName::Armor(45),StatName::MagicResist(45)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -1874,7 +1874,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static KAENIC_ROOKERN_2504: CachedItem = CachedItem {
                     gold: 2900,
-                    prettified_stats: &[StatName::MagicResist(80),StatName::Health(400),StatName::BaseHealthRegen(100)],
+                    prettified_stats: &[StatName::Health(400),StatName::BaseHealthRegen(100),StatName::MagicResist(80)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -1900,7 +1900,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:200f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static KINKOU_JITTE_447116: CachedItem = CachedItem {
                     gold: 0,
-                    prettified_stats: &[StatName::AdaptiveForce(70),StatName::Health(400),StatName::AbilityHaste(30)],
+                    prettified_stats: &[StatName::AdaptiveForce(70),StatName::AbilityHaste(30),StatName::Health(400)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -1913,7 +1913,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:400f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static KNIGHTS_VOW_3109: CachedItem = CachedItem {
                     gold: 2300,
-                    prettified_stats: &[StatName::Health(200),StatName::BaseHealthRegen(100),StatName::AbilityHaste(10),StatName::Armor(40)],
+                    prettified_stats: &[StatName::BaseHealthRegen(100),StatName::Health(200),StatName::Armor(40),StatName::AbilityHaste(10)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -1926,7 +1926,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:40f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:200f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static KRAKEN_SLAYER_6672: CachedItem = CachedItem {
                     gold: 3000,
-                    prettified_stats: &[StatName::AttackDamage(45),StatName::AttackSpeed(40),StatName::MoveSpeed(4)],
+                    prettified_stats: &[StatName::AttackSpeed(40),StatName::AttackDamage(45),StatName::MoveSpeed(4)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -2056,7 +2056,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:60f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:300f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static LICH_BANE_3100: CachedItem = CachedItem {
                     gold: 2900,
-                    prettified_stats: &[StatName::AbilityHaste(10),StatName::AbilityPower(100),StatName::MoveSpeed(4)],
+                    prettified_stats: &[StatName::AbilityPower(100),StatName::AbilityHaste(10),StatName::MoveSpeed(4)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -2069,7 +2069,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:100f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static LIFELINE_4003: CachedItem = CachedItem {
                     gold: 1600,
-                    prettified_stats: &[StatName::AttackDamage(25),StatName::MoveSpeed(4),StatName::Lethality(5)],
+                    prettified_stats: &[StatName::MoveSpeed(4),StatName::Lethality(5),StatName::AttackDamage(25)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -2082,7 +2082,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:25f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static LIGHTNING_ROD_447119: CachedItem = CachedItem {
                     gold: 0,
-                    prettified_stats: &[StatName::MagicResist(30),StatName::Armor(30),StatName::MoveSpeed(8),StatName::Health(500)],
+                    prettified_stats: &[StatName::MagicResist(30),StatName::Health(500),StatName::Armor(30),StatName::MoveSpeed(8)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -2095,7 +2095,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:30f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:30f32,crit_chance:0f32,crit_damage:0f32,health:500f32,lifesteal:0f32,magic_resist:30f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static LOCKET_OF_THE_IRON_SOLARI_3190: CachedItem = CachedItem {
                     gold: 2200,
-                    prettified_stats: &[StatName::Armor(25),StatName::AbilityHaste(10),StatName::Health(200),StatName::MagicResist(25)],
+                    prettified_stats: &[StatName::Armor(25),StatName::MagicResist(25),StatName::AbilityHaste(10),StatName::Health(200)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -2121,7 +2121,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:10f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static LORD_DOMINIKS_REGARDS_3036: CachedItem = CachedItem {
                     gold: 3100,
-                    prettified_stats: &[StatName::AttackDamage(35),StatName::ArmorPenetration(40),StatName::CriticalStrikeChance(25)],
+                    prettified_stats: &[StatName::ArmorPenetration(40),StatName::CriticalStrikeChance(25),StatName::AttackDamage(35)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -2134,7 +2134,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:40f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:35f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static LOST_CHAPTER_3802: CachedItem = CachedItem {
                     gold: 1200,
-                    prettified_stats: &[StatName::AbilityHaste(10),StatName::AbilityPower(40),StatName::Mana(300)],
+                    prettified_stats: &[StatName::AbilityPower(40),StatName::Mana(300),StatName::AbilityHaste(10)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -2160,7 +2160,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static LUDENS_COMPANION_6655: CachedItem = CachedItem {
                     gold: 2750,
-                    prettified_stats: &[StatName::AbilityPower(100),StatName::Mana(600),StatName::AbilityHaste(10)],
+                    prettified_stats: &[StatName::AbilityHaste(10),StatName::Mana(600),StatName::AbilityPower(100)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -2173,7 +2173,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:100f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:600f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static MALIGNANCE_3118: CachedItem = CachedItem {
                     gold: 2700,
-                    prettified_stats: &[StatName::AbilityPower(90),StatName::Mana(600),StatName::AbilityHaste(15)],
+                    prettified_stats: &[StatName::Mana(600),StatName::AbilityHaste(15),StatName::AbilityPower(90)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -2186,7 +2186,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:90f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:600f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static MANAMUNE_3004: CachedItem = CachedItem {
                     gold: 2900,
-                    prettified_stats: &[StatName::AbilityHaste(15),StatName::AttackDamage(35),StatName::Mana(500)],
+                    prettified_stats: &[StatName::AttackDamage(35),StatName::Mana(500),StatName::AbilityHaste(15)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -2199,7 +2199,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:35f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:500f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static MAW_OF_MALMORTIUS_3156: CachedItem = CachedItem {
                     gold: 3100,
-                    prettified_stats: &[StatName::AbilityHaste(15),StatName::AttackDamage(60),StatName::MagicResist(40)],
+                    prettified_stats: &[StatName::AttackDamage(60),StatName::AbilityHaste(15),StatName::MagicResist(40)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -2212,7 +2212,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:60f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:40f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static MEJAIS_SOULSTEALER_3041: CachedItem = CachedItem {
                     gold: 1500,
-                    prettified_stats: &[StatName::Health(100),StatName::AbilityPower(20)],
+                    prettified_stats: &[StatName::AbilityPower(20),StatName::Health(100)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -2225,7 +2225,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:20f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:100f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static MERCURIAL_SCIMITAR_3139: CachedItem = CachedItem {
                     gold: 3200,
-                    prettified_stats: &[StatName::MagicResist(35),StatName::AttackDamage(50),StatName::LifeSteal(10)],
+                    prettified_stats: &[StatName::MagicResist(35),StatName::LifeSteal(10),StatName::AttackDamage(50)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -2238,7 +2238,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:40f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:40f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static MERCURYS_TREADS_3111: CachedItem = CachedItem {
                     gold: 1250,
-                    prettified_stats: &[StatName::MagicResist(20),StatName::MoveSpeed(45),StatName::Tenacity(30)],
+                    prettified_stats: &[StatName::Tenacity(30),StatName::MagicResist(20),StatName::MoveSpeed(45)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -2251,7 +2251,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:20f32,mana:0f32,movespeed:45f32,omnivamp:0f32,},
                 };pub static MIKAELS_BLESSING_3222: CachedItem = CachedItem {
                     gold: 2300,
-                    prettified_stats: &[StatName::Health(250),StatName::BaseManaRegen(100),StatName::AbilityHaste(15),StatName::HealAndShieldPower(12)],
+                    prettified_stats: &[StatName::AbilityHaste(15),StatName::HealAndShieldPower(12),StatName::BaseManaRegen(100),StatName::Health(250)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -2277,7 +2277,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:60f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static MOONFLAIR_SPELLBLADE_447110: CachedItem = CachedItem {
                     gold: 0,
-                    prettified_stats: &[StatName::Health(400),StatName::Tenacity(30),StatName::AbilityPower(85)],
+                    prettified_stats: &[StatName::Tenacity(30),StatName::AbilityPower(85),StatName::Health(400)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -2290,7 +2290,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:85f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:400f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static MOONSTONE_RENEWER_6617: CachedItem = CachedItem {
                     gold: 2200,
-                    prettified_stats: &[StatName::Health(200),StatName::AbilityHaste(20),StatName::AbilityPower(25),StatName::BaseManaRegen(125)],
+                    prettified_stats: &[StatName::AbilityPower(25),StatName::BaseManaRegen(125),StatName::AbilityHaste(20),StatName::Health(200)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -2303,7 +2303,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:25f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:200f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static MORELLONOMICON_3165: CachedItem = CachedItem {
                     gold: 2850,
-                    prettified_stats: &[StatName::AbilityHaste(15),StatName::AbilityPower(75),StatName::Health(350)],
+                    prettified_stats: &[StatName::AbilityPower(75),StatName::Health(350),StatName::AbilityHaste(15)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -2316,7 +2316,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:75f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:350f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static MORTAL_REMINDER_3033: CachedItem = CachedItem {
                     gold: 3300,
-                    prettified_stats: &[StatName::AttackDamage(35),StatName::ArmorPenetration(35),StatName::CriticalStrikeChance(25)],
+                    prettified_stats: &[StatName::CriticalStrikeChance(25),StatName::AttackDamage(35),StatName::ArmorPenetration(35)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -2342,7 +2342,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static MURAMANA_3042: CachedItem = CachedItem {
                     gold: 2900,
-                    prettified_stats: &[StatName::AttackDamage(35),StatName::Mana(860),StatName::AbilityHaste(15)],
+                    prettified_stats: &[StatName::Mana(860),StatName::AbilityHaste(15),StatName::AttackDamage(35)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -2355,7 +2355,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:35f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:860f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static NASHORS_TOOTH_3115: CachedItem = CachedItem {
                     gold: 2900,
-                    prettified_stats: &[StatName::AbilityPower(80),StatName::AttackSpeed(50),StatName::AbilityHaste(15)],
+                    prettified_stats: &[StatName::AttackSpeed(50),StatName::AbilityHaste(15),StatName::AbilityPower(80)],
                     damage_type: DamageType::Magic,
                     attributes: Attrs::Onhit,
                     metadata: TypeMetadata { 
@@ -2472,7 +2472,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:30f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static OPPORTUNITY_6701: CachedItem = CachedItem {
                     gold: 2700,
-                    prettified_stats: &[StatName::Lethality(18),StatName::AttackDamage(55)],
+                    prettified_stats: &[StatName::AttackDamage(55),StatName::Lethality(18)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -2524,7 +2524,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:30f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:550f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static PERPLEXITY_4015: CachedItem = CachedItem {
                     gold: 2500,
-                    prettified_stats: &[StatName::MoveSpeed(5),StatName::ArmorPenetration(22),StatName::AbilityPower(60),StatName::MagicPenetration(30)],
+                    prettified_stats: &[StatName::MoveSpeed(5),StatName::ArmorPenetration(22),StatName::MagicPenetration(30),StatName::AbilityPower(60)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -2537,7 +2537,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:60f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:22f32,magic_penetration_percent:0f32,magic_penetration_flat:30f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static PHAGE_3044: CachedItem = CachedItem {
                     gold: 1100,
-                    prettified_stats: &[StatName::Health(200),StatName::AttackDamage(15)],
+                    prettified_stats: &[StatName::AttackDamage(15),StatName::Health(200)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -2550,7 +2550,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:15f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:200f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static PHANTOM_DANCER_3046: CachedItem = CachedItem {
                     gold: 2650,
-                    prettified_stats: &[StatName::MoveSpeed(10),StatName::AttackSpeed(65),StatName::CriticalStrikeChance(25)],
+                    prettified_stats: &[StatName::CriticalStrikeChance(25),StatName::MoveSpeed(10),StatName::AttackSpeed(65)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -2628,7 +2628,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static PROFANE_HYDRA_6698: CachedItem = CachedItem {
                     gold: 3200,
-                    prettified_stats: &[StatName::AttackDamage(55),StatName::AbilityHaste(10),StatName::Lethality(18)],
+                    prettified_stats: &[StatName::AttackDamage(55),StatName::Lethality(18),StatName::AbilityHaste(10)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -2641,7 +2641,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:60f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static PROWLERS_CLAW_446693: CachedItem = CachedItem {
                     gold: 0,
-                    prettified_stats: &[StatName::AbilityHaste(20),StatName::Lethality(20),StatName::AttackDamage(60)],
+                    prettified_stats: &[StatName::Lethality(20),StatName::AbilityHaste(20),StatName::AttackDamage(60)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -2654,7 +2654,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:55f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static PUPPETEER_447123: CachedItem = CachedItem {
                     gold: 0,
-                    prettified_stats: &[StatName::BaseManaRegen(150),StatName::AttackSpeed(30),StatName::HealAndShieldPower(15),StatName::AbilityHaste(40)],
+                    prettified_stats: &[StatName::AttackSpeed(30),StatName::HealAndShieldPower(15),StatName::AbilityHaste(40),StatName::BaseManaRegen(150)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -2667,7 +2667,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:30f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static PYROMANCERS_CLOAK_447118: CachedItem = CachedItem {
                     gold: 0,
-                    prettified_stats: &[StatName::AdaptiveForce(85),StatName::Health(400),StatName::AbilityHaste(15)],
+                    prettified_stats: &[StatName::Health(400),StatName::AdaptiveForce(85),StatName::AbilityHaste(15)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -2706,7 +2706,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:130f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static RADIANT_VIRTUE_446667: CachedItem = CachedItem {
                     gold: 0,
-                    prettified_stats: &[StatName::Armor(35),StatName::HealAndShieldPower(12),StatName::Health(400),StatName::MagicResist(35)],
+                    prettified_stats: &[StatName::MagicResist(35),StatName::HealAndShieldPower(12),StatName::Health(400),StatName::Armor(35)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -2745,7 +2745,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:75f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:350f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static RAPID_FIRECANNON_3094: CachedItem = CachedItem {
                     gold: 2650,
-                    prettified_stats: &[StatName::AttackSpeed(35),StatName::MoveSpeed(4),StatName::CriticalStrikeChance(25)],
+                    prettified_stats: &[StatName::CriticalStrikeChance(25),StatName::AttackSpeed(35),StatName::MoveSpeed(4)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -2771,7 +2771,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:65f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static REALITY_FRACTURE_447102: CachedItem = CachedItem {
                     gold: 0,
-                    prettified_stats: &[StatName::Health(300),StatName::AttackSpeed(40),StatName::AbilityPower(80)],
+                    prettified_stats: &[StatName::AttackSpeed(40),StatName::Health(300),StatName::AbilityPower(80)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -2784,7 +2784,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:80f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:40f32,crit_chance:0f32,crit_damage:0f32,health:300f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static REAPERS_TOLL_443090: CachedItem = CachedItem {
                     gold: 0,
-                    prettified_stats: &[StatName::MoveSpeed(5),StatName::AdaptiveForce(40),StatName::AttackSpeed(50)],
+                    prettified_stats: &[StatName::AdaptiveForce(40),StatName::AttackSpeed(50),StatName::MoveSpeed(5)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -2823,7 +2823,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:15f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static REDEMPTION_3107: CachedItem = CachedItem {
                     gold: 2300,
-                    prettified_stats: &[StatName::Health(200),StatName::AbilityHaste(15),StatName::HealAndShieldPower(10),StatName::BaseManaRegen(100)],
+                    prettified_stats: &[StatName::BaseManaRegen(100),StatName::HealAndShieldPower(10),StatName::Health(200),StatName::AbilityHaste(15)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -2849,7 +2849,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static REGICIDE_447115: CachedItem = CachedItem {
                     gold: 0,
-                    prettified_stats: &[StatName::MoveSpeed(8),StatName::AttackDamage(60),StatName::Lethality(15)],
+                    prettified_stats: &[StatName::MoveSpeed(8),StatName::Lethality(15),StatName::AttackDamage(60)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -2888,7 +2888,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static REVERBERATION_447114: CachedItem = CachedItem {
                     gold: 0,
-                    prettified_stats: &[StatName::MagicResist(35),StatName::Armor(35),StatName::AttackSpeed(40)],
+                    prettified_stats: &[StatName::Armor(35),StatName::AttackSpeed(40),StatName::MagicResist(35)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -2901,7 +2901,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:35f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:40f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:35f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static RIFTMAKER_4633: CachedItem = CachedItem {
                     gold: 3100,
-                    prettified_stats: &[StatName::AbilityPower(70),StatName::Health(350),StatName::AbilityHaste(15)],
+                    prettified_stats: &[StatName::Health(350),StatName::AbilityHaste(15),StatName::AbilityPower(70)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -2914,7 +2914,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:70f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:350f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static RITE_OF_RUIN_3430: CachedItem = CachedItem {
                     gold: 2500,
-                    prettified_stats: &[StatName::AbilityPower(50),StatName::AbilityHaste(15),StatName::CriticalStrikeChance(25)],
+                    prettified_stats: &[StatName::CriticalStrikeChance(25),StatName::AbilityPower(50),StatName::AbilityHaste(15)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -2953,7 +2953,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:150f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static RUNAANS_HURRICANE_3085: CachedItem = CachedItem {
                     gold: 2650,
-                    prettified_stats: &[StatName::MoveSpeed(4),StatName::CriticalStrikeChance(25),StatName::AttackSpeed(40)],
+                    prettified_stats: &[StatName::AttackSpeed(40),StatName::MoveSpeed(4),StatName::CriticalStrikeChance(25)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -2979,7 +2979,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:80f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static RUNIC_COMPASS_3866: CachedItem = CachedItem {
                     gold: 400,
-                    prettified_stats: &[StatName::GoldPer10Seconds(5),StatName::Health(100),StatName::BaseHealthRegen(50),StatName::BaseManaRegen(50)],
+                    prettified_stats: &[StatName::BaseManaRegen(50),StatName::GoldPer10Seconds(5),StatName::BaseHealthRegen(50),StatName::Health(100)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -2992,7 +2992,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:100f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static RYLAIS_CRYSTAL_SCEPTER_3116: CachedItem = CachedItem {
                     gold: 2600,
-                    prettified_stats: &[StatName::Health(400),StatName::AbilityPower(65)],
+                    prettified_stats: &[StatName::AbilityPower(65),StatName::Health(400)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -3005,7 +3005,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:65f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:400f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static SANGUINE_GIFT_443062: CachedItem = CachedItem {
                     gold: 0,
-                    prettified_stats: &[StatName::AbilityPower(80),StatName::AbilityHaste(20),StatName::HealAndShieldPower(15)],
+                    prettified_stats: &[StatName::AbilityPower(80),StatName::HealAndShieldPower(15),StatName::AbilityHaste(20)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -3070,7 +3070,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:20f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static SEEKERS_ARMGUARD_2420: CachedItem = CachedItem {
                     gold: 1600,
-                    prettified_stats: &[StatName::Armor(25),StatName::AbilityPower(40)],
+                    prettified_stats: &[StatName::AbilityPower(40),StatName::Armor(25)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -3083,7 +3083,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:40f32,armor:25f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static SERAPHS_EMBRACE_3040: CachedItem = CachedItem {
                     gold: 2900,
-                    prettified_stats: &[StatName::Mana(1000),StatName::AbilityHaste(25),StatName::AbilityPower(70)],
+                    prettified_stats: &[StatName::AbilityHaste(25),StatName::Mana(1000),StatName::AbilityPower(70)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -3096,7 +3096,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:70f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:1000f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static SERPENTS_FANG_6695: CachedItem = CachedItem {
                     gold: 2500,
-                    prettified_stats: &[StatName::Lethality(15),StatName::AttackDamage(55)],
+                    prettified_stats: &[StatName::AttackDamage(55),StatName::Lethality(15)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -3122,7 +3122,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:20f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static SERYLDAS_GRUDGE_6694: CachedItem = CachedItem {
                     gold: 3000,
-                    prettified_stats: &[StatName::ArmorPenetration(35),StatName::AttackDamage(45),StatName::AbilityHaste(15)],
+                    prettified_stats: &[StatName::AttackDamage(45),StatName::AbilityHaste(15),StatName::ArmorPenetration(35)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -3135,7 +3135,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:35f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:45f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static SHADOWFLAME_4645: CachedItem = CachedItem {
                     gold: 3200,
-                    prettified_stats: &[StatName::AbilityPower(110),StatName::MagicPenetration(15)],
+                    prettified_stats: &[StatName::MagicPenetration(15),StatName::AbilityPower(110)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -3174,7 +3174,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static SHIELD_OF_MOLTEN_STONE_443058: CachedItem = CachedItem {
                     gold: 0,
-                    prettified_stats: &[StatName::Health(300),StatName::Armor(100)],
+                    prettified_stats: &[StatName::Armor(100),StatName::Health(300)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -3213,7 +3213,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:25f32,omnivamp:0f32,},
                 };pub static SOLSTICE_SLEIGH_3876: CachedItem = CachedItem {
                     gold: 400,
-                    prettified_stats: &[StatName::Health(200),StatName::GoldPer10Seconds(5),StatName::BaseHealthRegen(75),StatName::BaseManaRegen(75)],
+                    prettified_stats: &[StatName::GoldPer10Seconds(5),StatName::Health(200),StatName::BaseManaRegen(75),StatName::BaseHealthRegen(75)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -3239,7 +3239,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:12f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:45f32,omnivamp:0f32,},
                 };pub static SPEAR_OF_SHOJIN_3161: CachedItem = CachedItem {
                     gold: 3100,
-                    prettified_stats: &[StatName::AttackDamage(45),StatName::Health(450)],
+                    prettified_stats: &[StatName::Health(450),StatName::AttackDamage(45)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -3252,7 +3252,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:45f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:450f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static SPECTRAL_CUTLASS_224004: CachedItem = CachedItem {
                     gold: 2800,
-                    prettified_stats: &[StatName::AttackDamage(55),StatName::Lethality(21)],
+                    prettified_stats: &[StatName::Lethality(21),StatName::AttackDamage(55)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -3265,7 +3265,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:50f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static SPECTRES_COWL_3211: CachedItem = CachedItem {
                     gold: 1250,
-                    prettified_stats: &[StatName::MagicResist(35),StatName::Health(200),StatName::BaseHealthRegen(100)],
+                    prettified_stats: &[StatName::BaseHealthRegen(100),StatName::Health(200),StatName::MagicResist(35)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -3291,7 +3291,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:18f32,magic_penetration_flat:7f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:50f32,omnivamp:0f32,},
                 };pub static SPIRIT_VISAGE_3065: CachedItem = CachedItem {
                     gold: 2700,
-                    prettified_stats: &[StatName::Health(400),StatName::AbilityHaste(10),StatName::MagicResist(50),StatName::BaseHealthRegen(100)],
+                    prettified_stats: &[StatName::Health(400),StatName::AbilityHaste(10),StatName::BaseHealthRegen(100),StatName::MagicResist(50)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -3304,7 +3304,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:400f32,lifesteal:0f32,magic_resist:50f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static STAFF_OF_FLOWING_WATER_6616: CachedItem = CachedItem {
                     gold: 2250,
-                    prettified_stats: &[StatName::HealAndShieldPower(10),StatName::AbilityHaste(15),StatName::AbilityPower(35),StatName::BaseManaRegen(125)],
+                    prettified_stats: &[StatName::AbilityHaste(15),StatName::AbilityPower(35),StatName::HealAndShieldPower(10),StatName::BaseManaRegen(125)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -3330,7 +3330,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static STATIKK_SHIV_3087: CachedItem = CachedItem {
                     gold: 2700,
-                    prettified_stats: &[StatName::AttackDamage(45),StatName::MoveSpeed(4),StatName::AttackSpeed(30)],
+                    prettified_stats: &[StatName::AttackSpeed(30),StatName::AttackDamage(45),StatName::MoveSpeed(4)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -3356,7 +3356,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static STEEL_SIGIL_2019: CachedItem = CachedItem {
                     gold: 1100,
-                    prettified_stats: &[StatName::AttackDamage(15),StatName::Armor(30)],
+                    prettified_stats: &[StatName::Armor(30),StatName::AttackDamage(15)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -3382,7 +3382,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:400f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static STORMRAZOR_223095: CachedItem = CachedItem {
                     gold: 2500,
-                    prettified_stats: &[StatName::AttackDamage(45),StatName::AttackSpeed(25),StatName::CriticalStrikeChance(25)],
+                    prettified_stats: &[StatName::CriticalStrikeChance(25),StatName::AttackDamage(45),StatName::AttackSpeed(25)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -3395,7 +3395,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:45f32,attack_speed:25f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static STORMSURGE_4646: CachedItem = CachedItem {
                     gold: 2800,
-                    prettified_stats: &[StatName::MoveSpeed(6),StatName::MagicPenetration(15),StatName::AbilityPower(90)],
+                    prettified_stats: &[StatName::MagicPenetration(15),StatName::MoveSpeed(6),StatName::AbilityPower(90)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -3434,7 +3434,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:40f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:400f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static SUNFIRE_AEGIS_3068: CachedItem = CachedItem {
                     gold: 2700,
-                    prettified_stats: &[StatName::Health(350),StatName::Armor(50),StatName::AbilityHaste(10)],
+                    prettified_stats: &[StatName::Armor(50),StatName::AbilityHaste(10),StatName::Health(350)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -3486,7 +3486,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:65f32,omnivamp:0f32,},
                 };pub static SWORD_OF_BLOSSOMING_DAWN_4011: CachedItem = CachedItem {
                     gold: 2500,
-                    prettified_stats: &[StatName::Health(200),StatName::AbilityHaste(15),StatName::HealAndShieldPower(12),StatName::AbilityPower(45)],
+                    prettified_stats: &[StatName::AbilityPower(45),StatName::Health(200),StatName::HealAndShieldPower(12),StatName::AbilityHaste(15)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -3564,7 +3564,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:240f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static TERMINUS_3302: CachedItem = CachedItem {
                     gold: 3000,
-                    prettified_stats: &[StatName::AttackDamage(30),StatName::AttackSpeed(35)],
+                    prettified_stats: &[StatName::AttackSpeed(35),StatName::AttackDamage(30)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -3577,7 +3577,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:30f32,attack_speed:35f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static THE_BRUTALIZER_2020: CachedItem = CachedItem {
                     gold: 1337,
-                    prettified_stats: &[StatName::AttackDamage(25),StatName::Lethality(5),StatName::AbilityHaste(10)],
+                    prettified_stats: &[StatName::Lethality(5),StatName::AttackDamage(25),StatName::AbilityHaste(10)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -3603,7 +3603,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:50f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static THE_GOLDEN_SPATULA_224403: CachedItem = CachedItem {
                     gold: 0,
-                    prettified_stats: &[StatName::BaseHealthRegen(100),StatName::AttackDamage(90),StatName::AbilityPower(125),StatName::Health(250),StatName::MagicResist(30),StatName::CriticalStrikeChance(25),StatName::Armor(30),StatName::BaseManaRegen(100),StatName::MoveSpeed(10),StatName::AttackSpeed(60),StatName::AbilityHaste(20),StatName::LifeSteal(10),StatName::Mana(250)],
+                    prettified_stats: &[StatName::BaseManaRegen(100),StatName::Omnivamp(10),StatName::Armor(30),StatName::AttackSpeed(60),StatName::AttackDamage(90),StatName::CriticalStrikeChance(25),StatName::MagicResist(30),StatName::AbilityHaste(20),StatName::AbilityPower(125),StatName::Mana(250),StatName::MoveSpeed(10),StatName::BaseHealthRegen(100),StatName::Health(250)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -3616,7 +3616,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:125f32,armor:40f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:90f32,attack_speed:60f32,crit_chance:0f32,crit_damage:0f32,health:350f32,lifesteal:0f32,magic_resist:40f32,mana:350f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static THORNMAIL_3075: CachedItem = CachedItem {
                     gold: 2450,
-                    prettified_stats: &[StatName::Armor(75),StatName::Health(150)],
+                    prettified_stats: &[StatName::Health(150),StatName::Armor(75)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -3642,7 +3642,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:20f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static TITANIC_HYDRA_3748: CachedItem = CachedItem {
                     gold: 3300,
-                    prettified_stats: &[StatName::AttackDamage(40),StatName::Health(600)],
+                    prettified_stats: &[StatName::Health(600),StatName::AttackDamage(40)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -3681,7 +3681,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:40f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:250f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static TRINITY_FORCE_3078: CachedItem = CachedItem {
                     gold: 3333,
-                    prettified_stats: &[StatName::Health(333),StatName::AbilityHaste(15),StatName::AttackSpeed(30),StatName::AttackDamage(36)],
+                    prettified_stats: &[StatName::AbilityHaste(15),StatName::AttackDamage(36),StatName::Health(333),StatName::AttackSpeed(30)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -3694,7 +3694,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:36f32,attack_speed:30f32,crit_chance:0f32,crit_damage:0f32,health:333f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static TUNNELER_2021: CachedItem = CachedItem {
                     gold: 1150,
-                    prettified_stats: &[StatName::AttackDamage(15),StatName::Health(250)],
+                    prettified_stats: &[StatName::Health(250),StatName::AttackDamage(15)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -3707,7 +3707,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:15f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:250f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static TURBO_CHEMTANK_443079: CachedItem = CachedItem {
                     gold: 0,
-                    prettified_stats: &[StatName::Health(600),StatName::AdaptiveForce(80)],
+                    prettified_stats: &[StatName::AdaptiveForce(80),StatName::Health(600)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -3733,7 +3733,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static TWILIGHTS_EDGE_447121: CachedItem = CachedItem {
                     gold: 0,
-                    prettified_stats: &[StatName::AbilityPower(100),StatName::AttackDamage(70)],
+                    prettified_stats: &[StatName::AttackDamage(70),StatName::AbilityPower(100)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -3759,7 +3759,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static UMBRAL_GLAIVE_3179: CachedItem = CachedItem {
                     gold: 2500,
-                    prettified_stats: &[StatName::Lethality(15),StatName::AttackDamage(55),StatName::AbilityHaste(10)],
+                    prettified_stats: &[StatName::AbilityHaste(10),StatName::AttackDamage(55),StatName::Lethality(15)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -3772,7 +3772,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:55f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static UNENDING_DESPAIR_2502: CachedItem = CachedItem {
                     gold: 2800,
-                    prettified_stats: &[StatName::Armor(25),StatName::MagicResist(25),StatName::AbilityHaste(10),StatName::Health(400)],
+                    prettified_stats: &[StatName::Health(400),StatName::Armor(25),StatName::MagicResist(25),StatName::AbilityHaste(10)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -3798,7 +3798,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:15f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static VERDANT_BARRIER_4632: CachedItem = CachedItem {
                     gold: 1600,
-                    prettified_stats: &[StatName::AbilityPower(40),StatName::MagicResist(25)],
+                    prettified_stats: &[StatName::MagicResist(25),StatName::AbilityPower(40)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -3811,7 +3811,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:40f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:25f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static VIGILANT_WARDSTONE_4643: CachedItem = CachedItem {
                     gold: 2300,
-                    prettified_stats: &[StatName::Health(250),StatName::Armor(25),StatName::MagicResist(30),StatName::AbilityHaste(20)],
+                    prettified_stats: &[StatName::AbilityHaste(20),StatName::Health(250),StatName::Armor(25),StatName::MagicResist(30)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -3824,7 +3824,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:25f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:250f32,lifesteal:0f32,magic_resist:30f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static VOID_STAFF_3135: CachedItem = CachedItem {
                     gold: 3000,
-                    prettified_stats: &[StatName::MagicPenetration(40),StatName::AbilityPower(95)],
+                    prettified_stats: &[StatName::AbilityPower(95),StatName::MagicPenetration(40)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -3837,7 +3837,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:95f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:40f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static VOLTAIC_CYCLOSWORD_6699: CachedItem = CachedItem {
                     gold: 3000,
-                    prettified_stats: &[StatName::AttackDamage(55),StatName::AbilityHaste(10),StatName::Lethality(18)],
+                    prettified_stats: &[StatName::AttackDamage(55),StatName::Lethality(18),StatName::AbilityHaste(10)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -3889,7 +3889,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:1000f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static WATCHFUL_WARDSTONE_4638: CachedItem = CachedItem {
                     gold: 1100,
-                    prettified_stats: &[StatName::Health(150),StatName::AbilityHaste(10),StatName::Armor(10),StatName::MagicResist(15)],
+                    prettified_stats: &[StatName::Armor(10),StatName::AbilityHaste(10),StatName::MagicResist(15),StatName::Health(150)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -3915,7 +3915,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:200f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static WINTERS_APPROACH_3119: CachedItem = CachedItem {
                     gold: 2400,
-                    prettified_stats: &[StatName::AbilityHaste(15),StatName::Health(550),StatName::Mana(500)],
+                    prettified_stats: &[StatName::Health(550),StatName::AbilityHaste(15),StatName::Mana(500)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -3928,7 +3928,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:550f32,lifesteal:0f32,magic_resist:0f32,mana:500f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static WITS_END_3091: CachedItem = CachedItem {
                     gold: 2800,
-                    prettified_stats: &[StatName::AttackSpeed(50),StatName::Tenacity(20),StatName::MagicResist(45)],
+                    prettified_stats: &[StatName::MagicResist(45),StatName::Tenacity(20),StatName::AttackSpeed(50)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -3941,7 +3941,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:50f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:45f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static WOOGLETS_WITCHCAP_228002: CachedItem = CachedItem {
                     gold: 0,
-                    prettified_stats: &[StatName::AbilityPower(300),StatName::Armor(50),StatName::AbilityHaste(20)],
+                    prettified_stats: &[StatName::AbilityHaste(20),StatName::Armor(50),StatName::AbilityPower(300)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -3954,7 +3954,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:300f32,armor:50f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static WORDLESS_PROMISE_4016: CachedItem = CachedItem {
                     gold: 2500,
-                    prettified_stats: &[StatName::AbilityPower(50),StatName::HealAndShieldPower(25),StatName::AbilityHaste(25)],
+                    prettified_stats: &[StatName::AbilityHaste(25),StatName::AbilityPower(50),StatName::HealAndShieldPower(25)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -3980,7 +3980,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:30f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static YOUMUUS_GHOSTBLADE_3142: CachedItem = CachedItem {
                     gold: 2800,
-                    prettified_stats: &[StatName::Lethality(18),StatName::MoveSpeed(4),StatName::AttackDamage(55)],
+                    prettified_stats: &[StatName::AttackDamage(55),StatName::Lethality(18),StatName::MoveSpeed(4)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -4006,7 +4006,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static YUN_TAL_WILDARROWS_3032: CachedItem = CachedItem {
                     gold: 3000,
-                    prettified_stats: &[StatName::CriticalStrikeChance(0),StatName::AttackDamage(55),StatName::AttackSpeed(35)],
+                    prettified_stats: &[StatName::CriticalStrikeChance(0),StatName::AttackSpeed(35),StatName::AttackDamage(55)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -4019,7 +4019,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:55f32,attack_speed:35f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static ZAZ_ZAKS_REALMSPIKE_3871: CachedItem = CachedItem {
                     gold: 400,
-                    prettified_stats: &[StatName::BaseHealthRegen(75),StatName::GoldPer10Seconds(5),StatName::Health(200),StatName::BaseManaRegen(75)],
+                    prettified_stats: &[StatName::BaseHealthRegen(75),StatName::Health(200),StatName::BaseManaRegen(75),StatName::GoldPer10Seconds(5)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -4032,7 +4032,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:200f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static ZEAL_3086: CachedItem = CachedItem {
                     gold: 1200,
-                    prettified_stats: &[StatName::AttackSpeed(15),StatName::MoveSpeed(4),StatName::CriticalStrikeChance(15)],
+                    prettified_stats: &[StatName::CriticalStrikeChance(15),StatName::AttackSpeed(15),StatName::MoveSpeed(4)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -4045,7 +4045,7 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     stats: CachedItemStats {ability_power:0f32,armor:0f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:15f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
                 };pub static ZEKES_CONVERGENCE_3050: CachedItem = CachedItem {
                     gold: 2200,
-                    prettified_stats: &[StatName::Health(300),StatName::MagicResist(25),StatName::Armor(25),StatName::AbilityHaste(10)],
+                    prettified_stats: &[StatName::AbilityHaste(10),StatName::Armor(25),StatName::Health(300),StatName::MagicResist(25)],
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
@@ -4082,4 +4082,4 @@ use super::*;pub static INTERNAL_ITEMS:[&CachedItem;314]=[&ABYSSAL_MASK_8020,&AE
                     range_closure: &[],
                     melee_closure: &[],
                     stats: CachedItemStats {ability_power:105f32,armor:50f32,armor_penetration_percent:0f32,armor_penetration_flat:0f32,magic_penetration_percent:0f32,magic_penetration_flat:0f32,attack_damage:0f32,attack_speed:0f32,crit_chance:0f32,crit_damage:0f32,health:0f32,lifesteal:0f32,magic_resist:0f32,mana:0f32,movespeed:0f32,omnivamp:0f32,},
-                };pub static SIMULATED_ITEMS:phf::OrderedSet<u32>=phf::phf_ordered_set!(8020u32,228001u32,3003u32,3504u32,3174u32,223039u32,6696u32,4642u32,3102u32,3071u32,2503u32,3153u32,8010u32,3877u32,3072u32,3869u32,3173u32,6609u32,4629u32,3171u32,3137u32,6621u32,3742u32,6333u32,3870u32,6620u32,6692u32,3814u32,3508u32,3073u32,4401u32,3176u32,3110u32,3026u32,3124u32,3084u32,4017u32,223146u32,3152u32,6664u32,4628u32,6697u32,3181u32,6662u32,6673u32,4005u32,6665u32,2504u32,3109u32,6672u32,6653u32,3100u32,3190u32,3036u32,6655u32,3118u32,3004u32,3156u32,3139u32,3222u32,6617u32,3165u32,3033u32,3115u32,6675u32,6701u32,2501u32,4015u32,3046u32,6698u32,3143u32,3094u32,3074u32,3107u32,4633u32,3430u32,6657u32,3085u32,3116u32,6695u32,6694u32,4645u32,2065u32,3876u32,3161u32,224004u32,3175u32,3065u32,6616u32,3087u32,3053u32,223095u32,4646u32,6631u32,6610u32,3068u32,3170u32,4011u32,3302u32,6676u32,3075u32,3748u32,3002u32,3078u32,3179u32,2502u32,3135u32,6699u32,3083u32,3119u32,3091u32,4016u32,3142u32,3032u32,3871u32,3050u32,3172u32,3157u32,);pub static SIMULATED_ITEMS_ENUM:[u16;118]=[0,4,7,8,9,10,11,14,15,18,21,22,25,26,27,35,37,38,43,44,47,53,54,55,67,69,70,71,81,84,95,96,97,107,115,122,123,128,129,130,131,132,133,134,135,136,140,144,147,148,157,158,161,163,166,167,168,169,171,173,176,177,178,181,182,190,193,194,196,202,210,211,212,217,223,224,225,227,230,238,240,241,245,247,249,250,252,253,254,256,259,260,261,262,263,264,267,268,274,276,278,280,282,283,289,290,294,295,298,301,302,304,306,308,309,311,312,313,];pub static DAMAGING_ITEMS:phf::Set<u32>=phf::phf_set!(3115u32,);
+                };pub static SIMULATED_ITEMS:phf::OrderedSet<u32>=phf::phf_ordered_set!(8020u32,228001u32,3003u32,3504u32,3174u32,223039u32,6696u32,4642u32,3102u32,3071u32,2503u32,3153u32,8010u32,3877u32,3072u32,3869u32,3173u32,6609u32,4629u32,3171u32,3137u32,6621u32,3742u32,6333u32,3870u32,6620u32,6692u32,3814u32,3508u32,3073u32,4401u32,3176u32,3110u32,3026u32,3124u32,3084u32,4017u32,223146u32,3152u32,6664u32,4628u32,6697u32,3181u32,6662u32,6673u32,4005u32,6665u32,2504u32,3109u32,6672u32,6653u32,3100u32,3190u32,3036u32,6655u32,3118u32,3004u32,3156u32,3139u32,3222u32,6617u32,3165u32,3033u32,3115u32,6675u32,6701u32,2501u32,4015u32,3046u32,6698u32,3143u32,3094u32,3074u32,3107u32,4633u32,3430u32,6657u32,3085u32,3116u32,6695u32,6694u32,4645u32,2065u32,3876u32,3161u32,224004u32,3175u32,3065u32,6616u32,3087u32,3053u32,223095u32,4646u32,6631u32,6610u32,3068u32,3170u32,4011u32,3302u32,6676u32,3075u32,3748u32,3002u32,3078u32,3179u32,2502u32,3135u32,6699u32,3083u32,3119u32,3091u32,4016u32,3142u32,3032u32,3871u32,3050u32,3172u32,3157u32,);pub static SIMULATED_ITEMS_ENUM:[u16;118]=[0,4,7,8,9,10,11,14,15,18,21,22,25,26,27,35,37,38,43,44,47,53,54,55,67,69,70,71,81,84,95,96,97,107,115,122,123,128,129,130,131,132,133,134,135,136,140,144,147,148,157,158,161,163,166,167,168,169,171,173,176,177,178,181,182,190,193,194,196,202,210,211,212,217,223,224,225,227,230,238,240,241,245,247,249,250,252,253,254,256,259,260,261,262,263,264,267,268,274,276,278,280,282,283,289,290,294,295,298,301,302,304,306,308,309,311,312,313,];pub static DAMAGING_ITEMS:phf::Set<u32>=phf::phf_set!(3153u32,3115u32,);

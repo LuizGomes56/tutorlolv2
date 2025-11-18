@@ -13,7 +13,7 @@ use std::{
     path::Path,
 };
 use tutorlolv2_fmt::invoke_rustfmt;
-use tutorlolv2_gen::{Attrs, ChampionId, DamageType, EvalIdent, INTERNAL_CHAMPIONS, Position};
+use tutorlolv2_gen::{Attrs, ChampionId, DamageType, INTERNAL_CHAMPIONS, Position};
 use tutorlolv2_types::{AbilityLike, AbilityName};
 
 const GENERATOR_FOLDER: &str = "tutorlolv2_dev/src/generators/gen_champions";

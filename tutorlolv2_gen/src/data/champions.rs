@@ -5,135 +5,135 @@ use super::*;#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode
                     attack_type: AttackType::Melee,
                     positions: &[Position::Top],
                     metadata: &[TypeMetadata { 
-                kind: AbilityLike::Q(AbilityName::_1), 
-                damage_type: DamageType::Physical, 
+                kind: AbilityLike::P(AbilityName::Void), 
+                damage_type: DamageType::Magic, 
                 attributes: Attrs::Undefined 
             },TypeMetadata { 
-                kind: AbilityLike::Q(AbilityName::_2), 
+                kind: AbilityLike::Q(AbilityName::Min), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::Undefined 
+                attributes: Attrs::Area 
             },TypeMetadata { 
-                kind: AbilityLike::Q(AbilityName::_3), 
+                kind: AbilityLike::Q(AbilityName::_1Min), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::Undefined 
+                attributes: Attrs::Area 
             },TypeMetadata { 
-                kind: AbilityLike::Q(AbilityName::_4), 
+                kind: AbilityLike::Q(AbilityName::_2Min), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::Undefined 
+                attributes: Attrs::Area 
             },TypeMetadata { 
-                kind: AbilityLike::Q(AbilityName::_5), 
+                kind: AbilityLike::Q(AbilityName::_3Min), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::Undefined 
-            },TypeMetadata { 
-                kind: AbilityLike::Q(AbilityName::_6), 
-                damage_type: DamageType::Physical, 
-                attributes: Attrs::Undefined 
-            },TypeMetadata { 
-                kind: AbilityLike::Q(AbilityName::_7), 
-                damage_type: DamageType::Physical, 
-                attributes: Attrs::Undefined 
-            },TypeMetadata { 
-                kind: AbilityLike::Q(AbilityName::_8), 
-                damage_type: DamageType::Physical, 
-                attributes: Attrs::Undefined 
+                attributes: Attrs::Area 
             },TypeMetadata { 
                 kind: AbilityLike::Q(AbilityName::Max), 
                 damage_type: DamageType::Physical, 
-                attributes: Attrs::Undefined 
+                attributes: Attrs::Area 
             },TypeMetadata { 
-                kind: AbilityLike::W(AbilityName::_1), 
+                kind: AbilityLike::Q(AbilityName::_1Max), 
+                damage_type: DamageType::Physical, 
+                attributes: Attrs::Area 
+            },TypeMetadata { 
+                kind: AbilityLike::Q(AbilityName::_2Max), 
+                damage_type: DamageType::Physical, 
+                attributes: Attrs::Area 
+            },TypeMetadata { 
+                kind: AbilityLike::Q(AbilityName::_3Max), 
+                damage_type: DamageType::Physical, 
+                attributes: Attrs::Area 
+            },TypeMetadata { 
+                kind: AbilityLike::W(AbilityName::Min), 
                 damage_type: DamageType::Physical, 
                 attributes: Attrs::Undefined 
             },TypeMetadata { 
-                kind: AbilityLike::W(AbilityName::_2), 
+                kind: AbilityLike::W(AbilityName::Max), 
                 damage_type: DamageType::Physical, 
                 attributes: Attrs::Undefined 
             }],
-                    closures: &[|ctx| { match ctx.q_level {1 => 10f32 + 0.6f32 * ctx.ad,2 => 25f32 + 0.675f32 * ctx.ad,3 => 40f32 + 0.75f32 * ctx.ad,4 => 55f32 + 0.825f32 * ctx.ad,5 => 70f32 + 0.9f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 17f32 + 1.02f32 * ctx.ad,2 => 42.5f32 + 1.1475f32 * ctx.ad,3 => 68f32 + 1.275f32 * ctx.ad,4 => 93.5f32 + 1.4025f32 * ctx.ad,5 => 119f32 + 1.53f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 12.5f32 + 0.75f32 * ctx.ad,2 => 31.25f32 + 0.84375f32 * ctx.ad,3 => 50f32 + 0.9375f32 * ctx.ad,4 => 68.75f32 + 1.03125f32 * ctx.ad,5 => 87.5f32 + 1.125f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 21.25f32 + 1.275f32 * ctx.ad,2 => 53.125f32 + 1.434375f32 * ctx.ad,3 => 85f32 + 1.59375f32 * ctx.ad,4 => 116.875f32 + 1.753125f32 * ctx.ad,5 => 148.75f32 + 1.9125f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 37.5f32 + 2.25f32 * ctx.ad,2 => 93.75f32 + 2.53125f32 * ctx.ad,3 => 150f32 + 2.8125f32 * ctx.ad,4 => 206.25f32 + 3.09375f32 * ctx.ad,5 => 262.5f32 + 3.375f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 63.75f32 + 3.825f32 * ctx.ad,2 => 159.375f32 + 4.303125f32 * ctx.ad,3 => 255f32 + 4.78125f32 * ctx.ad,4 => 350.625f32 + 5.259375f32 * ctx.ad,5 => 446.25f32 + 5.7375f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 15f32 + 0.9f32 * ctx.ad,2 => 37.5f32 + 1.0125f32 * ctx.ad,3 => 60f32 + 1.125f32 * ctx.ad,4 => 82.5f32 + 1.2375f32 * ctx.ad,5 => 105f32 + 1.35f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 25.5f32 + 1.53f32 * ctx.ad,2 => 63.75f32 + 1.72125f32 * ctx.ad,3 => 102f32 + 1.9125f32 * ctx.ad,4 => 140.25f32 + 2.10375f32 * ctx.ad,5 => 178.5f32 + 2.295f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 10f32 + 0.6f32 * ctx.ad + (17f32 + 1.02f32 * ctx.ad) + (12.5f32 + 0.75f32 * ctx.ad),2 => 25f32 + 0.675f32 * ctx.ad + (42.5f32 + 1.1475f32 * ctx.ad) + (31.25f32 + 0.84375f32 * ctx.ad),3 => 40f32 + 0.75f32 * ctx.ad + (68f32 + 1.275f32 * ctx.ad) + (50f32 + 0.9375f32 * ctx.ad),4 => 55f32 + 0.825f32 * ctx.ad + (93.5f32 + 1.4025f32 * ctx.ad) + (68.75f32 + 1.03125f32 * ctx.ad),5 => 70f32 + 0.9f32 * ctx.ad + (119f32 + 1.53f32 * ctx.ad) + (87.5f32 + 1.125f32 * ctx.ad),_ => 0.0 }},|ctx| { match ctx.w_level {1 => 60f32 + 0.8f32 * ctx.ad,2 => 80f32 + 0.8f32 * ctx.ad,3 => 100f32 + 0.8f32 * ctx.ad,4 => 120f32 + 0.8f32 * ctx.ad,5 => 140f32 + 0.8f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 30f32 + 0.4f32 * ctx.ad,2 => 40f32 + 0.4f32 * ctx.ad,3 => 50f32 + 0.4f32 * ctx.ad,4 => 60f32 + 0.4f32 * ctx.ad,5 => 70f32 + 0.4f32 * ctx.ad,_ => 0.0 }}],
+                    closures: &[|ctx| { match ctx.level as u8 {1 => 0.04f32 * ctx.enemy_bonus_health,2 => 0.042352941176470586f32 * ctx.enemy_bonus_health,3 => 0.04470588235294118f32 * ctx.enemy_bonus_health,4 => 0.047058823529411764f32 * ctx.enemy_bonus_health,5 => 0.049411764705882356f32 * ctx.enemy_bonus_health,6 => 0.05176470588235294f32 * ctx.enemy_bonus_health,7 => 0.05411764705882353f32 * ctx.enemy_bonus_health,8 => 0.05647058823529412f32 * ctx.enemy_bonus_health,9 => 0.058823529411764705f32 * ctx.enemy_bonus_health,10 => 0.06117647058823529f32 * ctx.enemy_bonus_health,11 => 0.06352941176470589f32 * ctx.enemy_bonus_health,12 => 0.06588235294117648f32 * ctx.enemy_bonus_health,13 => 0.06823529411764706f32 * ctx.enemy_bonus_health,14 => 0.07058823529411765f32 * ctx.enemy_bonus_health,15 => 0.07294117647058823f32 * ctx.enemy_bonus_health,16 => 0.07529411764705882f32 * ctx.enemy_bonus_health,17 => 0.07764705882352942f32 * ctx.enemy_bonus_health,18 => 0.08f32 * ctx.enemy_bonus_health,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 10f32 + 0.6f32 * ctx.ad + (12.5f32 + 0.75f32 * ctx.ad) + (15f32 + 0.9f32 * ctx.ad),2 => 25f32 + 0.675f32 * ctx.ad + (31.25f32 + 0.84375f32 * ctx.ad) + (37.5f32 + 1.0125f32 * ctx.ad),3 => 40f32 + 0.75f32 * ctx.ad + (50f32 + 0.9375f32 * ctx.ad) + (60f32 + 1.125f32 * ctx.ad),4 => 55f32 + 0.825f32 * ctx.ad + (68.75f32 + 1.03125f32 * ctx.ad) + (82.5f32 + 1.2375f32 * ctx.ad),5 => 70f32 + 0.9f32 * ctx.ad + (87.5f32 + 1.125f32 * ctx.ad) + (105f32 + 1.35f32 * ctx.ad),_ => 0.0 }},|ctx| { match ctx.q_level {1 => 10f32 + 0.6f32 * ctx.ad,2 => 25f32 + 0.675f32 * ctx.ad,3 => 40f32 + 0.75f32 * ctx.ad,4 => 55f32 + 0.825f32 * ctx.ad,5 => 70f32 + 0.9f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 12.5f32 + 0.75f32 * ctx.ad,2 => 31.25f32 + 0.84375f32 * ctx.ad,3 => 50f32 + 0.9375f32 * ctx.ad,4 => 68.75f32 + 1.03125f32 * ctx.ad,5 => 87.5f32 + 1.125f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 15f32 + 0.9f32 * ctx.ad,2 => 37.5f32 + 1.0125f32 * ctx.ad,3 => 60f32 + 1.125f32 * ctx.ad,4 => 82.5f32 + 1.2375f32 * ctx.ad,5 => 105f32 + 1.35f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 17f32 + 1.02f32 * ctx.ad + (21.25f32 + 1.275f32 * ctx.ad) + (25.5f32 + 1.53f32 * ctx.ad),2 => 42.5f32 + 1.1475f32 * ctx.ad + (53.125f32 + 1.434375f32 * ctx.ad) + (63.75f32 + 1.72125f32 * ctx.ad),3 => 68f32 + 1.275f32 * ctx.ad + (85f32 + 1.59375f32 * ctx.ad) + (102f32 + 1.9125f32 * ctx.ad),4 => 93.5f32 + 1.4025f32 * ctx.ad + (116.875f32 + 1.753125f32 * ctx.ad) + (140.25f32 + 2.10375f32 * ctx.ad),5 => 119f32 + 1.53f32 * ctx.ad + (148.75f32 + 1.9125f32 * ctx.ad) + (178.5f32 + 2.295f32 * ctx.ad),_ => 0.0 }},|ctx| { match ctx.q_level {1 => 17f32 + 1.02f32 * ctx.ad,2 => 42.5f32 + 1.1475f32 * ctx.ad,3 => 68f32 + 1.275f32 * ctx.ad,4 => 93.5f32 + 1.4025f32 * ctx.ad,5 => 119f32 + 1.53f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 21.25f32 + 1.275f32 * ctx.ad,2 => 53.125f32 + 1.434375f32 * ctx.ad,3 => 85f32 + 1.59375f32 * ctx.ad,4 => 116.875f32 + 1.753125f32 * ctx.ad,5 => 148.75f32 + 1.9125f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 25.5f32 + 1.53f32 * ctx.ad,2 => 63.75f32 + 1.72125f32 * ctx.ad,3 => 102f32 + 1.9125f32 * ctx.ad,4 => 140.25f32 + 2.10375f32 * ctx.ad,5 => 178.5f32 + 2.295f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 30f32 + 0.4f32 * ctx.ad,2 => 40f32 + 0.4f32 * ctx.ad,3 => 50f32 + 0.4f32 * ctx.ad,4 => 60f32 + 0.4f32 * ctx.ad,5 => 70f32 + 0.4f32 * ctx.ad,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 60f32 + 0.8f32 * ctx.ad,2 => 80f32 + 0.8f32 * ctx.ad,3 => 100f32 + 0.8f32 * ctx.ad,4 => 120f32 + 0.8f32 * ctx.ad,5 => 140f32 + 0.8f32 * ctx.ad,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:650f32,per_level:114f32},mana:CachedChampionStatsMap{flat:0f32,per_level:0f32},armor:CachedChampionStatsMap{flat:38f32,per_level:4.8f32},magic_resist:CachedChampionStatsMap{flat:32f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:60f32,per_level:5f32},attack_speed:CachedChampionStatsMap{flat:0.651f32,per_level:2.5f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.651000022888183f32,attack_range:175f32,aram_damage_taken:1f32,aram_damage_dealt:1.05f32,urf_damage_taken:0.7f32,urf_damage_dealt:1.15f32,},
-                    merge_data: &[(0, 1),(2, 3),(4, 5),(9, 10)],
+                    merge_data: &[(3, 7),(4, 8),(2, 6),(9, 10),(1, 5)],
                 };pub static AHRI: CachedChampion = CachedChampion {
                     name: "Ahri",
                     adaptative_type: AdaptativeType::Magic,
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle],
                     metadata: &[TypeMetadata { 
-                kind: AbilityLike::Q(AbilityName::_1), 
-                damage_type: DamageType::Unknown, 
-                attributes: Attrs::Undefined 
+                kind: AbilityLike::Q(AbilityName::Min), 
+                damage_type: DamageType::Magic, 
+                attributes: Attrs::Area 
             },TypeMetadata { 
-                kind: AbilityLike::Q(AbilityName::_2), 
-                damage_type: DamageType::Unknown, 
-                attributes: Attrs::Undefined 
+                kind: AbilityLike::Q(AbilityName::Max), 
+                damage_type: DamageType::Mixed, 
+                attributes: Attrs::Area 
             },TypeMetadata { 
                 kind: AbilityLike::W(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
                 attributes: Attrs::Undefined 
             },TypeMetadata { 
-                kind: AbilityLike::W(AbilityName::_2), 
+                kind: AbilityLike::W(AbilityName::Min), 
                 damage_type: DamageType::Magic, 
                 attributes: Attrs::Undefined 
             },TypeMetadata { 
-                kind: AbilityLike::W(AbilityName::_3), 
+                kind: AbilityLike::W(AbilityName::Max), 
                 damage_type: DamageType::Magic, 
                 attributes: Attrs::Undefined 
             },TypeMetadata { 
-                kind: AbilityLike::W(AbilityName::_4), 
+                kind: AbilityLike::E(AbilityName::Void), 
                 damage_type: DamageType::Magic, 
                 attributes: Attrs::Undefined 
             },TypeMetadata { 
-                kind: AbilityLike::W(AbilityName::_5), 
+                kind: AbilityLike::R(AbilityName::Min), 
                 damage_type: DamageType::Magic, 
                 attributes: Attrs::Undefined 
             },TypeMetadata { 
-                kind: AbilityLike::E(AbilityName::_1), 
-                damage_type: DamageType::Magic, 
-                attributes: Attrs::Undefined 
-            },TypeMetadata { 
-                kind: AbilityLike::R(AbilityName::_1), 
+                kind: AbilityLike::R(AbilityName::Max), 
                 damage_type: DamageType::Magic, 
                 attributes: Attrs::Undefined 
             }],
-                    closures: &[|ctx| { match ctx.q_level {1 => 40f32 + 0.5f32 * ctx.ap,2 => 65f32 + 0.5f32 * ctx.ap,3 => 90f32 + 0.5f32 * ctx.ap,4 => 115f32 + 0.5f32 * ctx.ap,5 => 140f32 + 0.5f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 80f32 + ctx.ap,2 => 130f32 + ctx.ap,3 => 180f32 + ctx.ap,4 => 230f32 + ctx.ap,5 => 280f32 + ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 40f32 + 0.4f32 * ctx.ap,2 => 60f32 + 0.4f32 * ctx.ap,3 => 80f32 + 0.4f32 * ctx.ap,4 => 100f32 + 0.4f32 * ctx.ap,5 => 120f32 + 0.4f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 12f32 + 0.12f32 * ctx.ap,2 => 18f32 + 0.12f32 * ctx.ap,3 => 24f32 + 0.12f32 * ctx.ap,4 => 30f32 + 0.12f32 * ctx.ap,5 => 36f32 + 0.12f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 64f32 + 0.64f32 * ctx.ap,2 => 96f32 + 0.64f32 * ctx.ap,3 => 128f32 + 0.64f32 * ctx.ap,4 => 160f32 + 0.64f32 * ctx.ap,5 => 192f32 + 0.64f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 80f32 + 0.8f32 * ctx.ap,2 => 120f32 + 0.8f32 * ctx.ap,3 => 160f32 + 0.8f32 * ctx.ap,4 => 200f32 + 0.8f32 * ctx.ap,5 => 240f32 + 0.8f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 24f32 + 0.24f32 * ctx.ap,2 => 36f32 + 0.24f32 * ctx.ap,3 => 48f32 + 0.24f32 * ctx.ap,4 => 60f32 + 0.24f32 * ctx.ap,5 => 72f32 + 0.24f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 0.0f32,2 => 0.0f32,3 => 0.0f32,4 => 0.0f32,5 => 0.0f32,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 60f32 + 0.35f32 * ctx.ap,2 => 90f32 + 0.35f32 * ctx.ap,3 => 120f32 + 0.35f32 * ctx.ap,_ => 0.0 }}],
+                    closures: &[|ctx| { match ctx.q_level {1 => 40f32 + 0.5f32 * ctx.ap,2 => 65f32 + 0.5f32 * ctx.ap,3 => 90f32 + 0.5f32 * ctx.ap,4 => 115f32 + 0.5f32 * ctx.ap,5 => 140f32 + 0.5f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => (40f32 + 0.5f32 * ctx.ap) * ctx.magic_multiplier + (40f32 + 0.5f32 * ctx.ap),2 => (65f32 + 0.5f32 * ctx.ap) * ctx.magic_multiplier + (65f32 + 0.5f32 * ctx.ap),3 => (90f32 + 0.5f32 * ctx.ap) * ctx.magic_multiplier + (90f32 + 0.5f32 * ctx.ap),4 => (115f32 + 0.5f32 * ctx.ap) * ctx.magic_multiplier + (115f32 + 0.5f32 * ctx.ap),5 => (140f32 + 0.5f32 * ctx.ap) * ctx.magic_multiplier + (140f32 + 0.5f32 * ctx.ap),_ => 0.0 }},|ctx| { match ctx.w_level {1 => 12f32 + 0.12f32 * ctx.ap,2 => 18f32 + 0.12f32 * ctx.ap,3 => 24f32 + 0.12f32 * ctx.ap,4 => 30f32 + 0.12f32 * ctx.ap,5 => 36f32 + 0.12f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 40f32 + 0.4f32 * ctx.ap,2 => 60f32 + 0.4f32 * ctx.ap,3 => 80f32 + 0.4f32 * ctx.ap,4 => 100f32 + 0.4f32 * ctx.ap,5 => 120f32 + 0.4f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.w_level {1 => 64f32 + 0.64f32 * ctx.ap,2 => 96f32 + 0.64f32 * ctx.ap,3 => 128f32 + 0.64f32 * ctx.ap,4 => 160f32 + 0.64f32 * ctx.ap,5 => 192f32 + 0.64f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 80f32 + 0.85f32 * ctx.ap,2 => 120f32 + 0.85f32 * ctx.ap,3 => 160f32 + 0.85f32 * ctx.ap,4 => 200f32 + 0.85f32 * ctx.ap,5 => 240f32 + 0.85f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 60f32 + 0.35f32 * ctx.ap,2 => 90f32 + 0.35f32 * ctx.ap,3 => 120f32 + 0.35f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 3f32 * (60f32 + 0.35f32 * ctx.ap),2 => 3f32 * (90f32 + 0.35f32 * ctx.ap),3 => 3f32 * (120f32 + 0.35f32 * ctx.ap),_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:590f32,per_level:104f32},mana:CachedChampionStatsMap{flat:418f32,per_level:25f32},armor:CachedChampionStatsMap{flat:21f32,per_level:4.2f32},magic_resist:CachedChampionStatsMap{flat:30f32,per_level:1.3f32},attack_damage:CachedChampionStatsMap{flat:53f32,per_level:3f32},attack_speed:CachedChampionStatsMap{flat:0.668f32,per_level:2.2f32},movespeed:330f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:550f32,aram_damage_taken:1f32,aram_damage_dealt:1f32,urf_damage_taken:1.05f32,urf_damage_dealt:0.9f32,},
-                    merge_data: &[],
+                    merge_data: &[(3, 4),(0, 1),(6, 7)],
                 };pub static AKALI: CachedChampion = CachedChampion {
                     name: "Akali",
                     adaptative_type: AdaptativeType::Physical,
                     attack_type: AttackType::Melee,
                     positions: &[Position::Middle,Position::Top],
                     metadata: &[TypeMetadata { 
-                kind: AbilityLike::Q(AbilityName::_1), 
+                kind: AbilityLike::P(AbilityName::Void), 
+                damage_type: DamageType::Magic, 
+                attributes: Attrs::Onhit 
+            },TypeMetadata { 
+                kind: AbilityLike::Q(AbilityName::Void), 
+                damage_type: DamageType::Magic, 
+                attributes: Attrs::Area 
+            },TypeMetadata { 
+                kind: AbilityLike::E(AbilityName::_1Min), 
                 damage_type: DamageType::Magic, 
                 attributes: Attrs::Undefined 
             },TypeMetadata { 
-                kind: AbilityLike::E(AbilityName::_1), 
+                kind: AbilityLike::E(AbilityName::Max), 
                 damage_type: DamageType::Magic, 
                 attributes: Attrs::Undefined 
             },TypeMetadata { 
-                kind: AbilityLike::E(AbilityName::_2), 
-                damage_type: DamageType::Magic, 
-                attributes: Attrs::Undefined 
-            },TypeMetadata { 
-                kind: AbilityLike::E(AbilityName::_3), 
+                kind: AbilityLike::E(AbilityName::_1Max), 
                 damage_type: DamageType::Magic, 
                 attributes: Attrs::Undefined 
             },TypeMetadata { 
                 kind: AbilityLike::R(AbilityName::_1), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::Undefined 
+                attributes: Attrs::Area 
             },TypeMetadata { 
-                kind: AbilityLike::R(AbilityName::_2), 
+                kind: AbilityLike::R(AbilityName::_2Min), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::Undefined 
+                attributes: Attrs::Area 
             },TypeMetadata { 
-                kind: AbilityLike::R(AbilityName::_3), 
+                kind: AbilityLike::R(AbilityName::_2Max), 
                 damage_type: DamageType::Magic, 
-                attributes: Attrs::Undefined 
+                attributes: Attrs::Area 
             }],
-                    closures: &[|ctx| { match ctx.q_level {1 => 45f32 + 0.65f32 * ctx.ad + 0.6f32 * ctx.ap,2 => 70f32 + 0.65f32 * ctx.ad + 0.6f32 * ctx.ap,3 => 95f32 + 0.65f32 * ctx.ad + 0.6f32 * ctx.ap,4 => 120f32 + 0.65f32 * ctx.ad + 0.6f32 * ctx.ap,5 => 145f32 + 0.65f32 * ctx.ad + 0.6f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 21f32 + 0.3f32 * ctx.ad + 0.33f32 * ctx.ap,2 => 42f32 + 0.3f32 * ctx.ad + 0.33f32 * ctx.ap,3 => 63f32 + 0.3f32 * ctx.ad + 0.33f32 * ctx.ap,4 => 84f32 + 0.3f32 * ctx.ad + 0.33f32 * ctx.ap,5 => 105f32 + 0.3f32 * ctx.ad + 0.33f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 49f32 + 0.7f32 * ctx.ad + 0.77f32 * ctx.ap,2 => 98f32 + 0.7f32 * ctx.ad + 0.77f32 * ctx.ap,3 => 147f32 + 0.7f32 * ctx.ad + 0.77f32 * ctx.ap,4 => 196f32 + 0.7f32 * ctx.ad + 0.77f32 * ctx.ap,5 => 245f32 + 0.7f32 * ctx.ad + 0.77f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 70f32 + ctx.ad + 1.1f32 * ctx.ap,2 => 140f32 + ctx.ad + 1.1f32 * ctx.ap,3 => 210f32 + ctx.ad + 1.1f32 * ctx.ap,4 => 280f32 + ctx.ad + 1.1f32 * ctx.ap,5 => 350f32 + ctx.ad + 1.1f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 110f32 + 0.5f32 * ctx.bonus_ad + 0.3f32 * ctx.ap,2 => 220f32 + 0.5f32 * ctx.bonus_ad + 0.3f32 * ctx.ap,3 => 330f32 + 0.5f32 * ctx.bonus_ad + 0.3f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 210f32 + 0.9f32 * ctx.ap,2 => 420f32 + 0.9f32 * ctx.ap,3 => 630f32 + 0.9f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 70f32 + 0.3f32 * ctx.ap,2 => 140f32 + 0.3f32 * ctx.ap,3 => 210f32 + 0.3f32 * ctx.ap,_ => 0.0 }}],
+                    closures: &[|ctx| { match ctx.level as u8 {1 => 35f32 + 0.6f32 * ctx.bonus_ad + 0.55f32 * ctx.ap,2 => 43.64705882352941f32 + 0.6f32 * ctx.bonus_ad + 0.55f32 * ctx.ap,3 => 52.294117647058826f32 + 0.6f32 * ctx.bonus_ad + 0.55f32 * ctx.ap,4 => 60.94117647058823f32 + 0.6f32 * ctx.bonus_ad + 0.55f32 * ctx.ap,5 => 69.58823529411765f32 + 0.6f32 * ctx.bonus_ad + 0.55f32 * ctx.ap,6 => 78.23529411764706f32 + 0.6f32 * ctx.bonus_ad + 0.55f32 * ctx.ap,7 => 86.88235294117646f32 + 0.6f32 * ctx.bonus_ad + 0.55f32 * ctx.ap,8 => 95.52941176470588f32 + 0.6f32 * ctx.bonus_ad + 0.55f32 * ctx.ap,9 => 104.17647058823529f32 + 0.6f32 * ctx.bonus_ad + 0.55f32 * ctx.ap,10 => 112.82352941176471f32 + 0.6f32 * ctx.bonus_ad + 0.55f32 * ctx.ap,11 => 121.47058823529412f32 + 0.6f32 * ctx.bonus_ad + 0.55f32 * ctx.ap,12 => 130.11764705882354f32 + 0.6f32 * ctx.bonus_ad + 0.55f32 * ctx.ap,13 => 138.76470588235293f32 + 0.6f32 * ctx.bonus_ad + 0.55f32 * ctx.ap,14 => 147.41176470588235f32 + 0.6f32 * ctx.bonus_ad + 0.55f32 * ctx.ap,15 => 156.05882352941177f32 + 0.6f32 * ctx.bonus_ad + 0.55f32 * ctx.ap,16 => 164.7058823529412f32 + 0.6f32 * ctx.bonus_ad + 0.55f32 * ctx.ap,17 => 173.35294117647058f32 + 0.6f32 * ctx.bonus_ad + 0.55f32 * ctx.ap,18 => 182f32 + 0.6f32 * ctx.bonus_ad + 0.55f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.q_level {1 => 45f32 + 0.65f32 * ctx.ad + 0.6f32 * ctx.ap,2 => 70f32 + 0.65f32 * ctx.ad + 0.6f32 * ctx.ap,3 => 95f32 + 0.65f32 * ctx.ad + 0.6f32 * ctx.ap,4 => 120f32 + 0.65f32 * ctx.ad + 0.6f32 * ctx.ap,5 => 145f32 + 0.65f32 * ctx.ad + 0.6f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 21f32 + 0.3f32 * ctx.ad + 0.33f32 * ctx.ap,2 => 42f32 + 0.3f32 * ctx.ad + 0.33f32 * ctx.ap,3 => 63f32 + 0.3f32 * ctx.ad + 0.33f32 * ctx.ap,4 => 84f32 + 0.3f32 * ctx.ad + 0.33f32 * ctx.ap,5 => 105f32 + 0.3f32 * ctx.ad + 0.33f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 70f32 + ctx.ad + 1.1f32 * ctx.ap,2 => 140f32 + ctx.ad + 1.1f32 * ctx.ap,3 => 210f32 + ctx.ad + 1.1f32 * ctx.ap,4 => 280f32 + ctx.ad + 1.1f32 * ctx.ap,5 => 350f32 + ctx.ad + 1.1f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.e_level {1 => 49f32 + 0.7f32 * ctx.ad + 0.77f32 * ctx.ap,2 => 98f32 + 0.7f32 * ctx.ad + 0.77f32 * ctx.ap,3 => 147f32 + 0.7f32 * ctx.ad + 0.77f32 * ctx.ap,4 => 196f32 + 0.7f32 * ctx.ad + 0.77f32 * ctx.ap,5 => 245f32 + 0.7f32 * ctx.ad + 0.77f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 110f32 + 0.5f32 * ctx.bonus_ad + 0.3f32 * ctx.ap,2 => 220f32 + 0.5f32 * ctx.bonus_ad + 0.3f32 * ctx.ap,3 => 330f32 + 0.5f32 * ctx.bonus_ad + 0.3f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 210f32 + 0.9f32 * ctx.ap,2 => 420f32 + 0.9f32 * ctx.ap,3 => 630f32 + 0.9f32 * ctx.ap,_ => 0.0 }},|ctx| { match ctx.r_level {1 => 70f32 + 0.3f32 * ctx.ap,2 => 140f32 + 0.3f32 * ctx.ap,3 => 210f32 + 0.3f32 * ctx.ap,_ => 0.0 }}],
                     stats: CachedChampionStats {health:CachedChampionStatsMap{flat:600f32,per_level:119f32},mana:CachedChampionStatsMap{flat:200f32,per_level:0f32},armor:CachedChampionStatsMap{flat:23f32,per_level:4.7f32},magic_resist:CachedChampionStatsMap{flat:37f32,per_level:2.05f32},attack_damage:CachedChampionStatsMap{flat:62f32,per_level:3.3f32},attack_speed:CachedChampionStatsMap{flat:0.625f32,per_level:3.2f32},movespeed:345f32,critical_strike_damage:175f32,critical_strike_damage_modifier:1f32,attack_speed_ratio:0.625f32,attack_range:125f32,aram_damage_taken:0.95f32,aram_damage_dealt:1f32,urf_damage_taken:0.9f32,urf_damage_dealt:1f32,},
-                    merge_data: &[],
+                    merge_data: &[(6, 7),(2, 4)],
                 };pub static AKSHAN: CachedChampion = CachedChampion {
                     name: "Akshan",
                     adaptative_type: AdaptativeType::Physical,

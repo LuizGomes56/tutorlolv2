@@ -7,6 +7,7 @@ use crate::{
     model::riot::{RiotCdnChampion, RiotCdnRune},
     read_file, resolve_path,
     riot::RiotCdnStandard,
+    update::setup_project_folders,
 };
 use reqwest::Client;
 use scraper::{Html, Selector};
@@ -214,6 +215,12 @@ impl HttpClient {
     }
 
     pub async unsafe fn update_env_version(&self) -> MayFail {
+        let target = format!(
+            "cache_{old_version}",
+            old_version = ENV_CONFIG.lol_version.replace(".", "_")
+        );
+        std::fs::rename("cache", target)?;
+        setup_project_folders()?;
         let version = self.fetch_version().await?;
         Ok(unsafe { set_env_var("LOL_VERSION", &version)? })
     }

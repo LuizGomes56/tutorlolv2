@@ -32,10 +32,14 @@ pub struct MerakiChampionStats {
 #[derive(Copy, Clone, Debug, Deserialize, Default)]
 pub enum Attrs {
     #[default]
-    None,
-    OnhitMax,
-    OnhitMin,
+    Undefined,
     Onhit,
+    OnhitMin,
+    OnhitMax,
+    Area,
+    AreaOnhit,
+    AreaOnhitMin,
+    AreaOnhitMax,
 }
 
 #[derive(Deserialize)]
