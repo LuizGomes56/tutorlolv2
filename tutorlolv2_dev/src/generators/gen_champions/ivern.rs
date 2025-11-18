@@ -1,10 +1,10 @@
 use super::*;
 
 impl Generator<Champion> for Ivern {
-    #[champion_generator]
     fn generate(mut self: Box<Self>) -> MayFail<Champion> {
-        ability![Q, (0, 0, _1)];
-        ability![W, (2, 0, _1), (3, 0, _2)];
-        ability![E, (1, 0, _1)];
+        self.ability(Q, [(0, 0, _1)]);
+        self.ability(W, [(2, 0, _1), (3, 0, _2)]);
+        self.ability(E, [(1, 0, _1)]);
+        self.end()
     }
 }

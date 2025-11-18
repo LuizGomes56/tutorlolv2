@@ -105,7 +105,7 @@ pub fn highlight_rust(rust_code: &str) -> String {
     );
 
     h.keyword("constant", r"\b[A-Z]+\b");
-    h.keyword("constant", r"\b(AbilityHaste|AbilityPower|Armor|ArmorPenetration|MagicPenetration|AttackDamage|AttackSpeed|GoldPer10Seconds|AdaptiveForce|CriticalStrikeChance|CriticalStrikeDamage|Health|LifeSteal|MagicResist|Mana|MoveSpeed|Omnivamp|BaseHealthRegen|BaseManaRegen|Tenacity|HealAndShieldPower|_1|_2|_3|_4|_5|_6|_7|_8|Mega|Max|Min|Minion|Minion1|Minion2|Minion3|MinionMax|Monster|Monster1|Monster2|Monster3|Monster4|MonsterMax|Void|_1Max|_2Max|_3Max|_4Max|_5Max|_6Max|_7Max|_8Max|_1Min|_2Min|_3Min|_4Min|_5Min|_6Min|_7Min|_8Min|Some|None|Top|Jungle|Middle|Bottom|Support|Melee|Ranged|BASIC_ATTACK|CRITICAL_STRIKE|Physical|Magic|Mixed|True|Adaptative|Unknown|Onhit|OnhitMin|OnhitMax)\b");
+    h.keyword("constant", r"\b(AbilityHaste|AbilityPower|Armor|ArmorPenetration|MagicPenetration|AttackDamage|AttackSpeed|GoldPer10Seconds|AdaptiveForce|CriticalStrikeChance|CriticalStrikeDamage|Health|LifeSteal|MagicResist|Mana|MoveSpeed|Omnivamp|BaseHealthRegen|BaseManaRegen|Tenacity|Lethality|HealAndShieldPower|_1|_2|_3|_4|_5|_6|_7|_8|Mega|Max|Min|Minion|Minion1|Minion2|Minion3|MinionMax|Monster|Monster1|Monster2|Monster3|Monster4|MonsterMax|Void|_1Max|_2Max|_3Max|_4Max|_5Max|_6Max|_7Max|_8Max|_1Min|_2Min|_3Min|_4Min|_5Min|_6Min|_7Min|_8Min|Some|None|Top|Jungle|Middle|Bottom|Support|Melee|Ranged|BASIC_ATTACK|CRITICAL_STRIKE|Physical|Magic|Mixed|True|Adaptative|Unknown|Onhit|OnhitMin|OnhitMax)\b");
     h.keyword("type", r"\b[A-Z][a-zA-Z0-9_]*\b");
     h.keyword(
         "primitive",

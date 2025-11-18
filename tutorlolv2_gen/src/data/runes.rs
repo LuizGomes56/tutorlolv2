@@ -5,7 +5,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::AbilityHaste,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -14,7 +14,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::AbsoluteFocus,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -23,7 +23,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::AbsorbLife,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -32,7 +32,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::AdaptiveForce,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -41,7 +41,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                     metadata: TypeMetadata {
                     kind: RuneId::Aery,
                     damage_type: DamageType::Adaptative,
-                    attributes: Attrs::None
+                    attributes: Attrs::Undefined
                 },
                     melee_closure: |_| 0.0f32,
                     range_closure: |_| 0.0f32,
@@ -50,7 +50,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                     metadata: TypeMetadata {
                     kind: RuneId::Aftershock,
                     damage_type: DamageType::Adaptative,
-                    attributes: Attrs::None
+                    attributes: Attrs::Undefined
                 },
                     melee_closure: |_| 0.0f32,
                     range_closure: |_| 0.0f32,
@@ -59,7 +59,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::ApproachVelocity,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -68,7 +68,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::AttackSpeed,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -77,7 +77,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::AxiomArcanist,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -86,7 +86,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::BiscuitDelivery,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -95,7 +95,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::BonePlating,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -104,7 +104,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::CashBack,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -113,7 +113,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::Celerity,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -122,7 +122,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                     metadata: TypeMetadata {
                     kind: RuneId::CheapShot,
                     damage_type: DamageType::True,
-                    attributes: Attrs::None
+                    attributes: Attrs::Undefined
                 },
                     melee_closure: |_| 0.0f32,
                     range_closure: |_| 0.0f32,
@@ -131,7 +131,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                     metadata: TypeMetadata {
                     kind: RuneId::Comet,
                     damage_type: DamageType::Adaptative,
-                    attributes: Attrs::None
+                    attributes: Attrs::Undefined
                 },
                     melee_closure: |_| 0.0f32,
                     range_closure: |_| 0.0f32,
@@ -140,7 +140,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::Conditioning,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -149,7 +149,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::Conqueror,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -158,7 +158,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::CosmicInsight,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -167,7 +167,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::CoupdeGrace,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -176,7 +176,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::CutDown,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -185,7 +185,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                     metadata: TypeMetadata {
                     kind: RuneId::DarkHarvest,
                     damage_type: DamageType::Adaptative,
-                    attributes: Attrs::None
+                    attributes: Attrs::Undefined
                 },
                     melee_closure: |_| 0.0f32,
                     range_closure: |_| 0.0f32,
@@ -194,7 +194,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::DeepWard,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -203,7 +203,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::Demolish,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -212,7 +212,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                     metadata: TypeMetadata {
                     kind: RuneId::Electrocute,
                     damage_type: DamageType::Adaptative,
-                    attributes: Attrs::None
+                    attributes: Attrs::Undefined
                 },
                     melee_closure: |_| 0.0f32,
                     range_closure: |_| 0.0f32,
@@ -221,7 +221,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::EyeballCollection,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -230,7 +230,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::FirstStrike,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -239,7 +239,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::FleetFootwork,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -248,7 +248,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::FontofLife,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -257,7 +257,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::GatheringStorm,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -266,7 +266,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::GhostPoro,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -275,7 +275,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::GlacialAugment,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -284,7 +284,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                     metadata: TypeMetadata {
                     kind: RuneId::Grasp,
                     damage_type: DamageType::Magic,
-                    attributes: Attrs::None
+                    attributes: Attrs::Undefined
                 },
                     melee_closure: |_| 0.0f32,
                     range_closure: |_| 0.0f32,
@@ -293,7 +293,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::GrislyMementos,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -302,7 +302,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::Guardian,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -311,7 +311,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::HailofBlades,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -320,7 +320,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::Health,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -329,7 +329,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::HealthScaling,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -338,7 +338,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::HextechFlashtraption,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -347,7 +347,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::JackOfAllTrades,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -356,7 +356,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::LastStand,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -365,7 +365,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::LegendAlacrity,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -374,7 +374,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::LegendBloodline,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -383,7 +383,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::LegendHaste,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -392,7 +392,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::LethalTempo,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -401,7 +401,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::MagicalFootwear,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -410,7 +410,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::ManaflowBand,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -419,7 +419,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::MoveSpeed,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -428,7 +428,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::NimbusCloak,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -437,7 +437,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::Overgrowth,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -446,7 +446,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::PhaseRush,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -455,7 +455,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                     metadata: TypeMetadata {
                     kind: RuneId::Predator,
                     damage_type: DamageType::Adaptative,
-                    attributes: Attrs::None
+                    attributes: Attrs::Undefined
                 },
                     melee_closure: |_| 0.0f32,
                     range_closure: |_| 0.0f32,
@@ -464,7 +464,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::PresenceofMind,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -473,7 +473,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                     metadata: TypeMetadata {
                     kind: RuneId::PressTheAttack,
                     damage_type: DamageType::Adaptative,
-                    attributes: Attrs::None
+                    attributes: Attrs::Undefined
                 },
                     melee_closure: |_| 0.0f32,
                     range_closure: |_| 0.0f32,
@@ -482,7 +482,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::RelentlessHunter,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -491,7 +491,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::Revitalize,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -500,7 +500,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                     metadata: TypeMetadata {
                     kind: RuneId::Scorch,
                     damage_type: DamageType::Magic,
-                    attributes: Attrs::None
+                    attributes: Attrs::Undefined
                 },
                     melee_closure: |_| 0.0f32,
                     range_closure: |_| 0.0f32,
@@ -509,7 +509,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::SecondWind,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -518,7 +518,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::ShieldBash,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -527,7 +527,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::SixthSense,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -536,7 +536,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                     metadata: TypeMetadata {
                     kind: RuneId::SuddenImpact,
                     damage_type: DamageType::True,
-                    attributes: Attrs::None
+                    attributes: Attrs::Undefined
                 },
                     melee_closure: |_| 0.0f32,
                     range_closure: |_| 0.0f32,
@@ -545,7 +545,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::TasteofBlood,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -554,7 +554,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::TenacityandSlowResist,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -563,7 +563,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::TimeWarpTonic,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -572,7 +572,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::Transcendence,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -581,7 +581,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::TreasureHunter,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -590,7 +590,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::TripleTonic,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -599,7 +599,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::Triumph,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -608,7 +608,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::UltimateHunter,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -617,7 +617,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::Unflinching,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -626,7 +626,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::UnsealedSpellbook,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -635,7 +635,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::Waterwalking,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    
@@ -644,7 +644,7 @@ use super::*;pub static RUNE_ID_TO_RIOT_ID:[u32;72]=[9994,8233,9101,9990,8214,84
                 metadata: TypeMetadata {
                 kind: RuneId::ZombieWard,
                 damage_type: DamageType::Unknown,
-                attributes: Attrs::None
+                attributes: Attrs::Undefined
             },
                 melee_closure: zero,
                 range_closure: zero,    

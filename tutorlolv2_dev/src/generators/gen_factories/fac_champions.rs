@@ -11,12 +11,10 @@ use regex::Regex;
 use std::{
     collections::{BTreeMap, BTreeSet, HashMap},
     path::Path,
-    str::FromStr,
 };
 use tutorlolv2_fmt::invoke_rustfmt;
-use tutorlolv2_gen::{
-    AbilityLike, AbilityName, ChampionId, EvalIdent, INTERNAL_CHAMPIONS, Position,
-};
+use tutorlolv2_gen::{Attrs, ChampionId, DamageType, INTERNAL_CHAMPIONS, Position};
+use tutorlolv2_types::{AbilityLike, AbilityName};
 
 const GENERATOR_FOLDER: &str = "tutorlolv2_dev/src/generators/gen_champions";
 
@@ -49,7 +47,7 @@ impl ChampionFactory {
                 ));
             }
             format!(
-                "ability![{ability_char}, {offsets}];",
+                "self.ability({ability_char}, [{offsets}]);",
                 offsets = offsets.join(","),
             )
         };
@@ -57,9 +55,8 @@ impl ChampionFactory {
         let mut generated_content = format!(
             "use super::*;
 
-                impl Generator<Champion> for {champion_id:?} {{
-                    #[champion_generator]
-                    fn generate(mut self: Box<Self>) -> MayFail<Champion> {{"
+            impl Generator<Champion> for {champion_id:?} {{
+                fn generate(mut self: Box<Self>) -> MayFail<Champion> {{"
         );
 
         if let Ok(data) = std::fs::read_to_string(&path) {
@@ -77,7 +74,7 @@ impl ChampionFactory {
             }
         }
 
-        generated_content.push_str("}}");
+        generated_content.push_str("self.end()}}");
         Ok(invoke_rustfmt(&generated_content, 80))
     }
 
@@ -220,7 +217,7 @@ impl ChampionFactory {
                 }
             }
 
-            println!("  Ability '{}':", k);
+            println!("  Ability '{k}':");
             println!("      found(old):     {old_values:?}");
             println!("      expected(new):  {new_values:?}");
             if !missing.is_empty() {
@@ -315,7 +312,7 @@ impl ChampionData {
                 .map(|pos| Position::from_raw(&pos).unwrap_or_default())
                 .collect(),
             stats: self.data.stats,
-            abilities: self.hashmap,
+            abilities: self.hashmap.into_iter().collect(),
             merge_data: self.mergevec,
         }
     }
@@ -358,10 +355,10 @@ impl ChampionData {
                         leveling: leveling_index,
                         binding: {
                             let enum_match = match bindings {
-                                ..9 => format!("_{}", bindings.to_string()),
-                                _ => format!("_{}Min", bindings - 8),
+                                ..9 => format!("\"_{bindings}\""),
+                                _ => format!("\"_{}Min\"", bindings - 8),
                             };
-                            AbilityName::from_str(&enum_match).unwrap()
+                            serde_json::from_str::<AbilityName>(&enum_match).unwrap()
                         },
                     };
                     macro_offsets.push(offset);
@@ -395,7 +392,7 @@ impl ChampionData {
                         if coef == 1.0 && !suffix.is_empty() {
                             suffix
                         } else if !suffix.is_empty() {
-                            format!("({} * {})", coef.trim(), suffix)
+                            format!("({} * {suffix})", coef.trim())
                         } else {
                             format!("{}", coef.trim())
                         }
@@ -408,7 +405,7 @@ impl ChampionData {
                     let final_string = if scallings.is_empty() {
                         formatted_string
                     } else {
-                        format!("{} + {}", formatted_string, scallings)
+                        format!("{formatted_string} + {scallings}")
                     };
                     parts.push(final_string);
                 }
@@ -416,6 +413,61 @@ impl ChampionData {
             result.push(parts.join(" + "));
         }
         result
+    }
+
+    const fn modify_pattern<const N: usize>(
+        ability: AbilityLike,
+        pattern: [(usize, usize, AbilityName); N],
+    ) -> [(usize, usize, AbilityLike); N] {
+        let mut offsets = [(0, 0, AbilityLike::P(AbilityName::Void)); N];
+        let mut i = 0;
+        while i < N {
+            let offset = pattern[i];
+            let (a, b, c) = offset;
+            offsets[i] = (a, b, ability.from_ability_name(c));
+            i += 1;
+        }
+        offsets
+    }
+
+    pub fn insert(&mut self, key: impl Into<AbilityLike>, ability: Ability) {
+        self.hashmap.insert(key.into(), ability);
+    }
+
+    pub fn get_mut(&mut self, key: impl Into<AbilityLike>) -> MayFail<&mut Ability> {
+        let field = key.into();
+        Ok(self
+            .hashmap
+            .get_mut(&field)
+            .ok_or("[get_mut] Failed to find field: {key:?}".to_string())?)
+    }
+
+    pub fn get(&self, key: impl Into<AbilityLike>) -> MayFail<&Ability> {
+        let field = key.into();
+        Ok(self
+            .hashmap
+            .get(&field)
+            .ok_or(format!("[get] Failed to find field: {field:?}"))?)
+    }
+
+    pub fn ability<const N: usize>(
+        &mut self,
+        key: AbilityLike,
+        pattern: [(usize, usize, AbilityName); N],
+    ) {
+        let offsets = Self::modify_pattern(key, pattern);
+        self.extract_ability_damage(key.into(), 0, &offsets);
+    }
+
+    pub fn attr<const N: usize>(
+        &mut self,
+        attr: Attrs,
+        set: [impl Into<AbilityLike>; N],
+    ) -> MayFail {
+        for key in set {
+            self.get_mut(key.into())?.attributes = attr;
+        }
+        Ok(())
     }
 
     pub fn extract_ability_damage(
@@ -461,7 +513,7 @@ impl ChampionData {
         }
     }
 
-    pub fn extract_passive_bounds(&self, offsets: (usize, usize)) -> (&MerakiAbility, (f64, f64)) {
+    pub fn get_passive_description(&self, offsets: (usize, usize)) -> (&MerakiAbility, &str) {
         let (ability_index, effect_index) = offsets;
 
         let passive = self
@@ -469,48 +521,159 @@ impl ChampionData {
             .abilities
             .p
             .get(ability_index)
-            .expect("Self::extract_passive_bounds: ability_index is invalid.");
+            .expect("Self::get_passive_description: ability_index is invalid.");
 
-        let passive_effects = passive
-            .effects
-            .get(effect_index)
-            .expect("Self::extract_passive_bounds: effect_index is invalid.")
-            .description
-            .clone();
+        (
+            passive,
+            &passive
+                .effects
+                .get(effect_index)
+                .expect("Self::get_passive_description: effect_index is invalid.")
+                .description,
+        )
+    }
 
-        let passive_bounds = passive_effects
+    pub fn end(mut self) -> MayFail<Champion> {
+        let name = &self.data.name;
+
+        // Verifies if any ability found has unknown damage and emits a warning
+        // to the console so it can be fixed by the next time the generator runs
+        self.hashmap
+            .iter()
+            .filter(|(_, value)| value.damage_type == DamageType::Unknown)
+            .for_each(|(key, _)| {
+                println!("[{name}]: Key {key:?} has unknown damage type",);
+            });
+
+        // Checks for minimum damage and maximum damage keys within the hashmap.
+        // If it finds any key that is labeled as minimum damage, it will look
+        // for keys that represent maximum damage. If it finds one, it will be
+        // added to the mergevec, so it can be displayed in the tables as
+        // `minimum damage - maximum damage`. If it doesn't find a maximum match,
+        // a warning is emitted to the console and the key is skipped.
+        let keys = self.hashmap.keys().cloned().collect::<Vec<_>>();
+        for key in keys {
+            let index = key.ability_name() as u8;
+
+            const MIN_I: u8 = AbilityName::Min as u8;
+            const MIN_J: u8 = AbilityName::_8Min as u8;
+            const MAX_I: u8 = AbilityName::Max as u8;
+            const MAX_J: u8 = AbilityName::_8Max as u8;
+
+            let min_range = MIN_I..=MIN_J;
+            const MAX_MATCH: u8 = 1 + MAX_J - MAX_I;
+
+            let make = key.from_fn();
+
+            if min_range.contains(&index) {
+                let mut found = false;
+                let ability_name =
+                    unsafe { std::mem::transmute::<_, AbilityName>(index + MAX_MATCH) };
+                let ability_like = make(ability_name);
+                if self.hashmap.contains_key(&ability_like) {
+                    self.mergevec.push((key, ability_like));
+                    found = true;
+                }
+
+                if !found {
+                    println!("[{name}]: Found a min key: {key:?} with no max matches",);
+                }
+            }
+        }
+
+        // Verifies if the mergevec makes sense. It means that the generated hashmap should
+        // contain all keys that are present in the mergevec. If it doesn't, the function
+        // returns a fail and prints a message to the console.
+        if !self
+            .mergevec
+            .iter()
+            .all(|(a, b)| self.hashmap.contains_key(a) && self.hashmap.contains_key(b))
+        {
+            println!(
+                "{name}: inconsistent data inserted in macro `merge!`.\nmerge_vec: {:?},\n`hashmap_keys: {:?}",
+                self.mergevec,
+                self.hashmap.keys().collect::<Vec<_>>()
+            );
+            return Err("Found inconsistent merge vec".into());
+        }
+
+        Ok(self.finish())
+    }
+
+    pub fn passive(
+        &mut self,
+        name: AbilityName,
+        offsets: (usize, usize),
+        postfix: Option<String>,
+        scalings: Option<usize>,
+    ) {
+        let (passive, passive_description) = self.get_passive_description(offsets);
+
+        let description = match scalings {
+            Some(scalings) => &passive.effects[scalings].description,
+            None => passive_description,
+        };
+
+        let passive_bounds = description
             .get_interval()
             .expect("Couldn't extract numeric values for passive.");
 
-        (passive, passive_bounds)
-    }
-
-    pub fn extract_passive_damage(
-        &mut self,
-        ability: AbilityLike,
-        offsets: (usize, usize),
-        postfix: Option<EvalIdent>,
-        scalings: Option<usize>,
-    ) {
-        let (passive, passive_bounds) = self.extract_passive_bounds(offsets);
-        let mut description = &String::new();
-        if let Some(scalings) = scalings {
-            description = &passive.effects[scalings].description;
-        }
-
-        let mut damage =
-            <str as RegExtractor>::process_linear_scalings(passive_bounds, 18, postfix);
-        if description.is_empty() {
-            return;
-        }
+        let mut damage = str::process_linear_scalings(passive_bounds, 18, postfix);
 
         let scalings = description.get_scalings();
         if scalings.len() > 0 {
-            damage.iter_mut().for_each(|dmg: &mut String| {
-                *dmg = format!("{} + {}", dmg, scalings);
+            damage.iter_mut().for_each(|dmg| {
+                *dmg = format!("{dmg} + {scalings}");
             });
         }
 
-        self.hashmap.insert(ability, passive.format(damage));
+        self.hashmap
+            .insert(AbilityLike::P(name), passive.format(damage));
+    }
+
+    /// Takes in two fields and returns a mutable reference to a new cloned value, that was
+    /// already inserted to `self.hashmap`. The first enum is from where it is being cloned,
+    /// and the second one is the new name it will have, and will be identical.
+    pub fn clone_to(
+        &mut self,
+        from: impl Into<AbilityLike>,
+        into: impl Into<AbilityLike>,
+    ) -> MayFail<&mut Ability> {
+        let clone_from = self.get(from.into())?.clone();
+        let into_key = into.into();
+        self.insert(into_key, clone_from);
+        self.get_mut(into_key)
+    }
+
+    pub fn damage_type(&mut self, key: impl Into<AbilityLike>, damage_type: DamageType) -> MayFail {
+        self.get_mut(key.into())?.damage_type = damage_type;
+        Ok(())
+    }
+
+    pub fn merge_damage<const N: usize>(
+        &self,
+        closure: fn([String; N]) -> String,
+        args: [impl Into<AbilityLike> + Copy; N],
+    ) -> MayFail<Vec<String>> {
+        let mut sizes = Vec::<usize>::new();
+        for arg in args {
+            let result = self.get(arg.into())?;
+            sizes.push(result.damage.len());
+        }
+        assert!(!sizes.is_empty(), "Closure must take at least one argument");
+        assert!(
+            sizes.windows(2).all(|w| w[0] == w[1]),
+            "Can't compare abilities with different sizes"
+        );
+        let len = sizes[0];
+        let mut result = Vec::<String>::with_capacity(len);
+        for i in 0..len {
+            let mut closure_args = std::array::from_fn(|_| String::new());
+            for (j, &arg) in args.iter().enumerate() {
+                closure_args[j] = self.get(arg.into())?.damage[i].clone();
+            }
+            result.push(closure(closure_args));
+        }
+        Ok(result)
     }
 }

@@ -4,6 +4,7 @@ use smallvec::SmallVec;
 use std::mem::MaybeUninit;
 use tinyset::SetU32;
 use tutorlolv2_gen::*;
+use tutorlolv2_types::{AbilityLike, AbilityName};
 
 pub const AXIOM_ARCANIST_BONUS_DAMAGE: f32 = 1.12;
 pub const COUP_DE_GRACE_AND_CUTDOWN_BONUS_DAMAGE: f32 = 1.08;
@@ -531,7 +532,8 @@ impl IsAbility for RuneId {}
 impl IsAbility for AbilityLike {
     fn apply_modifiers(&self, modifier: &mut f32, ability_modifiers: &AbilityModifiers) {
         let mut modify = |ability_name: AbilityName, value: f32| {
-            if ability_name <= AbilityName::_8Min {
+            // Any ability that is not Monster or Minion damage should have the modifier applied
+            if ability_name <= AbilityName::Mega {
                 *modifier *= value
             }
         };

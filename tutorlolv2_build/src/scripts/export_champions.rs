@@ -3,39 +3,43 @@ use std::cmp::Ordering;
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct ChampionCdnStatsMap {
+pub struct MerakiChampionStatMap {
     pub flat: f64,
     pub per_level: f64,
 }
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct ChampionCdnStats {
-    pub health: ChampionCdnStatsMap,
-    pub mana: ChampionCdnStatsMap,
-    pub armor: ChampionCdnStatsMap,
+pub struct MerakiChampionStats {
+    pub health: MerakiChampionStatMap,
+    pub mana: MerakiChampionStatMap,
+    pub armor: MerakiChampionStatMap,
     #[serde(rename = "magicResistance")]
-    pub magic_resist: ChampionCdnStatsMap,
-    pub attack_damage: ChampionCdnStatsMap,
-    pub attack_speed: ChampionCdnStatsMap,
-    pub movespeed: ChampionCdnStatsMap,
-    pub critical_strike_damage: ChampionCdnStatsMap,
-    pub critical_strike_damage_modifier: ChampionCdnStatsMap,
-    pub attack_speed_ratio: ChampionCdnStatsMap,
-    pub attack_range: ChampionCdnStatsMap,
-    pub aram_damage_taken: ChampionCdnStatsMap,
-    pub aram_damage_dealt: ChampionCdnStatsMap,
-    pub urf_damage_taken: ChampionCdnStatsMap,
-    pub urf_damage_dealt: ChampionCdnStatsMap,
+    pub magic_resist: MerakiChampionStatMap,
+    pub attack_damage: MerakiChampionStatMap,
+    pub attack_speed: MerakiChampionStatMap,
+    pub movespeed: MerakiChampionStatMap,
+    pub critical_strike_damage: MerakiChampionStatMap,
+    pub critical_strike_damage_modifier: MerakiChampionStatMap,
+    pub attack_speed_ratio: MerakiChampionStatMap,
+    pub attack_range: MerakiChampionStatMap,
+    pub aram_damage_taken: MerakiChampionStatMap,
+    pub aram_damage_dealt: MerakiChampionStatMap,
+    pub urf_damage_taken: MerakiChampionStatMap,
+    pub urf_damage_dealt: MerakiChampionStatMap,
 }
 
 #[derive(Copy, Clone, Debug, Deserialize, Default)]
 pub enum Attrs {
     #[default]
-    None,
-    OnhitMax,
-    OnhitMin,
+    Undefined,
     Onhit,
+    OnhitMin,
+    OnhitMax,
+    Area,
+    AreaOnhit,
+    AreaOnhitMin,
+    AreaOnhitMax,
 }
 
 #[derive(Deserialize)]
@@ -53,12 +57,12 @@ pub struct Champion {
     pub adaptative_type: String,
     pub attack_type: String,
     pub positions: Vec<String>,
-    pub stats: ChampionCdnStats,
-    pub abilities: HashMap<AbilityLike, Ability>,
+    pub stats: MerakiChampionStats,
+    pub abilities: Vec<(AbilityLike, Ability)>,
     pub merge_data: Vec<(AbilityLike, AbilityLike)>,
 }
 
-pub fn format_stats(stats: &ChampionCdnStats) -> String {
+pub fn format_stats(stats: &MerakiChampionStats) -> String {
     macro_rules! insert_stat {
         ($field:ident) => {
             format!(
@@ -92,7 +96,7 @@ pub fn format_stats(stats: &ChampionCdnStats) -> String {
 }
 
 pub fn sort_pqwer(data: &mut [(AbilityLike, String, String, String)]) {
-    let priority = |ch: char| match ch {
+    let priority = |ch| match ch {
         'P' => 0,
         'Q' => 1,
         'W' => 2,
@@ -119,7 +123,7 @@ pub fn sort_pqwer(data: &mut [(AbilityLike, String, String, String)]) {
 
 fn get_abilities_decl(
     champion_name: &str,
-    abilities: HashMap<AbilityLike, Ability>,
+    abilities: Vec<(AbilityLike, Ability)>,
 ) -> Vec<(AbilityLike, String, String, String)> {
     let mut result = Vec::new();
 
@@ -153,7 +157,19 @@ fn get_abilities_decl(
                 attributes: Attrs::{attributes:?},
                 damage: {damage},
             }};",
-            char_name = format!("{}_{}", name.ability_like(), name.ability_name()).to_uppercase(),
+            char_name = format!(
+                "{char_disc}{name_disc}",
+                char_disc = name.as_char(),
+                name_disc = {
+                    let ability_name = format!("{:?}", name.ability_name());
+                    if !ability_name.starts_with("_") {
+                        format!("_{ability_name}")
+                    } else {
+                        ability_name
+                    }
+                }
+            )
+            .to_uppercase(),
             ability_name = ability.name,
             damage_type = ability.damage_type,
             attributes = ability.attributes,
@@ -180,6 +196,7 @@ pub struct ChampionDetails {
     pub champion_name: String,
     pub generator: String,
     pub highlighted_abilities: Vec<(AbilityLike, String)>,
+    pub combos: Vec<Vec<AbilityLike>>,
     pub champion_formula: String,
     pub constdecl: String,
     pub positions: String,
@@ -190,7 +207,7 @@ pub fn find_merge_indexes(
     ability_data: &[(AbilityLike, String, String, String)],
 ) -> Vec<(usize, usize)> {
     let mut idx: HashMap<AbilityLike, usize> = HashMap::with_capacity(ability_data.len());
-    for (i, (al, _, _, _)) in ability_data.iter().enumerate() {
+    for (i, (al, ..)) in ability_data.iter().enumerate() {
         idx.entry(*al).or_insert(i);
     }
 
@@ -249,7 +266,7 @@ pub fn export_champions() -> BTreeMap<String, ChampionDetails> {
                 attack_type = champion.attack_type,
                 metadata = ability_data
                     .iter()
-                    .map(|(_, metadata, _, _)| metadata)
+                    .map(|(_, metadata, ..)| metadata)
                     .collect::<Vec<_>>()
                     .join(","),
                 closures = ability_data
@@ -265,10 +282,33 @@ pub fn export_champions() -> BTreeMap<String, ChampionDetails> {
                     .join(","),
             );
 
-            let generator = cwd!(format!("tutorlolv2_dev/src/generators/{champion_id}.rs"))
+            let generator = format!("tutorlolv2_dev/src/generators/gen_champions/{champion_id}.rs")
                 .read_as_path()
                 .invoke_rustfmt(80)
                 .highlight_rust();
+
+            let raw_combos = serde_json::from_str::<Vec<Vec<String>>>(
+                &format!("internal/scraper/combos/{champion_id}.json").read_as_path(),
+            )
+            .unwrap();
+
+            let mut champion_combos = Vec::<Vec<AbilityLike>>::new();
+
+            let ability_names = ability_data
+                .iter()
+                .map(|(name, ..)| name)
+                .collect::<Vec<_>>();
+            for combos in raw_combos {
+                let mut result = Vec::new();
+                for combo in combos {
+                    for &&ability_name in &ability_names {
+                        if combo == ability_name.as_char().to_string() {
+                            result.push(ability_name);
+                        }
+                    }
+                }
+                champion_combos.push(result);
+            }
 
             (
                 champion_id,
@@ -279,6 +319,7 @@ pub fn export_champions() -> BTreeMap<String, ChampionDetails> {
                         .clear_suffixes()
                         .highlight_rust(),
                     generator,
+                    combos: champion_combos,
                     highlighted_abilities: ability_data
                         .into_iter()
                         .map(|(name, _, _, ability_decl)| (name, ability_decl))

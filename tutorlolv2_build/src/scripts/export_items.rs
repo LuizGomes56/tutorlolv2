@@ -1,27 +1,33 @@
 use super::*;
+use tutorlolv2_types::StatName;
+
+#[derive(Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct MerakiItemStatMap {
+    pub flat: f64,
+    pub percent: f64,
+}
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ItemStats {
-    pub ability_power: f64,
-    pub armor: f64,
-    pub armor_penetration_percent: f64,
-    pub armor_penetration_flat: f64,
-    pub magic_penetration_percent: f64,
-    pub magic_penetration_flat: f64,
-    pub attack_damage: f64,
-    pub attack_speed: f64,
+    pub ability_power: MerakiItemStatMap,
+    pub armor: MerakiItemStatMap,
+    pub armor_penetration: MerakiItemStatMap,
+    pub magic_penetration: MerakiItemStatMap,
+    pub attack_damage: MerakiItemStatMap,
+    pub attack_speed: MerakiItemStatMap,
     #[serde(rename = "criticalStrikeChance")]
-    pub crit_chance: f64,
+    pub crit_chance: MerakiItemStatMap,
     #[serde(rename = "criticalStrikeDamage")]
-    pub crit_damage: f64,
-    pub health: f64,
-    pub lifesteal: f64,
+    pub crit_damage: MerakiItemStatMap,
+    pub health: MerakiItemStatMap,
+    pub lifesteal: MerakiItemStatMap,
     #[serde(rename = "magicResistance")]
-    pub magic_resist: f64,
-    pub mana: f64,
-    pub movespeed: f64,
-    pub omnivamp: f64,
+    pub magic_resist: MerakiItemStatMap,
+    pub mana: MerakiItemStatMap,
+    pub movespeed: MerakiItemStatMap,
+    pub omnivamp: MerakiItemStatMap,
 }
 
 #[derive(Deserialize)]
@@ -37,7 +43,7 @@ pub struct Item {
     pub name: String,
     pub price: u32,
     pub tier: u8,
-    pub prettified_stats: Vec<String>,
+    pub prettified_stats: Vec<StatName>,
     pub damage_type: String,
     pub stats: ItemStats,
     pub ranged: DamageObject,
@@ -94,16 +100,29 @@ pub fn format_stats(stats: &ItemStats) -> String {
 
     macro_rules! insert_stat {
         ($field:ident) => {
-            all_stats.push(format!("{}:{}f32,", stringify!($field), stats.$field));
+            all_stats.push(format!("{}:{}f32,", stringify!($field), stats.$field.flat));
+        };
+        (% $field:ident) => {
+            all_stats.push(format!(
+                "{}_percent:{}f32,",
+                stringify!($field),
+                stats.$field.flat
+            ));
+        };
+        (+ $field:ident) => {
+            all_stats.push(format!(
+                "{}_flat:{}f32,",
+                stringify!($field),
+                stats.$field.percent
+            ));
         };
     }
-
     insert_stat!(ability_power);
     insert_stat!(armor);
-    insert_stat!(armor_penetration_percent);
-    insert_stat!(armor_penetration_flat);
-    insert_stat!(magic_penetration_percent);
-    insert_stat!(magic_penetration_flat);
+    insert_stat!(% armor_penetration);
+    insert_stat!(+ armor_penetration);
+    insert_stat!(% magic_penetration);
+    insert_stat!(+ magic_penetration);
     insert_stat!(attack_damage);
     insert_stat!(attack_speed);
     insert_stat!(crit_chance);
@@ -131,7 +150,12 @@ pub fn export_items() -> Vec<(u32, ItemDetails)> {
         .map(|(_, item)| {
             let item_id = item.riot_id;
 
-            let prettified_stats = item.prettified_stats.join(",");
+            let prettified_stats = item
+                .prettified_stats
+                .iter()
+                .map(|stat| format!("StatName::{stat:?}"))
+                .collect::<Vec<_>>()
+                .join(",");
 
             let (metadata, range_closure, melee_closure) = get_items_decl(&item.name, &item);
 

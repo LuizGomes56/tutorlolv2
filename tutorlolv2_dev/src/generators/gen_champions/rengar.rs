@@ -1,10 +1,10 @@
 use super::*;
 
 impl Generator<Champion> for Rengar {
-    #[champion_generator]
     fn generate(mut self: Box<Self>) -> MayFail<Champion> {
-        ability![Q, (0, 0, _1)];
-        ability![W, (0, 0, _1)];
-        ability![E, (0, 0, _1)];
+        self.ability(Q, [(0, 0, _1)]);
+        self.ability(W, [(0, 0, _1)]);
+        self.ability(E, [(0, 0, _1)]);
+        self.end()
     }
 }

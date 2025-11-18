@@ -1,4 +1,3 @@
-use actix_web::rt::task::spawn_blocking;
 use std::{
     collections::HashMap,
     process::{Child, Command, Stdio},
@@ -9,20 +8,10 @@ use tutorlolv2_dev::{
     DeserializeOwned, JsonRead, Serialize,
     champions::MerakiChampion,
     client::{OrderJson, save_cache},
+    gen_factories::fac_items::ItemFactory,
     generators::gen_factories::fac_champions::ChampionFactory,
     items::MerakiItem,
 };
-use tutorlolv2_exports::*;
-
-async fn generate_html() {
-    let champions = spawn_blocking(generate_champion_html);
-    let items = spawn_blocking(generate_item_html);
-    let runes = spawn_blocking(generate_rune_html);
-
-    champions.await.unwrap();
-    items.await.unwrap();
-    runes.await.unwrap();
-}
 
 fn run(cwd: &str, prog: &str, args: &[&str]) {
     let status = Command::new(prog)
@@ -69,11 +58,13 @@ fn build_server() {
 }
 
 fn run_server() -> Child {
-    task(
+    let server = task(
         ".",
         "./tutorlolv2_server/target/release/tutorlolv2_server.exe",
         &[],
-    )
+    );
+    short_wait();
+    server
 }
 
 macro_rules! get {
@@ -129,16 +120,18 @@ fn run_lolstaticdata() {
 fn update_local() {
     build_server();
     let srv_0 = run_server();
-    short_wait();
 
-    get!("/setup/champions");
-    get!("/setup/items");
+    get!("/update/version");
     kill(srv_0);
+
+    let srv_1 = run_server();
+
+    get!("/setup/project");
+    kill(srv_1);
 
     build_script();
 
-    let srv_1 = run_server();
-    short_wait();
+    let srv_2 = run_server();
 
     get!("/setup/docs");
     run(
@@ -146,13 +139,8 @@ fn update_local() {
         "node",
         &["build_script.js"],
     );
-    kill(srv_1);
+    kill(srv_2);
     build_server();
-    run(
-        "./tutorlolv2_server",
-        "cargo",
-        &["build", "-r", "--no-default-features"],
-    );
 
     println!("Local finished");
 }
@@ -183,11 +171,10 @@ fn build_script() {
 fn update() {
     build_server();
     let srv_0 = run_server();
-    short_wait();
     get!("/update/version");
     kill(srv_0);
+
     let srv_1 = run_server();
-    short_wait();
     get!("/setup/project");
     get!("/images/compress");
     kill(srv_1);
@@ -195,9 +182,9 @@ fn update() {
     build_script();
 
     let srv_2 = run_server();
-    short_wait();
     get!("/setup/docs");
     kill(srv_2);
+
     build_server();
     run(
         "./tutorlolv2_server",
@@ -232,11 +219,17 @@ async fn main() {
             ord_folder::<MerakiItem>("items").await;
         }
         Some("check-gen") => ChampionFactory::check_all_offsets(),
+        Some("item-gen") => ItemFactory::run_all().unwrap(),
         Some("run-gen") => ChampionFactory::run_all().unwrap(),
         Some("make-gen") => {
             let _ = ChampionFactory::create_all();
         }
-        Some("html-gen") => generate_html().await,
+        Some("html-gen") => {
+            build_server();
+            let srv_0 = run_server();
+            get!("/setup/docs");
+            kill(srv_0);
+        }
         Some("update") => update(),
         Some("lolstaticdata") => run_lolstaticdata(),
         Some("local") => update_local(),

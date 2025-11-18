@@ -1,4 +1,7 @@
-use crate::generators::{Generator, gen_factories::fac_items::ItemData};
+use crate::{
+    MayFail,
+    generators::{Generator, gen_factories::fac_items::ItemData},
+};
 
 tutorlolv2_macros::expand_dir!("../internal/items", |Name| {
     pub struct Name(pub ItemData);
@@ -6,6 +9,10 @@ tutorlolv2_macros::expand_dir!("../internal/items", |Name| {
     impl Name {
         pub fn new(data: ItemData) -> Box<dyn Generator<ItemData>> {
             Box::new(Self(data))
+        }
+
+        pub fn end(self) -> MayFail<ItemData> {
+            Ok(self.0)
         }
     }
 

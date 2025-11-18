@@ -1,7 +1,7 @@
 use crate::MayFail;
 use regex::Regex;
 use std::fmt::Display;
-use tutorlolv2_gen::EvalIdent;
+use tutorlolv2_gen::eval::*;
 
 pub trait F64Ext {
     fn trim(&self) -> String;
@@ -30,7 +30,7 @@ pub trait RegExtractor {
     fn process_linear_scalings(
         bounds: (f64, f64),
         size: usize,
-        postfix: Option<EvalIdent>,
+        postfix: Option<String>,
     ) -> Vec<String>;
 }
 
@@ -53,7 +53,7 @@ impl RegExtractor for str {
         Ok(Regex::new(&format!(r"^(?:.*?(\d+)%){{{}}}", number + 1))?
             .captures(self)
             .and_then(|cap| cap.get(1).map(|m| m.as_str()))
-            .ok_or(format!("No percent value in #{} for '{}'", number, self))?
+            .ok_or(format!("No percent value in #{number} for '{self}'"))?
             .parse::<f64>()
             .map_err(|e| format!("Unable to convert all numbers to f64: {e:?}"))?)
     }
@@ -91,41 +91,41 @@ impl RegExtractor for str {
             "of expended Grit" => "0.0",
             "of the original damage" => "100.0",
             "per Overwhelm stack on the target" => "1.0",
-            "per Soul collected" => format!("*{}", EvalIdent::ThreshStacks),
-            "of primary target's bonus health" => EvalIdent::EnemyBonusHealth,
-            "of his bonus health" => EvalIdent::BonusHealth,
-            "Pantheon's bonus health" => EvalIdent::BonusHealth,
-            "critical strike chance" => EvalIdent::CritChance,
-            "of Ivern's AP" => EvalIdent::Ap,
-            "of Sona's AP" => EvalIdent::Ap,
-            "per Feast stack" => EvalIdent::ChogathStacks,
-            "of Siphoning Strike stacks" => EvalIdent::NasusStacks,
-            "Stardust" => EvalIdent::AurelionSolStacks,
-            "per mark" => EvalIdent::KindredStacks,
-            "bonus mana" => EvalIdent::BonusMana,
-            "bonus AD" => EvalIdent::BonusAd,
-            "bonus armor" => EvalIdent::BonusArmor,
-            "bonus magic resistance" => EvalIdent::BonusMagicResist,
-            "bonus health" => EvalIdent::BonusHealth,
-            "bonus movement speed" => EvalIdent::BonusMoveSpeed,
-            "armor" => EvalIdent::Armor,
-            "of the target's maximum health" => EvalIdent::EnemyMaxHealth,
-            "of target's maximum health" => EvalIdent::EnemyMaxHealth,
-            "of Zac's maximum health" => EvalIdent::MaxHealth,
-            "of Braum's maximum health" => EvalIdent::MaxHealth,
-            "of her maximum health" => EvalIdent::MaxHealth,
-            "of his maximum health" => EvalIdent::MaxHealth,
-            "of maximum health" => EvalIdent::MaxHealth,
-            "maximum health" => EvalIdent::MaxHealth,
-            "of the target's current health" => EvalIdent::CurrentHealth,
-            "of target's current health" => EvalIdent::CurrentHealth,
-            "target's current health" => EvalIdent::CurrentHealth,
-            "of the target's missing health" => EvalIdent::MissingHealth,
-            "of target's missing health" => EvalIdent::MissingHealth,
-            "target's missing health" => EvalIdent::MissingHealth,
-            "maximum mana" => EvalIdent::MaxMana,
-            "AP" => EvalIdent::Ap,
-            "AD" => EvalIdent::Ad,
+            "per Soul collected" => format!("*{ThreshStacks}"),
+            "of primary target's bonus health" => EnemyBonusHealth,
+            "of his bonus health" => BonusHealth,
+            "Pantheon's bonus health" => BonusHealth,
+            "critical strike chance" => CritChance,
+            "of Ivern's AP" => Ap,
+            "of Sona's AP" => Ap,
+            "per Feast stack" => ChogathStacks,
+            "of Siphoning Strike stacks" => NasusStacks,
+            "Stardust" => AurelionSolStacks,
+            "per mark" => KindredStacks,
+            "bonus mana" => BonusMana,
+            "bonus AD" => BonusAd,
+            "bonus armor" => BonusArmor,
+            "bonus magic resistance" => BonusMagicResist,
+            "bonus health" => BonusHealth,
+            "bonus movement speed" => BonusMoveSpeed,
+            "armor" => Armor,
+            "of the target's maximum health" => EnemyMaxHealth,
+            "of target's maximum health" => EnemyMaxHealth,
+            "of Zac's maximum health" => MaxHealth,
+            "of Braum's maximum health" => MaxHealth,
+            "of her maximum health" => MaxHealth,
+            "of his maximum health" => MaxHealth,
+            "of maximum health" => MaxHealth,
+            "maximum health" => MaxHealth,
+            "of the target's current health" => CurrentHealth,
+            "of target's current health" => CurrentHealth,
+            "target's current health" => CurrentHealth,
+            "of the target's missing health" => MissingHealth,
+            "of target's missing health" => MissingHealth,
+            "target's missing health" => MissingHealth,
+            "maximum mana" => MaxMana,
+            "AP" => Ap,
+            "AD" => Ad,
             "\u{00D7}" => "*",
         };
 
@@ -205,7 +205,7 @@ impl RegExtractor for str {
         let base = self.replace(paren_part, "").trim().to_string();
         let scaled = paren_part.get_scalings();
         if !scaled.is_empty() {
-            format!("{} + {}", base, scaled)
+            format!("{base} + {scaled}")
         } else {
             base
         }
@@ -214,14 +214,14 @@ impl RegExtractor for str {
     fn process_linear_scalings(
         bounds: (f64, f64),
         size: usize,
-        postfix: Option<EvalIdent>,
+        postfix: Option<String>,
     ) -> Vec<String> {
         let mut result = Vec::<String>::new();
         let (start, end) = bounds;
         for i in 0..size {
             let value = start + (((end - start) * (i as f64)) / (size as f64 - 1.0));
-            if let Some(postfix) = postfix {
-                result.push(format!("({value} + {postfix})"));
+            if let Some(ref postfix) = postfix {
+                result.push(format!("({value}{postfix})"));
                 continue;
             }
             result.push(value.to_string());

@@ -1,4 +1,5 @@
 use crate::{
+    MayFail,
     champions::{Champion, MerakiChampion},
     generators::{Generator, gen_factories::fac_champions::ChampionData},
 };
@@ -9,6 +10,10 @@ tutorlolv2_macros::expand_dir!("../internal/champions", |Name| {
     impl Name {
         pub fn new(data: MerakiChampion) -> Box<dyn Generator<Champion>> {
             Box::new(Self(ChampionData::new(data)))
+        }
+
+        pub fn end(self) -> MayFail<Champion> {
+            self.0.end()
         }
     }
 

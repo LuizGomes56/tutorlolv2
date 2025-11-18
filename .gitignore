@@ -7,10 +7,12 @@
 *.txt
 *.pdf
 *.svg
+internal
 target
 html
 safety_copy
 raw_img
 sprite
 cache
+cache_*
 img

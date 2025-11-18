@@ -56,10 +56,14 @@ pub async fn setup_project() -> impl Responder {
 
 #[get("/docs")]
 pub async fn setup_docs() -> impl Responder {
-    spawn_blocking(generate_champion_html);
-    spawn_blocking(generate_item_html);
-    spawn_blocking(generate_rune_html);
-    HttpResponse::Ok().body("Docs setup started. Expected time to complete: less than 1 minute")
+    for future in [
+        spawn_blocking(generate_champion_html),
+        spawn_blocking(generate_item_html),
+        spawn_blocking(generate_rune_html),
+    ] {
+        let _ = future.await;
+    }
+    HttpResponse::Ok().body("Html docs setup finished")
 }
 
 #[get("/folders")]

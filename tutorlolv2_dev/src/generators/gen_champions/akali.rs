@@ -1,10 +1,15 @@
 use super::*;
 
+// #![stable]
+
 impl Generator<Champion> for Akali {
-    #[champion_generator]
     fn generate(mut self: Box<Self>) -> MayFail<Champion> {
-        ability![Q, (0, 0, _1)];
-        ability![E, (0, 0, _1), (2, 0, _2), (2, 1, _3)];
-        ability![R, (0, 0, _1), (2, 0, _2), (2, 1, _3)];
+        self.passive(Void, (0, 1), None, None);
+        self.ability(Q, [(0, 0, Void)]);
+        self.ability(E, [(0, 0, _1Min), (2, 0, _1Max), (2, 1, Max)]);
+        self.ability(R, [(0, 0, _1), (2, 0, _2Min), (2, 1, _2Max)]);
+        self.attr(Area, dynvec![Q::Void, R::_1, R::_2Min, R::_2Max])?;
+        self.attr(Onhit, [P::Void])?;
+        self.end()
     }
 }

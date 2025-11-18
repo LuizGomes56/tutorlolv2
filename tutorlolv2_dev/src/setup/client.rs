@@ -7,6 +7,7 @@ use crate::{
     model::riot::{RiotCdnChampion, RiotCdnRune},
     read_file, resolve_path,
     riot::RiotCdnStandard,
+    update::setup_project_folders,
 };
 use reqwest::Client;
 use scraper::{Html, Selector};
@@ -214,6 +215,12 @@ impl HttpClient {
     }
 
     pub async unsafe fn update_env_version(&self) -> MayFail {
+        let target = format!(
+            "cache_{old_version}",
+            old_version = ENV_CONFIG.lol_version.replace(".", "_")
+        );
+        std::fs::rename("cache", target)?;
+        setup_project_folders()?;
         let version = self.fetch_version().await?;
         Ok(unsafe { set_env_var("LOL_VERSION", &version)? })
     }
@@ -411,7 +418,7 @@ impl HttpClient {
                     let bytes = read_file(path)?;
                     let html = Html::parse_document(&String::from_utf8(bytes)?);
 
-                    let mut result = HashMap::<String, Vec<Vec<String>>>::new();
+                    let mut result = Vec::<Vec<String>>::new();
 
                     let combo_section = Selector::parse("div.m-1o7d3sk")?;
                     let combo_span = Selector::parse("span.m-1pm4585.e1o1aytf0")?;
@@ -424,10 +431,7 @@ impl HttpClient {
                                 combo_strings.push(text.to_string());
                             };
                         }
-                        let _ = result
-                            .entry(champion_id.clone())
-                            .or_insert(vec![])
-                            .push(combo_strings);
+                        result.push(combo_strings);
                     }
 
                     result.into_file(format!("internal/scraper/combos/{champion_id}.json"))

@@ -1,6 +1,7 @@
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
-use tutorlolv2_gen::{AbilityLike, AdaptativeType, AttackType, Attrs, DamageType, Position};
+use tutorlolv2_gen::{AdaptativeType, AttackType, Attrs, DamageType, Position};
+use tutorlolv2_types::AbilityLike;
 
 #[derive(Deserialize, Serialize)]
 pub struct Modifiers {
@@ -34,7 +35,7 @@ impl MerakiAbility {
         Ability {
             name: self.name.clone(),
             damage_type: DamageType::from(self.damage_type.clone().unwrap_or_default()),
-            attributes: Attrs::None,
+            attributes: Attrs::Undefined,
             damage,
         }
     }
@@ -90,7 +91,7 @@ impl MerakiChampion {
                 .map(|pos| Position::from_raw(&pos).unwrap_or_default())
                 .collect(),
             stats: self.stats,
-            abilities,
+            abilities: abilities.into_iter().collect(),
             merge_data,
         }
     }
@@ -111,7 +112,7 @@ pub struct Champion {
     pub attack_type: AttackType,
     pub positions: Vec<Position>,
     pub stats: MerakiChampionStats,
-    pub abilities: HashMap<AbilityLike, Ability>,
+    pub abilities: Vec<(AbilityLike, Ability)>,
     pub merge_data: Vec<(AbilityLike, AbilityLike)>,
 }
 
