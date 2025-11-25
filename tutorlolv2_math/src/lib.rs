@@ -3,6 +3,7 @@ use tutorlolv2_gen::{
     AdaptativeType, INTERNAL_CHAMPIONS, INTERNAL_ITEMS, INTERNAL_RUNES, SIMULATED_ITEMS,
 };
 
+pub mod bitarray;
 pub mod calculator;
 pub mod helpers;
 pub mod model;
@@ -35,15 +36,6 @@ pub const NUMBER_OF_ABILITIES: usize = {
         i += 1;
     }
     sum
-};
-pub const BITSET_SIZE: usize = {
-    let mut result = NUMBER_OF_CHAMPIONS;
-    if NUMBER_OF_ITEMS > result {
-        result = NUMBER_OF_ITEMS;
-    } else if NUMBER_OF_RUNES > result {
-        result = NUMBER_OF_RUNES;
-    }
-    result.div_ceil(u64::BITS as usize)
 };
 pub const L_TEAM: usize = 5;
 pub const L_PLYR: usize = L_TEAM << 1;
@@ -119,5 +111,3 @@ impl RiotFormulas {
         }
     }
 }
-
-pub type BitArray = const_sized_bit_set::BitSetArray<BITSET_SIZE>;

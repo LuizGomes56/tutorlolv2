@@ -1,4 +1,4 @@
-use crate::*;
+use crate::{bitarray::BitArray, *};
 use bincode::{Decode, Encode};
 use smallvec::SmallVec;
 use tutorlolv2_gen::{
@@ -301,6 +301,7 @@ macro_rules! impl_default {
     };
 }
 
+impl_default!(Stats<f32>, 0.0f32);
 impl_default!(DamageModifiers, 1.0f32);
 impl_default!(AbilityModifiers, 1.0f32);
 impl_default!(Modifiers, 1.0f32);

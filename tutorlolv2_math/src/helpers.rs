@@ -1,7 +1,8 @@
 use super::model::*;
 use crate::{
-    BITSET_SIZE, BitArray, L_ITEM, L_RUNE, L_SIML, NUMBER_OF_CHAMPIONS, NUMBER_OF_ITEMS,
-    RiotFormulas, riot::*,
+    L_ITEM, L_RUNE, L_SIML, NUMBER_OF_CHAMPIONS, NUMBER_OF_ITEMS, RiotFormulas,
+    bitarray::{BitArray, bit_array_pop},
+    riot::*,
 };
 use smallvec::SmallVec;
 use std::mem::MaybeUninit;
@@ -39,26 +40,25 @@ pub static BASE_STATS: [[BasicStats<f32>; URF_MAX_LEVEL]; NUMBER_OF_CHAMPIONS] =
         while level < URF_MAX_LEVEL {
             let stats = &INTERNAL_CHAMPIONS[champion_index].stats;
             let growth_factor = RiotFormulas::growth(level as u8 + 1);
-            macro_rules! get_stat {
-                ($field:ident) => {
-                    RiotFormulas::stat_growth(
-                        stats.$field.flat,
-                        stats.$field.per_level,
-                        growth_factor,
-                    )
+            macro_rules! mount_basic_stats {
+                ($($field:ident),*) => {
+                    BasicStats {
+                        $(
+                            $field: RiotFormulas::stat_growth(
+                                stats.$field.flat,
+                                stats.$field.per_level,
+                                growth_factor,
+                            ),
+                        )*
+                    }
                 };
             }
-            let health = get_stat!(health);
-            let armor = get_stat!(armor);
-            let magic_resist = get_stat!(magic_resist);
-            let attack_damage = get_stat!(attack_damage);
-            let mana = get_stat!(mana);
-            base_stats[champion_index][level] = BasicStats {
+            base_stats[champion_index][level] = mount_basic_stats! {
                 health,
                 armor,
                 magic_resist,
                 attack_damage,
-                mana,
+                mana
             };
             level += 1;
         }
@@ -66,37 +66,42 @@ pub static BASE_STATS: [[BasicStats<f32>; URF_MAX_LEVEL]; NUMBER_OF_CHAMPIONS] =
     }
     base_stats
 };
-pub const MEGA_GNAR_HEALTH: CachedChampionStatsMap = CachedChampionStatsMap {
-    flat: 100.0,
-    per_level: 43.0,
-};
-pub const MEGA_GNAR_ARMOR: CachedChampionStatsMap = CachedChampionStatsMap {
-    flat: 3.5,
-    per_level: 3.0,
-};
-pub const MEGA_GNAR_MAGIC_RESIST: CachedChampionStatsMap = CachedChampionStatsMap {
-    flat: 3.5,
-    per_level: 3.5,
-};
-pub const MEGA_GNAR_ATTACK_DAMAGE: CachedChampionStatsMap = CachedChampionStatsMap {
-    flat: 6.0,
-    per_level: 2.5,
-};
+
 pub static MEGA_GNAR_BASE_STATS: [BasicStats<f32>; URF_MAX_LEVEL] = {
     let mut base_stats = BASE_STATS[ChampionId::Gnar as usize];
     let mut level = 0;
     while level < URF_MAX_LEVEL {
         let growth_factor = RiotFormulas::growth(level as u8 + 1);
+
+        type S = CachedChampionStatsMap;
+
+        const MEGA_GNAR_HEALTH: S = S {
+            flat: 100.0,
+            per_level: 43.0,
+        };
+        const MEGA_GNAR_ARMOR: S = S {
+            flat: 3.5,
+            per_level: 3.0,
+        };
+        const MEGA_GNAR_MAGIC_RESIST: S = S {
+            flat: 3.5,
+            per_level: 3.5,
+        };
+        const MEGA_GNAR_ATTACK_DAMAGE: S = S {
+            flat: 6.0,
+            per_level: 2.5,
+        };
+
         macro_rules! get_stat {
             ($field:ident) => {
                 RiotFormulas::stat_growth($field.flat, $field.per_level, growth_factor)
             };
         }
+
         base_stats[level].health += get_stat!(MEGA_GNAR_HEALTH);
         base_stats[level].armor += get_stat!(MEGA_GNAR_ARMOR);
         base_stats[level].magic_resist += get_stat!(MEGA_GNAR_MAGIC_RESIST);
         base_stats[level].attack_damage += get_stat!(MEGA_GNAR_ATTACK_DAMAGE);
-        base_stats[level].mana = 0.0;
         level += 1;
     }
     base_stats
@@ -139,7 +144,7 @@ pub const fn const_clamp(value: u8, range: std::ops::RangeInclusive<u8>) -> usiz
 }
 
 pub const fn get_base_stats(champion_id: ChampionId, level: u8) -> BasicStats<f32> {
-    BASE_STATS[champion_id as usize][const_clamp(level, 1..=30)]
+    BASE_STATS[champion_id as usize][const_clamp(level, 1..=URF_MAX_LEVEL as u8)]
 }
 
 impl SimpleStats<f32> {
@@ -153,7 +158,7 @@ impl SimpleStats<f32> {
 
     pub const fn base_stats(champion_id: ChampionId, level: u8, is_mega_gnar: bool) -> Self {
         let stats = match is_mega_gnar {
-            true => MEGA_GNAR_BASE_STATS[const_clamp(level, 1..=30)],
+            true => MEGA_GNAR_BASE_STATS[const_clamp(level, 1..=URF_MAX_LEVEL as u8)],
             false => get_base_stats(champion_id, level),
         };
         Self {
@@ -177,7 +182,7 @@ impl BasicStats<f32> {
 
     pub const fn base_stats(champion_id: ChampionId, level: u8, is_mega_gnar: bool) -> Self {
         match is_mega_gnar {
-            true => MEGA_GNAR_BASE_STATS[const_clamp(level, 1..=30)],
+            true => MEGA_GNAR_BASE_STATS[const_clamp(level, 1..=URF_MAX_LEVEL as u8)],
             false => get_base_stats(champion_id, level),
         }
     }
@@ -193,31 +198,28 @@ pub const fn get_simulated_stats(stats: &Stats<f32>, dragons: Dragons) -> [Stats
         let item_cache = INTERNAL_ITEMS[item_offset as usize];
         let mut new_stat = *stats;
 
-        macro_rules! add_stat {
-            ($field:ident) => {
-                new_stat.$field += item_cache.stats.$field;
-            };
-            (@$field:ident) => {
-                new_stat.$field = RiotFormulas::percent_value(&[new_stat.$field, stats.$field]);
-            };
-        }
+        new_stat.armor_penetration_flat += item_cache.stats.armor_penetration_flat;
+        new_stat.magic_penetration_flat += item_cache.stats.magic_penetration_flat;
+        new_stat.ability_power += item_cache.stats.ability_power;
+        new_stat.attack_damage += item_cache.stats.attack_damage;
+        new_stat.magic_resist += item_cache.stats.magic_resist;
+        new_stat.attack_speed += item_cache.stats.attack_speed;
+        new_stat.crit_chance += item_cache.stats.crit_chance;
+        new_stat.crit_damage += item_cache.stats.crit_damage;
+        new_stat.health += item_cache.stats.health;
+        new_stat.armor += item_cache.stats.armor;
+        new_stat.mana += item_cache.stats.mana;
+        new_stat.armor_penetration_percent = RiotFormulas::percent_value(&[
+            new_stat.armor_penetration_percent,
+            stats.armor_penetration_percent,
+        ]);
+        new_stat.magic_penetration_percent = RiotFormulas::percent_value(&[
+            new_stat.magic_penetration_percent,
+            stats.magic_penetration_percent,
+        ]);
 
-        add_stat!(mana);
-        add_stat!(health);
-        add_stat!(magic_resist);
-        add_stat!(crit_chance);
-        add_stat!(crit_damage);
-        add_stat!(ability_power);
-        add_stat!(attack_damage);
-        add_stat!(armor);
-        add_stat!(attack_speed);
-        add_stat!(armor_penetration_flat);
-        add_stat!(magic_penetration_flat);
-        add_stat!(@armor_penetration_percent);
-        add_stat!(@magic_penetration_percent);
-
-        let fire_mod = get_fire_multiplier(dragons.ally_fire_dragons);
         let earth_mod = get_earth_multiplier(dragons.ally_earth_dragons);
+        let fire_mod = get_fire_multiplier(dragons.ally_fire_dragons);
 
         new_stat.ability_power *= fire_mod;
         new_stat.attack_damage *= fire_mod;
@@ -308,23 +310,6 @@ pub fn items_slice_to_bit_array(input: &[ItemId]) -> BitArray {
         .collect::<BitArray>()
 }
 
-pub const fn pop_const(array: &mut [u64; BITSET_SIZE]) -> Option<usize> {
-    let mut word_index = 0;
-    while word_index <= BitArray::LAST_WORD {
-        let word = array[word_index];
-        if word != 0 {
-            let tz = word.trailing_zeros();
-            let r = tz as usize + (word_index * u64::BITS as usize);
-            let t = word & (0u64.wrapping_sub(word));
-            array[word_index] ^= t;
-
-            return Some(r);
-        }
-        word_index += 1;
-    }
-    None
-}
-
 pub const fn get_enemy_current_stats(
     stats: &mut SimpleStats<f32>,
     items: &BitArray,
@@ -335,23 +320,18 @@ pub const fn get_enemy_current_stats(
     let mut i = 0;
     let mut inner = items.into_inner();
     while i < items.count() as usize {
-        if let Some(item_id) = pop_const(&mut inner) {
+        if let Some(item_id) = bit_array_pop(&mut inner) {
             let item = INTERNAL_ITEMS[item_id];
-            macro_rules! add_value {
-                ($field:ident) => {
-                    stats.$field += item.stats.$field;
-                };
-            }
-            add_value!(health);
-            add_value!(armor);
-            add_value!(magic_resist);
+            stats.magic_resist += item.stats.magic_resist;
+            stats.health += item.stats.health;
+            stats.armor += item.stats.armor;
             bonus_mana += item.stats.mana;
         }
         i += 1;
     }
     let dragon_mod = get_earth_multiplier(earth_dragons);
-    stats.armor *= dragon_mod;
     stats.magic_resist *= dragon_mod;
+    stats.armor *= dragon_mod;
     bonus_mana
 }
 
@@ -431,14 +411,9 @@ pub const fn get_enemy_state(
                 13..18 => (state.level - 12) as f32 * 0.04,
                 18.. => 1.3,
             };
-            macro_rules! assign_value {
-                ($field:ident) => {
-                    e_current_stats.$field *= ornn_resist_multiplier;
-                };
-            }
-            assign_value!(armor);
-            assign_value!(magic_resist);
-            assign_value!(health);
+            e_current_stats.armor *= ornn_resist_multiplier;
+            e_current_stats.magic_resist *= ornn_resist_multiplier;
+            e_current_stats.health *= ornn_resist_multiplier;
         }
         ChampionId::Malphite => {
             // W upgrade pattern for malphite by 06/07/2025
@@ -621,12 +596,8 @@ pub fn eval_damage<const N: usize, T: IsAbility + 'static>(
         let damage = (modifier * closure(ctx)) as i32;
 
         match attributes {
-            Attrs::OnhitMin => {
-                onhit.minimum_damage += damage;
-            }
-            Attrs::OnhitMax => {
-                onhit.maximum_damage += damage;
-            }
+            Attrs::OnhitMin => onhit.minimum_damage += damage,
+            Attrs::OnhitMax => onhit.maximum_damage += damage,
             Attrs::Onhit => {
                 onhit.minimum_damage += damage;
                 onhit.maximum_damage += damage;
@@ -639,9 +610,9 @@ pub fn eval_damage<const N: usize, T: IsAbility + 'static>(
     result
 }
 
-pub fn eval_attacks(ctx: &EvalContext, mut onhit_damage: RangeDamage) -> Attacks {
-    let basic_attack = (BASIC_ATTACK.minimum_damage)(ctx) as i32;
-    let critical_strike = (CRITICAL_STRIKE.minimum_damage)(ctx) as i32;
+pub const fn eval_attacks(ctx: &EvalContext, mut onhit_damage: RangeDamage) -> Attacks {
+    let basic_attack = ctx.ad as i32;
+    let critical_strike = (ctx.ad * ctx.crit_damage / 100.0) as i32;
 
     onhit_damage.minimum_damage += basic_attack;
     onhit_damage.maximum_damage += critical_strike;

@@ -4,7 +4,6 @@ use serde::{Deserialize, Serialize};
 pub mod ability_name;
 
 pub use ability_name::*;
-pub use paste::paste;
 
 #[derive(
     Serialize, Deserialize, Copy, Clone, Encode, Debug, Eq, PartialEq, PartialOrd, Hash, Ord,

@@ -1,5 +1,5 @@
 use super::{helpers::*, model::*};
-use crate::{AbilityLevels, BitArray, L_CENM, L_MSTR, L_TWRD, RiotFormulas, riot::*};
+use crate::{AbilityLevels, L_CENM, L_MSTR, L_TWRD, RiotFormulas, bitarray::BitArray, riot::*};
 use smallvec::SmallVec;
 use std::mem::MaybeUninit;
 use tutorlolv2_gen::{
@@ -26,30 +26,20 @@ fn infer_champion_stats(items: &[ItemId], dragons: Dragons) -> Stats<f32> {
         let item = unsafe { INTERNAL_ITEMS.get_unchecked(*item_id as usize) };
         let item_stats = &item.stats;
 
-        macro_rules! add_stat {
-            ($field:ident) => {
-                stats.$field += item_stats.$field;
-            };
-            (@$mul:ident $field:ident) => {
-                stats.$field += $mul * item_stats.$field;
-            };
-        }
-
         let fire = get_fire_multiplier(dragons.ally_fire_dragons);
         let earth = get_earth_multiplier(dragons.ally_earth_dragons);
 
-        add_stat!(@fire ability_power);
-        add_stat!(@fire attack_damage);
-        add_stat!(@earth armor);
-        add_stat!(@earth magic_resist);
-        add_stat!(health);
-        add_stat!(crit_chance);
-        add_stat!(crit_damage);
-        add_stat!(mana);
-        add_stat!(attack_speed);
-
+        stats.ability_power += fire * item_stats.ability_power;
+        stats.attack_damage += fire * item_stats.attack_damage;
+        stats.magic_resist += earth * item_stats.magic_resist;
+        stats.attack_speed += item_stats.attack_speed;
+        stats.crit_chance += item_stats.crit_chance;
+        stats.crit_damage += item_stats.crit_damage;
+        stats.armor += earth * item_stats.armor;
         stats.current_health = stats.health;
+        stats.health += item_stats.health;
         stats.current_mana = stats.mana;
+        stats.mana += item_stats.mana;
 
         armor_penetration.push(item_stats.armor_penetration_percent);
         magic_penetration.push(item_stats.magic_penetration_percent);

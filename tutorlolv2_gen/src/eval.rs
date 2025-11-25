@@ -1,6 +1,6 @@
 macro_rules! create_eval_ident {
     (u8($($bytes:ident),* $(,)?), f32($($floats:ident),* $(,)?)) => {
-        tutorlolv2_types::paste! {
+        paste::paste! {
             #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
             #[repr(u8)]
             pub enum EvalIdent {

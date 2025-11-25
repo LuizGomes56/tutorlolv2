@@ -1,5 +1,5 @@
 use super::{helpers::*, model::*};
-use crate::{BitArray, L_SIML, L_TEAM, RiotFormulas, riot::*};
+use crate::{L_SIML, L_TEAM, RiotFormulas, bitarray::BitArray, riot::*};
 use smallvec::SmallVec;
 use std::mem::MaybeUninit;
 use tutorlolv2_gen::{

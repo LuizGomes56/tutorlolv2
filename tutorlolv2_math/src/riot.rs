@@ -1,15 +1,15 @@
 use crate::*;
 use bincode::{Decode, Encode};
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
 use smallvec::SmallVec;
 
-#[derive(Serialize, Default, Deserialize)]
+#[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RiotAbility {
     pub ability_level: u8,
 }
 
-#[derive(Serialize, Default, Deserialize)]
+#[derive(Deserialize)]
 #[serde(rename_all = "UPPERCASE")]
 pub struct RiotAbilities {
     pub q: RiotAbility,
@@ -30,7 +30,7 @@ impl RiotAbilities {
     }
 }
 
-#[derive(Encode, Decode, Serialize, Default, Deserialize, Copy, Clone)]
+#[derive(Encode, Decode, Deserialize, Copy, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct Stats<T> {
     pub ability_power: T,
@@ -55,19 +55,19 @@ pub struct Stats<T> {
     pub current_mana: T,
 }
 
-#[derive(Serialize, Default, Deserialize)]
+#[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RiotGeneralRunes {
     pub id: u32,
 }
 
-#[derive(Serialize, Default, Deserialize)]
+#[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RiotFullRunes {
     pub general_runes: Option<SmallVec<[RiotGeneralRunes; 6]>>,
 }
 
-#[derive(Serialize, Default, Deserialize)]
+#[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RiotActivePlayer<'a> {
     pub abilities: RiotAbilities,
@@ -78,7 +78,7 @@ pub struct RiotActivePlayer<'a> {
     pub riot_id: &'a str,
 }
 
-#[derive(Serialize, Default, Deserialize)]
+#[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RiotScoreboard {
     pub kills: u8,
@@ -87,13 +87,13 @@ pub struct RiotScoreboard {
     pub creep_score: u16,
 }
 
-#[derive(Serialize, Default, Deserialize)]
+#[derive(Deserialize)]
 pub struct RiotItems {
     #[serde(rename = "itemID")]
     pub item_id: u32,
 }
 
-#[derive(Serialize, Default, Deserialize)]
+#[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RiotAllPlayers<'a> {
     #[serde(borrow)]
@@ -109,28 +109,28 @@ pub struct RiotAllPlayers<'a> {
     pub scores: RiotScoreboard,
 }
 
-#[derive(Serialize, Default, Deserialize)]
+#[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RiotRealtimeGameData {
     pub game_time: f32,
     pub map_number: u8,
 }
 
-#[derive(Serialize, Default, Deserialize)]
+#[derive(Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct RealtimeEvent<'a> {
     pub dragon_type: Option<&'a str>,
     pub killer_name: Option<&'a str>,
 }
 
-#[derive(Serialize, Default, Deserialize)]
+#[derive(Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct RiotRealtimeEvents<'a> {
     #[serde(borrow)]
     pub events: Vec<RealtimeEvent<'a>>,
 }
 
-#[derive(Serialize, Default, Deserialize)]
+#[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RiotRealtime<'a> {
     #[serde(borrow)]
