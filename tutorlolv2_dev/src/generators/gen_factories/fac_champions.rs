@@ -381,7 +381,7 @@ impl ChampionData {
             for modifier in modifiers {
                 if let Some(value) = modifier.values.get(i) {
                     let raw_unit = modifier.units[i].trim();
-                    let scallings = raw_unit.get_scalings();
+                    let scalings = raw_unit.get_scalings();
                     let unit = raw_unit.remove_parenthesis();
                     let cleaned_string = if unit.contains('%') {
                         let parts = unit.split('%').collect::<Vec<&str>>();
@@ -394,18 +394,18 @@ impl ChampionData {
                         } else if !suffix.is_empty() {
                             format!("({} * {suffix})", coef.trim())
                         } else {
-                            format!("{}", coef.trim())
+                            coef.trim().to_string()
                         }
                     } else if unit.is_empty() {
                         value.trim()
                     } else {
-                        format!("{}{}", value.trim(), unit)
+                        format!("{}{unit}", value.trim())
                     };
                     let formatted_string = cleaned_string.replace_keys();
-                    let final_string = if scallings.is_empty() {
+                    let final_string = if scalings.is_empty() {
                         formatted_string
                     } else {
-                        format!("{formatted_string} + {scallings}")
+                        format!("{formatted_string} + {scalings}")
                     };
                     parts.push(final_string);
                 }

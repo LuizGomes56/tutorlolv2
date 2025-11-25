@@ -36,6 +36,15 @@ pub const NUMBER_OF_ABILITIES: usize = {
     }
     sum
 };
+pub const BITSET_SIZE: usize = {
+    let mut result = NUMBER_OF_CHAMPIONS;
+    if NUMBER_OF_ITEMS > result {
+        result = NUMBER_OF_ITEMS;
+    } else if NUMBER_OF_RUNES > result {
+        result = NUMBER_OF_RUNES;
+    }
+    result.div_ceil(u64::BITS as usize)
+};
 pub const L_TEAM: usize = 5;
 pub const L_PLYR: usize = L_TEAM << 1;
 pub const L_MSTR: usize = 7;
@@ -63,12 +72,25 @@ impl RiotFormulas {
         base + per_level * growth_factor
     }
 
-    pub fn percent_value(from_vec: &[f32]) -> f32 {
-        from_vec
-            .iter()
-            .map(|value: &f32| 100.0 - value)
-            .product::<f32>()
-            / 10f32.powi((from_vec.len() << 1) as i32)
+    pub const fn percent_value(from_vec: &[f32]) -> f32 {
+        let mut i = 0;
+        let mut prod = 1.0_f32;
+
+        while i < from_vec.len() {
+            prod *= 100.0_f32 - from_vec[i];
+            i += 1;
+        }
+
+        let mut div = 1.0_f32;
+        let mut j = 0;
+        let exp = (from_vec.len() as u32) << 1;
+
+        while j < exp {
+            div *= 10.0_f32;
+            j += 1;
+        }
+
+        prod / div
     }
 
     pub const fn real_resist(
@@ -97,3 +119,5 @@ impl RiotFormulas {
         }
     }
 }
+
+pub type BitArray = const_sized_bit_set::BitSetArray<BITSET_SIZE>;

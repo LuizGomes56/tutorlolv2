@@ -1,8 +1,7 @@
 use super::{helpers::*, model::*};
-use crate::{AbilityLevels, L_CENM, L_ITEM, L_MSTR, L_RUNE, L_TWRD, RiotFormulas, riot::*};
+use crate::{AbilityLevels, BitArray, L_CENM, L_MSTR, L_TWRD, RiotFormulas, riot::*};
 use smallvec::SmallVec;
 use std::mem::MaybeUninit;
-use tinyset::SetU32;
 use tutorlolv2_gen::{
     AdaptativeType, AttackType, ChampionId, INTERNAL_CHAMPIONS, INTERNAL_ITEMS, ItemId, RuneId,
 };
@@ -36,8 +35,8 @@ fn infer_champion_stats(items: &[ItemId], dragons: Dragons) -> Stats<f32> {
             };
         }
 
-        let fire = GET_FIRE_MULTIPLIER(dragons.ally_fire_dragons);
-        let earth = GET_EARTH_MULTIPLIER(dragons.ally_earth_dragons);
+        let fire = get_fire_multiplier(dragons.ally_fire_dragons);
+        let earth = get_earth_multiplier(dragons.ally_earth_dragons);
 
         add_stat!(@fire ability_power);
         add_stat!(@fire attack_damage);
@@ -69,7 +68,7 @@ pub struct ChampionExceptionData<'a> {
     pub current_player_stats: &'a mut Stats<f32>,
 }
 
-fn assign_champion_exceptions(data: ChampionExceptionData, champion_id: ChampionId) {
+const fn assign_champion_exceptions(data: ChampionExceptionData, champion_id: ChampionId) {
     let ChampionExceptionData {
         ability_levels,
         stacks,
@@ -80,7 +79,7 @@ fn assign_champion_exceptions(data: ChampionExceptionData, champion_id: Champion
         ChampionId::Swain => current_player_stats.health += (12 * stacks) as f32,
         ChampionId::Chogath => {
             current_player_stats.health +=
-                (stacks * 80 + 40 * ability_levels.r.clamp(0, 3) as u32) as f32
+                (stacks * 80 + 40 * const_clamp(ability_levels.r, 0..=3) as u32) as f32
         }
         ChampionId::Sion => current_player_stats.health += stacks as f32,
         ChampionId::Darius => {
@@ -118,7 +117,7 @@ pub struct RuneExceptionData<'a> {
     pub level: u8,
 }
 
-fn assign_rune_exceptions(data: RuneExceptionData, exceptions: SmallVec<[ValueException; L_RUNE]>) {
+const fn assign_rune_exceptions(data: RuneExceptionData, exceptions: &[ValueException]) {
     let RuneExceptionData {
         current_player_stats,
         attack_type,
@@ -126,7 +125,9 @@ fn assign_rune_exceptions(data: RuneExceptionData, exceptions: SmallVec<[ValueEx
         level,
     } = data;
 
-    for rune_exception in exceptions {
+    let mut i = 0;
+    while i < exceptions.len() {
+        let rune_exception = exceptions[i];
         let stacks = rune_exception.stacks();
         if let Some(rune_id) = rune_exception.get_rune_id() {
             match rune_id {
@@ -208,6 +209,7 @@ fn assign_rune_exceptions(data: RuneExceptionData, exceptions: SmallVec<[ValueEx
                 _ => {}
             }
         }
+        i += 1;
     }
 }
 
@@ -216,7 +218,7 @@ pub struct ItemExceptionData<'a> {
     pub current_player_bonus_stats: &'a mut BasicStats<f32>,
 }
 
-fn assign_item_exceptions(data: ItemExceptionData, exceptions: SmallVec<[ValueException; L_ITEM]>) {
+const fn assign_item_exceptions(data: ItemExceptionData, exceptions: &[ValueException]) {
     let ItemExceptionData {
         current_player_stats,
         current_player_bonus_stats,
@@ -229,7 +231,9 @@ fn assign_item_exceptions(data: ItemExceptionData, exceptions: SmallVec<[ValueEx
         }};
     }
 
-    for item_exception in exceptions.into_iter() {
+    let mut i = 0;
+    while i < exceptions.len() {
+        let item_exception = exceptions[i];
         let stacks = item_exception.stacks();
 
         if let Some(item_id) = item_exception.get_item_id() {
@@ -306,6 +310,7 @@ fn assign_item_exceptions(data: ItemExceptionData, exceptions: SmallVec<[ValueEx
                 _ => {}
             }
         }
+        i += 1;
     }
 }
 
@@ -336,7 +341,7 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
     let mut ability_modifiers = AbilityModifiers::default();
     let champion_raw_stats: Stats<f32> = champion_raw_stats_i32.into();
 
-    let current_player_runes = runes_slice_to_set_u32(&current_player_raw_runes);
+    let current_player_runes = runes_slice_to_bit_array(&current_player_raw_runes);
     let current_player_cache =
         unsafe { INTERNAL_CHAMPIONS.get_unchecked(current_player_champion_id as usize) };
 
@@ -382,7 +387,7 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
                 attack_type,
                 level,
             },
-            rune_exceptions,
+            &rune_exceptions,
         );
     }
 
@@ -392,11 +397,11 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
                 current_player_stats: &mut champion_stats,
                 current_player_bonus_stats: &mut current_player_bonus_stats,
             },
-            item_exceptions,
+            &item_exceptions,
         );
     }
 
-    let current_player_items = items_slice_to_set_u32(&current_player_raw_items);
+    let current_player_items = items_slice_to_bit_array(&current_player_raw_items);
     let (items_data, items_to_merge) = get_items_data(&current_player_items, attack_type);
 
     let eval_data = DamageEvalData {
@@ -431,7 +436,7 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
                 base_modifiers.global_mod *= COUP_DE_GRACE_AND_CUTDOWN_BONUS_DAMAGE
             }
             RuneId::LastStand => {
-                base_modifiers.global_mod *= LAST_STAND_CLOSURE(
+                base_modifiers.global_mod *= get_last_stand(
                     1.0 - (self_state.current_stats.current_health
                         / self_state.current_stats.health.max(1.0)),
                 )
@@ -473,7 +478,7 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
             } = player;
 
             let e_stats: SimpleStats<f32> = e_raw_stats.into();
-            let e_items = items_slice_to_set_u32(&e_raw_items);
+            let e_items = items_slice_to_bit_array(&e_raw_items);
             let e_base_stats = SimpleStats::base_stats(e_champion_id, e_level, e_is_mega_gnar);
             let mut full_state = get_enemy_state(
                 EnemyState {
@@ -535,7 +540,7 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
                     health: 1.0,
                     magic_resist,
                 },
-                items: SetU32::new(),
+                items: BitArray::EMPTY,
                 stacks: 0,
                 champion_id: ChampionId::Aatrox,
                 level: 0,

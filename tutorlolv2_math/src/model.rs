@@ -1,7 +1,6 @@
 use crate::*;
 use bincode::{Decode, Encode};
 use smallvec::SmallVec;
-use tinyset::SetU32;
 use tutorlolv2_gen::{
     AdaptativeType, ChampionId, ConstClosure, GameMap, ItemId, Position, RuneId, TypeMetadata,
 };
@@ -107,7 +106,7 @@ pub struct ResistShred {
 
 pub struct EnemyState<'a> {
     pub base_stats: SimpleStats<f32>,
-    pub items: SetU32,
+    pub items: BitArray,
     pub stacks: u32,
     pub champion_id: ChampionId,
     pub earth_dragons: u16,
@@ -294,8 +293,8 @@ pub struct Modifiers {
 
 macro_rules! impl_default {
     ($ty:ty, $initializer:literal) => {
-        impl Default for $ty {
-            fn default() -> Self {
+        impl $ty {
+            pub const fn default() -> Self {
                 unsafe { std::mem::transmute([$initializer; size_of::<$ty>() / size_of::<f32>()]) }
             }
         }

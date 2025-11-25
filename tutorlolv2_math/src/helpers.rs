@@ -1,8 +1,10 @@
 use super::model::*;
-use crate::{L_ITEM, L_RUNE, L_SIML, NUMBER_OF_CHAMPIONS, NUMBER_OF_ITEMS, RiotFormulas, riot::*};
+use crate::{
+    BITSET_SIZE, BitArray, L_ITEM, L_RUNE, L_SIML, NUMBER_OF_CHAMPIONS, NUMBER_OF_ITEMS,
+    RiotFormulas, riot::*,
+};
 use smallvec::SmallVec;
 use std::mem::MaybeUninit;
-use tinyset::SetU32;
 use tutorlolv2_gen::*;
 use tutorlolv2_types::{AbilityLike, AbilityName};
 
@@ -14,14 +16,23 @@ pub const EARTH_DRAGON_MULTIPLIER: f32 = 0.05;
 /// By 06/07/2025 Fire dragons give +3% bonus attack stats
 /// #![manual_impl]
 pub const FIRE_DRAGON_MULTIPLIER: f32 = 0.03;
-pub const LAST_STAND_CLOSURE: fn(f32) -> f32 =
-    |missing_health| 1.0 + (0.05 + 0.2 * (missing_health - 0.4)).clamp(0.0, 0.11);
-pub const GET_FIRE_MULTIPLIER: fn(u16) -> f32 = |x| 1.0 + x as f32 * FIRE_DRAGON_MULTIPLIER;
-pub const GET_EARTH_MULTIPLIER: fn(u16) -> f32 = |x| 1.0 + x as f32 * EARTH_DRAGON_MULTIPLIER;
 pub const URF_MAX_LEVEL: usize = 30;
+
+pub const fn get_last_stand(missing_health: f32) -> f32 {
+    1.0 + (0.05 + 0.2 * (missing_health - 0.4)).clamp(0.0, 0.11)
+}
+
+pub const fn get_earth_multiplier(x: u16) -> f32 {
+    1.0 + x as f32 * EARTH_DRAGON_MULTIPLIER
+}
+
+pub const fn get_fire_multiplier(x: u16) -> f32 {
+    1.0 + x as f32 * FIRE_DRAGON_MULTIPLIER
+}
+
 /// Ordered as: health, armor, magic_resist, attack_damage, mana
-pub static BASE_STATS: [[[f32; 5]; URF_MAX_LEVEL]; NUMBER_OF_CHAMPIONS] = {
-    let mut base_stats = [[[0.0; 5]; URF_MAX_LEVEL]; NUMBER_OF_CHAMPIONS];
+pub static BASE_STATS: [[BasicStats<f32>; URF_MAX_LEVEL]; NUMBER_OF_CHAMPIONS] = {
+    let mut base_stats = [[BasicStats::default(); URF_MAX_LEVEL]; NUMBER_OF_CHAMPIONS];
     let mut champion_index = 0;
     while champion_index < NUMBER_OF_CHAMPIONS {
         let mut level = 0;
@@ -42,7 +53,13 @@ pub static BASE_STATS: [[[f32; 5]; URF_MAX_LEVEL]; NUMBER_OF_CHAMPIONS] = {
             let magic_resist = get_stat!(magic_resist);
             let attack_damage = get_stat!(attack_damage);
             let mana = get_stat!(mana);
-            base_stats[champion_index][level] = [health, armor, magic_resist, attack_damage, mana];
+            base_stats[champion_index][level] = BasicStats {
+                health,
+                armor,
+                magic_resist,
+                attack_damage,
+                mana,
+            };
             level += 1;
         }
         champion_index += 1;
@@ -65,7 +82,7 @@ pub const MEGA_GNAR_ATTACK_DAMAGE: CachedChampionStatsMap = CachedChampionStatsM
     flat: 6.0,
     per_level: 2.5,
 };
-pub static MEGA_GNAR_BASE_STATS: [[f32; 5]; URF_MAX_LEVEL] = {
+pub static MEGA_GNAR_BASE_STATS: [BasicStats<f32>; URF_MAX_LEVEL] = {
     let mut base_stats = BASE_STATS[ChampionId::Gnar as usize];
     let mut level = 0;
     while level < URF_MAX_LEVEL {
@@ -75,11 +92,11 @@ pub static MEGA_GNAR_BASE_STATS: [[f32; 5]; URF_MAX_LEVEL] = {
                 RiotFormulas::stat_growth($field.flat, $field.per_level, growth_factor)
             };
         }
-        base_stats[level][0] += get_stat!(MEGA_GNAR_HEALTH);
-        base_stats[level][1] += get_stat!(MEGA_GNAR_ARMOR);
-        base_stats[level][2] += get_stat!(MEGA_GNAR_MAGIC_RESIST);
-        base_stats[level][3] += get_stat!(MEGA_GNAR_ATTACK_DAMAGE);
-        base_stats[level][4] = 0.0;
+        base_stats[level].health += get_stat!(MEGA_GNAR_HEALTH);
+        base_stats[level].armor += get_stat!(MEGA_GNAR_ARMOR);
+        base_stats[level].magic_resist += get_stat!(MEGA_GNAR_MAGIC_RESIST);
+        base_stats[level].attack_damage += get_stat!(MEGA_GNAR_ATTACK_DAMAGE);
+        base_stats[level].mana = 0.0;
         level += 1;
     }
     base_stats
@@ -98,82 +115,82 @@ macro_rules! bonus_stats {
 
 pub use bonus_stats;
 
-/// Level must be in range 1..=30. Returns the index in BASE_STATS level array.
-pub const fn clamp_level(level: u8) -> usize {
-    let min = 1;
-    let max = 30;
-    ((if level < min {
+pub const fn has_item<const N: usize>(origin: &BitArray, check_for: [ItemId; N]) -> bool {
+    let mut i = 0;
+    while i < N {
+        if origin.contains(check_for[i] as usize) {
+            return true;
+        }
+        i += 1;
+    }
+    false
+}
+
+pub const fn const_clamp(value: u8, range: std::ops::RangeInclusive<u8>) -> usize {
+    let min = *range.start();
+    let max = *range.end();
+    ((if value < min {
         min
-    } else if level > max {
+    } else if value > max {
         max
     } else {
-        level
+        value
     }) - 1) as usize
 }
 
-pub const fn get_base_stats(champion_id: ChampionId, level: u8) -> &'static [f32; 5] {
-    &BASE_STATS[champion_id as usize][clamp_level(level)]
-}
-
-impl BasicStats<f32> {
-    #[inline]
-    pub const fn from_slice(stats: &[f32; 5]) -> Self {
-        let [health, armor, magic_resist, attack_damage, mana] = *stats;
-        Self {
-            health,
-            armor,
-            magic_resist,
-            attack_damage,
-            mana,
-        }
-    }
+pub const fn get_base_stats(champion_id: ChampionId, level: u8) -> BasicStats<f32> {
+    BASE_STATS[champion_id as usize][const_clamp(level, 1..=30)]
 }
 
 impl SimpleStats<f32> {
-    #[inline]
-    pub const fn from_slice(stats: &[f32; 5]) -> Self {
-        let [health, armor, magic_resist, _, _] = *stats;
+    pub const fn default() -> Self {
         Self {
-            health,
-            armor,
-            magic_resist,
+            health: 0.0,
+            armor: 0.0,
+            magic_resist: 0.0,
+        }
+    }
+
+    pub const fn base_stats(champion_id: ChampionId, level: u8, is_mega_gnar: bool) -> Self {
+        let stats = match is_mega_gnar {
+            true => MEGA_GNAR_BASE_STATS[const_clamp(level, 1..=30)],
+            false => get_base_stats(champion_id, level),
+        };
+        Self {
+            health: stats.health,
+            armor: stats.armor,
+            magic_resist: stats.magic_resist,
         }
     }
 }
 
-macro_rules! impl_base_stats {
-    ($struct:ident) => {
-        impl $struct<f32> {
-            pub const fn base_stats(
-                champion_id: ChampionId,
-                level: u8,
-                is_mega_gnar: bool,
-            ) -> Self {
-                if is_mega_gnar {
-                    Self::from_slice(&MEGA_GNAR_BASE_STATS[clamp_level(level)])
-                } else {
-                    Self::from_slice(get_base_stats(champion_id, level))
-                }
-            }
+impl BasicStats<f32> {
+    pub const fn default() -> Self {
+        Self {
+            health: 0.0,
+            armor: 0.0,
+            magic_resist: 0.0,
+            attack_damage: 0.0,
+            mana: 0.0,
         }
-    };
+    }
+
+    pub const fn base_stats(champion_id: ChampionId, level: u8, is_mega_gnar: bool) -> Self {
+        match is_mega_gnar {
+            true => MEGA_GNAR_BASE_STATS[const_clamp(level, 1..=30)],
+            false => get_base_stats(champion_id, level),
+        }
+    }
 }
 
-impl_base_stats!(SimpleStats);
-impl_base_stats!(BasicStats);
-
-pub fn has_item<const N: usize>(origin: &SetU32, check_for: [ItemId; N]) -> bool {
-    check_for
-        .into_iter()
-        .any(|item_id| origin.contains(item_id as u32))
-}
-
-pub fn get_simulated_stats(stats: &Stats<f32>, dragons: Dragons) -> [Stats<f32>; L_SIML] {
+pub const fn get_simulated_stats(stats: &Stats<f32>, dragons: Dragons) -> [Stats<f32>; L_SIML] {
     let mut result = MaybeUninit::<[Stats<f32>; L_SIML]>::uninit();
     let result_ptr = result.as_mut_ptr();
 
-    for (i, item_offset) in SIMULATED_ITEMS_ENUM.into_iter().enumerate() {
-        let item_cache = unsafe { INTERNAL_ITEMS.get_unchecked(item_offset as usize) };
+    let mut i = 0;
+    while i < SIMULATED_ITEMS_ENUM.len() {
+        let item_offset = SIMULATED_ITEMS_ENUM[i];
+        let item_cache = INTERNAL_ITEMS[item_offset as usize];
         let mut new_stat = *stats;
 
         macro_rules! add_stat {
@@ -199,8 +216,8 @@ pub fn get_simulated_stats(stats: &Stats<f32>, dragons: Dragons) -> [Stats<f32>;
         add_stat!(@armor_penetration_percent);
         add_stat!(@magic_penetration_percent);
 
-        let fire_mod = GET_FIRE_MULTIPLIER(dragons.ally_fire_dragons);
-        let earth_mod = GET_EARTH_MULTIPLIER(dragons.ally_earth_dragons);
+        let fire_mod = get_fire_multiplier(dragons.ally_fire_dragons);
+        let earth_mod = get_earth_multiplier(dragons.ally_earth_dragons);
 
         new_stat.ability_power *= fire_mod;
         new_stat.attack_damage *= fire_mod;
@@ -210,15 +227,17 @@ pub fn get_simulated_stats(stats: &Stats<f32>, dragons: Dragons) -> [Stats<f32>;
         unsafe {
             core::ptr::addr_of_mut!((*result_ptr)[i]).write(new_stat);
         }
+
+        i += 1;
     }
 
     unsafe { result.assume_init() }
 }
 
-pub fn get_runes_data(runes: &SetU32, attack_type: AttackType) -> DamageKind<L_RUNE, RuneId> {
-    let mut metadata = SmallVec::with_capacity(runes.len());
-    let mut closures = SmallVec::with_capacity(runes.len());
-    for rune_number in runes.iter() {
+pub fn get_runes_data(runes: &BitArray, attack_type: AttackType) -> DamageKind<L_RUNE, RuneId> {
+    let mut metadata = SmallVec::with_capacity(runes.count() as usize);
+    let mut closures = SmallVec::with_capacity(runes.count() as usize);
+    for rune_number in runes.into_iter() {
         let rune = unsafe { INTERNAL_RUNES.get_unchecked(rune_number as usize) };
         closures.push(match attack_type {
             AttackType::Ranged => rune.range_closure,
@@ -229,27 +248,27 @@ pub fn get_runes_data(runes: &SetU32, attack_type: AttackType) -> DamageKind<L_R
     DamageKind { metadata, closures }
 }
 
+const _: () = {
+    let mut index = 0;
+    while index < NUMBER_OF_ITEMS {
+        let data = INTERNAL_ITEMS[index];
+        assert!(data.melee_closure.len() <= 2);
+        assert!(data.range_closure.len() <= 2);
+        index += 1;
+    }
+};
+
 pub fn get_items_data(
-    items: &SetU32,
+    items: &BitArray,
     attack_type: AttackType,
 ) -> (
     DamageKind<L_ITEM, ItemId>,
     SmallVec<[(usize, usize); L_ITEM]>,
 ) {
-    const _: () = {
-        let mut index = 0;
-        while index < NUMBER_OF_ITEMS {
-            let data = INTERNAL_ITEMS[index];
-            assert!(data.melee_closure.len() <= 2);
-            assert!(data.range_closure.len() <= 2);
-            index += 1;
-        }
-    };
-
-    let mut metadata = SmallVec::with_capacity(items.len());
-    let mut closures = SmallVec::with_capacity(items.len());
-    let mut multi_closure_indices = SmallVec::with_capacity(items.len());
-    for (index, item_number) in items.iter().enumerate() {
+    let mut metadata = SmallVec::with_capacity(items.count() as usize);
+    let mut closures = SmallVec::with_capacity(items.count() as usize);
+    let mut multi_closure_indices = SmallVec::with_capacity(items.count() as usize);
+    for (index, item_number) in items.into_iter().enumerate() {
         let item = unsafe { INTERNAL_ITEMS.get_unchecked(item_number as usize) };
         let slice = match attack_type {
             AttackType::Ranged => item.range_closure,
@@ -267,53 +286,76 @@ pub fn get_items_data(
     (DamageKind { metadata, closures }, multi_closure_indices)
 }
 
-pub fn runes_slice_to_set_u32(input: &[RuneId]) -> SetU32 {
+pub fn runes_slice_to_bit_array(input: &[RuneId]) -> BitArray {
     input
         .iter()
         .filter_map(|rune| {
             DAMAGING_RUNES
                 .contains(&rune.to_riot_id())
-                .then_some(*rune as u32)
+                .then_some(*rune as usize)
         })
-        .collect::<SetU32>()
+        .collect::<BitArray>()
 }
 
-pub fn items_slice_to_set_u32(input: &[ItemId]) -> SetU32 {
+pub fn items_slice_to_bit_array(input: &[ItemId]) -> BitArray {
     input
         .iter()
         .filter_map(|item| {
             DAMAGING_ITEMS
                 .contains(&item.to_riot_id())
-                .then_some(*item as u32)
+                .then_some(*item as usize)
         })
-        .collect::<SetU32>()
+        .collect::<BitArray>()
 }
 
-pub fn get_enemy_current_stats(
+pub const fn pop_const(array: &mut [u64; BITSET_SIZE]) -> Option<usize> {
+    let mut word_index = 0;
+    while word_index <= BitArray::LAST_WORD {
+        let word = array[word_index];
+        if word != 0 {
+            let tz = word.trailing_zeros();
+            let r = tz as usize + (word_index * u64::BITS as usize);
+            let t = word & (0u64.wrapping_sub(word));
+            array[word_index] ^= t;
+
+            return Some(r);
+        }
+        word_index += 1;
+    }
+    None
+}
+
+pub const fn get_enemy_current_stats(
     stats: &mut SimpleStats<f32>,
-    items: &SetU32,
+    items: &BitArray,
     earth_dragons: u16,
 ) -> f32 {
     let mut bonus_mana = 0.0;
-    for item_id in items.iter() {
-        let item = unsafe { INTERNAL_ITEMS.get_unchecked(item_id as usize) };
-        macro_rules! add_value {
-            ($field:ident) => {
-                stats.$field += item.stats.$field;
-            };
+
+    let mut i = 0;
+    let mut inner = items.into_inner();
+    while i < items.count() as usize {
+        if let Some(item_id) = pop_const(&mut inner) {
+            let item = INTERNAL_ITEMS[item_id];
+            macro_rules! add_value {
+                ($field:ident) => {
+                    stats.$field += item.stats.$field;
+                };
+            }
+            add_value!(health);
+            add_value!(armor);
+            add_value!(magic_resist);
+            bonus_mana += item.stats.mana;
         }
-        add_value!(health);
-        add_value!(armor);
-        add_value!(magic_resist);
-        bonus_mana += item.stats.mana;
+        i += 1;
     }
-    let dragon_mod = GET_EARTH_MULTIPLIER(earth_dragons);
+    let dragon_mod = get_earth_multiplier(earth_dragons);
     stats.armor *= dragon_mod;
     stats.magic_resist *= dragon_mod;
     bonus_mana
 }
 
-pub fn get_enemy_state(
+pub const fn get_enemy_state(
     state: EnemyState,
     shred: ResistShred,
     accept_negatives: bool,
@@ -326,7 +368,9 @@ pub fn get_enemy_state(
 
     let mut e_modifiers = DamageModifiers::default();
 
-    for item_exception in state.item_exceptions.iter() {
+    let mut i = 0;
+    while i < state.item_exceptions.len() {
+        let item_exception = state.item_exceptions[i];
         let stacks = item_exception.stacks();
 
         if let Some(item_id) = item_exception.get_item_id() {
@@ -350,6 +394,7 @@ pub fn get_enemy_state(
                 _ => {}
             }
         }
+        i += 1;
     }
 
     match state.champion_id {
@@ -442,7 +487,7 @@ pub fn get_enemy_state(
         steelcaps: has_item(e_items, [ItemId::PlatedSteelcaps, ItemId::ArmoredAdvance]),
         // #![manual_impl]
         rocksolid: has_item(
-            e_items,
+            &e_items,
             [
                 ItemId::RanduinsOmen,
                 ItemId::FrozenHeart,
@@ -450,7 +495,7 @@ pub fn get_enemy_state(
             ],
         ),
         // #![manual_impl]
-        randuin: has_item(e_items, [ItemId::RanduinsOmen]),
+        randuin: has_item(&e_items, [ItemId::RanduinsOmen]),
     }
 }
 

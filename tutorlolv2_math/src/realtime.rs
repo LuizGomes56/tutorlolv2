@@ -1,8 +1,7 @@
 use super::{helpers::*, model::*};
-use crate::{L_SIML, L_TEAM, RiotFormulas, riot::*};
+use crate::{BitArray, L_SIML, L_TEAM, RiotFormulas, riot::*};
 use smallvec::SmallVec;
 use std::mem::MaybeUninit;
-use tinyset::SetU32;
 use tutorlolv2_gen::{
     CHAMPION_NAME_TO_ID, ChampionId, DAMAGING_ITEMS, DAMAGING_RUNES, GameMap, INTERNAL_CHAMPIONS,
     INTERNAL_ITEMS, ItemId, Position, RuneId, SIMULATED_ITEMS_ENUM, TypeMetadata,
@@ -105,9 +104,9 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
 
             DAMAGING_ITEMS
                 .contains(&item_id)
-                .then_some(ItemId::from_riot_id(item_id) as u32)
+                .then_some(ItemId::from_riot_id(item_id) as usize)
         })
-        .collect::<SetU32>();
+        .collect::<BitArray>();
 
     let dragons = get_dragons(&events, &all_players);
 
@@ -150,7 +149,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
 
                         match rune_id {
                             LAST_STAND => {
-                                base_modifiers.global_mod *= LAST_STAND_CLOSURE(
+                                base_modifiers.global_mod *= get_last_stand(
                                     1.0 - (self_state.current_stats.current_health
                                         / self_state.current_stats.health.max(1.0)),
                                 )
@@ -164,9 +163,9 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
 
                         DAMAGING_RUNES
                             .contains(&rune_id)
-                            .then_some(RuneId::from_riot_id(rune_id) as u32)
+                            .then_some(RuneId::from_riot_id(rune_id) as usize)
                     })
-                    .collect::<SetU32>(),
+                    .collect::<BitArray>(),
             )
         })
         .unwrap_or_default();
@@ -228,9 +227,9 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
                     let item_id = riot_item.item_id;
                     DAMAGING_ITEMS
                         .contains(&item_id)
-                        .then_some(ItemId::from_riot_id(item_id) as u32)
+                        .then_some(ItemId::from_riot_id(item_id) as usize)
                 })
-                .collect::<SetU32>();
+                .collect::<BitArray>();
 
             let e_base_stats = SimpleStats::base_stats(e_champion_id, *e_level, false);
             let full_state = get_enemy_state(
