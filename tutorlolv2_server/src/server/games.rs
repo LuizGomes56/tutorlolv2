@@ -36,14 +36,14 @@ fn respond(data: impl Encode) -> Response {
 #[post("/realtime")]
 pub async fn realtime_handler(body: Bytes) -> Response {
     let game_data = serde_json::from_slice(&body)?;
-    let data = realtime(&game_data).ok_or("Err")?;
+    let data = realtime(&game_data).ok_or("Error executing fn `realtime`")?;
     respond(data)
 }
 
 #[post("/calculator")]
 pub async fn calculator_handler(body: Bytes) -> Response {
     let (decoded, _) = bincode::decode_from_slice(&body, BINCODE_CONFIG)?;
-    let data = calculator(decoded).ok_or("Err")?;
+    let data = calculator(decoded).ok_or("Error executing fn `calculator`")?;
     respond(data)
 }
 

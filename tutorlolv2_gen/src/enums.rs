@@ -26,7 +26,7 @@ macro_rules! const_enum {
 }
 
 const_enum! {
-    #[derive(Default, Copy, Serialize, Deserialize, Clone, Encode, Decode, PartialEq)]
+    #[derive(Debug, Default, Copy, Serialize, Deserialize, Clone, Encode, Decode, PartialEq)]
     pub enum DamageType {
         Physical,
         Magic,
@@ -39,7 +39,7 @@ const_enum! {
 }
 
 const_enum! {
-    #[derive(Copy, Clone, Encode, Serialize, Deserialize)]
+    #[derive(Debug, Copy, Clone, Encode, Serialize, Deserialize)]
     pub enum Attrs {
         Undefined,
         Onhit,

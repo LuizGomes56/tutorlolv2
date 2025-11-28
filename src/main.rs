@@ -220,7 +220,7 @@ async fn main() {
         }
         Some("check-gen") => ChampionFactory::check_all_offsets(),
         Some("item-gen") => ItemFactory::run_all().unwrap(),
-        Some("run-gen") => ChampionFactory::run_all().unwrap(),
+        Some("champion-gen") => ChampionFactory::run_all().unwrap(),
         Some("make-gen") => {
             let _ = ChampionFactory::create_all();
         }

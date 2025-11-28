@@ -1,6 +1,6 @@
 pub(self) use crate::{
     MayFail,
-    generators::{Generator, gen_decl::decl_champions::*},
+    generators::{Generator, gen_decl::decl_champions::*, gen_utils::RegExtractor},
     model::champions::{Ability, Champion},
 };
 pub(self) use tutorlolv2_gen::{enums::*, eval::*};
