@@ -197,6 +197,8 @@ fn update() {
 
 #[actix_web::main]
 async fn main() {
+    tutorlolv2_math::calculator(unsafe { std::mem::transmute([0u8; 304]) });
+
     match std::env::args()
         .collect::<Vec<String>>()
         .get(1)

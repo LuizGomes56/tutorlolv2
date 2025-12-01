@@ -1,10 +1,14 @@
 use super::{helpers::*, model::*};
-use crate::{AbilityLevels, L_CENM, L_MSTR, L_TWRD, RiotFormulas, bitarray::BitArray, riot::*};
+use crate::{
+    AbilityLevels, L_CENM, L_MSTR, L_TWRD, NUMBER_OF_ITEMS, RiotFormulas, bitarray::BitArray,
+    riot::*,
+};
 use smallvec::SmallVec;
 use std::mem::MaybeUninit;
 use tutorlolv2_gen::{
     AdaptativeType, AttackType, ChampionId, INTERNAL_CHAMPIONS, INTERNAL_ITEMS, ItemId, RuneId,
 };
+use tutorlolv2_types::StatName;
 
 const MONSTER_RESISTS: [(f32, f32); L_MSTR] = [
     (0f32, 0f32),
@@ -15,6 +19,75 @@ const MONSTER_RESISTS: [(f32, f32); L_MSTR] = [
     (42f32, 42f32),
     (20f32, 20f32),
 ];
+
+const NUMBER_OF_ITEMS_WITH_PEN: usize = {
+    let mut i = 0;
+    let mut j = 0;
+    while i < NUMBER_OF_ITEMS {
+        let item = INTERNAL_ITEMS[i];
+        if item.stats.armor_penetration_percent > 0.0 || item.stats.magic_penetration_percent > 0.0
+        {
+            j += 1;
+        } else {
+            let mut k = 0;
+            while k < item.prettified_stats.len() {
+                match item.prettified_stats[k] {
+                    StatName::ArmorPenetration(_) | StatName::MagicPenetration(_) => j += 1,
+                    _ => {}
+                }
+                k += 1;
+            }
+        }
+        i += 1;
+    }
+    j
+};
+
+/// ```rs
+/// [
+///     BlightingJewel,
+///     Cryptbloom,
+///     DetonationOrb,
+///     LastWhisper,
+///     LordDominiksRegards,
+///     MortalReminder,
+///     Perplexity,
+///     Perplexity,
+///     SeryldasGrudge,
+///     Shadowflame,
+///     SorcerersShoes,
+///     SpellslingersShoes,
+///     Stormsurge,
+///     VoidStaff
+/// ]
+/// ```
+const ITEMS_WITH_PEN: [ItemId; NUMBER_OF_ITEMS_WITH_PEN] = {
+    let mut i = 0;
+    let mut j = 0;
+    let mut items = [ItemId::AbyssalMask; NUMBER_OF_ITEMS_WITH_PEN];
+    while i < NUMBER_OF_ITEMS {
+        let item = INTERNAL_ITEMS[i];
+        if item.stats.armor_penetration_percent > 0.0 || item.stats.magic_penetration_percent > 0.0
+        {
+            items[j] = item.metadata.kind;
+            j += 1;
+        } else {
+            let mut k = 0;
+            while k < item.prettified_stats.len() {
+                match item.prettified_stats[k] {
+                    StatName::ArmorPenetration(_) | StatName::MagicPenetration(_) => {
+                        items[j] = item.metadata.kind;
+                        j += 1
+                    }
+                    _ => {}
+                }
+                k += 1;
+            }
+        }
+        i += 1;
+    }
+    items
+};
 
 fn infer_champion_stats(items: &[ItemId], dragons: Dragons) -> Stats<f32> {
     let mut stats = Stats::<f32>::default();
@@ -305,6 +378,8 @@ const fn assign_item_exceptions(data: ItemExceptionData, exceptions: &[ValueExce
 }
 
 pub fn calculator(game: InputGame) -> Option<OutputGame> {
+    println!("{{ const }} {ITEMS_WITH_PEN:?}");
+
     let InputGame {
         active_player:
             InputActivePlayer {
