@@ -298,6 +298,12 @@ macro_rules! impl_default {
                 unsafe { std::mem::transmute([$initializer; size_of::<$ty>() / size_of::<f32>()]) }
             }
         }
+
+        impl Default for $ty {
+            fn default() -> Self {
+                <$ty>::default()
+            }
+        }
     };
 }
 

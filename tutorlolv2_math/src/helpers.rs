@@ -543,13 +543,13 @@ pub const fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> E
     }
 }
 
-pub trait IsAbility {
+pub trait AbilityExt {
     fn apply_modifiers(&self, _: &mut f32, _: &AbilityModifiers) {}
 }
 
-impl IsAbility for ItemId {}
-impl IsAbility for RuneId {}
-impl IsAbility for AbilityLike {
+impl AbilityExt for ItemId {}
+impl AbilityExt for RuneId {}
+impl AbilityExt for AbilityLike {
     fn apply_modifiers(&self, modifier: &mut f32, ability_modifiers: &AbilityModifiers) {
         let mut modify = |ability_name: AbilityName, value: f32| {
             // Any ability that is not Monster or Minion damage should have the modifier applied
@@ -567,7 +567,7 @@ impl IsAbility for AbilityLike {
     }
 }
 
-pub fn eval_damage<const N: usize, T: IsAbility + 'static>(
+pub fn eval_damage<const N: usize, T: AbilityExt + 'static>(
     ctx: &EvalContext,
     onhit: &mut RangeDamage,
     metadata: &[TypeMetadata<T>],

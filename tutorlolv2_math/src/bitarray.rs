@@ -1,6 +1,5 @@
-use tutorlolv2_gen::{ChampionId, ItemId, RuneId};
-
 use crate::{NUMBER_OF_CHAMPIONS, NUMBER_OF_ITEMS, NUMBER_OF_RUNES};
+use tutorlolv2_gen::{ChampionId, ItemId, RuneId};
 
 pub const BITSET_SIZE: usize = {
     let mut result = NUMBER_OF_CHAMPIONS;

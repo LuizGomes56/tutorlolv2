@@ -10,7 +10,7 @@ use tutorlolv2_gen::{
 };
 use tutorlolv2_types::StatName;
 
-const MONSTER_RESISTS: [(f32, f32); L_MSTR] = [
+pub const MONSTER_RESISTS: [(f32, f32); L_MSTR] = [
     (0f32, 0f32),
     (21f32, 30f32),
     (120f32, 70f32),
@@ -20,7 +20,7 @@ const MONSTER_RESISTS: [(f32, f32); L_MSTR] = [
     (20f32, 20f32),
 ];
 
-const NUMBER_OF_ITEMS_WITH_PEN: usize = {
+pub const NUMBER_OF_ITEMS_WITH_PEN: usize = {
     let mut i = 0;
     let mut j = 0;
     while i < NUMBER_OF_ITEMS {
@@ -43,25 +43,7 @@ const NUMBER_OF_ITEMS_WITH_PEN: usize = {
     j
 };
 
-/// ```rs
-/// [
-///     BlightingJewel,
-///     Cryptbloom,
-///     DetonationOrb,
-///     LastWhisper,
-///     LordDominiksRegards,
-///     MortalReminder,
-///     Perplexity,
-///     Perplexity,
-///     SeryldasGrudge,
-///     Shadowflame,
-///     SorcerersShoes,
-///     SpellslingersShoes,
-///     Stormsurge,
-///     VoidStaff
-/// ]
-/// ```
-const ITEMS_WITH_PEN: [ItemId; NUMBER_OF_ITEMS_WITH_PEN] = {
+pub const ITEMS_WITH_PEN: [ItemId; NUMBER_OF_ITEMS_WITH_PEN] = {
     let mut i = 0;
     let mut j = 0;
     let mut items = [ItemId::AbyssalMask; NUMBER_OF_ITEMS_WITH_PEN];
@@ -89,14 +71,18 @@ const ITEMS_WITH_PEN: [ItemId; NUMBER_OF_ITEMS_WITH_PEN] = {
     items
 };
 
-fn infer_champion_stats(items: &[ItemId], dragons: Dragons) -> Stats<f32> {
+pub const fn infer_champion_stats(items: &[ItemId], dragons: Dragons) -> Stats<f32> {
     let mut stats = Stats::<f32>::default();
 
-    let mut armor_penetration = SmallVec::<[f32; 5]>::new();
-    let mut magic_penetration = SmallVec::<[f32; 5]>::new();
+    let mut armor_pen_count = 0;
+    let mut magic_pen_count = 0;
+    let mut armor_penetration = [0.0; NUMBER_OF_ITEMS_WITH_PEN];
+    let mut magic_penetration = [0.0; NUMBER_OF_ITEMS_WITH_PEN];
 
-    for item_id in items {
-        let item = unsafe { INTERNAL_ITEMS.get_unchecked(*item_id as usize) };
+    let mut i = 0;
+    while i < items.len() {
+        let item_id = items[i];
+        let item = INTERNAL_ITEMS[item_id as usize];
         let item_stats = &item.stats;
 
         let fire = get_fire_multiplier(dragons.ally_fire_dragons);
@@ -114,8 +100,12 @@ fn infer_champion_stats(items: &[ItemId], dragons: Dragons) -> Stats<f32> {
         stats.current_mana = stats.mana;
         stats.mana += item_stats.mana;
 
-        armor_penetration.push(item_stats.armor_penetration_percent);
-        magic_penetration.push(item_stats.magic_penetration_percent);
+        armor_penetration[armor_pen_count] = item_stats.armor_penetration_percent;
+        magic_penetration[magic_pen_count] = item_stats.magic_penetration_percent;
+
+        armor_pen_count += 1;
+        magic_pen_count += 1;
+        i += 1;
     }
 
     stats.crit_chance = stats.crit_chance.clamp(0.0, 100.0);
@@ -131,7 +121,7 @@ pub struct ChampionExceptionData<'a> {
     pub current_player_stats: &'a mut Stats<f32>,
 }
 
-const fn assign_champion_exceptions(data: ChampionExceptionData, champion_id: ChampionId) {
+pub const fn assign_champion_exceptions(data: ChampionExceptionData, champion_id: ChampionId) {
     let ChampionExceptionData {
         ability_levels,
         stacks,
@@ -180,7 +170,7 @@ pub struct RuneExceptionData<'a> {
     pub level: u8,
 }
 
-const fn assign_rune_exceptions(data: RuneExceptionData, exceptions: &[ValueException]) {
+pub const fn assign_rune_exceptions(data: RuneExceptionData, exceptions: &[ValueException]) {
     let RuneExceptionData {
         current_player_stats,
         attack_type,
@@ -281,7 +271,7 @@ pub struct ItemExceptionData<'a> {
     pub current_player_bonus_stats: &'a mut BasicStats<f32>,
 }
 
-const fn assign_item_exceptions(data: ItemExceptionData, exceptions: &[ValueException]) {
+pub const fn assign_item_exceptions(data: ItemExceptionData, exceptions: &[ValueException]) {
     let ItemExceptionData {
         current_player_stats,
         current_player_bonus_stats,
@@ -378,8 +368,6 @@ const fn assign_item_exceptions(data: ItemExceptionData, exceptions: &[ValueExce
 }
 
 pub fn calculator(game: InputGame) -> Option<OutputGame> {
-    println!("{{ const }} {ITEMS_WITH_PEN:?}");
-
     let InputGame {
         active_player:
             InputActivePlayer {
@@ -480,9 +468,9 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
 
     let shred = ResistShred {
         armor_penetration_flat: champion_stats.armor_penetration_flat,
-        armor_penetration_percent: champion_stats.armor_penetration_percent,
+        armor_penetration_percent: 1.0 - champion_stats.armor_penetration_percent / 100.0,
         magic_penetration_flat: champion_stats.magic_penetration_flat,
-        magic_penetration_percent: champion_stats.magic_penetration_percent,
+        magic_penetration_percent: 1.0 - champion_stats.magic_penetration_percent / 100.0,
     };
 
     let self_state = SelfState {
