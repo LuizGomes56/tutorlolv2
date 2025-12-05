@@ -42,7 +42,7 @@ fn http_get(url: &str) {
         .args([
             "-NoProfile",
             "-Command",
-            &format!("Invoke-WebRequest -UseBasicParsing '{}' | Out-Null", url),
+            &format!("Invoke-WebRequest -UseBasicParsing '{url}' | Out-Null"),
         ])
         .status()
         .expect("Could not run PowerShell");
@@ -197,8 +197,6 @@ fn update() {
 
 #[actix_web::main]
 async fn main() {
-    tutorlolv2_math::calculator(unsafe { std::mem::transmute([0u8; 304]) });
-
     match std::env::args()
         .collect::<Vec<String>>()
         .get(1)

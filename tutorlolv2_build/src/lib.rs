@@ -55,14 +55,7 @@ pub async fn run() {
         format!("pub static RECOMMENDED_RUNES:[[&[RuneId];5];{champions_len}]=[");
     let mut internal_items = format!("pub static INTERNAL_ITEMS:[&CachedItem;{items_len}]=[");
     let mut internal_items_content = String::new();
-    let mut internal_simulated_items =
-        String::from("pub static SIMULATED_ITEMS:phf::OrderedSet<u32>=phf::phf_ordered_set!(");
-    let mut internal_simulated_items_enum = format!(
-        "pub static SIMULATED_ITEMS_ENUM:[u16;{}]=[",
-        items.iter().filter(|(_, v)| v.is_simulated).count()
-    );
-    let mut internal_damaging_items =
-        String::from("pub static DAMAGING_ITEMS:phf::Set<u32>=phf::phf_set!(");
+
     let mut item_id_to_name = format!("pub static ITEM_ID_TO_NAME:[&str;{items_len}]=[");
     let mut item_formulas = format!("pub static ITEM_FORMULAS:[(u32,u32);{items_len}]=[");
     let mut rune_id_to_name = format!("pub static RUNE_ID_TO_NAME:[&str;{runes_len}]=[");
@@ -144,8 +137,21 @@ pub async fn run() {
             .join(","),
     );
     let champion_id_enum = format!(
-        "#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode)]
-        #[repr(u8)]pub enum ChampionId {{{}}}",
+        "#[derive(Debug, PartialEq, Ord, Eq, PartialOrd, Copy, Clone, Decode, Encode)]
+        #[repr(u8)]
+        pub enum ChampionId {{{}}}
+        impl ChampionId {{
+            pub const unsafe fn from_u8_unchecked(id: u8) -> Self {{
+                unsafe {{ core::mem::transmute(id) }}
+            }}
+            pub const fn from_u8(id: u8) -> Option<Self> {{
+                if id < {champions_len} as u8 {{
+                    Some(unsafe {{ Self::from_u8_unchecked(id) }})
+                }} else {{
+                    None
+                }}
+            }}
+        }}",
         champions
             .keys()
             .map(|key| key.remove_special_chars())
@@ -167,24 +173,6 @@ pub async fn run() {
         }
         champion_abilities.push_str("],");
         internal_champions_content.push_str(&champion_detail.constdecl);
-        // champion_combos.push_str(&format!(
-        //     "&[{}]",
-        //     champion_detail
-        //         .combos
-        //         .iter()
-        //         .map(|combos| {
-        //             format!(
-        //                 "&[{}]",
-        //                 combos
-        //                     .iter()
-        //                     .map(AbilityLike::as_literal)
-        //                     .collect::<Vec<String>>()
-        //                     .join(",")
-        //             )
-        //         })
-        //         .collect::<Vec<String>>()
-        //         .join(",")
-        // ));
     }
 
     champion_combos.push_str("];");
@@ -222,19 +210,25 @@ pub async fn run() {
         })
     });
 
-    let item_id_to_riot_id = format!(
-        "pub static ITEM_ID_TO_RIOT_ID:[u32;{}]=[{}];",
-        items.len(),
-        items
-            .iter()
-            .map(|(key, _)| *key)
-            .collect::<Vec<u32>>()
-            .join(","),
-    );
     let item_id_enum = format!(
-        "#[derive(Serialize,Deserialize,Debug,Copy,Clone,Ord,Eq,PartialOrd,PartialEq,Decode,Encode)]#[repr(u16)]
-        pub enum ItemId {{{}}}impl ItemId {{pub const fn to_riot_id(&self)->u32{{ITEM_ID_TO_RIOT_ID[*self as usize]}}
-        pub const fn from_riot_id(id:u32)->Self{{match id {{{}}}}}}}",
+        "#[derive(Serialize, Deserialize, Debug, Copy, Clone, Ord, Eq, PartialOrd, PartialEq, Decode, Encode)]
+        #[repr(u16)]
+        pub enum ItemId {{{}}}
+        impl ItemId {{
+            pub const fn from_riot_id(id: u32) -> Option<Self> {{
+                match id {{{}}}
+            }}
+            pub const unsafe fn from_u16_unchecked(id: u16) -> Self {{
+                unsafe {{ core::mem::transmute(id) }}
+            }}
+            pub const fn from_u16(id: u16) -> Option<Self> {{
+                if id < {items_len} as u16 {{
+                    Some(unsafe {{ Self::from_u16_unchecked(id) }})
+                }} else {{
+                    None
+                }}
+            }}
+        }}",
         items
             .iter()
             .map(|(_, value)| value.item_name.remove_special_chars())
@@ -243,87 +237,63 @@ pub async fn run() {
         items
             .iter()
             .map(|(item_id, value)| format!(
-                "{item_id}=>Self::{}",
-                value.item_name.remove_special_chars()
+                "{item_id} => Some(Self::{name})",
+                name = value.item_name.remove_special_chars()
             ))
-            .chain(std::iter::once("_=>Self::YourCut".to_string(),))
+            .chain(std::iter::once("_ => None".to_string()))
             .collect::<Vec<String>>()
             .join(","),
     );
-    for (index, (item_id, item_detail)) in items.into_iter().enumerate() {
+    for (item_id, item_detail) in items.into_iter() {
         internal_items_content.push_str(&item_detail.constdecl);
         internal_items.push_str(&format!(
             "&{}_{item_id},",
             item_detail.item_name.to_screaming_snake_case(),
         ));
-        if item_detail.is_simulated {
-            internal_simulated_items.push_str(&format!("{item_id}u32,"));
-            internal_simulated_items_enum.push_str(&format!("{index},"));
-        }
-        if item_detail.is_damaging {
-            internal_damaging_items.push_str(&format!("{item_id}u32,"));
-        }
         record_offsets!(item_formulas, item_detail.item_formula);
         item_id_to_name.push_str(&format!("\"{}\",", item_detail.item_name));
     }
 
     internal_items.push_str("];");
-    internal_simulated_items.push_str(");");
-    internal_simulated_items_enum.push_str("];");
-    internal_damaging_items.push_str(");");
     item_id_to_name.push_str("];");
     item_formulas.push_str("];");
 
-    let moved_item_id_to_riot_id = item_id_to_riot_id.clone();
     let moved_item_id_enum = item_id_enum.clone();
     tokio::task::spawn_blocking(move || {
         fs::write(cwd!("tutorlolv2_gen/src/data/items.rs"), {
             let mut s = String::with_capacity(
                 internal_items.len()
                     + moved_item_id_enum.len()
-                    + moved_item_id_to_riot_id.len()
                     + internal_items_content.len()
-                    + internal_simulated_items.len()
-                    + internal_simulated_items_enum.len()
-                    + internal_damaging_items.len()
                     + USE_SUPER.len(),
             );
             s.push_str(USE_SUPER);
             s.push_str(&internal_items);
             s.push_str(&moved_item_id_enum);
-            s.push_str(&moved_item_id_to_riot_id);
             s.push_str(&internal_items_content);
-            s.push_str(&internal_simulated_items);
-            s.push_str(&internal_simulated_items_enum);
-            s.push_str(&internal_damaging_items);
             s
         })
     });
 
-    let internal_damaging_runes = format!(
-        "pub static DAMAGING_RUNES:phf::Set<u32>=phf::phf_set!({});",
-        runes
-            .iter()
-            .filter_map(
-                |(rune_id, rune_data)| (!rune_data.undeclared).then_some(format!("{}u32", rune_id))
-            )
-            .collect::<Vec<String>>()
-            .join(",")
-    );
-
-    let rune_id_to_riot_id = format!(
-        "pub static RUNE_ID_TO_RIOT_ID:[u32;{}]=[{}];",
-        runes.len(),
-        runes
-            .iter()
-            .map(|(key, _)| *key)
-            .collect::<Vec<u32>>()
-            .join(","),
-    );
     let rune_id_enum = format!(
-        "#[derive(Debug,Copy,Clone,Ord,Eq,PartialOrd,PartialEq,Decode,Encode)]#[repr(u8)]pub enum RuneId {{{}}}
-        impl RuneId {{pub const fn to_riot_id(&self)->u32{{RUNE_ID_TO_RIOT_ID[*self as usize]}}
-        pub const fn from_riot_id(id:u32)->Self{{match id{{{}}}}}}}",
+        "#[derive(Debug, Copy, Clone, Ord, Eq, PartialOrd, PartialEq, Decode, Encode)]
+        #[repr(u8)]
+        pub enum RuneId {{{}}}
+        impl RuneId {{
+            pub const fn from_riot_id(id: u32) -> Option<Self> {{
+                match id {{{}}}
+            }}
+            pub const unsafe fn from_u8_unchecked(id: u8) -> Self {{
+                unsafe {{ core::mem::transmute(id) }}
+            }}
+            pub const fn from_u8(id: u8) -> Option<Self> {{
+                if id < {runes_len} as u8 {{
+                    Some(unsafe {{ Self::from_u8_unchecked(id) }})
+                }} else {{
+                    None
+                }}
+            }}
+        }}",
         runes
             .iter()
             .map(|(_, value)| value.rune_name.remove_special_chars())
@@ -332,13 +302,10 @@ pub async fn run() {
         runes
             .iter()
             .map(|(rune_id, value)| format!(
-                "{rune_id}=>Self::{}",
-                value.rune_name.remove_special_chars()
+                "{rune_id} => Some(Self::{name})",
+                name = value.rune_name.remove_special_chars()
             ))
-            .chain(std::iter::once(format!(
-                "_=>Self::{}",
-                runes.first().unwrap().1.rune_name.remove_special_chars()
-            )))
+            .chain(std::iter::once("_ => None".to_string()))
             .collect::<Vec<String>>()
             .join(","),
     );
@@ -356,7 +323,6 @@ pub async fn run() {
     rune_id_to_name.push_str("];");
     rune_formulas.push_str("];");
 
-    let moved_rune_id_to_riot_id = rune_id_to_riot_id.clone();
     let moved_rune_id_enum = rune_id_enum.clone();
     tokio::task::spawn_blocking(move || {
         fs::write(cwd!("tutorlolv2_gen/src/data/runes.rs"), {
@@ -364,16 +330,12 @@ pub async fn run() {
                 internal_runes.len()
                     + internal_runes_content.len()
                     + USE_SUPER.len()
-                    + internal_damaging_runes.len()
-                    + moved_rune_id_to_riot_id.len()
                     + moved_rune_id_enum.len(),
             );
             s.push_str(USE_SUPER);
-            s.push_str(&moved_rune_id_to_riot_id);
             s.push_str(&moved_rune_id_enum);
             s.push_str(&internal_runes);
             s.push_str(&internal_runes_content);
-            s.push_str(&internal_damaging_runes);
             s
         })
     });
@@ -390,9 +352,7 @@ pub async fn run() {
         item_id_to_name,
         item_formulas,
         item_id_enum,
-        item_id_to_riot_id,
         rune_id_enum,
-        rune_id_to_riot_id,
         rune_id_to_name,
         rune_formulas,
     ]

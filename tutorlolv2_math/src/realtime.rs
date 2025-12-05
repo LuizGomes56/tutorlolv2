@@ -1,10 +1,11 @@
 use super::{helpers::*, model::*};
-use crate::{L_SIML, L_TEAM, RiotFormulas, bitarray::BitArray, riot::*};
+use crate::{L_SIML, L_TEAM, RiotFormulas, riot::*};
 use smallvec::SmallVec;
 use std::mem::MaybeUninit;
 use tutorlolv2_gen::{
-    CHAMPION_NAME_TO_ID, ChampionId, DAMAGING_ITEMS, DAMAGING_RUNES, GameMap, INTERNAL_CHAMPIONS,
-    INTERNAL_ITEMS, ItemId, Position, RuneId, SIMULATED_ITEMS_ENUM, TypeMetadata,
+    BitArray, CHAMPION_NAME_TO_ID, ChampionId, DAMAGING_ITEMS, DAMAGING_RUNES, GameMap,
+    INTERNAL_CHAMPIONS, INTERNAL_ITEMS, ItemId, Position, RuneId, SIMULATED_ITEMS_ENUM,
+    TypeMetadata,
 };
 
 pub const SIMULATED_ITEMS_METADATA: [TypeMetadata<ItemId>; L_SIML] = {
@@ -12,7 +13,7 @@ pub const SIMULATED_ITEMS_METADATA: [TypeMetadata<ItemId>; L_SIML] = {
     let siml_items_ptr = siml_items.as_mut_ptr();
     let mut i = 0;
     while i < L_SIML {
-        let item_id = unsafe { core::mem::transmute::<u16, ItemId>(SIMULATED_ITEMS_ENUM[i]) };
+        let item_id = SIMULATED_ITEMS_ENUM[i];
         let item_cache = INTERNAL_ITEMS[item_id as usize];
         unsafe {
             core::ptr::addr_of_mut!((*siml_items_ptr)[i]).write(TypeMetadata::<ItemId> {
@@ -81,13 +82,13 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
         .items
         .iter()
         .filter_map(|riot_item| {
-            let item_id = riot_item.item_id;
+            let riot_id = riot_item.item_id;
 
             const SHADOWFLAME: u32 = ItemId::Shadowflame.to_riot_id();
             const RIFTMAKER: u32 = ItemId::Riftmaker.to_riot_id();
             const SPEAR_OF_SHOJIN: u32 = ItemId::SpearofShojin.to_riot_id();
 
-            match item_id {
+            match riot_id {
                 SHADOWFLAME => {
                     base_modifiers.magic_mod *= 1.2;
                     base_modifiers.true_mod *= 1.2;
@@ -102,9 +103,8 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
                 _ => {}
             };
 
-            DAMAGING_ITEMS
-                .contains(&item_id)
-                .then_some(ItemId::from_riot_id(item_id) as usize)
+            let item_id = unsafe { ItemId::from_riot_id(riot_id).unwrap_unchecked() } as _;
+            DAMAGING_ITEMS.contains(item_id).then_some(item_id)
         })
         .collect::<BitArray>();
 
@@ -140,14 +140,14 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
             Some(
                 gr.into_iter()
                     .filter_map(|riot_rune| {
-                        let rune_id = riot_rune.id;
+                        let riot_id = riot_rune.id;
 
                         const LAST_STAND: u32 = RuneId::LastStand.to_riot_id();
                         const COUP_DE_GRACE: u32 = RuneId::CoupdeGrace.to_riot_id();
                         const CUT_DOWN: u32 = RuneId::CutDown.to_riot_id();
                         const AXIOM_ARCANIST: u32 = RuneId::AxiomArcanist.to_riot_id();
 
-                        match rune_id {
+                        match riot_id {
                             LAST_STAND => {
                                 base_modifiers.global_mod *= get_last_stand(
                                     1.0 - (self_state.current_stats.current_health
@@ -161,9 +161,10 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
                             _ => {}
                         };
 
-                        DAMAGING_RUNES
-                            .contains(&rune_id)
-                            .then_some(RuneId::from_riot_id(rune_id) as usize)
+                        let rune_id =
+                            unsafe { RuneId::from_riot_id(riot_id).unwrap_unchecked() } as _;
+
+                        DAMAGING_RUNES.contains(rune_id).then_some(rune_id)
                     })
                     .collect::<BitArray>(),
             )
@@ -224,10 +225,9 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
             let e_items = e_riot_items
                 .iter()
                 .filter_map(|riot_item| {
-                    let item_id = riot_item.item_id;
-                    DAMAGING_ITEMS
-                        .contains(&item_id)
-                        .then_some(ItemId::from_riot_id(item_id) as usize)
+                    let riot_id = riot_item.item_id;
+                    let item_id = unsafe { ItemId::from_riot_id(riot_id).unwrap_unchecked() } as _;
+                    DAMAGING_ITEMS.contains(item_id).then_some(item_id)
                 })
                 .collect::<BitArray>();
 
@@ -343,13 +343,10 @@ fn get_dragons(events: &[RealtimeEvent], players_map: &[RiotAllPlayers]) -> Drag
             (event.killer_name.as_deref(), event.dragon_type.as_deref())
         {
             match dragon {
-                "Earth" => {
-                    if players_map.iter().any(|player| player.riot_id == killer) {
-                        ally_earth += 1;
-                    } else {
-                        enemy_earth += 1;
-                    }
-                }
+                "Earth" => match players_map.iter().any(|player| player.riot_id == killer) {
+                    true => ally_earth += 1,
+                    false => enemy_earth += 1,
+                },
                 "Fire" => ally_fire += 1,
                 "Chemtech" => ally_chemtech += 1,
                 _ => {}

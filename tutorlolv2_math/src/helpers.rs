@@ -1,9 +1,5 @@
 use super::model::*;
-use crate::{
-    L_ITEM, L_RUNE, L_SIML, NUMBER_OF_CHAMPIONS, NUMBER_OF_ITEMS, RiotFormulas,
-    bitarray::{BitArray, bit_array_pop},
-    riot::*,
-};
+use crate::{L_ITEM, L_RUNE, L_SIML, RiotFormulas, riot::*};
 use smallvec::SmallVec;
 use std::mem::MaybeUninit;
 use tutorlolv2_gen::*;
@@ -288,26 +284,30 @@ pub fn get_items_data(
     (DamageKind { metadata, closures }, multi_closure_indices)
 }
 
-pub fn runes_slice_to_bit_array(input: &[RuneId]) -> BitArray {
-    input
-        .iter()
-        .filter_map(|rune| {
-            DAMAGING_RUNES
-                .contains(&rune.to_riot_id())
-                .then_some(*rune as usize)
-        })
-        .collect::<BitArray>()
+pub const fn runes_slice_to_bit_array(input: &[RuneId]) -> BitArray {
+    let mut out = BitArray::EMPTY;
+    let mut i = 0;
+    while i < input.len() {
+        let rune = input[i] as usize;
+        if DAMAGING_RUNES.contains(rune) {
+            let _ = out.insert(rune);
+        }
+        i += 1;
+    }
+    out
 }
 
-pub fn items_slice_to_bit_array(input: &[ItemId]) -> BitArray {
-    input
-        .iter()
-        .filter_map(|item| {
-            DAMAGING_ITEMS
-                .contains(&item.to_riot_id())
-                .then_some(*item as usize)
-        })
-        .collect::<BitArray>()
+pub const fn items_slice_to_bit_array(input: &[ItemId]) -> BitArray {
+    let mut out = BitArray::EMPTY;
+    let mut i = 0;
+    while i < input.len() {
+        let item = input[i] as usize;
+        if DAMAGING_ITEMS.contains(item) {
+            let _ = out.insert(item);
+        }
+        i += 1;
+    }
+    out
 }
 
 pub const fn get_enemy_current_stats(

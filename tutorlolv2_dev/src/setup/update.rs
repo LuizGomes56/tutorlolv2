@@ -119,7 +119,8 @@ pub fn setup_internal_items() -> MayFail {
     }
 
     for (_, item) in common_items {
-        let item_id = ItemId::from_riot_id(item.meraki_item.id);
+        let item_id = ItemId::from_riot_id(item.meraki_item.id)
+            .ok_or("[fail] ItemId::from_riot_id(item.meraki_item.id)")?;
 
         let ItemCache {
             meraki_item,
@@ -138,13 +139,13 @@ pub fn setup_internal_items() -> MayFail {
             builds_from_item_ids: meraki_item
                 .builds_from
                 .iter()
-                .map(|v| ItemId::from_riot_id(*v))
+                .filter_map(|v| ItemId::from_riot_id(*v))
                 .collect(),
             builds_from_riot_ids: meraki_item.builds_from,
             builds_into_item_ids: meraki_item
                 .builds_into
                 .iter()
-                .map(|v| ItemId::from_riot_id(*v))
+                .filter_map(|v| ItemId::from_riot_id(*v))
                 .collect(),
             builds_into_riot_ids: meraki_item.builds_into,
             prettified_stats: Vec::new(),
@@ -225,19 +226,12 @@ pub fn setup_damaging_items() -> MayFail {
 
 pub async fn prettify_internal_items() -> MayFail {
     for (riot_id, riot_item) in RiotCdnItem::from_dir("cache/riot/items")? {
-        let item_id = ItemId::from_riot_id(riot_id.parse()?);
-
-        if item_id == ItemId::YourCut {
-            continue;
+        if let Some(item_id) = ItemId::from_riot_id(riot_id.parse()?) {
+            let internal_path = format!("internal/items/{item_id:?}.json",);
+            let mut internal_item = Item::from_file(&internal_path)?;
+            internal_item.prettified_stats = pretiffy_items(&riot_item)?;
+            internal_item.into_file(internal_path)?;
         }
-
-        let internal_path = format!("internal/items/{item_id:?}.json",);
-
-        let mut internal_item = Item::from_file(&internal_path)?;
-
-        internal_item.prettified_stats = pretiffy_items(&riot_item)?;
-
-        internal_item.into_file(internal_path)?;
     }
     Ok(())
 }

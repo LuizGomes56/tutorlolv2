@@ -1,12 +1,10 @@
 use super::{helpers::*, model::*};
-use crate::{
-    AbilityLevels, L_CENM, L_MSTR, L_TWRD, NUMBER_OF_ITEMS, RiotFormulas, bitarray::BitArray,
-    riot::*,
-};
+use crate::{AbilityLevels, L_CENM, L_MSTR, L_TWRD, RiotFormulas, riot::*};
 use smallvec::SmallVec;
 use std::mem::MaybeUninit;
 use tutorlolv2_gen::{
-    AdaptativeType, AttackType, ChampionId, INTERNAL_CHAMPIONS, INTERNAL_ITEMS, ItemId, RuneId,
+    AdaptativeType, AttackType, BitArray, ChampionId, INTERNAL_CHAMPIONS, INTERNAL_ITEMS, ItemId,
+    NUMBER_OF_ITEMS, RuneId,
 };
 use tutorlolv2_types::StatName;
 
@@ -413,7 +411,7 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
 
     let adaptative_type = RiotFormulas::adaptative_type(
         current_player_bonus_stats.attack_damage,
-        champion_raw_stats.ability_power as f32,
+        champion_raw_stats.ability_power,
     );
 
     let mut champion_stats = match infer_stats {
@@ -614,30 +612,33 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
         }
     }
 
-    let mut tower_damages_results = MaybeUninit::<[i32; 6]>::uninit();
-    let tower_damages_ptr = tower_damages_results.as_mut_ptr();
-
-    for i in 0..L_TWRD {
-        let formula = |pen_percent, pen_flat| {
-            (current_player_base_stats.attack_damage
-                + current_player_bonus_stats.attack_damage
-                + champion_stats.ability_power
-                    * 0.6
-                    * (100.0 / (140.0 + (-25.0 + 50.0 * i as f32) * pen_percent - pen_flat)))
-                as i32
-        };
-        unsafe {
-            core::ptr::addr_of_mut!((*tower_damages_ptr)[i]).write(match adaptative_type {
-                AdaptativeType::Physical => formula(
-                    champion_stats.armor_penetration_percent,
-                    champion_stats.armor_penetration_flat,
-                ),
-                AdaptativeType::Magic => formula(
-                    champion_stats.magic_penetration_percent,
-                    champion_stats.magic_penetration_flat,
-                ),
-            });
-        };
+    let mut tower_damages_results = MaybeUninit::<[i32; _]>::uninit();
+    {
+        let tower_damages_ptr = tower_damages_results.as_mut_ptr();
+        let mut i = 0;
+        while i < L_TWRD {
+            let formula = |pen_percent, pen_flat| {
+                (current_player_base_stats.attack_damage
+                    + current_player_bonus_stats.attack_damage
+                    + champion_stats.ability_power
+                        * 0.6
+                        * (100.0 / (140.0 + (-25.0 + 50.0 * i as f32) * pen_percent - pen_flat)))
+                    as i32
+            };
+            unsafe {
+                core::ptr::addr_of_mut!((*tower_damages_ptr)[i]).write(match adaptative_type {
+                    AdaptativeType::Physical => formula(
+                        champion_stats.armor_penetration_percent,
+                        champion_stats.armor_penetration_flat,
+                    ),
+                    AdaptativeType::Magic => formula(
+                        champion_stats.magic_penetration_percent,
+                        champion_stats.magic_penetration_flat,
+                    ),
+                });
+            };
+            i += 1;
+        }
     }
 
     Some(OutputGame {

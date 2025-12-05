@@ -1,8 +1,9 @@
-use crate::{bitarray::BitArray, *};
+use crate::*;
 use bincode::{Decode, Encode};
 use smallvec::SmallVec;
 use tutorlolv2_gen::{
-    AdaptativeType, ChampionId, ConstClosure, GameMap, ItemId, Position, RuneId, TypeMetadata,
+    AdaptativeType, BitArray, ChampionId, ConstClosure, GameMap, ItemId, NUMBER_OF_ITEMS,
+    NUMBER_OF_RUNES, Position, RuneId, TypeMetadata,
 };
 use tutorlolv2_types::AbilityLike;
 

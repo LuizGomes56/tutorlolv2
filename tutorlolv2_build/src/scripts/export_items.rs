@@ -140,15 +140,13 @@ pub struct ItemDetails {
     pub item_name: String,
     pub item_formula: String,
     pub constdecl: String,
-    pub is_simulated: bool,
-    pub is_damaging: bool,
 }
 
 pub fn export_items() -> Vec<(u32, ItemDetails)> {
     let mut items = init_map!(dir Item, "internal/items")
         .into_par_iter()
         .map(|(_, item)| {
-            let item_id = item.riot_id;
+            let riot_id = item.riot_id;
 
             let prettified_stats = item
                 .prettified_stats
@@ -158,6 +156,15 @@ pub fn export_items() -> Vec<(u32, ItemDetails)> {
                 .join(",");
 
             let (metadata, range_closure, melee_closure) = get_items_decl(&item.name, &item);
+
+            let is_simulated = item.tier >= 3 && item.price > 0 && item.purchasable;
+            let is_damaging = {
+                let is_damaging = |expr: &str| expr != "zero" && !expr.is_empty();
+                is_damaging(&item.ranged.minimum_damage)
+                    || is_damaging(&item.ranged.maximum_damage)
+                    || is_damaging(&item.melee.minimum_damage)
+                    || is_damaging(&item.melee.maximum_damage)
+            };
 
             let constdecl = format!(
                 "pub static {name}: CachedItem = CachedItem {{
@@ -169,8 +176,11 @@ pub fn export_items() -> Vec<(u32, ItemDetails)> {
                     range_closure: {range_closure},
                     melee_closure: {melee_closure},
                     stats: CachedItemStats {{{stats}}},
+                    is_simulated: {is_simulated},
+                    is_damaging: {is_damaging},
+                    riot_id: {riot_id},
                 }};",
-                name = format_args!("{}_{item_id}", item.name.to_screaming_snake_case()),
+                name = format_args!("{}_{riot_id}", item.name.to_screaming_snake_case()),
                 gold = item.price,
                 damage_type = item.damage_type,
                 attributes = item.attributes,
@@ -178,7 +188,7 @@ pub fn export_items() -> Vec<(u32, ItemDetails)> {
             );
 
             (
-                item_id,
+                riot_id,
                 ItemDetails {
                     item_formula: constdecl
                         .invoke_rustfmt(70)
@@ -186,14 +196,6 @@ pub fn export_items() -> Vec<(u32, ItemDetails)> {
                         .highlight_rust()
                         .replace_const(),
                     constdecl,
-                    is_simulated: item.tier >= 3 && item.price > 0 && item.purchasable,
-                    is_damaging: {
-                        let is_damaging = |expr: &str| expr != "zero" && !expr.is_empty();
-                        is_damaging(&item.ranged.minimum_damage)
-                            || is_damaging(&item.ranged.maximum_damage)
-                            || is_damaging(&item.melee.minimum_damage)
-                            || is_damaging(&item.melee.maximum_damage)
-                    },
                     item_name: item.name,
                 },
             )

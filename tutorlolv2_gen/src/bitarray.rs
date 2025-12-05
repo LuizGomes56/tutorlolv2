@@ -1,5 +1,4 @@
-use crate::{NUMBER_OF_CHAMPIONS, NUMBER_OF_ITEMS, NUMBER_OF_RUNES};
-use tutorlolv2_gen::{ChampionId, ItemId, RuneId};
+use crate::{ChampionId, ItemId, NUMBER_OF_CHAMPIONS, NUMBER_OF_ITEMS, NUMBER_OF_RUNES, RuneId};
 
 pub const BITSET_SIZE: usize = {
     let mut result = NUMBER_OF_CHAMPIONS;
@@ -11,7 +10,7 @@ pub const BITSET_SIZE: usize = {
     result.div_ceil(u64::BITS as usize)
 };
 
-pub type BitArray = const_sized_bit_set::BitSetArray<BITSET_SIZE>;
+pub type BitArray<const N: usize = BITSET_SIZE> = const_sized_bit_set::BitSetArray<N>;
 
 pub const fn bit_array_pop<const S: usize>(array: &mut [u64; S]) -> Option<usize> {
     let mut word_index = 0;
@@ -30,7 +29,7 @@ pub const fn bit_array_pop<const S: usize>(array: &mut [u64; S]) -> Option<usize
     None
 }
 
-pub const fn bit_array_items<const N: usize>(values: [ItemId; N]) -> BitArray {
+pub const fn bit_array_items<const N: usize, const R: usize>(values: [ItemId; N]) -> BitArray<R> {
     let mut array = BitArray::EMPTY;
     let mut i = 0;
     while i < N {
@@ -50,7 +49,7 @@ pub const fn bit_array_champions<const N: usize>(values: [ChampionId; N]) -> Bit
     array
 }
 
-pub const fn bit_array_runes<const N: usize>(values: [RuneId; N]) -> BitArray {
+pub const fn bit_array_runes<const N: usize, const R: usize>(values: [RuneId; N]) -> BitArray<R> {
     let mut array = BitArray::EMPTY;
     let mut i = 0;
     while i < N {

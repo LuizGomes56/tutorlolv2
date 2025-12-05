@@ -3,10 +3,11 @@ use crate::{
     export_code::*,
     html::{HtmlExt, Source, offset_to_str},
 };
+use tutorlolv2_gen::RuneId as RuneId2;
 
 pub fn generate_rune_html() {
     for i in 0..RUNE_FORMULAS.len() {
-        let rune_id = unsafe { std::mem::transmute::<_, RuneId>(i as u8) };
+        let rune_id = unsafe { RuneId2::from_u8_unchecked(i as _) };
         println!("Generating {rune_id:#?} html");
         let mut html = String::new();
 
