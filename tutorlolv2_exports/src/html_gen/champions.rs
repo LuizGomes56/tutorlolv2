@@ -12,8 +12,7 @@ trait EnumImport {
 
 impl EnumImport for ItemId {
     fn to_riot_id(&self) -> u32 {
-        let item_id = unsafe { tutorlolv2_gen::ItemId::from_u16_unchecked(self.cast_usize() as _) };
-        item_id.to_riot_id()
+        self.to_riot_id()
     }
     fn cast_usize(&self) -> usize {
         *self as usize
@@ -22,8 +21,7 @@ impl EnumImport for ItemId {
 
 impl EnumImport for RuneId {
     fn to_riot_id(&self) -> u32 {
-        let rune_id = unsafe { tutorlolv2_gen::RuneId::from_u8_unchecked(self.cast_usize() as _) };
-        rune_id.to_riot_id()
+        self.to_riot_id()
     }
     fn cast_usize(&self) -> usize {
         *self as usize

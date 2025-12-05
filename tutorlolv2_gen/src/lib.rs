@@ -116,15 +116,3 @@ pub const NUMBER_OF_ABILITIES: usize = {
     }
     sum
 };
-
-impl ItemId {
-    pub const fn to_riot_id(&self) -> u32 {
-        INTERNAL_ITEMS[*self as usize].riot_id
-    }
-}
-
-impl RuneId {
-    pub const fn to_riot_id(&self) -> u32 {
-        INTERNAL_RUNES[*self as usize].riot_id
-    }
-}

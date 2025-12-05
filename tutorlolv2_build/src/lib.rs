@@ -35,6 +35,24 @@ pub async fn run() {
     let items_len = items.len();
     let runes_len = runes.len();
 
+    let item_id_to_riot_id = format!(
+        "pub static ITEM_ID_TO_RIOT_ID:[u32;{items_len}]=[{}];",
+        items
+            .iter()
+            .map(|(riot_id, _)| *riot_id)
+            .collect::<Vec<_>>()
+            .join(","),
+    );
+
+    let rune_id_to_riot_id = format!(
+        "pub static RUNE_ID_TO_RIOT_ID:[u32;{runes_len}]=[{}];",
+        runes
+            .iter()
+            .map(|(riot_id, _)| *riot_id)
+            .collect::<Vec<_>>()
+            .join(","),
+    );
+
     let mut internal_champions_content = String::with_capacity(1 << 16);
     let mut internal_champions =
         format!("pub static INTERNAL_CHAMPIONS:[&CachedChampion;{champions_len}]=[");
@@ -215,6 +233,9 @@ pub async fn run() {
         #[repr(u16)]
         pub enum ItemId {{{}}}
         impl ItemId {{
+            pub const fn to_riot_id(&self) -> u32 {{
+                INTERNAL_ITEMS[*self as usize].riot_id
+            }}
             pub const fn from_riot_id(id: u32) -> Option<Self> {{
                 match id {{{}}}
             }}
@@ -280,6 +301,9 @@ pub async fn run() {
         #[repr(u8)]
         pub enum RuneId {{{}}}
         impl RuneId {{
+            pub const fn to_riot_id(&self) -> u32 {{
+                INTERNAL_RUNES[*self as usize].riot_id
+            }}
             pub const fn from_riot_id(id: u32) -> Option<Self> {{
                 match id {{{}}}
             }}
@@ -351,8 +375,16 @@ pub async fn run() {
         recommended_runes,
         item_id_to_name,
         item_formulas,
-        item_id_enum,
-        rune_id_enum,
+        item_id_to_riot_id,
+        rune_id_to_riot_id,
+        item_id_enum.replace(
+            "INTERNAL_ITEMS[*self as usize].riot_id",
+            "ITEM_ID_TO_RIOT_ID[*self as usize]",
+        ),
+        rune_id_enum.replace(
+            "INTERNAL_RUNES[*self as usize].riot_id",
+            "RUNE_ID_TO_RIOT_ID[*self as usize]",
+        ),
         rune_id_to_name,
         rune_formulas,
     ]

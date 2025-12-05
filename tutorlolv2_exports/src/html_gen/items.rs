@@ -3,11 +3,10 @@ use crate::{
     export_code::*,
     html::{HtmlExt, Source, offset_to_str},
 };
-use tutorlolv2_gen::ItemId as ItemId2;
 
 pub fn generate_item_html() {
     for i in 0..ITEM_FORMULAS.len() {
-        let item_id = unsafe { ItemId2::from_u16_unchecked(i as _) };
+        let item_id = unsafe { ItemId::from_u16_unchecked(i as _) };
         println!("Generating {item_id:#?} html");
         let mut html = String::new();
         let name = ITEM_ID_TO_NAME[item_id as usize];
