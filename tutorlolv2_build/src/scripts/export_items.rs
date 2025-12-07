@@ -37,7 +37,6 @@ pub struct DamageObject {
 }
 
 #[derive(Deserialize)]
-
 pub struct Item {
     pub riot_id: u32,
     pub name: String,

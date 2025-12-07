@@ -1,5 +1,9 @@
+use serde::de::DeserializeOwned;
+use tokio::sync::{Mutex, Semaphore};
+use tokio_stream::{StreamExt, wrappers::ReadDirStream};
+
 use super::*;
-use std::cmp::Ordering;
+use std::{cmp::Ordering, path::Path, sync::Arc};
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -121,6 +125,35 @@ pub fn sort_pqwer(data: &mut [(AbilityLike, String, String, String)]) {
     });
 }
 
+struct DeclaredAbility {
+    declaration: String,
+    metadata: String,
+    damage: String,
+    name: String,
+}
+
+fn declare_abilities(upper_id: &str, abilities: &[(AbilityLike, Ability)]) -> Vec<DeclaredAbility> {
+    abilities
+        .into_iter()
+        .map(|(name, ability)| {
+            let damage = match ability.damage.is_empty() {
+                true => String::from("zero"),
+                false => {
+                    let mut result = String::new();
+                    result
+                }
+            };
+
+            DeclaredAbility {
+                declaration: String::new(),
+                metadata: String::new(),
+                damage: String::new(),
+                name: String::new(),
+            }
+        })
+        .collect()
+}
+
 fn get_abilities_decl(
     champion_name: &str,
     abilities: Vec<(AbilityLike, Ability)>,
@@ -218,6 +251,69 @@ pub fn find_merge_indexes(
         }
     }
     out
+}
+
+pub type MayFail<T = ()> = Result<T, Box<dyn std::error::Error>>;
+
+pub async fn _parallel<P, F, T, R, Fut>(
+    permits: usize,
+    path: P,
+    f: F,
+) -> MayFail<BTreeMap<String, R>>
+where
+    P: AsRef<Path>,
+    R: Send + Sync + 'static,
+    T: DeserializeOwned,
+    Fut: Future<Output = MayFail<R>> + Send + Sync + 'static,
+    F: Clone + Send + Sync + 'static + Fn(String, T) -> Fut,
+{
+    let result = Arc::new(Mutex::new(BTreeMap::new()));
+    let mut futures = Vec::new();
+    let semaphore = Arc::new(Semaphore::new(permits));
+
+    let folder = Path::new("../").join(path);
+    let read_dir = tokio::fs::read_dir(folder).await?;
+    let mut dir_stream = ReadDirStream::new(read_dir);
+
+    while let Some(Ok(entry)) = dir_stream.next().await {
+        let f = f.clone();
+        let result = result.clone();
+        let semaphore = semaphore.clone();
+        futures.push(tokio::task::spawn(async move {
+            let _permit = semaphore.acquire().await.unwrap();
+            let file_name = entry.file_name().to_string_lossy().to_string();
+            let handler = {
+                let file_name = file_name.clone();
+                async move || -> MayFail<R> {
+                    let data = tokio::fs::read(entry.path()).await?;
+                    let json = serde_json::from_slice(&data)?;
+                    f(file_name, json).await
+                }
+            };
+
+            let data = handler().await.unwrap();
+            result.lock().await.insert(file_name, data);
+        }))
+    }
+
+    for future in futures {
+        future.await.unwrap();
+    }
+
+    let response = unsafe { Arc::try_unwrap(result).unwrap_unchecked() };
+    Ok(response.into_inner())
+}
+
+pub async fn _test() {
+    let data = _parallel(
+        64,
+        "internal/champions",
+        async |champion_id, json: Champion| {
+            let upper_id = champion_id.to_uppercase();
+            Ok(upper_id)
+        },
+    )
+    .await;
 }
 
 pub fn export_champions() -> BTreeMap<String, ChampionDetails> {

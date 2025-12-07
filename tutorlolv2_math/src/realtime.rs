@@ -333,7 +333,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
     })
 }
 
-fn get_dragons(events: &[RealtimeEvent], players_map: &[RiotAllPlayers]) -> Dragons {
+pub fn get_dragons(events: &[RealtimeEvent], players_map: &[RiotAllPlayers]) -> Dragons {
     let mut ally_fire = 0;
     let mut ally_earth = 0;
     let mut ally_chemtech = 0;

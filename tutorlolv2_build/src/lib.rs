@@ -108,7 +108,7 @@ pub async fn run() {
         let positions = scraped_data_map.get(champion_id).unwrap();
         let mut item_results = Vec::new();
         let mut rune_results = Vec::new();
-        for (pos_items, pos_runes) in positions.make_iterable().iter() {
+        for (pos_items, pos_runes) in positions.iter() {
             let insert_array = |array: &[String], enum_kind: &str| {
                 array
                     .iter()

@@ -2,7 +2,7 @@ use regex::{Captures, Regex};
 use serde::Deserialize;
 use std::fmt;
 
-pub fn add_f32_postfix<'a>(expr: &'a str) -> (String, bool) {
+pub fn add_f32_postfix(expr: &str) -> (String, bool) {
     let re_num = Regex::new(r"\b(\d+(\.\d+)?)\b").unwrap();
     let postfixed = re_num.replace_all(expr, |caps: &Captures| format!("{}f32", &caps[1]));
     let uses_ctx = postfixed.contains("ctx.");
@@ -24,14 +24,8 @@ pub struct Positions {
 }
 
 impl Positions {
-    pub fn make_iterable(&self) -> [(Vec<String>, Vec<String>); 5] {
-        [
-            (self.top.0.clone(), self.top.1.clone()),
-            (self.jungle.0.clone(), self.jungle.1.clone()),
-            (self.mid.0.clone(), self.mid.1.clone()),
-            (self.adc.0.clone(), self.adc.1.clone()),
-            (self.support.0.clone(), self.support.1.clone()),
-        ]
+    pub fn iter(&self) -> [&(Vec<String>, Vec<String>); 5] {
+        [&self.top, &self.jungle, &self.mid, &self.adc, &self.support]
     }
 }
 
