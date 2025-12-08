@@ -3,6 +3,8 @@ pub mod export_items;
 pub mod export_runes;
 pub mod utils;
 
+pub mod champions;
+
 pub use crate::*;
 pub use export_champions::*;
 pub use export_items::*;

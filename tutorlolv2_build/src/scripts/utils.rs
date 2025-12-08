@@ -6,7 +6,7 @@ pub fn add_f32_postfix(expr: &str) -> (String, bool) {
     let re_num = Regex::new(r"\b(\d+(\.\d+)?)\b").unwrap();
     let postfixed = re_num.replace_all(expr, |caps: &Captures| format!("{}f32", &caps[1]));
     let uses_ctx = postfixed.contains("ctx.");
-    (postfixed.into_owned(), uses_ctx)
+    (postfixed.to_lowercase(), uses_ctx)
 }
 
 #[derive(Deserialize)]

@@ -1,3 +1,4 @@
+pub mod _lib;
 mod scripts;
 
 use scripts::*;
