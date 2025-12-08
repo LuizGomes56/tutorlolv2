@@ -1,5 +1,3 @@
-use std::{cmp::Ordering, collections::HashMap, sync::Arc};
-
 use crate::{
     _lib::{_parallel, CwdPath, Generated, MayFail, push_end},
     scripts::{
@@ -7,6 +5,7 @@ use crate::{
     },
 };
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
+use std::{cmp::Ordering, collections::HashMap};
 use tutorlolv2_types::AbilityLike;
 
 struct DeclaredAbility {
@@ -169,7 +168,7 @@ pub fn define_merge_indexes(
         .join(",")
 }
 
-pub fn sort_abilities(data: &mut [DeclaredAbility]) {
+fn sort_abilities(data: &mut [DeclaredAbility]) {
     let priority = |ability_id: AbilityLike| match ability_id.as_char() {
         'P' => 0,
         'Q' => 1,
@@ -207,7 +206,7 @@ pub async fn generate_champions() -> MayFail<impl FnOnce(usize) -> Generated> {
     }
 
     let data = _parallel(
-        180,
+        32,
         "internal/champions",
         async |champion_id, champion: Champion| {
             println!("Building: {champion_id:?}");
@@ -430,26 +429,22 @@ pub async fn generate_champions() -> MayFail<impl FnOnce(usize) -> Generated> {
         "];",
     );
 
-    let champion_id_enum = Arc::new(champion_id_enum);
+    let imports = [
+        USE_SUPER,
+        &champion_id_enum,
+        &champion_declarations,
+        &champion_name_to_id,
+        &champion_cache,
+        BASIC_ATTACK,
+        CRITICAL_STRIKE,
+    ]
+    .concat();
 
-    tokio::task::spawn({
-        let champion_id_enum = champion_id_enum.clone();
-        async move {
-            tokio::fs::write(CwdPath::new("preview.rs"), {
-                // tokio::fs::write(CwdPath::new("tutorlolv2_gen/src/data/champions.rs"), {
-                [
-                    USE_SUPER,
-                    &champion_id_enum,
-                    &champion_declarations,
-                    &champion_name_to_id,
-                    &champion_cache,
-                    BASIC_ATTACK,
-                    CRITICAL_STRIKE,
-                ]
-                .concat()
-            })
-        }
-    });
+    tokio::task::spawn(tokio::fs::write(
+        CwdPath::new("tutorlolv2_gen/src/data/champions.rs"),
+        imports,
+    ))
+    .await??;
 
     let callback = move |index: usize| {
         let add_offsets = |list: Vec<_>, target: &mut String| {
@@ -458,7 +453,6 @@ pub async fn generate_champions() -> MayFail<impl FnOnce(usize) -> Generated> {
                 let new_end = end + index;
                 target.push_str(&format!("({new_start}, {new_end}),"));
             }
-            target.pop();
             target.push_str("];");
         };
 
@@ -467,7 +461,7 @@ pub async fn generate_champions() -> MayFail<impl FnOnce(usize) -> Generated> {
         add_offsets(formula_offsets, &mut champion_formulas);
 
         let exports = [
-            Arc::unwrap_or_clone(champion_id_enum),
+            champion_id_enum,
             champion_id_to_name,
             champion_positions,
             champion_generator,

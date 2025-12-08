@@ -38,9 +38,9 @@ pub struct DamageObject {
 
 #[derive(Deserialize)]
 pub struct Item {
-    pub riot_id: u32,
+    pub riot_id: usize,
     pub name: String,
-    pub price: u32,
+    pub price: usize,
     pub tier: u8,
     pub prettified_stats: Vec<StatName>,
     pub damage_type: String,
@@ -141,7 +141,7 @@ pub struct ItemDetails {
     pub constdecl: String,
 }
 
-pub fn export_items() -> Vec<(u32, ItemDetails)> {
+pub fn export_items() -> Vec<(usize, ItemDetails)> {
     let mut items = init_map!(dir Item, "internal/items")
         .into_par_iter()
         .map(|(_, item)| {
@@ -199,7 +199,7 @@ pub fn export_items() -> Vec<(u32, ItemDetails)> {
                 },
             )
         })
-        .collect::<Vec<(u32, ItemDetails)>>();
+        .collect::<Vec<(usize, ItemDetails)>>();
     items.sort_by(|a, b| a.1.item_name.cmp(&b.1.item_name));
     items
 }
