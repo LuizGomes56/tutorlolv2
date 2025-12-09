@@ -1,8 +1,6 @@
 use crate::{
-    _lib::{_parallel, CwdPath, Generated, MayFail, push_end},
-    scripts::{
-        Ability, BASIC_ATTACK, CRITICAL_STRIKE, Champion, MerakiChampionStats, StringExt, USE_SUPER,
-    },
+    _lib::{CwdPath, Generated, GeneratorFn, SrcFolder, parallel_task, push_end},
+    scripts::{Ability, Champion, MerakiChampionStats, StringExt, USE_SUPER},
 };
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
 use std::{cmp::Ordering, collections::HashMap};
@@ -195,21 +193,21 @@ fn sort_abilities(data: &mut [DeclaredAbility]) {
     });
 }
 
-pub async fn generate_champions() -> MayFail<impl FnOnce(usize) -> Generated> {
+pub async fn generate_champions() -> GeneratorFn {
     struct ChampionResult {
         champion_id_upper: String,
-        champion_name: String,
+        name: String,
         positions: String,
         declaration: String,
         ability_declarations: Vec<(AbilityLike, String)>,
         generator: String,
     }
 
-    let data = _parallel(
-        32,
+    let data = parallel_task(
+        64,
         "internal/champions",
         async |champion_id, champion: Champion| {
-            println!("Building: {champion_id:?}");
+            println!("Building: ChampionId({champion_id:?})");
 
             let champion_id_upper = champion_id.to_uppercase();
 
@@ -262,17 +260,12 @@ pub async fn generate_champions() -> MayFail<impl FnOnce(usize) -> Generated> {
                 merge_data = define_merge_indexes(merge_data, &ability_names),
             );
 
-            let generator_path = CwdPath::new(format!(
-                "tutorlolv2_dev/src/generators/gen_champions/{champion_id}.rs"
-            ));
-            let generator = tokio::fs::read_to_string(generator_path)
-                .await?
-                .invoke_rustfmt(80)
-                .highlight_rust();
+            let generator = CwdPath::get_generator(SrcFolder::Champions, &champion_id).await?;
 
-            let combos_path = CwdPath::new(format!("internal/scraper/combos/{champion_id}.json"));
-            let combos_file = tokio::fs::read_to_string(combos_path).await?;
-            let combos_json = serde_json::from_str::<Vec<Vec<String>>>(&combos_file)?;
+            let combos_json = CwdPath::deserialize::<Vec<Vec<String>>>(format!(
+                "internal/scraper/combos/{champion_id}.json"
+            ))
+            .await?;
 
             let mut champion_combos = Vec::<Vec<AbilityLike>>::new();
 
@@ -292,11 +285,9 @@ pub async fn generate_champions() -> MayFail<impl FnOnce(usize) -> Generated> {
             let champion_name = format!("{name:?}");
             let champion_id = format!("{champion_id_upper}");
 
-            println!("Finished: {champion_id:?}");
-
             Ok(ChampionResult {
                 ability_declarations,
-                champion_name,
+                name: champion_name,
                 champion_id_upper: champion_id,
                 declaration,
                 positions,
@@ -362,17 +353,16 @@ pub async fn generate_champions() -> MayFail<impl FnOnce(usize) -> Generated> {
         pub enum ChampionId {{",
     );
 
-    let champion_languages =
-        tokio::fs::read(CwdPath::new("internal/champion_languages.json")).await?;
     let languages_map =
-        serde_json::from_slice::<HashMap<String, Vec<String>>>(&champion_languages)?;
+        CwdPath::deserialize::<HashMap<String, Vec<String>>>("internal/champion_languages.json")
+            .await?;
     let mut language_arms = Vec::new();
 
     for (
         champion_id,
         ChampionResult {
             declaration,
-            champion_name,
+            name: champion_name,
             positions,
             ability_declarations,
             generator,
@@ -393,8 +383,8 @@ pub async fn generate_champions() -> MayFail<impl FnOnce(usize) -> Generated> {
         language_arms.push(name_alias);
 
         champion_declarations.push_str(&declaration);
-        champion_id_to_name.push_str(&format!("{champion_name:?},"));
-        champion_positions.push_str(&positions);
+        champion_id_to_name.push_str(&format!("{champion_name},"));
+        champion_positions.push_str(&(positions + ","));
         champion_id_enum.push_str(&(normalized_id + ","));
         champion_cache.push_str(&format!("&{champion_id_upper},"));
 
@@ -435,16 +425,9 @@ pub async fn generate_champions() -> MayFail<impl FnOnce(usize) -> Generated> {
         &champion_declarations,
         &champion_name_to_id,
         &champion_cache,
-        BASIC_ATTACK,
-        CRITICAL_STRIKE,
     ]
     .concat();
-
-    tokio::task::spawn(tokio::fs::write(
-        CwdPath::new("tutorlolv2_gen/src/data/champions.rs"),
-        imports,
-    ))
-    .await??;
+    CwdPath::fwrite(SrcFolder::Champions.import_file(), imports).await??;
 
     let callback = move |index: usize| {
         let add_offsets = |list: Vec<_>, target: &mut String| {
@@ -453,12 +436,16 @@ pub async fn generate_champions() -> MayFail<impl FnOnce(usize) -> Generated> {
                 let new_end = end + index;
                 target.push_str(&format!("({new_start}, {new_end}),"));
             }
-            target.push_str("];");
+            push_end([target], "];");
         };
 
-        add_offsets(ability_offsets, &mut champion_abilities);
-        add_offsets(generator_offsets, &mut champion_generator);
-        add_offsets(formula_offsets, &mut champion_formulas);
+        for (list, target) in [
+            (ability_offsets, &mut champion_abilities),
+            (generator_offsets, &mut champion_generator),
+            (formula_offsets, &mut champion_formulas),
+        ] {
+            add_offsets(list, target);
+        }
 
         let exports = [
             champion_id_enum,
@@ -473,5 +460,5 @@ pub async fn generate_champions() -> MayFail<impl FnOnce(usize) -> Generated> {
         Generated { exports, block }
     };
 
-    Ok(callback)
+    Ok(Box::new(callback))
 }

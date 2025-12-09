@@ -1,10 +1,10 @@
-pub mod bitarray;
+pub mod bitset;
 pub mod cache;
 pub mod data;
 pub mod enums;
 pub mod eval;
 
-pub use bitarray::*;
+pub use bitset::*;
 pub use cache::*;
 pub use data::*;
 pub use enums::*;
@@ -14,7 +14,7 @@ pub const NUMBER_OF_SIMULATED_ITEMS: usize = {
     let mut sum = 0;
     let mut i = 0;
     while i < NUMBER_OF_ITEMS {
-        let item = INTERNAL_ITEMS[i];
+        let item = ITEM_CACHE[i];
         if item.is_simulated {
             sum += 1;
         }
@@ -32,7 +32,7 @@ pub const SIMULATED_ITEMS: [u32; NUMBER_OF_SIMULATED_ITEMS] = {
     let mut i = 0;
     let mut j = 0;
     while i < NUMBER_OF_ITEMS {
-        let item = INTERNAL_ITEMS[i];
+        let item = ITEM_CACHE[i];
         if item.is_simulated {
             result[j] = item.riot_id;
             j += 1;
@@ -49,7 +49,7 @@ pub const SIMULATED_ITEMS_ENUM: [ItemId; NUMBER_OF_SIMULATED_ITEMS] = {
     let mut i = 0;
     let mut j = 0;
     while i < NUMBER_OF_ITEMS {
-        let item = INTERNAL_ITEMS[i];
+        let item = ITEM_CACHE[i];
         if item.is_simulated {
             result[j] = unsafe { ItemId::from_u16_unchecked(j as _) };
             j += 1;
@@ -63,7 +63,7 @@ pub const NUMBER_OF_DAMAGING_RUNES: usize = {
     let mut sum = 0;
     let mut i = 0;
     while i < NUMBER_OF_RUNES {
-        let rune = INTERNAL_RUNES[i];
+        let rune = RUNE_CACHE[i];
         if !rune.undeclared {
             sum += 1;
         }
@@ -77,7 +77,7 @@ pub const DAMAGING_RUNES_ARRAY: [RuneId; NUMBER_OF_DAMAGING_RUNES] = {
     let mut i = 0;
     let mut j = 0;
     while i < NUMBER_OF_RUNES {
-        let rune = INTERNAL_RUNES[i];
+        let rune = RUNE_CACHE[i];
         if !rune.undeclared {
             result[j] = unsafe { RuneId::from_u8_unchecked(i as _) };
             j += 1;
@@ -96,21 +96,19 @@ pub const DAMAGING_ITEMS_BITSET_SIZE: usize = NUMBER_OF_SIMULATED_ITEMS.div_ceil
 /// - `melee.maximum_damage != "zero"`
 /// Note that comparing the name of two functions and checking if they're equal to each
 /// other is still unstable, so the comparison `lhs == zero` does not work
-pub const DAMAGING_ITEMS: BitArray<DAMAGING_ITEMS_BITSET_SIZE> =
-    bit_array_items(SIMULATED_ITEMS_ENUM);
+pub const DAMAGING_ITEMS: BitSet<DAMAGING_ITEMS_BITSET_SIZE> = bitset_items(SIMULATED_ITEMS_ENUM);
 
 pub const DAMAGING_RUNES_BITSET_SIZE: usize = NUMBER_OF_DAMAGING_RUNES.div_ceil(64);
-pub const DAMAGING_RUNES: BitArray<DAMAGING_RUNES_BITSET_SIZE> =
-    bit_array_runes(DAMAGING_RUNES_ARRAY);
+pub const DAMAGING_RUNES: BitSet<DAMAGING_RUNES_BITSET_SIZE> = bitset_runes(DAMAGING_RUNES_ARRAY);
 
-pub const NUMBER_OF_CHAMPIONS: usize = INTERNAL_CHAMPIONS.len();
-pub const NUMBER_OF_ITEMS: usize = INTERNAL_ITEMS.len();
-pub const NUMBER_OF_RUNES: usize = INTERNAL_RUNES.len();
+pub const NUMBER_OF_CHAMPIONS: usize = CHAMPION_CACHE.len();
+pub const NUMBER_OF_ITEMS: usize = ITEM_CACHE.len();
+pub const NUMBER_OF_RUNES: usize = RUNE_CACHE.len();
 pub const NUMBER_OF_ABILITIES: usize = {
     let mut i = 0;
     let mut sum = 0;
     while i < NUMBER_OF_CHAMPIONS {
-        let data = INTERNAL_CHAMPIONS[i];
+        let data = CHAMPION_CACHE[i];
         sum += data.closures.len();
         i += 1;
     }

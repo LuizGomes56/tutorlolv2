@@ -1,6 +1,6 @@
 use crate::{
-    _lib::{_parallel, CwdPath, Generated, MayFail},
-    scripts::{DamageObject, Item, ItemStats, StringExt},
+    _lib::{CwdPath, Generated, GeneratorFn, SrcFolder, parallel_task, push_end},
+    scripts::{DamageObject, Item, ItemStats, StringExt, USE_SUPER},
 };
 
 struct DeclaredItem {
@@ -122,10 +122,10 @@ pub fn format_stats(stats: &ItemStats) -> String {
     all_stats.join(",")
 }
 
-pub async fn generate_items() -> MayFail<impl FnOnce(usize) -> Generated> {
+pub async fn generate_items() -> GeneratorFn {
     struct ItemResult {
         riot_id: usize,
-        item_formula: String,
+        formula: String,
         declaration: String,
         name: String,
         name_ssnake: String,
@@ -133,7 +133,9 @@ pub async fn generate_items() -> MayFail<impl FnOnce(usize) -> Generated> {
         generator: String,
     }
 
-    let mut data = _parallel(32, "internal/items", async |item_id, item: Item| {
+    let mut data = parallel_task(64, "internal/items", async |file_name, item: Item| {
+        println!("Building: ItemId({file_name:?})");
+
         let Item {
             riot_id,
             ref name,
@@ -162,6 +164,7 @@ pub async fn generate_items() -> MayFail<impl FnOnce(usize) -> Generated> {
             melee_closure,
         } = declare_item(&item);
 
+        let stats = format_stats(&stats);
         let is_simulated = tier >= 3 && price > 0 && purchasable;
         let is_damaging = {
             let is_zeroed = |expr: &str| expr != "zero" && !expr.is_empty();
@@ -172,7 +175,7 @@ pub async fn generate_items() -> MayFail<impl FnOnce(usize) -> Generated> {
         };
 
         let declaration = format!(
-            "pub static {name}: CachedItem = CachedItem {{
+            "pub static {name_ssnake}_{riot_id}: CachedItem = CachedItem {{
                 gold: {price},
                 prettified_stats: &[{prettified_stats}],
                 damage_type: DamageType::{damage_type},
@@ -185,22 +188,14 @@ pub async fn generate_items() -> MayFail<impl FnOnce(usize) -> Generated> {
                 is_damaging: {is_damaging},
                 riot_id: {riot_id},
             }};",
-            name = format_args!("{name_ssnake}_{riot_id}"),
-            stats = format_stats(&stats),
         );
 
-        let generator_path = CwdPath::new(format!(
-            "tutorlolv2_dev/src/generators/gen_items/{name}.rs",
-            name = name_ssnake.to_lowercase()
-        ));
-        let generator = tokio::fs::read_to_string(generator_path)
-            .await?
-            .invoke_rustfmt(80)
-            .highlight_rust();
+        let generator =
+            CwdPath::get_generator(SrcFolder::Items, name_ssnake.to_lowercase()).await?;
 
         Ok(ItemResult {
             riot_id,
-            item_formula: declaration
+            formula: declaration
                 .invoke_rustfmt(70)
                 .clear_suffixes()
                 .highlight_rust()
@@ -217,7 +212,134 @@ pub async fn generate_items() -> MayFail<impl FnOnce(usize) -> Generated> {
     .map(|(_, value)| value)
     .collect::<Vec<_>>();
 
-    data.sort_by(|a, b| a.riot_id.cmp(&b.riot_id));
+    data.sort_by(|a, b| a.name.cmp(&b.name));
 
-    Ok(|_| todo!())
+    let len = data.len();
+    let mut item_declarations = String::new();
+
+    let [
+        mut item_cache,
+        mut item_id_to_name,
+        mut item_formulas,
+        mut item_generator,
+        mut item_id_to_riot_id,
+    ] = std::array::from_fn(|i| {
+        let (name, vtype) = [
+            ("ITEM_CACHE", "&CachedItem"),
+            ("ITEM_ID_TO_NAME", "&str"),
+            ("ITEM_FORMULAS", "(u32,u32)"),
+            ("ITEM_GENERATOR", "(u32,u32)"),
+            ("ITEM_ID_TO_RIOT_ID", "u32"),
+        ][i];
+        format!("pub static {name}: [{vtype}; {len}] = [")
+    });
+
+    let mut offset = 0;
+    let mut formula_offsets = Vec::with_capacity(len);
+    let mut generator_offsets = Vec::with_capacity(len);
+
+    let mut block = String::new();
+
+    let mut record_offsets = |into: &mut Vec<_>, value: &str| {
+        let start = offset;
+        let end = offset + value.len();
+        block.push_str(value);
+        into.push((start, end));
+        offset = end;
+    };
+
+    let mut item_id_enum_match_arms = Vec::new();
+    let mut item_id_enum_fields = Vec::new();
+
+    for ItemResult {
+        riot_id,
+        formula,
+        declaration,
+        name,
+        name_ssnake,
+        name_normalized,
+        generator,
+    } in data
+    {
+        item_id_to_riot_id.push_str(&format!("{riot_id},"));
+        item_id_enum_match_arms.push(format!("{riot_id} => Some(Self::{name_normalized})"));
+        item_id_enum_fields.push(name_normalized);
+        item_id_to_name.push_str(&format!("{name:?},"));
+        item_cache.push_str(&format!("&{name_ssnake}_{riot_id},"));
+        item_declarations.push_str(&declaration);
+        record_offsets(&mut generator_offsets, &generator);
+        record_offsets(&mut formula_offsets, &formula);
+    }
+
+    let fields = item_id_enum_fields.join(",");
+    let match_arms = item_id_enum_match_arms.join(",");
+
+    let item_id_enum = format!(
+        "#[derive(Serialize, Deserialize, Debug, Copy, Clone, Ord, Eq, PartialOrd, PartialEq, Decode, Encode)]
+        #[repr(u16)]
+        pub enum ItemId {{ {fields} }}
+        impl ItemId {{
+            pub const fn to_riot_id(&self) -> u32 {{
+                ITEM_CACHE[*self as usize].riot_id
+            }}
+            pub const fn from_riot_id(id: u32) -> Option<Self> {{
+                match id {{ {match_arms}, _ => None }}
+            }}
+            pub const unsafe fn from_u16_unchecked(id: u16) -> Self {{
+                unsafe {{ core::mem::transmute(id) }}
+            }}
+            pub const fn from_u16(id: u16) -> Option<Self> {{
+                if id < {len} as u16 {{
+                    Some(unsafe {{ Self::from_u16_unchecked(id) }})
+                }} else {{
+                    None
+                }}
+            }}
+        }}"
+    );
+
+    push_end(
+        [
+            &mut item_cache,
+            &mut item_id_to_name,
+            &mut item_id_to_riot_id,
+        ],
+        "];",
+    );
+
+    let imports = [USE_SUPER, &item_cache, &item_id_enum, &item_declarations].concat();
+    CwdPath::fwrite(SrcFolder::Items.import_file(), imports).await??;
+
+    let callback = move |index: usize| {
+        let add_offsets = |list: Vec<_>, target: &mut String| {
+            for (start, end) in list {
+                let new_start = start + index;
+                let new_end = end + index;
+                target.push_str(&format!("({new_start}, {new_end}),"));
+            }
+            push_end([target], "];");
+        };
+
+        for (list, target) in [
+            (generator_offsets, &mut item_generator),
+            (formula_offsets, &mut item_formulas),
+        ] {
+            add_offsets(list, target);
+        }
+
+        let exports = [
+            item_id_enum.replace(
+                "ITEM_CACHE[*self as usize].riot_id",
+                "ITEM_ID_TO_RIOT_ID[*self as usize]",
+            ),
+            item_id_to_name,
+            item_formulas,
+            item_id_to_riot_id,
+        ]
+        .concat();
+
+        Generated { exports, block }
+    };
+
+    Ok(Box::new(callback))
 }

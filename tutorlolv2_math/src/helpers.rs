@@ -34,7 +34,7 @@ pub static BASE_STATS: [[BasicStats<f32>; URF_MAX_LEVEL]; NUMBER_OF_CHAMPIONS] =
     while champion_index < NUMBER_OF_CHAMPIONS {
         let mut level = 0;
         while level < URF_MAX_LEVEL {
-            let stats = &INTERNAL_CHAMPIONS[champion_index].stats;
+            let stats = &CHAMPION_CACHE[champion_index].stats;
             let growth_factor = RiotFormulas::growth(level as u8 + 1);
             macro_rules! mount_basic_stats {
                 ($($field:ident),*) => {
@@ -116,7 +116,7 @@ macro_rules! bonus_stats {
 
 pub use bonus_stats;
 
-pub const fn has_item<const N: usize>(origin: &BitArray, check_for: [ItemId; N]) -> bool {
+pub const fn has_item<const N: usize>(origin: &BitSet, check_for: [ItemId; N]) -> bool {
     let mut i = 0;
     while i < N {
         if origin.contains(check_for[i] as usize) {
@@ -191,7 +191,7 @@ pub const fn get_simulated_stats(stats: &Stats<f32>, dragons: Dragons) -> [Stats
     let mut i = 0;
     while i < SIMULATED_ITEMS_ENUM.len() {
         let item_offset = SIMULATED_ITEMS_ENUM[i];
-        let item_cache = INTERNAL_ITEMS[item_offset as usize];
+        let item_cache = ITEM_CACHE[item_offset as usize];
         let mut new_stat = *stats;
 
         new_stat.armor_penetration_flat += item_cache.stats.armor_penetration_flat;
@@ -232,11 +232,11 @@ pub const fn get_simulated_stats(stats: &Stats<f32>, dragons: Dragons) -> [Stats
     unsafe { result.assume_init() }
 }
 
-pub fn get_runes_data(runes: &BitArray, attack_type: AttackType) -> DamageKind<L_RUNE, RuneId> {
+pub fn get_runes_data(runes: &BitSet, attack_type: AttackType) -> DamageKind<L_RUNE, RuneId> {
     let mut metadata = SmallVec::with_capacity(runes.count() as usize);
     let mut closures = SmallVec::with_capacity(runes.count() as usize);
     for rune_number in runes.into_iter() {
-        let rune = unsafe { INTERNAL_RUNES.get_unchecked(rune_number as usize) };
+        let rune = unsafe { RUNE_CACHE.get_unchecked(rune_number as usize) };
         closures.push(match attack_type {
             AttackType::Ranged => rune.range_closure,
             AttackType::Melee => rune.melee_closure,
@@ -249,7 +249,7 @@ pub fn get_runes_data(runes: &BitArray, attack_type: AttackType) -> DamageKind<L
 const _: () = {
     let mut index = 0;
     while index < NUMBER_OF_ITEMS {
-        let data = INTERNAL_ITEMS[index];
+        let data = ITEM_CACHE[index];
         assert!(data.melee_closure.len() <= 2);
         assert!(data.range_closure.len() <= 2);
         index += 1;
@@ -257,7 +257,7 @@ const _: () = {
 };
 
 pub fn get_items_data(
-    items: &BitArray,
+    items: &BitSet,
     attack_type: AttackType,
 ) -> (
     DamageKind<L_ITEM, ItemId>,
@@ -267,7 +267,7 @@ pub fn get_items_data(
     let mut closures = SmallVec::with_capacity(items.count() as usize);
     let mut multi_closure_indices = SmallVec::with_capacity(items.count() as usize);
     for (index, item_number) in items.into_iter().enumerate() {
-        let item = unsafe { INTERNAL_ITEMS.get_unchecked(item_number as usize) };
+        let item = unsafe { ITEM_CACHE.get_unchecked(item_number as usize) };
         let slice = match attack_type {
             AttackType::Ranged => item.range_closure,
             AttackType::Melee => item.melee_closure,
@@ -284,8 +284,8 @@ pub fn get_items_data(
     (DamageKind { metadata, closures }, multi_closure_indices)
 }
 
-pub const fn runes_slice_to_bit_array(input: &[RuneId]) -> BitArray {
-    let mut out = BitArray::EMPTY;
+pub const fn runes_slice_to_bit_array(input: &[RuneId]) -> BitSet {
+    let mut out = BitSet::EMPTY;
     let mut i = 0;
     while i < input.len() {
         let rune = input[i] as usize;
@@ -297,8 +297,8 @@ pub const fn runes_slice_to_bit_array(input: &[RuneId]) -> BitArray {
     out
 }
 
-pub const fn items_slice_to_bit_array(input: &[ItemId]) -> BitArray {
-    let mut out = BitArray::EMPTY;
+pub const fn items_slice_to_bit_array(input: &[ItemId]) -> BitSet {
+    let mut out = BitSet::EMPTY;
     let mut i = 0;
     while i < input.len() {
         let item = input[i] as usize;
@@ -312,7 +312,7 @@ pub const fn items_slice_to_bit_array(input: &[ItemId]) -> BitArray {
 
 pub const fn get_enemy_current_stats(
     stats: &mut SimpleStats<f32>,
-    items: &BitArray,
+    items: &BitSet,
     earth_dragons: u16,
 ) -> f32 {
     let mut bonus_mana = 0.0;
@@ -321,7 +321,7 @@ pub const fn get_enemy_current_stats(
     let mut inner = items.into_inner();
     while i < items.count() as usize {
         if let Some(item_id) = bit_array_pop(&mut inner) {
-            let item = INTERNAL_ITEMS[item_id];
+            let item = ITEM_CACHE[item_id];
             stats.magic_resist += item.stats.magic_resist;
             stats.health += item.stats.health;
             stats.armor += item.stats.armor;

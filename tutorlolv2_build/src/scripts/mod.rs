@@ -5,6 +5,7 @@ pub mod utils;
 
 pub mod champions;
 pub mod items;
+pub mod runes;
 
 pub use crate::*;
 pub use export_champions::*;

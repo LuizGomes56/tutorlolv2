@@ -3,7 +3,7 @@ use crate::{AbilityLevels, L_CENM, L_MSTR, L_TWRD, RiotFormulas, riot::*};
 use smallvec::SmallVec;
 use std::mem::MaybeUninit;
 use tutorlolv2_gen::{
-    AdaptativeType, AttackType, BitArray, ChampionId, INTERNAL_CHAMPIONS, INTERNAL_ITEMS, ItemId,
+    AdaptativeType, AttackType, BitSet, CHAMPION_CACHE, ChampionId, ITEM_CACHE, ItemId,
     NUMBER_OF_ITEMS, RuneId,
 };
 use tutorlolv2_types::StatName;
@@ -22,7 +22,7 @@ pub const NUMBER_OF_ITEMS_WITH_PEN: usize = {
     let mut i = 0;
     let mut j = 0;
     while i < NUMBER_OF_ITEMS {
-        let item = INTERNAL_ITEMS[i];
+        let item = ITEM_CACHE[i];
         if item.stats.armor_penetration_percent > 0.0 || item.stats.magic_penetration_percent > 0.0
         {
             j += 1;
@@ -46,7 +46,7 @@ pub const ITEMS_WITH_PEN: [ItemId; NUMBER_OF_ITEMS_WITH_PEN] = {
     let mut j = 0;
     let mut items = [ItemId::AbyssalMask; NUMBER_OF_ITEMS_WITH_PEN];
     while i < NUMBER_OF_ITEMS {
-        let item = INTERNAL_ITEMS[i];
+        let item = ITEM_CACHE[i];
         if item.stats.armor_penetration_percent > 0.0 || item.stats.magic_penetration_percent > 0.0
         {
             items[j] = item.metadata.kind;
@@ -80,7 +80,7 @@ pub const fn infer_champion_stats(items: &[ItemId], dragons: Dragons) -> Stats<f
     let mut i = 0;
     while i < items.len() {
         let item_id = items[i];
-        let item = INTERNAL_ITEMS[item_id as usize];
+        let item = ITEM_CACHE[item_id as usize];
         let item_stats = &item.stats;
 
         let fire = get_fire_multiplier(dragons.ally_fire_dragons);
@@ -394,7 +394,7 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
 
     let current_player_runes = runes_slice_to_bit_array(&current_player_raw_runes);
     let current_player_cache =
-        unsafe { INTERNAL_CHAMPIONS.get_unchecked(current_player_champion_id as usize) };
+        unsafe { CHAMPION_CACHE.get_unchecked(current_player_champion_id as usize) };
 
     let current_player_base_stats =
         BasicStats::base_stats(current_player_champion_id, level, is_mega_gnar);
@@ -591,7 +591,7 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
                     health: 1.0,
                     magic_resist,
                 },
-                items: BitArray::EMPTY,
+                items: BitSet::EMPTY,
                 stacks: 0,
                 champion_id: ChampionId::Aatrox,
                 level: 0,

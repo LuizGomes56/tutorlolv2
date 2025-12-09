@@ -2,7 +2,7 @@ use crate::*;
 use bincode::{Decode, Encode};
 use smallvec::SmallVec;
 use tutorlolv2_gen::{
-    AdaptativeType, BitArray, ChampionId, ConstClosure, GameMap, ItemId, NUMBER_OF_ITEMS,
+    AdaptativeType, BitSet, ChampionId, ConstClosure, GameMap, ItemId, NUMBER_OF_ITEMS,
     NUMBER_OF_RUNES, Position, RuneId, TypeMetadata,
 };
 use tutorlolv2_types::AbilityLike;
@@ -107,7 +107,7 @@ pub struct ResistShred {
 
 pub struct EnemyState<'a> {
     pub base_stats: SimpleStats<f32>,
-    pub items: BitArray,
+    pub items: BitSet,
     pub stacks: u32,
     pub champion_id: ChampionId,
     pub earth_dragons: u16,

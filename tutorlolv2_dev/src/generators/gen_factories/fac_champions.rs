@@ -13,7 +13,7 @@ use std::{
     path::Path,
 };
 use tutorlolv2_fmt::invoke_rustfmt;
-use tutorlolv2_gen::{Attrs, ChampionId, DamageType, INTERNAL_CHAMPIONS, Position};
+use tutorlolv2_gen::{Attrs, CHAMPION_CACHE, ChampionId, DamageType, Position};
 use tutorlolv2_types::{AbilityLike, AbilityName};
 
 const GENERATOR_FOLDER: &str = "tutorlolv2_dev/src/generators/gen_champions";
@@ -27,7 +27,7 @@ pub struct ChampionData {
 pub struct ChampionFactory;
 
 impl ChampionFactory {
-    pub const NUMBER_OF_CHAMPIONS: usize = INTERNAL_CHAMPIONS.len();
+    pub const NUMBER_OF_CHAMPIONS: usize = CHAMPION_CACHE.len();
     pub const GENERATOR_FUNCTIONS: [fn(MerakiChampion) -> Box<dyn Generator<Champion>>;
         Self::NUMBER_OF_CHAMPIONS] =
         tutorlolv2_macros::expand_dir!("../internal/champions", |[Name]| Name::new);

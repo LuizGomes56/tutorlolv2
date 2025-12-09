@@ -3,9 +3,8 @@ use crate::{L_SIML, L_TEAM, RiotFormulas, riot::*};
 use smallvec::SmallVec;
 use std::mem::MaybeUninit;
 use tutorlolv2_gen::{
-    BitArray, CHAMPION_NAME_TO_ID, ChampionId, DAMAGING_ITEMS, DAMAGING_RUNES, GameMap,
-    INTERNAL_CHAMPIONS, INTERNAL_ITEMS, ItemId, Position, RuneId, SIMULATED_ITEMS_ENUM,
-    TypeMetadata,
+    BitSet, CHAMPION_CACHE, CHAMPION_NAME_TO_ID, ChampionId, DAMAGING_ITEMS, DAMAGING_RUNES,
+    GameMap, ITEM_CACHE, ItemId, Position, RuneId, SIMULATED_ITEMS_ENUM, TypeMetadata,
 };
 
 pub const SIMULATED_ITEMS_METADATA: [TypeMetadata<ItemId>; L_SIML] = {
@@ -14,7 +13,7 @@ pub const SIMULATED_ITEMS_METADATA: [TypeMetadata<ItemId>; L_SIML] = {
     let mut i = 0;
     while i < L_SIML {
         let item_id = SIMULATED_ITEMS_ENUM[i];
-        let item_cache = INTERNAL_ITEMS[item_id as usize];
+        let item_cache = ITEM_CACHE[item_id as usize];
         unsafe {
             core::ptr::addr_of_mut!((*siml_items_ptr)[i]).write(TypeMetadata::<ItemId> {
                 kind: item_id,
@@ -55,7 +54,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
 
     let current_player_champion_id = *CHAMPION_NAME_TO_ID.get(current_player.champion_name)?;
     let current_player_cache =
-        unsafe { INTERNAL_CHAMPIONS.get_unchecked(current_player_champion_id as usize) };
+        unsafe { CHAMPION_CACHE.get_unchecked(current_player_champion_id as usize) };
 
     let is_mega_gnar =
         current_player_champion_id == ChampionId::Gnar && champion_stats.attack_range >= 400.0;
@@ -106,7 +105,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
             let item_id = unsafe { ItemId::from_riot_id(riot_id).unwrap_unchecked() } as _;
             DAMAGING_ITEMS.contains(item_id).then_some(item_id)
         })
-        .collect::<BitArray>();
+        .collect::<BitSet>();
 
     let dragons = get_dragons(&events, &all_players);
 
@@ -166,7 +165,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
 
                         DAMAGING_RUNES.contains(rune_id).then_some(rune_id)
                     })
-                    .collect::<BitArray>(),
+                    .collect::<BitSet>(),
             )
         })
         .unwrap_or_default();
@@ -202,7 +201,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
             } = player;
 
             let e_champion_id = *CHAMPION_NAME_TO_ID.get(e_champion_name)?;
-            let e_cache = unsafe { INTERNAL_CHAMPIONS.get_unchecked(e_champion_id as usize) };
+            let e_cache = unsafe { CHAMPION_CACHE.get_unchecked(e_champion_id as usize) };
             let e_position = Position::from_raw(e_raw_position)
                 .unwrap_or(unsafe { *e_cache.positions.get_unchecked(0) });
             let team = Team::from(*e_team);
@@ -229,7 +228,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
                     let item_id = unsafe { ItemId::from_riot_id(riot_id).unwrap_unchecked() } as _;
                     DAMAGING_ITEMS.contains(item_id).then_some(item_id)
                 })
-                .collect::<BitArray>();
+                .collect::<BitSet>();
 
             let e_base_stats = SimpleStats::base_stats(e_champion_id, *e_level, false);
             let full_state = get_enemy_state(

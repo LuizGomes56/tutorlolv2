@@ -5,7 +5,7 @@ use scripts::*;
 use tutorlolv2_fmt::encode_brotli_11;
 use tutorlolv2_types::AbilityLike;
 
-const ONHIT_EFFECT: &str = r#"<pre><span class="control">intrinsic</span> <span class="constant">ONHIT_EFFECT</span> = {
+pub static ONHIT_EFFECT: &str = r#"<pre><span class="control">intrinsic</span> <span class="constant">ONHIT_EFFECT</span> = {
     <span class="variable">name</span>: <span class="string">"Onhit Effect"</span>,
     <span class="variable">damage_type</span>: <span class="type">DamageType</span>::<span class="constant">Mixed</span>,
     <span class="variable">damage</span>: ($($<span class="variable">dmg</span>:<span class="variable">expr</span>),*) => {
