@@ -10,8 +10,10 @@ use tutorlolv2_fmt::encode_brotli_11;
 
 mod scripts;
 
-use crate::scripts::{BASIC_ATTACK, CRITICAL_STRIKE, ONHIT_EFFECT, StringExt, TOWER_DAMAGE};
-use scripts::{champions::generate_champions, items::generate_items, runes::generate_runes};
+use crate::scripts::{
+    BASIC_ATTACK, CRITICAL_STRIKE, ONHIT_EFFECT, StringExt, TOWER_DAMAGE,
+    champions::generate_champions, items::generate_items, runes::generate_runes,
+};
 
 pub type MayFail<T = ()> = Result<T, Box<dyn std::error::Error>>;
 pub type GeneratorClosure = Box<dyn FnOnce(usize) -> Generated + Send + Sync + 'static>;

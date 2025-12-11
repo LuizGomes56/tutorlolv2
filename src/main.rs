@@ -4,7 +4,7 @@ use std::{
     time::Duration,
 };
 use tutorlolv2_dev::{
-    gen_factories::fac_items::ItemFactory,
+    gen_factories::{fac_champions::GENERATOR_FOLDER, fac_items::ItemFactory},
     generators::gen_factories::fac_champions::ChampionFactory,
 };
 
@@ -191,17 +191,28 @@ fn update() {
 }
 
 fn main() {
-    match std::env::args()
-        .collect::<Vec<String>>()
-        .get(1)
-        .map(String::as_str)
-    {
+    let args = std::env::args().collect::<Vec<String>>();
+    match args.get(1).map(String::as_str) {
         Some("build") => build_script(),
         Some("check-gen") => ChampionFactory::check_all_offsets(),
         Some("item-gen") => ItemFactory::run_all().unwrap(),
         Some("champion-gen") => ChampionFactory::run_all().unwrap(),
+        Some("generate") => {
+            let entity_id = &args[2];
+            let offset = args[3].parse::<usize>().unwrap();
+            ChampionFactory::run_from_raw(&entity_id, offset).unwrap();
+        }
         Some("make-gen") => {
             let _ = ChampionFactory::create_all();
+        }
+        Some("create-gen") => {
+            let entity_id = &args[2];
+            let data = ChampionFactory::create_from_raw(&entity_id).unwrap();
+            std::fs::write(
+                format!("{GENERATOR_FOLDER}/{entity_id}.rs"),
+                data.as_bytes(),
+            )
+            .unwrap();
         }
         Some("html-gen") => {
             build_server();
