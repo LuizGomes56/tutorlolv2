@@ -89,8 +89,8 @@ pub fn setup_internal_items() -> MayFail {
     let meraki_items = MerakiItem::from_dir("cache/meraki/items")?;
     let mut riot_items = RiotCdnItem::from_dir("cache/riot/items")?;
 
-    println!("Found {} riot items", riot_items.len());
-    println!("Found {} meraki items", meraki_items.len());
+    println!("[ok] Found {} riot items", riot_items.len());
+    println!("[ok] Found {} meraki items", meraki_items.len());
 
     struct ItemCache {
         meraki_item: MerakiItem,
@@ -285,7 +285,7 @@ fn pretiffy_items(data: &RiotCdnItem) -> MayFail<Vec<StatName>> {
     let json = result
         .into_iter()
         .map(|(key, value)| {
-            let name = tutorlolv2_fmt::to_pascal_case(&key);
+            let name = tutorlolv2_fmt::pascal_case(&key);
             format!(r#"{{ "name": "{name}", "value": {value} }}"#)
         })
         .collect::<Vec<_>>()

@@ -1,6 +1,6 @@
 use crate::MEGA_BLOCK;
 use std::fmt::{Debug, Display};
-use tutorlolv2_fmt::{encode_brotli_11, encode_zstd_9, highlight_json, minify_html, prettify_json};
+use tutorlolv2_fmt::{encode_brotli_11, encode_zstd_9, json_html, json_pretty, minify_html};
 
 pub const BASE_CSS: &'static str = include_str!("../../assets/base.css");
 
@@ -37,7 +37,7 @@ impl HtmlExt for String {
     }
 
     fn json_code(&self) -> String {
-        highlight_json(&prettify_json(
+        json_html(&json_pretty(
             &std::fs::read_to_string(self).unwrap_or_else(|_| "{}".to_string()),
         ))
     }

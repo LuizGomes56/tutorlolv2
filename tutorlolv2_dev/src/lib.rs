@@ -16,13 +16,13 @@ pub type MayFail<T = ()> = Result<T, Box<dyn std::error::Error>>;
 pub trait JsonRead: DeserializeOwned {
     fn from_file(path: impl AsRef<Path>) -> MayFail<Self> {
         let resolved_path = resolve_path(path)?;
-        println!("Trying to read {:?}", resolved_path.as_ref());
+        println!("[read] {:?}", resolved_path.as_ref());
         let data = std::fs::read(resolved_path)?;
         Ok(serde_json::from_slice(&data)?)
     }
 
     fn from_dir(path: impl AsRef<Path>) -> MayFail<HashMap<String, Self>> {
-        Ok(get_file_names(path.as_ref())?
+        Ok(get_file_names(&path)?
             .into_iter()
             .filter_map(|file_name| {
                 let data =
@@ -61,7 +61,7 @@ pub fn resolve_path(path: impl AsRef<Path>) -> MayFail<impl AsRef<Path>> {
 pub trait JsonWrite: Serialize {
     fn into_file(&self, path: impl AsRef<Path>) -> MayFail {
         let resolved_path = resolve_path(path)?;
-        println!("Trying to write {:?}", resolved_path.as_ref());
+        println!("[write] {:?}", resolved_path.as_ref());
         let data = serde_json::to_string_pretty(self)?;
         Ok(std::fs::write(resolved_path, data.as_bytes())?)
     }

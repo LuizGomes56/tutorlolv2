@@ -42,7 +42,7 @@ fn declare_abilities(
 
                     let expression = damage
                         .iter()
-                        .map(|dmg| dmg.clean_math_expr().transform_expr().0)
+                        .map(|dmg| dmg.as_closure().add_f32s())
                         .collect::<Vec<_>>();
 
                     let ctx_match = match letter {
@@ -81,10 +81,10 @@ fn declare_abilities(
                     damage: {damage},
                 }};"
             )
-            .invoke_rustfmt(80)
-            .highlight_rust()
-            .clear_suffixes()
-            .replace_const();
+            .rust_fmt(80)
+            .rust_html()
+            .drop_f32s()
+            .as_const();
 
             if declaration.is_empty() {
                 panic!("[{champion_id_upper}] Empty declaration for {ability_id:?}");
@@ -373,7 +373,7 @@ pub async fn generate_champions() -> GeneratorFn {
         },
     ) in data
     {
-        let normalized_id = champion_id.remove_special_chars();
+        let normalized_id = champion_id.normalize();
         let name_alias = languages_map
             .get(&champion_id)
             .ok_or(format!(
@@ -393,10 +393,7 @@ pub async fn generate_champions() -> GeneratorFn {
 
         tracker.record_into(&generator, &mut generator_offsets);
         tracker.record_into(
-            &declaration
-                .invoke_rustfmt(80)
-                .clear_suffixes()
-                .highlight_rust(),
+            &declaration.rust_fmt(80).drop_f32s().rust_html(),
             &mut formula_offsets,
         );
 

@@ -88,11 +88,11 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
             const SPEAR_OF_SHOJIN: u32 = ItemId::SpearofShojin.to_riot_id();
 
             match riot_id {
+                RIFTMAKER => base_modifiers.global_mod *= 1.08,
                 SHADOWFLAME => {
                     base_modifiers.magic_mod *= 1.2;
                     base_modifiers.true_mod *= 1.2;
                 }
-                RIFTMAKER => base_modifiers.global_mod *= 1.08,
                 SPEAR_OF_SHOJIN => {
                     ability_modifiers.q *= 1.12;
                     ability_modifiers.w *= 1.12;
@@ -332,31 +332,23 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
     })
 }
 
-pub fn get_dragons(events: &[RealtimeEvent], players_map: &[RiotAllPlayers]) -> Dragons {
-    let mut ally_fire = 0;
-    let mut ally_earth = 0;
-    let mut ally_chemtech = 0;
-    let mut enemy_earth = 0;
+pub fn get_dragons(events: &[RealtimeEvent], players: &[RiotAllPlayers]) -> Dragons {
+    let mut dragons = Dragons::default();
     for event in events {
         if let (Some(killer), Some(dragon)) =
             (event.killer_name.as_deref(), event.dragon_type.as_deref())
         {
             match dragon {
-                "Earth" => match players_map.iter().any(|player| player.riot_id == killer) {
-                    true => ally_earth += 1,
-                    false => enemy_earth += 1,
+                "Earth" => match players.iter().any(|player| player.riot_id == killer) {
+                    true => dragons.ally_earth_dragons += 1,
+                    false => dragons.enemy_earth_dragons += 1,
                 },
-                "Fire" => ally_fire += 1,
-                "Chemtech" => ally_chemtech += 1,
+                "Fire" => dragons.ally_fire_dragons += 1,
+                "Chemtech" => dragons.ally_chemtech_dragons += 1,
                 _ => {}
             }
         }
     }
 
-    Dragons {
-        ally_fire_dragons: ally_fire,
-        ally_earth_dragons: ally_earth,
-        ally_chemtech_dragons: ally_chemtech,
-        enemy_earth_dragons: enemy_earth,
-    }
+    dragons
 }

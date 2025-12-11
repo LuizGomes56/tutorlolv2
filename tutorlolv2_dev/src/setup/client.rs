@@ -55,17 +55,17 @@ impl HttpClient {
         let url = url.as_ref();
         let save_to = save_to.as_ref();
         if save_to.exists() {
-            println!("[ALREADY_EXISTS] {save_to:?}");
+            println!("[exists] {save_to:?}");
             Ok(())
         } else {
-            println!("[DOWNLOADING] {url}");
+            println!("[download] {url}");
             match self.get(url).send().await {
                 Ok(response) => {
                     let bytes = response.bytes().await?;
                     bytes.write_file(save_to)
                 }
                 Err(e) => {
-                    println!("[ERROR] {e}");
+                    println!("[error] {e}");
                     Err(e.to_string().into())
                 }
             }
@@ -88,7 +88,7 @@ impl HttpClient {
             let mut futures = Vec::new();
 
             let _ = self.download(
-                format!("{}/img/champion/{}", ddragon_url, champion.image.full),
+                format!("{ddragon_url}/img/champion/{}", champion.image.full),
                 format!("{champion_dir}/{champion_id}.png"),
             );
             let _ = self.download(
@@ -113,7 +113,7 @@ impl HttpClient {
 
             for future in futures {
                 if let Err(e) = future.await {
-                    println!("[ERROR] requesting {champion_id} images: {e}");
+                    println!("[error] requesting {champion_id} images: {e}");
                 };
             }
         }
@@ -282,7 +282,7 @@ impl HttpClient {
 
         for future in champions_futures {
             if let Err(e) = future.await {
-                println!("[CHAMPIONS] Task join error: {e:?}");
+                println!("[error] [champions] Task join error: {e:?}");
             }
         }
 
@@ -307,7 +307,7 @@ impl HttpClient {
 
         for future in items_futures {
             if let Err(e) = future.await {
-                println!("[ITEMS] Task join error: {e:?}");
+                println!("[error] [items] Task join error: {e:?}");
             }
         }
 
@@ -443,7 +443,7 @@ impl HttpClient {
                 };
                 match run_task() {
                     Ok(_) => (),
-                    Err(e) => println!("Error scraping combo for {champion_id:?}: {e:?}."),
+                    Err(e) => println!("[error] scraping combo for {champion_id:?}: {e:?}."),
                 }
             });
         }
@@ -518,7 +518,7 @@ impl HttpClient {
                         match run_task() {
                             Ok(_) => (),
                             Err(e) => {
-                                println!("Error processing HTML from {champion_id:?}: {e:#?}")
+                                println!("[error] processing HTML from {champion_id:?}: {e:#?}")
                             }
                         }
                     });
@@ -545,14 +545,14 @@ impl HttpClient {
                     Ok(m) => return Ok(m),
                     Err(e) => {
                         if !path.exists() {
-                            eprintln!("File for {path:?} might not yet have been created");
+                            eprintln!("[error] file for {path:?} might not yet have been created");
                         } else if attempts > 12 {
                             eprintln!(
-                                "Failed to load {path:?} after 12 attempts. Throwing error: {e:?}."
+                                "[error] failed to load {path:?} after 12 attempts. Throwing error: {e:?}."
                             );
                             return Err(e);
                         } else {
-                            eprintln!("Retrying {path:?} (error: {e:?})");
+                            eprintln!("[error] retrying {path:?} (error: {e:?})");
                             attempts += 1;
                         }
                         std::thread::sleep(std::time::Duration::from_secs(5));

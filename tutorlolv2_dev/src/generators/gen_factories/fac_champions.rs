@@ -12,7 +12,7 @@ use std::{
     collections::{BTreeMap, BTreeSet, HashMap},
     path::Path,
 };
-use tutorlolv2_fmt::invoke_rustfmt;
+use tutorlolv2_fmt::rustfmt;
 use tutorlolv2_gen::{Attrs, CHAMPION_CACHE, ChampionId, DamageType, Position};
 use tutorlolv2_types::{AbilityLike, AbilityName};
 
@@ -79,7 +79,7 @@ impl ChampionFactory {
         }
 
         generated_content.push_str("self.end()}}");
-        Ok(invoke_rustfmt(&generated_content, 80))
+        Ok(rustfmt(&generated_content, 80))
     }
 
     pub fn create_all() -> MayFail {

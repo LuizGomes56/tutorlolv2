@@ -22,7 +22,7 @@ fn declare_item(item: &Item) -> DeclaredItem {
         ..
     } = item;
 
-    let name = name.remove_special_chars();
+    let name = name.normalize();
 
     let metadata = format!(
         "TypeMetadata {{ 
@@ -34,8 +34,8 @@ fn declare_item(item: &Item) -> DeclaredItem {
 
     let assign_value = |expr: &str| {
         (!(expr.is_empty() || expr == "zero")).then_some({
-            let (new_expr, changed) = expr.clean_math_expr().transform_expr();
-            let ctx_param = if changed { "ctx" } else { "_" };
+            let new_expr = expr.as_closure().add_f32s();
+            let ctx_param = new_expr.ctx_param();
             let body = new_expr.to_lowercase();
             format!("|{ctx_param}| {body}")
         })
@@ -156,8 +156,8 @@ pub async fn generate_items() -> GeneratorFn {
                 attributes,
             } = item;
 
-            let name_ssnake = name.to_screaming_snake_case();
-            let name_normalized = name.remove_special_chars();
+            let name_ssnake = name.to_ssnake();
+            let name_normalized = name.normalize();
             let prettified_stats = prettified_stats
                 .iter()
                 .map(|stat| format!("StatName::{stat:?}"))
@@ -201,11 +201,7 @@ pub async fn generate_items() -> GeneratorFn {
 
             Ok(ItemResult {
                 riot_id,
-                formula: declaration
-                    .invoke_rustfmt(70)
-                    .clear_suffixes()
-                    .highlight_rust()
-                    .replace_const(),
+                formula: declaration.rust_fmt(70).drop_f32s().rust_html().as_const(),
                 declaration,
                 generator,
                 name_ssnake,

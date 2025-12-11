@@ -231,7 +231,7 @@ impl ValueException {
     }
 }
 
-#[derive(Encode, Decode, Copy, Clone, Default)]
+#[derive(Encode, Decode, Copy, Clone)]
 pub struct Dragons {
     pub ally_fire_dragons: u16,
     pub ally_earth_dragons: u16,
@@ -292,27 +292,6 @@ pub struct Modifiers {
     pub abilities: AbilityModifiers,
 }
 
-macro_rules! impl_default {
-    ($ty:ty, $initializer:literal) => {
-        impl $ty {
-            pub const fn default() -> Self {
-                unsafe { std::mem::transmute([$initializer; size_of::<$ty>() / size_of::<f32>()]) }
-            }
-        }
-
-        impl Default for $ty {
-            fn default() -> Self {
-                <$ty>::default()
-            }
-        }
-    };
-}
-
-impl_default!(Stats<f32>, 0.0f32);
-impl_default!(DamageModifiers, 1.0f32);
-impl_default!(AbilityModifiers, 1.0f32);
-impl_default!(Modifiers, 1.0f32);
-
 #[derive(Clone, Copy)]
 pub struct AbilityModifiers {
     pub q: f32,
@@ -371,6 +350,8 @@ macro_rules! impl_cast_from {
     };
 }
 
+impl_cast_from!(SimpleStats, health, armor, magic_resist);
+impl_cast_from!(BasicStats, armor, health, attack_damage, magic_resist, mana);
 impl_cast_from!(
     Stats,
     ability_power,
@@ -390,5 +371,25 @@ impl_cast_from!(
     mana,
     current_mana
 );
-impl_cast_from!(SimpleStats, health, armor, magic_resist);
-impl_cast_from!(BasicStats, armor, health, attack_damage, magic_resist, mana);
+
+macro_rules! impl_default {
+    ($ty:ty, $init:literal, $typedef:ty) => {
+        impl $ty {
+            pub const fn default() -> Self {
+                unsafe { std::mem::transmute([$init; size_of::<$ty>() / size_of::<$typedef>()]) }
+            }
+        }
+
+        impl Default for $ty {
+            fn default() -> Self {
+                <$ty>::default()
+            }
+        }
+    };
+}
+
+impl_default!(Stats<f32>, 0.0f32, f32);
+impl_default!(DamageModifiers, 1.0f32, f32);
+impl_default!(AbilityModifiers, 1.0f32, f32);
+impl_default!(Modifiers, 1.0f32, f32);
+impl_default!(Dragons, 0u8, u8);

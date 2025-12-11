@@ -96,7 +96,7 @@ impl CwdPath {
         Self::exists(&path).await;
 
         let data = tokio::fs::read_to_string(path).await?;
-        Ok(data.invoke_rustfmt(80).highlight_rust())
+        Ok(data.rust_fmt(80).rust_html())
     }
 
     pub async fn deserialize<T: DeserializeOwned>(origin: impl AsRef<Path>) -> MayFail<T> {
@@ -241,7 +241,7 @@ pub async fn new_runner() -> MayFail {
         ("TOWER_DAMAGE_OFFSET", TOWER_DAMAGE),
         ("CRITICAL_STRIKE_OFFSET", CRITICAL_STRIKE),
     ] {
-        let (start, end) = tracker.record(&value.highlight_rust());
+        let (start, end) = tracker.record(&value.rust_html());
         full_exports.push_str(&format!(
             "pub static {name}: (u32, u32) = ({start}, {end});"
         ));

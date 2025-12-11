@@ -24,7 +24,7 @@ pub fn encode_brotli_11(bytes: &[u8]) -> Vec<u8> {
     encoder.finish().unwrap()
 }
 
-pub fn to_pascal_case(input: &str) -> String {
+pub fn pascal_case(input: &str) -> String {
     let mut words = Vec::new();
     let mut cur = String::new();
 
@@ -55,7 +55,7 @@ pub fn to_pascal_case(input: &str) -> String {
     out
 }
 
-pub fn remove_special_chars(s: &str) -> String {
+pub fn normalize(s: &str) -> String {
     s.replace(" ", "")
         .replace("-", "")
         .replace(")", "")
@@ -66,7 +66,7 @@ pub fn remove_special_chars(s: &str) -> String {
         .replace(":", "")
 }
 
-pub fn invoke_rustfmt(src: &str, width: usize) -> String {
+pub fn rustfmt(src: &str, width: usize) -> String {
     let try_run = || -> Result<String, Box<dyn std::error::Error>> {
         let mut child = Command::new("rustfmt")
             .args(&[
@@ -89,7 +89,7 @@ pub fn invoke_rustfmt(src: &str, width: usize) -> String {
     try_run().unwrap_or(src.to_string())
 }
 
-pub fn highlight_rust(rust_code: &str) -> String {
+pub fn rust_html(rust_code: &str) -> String {
     let mut h = Highlighter::new(4);
     h.bounded("comment", r"/\*", r"\*/", false);
     h.keyword("comment", r"//.*$");
@@ -145,7 +145,7 @@ pub fn highlight_rust(rust_code: &str) -> String {
     format!("<pre>{}</pre>", out)
 }
 
-pub fn highlight_json(input: &str) -> String {
+pub fn json_html(input: &str) -> String {
     let mut h = Highlighter::new(4);
 
     h.keyword("string", r#""(?:[^"\\]|\\.)*""#);
@@ -203,7 +203,7 @@ pub fn highlight_json(input: &str) -> String {
     format!("<pre>{}</pre>", out)
 }
 
-pub fn prettify_json(input: &str) -> String {
+pub fn json_pretty(input: &str) -> String {
     let v: Value = serde_json::from_str(input).unwrap();
     let mut buf = Vec::new();
     let fmt = PrettyFormatter::with_indent(b"    ");

@@ -30,8 +30,8 @@ pub async fn generate_runes() -> GeneratorFn {
 
                 println!("Building: Rune({name:?})");
 
-                let name_normalized = name.remove_special_chars();
-                let name_ssnake = name.to_screaming_snake_case();
+                let name_normalized = name.normalize();
+                let name_ssnake = name.to_ssnake();
 
                 let metadata = format!(
                     "TypeMetadata {{
@@ -42,8 +42,8 @@ pub async fn generate_runes() -> GeneratorFn {
                 );
 
                 let get_closure = |expr: String| {
-                    let (closure, has_ctx) = expr.clean_math_expr().transform_expr();
-                    let arg = if has_ctx { "ctx" } else { "_" };
+                    let closure = expr.as_closure().add_f32s();
+                    let arg = closure.ctx_param();
                     let body = closure.to_lowercase();
                     format!("|{arg}| {body}")
                 };
@@ -64,11 +64,7 @@ pub async fn generate_runes() -> GeneratorFn {
 
                 RuneResult {
                     riot_id,
-                    formula: declaration
-                        .invoke_rustfmt(80)
-                        .clear_suffixes()
-                        .highlight_rust()
-                        .replace_const(),
+                    formula: declaration.rust_fmt(80).drop_f32s().rust_html().as_const(),
                     declaration,
                     name,
                     name_ssnake,
@@ -96,7 +92,7 @@ pub async fn generate_runes() -> GeneratorFn {
         }
 
         for (name, riot_id) in undeclared {
-            let name_normalized = name.remove_special_chars();
+            let name_normalized = name.normalize();
 
             let mut repeated = false;
             for value in &runes {
@@ -109,7 +105,7 @@ pub async fn generate_runes() -> GeneratorFn {
                 continue;
             }
 
-            let name_ssnake = name.to_screaming_snake_case();
+            let name_ssnake = name.to_ssnake();
 
             let metadata = format!(
                 "TypeMetadata {{
@@ -133,11 +129,7 @@ pub async fn generate_runes() -> GeneratorFn {
             runes.push(RuneResult {
                 name_normalized,
                 riot_id,
-                formula: declaration
-                    .invoke_rustfmt(80)
-                    .clear_suffixes()
-                    .highlight_rust()
-                    .replace_const(),
+                formula: declaration.rust_fmt(80).drop_f32s().rust_html().as_const(),
                 declaration,
                 name_ssnake,
                 name: name.to_string(),

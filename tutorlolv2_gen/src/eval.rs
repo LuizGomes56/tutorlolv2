@@ -1,45 +1,28 @@
 macro_rules! create_eval_ident {
-    (u8($($bytes:ident),* $(,)?), f32($($floats:ident),* $(,)?)) => {
+    ($($type:ident($($value:ident),*$(,)?)),+$(,)?) => {
         paste::paste! {
             #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
             #[repr(u8)]
             pub enum EvalIdent {
-                $(
-                    [<$bytes:camel>],
-                )*
-                $(
-                    [<$floats:camel>],
-                )*
+                $($([<$value:camel>],)*)*
             }
 
-            $(
+            $($(
                 #[allow(non_upper_case_globals)]
-                pub const [<$bytes:camel>]: EvalIdent = EvalIdent::[<$bytes:camel>];
-            )*
-            $(
-                #[allow(non_upper_case_globals)]
-                pub const [<$floats:camel>]: EvalIdent = EvalIdent::[<$floats:camel>];
-            )*
+                pub const [<$value:camel>]: EvalIdent = EvalIdent::[<$value:camel>];
+            )*)*
 
             #[derive(Default, Debug, Copy, Clone)]
             pub struct EvalContext {
-                $(
-                    pub $bytes: u8,
-                )*
-                $(
-                    pub $floats: f32,
-                )*
+                $($(pub $value: $type,)*)*
             }
 
             impl ::core::fmt::Display for EvalIdent {
                 fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
                     match self {
-                        $(
-                            Self::[<$bytes:camel>]  => write!(f, concat!("ctx.", stringify!($bytes))),
-                        )*
-                        $(
-                            Self::[<$floats:camel>] => write!(f, concat!("ctx.", stringify!($floats))),
-                        )*
+                        $($(
+                            Self::[<$value:camel>] => write!(f, concat!("ctx.", stringify!($value))),
+                        )*)*
                     }
                 }
             }

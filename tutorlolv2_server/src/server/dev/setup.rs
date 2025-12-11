@@ -61,7 +61,7 @@ pub async fn setup_docs() -> impl Responder {
         spawn_blocking(generate_item_html),
         spawn_blocking(generate_rune_html),
     ] {
-        let _ = future.await;
+        future.await.unwrap();
     }
     HttpResponse::Ok().body("Html docs setup finished")
 }

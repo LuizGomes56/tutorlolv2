@@ -2,7 +2,7 @@ use super::{helpers::*, model::*};
 use crate::{AbilityLevels, L_CENM, L_MSTR, RiotFormulas, riot::*};
 use smallvec::SmallVec;
 use tutorlolv2_gen::{
-    AdaptativeType, AttackType, BitSet, CHAMPION_CACHE, ChampionId, ITEM_CACHE, ItemId,
+    AdaptativeType, AttackType, BitSet, CHAMPION_CACHE, CachedItem, ChampionId, ITEM_CACHE, ItemId,
     NUMBER_OF_ITEMS, RuneId,
 };
 use tutorlolv2_types::StatName;
@@ -21,14 +21,18 @@ pub const NUMBER_OF_ITEMS_WITH_PEN: usize = {
     let mut i = 0;
     let mut j = 0;
     while i < NUMBER_OF_ITEMS {
-        let item = ITEM_CACHE[i];
-        if item.stats.armor_penetration_percent > 0.0 || item.stats.magic_penetration_percent > 0.0
-        {
+        let CachedItem {
+            stats,
+            prettified_stats,
+            ..
+        } = ITEM_CACHE[i];
+
+        if stats.armor_penetration_percent > 0.0 || stats.magic_penetration_percent > 0.0 {
             j += 1;
         } else {
             let mut k = 0;
-            while k < item.prettified_stats.len() {
-                match item.prettified_stats[k] {
+            while k < prettified_stats.len() {
+                match prettified_stats[k] {
                     StatName::ArmorPenetration(_) | StatName::MagicPenetration(_) => j += 1,
                     _ => {}
                 }
@@ -45,17 +49,22 @@ pub const ITEMS_WITH_PEN: [ItemId; NUMBER_OF_ITEMS_WITH_PEN] = {
     let mut j = 0;
     let mut items = [ItemId::AbyssalMask; NUMBER_OF_ITEMS_WITH_PEN];
     while i < NUMBER_OF_ITEMS {
-        let item = ITEM_CACHE[i];
-        if item.stats.armor_penetration_percent > 0.0 || item.stats.magic_penetration_percent > 0.0
-        {
-            items[j] = item.metadata.kind;
+        let CachedItem {
+            stats,
+            prettified_stats,
+            metadata,
+            ..
+        } = ITEM_CACHE[i];
+
+        if stats.armor_penetration_percent > 0.0 || stats.magic_penetration_percent > 0.0 {
+            items[j] = metadata.kind;
             j += 1;
         } else {
             let mut k = 0;
-            while k < item.prettified_stats.len() {
-                match item.prettified_stats[k] {
+            while k < prettified_stats.len() {
+                match prettified_stats[k] {
                     StatName::ArmorPenetration(_) | StatName::MagicPenetration(_) => {
-                        items[j] = item.metadata.kind;
+                        items[j] = metadata.kind;
                         j += 1
                     }
                     _ => {}

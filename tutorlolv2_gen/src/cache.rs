@@ -12,7 +12,6 @@ pub enum AttackType {
 impl<T: AsRef<str>> From<T> for AttackType {
     fn from(s: T) -> Self {
         match s.as_ref() {
-            "MELEE" => AttackType::Melee,
             "RANGED" => AttackType::Ranged,
             _ => AttackType::Melee,
         }
@@ -22,7 +21,6 @@ impl<T: AsRef<str>> From<T> for AttackType {
 impl<T: AsRef<str>> From<T> for AdaptativeType {
     fn from(s: T) -> Self {
         match s.as_ref() {
-            "PHYSICAL_DAMAGE" => AdaptativeType::Physical,
             "MAGIC_DAMAGE" => AdaptativeType::Magic,
             _ => AdaptativeType::Physical,
         }
