@@ -1,6 +1,6 @@
 use crate::{
     FileWrite, JsonRead, JsonWrite, MayFail,
-    champions::MerakiChampion,
+    champions::{Abilities, MerakiChampion},
     get_file_names,
     init::ENV_CONFIG,
     items::MerakiItem,
@@ -138,7 +138,9 @@ impl HttpClient {
             }));
         }
         for future in futures {
-            let _ = future.await;
+            if let Err(e) = future.await {
+                println!("[error] requesting item images: {e}");
+            }
         }
         Ok(())
     }
@@ -163,7 +165,9 @@ impl HttpClient {
                 }));
             }
             for future in futures {
-                let _ = future.await;
+                if let Err(e) = future.await {
+                    println!("[error] requesting {champion_id} images: {e}");
+                }
             }
         }
         Ok(())
@@ -524,40 +528,16 @@ impl HttpClient {
 
         let mut results = FinalData::new();
 
-        fn wait_ready(raw_path: impl AsRef<Path>) -> MayFail<Inner> {
-            let mut attempts = 0;
-            loop {
-                let resolved_path = resolve_path(&raw_path)?;
-                let path = resolved_path.as_ref();
-                match Inner::from_file(path) {
-                    Ok(m) => return Ok(m),
-                    Err(e) => {
-                        if !path.exists() {
-                            eprintln!("[error] file for {path:?} might not yet have been created");
-                        } else if attempts > 12 {
-                            eprintln!(
-                                "[error] failed to load {path:?} after 12 attempts. Throwing error: {e:?}."
-                            );
-                            return Err(e);
-                        } else {
-                            eprintln!("[error] retrying {path:?} (error: {e:?})");
-                            attempts += 1;
-                        }
-                        std::thread::sleep(std::time::Duration::from_secs(5));
-                    }
-                }
-            }
-        }
-
         for champion_id in champion_ids {
             let mut positions = HashMap::new();
             for position in ["top", "jungle", "mid", "adc", "support"] {
-                let data = wait_ready(format!(
+                let resolved_path = resolve_path(format!(
                     "internal/scraper/builds/{position}/{champion_id}.json"
                 ))?;
+                let data = Inner::from_file(resolved_path)?;
                 positions.insert(position, data);
             }
-            results.insert(champion_id.clone(), positions);
+            results.insert(champion_id, positions);
         }
 
         results.into_file("internal/scraper/data.json")
@@ -572,19 +552,19 @@ unsafe fn set_env_var(key: &str, value: &str) -> std::io::Result<()> {
     let mut found = false;
     for line in reader.lines() {
         let line = line?;
-        if line.starts_with(&format!("{}=", key)) {
-            lines.push(format!("{}={}", key, value));
+        if line.starts_with(&format!("{key}=")) {
+            lines.push(format!("{key}={value}"));
             found = true;
         } else {
             lines.push(line);
         }
     }
     if !found {
-        lines.push(format!("{}={}", key, value));
+        lines.push(format!("{key}={value}"));
     }
     let mut out = std::fs::File::create(path)?;
-    for l in lines {
-        writeln!(out, "{}", l)?;
+    for line in lines {
+        writeln!(out, "{line}")?;
     }
     Ok(())
 }
@@ -597,13 +577,8 @@ impl OrderJson<MerakiChampion> for HashMap<String, MerakiChampion> {
     fn into_iter_ord(self) -> impl Iterator<Item = (String, MerakiChampion)> {
         let mut vec_self = self.into_iter().collect::<Vec<_>>();
         for (_, champion) in vec_self.iter_mut() {
-            for ability_list in [
-                &mut champion.abilities.q,
-                &mut champion.abilities.w,
-                &mut champion.abilities.e,
-                &mut champion.abilities.r,
-                &mut champion.abilities.p,
-            ] {
+            let Abilities { p, q, w, e, r } = &mut champion.abilities;
+            for ability_list in [q, w, e, r, p] {
                 for ability in ability_list {
                     ability
                         .effects
@@ -612,8 +587,8 @@ impl OrderJson<MerakiChampion> for HashMap<String, MerakiChampion> {
                         effect.leveling.sort_by(|a, b| {
                             a.attribute
                                 .as_deref()
-                                .unwrap_or("")
-                                .cmp(b.attribute.as_deref().unwrap_or(""))
+                                .unwrap_or_default()
+                                .cmp(b.attribute.as_deref().unwrap_or_default())
                         });
                     }
                 }

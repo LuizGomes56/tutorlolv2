@@ -77,15 +77,15 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
         champion_stats.ability_power,
     );
 
+    const SHADOWFLAME: u32 = ItemId::Shadowflame.to_riot_id();
+    const RIFTMAKER: u32 = ItemId::Riftmaker.to_riot_id();
+    const SPEAR_OF_SHOJIN: u32 = ItemId::SpearOfShojin.to_riot_id();
+
     let current_player_items = current_player
         .items
         .iter()
         .filter_map(|riot_item| {
             let riot_id = riot_item.item_id;
-
-            const SHADOWFLAME: u32 = ItemId::Shadowflame.to_riot_id();
-            const RIFTMAKER: u32 = ItemId::Riftmaker.to_riot_id();
-            const SPEAR_OF_SHOJIN: u32 = ItemId::SpearOfShojin.to_riot_id();
 
             match riot_id {
                 RIFTMAKER => base_modifiers.global_mod *= 1.08,
@@ -102,7 +102,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
                 _ => {}
             };
 
-            let item_id = unsafe { ItemId::from_riot_id(riot_id).unwrap_unchecked() } as _;
+            let item_id = ItemId::from_riot_id(riot_id)? as _;
             DAMAGING_ITEMS.contains(item_id).then_some(item_id)
         })
         .collect::<BitSet>();
@@ -133,6 +133,11 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
         level: *level,
     };
 
+    const LAST_STAND: u32 = RuneId::LastStand.to_riot_id();
+    const COUP_DE_GRACE: u32 = RuneId::CoupDeGrace.to_riot_id();
+    const CUT_DOWN: u32 = RuneId::CutDown.to_riot_id();
+    const AXIOM_ARCANIST: u32 = RuneId::AxiomArcanist.to_riot_id();
+
     let current_player_runes = general_runes
         .as_ref()
         .and_then(|gr| {
@@ -141,28 +146,21 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
                     .filter_map(|riot_rune| {
                         let riot_id = riot_rune.id;
 
-                        const LAST_STAND: u32 = RuneId::LastStand.to_riot_id();
-                        const COUP_DE_GRACE: u32 = RuneId::CoupDeGrace.to_riot_id();
-                        const CUT_DOWN: u32 = RuneId::CutDown.to_riot_id();
-                        const AXIOM_ARCANIST: u32 = RuneId::AxiomArcanist.to_riot_id();
-
                         match riot_id {
+                            AXIOM_ARCANIST => ability_modifiers.r *= AXIOM_ARCANIST_BONUS_DAMAGE,
+                            COUP_DE_GRACE | CUT_DOWN => {
+                                base_modifiers.global_mod *= COUP_DE_GRACE_AND_CUTDOWN_BONUS_DAMAGE
+                            }
                             LAST_STAND => {
                                 base_modifiers.global_mod *= get_last_stand(
                                     1.0 - (self_state.current_stats.current_health
                                         / self_state.current_stats.health.max(1.0)),
                                 )
                             }
-                            COUP_DE_GRACE | CUT_DOWN => {
-                                base_modifiers.global_mod *= COUP_DE_GRACE_AND_CUTDOWN_BONUS_DAMAGE
-                            }
-                            AXIOM_ARCANIST => ability_modifiers.r *= AXIOM_ARCANIST_BONUS_DAMAGE,
                             _ => {}
                         };
 
-                        let rune_id =
-                            unsafe { RuneId::from_riot_id(riot_id).unwrap_unchecked() } as _;
-
+                        let rune_id = RuneId::from_riot_id(riot_id)? as _;
                         DAMAGING_RUNES.contains(rune_id).then_some(rune_id)
                     })
                     .collect::<BitSet>(),
@@ -224,8 +222,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
             let e_items = e_riot_items
                 .iter()
                 .filter_map(|riot_item| {
-                    let riot_id = riot_item.item_id;
-                    let item_id = unsafe { ItemId::from_riot_id(riot_id).unwrap_unchecked() } as _;
+                    let item_id = ItemId::from_riot_id(riot_item.item_id)? as _;
                     DAMAGING_ITEMS.contains(item_id).then_some(item_id)
                 })
                 .collect::<BitSet>();

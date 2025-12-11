@@ -88,7 +88,7 @@ impl ChampionFactory {
         }
 
         for i in 0..Self::NUMBER_OF_CHAMPIONS as u8 {
-            let champion_id = unsafe { std::mem::transmute::<_, ChampionId>(i) };
+            let champion_id = unsafe { ChampionId::from_u8_unchecked(i) };
             let data = Self::create(champion_id)?;
             let file_name = format!("{champion_id:?}").to_lowercase();
             std::fs::write(
@@ -101,21 +101,9 @@ impl ChampionFactory {
     }
 
     pub fn run_all() -> MayFail {
-        for i in 0..Self::NUMBER_OF_CHAMPIONS {
-            let champion_id = unsafe { std::mem::transmute::<_, ChampionId>(i as u8) };
-            let result = Self::run(champion_id);
-            match result {
-                Ok(champion) => {
-                    champion.into_file(format!("internal/champions/{champion_id:?}.json"))?;
-                }
-                Err(e) => {
-                    println!("Error generating {champion_id:?}: {e:?}. Performing offset check.");
-                    match Self::check_offsets(champion_id)? {
-                        true => println!("{champion_id:?} have an issue unrelated to offsets"),
-                        false => println!("{champion_id:?} likely has incorrect offsets"),
-                    }
-                }
-            };
+        for i in 0..Self::NUMBER_OF_CHAMPIONS as u8 {
+            let champion_id = unsafe { ChampionId::from_u8_unchecked(i) };
+            Self::run(champion_id)?;
         }
         Ok(())
     }
@@ -124,16 +112,21 @@ impl ChampionFactory {
         let data = MerakiChampion::from_file(format!("cache/meraki/champions/{entity_id}.json"))?;
         let function = Self::GENERATOR_FUNCTIONS[offset];
         let generator = function(data);
-        let champion = generator.generate()?;
-        champion.into_file(format!("internal/champions/{entity_id}.json"))
+        match generator.generate() {
+            Ok(champion) => champion.into_file(format!("internal/champions/{entity_id}.json")),
+            Err(e) => {
+                println!("Error generating {entity_id:?}: {e:?}. Performing offset check.");
+                match Self::check_offsets_raw(entity_id)? {
+                    true => println!("{entity_id:?} have an issue unrelated to offsets"),
+                    false => println!("{entity_id:?} likely has incorrect offsets"),
+                }
+                Ok(())
+            }
+        }
     }
 
-    pub fn run(champion_id: ChampionId) -> MayFail<Champion> {
-        let data =
-            MerakiChampion::from_file(format!("cache/meraki/champions/{champion_id:?}.json"))?;
-        let function = Self::GENERATOR_FUNCTIONS[champion_id as usize];
-        let generator = function(data);
-        Ok(generator.generate()?)
+    pub fn run(champion_id: ChampionId) -> MayFail {
+        Self::run_from_raw(&format!("{champion_id:?}"), champion_id as usize)
     }
 
     pub fn parse_offsets(src: &str) -> MayFail<HashMap<char, Vec<(usize, usize)>>> {
@@ -229,15 +222,26 @@ impl ChampionFactory {
                 }
             }
 
-            println!("  Ability '{k}':");
-            println!("      found(old):     {old_values:?}");
-            println!("      expected(new):  {new_values:?}");
-            if !missing.is_empty() {
-                println!("  missing in new: {missing:?}");
+            #[derive(Debug)]
+            #[allow(non_snake_case, unused)]
+            struct OffsetCheck {
+                Ability: char,
+                Found: Vec<(usize, usize)>,
+                Expected: Vec<(usize, usize)>,
+                Missing_In_New: Vec<(usize, usize)>,
+                Extra_In_New: Vec<(usize, usize)>,
             }
-            if !extra.is_empty() {
-                println!("      extra in new:     {extra:?}");
-            }
+
+            println!(
+                "{:#?}",
+                OffsetCheck {
+                    Ability: k,
+                    Found: old_values,
+                    Expected: new_values,
+                    Missing_In_New: missing,
+                    Extra_In_New: extra,
+                }
+            );
         }
     }
 
@@ -254,25 +258,23 @@ impl ChampionFactory {
     }
 
     pub fn check_all_offsets() {
-        for i in 0..Self::NUMBER_OF_CHAMPIONS {
-            let champion_id = unsafe { std::mem::transmute::<_, ChampionId>(i as u8) };
+        for i in 0..Self::NUMBER_OF_CHAMPIONS as u8 {
+            let champion_id = unsafe { ChampionId::from_u8_unchecked(i) };
             match Self::check_offsets(champion_id) {
-                Err(e) => {
-                    println!("Error checking {champion_id:?} offsets: {e:?}");
-                }
-                Ok(false) => {
-                    println!("{champion_id:?} has incorrect offsets");
-                }
-                Ok(true) => {
-                    println!("{champion_id:?} passed offsets check");
-                }
+                Err(e) => println!("Error checking {champion_id:?} offsets: {e:?}"),
+                Ok(false) => println!("{champion_id:?} has incorrect offsets"),
+                Ok(true) => println!("{champion_id:?} passed offsets check"),
             };
         }
     }
 
-    pub fn check_offsets(name: ChampionId) -> MayFail<bool> {
+    pub fn check_offsets(champion_id: ChampionId) -> MayFail<bool> {
+        Self::check_offsets_raw(&format!("{champion_id:?}"))
+    }
+
+    pub fn check_offsets_raw(name: &str) -> MayFail<bool> {
         let meraki_champion =
-            MerakiChampion::from_file(format!("cache/meraki/champions/{name:?}.json"))?;
+            MerakiChampion::from_file(format!("cache/meraki/champions/{name}.json"))?;
 
         let mut new_offsets = HashMap::<char, Vec<(usize, usize)>>::new();
 
@@ -287,7 +289,7 @@ impl ChampionFactory {
             );
         }
 
-        let old_content = std::fs::read_to_string(format!("{GENERATOR_FOLDER}/{name:?}.rs"))?;
+        let old_content = std::fs::read_to_string(format!("{GENERATOR_FOLDER}/{name}.rs"))?;
 
         if !Self::compare_offsets(&old_content, &new_offsets)? {
             return Ok(false);

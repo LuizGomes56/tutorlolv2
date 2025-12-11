@@ -199,21 +199,11 @@ impl ValueException {
     }
 
     pub const fn get_rune_id(&self) -> Option<RuneId> {
-        let disc = self.enum_id();
-        if disc < NUMBER_OF_RUNES as u16 {
-            unsafe { Some(std::mem::transmute::<u8, RuneId>(disc as u8)) }
-        } else {
-            None
-        }
+        RuneId::from_u8(self.enum_id() as u8)
     }
 
     pub const fn get_item_id(&self) -> Option<ItemId> {
-        let disc = self.enum_id();
-        if disc < NUMBER_OF_ITEMS as u16 {
-            unsafe { Some(std::mem::transmute::<u16, ItemId>(disc)) }
-        } else {
-            None
-        }
+        ItemId::from_u16(self.enum_id())
     }
 
     const fn truncate_value(v: u32) -> u32 {
@@ -389,6 +379,8 @@ macro_rules! impl_default {
 }
 
 impl_default!(Stats<f32>, 0.0f32, f32);
+impl_default!(SimpleStats<f32>, 0.0f32, f32);
+impl_default!(BasicStats<f32>, 0.0f32, f32);
 impl_default!(DamageModifiers, 1.0f32, f32);
 impl_default!(AbilityModifiers, 1.0f32, f32);
 impl_default!(Modifiers, 1.0f32, f32);

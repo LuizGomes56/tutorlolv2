@@ -144,14 +144,6 @@ pub const fn get_base_stats(champion_id: ChampionId, level: u8) -> BasicStats<f3
 }
 
 impl SimpleStats<f32> {
-    pub const fn default() -> Self {
-        Self {
-            health: 0.0,
-            armor: 0.0,
-            magic_resist: 0.0,
-        }
-    }
-
     pub const fn base_stats(champion_id: ChampionId, level: u8, is_mega_gnar: bool) -> Self {
         let stats = match is_mega_gnar {
             true => MEGA_GNAR_BASE_STATS[const_clamp(level, 1..=URF_MAX_LEVEL as u8)],
@@ -166,16 +158,6 @@ impl SimpleStats<f32> {
 }
 
 impl BasicStats<f32> {
-    pub const fn default() -> Self {
-        Self {
-            health: 0.0,
-            armor: 0.0,
-            magic_resist: 0.0,
-            attack_damage: 0.0,
-            mana: 0.0,
-        }
-    }
-
     pub const fn base_stats(champion_id: ChampionId, level: u8, is_mega_gnar: bool) -> Self {
         match is_mega_gnar {
             true => MEGA_GNAR_BASE_STATS[const_clamp(level, 1..=URF_MAX_LEVEL as u8)],
@@ -610,9 +592,14 @@ pub fn eval_damage<const N: usize, T: AbilityExt + 'static>(
     result
 }
 
-pub const fn eval_attacks(ctx: &EvalContext, mut onhit_damage: RangeDamage) -> Attacks {
-    let basic_attack = ctx.ad as i32;
-    let critical_strike = (ctx.ad * ctx.crit_damage / 100.0) as i32;
+pub const fn eval_attacks(
+    ctx: &EvalContext,
+    mut onhit_damage: RangeDamage,
+    physical_mod: f32,
+) -> Attacks {
+    let basic_attack = ctx.ad * physical_mod;
+    let critical_strike = (basic_attack * ctx.crit_damage / 100.0) as i32;
+    let basic_attack = basic_attack as i32;
 
     onhit_damage.minimum_damage += basic_attack;
     onhit_damage.maximum_damage += critical_strike;
@@ -648,7 +635,7 @@ pub fn get_damages(eval_ctx: &EvalContext, data: &DamageEvalData, modifiers: Mod
         &data.runes.closures,
         modifiers,
     );
-    let attacks = eval_attacks(&eval_ctx, onhit);
+    let attacks = eval_attacks(&eval_ctx, onhit, modifiers.damages.physical_mod);
 
     Damages {
         abilities,

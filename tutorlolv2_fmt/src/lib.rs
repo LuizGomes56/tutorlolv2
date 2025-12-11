@@ -102,26 +102,24 @@ pub fn rust_html(rust_code: &str) -> String {
     h.keyword("lifetime", r"'\w+");
     h.keyword(
         "keyword",
-        r"\b(void|pub|use|crate|mut|static|ref|dyn|unsafe|extern|type|super|mod|struct|const|enum|fn|let|impl|trait|where|loop|Self|self)\b",
+        r"\b(void|pub|use|crate|mut|static|ref|dyn|unsafe|extern|type|super|mod|struct|const|enum|fn|let|impl|trait|where|Self|self)\b",
     );
     h.keyword(
         "control",
-        r"\b(break|continue|intrinsic|match|return|yield|for|while|match|if|else|as|in)\b",
+        r"\b(break|continue|intrinsic|loop|match|return|yield|for|while|match|if|else|as|in)\b",
     );
 
     h.keyword("constant", r"\b[A-Z]+\b");
-    h.keyword("constant", r"\b(AbilityHaste|AbilityPower|Armor|ArmorPenetration|MagicPenetration|AttackDamage|AttackSpeed|GoldPer10Seconds|AdaptiveForce|CriticalStrikeChance|CriticalStrikeDamage|Health|LifeSteal|MagicResist|Mana|MoveSpeed|Omnivamp|BaseHealthRegen|BaseManaRegen|Tenacity|Lethality|HealAndShieldPower|_1|_2|_3|_4|_5|_6|_7|_8|Mega|Max|Min|Minion|Minion1|Minion2|Minion3|MinionMax|Monster|Monster1|Monster2|Monster3|Monster4|MonsterMax|Void|_1Max|_2Max|_3Max|_4Max|_5Max|_6Max|_7Max|_8Max|_1Min|_2Min|_3Min|_4Min|_5Min|_6Min|_7Min|_8Min|Some|None|Top|Jungle|Middle|Bottom|Support|Melee|Ranged|BASIC_ATTACK|CRITICAL_STRIKE|Physical|Magic|Mixed|True|Adaptative|Unknown|Onhit|OnhitMin|OnhitMax)\b");
     h.keyword("type", r"\b[A-Z][a-zA-Z0-9_]*\b");
     h.keyword(
         "primitive",
-        r"\b(bool|usize|u8|u16|u32|u64|isize|i8|i16|i32|i64|f32|f64|char|str|tutorlolv2_macros)\b",
+        r"\b(bool|usize|u8|u16|u32|u64|isize|i8|i16|i32|i64|f32|f64|char|str)\b",
     );
-    h.keyword("float", r"\b\d+\.?\d*f32\b");
     h.keyword("number", r"\b\d+\.?\d*\b");
     h.keyword("boolean", r"\b(true|false)\b");
     h.keyword("macro", r"[a-zA-Z_][a-zA-Z0-9_]*!");
     h.keyword("function", r"\b[a-z][a-zA-Z0-9_]*\(");
-    h.keyword("function", r"\b(zero|generator)\b");
+    h.keyword("function", r"\b(zero)\b");
     h.keyword("variable", r"\b[a-z][a-zA-Z0-9_]*\b");
 
     let code = rust_code

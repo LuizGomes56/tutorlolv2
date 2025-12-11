@@ -39,7 +39,9 @@ pub const fn bitset_items<const N: usize, const R: usize>(values: [ItemId; N]) -
     array
 }
 
-pub const fn bitset_champions<const N: usize>(values: [ChampionId; N]) -> BitSet {
+pub const fn bitset_champions<const N: usize, const R: usize>(
+    values: [ChampionId; N],
+) -> BitSet<R> {
     let mut array = BitSet::EMPTY;
     let mut i = 0;
     while i < N {

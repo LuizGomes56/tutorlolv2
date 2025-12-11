@@ -87,8 +87,8 @@ impl ItemFactory {
         tutorlolv2_macros::expand_dir!("../internal/items", |[Name]| Name::new);
 
     pub fn run_all() -> MayFail {
-        for i in 0..Self::NUMBER_OF_ITEMS {
-            let item_id = unsafe { std::mem::transmute::<_, ItemId>(i as u16) };
+        for i in 0..Self::NUMBER_OF_ITEMS as u16 {
+            let item_id = unsafe { ItemId::from_u16_unchecked(i) };
             Self::run(item_id)?
                 .current_data
                 .into_file(format!("internal/items/{item_id:?}.json"))?;

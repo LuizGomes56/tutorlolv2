@@ -286,7 +286,7 @@ fn pretiffy_items(data: &RiotCdnItem) -> MayFail<Vec<StatName>> {
         .into_iter()
         .map(|(key, value)| {
             let name = tutorlolv2_fmt::pascal_case(&key);
-            format!(r#"{{ "name": "{name}", "value": {value} }}"#)
+            format!(r#"{{ "name": {name:?}, "value": {value} }}"#)
         })
         .collect::<Vec<_>>()
         .join(",");
