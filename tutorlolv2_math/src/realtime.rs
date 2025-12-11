@@ -85,7 +85,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
 
             const SHADOWFLAME: u32 = ItemId::Shadowflame.to_riot_id();
             const RIFTMAKER: u32 = ItemId::Riftmaker.to_riot_id();
-            const SPEAR_OF_SHOJIN: u32 = ItemId::SpearofShojin.to_riot_id();
+            const SPEAR_OF_SHOJIN: u32 = ItemId::SpearOfShojin.to_riot_id();
 
             match riot_id {
                 RIFTMAKER => base_modifiers.global_mod *= 1.08,
@@ -142,7 +142,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
                         let riot_id = riot_rune.id;
 
                         const LAST_STAND: u32 = RuneId::LastStand.to_riot_id();
-                        const COUP_DE_GRACE: u32 = RuneId::CoupdeGrace.to_riot_id();
+                        const COUP_DE_GRACE: u32 = RuneId::CoupDeGrace.to_riot_id();
                         const CUT_DOWN: u32 = RuneId::CutDown.to_riot_id();
                         const AXIOM_ARCANIST: u32 = RuneId::AxiomArcanist.to_riot_id();
 

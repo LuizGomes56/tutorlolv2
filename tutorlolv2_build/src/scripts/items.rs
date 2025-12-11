@@ -140,7 +140,7 @@ pub async fn generate_items() -> GeneratorFn {
         128,
         "internal/items",
         async |file_name, item: Item| {
-            println!("Building: ItemId({file_name:?})");
+            println!("[build] ItemId({file_name:?})");
 
             let Item {
                 riot_id,

@@ -213,7 +213,7 @@ pub async fn generate_champions() -> GeneratorFn {
         128,
         "internal/champions",
         async |champion_id, champion: Champion| {
-            println!("Building: ChampionId({champion_id:?})");
+            println!("[build] ChampionId({champion_id:?})");
 
             let champion_id_upper = champion_id.to_uppercase();
 

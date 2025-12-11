@@ -319,12 +319,12 @@ pub const fn assign_item_exceptions(data: ItemExceptionData, exceptions: &[Value
                     change_stat!(armor *= modifier);
                     change_stat!(magic_resist *= modifier)
                 }
-                ItemId::RiteofRuin => current_player_stats.crit_chance += stacks as f32 * 2.5,
-                ItemId::ElixirofIron => change_stat!(health += 300.0),
-                ItemId::JuiceofVitality => {
+                ItemId::RiteOfRuin => current_player_stats.crit_chance += stacks as f32 * 2.5,
+                ItemId::ElixirOfIron => change_stat!(health += 300.0),
+                ItemId::JuiceOfVitality => {
                     change_stat!(health += 300.0 + 0.1 * current_player_stats.health)
                 }
-                ItemId::JuiceofPower => {
+                ItemId::JuiceOfPower => {
                     change_stat!(attack_damage += 18.0 + 0.1 * current_player_stats.attack_damage);
                     current_player_stats.ability_power +=
                         30.0 + 0.1 * current_player_stats.ability_power;
@@ -491,7 +491,7 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
 
     for rune_id in current_player_raw_runes {
         match rune_id {
-            RuneId::CoupdeGrace | RuneId::CutDown => {
+            RuneId::CoupDeGrace | RuneId::CutDown => {
                 base_modifiers.global_mod *= COUP_DE_GRACE_AND_CUTDOWN_BONUS_DAMAGE
             }
             RuneId::LastStand => {
@@ -512,7 +512,7 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
                 base_modifiers.true_mod *= 1.2;
             }
             ItemId::Riftmaker => base_modifiers.global_mod *= 1.08,
-            ItemId::SpearofShojin => {
+            ItemId::SpearOfShojin => {
                 ability_modifiers.q *= 1.12;
                 ability_modifiers.w *= 1.12;
                 ability_modifiers.e *= 1.12;

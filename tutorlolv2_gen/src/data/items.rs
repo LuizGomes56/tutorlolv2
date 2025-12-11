@@ -1,12 +1,12 @@
 use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AEGIS_OF_THE_LEGION_3105,&AETHER_WISP_3113,&AMPLIFYING_TOME_1052,&ANATHEMAS_CHAINS_228001,&ANTI_TOWER_SOCKS_1508,&ARCANE_SWEEPER_TRINKET_3348,&ARCHANGELS_STAFF_3003,&ARDENT_CENSER_3504,&ARMORED_ADVANCE_3174,&ATMAS_RECKONING_223039,&AXIOM_ARC_6696,&B_F_SWORD_1038,&BAMIS_CINDER_6660,&BANDLEGLASS_MIRROR_4642,&BANSHEES_VEIL_3102,&BASE_TURRET_REINFORCED_ARMOR_TURRET_ITEM_1506,&BERSERKERS_GREAVES_3006,&BLACK_CLEAVER_3071,&BLACK_HOLE_GAUNTLET_447122,&BLACK_SPEAR_3599,&BLACKFIRE_TORCH_2503,&BLADE_OF_THE_RUINED_KING_3153,&BLASTING_WAND_1026,&BLIGHTING_JEWEL_4630,&BLOODLETTERS_CURSE_8010,&BLOODSONG_3877,&BLOODTHIRSTER_3072,&BOOTS_1001,&BOOTS_OF_SWIFTNESS_3009,&BOUNTY_OF_WORLDS_3867,&BRAMBLE_VEST_3076,&CAPPA_JUICE_2141,&CATALYST_OF_AEONS_3803,&CAULFIELDS_WARHAMMER_3133,&CELESTIAL_OPPOSITION_3869,&CHAIN_VEST_1031,&CHAINLACED_CRUSHERS_3173,&CHEMPUNK_CHAINSWORD_6609,&CLOAK_OF_AGILITY_1018,&CLOAK_OF_STARRY_NIGHT_443059,&CLOTH_ARMOR_1029,&CONTROL_WARD_2055,&COSMIC_DRIVE_4629,&CRIMSON_LUCIDITY_3171,&CROWN_OF_THE_SHATTERED_QUEEN_444644,&CRUELTY_447109,&CRYPTBLOOM_3137,&CRYSTALLINE_BRACER_3801,&CULL_1083,&DAGGER_1042,&DARK_SEAL_1082,&DARKSTEEL_TALONS_443054,&DAWNCORE_6621,&DEAD_MANS_PLATE_3742,&DEATHS_DANCE_6333,&DEATHS_DAUGHTER_3902,&DECAPITATOR_447107,&DEMON_KINGS_CROWN_443056,&DEMONIC_EMBRACE_444637,&DETONATION_ORB_447113,&DIAMOND_TIPPED_SPEAR_447120,&DIVINE_SUNDERER_446632,&DORANS_BLADE_1055,&DORANS_RING_1056,&DORANS_SHIELD_1054,&DRAGONHEART_447106,&DREAM_MAKER_3870,&DUSKBLADE_OF_DRAKTHARR_446691,&ECHOES_OF_HELIA_6620,&ECLIPSE_6692,&EDGE_OF_NIGHT_3814,&ELEISAS_MIRACLE_443063,&ELIXIR_OF_AVARICE_2151,&ELIXIR_OF_FORCE_2152,&ELIXIR_OF_IRON_2138,&ELIXIR_OF_SKILL_2150,&ELIXIR_OF_SORCERY_2139,&ELIXIR_OF_WRATH_2140,&EMPYREAN_PROMISE_447105,&ENHANCED_LUCKY_DICE_2146,&ESSENCE_REAVER_3508,&EVERFROST_446656,&EXECUTIONERS_CALLING_3123,&EXPERIMENTAL_HEXPLATE_3073,&EYE_OF_THE_HERALD_3513,&FAERIE_CHARM_1004,&FARSIGHT_ALTERATION_3363,&FATED_ASHES_2508,&FIENDISH_CODEX_3108,&FIMBULWINTER_3121,&FIRE_AT_WILL_3901,&FLESHEATER_447112,&FORBIDDEN_IDOL_3114,&FORCE_OF_ENTROPY_443061,&FORCE_OF_NATURE_4401,&FOREVER_FORWARD_3176,&FROZEN_HEART_3110,&FULMINATION_443055,&GALEFORCE_446671,&GAMBLERS_BLADE_447101,&GARGOYLE_STONEPLATE_443193,&GHOSTCRAWLERS_223005,&GIANTS_BELT_1011,&GLACIAL_BUCKLER_3024,&GLOWING_MOTE_2022,&GOREDRINKER_226630,&GUARDIAN_ANGEL_3026,&GUARDIANS_AMULET_2049,&GUARDIANS_BLADE_3177,&GUARDIANS_DIRK_223185,&GUARDIANS_HAMMER_3184,&GUARDIANS_HORN_2051,&GUARDIANS_ORB_3112,&GUARDIANS_SHROUD_2050,&GUINSOOS_RAGEBLADE_3124,&GUSTO_1509,&GUSTWALKER_HATCHLING_1102,&HAMSTRINGER_443069,&HAUNTING_GUISE_3147,&HEALTH_POTION_2003,&HEARTHBOUND_AXE_3051,&HEARTSTEEL_3084,&HELLFIRE_HATCHET_4017,&HEMOMANCERS_HELM_447103,&HEXBOLT_COMPANION_443081,&HEXDRINKER_3155,&HEXTECH_ALTERNATOR_3145,&HEXTECH_GUNBLADE_223146,&HEXTECH_ROCKETBELT_3152,&HOLLOW_RADIANCE_6664,&HORIZON_FOCUS_4628,&HUBRIS_6697,&HULLBREAKER_3181,&ICEBORN_GAUNTLET_6662,&IMMORTAL_SHIELDBOW_6673,&IMPERIAL_MANDATE_4005,&INFINITY_EDGE_3031,&INNERVATING_LOCKET_447104,&IONIAN_BOOTS_OF_LUCIDITY_3158,&JAK_SHO_THE_PROTEAN_6665,&JUICE_OF_HASTE_2144,&JUICE_OF_POWER_2142,&JUICE_OF_VITALITY_2143,&KAENIC_ROOKERN_2504,&KINDLEGEM_3067,&KINKOU_JITTE_447116,&KNIGHTS_VOW_3109,&KRAKEN_SLAYER_6672,&LANE_SWAP_DETECTOR_1501,&LAST_WHISPER_3035,&LEGENDARY_ASSASSIN_ITEM_220003,&LEGENDARY_FIGHTER_ITEM_220001,&LEGENDARY_MAGE_ITEM_220004,&LEGENDARY_MARKSMAN_ITEM_220002,&LEGENDARY_SUPPORT_ITEM_220006,&LEGENDARY_TANK_ITEM_220005,&LIANDRYS_TORMENT_6653,&LICH_BANE_3100,&LIFELINE_4003,&LIGHTNING_ROD_447119,&LOCKET_OF_THE_IRON_SOLARI_3190,&LONG_SWORD_1036,&LORD_DOMINIKS_REGARDS_3036,&LOST_CHAPTER_3802,&LUCKY_DICE_2145,&LUDENS_COMPANION_6655,&MALIGNANCE_3118,&MANAMUNE_3004,&MAW_OF_MALMORTIUS_3156,&MEJAIS_SOULSTEALER_3041,&MERCURIAL_SCIMITAR_3139,&MERCURYS_TREADS_3111,&MIKAELS_BLESSING_3222,&MIRAGE_BLADE_447100,&MOONFLAIR_SPELLBLADE_447110,&MOONSTONE_RENEWER_6617,&MORELLONOMICON_3165,&MORTAL_REMINDER_3033,&MOSSTOMPER_SEEDLING_1103,&MURAMANA_3042,&NASHORS_TOOTH_3115,&NAVORI_FLICKERBLADE_6675,&NEEDLESSLY_LARGE_ROD_1058,&NEGATRON_CLOAK_1057,&NIGHT_HARVESTER_444636,&NOONQUIVER_6670,&NULL_MAGIC_MANTLE_1033,&OBLIVION_ORB_3916,&OHMWRECKER_TURRET_ITEM_1500,&OPPORTUNITY_6701,&ORACLE_LENS_3364,&OVERCHARGED_1507,&OVERLORDS_BLOODMAIL_2501,&PERPLEXITY_4015,&PHAGE_3044,&PHANTOM_DANCER_3046,&PHREAKISH_GUSTO_1510,&PICKAXE_1037,&PLATED_STEELCAPS_3047,&PORO_SNAX_2052,&PRISMATIC_ITEM_220007,&PROFANE_HYDRA_6698,&PROWLERS_CLAW_446693,&PUPPETEER_447123,&PYROMANCERS_CLOAK_447118,&QUICKSILVER_SASH_3140,&RABADONS_DEATHCAP_3089,&RADIANT_VIRTUE_446667,&RAISE_MORALE_3903,&RANDUINS_OMEN_3143,&RAPID_FIRECANNON_3094,&RAVENOUS_HYDRA_3074,&REALITY_FRACTURE_447102,&REAPERS_TOLL_443090,&RECTRIX_6690,&RECURVE_BOW_1043,&REDEMPTION_3107,&REFILLABLE_POTION_2031,&REGICIDE_447115,&REINFORCED_ARMOR_TURRET_ITEM_1502,&REJUVENATION_BEAD_1006,&REVERBERATION_447114,&RIFTMAKER_4633,&RITE_OF_RUIN_3430,&ROD_OF_AGES_6657,&RUBY_CRYSTAL_1028,&RUNAANS_HURRICANE_3085,&RUNECARVER_447108,&RUNIC_COMPASS_3866,&RYLAIS_CRYSTAL_SCEPTER_3116,&SANGUINE_GIFT_443062,&SAPPHIRE_CRYSTAL_1027,&SCARECROW_EFFIGY_3330,&SCORCHCLAW_PUP_1101,&SCOUTS_SLINGSHOT_3144,&SEEKERS_ARMGUARD_2420,&SERAPHS_EMBRACE_3040,&SERPENTS_FANG_6695,&SERRATED_DIRK_3134,&SERYLDAS_GRUDGE_6694,&SHADOWFLAME_4645,&SHATTERED_ARMGUARD_2421,&SHEEN_3057,&SHIELD_OF_MOLTEN_STONE_443058,&SHURELYAS_BATTLESONG_2065,&SLIGHTLY_MAGICAL_BOOTS_2422,&SOLSTICE_SLEIGH_3876,&SORCERERS_SHOES_3020,&SPEAR_OF_SHOJIN_3161,&SPECTRAL_CUTLASS_224004,&SPECTRES_COWL_3211,&SPELLSLINGERS_SHOES_3175,&SPIRIT_VISAGE_3065,&STAFF_OF_FLOWING_WATER_6616,&STAT_BONUS_220000,&STATIKK_SHIV_3087,&STEALTH_WARD_3340,&STEEL_SIGIL_2019,&STERAKS_GAGE_3053,&STORMRAZOR_223095,&STORMSURGE_4646,&STRIDEBREAKER_6631,&SUNDERED_SKY_6610,&SUNFIRE_AEGIS_3068,&SUPER_MECH_ARMOR_1511,&SUPER_MECH_POWER_FIELD_1512,&SWIFTMARCH_3170,&SWORD_OF_BLOSSOMING_DAWN_4011,&SWORD_OF_THE_DIVINE_443060,&SYMBIOTIC_SOLES_3010,&SYNCHRONIZED_SOULS_3013,&TALISMAN_OF_ASCENSION_443064,&TEAR_OF_THE_GODDESS_3070,&TERMINUS_3302,&THE_BRUTALIZER_2020,&THE_COLLECTOR_6676,&THE_GOLDEN_SPATULA_224403,&THORNMAIL_3075,&TIAMAT_3077,&TITANIC_HYDRA_3748,&TOTAL_BISCUIT_OF_EVERLASTING_WILL_2010,&TRAILBLAZER_3002,&TRINITY_FORCE_3078,&TUNNELER_2021,&TURBO_CHEMTANK_443079,&TURRET_PLATING_1515,&TWILIGHTS_EDGE_447121,&TWIN_MASK_443080,&UMBRAL_GLAIVE_3179,&UNENDING_DESPAIR_2502,&VAMPIRIC_SCEPTER_1053,&VERDANT_BARRIER_4632,&VIGILANT_WARDSTONE_4643,&VOID_STAFF_3135,&VOLTAIC_CYCLOSWORD_6699,&WARDENS_EYE_1503,&WARDENS_MAIL_3082,&WARMOGS_ARMOR_3083,&WATCHFUL_WARDSTONE_4638,&WINGED_MOONPLATE_3066,&WINTERS_APPROACH_3119,&WITS_END_3091,&WOOGLETS_WITCHCAP_228002,&WORDLESS_PROMISE_4016,&WORLD_ATLAS_3865,&YOUMUUS_GHOSTBLADE_3142,&YOUR_CUT_3400,&YUN_TAL_WILDARROWS_3032,&ZAZ_ZAKS_REALMSPIKE_3871,&ZEAL_3086,&ZEKES_CONVERGENCE_3050,&ZEPHYR_3172,&ZHONYAS_HOURGLASS_3157,];#[derive(Serialize, Deserialize, Debug, Copy, Clone, Ord, Eq, PartialOrd, PartialEq, Decode, Encode)]
         #[repr(u16)]
-        pub enum ItemId { AbyssalMask,AegisOfTheLegion,AetherWisp,AmplifyingTome,AnathemaSChains,AntiTowerSocks,ArcaneSweeperTrinket,ArchangelSStaff,ArdentCenser,ArmoredAdvance,AtmaSReckoning,AxiomArc,BFSword,BamiSCinder,BandleglassMirror,BansheeSVeil,BaseTurretReinforcedArmorTurretItem,BerserkerSGreaves,BlackCleaver,BlackHoleGauntlet,BlackSpear,BlackfireTorch,BladeOfTheRuinedKing,BlastingWand,BlightingJewel,BloodletterSCurse,Bloodsong,Bloodthirster,Boots,BootsOfSwiftness,BountyOfWorlds,BrambleVest,CappaJuice,CatalystOfAeons,CaulfieldSWarhammer,CelestialOpposition,ChainVest,ChainlacedCrushers,ChempunkChainsword,CloakOfAgility,CloakOfStarryNight,ClothArmor,ControlWard,CosmicDrive,CrimsonLucidity,CrownOfTheShatteredQueen,Cruelty,Cryptbloom,CrystallineBracer,Cull,Dagger,DarkSeal,DarksteelTalons,Dawncore,DeadManSPlate,DeathSDance,DeathSDaughter,Decapitator,DemonKingSCrown,DemonicEmbrace,DetonationOrb,DiamondTippedSpear,DivineSunderer,DoranSBlade,DoranSRing,DoranSShield,Dragonheart,DreamMaker,DuskbladeOfDraktharr,EchoesOfHelia,Eclipse,EdgeOfNight,EleisaSMiracle,ElixirOfAvarice,ElixirOfForce,ElixirOfIron,ElixirOfSkill,ElixirOfSorcery,ElixirOfWrath,EmpyreanPromise,EnhancedLuckyDice,EssenceReaver,Everfrost,ExecutionerSCalling,ExperimentalHexplate,EyeOfTheHerald,FaerieCharm,FarsightAlteration,FatedAshes,FiendishCodex,Fimbulwinter,FireAtWill,Flesheater,ForbiddenIdol,ForceOfEntropy,ForceOfNature,ForeverForward,FrozenHeart,Fulmination,Galeforce,GamblerSBlade,GargoyleStoneplate,Ghostcrawlers,GiantSBelt,GlacialBuckler,GlowingMote,Goredrinker,GuardianAngel,GuardianSAmulet,GuardianSBlade,GuardianSDirk,GuardianSHammer,GuardianSHorn,GuardianSOrb,GuardianSShroud,GuinsooSRageblade,Gusto,GustwalkerHatchling,Hamstringer,HauntingGuise,HealthPotion,HearthboundAxe,Heartsteel,HellfireHatchet,HemomancerSHelm,HexboltCompanion,Hexdrinker,HextechAlternator,HextechGunblade,HextechRocketbelt,HollowRadiance,HorizonFocus,Hubris,Hullbreaker,IcebornGauntlet,ImmortalShieldbow,ImperialMandate,InfinityEdge,InnervatingLocket,IonianBootsOfLucidity,JakShoTheProtean,JuiceOfHaste,JuiceOfPower,JuiceOfVitality,KaenicRookern,Kindlegem,KinkouJitte,KnightSVow,KrakenSlayer,LaneSwapDetector,LastWhisper,LegendaryAssassinItem,LegendaryFighterItem,LegendaryMageItem,LegendaryMarksmanItem,LegendarySupportItem,LegendaryTankItem,LiandrySTorment,LichBane,Lifeline,LightningRod,LocketOfTheIronSolari,LongSword,LordDominikSRegards,LostChapter,LuckyDice,LudenSCompanion,Malignance,Manamune,MawOfMalmortius,MejaiSSoulstealer,MercurialScimitar,MercurySTreads,MikaelSBlessing,MirageBlade,MoonflairSpellblade,MoonstoneRenewer,Morellonomicon,MortalReminder,MosstomperSeedling,Muramana,NashorSTooth,NavoriFlickerblade,NeedlesslyLargeRod,NegatronCloak,NightHarvester,Noonquiver,NullMagicMantle,OblivionOrb,OhmwreckerTurretItem,Opportunity,OracleLens,Overcharged,OverlordSBloodmail,Perplexity,Phage,PhantomDancer,PhreakishGusto,Pickaxe,PlatedSteelcaps,PoroSnax,PrismaticItem,ProfaneHydra,ProwlerSClaw,Puppeteer,PyromancerSCloak,QuicksilverSash,RabadonSDeathcap,RadiantVirtue,RaiseMorale,RanduinSOmen,RapidFirecannon,RavenousHydra,RealityFracture,ReaperSToll,Rectrix,RecurveBow,Redemption,RefillablePotion,Regicide,ReinforcedArmorTurretItem,RejuvenationBead,Reverberation,Riftmaker,RiteOfRuin,RodOfAges,RubyCrystal,RunaanSHurricane,Runecarver,RunicCompass,RylaiSCrystalScepter,SanguineGift,SapphireCrystal,ScarecrowEffigy,ScorchclawPup,ScoutSSlingshot,SeekerSArmguard,SeraphSEmbrace,SerpentSFang,SerratedDirk,SeryldaSGrudge,Shadowflame,ShatteredArmguard,Sheen,ShieldOfMoltenStone,ShurelyaSBattlesong,SlightlyMagicalBoots,SolsticeSleigh,SorcererSShoes,SpearOfShojin,SpectralCutlass,SpectreSCowl,SpellslingerSShoes,SpiritVisage,StaffOfFlowingWater,StatBonus,StatikkShiv,StealthWard,SteelSigil,SterakSGage,Stormrazor,Stormsurge,Stridebreaker,SunderedSky,SunfireAegis,SuperMechArmor,SuperMechPowerField,Swiftmarch,SwordOfBlossomingDawn,SwordOfTheDivine,SymbioticSoles,SynchronizedSouls,TalismanOfAscension,TearOfTheGoddess,Terminus,TheBrutalizer,TheCollector,TheGoldenSpatula,Thornmail,Tiamat,TitanicHydra,TotalBiscuitOfEverlastingWill,Trailblazer,TrinityForce,Tunneler,TurboChemtank,TurretPlating,TwilightSEdge,TwinMask,UmbralGlaive,UnendingDespair,VampiricScepter,VerdantBarrier,VigilantWardstone,VoidStaff,VoltaicCyclosword,WardenSEye,WardenSMail,WarmogSArmor,WatchfulWardstone,WingedMoonplate,WinterSApproach,WitSEnd,WoogletSWitchcap,WordlessPromise,WorldAtlas,YoumuuSGhostblade,YourCut,YunTalWildarrows,ZazZakSRealmspike,Zeal,ZekeSConvergence,Zephyr,ZhonyaSHourglass }
+        pub enum ItemId { AbyssalMask,AegisOfTheLegion,AetherWisp,AmplifyingTome,AnathemasChains,AntiTowerSocks,ArcaneSweeperTrinket,ArchangelsStaff,ArdentCenser,ArmoredAdvance,AtmasReckoning,AxiomArc,BFSword,BamisCinder,BandleglassMirror,BansheesVeil,BaseTurretReinforcedArmorTurretItem,BerserkersGreaves,BlackCleaver,BlackHoleGauntlet,BlackSpear,BlackfireTorch,BladeOfTheRuinedKing,BlastingWand,BlightingJewel,BloodlettersCurse,Bloodsong,Bloodthirster,Boots,BootsOfSwiftness,BountyOfWorlds,BrambleVest,CappaJuice,CatalystOfAeons,CaulfieldsWarhammer,CelestialOpposition,ChainVest,ChainlacedCrushers,ChempunkChainsword,CloakOfAgility,CloakOfStarryNight,ClothArmor,ControlWard,CosmicDrive,CrimsonLucidity,CrownOfTheShatteredQueen,Cruelty,Cryptbloom,CrystallineBracer,Cull,Dagger,DarkSeal,DarksteelTalons,Dawncore,DeadMansPlate,DeathsDance,DeathsDaughter,Decapitator,DemonKingsCrown,DemonicEmbrace,DetonationOrb,DiamondTippedSpear,DivineSunderer,DoransBlade,DoransRing,DoransShield,Dragonheart,DreamMaker,DuskbladeOfDraktharr,EchoesOfHelia,Eclipse,EdgeOfNight,EleisasMiracle,ElixirOfAvarice,ElixirOfForce,ElixirOfIron,ElixirOfSkill,ElixirOfSorcery,ElixirOfWrath,EmpyreanPromise,EnhancedLuckyDice,EssenceReaver,Everfrost,ExecutionersCalling,ExperimentalHexplate,EyeOfTheHerald,FaerieCharm,FarsightAlteration,FatedAshes,FiendishCodex,Fimbulwinter,FireAtWill,Flesheater,ForbiddenIdol,ForceOfEntropy,ForceOfNature,ForeverForward,FrozenHeart,Fulmination,Galeforce,GamblersBlade,GargoyleStoneplate,Ghostcrawlers,GiantsBelt,GlacialBuckler,GlowingMote,Goredrinker,GuardianAngel,GuardiansAmulet,GuardiansBlade,GuardiansDirk,GuardiansHammer,GuardiansHorn,GuardiansOrb,GuardiansShroud,GuinsoosRageblade,Gusto,GustwalkerHatchling,Hamstringer,HauntingGuise,HealthPotion,HearthboundAxe,Heartsteel,HellfireHatchet,HemomancersHelm,HexboltCompanion,Hexdrinker,HextechAlternator,HextechGunblade,HextechRocketbelt,HollowRadiance,HorizonFocus,Hubris,Hullbreaker,IcebornGauntlet,ImmortalShieldbow,ImperialMandate,InfinityEdge,InnervatingLocket,IonianBootsOfLucidity,JakshoTheProtean,JuiceOfHaste,JuiceOfPower,JuiceOfVitality,KaenicRookern,Kindlegem,KinkouJitte,KnightsVow,KrakenSlayer,LaneSwapDetector,LastWhisper,LegendaryAssassinItem,LegendaryFighterItem,LegendaryMageItem,LegendaryMarksmanItem,LegendarySupportItem,LegendaryTankItem,LiandrysTorment,LichBane,Lifeline,LightningRod,LocketOfTheIronSolari,LongSword,LordDominiksRegards,LostChapter,LuckyDice,LudensCompanion,Malignance,Manamune,MawOfMalmortius,MejaisSoulstealer,MercurialScimitar,MercurysTreads,MikaelsBlessing,MirageBlade,MoonflairSpellblade,MoonstoneRenewer,Morellonomicon,MortalReminder,MosstomperSeedling,Muramana,NashorsTooth,NavoriFlickerblade,NeedlesslyLargeRod,NegatronCloak,NightHarvester,Noonquiver,NullMagicMantle,OblivionOrb,OhmwreckerTurretItem,Opportunity,OracleLens,Overcharged,OverlordsBloodmail,Perplexity,Phage,PhantomDancer,PhreakishGusto,Pickaxe,PlatedSteelcaps,PoroSnax,PrismaticItem,ProfaneHydra,ProwlersClaw,Puppeteer,PyromancersCloak,QuicksilverSash,RabadonsDeathcap,RadiantVirtue,RaiseMorale,RanduinsOmen,RapidFirecannon,RavenousHydra,RealityFracture,ReapersToll,Rectrix,RecurveBow,Redemption,RefillablePotion,Regicide,ReinforcedArmorTurretItem,RejuvenationBead,Reverberation,Riftmaker,RiteOfRuin,RodOfAges,RubyCrystal,RunaansHurricane,Runecarver,RunicCompass,RylaisCrystalScepter,SanguineGift,SapphireCrystal,ScarecrowEffigy,ScorchclawPup,ScoutsSlingshot,SeekersArmguard,SeraphsEmbrace,SerpentsFang,SerratedDirk,SeryldasGrudge,Shadowflame,ShatteredArmguard,Sheen,ShieldOfMoltenStone,ShurelyasBattlesong,SlightlyMagicalBoots,SolsticeSleigh,SorcerersShoes,SpearOfShojin,SpectralCutlass,SpectresCowl,SpellslingersShoes,SpiritVisage,StaffOfFlowingWater,StatBonus,StatikkShiv,StealthWard,SteelSigil,SteraksGage,Stormrazor,Stormsurge,Stridebreaker,SunderedSky,SunfireAegis,SuperMechArmor,SuperMechPowerField,Swiftmarch,SwordOfBlossomingDawn,SwordOfTheDivine,SymbioticSoles,SynchronizedSouls,TalismanOfAscension,TearOfTheGoddess,Terminus,TheBrutalizer,TheCollector,TheGoldenSpatula,Thornmail,Tiamat,TitanicHydra,TotalBiscuitOfEverlastingWill,Trailblazer,TrinityForce,Tunneler,TurboChemtank,TurretPlating,TwilightsEdge,TwinMask,UmbralGlaive,UnendingDespair,VampiricScepter,VerdantBarrier,VigilantWardstone,VoidStaff,VoltaicCyclosword,WardensEye,WardensMail,WarmogsArmor,WatchfulWardstone,WingedMoonplate,WintersApproach,WitsEnd,WoogletsWitchcap,WordlessPromise,WorldAtlas,YoumuusGhostblade,YourCut,YunTalWildarrows,ZazZaksRealmspike,Zeal,ZekesConvergence,Zephyr,ZhonyasHourglass }
         impl ItemId {
             pub const fn to_riot_id(&self) -> u32 {
                 ITEM_CACHE[*self as usize].riot_id
             }
             pub const fn from_riot_id(id: u32) -> Option<Self> {
-                match id { 8020 => Some(Self::AbyssalMask),3105 => Some(Self::AegisOfTheLegion),3113 => Some(Self::AetherWisp),1052 => Some(Self::AmplifyingTome),228001 => Some(Self::AnathemaSChains),1508 => Some(Self::AntiTowerSocks),3348 => Some(Self::ArcaneSweeperTrinket),3003 => Some(Self::ArchangelSStaff),3504 => Some(Self::ArdentCenser),3174 => Some(Self::ArmoredAdvance),223039 => Some(Self::AtmaSReckoning),6696 => Some(Self::AxiomArc),1038 => Some(Self::BFSword),6660 => Some(Self::BamiSCinder),4642 => Some(Self::BandleglassMirror),3102 => Some(Self::BansheeSVeil),1506 => Some(Self::BaseTurretReinforcedArmorTurretItem),3006 => Some(Self::BerserkerSGreaves),3071 => Some(Self::BlackCleaver),447122 => Some(Self::BlackHoleGauntlet),3599 => Some(Self::BlackSpear),2503 => Some(Self::BlackfireTorch),3153 => Some(Self::BladeOfTheRuinedKing),1026 => Some(Self::BlastingWand),4630 => Some(Self::BlightingJewel),8010 => Some(Self::BloodletterSCurse),3877 => Some(Self::Bloodsong),3072 => Some(Self::Bloodthirster),1001 => Some(Self::Boots),3009 => Some(Self::BootsOfSwiftness),3867 => Some(Self::BountyOfWorlds),3076 => Some(Self::BrambleVest),2141 => Some(Self::CappaJuice),3803 => Some(Self::CatalystOfAeons),3133 => Some(Self::CaulfieldSWarhammer),3869 => Some(Self::CelestialOpposition),1031 => Some(Self::ChainVest),3173 => Some(Self::ChainlacedCrushers),6609 => Some(Self::ChempunkChainsword),1018 => Some(Self::CloakOfAgility),443059 => Some(Self::CloakOfStarryNight),1029 => Some(Self::ClothArmor),2055 => Some(Self::ControlWard),4629 => Some(Self::CosmicDrive),3171 => Some(Self::CrimsonLucidity),444644 => Some(Self::CrownOfTheShatteredQueen),447109 => Some(Self::Cruelty),3137 => Some(Self::Cryptbloom),3801 => Some(Self::CrystallineBracer),1083 => Some(Self::Cull),1042 => Some(Self::Dagger),1082 => Some(Self::DarkSeal),443054 => Some(Self::DarksteelTalons),6621 => Some(Self::Dawncore),3742 => Some(Self::DeadManSPlate),6333 => Some(Self::DeathSDance),3902 => Some(Self::DeathSDaughter),447107 => Some(Self::Decapitator),443056 => Some(Self::DemonKingSCrown),444637 => Some(Self::DemonicEmbrace),447113 => Some(Self::DetonationOrb),447120 => Some(Self::DiamondTippedSpear),446632 => Some(Self::DivineSunderer),1055 => Some(Self::DoranSBlade),1056 => Some(Self::DoranSRing),1054 => Some(Self::DoranSShield),447106 => Some(Self::Dragonheart),3870 => Some(Self::DreamMaker),446691 => Some(Self::DuskbladeOfDraktharr),6620 => Some(Self::EchoesOfHelia),6692 => Some(Self::Eclipse),3814 => Some(Self::EdgeOfNight),443063 => Some(Self::EleisaSMiracle),2151 => Some(Self::ElixirOfAvarice),2152 => Some(Self::ElixirOfForce),2138 => Some(Self::ElixirOfIron),2150 => Some(Self::ElixirOfSkill),2139 => Some(Self::ElixirOfSorcery),2140 => Some(Self::ElixirOfWrath),447105 => Some(Self::EmpyreanPromise),2146 => Some(Self::EnhancedLuckyDice),3508 => Some(Self::EssenceReaver),446656 => Some(Self::Everfrost),3123 => Some(Self::ExecutionerSCalling),3073 => Some(Self::ExperimentalHexplate),3513 => Some(Self::EyeOfTheHerald),1004 => Some(Self::FaerieCharm),3363 => Some(Self::FarsightAlteration),2508 => Some(Self::FatedAshes),3108 => Some(Self::FiendishCodex),3121 => Some(Self::Fimbulwinter),3901 => Some(Self::FireAtWill),447112 => Some(Self::Flesheater),3114 => Some(Self::ForbiddenIdol),443061 => Some(Self::ForceOfEntropy),4401 => Some(Self::ForceOfNature),3176 => Some(Self::ForeverForward),3110 => Some(Self::FrozenHeart),443055 => Some(Self::Fulmination),446671 => Some(Self::Galeforce),447101 => Some(Self::GamblerSBlade),443193 => Some(Self::GargoyleStoneplate),223005 => Some(Self::Ghostcrawlers),1011 => Some(Self::GiantSBelt),3024 => Some(Self::GlacialBuckler),2022 => Some(Self::GlowingMote),226630 => Some(Self::Goredrinker),3026 => Some(Self::GuardianAngel),2049 => Some(Self::GuardianSAmulet),3177 => Some(Self::GuardianSBlade),223185 => Some(Self::GuardianSDirk),3184 => Some(Self::GuardianSHammer),2051 => Some(Self::GuardianSHorn),3112 => Some(Self::GuardianSOrb),2050 => Some(Self::GuardianSShroud),3124 => Some(Self::GuinsooSRageblade),1509 => Some(Self::Gusto),1102 => Some(Self::GustwalkerHatchling),443069 => Some(Self::Hamstringer),3147 => Some(Self::HauntingGuise),2003 => Some(Self::HealthPotion),3051 => Some(Self::HearthboundAxe),3084 => Some(Self::Heartsteel),4017 => Some(Self::HellfireHatchet),447103 => Some(Self::HemomancerSHelm),443081 => Some(Self::HexboltCompanion),3155 => Some(Self::Hexdrinker),3145 => Some(Self::HextechAlternator),223146 => Some(Self::HextechGunblade),3152 => Some(Self::HextechRocketbelt),6664 => Some(Self::HollowRadiance),4628 => Some(Self::HorizonFocus),6697 => Some(Self::Hubris),3181 => Some(Self::Hullbreaker),6662 => Some(Self::IcebornGauntlet),6673 => Some(Self::ImmortalShieldbow),4005 => Some(Self::ImperialMandate),3031 => Some(Self::InfinityEdge),447104 => Some(Self::InnervatingLocket),3158 => Some(Self::IonianBootsOfLucidity),6665 => Some(Self::JakShoTheProtean),2144 => Some(Self::JuiceOfHaste),2142 => Some(Self::JuiceOfPower),2143 => Some(Self::JuiceOfVitality),2504 => Some(Self::KaenicRookern),3067 => Some(Self::Kindlegem),447116 => Some(Self::KinkouJitte),3109 => Some(Self::KnightSVow),6672 => Some(Self::KrakenSlayer),1501 => Some(Self::LaneSwapDetector),3035 => Some(Self::LastWhisper),220003 => Some(Self::LegendaryAssassinItem),220001 => Some(Self::LegendaryFighterItem),220004 => Some(Self::LegendaryMageItem),220002 => Some(Self::LegendaryMarksmanItem),220006 => Some(Self::LegendarySupportItem),220005 => Some(Self::LegendaryTankItem),6653 => Some(Self::LiandrySTorment),3100 => Some(Self::LichBane),4003 => Some(Self::Lifeline),447119 => Some(Self::LightningRod),3190 => Some(Self::LocketOfTheIronSolari),1036 => Some(Self::LongSword),3036 => Some(Self::LordDominikSRegards),3802 => Some(Self::LostChapter),2145 => Some(Self::LuckyDice),6655 => Some(Self::LudenSCompanion),3118 => Some(Self::Malignance),3004 => Some(Self::Manamune),3156 => Some(Self::MawOfMalmortius),3041 => Some(Self::MejaiSSoulstealer),3139 => Some(Self::MercurialScimitar),3111 => Some(Self::MercurySTreads),3222 => Some(Self::MikaelSBlessing),447100 => Some(Self::MirageBlade),447110 => Some(Self::MoonflairSpellblade),6617 => Some(Self::MoonstoneRenewer),3165 => Some(Self::Morellonomicon),3033 => Some(Self::MortalReminder),1103 => Some(Self::MosstomperSeedling),3042 => Some(Self::Muramana),3115 => Some(Self::NashorSTooth),6675 => Some(Self::NavoriFlickerblade),1058 => Some(Self::NeedlesslyLargeRod),1057 => Some(Self::NegatronCloak),444636 => Some(Self::NightHarvester),6670 => Some(Self::Noonquiver),1033 => Some(Self::NullMagicMantle),3916 => Some(Self::OblivionOrb),1500 => Some(Self::OhmwreckerTurretItem),6701 => Some(Self::Opportunity),3364 => Some(Self::OracleLens),1507 => Some(Self::Overcharged),2501 => Some(Self::OverlordSBloodmail),4015 => Some(Self::Perplexity),3044 => Some(Self::Phage),3046 => Some(Self::PhantomDancer),1510 => Some(Self::PhreakishGusto),1037 => Some(Self::Pickaxe),3047 => Some(Self::PlatedSteelcaps),2052 => Some(Self::PoroSnax),220007 => Some(Self::PrismaticItem),6698 => Some(Self::ProfaneHydra),446693 => Some(Self::ProwlerSClaw),447123 => Some(Self::Puppeteer),447118 => Some(Self::PyromancerSCloak),3140 => Some(Self::QuicksilverSash),3089 => Some(Self::RabadonSDeathcap),446667 => Some(Self::RadiantVirtue),3903 => Some(Self::RaiseMorale),3143 => Some(Self::RanduinSOmen),3094 => Some(Self::RapidFirecannon),3074 => Some(Self::RavenousHydra),447102 => Some(Self::RealityFracture),443090 => Some(Self::ReaperSToll),6690 => Some(Self::Rectrix),1043 => Some(Self::RecurveBow),3107 => Some(Self::Redemption),2031 => Some(Self::RefillablePotion),447115 => Some(Self::Regicide),1502 => Some(Self::ReinforcedArmorTurretItem),1006 => Some(Self::RejuvenationBead),447114 => Some(Self::Reverberation),4633 => Some(Self::Riftmaker),3430 => Some(Self::RiteOfRuin),6657 => Some(Self::RodOfAges),1028 => Some(Self::RubyCrystal),3085 => Some(Self::RunaanSHurricane),447108 => Some(Self::Runecarver),3866 => Some(Self::RunicCompass),3116 => Some(Self::RylaiSCrystalScepter),443062 => Some(Self::SanguineGift),1027 => Some(Self::SapphireCrystal),3330 => Some(Self::ScarecrowEffigy),1101 => Some(Self::ScorchclawPup),3144 => Some(Self::ScoutSSlingshot),2420 => Some(Self::SeekerSArmguard),3040 => Some(Self::SeraphSEmbrace),6695 => Some(Self::SerpentSFang),3134 => Some(Self::SerratedDirk),6694 => Some(Self::SeryldaSGrudge),4645 => Some(Self::Shadowflame),2421 => Some(Self::ShatteredArmguard),3057 => Some(Self::Sheen),443058 => Some(Self::ShieldOfMoltenStone),2065 => Some(Self::ShurelyaSBattlesong),2422 => Some(Self::SlightlyMagicalBoots),3876 => Some(Self::SolsticeSleigh),3020 => Some(Self::SorcererSShoes),3161 => Some(Self::SpearOfShojin),224004 => Some(Self::SpectralCutlass),3211 => Some(Self::SpectreSCowl),3175 => Some(Self::SpellslingerSShoes),3065 => Some(Self::SpiritVisage),6616 => Some(Self::StaffOfFlowingWater),220000 => Some(Self::StatBonus),3087 => Some(Self::StatikkShiv),3340 => Some(Self::StealthWard),2019 => Some(Self::SteelSigil),3053 => Some(Self::SterakSGage),223095 => Some(Self::Stormrazor),4646 => Some(Self::Stormsurge),6631 => Some(Self::Stridebreaker),6610 => Some(Self::SunderedSky),3068 => Some(Self::SunfireAegis),1511 => Some(Self::SuperMechArmor),1512 => Some(Self::SuperMechPowerField),3170 => Some(Self::Swiftmarch),4011 => Some(Self::SwordOfBlossomingDawn),443060 => Some(Self::SwordOfTheDivine),3010 => Some(Self::SymbioticSoles),3013 => Some(Self::SynchronizedSouls),443064 => Some(Self::TalismanOfAscension),3070 => Some(Self::TearOfTheGoddess),3302 => Some(Self::Terminus),2020 => Some(Self::TheBrutalizer),6676 => Some(Self::TheCollector),224403 => Some(Self::TheGoldenSpatula),3075 => Some(Self::Thornmail),3077 => Some(Self::Tiamat),3748 => Some(Self::TitanicHydra),2010 => Some(Self::TotalBiscuitOfEverlastingWill),3002 => Some(Self::Trailblazer),3078 => Some(Self::TrinityForce),2021 => Some(Self::Tunneler),443079 => Some(Self::TurboChemtank),1515 => Some(Self::TurretPlating),447121 => Some(Self::TwilightSEdge),443080 => Some(Self::TwinMask),3179 => Some(Self::UmbralGlaive),2502 => Some(Self::UnendingDespair),1053 => Some(Self::VampiricScepter),4632 => Some(Self::VerdantBarrier),4643 => Some(Self::VigilantWardstone),3135 => Some(Self::VoidStaff),6699 => Some(Self::VoltaicCyclosword),1503 => Some(Self::WardenSEye),3082 => Some(Self::WardenSMail),3083 => Some(Self::WarmogSArmor),4638 => Some(Self::WatchfulWardstone),3066 => Some(Self::WingedMoonplate),3119 => Some(Self::WinterSApproach),3091 => Some(Self::WitSEnd),228002 => Some(Self::WoogletSWitchcap),4016 => Some(Self::WordlessPromise),3865 => Some(Self::WorldAtlas),3142 => Some(Self::YoumuuSGhostblade),3400 => Some(Self::YourCut),3032 => Some(Self::YunTalWildarrows),3871 => Some(Self::ZazZakSRealmspike),3086 => Some(Self::Zeal),3050 => Some(Self::ZekeSConvergence),3172 => Some(Self::Zephyr),3157 => Some(Self::ZhonyaSHourglass), _ => None }
+                match id { 8020 => Some(Self::AbyssalMask),3105 => Some(Self::AegisOfTheLegion),3113 => Some(Self::AetherWisp),1052 => Some(Self::AmplifyingTome),228001 => Some(Self::AnathemasChains),1508 => Some(Self::AntiTowerSocks),3348 => Some(Self::ArcaneSweeperTrinket),3003 => Some(Self::ArchangelsStaff),3504 => Some(Self::ArdentCenser),3174 => Some(Self::ArmoredAdvance),223039 => Some(Self::AtmasReckoning),6696 => Some(Self::AxiomArc),1038 => Some(Self::BFSword),6660 => Some(Self::BamisCinder),4642 => Some(Self::BandleglassMirror),3102 => Some(Self::BansheesVeil),1506 => Some(Self::BaseTurretReinforcedArmorTurretItem),3006 => Some(Self::BerserkersGreaves),3071 => Some(Self::BlackCleaver),447122 => Some(Self::BlackHoleGauntlet),3599 => Some(Self::BlackSpear),2503 => Some(Self::BlackfireTorch),3153 => Some(Self::BladeOfTheRuinedKing),1026 => Some(Self::BlastingWand),4630 => Some(Self::BlightingJewel),8010 => Some(Self::BloodlettersCurse),3877 => Some(Self::Bloodsong),3072 => Some(Self::Bloodthirster),1001 => Some(Self::Boots),3009 => Some(Self::BootsOfSwiftness),3867 => Some(Self::BountyOfWorlds),3076 => Some(Self::BrambleVest),2141 => Some(Self::CappaJuice),3803 => Some(Self::CatalystOfAeons),3133 => Some(Self::CaulfieldsWarhammer),3869 => Some(Self::CelestialOpposition),1031 => Some(Self::ChainVest),3173 => Some(Self::ChainlacedCrushers),6609 => Some(Self::ChempunkChainsword),1018 => Some(Self::CloakOfAgility),443059 => Some(Self::CloakOfStarryNight),1029 => Some(Self::ClothArmor),2055 => Some(Self::ControlWard),4629 => Some(Self::CosmicDrive),3171 => Some(Self::CrimsonLucidity),444644 => Some(Self::CrownOfTheShatteredQueen),447109 => Some(Self::Cruelty),3137 => Some(Self::Cryptbloom),3801 => Some(Self::CrystallineBracer),1083 => Some(Self::Cull),1042 => Some(Self::Dagger),1082 => Some(Self::DarkSeal),443054 => Some(Self::DarksteelTalons),6621 => Some(Self::Dawncore),3742 => Some(Self::DeadMansPlate),6333 => Some(Self::DeathsDance),3902 => Some(Self::DeathsDaughter),447107 => Some(Self::Decapitator),443056 => Some(Self::DemonKingsCrown),444637 => Some(Self::DemonicEmbrace),447113 => Some(Self::DetonationOrb),447120 => Some(Self::DiamondTippedSpear),446632 => Some(Self::DivineSunderer),1055 => Some(Self::DoransBlade),1056 => Some(Self::DoransRing),1054 => Some(Self::DoransShield),447106 => Some(Self::Dragonheart),3870 => Some(Self::DreamMaker),446691 => Some(Self::DuskbladeOfDraktharr),6620 => Some(Self::EchoesOfHelia),6692 => Some(Self::Eclipse),3814 => Some(Self::EdgeOfNight),443063 => Some(Self::EleisasMiracle),2151 => Some(Self::ElixirOfAvarice),2152 => Some(Self::ElixirOfForce),2138 => Some(Self::ElixirOfIron),2150 => Some(Self::ElixirOfSkill),2139 => Some(Self::ElixirOfSorcery),2140 => Some(Self::ElixirOfWrath),447105 => Some(Self::EmpyreanPromise),2146 => Some(Self::EnhancedLuckyDice),3508 => Some(Self::EssenceReaver),446656 => Some(Self::Everfrost),3123 => Some(Self::ExecutionersCalling),3073 => Some(Self::ExperimentalHexplate),3513 => Some(Self::EyeOfTheHerald),1004 => Some(Self::FaerieCharm),3363 => Some(Self::FarsightAlteration),2508 => Some(Self::FatedAshes),3108 => Some(Self::FiendishCodex),3121 => Some(Self::Fimbulwinter),3901 => Some(Self::FireAtWill),447112 => Some(Self::Flesheater),3114 => Some(Self::ForbiddenIdol),443061 => Some(Self::ForceOfEntropy),4401 => Some(Self::ForceOfNature),3176 => Some(Self::ForeverForward),3110 => Some(Self::FrozenHeart),443055 => Some(Self::Fulmination),446671 => Some(Self::Galeforce),447101 => Some(Self::GamblersBlade),443193 => Some(Self::GargoyleStoneplate),223005 => Some(Self::Ghostcrawlers),1011 => Some(Self::GiantsBelt),3024 => Some(Self::GlacialBuckler),2022 => Some(Self::GlowingMote),226630 => Some(Self::Goredrinker),3026 => Some(Self::GuardianAngel),2049 => Some(Self::GuardiansAmulet),3177 => Some(Self::GuardiansBlade),223185 => Some(Self::GuardiansDirk),3184 => Some(Self::GuardiansHammer),2051 => Some(Self::GuardiansHorn),3112 => Some(Self::GuardiansOrb),2050 => Some(Self::GuardiansShroud),3124 => Some(Self::GuinsoosRageblade),1509 => Some(Self::Gusto),1102 => Some(Self::GustwalkerHatchling),443069 => Some(Self::Hamstringer),3147 => Some(Self::HauntingGuise),2003 => Some(Self::HealthPotion),3051 => Some(Self::HearthboundAxe),3084 => Some(Self::Heartsteel),4017 => Some(Self::HellfireHatchet),447103 => Some(Self::HemomancersHelm),443081 => Some(Self::HexboltCompanion),3155 => Some(Self::Hexdrinker),3145 => Some(Self::HextechAlternator),223146 => Some(Self::HextechGunblade),3152 => Some(Self::HextechRocketbelt),6664 => Some(Self::HollowRadiance),4628 => Some(Self::HorizonFocus),6697 => Some(Self::Hubris),3181 => Some(Self::Hullbreaker),6662 => Some(Self::IcebornGauntlet),6673 => Some(Self::ImmortalShieldbow),4005 => Some(Self::ImperialMandate),3031 => Some(Self::InfinityEdge),447104 => Some(Self::InnervatingLocket),3158 => Some(Self::IonianBootsOfLucidity),6665 => Some(Self::JakshoTheProtean),2144 => Some(Self::JuiceOfHaste),2142 => Some(Self::JuiceOfPower),2143 => Some(Self::JuiceOfVitality),2504 => Some(Self::KaenicRookern),3067 => Some(Self::Kindlegem),447116 => Some(Self::KinkouJitte),3109 => Some(Self::KnightsVow),6672 => Some(Self::KrakenSlayer),1501 => Some(Self::LaneSwapDetector),3035 => Some(Self::LastWhisper),220003 => Some(Self::LegendaryAssassinItem),220001 => Some(Self::LegendaryFighterItem),220004 => Some(Self::LegendaryMageItem),220002 => Some(Self::LegendaryMarksmanItem),220006 => Some(Self::LegendarySupportItem),220005 => Some(Self::LegendaryTankItem),6653 => Some(Self::LiandrysTorment),3100 => Some(Self::LichBane),4003 => Some(Self::Lifeline),447119 => Some(Self::LightningRod),3190 => Some(Self::LocketOfTheIronSolari),1036 => Some(Self::LongSword),3036 => Some(Self::LordDominiksRegards),3802 => Some(Self::LostChapter),2145 => Some(Self::LuckyDice),6655 => Some(Self::LudensCompanion),3118 => Some(Self::Malignance),3004 => Some(Self::Manamune),3156 => Some(Self::MawOfMalmortius),3041 => Some(Self::MejaisSoulstealer),3139 => Some(Self::MercurialScimitar),3111 => Some(Self::MercurysTreads),3222 => Some(Self::MikaelsBlessing),447100 => Some(Self::MirageBlade),447110 => Some(Self::MoonflairSpellblade),6617 => Some(Self::MoonstoneRenewer),3165 => Some(Self::Morellonomicon),3033 => Some(Self::MortalReminder),1103 => Some(Self::MosstomperSeedling),3042 => Some(Self::Muramana),3115 => Some(Self::NashorsTooth),6675 => Some(Self::NavoriFlickerblade),1058 => Some(Self::NeedlesslyLargeRod),1057 => Some(Self::NegatronCloak),444636 => Some(Self::NightHarvester),6670 => Some(Self::Noonquiver),1033 => Some(Self::NullMagicMantle),3916 => Some(Self::OblivionOrb),1500 => Some(Self::OhmwreckerTurretItem),6701 => Some(Self::Opportunity),3364 => Some(Self::OracleLens),1507 => Some(Self::Overcharged),2501 => Some(Self::OverlordsBloodmail),4015 => Some(Self::Perplexity),3044 => Some(Self::Phage),3046 => Some(Self::PhantomDancer),1510 => Some(Self::PhreakishGusto),1037 => Some(Self::Pickaxe),3047 => Some(Self::PlatedSteelcaps),2052 => Some(Self::PoroSnax),220007 => Some(Self::PrismaticItem),6698 => Some(Self::ProfaneHydra),446693 => Some(Self::ProwlersClaw),447123 => Some(Self::Puppeteer),447118 => Some(Self::PyromancersCloak),3140 => Some(Self::QuicksilverSash),3089 => Some(Self::RabadonsDeathcap),446667 => Some(Self::RadiantVirtue),3903 => Some(Self::RaiseMorale),3143 => Some(Self::RanduinsOmen),3094 => Some(Self::RapidFirecannon),3074 => Some(Self::RavenousHydra),447102 => Some(Self::RealityFracture),443090 => Some(Self::ReapersToll),6690 => Some(Self::Rectrix),1043 => Some(Self::RecurveBow),3107 => Some(Self::Redemption),2031 => Some(Self::RefillablePotion),447115 => Some(Self::Regicide),1502 => Some(Self::ReinforcedArmorTurretItem),1006 => Some(Self::RejuvenationBead),447114 => Some(Self::Reverberation),4633 => Some(Self::Riftmaker),3430 => Some(Self::RiteOfRuin),6657 => Some(Self::RodOfAges),1028 => Some(Self::RubyCrystal),3085 => Some(Self::RunaansHurricane),447108 => Some(Self::Runecarver),3866 => Some(Self::RunicCompass),3116 => Some(Self::RylaisCrystalScepter),443062 => Some(Self::SanguineGift),1027 => Some(Self::SapphireCrystal),3330 => Some(Self::ScarecrowEffigy),1101 => Some(Self::ScorchclawPup),3144 => Some(Self::ScoutsSlingshot),2420 => Some(Self::SeekersArmguard),3040 => Some(Self::SeraphsEmbrace),6695 => Some(Self::SerpentsFang),3134 => Some(Self::SerratedDirk),6694 => Some(Self::SeryldasGrudge),4645 => Some(Self::Shadowflame),2421 => Some(Self::ShatteredArmguard),3057 => Some(Self::Sheen),443058 => Some(Self::ShieldOfMoltenStone),2065 => Some(Self::ShurelyasBattlesong),2422 => Some(Self::SlightlyMagicalBoots),3876 => Some(Self::SolsticeSleigh),3020 => Some(Self::SorcerersShoes),3161 => Some(Self::SpearOfShojin),224004 => Some(Self::SpectralCutlass),3211 => Some(Self::SpectresCowl),3175 => Some(Self::SpellslingersShoes),3065 => Some(Self::SpiritVisage),6616 => Some(Self::StaffOfFlowingWater),220000 => Some(Self::StatBonus),3087 => Some(Self::StatikkShiv),3340 => Some(Self::StealthWard),2019 => Some(Self::SteelSigil),3053 => Some(Self::SteraksGage),223095 => Some(Self::Stormrazor),4646 => Some(Self::Stormsurge),6631 => Some(Self::Stridebreaker),6610 => Some(Self::SunderedSky),3068 => Some(Self::SunfireAegis),1511 => Some(Self::SuperMechArmor),1512 => Some(Self::SuperMechPowerField),3170 => Some(Self::Swiftmarch),4011 => Some(Self::SwordOfBlossomingDawn),443060 => Some(Self::SwordOfTheDivine),3010 => Some(Self::SymbioticSoles),3013 => Some(Self::SynchronizedSouls),443064 => Some(Self::TalismanOfAscension),3070 => Some(Self::TearOfTheGoddess),3302 => Some(Self::Terminus),2020 => Some(Self::TheBrutalizer),6676 => Some(Self::TheCollector),224403 => Some(Self::TheGoldenSpatula),3075 => Some(Self::Thornmail),3077 => Some(Self::Tiamat),3748 => Some(Self::TitanicHydra),2010 => Some(Self::TotalBiscuitOfEverlastingWill),3002 => Some(Self::Trailblazer),3078 => Some(Self::TrinityForce),2021 => Some(Self::Tunneler),443079 => Some(Self::TurboChemtank),1515 => Some(Self::TurretPlating),447121 => Some(Self::TwilightsEdge),443080 => Some(Self::TwinMask),3179 => Some(Self::UmbralGlaive),2502 => Some(Self::UnendingDespair),1053 => Some(Self::VampiricScepter),4632 => Some(Self::VerdantBarrier),4643 => Some(Self::VigilantWardstone),3135 => Some(Self::VoidStaff),6699 => Some(Self::VoltaicCyclosword),1503 => Some(Self::WardensEye),3082 => Some(Self::WardensMail),3083 => Some(Self::WarmogsArmor),4638 => Some(Self::WatchfulWardstone),3066 => Some(Self::WingedMoonplate),3119 => Some(Self::WintersApproach),3091 => Some(Self::WitsEnd),228002 => Some(Self::WoogletsWitchcap),4016 => Some(Self::WordlessPromise),3865 => Some(Self::WorldAtlas),3142 => Some(Self::YoumuusGhostblade),3400 => Some(Self::YourCut),3032 => Some(Self::YunTalWildarrows),3871 => Some(Self::ZazZaksRealmspike),3086 => Some(Self::Zeal),3050 => Some(Self::ZekesConvergence),3172 => Some(Self::Zephyr),3157 => Some(Self::ZhonyasHourglass), _ => None }
             }
             pub const unsafe fn from_u16_unchecked(id: u16) -> Self {
                 unsafe { core::mem::transmute(id) }
@@ -88,7 +88,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::AnathemaSChains, 
+            kind: ItemId::AnathemasChains, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -136,7 +136,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::ArchangelSStaff, 
+            kind: ItemId::ArchangelsStaff, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -184,7 +184,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::AtmaSReckoning, 
+            kind: ItemId::AtmasReckoning, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -232,7 +232,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::BamiSCinder, 
+            kind: ItemId::BamisCinder, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -264,7 +264,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::BansheeSVeil, 
+            kind: ItemId::BansheesVeil, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -296,7 +296,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::BerserkerSGreaves, 
+            kind: ItemId::BerserkersGreaves, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -424,7 +424,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::BloodletterSCurse, 
+            kind: ItemId::BloodlettersCurse, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -568,7 +568,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::CaulfieldSWarhammer, 
+            kind: ItemId::CaulfieldsWarhammer, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -888,7 +888,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::DeadManSPlate, 
+            kind: ItemId::DeadMansPlate, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -904,7 +904,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::DeathSDance, 
+            kind: ItemId::DeathsDance, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -920,7 +920,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::DeathSDaughter, 
+            kind: ItemId::DeathsDaughter, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -952,7 +952,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::DemonKingSCrown, 
+            kind: ItemId::DemonKingsCrown, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -1032,7 +1032,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::DoranSBlade, 
+            kind: ItemId::DoransBlade, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -1048,7 +1048,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::DoranSRing, 
+            kind: ItemId::DoransRing, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -1064,7 +1064,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::DoranSShield, 
+            kind: ItemId::DoransShield, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -1176,7 +1176,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::EleisaSMiracle, 
+            kind: ItemId::EleisasMiracle, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -1352,7 +1352,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::ExecutionerSCalling, 
+            kind: ItemId::ExecutionersCalling, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -1624,7 +1624,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::GamblerSBlade, 
+            kind: ItemId::GamblersBlade, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -1672,7 +1672,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::GiantSBelt, 
+            kind: ItemId::GiantsBelt, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -1752,7 +1752,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::GuardianSAmulet, 
+            kind: ItemId::GuardiansAmulet, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -1768,7 +1768,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::GuardianSBlade, 
+            kind: ItemId::GuardiansBlade, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -1784,7 +1784,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::GuardianSDirk, 
+            kind: ItemId::GuardiansDirk, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -1800,7 +1800,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::GuardianSHammer, 
+            kind: ItemId::GuardiansHammer, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -1816,7 +1816,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::GuardianSHorn, 
+            kind: ItemId::GuardiansHorn, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -1832,7 +1832,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::GuardianSOrb, 
+            kind: ItemId::GuardiansOrb, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -1848,7 +1848,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::GuardianSShroud, 
+            kind: ItemId::GuardiansShroud, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -1864,7 +1864,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::GuinsooSRageblade, 
+            kind: ItemId::GuinsoosRageblade, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -2008,7 +2008,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::HemomancerSHelm, 
+            kind: ItemId::HemomancersHelm, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -2264,7 +2264,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::JakShoTheProtean, 
+            kind: ItemId::JakshoTheProtean, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -2376,7 +2376,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::KnightSVow, 
+            kind: ItemId::KnightsVow, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -2536,7 +2536,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::LiandrySTorment, 
+            kind: ItemId::LiandrysTorment, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -2632,7 +2632,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::LordDominikSRegards, 
+            kind: ItemId::LordDominiksRegards, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -2680,7 +2680,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::LudenSCompanion, 
+            kind: ItemId::LudensCompanion, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -2744,7 +2744,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::MejaiSSoulstealer, 
+            kind: ItemId::MejaisSoulstealer, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -2776,7 +2776,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::MercurySTreads, 
+            kind: ItemId::MercurysTreads, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -2792,7 +2792,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::MikaelSBlessing, 
+            kind: ItemId::MikaelsBlessing, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -2920,7 +2920,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Magic,
                     attributes: Attrs::Onhit,
                     metadata: TypeMetadata { 
-            kind: ItemId::NashorSTooth, 
+            kind: ItemId::NashorsTooth, 
             damage_type: DamageType::Magic, 
             attributes: Attrs::Onhit 
         },
@@ -3112,7 +3112,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::OverlordSBloodmail, 
+            kind: ItemId::OverlordsBloodmail, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -3272,7 +3272,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::ProwlerSClaw, 
+            kind: ItemId::ProwlersClaw, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -3304,7 +3304,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::PyromancerSCloak, 
+            kind: ItemId::PyromancersCloak, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -3336,7 +3336,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::RabadonSDeathcap, 
+            kind: ItemId::RabadonsDeathcap, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -3384,7 +3384,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::RanduinSOmen, 
+            kind: ItemId::RanduinsOmen, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -3448,7 +3448,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::ReaperSToll, 
+            kind: ItemId::ReapersToll, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -3656,7 +3656,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::RunaanSHurricane, 
+            kind: ItemId::RunaansHurricane, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -3704,7 +3704,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::RylaiSCrystalScepter, 
+            kind: ItemId::RylaisCrystalScepter, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -3784,7 +3784,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::ScoutSSlingshot, 
+            kind: ItemId::ScoutsSlingshot, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -3800,7 +3800,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::SeekerSArmguard, 
+            kind: ItemId::SeekersArmguard, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -3816,7 +3816,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::SeraphSEmbrace, 
+            kind: ItemId::SeraphsEmbrace, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -3832,7 +3832,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::SerpentSFang, 
+            kind: ItemId::SerpentsFang, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -3864,7 +3864,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::SeryldaSGrudge, 
+            kind: ItemId::SeryldasGrudge, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -3944,7 +3944,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::ShurelyaSBattlesong, 
+            kind: ItemId::ShurelyasBattlesong, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -3992,7 +3992,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::SorcererSShoes, 
+            kind: ItemId::SorcerersShoes, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -4040,7 +4040,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::SpectreSCowl, 
+            kind: ItemId::SpectresCowl, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -4056,7 +4056,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::SpellslingerSShoes, 
+            kind: ItemId::SpellslingersShoes, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -4168,7 +4168,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::SterakSGage, 
+            kind: ItemId::SteraksGage, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -4616,7 +4616,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::TwilightSEdge, 
+            kind: ItemId::TwilightsEdge, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -4760,7 +4760,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::WardenSEye, 
+            kind: ItemId::WardensEye, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -4776,7 +4776,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::WardenSMail, 
+            kind: ItemId::WardensMail, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -4792,7 +4792,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::WarmogSArmor, 
+            kind: ItemId::WarmogsArmor, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -4840,7 +4840,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::WinterSApproach, 
+            kind: ItemId::WintersApproach, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -4856,7 +4856,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::WitSEnd, 
+            kind: ItemId::WitsEnd, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -4872,7 +4872,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::WoogletSWitchcap, 
+            kind: ItemId::WoogletsWitchcap, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -4920,7 +4920,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::YoumuuSGhostblade, 
+            kind: ItemId::YoumuusGhostblade, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -4968,7 +4968,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::ZazZakSRealmspike, 
+            kind: ItemId::ZazZaksRealmspike, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -5000,7 +5000,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::ZekeSConvergence, 
+            kind: ItemId::ZekesConvergence, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },
@@ -5032,7 +5032,7 @@ use super::*;pub static ITEM_CACHE: [&CachedItem; 314] = [&ABYSSAL_MASK_8020,&AE
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined,
                     metadata: TypeMetadata { 
-            kind: ItemId::ZhonyaSHourglass, 
+            kind: ItemId::ZhonyasHourglass, 
             damage_type: DamageType::Unknown, 
             attributes: Attrs::Undefined 
         },

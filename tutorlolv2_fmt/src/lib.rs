@@ -27,15 +27,30 @@ pub fn encode_brotli_11(bytes: &[u8]) -> Vec<u8> {
 pub fn pascal_case(input: &str) -> String {
     let mut words = Vec::new();
     let mut cur = String::new();
+    let mut chars = input.chars().peekable();
 
-    for ch in input.chars() {
+    while let Some(ch) = chars.next() {
         if ch.is_alphanumeric() {
             cur.push(ch);
-        } else if !cur.is_empty() {
-            words.push(cur);
-            cur = String::new();
+        } else if ch == '\'' {
+            if let Some(&next) = chars.peek() {
+                if (next == 's' || next == 'S') && !cur.is_empty() {
+                    chars.next();
+                    cur.push('s');
+                    continue;
+                }
+            }
+
+            if !cur.is_empty() {
+                words.push(std::mem::take(&mut cur));
+            }
+        } else {
+            if !cur.is_empty() {
+                words.push(std::mem::take(&mut cur));
+            }
         }
     }
+
     if !cur.is_empty() {
         words.push(cur);
     }
@@ -52,18 +67,8 @@ pub fn pascal_case(input: &str) -> String {
             }
         }
     }
-    out
-}
 
-pub fn normalize(s: &str) -> String {
-    s.replace(" ", "")
-        .replace("-", "")
-        .replace(")", "")
-        .replace("(", "")
-        .replace("'", "")
-        .replace(".", "")
-        .replace(",", "")
-        .replace(":", "")
+    out
 }
 
 pub fn rustfmt(src: &str, width: usize) -> String {

@@ -28,7 +28,7 @@ pub async fn generate_runes() -> GeneratorFn {
                     melee,
                 } = rune;
 
-                println!("Building: Rune({name:?})");
+                println!("[build] Rune({name:?})");
 
                 let name_pascal = name.pascal_case();
                 let name_ssnake = name.to_ssnake();

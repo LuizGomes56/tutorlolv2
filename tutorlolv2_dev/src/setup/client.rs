@@ -20,6 +20,7 @@ use std::{
     sync::Arc,
 };
 use tokio::{sync::Semaphore, task::JoinHandle};
+use tutorlolv2_fmt::pascal_case;
 
 macro_rules! target_dir {
     () => {
@@ -488,20 +489,7 @@ impl HttpClient {
                             let push_alt_attr = |array: &mut Vec<String>, selector: &Selector| {
                                 for img in document.select(selector) {
                                     if let Some(alt) = img.value().attr("alt") {
-                                        array.push(
-                                            alt.replace(" ", "")
-                                                .replace("-", "")
-                                                .replace(")", "")
-                                                .replace("(", "")
-                                                .replace("'", "")
-                                                .replace(".", "")
-                                                .replace(",", "")
-                                                .replace(":", "")
-                                                .replace(
-                                                    "BladeofTheRuinedKing",
-                                                    "BladeoftheRuinedKing",
-                                                ),
-                                        );
+                                        array.push(pascal_case(alt));
                                     }
                                 }
                             };
