@@ -1,8 +1,9 @@
-use crate::{bitarray::BitArray, *};
+use crate::*;
 use bincode::{Decode, Encode};
 use smallvec::SmallVec;
 use tutorlolv2_gen::{
-    AdaptativeType, ChampionId, ConstClosure, GameMap, ItemId, Position, RuneId, TypeMetadata,
+    AdaptativeType, BitSet, ChampionId, ConstClosure, GameMap, ItemId, NUMBER_OF_ITEMS,
+    NUMBER_OF_RUNES, Position, RuneId, TypeMetadata,
 };
 use tutorlolv2_types::AbilityLike;
 
@@ -106,7 +107,7 @@ pub struct ResistShred {
 
 pub struct EnemyState<'a> {
     pub base_stats: SimpleStats<f32>,
-    pub items: BitArray,
+    pub items: BitSet,
     pub stacks: u32,
     pub champion_id: ChampionId,
     pub earth_dragons: u16,
@@ -296,6 +297,12 @@ macro_rules! impl_default {
         impl $ty {
             pub const fn default() -> Self {
                 unsafe { std::mem::transmute([$initializer; size_of::<$ty>() / size_of::<f32>()]) }
+            }
+        }
+
+        impl Default for $ty {
+            fn default() -> Self {
+                <$ty>::default()
             }
         }
     };

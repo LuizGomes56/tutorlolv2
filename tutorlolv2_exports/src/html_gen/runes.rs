@@ -1,12 +1,12 @@
 use crate::{
     Url,
-    export_code::*,
+    exports::*,
     html::{HtmlExt, Source, offset_to_str},
 };
 
 pub fn generate_rune_html() {
     for i in 0..RUNE_FORMULAS.len() {
-        let rune_id = unsafe { std::mem::transmute::<_, RuneId>(i as u8) };
+        let rune_id = unsafe { RuneId::from_u8_unchecked(i as _) };
         println!("Generating {rune_id:#?} html");
         let mut html = String::new();
 

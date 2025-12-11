@@ -1,4 +1,4 @@
-#[tokio::main]
+#[tokio::main(flavor = "multi_thread")]
 async fn main() {
-    tutorlolv2_build::run().await;
+    tutorlolv2_build::new_runner().await.unwrap();
 }

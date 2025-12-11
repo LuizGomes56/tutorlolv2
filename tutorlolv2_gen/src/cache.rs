@@ -162,6 +162,9 @@ pub struct CachedItem {
     pub range_closure: &'static [ConstClosure],
     pub melee_closure: &'static [ConstClosure],
     pub attributes: Attrs,
+    pub is_simulated: bool,
+    pub is_damaging: bool,
+    pub riot_id: u32,
 }
 
 pub struct CachedRune {
@@ -169,6 +172,8 @@ pub struct CachedRune {
     pub metadata: TypeMetadata<RuneId>,
     pub range_closure: ConstClosure,
     pub melee_closure: ConstClosure,
+    pub riot_id: u32,
+    pub undeclared: bool,
 }
 
 pub struct CachedItemStats {

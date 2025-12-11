@@ -1,432 +1,272 @@
+use serde::de::DeserializeOwned;
+use std::{
+    fmt::Debug,
+    path::{Path, PathBuf},
+    sync::Arc,
+};
+use tokio::{sync::Semaphore, task::JoinHandle};
+use tokio_stream::{StreamExt, wrappers::ReadDirStream};
+use tutorlolv2_fmt::encode_brotli_11;
+
 mod scripts;
 
-use scripts::*;
-use tutorlolv2_fmt::encode_brotli_11;
-use tutorlolv2_types::AbilityLike;
-
-const ONHIT_EFFECT: &str = r#"<pre><span class="control">intrinsic</span> <span class="constant">ONHIT_EFFECT</span> = {
-    <span class="variable">name</span>: <span class="string">"Onhit Effect"</span>,
-    <span class="variable">damage_type</span>: <span class="type">DamageType</span>::<span class="constant">Mixed</span>,
-    <span class="variable">damage</span>: ($($<span class="variable">dmg</span>:<span class="variable">expr</span>),*) => {
-        <span class="variable">onhit</span>.<span class="variable">minimum_damage</span>
-            += <span class="constant">BASIC_ATTACK</span> + $($<span class="variable">dmg</span>),*;
-        <span class="variable">onhit</span>.<span class="variable">maximum_damage</span>
-            += <span class="constant">CRITICAL_STRIKE</span> + $($<span class="variable">dmg</span>),*;
-    },
+use crate::scripts::{
+    BASIC_ATTACK, CRITICAL_STRIKE, ONHIT_EFFECT, StringExt, TOWER_DAMAGE,
+    champions::generate_champions, items::generate_items, runes::generate_runes,
 };
-</pre>"#;
 
-pub async fn run() {
-    let mut mega_block = String::with_capacity(1 << 23);
-    let champion_languages_raw_json =
-        std::fs::read_to_string(cwd!("internal/champion_languages.json")).unwrap();
-    let champion_languages_json =
-        serde_json::from_str::<HashMap<String, Vec<String>>>(&champion_languages_raw_json).unwrap();
+pub type MayFail<T = ()> = Result<T, Box<dyn std::error::Error>>;
+pub type GeneratorClosure = Box<dyn FnOnce(usize) -> Generated + Send + Sync + 'static>;
+pub type GeneratorFn = MayFail<GeneratorClosure>;
 
-    let champions_handle = tokio::task::spawn_blocking(export_champions);
-    let items_handle = tokio::task::spawn_blocking(export_items);
-    let runes_handle = tokio::task::spawn_blocking(export_runes);
+pub struct Generated {
+    pub exports: String,
+    pub block: String,
+}
 
-    let champions = champions_handle.await.unwrap();
-    let items = items_handle.await.unwrap();
-    let runes = runes_handle.await.unwrap();
+pub enum SrcFolder {
+    Champions,
+    Items,
+    Runes,
+}
 
-    let champions_len = champions.len();
-    let items_len = items.len();
-    let runes_len = runes.len();
+impl SrcFolder {
+    #[cfg(debug_assertions)]
+    const BASE_PATH: &str = "__build_dbg";
+    #[cfg(not(debug_assertions))]
+    const BASE_PATH: &str = "tutorlolv2_gen/src/data";
 
-    let mut internal_champions_content = String::with_capacity(1 << 16);
-    let mut internal_champions =
-        format!("pub static INTERNAL_CHAMPIONS:[&CachedChampion;{champions_len}]=[");
-    let mut champion_positions =
-        format!("pub static CHAMPION_POSITIONS:[&[Position];{champions_len}]=[");
-    let mut champion_id_to_name =
-        format!("pub static CHAMPION_ID_TO_NAME:[&str;{champions_len}]=[");
-    let mut champion_formulas =
-        format!("pub static CHAMPION_FORMULAS:[(u32,u32);{champions_len}]=[");
-    let mut champion_generator =
-        format!("pub static CHAMPION_GENERATOR:[(u32,u32);{champions_len}]=[");
-    let mut champion_abilities =
-        format!("pub static CHAMPION_ABILITIES:[&[(AbilityLike,(u32,u32))];{champions_len}]=[");
-    let mut champion_combos = format!("pub static CHAMPION_COMBOS:[&[&[AbilityLike]];0]=[");
-    let mut recommended_items =
-        format!("pub static RECOMMENDED_ITEMS:[[&[ItemId];5];{champions_len}]=[");
-    let mut recommended_runes =
-        format!("pub static RECOMMENDED_RUNES:[[&[RuneId];5];{champions_len}]=[");
-    let mut internal_items = format!("pub static INTERNAL_ITEMS:[&CachedItem;{items_len}]=[");
-    let mut internal_items_content = String::new();
-    let mut internal_simulated_items =
-        String::from("pub static SIMULATED_ITEMS:phf::OrderedSet<u32>=phf::phf_ordered_set!(");
-    let mut internal_simulated_items_enum = format!(
-        "pub static SIMULATED_ITEMS_ENUM:[u16;{}]=[",
-        items.iter().filter(|(_, v)| v.is_simulated).count()
-    );
-    let mut internal_damaging_items =
-        String::from("pub static DAMAGING_ITEMS:phf::Set<u32>=phf::phf_set!(");
-    let mut item_id_to_name = format!("pub static ITEM_ID_TO_NAME:[&str;{items_len}]=[");
-    let mut item_formulas = format!("pub static ITEM_FORMULAS:[(u32,u32);{items_len}]=[");
-    let mut rune_id_to_name = format!("pub static RUNE_ID_TO_NAME:[&str;{runes_len}]=[");
-    let mut rune_formulas = format!("pub static RUNE_FORMULAS:[(u32,u32);{runes_len}]=[");
-    let mut internal_runes = format!("pub static INTERNAL_RUNES:[&CachedRune;{runes_len}]=[");
-    let mut internal_runes_content = String::new();
-
-    let mut current_offset = 0usize;
-
-    macro_rules! record_offsets {
-        ($value:expr) => {{
-            let (start, end) = record_offsets!(@record $value);
-            format!("({start},{end})")
-        }};
-        ($field:ident, $value:expr) => {{
-            let (start, end) = record_offsets!(@record $value);
-            $field.push_str(&format!("({start},{end}),"));
-        }};
-        (@record $value:expr) => {{
-            let start = current_offset;
-            mega_block.push_str(&$value);
-            let end = current_offset + $value.len();
-            current_offset = end;
-            (start, end)
-        }}
+    pub fn new(path: impl AsRef<Path>) -> PathBuf {
+        Path::new(Self::BASE_PATH).join(path)
     }
 
-    let scraped_data_map =
-        init_map!(file BTreeMap<String, Positions>, "internal/scraper/data.json");
-
-    for champion_id in champions.keys() {
-        let positions = scraped_data_map.get(champion_id).unwrap();
-        let mut item_results = Vec::new();
-        let mut rune_results = Vec::new();
-        for (pos_items, pos_runes) in positions.make_iterable().iter() {
-            let insert_array = |array: &[String], enum_kind: &str| {
-                array
-                    .iter()
-                    .map(|element| format!("{enum_kind}::{element}"))
-                    .collect::<Vec<String>>()
-                    .join(",")
-            };
-            item_results.push(insert_array(pos_items, "ItemId"));
-            rune_results.push(insert_array(pos_runes, "RuneId"));
-        }
-        let push_result = |array: &[String], target_string: &mut String| {
-            target_string.push_str(&format!(
-                "[{}],",
-                array
-                    .iter()
-                    .map(|element| format!("&[{element}]").to_string())
-                    .collect::<Vec<String>>()
-                    .join(","),
-            ))
+    pub fn import_file(self) -> PathBuf {
+        let base = Path::new(Self::BASE_PATH);
+        let file = match self {
+            Self::Champions => base.join("champions"),
+            Self::Items => base.join("items"),
+            Self::Runes => base.join("runes"),
         };
-        push_result(&item_results, &mut recommended_items);
-        push_result(&rune_results, &mut recommended_runes);
+        file.with_extension("rs")
     }
 
-    let champion_name_to_id_phf = format!(
-        "pub static CHAMPION_NAME_TO_ID:phf::Map<&'static str,ChampionId>=phf::phf_map!{{{}}};",
-        champions
-            .keys()
-            .map(|key| {
-                champion_languages_json
-                    .get(key)
-                    .unwrap()
-                    .iter()
-                    .map(|champion_name_alias| {
-                        format!(
-                            "\"{champion_name_alias}\"=>ChampionId::{}",
-                            key.remove_special_chars()
-                        )
-                    })
-                    .collect::<Vec<String>>()
-                    .join(",")
-            })
-            .collect::<Vec<String>>()
-            .join(","),
-    );
-    let champion_id_enum = format!(
-        "#[derive(Debug,PartialEq,Ord,Eq,PartialOrd,Copy,Clone,Decode,Encode)]
-        #[repr(u8)]pub enum ChampionId {{{}}}",
-        champions
-            .keys()
-            .map(|key| key.remove_special_chars())
-            .collect::<Vec<String>>()
-            .join(","),
-    );
-    for (champion_id, champion_detail) in champions.into_iter() {
-        internal_champions.push_str(&format!("&{},", champion_id.to_uppercase()));
-        champion_id_to_name.push_str(&format!("\"{}\",", champion_detail.champion_name));
-        champion_positions.push_str(&format!("&[{}],", champion_detail.positions));
-        record_offsets!(champion_formulas, champion_detail.champion_formula);
-        record_offsets!(champion_generator, champion_detail.generator);
-
-        champion_abilities.push_str("&[");
-        for (ability_like, ability_formula) in &champion_detail.highlighted_abilities {
-            let (start, end) = record_offsets!(@record ability_formula);
-            champion_abilities
-                .push_str(&format!("({},({start},{end})),", ability_like.as_literal(),));
+    pub fn gen_folder(self) -> impl AsRef<Path> {
+        match self {
+            SrcFolder::Champions => "gen_champions",
+            SrcFolder::Items => "gen_items",
+            SrcFolder::Runes => "gen_runes",
         }
-        champion_abilities.push_str("],");
-        internal_champions_content.push_str(&champion_detail.constdecl);
-        // champion_combos.push_str(&format!(
-        //     "&[{}]",
-        //     champion_detail
-        //         .combos
-        //         .iter()
-        //         .map(|combos| {
-        //             format!(
-        //                 "&[{}]",
-        //                 combos
-        //                     .iter()
-        //                     .map(AbilityLike::as_literal)
-        //                     .collect::<Vec<String>>()
-        //                     .join(",")
-        //             )
-        //         })
-        //         .collect::<Vec<String>>()
-        //         .join(",")
-        // ));
+    }
+}
+
+pub struct CwdPath;
+
+impl CwdPath {
+    pub fn new(path: impl AsRef<Path>) -> PathBuf {
+        Path::new("../").join(path)
     }
 
-    champion_combos.push_str("];");
-    recommended_items.push_str("];");
-    recommended_runes.push_str("];");
-    champion_positions.push_str("];");
-    internal_champions.push_str("];");
-    champion_id_to_name.push_str("];");
-    champion_formulas.push_str("];");
-    champion_generator.push_str("];");
-    champion_abilities.push_str("];");
+    pub fn fwrite<P, D>(path: P, data: D) -> JoinHandle<Result<(), std::io::Error>>
+    where
+        P: AsRef<Path> + Debug + Send + Sync + 'static,
+        D: AsRef<[u8]> + Send + Sync + 'static,
+    {
+        println!("[write] {path:?}");
+        tokio::spawn(tokio::fs::write(CwdPath::new(path), data))
+    }
 
-    let moved_champion_id_enum = champion_id_enum.clone();
-    tokio::task::spawn_blocking(move || {
-        fs::write(cwd!("tutorlolv2_gen/src/data/champions.rs"), {
-            let mut s = String::with_capacity(
-                USE_SUPER.len()
-                    + internal_champions_content.len()
-                    + internal_champions.len()
-                    + moved_champion_id_enum.len()
-                    + BASIC_ATTACK.len()
-                    + CRITICAL_STRIKE.len()
-                    + champion_name_to_id_phf.len()
-                    + champion_combos.len(),
-            );
-            s.push_str(USE_SUPER);
-            s.push_str(&moved_champion_id_enum);
-            s.push_str(&internal_champions_content);
-            s.push_str(&champion_name_to_id_phf);
-            s.push_str(&internal_champions);
-            s.push_str(BASIC_ATTACK);
-            s.push_str(CRITICAL_STRIKE);
-            s.push_str(&champion_combos);
-            s
-        })
-    });
+    pub async fn exists(path: impl AsRef<Path> + Debug) -> bool {
+        let result = tokio::fs::try_exists(&path).await;
+        match result {
+            Ok(true) => println!("[ok] {path:?}"),
+            Ok(false) => println!("[null] {path:?}"),
+            Err(ref e) => println!("[error] {path:?}: {e:?}"),
+        }
+        result.ok().unwrap_or_default()
+    }
 
-    let item_id_to_riot_id = format!(
-        "pub static ITEM_ID_TO_RIOT_ID:[u32;{}]=[{}];",
-        items.len(),
-        items
-            .iter()
-            .map(|(key, _)| *key)
-            .collect::<Vec<u32>>()
-            .join(","),
+    pub async fn get_generator(gen_folder: SrcFolder, file: impl AsRef<Path>) -> MayFail<String> {
+        let folder = gen_folder.gen_folder();
+        let path = Self::new("tutorlolv2_dev/src/generators")
+            .join(folder)
+            .join(file)
+            .with_extension("rs");
+
+        #[cfg(debug_assertions)]
+        Self::exists(&path).await;
+
+        let data = tokio::fs::read_to_string(path).await?;
+        Ok(data.invoke_rustfmt(80).highlight_rust())
+    }
+
+    pub async fn deserialize<T: DeserializeOwned>(origin: impl AsRef<Path>) -> MayFail<T> {
+        let path = Self::new(origin).with_extension("json");
+
+        #[cfg(debug_assertions)]
+        Self::exists(&path).await;
+
+        let bytes = tokio::fs::read(path).await?;
+        let data = serde_json::from_slice::<T>(&bytes)?;
+        Ok(data)
+    }
+}
+
+pub fn push_end<const N: usize>(variables: [&mut String; N], end: &str) {
+    variables
+        .into_iter()
+        .for_each(|variable| variable.push_str(end));
+}
+
+pub async fn parallel_task<_Path, _FnIn, _Type, _Resp, _Data, V, _Fut1, _Fut2>(
+    permits: usize,
+    path: _Path,
+    f: _FnIn,
+    r: _Resp,
+) -> MayFail<V>
+where
+    _Path: AsRef<Path>,
+    _Data: Send + Sync + 'static,
+    _Fut2: Future<Output = MayFail<V>> + Send + Sync + 'static,
+    _Resp: Fn(Vec<JoinHandle<(String, _Data)>>) -> _Fut2,
+    _Type: DeserializeOwned,
+    _Fut1: Future<Output = MayFail<_Data>> + Send + Sync + 'static,
+    _FnIn: Clone + Send + Sync + 'static + Fn(String, _Type) -> _Fut1,
+{
+    let mut futures = Vec::new();
+    let semaphore = Arc::new(Semaphore::new(permits));
+
+    let folder = CwdPath::new(path);
+    let read_dir = tokio::fs::read_dir(folder).await?;
+    let mut dir_stream = ReadDirStream::new(read_dir);
+
+    while let Some(Ok(entry)) = dir_stream.next().await {
+        let f = f.clone();
+        let semaphore = semaphore.clone();
+        futures.push(tokio::task::spawn(async move {
+            let _permit = semaphore.acquire().await.unwrap();
+            let file_name = entry
+                .file_name()
+                .to_string_lossy()
+                .to_string()
+                .split(".")
+                .next()
+                .ok_or(format!("Failed to get file name for entry: {entry:?}"))
+                .unwrap()
+                .to_string();
+            let handler = {
+                let file_name = file_name.clone();
+                async move || -> MayFail<_Data> {
+                    let data = tokio::fs::read(entry.path()).await?;
+                    let json = serde_json::from_slice(&data)?;
+                    f(file_name, json).await
+                }
+            };
+
+            (file_name, handler().await.unwrap())
+        }))
+    }
+
+    r(futures).await
+}
+
+fn gen_task<F, Fut>(f: F) -> JoinHandle<GeneratorClosure>
+where
+    Fut: Future<Output = GeneratorFn> + Send + Sync,
+    F: Fn() -> Fut + Send + Sync + 'static,
+{
+    tokio::task::spawn(async move {
+        match f().await {
+            Ok(value) => value,
+            Err(e) => panic!("Error on future [gen]: {e:?}"),
+        }
+    })
+}
+
+pub struct Tracker<'a> {
+    inner: &'a mut String,
+}
+
+impl<'a> Tracker<'a> {
+    pub const fn new(inner: &'a mut String) -> Self {
+        Self { inner }
+    }
+
+    pub const fn offset(&self) -> usize {
+        self.inner.len()
+    }
+
+    pub fn record(&mut self, value: &str) -> (usize, usize) {
+        let start = self.offset();
+        self.inner.push_str(value);
+        let end = self.offset();
+        (start, end)
+    }
+
+    pub fn record_into(&mut self, value: &str, into: &mut Vec<(usize, usize)>) {
+        let (start, end) = self.record(value);
+        into.push((start, end));
+    }
+}
+
+pub async fn new_runner() -> MayFail {
+    let mut full_block = String::with_capacity(8 * 1024 * 1024);
+    let mut full_exports = format!(
+        "use crate::*;
+        #[derive(Debug, Copy, Clone, Decode)]
+        pub enum Position {{
+            Top, Jungle, Middle, Bottom, Support
+        }}"
     );
-    let item_id_enum = format!(
-        "#[derive(Serialize,Deserialize,Debug,Copy,Clone,Ord,Eq,PartialOrd,PartialEq,Decode,Encode)]#[repr(u16)]
-        pub enum ItemId {{{}}}impl ItemId {{pub const fn to_riot_id(&self)->u32{{ITEM_ID_TO_RIOT_ID[*self as usize]}}
-        pub const fn from_riot_id(id:u32)->Self{{match id {{{}}}}}}}",
-        items
-            .iter()
-            .map(|(_, value)| value.item_name.remove_special_chars())
-            .collect::<Vec<String>>()
-            .join(","),
-        items
-            .iter()
-            .map(|(item_id, value)| format!(
-                "{item_id}=>Self::{}",
-                value.item_name.remove_special_chars()
-            ))
-            .chain(std::iter::once("_=>Self::YourCut".to_string(),))
-            .collect::<Vec<String>>()
-            .join(","),
-    );
-    for (index, (item_id, item_detail)) in items.into_iter().enumerate() {
-        internal_items_content.push_str(&item_detail.constdecl);
-        internal_items.push_str(&format!(
-            "&{}_{item_id},",
-            item_detail.item_name.to_screaming_snake_case(),
+    let mut closures = Vec::new();
+
+    for task in [
+        gen_task(generate_champions),
+        gen_task(generate_items),
+        gen_task(generate_runes),
+    ] {
+        closures.push(task.await?);
+    }
+
+    for closure in closures {
+        let Generated { exports, block } = closure(full_block.len());
+        full_block.push_str(&block);
+        full_exports.push_str(&exports);
+    }
+
+    let mut tracker = Tracker::new(&mut full_block);
+
+    for (name, value) in [
+        ("ONHIT_EFFECT_OFFSET", ONHIT_EFFECT),
+        ("BASIC_ATTACK_OFFSET", BASIC_ATTACK),
+        ("TOWER_DAMAGE_OFFSET", TOWER_DAMAGE),
+        ("CRITICAL_STRIKE_OFFSET", CRITICAL_STRIKE),
+    ] {
+        let (start, end) = tracker.record(&value.highlight_rust());
+        full_exports.push_str(&format!(
+            "pub static {name}: (u32, u32) = ({start}, {end});"
         ));
-        if item_detail.is_simulated {
-            internal_simulated_items.push_str(&format!("{item_id}u32,"));
-            internal_simulated_items_enum.push_str(&format!("{index},"));
-        }
-        if item_detail.is_damaging {
-            internal_damaging_items.push_str(&format!("{item_id}u32,"));
-        }
-        record_offsets!(item_formulas, item_detail.item_formula);
-        item_id_to_name.push_str(&format!("\"{}\",", item_detail.item_name));
     }
 
-    internal_items.push_str("];");
-    internal_simulated_items.push_str(");");
-    internal_simulated_items_enum.push_str("];");
-    internal_damaging_items.push_str(");");
-    item_id_to_name.push_str("];");
-    item_formulas.push_str("];");
+    let offset = tracker.offset();
+    let compressed_block = encode_brotli_11(full_block.as_bytes());
 
-    let moved_item_id_to_riot_id = item_id_to_riot_id.clone();
-    let moved_item_id_enum = item_id_enum.clone();
-    tokio::task::spawn_blocking(move || {
-        fs::write(cwd!("tutorlolv2_gen/src/data/items.rs"), {
-            let mut s = String::with_capacity(
-                internal_items.len()
-                    + moved_item_id_enum.len()
-                    + moved_item_id_to_riot_id.len()
-                    + internal_items_content.len()
-                    + internal_simulated_items.len()
-                    + internal_simulated_items_enum.len()
-                    + internal_damaging_items.len()
-                    + USE_SUPER.len(),
-            );
-            s.push_str(USE_SUPER);
-            s.push_str(&internal_items);
-            s.push_str(&moved_item_id_enum);
-            s.push_str(&moved_item_id_to_riot_id);
-            s.push_str(&internal_items_content);
-            s.push_str(&internal_simulated_items);
-            s.push_str(&internal_simulated_items_enum);
-            s.push_str(&internal_damaging_items);
-            s
-        })
-    });
-
-    let internal_damaging_runes = format!(
-        "pub static DAMAGING_RUNES:phf::Set<u32>=phf::phf_set!({});",
-        runes
+    full_exports.push_str(&format!("pub const BLOCK_SIZE: usize = {offset};"));
+    full_exports.push_str(&format!(
+        "pub const BLOCK: [u8; {size}] = [{bytes}];",
+        size = compressed_block.len(),
+        bytes = compressed_block
             .iter()
-            .filter_map(
-                |(rune_id, rune_data)| (!rune_data.undeclared).then_some(format!("{}u32", rune_id))
-            )
-            .collect::<Vec<String>>()
+            .map(u8::to_string)
+            .collect::<Vec<_>>()
             .join(",")
-    );
+    ));
 
-    let rune_id_to_riot_id = format!(
-        "pub static RUNE_ID_TO_RIOT_ID:[u32;{}]=[{}];",
-        runes.len(),
-        runes
-            .iter()
-            .map(|(key, _)| *key)
-            .collect::<Vec<u32>>()
-            .join(","),
-    );
-    let rune_id_enum = format!(
-        "#[derive(Debug,Copy,Clone,Ord,Eq,PartialOrd,PartialEq,Decode,Encode)]#[repr(u8)]pub enum RuneId {{{}}}
-        impl RuneId {{pub const fn to_riot_id(&self)->u32{{RUNE_ID_TO_RIOT_ID[*self as usize]}}
-        pub const fn from_riot_id(id:u32)->Self{{match id{{{}}}}}}}",
-        runes
-            .iter()
-            .map(|(_, value)| value.rune_name.remove_special_chars())
-            .collect::<Vec<String>>()
-            .join(","),
-        runes
-            .iter()
-            .map(|(rune_id, value)| format!(
-                "{rune_id}=>Self::{}",
-                value.rune_name.remove_special_chars()
-            ))
-            .chain(std::iter::once(format!(
-                "_=>Self::{}",
-                runes.first().unwrap().1.rune_name.remove_special_chars()
-            )))
-            .collect::<Vec<String>>()
-            .join(","),
-    );
-    for (rune_id, rune_detail) in runes.into_iter() {
-        internal_runes.push_str(&format!(
-            "&{}_{rune_id},",
-            rune_detail.rune_name.to_screaming_snake_case(),
-        ));
-        internal_runes_content.push_str(&rune_detail.constdecl);
-        rune_id_to_name.push_str(&format!("\"{}\",", rune_detail.rune_name));
-        record_offsets!(rune_formulas, rune_detail.rune_formula);
+    for task in [
+        CwdPath::fwrite("tutorlolv2_exports/assets/block.txt", full_block),
+        CwdPath::fwrite("tutorlolv2_exports/src/exports.rs", full_exports),
+    ] {
+        task.await??
     }
 
-    internal_runes.push_str("];");
-    rune_id_to_name.push_str("];");
-    rune_formulas.push_str("];");
-
-    let moved_rune_id_to_riot_id = rune_id_to_riot_id.clone();
-    let moved_rune_id_enum = rune_id_enum.clone();
-    tokio::task::spawn_blocking(move || {
-        fs::write(cwd!("tutorlolv2_gen/src/data/runes.rs"), {
-            let mut s = String::with_capacity(
-                internal_runes.len()
-                    + internal_runes_content.len()
-                    + USE_SUPER.len()
-                    + internal_damaging_runes.len()
-                    + moved_rune_id_to_riot_id.len()
-                    + moved_rune_id_enum.len(),
-            );
-            s.push_str(USE_SUPER);
-            s.push_str(&moved_rune_id_to_riot_id);
-            s.push_str(&moved_rune_id_enum);
-            s.push_str(&internal_runes);
-            s.push_str(&internal_runes_content);
-            s.push_str(&internal_damaging_runes);
-            s
-        })
-    });
-
-    let exported_content = [
-        champion_id_enum,
-        champion_id_to_name,
-        champion_positions,
-        champion_formulas,
-        champion_generator,
-        champion_abilities,
-        recommended_items,
-        recommended_runes,
-        item_id_to_name,
-        item_formulas,
-        item_id_enum,
-        item_id_to_riot_id,
-        rune_id_enum,
-        rune_id_to_riot_id,
-        rune_id_to_name,
-        rune_formulas,
-    ]
-    .concat();
-
-    let mut bytes = Vec::from(b"use crate::*;");
-
-    bytes.extend_from_slice(
-        format!(
-            "{exported_content}#[derive(Debug,Copy,Clone,Decode)]pub enum Position{{Top,Jungle,Middle,Bottom,Support}}
-            pub const BASIC_ATTACK_OFFSET:(u32,u32)={};pub const CRITICAL_STRIKE_OFFSET:(u32,u32)={};
-            pub const ONHIT_EFFECT_OFFSET:(u32,u32)={};pub const UNCOMPRESSED_MEGA_BLOCK_SIZE:usize={current_offset};",
-            record_offsets!(BASIC_ATTACK.invoke_rustfmt(60).highlight_rust()),
-            record_offsets!(CRITICAL_STRIKE.invoke_rustfmt(60).highlight_rust()),
-            record_offsets!(ONHIT_EFFECT),
-        )
-        .as_bytes(),
-    );
-
-    let _ = fs::write(
-        cwd!("tutorlolv2_exports/assets/mega_block.txt"),
-        &mega_block,
-    );
-
-    let mega_block_compressed = encode_brotli_11(mega_block.as_bytes());
-
-    bytes.extend_from_slice(
-        format!(
-            "pub const MEGA_BLOCK:[u8;{}]=[{}];",
-            mega_block_compressed.len(),
-            mega_block_compressed.join(",")
-        )
-        .as_bytes(),
-    );
-
-    let _ = fs::write(cwd!("tutorlolv2_exports/src/export_code.rs"), bytes);
+    Ok(())
 }

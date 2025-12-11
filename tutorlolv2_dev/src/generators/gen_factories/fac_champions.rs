@@ -13,10 +13,10 @@ use std::{
     path::Path,
 };
 use tutorlolv2_fmt::invoke_rustfmt;
-use tutorlolv2_gen::{Attrs, ChampionId, DamageType, INTERNAL_CHAMPIONS, Position};
+use tutorlolv2_gen::{Attrs, CHAMPION_CACHE, ChampionId, DamageType, Position};
 use tutorlolv2_types::{AbilityLike, AbilityName};
 
-const GENERATOR_FOLDER: &str = "tutorlolv2_dev/src/generators/gen_champions";
+pub const GENERATOR_FOLDER: &str = "tutorlolv2_dev/src/generators/gen_champions";
 
 pub struct ChampionData {
     pub data: MerakiChampion,
@@ -27,16 +27,20 @@ pub struct ChampionData {
 pub struct ChampionFactory;
 
 impl ChampionFactory {
-    pub const NUMBER_OF_CHAMPIONS: usize = INTERNAL_CHAMPIONS.len();
+    pub const NUMBER_OF_CHAMPIONS: usize = CHAMPION_CACHE.len();
     pub const GENERATOR_FUNCTIONS: [fn(MerakiChampion) -> Box<dyn Generator<Champion>>;
         Self::NUMBER_OF_CHAMPIONS] =
         tutorlolv2_macros::expand_dir!("../internal/champions", |[Name]| Name::new);
 
     pub fn create(champion_id: ChampionId) -> MayFail<String> {
-        let file_name = format!("{champion_id:?}").to_lowercase();
+        Self::create_from_raw(&format!("{champion_id:?}"))
+    }
+
+    pub fn create_from_raw(entity_id: &str) -> MayFail<String> {
+        let file_name = entity_id.to_lowercase();
         let path = format!("{GENERATOR_FOLDER}/{file_name}.rs");
 
-        let bind_macro = |ability_char: char, meraki_offsets: &[MerakiOffset]| -> String {
+        let bind_function = |ability_char: char, meraki_offsets: &[MerakiOffset]| -> String {
             let mut offsets = Vec::new();
             for meraki_offset in meraki_offsets {
                 offsets.push(format!(
@@ -55,7 +59,7 @@ impl ChampionFactory {
         let mut generated_content = format!(
             "use super::*;
 
-            impl Generator<Champion> for {champion_id:?} {{
+            impl Generator<Champion> for {entity_id} {{
                 fn generate(mut self: Box<Self>) -> MayFail<Champion> {{"
         );
 
@@ -66,11 +70,11 @@ impl ChampionFactory {
         }
 
         let meraki_champion =
-            MerakiChampion::from_file(format!("cache/meraki/champions/{champion_id:?}.json"))?;
+            MerakiChampion::from_file(format!("cache/meraki/champions/{entity_id}.json"))?;
         for (ability_char, ability_vec) in meraki_champion.abilities.into_iter() {
             let meraki_offsets = ChampionData::get_ability_offsets(ability_vec);
             if meraki_offsets.len() > 0 {
-                generated_content.push_str(&bind_macro(ability_char, &meraki_offsets));
+                generated_content.push_str(&bind_function(ability_char, &meraki_offsets));
             }
         }
 
@@ -114,6 +118,14 @@ impl ChampionFactory {
             };
         }
         Ok(())
+    }
+
+    pub fn run_from_raw(entity_id: &str, offset: usize) -> MayFail {
+        let data = MerakiChampion::from_file(format!("cache/meraki/champions/{entity_id}.json"))?;
+        let function = Self::GENERATOR_FUNCTIONS[offset];
+        let generator = function(data);
+        let champion = generator.generate()?;
+        champion.into_file(format!("internal/champions/{entity_id}.json"))
     }
 
     pub fn run(champion_id: ChampionId) -> MayFail<Champion> {
@@ -380,7 +392,12 @@ impl ChampionData {
             let mut parts = Vec::new();
             for modifier in modifiers {
                 if let Some(value) = modifier.values.get(i) {
-                    let raw_unit = modifier.units[i].trim();
+                    let mut raw_unit = modifier.units[i].trim();
+
+                    if raw_unit == "\u{00d7}" {
+                        raw_unit = "";
+                    }
+
                     let scalings = raw_unit.get_scalings();
                     let unit = raw_unit.remove_parenthesis();
                     let cleaned_string = if unit.contains('%') {

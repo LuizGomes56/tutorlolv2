@@ -1,16 +1,11 @@
 use std::{
-    collections::HashMap,
     process::{Child, Command, Stdio},
     thread,
     time::Duration,
 };
 use tutorlolv2_dev::{
-    DeserializeOwned, JsonRead, Serialize,
-    champions::MerakiChampion,
-    client::{OrderJson, save_cache},
-    gen_factories::fac_items::ItemFactory,
+    gen_factories::{fac_champions::GENERATOR_FOLDER, fac_items::ItemFactory},
     generators::gen_factories::fac_champions::ChampionFactory,
-    items::MerakiItem,
 };
 
 fn run(cwd: &str, prog: &str, args: &[&str]) {
@@ -42,11 +37,11 @@ fn http_get(url: &str) {
         .args([
             "-NoProfile",
             "-Command",
-            &format!("Invoke-WebRequest -UseBasicParsing '{}' | Out-Null", url),
+            &format!("Invoke-WebRequest -UseBasicParsing '{url}' | Out-Null"),
         ])
         .status()
         .expect("Could not run PowerShell");
-    assert!(status.success(), "Request GET {} failed", url);
+    assert!(status.success(), "Request GET {url} failed");
 }
 
 fn short_wait() {
@@ -195,34 +190,29 @@ fn update() {
     println!("Setup finished");
 }
 
-#[actix_web::main]
-async fn main() {
-    match std::env::args()
-        .collect::<Vec<String>>()
-        .get(1)
-        .map(String::as_str)
-    {
+fn main() {
+    let args = std::env::args().collect::<Vec<String>>();
+    match args.get(1).map(String::as_str) {
         Some("build") => build_script(),
-        Some("cdn-ord") => {
-            async fn ord_folder<T>(endpoint: &str)
-            where
-                T: DeserializeOwned + Serialize,
-                HashMap<String, T>: OrderJson<T>,
-            {
-                let _ = save_cache(
-                    T::from_dir(format!("cache/meraki/{endpoint}")).unwrap(),
-                    endpoint,
-                );
-            }
-
-            ord_folder::<MerakiChampion>("champions").await;
-            ord_folder::<MerakiItem>("items").await;
-        }
         Some("check-gen") => ChampionFactory::check_all_offsets(),
         Some("item-gen") => ItemFactory::run_all().unwrap(),
-        Some("run-gen") => ChampionFactory::run_all().unwrap(),
+        Some("champion-gen") => ChampionFactory::run_all().unwrap(),
+        Some("generate") => {
+            let entity_id = &args[2];
+            let offset = args[3].parse::<usize>().unwrap();
+            ChampionFactory::run_from_raw(&entity_id, offset).unwrap();
+        }
         Some("make-gen") => {
             let _ = ChampionFactory::create_all();
+        }
+        Some("create-gen") => {
+            let entity_id = &args[2];
+            let data = ChampionFactory::create_from_raw(&entity_id).unwrap();
+            std::fs::write(
+                format!("{GENERATOR_FOLDER}/{entity_id}.rs"),
+                data.as_bytes(),
+            )
+            .unwrap();
         }
         Some("html-gen") => {
             build_server();
@@ -233,6 +223,13 @@ async fn main() {
         Some("update") => update(),
         Some("lolstaticdata") => run_lolstaticdata(),
         Some("local") => update_local(),
-        _ => tutorlolv2_server::run().await.unwrap(),
+        _ => {
+            run("./tutorlolv2_server", "cargo", &["build"]);
+            let _ = task(
+                ".",
+                "./tutorlolv2_server/target/debug/tutorlolv2_server.exe",
+                &[],
+            );
+        }
     }
 }

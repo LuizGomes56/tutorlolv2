@@ -1,6 +1,6 @@
 use crate::{
     Url,
-    export_code::*,
+    exports::*,
     html::{HtmlExt, Source, offset_to_str},
 };
 use std::fmt::Debug;
@@ -10,22 +10,23 @@ trait EnumImport {
     fn cast_usize(&self) -> usize;
 }
 
-macro_rules! impl_enum_import {
-    ($ty:ty) => {
-        impl EnumImport for $ty {
-            fn to_riot_id(&self) -> u32 {
-                self.to_riot_id()
-            }
-
-            fn cast_usize(&self) -> usize {
-                *self as usize
-            }
-        }
-    };
+impl EnumImport for ItemId {
+    fn to_riot_id(&self) -> u32 {
+        self.to_riot_id()
+    }
+    fn cast_usize(&self) -> usize {
+        *self as usize
+    }
 }
 
-impl_enum_import!(ItemId);
-impl_enum_import!(RuneId);
+impl EnumImport for RuneId {
+    fn to_riot_id(&self) -> u32 {
+        self.to_riot_id()
+    }
+    fn cast_usize(&self) -> usize {
+        *self as usize
+    }
+}
 
 fn push_recommendation<
     T: 'static + EnumImport + Debug,

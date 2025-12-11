@@ -1,12 +1,12 @@
 use crate::{
     Url,
-    export_code::*,
+    exports::*,
     html::{HtmlExt, Source, offset_to_str},
 };
 
 pub fn generate_item_html() {
     for i in 0..ITEM_FORMULAS.len() {
-        let item_id = unsafe { std::mem::transmute::<_, ItemId>(i as u16) };
+        let item_id = unsafe { ItemId::from_u16_unchecked(i as _) };
         println!("Generating {item_id:#?} html");
         let mut html = String::new();
         let name = ITEM_ID_TO_NAME[item_id as usize];

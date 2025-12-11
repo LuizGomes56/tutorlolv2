@@ -97,7 +97,7 @@ impl MerakiChampion {
     }
 }
 
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Serialize, Debug, Deserialize, Clone)]
 pub struct Ability {
     pub name: String,
     pub damage_type: DamageType,

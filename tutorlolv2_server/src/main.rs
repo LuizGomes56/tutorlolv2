@@ -1,6 +1,6 @@
 use tutorlolv2_server::run;
 
-#[actix_web::main]
+#[tokio::main(flavor = "multi_thread")]
 async fn main() -> std::io::Result<()> {
     run().await
 }

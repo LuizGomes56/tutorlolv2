@@ -9,6 +9,7 @@ paste = "1.0.15"
 phf = { version = "0.13.1", features = ["macros"] }
 serde = { version = "1.0", features = ["derive"] }
 tutorlolv2_types = { path = "../tutorlolv2_types", default-features = false }
+const_sized_bit_set = "0.3.0"
 
 [features]
 default = ["dev"]

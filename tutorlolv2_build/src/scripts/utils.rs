@@ -1,70 +1,11 @@
 use regex::{Captures, Regex};
-use serde::Deserialize;
 use std::fmt;
 
-pub fn add_f32_postfix<'a>(expr: &'a str) -> (String, bool) {
+pub fn add_f32_postfix(expr: &str) -> (String, bool) {
     let re_num = Regex::new(r"\b(\d+(\.\d+)?)\b").unwrap();
     let postfixed = re_num.replace_all(expr, |caps: &Captures| format!("{}f32", &caps[1]));
     let uses_ctx = postfixed.contains("ctx.");
-    (postfixed.into_owned(), uses_ctx)
-}
-
-#[derive(Deserialize)]
-pub struct Positions {
-    #[serde(default)]
-    pub jungle: (Vec<String>, Vec<String>),
-    #[serde(default)]
-    pub top: (Vec<String>, Vec<String>),
-    #[serde(default)]
-    pub mid: (Vec<String>, Vec<String>),
-    #[serde(default)]
-    pub adc: (Vec<String>, Vec<String>),
-    #[serde(default)]
-    pub support: (Vec<String>, Vec<String>),
-}
-
-impl Positions {
-    pub fn make_iterable(&self) -> [(Vec<String>, Vec<String>); 5] {
-        [
-            (self.top.0.clone(), self.top.1.clone()),
-            (self.jungle.0.clone(), self.jungle.1.clone()),
-            (self.mid.0.clone(), self.mid.1.clone()),
-            (self.adc.0.clone(), self.adc.1.clone()),
-            (self.support.0.clone(), self.support.1.clone()),
-        ]
-    }
-}
-
-#[macro_export]
-macro_rules! cwd {
-    ($path:expr) => {
-        format!("../{}", $path)
-    };
-}
-
-#[macro_export]
-macro_rules! init_map {
-    (file $type_name:ty, $path:literal) => {{
-        let content = std::fs::read_to_string(cwd!($path)).unwrap();
-        serde_json::from_str::<$type_name>(&content).unwrap()
-    }};
-    (dir $type_name:ty, $path:literal) => {{
-        let mut map = BTreeMap::<String, $type_name>::new();
-        if let Ok(dir) = std::fs::read_dir(cwd!($path)) {
-            for entry in dir {
-                let path = entry.unwrap().path();
-                let file_stem = path.file_stem().unwrap();
-                let file_name = file_stem.to_str().unwrap();
-                let content = std::fs::read_to_string(&path).unwrap();
-                let parsed = serde_json::from_str::<$type_name>(&content).unwrap();
-                map.insert(file_name.to_owned(), parsed);
-            }
-        }
-        if map.is_empty() {
-            panic!("No files found in {}", $path);
-        }
-        map
-    }};
+    (postfixed.to_lowercase(), uses_ctx)
 }
 
 pub fn is_valid_math_expression(input: &str) -> bool {
@@ -259,29 +200,3 @@ pub fn clear_suffixes(input: &str) -> String {
         })
         .to_string()
 }
-
-pub trait Joinable<U>: AsRef<[U]>
-where
-    U: ToString,
-{
-    fn join(&self, sep: &str) -> String {
-        let slice = self.as_ref();
-        let mut out = String::new();
-        for (i, v) in slice.iter().enumerate() {
-            if i > 0 {
-                out.push_str(sep);
-            }
-            out.push_str(&v.to_string());
-        }
-        out
-    }
-}
-
-impl<U, S> Joinable<U> for S
-where
-    S: AsRef<[U]>,
-    U: ToString,
-{
-}
-
-pub const USE_SUPER: &str = "use super::*;";

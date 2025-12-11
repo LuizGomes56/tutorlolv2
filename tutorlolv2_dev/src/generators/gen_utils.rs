@@ -18,8 +18,9 @@ impl F64Ext for f64 {
 }
 
 pub trait RegExtractor {
+    fn capture_numbers_slash(&self) -> Vec<f64>;
     fn capture_percent(&self, number: usize) -> MayFail<f64>;
-    fn capture_numbers(&self) -> Vec<String>;
+    fn capture_numbers(&self) -> Vec<f64>;
     fn capture_parens(&self, number: usize) -> MayFail<String>;
     fn replace_keys(&self) -> String;
     fn remove_parenthesis(&self) -> String;
@@ -42,8 +43,7 @@ impl RegExtractor for str {
                 .captures(self)
                 .and_then(|cap| cap.get(1).map(|m| m.as_str()))
                 .ok_or(format!(
-                    "There are no parenthesis in #{} for '{}'",
-                    number, self
+                    "There are no parenthesis in #{number} for '{self}'"
                 ))?
                 .to_string(),
         )
@@ -58,12 +58,28 @@ impl RegExtractor for str {
             .map_err(|e| format!("Unable to convert all numbers to f64: {e:?}"))?)
     }
 
-    fn capture_numbers(&self) -> Vec<String> {
+    fn capture_numbers_slash(&self) -> Vec<f64> {
+        let re = Regex::new(r"\d+(?:\s*/\s*\d+)+").unwrap();
+        let mut nums = Vec::<f64>::new();
+
+        for m in re.find_iter(self) {
+            let slice = m.as_str();
+            for part in slice.split('/') {
+                if let Ok(n) = part.trim().parse::<f64>() {
+                    nums.push(n);
+                }
+            }
+        }
+
+        nums
+    }
+
+    fn capture_numbers(&self) -> Vec<f64> {
         Regex::new(r"\d+")
             .unwrap()
             .find_iter(self)
-            .map(|m| m.as_str().to_string())
-            .collect::<Vec<String>>()
+            .filter_map(|m| m.as_str().to_string().parse().ok())
+            .collect::<Vec<f64>>()
     }
 
     fn replace_keys(&self) -> String {
@@ -95,6 +111,8 @@ impl RegExtractor for str {
             "of primary target's bonus health" => EnemyBonusHealth,
             "of his bonus health" => BonusHealth,
             "Pantheon's bonus health" => BonusHealth,
+            "bonus attack speed" => AttackSpeed,
+            "based on critical strike chance" => CritChance,
             "critical strike chance" => CritChance,
             "of Ivern's AP" => Ap,
             "of Sona's AP" => Ap,
@@ -157,11 +175,11 @@ impl RegExtractor for str {
                 if let Ok(percent) = parts[0].trim_end_matches('%').parse::<f64>() {
                     let decimal = percent / 100.0;
                     let rest = parts[1..].join(" ");
-                    result.push(format!("({} * {})", decimal, rest));
+                    result.push(format!("({decimal} * {rest})"));
                     continue;
                 }
             }
-            result.push(format!("({})", cleaned));
+            result.push(format!("({cleaned})"));
         }
         result
             .into_iter()

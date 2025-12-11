@@ -1,6 +1,5 @@
-use once_cell::sync::Lazy;
-
 use crate::client::HttpClient;
+use once_cell::sync::Lazy;
 
 macro_rules! env_var {
     ($name:literal) => {
