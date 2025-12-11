@@ -1,6 +1,6 @@
 use crate::{
-    _lib::{CwdPath, Generated, GeneratorFn, SrcFolder, push_end},
-    scripts::{Rune, StringExt, USE_SUPER},
+    CwdPath, Generated, GeneratorFn, SrcFolder, Tracker, push_end,
+    scripts::{StringExt, USE_SUPER, model::Rune},
 };
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
 use std::collections::HashMap;
@@ -166,18 +166,10 @@ pub async fn generate_runes() -> GeneratorFn {
         format!("pub static {name}: [{vtype}; {len}] = [")
     });
 
-    let mut offset = 0;
-    let mut formula_offsets = Vec::with_capacity(len);
-
     let mut block = String::new();
 
-    let mut record_offsets = |into: &mut Vec<_>, value: &str| {
-        let start = offset;
-        let end = offset + value.len();
-        block.push_str(value);
-        into.push((start, end));
-        offset = end;
-    };
+    let mut tracker = Tracker::new(&mut block);
+    let mut formula_offsets = Vec::with_capacity(len);
 
     let mut rune_id_enum_match_arms = Vec::new();
     let mut rune_id_enum_fields = Vec::new();
@@ -197,7 +189,7 @@ pub async fn generate_runes() -> GeneratorFn {
         rune_id_to_name.push_str(&format!("{name:?},"));
         rune_cache.push_str(&format!("&{name_ssnake}_{riot_id},"));
         rune_declarations.push_str(&declaration);
-        record_offsets(&mut formula_offsets, &formula);
+        tracker.record_into(&formula, &mut formula_offsets);
     }
 
     let fields = rune_id_enum_fields.join(",");

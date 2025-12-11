@@ -380,7 +380,12 @@ impl ChampionData {
             let mut parts = Vec::new();
             for modifier in modifiers {
                 if let Some(value) = modifier.values.get(i) {
-                    let raw_unit = modifier.units[i].trim();
+                    let mut raw_unit = modifier.units[i].trim();
+
+                    if raw_unit == "\u{00d7}" {
+                        raw_unit = "";
+                    }
+
                     let scalings = raw_unit.get_scalings();
                     let unit = raw_unit.remove_parenthesis();
                     let cleaned_string = if unit.contains('%') {

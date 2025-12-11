@@ -1,5 +1,5 @@
 #[allow(dead_code)]
-mod export_code;
+mod exports;
 mod html_gen;
 
 use bincode::{Decode, Encode};
@@ -7,7 +7,7 @@ pub use html_gen::*;
 pub(self) use serde::{Deserialize, Serialize};
 use tutorlolv2_types::*;
 
-pub static MEGA_BLOCK: &'static str = include_str!("../assets/mega_block.txt");
+pub static MEGA_BLOCK: &str = include_str!("../assets/block.txt");
 
 macro_rules! impl_url {
     ($($kind:ident),* $(,)?) => {

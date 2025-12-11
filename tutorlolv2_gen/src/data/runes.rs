@@ -1,18 +1,18 @@
-use super::*;pub static RUNE_CACHE: [&CachedRune; 75] = [&ABILITY_HASTE_9994,&ABSOLUTE_FOCUS_8233,&ABSORB_LIFE_9101,&ADAPTIVE_FORCE_9990,&AERY_8214,&AFTERSHOCK_8439,&APPROACH_VELOCITY_8410,&ARCANE_COMET_8229,&ATTACK_SPEED_9992,&AXIOM_ARCANIST_8224,&BISCUIT_DELIVERY_8345,&BONE_PLATING_8473,&CASH_BACK_8321,&CELERITY_8234,&CHEAP_SHOT_8126,&COMET_8229,&CONDITIONING_8429,&CONQUEROR_8010,&COSMIC_INSIGHT_8347,&COUP_DE_GRACE_8014,&CUT_DOWN_8017,&DARK_HARVEST_8128,&DEEP_WARD_8141,&DEMOLISH_8446,&ELECTROCUTE_8112,&EYEBALL_COLLECTION_8120,&FIRST_STRIKE_8369,&FLEET_FOOTWORK_8021,&FONT_OF_LIFE_8463,&GATHERING_STORM_8236,&GHOST_PORO_8136,&GLACIAL_AUGMENT_8351,&GRASP_8437,&GRASP_OF_THE_UNDYING_8437,&GRISLY_MEMENTOS_8140,&GUARDIAN_8465,&HAIL_OF_BLADES_9923,&HEALTH_9993,&HEALTH_SCALING_9991,&HEXTECH_FLASHTRAPTION_8306,&JACK_OF_ALL_TRADES_8316,&LAST_STAND_8299,&LEGEND_ALACRITY_9104,&LEGEND_BLOODLINE_9103,&LEGEND_HASTE_9105,&LETHAL_TEMPO_8008,&MAGICAL_FOOTWEAR_8304,&MANAFLOW_BAND_8226,&MOVE_SPEED_9996,&NIMBUS_CLOAK_8275,&OVERGROWTH_8451,&PHASE_RUSH_8230,&PREDATOR_8124,&PRESENCE_OF_MIND_8009,&PRESS_THE_ATTACK_8005,&RELENTLESS_HUNTER_8105,&REVITALIZE_8453,&SCORCH_8237,&SECOND_WIND_8444,&SHIELD_BASH_8401,&SIXTH_SENSE_8137,&SUDDEN_IMPACT_8143,&SUMMON_AERY_8214,&TASTE_OF_BLOOD_8139,&TENACITY_AND_SLOW_RESIST_9995,&TIME_WARP_TONIC_8352,&TRANSCENDENCE_8210,&TREASURE_HUNTER_8135,&TRIPLE_TONIC_8313,&TRIUMPH_9111,&ULTIMATE_HUNTER_8106,&UNFLINCHING_8242,&UNSEALED_SPELLBOOK_8360,&WATERWALKING_8232,&ZOMBIE_WARD_8138,];#[derive(Debug, Copy, Clone, Ord, Eq, PartialOrd, PartialEq, Decode, Encode)]
+use super::*;pub static RUNE_CACHE: [&CachedRune; 72] = [&ABILITY_HASTE_9994,&ABSOLUTE_FOCUS_8233,&ABSORB_LIFE_9101,&ADAPTIVE_FORCE_9990,&AFTERSHOCK_8439,&APPROACH_VELOCITY_8410,&ARCANE_COMET_8229,&ATTACK_SPEED_9992,&AXIOM_ARCANIST_8224,&BISCUIT_DELIVERY_8345,&BONE_PLATING_8473,&CASH_BACK_8321,&CELERITY_8234,&CHEAP_SHOT_8126,&CONDITIONING_8429,&CONQUEROR_8010,&COSMIC_INSIGHT_8347,&COUP_DE_GRACE_8014,&CUT_DOWN_8017,&DARK_HARVEST_8128,&DEEP_WARD_8141,&DEMOLISH_8446,&ELECTROCUTE_8112,&EYEBALL_COLLECTION_8120,&FIRST_STRIKE_8369,&FLEET_FOOTWORK_8021,&FONT_OF_LIFE_8463,&GATHERING_STORM_8236,&GHOST_PORO_8136,&GLACIAL_AUGMENT_8351,&GRASP_OF_THE_UNDYING_8437,&GRISLY_MEMENTOS_8140,&GUARDIAN_8465,&HAIL_OF_BLADES_9923,&HEALTH_9993,&HEALTH_SCALING_9991,&HEXTECH_FLASHTRAPTION_8306,&JACK_OF_ALL_TRADES_8316,&LAST_STAND_8299,&LEGEND_ALACRITY_9104,&LEGEND_BLOODLINE_9103,&LEGEND_HASTE_9105,&LETHAL_TEMPO_8008,&MAGICAL_FOOTWEAR_8304,&MANAFLOW_BAND_8226,&MOVE_SPEED_9996,&NIMBUS_CLOAK_8275,&OVERGROWTH_8451,&PHASE_RUSH_8230,&PREDATOR_8124,&PRESENCE_OF_MIND_8009,&PRESS_THE_ATTACK_8005,&RELENTLESS_HUNTER_8105,&REVITALIZE_8453,&SCORCH_8237,&SECOND_WIND_8444,&SHIELD_BASH_8401,&SIXTH_SENSE_8137,&SUDDEN_IMPACT_8143,&SUMMON_AERY_8214,&TASTE_OF_BLOOD_8139,&TENACITY_AND_SLOW_RESIST_9995,&TIME_WARP_TONIC_8352,&TRANSCENDENCE_8210,&TREASURE_HUNTER_8135,&TRIPLE_TONIC_8313,&TRIUMPH_9111,&ULTIMATE_HUNTER_8106,&UNFLINCHING_8242,&UNSEALED_SPELLBOOK_8360,&WATERWALKING_8232,&ZOMBIE_WARD_8138,];#[derive(Debug, Copy, Clone, Ord, Eq, PartialOrd, PartialEq, Decode, Encode)]
         #[repr(u8)]
-        pub enum RuneId { AbilityHaste,AbsoluteFocus,AbsorbLife,AdaptiveForce,Aery,Aftershock,ApproachVelocity,ArcaneComet,AttackSpeed,AxiomArcanist,BiscuitDelivery,BonePlating,CashBack,Celerity,CheapShot,Comet,Conditioning,Conqueror,CosmicInsight,CoupdeGrace,CutDown,DarkHarvest,DeepWard,Demolish,Electrocute,EyeballCollection,FirstStrike,FleetFootwork,FontofLife,GatheringStorm,GhostPoro,GlacialAugment,Grasp,GraspoftheUndying,GrislyMementos,Guardian,HailofBlades,Health,HealthScaling,HextechFlashtraption,JackOfAllTrades,LastStand,LegendAlacrity,LegendBloodline,LegendHaste,LethalTempo,MagicalFootwear,ManaflowBand,MoveSpeed,NimbusCloak,Overgrowth,PhaseRush,Predator,PresenceofMind,PressTheAttack,RelentlessHunter,Revitalize,Scorch,SecondWind,ShieldBash,SixthSense,SuddenImpact,SummonAery,TasteofBlood,TenacityandSlowResist,TimeWarpTonic,Transcendence,TreasureHunter,TripleTonic,Triumph,UltimateHunter,Unflinching,UnsealedSpellbook,Waterwalking,ZombieWard }
+        pub enum RuneId { AbilityHaste,AbsoluteFocus,AbsorbLife,AdaptiveForce,Aftershock,ApproachVelocity,ArcaneComet,AttackSpeed,AxiomArcanist,BiscuitDelivery,BonePlating,CashBack,Celerity,CheapShot,Conditioning,Conqueror,CosmicInsight,CoupdeGrace,CutDown,DarkHarvest,DeepWard,Demolish,Electrocute,EyeballCollection,FirstStrike,FleetFootwork,FontofLife,GatheringStorm,GhostPoro,GlacialAugment,GraspoftheUndying,GrislyMementos,Guardian,HailofBlades,Health,HealthScaling,HextechFlashtraption,JackOfAllTrades,LastStand,LegendAlacrity,LegendBloodline,LegendHaste,LethalTempo,MagicalFootwear,ManaflowBand,MoveSpeed,NimbusCloak,Overgrowth,PhaseRush,Predator,PresenceofMind,PressTheAttack,RelentlessHunter,Revitalize,Scorch,SecondWind,ShieldBash,SixthSense,SuddenImpact,SummonAery,TasteofBlood,TenacityandSlowResist,TimeWarpTonic,Transcendence,TreasureHunter,TripleTonic,Triumph,UltimateHunter,Unflinching,UnsealedSpellbook,Waterwalking,ZombieWard }
         impl RuneId {
             pub const fn to_riot_id(&self) -> u32 {
                 RUNE_CACHE[*self as usize].riot_id
             }
             pub const fn from_riot_id(id: u32) -> Option<Self> {
-                match id { 9994 => Some(Self::AbilityHaste),8233 => Some(Self::AbsoluteFocus),9101 => Some(Self::AbsorbLife),9990 => Some(Self::AdaptiveForce),8214 => Some(Self::Aery),8439 => Some(Self::Aftershock),8410 => Some(Self::ApproachVelocity),8229 => Some(Self::ArcaneComet),9992 => Some(Self::AttackSpeed),8224 => Some(Self::AxiomArcanist),8345 => Some(Self::BiscuitDelivery),8473 => Some(Self::BonePlating),8321 => Some(Self::CashBack),8234 => Some(Self::Celerity),8126 => Some(Self::CheapShot),8229 => Some(Self::Comet),8429 => Some(Self::Conditioning),8010 => Some(Self::Conqueror),8347 => Some(Self::CosmicInsight),8014 => Some(Self::CoupdeGrace),8017 => Some(Self::CutDown),8128 => Some(Self::DarkHarvest),8141 => Some(Self::DeepWard),8446 => Some(Self::Demolish),8112 => Some(Self::Electrocute),8120 => Some(Self::EyeballCollection),8369 => Some(Self::FirstStrike),8021 => Some(Self::FleetFootwork),8463 => Some(Self::FontofLife),8236 => Some(Self::GatheringStorm),8136 => Some(Self::GhostPoro),8351 => Some(Self::GlacialAugment),8437 => Some(Self::Grasp),8437 => Some(Self::GraspoftheUndying),8140 => Some(Self::GrislyMementos),8465 => Some(Self::Guardian),9923 => Some(Self::HailofBlades),9993 => Some(Self::Health),9991 => Some(Self::HealthScaling),8306 => Some(Self::HextechFlashtraption),8316 => Some(Self::JackOfAllTrades),8299 => Some(Self::LastStand),9104 => Some(Self::LegendAlacrity),9103 => Some(Self::LegendBloodline),9105 => Some(Self::LegendHaste),8008 => Some(Self::LethalTempo),8304 => Some(Self::MagicalFootwear),8226 => Some(Self::ManaflowBand),9996 => Some(Self::MoveSpeed),8275 => Some(Self::NimbusCloak),8451 => Some(Self::Overgrowth),8230 => Some(Self::PhaseRush),8124 => Some(Self::Predator),8009 => Some(Self::PresenceofMind),8005 => Some(Self::PressTheAttack),8105 => Some(Self::RelentlessHunter),8453 => Some(Self::Revitalize),8237 => Some(Self::Scorch),8444 => Some(Self::SecondWind),8401 => Some(Self::ShieldBash),8137 => Some(Self::SixthSense),8143 => Some(Self::SuddenImpact),8214 => Some(Self::SummonAery),8139 => Some(Self::TasteofBlood),9995 => Some(Self::TenacityandSlowResist),8352 => Some(Self::TimeWarpTonic),8210 => Some(Self::Transcendence),8135 => Some(Self::TreasureHunter),8313 => Some(Self::TripleTonic),9111 => Some(Self::Triumph),8106 => Some(Self::UltimateHunter),8242 => Some(Self::Unflinching),8360 => Some(Self::UnsealedSpellbook),8232 => Some(Self::Waterwalking),8138 => Some(Self::ZombieWard), _ => None }
+                match id { 9994 => Some(Self::AbilityHaste),8233 => Some(Self::AbsoluteFocus),9101 => Some(Self::AbsorbLife),9990 => Some(Self::AdaptiveForce),8439 => Some(Self::Aftershock),8410 => Some(Self::ApproachVelocity),8229 => Some(Self::ArcaneComet),9992 => Some(Self::AttackSpeed),8224 => Some(Self::AxiomArcanist),8345 => Some(Self::BiscuitDelivery),8473 => Some(Self::BonePlating),8321 => Some(Self::CashBack),8234 => Some(Self::Celerity),8126 => Some(Self::CheapShot),8429 => Some(Self::Conditioning),8010 => Some(Self::Conqueror),8347 => Some(Self::CosmicInsight),8014 => Some(Self::CoupdeGrace),8017 => Some(Self::CutDown),8128 => Some(Self::DarkHarvest),8141 => Some(Self::DeepWard),8446 => Some(Self::Demolish),8112 => Some(Self::Electrocute),8120 => Some(Self::EyeballCollection),8369 => Some(Self::FirstStrike),8021 => Some(Self::FleetFootwork),8463 => Some(Self::FontofLife),8236 => Some(Self::GatheringStorm),8136 => Some(Self::GhostPoro),8351 => Some(Self::GlacialAugment),8437 => Some(Self::GraspoftheUndying),8140 => Some(Self::GrislyMementos),8465 => Some(Self::Guardian),9923 => Some(Self::HailofBlades),9993 => Some(Self::Health),9991 => Some(Self::HealthScaling),8306 => Some(Self::HextechFlashtraption),8316 => Some(Self::JackOfAllTrades),8299 => Some(Self::LastStand),9104 => Some(Self::LegendAlacrity),9103 => Some(Self::LegendBloodline),9105 => Some(Self::LegendHaste),8008 => Some(Self::LethalTempo),8304 => Some(Self::MagicalFootwear),8226 => Some(Self::ManaflowBand),9996 => Some(Self::MoveSpeed),8275 => Some(Self::NimbusCloak),8451 => Some(Self::Overgrowth),8230 => Some(Self::PhaseRush),8124 => Some(Self::Predator),8009 => Some(Self::PresenceofMind),8005 => Some(Self::PressTheAttack),8105 => Some(Self::RelentlessHunter),8453 => Some(Self::Revitalize),8237 => Some(Self::Scorch),8444 => Some(Self::SecondWind),8401 => Some(Self::ShieldBash),8137 => Some(Self::SixthSense),8143 => Some(Self::SuddenImpact),8214 => Some(Self::SummonAery),8139 => Some(Self::TasteofBlood),9995 => Some(Self::TenacityandSlowResist),8352 => Some(Self::TimeWarpTonic),8210 => Some(Self::Transcendence),8135 => Some(Self::TreasureHunter),8313 => Some(Self::TripleTonic),9111 => Some(Self::Triumph),8106 => Some(Self::UltimateHunter),8242 => Some(Self::Unflinching),8360 => Some(Self::UnsealedSpellbook),8232 => Some(Self::Waterwalking),8138 => Some(Self::ZombieWard), _ => None }
             }
             pub const unsafe fn from_u8_unchecked(id: u8) -> Self {
                 unsafe { core::mem::transmute(id) }
             }
             pub const fn from_u8(id: u8) -> Option<Self> {
-                if id < 75 as u8 {
+                if id < 72 as u8 {
                     Some(unsafe { Self::from_u8_unchecked(id) })
                 } else {
                     None
@@ -62,18 +62,7 @@ use super::*;pub static RUNE_CACHE: [&CachedRune; 75] = [&ABILITY_HASTE_9994,&AB
                     range_closure: zero,
                     riot_id: 9990,
                     undeclared: true
-                };pub static AERY_8214: CachedRune = CachedRune {
-                        damage_type: DamageType::Adaptative,
-                        metadata: TypeMetadata {
-                        kind: RuneId::Aery,
-                        damage_type: DamageType::Adaptative,
-                        attributes: Attrs::Undefined
-                    },
-                        melee_closure: |_| 0.0f32,
-                        range_closure: |_| 0.0f32,
-                        riot_id: 8214,
-                        undeclared: false
-                    };pub static AFTERSHOCK_8439: CachedRune = CachedRune {
+                };pub static AFTERSHOCK_8439: CachedRune = CachedRune {
                         damage_type: DamageType::Adaptative,
                         metadata: TypeMetadata {
                         kind: RuneId::Aftershock,
@@ -96,17 +85,17 @@ use super::*;pub static RUNE_CACHE: [&CachedRune; 75] = [&ABILITY_HASTE_9994,&AB
                     riot_id: 8410,
                     undeclared: true
                 };pub static ARCANE_COMET_8229: CachedRune = CachedRune {
-                    damage_type: DamageType::Unknown,
-                    metadata: TypeMetadata {
-                    kind: RuneId::ArcaneComet,
-                    damage_type: DamageType::Unknown,
-                    attributes: Attrs::Undefined
-                },
-                    melee_closure: zero,
-                    range_closure: zero,
-                    riot_id: 8229,
-                    undeclared: true
-                };pub static ATTACK_SPEED_9992: CachedRune = CachedRune {
+                        damage_type: DamageType::Adaptative,
+                        metadata: TypeMetadata {
+                        kind: RuneId::ArcaneComet,
+                        damage_type: DamageType::Adaptative,
+                        attributes: Attrs::Undefined
+                    },
+                        melee_closure: |_| 0.0f32,
+                        range_closure: |_| 0.0f32,
+                        riot_id: 8229,
+                        undeclared: false
+                    };pub static ATTACK_SPEED_9992: CachedRune = CachedRune {
                     damage_type: DamageType::Unknown,
                     metadata: TypeMetadata {
                     kind: RuneId::AttackSpeed,
@@ -182,17 +171,6 @@ use super::*;pub static RUNE_CACHE: [&CachedRune; 75] = [&ABILITY_HASTE_9994,&AB
                         melee_closure: |_| 0.0f32,
                         range_closure: |_| 0.0f32,
                         riot_id: 8126,
-                        undeclared: false
-                    };pub static COMET_8229: CachedRune = CachedRune {
-                        damage_type: DamageType::Adaptative,
-                        metadata: TypeMetadata {
-                        kind: RuneId::Comet,
-                        damage_type: DamageType::Adaptative,
-                        attributes: Attrs::Undefined
-                    },
-                        melee_closure: |_| 0.0f32,
-                        range_closure: |_| 0.0f32,
-                        riot_id: 8229,
                         undeclared: false
                     };pub static CONDITIONING_8429: CachedRune = CachedRune {
                     damage_type: DamageType::Unknown,
@@ -370,10 +348,10 @@ use super::*;pub static RUNE_CACHE: [&CachedRune; 75] = [&ABILITY_HASTE_9994,&AB
                     range_closure: zero,
                     riot_id: 8351,
                     undeclared: true
-                };pub static GRASP_8437: CachedRune = CachedRune {
+                };pub static GRASP_OF_THE_UNDYING_8437: CachedRune = CachedRune {
                         damage_type: DamageType::Magic,
                         metadata: TypeMetadata {
-                        kind: RuneId::Grasp,
+                        kind: RuneId::GraspoftheUndying,
                         damage_type: DamageType::Magic,
                         attributes: Attrs::Undefined
                     },
@@ -381,18 +359,7 @@ use super::*;pub static RUNE_CACHE: [&CachedRune; 75] = [&ABILITY_HASTE_9994,&AB
                         range_closure: |_| 0.0f32,
                         riot_id: 8437,
                         undeclared: false
-                    };pub static GRASP_OF_THE_UNDYING_8437: CachedRune = CachedRune {
-                    damage_type: DamageType::Unknown,
-                    metadata: TypeMetadata {
-                    kind: RuneId::GraspoftheUndying,
-                    damage_type: DamageType::Unknown,
-                    attributes: Attrs::Undefined
-                },
-                    melee_closure: zero,
-                    range_closure: zero,
-                    riot_id: 8437,
-                    undeclared: true
-                };pub static GRISLY_MEMENTOS_8140: CachedRune = CachedRune {
+                    };pub static GRISLY_MEMENTOS_8140: CachedRune = CachedRune {
                     damage_type: DamageType::Unknown,
                     metadata: TypeMetadata {
                     kind: RuneId::GrislyMementos,
@@ -701,17 +668,17 @@ use super::*;pub static RUNE_CACHE: [&CachedRune; 75] = [&ABILITY_HASTE_9994,&AB
                         riot_id: 8143,
                         undeclared: false
                     };pub static SUMMON_AERY_8214: CachedRune = CachedRune {
-                    damage_type: DamageType::Unknown,
-                    metadata: TypeMetadata {
-                    kind: RuneId::SummonAery,
-                    damage_type: DamageType::Unknown,
-                    attributes: Attrs::Undefined
-                },
-                    melee_closure: zero,
-                    range_closure: zero,
-                    riot_id: 8214,
-                    undeclared: true
-                };pub static TASTE_OF_BLOOD_8139: CachedRune = CachedRune {
+                        damage_type: DamageType::Adaptative,
+                        metadata: TypeMetadata {
+                        kind: RuneId::SummonAery,
+                        damage_type: DamageType::Adaptative,
+                        attributes: Attrs::Undefined
+                    },
+                        melee_closure: |_| 0.0f32,
+                        range_closure: |_| 0.0f32,
+                        riot_id: 8214,
+                        undeclared: false
+                    };pub static TASTE_OF_BLOOD_8139: CachedRune = CachedRune {
                     damage_type: DamageType::Unknown,
                     metadata: TypeMetadata {
                     kind: RuneId::TasteofBlood,

@@ -1,6 +1,9 @@
 use crate::{
-    _lib::{CwdPath, Generated, GeneratorFn, SrcFolder, parallel_task, push_end},
-    scripts::{DamageObject, Item, ItemStats, StringExt, USE_SUPER},
+    CwdPath, Generated, GeneratorFn, SrcFolder, Tracker, parallel_task, push_end,
+    scripts::{
+        StringExt, USE_SUPER,
+        model::{DamageObject, Item, ItemStats},
+    },
 };
 
 struct DeclaredItem {
@@ -133,84 +136,93 @@ pub async fn generate_items() -> GeneratorFn {
         generator: String,
     }
 
-    let mut data = parallel_task(64, "internal/items", async |file_name, item: Item| {
-        println!("Building: ItemId({file_name:?})");
+    let mut data = parallel_task(
+        128,
+        "internal/items",
+        async |file_name, item: Item| {
+            println!("Building: ItemId({file_name:?})");
 
-        let Item {
-            riot_id,
-            ref name,
-            ref prettified_stats,
-            tier,
-            price,
-            purchasable,
-            ref damage_type,
-            ref stats,
-            ref ranged,
-            ref melee,
-            attributes,
-        } = item;
+            let Item {
+                riot_id,
+                ref name,
+                ref prettified_stats,
+                tier,
+                price,
+                purchasable,
+                ref damage_type,
+                ref stats,
+                ref ranged,
+                ref melee,
+                attributes,
+            } = item;
 
-        let name_ssnake = name.to_screaming_snake_case();
-        let name_normalized = name.remove_special_chars();
-        let prettified_stats = prettified_stats
-            .iter()
-            .map(|stat| format!("StatName::{stat:?}"))
-            .collect::<Vec<_>>()
-            .join(",");
+            let name_ssnake = name.to_screaming_snake_case();
+            let name_normalized = name.remove_special_chars();
+            let prettified_stats = prettified_stats
+                .iter()
+                .map(|stat| format!("StatName::{stat:?}"))
+                .collect::<Vec<_>>()
+                .join(",");
 
-        let DeclaredItem {
-            metadata,
-            range_closure,
-            melee_closure,
-        } = declare_item(&item);
+            let DeclaredItem {
+                metadata,
+                range_closure,
+                melee_closure,
+            } = declare_item(&item);
 
-        let stats = format_stats(&stats);
-        let is_simulated = tier >= 3 && price > 0 && purchasable;
-        let is_damaging = {
-            let is_zeroed = |expr: &str| expr != "zero" && !expr.is_empty();
-            is_zeroed(&ranged.minimum_damage)
-                || is_zeroed(&ranged.maximum_damage)
-                || is_zeroed(&melee.minimum_damage)
-                || is_zeroed(&melee.maximum_damage)
-        };
+            let stats = format_stats(&stats);
+            let is_simulated = tier >= 3 && price > 0 && purchasable;
+            let is_damaging = {
+                let is_zeroed = |expr: &str| expr != "zero" && !expr.is_empty();
+                is_zeroed(&ranged.minimum_damage)
+                    || is_zeroed(&ranged.maximum_damage)
+                    || is_zeroed(&melee.minimum_damage)
+                    || is_zeroed(&melee.maximum_damage)
+            };
 
-        let declaration = format!(
-            "pub static {name_ssnake}_{riot_id}: CachedItem = CachedItem {{
-                gold: {price},
-                prettified_stats: &[{prettified_stats}],
-                damage_type: DamageType::{damage_type},
-                attributes: Attrs::{attributes:?},
-                metadata: {metadata},
-                range_closure: {range_closure},
-                melee_closure: {melee_closure},
-                stats: CachedItemStats {{ {stats} }},
-                is_simulated: {is_simulated},
-                is_damaging: {is_damaging},
-                riot_id: {riot_id},
-            }};",
-        );
+            let declaration = format!(
+                "pub static {name_ssnake}_{riot_id}: CachedItem = CachedItem {{
+                    gold: {price},
+                    prettified_stats: &[{prettified_stats}],
+                    damage_type: DamageType::{damage_type},
+                    attributes: Attrs::{attributes:?},
+                    metadata: {metadata},
+                    range_closure: {range_closure},
+                    melee_closure: {melee_closure},
+                    stats: CachedItemStats {{ {stats} }},
+                    is_simulated: {is_simulated},
+                    is_damaging: {is_damaging},
+                    riot_id: {riot_id},
+                }};"
+            );
 
-        let generator =
-            CwdPath::get_generator(SrcFolder::Items, name_ssnake.to_lowercase()).await?;
+            let generator =
+                CwdPath::get_generator(SrcFolder::Items, name_ssnake.to_lowercase()).await?;
 
-        Ok(ItemResult {
-            riot_id,
-            formula: declaration
-                .invoke_rustfmt(70)
-                .clear_suffixes()
-                .highlight_rust()
-                .replace_const(),
-            declaration,
-            generator,
-            name_ssnake,
-            name_normalized,
-            name: item.name,
-        })
-    })
-    .await?
-    .into_iter()
-    .map(|(_, value)| value)
-    .collect::<Vec<_>>();
+            Ok(ItemResult {
+                riot_id,
+                formula: declaration
+                    .invoke_rustfmt(70)
+                    .clear_suffixes()
+                    .highlight_rust()
+                    .replace_const(),
+                declaration,
+                generator,
+                name_ssnake,
+                name_normalized,
+                name: item.name,
+            })
+        },
+        async |futures| {
+            let mut result = Vec::new();
+            for future in futures {
+                let (_, data) = future.await?;
+                result.push(data);
+            }
+            Ok(result)
+        },
+    )
+    .await?;
 
     data.sort_by(|a, b| a.name.cmp(&b.name));
 
@@ -234,19 +246,11 @@ pub async fn generate_items() -> GeneratorFn {
         format!("pub static {name}: [{vtype}; {len}] = [")
     });
 
-    let mut offset = 0;
-    let mut formula_offsets = Vec::with_capacity(len);
-    let mut generator_offsets = Vec::with_capacity(len);
-
     let mut block = String::new();
 
-    let mut record_offsets = |into: &mut Vec<_>, value: &str| {
-        let start = offset;
-        let end = offset + value.len();
-        block.push_str(value);
-        into.push((start, end));
-        offset = end;
-    };
+    let mut tracker = Tracker::new(&mut block);
+    let mut formula_offsets = Vec::with_capacity(len);
+    let mut generator_offsets = Vec::with_capacity(len);
 
     let mut item_id_enum_match_arms = Vec::new();
     let mut item_id_enum_fields = Vec::new();
@@ -267,8 +271,8 @@ pub async fn generate_items() -> GeneratorFn {
         item_id_to_name.push_str(&format!("{name:?},"));
         item_cache.push_str(&format!("&{name_ssnake}_{riot_id},"));
         item_declarations.push_str(&declaration);
-        record_offsets(&mut generator_offsets, &generator);
-        record_offsets(&mut formula_offsets, &formula);
+        tracker.record_into(&generator, &mut generator_offsets);
+        tracker.record_into(&formula, &mut formula_offsets);
     }
 
     let fields = item_id_enum_fields.join(",");

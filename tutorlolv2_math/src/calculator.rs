@@ -1,7 +1,6 @@
 use super::{helpers::*, model::*};
-use crate::{AbilityLevels, L_CENM, L_MSTR, L_TWRD, RiotFormulas, riot::*};
+use crate::{AbilityLevels, L_CENM, L_MSTR, RiotFormulas, riot::*};
 use smallvec::SmallVec;
-use std::mem::MaybeUninit;
 use tutorlolv2_gen::{
     AdaptativeType, AttackType, BitSet, CHAMPION_CACHE, ChampionId, ITEM_CACHE, ItemId,
     NUMBER_OF_ITEMS, RuneId,
@@ -392,7 +391,7 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
     let mut ability_modifiers = AbilityModifiers::default();
     let champion_raw_stats: Stats<f32> = champion_raw_stats_i32.into();
 
-    let current_player_runes = runes_slice_to_bit_array(&current_player_raw_runes);
+    let current_player_runes = get_damaging_runes(&current_player_raw_runes);
     let current_player_cache =
         unsafe { CHAMPION_CACHE.get_unchecked(current_player_champion_id as usize) };
 
@@ -452,7 +451,7 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
         );
     }
 
-    let current_player_items = items_slice_to_bit_array(&current_player_raw_items);
+    let current_player_items = get_damaging_items(&current_player_raw_items);
     let (items_data, items_to_merge) = get_items_data(&current_player_items, attack_type);
 
     let eval_data = DamageEvalData {
@@ -529,7 +528,7 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
             } = player;
 
             let e_stats: SimpleStats<f32> = e_raw_stats.into();
-            let e_items = items_slice_to_bit_array(&e_raw_items);
+            let e_items = get_damaging_items(&e_raw_items);
             let e_base_stats = SimpleStats::base_stats(e_champion_id, e_level, e_is_mega_gnar);
             let mut full_state = get_enemy_state(
                 EnemyState {
@@ -580,10 +579,8 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
         })
         .collect::<SmallVec<[OutputEnemy; L_CENM]>>();
 
-    let mut monster_results = MaybeUninit::<[MonsterDamage; L_MSTR]>::uninit();
-    let monster_result_ptr = monster_results.as_mut_ptr();
-
-    for (index, (armor, magic_resist)) in MONSTER_RESISTS.into_iter().enumerate() {
+    let monster_damages = std::array::from_fn(|i| {
+        let (armor, magic_resist) = MONSTER_RESISTS[i];
         let full_state = get_enemy_state(
             EnemyState {
                 base_stats: SimpleStats::<f32> {
@@ -603,43 +600,34 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
         );
         let eval_ctx = get_eval_ctx(&self_state, &full_state);
         let damages = get_damages(&eval_ctx, &eval_data, Modifiers::default());
-        unsafe {
-            core::ptr::addr_of_mut!((*monster_result_ptr)[index]).write(MonsterDamage {
-                attacks: damages.attacks,
-                abilities: damages.abilities,
-                items: damages.items,
-            });
+        MonsterDamage {
+            attacks: damages.attacks,
+            abilities: damages.abilities,
+            items: damages.items,
         }
-    }
+    });
 
-    let mut tower_damages_results = MaybeUninit::<[i32; _]>::uninit();
-    {
-        let tower_damages_ptr = tower_damages_results.as_mut_ptr();
-        let mut i = 0;
-        while i < L_TWRD {
-            let formula = |pen_percent, pen_flat| {
-                (current_player_base_stats.attack_damage
-                    + current_player_bonus_stats.attack_damage
-                    + champion_stats.ability_power
-                        * 0.6
-                        * (100.0 / (140.0 + (-25.0 + 50.0 * i as f32) * pen_percent - pen_flat)))
-                    as i32
-            };
-            unsafe {
-                core::ptr::addr_of_mut!((*tower_damages_ptr)[i]).write(match adaptative_type {
-                    AdaptativeType::Physical => formula(
-                        champion_stats.armor_penetration_percent,
-                        champion_stats.armor_penetration_flat,
-                    ),
-                    AdaptativeType::Magic => formula(
-                        champion_stats.magic_penetration_percent,
-                        champion_stats.magic_penetration_flat,
-                    ),
-                });
-            };
-            i += 1;
-        }
-    }
+    let tower_damage_formula = |plates, pen_percent, pen_flat| {
+        (current_player_base_stats.attack_damage
+            + current_player_bonus_stats.attack_damage
+            + champion_stats.ability_power
+                * 0.6
+                * (100.0 / (140.0 + (-25.0 + 50.0 * plates) * pen_percent - pen_flat)))
+            as i32
+    };
+
+    let tower_damages = std::array::from_fn(|i| match adaptative_type {
+        AdaptativeType::Physical => tower_damage_formula(
+            i as f32,
+            champion_stats.armor_penetration_percent,
+            champion_stats.armor_penetration_flat,
+        ),
+        AdaptativeType::Magic => tower_damage_formula(
+            i as f32,
+            champion_stats.magic_penetration_percent,
+            champion_stats.magic_penetration_flat,
+        ),
+    });
 
     Some(OutputGame {
         current_player: OutputCurrentPlayer {
@@ -656,7 +644,7 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
         runes_meta: eval_data.runes.metadata,
         abilities_to_merge: current_player_cache.merge_data,
         items_to_merge: items_to_merge,
-        monster_damages: unsafe { monster_results.assume_init() },
-        tower_damages: unsafe { tower_damages_results.assume_init() },
+        monster_damages,
+        tower_damages,
     })
 }

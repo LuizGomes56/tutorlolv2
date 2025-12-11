@@ -1,9 +1,15 @@
 use crate::{
-    _lib::{CwdPath, Generated, GeneratorFn, SrcFolder, parallel_task, push_end},
-    scripts::{Ability, Champion, MerakiChampionStats, StringExt, USE_SUPER},
+    CwdPath, Generated, GeneratorFn, MayFail, SrcFolder, Tracker, parallel_task, push_end,
+    scripts::{
+        StringExt, USE_SUPER,
+        model::{Ability, Champion, MerakiChampionStats},
+    },
 };
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
-use std::{cmp::Ordering, collections::HashMap};
+use std::{
+    cmp::Ordering,
+    collections::{BTreeMap, HashMap},
+};
 use tutorlolv2_types::AbilityLike;
 
 struct DeclaredAbility {
@@ -204,7 +210,7 @@ pub async fn generate_champions() -> GeneratorFn {
     }
 
     let data = parallel_task(
-        64,
+        128,
         "internal/champions",
         async |champion_id, champion: Champion| {
             println!("Building: ChampionId({champion_id:?})");
@@ -281,23 +287,28 @@ pub async fn generate_champions() -> GeneratorFn {
                 champion_combos.push(result);
             }
 
-            let positions = format!("&[{positions}]");
-            let champion_name = format!("{name:?}");
-            let champion_id = format!("{champion_id_upper}");
-
             Ok(ChampionResult {
                 ability_declarations,
-                name: champion_name,
-                champion_id_upper: champion_id,
+                name,
+                champion_id_upper,
                 declaration,
-                positions,
+                positions: format!("&[{positions}]"),
                 generator,
             })
+        },
+        async |futures| {
+            let mut result = BTreeMap::new();
+            for future in futures {
+                let (file_name, data) = future.await?;
+                result.insert(file_name, data);
+            }
+            Ok(result)
         },
     )
     .await?;
 
     let len = data.len();
+    let recommendations = get_recommendations(len).await?;
 
     let [
         mut champion_cache,
@@ -318,20 +329,12 @@ pub async fn generate_champions() -> GeneratorFn {
         format!("pub static {name}: [{vtype}; {len}] = [")
     });
 
-    let mut offset = 0;
+    let mut block = String::new();
+
+    let mut tracker = Tracker::new(&mut block);
     let mut formula_offsets = Vec::with_capacity(len);
     let mut generator_offsets = Vec::with_capacity(len);
     let mut ability_offsets = Vec::with_capacity(len);
-
-    let mut block = String::new();
-
-    let mut record_offsets = |into: &mut Vec<_>, value: &str| {
-        let start = offset;
-        let end = offset + value.len();
-        block.push_str(value);
-        into.push((start, end));
-        offset = end;
-    };
 
     let mut champion_declarations = String::new();
 
@@ -362,7 +365,7 @@ pub async fn generate_champions() -> GeneratorFn {
         champion_id,
         ChampionResult {
             declaration,
-            name: champion_name,
+            name,
             positions,
             ability_declarations,
             generator,
@@ -383,23 +386,29 @@ pub async fn generate_champions() -> GeneratorFn {
         language_arms.push(name_alias);
 
         champion_declarations.push_str(&declaration);
-        champion_id_to_name.push_str(&format!("{champion_name},"));
+        champion_id_to_name.push_str(&format!("{name:?},"));
         champion_positions.push_str(&(positions + ","));
         champion_id_enum.push_str(&(normalized_id + ","));
         champion_cache.push_str(&format!("&{champion_id_upper},"));
 
-        record_offsets(&mut generator_offsets, &generator);
-        record_offsets(
-            &mut formula_offsets,
+        tracker.record_into(&generator, &mut generator_offsets);
+        tracker.record_into(
             &declaration
                 .invoke_rustfmt(80)
                 .clear_suffixes()
                 .highlight_rust(),
+            &mut formula_offsets,
         );
 
-        for (_, formula) in ability_declarations {
-            record_offsets(&mut ability_offsets, &formula);
-        }
+        let abilities = ability_declarations
+            .into_iter()
+            .map(|(ability_id, formula)| {
+                let (start, end) = tracker.record(&formula);
+                (ability_id, (start, end))
+            })
+            .collect::<Vec<_>>();
+
+        ability_offsets.push(abilities);
     }
 
     let champion_name_to_id = format!(
@@ -419,15 +428,18 @@ pub async fn generate_champions() -> GeneratorFn {
         "];",
     );
 
-    let imports = [
-        USE_SUPER,
-        &champion_id_enum,
-        &champion_declarations,
-        &champion_name_to_id,
-        &champion_cache,
-    ]
-    .concat();
-    CwdPath::fwrite(SrcFolder::Champions.import_file(), imports).await??;
+    CwdPath::fwrite(
+        SrcFolder::Champions.import_file(),
+        [
+            USE_SUPER,
+            &champion_id_enum,
+            &champion_declarations,
+            &champion_name_to_id,
+            &champion_cache,
+        ]
+        .concat(),
+    )
+    .await??;
 
     let callback = move |index: usize| {
         let add_offsets = |list: Vec<_>, target: &mut String| {
@@ -439,13 +451,21 @@ pub async fn generate_champions() -> GeneratorFn {
             push_end([target], "];");
         };
 
-        for (list, target) in [
-            (ability_offsets, &mut champion_abilities),
-            (generator_offsets, &mut champion_generator),
-            (formula_offsets, &mut champion_formulas),
-        ] {
-            add_offsets(list, target);
+        add_offsets(generator_offsets, &mut champion_generator);
+        add_offsets(formula_offsets, &mut champion_formulas);
+
+        for ability in ability_offsets {
+            let mut recorded_abilities = Vec::new();
+            for (ability_id, (start, end)) in ability {
+                let literal = ability_id.as_literal();
+                let new_start = start + index;
+                let new_end = end + index;
+                recorded_abilities.push(format!("({literal}, ({new_start}, {new_end}))"));
+            }
+            let result = recorded_abilities.join(",");
+            champion_abilities.push_str(&format!("&[{result}],"));
         }
+        push_end([&mut champion_abilities], "];");
 
         let exports = [
             champion_id_enum,
@@ -454,6 +474,7 @@ pub async fn generate_champions() -> GeneratorFn {
             champion_generator,
             champion_abilities,
             champion_formulas,
+            recommendations,
         ]
         .concat();
 
@@ -461,4 +482,44 @@ pub async fn generate_champions() -> GeneratorFn {
     };
 
     Ok(Box::new(callback))
+}
+
+pub async fn get_recommendations(len: usize) -> MayFail<String> {
+    let enum_ids = ["ItemId", "RuneId"];
+    let declaration = ["RECOMMENDED_ITEMS", "RECOMMENDED_RUNES"];
+
+    let mut globals = std::array::from_fn::<_, 2, _>(|i| {
+        let enumv = enum_ids[i];
+        let var = declaration[i];
+        format!("pub static {var}: [[&[{enumv}]; 5]; {len}] = [")
+    });
+
+    let json = CwdPath::deserialize::<BTreeMap<String, HashMap<String, [Vec<String>; 2]>>>(
+        "internal/scraper/data.json",
+    )
+    .await?;
+
+    for (_, data) in json {
+        push_end(globals.each_mut(), "[");
+        for (_, recommendations) in data.into_iter() {
+            for (i, value) in std::array::from_fn::<_, 2, _>(|j| {
+                let venum = enum_ids[j];
+                let result = recommendations[j]
+                    .iter()
+                    .map(|element| format!("{venum}::{element}"))
+                    .collect::<Vec<_>>()
+                    .join(",");
+                format!("&[{result}]")
+            })
+            .into_iter()
+            .enumerate()
+            {
+                globals[i].push_str(&format!("{value},"));
+            }
+        }
+        push_end(globals.each_mut(), "],");
+    }
+
+    push_end(globals.each_mut(), "];");
+    Ok(globals.concat())
 }

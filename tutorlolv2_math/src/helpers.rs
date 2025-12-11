@@ -284,7 +284,7 @@ pub fn get_items_data(
     (DamageKind { metadata, closures }, multi_closure_indices)
 }
 
-pub const fn runes_slice_to_bit_array(input: &[RuneId]) -> BitSet {
+pub const fn get_damaging_runes(input: &[RuneId]) -> BitSet {
     let mut out = BitSet::EMPTY;
     let mut i = 0;
     while i < input.len() {
@@ -297,7 +297,7 @@ pub const fn runes_slice_to_bit_array(input: &[RuneId]) -> BitSet {
     out
 }
 
-pub const fn items_slice_to_bit_array(input: &[ItemId]) -> BitSet {
+pub const fn get_damaging_items(input: &[ItemId]) -> BitSet {
     let mut out = BitSet::EMPTY;
     let mut i = 0;
     while i < input.len() {

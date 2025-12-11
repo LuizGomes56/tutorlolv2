@@ -1,6 +1,6 @@
 use actix_web::{HttpResponse, Responder, get};
 
-static EXPORTED_CODE: &str = include_str!("../../../../tutorlolv2_exports/src/export_code.rs");
+static EXPORTED_CODE: &str = include_str!("../../../../tutorlolv2_exports/src/exports.rs");
 
 #[get("/comptime")]
 pub async fn static_comptime() -> impl Responder {

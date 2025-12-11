@@ -1,39 +1,50 @@
-pub mod export_champions;
-pub mod export_items;
-pub mod export_runes;
-pub mod utils;
+use crate::scripts::utils::{add_f32_postfix, clean_math_expr, clear_suffixes};
+use tutorlolv2_fmt::{highlight_rust, invoke_rustfmt};
 
 pub mod champions;
 pub mod items;
+pub mod model;
 pub mod runes;
+pub mod utils;
 
-pub use crate::*;
-pub use export_champions::*;
-pub use export_items::*;
-pub use export_runes::*;
-pub use rayon::iter::{IntoParallelIterator, ParallelIterator};
-pub use serde::Deserialize;
-pub use std::{
-    collections::{BTreeMap, HashMap},
-    fs,
-};
-pub use tutorlolv2_fmt::*;
-pub use utils::*;
+pub static USE_SUPER: &str = "use super::*;";
 
-pub static CRITICAL_STRIKE: &str = r#"pub static CRITICAL_STRIKE: DamageExpression = DamageExpression {
-    attributes: Attrs::OnhitMax,
-    damage_type: DamageType::Physical,
-    minimum_damage: |ctx| {
-        ctx.ad * ctx.crit_damage / 100.0
-    },
-    maximum_damage: zero,
+pub static TOWER_DAMAGE: &str = r#"intrinsic const TOWER_DAMAGE {
+    damage_type: RiotFormulas::adaptative_type(
+        bonus_stats.attack_damage,
+        current_stats.ability_power,
+    ),
+    damage: intrinsic |plates, percent, flat| {
+        base_stats.attack_damage
+            + bonus_stats.attack_damage
+            + current_stats.ability_power
+                * 0.6
+                * (100 / (140 + (-25 + 50 * plates) * percent - flat))
+    }
+}"#;
+
+pub static ONHIT_EFFECT: &str = r#"intrinsic const ONHIT_EFFECT {
+    damage_type: DamageType::Mixed,
+    definition: |damage, [min, max], attr| match attr {
+        Attrs::OnhitMin | Attrs::AreaOnhitMin => *min += damage,
+        Attrs::OnhitMax | Attrs::AreaOnhitMax => *max += damage,
+        Attrs::Onhit | Attrs::AreaOnhit => {
+            *min += damage;
+            *max += damage;
+        }
+    }
 };"#;
 
-pub static BASIC_ATTACK: &str = r#"pub static BASIC_ATTACK: DamageExpression = DamageExpression {
+pub static CRITICAL_STRIKE: &str = r#"intrinsic const CRITICAL_STRIKE {
+    attributes: Attrs::OnhitMax,
+    damage_type: DamageType::Physical,
+    damage: |ctx| ctx.ad * ctx.crit_damage / 100.0,
+};"#;
+
+pub static BASIC_ATTACK: &str = r#"intrinsic const BASIC_ATTACK {
     attributes: Attrs::OnhitMin,
     damage_type: DamageType::Physical,
-    minimum_damage: |ctx| ctx.ad,
-    maximum_damage: zero,
+    damage: |ctx| ctx.ad,
 };"#;
 
 pub trait StringExt {
@@ -41,7 +52,6 @@ pub trait StringExt {
     fn clear_suffixes(&self) -> String;
     fn invoke_rustfmt(&self, width: usize) -> String;
     fn replace_const(&self) -> String;
-    fn read_as_path(&self) -> String;
     fn to_screaming_snake_case(&self) -> String;
     fn remove_special_chars(&self) -> String;
     fn clean_math_expr(&self) -> String;
@@ -66,9 +76,6 @@ impl StringExt for str {
     }
     fn replace_const(&self) -> String {
         self.replacen("class=\"type\"", "class=\"constant\"", 1)
-    }
-    fn read_as_path(&self) -> String {
-        std::fs::read_to_string(cwd!(self)).unwrap()
     }
     fn remove_special_chars(&self) -> String {
         tutorlolv2_fmt::remove_special_chars(self)

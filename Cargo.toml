@@ -15,10 +15,6 @@ debug = false
 incremental = false
 
 [dependencies]
-actix-web = { version = "4.11.0", default-features = false, features = [
-    "http2",
-    "macros",
-] }
 tutorlolv2_avif = { path = "tutorlolv2_avif" }
 tutorlolv2_build = { path = "tutorlolv2_build" }
 tutorlolv2_dev = { path = "tutorlolv2_dev" }

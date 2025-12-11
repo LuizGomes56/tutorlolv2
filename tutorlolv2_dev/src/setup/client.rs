@@ -215,13 +215,18 @@ impl HttpClient {
     }
 
     pub async unsafe fn update_env_version(&self) -> MayFail {
+        let version = self.fetch_version().await?;
+
+        if version == ENV_CONFIG.lol_version {
+            return Ok(());
+        }
+
         let target = format!(
             "cache_{old_version}",
             old_version = ENV_CONFIG.lol_version.replace(".", "_")
         );
         std::fs::rename("cache", target)?;
         setup_project_folders()?;
-        let version = self.fetch_version().await?;
         Ok(unsafe { set_env_var("LOL_VERSION", &version)? })
     }
 
@@ -470,8 +475,6 @@ impl HttpClient {
 
                     tokio::task::spawn_blocking(move || {
                         let run_task = || -> MayFail {
-                            let mut result = HashMap::<String, _>::default();
-
                             let html = String::from_utf8(read_file(&cache_path)?)?;
 
                             let document = Html::parse_document(&html);
@@ -510,8 +513,7 @@ impl HttpClient {
                             push_alt_attr(&mut items, &full_build);
                             push_alt_attr(&mut items, &situational_build);
 
-                            result.insert(String::from(position), (items, runes));
-                            result.into_file(internal_path)
+                            [items, runes].into_file(internal_path)
                         };
                         match run_task() {
                             Ok(_) => (),
@@ -528,16 +530,18 @@ impl HttpClient {
             }
         }
 
-        let mut results = HashMap::<String, HashMap<String, (Vec<String>, Vec<String>)>>::new();
+        type Inner = [Vec<String>; 2];
+        type Data = HashMap<&'static str, Inner>;
+        type FinalData = HashMap<String, Data>;
 
-        fn wait_ready(
-            raw_path: impl AsRef<Path>,
-        ) -> MayFail<HashMap<String, (Vec<String>, Vec<String>)>> {
+        let mut results = FinalData::new();
+
+        fn wait_ready(raw_path: impl AsRef<Path>) -> MayFail<Inner> {
             let mut attempts = 0;
             loop {
                 let resolved_path = resolve_path(&raw_path)?;
                 let path = resolved_path.as_ref();
-                match HashMap::<String, (Vec<String>, Vec<String>)>::from_file(path) {
+                match Inner::from_file(path) {
                     Ok(m) => return Ok(m),
                     Err(e) => {
                         if !path.exists() {
@@ -558,12 +562,14 @@ impl HttpClient {
         }
 
         for champion_id in champion_ids {
+            let mut positions = HashMap::new();
             for position in ["top", "jungle", "mid", "adc", "support"] {
                 let data = wait_ready(format!(
                     "internal/scraper/builds/{position}/{champion_id}.json"
                 ))?;
-                results.insert(champion_id.clone(), data);
+                positions.insert(position, data);
             }
+            results.insert(champion_id.clone(), positions);
         }
 
         results.into_file("internal/scraper/data.json")
