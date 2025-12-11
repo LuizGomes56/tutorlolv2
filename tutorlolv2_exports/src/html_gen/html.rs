@@ -12,8 +12,8 @@ pub trait HtmlExt {
     fn footer(&mut self);
 }
 
-pub fn offset_to_str(offsets: (u32, u32)) -> &'static str {
-    unsafe { MEGA_BLOCK.get_unchecked(offsets.0 as usize..offsets.1 as usize) }
+pub fn offset_to_str((start, end): (u32, u32)) -> &'static str {
+    unsafe { MEGA_BLOCK.get_unchecked(start as usize..end as usize) }
 }
 
 pub enum Source {
@@ -38,18 +38,16 @@ impl HtmlExt for String {
 
     fn json_code(&self) -> String {
         json_html(&json_pretty(
-            &std::fs::read_to_string(self).unwrap_or_else(|_| "{}".to_string()),
+            &std::fs::read_to_string(self).unwrap_or("{}".to_string()),
         ))
     }
 
     fn code_section(&mut self, comment: &str, code: &str) {
         self.push_str(&format!(
             r#"<section style="background: #1a1a1a; padding: 25px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); border: 1px solid #333;">
-                <h2 style="font-size: 1.5rem; font-weight: 600; margin: 0 0 20px 0; color: white; border-bottom: 2px solid #333; padding-bottom: 10px;">{}</h2>
-                <code>{}</code>
+                <h2 style="font-size: 1.5rem; font-weight: 600; margin: 0 0 20px 0; color: white; border-bottom: 2px solid #333; padding-bottom: 10px;">{comment}</h2>
+                <code>{code}</code>
             </section>"#,
-            comment,
-            code
         ));
     }
 

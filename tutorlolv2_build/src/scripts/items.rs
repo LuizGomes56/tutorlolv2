@@ -22,7 +22,7 @@ fn declare_item(item: &Item) -> DeclaredItem {
         ..
     } = item;
 
-    let name = name.normalize();
+    let name = name.pascal_case();
 
     let metadata = format!(
         "TypeMetadata {{ 
@@ -132,7 +132,7 @@ pub async fn generate_items() -> GeneratorFn {
         declaration: String,
         name: String,
         name_ssnake: String,
-        name_normalized: String,
+        name_pascal: String,
         generator: String,
     }
 
@@ -157,7 +157,7 @@ pub async fn generate_items() -> GeneratorFn {
             } = item;
 
             let name_ssnake = name.to_ssnake();
-            let name_normalized = name.normalize();
+            let name_pascal = name.pascal_case();
             let prettified_stats = prettified_stats
                 .iter()
                 .map(|stat| format!("StatName::{stat:?}"))
@@ -205,7 +205,7 @@ pub async fn generate_items() -> GeneratorFn {
                 declaration,
                 generator,
                 name_ssnake,
-                name_normalized,
+                name_pascal,
                 name: item.name,
             })
         },
@@ -257,13 +257,13 @@ pub async fn generate_items() -> GeneratorFn {
         declaration,
         name,
         name_ssnake,
-        name_normalized,
+        name_pascal,
         generator,
     } in data
     {
         item_id_to_riot_id.push_str(&format!("{riot_id},"));
-        item_id_enum_match_arms.push(format!("{riot_id} => Some(Self::{name_normalized})"));
-        item_id_enum_fields.push(name_normalized);
+        item_id_enum_match_arms.push(format!("{riot_id} => Some(Self::{name_pascal})"));
+        item_id_enum_fields.push(name_pascal);
         item_id_to_name.push_str(&format!("{name:?},"));
         item_cache.push_str(&format!("&{name_ssnake}_{riot_id},"));
         item_declarations.push_str(&declaration);

@@ -373,14 +373,14 @@ pub async fn generate_champions() -> GeneratorFn {
         },
     ) in data
     {
-        let normalized_id = champion_id.normalize();
+        let pascal_id = champion_id.pascal_case();
         let name_alias = languages_map
             .get(&champion_id)
             .ok_or(format!(
                 "Failed to recover {champion_id:?} from languages map"
             ))?
             .into_iter()
-            .map(|alias| format!("{alias:?} => ChampionId::{normalized_id}"))
+            .map(|alias| format!("{alias:?} => ChampionId::{pascal_id}"))
             .collect::<Vec<String>>()
             .join(",");
         language_arms.push(name_alias);
@@ -388,7 +388,7 @@ pub async fn generate_champions() -> GeneratorFn {
         champion_declarations.push_str(&declaration);
         champion_id_to_name.push_str(&format!("{name:?},"));
         champion_positions.push_str(&(positions + ","));
-        champion_id_enum.push_str(&(normalized_id + ","));
+        champion_id_enum.push_str(&(pascal_id + ","));
         champion_cache.push_str(&format!("&{champion_id_upper},"));
 
         tracker.record_into(&generator, &mut generator_offsets);

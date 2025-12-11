@@ -233,8 +233,8 @@ pub trait StringExt: AsRef<str> {
         out
     }
 
-    fn normalize(&self) -> String {
-        tutorlolv2_fmt::normalize(self.as_ref())
+    fn pascal_case(&self) -> String {
+        tutorlolv2_fmt::pascal_case(self.as_ref())
     }
 
     fn is_math_expr(&self) -> bool {
