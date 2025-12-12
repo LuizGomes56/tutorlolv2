@@ -1,18 +1,21 @@
 use super::model::*;
 use crate::{L_ITEM, L_RUNE, L_SIML, RiotFormulas, riot::*};
+use core::mem::MaybeUninit;
 use smallvec::SmallVec;
-use std::mem::MaybeUninit;
 use tutorlolv2_gen::*;
 use tutorlolv2_types::{AbilityLike, AbilityName};
 
+/// Rune [`RuneId::AxiomArcanist`] gives +12% bonus damage to `R`
+/// if it deals single target damage. The -3% penalty is not yet
+/// supported for area-damaging ultimates
 pub const AXIOM_ARCANIST_BONUS_DAMAGE: f32 = 1.12;
 pub const COUP_DE_GRACE_AND_CUTDOWN_BONUS_DAMAGE: f32 = 1.08;
 /// By 06/07/2025 Earth dragons give +5% resists
-/// #![manual_impl]
 pub const EARTH_DRAGON_MULTIPLIER: f32 = 0.05;
 /// By 06/07/2025 Fire dragons give +3% bonus attack stats
-/// #![manual_impl]
 pub const FIRE_DRAGON_MULTIPLIER: f32 = 0.03;
+/// Despite the usual maximum level being 18, in
+/// URF you can reach up to this constant's value
 pub const URF_MAX_LEVEL: usize = 30;
 
 pub const fn get_last_stand(missing_health: f32) -> f32 {
@@ -27,7 +30,6 @@ pub const fn get_fire_multiplier(x: u16) -> f32 {
     1.0 + x as f32 * FIRE_DRAGON_MULTIPLIER
 }
 
-/// Ordered as: health, armor, magic_resist, attack_damage, mana
 pub static BASE_STATS: [[BasicStats<f32>; URF_MAX_LEVEL]; NUMBER_OF_CHAMPIONS] = {
     let mut base_stats = [[BasicStats::default(); URF_MAX_LEVEL]; NUMBER_OF_CHAMPIONS];
     let mut champion_index = 0;
@@ -116,6 +118,7 @@ macro_rules! bonus_stats {
 
 pub use bonus_stats;
 
+///
 pub const fn has_item<const N: usize>(origin: &BitSet, check_for: [ItemId; N]) -> bool {
     let mut i = 0;
     while i < N {
@@ -127,7 +130,7 @@ pub const fn has_item<const N: usize>(origin: &BitSet, check_for: [ItemId; N]) -
     false
 }
 
-pub const fn const_clamp(value: u8, range: std::ops::RangeInclusive<u8>) -> usize {
+pub const fn const_clamp(value: u8, range: core::ops::RangeInclusive<u8>) -> usize {
     let min = *range.start();
     let max = *range.end();
     ((if value < min {
@@ -471,10 +474,7 @@ pub const fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> E
         thresh_stacks: 1.0,
         kindred_stacks: 1.0,
         belveth_stacks: 1.0,
-        adaptative_damage: match RiotFormulas::adaptative_type(
-            self_state.bonus_stats.attack_damage,
-            self_state.current_stats.ability_power,
-        ) {
+        adaptative_damage: match self_state.adaptative_type {
             AdaptativeType::Physical => e_state.armor_values.modifier,
             AdaptativeType::Magic => e_state.magic_values.modifier,
         },

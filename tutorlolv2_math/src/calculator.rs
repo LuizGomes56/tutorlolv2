@@ -17,6 +17,9 @@ pub const MONSTER_RESISTS: [(f32, f32); L_MSTR] = [
     (20f32, 20f32),
 ];
 
+/// Counts how many items have either armor or magic resistence
+/// in its stats. Items that give those attributes conditionally
+/// such as [`ItemId::BlackCleaver`] are also included.
 pub const NUMBER_OF_ITEMS_WITH_PEN: usize = {
     let mut i = 0;
     let mut j = 0;
@@ -44,6 +47,9 @@ pub const NUMBER_OF_ITEMS_WITH_PEN: usize = {
     j
 };
 
+/// Array with [`ItemId`] definition of all items that have some
+/// kind of armor or magic penetration, including those that give
+/// these attributes conditionally such as [`ItemId::BlackCleaver`]
 pub const ITEMS_WITH_PEN: [ItemId; NUMBER_OF_ITEMS_WITH_PEN] = {
     let mut i = 0;
     let mut j = 0;
@@ -437,15 +443,19 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
     let enemy_earth_dragons = dragons.enemy_earth_dragons;
     let champion_raw_stats: Stats<f32> = champion_raw_stats_i32.into();
 
-    let current_player_runes = get_damaging_runes(&current_player_raw_runes);
     let current_player_cache =
         unsafe { CHAMPION_CACHE.get_unchecked(current_player_champion_id as usize) };
 
     let current_player_base_stats =
         BasicStats::base_stats(current_player_champion_id, level, is_mega_gnar);
 
+    let mut champion_stats = match infer_stats {
+        true => champion_raw_stats,
+        false => infer_champion_stats(&current_player_raw_items, dragons),
+    };
+
     let mut current_player_bonus_stats = bonus_stats!(
-        BasicStats::<f32>(champion_raw_stats, current_player_base_stats) {
+        BasicStats::<f32>(champion_stats, current_player_base_stats) {
             armor,
             health,
             attack_damage,
@@ -456,13 +466,9 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
 
     let adaptative_type = RiotFormulas::adaptative_type(
         current_player_bonus_stats.attack_damage,
-        champion_raw_stats.ability_power,
-    );
-
-    let mut champion_stats = match infer_stats {
-        true => champion_raw_stats,
-        false => infer_champion_stats(&current_player_raw_items, dragons),
-    };
+        champion_stats.ability_power,
+    )
+    .unwrap_or(current_player_cache.adaptative_type);
 
     let attack_type = current_player_cache.attack_type;
 
@@ -495,6 +501,7 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
         &item_exceptions,
     );
 
+    let current_player_runes = get_damaging_runes(&current_player_raw_runes);
     let current_player_items = get_damaging_items(&current_player_raw_items);
     let (items_data, items_to_merge) = get_items_data(&current_player_items, attack_type);
 
@@ -518,6 +525,7 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
         current_stats: champion_stats.into(),
         bonus_stats: current_player_bonus_stats,
         base_stats: current_player_base_stats,
+        adaptative_type,
         ability_levels,
         level,
     };
@@ -588,7 +596,7 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
         })
         .collect::<SmallVec<[OutputEnemy; L_CENM]>>();
 
-    let monster_damages = std::array::from_fn(|i| {
+    let monster_damages = core::array::from_fn(|i| {
         let (armor, magic_resist) = MONSTER_RESISTS[i];
         let full_state = get_enemy_state(
             EnemyState {
@@ -625,7 +633,7 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
             as i32
     };
 
-    let tower_damages = std::array::from_fn(|i| match adaptative_type {
+    let tower_damages = core::array::from_fn(|i| match adaptative_type {
         AdaptativeType::Physical => tower_damage_formula(
             i as f32,
             champion_stats.armor_penetration_percent,

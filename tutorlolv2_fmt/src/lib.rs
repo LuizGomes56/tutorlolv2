@@ -7,6 +7,8 @@ use std::{
 };
 use synoptic::{Highlighter, TokOpt};
 
+/// Takes an HTML string as input and minifies it, returning a sequence
+/// of bytes. Text defined inside tags `<pre>` and `<code>` are ignored
 pub fn minify_html(html: &mut str) -> Vec<u8> {
     let mut result = Vec::new();
     let mut html_cursor = Cursor::new(html.as_bytes());
@@ -14,16 +16,25 @@ pub fn minify_html(html: &mut str) -> Vec<u8> {
     result
 }
 
+/// Encodes some data using `zstd` at the maximum level, which is 9
+/// Panics if the input is invalid, or if the compression fails
 pub fn encode_zstd_9(bytes: &[u8]) -> Vec<u8> {
     zstd::encode_all(bytes, 9).unwrap()
 }
 
+/// Encodes some data using `brotli` at the maximum level, which is 11.
+/// Panics if the input is invalid, or if the compression fails
 pub fn encode_brotli_11(bytes: &[u8]) -> Vec<u8> {
     let mut encoder = brotli2::write::BrotliEncoder::new(Vec::new(), 11);
     encoder.write_all(bytes).unwrap();
     encoder.finish().unwrap()
 }
 
+/// Converts the input [`str`] to pascal case
+/// ```rs
+/// assert_eq!(pascal_case("hello world"), "HelloWorld");
+/// assert_eq!(pascal_case("Blade of the Ruined King", "BladeOfTheRuinedKing");
+/// ```
 pub fn pascal_case(input: &str) -> String {
     let mut words = Vec::new();
     let mut cur = String::new();
@@ -71,6 +82,9 @@ pub fn pascal_case(input: &str) -> String {
     out
 }
 
+/// Invokes `rustfmt` program to the input [`str`], with some defined `width`,
+/// often set to be `80`. Returns the formatted code or an empty [`String`] if
+/// it emits an error or warning
 pub fn rustfmt(src: &str, width: usize) -> String {
     let try_run = || -> Result<String, Box<dyn std::error::Error>> {
         let mut child = Command::new("rustfmt")
@@ -94,6 +108,7 @@ pub fn rustfmt(src: &str, width: usize) -> String {
     try_run().unwrap_or(src.to_string())
 }
 
+/// Converts Rust code contained in the input [`str`] to an HTML [`String`]
 pub fn rust_html(rust_code: &str) -> String {
     let mut h = Highlighter::new(4);
     h.bounded("comment", r"/\*", r"\*/", false);
@@ -148,6 +163,7 @@ pub fn rust_html(rust_code: &str) -> String {
     format!("<pre>{}</pre>", out)
 }
 
+/// Converts JSON code contained in the input [`str`] to an HTML [`String`]
 pub fn json_html(input: &str) -> String {
     let mut h = Highlighter::new(4);
 
@@ -206,6 +222,7 @@ pub fn json_html(input: &str) -> String {
     format!("<pre>{}</pre>", out)
 }
 
+/// Converts JSON code to a pretty-printed [`String`]. It does not turn it to HTML
 pub fn json_pretty(input: &str) -> String {
     let v: Value = serde_json::from_str(input).unwrap();
     let mut buf = Vec::new();

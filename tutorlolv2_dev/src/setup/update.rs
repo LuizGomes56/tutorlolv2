@@ -132,7 +132,7 @@ pub fn setup_internal_items() -> MayFail {
             maps: riot_item
                 .maps
                 .into_iter()
-                .map(|(map_id, is_available)| (GameMap::from(map_id), is_available))
+                .map(|(map_id, is_available)| (GameMap::from_u8(map_id), is_available))
                 .collect(),
             sell: riot_item.gold.sell,
             riot_id: item_id.to_riot_id(),

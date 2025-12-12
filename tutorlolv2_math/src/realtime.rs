@@ -1,12 +1,15 @@
 use super::{helpers::*, model::*};
 use crate::{L_SIML, L_TEAM, RiotFormulas, riot::*};
+use core::mem::MaybeUninit;
 use smallvec::SmallVec;
-use std::mem::MaybeUninit;
 use tutorlolv2_gen::{
     BitSet, CHAMPION_CACHE, CHAMPION_NAME_TO_ID, ChampionId, DAMAGING_ITEMS, DAMAGING_RUNES,
     GameMap, ITEM_CACHE, ItemId, Position, RuneId, SIMULATED_ITEMS_ENUM, TypeMetadata,
 };
 
+/// Contains the metadata of all items that have their stats compared to choose
+/// which one is best to buy considering the current game state. See [`TypeMetadata`]
+/// for more details
 pub const SIMULATED_ITEMS_METADATA: [TypeMetadata<ItemId>; L_SIML] = {
     let mut siml_items = MaybeUninit::<[TypeMetadata<ItemId>; L_SIML]>::uninit();
     let siml_items_ptr = siml_items.as_mut_ptr();
@@ -26,6 +29,12 @@ pub const SIMULATED_ITEMS_METADATA: [TypeMetadata<ItemId>; L_SIML] = {
     unsafe { siml_items.assume_init() }
 };
 
+/// Receives a reference to the current player's game, defined by the struct [`RiotRealtime`]
+/// and returns a new [`Option<Realtime>`], which contains all the information that could be
+/// extracted from the input struct. See [`Realtime`] for more information
+/// This function assumes that the data in the input struct is valid, and does several
+/// memory assumptions and use unsafe blocks to avoid unnecessary branches, making this
+/// code faster, but requires the use of unsafe features
 pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
     let RiotRealtime {
         active_player:
@@ -44,7 +53,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
         },
     } = game;
 
-    let game_map = GameMap::from(*map_number);
+    let game_map = GameMap::from_u8(*map_number);
     let mut ability_modifiers = AbilityModifiers::default();
     let mut base_modifiers = DamageModifiers::default();
 
@@ -75,7 +84,8 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
     let adaptative_type = RiotFormulas::adaptative_type(
         current_player_bonus_stats.attack_damage,
         champion_stats.ability_power,
-    );
+    )
+    .unwrap_or(current_player_cache.adaptative_type);
 
     const SHADOWFLAME: u32 = ItemId::Shadowflame.to_riot_id();
     const RIFTMAKER: u32 = ItemId::Riftmaker.to_riot_id();
@@ -111,7 +121,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
 
     let enemy_earth_dragons = dragons.enemy_earth_dragons;
     let simulated_stats = get_simulated_stats(&champion_stats, dragons);
-    let ability_levels = abilities.get_levelings();
+    let ability_levels = abilities.get_ability_levels();
     let current_player_position = Position::from_raw(current_player.position)
         .unwrap_or(unsafe { *current_player_cache.positions.get_unchecked(0) });
     let current_player_cache_attack_type = current_player_cache.attack_type;
@@ -129,6 +139,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
         current_stats: *champion_stats,
         bonus_stats: current_player_bonus_stats,
         base_stats: current_player_base_stats,
+        adaptative_type,
         ability_levels,
         level: *level,
     };
@@ -206,7 +217,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
 
             scoreboard.push(Scoreboard {
                 riot_id,
-                assists: *assists,
+                assists: *assists as _,
                 deaths: *deaths,
                 kills: *kills,
                 creep_score: *creep_score,
@@ -268,10 +279,9 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
                 },
             };
             let damages = get_damages(&eval_ctx, &eval_data, modifiers);
-            let mut siml_results = MaybeUninit::<[Damages; L_SIML]>::uninit();
-            let siml_result_ptr = siml_results.as_mut_ptr();
 
-            for (i, siml_stat) in simulated_stats.into_iter().enumerate() {
+            let siml_items = core::array::from_fn(|i| {
+                let siml_stat = simulated_stats[i];
                 let siml_eval_ctx = get_eval_ctx(
                     &SelfState {
                         current_stats: siml_stat,
@@ -279,11 +289,8 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
                     },
                     &full_state,
                 );
-                let siml_damages = get_damages(&siml_eval_ctx, &eval_data, modifiers);
-                unsafe {
-                    core::ptr::addr_of_mut!((*siml_result_ptr)[i]).write(siml_damages);
-                }
-            }
+                get_damages(&siml_eval_ctx, &eval_data, modifiers)
+            });
 
             Some(Enemy {
                 champion_id: e_champion_id,
@@ -291,7 +298,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
                 team,
                 riot_id,
                 damages,
-                siml_items: unsafe { siml_results.assume_init() },
+                siml_items,
                 base_stats: e_base_stats.into(),
                 bonus_stats: full_state.bonus_stats.into(),
                 current_stats: full_state.current_stats.into(),
