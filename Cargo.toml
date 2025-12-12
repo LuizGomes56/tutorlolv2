@@ -1,20 +1,25 @@
-[package]
-name = "tutorlolv2"
-version = "0.5.0"
-edition = "2024"
-authors = ["Luiz Gustavo Santana Dias Gomes"]
-repository = "https://github.com/LuizGomes56/tutorlolv2"
+[workspace]
+workspace.name = "tutorlolv2"
+workspace.version = "0.5.3"
+workspace.edition = "2024"
+workspace.authors = ["Luiz Gustavo Santana Dias Gomes"]
+workspace.repository = "https://github.com/LuizGomes56/tutorlolv2"
+members = [
+    "tutorlolv2_avif",
+    "tutorlolv2_build",
+    "tutorlolv2_dev",
+    "tutorlolv2_exports",
+    "tutorlolv2_fmt",
+    "tutorlolv2_gen",
+    "tutorlolv2_macros",
+    "tutorlolv2_math",
+    "tutorlolv2_server",
+    "tutorlolv2_types",
+]
 
-[profile.release]
-opt-level = 3
-lto = true
-codegen-units = 1
-panic = "abort"
-strip = true
-debug = false
-incremental = false
+resolver = "2"
 
-[dependencies]
+[workspace.dependencies]
 tutorlolv2_avif = { path = "tutorlolv2_avif" }
 tutorlolv2_build = { path = "tutorlolv2_build" }
 tutorlolv2_dev = { path = "tutorlolv2_dev" }

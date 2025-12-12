@@ -1,10 +1,7 @@
 [package]
 name = "tutorlolv2_server"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2024"
-
-[[bin]]
-name = "tutorlolv2_server"
 
 [profile.release]
 opt-level = 3
@@ -16,8 +13,9 @@ debug = false
 incremental = false
 
 [dependencies]
-tutorlolv2_math = { path = "../tutorlolv2_math" }
-tutorlolv2_gen = { path = "../tutorlolv2_gen" }
+tutorlolv2_math = { workspace = true }
+tutorlolv2_gen = { workspace = true }
+
 paste = "1.0.15"
 sqlx = { version = "0.8", features = [
     "runtime-tokio-rustls",
@@ -37,9 +35,9 @@ actix-files = "0.6.8"
 actix-cors = "0.7.1"
 serde_json = "1.0.145"
 
-tutorlolv2_dev = { path = "../tutorlolv2_dev", optional = true }
-tutorlolv2_avif = { path = "../tutorlolv2_avif", optional = true }
-tutorlolv2_exports = { path = "../tutorlolv2_exports", optional = true }
+tutorlolv2_dev = { workspace = true, optional = true }
+tutorlolv2_avif = { workspace = true, optional = true }
+tutorlolv2_exports = { workspace = true, optional = true }
 reqwest = { version = "0.12.1", features = [
     "json",
     "rustls-tls",
