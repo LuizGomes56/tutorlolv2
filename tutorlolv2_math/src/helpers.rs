@@ -172,7 +172,7 @@ pub use bonus_stats;
 
 /// Checks if at least one of the provided [`ItemId`] in the array is in the [`BitSet`]
 /// This is similar to the [`std::iter::Iterator::any`] method
-pub const fn has_item<const N: usize>(origin: &BitSet, check_for: [ItemId; N]) -> bool {
+pub const fn has_item<const N: usize>(origin: &ItemsBitSet, check_for: [ItemId; N]) -> bool {
     let mut i = 0;
     while i < N {
         if origin.contains(check_for[i] as usize) {
@@ -281,7 +281,7 @@ pub const fn get_simulated_stats(stats: &Stats<f32>, dragons: Dragons) -> [Stats
 /// Returns an instance [`DamageKind`] containing the closures and metadata of the runes.
 /// Since the number of runes is unknown at compile time, those values are dynamically
 /// allocated. This function does not evaluate any closures
-pub fn get_runes_data(runes: &BitSet, attack_type: AttackType) -> DamageKind<L_RUNE, RuneId> {
+pub fn get_runes_data(runes: &RunesBitSet, attack_type: AttackType) -> DamageKind<L_RUNE, RuneId> {
     let mut metadata = SmallVec::with_capacity(runes.count() as usize);
     let mut closures = SmallVec::with_capacity(runes.count() as usize);
     for rune_number in runes.into_iter() {
@@ -312,7 +312,7 @@ const _: () = {
 /// if any. The merge data determines if an item has a maximum damage. If it does, it tells
 /// the table generator function to merge those damages in a single cell as `{min} - {max}`
 pub fn get_items_data(
-    items: &BitSet,
+    items: &ItemsBitSet,
     attack_type: AttackType,
 ) -> (
     DamageKind<L_ITEM, ItemId>,
@@ -339,10 +339,10 @@ pub fn get_items_data(
     (DamageKind { metadata, closures }, multi_closure_indices)
 }
 
-/// Converts a slice of [`RuneId`] into a [`BitSet`], removing the ones that
+/// Converts a slice of [`RuneId`] into a [`RunesBitSet`], removing the ones that
 /// do not deal any damage
-pub const fn get_damaging_runes(input: &[RuneId]) -> BitSet {
-    let mut out = BitSet::EMPTY;
+pub const fn get_damaging_runes(input: &[RuneId]) -> RunesBitSet {
+    let mut out = RunesBitSet::EMPTY;
     let mut i = 0;
     while i < input.len() {
         let rune = input[i] as usize;
@@ -354,10 +354,10 @@ pub const fn get_damaging_runes(input: &[RuneId]) -> BitSet {
     out
 }
 
-/// Converts a slice of [`ItemId`] into a [`BitSet`], removing the ones that
+/// Converts a slice of [`ItemId`] into a [`ItemsBitSet`], removing the ones that
 /// do not deal any damage
-pub const fn get_damaging_items(input: &[ItemId]) -> BitSet {
-    let mut out = BitSet::EMPTY;
+pub const fn get_damaging_items(input: &[ItemId]) -> ItemsBitSet {
+    let mut out = ItemsBitSet::EMPTY;
     let mut i = 0;
     while i < input.len() {
         let item = input[i] as usize;
@@ -375,7 +375,7 @@ pub const fn get_damaging_items(input: &[ItemId]) -> BitSet {
 /// the bonus mana allows a better estimate about the enemy's current HP
 pub const fn get_enemy_current_stats(
     stats: &mut SimpleStats<f32>,
-    items: &BitSet,
+    items: &ItemsBitSet,
     earth_dragons: u16,
 ) -> f32 {
     let mut bonus_mana = 0.0;
@@ -612,11 +612,11 @@ pub const fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> E
     }
 }
 
-/// Trait that extends the behavior of what to do with the struct [`Modifiers`] , which
+/// `Sealed` trait that extends the behavior of what to do with the struct [`Modifiers`] , which
 /// is multiplied by the result of a [`ConstClosure`]. For example, only for abilities,
 /// depending on their letter `P`, `Q`, `W`, `E`, `R`, there are some buffs or debuffs
 /// that are applied to the damage of those abilities
-pub trait AbilityExt {
+trait AbilityExt {
     fn apply_modifiers(&self, _: &mut f32, _: &AbilityModifiers) {}
 }
 
@@ -646,6 +646,7 @@ impl AbilityExt for AbilityId {
 /// resist multiplier of the enemy, and considers global and local damage modifiers
 /// of each ability, item, and rune. This function will cause `Undefined Behavior`
 /// if the length of `closures` and `metadata` are not equal
+#[allow(private_bounds)]
 pub fn eval_damage<const N: usize, T: AbilityExt + 'static>(
     ctx: &EvalContext,
     onhit: &mut RangeDamage,

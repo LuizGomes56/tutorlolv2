@@ -107,11 +107,11 @@ pub const DAMAGING_ITEMS_BITSET_SIZE: usize = NUMBER_OF_DAMAGING_ITEMS.div_ceil(
 /// - `melee.maximum_damage != "zero"`
 /// Note that comparing the name of two functions and checking if they're equal to each
 /// other is still unstable, so the comparison `lhs == zero` does not work
-pub const DAMAGING_ITEMS: BitSet<DAMAGING_ITEMS_BITSET_SIZE> = bitset_items(SIMULATED_ITEMS_ENUM);
+pub const DAMAGING_ITEMS: ItemsBitSet = bitset_items(SIMULATED_ITEMS_ENUM);
 
 /// Calculation of the appropriate size of the bitset that will store the damaging runes
 pub const DAMAGING_RUNES_BITSET_SIZE: usize = NUMBER_OF_DAMAGING_RUNES.div_ceil(64);
-pub const DAMAGING_RUNES: BitSet<DAMAGING_RUNES_BITSET_SIZE> = bitset_runes(DAMAGING_RUNES_ARRAY);
+pub const DAMAGING_RUNES: RunesBitSet = bitset_runes(DAMAGING_RUNES_ARRAY);
 
 /// How many champions we have in the game in the current patch
 pub const NUMBER_OF_CHAMPIONS: usize = CHAMPION_CACHE.len();

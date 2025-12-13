@@ -3,8 +3,9 @@ use crate::{L_SIML, L_TEAM, RiotFormulas, riot::*};
 use core::mem::MaybeUninit;
 use smallvec::SmallVec;
 use tutorlolv2_gen::{
-    BitSet, CHAMPION_CACHE, CHAMPION_NAME_TO_ID, ChampionId, DAMAGING_ITEMS, DAMAGING_RUNES,
-    GameMap, ITEM_CACHE, ItemId, Position, RuneId, SIMULATED_ITEMS_ENUM, TypeMetadata,
+    CHAMPION_CACHE, CHAMPION_NAME_TO_ID, ChampionId, DAMAGING_ITEMS, DAMAGING_RUNES, GameMap,
+    ITEM_CACHE, ItemId, ItemsBitSet, Position, RuneId, RunesBitSet, SIMULATED_ITEMS_ENUM,
+    TypeMetadata,
 };
 
 /// Contains the metadata of all items that have their stats compared to choose
@@ -115,7 +116,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
             let item_id = ItemId::from_riot_id(riot_id)? as _;
             DAMAGING_ITEMS.contains(item_id).then_some(item_id)
         })
-        .collect::<BitSet>();
+        .collect::<ItemsBitSet>();
 
     let dragons = get_dragons(&events, &all_players);
 
@@ -174,7 +175,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
                         let rune_id = RuneId::from_riot_id(riot_id)? as _;
                         DAMAGING_RUNES.contains(rune_id).then_some(rune_id)
                     })
-                    .collect::<BitSet>(),
+                    .collect::<RunesBitSet>(),
             )
         })
         .unwrap_or_default();
@@ -233,7 +234,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
             let e_items = e_riot_items
                 .iter()
                 .filter_map(|riot_item| Some(ItemId::from_riot_id(riot_item.item_id)? as _))
-                .collect::<BitSet>();
+                .collect::<ItemsBitSet>();
 
             let e_base_stats = SimpleStats::base_stats(e_champion_id, *e_level, false);
             let full_state = get_enemy_state(
