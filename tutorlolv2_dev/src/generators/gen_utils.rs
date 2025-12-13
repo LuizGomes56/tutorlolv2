@@ -4,6 +4,8 @@ use std::fmt::Display;
 use tutorlolv2_gen::eval::*;
 
 pub trait F64Ext {
+    /// Removes the `.0` or any other fractional part
+    /// and transforms the float number to a string
     fn trim(&self) -> String;
 }
 
@@ -12,20 +14,63 @@ impl F64Ext for f64 {
         if self.fract() == 0.0 {
             format!("{:.0}", self)
         } else {
-            format!("{}", self)
+            self.to_string()
         }
     }
 }
 
+/// Provides several methods to extract data from strings using Regex patterns,
+/// specially inside generator functions
 pub trait RegExtractor {
+    /// Capture numbers separated by a `/` symbol.
+    /// ```txt
+    /// 100 / 200 / 300 / 400 -> [100.0, 200.0, 300.0, 400.0]
+    /// ```
+    /// Any data that can't be parsed to a `f64` will be ignored
     fn capture_numbers_slash(&self) -> Vec<f64>;
+
+    /// Capture the numbers that are followed by a `%` symbol
+    /// ```txt
+    /// 100% -> 100.0
+    /// 200% -> 200.0
+    /// 300% -> 300.0
+    /// ```
     fn capture_percent(&self, number: usize) -> MayFail<f64>;
+
+    /// Returns a vector of all the numbers that could be extracted
+    /// from some string, preserving the order that they were found
     fn capture_numbers(&self) -> Vec<f64>;
+
+    /// Captures only the numbers inside a set of parenthesis. Parameter
+    /// `number` indicates how many appearences of the regex match to skip
+    /// ```txt
+    /// (100%) -> 100.0
+    /// (+ 84 * ATTACK_DAMAGE) -> 84.0
+    /// ```
     fn capture_parens(&self, number: usize) -> MayFail<String>;
+
+    /// Replaces several string matches to values that are mathematically
+    /// evaluable.
+    /// For example "per Soul collected" becomes [`ThreshStacks`]
     fn replace_keys(&self) -> String;
+
+    /// Removes all the parentheses from a string
     fn remove_parenthesis(&self) -> String;
+
+    /// Extracts tuples of scalings from a string`
+    /// ```txt
+    /// (+ 80% AP) -> (0.8 * ctx.ap)
+    /// ```
     fn get_scalings(&self) -> String;
+
+    /// Finds a match of `:` separated pairs of numbers and returns a
+    /// tuple if that value was found. This is useful for extracting
+    /// passive damage intervals
+    /// ```txt
+    /// 200 : 380 -> (200.0, 380.0)
+    /// ```
     fn get_interval(&self) -> Option<(f64, f64)>;
+
     fn get_damage(&self) -> String;
     fn from_scaled_string(&self) -> String;
     fn process_linear_scalings(

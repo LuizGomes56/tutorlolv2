@@ -19,11 +19,23 @@ pub type MayFail<T = ()> = Result<T, Box<dyn std::error::Error>>;
 pub type GeneratorClosure = Box<dyn FnOnce(usize) -> Generated + Send + Sync + 'static>;
 pub type GeneratorFn = MayFail<GeneratorClosure>;
 
+/// Definition of what each generator function should return
 pub struct Generated {
+    /// Refers to what will be written to the `exports` folder,
+    /// and that is useful for the frontend application to use.
+    /// This is going to be concatenated with the same field for
+    /// other generators, creating a very large String that will
+    /// serve as a library to the frontend application
     pub exports: String,
+    /// Every HTML that the generator function wants to export to
+    /// the `BLOCK` of the frontend application, appearing when
+    /// the user hovers over some object. It will be concatenated,
+    /// compressed and exported to the frontend at the end
     pub block: String,
 }
 
+/// Definition of all available folders to write at, in the target directory
+/// of the `exports`
 pub enum SrcFolder {
     Champions,
     Items,
@@ -36,10 +48,14 @@ impl SrcFolder {
     #[cfg(not(debug_assertions))]
     const BASE_PATH: &str = "tutorlolv2_gen/src/data";
 
+    /// Creates a new resolved path to write at the library that
+    /// holds the generated data
     pub fn new(path: impl AsRef<Path>) -> PathBuf {
         Path::new(Self::BASE_PATH).join(path)
     }
 
+    /// Gets a path that can be read to determine to where the
+    /// data should be saved at
     pub fn import_file(self) -> PathBuf {
         let base = Path::new(Self::BASE_PATH);
         let file = match self {
@@ -50,6 +66,8 @@ impl SrcFolder {
         file.with_extension("rs")
     }
 
+    /// Returns the name of the folder holding the generators of some
+    /// definition of the enum [`SrcFolder`]
     pub fn gen_folder(self) -> impl AsRef<Path> {
         match self {
             SrcFolder::Champions => "gen_champions",
@@ -59,13 +77,16 @@ impl SrcFolder {
     }
 }
 
+/// Helper struct that resolves the paths of the data that will be saved to files
 pub struct CwdPath;
 
 impl CwdPath {
+    /// Create a new path in the working directory of the main project
     pub fn new(path: impl AsRef<Path>) -> PathBuf {
         Path::new("../").join(path)
     }
 
+    /// Helper function that spawns a new thread to write some data to a file
     pub fn fwrite<P, D>(path: P, data: D) -> JoinHandle<Result<(), std::io::Error>>
     where
         P: AsRef<Path> + Debug + Send + Sync + 'static,
@@ -75,6 +96,7 @@ impl CwdPath {
         tokio::spawn(tokio::fs::write(CwdPath::new(path), data))
     }
 
+    /// Checks if some path exists, and logs to the console the result
     pub async fn exists(path: impl AsRef<Path> + Debug) -> bool {
         let result = tokio::fs::try_exists(&path).await;
         match result {
@@ -85,6 +107,8 @@ impl CwdPath {
         result.ok().unwrap_or_default()
     }
 
+    /// Returns the HTML of some generator file that will be exported to the frontend,
+    /// already formatted properly, and highlighted
     pub async fn get_generator(gen_folder: SrcFolder, file: impl AsRef<Path>) -> MayFail<String> {
         let folder = gen_folder.gen_folder();
         let path = Self::new("tutorlolv2_dev/src/generators")
@@ -99,6 +123,8 @@ impl CwdPath {
         Ok(data.rust_fmt(80).rust_html())
     }
 
+    /// Returns a `T` that represents a deserialized JSON file, from some `origin` path.
+    /// The `.json` extension is added if it is missing in the provided path
     pub async fn deserialize<T: DeserializeOwned>(origin: impl AsRef<Path>) -> MayFail<T> {
         let path = Self::new(origin).with_extension("json");
 
@@ -111,22 +137,56 @@ impl CwdPath {
     }
 }
 
+/// Adds some string to the end of each variable in the provided array of mutable
+/// references
 pub fn push_end<const N: usize>(variables: [&mut String; N], end: &str) {
     variables
         .into_iter()
         .for_each(|variable| variable.push_str(end));
 }
 
-pub async fn parallel_task<_Path, _FnIn, _Type, _Resp, _Data, V, _Fut1, _Fut2>(
+/// Begins the execution of every task in parallel, setting a maximum number of
+/// tasks that may run concurrently or in parallel.
+/// - `permits`: The maximum number of tasks that may run at the same timem
+/// - `path`: Path to the folder where the target files are located. They must
+/// be `.json` files. Note that every file in that folder should have the same
+/// JSON structure, meaning that they will all be deserialized to the same struct
+/// - `f`: An async closure that takes in as arguments the name of a file located
+/// in the `path` folder, and the deserialized data type of that file, and returns
+/// some data that will be inferred by the compiler, and used in the `R` function
+/// - `r`: A function that decides what to do with the [`JoinHandle`]'s outputs. In
+/// other words, it defines if all tasks will be collected to a [`Vec`],
+/// [`std::collections::BTreeMap`], or [`std::collections::HashMap`].
+///
+/// ```rs
+/// let data = parallel_task(
+///     128,
+///     "internal/champions",
+///     async |champion_id, champion: Champion| {
+///         // Do some work and return a `MayFail` of some type
+///         ..
+///     },
+///     async |futures| {
+///         // In this case, it collects the results to a `BTreeMap`
+///         let mut result = BTreeMap::new();
+///         for future in futures {
+///             let (file_name, data) = future.await?;
+///             result.insert(file_name, data);
+///         }
+///         Ok(result)
+///     },
+/// ).await?;
+/// ```
+pub async fn parallel_task<_Path, _FnIn, _Type, _Resp, _Data, _Retn, _Fut1, _Fut2>(
     permits: usize,
     path: _Path,
     f: _FnIn,
     r: _Resp,
-) -> MayFail<V>
+) -> MayFail<_Retn>
 where
     _Path: AsRef<Path>,
     _Data: Send + Sync + 'static,
-    _Fut2: Future<Output = MayFail<V>> + Send + Sync + 'static,
+    _Fut2: Future<Output = MayFail<_Retn>> + Send + Sync + 'static,
     _Resp: Fn(Vec<JoinHandle<(String, _Data)>>) -> _Fut2,
     _Type: DeserializeOwned,
     _Fut1: Future<Output = MayFail<_Data>> + Send + Sync + 'static,
@@ -169,6 +229,10 @@ where
     r(futures).await
 }
 
+/// Spawns some task, given the function and panics on that thread if it fails
+/// ```rs
+/// let data = gen_task(generate_champions).await?;
+/// ```
 fn gen_task<F, Fut>(f: F) -> JoinHandle<GeneratorClosure>
 where
     Fut: Future<Output = GeneratorFn> + Send + Sync,
@@ -182,19 +246,28 @@ where
     })
 }
 
+/// Provides functions to help track the current and new offsets of some
+/// data inside a very large string
 pub struct Tracker<'a> {
     inner: &'a mut String,
 }
 
 impl<'a> Tracker<'a> {
+    /// Creates a new instance of self, from an existing string that
+    /// should live longer than this struct
     pub const fn new(inner: &'a mut String) -> Self {
         Self { inner }
     }
 
+    /// Get the current length of the string, which represents
+    /// the `end` offset of the last record
     pub const fn offset(&self) -> usize {
         self.inner.len()
     }
 
+    /// Returns the start and end offsets of a new record `value`
+    /// in the current tracked string. The `value` is added to that
+    /// string and the offsets are adjusted properly
     pub fn record(&mut self, value: &str) -> (usize, usize) {
         let start = self.offset();
         self.inner.push_str(value);
@@ -202,13 +275,19 @@ impl<'a> Tracker<'a> {
         (start, end)
     }
 
+    /// Adds a new record to the current tracked string, but adds
+    /// the result tuple into the provided vector
     pub fn record_into(&mut self, value: &str, into: &mut Vec<(usize, usize)>) {
         let (start, end) = self.record(value);
         into.push((start, end));
     }
 }
 
-pub async fn new_runner() -> MayFail {
+/// Entry point of the build library. Generates a new library that will be
+/// used by both frontend and backend, as well as HTML that represents the
+/// internal code that will be shown when hovering over some objects in the
+/// frontend application
+pub async fn run() -> MayFail {
     let mut full_block = String::with_capacity(8 * 1024 * 1024);
     let mut full_exports = format!(
         "use crate::*;

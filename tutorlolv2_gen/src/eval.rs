@@ -33,8 +33,8 @@ macro_rules! create_eval_struct {
             ///     .. // other fields
             ///     metadata: [
             ///         // example metadata
-            ///         TypeMetadata<AbilityLike> {
-            ///             kind: AbilityLike::Q(AbilityName::_1),
+            ///         TypeMetadata<AbilityId> {
+            ///             kind: AbilityId::Q(AbilityName::_1),
             ///             damage_type: DamageType::Magic,
             ///             attributes: Attrs::Undefined,
             ///         },

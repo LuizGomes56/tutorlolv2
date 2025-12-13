@@ -5,7 +5,7 @@ use tutorlolv2_gen::{
     AdaptativeType, BitSet, ChampionId, ConstClosure, GameMap, ItemId, NUMBER_OF_ITEMS,
     NUMBER_OF_RUNES, Position, RuneId, TypeMetadata,
 };
-use tutorlolv2_types::AbilityLike;
+use tutorlolv2_types::AbilityId;
 
 /// Enum that defines the team of some player.
 /// - `CHAOS` is converted to [`Team::Red`],
@@ -98,11 +98,11 @@ pub struct Realtime<'a> {
     /// in both teams, including the current player. This data is not guaranteed
     /// to be ordered based on team. Sorting this vector has to be done by the caller
     pub scoreboard: SmallVec<[Scoreboard<'a>; L_PLYR]>,
-    /// Constant array of the [`TypeMetadata<AbilityLike>`] of all abilities of the
+    /// Constant array of the [`TypeMetadata<AbilityId>`] of all abilities of the
     /// current champion. Note that this value lives at the static variable
     /// [`tutorlolv2_gen::CHAMPION_CACHE`] at the index [`ChampionId`] when casting
     /// this enum to type [`usize`]
-    pub abilities_meta: &'static [TypeMetadata<AbilityLike>],
+    pub abilities_meta: &'static [TypeMetadata<AbilityId>],
     /// Vector of the [`TypeMetadata<ItemId>`] of all damaging items the player had
     pub items_meta: SmallVec<[TypeMetadata<ItemId>; L_ITEM]>,
     /// Vector of the [`TypeMetadata<RuneId>`] of all damaging runes the player had
@@ -225,7 +225,7 @@ pub struct SimpleStats<T> {
 }
 
 pub struct DamageEvalData {
-    pub abilities: ConstDamageKind<AbilityLike>,
+    pub abilities: ConstDamageKind<AbilityId>,
     pub items: DamageKind<L_ITEM, ItemId>,
     pub runes: DamageKind<L_RUNE, RuneId>,
 }
@@ -390,7 +390,7 @@ pub struct Modifiers {
 
 /// Holds float values that will be multiplied by the damages of each ability
 /// depending on their letters, which can be obtained through the method
-/// [`AbilityLike::as_char`] with simple branching. Values of `1.0` mean no modifiers
+/// [`AbilityId::as_char`] with simple branching. Values of `1.0` mean no modifiers
 #[derive(Clone, Copy)]
 pub struct AbilityModifiers {
     pub q: f32,
@@ -422,7 +422,7 @@ pub struct OutputGame {
     pub current_player: OutputCurrentPlayer,
     pub enemies: SmallVec<[OutputEnemy; L_CENM]>,
     pub tower_damages: [i32; L_TWRD],
-    pub abilities_meta: &'static [TypeMetadata<AbilityLike>],
+    pub abilities_meta: &'static [TypeMetadata<AbilityId>],
     pub abilities_to_merge: &'static [(usize, usize)],
     pub items_to_merge: SmallVec<[(usize, usize); L_ITEM]>,
     pub items_meta: SmallVec<[TypeMetadata<ItemId>; L_ITEM]>,

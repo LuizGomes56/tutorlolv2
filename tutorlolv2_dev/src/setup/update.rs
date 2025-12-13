@@ -165,6 +165,8 @@ pub fn setup_internal_items() -> MayFail {
     Ok(())
 }
 
+/// Reads the cached runes json extracted from Riot's API and generates a new file containing
+/// only the names of each rune, and their ids
 pub fn setup_runes_json() -> MayFail {
     let map = Vec::<RiotCdnRune>::from_file("cache/riot/runes.json")?;
     let mut result = HashMap::<String, usize>::new();

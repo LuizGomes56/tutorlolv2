@@ -4,12 +4,12 @@ pub(self) use crate::{
     model::champions::{Ability, Champion},
 };
 pub(self) use tutorlolv2_gen::{enums::*, eval::*};
-pub(self) use tutorlolv2_types::{AbilityLike, AbilityName, E, P, Q, R, W, ability_name::*};
+pub(self) use tutorlolv2_types::{AbilityId, AbilityName, E, P, Q, R, W, ability_name::*};
 
 macro_rules! dynvec {
     ($($field:expr),+) => {
         [$({
-            let value: AbilityLike = $field.into();
+            let value: AbilityId = $field.into();
             value
         }),+]
     };
@@ -18,7 +18,7 @@ macro_rules! dynvec {
 macro_rules! offset {
     ($($letter:ident),+$(,)?) => {
         $(
-            pub const $letter: AbilityLike = AbilityLike::$letter(AbilityName::Void);
+            pub const $letter: AbilityId = AbilityId::$letter(AbilityName::Void);
         )+
     }
 }

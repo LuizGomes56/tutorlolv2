@@ -7,6 +7,9 @@ use tutorlolv2_gen::{
 };
 use tutorlolv2_types::StatName;
 
+/// Constant array containing the armor and magic resistences of jungle monsters.
+/// Note that there's no specific name to each monster since the damage against
+/// most of them repeats since their armor and magic resistence values are the same
 pub const MONSTER_RESISTS: [(f32, f32); L_MSTR] = [
     (0f32, 0f32),
     (21f32, 30f32),
@@ -83,7 +86,10 @@ pub const ITEMS_WITH_PEN: [ItemId; NUMBER_OF_ITEMS_WITH_PEN] = {
     items
 };
 
-pub const fn infer_champion_stats(items: &[ItemId], dragons: Dragons) -> Stats<f32> {
+/// Reads all items in received slice, and returns a new struct [`Stats<f32>`]
+/// representing all the stats that those items would give as bonus, and
+/// considering the buffs from dragons
+pub const fn get_item_bonus_stats(items: &[ItemId], dragons: Dragons) -> Stats<f32> {
     let mut stats = Stats::<f32>::default();
 
     let mut armor_pen_count = 0;
@@ -133,12 +139,16 @@ pub struct ChampionExceptionData<'a> {
     pub current_player_stats: &'a mut Stats<f32>,
 }
 
+/// Receives basic information about the current player ability levels and its identifier,
+/// and modifies the current stats based on the number of stacks. Note that depending on the
+/// value of the enum [`ChampionId`], this function might do nothing
 pub const fn assign_champion_exceptions(data: ChampionExceptionData, champion_id: ChampionId) {
     let ChampionExceptionData {
         ability_levels,
         stacks,
         current_player_stats,
     } = data;
+
     match champion_id {
         ChampionId::Veigar => current_player_stats.ability_power += stacks as f32,
         ChampionId::Swain => current_player_stats.health += (12 * stacks) as f32,
@@ -183,6 +193,8 @@ pub struct RuneExceptionData<'a> {
     pub level: u8,
 }
 
+/// Receives a struct containing mutable references to the player's stats and modifiers,
+/// applying them based on the received `exceptions` slice
 pub const fn assign_rune_exceptions(data: RuneExceptionData, exceptions: &[ValueException]) {
     if exceptions.is_empty() {
         return;
@@ -300,6 +312,8 @@ pub struct ItemExceptionData<'a> {
     modifiers: &'a mut Modifiers,
 }
 
+/// Receives mutable references to the champion's current stats, bonus stats and modifiers,
+/// modifying their values based on the `exceptions` slice
 pub const fn assign_item_exceptions(data: ItemExceptionData, exceptions: &[ValueException]) {
     if exceptions.is_empty() {
         return;
@@ -416,6 +430,10 @@ pub const fn assign_item_exceptions(data: ItemExceptionData, exceptions: &[Value
     }
 }
 
+/// Receives data about some custom game, containing the minimum information about the
+/// current player and the enemy players, returning a new struct containing the calculated
+/// damages against several entities. This function is generally safe to use, but it assumes
+/// that the received struct [`InputGame`] is valid. There's no undefined behavior checks.
 pub fn calculator(game: InputGame) -> Option<OutputGame> {
     let InputGame {
         active_player:
@@ -451,7 +469,7 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
 
     let mut champion_stats = match infer_stats {
         true => champion_raw_stats,
-        false => infer_champion_stats(&current_player_raw_items, dragons),
+        false => get_item_bonus_stats(&current_player_raw_items, dragons),
     };
 
     let mut current_player_bonus_stats = bonus_stats!(
@@ -532,7 +550,7 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
 
     let enemies = enemy_players
         .into_iter()
-        .filter_map(|player| {
+        .map(|player| {
             let InputMinData {
                 infer_stats: e_infer_stats,
                 items: e_raw_items,
@@ -583,7 +601,7 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
 
             let damages = get_damages(&eval_ctx, &eval_data, modifiers);
 
-            Some(OutputEnemy {
+            OutputEnemy {
                 champion_id: e_champion_id,
                 damages,
                 base_stats: e_base_stats.into(),
@@ -592,7 +610,7 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
                 real_armor: full_state.armor_values.real as i32,
                 real_magic_resist: full_state.magic_values.real as i32,
                 level: e_level,
-            })
+            }
         })
         .collect::<SmallVec<[OutputEnemy; L_CENM]>>();
 

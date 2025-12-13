@@ -22,6 +22,7 @@ use std::{
 use tokio::{sync::Semaphore, task::JoinHandle};
 use tutorlolv2_fmt::pascal_case;
 
+/// Returns the directory where images will be downloaded to
 macro_rules! target_dir {
     () => {
         "raw_img"
@@ -31,6 +32,8 @@ macro_rules! target_dir {
     };
 }
 
+/// Wrapper around [`reqwest::Client`] that adds methods to
+/// download files and cache then to avoid repeated requests
 #[derive(Clone)]
 pub struct HttpClient(Client);
 
@@ -48,31 +51,38 @@ impl std::ops::Deref for HttpClient {
 }
 
 impl HttpClient {
+    /// Creates a new instance of [`HttpClient`]
     pub fn new() -> Self {
         Self(Client::new())
     }
 
+    /// Downloads some url and saves to a file if it doesn't already exist. If it does,
+    /// a message is printed to the console and an empty result is returned
     pub async fn download(&self, url: impl AsRef<str>, save_to: impl AsRef<Path>) -> MayFail {
         let url = url.as_ref();
         let save_to = save_to.as_ref();
-        if save_to.exists() {
-            println!("[exists] {save_to:?}");
-            Ok(())
-        } else {
-            println!("[download] {url}");
-            match self.get(url).send().await {
-                Ok(response) => {
-                    let bytes = response.bytes().await?;
-                    bytes.write_file(save_to)
-                }
-                Err(e) => {
-                    println!("[error] {e}");
-                    Err(e.to_string().into())
+        match save_to.exists() {
+            true => {
+                println!("[exists] {save_to:?}");
+                Ok(())
+            }
+            false => {
+                println!("[download] {url}");
+                match self.get(url).send().await {
+                    Ok(response) => {
+                        let bytes = response.bytes().await?;
+                        bytes.write_file(save_to)
+                    }
+                    Err(e) => {
+                        println!("[error] {e}");
+                        Err(e.to_string().into())
+                    }
                 }
             }
         }
     }
 
+    /// Creates the base url of the Data Dragon API, using the environment variables
     pub fn ddragon_url() -> String {
         format!(
             "{}/cdn/{}",
@@ -80,6 +90,8 @@ impl HttpClient {
         )
     }
 
+    /// Downloads the images of champions, their abilities and passives.
+    /// Skips images that have already been downloaded
     pub async fn download_general_img(&self) -> MayFail {
         let riot_champions = RiotCdnChampion::from_dir("cache/riot/champions")?;
         let ddragon_url = Self::ddragon_url();
@@ -121,6 +133,9 @@ impl HttpClient {
         Ok(())
     }
 
+    /// Downloads the images of all items in the cached data. Skips the ones
+    /// that have already been downloaded, and does not skip the ones that
+    /// throw an error
     pub async fn download_items_img(&self) -> MayFail {
         let riot_items = get_file_names("cache/riot/items")?;
         let ddragon_url = Self::ddragon_url();
@@ -145,6 +160,8 @@ impl HttpClient {
         Ok(())
     }
 
+    /// Downloads the images of splash and centered arts for all champions and
+    /// every skin available in the current patch. Skips the ones that emit an error
     pub async fn download_arts_img(&self) -> MayFail {
         let riot_champions = RiotCdnChampion::from_dir("cache/riot/champions")?;
         let base_url = format!("{}/cdn", ENV_CONFIG.dd_dragon_endpoint);
@@ -173,6 +190,7 @@ impl HttpClient {
         Ok(())
     }
 
+    /// Downloads the images of every rune, rune-tree and icon
     pub async fn download_runes_img(&self) -> MayFail {
         let riot_runes = Vec::<RiotCdnRune>::from_file("cache/riot/runes.json")?;
         let mut futures = Vec::new();
@@ -199,6 +217,8 @@ impl HttpClient {
         Ok(())
     }
 
+    /// Fetches the latest version of League of Legends, returning
+    /// the current patch version as a string
     pub async fn fetch_version(&self) -> MayFail<String> {
         let result = self
             .get(format!(
@@ -215,10 +235,17 @@ impl HttpClient {
             .clone())
     }
 
+    /// Creates the riot endpoint using the environment variables.
+    /// This is mainly used to download champion json files
     pub fn riot_endpoint(endpoint: &str, language: &str) -> String {
         format!("{}/data/{language}/{endpoint}.json", Self::ddragon_url())
     }
 
+    /// Fetches League of Legends current version and updates it directly
+    /// in the `.env` file if it has changed, renaming the cache folder and
+    /// setting up a new empty one, which forces the application to re-download
+    /// every champion, item, and rune file again. Does nothing if the version
+    /// is equal
     pub async unsafe fn update_env_version(&self) -> MayFail {
         let version = self.fetch_version().await?;
 
@@ -378,6 +405,8 @@ impl HttpClient {
         languages_data.into_file("internal/champion_languages.json")
     }
 
+    /// Fetches the available languages in league of legends and saves them to
+    /// the appropriate cache location
     pub async fn update_language_cache(&self) -> MayFail {
         self.download(
             format!("{}/cdn/languages.json", ENV_CONFIG.dd_dragon_endpoint),
@@ -386,6 +415,8 @@ impl HttpClient {
         .await
     }
 
+    /// Fetches some endpoint of the merakianalytics api, orders the data
+    /// before saving to the appropriate cache folder
     pub async fn update_meraki_cache(&self, endpoint: &str) -> MayFail {
         let save_to = format!("cache/meraki/{endpoint}.json");
         self.download(
@@ -412,6 +443,8 @@ impl HttpClient {
         }
     }
 
+    /// Fetches the `meta_endpoint` and scrapes the information from some champion's
+    /// common ability combos and saves to a cache file
     pub async fn combo_scraper(&self) -> MayFail {
         let champion_ids = get_file_names("cache/riot/champions")?;
 
@@ -446,15 +479,18 @@ impl HttpClient {
 
                     result.into_file(format!("internal/scraper/combos/{champion_id}.json"))
                 };
-                match run_task() {
-                    Ok(_) => (),
-                    Err(e) => println!("[error] scraping combo for {champion_id:?}: {e:?}."),
+                if let Err(e) = run_task() {
+                    println!("[error] scraping combo for {champion_id:?}: {e:?}.")
                 }
             });
         }
         Ok(())
     }
 
+    /// Fetches the most common item builds, and rune choices for every position,
+    /// for every champion, scraping from the `meta_endpoint`. At the end, a new
+    /// json file is generated, aggregating all the collected information in a single
+    /// location
     pub async fn call_scraper(&self) -> MayFail {
         let champion_ids = get_file_names("cache/riot/champions")?;
 
@@ -507,18 +543,17 @@ impl HttpClient {
 
                             [items, runes].into_file(internal_path)
                         };
-                        match run_task() {
-                            Ok(_) => (),
-                            Err(e) => {
-                                println!("[error] processing HTML from {champion_id:?}: {e:#?}")
-                            }
+                        if let Err(e) = run_task() {
+                            println!("[error] processing HTML from {champion_id:?}: {e:#?}")
                         }
                     });
                 }));
             }
 
             for future in futures_vec {
-                let _ = future.await;
+                if let Err(e) = future.await {
+                    println!("[error] failed future for {champion_id:?}: {e:#?}")
+                }
             }
         }
 
@@ -544,6 +579,8 @@ impl HttpClient {
     }
 }
 
+/// Updates the `.env` file, setting a new key and value pair. If it already
+/// exists, the value gets replaced
 unsafe fn set_env_var(key: &str, value: &str) -> std::io::Result<()> {
     let path = ".env";
     let file = std::fs::File::open(path)?;
@@ -569,6 +606,9 @@ unsafe fn set_env_var(key: &str, value: &str) -> std::io::Result<()> {
     Ok(())
 }
 
+/// Orders the data that comes from the JSON files to achieve
+/// consistency between versions, avoiding offset changes every patch even when
+/// nothing about some champion have changed
 pub trait OrderJson<T: Serialize> {
     fn into_iter_ord(self) -> impl Iterator<Item = (String, T)>;
 }
@@ -609,6 +649,8 @@ impl OrderJson<MerakiItem> for HashMap<String, MerakiItem> {
     }
 }
 
+/// Reads every key in something that implements trait [`OrderJson`], orders the data
+/// and saves to the cache folder
 pub fn save_cache<T: Serialize>(result: impl OrderJson<T>, endpoint: &str) -> MayFail {
     for (key, value) in result.into_iter_ord() {
         value.into_file(format!("cache/meraki/{endpoint}/{key}.json"))?;

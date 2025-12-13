@@ -27,27 +27,10 @@ pub const NUMBER_OF_SIMULATED_ITEMS: usize = {
     sum
 };
 
-/// Stores the `riot_id` value for items that meet the following requirements:
+/// Stores the simulated items as [`ItemId`], and only those that follow the rules:
 /// - `tier >= 3`
 /// - `price > 0`
 /// - `purchasable`
-pub const SIMULATED_ITEMS: [u32; NUMBER_OF_SIMULATED_ITEMS] = {
-    let mut result = [0; NUMBER_OF_SIMULATED_ITEMS];
-    let mut i = 0;
-    let mut j = 0;
-    while i < NUMBER_OF_ITEMS {
-        let item = ITEM_CACHE[i];
-        if item.is_simulated {
-            result[j] = item.riot_id;
-            j += 1;
-        }
-        i += 1;
-    }
-    result
-};
-
-/// Stores the simulated items as `ItemId` instead of `riot_id`. They're identical and can be
-/// coerced to each other in constant time
 pub const SIMULATED_ITEMS_ENUM: [ItemId; NUMBER_OF_SIMULATED_ITEMS] = {
     let mut result = [ItemId::AbyssalMask; NUMBER_OF_SIMULATED_ITEMS];
     let mut i = 0;

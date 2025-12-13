@@ -9,7 +9,7 @@ pub use ability_name::*;
     Serialize, Deserialize, Copy, Clone, Encode, Debug, Eq, PartialEq, PartialOrd, Hash, Ord,
 )]
 #[serde(tag = "type", content = "name")]
-pub enum AbilityLike {
+pub enum AbilityId {
     P(AbilityName),
     Q(AbilityName),
     W(AbilityName),
@@ -17,50 +17,50 @@ pub enum AbilityLike {
     R(AbilityName),
 }
 
-impl AbilityLike {
+impl AbilityId {
     pub const fn as_char(&self) -> char {
         match self {
-            AbilityLike::P(_) => 'P',
-            AbilityLike::Q(_) => 'Q',
-            AbilityLike::W(_) => 'W',
-            AbilityLike::E(_) => 'E',
-            AbilityLike::R(_) => 'R',
+            AbilityId::P(_) => 'P',
+            AbilityId::Q(_) => 'Q',
+            AbilityId::W(_) => 'W',
+            AbilityId::E(_) => 'E',
+            AbilityId::R(_) => 'R',
         }
     }
 
     pub const fn from_fn(&self) -> fn(AbilityName) -> Self {
         match self {
-            AbilityLike::P(_) => AbilityLike::P,
-            AbilityLike::Q(_) => AbilityLike::Q,
-            AbilityLike::W(_) => AbilityLike::W,
-            AbilityLike::E(_) => AbilityLike::E,
-            AbilityLike::R(_) => AbilityLike::R,
+            AbilityId::P(_) => AbilityId::P,
+            AbilityId::Q(_) => AbilityId::Q,
+            AbilityId::W(_) => AbilityId::W,
+            AbilityId::E(_) => AbilityId::E,
+            AbilityId::R(_) => AbilityId::R,
         }
     }
 
     pub const fn from_ability_name(&self, ability_name: AbilityName) -> Self {
         match self {
-            AbilityLike::P(_) => AbilityLike::P(ability_name),
-            AbilityLike::Q(_) => AbilityLike::Q(ability_name),
-            AbilityLike::W(_) => AbilityLike::W(ability_name),
-            AbilityLike::E(_) => AbilityLike::E(ability_name),
-            AbilityLike::R(_) => AbilityLike::R(ability_name),
+            AbilityId::P(_) => AbilityId::P(ability_name),
+            AbilityId::Q(_) => AbilityId::Q(ability_name),
+            AbilityId::W(_) => AbilityId::W(ability_name),
+            AbilityId::E(_) => AbilityId::E(ability_name),
+            AbilityId::R(_) => AbilityId::R(ability_name),
         }
     }
 
     pub const fn ability_name(&self) -> AbilityName {
         match self {
-            AbilityLike::P(v) => *v,
-            AbilityLike::Q(v) => *v,
-            AbilityLike::W(v) => *v,
-            AbilityLike::E(v) => *v,
-            AbilityLike::R(v) => *v,
+            AbilityId::P(v) => *v,
+            AbilityId::Q(v) => *v,
+            AbilityId::W(v) => *v,
+            AbilityId::E(v) => *v,
+            AbilityId::R(v) => *v,
         }
     }
 
     pub fn as_literal(&self) -> String {
         format!(
-            "AbilityLike::{}(AbilityName::{:?})",
+            "AbilityId::{}(AbilityName::{:?})",
             self.as_char(),
             self.ability_name()
         )

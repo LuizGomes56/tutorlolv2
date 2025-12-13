@@ -1,5 +1,5 @@
 use serde::Deserialize;
-use tutorlolv2_types::{AbilityLike, StatName};
+use tutorlolv2_types::{AbilityId, StatName};
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -58,8 +58,8 @@ pub struct Champion {
     pub attack_type: String,
     pub positions: Vec<String>,
     pub stats: MerakiChampionStats,
-    pub abilities: Vec<(AbilityLike, Ability)>,
-    pub merge_data: Vec<(AbilityLike, AbilityLike)>,
+    pub abilities: Vec<(AbilityId, Ability)>,
+    pub merge_data: Vec<(AbilityId, AbilityId)>,
 }
 
 #[derive(Deserialize)]

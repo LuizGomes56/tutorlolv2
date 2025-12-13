@@ -18,47 +18,47 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::P(AbilityName::Void), 
+                    kind: AbilityId::P(AbilityName::Void), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::Min), 
+                    kind: AbilityId::Q(AbilityName::Min), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Area 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1Min), 
+                    kind: AbilityId::Q(AbilityName::_1Min), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Area 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2Min), 
+                    kind: AbilityId::Q(AbilityName::_2Min), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Area 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_3Min), 
+                    kind: AbilityId::Q(AbilityName::_3Min), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Area 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::Max), 
+                    kind: AbilityId::Q(AbilityName::Max), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Area 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1Max), 
+                    kind: AbilityId::Q(AbilityName::_1Max), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Area 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2Max), 
+                    kind: AbilityId::Q(AbilityName::_2Max), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Area 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_3Max), 
+                    kind: AbilityId::Q(AbilityName::_3Max), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Area 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::Min), 
+                    kind: AbilityId::W(AbilityName::Min), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::Max), 
+                    kind: AbilityId::W(AbilityName::Max), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -71,35 +71,35 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::Min), 
+                    kind: AbilityId::Q(AbilityName::Min), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Area 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::Max), 
+                    kind: AbilityId::Q(AbilityName::Max), 
                     damage_type: DamageType::Mixed, 
                     attributes: Attrs::Area 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::Min), 
+                    kind: AbilityId::W(AbilityName::Min), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::Max), 
+                    kind: AbilityId::W(AbilityName::Max), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::Void), 
+                    kind: AbilityId::E(AbilityName::Void), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::Min), 
+                    kind: AbilityId::R(AbilityName::Min), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::Max), 
+                    kind: AbilityId::R(AbilityName::Max), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -112,35 +112,35 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Middle,Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::P(AbilityName::Void), 
+                    kind: AbilityId::P(AbilityName::Void), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Onhit 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::Void), 
+                    kind: AbilityId::Q(AbilityName::Void), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Area 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1Min), 
+                    kind: AbilityId::E(AbilityName::_1Min), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::Max), 
+                    kind: AbilityId::E(AbilityName::Max), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1Max), 
+                    kind: AbilityId::E(AbilityName::_1Max), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Area 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2Min), 
+                    kind: AbilityId::R(AbilityName::_2Min), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Area 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2Max), 
+                    kind: AbilityId::R(AbilityName::_2Max), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Area 
                 },],
@@ -153,35 +153,35 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::P(AbilityName::Void), 
+                    kind: AbilityId::P(AbilityName::Void), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::Min), 
+                    kind: AbilityId::Q(AbilityName::Min), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Area 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::Max), 
+                    kind: AbilityId::Q(AbilityName::Max), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Area 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::Void), 
+                    kind: AbilityId::E(AbilityName::Void), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1Min), 
+                    kind: AbilityId::R(AbilityName::_1Min), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2Min), 
+                    kind: AbilityId::R(AbilityName::_2Min), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1Max), 
+                    kind: AbilityId::R(AbilityName::_1Max), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2Max), 
+                    kind: AbilityId::R(AbilityName::_2Max), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -194,23 +194,23 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Support],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },],
@@ -223,31 +223,31 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_3), 
+                    kind: AbilityId::Q(AbilityName::_3), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_4), 
+                    kind: AbilityId::Q(AbilityName::_4), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -260,23 +260,23 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle,Position::Support],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -289,31 +289,31 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_3), 
+                    kind: AbilityId::Q(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -326,19 +326,19 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -351,7 +351,7 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::P(AbilityName::_1), 
+                    kind: AbilityId::P(AbilityName::_1), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },],
@@ -364,19 +364,19 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom,Position::Support],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -389,35 +389,35 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_3), 
+                    kind: AbilityId::Q(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_4), 
+                    kind: AbilityId::Q(AbilityName::_4), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -430,31 +430,31 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle,Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_3), 
+                    kind: AbilityId::Q(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_4), 
+                    kind: AbilityId::Q(AbilityName::_4), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_5), 
+                    kind: AbilityId::Q(AbilityName::_5), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -467,19 +467,19 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -492,7 +492,7 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Support],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -505,55 +505,55 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_3), 
+                    kind: AbilityId::Q(AbilityName::_3), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_4), 
+                    kind: AbilityId::Q(AbilityName::_4), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_3), 
+                    kind: AbilityId::E(AbilityName::_3), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_4), 
+                    kind: AbilityId::E(AbilityName::_4), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_5), 
+                    kind: AbilityId::E(AbilityName::_5), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::True, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::True, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_3), 
+                    kind: AbilityId::R(AbilityName::_3), 
                     damage_type: DamageType::True, 
                     attributes: Attrs::Undefined 
                 },],
@@ -566,15 +566,15 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Support],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -587,27 +587,27 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Jungle,Position::Middle,Position::Support],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -620,15 +620,15 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Support],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -641,31 +641,31 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_3), 
+                    kind: AbilityId::E(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_4), 
+                    kind: AbilityId::E(AbilityName::_4), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -678,23 +678,23 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -707,31 +707,31 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Support,Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_3), 
+                    kind: AbilityId::W(AbilityName::_3), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_4), 
+                    kind: AbilityId::W(AbilityName::_4), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -744,31 +744,31 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -781,27 +781,27 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::True, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::True, 
                     attributes: Attrs::Undefined 
                 },],
@@ -814,31 +814,31 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -851,27 +851,27 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::True, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::True, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_3), 
+                    kind: AbilityId::R(AbilityName::_3), 
                     damage_type: DamageType::True, 
                     attributes: Attrs::Undefined 
                 },],
@@ -884,31 +884,31 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle,Position::Middle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_3), 
+                    kind: AbilityId::R(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -921,39 +921,39 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_3), 
+                    kind: AbilityId::Q(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_3), 
+                    kind: AbilityId::W(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_3), 
+                    kind: AbilityId::E(AbilityName::_3), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -966,27 +966,27 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_3), 
+                    kind: AbilityId::R(AbilityName::_3), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_4), 
+                    kind: AbilityId::R(AbilityName::_4), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -999,23 +999,23 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle,Position::Middle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_3), 
+                    kind: AbilityId::Q(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -1028,15 +1028,15 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Jungle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_3), 
+                    kind: AbilityId::Q(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_4), 
+                    kind: AbilityId::Q(AbilityName::_4), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -1049,43 +1049,43 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_3), 
+                    kind: AbilityId::Q(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_4), 
+                    kind: AbilityId::Q(AbilityName::_4), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_5), 
+                    kind: AbilityId::Q(AbilityName::_5), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_6), 
+                    kind: AbilityId::Q(AbilityName::_6), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -1098,23 +1098,23 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -1127,47 +1127,47 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Jungle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_3), 
+                    kind: AbilityId::Q(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_4), 
+                    kind: AbilityId::Q(AbilityName::_4), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_3), 
+                    kind: AbilityId::W(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_4), 
+                    kind: AbilityId::W(AbilityName::_4), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -1180,15 +1180,15 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -1201,39 +1201,39 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Middle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_3), 
+                    kind: AbilityId::W(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_4), 
+                    kind: AbilityId::W(AbilityName::_4), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_3), 
+                    kind: AbilityId::R(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -1246,35 +1246,35 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Middle,Position::Support],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_3), 
+                    kind: AbilityId::W(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_4), 
+                    kind: AbilityId::W(AbilityName::_4), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -1287,39 +1287,39 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_3), 
+                    kind: AbilityId::R(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_4), 
+                    kind: AbilityId::R(AbilityName::_4), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_5), 
+                    kind: AbilityId::R(AbilityName::_5), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_6), 
+                    kind: AbilityId::R(AbilityName::_6), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_7), 
+                    kind: AbilityId::R(AbilityName::_7), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -1332,23 +1332,23 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::True, 
                     attributes: Attrs::Undefined 
                 },],
@@ -1361,31 +1361,31 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_3), 
+                    kind: AbilityId::Q(AbilityName::_3), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -1398,39 +1398,39 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle,Position::Middle,Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_3), 
+                    kind: AbilityId::Q(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_4), 
+                    kind: AbilityId::Q(AbilityName::_4), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_3), 
+                    kind: AbilityId::W(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -1443,27 +1443,27 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Jungle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_3), 
+                    kind: AbilityId::Q(AbilityName::_3), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -1476,59 +1476,59 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle,Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_3), 
+                    kind: AbilityId::Q(AbilityName::_3), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_4), 
+                    kind: AbilityId::Q(AbilityName::_4), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_5), 
+                    kind: AbilityId::Q(AbilityName::_5), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_6), 
+                    kind: AbilityId::Q(AbilityName::_6), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_7), 
+                    kind: AbilityId::Q(AbilityName::_7), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_8), 
+                    kind: AbilityId::Q(AbilityName::_8), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_3), 
+                    kind: AbilityId::R(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_4), 
+                    kind: AbilityId::R(AbilityName::_4), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_5), 
+                    kind: AbilityId::R(AbilityName::_5), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -1541,31 +1541,31 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -1578,35 +1578,35 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle,Position::Support,Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_3), 
+                    kind: AbilityId::W(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_4), 
+                    kind: AbilityId::W(AbilityName::_4), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_5), 
+                    kind: AbilityId::W(AbilityName::_5), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_6), 
+                    kind: AbilityId::W(AbilityName::_6), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_7), 
+                    kind: AbilityId::W(AbilityName::_7), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_8), 
+                    kind: AbilityId::W(AbilityName::_8), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -1619,19 +1619,19 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle,Position::Support],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_3), 
+                    kind: AbilityId::R(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_4), 
+                    kind: AbilityId::R(AbilityName::_4), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -1644,23 +1644,23 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Mixed, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -1673,23 +1673,23 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Middle,Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -1702,19 +1702,19 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Jungle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -1727,23 +1727,23 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Support],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_3), 
+                    kind: AbilityId::Q(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },],
@@ -1756,15 +1756,15 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -1777,27 +1777,27 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle,Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -1810,23 +1810,23 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle,Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_3), 
+                    kind: AbilityId::W(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -1839,47 +1839,47 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_3), 
+                    kind: AbilityId::Q(AbilityName::_3), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_3), 
+                    kind: AbilityId::R(AbilityName::_3), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_4), 
+                    kind: AbilityId::R(AbilityName::_4), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -1892,27 +1892,27 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_3), 
+                    kind: AbilityId::R(AbilityName::_3), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_4), 
+                    kind: AbilityId::R(AbilityName::_4), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -1925,39 +1925,39 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_3), 
+                    kind: AbilityId::W(AbilityName::_3), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_4), 
+                    kind: AbilityId::W(AbilityName::_4), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_5), 
+                    kind: AbilityId::W(AbilityName::_5), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_3), 
+                    kind: AbilityId::R(AbilityName::_3), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -1970,23 +1970,23 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_3), 
+                    kind: AbilityId::Q(AbilityName::_3), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_4), 
+                    kind: AbilityId::Q(AbilityName::_4), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -1999,23 +1999,23 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -2028,15 +2028,15 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle,Position::Support,Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -2049,23 +2049,23 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Jungle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -2078,31 +2078,31 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Middle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_3), 
+                    kind: AbilityId::R(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_4), 
+                    kind: AbilityId::R(AbilityName::_4), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -2115,31 +2115,31 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Middle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_3), 
+                    kind: AbilityId::R(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_4), 
+                    kind: AbilityId::R(AbilityName::_4), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_5), 
+                    kind: AbilityId::R(AbilityName::_5), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -2152,19 +2152,19 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -2177,35 +2177,35 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_3), 
+                    kind: AbilityId::Q(AbilityName::_3), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_4), 
+                    kind: AbilityId::Q(AbilityName::_4), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_5), 
+                    kind: AbilityId::Q(AbilityName::_5), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_6), 
+                    kind: AbilityId::Q(AbilityName::_6), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -2218,31 +2218,31 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -2255,19 +2255,19 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -2280,23 +2280,23 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Jungle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -2309,47 +2309,47 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_4), 
+                    kind: AbilityId::Q(AbilityName::_4), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_5), 
+                    kind: AbilityId::Q(AbilityName::_5), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_6), 
+                    kind: AbilityId::Q(AbilityName::_6), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_7), 
+                    kind: AbilityId::Q(AbilityName::_7), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -2362,23 +2362,23 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -2391,55 +2391,55 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_3), 
+                    kind: AbilityId::E(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_3), 
+                    kind: AbilityId::R(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_4), 
+                    kind: AbilityId::R(AbilityName::_4), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_5), 
+                    kind: AbilityId::R(AbilityName::_5), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_6), 
+                    kind: AbilityId::R(AbilityName::_6), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_7), 
+                    kind: AbilityId::R(AbilityName::_7), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -2452,19 +2452,19 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -2477,23 +2477,23 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Support],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -2506,35 +2506,35 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_3), 
+                    kind: AbilityId::W(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_4), 
+                    kind: AbilityId::W(AbilityName::_4), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -2547,19 +2547,19 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -2572,35 +2572,35 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_3), 
+                    kind: AbilityId::R(AbilityName::_3), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_4), 
+                    kind: AbilityId::R(AbilityName::_4), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_5), 
+                    kind: AbilityId::R(AbilityName::_5), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_6), 
+                    kind: AbilityId::R(AbilityName::_6), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -2613,31 +2613,31 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Support],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_3), 
+                    kind: AbilityId::Q(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_4), 
+                    kind: AbilityId::Q(AbilityName::_4), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_5), 
+                    kind: AbilityId::Q(AbilityName::_5), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_6), 
+                    kind: AbilityId::Q(AbilityName::_6), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -2650,15 +2650,15 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle,Position::Support],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -2671,23 +2671,23 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Middle,Position::Support,Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -2700,39 +2700,39 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_3), 
+                    kind: AbilityId::R(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_4), 
+                    kind: AbilityId::R(AbilityName::_4), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -2745,35 +2745,35 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle,Position::Support],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_3), 
+                    kind: AbilityId::Q(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_3), 
+                    kind: AbilityId::E(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -2786,43 +2786,43 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_3), 
+                    kind: AbilityId::Q(AbilityName::_3), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_4), 
+                    kind: AbilityId::Q(AbilityName::_4), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_5), 
+                    kind: AbilityId::Q(AbilityName::_5), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_6), 
+                    kind: AbilityId::Q(AbilityName::_6), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_7), 
+                    kind: AbilityId::Q(AbilityName::_7), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::True, 
                     attributes: Attrs::Undefined 
                 },],
@@ -2835,59 +2835,59 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle,Position::Support],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_3), 
+                    kind: AbilityId::Q(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_4), 
+                    kind: AbilityId::Q(AbilityName::_4), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_3), 
+                    kind: AbilityId::E(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_4), 
+                    kind: AbilityId::E(AbilityName::_4), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_5), 
+                    kind: AbilityId::E(AbilityName::_5), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_6), 
+                    kind: AbilityId::E(AbilityName::_6), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_3), 
+                    kind: AbilityId::R(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -2900,7 +2900,7 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Support],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -2913,19 +2913,19 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -2938,27 +2938,27 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle,Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_3), 
+                    kind: AbilityId::R(AbilityName::_3), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -2971,15 +2971,15 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -2992,31 +2992,31 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Support],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_3), 
+                    kind: AbilityId::W(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_4), 
+                    kind: AbilityId::W(AbilityName::_4), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -3029,55 +3029,55 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Middle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_3), 
+                    kind: AbilityId::Q(AbilityName::_3), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_4), 
+                    kind: AbilityId::Q(AbilityName::_4), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_5), 
+                    kind: AbilityId::Q(AbilityName::_5), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_6), 
+                    kind: AbilityId::Q(AbilityName::_6), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_7), 
+                    kind: AbilityId::Q(AbilityName::_7), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_8), 
+                    kind: AbilityId::Q(AbilityName::_8), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_3), 
+                    kind: AbilityId::E(AbilityName::_3), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -3090,27 +3090,27 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Support],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -3123,27 +3123,27 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_3), 
+                    kind: AbilityId::E(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -3156,43 +3156,43 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Support],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_3), 
+                    kind: AbilityId::E(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_4), 
+                    kind: AbilityId::E(AbilityName::_4), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_5), 
+                    kind: AbilityId::E(AbilityName::_5), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_6), 
+                    kind: AbilityId::E(AbilityName::_6), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -3205,31 +3205,31 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle,Position::Support],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_3), 
+                    kind: AbilityId::Q(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_4), 
+                    kind: AbilityId::Q(AbilityName::_4), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -3242,23 +3242,23 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Jungle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_3), 
+                    kind: AbilityId::Q(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_4), 
+                    kind: AbilityId::Q(AbilityName::_4), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_3), 
+                    kind: AbilityId::W(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },],
@@ -3271,31 +3271,31 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Bottom],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_3), 
+                    kind: AbilityId::R(AbilityName::_3), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_4), 
+                    kind: AbilityId::R(AbilityName::_4), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -3308,23 +3308,23 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -3337,47 +3337,47 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_3), 
+                    kind: AbilityId::W(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_4), 
+                    kind: AbilityId::W(AbilityName::_4), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_3), 
+                    kind: AbilityId::E(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_4), 
+                    kind: AbilityId::E(AbilityName::_4), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -3390,23 +3390,23 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_3), 
+                    kind: AbilityId::Q(AbilityName::_3), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::True, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },],
@@ -3419,23 +3419,23 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -3448,43 +3448,43 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_3), 
+                    kind: AbilityId::W(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_4), 
+                    kind: AbilityId::W(AbilityName::_4), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_5), 
+                    kind: AbilityId::W(AbilityName::_5), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_6), 
+                    kind: AbilityId::W(AbilityName::_6), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -3497,43 +3497,43 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle,Position::Middle,Position::Support,Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_3), 
+                    kind: AbilityId::Q(AbilityName::_3), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_4), 
+                    kind: AbilityId::Q(AbilityName::_4), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_5), 
+                    kind: AbilityId::Q(AbilityName::_5), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_6), 
+                    kind: AbilityId::Q(AbilityName::_6), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },],
@@ -3546,43 +3546,43 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle,Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_3), 
+                    kind: AbilityId::Q(AbilityName::_3), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_4), 
+                    kind: AbilityId::Q(AbilityName::_4), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_5), 
+                    kind: AbilityId::Q(AbilityName::_5), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -3595,11 +3595,11 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Support],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -3612,27 +3612,27 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Middle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -3645,11 +3645,11 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -3662,15 +3662,15 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Support],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -3683,15 +3683,15 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -3704,23 +3704,23 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -3733,23 +3733,23 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Support],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -3762,11 +3762,11 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Support],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -3779,35 +3779,35 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_3), 
+                    kind: AbilityId::W(AbilityName::_3), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -3820,15 +3820,15 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle,Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -3841,15 +3841,15 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -3862,63 +3862,63 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Middle,Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_3), 
+                    kind: AbilityId::Q(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_4), 
+                    kind: AbilityId::Q(AbilityName::_4), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_5), 
+                    kind: AbilityId::Q(AbilityName::_5), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_6), 
+                    kind: AbilityId::Q(AbilityName::_6), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_7), 
+                    kind: AbilityId::Q(AbilityName::_7), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_8), 
+                    kind: AbilityId::Q(AbilityName::_8), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_3), 
+                    kind: AbilityId::E(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_4), 
+                    kind: AbilityId::E(AbilityName::_4), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_3), 
+                    kind: AbilityId::R(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -3931,19 +3931,19 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },],
@@ -3956,35 +3956,35 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_3), 
+                    kind: AbilityId::R(AbilityName::_3), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_4), 
+                    kind: AbilityId::R(AbilityName::_4), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -3997,31 +3997,31 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_3), 
+                    kind: AbilityId::W(AbilityName::_3), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -4034,15 +4034,15 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom,Position::Support],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -4055,23 +4055,23 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom,Position::Support],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -4084,31 +4084,31 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -4121,47 +4121,47 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle,Position::Support],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_3), 
+                    kind: AbilityId::W(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_4), 
+                    kind: AbilityId::W(AbilityName::_4), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_5), 
+                    kind: AbilityId::W(AbilityName::_5), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_3), 
+                    kind: AbilityId::R(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -4174,27 +4174,27 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Support,Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_3), 
+                    kind: AbilityId::Q(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_4), 
+                    kind: AbilityId::Q(AbilityName::_4), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_5), 
+                    kind: AbilityId::Q(AbilityName::_5), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -4207,27 +4207,27 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -4240,15 +4240,15 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -4261,47 +4261,47 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_3), 
+                    kind: AbilityId::Q(AbilityName::_3), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_4), 
+                    kind: AbilityId::Q(AbilityName::_4), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_5), 
+                    kind: AbilityId::Q(AbilityName::_5), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_6), 
+                    kind: AbilityId::Q(AbilityName::_6), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_7), 
+                    kind: AbilityId::Q(AbilityName::_7), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -4314,31 +4314,31 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_3), 
+                    kind: AbilityId::Q(AbilityName::_3), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_3), 
+                    kind: AbilityId::W(AbilityName::_3), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_4), 
+                    kind: AbilityId::W(AbilityName::_4), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -4351,31 +4351,31 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle,Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_3), 
+                    kind: AbilityId::Q(AbilityName::_3), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_4), 
+                    kind: AbilityId::Q(AbilityName::_4), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_5), 
+                    kind: AbilityId::Q(AbilityName::_5), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -4388,55 +4388,55 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom,Position::Middle,Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_3), 
+                    kind: AbilityId::Q(AbilityName::_3), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_4), 
+                    kind: AbilityId::Q(AbilityName::_4), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_5), 
+                    kind: AbilityId::Q(AbilityName::_5), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_6), 
+                    kind: AbilityId::Q(AbilityName::_6), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_3), 
+                    kind: AbilityId::W(AbilityName::_3), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -4449,19 +4449,19 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Support],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -4474,15 +4474,15 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Support],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -4495,31 +4495,31 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom,Position::Middle,Position::Support],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_3), 
+                    kind: AbilityId::Q(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -4532,27 +4532,27 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Middle,Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_3), 
+                    kind: AbilityId::Q(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_4), 
+                    kind: AbilityId::Q(AbilityName::_4), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_5), 
+                    kind: AbilityId::Q(AbilityName::_5), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -4565,35 +4565,35 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_3), 
+                    kind: AbilityId::W(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_3), 
+                    kind: AbilityId::R(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -4606,19 +4606,19 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Support,Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },],
@@ -4631,31 +4631,31 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Jungle,Position::Middle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_3), 
+                    kind: AbilityId::Q(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_4), 
+                    kind: AbilityId::Q(AbilityName::_4), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_3), 
+                    kind: AbilityId::E(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -4668,31 +4668,31 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_3), 
+                    kind: AbilityId::W(AbilityName::_3), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -4705,7 +4705,7 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Middle,Position::Support],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -4718,39 +4718,39 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Jungle,Position::Support,Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_3), 
+                    kind: AbilityId::E(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_4), 
+                    kind: AbilityId::E(AbilityName::_4), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_5), 
+                    kind: AbilityId::E(AbilityName::_5), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_6), 
+                    kind: AbilityId::E(AbilityName::_6), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -4763,23 +4763,23 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Support],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_3), 
+                    kind: AbilityId::E(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -4792,31 +4792,31 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom,Position::Middle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_3), 
+                    kind: AbilityId::E(AbilityName::_3), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_4), 
+                    kind: AbilityId::E(AbilityName::_4), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_5), 
+                    kind: AbilityId::E(AbilityName::_5), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -4829,27 +4829,27 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle,Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_3), 
+                    kind: AbilityId::Q(AbilityName::_3), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_3), 
+                    kind: AbilityId::R(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -4862,15 +4862,15 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -4883,23 +4883,23 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom,Position::Middle,Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_3), 
+                    kind: AbilityId::W(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -4912,23 +4912,23 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom,Position::Support],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_3), 
+                    kind: AbilityId::E(AbilityName::_3), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_4), 
+                    kind: AbilityId::E(AbilityName::_4), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -4941,23 +4941,23 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle,Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_3), 
+                    kind: AbilityId::Q(AbilityName::_3), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -4970,19 +4970,19 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },],
@@ -4995,55 +4995,55 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_3), 
+                    kind: AbilityId::Q(AbilityName::_3), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_4), 
+                    kind: AbilityId::Q(AbilityName::_4), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_3), 
+                    kind: AbilityId::W(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_4), 
+                    kind: AbilityId::W(AbilityName::_4), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_5), 
+                    kind: AbilityId::W(AbilityName::_5), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_6), 
+                    kind: AbilityId::W(AbilityName::_6), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_7), 
+                    kind: AbilityId::W(AbilityName::_7), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -5056,31 +5056,31 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom,Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::True, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::True, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_3), 
+                    kind: AbilityId::E(AbilityName::_3), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },],
@@ -5093,19 +5093,19 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle,Position::Support],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -5118,31 +5118,31 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle,Position::Support],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_3), 
+                    kind: AbilityId::W(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },],
@@ -5155,27 +5155,27 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_3), 
+                    kind: AbilityId::R(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -5188,23 +5188,23 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -5217,35 +5217,35 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_3), 
+                    kind: AbilityId::Q(AbilityName::_3), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_4), 
+                    kind: AbilityId::Q(AbilityName::_4), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_5), 
+                    kind: AbilityId::Q(AbilityName::_5), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_6), 
+                    kind: AbilityId::Q(AbilityName::_6), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -5258,39 +5258,39 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_3), 
+                    kind: AbilityId::Q(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_3), 
+                    kind: AbilityId::E(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_3), 
+                    kind: AbilityId::R(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -5303,31 +5303,31 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle,Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -5340,19 +5340,19 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle,Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -5365,19 +5365,19 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle,Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -5390,31 +5390,31 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_3), 
+                    kind: AbilityId::Q(AbilityName::_3), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_4), 
+                    kind: AbilityId::Q(AbilityName::_4), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -5427,31 +5427,31 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Middle,Position::Support],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_3), 
+                    kind: AbilityId::R(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -5464,31 +5464,31 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_3), 
+                    kind: AbilityId::W(AbilityName::_3), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -5501,27 +5501,27 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Bottom,Position::Middle,Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_3), 
+                    kind: AbilityId::E(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_4), 
+                    kind: AbilityId::E(AbilityName::_4), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -5534,35 +5534,35 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Middle,Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_3), 
+                    kind: AbilityId::W(AbilityName::_3), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::True, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_3), 
+                    kind: AbilityId::R(AbilityName::_3), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },],
@@ -5575,19 +5575,19 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_3), 
+                    kind: AbilityId::E(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -5600,39 +5600,39 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_3), 
+                    kind: AbilityId::Q(AbilityName::_3), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_4), 
+                    kind: AbilityId::Q(AbilityName::_4), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_5), 
+                    kind: AbilityId::Q(AbilityName::_5), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_3), 
+                    kind: AbilityId::W(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },],
@@ -5645,27 +5645,27 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Support],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_3), 
+                    kind: AbilityId::Q(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_2), 
+                    kind: AbilityId::R(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_3), 
+                    kind: AbilityId::R(AbilityName::_3), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -5678,15 +5678,15 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -5699,27 +5699,27 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle,Position::Support,Position::Top],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_1), 
+                    kind: AbilityId::W(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::W(AbilityName::_2), 
+                    kind: AbilityId::W(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -5732,15 +5732,15 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Melee,
                     positions: &[Position::Jungle,Position::Middle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_3), 
+                    kind: AbilityId::R(AbilityName::_3), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -5753,11 +5753,11 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_2), 
+                    kind: AbilityId::Q(AbilityName::_2), 
                     damage_type: DamageType::Physical, 
                     attributes: Attrs::Undefined 
                 },],
@@ -5770,11 +5770,11 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Bottom,Position::Middle],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_2), 
+                    kind: AbilityId::E(AbilityName::_2), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],
@@ -5787,15 +5787,15 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Support],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::E(AbilityName::_1), 
+                    kind: AbilityId::E(AbilityName::_1), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },TypeMetadata { 
-                    kind: AbilityLike::R(AbilityName::_1), 
+                    kind: AbilityId::R(AbilityName::_1), 
                     damage_type: DamageType::Unknown, 
                     attributes: Attrs::Undefined 
                 },],
@@ -5817,7 +5817,7 @@ use super::*;impl ChampionId {
                     attack_type: AttackType::Ranged,
                     positions: &[Position::Support],
                     metadata: &[TypeMetadata { 
-                    kind: AbilityLike::Q(AbilityName::_1), 
+                    kind: AbilityId::Q(AbilityName::_1), 
                     damage_type: DamageType::Magic, 
                     attributes: Attrs::Undefined 
                 },],

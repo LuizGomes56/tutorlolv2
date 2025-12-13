@@ -232,10 +232,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
 
             let e_items = e_riot_items
                 .iter()
-                .filter_map(|riot_item| {
-                    let item_id = ItemId::from_riot_id(riot_item.item_id)? as _;
-                    DAMAGING_ITEMS.contains(item_id).then_some(item_id)
-                })
+                .filter_map(|riot_item| Some(ItemId::from_riot_id(riot_item.item_id)? as _))
                 .collect::<BitSet>();
 
             let e_base_stats = SimpleStats::base_stats(e_champion_id, *e_level, false);
@@ -336,6 +333,11 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
     })
 }
 
+/// Reads all game events and looks for dragon kills, returning a struct with
+/// the number of killed dragons for each team. A slice with information about
+/// all players in the game needs to be provided so the dragon kill per team
+/// can be assigned correctly. Dragons that do not guarantee buffs that can
+/// affect damage calculations are ignored.
 pub fn get_dragons(events: &[RealtimeEvent], players: &[RiotAllPlayers]) -> Dragons {
     let mut dragons = Dragons::default();
     for event in events {

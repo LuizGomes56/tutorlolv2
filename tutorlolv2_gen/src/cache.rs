@@ -110,12 +110,12 @@ impl GameMap {
     }
 }
 
-/// A generic metadata holder for [`AbilityLike`], [`ItemId`], or [`RuneId`].
+/// A generic metadata holder for [`AbilityId`], [`ItemId`], or [`RuneId`].
 /// Contains its damage type, attributes, and which instance of the enum the value is.
 #[derive(Copy, Clone, Encode)]
 pub struct TypeMetadata<T> {
     /// Represents a variety of values:
-    /// - [`AbilityLike`]: Which ability key it represents, and its name
+    /// - [`AbilityId`]: Which ability key it represents, and its name
     /// - [`ItemId`]: Can be casted to [`usize`] and indexes into [`crate::ITEM_CACHE`]
     /// - [`RuneId`]: Can be casted to [`usize`] and indexes into [`crate::RUNE_CACHE`]
     pub kind: T,
@@ -141,7 +141,7 @@ pub struct CachedChampion {
     pub attack_type: AttackType,
     pub positions: &'static [Position],
     pub stats: CachedChampionStats,
-    pub metadata: &'static [TypeMetadata<AbilityLike>],
+    pub metadata: &'static [TypeMetadata<AbilityId>],
     pub closures: &'static [ConstClosure],
     pub merge_data: &'static [(usize, usize)],
 }

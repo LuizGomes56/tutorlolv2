@@ -10,10 +10,10 @@ use std::{
     cmp::Ordering,
     collections::{BTreeMap, HashMap},
 };
-use tutorlolv2_types::AbilityLike;
+use tutorlolv2_types::AbilityId;
 
 struct DeclaredAbility {
-    ability_id: AbilityLike,
+    ability_id: AbilityId,
     declaration: String,
     metadata: String,
     damage: String,
@@ -21,7 +21,7 @@ struct DeclaredAbility {
 
 fn declare_abilities(
     champion_id_upper: &str,
-    abilities: Vec<(AbilityLike, Ability)>,
+    abilities: Vec<(AbilityId, Ability)>,
 ) -> Vec<DeclaredAbility> {
     abilities
         .into_par_iter()
@@ -154,8 +154,8 @@ pub fn get_stats(stats: &MerakiChampionStats) -> String {
 }
 
 pub fn define_merge_indexes(
-    merge_data: Vec<(AbilityLike, AbilityLike)>,
-    ability_data: &[AbilityLike],
+    merge_data: Vec<(AbilityId, AbilityId)>,
+    ability_data: &[AbilityId],
 ) -> String {
     let mut index = HashMap::with_capacity(ability_data.len());
     for (i, ability_id) in ability_data.into_iter().enumerate() {
@@ -173,7 +173,7 @@ pub fn define_merge_indexes(
 }
 
 fn sort_abilities(data: &mut [DeclaredAbility]) {
-    let priority = |ability_id: AbilityLike| match ability_id.as_char() {
+    let priority = |ability_id: AbilityId| match ability_id.as_char() {
         'P' => 0,
         'Q' => 1,
         'W' => 2,
@@ -205,7 +205,7 @@ pub async fn generate_champions() -> GeneratorFn {
         name: String,
         positions: String,
         declaration: String,
-        ability_declarations: Vec<(AbilityLike, String)>,
+        ability_declarations: Vec<(AbilityId, String)>,
         generator: String,
     }
 
@@ -273,7 +273,7 @@ pub async fn generate_champions() -> GeneratorFn {
             ))
             .await?;
 
-            let mut champion_combos = Vec::<Vec<AbilityLike>>::new();
+            let mut champion_combos = Vec::<Vec<AbilityId>>::new();
 
             for combos in combos_json {
                 let mut result = Vec::new();
@@ -324,7 +324,7 @@ pub async fn generate_champions() -> GeneratorFn {
             ("CHAMPION_ID_TO_NAME", "&str"),
             ("CHAMPION_FORMULAS", "(u32,u32)"),
             ("CHAMPION_GENERATOR", "(u32,u32)"),
-            ("CHAMPION_ABILITIES", "&[(AbilityLike,(u32,u32))]"),
+            ("CHAMPION_ABILITIES", "&[(AbilityId,(u32,u32))]"),
         ][i];
         format!("pub static {name}: [{vtype}; {len}] = [")
     });
@@ -481,6 +481,8 @@ pub async fn generate_champions() -> GeneratorFn {
     Ok(Box::new(callback))
 }
 
+/// Creates a new string with the definition of recommended items and runes
+/// that will be exported to the frontend application
 pub async fn get_recommendations(len: usize) -> MayFail<String> {
     let enum_ids = ["ItemId", "RuneId"];
     let declaration = ["RECOMMENDED_ITEMS", "RECOMMENDED_RUNES"];
