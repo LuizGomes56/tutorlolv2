@@ -620,24 +620,80 @@ trait AbilityExt {
     fn apply_modifiers(&self, _: &mut f32, _: &AbilityModifiers) {}
 }
 
+/// Inserts ability modifier buffs or debuffs for each individual ability, based on their
+/// letter discriminant: `P`, `Q`, `W`, `E`, `R`.
+pub const fn ability_id_mod(
+    ability_id: AbilityId,
+    modifier: &mut f32,
+    ability_modifiers: AbilityModifiers,
+) {
+    match ability_id {
+        AbilityId::Q(v) => {
+            if v as u8 <= AbilityName::Mega as u8 {
+                *modifier *= ability_modifiers.q
+            }
+        }
+        AbilityId::W(v) => {
+            if v as u8 <= AbilityName::Mega as u8 {
+                *modifier *= ability_modifiers.w
+            }
+        }
+        AbilityId::E(v) => {
+            if v as u8 <= AbilityName::Mega as u8 {
+                *modifier *= ability_modifiers.e
+            }
+        }
+        AbilityId::R(v) => {
+            if v as u8 <= AbilityName::Mega as u8 {
+                *modifier *= ability_modifiers.r
+            }
+        }
+        _ => {}
+    }
+}
+
 impl AbilityExt for ItemId {}
 impl AbilityExt for RuneId {}
 impl AbilityExt for AbilityId {
     fn apply_modifiers(&self, modifier: &mut f32, ability_modifiers: &AbilityModifiers) {
-        let mut modify = |ability_name: AbilityName, value: f32| {
-            // Any ability that is not Monster or Minion damage should have the modifier applied
-            if ability_name <= AbilityName::Mega {
-                *modifier *= value
-            }
-        };
-        match self {
-            Self::Q(v) => modify(*v, ability_modifiers.q),
-            Self::W(v) => modify(*v, ability_modifiers.w),
-            Self::E(v) => modify(*v, ability_modifiers.e),
-            Self::R(v) => modify(*v, ability_modifiers.r),
+        ability_id_mod(*self, modifier, *ability_modifiers)
+    }
+}
+
+/// Constant version of the [`eval_damage`] function for the enum [`AbilityId`].
+pub const fn const_ability_id_eval_damage<const N: usize>(
+    ctx: &EvalContext,
+    onhit: &mut RangeDamage,
+    champion_id: ChampionId,
+    modifiers: Modifiers,
+) -> [i32; N] {
+    let mut result = [0; N];
+    let mut i = 0;
+    while i < N {
+        let CachedChampion { metadata, .. } = CHAMPION_CACHE[champion_id as usize];
+
+        let TypeMetadata {
+            kind,
+            damage_type,
+            attributes,
+        } = metadata[i];
+
+        let mut modifier = modifiers.damages.modifier(damage_type);
+
+        match kind {
+            AbilityId::Q(_) => modifier *= modifiers.abilities.q,
+            AbilityId::W(_) => modifier *= modifiers.abilities.w,
+            AbilityId::E(_) => modifier *= modifiers.abilities.e,
+            AbilityId::R(_) => modifier *= modifiers.abilities.r,
             _ => {}
         }
+
+        let damage = (modifier * const_eval(ctx, champion_id, kind)) as i32;
+        onhit.inc_attr(attributes, damage);
+        result[i] = damage;
+        i += 1;
     }
+    result
 }
 
 /// Evaluates the damage of some ability, item, or rune. Generic parameter `T`
@@ -658,33 +714,18 @@ pub fn eval_damage<const N: usize, T: AbilityExt + 'static>(
     let mut result = SmallVec::with_capacity(len);
     for i in 0..len {
         let closure = unsafe { closures.get_unchecked(i) };
-        let metadata = unsafe { metadata.get_unchecked(i) };
-        let damage_type = metadata.damage_type;
-        let attributes = metadata.attributes;
+        let TypeMetadata {
+            kind,
+            damage_type,
+            attributes,
+        } = unsafe { metadata.get_unchecked(i) };
 
-        let mut modifier = match damage_type {
-            DamageType::Physical => modifiers.damages.physical_mod,
-            DamageType::Magic => modifiers.damages.magic_mod,
-            DamageType::True => modifiers.damages.true_mod,
-            _ => 1.0,
-        } * modifiers.damages.global_mod;
-
-        metadata
-            .kind
-            .apply_modifiers(&mut modifier, &modifiers.abilities);
+        let mut modifier = modifiers.damages.modifier(*damage_type);
+        kind.apply_modifiers(&mut modifier, &modifiers.abilities);
 
         let damage = (modifier * closure(ctx)) as i32;
 
-        match attributes {
-            Attrs::OnhitMin => onhit.minimum_damage += damage,
-            Attrs::OnhitMax => onhit.maximum_damage += damage,
-            Attrs::Onhit => {
-                onhit.minimum_damage += damage;
-                onhit.maximum_damage += damage;
-            }
-            _ => {}
-        };
-
+        onhit.inc_attr(*attributes, damage);
         result.push(damage);
     }
     result

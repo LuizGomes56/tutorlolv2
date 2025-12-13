@@ -2,8 +2,8 @@ use crate::*;
 use bincode::{Decode, Encode};
 use smallvec::SmallVec;
 use tutorlolv2_gen::{
-    AdaptativeType, ChampionId, ConstClosure, GameMap, ItemId, ItemsBitSet, NUMBER_OF_ITEMS,
-    NUMBER_OF_RUNES, Position, RuneId, TypeMetadata,
+    AdaptativeType, Attrs, ChampionId, ConstClosure, DamageType, GameMap, ItemId, ItemsBitSet,
+    NUMBER_OF_ITEMS, NUMBER_OF_RUNES, Position, RuneId, TypeMetadata,
 };
 use tutorlolv2_types::AbilityId;
 
@@ -29,6 +29,20 @@ impl From<&str> for Team {
 pub struct RangeDamage {
     pub minimum_damage: i32,
     pub maximum_damage: i32,
+}
+
+impl RangeDamage {
+    pub const fn inc_attr(&mut self, attr: Attrs, damage: i32) {
+        match attr {
+            Attrs::OnhitMin => self.minimum_damage += damage,
+            Attrs::OnhitMax => self.maximum_damage += damage,
+            Attrs::Onhit => {
+                self.minimum_damage += damage;
+                self.maximum_damage += damage;
+            }
+            _ => {}
+        };
+    }
 }
 
 /// Struct holding the core champion stats of a player, where `T` is a
@@ -380,6 +394,18 @@ pub struct DamageModifiers {
     pub magic_mod: f32,
     pub true_mod: f32,
     pub global_mod: f32,
+}
+
+impl DamageModifiers {
+    pub const fn modifier(&self, damage_type: DamageType) -> f32 {
+        self.global_mod
+            * match damage_type {
+                DamageType::Physical => self.physical_mod,
+                DamageType::Magic => self.magic_mod,
+                DamageType::True => self.true_mod,
+                _ => 1.0,
+            }
+    }
 }
 
 #[derive(Clone, Copy)]
