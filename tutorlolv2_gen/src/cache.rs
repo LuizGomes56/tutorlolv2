@@ -3,6 +3,9 @@ use bincode::Encode;
 use serde::{Deserialize, Serialize};
 use tutorlolv2_types::*;
 
+/// A champion can have either melee or ranged damage. Ranged champions
+/// often have some damage penalty for items and runes, which are considered
+/// by branching over this enum
 #[derive(Copy, Clone, Serialize, Deserialize, PartialEq)]
 pub enum AttackType {
     Melee,
@@ -12,7 +15,6 @@ pub enum AttackType {
 impl<T: AsRef<str>> From<T> for AttackType {
     fn from(s: T) -> Self {
         match s.as_ref() {
-            "MELEE" => AttackType::Melee,
             "RANGED" => AttackType::Ranged,
             _ => AttackType::Melee,
         }
@@ -22,7 +24,6 @@ impl<T: AsRef<str>> From<T> for AttackType {
 impl<T: AsRef<str>> From<T> for AdaptativeType {
     fn from(s: T) -> Self {
         match s.as_ref() {
-            "PHYSICAL_DAMAGE" => AdaptativeType::Physical,
             "MAGIC_DAMAGE" => AdaptativeType::Magic,
             _ => AdaptativeType::Physical,
         }
@@ -35,6 +36,10 @@ pub enum AdaptativeType {
     Magic,
 }
 
+/// Represents each playable position or `lane` that a champion can
+/// play in the standard gamemode `SummonersRift`, whose definition
+/// is [`GameMap::SummonersRift`]. If we don't know a champion's position,
+/// it is set to [`Position::Top`].
 #[derive(Copy, Clone, Encode, Serialize, Deserialize, Default)]
 pub enum Position {
     #[default]
@@ -46,6 +51,7 @@ pub enum Position {
 }
 
 impl Position {
+    /// Converts a raw string into a [`Position`].
     pub fn from_raw(raw: &str) -> Option<Self> {
         match raw {
             "TOP" => Some(Position::Top),
@@ -58,8 +64,12 @@ impl Position {
     }
 }
 
-#[derive(Encode, Deserialize, Serialize)]
+/// All possible maps and codes that can be played. Most of them are
+/// event maps that may never return to the game, and don't have a
+/// deterministic code. [`GameMap::SummonersRift`] is the default map.
+#[derive(Default, Encode, Deserialize, Serialize)]
 pub enum GameMap {
+    #[default]
     SummonersRift,
     Tutorial,
     TwistedTreeline,
@@ -76,8 +86,10 @@ pub enum GameMap {
     Urf,
 }
 
-impl From<u8> for GameMap {
-    fn from(value: u8) -> Self {
+impl GameMap {
+    /// Constant conversion of a [`u8`] into a [`GameMap`] enum,
+    /// where the byte represents the code of the current map
+    pub const fn from_u8(value: u8) -> Self {
         match value {
             3 => GameMap::Tutorial,
             4 | 10 => GameMap::TwistedTreeline,
@@ -98,22 +110,38 @@ impl From<u8> for GameMap {
     }
 }
 
+/// A generic metadata holder for [`AbilityId`], [`ItemId`], or [`RuneId`].
+/// Contains its damage type, attributes, and which instance of the enum the value is.
 #[derive(Copy, Clone, Encode)]
 pub struct TypeMetadata<T> {
+    /// Represents a variety of values:
+    /// - [`AbilityId`]: Which ability key it represents, and its name
+    /// - [`ItemId`]: Can be casted to [`usize`] and indexes into [`crate::ITEM_CACHE`]
+    /// - [`RuneId`]: Can be casted to [`usize`] and indexes into [`crate::RUNE_CACHE`]
     pub kind: T,
+    /// Represents the damage type of the current instance
     pub damage_type: DamageType,
+    /// A variety of possible extra attributes the current instance can have.
+    /// See [`Attrs`] for more details
     pub attributes: Attrs,
 }
 
+/// Definition of a closure that lives in the generated static variables of
+/// cache fields, such as [`crate::CHAMPION_CACHE`], [`crate::ITEM_CACHE`], or
+/// [`crate::RUNE_CACHE`]. They all receive a [`EvalContext`], which contains
+/// more than the necessary information to calculate the damage of some ability,
+/// item, passive, or rune, and they return an [`f32`], which represents the calculated
+/// damage. All of them must be qualified as `const`, capturing no variables
 pub type ConstClosure = fn(&EvalContext) -> f32;
 
+/// Generated data about some champion, held in the static variable [`crate::CHAMPION_CACHE`]
 pub struct CachedChampion {
     pub name: &'static str,
     pub adaptative_type: AdaptativeType,
     pub attack_type: AttackType,
     pub positions: &'static [Position],
     pub stats: CachedChampionStats,
-    pub metadata: &'static [TypeMetadata<AbilityLike>],
+    pub metadata: &'static [TypeMetadata<AbilityId>],
     pub closures: &'static [ConstClosure],
     pub merge_data: &'static [(usize, usize)],
 }
@@ -153,6 +181,7 @@ pub struct CachedItemDamages {
     pub maximum_damage: ConstClosure,
 }
 
+/// Generated data about some item, held in the static variable [`crate::ITEM_CACHE`]
 pub struct CachedItem {
     pub gold: u16,
     pub prettified_stats: &'static [StatName],
@@ -167,6 +196,7 @@ pub struct CachedItem {
     pub riot_id: u32,
 }
 
+/// Generated data about some rune, held in the static variable [`crate::RUNE_CACHE`]
 pub struct CachedRune {
     pub damage_type: DamageType,
     pub metadata: TypeMetadata<RuneId>,
@@ -195,15 +225,11 @@ pub struct CachedItemStats {
     pub omnivamp: f32,
 }
 
-#[inline(always)]
+/// A constant function that returns `0.0f32`. This is used as a placeholder
+/// when some item, rune, or ability doesn't deal any damage, but must be defined
+/// in the static variable to meet the requirements of the compiler. In the best-case
+/// scenario, this function should never be called, to avoid wasting CPU time with
+/// a compile-time known result
 pub const fn zero(_: &EvalContext) -> f32 {
     0.0
-}
-
-#[derive(Copy, Clone)]
-pub struct DamageExpression {
-    pub attributes: Attrs,
-    pub damage_type: DamageType,
-    pub minimum_damage: ConstClosure,
-    pub maximum_damage: ConstClosure,
 }

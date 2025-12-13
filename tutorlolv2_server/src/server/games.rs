@@ -85,7 +85,7 @@ pub async fn create_game_handler(state: Data<AppState>) -> Response {
 #[post("/get_by_code")]
 pub async fn get_by_code_handler(state: Data<AppState>, body: actix_web::web::Bytes) -> Response {
     let game_code = std::str::from_utf8(body.as_ref())?;
-    let data = sqlx::query_as::<_, (String,)>(
+    let (data,) = sqlx::query_as::<_, (String,)>(
         "SELECT g.game_id, gd.game_data AS game 
         FROM games g
         JOIN game_data gd ON gd.game_id = g.game_id 
@@ -97,7 +97,7 @@ pub async fn get_by_code_handler(state: Data<AppState>, body: actix_web::web::By
     .fetch_one(&state.db)
     .await?;
 
-    let riot_realtime = serde_json::from_str(&data.0)?;
+    let riot_realtime = serde_json::from_str(&data)?;
     let realtime_data = realtime(&riot_realtime).ok_or("Err")?;
     respond(realtime_data)
 }

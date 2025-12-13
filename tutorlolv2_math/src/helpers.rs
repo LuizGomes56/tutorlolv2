@@ -1,33 +1,69 @@
 use super::model::*;
 use crate::{L_ITEM, L_RUNE, L_SIML, RiotFormulas, riot::*};
+use core::mem::MaybeUninit;
 use smallvec::SmallVec;
-use std::mem::MaybeUninit;
 use tutorlolv2_gen::*;
-use tutorlolv2_types::{AbilityLike, AbilityName};
+use tutorlolv2_types::{AbilityId, AbilityName};
 
+/// Rune [`RuneId::AxiomArcanist`] gives +12% bonus damage to `R`
+/// if it deals single target damage. The -3% penalty is not yet
+/// supported for area-damaging ultimates
 pub const AXIOM_ARCANIST_BONUS_DAMAGE: f32 = 1.12;
 pub const COUP_DE_GRACE_AND_CUTDOWN_BONUS_DAMAGE: f32 = 1.08;
 /// By 06/07/2025 Earth dragons give +5% resists
-/// #![manual_impl]
 pub const EARTH_DRAGON_MULTIPLIER: f32 = 0.05;
 /// By 06/07/2025 Fire dragons give +3% bonus attack stats
-/// #![manual_impl]
 pub const FIRE_DRAGON_MULTIPLIER: f32 = 0.03;
+/// Despite the usual maximum level being 18, in
+/// URF you can reach up to this constant's value
 pub const URF_MAX_LEVEL: usize = 30;
 
+/// Formula to get the bonus damage of the rune [`RuneId::LastStand`], where
+/// missing health is a ratio of the current health and the maximum health.
+/// ```rs
+/// let missing_health = 1.0 - (
+///     current_player_stats.current_health /
+///         current_player_stats.health.max(1.0)
+/// );
+/// ```
+/// Note that it uses [`f32::max`] to avoid division by zero.
+///
+/// - Current Health = 800
+/// - Maximum Health = 1000
+///
+/// Then you're missing 200 health, which represents 20% of the total HP,
+/// which should translate to 0.2.
+/// Check the formula
+/// `1.0 - (800.0 / 1000.0) = 0.2`
+///
+/// Also, this formula has a range from 1.0 to 1.11, since in game the
+/// maximum damage increase is of `11%`
 pub const fn get_last_stand(missing_health: f32) -> f32 {
     1.0 + (0.05 + 0.2 * (missing_health - 0.4)).clamp(0.0, 0.11)
 }
 
+/// Receives the number of Mountain dragons and returns a multiplier that will
+/// be applied to increase some target's armor and magic resistences
 pub const fn get_earth_multiplier(x: u16) -> f32 {
     1.0 + x as f32 * EARTH_DRAGON_MULTIPLIER
 }
 
+/// Receives the number of fire dragons and returns a number that can be multiplied
+/// by the current ability power and attack damage to obtain the expected current
+/// player's numeric value for those fields
 pub const fn get_fire_multiplier(x: u16) -> f32 {
     1.0 + x as f32 * FIRE_DRAGON_MULTIPLIER
 }
 
-/// Ordered as: health, armor, magic_resist, attack_damage, mana
+/// Constant array ordered based on the [`ChampionId`] when casted to a [`usize`]
+/// index. The second inner array represents the base stats of that champion at
+/// a given level that goes from 0 to [`URF_MAX_LEVEL`], where 0 represents the
+/// level 1.
+/// ```rs
+/// let my_champion = ChampionId::Aatrox;
+/// let my_level = 6;
+/// BASE_STATS[my_champion_id as usize][6];
+/// ```
 pub static BASE_STATS: [[BasicStats<f32>; URF_MAX_LEVEL]; NUMBER_OF_CHAMPIONS] = {
     let mut base_stats = [[BasicStats::default(); URF_MAX_LEVEL]; NUMBER_OF_CHAMPIONS];
     let mut champion_index = 0;
@@ -63,6 +99,10 @@ pub static BASE_STATS: [[BasicStats<f32>; URF_MAX_LEVEL]; NUMBER_OF_CHAMPIONS] =
     base_stats
 };
 
+/// Constant sorted array containing a struct [`BasicStats<f32>`] of Mega Gnar.
+/// Each index represents the base stats at each level. The maximum level is
+/// defined by the constant [`URF_MAX_LEVEL`], which is over the usual maximum
+/// level of 18
 pub static MEGA_GNAR_BASE_STATS: [BasicStats<f32>; URF_MAX_LEVEL] = {
     let mut base_stats = BASE_STATS[ChampionId::Gnar as usize];
     let mut level = 0;
@@ -103,6 +143,20 @@ pub static MEGA_GNAR_BASE_STATS: [BasicStats<f32>; URF_MAX_LEVEL] = {
     base_stats
 };
 
+/// Simplified way to construct a new struct from the provided base stats and
+/// current stats. Only structs with generic arguments `T` are accepted in this
+/// macro
+/// ```rs
+/// let current_player_bonus_stats = bonus_stats!(
+///     BasicStats::<f32>(champion_stats, current_player_base_stats) {
+///         armor,
+///         health,
+///         attack_damage,
+///         magic_resist,
+///         mana
+///     }
+/// );
+/// ```
 #[macro_export]
 macro_rules! bonus_stats {
     ($struct:ident::<$t:ty>($current_stats:expr, $base_stats:expr) { $($field:ident),*}) => {
@@ -116,6 +170,8 @@ macro_rules! bonus_stats {
 
 pub use bonus_stats;
 
+/// Checks if at least one of the provided [`ItemId`] in the array is in the [`BitSet`]
+/// This is similar to the [`std::iter::Iterator::any`] method
 pub const fn has_item<const N: usize>(origin: &BitSet, check_for: [ItemId; N]) -> bool {
     let mut i = 0;
     while i < N {
@@ -127,34 +183,30 @@ pub const fn has_item<const N: usize>(origin: &BitSet, check_for: [ItemId; N]) -
     false
 }
 
-pub const fn const_clamp(value: u8, range: std::ops::RangeInclusive<u8>) -> usize {
+/// Same as the method [`u8::clamp`] but with the `const` qualifier,
+pub const fn const_clamp(value: u8, range: core::ops::RangeInclusive<u8>) -> usize {
     let min = *range.start();
     let max = *range.end();
-    ((if value < min {
+    (if value < min {
         min
     } else if value > max {
         max
     } else {
         value
-    }) - 1) as usize
+    }) as usize
 }
 
+/// Takes as parameters the enum [`ChampionId`] and the desired level of the current
+/// champion and returns its base stats. If the level is higher than [`URF_MAX_LEVEL`],
+/// the value is clamped to avoid panics
 pub const fn get_base_stats(champion_id: ChampionId, level: u8) -> BasicStats<f32> {
-    BASE_STATS[champion_id as usize][const_clamp(level, 1..=URF_MAX_LEVEL as u8)]
+    BASE_STATS[champion_id as usize][const_clamp(level, 1..=URF_MAX_LEVEL as u8) - 1]
 }
 
 impl SimpleStats<f32> {
-    pub const fn default() -> Self {
-        Self {
-            health: 0.0,
-            armor: 0.0,
-            magic_resist: 0.0,
-        }
-    }
-
     pub const fn base_stats(champion_id: ChampionId, level: u8, is_mega_gnar: bool) -> Self {
         let stats = match is_mega_gnar {
-            true => MEGA_GNAR_BASE_STATS[const_clamp(level, 1..=URF_MAX_LEVEL as u8)],
+            true => MEGA_GNAR_BASE_STATS[const_clamp(level, 1..=URF_MAX_LEVEL as u8) - 1],
             false => get_base_stats(champion_id, level),
         };
         Self {
@@ -166,24 +218,18 @@ impl SimpleStats<f32> {
 }
 
 impl BasicStats<f32> {
-    pub const fn default() -> Self {
-        Self {
-            health: 0.0,
-            armor: 0.0,
-            magic_resist: 0.0,
-            attack_damage: 0.0,
-            mana: 0.0,
-        }
-    }
-
     pub const fn base_stats(champion_id: ChampionId, level: u8, is_mega_gnar: bool) -> Self {
         match is_mega_gnar {
-            true => MEGA_GNAR_BASE_STATS[const_clamp(level, 1..=URF_MAX_LEVEL as u8)],
+            true => MEGA_GNAR_BASE_STATS[const_clamp(level, 1..=URF_MAX_LEVEL as u8) - 1],
             false => get_base_stats(champion_id, level),
         }
     }
 }
 
+/// Receives the current player stats and the qualified dragons and returns a large array
+/// of stats as if the player owned the qualified item, defined in the constant
+/// [`SIMULATED_ITEMS_ENUM`]. The qualified items are defined by their tier, gold, and if
+/// they're purchasable in the standard gamemode [`GameMap::SummonersRift`].
 pub const fn get_simulated_stats(stats: &Stats<f32>, dragons: Dragons) -> [Stats<f32>; L_SIML] {
     let mut result = MaybeUninit::<[Stats<f32>; L_SIML]>::uninit();
     let result_ptr = result.as_mut_ptr();
@@ -232,6 +278,9 @@ pub const fn get_simulated_stats(stats: &Stats<f32>, dragons: Dragons) -> [Stats
     unsafe { result.assume_init() }
 }
 
+/// Returns an instance [`DamageKind`] containing the closures and metadata of the runes.
+/// Since the number of runes is unknown at compile time, those values are dynamically
+/// allocated. This function does not evaluate any closures
 pub fn get_runes_data(runes: &BitSet, attack_type: AttackType) -> DamageKind<L_RUNE, RuneId> {
     let mut metadata = SmallVec::with_capacity(runes.count() as usize);
     let mut closures = SmallVec::with_capacity(runes.count() as usize);
@@ -246,6 +295,9 @@ pub fn get_runes_data(runes: &BitSet, attack_type: AttackType) -> DamageKind<L_R
     DamageKind { metadata, closures }
 }
 
+/// Asserts that every single item that has a closure array has two or less
+/// elements inside. An item can have minimum and maximum damages only, 3
+/// or more damage values are not supported
 const _: () = {
     let mut index = 0;
     while index < NUMBER_OF_ITEMS {
@@ -256,6 +308,9 @@ const _: () = {
     }
 };
 
+/// Returns an instance [`DamageKind`] along with the merge data about the provided items,
+/// if any. The merge data determines if an item has a maximum damage. If it does, it tells
+/// the table generator function to merge those damages in a single cell as `{min} - {max}`
 pub fn get_items_data(
     items: &BitSet,
     attack_type: AttackType,
@@ -284,6 +339,8 @@ pub fn get_items_data(
     (DamageKind { metadata, closures }, multi_closure_indices)
 }
 
+/// Converts a slice of [`RuneId`] into a [`BitSet`], removing the ones that
+/// do not deal any damage
 pub const fn get_damaging_runes(input: &[RuneId]) -> BitSet {
     let mut out = BitSet::EMPTY;
     let mut i = 0;
@@ -297,6 +354,8 @@ pub const fn get_damaging_runes(input: &[RuneId]) -> BitSet {
     out
 }
 
+/// Converts a slice of [`ItemId`] into a [`BitSet`], removing the ones that
+/// do not deal any damage
 pub const fn get_damaging_items(input: &[ItemId]) -> BitSet {
     let mut out = BitSet::EMPTY;
     let mut i = 0;
@@ -310,6 +369,10 @@ pub const fn get_damaging_items(input: &[ItemId]) -> BitSet {
     out
 }
 
+/// Mutates the variable `stats` and returns the bonus mana recovered from all items.
+/// In general, information about the enemy's mana is useless, but there are some items
+/// that increase their HP based on this stat. Because of that, having information about
+/// the bonus mana allows a better estimate about the enemy's current HP
 pub const fn get_enemy_current_stats(
     stats: &mut SimpleStats<f32>,
     items: &BitSet,
@@ -335,6 +398,11 @@ pub const fn get_enemy_current_stats(
     bonus_mana
 }
 
+/// Takes information about the current enemy and returns a struct that represents
+/// all the useful information we should infer from the current enemy state. This
+/// will be used to create a struct [`EvalContext`] that will be used to evaluate
+/// the closures of the current champion. Champion and item specific bonus stats
+/// are applied in this function
 pub const fn get_enemy_state(
     state: EnemyState,
     shred: ResistShred,
@@ -474,6 +542,10 @@ pub const fn get_enemy_state(
     }
 }
 
+/// Construct a new [`EvalContext`] type that can be used to evaluate any champion's
+/// closures and get their intermediary damage values, before applying the reductions
+/// from armor and magic resist. See [`ConstClosure`] for more details about those
+/// functions
 pub const fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> EvalContext {
     EvalContext {
         q_level: self_state.ability_levels.q,
@@ -489,10 +561,7 @@ pub const fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> E
         thresh_stacks: 1.0,
         kindred_stacks: 1.0,
         belveth_stacks: 1.0,
-        adaptative_damage: match RiotFormulas::adaptative_type(
-            self_state.bonus_stats.attack_damage,
-            self_state.current_stats.ability_power,
-        ) {
+        adaptative_damage: match self_state.adaptative_type {
             AdaptativeType::Physical => e_state.armor_values.modifier,
             AdaptativeType::Magic => e_state.magic_values.modifier,
         },
@@ -543,13 +612,17 @@ pub const fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> E
     }
 }
 
+/// Trait that extends the behavior of what to do with the struct [`Modifiers`] , which
+/// is multiplied by the result of a [`ConstClosure`]. For example, only for abilities,
+/// depending on their letter `P`, `Q`, `W`, `E`, `R`, there are some buffs or debuffs
+/// that are applied to the damage of those abilities
 pub trait AbilityExt {
     fn apply_modifiers(&self, _: &mut f32, _: &AbilityModifiers) {}
 }
 
 impl AbilityExt for ItemId {}
 impl AbilityExt for RuneId {}
-impl AbilityExt for AbilityLike {
+impl AbilityExt for AbilityId {
     fn apply_modifiers(&self, modifier: &mut f32, ability_modifiers: &AbilityModifiers) {
         let mut modify = |ability_name: AbilityName, value: f32| {
             // Any ability that is not Monster or Minion damage should have the modifier applied
@@ -567,6 +640,12 @@ impl AbilityExt for AbilityLike {
     }
 }
 
+/// Evaluates the damage of some ability, item, or rune. Generic parameter `T`
+/// should be of type [`ItemId`], [`AbilityId`], or [`RuneId`] only. This function
+/// already multiplies the final damage result by the appropriate armor, or magic
+/// resist multiplier of the enemy, and considers global and local damage modifiers
+/// of each ability, item, and rune. This function will cause `Undefined Behavior`
+/// if the length of `closures` and `metadata` are not equal
 pub fn eval_damage<const N: usize, T: AbilityExt + 'static>(
     ctx: &EvalContext,
     onhit: &mut RangeDamage,
@@ -610,9 +689,15 @@ pub fn eval_damage<const N: usize, T: AbilityExt + 'static>(
     result
 }
 
-pub const fn eval_attacks(ctx: &EvalContext, mut onhit_damage: RangeDamage) -> Attacks {
-    let basic_attack = ctx.ad as i32;
-    let critical_strike = (ctx.ad * ctx.crit_damage / 100.0) as i32;
+/// Evaluates the damage of basic attacks, onhit damages and critical strikes
+pub const fn eval_attacks(
+    ctx: &EvalContext,
+    mut onhit_damage: RangeDamage,
+    physical_mod: f32,
+) -> Attacks {
+    let basic_attack = ctx.ad * physical_mod;
+    let critical_strike = (basic_attack * ctx.crit_damage / 100.0) as i32;
+    let basic_attack = basic_attack as i32;
 
     onhit_damage.minimum_damage += basic_attack;
     onhit_damage.maximum_damage += critical_strike;
@@ -624,6 +709,34 @@ pub const fn eval_attacks(ctx: &EvalContext, mut onhit_damage: RangeDamage) -> A
     }
 }
 
+/// Confirms that every single metadata array have the same length as the closures array,
+/// for every champion. Also, for every item, the melee and range closures should also have
+/// the same number of elements inside. If this is not done, some functions in this module
+/// will panic or cause undefined behavior
+const _: () = {
+    let mut i = 0;
+    while i < NUMBER_OF_CHAMPIONS {
+        let CachedChampion {
+            metadata, closures, ..
+        } = CHAMPION_CACHE[i];
+        assert!(metadata.len() == closures.len());
+        i += 1;
+    }
+    let mut j = 0;
+    while j < NUMBER_OF_ITEMS {
+        let CachedItem {
+            melee_closure,
+            range_closure,
+            ..
+        } = ITEM_CACHE[j];
+        assert!(melee_closure.len() == range_closure.len());
+        j += 1;
+    }
+};
+
+/// Constructs a new [`Damages`] struct that holds all the damage values against some entity
+/// that could be calculated. This function will cause undefined behavior if any
+/// metadata of closures vectors do not have the same length
 pub fn get_damages(eval_ctx: &EvalContext, data: &DamageEvalData, modifiers: Modifiers) -> Damages {
     let mut onhit = RangeDamage::default();
 
@@ -648,7 +761,7 @@ pub fn get_damages(eval_ctx: &EvalContext, data: &DamageEvalData, modifiers: Mod
         &data.runes.closures,
         modifiers,
     );
-    let attacks = eval_attacks(&eval_ctx, onhit);
+    let attacks = eval_attacks(&eval_ctx, onhit, modifiers.damages.physical_mod);
 
     Damages {
         abilities,

@@ -63,7 +63,6 @@ fn api_scope() -> impl HttpServiceFactory + 'static {
                     .service(download_arts)
                     .service(download_runes)
                     .service(download_all)
-                    .service(generate_sprites)
                     .service(compress_images),
             ),
     );

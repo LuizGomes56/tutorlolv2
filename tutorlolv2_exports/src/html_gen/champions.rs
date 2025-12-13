@@ -78,7 +78,7 @@ fn push_recommendation<
 
 pub fn generate_champion_html() {
     for i in 0..CHAMPION_FORMULAS.len() {
-        let champion_id = unsafe { std::mem::transmute::<_, ChampionId>(i as u8) };
+        let champion_id = unsafe { ChampionId::from_u8_unchecked(i as u8) };
         println!("Generating {champion_id:#?} html");
         let mut html = String::new();
 

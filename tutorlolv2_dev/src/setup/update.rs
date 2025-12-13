@@ -89,8 +89,8 @@ pub fn setup_internal_items() -> MayFail {
     let meraki_items = MerakiItem::from_dir("cache/meraki/items")?;
     let mut riot_items = RiotCdnItem::from_dir("cache/riot/items")?;
 
-    println!("Found {} riot items", riot_items.len());
-    println!("Found {} meraki items", meraki_items.len());
+    println!("[ok] Found {} riot items", riot_items.len());
+    println!("[ok] Found {} meraki items", meraki_items.len());
 
     struct ItemCache {
         meraki_item: MerakiItem,
@@ -132,7 +132,7 @@ pub fn setup_internal_items() -> MayFail {
             maps: riot_item
                 .maps
                 .into_iter()
-                .map(|(map_id, is_available)| (GameMap::from(map_id), is_available))
+                .map(|(map_id, is_available)| (GameMap::from_u8(map_id), is_available))
                 .collect(),
             sell: riot_item.gold.sell,
             riot_id: item_id.to_riot_id(),
@@ -165,6 +165,8 @@ pub fn setup_internal_items() -> MayFail {
     Ok(())
 }
 
+/// Reads the cached runes json extracted from Riot's API and generates a new file containing
+/// only the names of each rune, and their ids
 pub fn setup_runes_json() -> MayFail {
     let map = Vec::<RiotCdnRune>::from_file("cache/riot/runes.json")?;
     let mut result = HashMap::<String, usize>::new();
@@ -285,8 +287,8 @@ fn pretiffy_items(data: &RiotCdnItem) -> MayFail<Vec<StatName>> {
     let json = result
         .into_iter()
         .map(|(key, value)| {
-            let name = tutorlolv2_fmt::to_pascal_case(&key);
-            format!(r#"{{ "name": "{name}", "value": {value} }}"#)
+            let name = tutorlolv2_fmt::pascal_case(&key);
+            format!(r#"{{ "name": {name:?}, "value": {value} }}"#)
         })
         .collect::<Vec<_>>()
         .join(",");

@@ -10,10 +10,10 @@ use std::{
     cmp::Ordering,
     collections::{BTreeMap, HashMap},
 };
-use tutorlolv2_types::AbilityLike;
+use tutorlolv2_types::AbilityId;
 
 struct DeclaredAbility {
-    ability_id: AbilityLike,
+    ability_id: AbilityId,
     declaration: String,
     metadata: String,
     damage: String,
@@ -21,7 +21,7 @@ struct DeclaredAbility {
 
 fn declare_abilities(
     champion_id_upper: &str,
-    abilities: Vec<(AbilityLike, Ability)>,
+    abilities: Vec<(AbilityId, Ability)>,
 ) -> Vec<DeclaredAbility> {
     abilities
         .into_par_iter()
@@ -42,7 +42,7 @@ fn declare_abilities(
 
                     let expression = damage
                         .iter()
-                        .map(|dmg| dmg.clean_math_expr().transform_expr().0)
+                        .map(|dmg| dmg.as_closure().add_f32s())
                         .collect::<Vec<_>>();
 
                     let ctx_match = match letter {
@@ -81,10 +81,10 @@ fn declare_abilities(
                     damage: {damage},
                 }};"
             )
-            .invoke_rustfmt(80)
-            .highlight_rust()
-            .clear_suffixes()
-            .replace_const();
+            .rust_fmt(80)
+            .rust_html()
+            .drop_f32s()
+            .as_const();
 
             if declaration.is_empty() {
                 panic!("[{champion_id_upper}] Empty declaration for {ability_id:?}");
@@ -154,8 +154,8 @@ pub fn get_stats(stats: &MerakiChampionStats) -> String {
 }
 
 pub fn define_merge_indexes(
-    merge_data: Vec<(AbilityLike, AbilityLike)>,
-    ability_data: &[AbilityLike],
+    merge_data: Vec<(AbilityId, AbilityId)>,
+    ability_data: &[AbilityId],
 ) -> String {
     let mut index = HashMap::with_capacity(ability_data.len());
     for (i, ability_id) in ability_data.into_iter().enumerate() {
@@ -173,7 +173,7 @@ pub fn define_merge_indexes(
 }
 
 fn sort_abilities(data: &mut [DeclaredAbility]) {
-    let priority = |ability_id: AbilityLike| match ability_id.as_char() {
+    let priority = |ability_id: AbilityId| match ability_id.as_char() {
         'P' => 0,
         'Q' => 1,
         'W' => 2,
@@ -205,7 +205,7 @@ pub async fn generate_champions() -> GeneratorFn {
         name: String,
         positions: String,
         declaration: String,
-        ability_declarations: Vec<(AbilityLike, String)>,
+        ability_declarations: Vec<(AbilityId, String)>,
         generator: String,
     }
 
@@ -213,7 +213,7 @@ pub async fn generate_champions() -> GeneratorFn {
         128,
         "internal/champions",
         async |champion_id, champion: Champion| {
-            println!("Building: ChampionId({champion_id:?})");
+            println!("[build] ChampionId({champion_id:?})");
 
             let champion_id_upper = champion_id.to_uppercase();
 
@@ -273,7 +273,7 @@ pub async fn generate_champions() -> GeneratorFn {
             ))
             .await?;
 
-            let mut champion_combos = Vec::<Vec<AbilityLike>>::new();
+            let mut champion_combos = Vec::<Vec<AbilityId>>::new();
 
             for combos in combos_json {
                 let mut result = Vec::new();
@@ -324,7 +324,7 @@ pub async fn generate_champions() -> GeneratorFn {
             ("CHAMPION_ID_TO_NAME", "&str"),
             ("CHAMPION_FORMULAS", "(u32,u32)"),
             ("CHAMPION_GENERATOR", "(u32,u32)"),
-            ("CHAMPION_ABILITIES", "&[(AbilityLike,(u32,u32))]"),
+            ("CHAMPION_ABILITIES", "&[(AbilityId,(u32,u32))]"),
         ][i];
         format!("pub static {name}: [{vtype}; {len}] = [")
     });
@@ -373,14 +373,14 @@ pub async fn generate_champions() -> GeneratorFn {
         },
     ) in data
     {
-        let normalized_id = champion_id.remove_special_chars();
+        let pascal_id = champion_id.pascal_case();
         let name_alias = languages_map
             .get(&champion_id)
             .ok_or(format!(
                 "Failed to recover {champion_id:?} from languages map"
             ))?
             .into_iter()
-            .map(|alias| format!("{alias:?} => ChampionId::{normalized_id}"))
+            .map(|alias| format!("{alias:?} => ChampionId::{pascal_id}"))
             .collect::<Vec<String>>()
             .join(",");
         language_arms.push(name_alias);
@@ -388,15 +388,12 @@ pub async fn generate_champions() -> GeneratorFn {
         champion_declarations.push_str(&declaration);
         champion_id_to_name.push_str(&format!("{name:?},"));
         champion_positions.push_str(&(positions + ","));
-        champion_id_enum.push_str(&(normalized_id + ","));
+        champion_id_enum.push_str(&(pascal_id + ","));
         champion_cache.push_str(&format!("&{champion_id_upper},"));
 
         tracker.record_into(&generator, &mut generator_offsets);
         tracker.record_into(
-            &declaration
-                .invoke_rustfmt(80)
-                .clear_suffixes()
-                .highlight_rust(),
+            &declaration.rust_fmt(80).drop_f32s().rust_html(),
             &mut formula_offsets,
         );
 
@@ -484,6 +481,8 @@ pub async fn generate_champions() -> GeneratorFn {
     Ok(Box::new(callback))
 }
 
+/// Creates a new string with the definition of recommended items and runes
+/// that will be exported to the frontend application
 pub async fn get_recommendations(len: usize) -> MayFail<String> {
     let enum_ids = ["ItemId", "RuneId"];
     let declaration = ["RECOMMENDED_ITEMS", "RECOMMENDED_RUNES"];

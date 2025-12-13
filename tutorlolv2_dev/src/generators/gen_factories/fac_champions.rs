@@ -12,30 +12,40 @@ use std::{
     collections::{BTreeMap, BTreeSet, HashMap},
     path::Path,
 };
-use tutorlolv2_fmt::invoke_rustfmt;
+use tutorlolv2_fmt::rustfmt;
 use tutorlolv2_gen::{Attrs, CHAMPION_CACHE, ChampionId, DamageType, Position};
-use tutorlolv2_types::{AbilityLike, AbilityName};
+use tutorlolv2_types::{AbilityId, AbilityName};
 
 pub const GENERATOR_FOLDER: &str = "tutorlolv2_dev/src/generators/gen_champions";
 
 pub struct ChampionData {
     pub data: MerakiChampion,
-    pub hashmap: HashMap<AbilityLike, Ability>,
-    pub mergevec: Vec<(AbilityLike, AbilityLike)>,
+    pub hashmap: HashMap<AbilityId, Ability>,
+    pub mergevec: Vec<(AbilityId, AbilityId)>,
 }
 
+/// Struct that creates and runs files that implement the trait [`Generator`].
+/// They generate intermediary representations of data that will be used by the
+/// `tutorlolv2_build` to generate the `tutorlolv2_gen` library. They will read
+/// the cached data from meraki analytics api and parse strings to generate the
+/// final json file containing only the useful information we could extract from it
 pub struct ChampionFactory;
 
 impl ChampionFactory {
     pub const NUMBER_OF_CHAMPIONS: usize = CHAMPION_CACHE.len();
+    /// Array containing all the `::new` functions of every champion generator struct
     pub const GENERATOR_FUNCTIONS: [fn(MerakiChampion) -> Box<dyn Generator<Champion>>;
         Self::NUMBER_OF_CHAMPIONS] =
         tutorlolv2_macros::expand_dir!("../internal/champions", |[Name]| Name::new);
 
+    /// Creates a new generator file, given a [`ChampionId`]
     pub fn create(champion_id: ChampionId) -> MayFail<String> {
         Self::create_from_raw(&format!("{champion_id:?}"))
     }
 
+    /// Creates a new generator file in the [`GENERATOR_FOLDER`] directory. The
+    /// cache file is read to generate the new file with fairly accurate offsets
+    /// and good function bindings
     pub fn create_from_raw(entity_id: &str) -> MayFail<String> {
         let file_name = entity_id.to_lowercase();
         let path = format!("{GENERATOR_FOLDER}/{file_name}.rs");
@@ -79,16 +89,18 @@ impl ChampionFactory {
         }
 
         generated_content.push_str("self.end()}}");
-        Ok(invoke_rustfmt(&generated_content, 80))
+        Ok(rustfmt(&generated_content, 80))
     }
 
+    /// Creates the whole folder of champion generators. Fails if an error
+    /// is thrown in some iteration
     pub fn create_all() -> MayFail {
         if !Path::new(GENERATOR_FOLDER).exists() {
             std::fs::create_dir(GENERATOR_FOLDER).unwrap();
         }
 
         for i in 0..Self::NUMBER_OF_CHAMPIONS as u8 {
-            let champion_id = unsafe { std::mem::transmute::<_, ChampionId>(i) };
+            let champion_id = unsafe { ChampionId::from_u8_unchecked(i) };
             let data = Self::create(champion_id)?;
             let file_name = format!("{champion_id:?}").to_lowercase();
             std::fs::write(
@@ -100,44 +112,44 @@ impl ChampionFactory {
         Ok(())
     }
 
+    /// Runs all generator files. It means that several `.json` files will be created
+    /// in the internal cache folder
     pub fn run_all() -> MayFail {
-        for i in 0..Self::NUMBER_OF_CHAMPIONS {
-            let champion_id = unsafe { std::mem::transmute::<_, ChampionId>(i as u8) };
-            let result = Self::run(champion_id);
-            match result {
-                Ok(champion) => {
-                    champion.into_file(format!("internal/champions/{champion_id:?}.json"))?;
-                }
-                Err(e) => {
-                    println!("Error generating {champion_id:?}: {e:?}. Performing offset check.");
-                    match Self::check_offsets(champion_id)? {
-                        true => println!("{champion_id:?} have an issue unrelated to offsets"),
-                        false => println!("{champion_id:?} likely has incorrect offsets"),
-                    }
-                }
-            };
+        for i in 0..Self::NUMBER_OF_CHAMPIONS as u8 {
+            let champion_id = unsafe { ChampionId::from_u8_unchecked(i) };
+            Self::run(champion_id)?;
         }
         Ok(())
     }
 
+    /// Runs a generator file, given the entity name and its offset in the
+    /// [`Self::GENERATOR_FUNCTIONS`] array
     pub fn run_from_raw(entity_id: &str, offset: usize) -> MayFail {
         let data = MerakiChampion::from_file(format!("cache/meraki/champions/{entity_id}.json"))?;
         let function = Self::GENERATOR_FUNCTIONS[offset];
         let generator = function(data);
-        let champion = generator.generate()?;
-        champion.into_file(format!("internal/champions/{entity_id}.json"))
+        match generator.generate() {
+            Ok(champion) => champion.into_file(format!("internal/champions/{entity_id}.json")),
+            Err(e) => {
+                println!("Error generating {entity_id:?}: {e:?}. Performing offset check.");
+                match Self::check_offsets_raw(entity_id)? {
+                    true => println!("{entity_id:?} have an issue unrelated to offsets"),
+                    false => println!("{entity_id:?} likely has incorrect offsets"),
+                }
+                Ok(())
+            }
+        }
     }
 
-    pub fn run(champion_id: ChampionId) -> MayFail<Champion> {
-        let data =
-            MerakiChampion::from_file(format!("cache/meraki/champions/{champion_id:?}.json"))?;
-        let function = Self::GENERATOR_FUNCTIONS[champion_id as usize];
-        let generator = function(data);
-        Ok(generator.generate()?)
+    /// Runs a generator file, given the [`ChampionId`]
+    pub fn run(champion_id: ChampionId) -> MayFail {
+        Self::run_from_raw(&format!("{champion_id:?}"), champion_id as usize)
     }
 
+    /// Receives the raw string of some generator file generates a HashMap with
+    /// the extracted offsets being used in that file
     pub fn parse_offsets(src: &str) -> MayFail<HashMap<char, Vec<(usize, usize)>>> {
-        let macro_re = Regex::new(r"(?s)ability!\s*\[\s*([A-Za-z])\s*,(.*?)\]")?;
+        let macro_re = Regex::new(r"(?s)ability(\s*\[\s*([A-Za-z])\s*,(.*?)\]")?;
         let tuple_re = Regex::new(r"\(\s*(\d+)\s*,\s*(\d+)\s*,")?;
 
         let mut out = HashMap::<char, Vec<(usize, usize)>>::new();
@@ -165,6 +177,7 @@ impl ChampionFactory {
         Ok(out)
     }
 
+    /// Creates a BtreeMap whose values are sorted vectors by offset tuple
     fn to_sorted_btree(
         m: &HashMap<char, Vec<(usize, usize)>>,
     ) -> BTreeMap<char, Vec<(usize, usize)>> {
@@ -180,6 +193,9 @@ impl ChampionFactory {
         norm
     }
 
+    /// Prints the differences of old and new offsets to the console. It is used
+    /// to warn if there might have been some changes in the current patch that could
+    /// potentially cause the generator file to fail or produce invalid outputs
     fn print_diffs(
         old: &BTreeMap<char, Vec<(usize, usize)>>,
         new: &BTreeMap<char, Vec<(usize, usize)>>,
@@ -229,18 +245,31 @@ impl ChampionFactory {
                 }
             }
 
-            println!("  Ability '{k}':");
-            println!("      found(old):     {old_values:?}");
-            println!("      expected(new):  {new_values:?}");
-            if !missing.is_empty() {
-                println!("  missing in new: {missing:?}");
+            #[derive(Debug)]
+            #[allow(non_snake_case, unused)]
+            struct OffsetCheck {
+                Ability: char,
+                Found: Vec<(usize, usize)>,
+                Expected: Vec<(usize, usize)>,
+                Missing_In_New: Vec<(usize, usize)>,
+                Extra_In_New: Vec<(usize, usize)>,
             }
-            if !extra.is_empty() {
-                println!("      extra in new:     {extra:?}");
-            }
+
+            println!(
+                "{:#?}",
+                OffsetCheck {
+                    Ability: k,
+                    Found: old_values,
+                    Expected: new_values,
+                    Missing_In_New: missing,
+                    Extra_In_New: extra,
+                }
+            );
         }
     }
 
+    /// Compares old and new offsets, and returns if they're absolutely equal or not.
+    /// If they're not equal, likely the generator file will fail
     pub fn compare_offsets(src: &str, new: &HashMap<char, Vec<(usize, usize)>>) -> MayFail<bool> {
         let old_raw = Self::parse_offsets(src)?;
         let old = Self::to_sorted_btree(&old_raw);
@@ -253,26 +282,30 @@ impl ChampionFactory {
         }
     }
 
+    /// Verifies if the offsets used in the `.ability()` or `.passive()` functions
+    /// inside all generators are likely to be correct, printing to the console the
+    /// collected results
     pub fn check_all_offsets() {
-        for i in 0..Self::NUMBER_OF_CHAMPIONS {
-            let champion_id = unsafe { std::mem::transmute::<_, ChampionId>(i as u8) };
+        for i in 0..Self::NUMBER_OF_CHAMPIONS as u8 {
+            let champion_id = unsafe { ChampionId::from_u8_unchecked(i) };
             match Self::check_offsets(champion_id) {
-                Err(e) => {
-                    println!("Error checking {champion_id:?} offsets: {e:?}");
-                }
-                Ok(false) => {
-                    println!("{champion_id:?} has incorrect offsets");
-                }
-                Ok(true) => {
-                    println!("{champion_id:?} passed offsets check");
-                }
+                Err(e) => println!("Error checking {champion_id:?} offsets: {e:?}"),
+                Ok(false) => println!("{champion_id:?} has incorrect offsets"),
+                Ok(true) => println!("{champion_id:?} passed offsets check"),
             };
         }
     }
 
-    pub fn check_offsets(name: ChampionId) -> MayFail<bool> {
+    /// Verifies the offsets used in the [`ChampionData::ability`] and [`ChampionData::passive`]
+    /// methods for some [`ChampionId`]
+    pub fn check_offsets(champion_id: ChampionId) -> MayFail<bool> {
+        Self::check_offsets_raw(&format!("{champion_id:?}"))
+    }
+
+    /// Verifies the correctness of offsets for some champion, search by its normalized name
+    pub fn check_offsets_raw(name: &str) -> MayFail<bool> {
         let meraki_champion =
-            MerakiChampion::from_file(format!("cache/meraki/champions/{name:?}.json"))?;
+            MerakiChampion::from_file(format!("cache/meraki/champions/{name}.json"))?;
 
         let mut new_offsets = HashMap::<char, Vec<(usize, usize)>>::new();
 
@@ -287,7 +320,7 @@ impl ChampionFactory {
             );
         }
 
-        let old_content = std::fs::read_to_string(format!("{GENERATOR_FOLDER}/{name:?}.rs"))?;
+        let old_content = std::fs::read_to_string(format!("{GENERATOR_FOLDER}/{name}.rs"))?;
 
         if !Self::compare_offsets(&old_content, &new_offsets)? {
             return Ok(false);
@@ -304,6 +337,8 @@ pub struct MerakiOffset {
 }
 
 impl ChampionData {
+    /// Create empty results for the current champion, associating
+    /// the struct to the new generator
     pub fn new(data: MerakiChampion) -> Self {
         Self {
             data,
@@ -312,6 +347,8 @@ impl ChampionData {
         }
     }
 
+    /// Converts the [`ChampionData`] into a [`Champion`], ending
+    /// the work of the generator
     pub fn finish(self) -> Champion {
         Champion {
             name: self.data.name,
@@ -329,22 +366,25 @@ impl ChampionData {
         }
     }
 
+    /// Returns the [`MerakiAbility`] for some [`AbilityId`] and its offset
     pub fn get_meraki_ability<'a>(
         &'a self,
-        ability: AbilityLike,
+        ability: AbilityId,
         ability_offset: usize,
     ) -> &'a MerakiAbility {
         let abilities = &self.data.abilities;
         let meraki_abilities = match ability {
-            AbilityLike::P(_) => &abilities.p,
-            AbilityLike::Q(_) => &abilities.q,
-            AbilityLike::W(_) => &abilities.w,
-            AbilityLike::E(_) => &abilities.e,
-            AbilityLike::R(_) => &abilities.r,
+            AbilityId::P(_) => &abilities.p,
+            AbilityId::Q(_) => &abilities.q,
+            AbilityId::W(_) => &abilities.w,
+            AbilityId::E(_) => &abilities.e,
+            AbilityId::R(_) => &abilities.r,
         };
         &meraki_abilities[ability_offset]
     }
 
+    /// Searchs through the whole [`MerakiAbility`] struct and returns metadata
+    /// about the offsets in such vector that likely contain a damaging ability
     pub fn get_ability_offsets(abilities: Vec<MerakiAbility>) -> Vec<MerakiOffset> {
         let mut macro_offsets = Vec::<MerakiOffset>::new();
         let mut bindings = 1;
@@ -382,6 +422,9 @@ impl ChampionData {
         macro_offsets
     }
 
+    /// Receives a slice of [`Modifiers`] and returns a [`Vec<String>`] containing
+    /// the damages of the extracted ability, for each level. An empty vector
+    /// means that nothing could be extracted from such modifier
     pub fn extract_ability(modifiers: &[Modifiers]) -> Vec<String> {
         let mut result = Vec::new();
         if modifiers.is_empty() {
@@ -433,10 +476,10 @@ impl ChampionData {
     }
 
     const fn modify_pattern<const N: usize>(
-        ability: AbilityLike,
+        ability: AbilityId,
         pattern: [(usize, usize, AbilityName); N],
-    ) -> [(usize, usize, AbilityLike); N] {
-        let mut offsets = [(0, 0, AbilityLike::P(AbilityName::Void)); N];
+    ) -> [(usize, usize, AbilityId); N] {
+        let mut offsets = [(0, 0, AbilityId::P(AbilityName::Void)); N];
         let mut i = 0;
         while i < N {
             let offset = pattern[i];
@@ -447,11 +490,14 @@ impl ChampionData {
         offsets
     }
 
-    pub fn insert(&mut self, key: impl Into<AbilityLike>, ability: Ability) {
+    /// Inserts a new ability into [`Self::hashmap`].
+    pub fn insert(&mut self, key: impl Into<AbilityId>, ability: Ability) {
         self.hashmap.insert(key.into(), ability);
     }
 
-    pub fn get_mut(&mut self, key: impl Into<AbilityLike>) -> MayFail<&mut Ability> {
+    /// Returns a mutable reference to some key in [`Self::hashmap`],
+    /// with custom error message
+    pub fn get_mut(&mut self, key: impl Into<AbilityId>) -> MayFail<&mut Ability> {
         let field = key.into();
         Ok(self
             .hashmap
@@ -459,7 +505,8 @@ impl ChampionData {
             .ok_or("[get_mut] Failed to find field: {key:?}".to_string())?)
     }
 
-    pub fn get(&self, key: impl Into<AbilityLike>) -> MayFail<&Ability> {
+    /// Returns a reference to some key in [`Self::hashmap`], with custom error message
+    pub fn get(&self, key: impl Into<AbilityId>) -> MayFail<&Ability> {
         let field = key.into();
         Ok(self
             .hashmap
@@ -467,31 +514,43 @@ impl ChampionData {
             .ok_or(format!("[get] Failed to find field: {field:?}"))?)
     }
 
+    /// Receives some ability key and a pattern of that helps locate where
+    /// in the effects and levelings array some ability of that kind is located,
+    /// and the desired name to call it through the application.
+    ///
+    /// ```rs
+    /// self.ability(
+    ///     Q,
+    ///     [(0, 0, _1), (0, 1, _1Max), (2, 1, _2)]
+    /// )
+    /// ```
     pub fn ability<const N: usize>(
         &mut self,
-        key: AbilityLike,
+        key: AbilityId,
         pattern: [(usize, usize, AbilityName); N],
     ) {
         let offsets = Self::modify_pattern(key, pattern);
         self.extract_ability_damage(key.into(), 0, &offsets);
     }
 
-    pub fn attr<const N: usize>(
-        &mut self,
-        attr: Attrs,
-        set: [impl Into<AbilityLike>; N],
-    ) -> MayFail {
+    /// Adds the attribute to all abilities in the provided array. If any ability in that
+    /// array does not exist in [`Self::hashmap`], this function will fail.
+    /// If there's an ability with a different [`AbilityId`] kind, you may want to use the
+    /// macro [`dynvec`]
+    pub fn attr<const N: usize>(&mut self, attr: Attrs, set: [impl Into<AbilityId>; N]) -> MayFail {
         for key in set {
             self.get_mut(key.into())?.attributes = attr;
         }
         Ok(())
     }
 
+    /// Use method [`Self::ability`] instead. It allows the usage of [`AbilityName`] values
+    /// in the third value of the pattern tuples instead of a full [`AbilityId`] enum
     pub fn extract_ability_damage(
         &mut self,
-        ability: AbilityLike,
+        ability: AbilityId,
         ability_offset: usize,
-        pattern: &[(usize, usize, AbilityLike)],
+        pattern: &[(usize, usize, AbilityId)],
     ) {
         let mut indexes = HashMap::new();
 
@@ -530,6 +589,7 @@ impl ChampionData {
         }
     }
 
+    /// Returns the current passive details and its description in a tuple, given its offsets
     pub fn get_passive_description(&self, offsets: (usize, usize)) -> (&MerakiAbility, &str) {
         let (ability_index, effect_index) = offsets;
 
@@ -550,6 +610,9 @@ impl ChampionData {
         )
     }
 
+    /// Finishes the generator function, performing damage type checks and creating
+    /// the [`Self::mergevec`] vector which represents what abilities should be displayed
+    /// in a single table cell, and printing useful warning messages to the console
     pub fn end(mut self) -> MayFail<Champion> {
         let name = &self.data.name;
 
@@ -617,6 +680,19 @@ impl ChampionData {
         Ok(self.finish())
     }
 
+    /// Extracts some passive from the merakianalytics data.
+    /// - `postfix` is an optional field that will add some string to the end of every
+    /// single damage value, for every level at the end. This could be a multiplication
+    /// or sum of some value that is constant and could not be extracted directly from
+    /// the passive description
+    /// - `scalings` is rarely used, it defines where the scalings such as `+ 80% AP` for
+    /// example are located, in which `effect` index of that array.
+    ///
+    /// ```rs
+    /// self.passive(Void, (0, 2), None, None);
+    /// self.passive(_1, (0, 0), Some(" + 0.8 * {AttackDamage}"), None);
+    /// self.passive(_4, (0, 1), Some(" + 94"), Some(1));
+    /// ```
     pub fn passive(
         &mut self,
         name: AbilityName,
@@ -645,16 +721,16 @@ impl ChampionData {
         }
 
         self.hashmap
-            .insert(AbilityLike::P(name), passive.format(damage));
+            .insert(AbilityId::P(name), passive.format(damage));
     }
 
     /// Takes in two fields and returns a mutable reference to a new cloned value, that was
-    /// already inserted to `self.hashmap`. The first enum is from where it is being cloned,
+    /// already inserted to [`Self::hashmap`]. The first enum is from where it is being cloned,
     /// and the second one is the new name it will have, and will be identical.
     pub fn clone_to(
         &mut self,
-        from: impl Into<AbilityLike>,
-        into: impl Into<AbilityLike>,
+        from: impl Into<AbilityId>,
+        into: impl Into<AbilityId>,
     ) -> MayFail<&mut Ability> {
         let clone_from = self.get(from.into())?.clone();
         let into_key = into.into();
@@ -662,15 +738,34 @@ impl ChampionData {
         self.get_mut(into_key)
     }
 
-    pub fn damage_type(&mut self, key: impl Into<AbilityLike>, damage_type: DamageType) -> MayFail {
+    /// Associates some damage type to a key in [`Self::hashmap`]. If that key is missing,
+    /// this function will fail
+    pub fn damage_type(&mut self, key: impl Into<AbilityId>, damage_type: DamageType) -> MayFail {
         self.get_mut(key.into())?.damage_type = damage_type;
         Ok(())
     }
 
+    /// Takes in a closure that receives as argument a constant sized array of strings,
+    /// and must return a new string. It will take each damage, for each level, for one
+    /// or more abilities and concatenate them into a single vector, generating a new
+    /// vector of damages for some new ability
+    ///
+    /// ```rs
+    /// let merge = |args| {
+    ///     self.merge_damage(
+    ///         |[q1, q2, q3]| format!("({q1}) + ({q2}) + ({q3})"),
+    ///         args
+    ///     )
+    /// };
+    /// self.merge_damage(|[r]| format!("3 * ({r})"), [R::Min])?;
+    /// self.merge_damage(|[q]| format!("({q}) * {MagicMultiplier} + ({q})"), [Q::Min])?;
+    /// ```
+    ///
+    /// Note that it can also be used to duplicate the damage values of some ability
     pub fn merge_damage<const N: usize>(
         &self,
         closure: fn([String; N]) -> String,
-        args: [impl Into<AbilityLike> + Copy; N],
+        args: [impl Into<AbilityId> + Copy; N],
     ) -> MayFail<Vec<String>> {
         let mut sizes = Vec::<usize>::new();
         for arg in args {

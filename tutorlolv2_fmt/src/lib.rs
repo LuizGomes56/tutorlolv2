@@ -7,6 +7,8 @@ use std::{
 };
 use synoptic::{Highlighter, TokOpt};
 
+/// Takes an HTML string as input and minifies it, returning a sequence
+/// of bytes. Text defined inside tags `<pre>` and `<code>` are ignored
 pub fn minify_html(html: &mut str) -> Vec<u8> {
     let mut result = Vec::new();
     let mut html_cursor = Cursor::new(html.as_bytes());
@@ -14,28 +16,52 @@ pub fn minify_html(html: &mut str) -> Vec<u8> {
     result
 }
 
+/// Encodes some data using `zstd` at the maximum level, which is 9
+/// Panics if the input is invalid, or if the compression fails
 pub fn encode_zstd_9(bytes: &[u8]) -> Vec<u8> {
     zstd::encode_all(bytes, 9).unwrap()
 }
 
+/// Encodes some data using `brotli` at the maximum level, which is 11.
+/// Panics if the input is invalid, or if the compression fails
 pub fn encode_brotli_11(bytes: &[u8]) -> Vec<u8> {
     let mut encoder = brotli2::write::BrotliEncoder::new(Vec::new(), 11);
     encoder.write_all(bytes).unwrap();
     encoder.finish().unwrap()
 }
 
-pub fn to_pascal_case(input: &str) -> String {
+/// Converts the input [`str`] to pascal case
+/// ```rs
+/// assert_eq!(pascal_case("hello world"), "HelloWorld");
+/// assert_eq!(pascal_case("Blade of the Ruined King", "BladeOfTheRuinedKing");
+/// ```
+pub fn pascal_case(input: &str) -> String {
     let mut words = Vec::new();
     let mut cur = String::new();
+    let mut chars = input.chars().peekable();
 
-    for ch in input.chars() {
+    while let Some(ch) = chars.next() {
         if ch.is_alphanumeric() {
             cur.push(ch);
-        } else if !cur.is_empty() {
-            words.push(cur);
-            cur = String::new();
+        } else if ch == '\'' {
+            if let Some(&next) = chars.peek() {
+                if (next == 's' || next == 'S') && !cur.is_empty() {
+                    chars.next();
+                    cur.push('s');
+                    continue;
+                }
+            }
+
+            if !cur.is_empty() {
+                words.push(std::mem::take(&mut cur));
+            }
+        } else {
+            if !cur.is_empty() {
+                words.push(std::mem::take(&mut cur));
+            }
         }
     }
+
     if !cur.is_empty() {
         words.push(cur);
     }
@@ -52,21 +78,14 @@ pub fn to_pascal_case(input: &str) -> String {
             }
         }
     }
+
     out
 }
 
-pub fn remove_special_chars(s: &str) -> String {
-    s.replace(" ", "")
-        .replace("-", "")
-        .replace(")", "")
-        .replace("(", "")
-        .replace("'", "")
-        .replace(".", "")
-        .replace(",", "")
-        .replace(":", "")
-}
-
-pub fn invoke_rustfmt(src: &str, width: usize) -> String {
+/// Invokes `rustfmt` program to the input [`str`], with some defined `width`,
+/// often set to be `80`. Returns the formatted code or an empty [`String`] if
+/// it emits an error or warning
+pub fn rustfmt(src: &str, width: usize) -> String {
     let try_run = || -> Result<String, Box<dyn std::error::Error>> {
         let mut child = Command::new("rustfmt")
             .args(&[
@@ -89,7 +108,8 @@ pub fn invoke_rustfmt(src: &str, width: usize) -> String {
     try_run().unwrap_or(src.to_string())
 }
 
-pub fn highlight_rust(rust_code: &str) -> String {
+/// Converts Rust code contained in the input [`str`] to an HTML [`String`]
+pub fn rust_html(rust_code: &str) -> String {
     let mut h = Highlighter::new(4);
     h.bounded("comment", r"/\*", r"\*/", false);
     h.keyword("comment", r"//.*$");
@@ -97,26 +117,24 @@ pub fn highlight_rust(rust_code: &str) -> String {
     h.keyword("lifetime", r"'\w+");
     h.keyword(
         "keyword",
-        r"\b(void|pub|use|crate|mut|static|ref|dyn|unsafe|extern|type|super|mod|struct|const|enum|fn|let|impl|trait|where|loop|Self|self)\b",
+        r"\b(void|pub|use|crate|mut|static|ref|dyn|unsafe|extern|type|super|mod|struct|const|enum|fn|let|impl|trait|where|Self|self)\b",
     );
     h.keyword(
         "control",
-        r"\b(break|continue|intrinsic|match|return|yield|for|while|match|if|else|as|in)\b",
+        r"\b(break|continue|intrinsic|loop|match|return|yield|for|while|match|if|else|as|in)\b",
     );
 
     h.keyword("constant", r"\b[A-Z]+\b");
-    h.keyword("constant", r"\b(AbilityHaste|AbilityPower|Armor|ArmorPenetration|MagicPenetration|AttackDamage|AttackSpeed|GoldPer10Seconds|AdaptiveForce|CriticalStrikeChance|CriticalStrikeDamage|Health|LifeSteal|MagicResist|Mana|MoveSpeed|Omnivamp|BaseHealthRegen|BaseManaRegen|Tenacity|Lethality|HealAndShieldPower|_1|_2|_3|_4|_5|_6|_7|_8|Mega|Max|Min|Minion|Minion1|Minion2|Minion3|MinionMax|Monster|Monster1|Monster2|Monster3|Monster4|MonsterMax|Void|_1Max|_2Max|_3Max|_4Max|_5Max|_6Max|_7Max|_8Max|_1Min|_2Min|_3Min|_4Min|_5Min|_6Min|_7Min|_8Min|Some|None|Top|Jungle|Middle|Bottom|Support|Melee|Ranged|BASIC_ATTACK|CRITICAL_STRIKE|Physical|Magic|Mixed|True|Adaptative|Unknown|Onhit|OnhitMin|OnhitMax)\b");
     h.keyword("type", r"\b[A-Z][a-zA-Z0-9_]*\b");
     h.keyword(
         "primitive",
-        r"\b(bool|usize|u8|u16|u32|u64|isize|i8|i16|i32|i64|f32|f64|char|str|tutorlolv2_macros)\b",
+        r"\b(bool|usize|u8|u16|u32|u64|isize|i8|i16|i32|i64|f32|f64|char|str)\b",
     );
-    h.keyword("float", r"\b\d+\.?\d*f32\b");
     h.keyword("number", r"\b\d+\.?\d*\b");
     h.keyword("boolean", r"\b(true|false)\b");
     h.keyword("macro", r"[a-zA-Z_][a-zA-Z0-9_]*!");
     h.keyword("function", r"\b[a-z][a-zA-Z0-9_]*\(");
-    h.keyword("function", r"\b(zero|generator)\b");
+    h.keyword("function", r"\b(zero)\b");
     h.keyword("variable", r"\b[a-z][a-zA-Z0-9_]*\b");
 
     let code = rust_code
@@ -145,7 +163,8 @@ pub fn highlight_rust(rust_code: &str) -> String {
     format!("<pre>{}</pre>", out)
 }
 
-pub fn highlight_json(input: &str) -> String {
+/// Converts JSON code contained in the input [`str`] to an HTML [`String`]
+pub fn json_html(input: &str) -> String {
     let mut h = Highlighter::new(4);
 
     h.keyword("string", r#""(?:[^"\\]|\\.)*""#);
@@ -203,7 +222,8 @@ pub fn highlight_json(input: &str) -> String {
     format!("<pre>{}</pre>", out)
 }
 
-pub fn prettify_json(input: &str) -> String {
+/// Converts JSON code to a pretty-printed [`String`]. It does not turn it to HTML
+pub fn json_pretty(input: &str) -> String {
     let v: Value = serde_json::from_str(input).unwrap();
     let mut buf = Vec::new();
     let fmt = PrettyFormatter::with_indent(b"    ");

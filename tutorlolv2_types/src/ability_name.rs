@@ -1,4 +1,4 @@
-use crate::AbilityLike;
+use crate::AbilityId;
 use bincode::Encode;
 use serde::{Deserialize, Serialize};
 
@@ -15,32 +15,32 @@ macro_rules! ability_name {
 
         #[derive(Clone, Copy)]
         pub enum P { $($field),+ }
-        impl Into<AbilityLike> for P { fn into(self) -> AbilityLike { match self {
-            $(P::$field => AbilityLike::P(AbilityName::$field)),+ } }
+        impl Into<AbilityId> for P { fn into(self) -> AbilityId { match self {
+            $(P::$field => AbilityId::P(AbilityName::$field)),+ } }
         }
 
         #[derive(Clone, Copy)]
         pub enum Q { $($field),+ }
-        impl Into<AbilityLike> for Q { fn into(self) -> AbilityLike { match self {
-            $(Q::$field => AbilityLike::Q(AbilityName::$field)),+ } }
+        impl Into<AbilityId> for Q { fn into(self) -> AbilityId { match self {
+            $(Q::$field => AbilityId::Q(AbilityName::$field)),+ } }
         }
 
         #[derive(Clone, Copy)]
         pub enum W { $($field),+ }
-        impl Into<AbilityLike> for W { fn into(self) -> AbilityLike { match self {
-            $(W::$field => AbilityLike::W(AbilityName::$field)),+ } }
+        impl Into<AbilityId> for W { fn into(self) -> AbilityId { match self {
+            $(W::$field => AbilityId::W(AbilityName::$field)),+ } }
         }
 
         #[derive(Clone, Copy)]
         pub enum E { $($field),+ }
-        impl Into<AbilityLike> for E { fn into(self) -> AbilityLike { match self {
-            $(E::$field => AbilityLike::E(AbilityName::$field)),+ } }
+        impl Into<AbilityId> for E { fn into(self) -> AbilityId { match self {
+            $(E::$field => AbilityId::E(AbilityName::$field)),+ } }
         }
 
         #[derive(Clone, Copy)]
         pub enum R { $($field),+ }
-        impl Into<AbilityLike> for R { fn into(self) -> AbilityLike { match self {
-            $(R::$field => AbilityLike::R(AbilityName::$field)),+ } }
+        impl Into<AbilityId> for R { fn into(self) -> AbilityId { match self {
+            $(R::$field => AbilityId::R(AbilityName::$field)),+ } }
         }
     };
 }

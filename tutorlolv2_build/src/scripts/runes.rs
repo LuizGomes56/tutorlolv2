@@ -7,7 +7,7 @@ use std::collections::HashMap;
 
 struct RuneResult {
     name: String,
-    name_normalized: String,
+    name_pascal: String,
     name_ssnake: String,
     declaration: String,
     formula: String,
@@ -28,22 +28,22 @@ pub async fn generate_runes() -> GeneratorFn {
                     melee,
                 } = rune;
 
-                println!("Building: Rune({name:?})");
+                println!("[build] Rune({name:?})");
 
-                let name_normalized = name.remove_special_chars();
-                let name_ssnake = name.to_screaming_snake_case();
+                let name_pascal = name.pascal_case();
+                let name_ssnake = name.to_ssnake();
 
                 let metadata = format!(
                     "TypeMetadata {{
-                        kind: RuneId::{name_normalized},
+                        kind: RuneId::{name_pascal},
                         damage_type: DamageType::{damage_type},
                         attributes: Attrs::Undefined
                     }}"
                 );
 
                 let get_closure = |expr: String| {
-                    let (closure, has_ctx) = expr.clean_math_expr().transform_expr();
-                    let arg = if has_ctx { "ctx" } else { "_" };
+                    let closure = expr.as_closure().add_f32s();
+                    let arg = closure.ctx_param();
                     let body = closure.to_lowercase();
                     format!("|{arg}| {body}")
                 };
@@ -64,15 +64,11 @@ pub async fn generate_runes() -> GeneratorFn {
 
                 RuneResult {
                     riot_id,
-                    formula: declaration
-                        .invoke_rustfmt(80)
-                        .clear_suffixes()
-                        .highlight_rust()
-                        .replace_const(),
+                    formula: declaration.rust_fmt(80).drop_f32s().rust_html().as_const(),
                     declaration,
                     name,
                     name_ssnake,
-                    name_normalized,
+                    name_pascal,
                 }
             })
             .collect::<Vec<_>>();
@@ -96,11 +92,11 @@ pub async fn generate_runes() -> GeneratorFn {
         }
 
         for (name, riot_id) in undeclared {
-            let name_normalized = name.remove_special_chars();
+            let name_pascal = name.pascal_case();
 
             let mut repeated = false;
             for value in &runes {
-                if value.name_normalized.to_lowercase() == name_normalized.to_lowercase() {
+                if value.name_pascal.to_lowercase() == name_pascal.to_lowercase() {
                     repeated = true;
                 }
             }
@@ -109,11 +105,11 @@ pub async fn generate_runes() -> GeneratorFn {
                 continue;
             }
 
-            let name_ssnake = name.to_screaming_snake_case();
+            let name_ssnake = name.to_ssnake();
 
             let metadata = format!(
                 "TypeMetadata {{
-                    kind: RuneId::{name_normalized},
+                    kind: RuneId::{name_pascal},
                     damage_type: DamageType::Unknown,
                     attributes: Attrs::Undefined
                 }}"
@@ -131,16 +127,12 @@ pub async fn generate_runes() -> GeneratorFn {
             );
 
             runes.push(RuneResult {
-                name_normalized,
+                name_pascal,
                 riot_id,
-                formula: declaration
-                    .invoke_rustfmt(80)
-                    .clear_suffixes()
-                    .highlight_rust()
-                    .replace_const(),
+                formula: declaration.rust_fmt(80).drop_f32s().rust_html().as_const(),
                 declaration,
                 name_ssnake,
-                name: name.to_string(),
+                name,
             });
         }
 
@@ -180,12 +172,12 @@ pub async fn generate_runes() -> GeneratorFn {
         declaration,
         name,
         name_ssnake,
-        name_normalized,
+        name_pascal,
     } in data
     {
         rune_id_to_riot_id.push_str(&format!("{riot_id},"));
-        rune_id_enum_match_arms.push(format!("{riot_id} => Some(Self::{name_normalized})"));
-        rune_id_enum_fields.push(name_normalized);
+        rune_id_enum_match_arms.push(format!("{riot_id} => Some(Self::{name_pascal})"));
+        rune_id_enum_fields.push(name_pascal);
         rune_id_to_name.push_str(&format!("{name:?},"));
         rune_cache.push_str(&format!("&{name_ssnake}_{riot_id},"));
         rune_declarations.push_str(&declaration);

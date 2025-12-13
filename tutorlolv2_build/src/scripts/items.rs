@@ -22,7 +22,7 @@ fn declare_item(item: &Item) -> DeclaredItem {
         ..
     } = item;
 
-    let name = name.remove_special_chars();
+    let name = name.pascal_case();
 
     let metadata = format!(
         "TypeMetadata {{ 
@@ -34,8 +34,8 @@ fn declare_item(item: &Item) -> DeclaredItem {
 
     let assign_value = |expr: &str| {
         (!(expr.is_empty() || expr == "zero")).then_some({
-            let (new_expr, changed) = expr.clean_math_expr().transform_expr();
-            let ctx_param = if changed { "ctx" } else { "_" };
+            let new_expr = expr.as_closure().add_f32s();
+            let ctx_param = new_expr.ctx_param();
             let body = new_expr.to_lowercase();
             format!("|{ctx_param}| {body}")
         })
@@ -132,7 +132,7 @@ pub async fn generate_items() -> GeneratorFn {
         declaration: String,
         name: String,
         name_ssnake: String,
-        name_normalized: String,
+        name_pascal: String,
         generator: String,
     }
 
@@ -140,7 +140,7 @@ pub async fn generate_items() -> GeneratorFn {
         128,
         "internal/items",
         async |file_name, item: Item| {
-            println!("Building: ItemId({file_name:?})");
+            println!("[build] ItemId({file_name:?})");
 
             let Item {
                 riot_id,
@@ -156,8 +156,8 @@ pub async fn generate_items() -> GeneratorFn {
                 attributes,
             } = item;
 
-            let name_ssnake = name.to_screaming_snake_case();
-            let name_normalized = name.remove_special_chars();
+            let name_ssnake = name.to_ssnake();
+            let name_pascal = name.pascal_case();
             let prettified_stats = prettified_stats
                 .iter()
                 .map(|stat| format!("StatName::{stat:?}"))
@@ -201,15 +201,11 @@ pub async fn generate_items() -> GeneratorFn {
 
             Ok(ItemResult {
                 riot_id,
-                formula: declaration
-                    .invoke_rustfmt(70)
-                    .clear_suffixes()
-                    .highlight_rust()
-                    .replace_const(),
+                formula: declaration.rust_fmt(70).drop_f32s().rust_html().as_const(),
                 declaration,
                 generator,
                 name_ssnake,
-                name_normalized,
+                name_pascal,
                 name: item.name,
             })
         },
@@ -261,13 +257,13 @@ pub async fn generate_items() -> GeneratorFn {
         declaration,
         name,
         name_ssnake,
-        name_normalized,
+        name_pascal,
         generator,
     } in data
     {
         item_id_to_riot_id.push_str(&format!("{riot_id},"));
-        item_id_enum_match_arms.push(format!("{riot_id} => Some(Self::{name_normalized})"));
-        item_id_enum_fields.push(name_normalized);
+        item_id_enum_match_arms.push(format!("{riot_id} => Some(Self::{name_pascal})"));
+        item_id_enum_fields.push(name_pascal);
         item_id_to_name.push_str(&format!("{name:?},"));
         item_cache.push_str(&format!("&{name_ssnake}_{riot_id},"));
         item_declarations.push_str(&declaration);

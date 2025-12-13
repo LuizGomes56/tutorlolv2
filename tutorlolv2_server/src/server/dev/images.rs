@@ -1,5 +1,4 @@
 use actix_web::{HttpResponse, Responder, get};
-use tutorlolv2_avif::{clean_sprite_folder, concat_sprite_jsons, generate_spritesheet};
 use tutorlolv2_dev::HTTP_CLIENT;
 
 macro_rules! download_image {
@@ -56,7 +55,6 @@ pub async fn convert_folder(source: &str, folder: &str) -> Result<(), Box<dyn st
     Ok(())
 }
 
-pub const SPRITE_FOLDERS: [&str; 3] = ["abilities", "champions", "items"];
 pub const IMG_FOLDERS: [&str; 8] = [
     "abilities",
     "centered",
@@ -68,18 +66,9 @@ pub const IMG_FOLDERS: [&str; 8] = [
     "stats",
 ];
 
-#[get("/sprite")]
-pub async fn generate_sprites() -> impl Responder {
-    println!("{:#?}", generate_spritesheet());
-    concat_sprite_jsons();
-    let _ = clean_sprite_folder();
-    img_convert_avif(SPRITE_FOLDERS).await;
-    download_image!(@inner "Started process")
-}
-
 pub async fn img_convert_avif<const N: usize>(folders: [&'static str; N]) {
     for folder in folders {
-        println!("Converting folder: {}", folder);
+        println!("Converting folder: {folder}");
         let _ = convert_folder("raw_img", folder).await;
     }
 }

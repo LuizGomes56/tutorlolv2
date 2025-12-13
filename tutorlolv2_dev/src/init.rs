@@ -1,13 +1,14 @@
 use crate::client::HttpClient;
 use once_cell::sync::Lazy;
 
+/// Loads environment variables or panics if they're not set
 macro_rules! env_var {
     ($name:literal) => {
         std::env::var($name).expect(&concat!("[env] ", $name, " is not set"))
     };
 }
 
-/// Example of `.env` file
+/// Holds all environment variables. Example of `.env` file
 /// ```toml
 /// DATABASE_URL=postgresql://postgres:{PASSWORD}@localhost:5432/{USER}
 /// HOST=127.0.0.1:*
@@ -28,6 +29,7 @@ pub struct EnvConfig {
 }
 
 impl EnvConfig {
+    /// Creates a new struct containing all relevant environment variables
     pub fn new() -> Self {
         EnvConfig {
             lol_version: env_var!("LOL_VERSION"),
@@ -40,5 +42,10 @@ impl EnvConfig {
     }
 }
 
+/// Holds all useful environment variables this application will use
 pub static ENV_CONFIG: Lazy<EnvConfig> = Lazy::new(EnvConfig::new);
+
+/// Wrapper around [`reqwest::Client`] which implements methods
+/// to download and save files to a local cache and avoids requests
+/// to the same URLs
 pub static HTTP_CLIENT: Lazy<HttpClient> = Lazy::new(HttpClient::new);

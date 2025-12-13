@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use tutorlolv2_gen::{AdaptativeType, AttackType, Attrs, DamageType, Position};
-use tutorlolv2_types::AbilityLike;
+use tutorlolv2_types::AbilityId;
 
 #[derive(Deserialize, Serialize)]
 pub struct Modifiers {
@@ -31,6 +31,9 @@ pub struct MerakiAbility {
 }
 
 impl MerakiAbility {
+    /// Receives a `damage` vector and returns a new [`Ability`] struct,
+    /// filling the information that can be inferred from the [`Self`] object,
+    /// such as name, attributes, and damage type
     pub fn format(&self, damage: Vec<String>) -> Ability {
         Ability {
             name: self.name.clone(),
@@ -76,10 +79,14 @@ pub struct MerakiChampion {
 }
 
 impl MerakiChampion {
+    /// Receives the collected abilities and their generated merge information
+    /// and creates a new [`Champion`] struct which represents the result of
+    /// a champion generator file. Other fields are filled based on the information
+    /// of the [`Self`] object
     pub fn format(
         self,
-        abilities: HashMap<AbilityLike, Ability>,
-        merge_data: Vec<(AbilityLike, AbilityLike)>,
+        abilities: HashMap<AbilityId, Ability>,
+        merge_data: Vec<(AbilityId, AbilityId)>,
     ) -> Champion {
         Champion {
             name: self.name,
@@ -112,8 +119,8 @@ pub struct Champion {
     pub attack_type: AttackType,
     pub positions: Vec<Position>,
     pub stats: MerakiChampionStats,
-    pub abilities: Vec<(AbilityLike, Ability)>,
-    pub merge_data: Vec<(AbilityLike, AbilityLike)>,
+    pub abilities: Vec<(AbilityId, Ability)>,
+    pub merge_data: Vec<(AbilityId, AbilityId)>,
 }
 
 #[derive(Serialize, Deserialize)]
