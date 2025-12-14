@@ -171,7 +171,7 @@ macro_rules! bonus_stats {
 pub use bonus_stats;
 
 /// Checks if at least one of the provided [`ItemId`] in the array is in the [`BitSet`]
-/// This is similar to the [`std::iter::Iterator::any`] method
+/// This is similar to the [`core::iter::Iterator::any`] method
 pub const fn has_item<const N: usize>(origin: &ItemsBitSet, check_for: [ItemId; N]) -> bool {
     let mut i = 0;
     while i < N {
@@ -288,7 +288,7 @@ pub fn get_runes_data(runes: &RunesBitSet, attack_type: AttackType) -> DamageKin
     for rune_number in runes.into_iter() {
         let rune = unsafe { RUNE_CACHE.get_unchecked(rune_number) };
         closures.push(match attack_type {
-            AttackType::Ranged => rune.range_closure,
+            AttackType::Ranged => rune.ranged_closure,
             AttackType::Melee => rune.melee_closure,
         });
         metadata.push(rune.metadata);
@@ -303,11 +303,11 @@ pub fn get_items_data(items: &ItemsBitSet, attack_type: AttackType) -> DamageKin
     for item_number in items.into_iter() {
         let item = unsafe { ITEM_CACHE.get_unchecked(item_number) };
         let slice = match attack_type {
-            AttackType::Ranged => item.range_closure,
+            AttackType::Ranged => item.ranged_closure,
             AttackType::Melee => item.melee_closure,
         };
 
-        closures.extend_from_slice(slice);
+        closures.extend_from_slice(&slice);
         metadata.push(item.metadata);
     }
     DamageKind { metadata, closures }
@@ -609,91 +609,6 @@ pub const fn ability_id_mod(
     modifier
 }
 
-/// Constant version of the [`eval_damage`] function for the enum [`AbilityId`].
-pub const fn const_ability_id_eval_damage<const N: usize>(
-    ctx: &EvalContext,
-    onhit: &mut RangeDamage,
-    champion_id: ChampionId,
-    modifiers: Modifiers,
-) -> [i32; N] {
-    let mut result = [0; N];
-    let mut i = 0;
-    while i < N {
-        let CachedChampion { metadata, .. } = CHAMPION_CACHE[champion_id as usize];
-        let TypeMetadata {
-            kind,
-            damage_type,
-            attributes,
-        } = metadata[i];
-        let modifier = ability_id_mod(kind, damage_type, modifiers);
-        let damage = (modifier * const_eval(ctx, champion_id, kind)) as i32;
-        onhit.inc_attr(attributes, damage);
-        result[i] = damage;
-        i += 1;
-    }
-    result
-}
-
-pub const fn const_item_id_eval_damage<const N: usize>(
-    ctx: &EvalContext,
-    onhit: &mut RangeDamage,
-    item_id: ItemId,
-    attack_type: AttackType,
-    modifiers: Modifiers,
-) -> [i32; N] {
-    let mut result = [0; N];
-    let mut i = 0;
-    while i < N {
-        let CachedItem {
-            attributes,
-            damage_type,
-            ..
-        } = ITEM_CACHE[item_id as usize];
-
-        let modifier = modifiers.damages.modifier(*damage_type);
-
-        // match attack_type {
-        //     AttackType::Melee => {
-        //         let minimum_damage =
-        //     }
-        //     AttackType::Ranged => {
-
-        //     }
-        // }
-
-        // for j in 0..2 {
-        //     let closure = unsafe { closures.get_unchecked(i + j) };
-        //     let damage = (modifier * closure(ctx)) as i32;
-        //     onhit.inc_attr(*attributes, damage);
-        //     result.push(damage);
-        // }
-
-        i += 2;
-    }
-    result
-}
-
-pub const fn const_rune_id_eval_damage<const N: usize>(
-    ctx: &EvalContext,
-    onhit: &mut RangeDamage,
-    rune_id: RuneId,
-    modifiers: Modifiers,
-) -> [i32; N] {
-    let mut result = [0; N];
-    let mut i = 0;
-    while i < N {
-        let CachedRune { damage_type, .. } = RUNE_CACHE[rune_id as usize];
-        todo!();
-        // let modifier = modifiers.damages.modifier(*damage_type);
-        // let damage = (modifier * const_eval(ctx, rune_id, rune_id)) as i32;
-        // onhit.inc_attr(*attributes, damage);
-        // result[i] = damage;
-        i += 1;
-    }
-    todo!()
-    // result
-}
-
 /// Evaluates the damage of some ability, item, or rune. Generic parameter `T`
 /// should be of type [`ItemId`], [`AbilityId`], or [`RuneId`] only. This function
 /// already multiplies the final damage result by the appropriate armor, or magic
@@ -820,7 +735,7 @@ const _: () = {
     while j < NUMBER_OF_ITEMS {
         let CachedItem {
             melee_closure,
-            range_closure,
+            ranged_closure: range_closure,
             ..
         } = ITEM_CACHE[j];
         assert!(melee_closure.len() == range_closure.len());

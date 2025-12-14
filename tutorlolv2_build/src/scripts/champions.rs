@@ -466,7 +466,7 @@ pub async fn generate_champions() -> GeneratorFn {
     }
 
     let const_eval = format!(
-        "pub const fn const_eval(
+        "pub const fn ability_const_eval(
             ctx: &EvalContext, 
             champion_id: ChampionId, 
             kind: AbilityId

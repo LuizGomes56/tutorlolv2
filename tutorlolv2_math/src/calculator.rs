@@ -529,7 +529,7 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
     let current_player_runes = get_damaging_runes(&current_player_raw_runes);
     let current_player_items = get_damaging_items(&current_player_raw_items);
     let eval_data = DamageEvalData {
-        abilities: ConstDamageKind {
+        abilities: StaticDamageKind {
             metadata: current_player_cache.metadata,
             closures: current_player_cache.closures,
         },

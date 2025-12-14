@@ -181,7 +181,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
         .unwrap_or_default();
 
     let eval_data = DamageEvalData {
-        abilities: ConstDamageKind {
+        abilities: StaticDamageKind {
             metadata: current_player_cache.metadata,
             closures: current_player_cache.closures,
         },

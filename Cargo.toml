@@ -8,6 +8,7 @@ debug = false
 incremental = false
 
 [workspace]
+workspace.workspace = true
 workspace.name = "tutorlolv2"
 workspace.version = "0.5.3"
 workspace.edition = "2024"
@@ -26,7 +27,7 @@ members = [
     "tutorlolv2_types",
 ]
 
-resolver = "2"
+resolver = "3"
 
 [workspace.dependencies]
 tutorlolv2_avif = { path = "tutorlolv2_avif" }

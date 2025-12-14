@@ -25,7 +25,7 @@ impl From<&str> for Team {
     }
 }
 
-#[derive(Encode, Default)]
+#[derive(Encode)]
 pub struct RangeDamage {
     pub minimum_damage: i32,
     pub maximum_damage: i32,
@@ -74,7 +74,7 @@ pub struct Attacks {
 /// the current champion is only known at runtime, but since the application knowns
 /// all the possible champion's data at compile-time, the length of both metadata
 /// and closures is known and lives forever, unlike the ones in variant [`DamageKind`]
-pub struct ConstDamageKind<T: 'static> {
+pub struct StaticDamageKind<T: 'static> {
     pub metadata: &'static [TypeMetadata<T>],
     pub closures: &'static [ConstClosure],
 }
@@ -233,7 +233,7 @@ pub struct SimpleStats<T> {
 }
 
 pub struct DamageEvalData {
-    pub abilities: ConstDamageKind<AbilityId>,
+    pub abilities: StaticDamageKind<AbilityId>,
     pub items: DamageKind<L_ITEM, ItemId>,
     pub runes: DamageKind<L_RUNE, RuneId>,
 }
@@ -260,6 +260,13 @@ pub struct Damages {
     pub abilities: SmallVec<[i32; L_ABLT]>,
     pub items: SmallVec<[i32; L_ITEM]>,
     pub runes: SmallVec<[i32; L_RUNE]>,
+}
+
+pub struct ConstDamages<const A: usize, const I: usize, const R: usize> {
+    pub attacks: Attacks,
+    pub abilities: [i32; A],
+    pub items: [i32; I],
+    pub runes: [i32; R],
 }
 
 /// Wrapper around the type [`u32`], whose first [`Self::DISC_BITS`] are used to
@@ -521,3 +528,4 @@ impl_default!(DamageModifiers, 1.0f32, f32);
 impl_default!(AbilityModifiers, 1.0f32, f32);
 impl_default!(Modifiers, 1.0f32, f32);
 impl_default!(Dragons, 0u8, u8);
+impl_default!(RangeDamage, 0i32, i32);

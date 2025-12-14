@@ -188,8 +188,8 @@ pub struct CachedItem {
     pub damage_type: DamageType,
     pub stats: CachedItemStats,
     pub metadata: TypeMetadata<ItemId>,
-    pub range_closure: &'static [ConstClosure],
-    pub melee_closure: &'static [ConstClosure],
+    pub ranged_closure: [ConstClosure; 2],
+    pub melee_closure: [ConstClosure; 2],
     pub attributes: Attrs,
     pub is_simulated: bool,
     pub is_damaging: bool,
@@ -200,8 +200,8 @@ pub struct CachedItem {
 pub struct CachedRune {
     pub damage_type: DamageType,
     pub metadata: TypeMetadata<RuneId>,
-    pub range_closure: ConstClosure,
     pub melee_closure: ConstClosure,
+    pub ranged_closure: ConstClosure,
     pub riot_id: u32,
     pub undeclared: bool,
 }

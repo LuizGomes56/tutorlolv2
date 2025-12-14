@@ -4,12 +4,14 @@ use tutorlolv2_gen::{
 };
 
 pub mod calculator;
+pub mod const_impl;
 pub mod helpers;
 pub mod model;
 pub mod realtime;
 pub mod riot;
 
 pub use calculator::*;
+pub use const_impl::*;
 pub use helpers::*;
 pub use model::*;
 pub use realtime::*;
