@@ -10,6 +10,7 @@ struct DeclaredItem {
     metadata: String,
     range_closure: String,
     melee_closure: String,
+    constfn_declaration: String,
 }
 
 fn declare_item(item: &Item) -> DeclaredItem {
@@ -32,35 +33,51 @@ fn declare_item(item: &Item) -> DeclaredItem {
         }}"
     );
 
-    let assign_value = |expr: &str| {
-        (!(expr.is_empty() || expr == "zero")).then_some({
+    let get_closure = |expr: &str| match expr {
+        expr if expr.is_empty() => {
             let new_expr = expr.as_closure().add_f32s();
             let ctx_param = new_expr.ctx_param();
             let body = new_expr.to_lowercase();
             format!("|{ctx_param}| {body}")
-        })
+        }
+        zero => zero.to_string(),
     };
 
-    let make_closure = |damage_object: &DamageObject| {
-        let mut closures = Vec::new();
-        if let Some(min) = assign_value(&damage_object.minimum_damage) {
-            closures.push(min);
-        };
-        if let Some(max) = assign_value(&damage_object.maximum_damage) {
-            closures.push(max);
-        };
-        let data = closures.join(",");
-        format!("&[{data}]")
-    };
+    let mut constfn_declaration = String::new();
 
-    let range_closure = make_closure(&ranged);
-    let melee_closure = make_closure(&melee);
+    // let mut make_closure = |damage_object: &DamageObject, tag| {
+    //     [
+    //         (
+    //             "minimum_damage",
+    //             assign_value(&damage_object.minimum_damage),
+    //         ),
+    //         (
+    //             "maximum_damage",
+    //             assign_value(&damage_object.maximum_damage),
+    //         ),
+    //     ]
+    //     .into_iter()
+    //     .map(|(rtype, closure)| {
+    //         let closure = closure.unwrap_or("zero".to_string());
+    //         let body = closure.trim_start_matches("|ctx|");
+    //         let fn_name = format!("{name}_{tag}_{rtype}").to_lowercase();
+    //         constfn_declaration.push_str(&format!(
+    //             "pub const fn {fn_name}(ctx: &EvalContext) -> f32 {{ {body} }}",
+    //         ));
+    //     })
+    // };
 
-    DeclaredItem {
-        metadata,
-        range_closure,
-        melee_closure,
-    }
+    // let range_closure = make_closure(&ranged, "range");
+    // let melee_closure = make_closure(&melee, "melee");
+
+    todo!();
+
+    // DeclaredItem {
+    //     metadata,
+    //     range_closure,
+    //     melee_closure,
+    //     constfn_declaration,
+    // }
 }
 
 pub fn format_stats(stats: &ItemStats) -> String {
@@ -128,8 +145,8 @@ pub fn format_stats(stats: &ItemStats) -> String {
 pub async fn generate_items() -> GeneratorFn {
     struct ItemResult {
         riot_id: usize,
-        formula: String,
-        declaration: String,
+        html_declaration: String,
+        base_declaration: String,
         name: String,
         name_ssnake: String,
         name_pascal: String,
@@ -142,17 +159,24 @@ pub async fn generate_items() -> GeneratorFn {
         async |file_name, item: Item| {
             println!("[build] ItemId({file_name:?})");
 
+            let DeclaredItem {
+                metadata,
+                range_closure,
+                melee_closure,
+                constfn_declaration,
+            } = declare_item(&item);
+
             let Item {
                 riot_id,
-                ref name,
-                ref prettified_stats,
+                name,
+                prettified_stats,
                 tier,
                 price,
                 purchasable,
-                ref damage_type,
-                ref stats,
-                ref ranged,
-                ref melee,
+                damage_type,
+                stats,
+                ranged,
+                melee,
                 attributes,
             } = item;
 
@@ -164,12 +188,6 @@ pub async fn generate_items() -> GeneratorFn {
                 .collect::<Vec<_>>()
                 .join(",");
 
-            let DeclaredItem {
-                metadata,
-                range_closure,
-                melee_closure,
-            } = declare_item(&item);
-
             let stats = format_stats(&stats);
             let is_simulated = tier >= 3 && price > 0 && purchasable;
             let is_damaging = {
@@ -180,33 +198,47 @@ pub async fn generate_items() -> GeneratorFn {
                     || is_zeroed(&melee.maximum_damage)
             };
 
-            let declaration = format!(
+            let mut base_declaration = format!(
                 "pub static {name_ssnake}_{riot_id}: CachedItem = CachedItem {{
                     gold: {price},
                     prettified_stats: &[{prettified_stats}],
                     damage_type: DamageType::{damage_type},
                     attributes: Attrs::{attributes:?},
                     metadata: {metadata},
-                    range_closure: {range_closure},
-                    melee_closure: {melee_closure},
                     stats: CachedItemStats {{ {stats} }},
                     is_simulated: {is_simulated},
                     is_damaging: {is_damaging},
-                    riot_id: {riot_id},
-                }};"
+                    riot_id: {riot_id},"
             );
+
+            let html_declaration = format!(
+                "{base_declaration}
+                range_closure: {range_closure},
+                melee_closure: {melee_closure}, }};"
+            )
+            .rust_fmt(80)
+            .drop_f32s()
+            .rust_html()
+            .as_const();
+
+            base_declaration.push_str(&format!(
+                "range_closure: {name_pascal}_range,
+                melee_closure: {name_pascal}_melee, }};"
+            ));
+
+            base_declaration.push_str(&constfn_declaration);
 
             let generator =
                 CwdPath::get_generator(SrcFolder::Items, name_ssnake.to_lowercase()).await?;
 
             Ok(ItemResult {
                 riot_id,
-                formula: declaration.rust_fmt(70).drop_f32s().rust_html().as_const(),
-                declaration,
+                html_declaration,
+                base_declaration,
                 generator,
                 name_ssnake,
                 name_pascal,
-                name: item.name,
+                name,
             })
         },
         async |futures| {
@@ -253,8 +285,8 @@ pub async fn generate_items() -> GeneratorFn {
 
     for ItemResult {
         riot_id,
-        formula,
-        declaration,
+        html_declaration: formula,
+        base_declaration: declaration,
         name,
         name_ssnake,
         name_pascal,
@@ -307,11 +339,16 @@ pub async fn generate_items() -> GeneratorFn {
         "];",
     );
 
-    let imports = [USE_SUPER, &item_cache, &item_id_enum, &item_declarations].concat();
-    CwdPath::fwrite(SrcFolder::Items.import_file(), imports).await??;
+    CwdPath::fwrite(
+        SrcFolder::Items.import_file(),
+        [USE_SUPER, &item_cache, &item_id_enum, &item_declarations]
+            .concat()
+            .rust_fmt(80),
+    )
+    .await??;
 
     let callback = move |index: usize| {
-        let add_offsets = |list: Vec<_>, target: &mut String| {
+        let add_offsets = |(list, target): (Vec<_>, &mut String)| {
             for (start, end) in list {
                 let new_start = start + index;
                 let new_end = end + index;
@@ -320,12 +357,12 @@ pub async fn generate_items() -> GeneratorFn {
             push_end([target], "];");
         };
 
-        for (list, target) in [
+        [
             (generator_offsets, &mut item_generator),
             (formula_offsets, &mut item_formulas),
-        ] {
-            add_offsets(list, target);
-        }
+        ]
+        .into_iter()
+        .for_each(add_offsets);
 
         let exports = [
             item_id_enum.replace(

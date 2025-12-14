@@ -133,12 +133,6 @@ pub struct Realtime<'a> {
     /// of some ability, the maximum damage, or both, while maintaining the table
     /// display in a very deterministic format
     pub abilities_to_merge: &'static [(usize, usize)],
-    /// A vector of tuples that tells which items should have their damages
-    /// merged in a single table-cell, creating the display format as
-    /// `{minimum_damage} - {maximum_damage}`. The tuple [`(usize, usize)`]
-    /// defines the indexes in the field `items_meta`, where the first item in
-    /// the tuple is the `minimum_damage` and the other one is the `maximum_damage`
-    pub items_to_merge: SmallVec<[(usize, usize); L_ITEM]>,
     /// Game time in seconds
     pub game_time: u32,
     /// Level of each ability of the current player
@@ -450,7 +444,6 @@ pub struct OutputGame {
     pub tower_damages: [i32; L_TWRD],
     pub abilities_meta: &'static [TypeMetadata<AbilityId>],
     pub abilities_to_merge: &'static [(usize, usize)],
-    pub items_to_merge: SmallVec<[(usize, usize); L_ITEM]>,
     pub items_meta: SmallVec<[TypeMetadata<ItemId>; L_ITEM]>,
     pub runes_meta: SmallVec<[TypeMetadata<RuneId>; L_RUNE]>,
 }

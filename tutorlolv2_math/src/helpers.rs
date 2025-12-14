@@ -282,10 +282,11 @@ pub const fn get_simulated_stats(stats: &Stats<f32>, dragons: Dragons) -> [Stats
 /// Since the number of runes is unknown at compile time, those values are dynamically
 /// allocated. This function does not evaluate any closures
 pub fn get_runes_data(runes: &RunesBitSet, attack_type: AttackType) -> DamageKind<L_RUNE, RuneId> {
-    let mut metadata = SmallVec::with_capacity(runes.count() as usize);
-    let mut closures = SmallVec::with_capacity(runes.count() as usize);
+    let count = runes.count() as usize;
+    let mut metadata = SmallVec::with_capacity(count);
+    let mut closures = SmallVec::with_capacity(count);
     for rune_number in runes.into_iter() {
-        let rune = unsafe { RUNE_CACHE.get_unchecked(rune_number as usize) };
+        let rune = unsafe { RUNE_CACHE.get_unchecked(rune_number) };
         closures.push(match attack_type {
             AttackType::Ranged => rune.range_closure,
             AttackType::Melee => rune.melee_closure,
@@ -295,48 +296,21 @@ pub fn get_runes_data(runes: &RunesBitSet, attack_type: AttackType) -> DamageKin
     DamageKind { metadata, closures }
 }
 
-/// Asserts that every single item that has a closure array has two or less
-/// elements inside. An item can have minimum and maximum damages only, 3
-/// or more damage values are not supported
-const _: () = {
-    let mut index = 0;
-    while index < NUMBER_OF_ITEMS {
-        let data = ITEM_CACHE[index];
-        assert!(data.melee_closure.len() <= 2);
-        assert!(data.range_closure.len() <= 2);
-        index += 1;
-    }
-};
-
-/// Returns an instance [`DamageKind`] along with the merge data about the provided items,
-/// if any. The merge data determines if an item has a maximum damage. If it does, it tells
-/// the table generator function to merge those damages in a single cell as `{min} - {max}`
-pub fn get_items_data(
-    items: &ItemsBitSet,
-    attack_type: AttackType,
-) -> (
-    DamageKind<L_ITEM, ItemId>,
-    SmallVec<[(usize, usize); L_ITEM]>,
-) {
-    let mut metadata = SmallVec::with_capacity(items.count() as usize);
-    let mut closures = SmallVec::with_capacity(items.count() as usize);
-    let mut multi_closure_indices = SmallVec::with_capacity(items.count() as usize);
-    for (index, item_number) in items.into_iter().enumerate() {
-        let item = unsafe { ITEM_CACHE.get_unchecked(item_number as usize) };
+pub fn get_items_data(items: &ItemsBitSet, attack_type: AttackType) -> DamageKind<L_ITEM, ItemId> {
+    let count = items.count() as usize;
+    let mut metadata = SmallVec::with_capacity(count);
+    let mut closures = SmallVec::with_capacity(count << 1);
+    for item_number in items.into_iter() {
+        let item = unsafe { ITEM_CACHE.get_unchecked(item_number) };
         let slice = match attack_type {
             AttackType::Ranged => item.range_closure,
             AttackType::Melee => item.melee_closure,
         };
 
-        if slice.len() > 1 {
-            multi_closure_indices.push((index, index + 1));
-            metadata.push(item.metadata);
-        }
-
         closures.extend_from_slice(slice);
         metadata.push(item.metadata);
     }
-    (DamageKind { metadata, closures }, multi_closure_indices)
+    DamageKind { metadata, closures }
 }
 
 /// Converts a slice of [`RuneId`] into a [`RunesBitSet`], removing the ones that
@@ -612,52 +586,27 @@ pub const fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> E
     }
 }
 
-/// `Sealed` trait that extends the behavior of what to do with the struct [`Modifiers`] , which
-/// is multiplied by the result of a [`ConstClosure`]. For example, only for abilities,
-/// depending on their letter `P`, `Q`, `W`, `E`, `R`, there are some buffs or debuffs
-/// that are applied to the damage of those abilities
-trait AbilityExt {
-    fn apply_modifiers(&self, _: &mut f32, _: &AbilityModifiers) {}
-}
-
 /// Inserts ability modifier buffs or debuffs for each individual ability, based on their
 /// letter discriminant: `P`, `Q`, `W`, `E`, `R`.
 pub const fn ability_id_mod(
     ability_id: AbilityId,
-    modifier: &mut f32,
-    ability_modifiers: AbilityModifiers,
-) {
-    match ability_id {
-        AbilityId::Q(v) => {
-            if v as u8 <= AbilityName::Mega as u8 {
-                *modifier *= ability_modifiers.q
-            }
-        }
-        AbilityId::W(v) => {
-            if v as u8 <= AbilityName::Mega as u8 {
-                *modifier *= ability_modifiers.w
-            }
-        }
-        AbilityId::E(v) => {
-            if v as u8 <= AbilityName::Mega as u8 {
-                *modifier *= ability_modifiers.e
-            }
-        }
-        AbilityId::R(v) => {
-            if v as u8 <= AbilityName::Mega as u8 {
-                *modifier *= ability_modifiers.r
-            }
-        }
-        _ => {}
-    }
-}
+    damage_type: DamageType,
+    modifiers: Modifiers,
+) -> f32 {
+    let Modifiers { damages, abilities } = modifiers;
+    let mut modifier = damages.modifier(damage_type);
 
-impl AbilityExt for ItemId {}
-impl AbilityExt for RuneId {}
-impl AbilityExt for AbilityId {
-    fn apply_modifiers(&self, modifier: &mut f32, ability_modifiers: &AbilityModifiers) {
-        ability_id_mod(*self, modifier, *ability_modifiers)
+    if let Some((v, modf)) = match ability_id {
+        AbilityId::Q(v) => Some((v, abilities.q)),
+        AbilityId::W(v) => Some((v, abilities.w)),
+        AbilityId::E(v) => Some((v, abilities.e)),
+        AbilityId::R(v) => Some((v, abilities.r)),
+        _ => None,
+    } && v as u8 <= AbilityName::Mega as u8
+    {
+        modifier *= modf;
     }
+    modifier
 }
 
 /// Constant version of the [`eval_damage`] function for the enum [`AbilityId`].
@@ -671,23 +620,12 @@ pub const fn const_ability_id_eval_damage<const N: usize>(
     let mut i = 0;
     while i < N {
         let CachedChampion { metadata, .. } = CHAMPION_CACHE[champion_id as usize];
-
         let TypeMetadata {
             kind,
             damage_type,
             attributes,
         } = metadata[i];
-
-        let mut modifier = modifiers.damages.modifier(damage_type);
-
-        match kind {
-            AbilityId::Q(_) => modifier *= modifiers.abilities.q,
-            AbilityId::W(_) => modifier *= modifiers.abilities.w,
-            AbilityId::E(_) => modifier *= modifiers.abilities.e,
-            AbilityId::R(_) => modifier *= modifiers.abilities.r,
-            _ => {}
-        }
-
+        let modifier = ability_id_mod(kind, damage_type, modifiers);
         let damage = (modifier * const_eval(ctx, champion_id, kind)) as i32;
         onhit.inc_attr(attributes, damage);
         result[i] = damage;
@@ -696,37 +634,151 @@ pub const fn const_ability_id_eval_damage<const N: usize>(
     result
 }
 
+pub const fn const_item_id_eval_damage<const N: usize>(
+    ctx: &EvalContext,
+    onhit: &mut RangeDamage,
+    item_id: ItemId,
+    attack_type: AttackType,
+    modifiers: Modifiers,
+) -> [i32; N] {
+    let mut result = [0; N];
+    let mut i = 0;
+    while i < N {
+        let CachedItem {
+            attributes,
+            damage_type,
+            ..
+        } = ITEM_CACHE[item_id as usize];
+
+        let modifier = modifiers.damages.modifier(*damage_type);
+
+        // match attack_type {
+        //     AttackType::Melee => {
+        //         let minimum_damage =
+        //     }
+        //     AttackType::Ranged => {
+
+        //     }
+        // }
+
+        // for j in 0..2 {
+        //     let closure = unsafe { closures.get_unchecked(i + j) };
+        //     let damage = (modifier * closure(ctx)) as i32;
+        //     onhit.inc_attr(*attributes, damage);
+        //     result.push(damage);
+        // }
+
+        i += 2;
+    }
+    result
+}
+
+pub const fn const_rune_id_eval_damage<const N: usize>(
+    ctx: &EvalContext,
+    onhit: &mut RangeDamage,
+    rune_id: RuneId,
+    modifiers: Modifiers,
+) -> [i32; N] {
+    let mut result = [0; N];
+    let mut i = 0;
+    while i < N {
+        let CachedRune { damage_type, .. } = RUNE_CACHE[rune_id as usize];
+        todo!();
+        // let modifier = modifiers.damages.modifier(*damage_type);
+        // let damage = (modifier * const_eval(ctx, rune_id, rune_id)) as i32;
+        // onhit.inc_attr(*attributes, damage);
+        // result[i] = damage;
+        i += 1;
+    }
+    todo!()
+    // result
+}
+
 /// Evaluates the damage of some ability, item, or rune. Generic parameter `T`
 /// should be of type [`ItemId`], [`AbilityId`], or [`RuneId`] only. This function
 /// already multiplies the final damage result by the appropriate armor, or magic
 /// resist multiplier of the enemy, and considers global and local damage modifiers
 /// of each ability, item, and rune. This function will cause `Undefined Behavior`
 /// if the length of `closures` and `metadata` are not equal
-#[allow(private_bounds)]
-pub fn eval_damage<const N: usize, T: AbilityExt + 'static>(
+pub fn ability_id_eval_damage<const N: usize>(
     ctx: &EvalContext,
     onhit: &mut RangeDamage,
-    metadata: &[TypeMetadata<T>],
+    metadata: &[TypeMetadata<AbilityId>],
     closures: &[ConstClosure],
     modifiers: Modifiers,
 ) -> SmallVec<[i32; N]> {
     let len = metadata.len();
     let mut result = SmallVec::with_capacity(len);
-    for i in 0..len {
-        let closure = unsafe { closures.get_unchecked(i) };
+    let mut i = 0;
+    while i < len {
         let TypeMetadata {
             kind,
             damage_type,
             attributes,
+        } = metadata[i];
+        let closure = unsafe { closures.get_unchecked(i) };
+        let modifier = ability_id_mod(kind, damage_type, modifiers);
+        let damage = (modifier * closure(ctx)) as i32;
+        onhit.inc_attr(attributes, damage);
+        result.push(damage);
+        i += 1;
+    }
+    result
+}
+
+pub fn item_id_eval_damage<const N: usize>(
+    ctx: &EvalContext,
+    onhit: &mut RangeDamage,
+    metadata: &[TypeMetadata<ItemId>],
+    closures: &[ConstClosure],
+    modifiers: Modifiers,
+) -> SmallVec<[i32; N]> {
+    let len = closures.len();
+    let mut result = SmallVec::with_capacity(len);
+    let mut i = 0;
+    while i < len {
+        let TypeMetadata {
+            damage_type,
+            attributes,
+            ..
         } = unsafe { metadata.get_unchecked(i) };
 
-        let mut modifier = modifiers.damages.modifier(*damage_type);
-        kind.apply_modifiers(&mut modifier, &modifiers.abilities);
+        let modifier = modifiers.damages.modifier(*damage_type);
 
+        for j in 0..2 {
+            let closure = unsafe { closures.get_unchecked(i + j) };
+            let damage = (modifier * closure(ctx)) as i32;
+            onhit.inc_attr(*attributes, damage);
+            result.push(damage);
+        }
+
+        i += 2;
+    }
+    result
+}
+
+pub fn rune_id_eval_damage<const N: usize>(
+    ctx: &EvalContext,
+    onhit: &mut RangeDamage,
+    metadata: &[TypeMetadata<RuneId>],
+    closures: &[ConstClosure],
+    modifiers: Modifiers,
+) -> SmallVec<[i32; N]> {
+    let len = metadata.len();
+    let mut result = SmallVec::with_capacity(len);
+    let mut i = 0;
+    while i < len {
+        let TypeMetadata {
+            damage_type,
+            attributes,
+            ..
+        } = unsafe { metadata.get_unchecked(i) };
+        let modifier = modifiers.damages.modifier(*damage_type);
+        let closure = unsafe { closures.get_unchecked(i) };
         let damage = (modifier * closure(ctx)) as i32;
-
         onhit.inc_attr(*attributes, damage);
         result.push(damage);
+        i += 1;
     }
     result
 }
@@ -782,21 +834,21 @@ const _: () = {
 pub fn get_damages(eval_ctx: &EvalContext, data: &DamageEvalData, modifiers: Modifiers) -> Damages {
     let mut onhit = RangeDamage::default();
 
-    let abilities = eval_damage(
+    let abilities = ability_id_eval_damage(
         &eval_ctx,
         &mut onhit,
         &data.abilities.metadata,
         &data.abilities.closures,
         modifiers,
     );
-    let items = eval_damage(
+    let items = item_id_eval_damage(
         &eval_ctx,
         &mut onhit,
         &data.items.metadata,
         &data.items.closures,
         modifiers,
     );
-    let runes = eval_damage(
+    let runes = rune_id_eval_damage(
         &eval_ctx,
         &mut onhit,
         &data.runes.metadata,

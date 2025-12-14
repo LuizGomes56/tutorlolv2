@@ -231,8 +231,8 @@ pub async fn generate_champions() -> GeneratorFn {
         base_declaration: String,
         ability_declarations: Vec<(AbilityId, String)>,
         generator: String,
-        constfns: Vec<ConstFn>,
         html_declaration: String,
+        const_match_kind: String,
     }
 
     let data = parallel_task(
@@ -257,12 +257,12 @@ pub async fn generate_champions() -> GeneratorFn {
 
             sort_abilities(&mut abilities);
 
-            let mut constfns = Vec::new();
+            let mut constfns = Vec::with_capacity(abilities.len());
             let mut fn_names = String::new();
             let mut closures = String::new();
             let mut metadata = String::new();
-            let mut ability_names = Vec::new();
-            let mut ability_declarations = Vec::new();
+            let mut ability_names = Vec::with_capacity(abilities.len());
+            let mut ability_declarations = Vec::with_capacity(abilities.len());
 
             for ability in abilities {
                 fn_names.push_str(&format!("{name},", name = ability.constfn.name));
@@ -302,6 +302,23 @@ pub async fn generate_champions() -> GeneratorFn {
 
             base_declaration.push_str(&format!("&[{fn_names}], }};"));
 
+            let mut match_arm_kind = Vec::with_capacity(constfns.len());
+            for ConstFn {
+                ability_id,
+                declaration,
+                name,
+            } in constfns
+            {
+                base_declaration.push_str(&declaration);
+                match_arm_kind.push(format!("{ability_id} => {name}(ctx)"));
+            }
+
+            match_arm_kind.push(format!(
+                r#"_ => panic!("Invalid AbilityId for '{champion_id}'")"#
+            ));
+
+            let const_match_kind = match_arm_kind.join(",");
+
             let generator = CwdPath::get_generator(SrcFolder::Champions, &champion_id).await?;
 
             let combos_json = CwdPath::deserialize::<Vec<Vec<String>>>(format!(
@@ -325,7 +342,7 @@ pub async fn generate_champions() -> GeneratorFn {
 
             Ok(ChampionResult {
                 ability_declarations,
-                constfns,
+                const_match_kind,
                 name,
                 champion_id_upper,
                 base_declaration,
@@ -397,7 +414,7 @@ pub async fn generate_champions() -> GeneratorFn {
     let languages_map =
         CwdPath::deserialize::<HashMap<String, Vec<String>>>("internal/champion_languages.json")
             .await?;
-    let mut language_arms = Vec::new();
+    let mut language_arms = Vec::with_capacity(data.len());
     let mut const_match_arms = String::new();
 
     for (
@@ -407,10 +424,10 @@ pub async fn generate_champions() -> GeneratorFn {
             html_declaration,
             name,
             positions,
+            const_match_kind,
             ability_declarations,
             generator,
             champion_id_upper,
-            constfns,
         },
     ) in data
     {
@@ -425,30 +442,10 @@ pub async fn generate_champions() -> GeneratorFn {
             .join(",");
         language_arms.push(name_alias);
 
-        let mut closures = Vec::new();
-        let mut match_arm_kind = Vec::new();
-        for ConstFn {
-            ability_id,
-            declaration,
-            name,
-        } in constfns
-        {
-            champion_declarations.push_str(&declaration);
-            match_arm_kind.push(format!("{ability_id} => {name}(ctx)"));
-            closures.push(name);
-        }
-
-        match_arm_kind.push(format!(
-            r#"_ => panic!("Invalid AbilityId for '{champion_id}'")"#
-        ));
-
         champion_declarations.push_str(&base_declaration);
-        closures.join(",");
 
-        let match_arm = format!(
-            "ChampionId::{champion_id} => {{ match kind {{ {arm} }} }}",
-            arm = match_arm_kind.join(",")
-        );
+        let match_arm =
+            format!("ChampionId::{champion_id} => {{ match kind {{ {const_match_kind} }} }}");
 
         const_match_arms.push_str(&match_arm);
 
@@ -511,7 +508,7 @@ pub async fn generate_champions() -> GeneratorFn {
     .await??;
 
     let callback = move |index: usize| {
-        let add_offsets = |list: Vec<_>, target: &mut String| {
+        let add_offsets = |(list, target): (Vec<_>, &mut String)| {
             for (start, end) in list {
                 let new_start = start + index;
                 let new_end = end + index;
@@ -520,11 +517,15 @@ pub async fn generate_champions() -> GeneratorFn {
             push_end([target], "];");
         };
 
-        add_offsets(generator_offsets, &mut champion_generator);
-        add_offsets(formula_offsets, &mut champion_formulas);
+        [
+            (generator_offsets, &mut champion_generator),
+            (formula_offsets, &mut champion_formulas),
+        ]
+        .into_iter()
+        .for_each(add_offsets);
 
         for ability in ability_offsets {
-            let mut recorded_abilities = Vec::new();
+            let mut recorded_abilities = Vec::with_capacity(ability.len());
             for (ability_id, (start, end)) in ability {
                 let literal = ability_id.as_literal();
                 let new_start = start + index;

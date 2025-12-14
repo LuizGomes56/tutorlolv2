@@ -528,14 +528,12 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
 
     let current_player_runes = get_damaging_runes(&current_player_raw_runes);
     let current_player_items = get_damaging_items(&current_player_raw_items);
-    let (items_data, items_to_merge) = get_items_data(&current_player_items, attack_type);
-
     let eval_data = DamageEvalData {
         abilities: ConstDamageKind {
             metadata: current_player_cache.metadata,
             closures: current_player_cache.closures,
         },
-        items: items_data,
+        items: get_items_data(&current_player_items, attack_type),
         runes: get_runes_data(&current_player_runes, attack_type),
     };
 
@@ -685,7 +683,6 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
         items_meta: eval_data.items.metadata,
         runes_meta: eval_data.runes.metadata,
         abilities_to_merge: current_player_cache.merge_data,
-        items_to_merge,
         monster_damages,
         tower_damages,
     })
