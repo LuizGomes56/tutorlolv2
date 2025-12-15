@@ -3,7 +3,7 @@ use crate::{AbilityLevels, L_CENM, L_MSTR, RiotFormulas, riot::*};
 use smallvec::SmallVec;
 use tutorlolv2_gen::{
     AdaptativeType, AttackType, CHAMPION_CACHE, CachedItem, ChampionId, ITEM_CACHE, ItemId,
-    ItemsBitSet, NUMBER_OF_ITEMS, RuneId,
+    NUMBER_OF_ITEMS, RuneId,
 };
 use tutorlolv2_types::StatName;
 
@@ -443,7 +443,7 @@ pub const fn assign_item_exceptions(data: ItemExceptionData, exceptions: &[Value
 /// current player and the enemy players, returning a new struct containing the calculated
 /// damages against several entities. This function is generally safe to use, but it assumes
 /// that the received struct [`InputGame`] is valid. There's no undefined behavior checks.
-pub fn calculator(game: InputGame) -> Option<OutputGame> {
+pub fn calculator(game: InputGame) -> OutputGame {
     let InputGame {
         active_player:
             InputActivePlayer {
@@ -558,7 +558,7 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
         .map(|player| {
             let InputMinData {
                 infer_stats: e_infer_stats,
-                items: e_raw_items,
+                items: e_items,
                 stacks: e_stacks,
                 stats: e_raw_stats,
                 level: e_level,
@@ -568,12 +568,11 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
             } = player;
 
             let e_stats: SimpleStats<f32> = e_raw_stats.into();
-            let e_items = get_damaging_items(&e_raw_items);
             let e_base_stats = SimpleStats::base_stats(e_champion_id, e_level, e_is_mega_gnar);
             let mut full_state = get_enemy_state(
                 EnemyState {
                     base_stats: e_base_stats,
-                    items: e_items,
+                    items: &e_items,
                     stacks: e_stacks,
                     champion_id: e_champion_id,
                     level: e_level,
@@ -628,7 +627,7 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
                     health: 1.0,
                     magic_resist,
                 },
-                items: ItemsBitSet::EMPTY,
+                items: &[],
                 stacks: 0,
                 champion_id: ChampionId::Aatrox,
                 level: 0,
@@ -669,7 +668,7 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
         ),
     });
 
-    Some(OutputGame {
+    OutputGame {
         current_player: OutputCurrentPlayer {
             base_stats: current_player_base_stats.into(),
             bonus_stats: current_player_bonus_stats.into(),
@@ -685,5 +684,5 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
         abilities_to_merge: current_player_cache.merge_data,
         monster_damages,
         tower_damages,
-    })
+    }
 }

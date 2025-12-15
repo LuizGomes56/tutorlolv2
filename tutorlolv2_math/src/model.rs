@@ -2,8 +2,8 @@ use crate::*;
 use bincode::{Decode, Encode};
 use smallvec::SmallVec;
 use tutorlolv2_gen::{
-    AdaptativeType, Attrs, ChampionId, ConstClosure, DamageType, GameMap, ItemId, ItemsBitSet,
-    NUMBER_OF_ITEMS, NUMBER_OF_RUNES, Position, RuneId, TypeMetadata,
+    AdaptativeType, Attrs, ChampionId, ConstClosure, DamageType, GameMap, ItemId, NUMBER_OF_ITEMS,
+    NUMBER_OF_RUNES, Position, RuneId, TypeMetadata,
 };
 use tutorlolv2_types::AbilityId;
 
@@ -182,7 +182,7 @@ pub struct ResistShred {
 
 pub struct EnemyState<'a> {
     pub base_stats: SimpleStats<f32>,
-    pub items: ItemsBitSet,
+    pub items: &'a [ItemId],
     pub stacks: u32,
     pub champion_id: ChampionId,
     pub earth_dragons: u16,
@@ -260,13 +260,6 @@ pub struct Damages {
     pub abilities: SmallVec<[i32; L_ABLT]>,
     pub items: SmallVec<[i32; L_ITEM]>,
     pub runes: SmallVec<[i32; L_RUNE]>,
-}
-
-pub struct ConstDamages<const A: usize, const I: usize, const R: usize> {
-    pub attacks: Attacks,
-    pub abilities: [i32; A],
-    pub items: [i32; I],
-    pub runes: [i32; R],
 }
 
 /// Wrapper around the type [`u32`], whose first [`Self::DISC_BITS`] are used to
@@ -460,19 +453,31 @@ pub struct OutputGame {
 /// deterministic castings from between [`f32`] and [`i32`]
 macro_rules! impl_cast_from {
     ($stru:ident, $($fields:ident),*) => {
-        impl From<$stru<f32>> for $stru<i32> {
-            fn from(value: $stru<f32>) -> Self {
+        impl $stru<f32> {
+            pub const fn from_i32(value: $stru<i32>) -> Self {
+                $stru {
+                    $($fields: value.$fields as f32),*
+                }
+            }
+        }
+
+        impl $stru<i32> {
+            pub const fn from_f32(value: $stru<f32>) -> Self {
                 $stru {
                     $($fields: value.$fields as i32),*
                 }
             }
         }
 
+        impl From<$stru<f32>> for $stru<i32> {
+            fn from(value: $stru<f32>) -> Self {
+                $stru::from_f32(value)
+            }
+        }
+
         impl From<$stru<i32>> for $stru<f32> {
             fn from(value: $stru<i32>) -> Self {
-                $stru {
-                    $($fields: value.$fields as f32),*
-                }
+                $stru::from_i32(value)
             }
         }
     };

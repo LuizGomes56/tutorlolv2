@@ -1,5 +1,5 @@
 use super::{helpers::*, model::*};
-use crate::{L_SIML, L_TEAM, RiotFormulas, riot::*};
+use crate::{L_ITEM, L_SIML, L_TEAM, RiotFormulas, riot::*};
 use core::mem::MaybeUninit;
 use smallvec::SmallVec;
 use tutorlolv2_gen::{
@@ -232,13 +232,13 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
             let e_items = e_riot_items
                 .iter()
                 .filter_map(|riot_item| Some(ItemId::from_riot_id(riot_item.item_id)? as _))
-                .collect::<ItemsBitSet>();
+                .collect::<SmallVec<[_; L_ITEM]>>();
 
             let e_base_stats = SimpleStats::base_stats(e_champion_id, *e_level, false);
             let full_state = get_enemy_state(
                 EnemyState {
                     base_stats: e_base_stats,
-                    items: e_items,
+                    items: &e_items,
                     stacks: 0,
                     champion_id: e_champion_id,
                     level: *e_level,

@@ -349,21 +349,18 @@ pub const fn get_damaging_items(input: &[ItemId]) -> ItemsBitSet {
 /// the bonus mana allows a better estimate about the enemy's current HP
 pub const fn get_enemy_current_stats(
     stats: &mut SimpleStats<f32>,
-    items: &ItemsBitSet,
+    items: &[ItemId],
     earth_dragons: u16,
 ) -> f32 {
     let mut bonus_mana = 0.0;
 
     let mut i = 0;
-    let mut inner = items.into_inner();
-    while i < items.count() as usize {
-        if let Some(item_id) = bit_array_pop(&mut inner) {
-            let item = ITEM_CACHE[item_id];
-            stats.magic_resist += item.stats.magic_resist;
-            stats.health += item.stats.health;
-            stats.armor += item.stats.armor;
-            bonus_mana += item.stats.mana;
-        }
+    while i < items.len() {
+        let item = ITEM_CACHE[items[i] as usize];
+        stats.magic_resist += item.stats.magic_resist;
+        stats.health += item.stats.health;
+        stats.armor += item.stats.armor;
+        bonus_mana += item.stats.mana;
         i += 1;
     }
     let dragon_mod = get_earth_multiplier(earth_dragons);
@@ -494,6 +491,13 @@ pub const fn get_enemy_state(
         }
     );
 
+    let mut origin = ItemsBitSet::EMPTY;
+    let mut i = 0;
+    while i < e_items.len() {
+        origin.insert(e_items[i] as usize);
+        i += 1;
+    }
+
     EnemyFullState {
         current_stats: e_current_stats,
         bonus_stats: e_bonus_stats,
@@ -501,10 +505,10 @@ pub const fn get_enemy_state(
         armor_values,
         magic_values,
         // #![manual_impl]
-        steelcaps: has_item(e_items, [ItemId::PlatedSteelcaps, ItemId::ArmoredAdvance]),
+        steelcaps: has_item(&origin, [ItemId::PlatedSteelcaps, ItemId::ArmoredAdvance]),
         // #![manual_impl]
         rocksolid: has_item(
-            &e_items,
+            &origin,
             [
                 ItemId::RanduinsOmen,
                 ItemId::FrozenHeart,
@@ -512,7 +516,7 @@ pub const fn get_enemy_state(
             ],
         ),
         // #![manual_impl]
-        randuin: has_item(&e_items, [ItemId::RanduinsOmen]),
+        randuin: has_item(&origin, [ItemId::RanduinsOmen]),
     }
 }
 
