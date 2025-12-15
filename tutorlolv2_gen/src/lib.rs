@@ -1,3 +1,4 @@
+#![no_std]
 pub mod bitset;
 pub mod cache;
 pub mod data;

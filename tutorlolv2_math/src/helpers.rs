@@ -1,7 +1,5 @@
-use super::model::*;
-use crate::{L_ITEM, L_RUNE, L_SIML, RiotFormulas, riot::*};
+use crate::{L_SIML, RiotFormulas, model::*, riot::*, *};
 use core::mem::MaybeUninit;
-use smallvec::SmallVec;
 use tutorlolv2_gen::*;
 use tutorlolv2_types::{AbilityId, AbilityName};
 
@@ -281,36 +279,47 @@ pub const fn get_simulated_stats(stats: &Stats<f32>, dragons: Dragons) -> [Stats
 /// Returns an instance [`DamageKind`] containing the closures and metadata of the runes.
 /// Since the number of runes is unknown at compile time, those values are dynamically
 /// allocated. This function does not evaluate any closures
-pub fn get_runes_data(runes: &RunesBitSet, attack_type: AttackType) -> DamageKind<L_RUNE, RuneId> {
+pub fn get_runes_data(runes: &RunesBitSet, attack_type: AttackType) -> DamageKind<RuneId> {
     let count = runes.count() as usize;
-    let mut metadata = SmallVec::with_capacity(count);
-    let mut closures = SmallVec::with_capacity(count);
-    for rune_number in runes.into_iter() {
-        let rune = unsafe { RUNE_CACHE.get_unchecked(rune_number) };
-        closures.push(match attack_type {
-            AttackType::Ranged => rune.ranged_closure,
-            AttackType::Melee => rune.melee_closure,
-        });
-        metadata.push(rune.metadata);
+    let mut metadata = Box::new_uninit_slice(count);
+    let mut closures = Box::new_uninit_slice(count);
+    for (i, rune_offset) in runes.into_iter().enumerate() {
+        let rune = unsafe { RUNE_CACHE.get_unchecked(rune_offset) };
+        unsafe {
+            metadata.get_unchecked_mut(i).write(rune.metadata);
+            closures.get_unchecked_mut(i).write(match attack_type {
+                AttackType::Ranged => rune.ranged_closure,
+                AttackType::Melee => rune.melee_closure,
+            });
+        }
     }
-    DamageKind { metadata, closures }
+    DamageKind {
+        metadata: unsafe { metadata.assume_init() },
+        closures: unsafe { closures.assume_init() },
+    }
 }
 
-pub fn get_items_data(items: &ItemsBitSet, attack_type: AttackType) -> DamageKind<L_ITEM, ItemId> {
+pub fn get_items_data(items: &ItemsBitSet, attack_type: AttackType) -> DamageKind<ItemId> {
     let count = items.count() as usize;
-    let mut metadata = SmallVec::with_capacity(count);
-    let mut closures = SmallVec::with_capacity(count << 1);
-    for item_number in items.into_iter() {
-        let item = unsafe { ITEM_CACHE.get_unchecked(item_number) };
+    let mut metadata = Box::new_uninit_slice(count);
+    let mut closures = Box::new_uninit_slice(count << 1);
+    for (i, item_offset) in items.into_iter().enumerate() {
+        let item = unsafe { ITEM_CACHE.get_unchecked(item_offset) };
         let slice = match attack_type {
             AttackType::Ranged => item.ranged_closure,
             AttackType::Melee => item.melee_closure,
         };
 
-        closures.extend_from_slice(&slice);
-        metadata.push(item.metadata);
+        unsafe {
+            metadata.get_unchecked_mut(i).write(item.metadata);
+            closures.get_unchecked_mut(i).write(slice[0]);
+            closures.get_unchecked_mut(i + 1).write(slice[1]);
+        }
     }
-    DamageKind { metadata, closures }
+    DamageKind {
+        metadata: unsafe { metadata.assume_init() },
+        closures: unsafe { closures.assume_init() },
+    }
 }
 
 /// Converts a slice of [`RuneId`] into a [`RunesBitSet`], removing the ones that
@@ -379,17 +388,31 @@ pub const fn get_enemy_state(
     shred: ResistShred,
     accept_negatives: bool,
 ) -> EnemyFullState {
-    let mut e_current_stats = state.base_stats;
-    let e_items = &state.items;
-    let stacks = state.stacks as f32;
+    let EnemyState {
+        base_stats,
+        items,
+        stacks,
+        champion_id,
+        earth_dragons,
+        level,
+        item_exceptions,
+    } = state;
+    let ResistShred {
+        armor_penetration_flat,
+        armor_penetration_percent,
+        magic_penetration_flat,
+        magic_penetration_percent,
+    } = shred;
 
-    let bonus_mana = get_enemy_current_stats(&mut e_current_stats, &e_items, state.earth_dragons);
+    let mut e_current_stats = base_stats;
+
+    let bonus_mana = get_enemy_current_stats(&mut e_current_stats, items, earth_dragons);
 
     let mut e_modifiers = DamageModifiers::default();
 
     let mut i = 0;
-    while i < state.item_exceptions.len() {
-        let item_exception = state.item_exceptions[i];
+    while i < item_exceptions.len() {
+        let item_exception = item_exceptions[i];
         let stacks = item_exception.stacks();
 
         if let Some(item_id) = item_exception.get_item_id() {
@@ -416,24 +439,23 @@ pub const fn get_enemy_state(
         i += 1;
     }
 
-    match state.champion_id {
+    match champion_id {
         ChampionId::Swain => {
-            let stack_hp = 12.0 * stacks;
-            e_current_stats.health += stack_hp;
+            let stack_hp = 12 * stacks;
+            e_current_stats.health += stack_hp as f32;
         }
         ChampionId::Chogath => {
-            let stack_hp = stacks * 80.0
-                + 40.0
-                    * match state.level {
-                        ..6 => 0.0,
-                        6..11 => 1.0,
-                        11..16 => 2.0,
-                        16.. => 3.0,
-                    };
-            e_current_stats.health += stack_hp;
+            let stack_hp = stacks * 80
+                + 40 * match level {
+                    ..6 => 0,
+                    6..11 => 1,
+                    11..16 => 2,
+                    16.. => 3,
+                };
+            e_current_stats.health += stack_hp as f32;
         }
         ChampionId::Sion => {
-            e_current_stats.health += stacks;
+            e_current_stats.health += stacks as f32;
         }
         ChampionId::Kassadin => {
             // #![manual_impl]
@@ -445,9 +467,9 @@ pub const fn get_enemy_state(
             // At level 18, the maximum bonus must have been reached
             // For every upgrade, a +4% resist is applied.
             // #![manual_impl]
-            let ornn_resist_multiplier = match state.level {
+            let ornn_resist_multiplier = match level {
                 ..13 => 1.1,
-                13..18 => (state.level - 12) as f32 * 0.04,
+                13..18 => (level - 12) as f32 * 0.04,
                 18.. => 1.3,
             };
             e_current_stats.armor *= ornn_resist_multiplier;
@@ -457,7 +479,7 @@ pub const fn get_enemy_state(
         ChampionId::Malphite => {
             // W upgrade pattern for malphite by 06/07/2025
             // #![manual_impl]
-            let malphite_resist_multiplier = match state.level {
+            let malphite_resist_multiplier = match level {
                 ..3 => 1.0,
                 3..14 => 1.1,
                 14 => 1.15,
@@ -471,20 +493,20 @@ pub const fn get_enemy_state(
     }
 
     let armor_values = RiotFormulas::real_resist(
-        shred.armor_penetration_percent,
-        shred.armor_penetration_flat,
+        armor_penetration_percent,
+        armor_penetration_flat,
         e_current_stats.armor,
         accept_negatives,
     );
     let magic_values = RiotFormulas::real_resist(
-        shred.magic_penetration_percent,
-        shred.magic_penetration_flat,
+        magic_penetration_percent,
+        magic_penetration_flat,
         e_current_stats.magic_resist,
         accept_negatives,
     );
 
     let e_bonus_stats = bonus_stats!(
-        SimpleStats::<f32>(e_current_stats, state.base_stats) {
+        SimpleStats::<f32>(e_current_stats, base_stats) {
             armor,
             health,
             magic_resist
@@ -493,8 +515,8 @@ pub const fn get_enemy_state(
 
     let mut origin = ItemsBitSet::EMPTY;
     let mut i = 0;
-    while i < e_items.len() {
-        origin.insert(e_items[i] as usize);
+    while i < items.len() {
+        origin.insert(items[i] as usize);
         i += 1;
     }
 
@@ -613,93 +635,111 @@ pub const fn ability_id_mod(
     modifier
 }
 
-/// Evaluates the damage of some ability, item, or rune. Generic parameter `T`
-/// should be of type [`ItemId`], [`AbilityId`], or [`RuneId`] only. This function
+/// Evaluates the damage of all provided metadata of [`AbilityId`]. This function
 /// already multiplies the final damage result by the appropriate armor, or magic
 /// resist multiplier of the enemy, and considers global and local damage modifiers
-/// of each ability, item, and rune. This function will cause `Undefined Behavior`
-/// if the length of `closures` and `metadata` are not equal
-pub fn ability_id_eval_damage<const N: usize>(
+/// This function will cause `Undefined Behavior` if the length of `closures` and
+/// `metadata` are not equal. See similar functions [`item_id_eval_damage`] and
+/// [`rune_id_eval_damage`]
+pub fn ability_id_eval_damage(
     ctx: &EvalContext,
     onhit: &mut RangeDamage,
     metadata: &[TypeMetadata<AbilityId>],
     closures: &[ConstClosure],
     modifiers: Modifiers,
-) -> SmallVec<[i32; N]> {
+) -> Box<[i32]> {
     let len = metadata.len();
-    let mut result = SmallVec::with_capacity(len);
-    let mut i = 0;
-    while i < len {
-        let TypeMetadata {
-            kind,
-            damage_type,
-            attributes,
-        } = metadata[i];
-        let closure = unsafe { closures.get_unchecked(i) };
-        let modifier = ability_id_mod(kind, damage_type, modifiers);
-        let damage = (modifier * closure(ctx)) as i32;
-        onhit.inc_attr(attributes, damage);
-        result.push(damage);
-        i += 1;
-    }
-    result
+    debug_assert_eq!(len, closures.len());
+
+    (0..len)
+        .into_iter()
+        .map(|i| {
+            let TypeMetadata {
+                kind,
+                damage_type,
+                attributes,
+            } = metadata[i];
+            let closure = unsafe { closures.get_unchecked(i) };
+            let modifier = ability_id_mod(kind, damage_type, modifiers);
+            let damage = (modifier * closure(ctx)) as i32;
+            onhit.inc_attr(attributes, damage);
+            damage
+        })
+        .collect()
 }
 
-pub fn item_id_eval_damage<const N: usize>(
+/// Evaluates the damages of all requested items. This function causes
+/// `Undefined Behavior` if the length of `closures` is not twice as much as `metadata`
+/// or panic in debug mode. See similar function [`ability_id_eval_damage`] and
+/// [`rune_id_eval_damage`]
+pub fn item_id_eval_damage(
     ctx: &EvalContext,
     onhit: &mut RangeDamage,
     metadata: &[TypeMetadata<ItemId>],
     closures: &[ConstClosure],
     modifiers: Modifiers,
-) -> SmallVec<[i32; N]> {
-    let len = closures.len();
-    let mut result = SmallVec::with_capacity(len);
-    let mut i = 0;
-    while i < len {
+) -> Box<[i32]> {
+    let out_len = closures.len();
+    debug_assert_eq!(out_len, metadata.len() << 1);
+    let mut result = Box::<[i32]>::new_uninit_slice(out_len);
+
+    let mut meta_index = 0usize;
+    let mut out_index = 0usize;
+
+    while meta_index < metadata.len() {
         let TypeMetadata {
             damage_type,
             attributes,
             ..
-        } = unsafe { metadata.get_unchecked(i) };
-
+        } = unsafe { metadata.get_unchecked(meta_index) };
         let modifier = modifiers.damages.modifier(*damage_type);
-
-        for j in 0..2 {
-            let closure = unsafe { closures.get_unchecked(i + j) };
+        let mut j = 0;
+        while j < 2 {
+            let closure = unsafe { closures.get_unchecked(meta_index + j) };
             let damage = (modifier * closure(ctx)) as i32;
             onhit.inc_attr(*attributes, damage);
-            result.push(damage);
+            unsafe {
+                result.get_unchecked_mut(out_index).write(damage);
+            }
+            out_index += 1;
+            j += 1;
         }
-
-        i += 2;
+        meta_index += 1;
     }
-    result
+
+    debug_assert_eq!(out_index, out_len);
+    unsafe { result.assume_init() }
 }
 
-pub fn rune_id_eval_damage<const N: usize>(
+/// Evaluates the damages of all runes that deal damage, owned by the current player.
+/// This function causes `Undefined Behavior` if the length of `closures` is not equal
+/// to the length of `metadata`. See similar function [`ability_id_eval_damage`] and
+/// [`item_id_eval_damage`]
+pub fn rune_id_eval_damage(
     ctx: &EvalContext,
     onhit: &mut RangeDamage,
     metadata: &[TypeMetadata<RuneId>],
     closures: &[ConstClosure],
     modifiers: Modifiers,
-) -> SmallVec<[i32; N]> {
+) -> Box<[i32]> {
     let len = metadata.len();
-    let mut result = SmallVec::with_capacity(len);
-    let mut i = 0;
-    while i < len {
-        let TypeMetadata {
-            damage_type,
-            attributes,
-            ..
-        } = unsafe { metadata.get_unchecked(i) };
-        let modifier = modifiers.damages.modifier(*damage_type);
-        let closure = unsafe { closures.get_unchecked(i) };
-        let damage = (modifier * closure(ctx)) as i32;
-        onhit.inc_attr(*attributes, damage);
-        result.push(damage);
-        i += 1;
-    }
-    result
+    debug_assert_eq!(len, closures.len());
+
+    (0..len)
+        .into_iter()
+        .map(|i| {
+            let TypeMetadata {
+                damage_type,
+                attributes,
+                ..
+            } = unsafe { metadata.get_unchecked(i) };
+            let modifier = modifiers.damages.modifier(*damage_type);
+            let closure = unsafe { closures.get_unchecked(i) };
+            let damage = (modifier * closure(ctx)) as i32;
+            onhit.inc_attr(*attributes, damage);
+            damage
+        })
+        .collect()
 }
 
 /// Evaluates the damage of basic attacks, onhit damages and critical strikes
@@ -782,4 +822,77 @@ pub fn get_damages(eval_ctx: &EvalContext, data: &DamageEvalData, modifiers: Mod
         runes,
         attacks,
     }
+}
+
+pub fn get_monster_damages(
+    self_state: &SelfState,
+    eval_data: &DamageEvalData,
+    shred: ResistShred,
+) -> [MonsterDamage; L_MSTR] {
+    core::array::from_fn(|i| {
+        let (armor, magic_resist) = MONSTER_RESISTS[i];
+        let full_state = get_enemy_state(
+            EnemyState {
+                base_stats: SimpleStats::<f32> {
+                    armor,
+                    health: 1.0,
+                    magic_resist,
+                },
+                items: &[],
+                stacks: 0,
+                champion_id: ChampionId::Aatrox,
+                level: 0,
+                earth_dragons: 0,
+                item_exceptions: &[],
+            },
+            shred,
+            true,
+        );
+        let eval_ctx = get_eval_ctx(&self_state, &full_state);
+        let damages = get_damages(&eval_ctx, &eval_data, Modifiers::default());
+        MonsterDamage {
+            attacks: damages.attacks,
+            abilities: damages.abilities,
+            items: damages.items,
+        }
+    })
+}
+
+pub const fn get_tower_damages(
+    adaptative_type: AdaptativeType,
+    base_attack_damage: f32,
+    bonus_attack_damage: f32,
+    ability_power: f32,
+    shred: ResistShred,
+) -> [i32; L_TWRD] {
+    let mut tower_damages = MaybeUninit::<[i32; L_TWRD]>::uninit();
+    let tower_ptr = tower_damages.as_mut_ptr();
+    let mut i = 0;
+
+    let (pen_percent, pen_flat) = match adaptative_type {
+        AdaptativeType::Physical => (
+            shred.armor_penetration_percent,
+            shred.armor_penetration_flat,
+        ),
+        AdaptativeType::Magic => (
+            shred.magic_penetration_percent,
+            shred.magic_penetration_flat,
+        ),
+    };
+
+    while i < L_TWRD {
+        let damage = RiotFormulas::tower_damage(
+            i as f32,
+            base_attack_damage,
+            bonus_attack_damage,
+            ability_power,
+            pen_percent,
+            pen_flat,
+        );
+        unsafe {
+            core::ptr::addr_of_mut!((*tower_ptr)[i]).write(damage);
+        }
+        i += 1;
+    }
+    unsafe { tower_damages.assume_init() }
 }

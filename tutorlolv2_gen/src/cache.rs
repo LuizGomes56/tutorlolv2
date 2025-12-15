@@ -30,7 +30,7 @@ impl<T: AsRef<str>> From<T> for AdaptativeType {
     }
 }
 
-#[derive(Encode, Copy, Clone, Serialize, Deserialize)]
+#[derive(Copy, Clone, Debug, Deserialize, Encode, Serialize)]
 pub enum AdaptativeType {
     Physical,
     Magic,
@@ -40,7 +40,7 @@ pub enum AdaptativeType {
 /// play in the standard gamemode `SummonersRift`, whose definition
 /// is [`GameMap::SummonersRift`]. If we don't know a champion's position,
 /// it is set to [`Position::Top`].
-#[derive(Copy, Clone, Encode, Serialize, Deserialize, Default)]
+#[derive(Copy, Clone, Debug, Default, Deserialize, Encode, Serialize)]
 pub enum Position {
     #[default]
     Top,
@@ -67,7 +67,7 @@ impl Position {
 /// All possible maps and codes that can be played. Most of them are
 /// event maps that may never return to the game, and don't have a
 /// deterministic code. [`GameMap::SummonersRift`] is the default map.
-#[derive(Default, Encode, Deserialize, Serialize)]
+#[derive(Debug, Default, Deserialize, Encode, Serialize)]
 pub enum GameMap {
     #[default]
     SummonersRift,
@@ -112,7 +112,7 @@ impl GameMap {
 
 /// A generic metadata holder for [`AbilityId`], [`ItemId`], or [`RuneId`].
 /// Contains its damage type, attributes, and which instance of the enum the value is.
-#[derive(Copy, Clone, Encode)]
+#[derive(Copy, Clone, Debug, Encode)]
 pub struct TypeMetadata<T> {
     /// Represents a variety of values:
     /// - [`AbilityId`]: Which ability key it represents, and its name

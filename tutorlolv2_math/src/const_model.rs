@@ -1,11 +1,11 @@
-use tutorlolv2_gen::{ChampionId, ItemId, RuneId, TypeMetadata};
-use tutorlolv2_types::AbilityId;
-
 use crate::{
     AbilityLevels, Attacks, Dragons, L_MSTR, L_TWRD, OutputCurrentPlayer, SimpleStats, Stats,
     ValueException,
 };
+use tutorlolv2_gen::{ChampionId, ItemId, RuneId, TypeMetadata};
+use tutorlolv2_types::AbilityId;
 
+#[derive(Debug)]
 pub struct ConstInputGame<
     const _ENEMIES: usize,
     const _RUNES: usize,
@@ -18,6 +18,7 @@ pub struct ConstInputGame<
     pub dragons: Dragons,
 }
 
+#[derive(Debug)]
 pub struct ConstInputActivePlayer<
     const _ITEMS: usize,
     const _ITEMS_EXC: usize,
@@ -30,7 +31,7 @@ pub struct ConstInputActivePlayer<
     pub data: ConstInputMinData<Stats<i32>, _ITEMS, _ITEMS_EXC>,
 }
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Debug)]
 pub struct ConstInputMinData<T, const _ITEMS: usize, const _ITEMS_EXC: usize> {
     pub stats: T,
     pub items: [ItemId; _ITEMS],
@@ -42,6 +43,7 @@ pub struct ConstInputMinData<T, const _ITEMS: usize, const _ITEMS_EXC: usize> {
     pub champion_id: ChampionId,
 }
 
+#[derive(Debug)]
 pub struct ConstDamages<const _ABILITIES: usize, const _ITEMS: usize, const _RUNES: usize> {
     pub attacks: Attacks,
     pub abilities: [i32; _ABILITIES],
@@ -49,12 +51,14 @@ pub struct ConstDamages<const _ABILITIES: usize, const _ITEMS: usize, const _RUN
     pub runes: [i32; _RUNES],
 }
 
+#[derive(Debug)]
 pub struct ConstMonsterDamage<const _ABILITIES: usize, const _ITEMS: usize> {
     pub attacks: Attacks,
     pub abilities: [i32; _ABILITIES],
     pub items: [i32; _ITEMS],
 }
 
+#[derive(Debug)]
 pub struct ConstOutputEnemy<const _ABILITIES: usize, const _ITEMS: usize, const _RUNES: usize> {
     pub damages: ConstDamages<_ABILITIES, _ITEMS, _RUNES>,
     pub base_stats: SimpleStats<i32>,
@@ -66,6 +70,7 @@ pub struct ConstOutputEnemy<const _ABILITIES: usize, const _ITEMS: usize, const 
     pub champion_id: ChampionId,
 }
 
+#[derive(Debug)]
 pub struct ConstOutputGame<
     const _ABILITIES: usize,
     const _ENEMIES: usize,

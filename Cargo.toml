@@ -8,7 +8,6 @@ debug = false
 incremental = false
 
 [workspace]
-workspace.workspace = true
 workspace.name = "tutorlolv2"
 workspace.version = "0.5.3"
 workspace.edition = "2024"
@@ -31,12 +30,10 @@ resolver = "3"
 
 [workspace.dependencies]
 tutorlolv2_avif = { path = "tutorlolv2_avif" }
-tutorlolv2_build = { path = "tutorlolv2_build" }
 tutorlolv2_dev = { path = "tutorlolv2_dev" }
 tutorlolv2_exports = { path = "tutorlolv2_exports" }
 tutorlolv2_fmt = { path = "tutorlolv2_fmt" }
 tutorlolv2_gen = { path = "tutorlolv2_gen" }
 tutorlolv2_macros = { path = "tutorlolv2_macros" }
 tutorlolv2_math = { path = "tutorlolv2_math" }
-tutorlolv2_server = { path = "tutorlolv2_server" }
 tutorlolv2_types = { path = "tutorlolv2_types" }
