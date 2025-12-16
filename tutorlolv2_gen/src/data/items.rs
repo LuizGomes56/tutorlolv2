@@ -315,19 +315,9 @@ pub static ITEM_CACHE: [&CachedItem; 314] = [
     &ZEPHYR_3172,
     &ZHONYAS_HOURGLASS_3157,
 ];
-#[derive(
-    Serialize,
-    Deserialize,
-    Debug,
-    Copy,
-    Clone,
-    Ord,
-    Eq,
-    PartialOrd,
-    PartialEq,
-    Decode,
-    Encode,
-)]
+#[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
+#[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[repr(u16)]
 pub enum ItemId {
     AbyssalMask,
@@ -667,9 +657,7 @@ impl ItemId {
             6660 | 226660 | 446660 => Some(Self::BamisCinder),
             4642 | 224642 | 444642 => Some(Self::BandleglassMirror),
             3102 | 223102 | 443102 => Some(Self::BansheesVeil),
-            1506 | 221506 | 441506 => {
-                Some(Self::BaseTurretReinforcedArmorTurretItem)
-            }
+            1506 | 221506 | 441506 => Some(Self::BaseTurretReinforcedArmorTurretItem),
             3006 | 223006 | 443006 => Some(Self::BerserkersGreaves),
             3071 | 223071 | 443071 => Some(Self::BlackCleaver),
             447122 => Some(Self::BlackHoleGauntlet),
@@ -1350,10 +1338,7 @@ pub static ARMORED_ADVANCE_3174: CachedItem = CachedItem {
 };
 pub static ATMAS_RECKONING_223039: CachedItem = CachedItem {
     price: 2500,
-    prettified_stats: &[
-        StatName::Health(700),
-        StatName::CriticalStrikeChance(20),
-    ],
+    prettified_stats: &[StatName::Health(700), StatName::CriticalStrikeChance(20)],
     damage_type: DamageType::Unknown,
     attributes: Attrs::Undefined,
     metadata: TypeMetadata {
@@ -1569,42 +1554,41 @@ pub static BANSHEES_VEIL_3102: CachedItem = CachedItem {
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
-pub static BASE_TURRET_REINFORCED_ARMOR_TURRET_ITEM_1506: CachedItem =
-    CachedItem {
-        price: 0,
-        prettified_stats: &[],
+pub static BASE_TURRET_REINFORCED_ARMOR_TURRET_ITEM_1506: CachedItem = CachedItem {
+    price: 0,
+    prettified_stats: &[],
+    damage_type: DamageType::Unknown,
+    attributes: Attrs::Undefined,
+    metadata: TypeMetadata {
+        kind: ItemId::BaseTurretReinforcedArmorTurretItem,
         damage_type: DamageType::Unknown,
         attributes: Attrs::Undefined,
-        metadata: TypeMetadata {
-            kind: ItemId::BaseTurretReinforcedArmorTurretItem,
-            damage_type: DamageType::Unknown,
-            attributes: Attrs::Undefined,
-        },
-        stats: CachedItemStats {
-            ability_power: 0f32,
-            armor: 0f32,
-            attack_damage: 0f32,
-            attack_speed: 0f32,
-            crit_chance: 0f32,
-            crit_damage: 0f32,
-            health: 0f32,
-            lifesteal: 0f32,
-            magic_resist: 0f32,
-            mana: 0f32,
-            movespeed: 0f32,
-            omnivamp: 0f32,
-            armor_penetration_flat: 0f32,
-            magic_penetration_flat: 0f32,
-            armor_penetration_percent: 0f32,
-            magic_penetration_percent: 0f32,
-        },
-        purchasable: false,
-        deals_damage: false,
-        tier: 1,
-        riot_id: 1506,
-        ranged_closure: [zero, zero],
-        melee_closure: [zero, zero],
-    };
+    },
+    stats: CachedItemStats {
+        ability_power: 0f32,
+        armor: 0f32,
+        attack_damage: 0f32,
+        attack_speed: 0f32,
+        crit_chance: 0f32,
+        crit_damage: 0f32,
+        health: 0f32,
+        lifesteal: 0f32,
+        magic_resist: 0f32,
+        mana: 0f32,
+        movespeed: 0f32,
+        omnivamp: 0f32,
+        armor_penetration_flat: 0f32,
+        magic_penetration_flat: 0f32,
+        armor_penetration_percent: 0f32,
+        magic_penetration_percent: 0f32,
+    },
+    purchasable: false,
+    deals_damage: false,
+    tier: 1,
+    riot_id: 1506,
+    ranged_closure: [zero, zero],
+    melee_closure: [zero, zero],
+};
 pub static BERSERKERS_GREAVES_3006: CachedItem = CachedItem {
     price: 1100,
     prettified_stats: &[StatName::MoveSpeed(45), StatName::AttackSpeed(25)],
@@ -1829,19 +1813,13 @@ pub static BLADE_OF_THE_RUINED_KING_3153: CachedItem = CachedItem {
 };
 pub const fn blade_of_the_ruined_king_ranged_min(ctx: &EvalContext) -> f32 {
     ctx.enemy_current_health
-        - (0.06f32
-            * ctx.enemy_current_health
-            * (1f32 - 0.06f32 * ctx.physical_multiplier)
-            - ctx.ad
+        - (0.06f32 * ctx.enemy_current_health * (1f32 - 0.06f32 * ctx.physical_multiplier) - ctx.ad
             + ctx.ad * (1f32 - 0.06f32 * ctx.physical_multiplier))
             / 0.06f32
 }
 pub const fn blade_of_the_ruined_king_melee_min(ctx: &EvalContext) -> f32 {
     ctx.enemy_current_health
-        - (0.09f32
-            * ctx.enemy_current_health
-            * (1f32 - 0.09f32 * ctx.physical_multiplier)
-            - ctx.ad
+        - (0.09f32 * ctx.enemy_current_health * (1f32 - 0.09f32 * ctx.physical_multiplier) - ctx.ad
             + ctx.ad * (1f32 - 0.09f32 * ctx.physical_multiplier))
             / 0.09f32
 }
@@ -1882,10 +1860,7 @@ pub static BLASTING_WAND_1026: CachedItem = CachedItem {
 };
 pub static BLIGHTING_JEWEL_4630: CachedItem = CachedItem {
     price: 1100,
-    prettified_stats: &[
-        StatName::MagicPenetration(13),
-        StatName::AbilityPower(25),
-    ],
+    prettified_stats: &[StatName::MagicPenetration(13), StatName::AbilityPower(25)],
     damage_type: DamageType::Unknown,
     attributes: Attrs::Undefined,
     metadata: TypeMetadata {
@@ -4422,10 +4397,7 @@ pub static FLESHEATER_447112: CachedItem = CachedItem {
 };
 pub static FORBIDDEN_IDOL_3114: CachedItem = CachedItem {
     price: 600,
-    prettified_stats: &[
-        StatName::BaseManaRegen(50),
-        StatName::HealAndShieldPower(8),
-    ],
+    prettified_stats: &[StatName::BaseManaRegen(50), StatName::HealAndShieldPower(8)],
     damage_type: DamageType::Unknown,
     attributes: Attrs::Undefined,
     metadata: TypeMetadata {
@@ -5839,10 +5811,7 @@ pub static HOLLOW_RADIANCE_6664: CachedItem = CachedItem {
 };
 pub static HORIZON_FOCUS_4628: CachedItem = CachedItem {
     price: 2800,
-    prettified_stats: &[
-        StatName::AbilityPower(125),
-        StatName::AbilityHaste(25),
-    ],
+    prettified_stats: &[StatName::AbilityPower(125), StatName::AbilityHaste(25)],
     damage_type: DamageType::Unknown,
     attributes: Attrs::Undefined,
     metadata: TypeMetadata {
@@ -6555,10 +6524,7 @@ pub static LANE_SWAP_DETECTOR_1501: CachedItem = CachedItem {
 };
 pub static LAST_WHISPER_3035: CachedItem = CachedItem {
     price: 1450,
-    prettified_stats: &[
-        StatName::AttackDamage(20),
-        StatName::ArmorPenetration(18),
-    ],
+    prettified_stats: &[StatName::AttackDamage(20), StatName::ArmorPenetration(18)],
     damage_type: DamageType::Unknown,
     attributes: Attrs::Undefined,
     metadata: TypeMetadata {
@@ -9941,10 +9907,7 @@ pub static SERYLDAS_GRUDGE_6694: CachedItem = CachedItem {
 };
 pub static SHADOWFLAME_4645: CachedItem = CachedItem {
     price: 3200,
-    prettified_stats: &[
-        StatName::MagicPenetration(15),
-        StatName::AbilityPower(110),
-    ],
+    prettified_stats: &[StatName::MagicPenetration(15), StatName::AbilityPower(110)],
     damage_type: DamageType::Unknown,
     attributes: Attrs::Undefined,
     metadata: TypeMetadata {
@@ -10199,10 +10162,7 @@ pub static SOLSTICE_SLEIGH_3876: CachedItem = CachedItem {
 };
 pub static SORCERERS_SHOES_3020: CachedItem = CachedItem {
     price: 1100,
-    prettified_stats: &[
-        StatName::MagicPenetration(12),
-        StatName::MoveSpeed(45),
-    ],
+    prettified_stats: &[StatName::MagicPenetration(12), StatName::MoveSpeed(45)],
     damage_type: DamageType::Unknown,
     attributes: Attrs::Undefined,
     metadata: TypeMetadata {
@@ -11644,10 +11604,7 @@ pub static TURRET_PLATING_1515: CachedItem = CachedItem {
 };
 pub static TWILIGHTS_EDGE_447121: CachedItem = CachedItem {
     price: 0,
-    prettified_stats: &[
-        StatName::AbilityPower(100),
-        StatName::AttackDamage(70),
-    ],
+    prettified_stats: &[StatName::AbilityPower(100), StatName::AttackDamage(70)],
     damage_type: DamageType::Unknown,
     attributes: Attrs::Undefined,
     metadata: TypeMetadata {
@@ -11906,10 +11863,7 @@ pub static VIGILANT_WARDSTONE_4643: CachedItem = CachedItem {
 };
 pub static VOID_STAFF_3135: CachedItem = CachedItem {
     price: 3000,
-    prettified_stats: &[
-        StatName::MagicPenetration(40),
-        StatName::AbilityPower(95),
-    ],
+    prettified_stats: &[StatName::MagicPenetration(40), StatName::AbilityPower(95)],
     damage_type: DamageType::Unknown,
     attributes: Attrs::Undefined,
     metadata: TypeMetadata {
@@ -12749,12 +12703,8 @@ pub const fn item_const_eval(
             AttackType::Ranged => [zero(ctx), zero(ctx)],
         },
         ItemId::BladeOfTheRuinedKing => match attack_type {
-            AttackType::Melee => {
-                [blade_of_the_ruined_king_melee_min(ctx), zero(ctx)]
-            }
-            AttackType::Ranged => {
-                [blade_of_the_ruined_king_ranged_min(ctx), zero(ctx)]
-            }
+            AttackType::Melee => [blade_of_the_ruined_king_melee_min(ctx), zero(ctx)],
+            AttackType::Ranged => [blade_of_the_ruined_king_ranged_min(ctx), zero(ctx)],
         },
         ItemId::BlastingWand => match attack_type {
             AttackType::Melee => [zero(ctx), zero(ctx)],

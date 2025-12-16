@@ -357,7 +357,10 @@ pub async fn generate_items() -> GeneratorFn {
     let match_arms = item_id_enum_match_arms.join(",");
 
     let item_id_enum = format!(
-        "#[derive(Serialize, Deserialize, Debug, Copy, Clone, Ord, Eq, PartialOrd, PartialEq, Decode, Encode)]
+        r#"
+        #[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
+        #[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
+        #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
         #[repr(u16)]
         pub enum ItemId {{ {fields} }}
         impl ItemId {{
@@ -377,7 +380,7 @@ pub async fn generate_items() -> GeneratorFn {
                     None
                 }}
             }}
-        }}"
+        }}"#
     );
 
     let const_eval = format!(

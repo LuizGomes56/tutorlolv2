@@ -1,12 +1,20 @@
 [package]
 name = "tutorlolv2_build"
-version = "0.2.3"
+version = "0.2.4"
 edition = "2024"
 
-[dependencies]
-tutorlolv2_fmt = { workspace = true }
-tutorlolv2_types = { workspace = true }
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
+debug = false
+incremental = false
 
+[dependencies]
+tutorlolv2_fmt = { path = "../tutorlolv2_fmt" }
+tutorlolv2_types = { path = "../tutorlolv2_types" }
 tokio = { version = "1.47", features = ["full"] }
 serde_json = "1.0.143"
 serde = { version = "1.0", features = ["derive"] }

@@ -1,15 +1,12 @@
-use crate::{L_SIML, RiotFormulas, helpers::*, model::*, riot::*, *};
+use crate::{helpers::*, model::*, riot::*};
+use alloc::boxed::Box;
 use core::mem::MaybeUninit;
-use tutorlolv2_gen::{
-    CHAMPION_CACHE, CHAMPION_NAME_TO_ID, ChampionId, DAMAGING_ITEMS, DAMAGING_RUNES, GameMap,
-    ITEM_CACHE, ItemId, ItemsBitSet, Position, RuneId, RunesBitSet, SIMULATED_ITEMS_ENUM,
-    TypeMetadata,
-};
+use tutorlolv2_gen::*;
 
 /// Contains the metadata of all items that have their stats compared to choose
 /// which one is best to buy considering the current game state. See [`TypeMetadata`]
 /// for more details
-pub const SIMULATED_ITEMS_METADATA: [TypeMetadata<ItemId>; L_SIML] = {
+pub const SIMULATED_ITEMS_METADATA: SimulatedMetadata = {
     let mut siml_items = MaybeUninit::<[TypeMetadata<ItemId>; L_SIML]>::uninit();
     let siml_items_ptr = siml_items.as_mut_ptr();
     let mut i = 0;
@@ -25,7 +22,7 @@ pub const SIMULATED_ITEMS_METADATA: [TypeMetadata<ItemId>; L_SIML] = {
         };
         i += 1;
     }
-    unsafe { siml_items.assume_init() }
+    SimulatedMetadata(unsafe { siml_items.assume_init() })
 };
 
 /// Receives a reference to the current player's game, defined by the struct [`RiotRealtime`]
@@ -274,7 +271,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
             };
             let damages = get_damages(&eval_ctx, &eval_data, modifiers);
 
-            let siml_items = core::array::from_fn(|i| {
+            let siml_items = SimulatedItems(core::array::from_fn(|i| {
                 let siml_stat = simulated_stats[i];
                 let siml_eval_ctx = get_eval_ctx(
                     &SelfState {
@@ -284,7 +281,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
                     &full_state,
                 );
                 get_damages(&siml_eval_ctx, &eval_data, modifiers)
-            });
+            }));
 
             Some(Enemy {
                 champion_id: e_champion_id,

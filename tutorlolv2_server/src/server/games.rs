@@ -7,7 +7,7 @@ use actix_web::{
 };
 use bincode::{Encode, config::Configuration};
 use rand::random_range;
-use tutorlolv2_math::{calculator, realtime};
+use tutorlolv2::{calculator, realtime};
 use uuid::Uuid;
 
 type Response = Result<HttpResponse, Box<dyn std::error::Error>>;
@@ -98,6 +98,7 @@ pub async fn get_by_code_handler(state: Data<AppState>, body: actix_web::web::By
     .await?;
 
     let riot_realtime = serde_json::from_str(&data)?;
-    let realtime_data = realtime(&riot_realtime).ok_or("Err")?;
+    let realtime_data =
+        realtime(&riot_realtime).ok_or("Error calling function `realtime`. Invalid input")?;
     respond(realtime_data)
 }

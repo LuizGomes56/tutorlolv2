@@ -23,7 +23,7 @@ macro_rules! create_eval_struct {
             /// General struct that holds all the possible values that a constant
             /// closure can access when calculating the damage of some item, ability,
             /// passive, or rune. Those closures are created with the help of generators
-            /// and the struct [`EvalIdent`].
+            /// and the struct [`self::EvalIdent`].
             /// Closures have the following signature: `fn(ctx: &EvalContext) -> f32`.
             /// - The following code has an example of usage. For the complete details
             /// of the actual data that the static variable in the example holds, see

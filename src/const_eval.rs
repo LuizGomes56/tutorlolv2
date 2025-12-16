@@ -1,7 +1,10 @@
-use crate::{ability_id_mod, model::*};
+use crate::{
+    helpers::ability_id_mod,
+    model::{Modifiers, RangeDamage},
+};
 use tutorlolv2_gen::*;
 
-/// Constant evaluation of abilities, similar to function [`crate::ability_id_eval_damage`]
+/// Constant evaluation of abilities, similar to function [`crate::helpers::ability_id_eval_damage`]
 pub const fn const_ability_id_eval_damage<const N: usize>(
     ctx: &EvalContext,
     onhit: &mut RangeDamage,
@@ -26,7 +29,7 @@ pub const fn const_ability_id_eval_damage<const N: usize>(
     result
 }
 
-/// Constant evaluation of items, similar to function [`crate::item_id_eval_damage`]
+/// Constant evaluation of items, similar to function [`crate::helpers::item_id_eval_damage`]
 pub const fn const_item_id_eval_damage<const N: usize>(
     ctx: &EvalContext,
     onhit: &mut RangeDamage,
@@ -57,7 +60,7 @@ pub const fn const_item_id_eval_damage<const N: usize>(
     result
 }
 
-/// Constant evaluation of runes, similar to function [`crate::rune_id_eval_damage`]
+/// Constant evaluation of runes, similar to function [`crate::helpers::rune_id_eval_damage`]
 pub const fn const_rune_id_eval_damage<const N: usize>(
     ctx: &EvalContext,
     rune_ids: [RuneId; N],

@@ -1,4 +1,5 @@
-use crate::{L_SIML, RiotFormulas, model::*, riot::*, *};
+use crate::{calculator::MONSTER_RESISTS, model::*, riot::Stats};
+use alloc::boxed::Box;
 use core::mem::MaybeUninit;
 use tutorlolv2_gen::*;
 use tutorlolv2_types::{AbilityId, AbilityName};
@@ -168,8 +169,8 @@ macro_rules! bonus_stats {
 
 pub use bonus_stats;
 
-/// Checks if at least one of the provided [`ItemId`] in the array is in the [`BitSet`]
-/// This is similar to the [`core::iter::Iterator::any`] method
+/// Checks if at least one of the provided [`ItemId`] in the array is in the
+/// [`tutorlolv2_gen::ItemsBitSet`], similar to method [`core::iter::Iterator::any`]
 pub const fn has_item<const N: usize>(origin: &ItemsBitSet, check_for: [ItemId; N]) -> bool {
     let mut i = 0;
     while i < N {

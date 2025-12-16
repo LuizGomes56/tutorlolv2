@@ -1,18 +1,15 @@
 #![no_std]
-use bincode::Encode;
-use serde::{Deserialize, Serialize};
-
 pub mod ability_name;
 
 pub use ability_name::*;
 
-extern crate alloc;
-use alloc::{format, string::String};
-
-#[derive(
-    Serialize, Deserialize, Copy, Clone, Encode, Debug, Eq, PartialEq, PartialOrd, Hash, Ord,
+#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+#[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
+#[cfg_attr(
+    feature = "serde",
+    derive(serde::Serialize, serde::Deserialize),
+    serde(tag = "type", content = "name")
 )]
-#[serde(tag = "type", content = "name")]
 pub enum AbilityId {
     P(AbilityName),
     Q(AbilityName),
@@ -31,7 +28,15 @@ impl AbilityId {
             AbilityId::R(_) => 'R',
         }
     }
+}
 
+#[cfg(feature = "dev")]
+extern crate alloc;
+#[cfg(feature = "dev")]
+use alloc::{format, string::String};
+
+#[cfg(feature = "dev")]
+impl AbilityId {
     pub const fn from_fn(&self) -> fn(AbilityName) -> Self {
         match self {
             AbilityId::P(_) => AbilityId::P,
@@ -71,8 +76,13 @@ impl AbilityId {
     }
 }
 
-#[derive(Serialize, Deserialize, Debug, Copy, Clone)]
-#[serde(tag = "name", content = "value")]
+#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+#[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
+#[cfg_attr(
+    feature = "serde",
+    derive(serde::Serialize, serde::Deserialize),
+    serde(tag = "name", content = "value")
+)]
 pub enum StatName {
     AbilityHaste(u16),
     AbilityPower(u16),

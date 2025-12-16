@@ -1,8 +1,6 @@
-use crate::{AbilityLevels, L_MSTR, helpers::*, model::*, riot::*, *};
-use tutorlolv2_gen::{
-    AdaptativeType, AttackType, CHAMPION_CACHE, CachedItem, ChampionId, ITEM_CACHE, ItemId,
-    NUMBER_OF_ITEMS, RuneId,
-};
+use crate::{helpers::*, model::*, riot::Stats};
+use alloc::boxed::Box;
+use tutorlolv2_gen::*;
 use tutorlolv2_types::StatName;
 
 /// Constant array containing the armor and magic resistences of jungle monsters.

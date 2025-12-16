@@ -73,9 +73,9 @@ pub static RUNE_CACHE: [&CachedRune; 72] = [
     &WATERWALKING_8232,
     &ZOMBIE_WARD_8138,
 ];
-#[derive(
-    Debug, Copy, Clone, Ord, Eq, PartialOrd, PartialEq, Decode, Encode,
-)]
+#[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
+#[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[repr(u8)]
 pub enum RuneId {
     AbilityHaste,
@@ -304,12 +304,10 @@ pub static AFTERSHOCK_8439: CachedRune = CachedRune {
     ranged_closure: aftershock_ranged,
 };
 pub const fn aftershock_ranged(ctx: &EvalContext) -> f32 {
-    (25f32 + 95f32 / 17f32 * (ctx.level - 1f32) + 0.08f32 * ctx.bonus_health)
-        * ctx.magic_multiplier
+    (25f32 + 95f32 / 17f32 * (ctx.level - 1f32) + 0.08f32 * ctx.bonus_health) * ctx.magic_multiplier
 }
 pub const fn aftershock_melee(ctx: &EvalContext) -> f32 {
-    (25f32 + 95f32 / 17f32 * (ctx.level - 1f32) + 0.08f32 * ctx.bonus_health)
-        * ctx.magic_multiplier
+    (25f32 + 95f32 / 17f32 * (ctx.level - 1f32) + 0.08f32 * ctx.bonus_health) * ctx.magic_multiplier
 }
 pub static APPROACH_VELOCITY_8410: CachedRune = CachedRune {
     damage_type: DamageType::Unknown,
@@ -336,15 +334,11 @@ pub static ARCANE_COMET_8229: CachedRune = CachedRune {
     ranged_closure: arcane_comet_ranged,
 };
 pub const fn arcane_comet_ranged(ctx: &EvalContext) -> f32 {
-    (30f32
-        + 100f32 / 17f32 * (ctx.level - 1f32)
-        + (0.1f32 * ctx.bonus_ad + 0.05f32 * ctx.ap))
+    (30f32 + 100f32 / 17f32 * (ctx.level - 1f32) + (0.1f32 * ctx.bonus_ad + 0.05f32 * ctx.ap))
         * ctx.adaptative_damage
 }
 pub const fn arcane_comet_melee(ctx: &EvalContext) -> f32 {
-    (30f32
-        + 100f32 / 17f32 * (ctx.level - 1f32)
-        + (0.1f32 * ctx.bonus_ad + 0.05f32 * ctx.ap))
+    (30f32 + 100f32 / 17f32 * (ctx.level - 1f32) + (0.1f32 * ctx.bonus_ad + 0.05f32 * ctx.ap))
         * ctx.adaptative_damage
 }
 pub static ATTACK_SPEED_9992: CachedRune = CachedRune {
@@ -510,17 +504,11 @@ pub static DARK_HARVEST_8128: CachedRune = CachedRune {
     ranged_closure: dark_harvest_ranged,
 };
 pub const fn dark_harvest_ranged(ctx: &EvalContext) -> f32 {
-    (20f32
-        + 60f32 / 17f32 * (ctx.level - 1f32)
-        + 0.1f32 * ctx.bonus_ad
-        + 0.05f32 * ctx.ap)
+    (20f32 + 60f32 / 17f32 * (ctx.level - 1f32) + 0.1f32 * ctx.bonus_ad + 0.05f32 * ctx.ap)
         * ctx.adaptative_damage
 }
 pub const fn dark_harvest_melee(ctx: &EvalContext) -> f32 {
-    (20f32
-        + 60f32 / 17f32 * (ctx.level - 1f32)
-        + 0.1f32 * ctx.bonus_ad
-        + 0.05f32 * ctx.ap)
+    (20f32 + 60f32 / 17f32 * (ctx.level - 1f32) + 0.1f32 * ctx.bonus_ad + 0.05f32 * ctx.ap)
         * ctx.adaptative_damage
 }
 pub static DEEP_WARD_8141: CachedRune = CachedRune {
@@ -560,17 +548,11 @@ pub static ELECTROCUTE_8112: CachedRune = CachedRune {
     ranged_closure: electrocute_ranged,
 };
 pub const fn electrocute_ranged(ctx: &EvalContext) -> f32 {
-    (30f32
-        + 190f32 / 17f32 * (ctx.level - 1f32)
-        + 0.1f32 * ctx.bonus_ad
-        + 0.05f32 * ctx.ap)
+    (30f32 + 190f32 / 17f32 * (ctx.level - 1f32) + 0.1f32 * ctx.bonus_ad + 0.05f32 * ctx.ap)
         * ctx.adaptative_damage
 }
 pub const fn electrocute_melee(ctx: &EvalContext) -> f32 {
-    (30f32
-        + 190f32 / 17f32 * (ctx.level - 1f32)
-        + 0.1f32 * ctx.bonus_ad
-        + 0.05f32 * ctx.ap)
+    (30f32 + 190f32 / 17f32 * (ctx.level - 1f32) + 0.1f32 * ctx.bonus_ad + 0.05f32 * ctx.ap)
         * ctx.adaptative_damage
 }
 pub static EYEBALL_COLLECTION_8120: CachedRune = CachedRune {
@@ -904,15 +886,11 @@ pub static PREDATOR_8124: CachedRune = CachedRune {
     ranged_closure: predator_ranged,
 };
 pub const fn predator_ranged(ctx: &EvalContext) -> f32 {
-    (20f32
-        + 160f32 / 17f32 * (ctx.level - 1f32)
-        + (0.25f32 * ctx.bonus_ad + 0.15f32 * ctx.ap))
+    (20f32 + 160f32 / 17f32 * (ctx.level - 1f32) + (0.25f32 * ctx.bonus_ad + 0.15f32 * ctx.ap))
         * ctx.adaptative_damage
 }
 pub const fn predator_melee(ctx: &EvalContext) -> f32 {
-    (20f32
-        + 160f32 / 17f32 * (ctx.level - 1f32)
-        + (0.25f32 * ctx.bonus_ad + 0.15f32 * ctx.ap))
+    (20f32 + 160f32 / 17f32 * (ctx.level - 1f32) + (0.25f32 * ctx.bonus_ad + 0.15f32 * ctx.ap))
         * ctx.adaptative_damage
 }
 pub static PRESENCE_OF_MIND_8009: CachedRune = CachedRune {
@@ -1054,17 +1032,11 @@ pub static SUMMON_AERY_8214: CachedRune = CachedRune {
     ranged_closure: summon_aery_ranged,
 };
 pub const fn summon_aery_ranged(ctx: &EvalContext) -> f32 {
-    (10f32
-        + 40f32 / 17f32 * (ctx.level - 1f32)
-        + 0.1f32 * ctx.bonus_ad
-        + 0.05f32 * ctx.ap)
+    (10f32 + 40f32 / 17f32 * (ctx.level - 1f32) + 0.1f32 * ctx.bonus_ad + 0.05f32 * ctx.ap)
         * ctx.adaptative_damage
 }
 pub const fn summon_aery_melee(ctx: &EvalContext) -> f32 {
-    (10f32
-        + 40f32 / 17f32 * (ctx.level - 1f32)
-        + 0.1f32 * ctx.bonus_ad
-        + 0.05f32 * ctx.ap)
+    (10f32 + 40f32 / 17f32 * (ctx.level - 1f32) + 0.1f32 * ctx.bonus_ad + 0.05f32 * ctx.ap)
         * ctx.adaptative_damage
 }
 pub static TASTE_OF_BLOOD_8139: CachedRune = CachedRune {
@@ -1211,11 +1183,7 @@ pub static ZOMBIE_WARD_8138: CachedRune = CachedRune {
     riot_id: 8138,
     undeclared: true,
 };
-pub const fn rune_const_eval(
-    ctx: &EvalContext,
-    rune_id: RuneId,
-    attack_type: AttackType,
-) -> f32 {
+pub const fn rune_const_eval(ctx: &EvalContext, rune_id: RuneId, attack_type: AttackType) -> f32 {
     match rune_id {
         RuneId::AbilityHaste => match attack_type {
             AttackType::Melee => zero(ctx),

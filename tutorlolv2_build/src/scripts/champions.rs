@@ -394,7 +394,7 @@ pub async fn generate_champions() -> GeneratorFn {
     let mut champion_declarations = String::new();
 
     let mut champion_id_enum = format!(
-        "impl ChampionId {{
+        r#"impl ChampionId {{
             pub const unsafe fn from_u8_unchecked(id: u8) -> Self {{
                 unsafe {{ core::mem::transmute(id) }}
             }}
@@ -406,9 +406,10 @@ pub async fn generate_champions() -> GeneratorFn {
                 }}
             }}
         }}
-        #[derive(Debug, PartialEq, Ord, Eq, PartialOrd, Copy, Clone, Decode, Encode)]
-        #[repr(u8)]
-        pub enum ChampionId {{",
+        #[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
+        #[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
+        #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+        pub enum ChampionId {{"#,
     );
 
     let languages_map =
