@@ -1,9 +1,7 @@
-use super::{helpers::*, model::*};
-use crate::{AbilityLevels, L_CENM, L_MSTR, RiotFormulas, riot::*};
-use smallvec::SmallVec;
+use crate::{AbilityLevels, L_MSTR, helpers::*, model::*, riot::*, *};
 use tutorlolv2_gen::{
     AdaptativeType, AttackType, CHAMPION_CACHE, CachedItem, ChampionId, ITEM_CACHE, ItemId,
-    ItemsBitSet, NUMBER_OF_ITEMS, RuneId,
+    NUMBER_OF_ITEMS, RuneId,
 };
 use tutorlolv2_types::StatName;
 
@@ -443,7 +441,7 @@ pub const fn assign_item_exceptions(data: ItemExceptionData, exceptions: &[Value
 /// current player and the enemy players, returning a new struct containing the calculated
 /// damages against several entities. This function is generally safe to use, but it assumes
 /// that the received struct [`InputGame`] is valid. There's no undefined behavior checks.
-pub fn calculator(game: InputGame) -> Option<OutputGame> {
+pub fn calculator(game: InputGame) -> OutputGame {
     let InputGame {
         active_player:
             InputActivePlayer {
@@ -462,23 +460,21 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
                         item_exceptions,
                     },
             },
-        enemy_players,
         dragons,
+        enemy_players,
     } = game;
 
+    let champion_raw_stats = Stats::from_i32(&champion_raw_stats_i32);
     let mut modifiers = Modifiers::default();
-    let enemy_earth_dragons = dragons.enemy_earth_dragons;
-    let champion_raw_stats: Stats<f32> = champion_raw_stats_i32.into();
 
-    let current_player_cache =
-        unsafe { CHAMPION_CACHE.get_unchecked(current_player_champion_id as usize) };
+    let current_player_cache = CHAMPION_CACHE[current_player_champion_id as usize];
 
     let current_player_base_stats =
         BasicStats::base_stats(current_player_champion_id, level, is_mega_gnar);
 
     let mut champion_stats = match infer_stats {
-        true => champion_raw_stats,
-        false => get_item_bonus_stats(&current_player_raw_items, &mut modifiers, dragons),
+        true => get_item_bonus_stats(&current_player_raw_items, &mut modifiers, dragons),
+        false => champion_raw_stats,
     };
 
     let mut current_player_bonus_stats = bonus_stats!(
@@ -491,11 +487,13 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
         }
     );
 
-    let adaptative_type = RiotFormulas::adaptative_type(
+    let adaptative_type = match RiotFormulas::adaptative_type(
         current_player_bonus_stats.attack_damage,
         champion_stats.ability_power,
-    )
-    .unwrap_or(current_player_cache.adaptative_type);
+    ) {
+        Some(data) => data,
+        None => current_player_cache.adaptative_type,
+    };
 
     let attack_type = current_player_cache.attack_type;
 
@@ -526,28 +524,20 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
         &item_exceptions,
     );
 
+    let shred = ResistShred::new(&champion_stats);
+    let tower_damages = get_tower_damages(
+        adaptative_type,
+        current_player_base_stats.attack_damage,
+        current_player_bonus_stats.attack_damage,
+        champion_stats.ability_power,
+        shred,
+    );
+
     let current_player_runes = get_damaging_runes(&current_player_raw_runes);
     let current_player_items = get_damaging_items(&current_player_raw_items);
-    let (items_data, items_to_merge) = get_items_data(&current_player_items, attack_type);
-
-    let eval_data = DamageEvalData {
-        abilities: ConstDamageKind {
-            metadata: current_player_cache.metadata,
-            closures: current_player_cache.closures,
-        },
-        items: items_data,
-        runes: get_runes_data(&current_player_runes, attack_type),
-    };
-
-    let shred = ResistShred {
-        armor_penetration_flat: champion_stats.armor_penetration_flat,
-        armor_penetration_percent: 1.0 - champion_stats.armor_penetration_percent / 100.0,
-        magic_penetration_flat: champion_stats.magic_penetration_flat,
-        magic_penetration_percent: 1.0 - champion_stats.magic_penetration_percent / 100.0,
-    };
 
     let self_state = SelfState {
-        current_stats: champion_stats.into(),
+        current_stats: champion_stats,
         bonus_stats: current_player_bonus_stats,
         base_stats: current_player_base_stats,
         adaptative_type,
@@ -555,27 +545,75 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
         level,
     };
 
-    let enemies = enemy_players
+    // Everything up to this point was const-evaluable. The functions below require
+    // heap allocation, therefore they're not constant qualified
+
+    let eval_data = DamageEvalData {
+        abilities: StaticDamageKind {
+            metadata: current_player_cache.metadata,
+            closures: current_player_cache.closures,
+        },
+        items: get_items_data(&current_player_items, attack_type),
+        runes: get_runes_data(&current_player_runes, attack_type),
+    };
+
+    let monster_damages = get_monster_damages(&self_state, &eval_data, shred);
+    let enemies = get_calculator_enemies(
+        enemy_players,
+        &self_state,
+        &eval_data,
+        modifiers,
+        shred,
+        game.dragons.enemy_earth_dragons,
+    );
+
+    OutputGame {
+        current_player: OutputCurrentPlayer {
+            base_stats: BasicStats::from_f32(&current_player_base_stats),
+            bonus_stats: BasicStats::from_f32(&current_player_bonus_stats),
+            current_stats: Stats::from_f32(&champion_stats),
+            champion_id: current_player_champion_id,
+            adaptative_type,
+            level,
+        },
+        abilities_to_merge: current_player_cache.merge_data,
+        abilities_meta: eval_data.abilities.metadata,
+        items_meta: eval_data.items.metadata,
+        runes_meta: eval_data.runes.metadata,
+        monster_damages,
+        tower_damages,
+        enemies,
+    }
+}
+
+pub fn get_calculator_enemies(
+    enemy_players: Box<[InputMinData<SimpleStats<i32>>]>,
+    self_state: &SelfState,
+    eval_data: &DamageEvalData,
+    modifiers: Modifiers,
+    shred: ResistShred,
+    enemy_earth_dragons: u16,
+) -> Box<[OutputEnemy]> {
+    enemy_players
         .into_iter()
         .map(|player| {
             let InputMinData {
                 infer_stats: e_infer_stats,
-                items: e_raw_items,
+                items: e_items,
                 stacks: e_stacks,
-                stats: e_raw_stats,
+                stats: e_raw_stats_i32,
                 level: e_level,
                 champion_id: e_champion_id,
                 is_mega_gnar: e_is_mega_gnar,
                 item_exceptions: e_item_exceptions,
             } = player;
 
-            let e_stats: SimpleStats<f32> = e_raw_stats.into();
-            let e_items = get_damaging_items(&e_raw_items);
+            let e_stats = SimpleStats::from_i32(&e_raw_stats_i32);
             let e_base_stats = SimpleStats::base_stats(e_champion_id, e_level, e_is_mega_gnar);
             let mut full_state = get_enemy_state(
                 EnemyState {
                     base_stats: e_base_stats,
-                    items: e_items,
+                    items: &e_items,
                     stacks: e_stacks,
                     champion_id: e_champion_id,
                     level: e_level,
@@ -590,7 +628,7 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
                 full_state.current_stats = e_stats;
             }
 
-            let eval_ctx = get_eval_ctx(&self_state, &full_state);
+            let eval_ctx = get_eval_ctx(self_state, &full_state);
 
             let modifiers = Modifiers {
                 damages: DamageModifiers {
@@ -606,87 +644,20 @@ pub fn calculator(game: InputGame) -> Option<OutputGame> {
                 ..modifiers
             };
 
-            let damages = get_damages(&eval_ctx, &eval_data, modifiers);
+            // Everything const up to this point
+
+            let damages = get_damages(&eval_ctx, eval_data, modifiers);
 
             OutputEnemy {
+                current_stats: SimpleStats::from_f32(&full_state.current_stats),
+                bonus_stats: SimpleStats::from_f32(&full_state.bonus_stats),
+                base_stats: SimpleStats::from_f32(&e_base_stats),
+                real_magic_resist: full_state.magic_values.real as _,
+                real_armor: full_state.armor_values.real as _,
                 champion_id: e_champion_id,
-                damages,
-                base_stats: e_base_stats.into(),
-                bonus_stats: full_state.bonus_stats.into(),
-                current_stats: full_state.current_stats.into(),
-                real_armor: full_state.armor_values.real as i32,
-                real_magic_resist: full_state.magic_values.real as i32,
                 level: e_level,
+                damages,
             }
         })
-        .collect::<SmallVec<[OutputEnemy; L_CENM]>>();
-
-    let monster_damages = core::array::from_fn(|i| {
-        let (armor, magic_resist) = MONSTER_RESISTS[i];
-        let full_state = get_enemy_state(
-            EnemyState {
-                base_stats: SimpleStats::<f32> {
-                    armor,
-                    health: 1.0,
-                    magic_resist,
-                },
-                items: ItemsBitSet::EMPTY,
-                stacks: 0,
-                champion_id: ChampionId::Aatrox,
-                level: 0,
-                earth_dragons: 0,
-                item_exceptions: &[],
-            },
-            shred,
-            true,
-        );
-        let eval_ctx = get_eval_ctx(&self_state, &full_state);
-        let damages = get_damages(&eval_ctx, &eval_data, Modifiers::default());
-        MonsterDamage {
-            attacks: damages.attacks,
-            abilities: damages.abilities,
-            items: damages.items,
-        }
-    });
-
-    let tower_damage_formula = |plates, pen_percent, pen_flat| {
-        (current_player_base_stats.attack_damage
-            + current_player_bonus_stats.attack_damage
-            + champion_stats.ability_power
-                * 0.6
-                * (100.0 / (140.0 + (-25.0 + 50.0 * plates) * pen_percent - pen_flat)))
-            as i32
-    };
-
-    let tower_damages = core::array::from_fn(|i| match adaptative_type {
-        AdaptativeType::Physical => tower_damage_formula(
-            i as f32,
-            champion_stats.armor_penetration_percent,
-            champion_stats.armor_penetration_flat,
-        ),
-        AdaptativeType::Magic => tower_damage_formula(
-            i as f32,
-            champion_stats.magic_penetration_percent,
-            champion_stats.magic_penetration_flat,
-        ),
-    });
-
-    Some(OutputGame {
-        current_player: OutputCurrentPlayer {
-            base_stats: current_player_base_stats.into(),
-            bonus_stats: current_player_bonus_stats.into(),
-            current_stats: champion_stats.into(),
-            level,
-            adaptative_type,
-            champion_id: current_player_champion_id,
-        },
-        enemies,
-        abilities_meta: eval_data.abilities.metadata,
-        items_meta: eval_data.items.metadata,
-        runes_meta: eval_data.runes.metadata,
-        abilities_to_merge: current_player_cache.merge_data,
-        items_to_merge,
-        monster_damages,
-        tower_damages,
-    })
+        .collect::<Box<[OutputEnemy]>>()
 }

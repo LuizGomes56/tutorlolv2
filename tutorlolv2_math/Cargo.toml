@@ -6,8 +6,9 @@ edition = "2024"
 [dependencies]
 tutorlolv2_types = { workspace = true }
 tutorlolv2_gen = { workspace = true }
-
-smallvec = { version = "1.15.1", features = ["serde", "impl_bincode"] }
 bincode = "2.0.1"
 serde = { version = "1.0", features = ["derive"] }
 const_sized_bit_set = "0.3.0"
+
+[dev-dependencies]
+serde_json = "1.0.145"

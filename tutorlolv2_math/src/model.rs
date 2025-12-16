@@ -1,8 +1,7 @@
 use crate::*;
 use bincode::{Decode, Encode};
-use smallvec::SmallVec;
 use tutorlolv2_gen::{
-    AdaptativeType, ChampionId, ConstClosure, GameMap, ItemId, ItemsBitSet, NUMBER_OF_ITEMS,
+    AdaptativeType, Attrs, ChampionId, ConstClosure, DamageType, GameMap, ItemId, NUMBER_OF_ITEMS,
     NUMBER_OF_RUNES, Position, RuneId, TypeMetadata,
 };
 use tutorlolv2_types::AbilityId;
@@ -10,7 +9,7 @@ use tutorlolv2_types::AbilityId;
 /// Enum that defines the team of some player.
 /// - `CHAOS` is converted to [`Team::Red`],
 /// - `ORDER` and any other variant matches [`Team::Blue`]
-#[derive(Encode, PartialEq, Clone, Copy)]
+#[derive(Clone, Copy, Debug, Encode, PartialEq)]
 pub enum Team {
     Blue,
     Red,
@@ -25,15 +24,29 @@ impl From<&str> for Team {
     }
 }
 
-#[derive(Encode, Default)]
+#[derive(Clone, Copy, Debug, Encode)]
 pub struct RangeDamage {
     pub minimum_damage: i32,
     pub maximum_damage: i32,
 }
 
+impl RangeDamage {
+    pub const fn inc_attr(&mut self, attr: Attrs, damage: i32) {
+        match attr {
+            Attrs::OnhitMin => self.minimum_damage += damage,
+            Attrs::OnhitMax => self.maximum_damage += damage,
+            Attrs::Onhit => {
+                self.minimum_damage += damage;
+                self.maximum_damage += damage;
+            }
+            _ => {}
+        };
+    }
+}
+
 /// Struct holding the core champion stats of a player, where `T` is a
 /// numeric type
-#[derive(Encode, Clone, Copy)]
+#[derive(Clone, Copy, Debug, Encode)]
 pub struct BasicStats<T> {
     pub armor: T,
     pub health: T,
@@ -43,7 +56,7 @@ pub struct BasicStats<T> {
 }
 
 /// Holds the damage of the basic attack, critical strike damage, and onhits
-#[derive(Encode)]
+#[derive(Clone, Copy, Debug, Encode)]
 pub struct Attacks {
     /// Damage of the basic attack hit
     pub basic_attack: i32,
@@ -60,7 +73,8 @@ pub struct Attacks {
 /// the current champion is only known at runtime, but since the application knowns
 /// all the possible champion's data at compile-time, the length of both metadata
 /// and closures is known and lives forever, unlike the ones in variant [`DamageKind`]
-pub struct ConstDamageKind<T: 'static> {
+#[derive(Debug)]
+pub struct StaticDamageKind<T: 'static> {
     pub metadata: &'static [TypeMetadata<T>],
     pub closures: &'static [ConstClosure],
 }
@@ -68,15 +82,16 @@ pub struct ConstDamageKind<T: 'static> {
 /// Runtime-known values that depend on how many damaging items or runes the
 /// current player has. Holds the metadata and closures of the given `T` parameter.
 /// See [`TypeMetadata`] and [`ConstClosure`] for more details
-pub struct DamageKind<const N: usize, T> {
+#[derive(Debug)]
+pub struct DamageKind<T> {
     /// Vector of the [`TypeMetadata`] of either [`ItemId`] or [`RuneId`]
     /// Order is not guaranteed and none of these values are knonwn at compile time
     /// since they depend on how many damaging items the current player has
-    pub metadata: SmallVec<[TypeMetadata<T>; N]>,
+    pub metadata: Box<[TypeMetadata<T>]>,
     /// Vector of closures of some [`ItemId`] or [`RuneId`], defined by the generic
     /// parameter `T`. See [`ConstClosure`] to learn more of how to evaluate these
     /// functions, and what they return
-    pub closures: SmallVec<[ConstClosure; N]>,
+    pub closures: Box<[ConstClosure]>,
 }
 
 /// Contains all the results from function [`realtime::realtime`] that could be extracted
@@ -87,31 +102,38 @@ pub struct DamageKind<const N: usize, T> {
 /// the size of this struct is often larger than `70 KB`, and it is created every
 /// second, while part of its fields live in the caller function, which is why it
 /// has lifetime annotations.
-#[derive(Encode)]
+#[derive(Debug, Encode)]
 pub struct Realtime<'a> {
     /// Contains the information about the current player
     pub current_player: CurrentPlayer<'a>,
+
     /// Holds the recovered information about each enemy in the opposing team. including
     /// how much damage they will take for each item, rune, or ability of the current player
-    pub enemies: SmallVec<[Enemy<'a>; L_TEAM]>,
+    pub enemies: Box<[Enemy<'a>]>,
+
     /// The game's scoreboard. Contains meaningful information about each champion
     /// in both teams, including the current player. This data is not guaranteed
     /// to be ordered based on team. Sorting this vector has to be done by the caller
-    pub scoreboard: SmallVec<[Scoreboard<'a>; L_PLYR]>,
+    pub scoreboard: Box<[Scoreboard<'a>]>,
+
     /// Constant array of the [`TypeMetadata<AbilityId>`] of all abilities of the
     /// current champion. Note that this value lives at the static variable
     /// [`tutorlolv2_gen::CHAMPION_CACHE`] at the index [`ChampionId`] when casting
     /// this enum to type [`usize`]
     pub abilities_meta: &'static [TypeMetadata<AbilityId>],
+
     /// Vector of the [`TypeMetadata<ItemId>`] of all damaging items the player had
-    pub items_meta: SmallVec<[TypeMetadata<ItemId>; L_ITEM]>,
+    pub items_meta: Box<[TypeMetadata<ItemId>]>,
+
     /// Vector of the [`TypeMetadata<RuneId>`] of all damaging runes the player had
-    pub runes_meta: SmallVec<[TypeMetadata<RuneId>; L_RUNE]>,
+    pub runes_meta: Box<[TypeMetadata<RuneId>]>,
+
     /// Constant array containing the [`TypeMetadata<ItemId>`] of all items that
     /// were chosen to have their damages compared among each other, to determine
     /// which one is mathematically besst to buy next. Note that this value lives
     /// at the constant [`SIMULATED_ITEMS_METADATA`]
     pub siml_meta: [TypeMetadata<ItemId>; L_SIML],
+
     /// Constant array of tuples that determines which abilities should
     /// be displayed in a single cell, in the format `{min} - {max}`. Doing it
     /// this way allow that when summing up the damage of each ability, the user
@@ -119,23 +141,20 @@ pub struct Realtime<'a> {
     /// of some ability, the maximum damage, or both, while maintaining the table
     /// display in a very deterministic format
     pub abilities_to_merge: &'static [(usize, usize)],
-    /// A vector of tuples that tells which items should have their damages
-    /// merged in a single table-cell, creating the display format as
-    /// `{minimum_damage} - {maximum_damage}`. The tuple [`(usize, usize)`]
-    /// defines the indexes in the field `items_meta`, where the first item in
-    /// the tuple is the `minimum_damage` and the other one is the `maximum_damage`
-    pub items_to_merge: SmallVec<[(usize, usize); L_ITEM]>,
+
     /// Game time in seconds
     pub game_time: u32,
+
     /// Level of each ability of the current player
     pub ability_levels: AbilityLevels,
+
     /// Contains which dragons were associated, and to which team.
     /// Only `Earth`, `Fire` and `Chemtech` dragons are considered,
     /// since the others doesn't give any damage-related bonus
     pub dragons: Dragons,
 }
 
-#[derive(Encode)]
+#[derive(Debug, Encode)]
 pub struct Scoreboard<'a> {
     pub riot_id: &'a str,
     pub assists: u8,
@@ -147,7 +166,7 @@ pub struct Scoreboard<'a> {
     pub team: Team,
 }
 
-#[derive(Encode)]
+#[derive(Debug, Encode)]
 pub struct CurrentPlayer<'a> {
     pub riot_id: &'a str,
     pub base_stats: BasicStats<i32>,
@@ -164,7 +183,7 @@ pub struct CurrentPlayer<'a> {
 
 /// Struct that holds the values that can reduce the enemie's armor or
 /// magic resistence benefits
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Debug)]
 pub struct ResistShred {
     pub armor_penetration_flat: f32,
     pub armor_penetration_percent: f32,
@@ -172,21 +191,43 @@ pub struct ResistShred {
     pub magic_penetration_percent: f32,
 }
 
+impl ResistShred {
+    /// Creates a [`ResistShred`] struct from the current player stats. This API
+    /// uses percent penetration as a value in range `[0.0, 100.0]`. Values over
+    /// `100.0` will be clamped
+    pub const fn new(stats: &Stats<f32>) -> Self {
+        let Stats {
+            armor_penetration_flat,
+            armor_penetration_percent,
+            magic_penetration_flat,
+            magic_penetration_percent,
+            ..
+        } = *stats;
+        Self {
+            armor_penetration_flat: armor_penetration_flat,
+            armor_penetration_percent: armor_penetration_percent.clamp(0.0, 100.0),
+            magic_penetration_flat: magic_penetration_flat,
+            magic_penetration_percent: magic_penetration_percent.clamp(0.0, 100.0),
+        }
+    }
+}
+
+#[derive(Debug)]
 pub struct EnemyState<'a> {
     pub base_stats: SimpleStats<f32>,
-    pub items: ItemsBitSet,
+    pub items: &'a [ItemId],
     pub stacks: u32,
     pub champion_id: ChampionId,
     pub earth_dragons: u16,
     pub level: u8,
     pub item_exceptions: &'a [ValueException],
-    // _padding: u32,
+    // _padding: u32
 }
 
 /// Defines the state of the current player, that will be used
 /// to calculate the final necessary evaluation data of the enemy
 /// player. This struct should be the same used for all champions
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Debug)]
 pub struct SelfState {
     pub ability_levels: AbilityLevels,
     pub current_stats: Stats<f32>,
@@ -200,6 +241,7 @@ pub struct SelfState {
 /// Holds the intermediary data of some enemy champion, including fields
 /// necessary to have a more precise calculation of the damage against this
 /// target. Each enemy champion should have their own instance of this struct
+#[derive(Debug)]
 pub struct EnemyFullState {
     pub current_stats: SimpleStats<f32>,
     pub bonus_stats: SimpleStats<f32>,
@@ -217,20 +259,21 @@ pub struct EnemyFullState {
 /// [`BasicStats`], but without the `attack_damage` and `mana` fields,
 /// which are fields that do not quantify any damage reduction the enemy
 /// champion may take. Generic parameter `T` is supposed to be a numeric type
-#[derive(Encode, Decode, Clone, Copy)]
+#[derive(Clone, Copy, Debug, Decode, Encode)]
 pub struct SimpleStats<T> {
     pub armor: T,
     pub health: T,
     pub magic_resist: T,
 }
 
+#[derive(Debug)]
 pub struct DamageEvalData {
-    pub abilities: ConstDamageKind<AbilityId>,
-    pub items: DamageKind<L_ITEM, ItemId>,
-    pub runes: DamageKind<L_RUNE, RuneId>,
+    pub abilities: StaticDamageKind<AbilityId>,
+    pub items: DamageKind<ItemId>,
+    pub runes: DamageKind<RuneId>,
 }
 
-#[derive(Encode)]
+#[derive(Debug, Encode)]
 pub struct Enemy<'a> {
     pub riot_id: &'a str,
     pub damages: Damages,
@@ -246,18 +289,18 @@ pub struct Enemy<'a> {
     pub position: Position,
 }
 
-#[derive(Encode)]
+#[derive(Clone, Debug, Encode)]
 pub struct Damages {
     pub attacks: Attacks,
-    pub abilities: SmallVec<[i32; L_ABLT]>,
-    pub items: SmallVec<[i32; L_ITEM]>,
-    pub runes: SmallVec<[i32; L_RUNE]>,
+    pub abilities: Box<[i32]>,
+    pub items: Box<[i32]>,
+    pub runes: Box<[i32]>,
 }
 
 /// Wrapper around the type [`u32`], whose first [`Self::DISC_BITS`] are used to
 /// identify the enum type of the current value, which is either [`ItemId`] or [`RuneId`],
 /// and the remaining [`Self::VAL_BITS`] are used to store the actual number of stacks held
-#[derive(Decode, Copy, Clone)]
+#[derive(Clone, Copy, Debug, Decode)]
 #[repr(transparent)]
 pub struct ValueException(u32);
 
@@ -315,7 +358,7 @@ impl ValueException {
 }
 
 /// Holds the number of dragons and their types, associated to the ally or enemy team.
-#[derive(Encode, Decode, Copy, Clone)]
+#[derive(Clone, Copy, Debug, Decode, Encode)]
 pub struct Dragons {
     pub ally_fire_dragons: u16,
     pub ally_earth_dragons: u16,
@@ -323,17 +366,17 @@ pub struct Dragons {
     pub enemy_earth_dragons: u16,
 }
 
-#[derive(Decode)]
+#[derive(Clone, Debug, Decode)]
 pub struct InputGame {
     pub active_player: InputActivePlayer,
-    pub enemy_players: SmallVec<[InputMinData<SimpleStats<i32>>; L_CENM]>,
+    pub enemy_players: Box<[InputMinData<SimpleStats<i32>>]>,
     pub dragons: Dragons,
 }
 
-#[derive(Decode)]
+#[derive(Clone, Debug, Decode)]
 pub struct InputActivePlayer {
-    pub runes: SmallVec<[RuneId; L_RUNE]>,
-    pub rune_exceptions: SmallVec<[ValueException; L_RUNE]>,
+    pub runes: Box<[RuneId]>,
+    pub rune_exceptions: Box<[ValueException]>,
     pub abilities: AbilityLevels,
     pub data: InputMinData<Stats<i32>>,
 }
@@ -345,11 +388,11 @@ pub struct InputActivePlayer {
 /// have effect if field `champion_id` is also of type [`ChampionId::Gnar`].
 /// Field `stacks` is useless if the associated champion does not have any special
 /// characteristics that are related to stack-scaling
-#[derive(Decode)]
+#[derive(Clone, Debug, Decode)]
 pub struct InputMinData<T> {
     pub stats: T,
-    pub items: SmallVec<[ItemId; L_ITEM]>,
-    pub item_exceptions: SmallVec<[ValueException; L_ITEM]>,
+    pub items: Box<[ItemId]>,
+    pub item_exceptions: Box<[ValueException]>,
     pub stacks: u32,
     pub level: u8,
     pub infer_stats: bool,
@@ -358,7 +401,7 @@ pub struct InputMinData<T> {
 }
 
 /// Returned data by the function [`calculator::calculator`]
-#[derive(Encode)]
+#[derive(Clone, Debug, Encode)]
 pub struct OutputEnemy {
     pub damages: Damages,
     pub base_stats: SimpleStats<i32>,
@@ -374,7 +417,7 @@ pub struct OutputEnemy {
 /// damage types, defined by the metadata [`tutorlolv2_gen::DamageType`]. Note
 /// that the value `1.0` means no modifiers, and `global_mod` is applied regardless
 /// of the damage type provided
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Debug)]
 pub struct DamageModifiers {
     pub physical_mod: f32,
     pub magic_mod: f32,
@@ -382,7 +425,19 @@ pub struct DamageModifiers {
     pub global_mod: f32,
 }
 
-#[derive(Clone, Copy)]
+impl DamageModifiers {
+    pub const fn modifier(&self, damage_type: DamageType) -> f32 {
+        self.global_mod
+            * match damage_type {
+                DamageType::Physical => self.physical_mod,
+                DamageType::Magic => self.magic_mod,
+                DamageType::True => self.true_mod,
+                _ => 1.0,
+            }
+    }
+}
+
+#[derive(Clone, Copy, Debug)]
 pub struct Modifiers {
     pub damages: DamageModifiers,
     pub abilities: AbilityModifiers,
@@ -391,7 +446,7 @@ pub struct Modifiers {
 /// Holds float values that will be multiplied by the damages of each ability
 /// depending on their letters, which can be obtained through the method
 /// [`AbilityId::as_char`] with simple branching. Values of `1.0` mean no modifiers
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Debug)]
 pub struct AbilityModifiers {
     pub q: f32,
     pub w: f32,
@@ -399,7 +454,7 @@ pub struct AbilityModifiers {
     pub r: f32,
 }
 
-#[derive(Encode)]
+#[derive(Debug, Encode)]
 pub struct OutputCurrentPlayer {
     pub current_stats: Stats<i32>,
     pub base_stats: BasicStats<i32>,
@@ -409,24 +464,23 @@ pub struct OutputCurrentPlayer {
     pub champion_id: ChampionId,
 }
 
-#[derive(Encode)]
+#[derive(Debug, Encode)]
 pub struct MonsterDamage {
     pub attacks: Attacks,
-    pub abilities: SmallVec<[i32; L_ABLT]>,
-    pub items: SmallVec<[i32; L_ITEM]>,
+    pub abilities: Box<[i32]>,
+    pub items: Box<[i32]>,
 }
 
-#[derive(Encode)]
+#[derive(Debug, Encode)]
 pub struct OutputGame {
     pub monster_damages: [MonsterDamage; L_MSTR],
     pub current_player: OutputCurrentPlayer,
-    pub enemies: SmallVec<[OutputEnemy; L_CENM]>,
+    pub enemies: Box<[OutputEnemy]>,
     pub tower_damages: [i32; L_TWRD],
     pub abilities_meta: &'static [TypeMetadata<AbilityId>],
     pub abilities_to_merge: &'static [(usize, usize)],
-    pub items_to_merge: SmallVec<[(usize, usize); L_ITEM]>,
-    pub items_meta: SmallVec<[TypeMetadata<ItemId>; L_ITEM]>,
-    pub runes_meta: SmallVec<[TypeMetadata<RuneId>; L_RUNE]>,
+    pub items_meta: Box<[TypeMetadata<ItemId>]>,
+    pub runes_meta: Box<[TypeMetadata<RuneId>]>,
 }
 
 /// Implements traits From<T<f32>> and From<T<i32>> for some struct
@@ -434,19 +488,43 @@ pub struct OutputGame {
 /// deterministic castings from between [`f32`] and [`i32`]
 macro_rules! impl_cast_from {
     ($stru:ident, $($fields:ident),*) => {
-        impl From<$stru<f32>> for $stru<i32> {
-            fn from(value: $stru<f32>) -> Self {
+        impl $stru<f32> {
+            pub const fn from_i32(value: &$stru<i32>) -> Self {
+                $stru {
+                    $($fields: value.$fields as f32),*
+                }
+            }
+        }
+
+        impl $stru<i32> {
+            pub const fn from_f32(value: &$stru<f32>) -> Self {
                 $stru {
                     $($fields: value.$fields as i32),*
                 }
             }
         }
 
+        impl From<$stru<f32>> for $stru<i32> {
+            fn from(value: $stru<f32>) -> Self {
+                $stru::from_f32(&value)
+            }
+        }
+
         impl From<$stru<i32>> for $stru<f32> {
             fn from(value: $stru<i32>) -> Self {
-                $stru {
-                    $($fields: value.$fields as f32),*
-                }
+                $stru::from_i32(&value)
+            }
+        }
+
+        impl From<&$stru<f32>> for $stru<i32> {
+            fn from(value: &$stru<f32>) -> Self {
+                $stru::from_f32(value)
+            }
+        }
+
+        impl From<&$stru<i32>> for $stru<f32> {
+            fn from(value: &$stru<i32>) -> Self {
+                $stru::from_i32(value)
             }
         }
     };
@@ -502,3 +580,4 @@ impl_default!(DamageModifiers, 1.0f32, f32);
 impl_default!(AbilityModifiers, 1.0f32, f32);
 impl_default!(Modifiers, 1.0f32, f32);
 impl_default!(Dragons, 0u8, u8);
+impl_default!(RangeDamage, 0i32, i32);

@@ -8,8 +8,12 @@ use crate::{
 
 struct DeclaredItem {
     metadata: String,
-    range_closure: String,
-    melee_closure: String,
+    ranged_closures: String,
+    melee_closures: String,
+    constfn_declaration: String,
+    melee_fn_names: String,
+    ranged_fn_names: String,
+    match_arm: String,
 }
 
 fn declare_item(item: &Item) -> DeclaredItem {
@@ -23,6 +27,7 @@ fn declare_item(item: &Item) -> DeclaredItem {
     } = item;
 
     let name = name.pascal_case();
+    let name_ssnake = name.to_ssnake();
 
     let metadata = format!(
         "TypeMetadata {{ 
@@ -32,34 +37,71 @@ fn declare_item(item: &Item) -> DeclaredItem {
         }}"
     );
 
-    let assign_value = |expr: &str| {
-        (!(expr.is_empty() || expr == "zero")).then_some({
+    let mut constfn_declaration = String::new();
+
+    let get_constfn_closure = |expr: &str| {
+        (!expr.is_empty() && expr != "zero").then_some({
             let new_expr = expr.as_closure().add_f32s();
             let ctx_param = new_expr.ctx_param();
             let body = new_expr.to_lowercase();
-            format!("|{ctx_param}| {body}")
+            let closure = format!("|{ctx_param}| {body}");
+            move |fn_name: &str| {
+                (
+                    format!("pub const fn {fn_name}(ctx: &EvalContext) -> f32 {{ {body} }}"),
+                    closure,
+                )
+            }
         })
     };
 
-    let make_closure = |damage_object: &DamageObject| {
-        let mut closures = Vec::new();
-        if let Some(min) = assign_value(&damage_object.minimum_damage) {
-            closures.push(min);
-        };
-        if let Some(max) = assign_value(&damage_object.maximum_damage) {
-            closures.push(max);
-        };
-        let data = closures.join(",");
-        format!("&[{data}]")
+    let mut melee_fn_names = Vec::new();
+    let mut ranged_fn_names = Vec::new();
+
+    let mut get_closure = |obj: &DamageObject, fn_vec: &mut Vec<_>, tag| {
+        let values = [&obj.minimum_damage, &obj.maximum_damage];
+        let dtypes = ["min", "max"];
+        std::array::from_fn::<_, 2, _>(|i| {
+            let (fn_name, closure) = match get_constfn_closure(values[i]) {
+                Some(f) => {
+                    let dtype = dtypes[i];
+                    let fn_name = format!("{name_ssnake}_{tag}_{dtype}").to_lowercase();
+                    let (constfn, closure) = f(&fn_name);
+                    constfn_declaration.push_str(&constfn);
+                    (fn_name, closure)
+                }
+                None => ("zero".into(), "zero".into()),
+            };
+            fn_vec.push(fn_name);
+            closure
+        })
     };
 
-    let range_closure = make_closure(&ranged);
-    let melee_closure = make_closure(&melee);
+    let ranged_closures = get_closure(&ranged, &mut ranged_fn_names, "ranged").join(",");
+    let melee_closures = get_closure(&melee, &mut melee_fn_names, "melee").join(",");
+
+    let get_fn_call = |names: &[String]| {
+        names
+            .iter()
+            .map(|fn_name| format!("{fn_name}(ctx)"))
+            .collect::<Vec<_>>()
+            .join(",")
+    };
+
+    let match_arm = format!(
+        "AttackType::Melee => [{melee_fn_calls}],
+        AttackType::Ranged => [{ranged_fn_calls}]",
+        melee_fn_calls = get_fn_call(&melee_fn_names),
+        ranged_fn_calls = get_fn_call(&ranged_fn_names),
+    );
 
     DeclaredItem {
         metadata,
-        range_closure,
-        melee_closure,
+        match_arm,
+        ranged_closures,
+        melee_closures,
+        melee_fn_names: melee_fn_names.join(","),
+        ranged_fn_names: ranged_fn_names.join(","),
+        constfn_declaration,
     }
 }
 
@@ -128,12 +170,13 @@ pub fn format_stats(stats: &ItemStats) -> String {
 pub async fn generate_items() -> GeneratorFn {
     struct ItemResult {
         riot_id: usize,
-        formula: String,
-        declaration: String,
+        html_declaration: String,
+        base_declaration: String,
         name: String,
         name_ssnake: String,
         name_pascal: String,
         generator: String,
+        match_arm: String,
     }
 
     let mut data = parallel_task(
@@ -142,17 +185,27 @@ pub async fn generate_items() -> GeneratorFn {
         async |file_name, item: Item| {
             println!("[build] ItemId({file_name:?})");
 
+            let DeclaredItem {
+                metadata,
+                match_arm,
+                ranged_closures,
+                melee_closures,
+                melee_fn_names,
+                ranged_fn_names,
+                constfn_declaration,
+            } = declare_item(&item);
+
             let Item {
                 riot_id,
-                ref name,
-                ref prettified_stats,
+                name,
+                prettified_stats,
                 tier,
                 price,
                 purchasable,
-                ref damage_type,
-                ref stats,
-                ref ranged,
-                ref melee,
+                damage_type,
+                stats,
+                ranged,
+                melee,
                 attributes,
             } = item;
 
@@ -164,15 +217,8 @@ pub async fn generate_items() -> GeneratorFn {
                 .collect::<Vec<_>>()
                 .join(",");
 
-            let DeclaredItem {
-                metadata,
-                range_closure,
-                melee_closure,
-            } = declare_item(&item);
-
             let stats = format_stats(&stats);
-            let is_simulated = tier >= 3 && price > 0 && purchasable;
-            let is_damaging = {
+            let deals_damage = {
                 let is_zeroed = |expr: &str| expr != "zero" && !expr.is_empty();
                 is_zeroed(&ranged.minimum_damage)
                     || is_zeroed(&ranged.maximum_damage)
@@ -180,33 +226,49 @@ pub async fn generate_items() -> GeneratorFn {
                     || is_zeroed(&melee.maximum_damage)
             };
 
-            let declaration = format!(
+            let mut base_declaration = format!(
                 "pub static {name_ssnake}_{riot_id}: CachedItem = CachedItem {{
-                    gold: {price},
+                    price: {price},
                     prettified_stats: &[{prettified_stats}],
                     damage_type: DamageType::{damage_type},
                     attributes: Attrs::{attributes:?},
                     metadata: {metadata},
-                    range_closure: {range_closure},
-                    melee_closure: {melee_closure},
                     stats: CachedItemStats {{ {stats} }},
-                    is_simulated: {is_simulated},
-                    is_damaging: {is_damaging},
-                    riot_id: {riot_id},
-                }};"
+                    purchasable: {purchasable},
+                    deals_damage: {deals_damage},
+                    tier: {tier},
+                    riot_id: {riot_id},"
             );
+
+            let html_declaration = format!(
+                "{base_declaration}
+                ranged_closure: [{ranged_closures}],
+                melee_closure: [{melee_closures}], }};"
+            )
+            .rust_fmt()
+            .drop_f32s()
+            .rust_html()
+            .as_const();
+
+            base_declaration.push_str(&format!(
+                "ranged_closure: [{ranged_fn_names}],
+                melee_closure: [{melee_fn_names}], }};"
+            ));
+
+            base_declaration.push_str(&constfn_declaration);
 
             let generator =
                 CwdPath::get_generator(SrcFolder::Items, name_ssnake.to_lowercase()).await?;
 
             Ok(ItemResult {
                 riot_id,
-                formula: declaration.rust_fmt(70).drop_f32s().rust_html().as_const(),
-                declaration,
+                match_arm,
+                html_declaration,
+                base_declaration,
                 generator,
                 name_ssnake,
                 name_pascal,
-                name: item.name,
+                name,
             })
         },
         async |futures| {
@@ -250,25 +312,45 @@ pub async fn generate_items() -> GeneratorFn {
 
     let mut item_id_enum_match_arms = Vec::new();
     let mut item_id_enum_fields = Vec::new();
+    let mut const_match_arms = String::new();
 
     for ItemResult {
         riot_id,
-        formula,
-        declaration,
+        match_arm,
+        html_declaration,
+        base_declaration,
         name,
         name_ssnake,
         name_pascal,
         generator,
     } in data
     {
+        let match_arm = format!(
+            "ItemId::{name_pascal} => {{ 
+                match attack_type {{ {match_arm} }} 
+            }}"
+        );
+
+        const_match_arms.push_str(&match_arm);
         item_id_to_riot_id.push_str(&format!("{riot_id},"));
-        item_id_enum_match_arms.push(format!("{riot_id} => Some(Self::{name_pascal})"));
+        item_id_enum_match_arms.push({
+            let str_id = riot_id.to_string();
+            let mut branches = Vec::with_capacity(3);
+            if !(str_id.starts_with("22") || str_id.starts_with("44")) {
+                branches.push(format!("44{riot_id}"));
+                branches.push(format!("22{riot_id}"));
+            }
+            branches.push(str_id);
+            branches.reverse();
+            let branches = branches.join("|");
+            format!("{branches} => Some(Self::{name_pascal})")
+        });
         item_id_enum_fields.push(name_pascal);
         item_id_to_name.push_str(&format!("{name:?},"));
         item_cache.push_str(&format!("&{name_ssnake}_{riot_id},"));
-        item_declarations.push_str(&declaration);
+        item_declarations.push_str(&base_declaration);
         tracker.record_into(&generator, &mut generator_offsets);
-        tracker.record_into(&formula, &mut formula_offsets);
+        tracker.record_into(&html_declaration, &mut formula_offsets);
     }
 
     let fields = item_id_enum_fields.join(",");
@@ -298,6 +380,16 @@ pub async fn generate_items() -> GeneratorFn {
         }}"
     );
 
+    let const_eval = format!(
+        "pub const fn item_const_eval(
+            ctx: &EvalContext, 
+            item_id: ItemId, 
+            attack_type: AttackType
+        ) -> [f32; 2] {{
+            match item_id {{ {const_match_arms} }}
+        }}"
+    );
+
     push_end(
         [
             &mut item_cache,
@@ -307,11 +399,22 @@ pub async fn generate_items() -> GeneratorFn {
         "];",
     );
 
-    let imports = [USE_SUPER, &item_cache, &item_id_enum, &item_declarations].concat();
-    CwdPath::fwrite(SrcFolder::Items.import_file(), imports).await??;
+    CwdPath::fwrite(
+        SrcFolder::Items.import_file(),
+        [
+            USE_SUPER,
+            &item_cache,
+            &item_id_enum,
+            &item_declarations,
+            &const_eval,
+        ]
+        .concat()
+        .rust_fmt(),
+    )
+    .await??;
 
     let callback = move |index: usize| {
-        let add_offsets = |list: Vec<_>, target: &mut String| {
+        let add_offsets = |(list, target): (Vec<_>, &mut String)| {
             for (start, end) in list {
                 let new_start = start + index;
                 let new_end = end + index;
@@ -320,12 +423,12 @@ pub async fn generate_items() -> GeneratorFn {
             push_end([target], "];");
         };
 
-        for (list, target) in [
+        [
             (generator_offsets, &mut item_generator),
             (formula_offsets, &mut item_formulas),
-        ] {
-            add_offsets(list, target);
-        }
+        ]
+        .into_iter()
+        .for_each(add_offsets);
 
         let exports = [
             item_id_enum.replace(

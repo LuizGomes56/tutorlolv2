@@ -1,22 +1,27 @@
+#![no_std]
 use bincode::{Decode, Encode};
-use tutorlolv2_gen::{
-    AdaptativeType, NUMBER_OF_ABILITIES, NUMBER_OF_CHAMPIONS, NUMBER_OF_SIMULATED_ITEMS,
-};
+use tutorlolv2_gen::{AdaptativeType, NUMBER_OF_SIMULATED_ITEMS};
+
+extern crate alloc;
+
+pub(crate) use alloc::boxed::Box;
 
 pub mod calculator;
+pub mod const_eval;
 pub mod helpers;
 pub mod model;
 pub mod realtime;
 pub mod riot;
 
 pub use calculator::*;
+pub use const_eval::*;
 pub use helpers::*;
 pub use model::*;
 pub use realtime::*;
 pub use riot::*;
 
 /// Holds the levels of the abilities of a champion
-#[derive(Encode, Decode, Clone, Copy)]
+#[derive(Clone, Copy, Debug, Decode, Encode)]
 pub struct AbilityLevels {
     pub q: u8,
     pub w: u8,
@@ -24,17 +29,8 @@ pub struct AbilityLevels {
     pub r: u8,
 }
 
-/// Expected array length to a team in the `SummonersRift` gamemode
-pub const L_TEAM: usize = 5;
-
-/// Expected number of players per game
-pub const L_PLYR: usize = L_TEAM << 1;
-
 /// Exact number of resistence variations for jungle monsters
 pub const L_MSTR: usize = 7;
-
-/// Most common number of enemies in a regular input for the calculator section
-pub const L_CENM: usize = 1;
 
 /// Number of different plates a tower can have. Each tower can have `0..=5` plates
 pub const L_TWRD: usize = 6;
@@ -42,22 +38,12 @@ pub const L_TWRD: usize = 6;
 /// Alias to the number of simulated items
 pub const L_SIML: usize = NUMBER_OF_SIMULATED_ITEMS;
 
-/// Most common number of damaging runes the current player has
-pub const L_RUNE: usize = 2;
-
-/// Upper bound of the number of damaging items the current player usually have
-pub const L_ITEM: usize = 5;
-
-/// Estimate of how many abilities it is more common that a champion has. If
-/// it happens to have more, the whole data will spill to the heap to avoid
-/// stack overflows.
-pub const L_ABLT: usize = NUMBER_OF_ABILITIES / NUMBER_OF_CHAMPIONS;
-
 /// Holds the real resistence that a enemy has, after applying the appropriate
 /// armor or magic penetrations that the current player has, and other buffs or
 /// penalties applied. Field `modifier` is a value between `0.0` and `1.0` that
 /// represents the number that will be multiplied by the raw damage to obtain
 /// the precise final damage
+#[derive(Clone, Copy, Debug)]
 pub struct ResistValue {
     pub real: f32,
     pub modifier: f32,
@@ -84,23 +70,16 @@ impl RiotFormulas {
     /// up to `60%` directly, instead they return `51%` penetration.
     pub const fn percent_value(from_vec: &[f32]) -> f32 {
         let mut i = 0;
-        let mut prod = 1.0_f32;
+        let mut prod = 1f32;
+        let mut div = 1f32;
 
         while i < from_vec.len() {
-            prod *= 100.0_f32 - from_vec[i];
+            div *= 10f32;
+            prod *= 100f32 - from_vec[i];
             i += 1;
         }
 
-        let mut div = 1.0_f32;
-        let mut j = 0;
-        let exp = (from_vec.len() as u32) << 1;
-
-        while j < exp {
-            div *= 10.0_f32;
-            j += 1;
-        }
-
-        prod / div
+        100f32 - prod / div
     }
 
     /// Returns the real resistence value in a struct [`ResistValue`], taking into account
@@ -114,7 +93,7 @@ impl RiotFormulas {
         resist: f32,
         accept_negatives: bool,
     ) -> ResistValue {
-        let real_val = (percent_pen * resist - flat_pen).max(if accept_negatives {
+        let real_val = ((1.0 - percent_pen / 100.0) * resist - flat_pen).max(if accept_negatives {
             f32::NEG_INFINITY
         } else {
             0.0
@@ -124,6 +103,23 @@ impl RiotFormulas {
             real: real_val,
             modifier: modf_val,
         }
+    }
+
+    /// Returns an [`i32`] that represents the damage against some turret
+    pub const fn tower_damage(
+        plates: f32,
+        base_attack_damage: f32,
+        bonus_attack_damage: f32,
+        ability_power: f32,
+        pen_percent: f32,
+        pen_flat: f32,
+    ) -> i32 {
+        (base_attack_damage
+            + bonus_attack_damage
+            + ability_power
+                * 0.6
+                * (100.0 / (140.0 + (-25.0 + 50.0 * plates) * pen_percent - pen_flat)))
+            as i32
     }
 
     /// Returns the adaptative type of the current player, given its bonus attack_damage

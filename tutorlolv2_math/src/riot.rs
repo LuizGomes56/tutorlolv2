@@ -1,7 +1,6 @@
 use crate::*;
 use bincode::{Decode, Encode};
 use serde::Deserialize;
-use smallvec::SmallVec;
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -41,7 +40,7 @@ impl RiotAbilities {
 /// like [`f32`], [`f64`], or [`i32`]. This struct is used
 /// as both input and output, which means that it implements
 /// [`Encode`], [`Decode`], and [`Deserialize`].
-#[derive(Encode, Decode, Deserialize, Copy, Clone)]
+#[derive(Copy, Clone, Debug, Decode, Deserialize, Encode)]
 #[serde(rename_all = "camelCase")]
 pub struct Stats<T> {
     pub ability_power: T,
@@ -66,6 +65,21 @@ pub struct Stats<T> {
     pub current_mana: T,
 }
 
+impl Stats<f32> {
+    /// Returns a new struct [`Stats`] with the same original values except the ones
+    /// that involve percent penetration, which are resolved and converted to the
+    /// `[0.0, 100.0]` range used in this library
+    pub const fn base100(&self) -> Self {
+        Self {
+            armor_penetration_percent: (1.0 - self.armor_penetration_percent).clamp(0.0, 1.0)
+                * 100.0,
+            magic_penetration_percent: (1.0 - self.magic_penetration_percent).clamp(0.0, 1.0)
+                * 100.0,
+            ..*self
+        }
+    }
+}
+
 /// Field `id` is the rune identifier in Riot's API,
 /// which has to be translated to enum [`tutorlolv2_gen::RuneId`],
 /// using the function [`tutorlolv2_gen::RuneId::from_riot_id`]
@@ -81,7 +95,7 @@ pub struct RiotGeneralRunes {
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RiotFullRunes {
-    pub general_runes: Option<SmallVec<[RiotGeneralRunes; 6]>>,
+    pub general_runes: Option<Box<[RiotGeneralRunes]>>,
 }
 
 /// All useful fields from the `active_player` object
@@ -115,6 +129,7 @@ pub struct RiotScoreboard {
 /// be converted to enum [`tutorlolv2_gen::ItemId`],
 /// using function [`tutorlolv2_gen::ItemId::from_riot_id`]
 #[derive(Deserialize)]
+#[repr(transparent)]
 pub struct RiotItems {
     #[serde(rename = "itemID")]
     pub item_id: u32,
@@ -130,7 +145,7 @@ pub struct RiotItems {
 pub struct RiotAllPlayers<'a> {
     #[serde(borrow)]
     pub champion_name: &'a str,
-    pub items: SmallVec<[RiotItems; L_ITEM]>,
+    pub items: Box<[RiotItems]>,
     pub level: u8,
     #[serde(borrow)]
     pub position: &'a str,
@@ -168,7 +183,7 @@ pub struct RealtimeEvent<'a> {
 #[serde(rename_all = "PascalCase")]
 pub struct RiotRealtimeEvents<'a> {
     #[serde(borrow)]
-    pub events: Vec<RealtimeEvent<'a>>,
+    pub events: Box<[RealtimeEvent<'a>]>,
 }
 
 /// Struct holding all the useful information provided in Riot's API
@@ -177,7 +192,7 @@ pub struct RiotRealtimeEvents<'a> {
 pub struct RiotRealtime<'a> {
     #[serde(borrow)]
     pub active_player: RiotActivePlayer<'a>,
-    pub all_players: SmallVec<[RiotAllPlayers<'a>; L_PLYR]>,
+    pub all_players: Box<[RiotAllPlayers<'a>]>,
     #[serde(borrow)]
     pub events: RiotRealtimeEvents<'a>,
     pub game_data: RiotRealtimeGameData,

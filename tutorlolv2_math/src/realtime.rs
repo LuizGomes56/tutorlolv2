@@ -1,7 +1,5 @@
-use super::{helpers::*, model::*};
-use crate::{L_SIML, L_TEAM, RiotFormulas, riot::*};
+use crate::{L_SIML, RiotFormulas, helpers::*, model::*, riot::*, *};
 use core::mem::MaybeUninit;
-use smallvec::SmallVec;
 use tutorlolv2_gen::{
     CHAMPION_CACHE, CHAMPION_NAME_TO_ID, ChampionId, DAMAGING_ITEMS, DAMAGING_RUNES, GameMap,
     ITEM_CACHE, ItemId, ItemsBitSet, Position, RuneId, RunesBitSet, SIMULATED_ITEMS_ENUM,
@@ -54,6 +52,8 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
         },
     } = game;
 
+    let current_player_stats = champion_stats.base100();
+
     let game_map = GameMap::from_u8(*map_number);
     let mut ability_modifiers = AbilityModifiers::default();
     let mut base_modifiers = DamageModifiers::default();
@@ -66,14 +66,14 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
     let current_player_cache =
         unsafe { CHAMPION_CACHE.get_unchecked(current_player_champion_id as usize) };
 
-    let is_mega_gnar =
-        current_player_champion_id == ChampionId::Gnar && champion_stats.attack_range >= 400.0;
+    let is_mega_gnar = current_player_champion_id == ChampionId::Gnar
+        && current_player_stats.attack_range >= 400.0;
 
     let current_player_base_stats =
         BasicStats::base_stats(current_player_champion_id, *level, is_mega_gnar);
 
     let current_player_bonus_stats = bonus_stats!(
-        BasicStats::<f32>(champion_stats, current_player_base_stats) {
+        BasicStats::<f32>(current_player_stats, current_player_base_stats) {
             armor,
             health,
             attack_damage,
@@ -84,7 +84,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
 
     let adaptative_type = RiotFormulas::adaptative_type(
         current_player_bonus_stats.attack_damage,
-        champion_stats.ability_power,
+        current_player_stats.ability_power,
     )
     .unwrap_or(current_player_cache.adaptative_type);
 
@@ -121,23 +121,18 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
     let dragons = get_dragons(&events, &all_players);
 
     let enemy_earth_dragons = dragons.enemy_earth_dragons;
-    let simulated_stats = get_simulated_stats(&champion_stats, dragons);
+    let simulated_stats = get_simulated_stats(&current_player_stats, dragons);
     let ability_levels = abilities.get_ability_levels();
     let current_player_position = Position::from_raw(current_player.position)
         .unwrap_or(unsafe { *current_player_cache.positions.get_unchecked(0) });
     let current_player_cache_attack_type = current_player_cache.attack_type;
 
     let current_player_team = Team::from(current_player.team);
-    let shred = ResistShred {
-        armor_penetration_flat: champion_stats.armor_penetration_flat,
-        armor_penetration_percent: champion_stats.armor_penetration_percent,
-        magic_penetration_flat: champion_stats.magic_penetration_flat,
-        magic_penetration_percent: champion_stats.magic_penetration_percent,
-    };
+    let shred = ResistShred::new(&current_player_stats);
 
-    let mut scoreboard = SmallVec::with_capacity(all_players.len());
+    let mut scoreboard = Box::new_uninit_slice(all_players.len());
     let self_state = SelfState {
-        current_stats: *champion_stats,
+        current_stats: current_player_stats,
         bonus_stats: current_player_bonus_stats,
         base_stats: current_player_base_stats,
         adaptative_type,
@@ -180,20 +175,19 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
         })
         .unwrap_or_default();
 
-    let (items_data, items_to_merge) =
-        get_items_data(&current_player_items, current_player_cache_attack_type);
     let eval_data = DamageEvalData {
-        abilities: ConstDamageKind {
+        abilities: StaticDamageKind {
             metadata: current_player_cache.metadata,
             closures: current_player_cache.closures,
         },
-        items: items_data,
+        items: get_items_data(&current_player_items, current_player_cache_attack_type),
         runes: get_runes_data(&current_player_runes, current_player_cache_attack_type),
     };
 
     let enemies = all_players
         .into_iter()
-        .filter_map(|player| {
+        .enumerate()
+        .filter_map(|(i, player)| {
             let RiotAllPlayers {
                 items: e_riot_items,
                 riot_id,
@@ -216,16 +210,18 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
                 .unwrap_or(unsafe { *e_cache.positions.get_unchecked(0) });
             let team = Team::from(*e_team);
 
-            scoreboard.push(Scoreboard {
-                riot_id,
-                assists: *assists as _,
-                deaths: *deaths,
-                kills: *kills,
-                creep_score: *creep_score,
-                champion_id: e_champion_id,
-                position: e_position,
-                team,
-            });
+            unsafe {
+                scoreboard.get_unchecked_mut(i).write(Scoreboard {
+                    riot_id,
+                    assists: *assists as _,
+                    deaths: *deaths,
+                    kills: *kills,
+                    creep_score: *creep_score,
+                    champion_id: e_champion_id,
+                    position: e_position,
+                    team,
+                })
+            };
 
             if team == current_player_team {
                 return None;
@@ -234,13 +230,13 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
             let e_items = e_riot_items
                 .iter()
                 .filter_map(|riot_item| Some(ItemId::from_riot_id(riot_item.item_id)? as _))
-                .collect::<ItemsBitSet>();
+                .collect::<Box<[_]>>();
 
             let e_base_stats = SimpleStats::base_stats(e_champion_id, *e_level, false);
             let full_state = get_enemy_state(
                 EnemyState {
                     base_stats: e_base_stats,
-                    items: e_items,
+                    items: &e_items,
                     stacks: 0,
                     champion_id: e_champion_id,
                     level: *e_level,
@@ -305,14 +301,14 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
                 level: *e_level,
             })
         })
-        .collect::<SmallVec<[Enemy<'_>; L_TEAM]>>();
+        .collect::<Box<[Enemy<'_>]>>();
 
     Some(Realtime {
         current_player: CurrentPlayer {
             riot_id,
-            base_stats: current_player_base_stats.into(),
-            bonus_stats: current_player_bonus_stats.into(),
-            current_stats: (*champion_stats).into(),
+            base_stats: BasicStats::from_f32(&current_player_base_stats),
+            bonus_stats: BasicStats::from_f32(&current_player_bonus_stats),
+            current_stats: Stats::from_f32(&current_player_stats),
             level: *level,
             team: current_player_team,
             adaptative_type,
@@ -321,14 +317,13 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
             game_map,
         },
         enemies,
-        scoreboard,
+        scoreboard: unsafe { scoreboard.assume_init() },
         abilities_meta: eval_data.abilities.metadata,
         items_meta: eval_data.items.metadata,
         runes_meta: eval_data.runes.metadata,
         siml_meta: SIMULATED_ITEMS_METADATA,
         abilities_to_merge: current_player_cache.merge_data,
-        items_to_merge: items_to_merge,
-        game_time: *game_time as u32,
+        game_time: *game_time as _,
         ability_levels,
         dragons,
     })

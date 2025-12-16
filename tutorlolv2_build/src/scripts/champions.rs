@@ -16,6 +16,7 @@ struct DeclaredAbility {
     ability_id: AbilityId,
     declaration: String,
     metadata: String,
+    constfn: ConstFn,
     damage: String,
 }
 
@@ -70,6 +71,17 @@ fn declare_abilities(
             )
             .to_uppercase();
 
+            let constfn_name = format!(
+                "{champion_id}_{discriminant}",
+                champion_id = champion_id_upper.to_ssnake()
+            )
+            .to_lowercase();
+
+            let constfn_declaration = format!(
+                "pub const fn {constfn_name}(ctx: &EvalContext) -> f32 {body}",
+                body = damage.trim_start_matches("|ctx|")
+            );
+
             let damage_type = format_args!("DamageType::{damage_type}");
             let attributes = format_args!("Attrs::{attributes:?}");
 
@@ -81,7 +93,7 @@ fn declare_abilities(
                     damage: {damage},
                 }};"
             )
-            .rust_fmt(80)
+            .rust_fmt()
             .rust_html()
             .drop_f32s()
             .as_const();
@@ -90,19 +102,25 @@ fn declare_abilities(
                 panic!("[{champion_id_upper}] Empty declaration for {ability_id:?}");
             }
 
+            let kind = ability_id.as_literal();
+
             let metadata = format!(
                 "TypeMetadata {{ 
                     kind: {kind}, 
                     damage_type: {damage_type}, 
                     attributes: {attributes} 
-                }}",
-                kind = ability_id.as_literal(),
+                }}"
             );
 
             DeclaredAbility {
                 ability_id,
                 declaration,
                 metadata,
+                constfn: ConstFn {
+                    ability_id: kind,
+                    declaration: constfn_declaration,
+                    name: constfn_name,
+                },
                 damage,
             }
         })
@@ -199,14 +217,22 @@ fn sort_abilities(data: &mut [DeclaredAbility]) {
     });
 }
 
+struct ConstFn {
+    ability_id: String,
+    declaration: String,
+    name: String,
+}
+
 pub async fn generate_champions() -> GeneratorFn {
     struct ChampionResult {
         champion_id_upper: String,
         name: String,
         positions: String,
-        declaration: String,
+        base_declaration: String,
         ability_declarations: Vec<(AbilityId, String)>,
         generator: String,
+        html_declaration: String,
+        const_match_kind: String,
     }
 
     let data = parallel_task(
@@ -231,12 +257,16 @@ pub async fn generate_champions() -> GeneratorFn {
 
             sort_abilities(&mut abilities);
 
+            let mut constfns = Vec::with_capacity(abilities.len());
+            let mut fn_names = String::new();
             let mut closures = String::new();
             let mut metadata = String::new();
-            let mut ability_names = Vec::new();
-            let mut ability_declarations = Vec::new();
+            let mut ability_names = Vec::with_capacity(abilities.len());
+            let mut ability_declarations = Vec::with_capacity(abilities.len());
 
             for ability in abilities {
+                fn_names.push_str(&format!("{name},", name = ability.constfn.name));
+                constfns.push(ability.constfn);
                 closures.push_str(&ability.damage);
                 metadata.push_str(&ability.metadata);
                 closures.push(',');
@@ -251,20 +281,43 @@ pub async fn generate_champions() -> GeneratorFn {
                 .collect::<Vec<_>>()
                 .join(",");
 
-            let declaration = format!(
+            let mut base_declaration = format!(
                 "pub static {champion_id_upper}: CachedChampion = CachedChampion {{
                     name: {name:?},
                     adaptative_type: AdaptativeType::{adaptative_type},
                     attack_type: AttackType::{attack_type},
                     positions: &[{positions}],
                     metadata: &[{metadata}],
-                    closures: &[{closures}],
                     stats: CachedChampionStats {{{stats}}},
                     merge_data: &[{merge_data}],
-                }};",
+                    closures: ",
                 stats = get_stats(&stats),
                 merge_data = define_merge_indexes(merge_data, &ability_names),
             );
+
+            let html_declaration = format!("{base_declaration}&[{closures}], }};")
+                .rust_fmt()
+                .drop_f32s()
+                .rust_html();
+
+            base_declaration.push_str(&format!("&[{fn_names}], }};"));
+
+            let mut match_arm_kind = Vec::with_capacity(constfns.len());
+            for ConstFn {
+                ability_id,
+                declaration,
+                name,
+            } in constfns
+            {
+                base_declaration.push_str(&declaration);
+                match_arm_kind.push(format!("{ability_id} => {name}(ctx)"));
+            }
+
+            match_arm_kind.push(format!(
+                r#"_ => panic!("Invalid AbilityId for '{champion_id}'")"#
+            ));
+
+            let const_match_kind = match_arm_kind.join(",");
 
             let generator = CwdPath::get_generator(SrcFolder::Champions, &champion_id).await?;
 
@@ -289,9 +342,11 @@ pub async fn generate_champions() -> GeneratorFn {
 
             Ok(ChampionResult {
                 ability_declarations,
+                const_match_kind,
                 name,
                 champion_id_upper,
-                declaration,
+                base_declaration,
+                html_declaration,
                 positions: format!("&[{positions}]"),
                 generator,
             })
@@ -359,54 +414,66 @@ pub async fn generate_champions() -> GeneratorFn {
     let languages_map =
         CwdPath::deserialize::<HashMap<String, Vec<String>>>("internal/champion_languages.json")
             .await?;
-    let mut language_arms = Vec::new();
+    let mut language_arms = Vec::with_capacity(data.len());
+    let mut const_match_arms = String::new();
 
     for (
         champion_id,
         ChampionResult {
-            declaration,
+            base_declaration,
+            html_declaration,
             name,
             positions,
+            const_match_kind,
             ability_declarations,
             generator,
             champion_id_upper,
         },
     ) in data
     {
-        let pascal_id = champion_id.pascal_case();
         let name_alias = languages_map
             .get(&champion_id)
             .ok_or(format!(
                 "Failed to recover {champion_id:?} from languages map"
             ))?
             .into_iter()
-            .map(|alias| format!("{alias:?} => ChampionId::{pascal_id}"))
+            .map(|alias| format!("{alias:?} => ChampionId::{champion_id}"))
             .collect::<Vec<String>>()
             .join(",");
         language_arms.push(name_alias);
 
-        champion_declarations.push_str(&declaration);
+        champion_declarations.push_str(&base_declaration);
+
+        let match_arm =
+            format!("ChampionId::{champion_id} => {{ match kind {{ {const_match_kind} }} }}");
+
+        const_match_arms.push_str(&match_arm);
+
         champion_id_to_name.push_str(&format!("{name:?},"));
         champion_positions.push_str(&(positions + ","));
-        champion_id_enum.push_str(&(pascal_id + ","));
+        champion_id_enum.push_str(&(champion_id + ","));
         champion_cache.push_str(&format!("&{champion_id_upper},"));
 
         tracker.record_into(&generator, &mut generator_offsets);
-        tracker.record_into(
-            &declaration.rust_fmt(80).drop_f32s().rust_html(),
-            &mut formula_offsets,
-        );
+        tracker.record_into(&html_declaration, &mut formula_offsets);
 
         let abilities = ability_declarations
             .into_iter()
-            .map(|(ability_id, formula)| {
-                let (start, end) = tracker.record(&formula);
-                (ability_id, (start, end))
-            })
+            .map(|(ability_id, formula)| (ability_id, tracker.record(&formula)))
             .collect::<Vec<_>>();
 
         ability_offsets.push(abilities);
     }
+
+    let const_eval = format!(
+        "pub const fn ability_const_eval(
+            ctx: &EvalContext, 
+            champion_id: ChampionId, 
+            kind: AbilityId
+        ) -> f32 {{
+            match champion_id {{ {const_match_arms} }}
+        }}"
+    );
 
     let champion_name_to_id = format!(
         "pub static CHAMPION_NAME_TO_ID: phf::Map<&str, ChampionId> = phf::phf_map! {{
@@ -433,13 +500,15 @@ pub async fn generate_champions() -> GeneratorFn {
             &champion_declarations,
             &champion_name_to_id,
             &champion_cache,
+            &const_eval,
         ]
-        .concat(),
+        .concat()
+        .rust_fmt(),
     )
     .await??;
 
     let callback = move |index: usize| {
-        let add_offsets = |list: Vec<_>, target: &mut String| {
+        let add_offsets = |(list, target): (Vec<_>, &mut String)| {
             for (start, end) in list {
                 let new_start = start + index;
                 let new_end = end + index;
@@ -448,11 +517,15 @@ pub async fn generate_champions() -> GeneratorFn {
             push_end([target], "];");
         };
 
-        add_offsets(generator_offsets, &mut champion_generator);
-        add_offsets(formula_offsets, &mut champion_formulas);
+        [
+            (generator_offsets, &mut champion_generator),
+            (formula_offsets, &mut champion_formulas),
+        ]
+        .into_iter()
+        .for_each(add_offsets);
 
         for ability in ability_offsets {
-            let mut recorded_abilities = Vec::new();
+            let mut recorded_abilities = Vec::with_capacity(ability.len());
             for (ability_id, (start, end)) in ability {
                 let literal = ability_id.as_literal();
                 let new_start = start + index;

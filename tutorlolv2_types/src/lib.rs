@@ -1,9 +1,13 @@
+#![no_std]
 use bincode::Encode;
 use serde::{Deserialize, Serialize};
 
 pub mod ability_name;
 
 pub use ability_name::*;
+
+extern crate alloc;
+use alloc::{format, string::String};
 
 #[derive(
     Serialize, Deserialize, Copy, Clone, Encode, Debug, Eq, PartialEq, PartialOrd, Hash, Ord,

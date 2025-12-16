@@ -43,7 +43,7 @@ pub async fn realtime_handler(body: Bytes) -> Response {
 #[post("/calculator")]
 pub async fn calculator_handler(body: Bytes) -> Response {
     let (decoded, _) = bincode::decode_from_slice(&body, BINCODE_CONFIG)?;
-    let data = calculator(decoded).ok_or("Error executing fn `calculator`")?;
+    let data = calculator(decoded);
     respond(data)
 }
 

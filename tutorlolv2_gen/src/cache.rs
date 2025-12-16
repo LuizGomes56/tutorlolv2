@@ -30,7 +30,7 @@ impl<T: AsRef<str>> From<T> for AdaptativeType {
     }
 }
 
-#[derive(Encode, Copy, Clone, Serialize, Deserialize)]
+#[derive(Copy, Clone, Debug, Deserialize, Encode, Serialize)]
 pub enum AdaptativeType {
     Physical,
     Magic,
@@ -40,7 +40,7 @@ pub enum AdaptativeType {
 /// play in the standard gamemode `SummonersRift`, whose definition
 /// is [`GameMap::SummonersRift`]. If we don't know a champion's position,
 /// it is set to [`Position::Top`].
-#[derive(Copy, Clone, Encode, Serialize, Deserialize, Default)]
+#[derive(Copy, Clone, Debug, Default, Deserialize, Encode, Serialize)]
 pub enum Position {
     #[default]
     Top,
@@ -67,7 +67,7 @@ impl Position {
 /// All possible maps and codes that can be played. Most of them are
 /// event maps that may never return to the game, and don't have a
 /// deterministic code. [`GameMap::SummonersRift`] is the default map.
-#[derive(Default, Encode, Deserialize, Serialize)]
+#[derive(Debug, Default, Deserialize, Encode, Serialize)]
 pub enum GameMap {
     #[default]
     SummonersRift,
@@ -112,12 +112,12 @@ impl GameMap {
 
 /// A generic metadata holder for [`AbilityId`], [`ItemId`], or [`RuneId`].
 /// Contains its damage type, attributes, and which instance of the enum the value is.
-#[derive(Copy, Clone, Encode)]
+#[derive(Copy, Clone, Debug, Encode)]
 pub struct TypeMetadata<T> {
     /// Represents a variety of values:
-    /// - [`AbilityId`]: Which ability key it represents, and its name
-    /// - [`ItemId`]: Can be casted to [`usize`] and indexes into [`crate::ITEM_CACHE`]
-    /// - [`RuneId`]: Can be casted to [`usize`] and indexes into [`crate::RUNE_CACHE`]
+    /// - [`AbilityId`] Which ability key it represents, and its name
+    /// - [`ItemId`] Can be casted to [`usize`] and indexes into [`crate::ITEM_CACHE`]
+    /// - [`RuneId`] Can be casted to [`usize`] and indexes into [`crate::RUNE_CACHE`]
     pub kind: T,
     /// Represents the damage type of the current instance
     pub damage_type: DamageType,
@@ -183,16 +183,17 @@ pub struct CachedItemDamages {
 
 /// Generated data about some item, held in the static variable [`crate::ITEM_CACHE`]
 pub struct CachedItem {
-    pub gold: u16,
+    pub tier: u8,
+    pub price: u16,
     pub prettified_stats: &'static [StatName],
     pub damage_type: DamageType,
     pub stats: CachedItemStats,
     pub metadata: TypeMetadata<ItemId>,
-    pub range_closure: &'static [ConstClosure],
-    pub melee_closure: &'static [ConstClosure],
+    pub ranged_closure: [ConstClosure; 2],
+    pub melee_closure: [ConstClosure; 2],
     pub attributes: Attrs,
-    pub is_simulated: bool,
-    pub is_damaging: bool,
+    pub deals_damage: bool,
+    pub purchasable: bool,
     pub riot_id: u32,
 }
 
@@ -200,8 +201,8 @@ pub struct CachedItem {
 pub struct CachedRune {
     pub damage_type: DamageType,
     pub metadata: TypeMetadata<RuneId>,
-    pub range_closure: ConstClosure,
     pub melee_closure: ConstClosure,
+    pub ranged_closure: ConstClosure,
     pub riot_id: u32,
     pub undeclared: bool,
 }

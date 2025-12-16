@@ -9,9 +9,10 @@ struct RuneResult {
     name: String,
     name_pascal: String,
     name_ssnake: String,
-    declaration: String,
-    formula: String,
+    base_declaration: String,
+    html_declaration: String,
     riot_id: usize,
+    match_arm: String,
 }
 
 pub async fn generate_runes() -> GeneratorFn {
@@ -41,31 +42,59 @@ pub async fn generate_runes() -> GeneratorFn {
                     }}"
                 );
 
-                let get_closure = |expr: String| {
+                let mut constfn_declaration = String::new();
+
+                let mut get_closure = |expr: String, tag| {
                     let closure = expr.as_closure().add_f32s();
                     let arg = closure.ctx_param();
                     let body = closure.to_lowercase();
+                    let fn_name = format!("{name_ssnake}_{tag}").to_lowercase();
+                    constfn_declaration.push_str(&format!(
+                        "pub const fn {fn_name}(ctx: &EvalContext) -> f32 {{ {body} }}"
+                    ));
                     format!("|{arg}| {body}")
                 };
 
-                let melee_closure = get_closure(ranged);
-                let range_closure = get_closure(melee);
+                let melee_closure = get_closure(ranged, "ranged");
+                let ranged_closure = get_closure(melee, "melee");
 
-                let declaration = format!(
+                let mut base_declaration = format!(
                     "pub static {name_ssnake}_{riot_id}: CachedRune = CachedRune {{
                         damage_type: DamageType::{damage_type},
                         metadata: {metadata},
-                        melee_closure: {melee_closure},
-                        range_closure: {range_closure},
                         riot_id: {riot_id},
-                        undeclared: false
-                    }};"
+                        undeclared: false,"
+                );
+
+                let html_declaration = format!(
+                    "{base_declaration}
+                    melee_closure: {melee_closure},
+                    ranged_closure: {ranged_closure} }};"
+                )
+                .rust_fmt()
+                .drop_f32s()
+                .rust_html()
+                .as_const();
+
+                let melee_constfn_name = format!("{name_ssnake}_melee").to_lowercase();
+                let ranged_constfn_name = format!("{name_ssnake}_ranged").to_lowercase();
+
+                base_declaration.push_str(&format!(
+                    "melee_closure: {melee_constfn_name},
+                    ranged_closure: {ranged_constfn_name} }};"
+                ));
+                base_declaration.push_str(&constfn_declaration);
+
+                let match_arm = format!(
+                    "AttackType::Melee => {melee_constfn_name}(ctx),
+                    AttackType::Ranged => {ranged_constfn_name}(ctx)",
                 );
 
                 RuneResult {
                     riot_id,
-                    formula: declaration.rust_fmt(80).drop_f32s().rust_html().as_const(),
-                    declaration,
+                    match_arm,
+                    html_declaration,
+                    base_declaration,
                     name,
                     name_ssnake,
                     name_pascal,
@@ -115,22 +144,32 @@ pub async fn generate_runes() -> GeneratorFn {
                 }}"
             );
 
-            let declaration = format!(
+            let base_declaration = format!(
                 "pub static {name_ssnake}_{riot_id}: CachedRune = CachedRune {{
                     damage_type: DamageType::Unknown,
                     metadata: {metadata},
                     melee_closure: zero,
-                    range_closure: zero,
+                    ranged_closure: zero,
                     riot_id: {riot_id},
                     undeclared: true
                 }};"
             );
 
+            let match_arm = format!(
+                "AttackType::Melee => zero(ctx),
+                AttackType::Ranged => zero(ctx)",
+            );
+
             runes.push(RuneResult {
                 name_pascal,
+                match_arm,
                 riot_id,
-                formula: declaration.rust_fmt(80).drop_f32s().rust_html().as_const(),
-                declaration,
+                html_declaration: base_declaration
+                    .rust_fmt()
+                    .drop_f32s()
+                    .rust_html()
+                    .as_const(),
+                base_declaration,
                 name_ssnake,
                 name,
             });
@@ -165,23 +204,32 @@ pub async fn generate_runes() -> GeneratorFn {
 
     let mut rune_id_enum_match_arms = Vec::new();
     let mut rune_id_enum_fields = Vec::new();
+    let mut const_match_arms = String::new();
 
     for RuneResult {
         riot_id,
-        formula,
-        declaration,
+        html_declaration,
+        base_declaration,
+        match_arm,
         name,
         name_ssnake,
         name_pascal,
     } in data
     {
+        let match_arm = format!(
+            "RuneId::{name_pascal} => {{ 
+                match attack_type {{ {match_arm} }} 
+            }}"
+        );
+
+        const_match_arms.push_str(&match_arm);
         rune_id_to_riot_id.push_str(&format!("{riot_id},"));
         rune_id_enum_match_arms.push(format!("{riot_id} => Some(Self::{name_pascal})"));
         rune_id_enum_fields.push(name_pascal);
         rune_id_to_name.push_str(&format!("{name:?},"));
         rune_cache.push_str(&format!("&{name_ssnake}_{riot_id},"));
-        rune_declarations.push_str(&declaration);
-        tracker.record_into(&formula, &mut formula_offsets);
+        rune_declarations.push_str(&base_declaration);
+        tracker.record_into(&html_declaration, &mut formula_offsets);
     }
 
     let fields = rune_id_enum_fields.join(",");
@@ -220,8 +268,29 @@ pub async fn generate_runes() -> GeneratorFn {
         "];",
     );
 
-    let imports = [USE_SUPER, &rune_cache, &rune_id_enum, &rune_declarations].concat();
-    CwdPath::fwrite(SrcFolder::Runes.import_file(), imports).await??;
+    let const_eval = format!(
+        "pub const fn rune_const_eval(
+            ctx: &EvalContext, 
+            rune_id: RuneId, 
+            attack_type: AttackType
+        ) -> f32 {{
+            match rune_id {{ {const_match_arms} }}
+        }}"
+    );
+
+    CwdPath::fwrite(
+        SrcFolder::Runes.import_file(),
+        [
+            USE_SUPER,
+            &rune_cache,
+            &rune_id_enum,
+            &rune_declarations,
+            &const_eval,
+        ]
+        .concat()
+        .rust_fmt(),
+    )
+    .await??;
 
     let callback = move |index: usize| {
         let add_offsets = |list: Vec<_>, target: &mut String| {
