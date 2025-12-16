@@ -218,8 +218,7 @@ pub async fn generate_items() -> GeneratorFn {
                 .join(",");
 
             let stats = format_stats(&stats);
-            let is_simulated = tier >= 3 && price > 0 && purchasable;
-            let is_damaging = {
+            let deals_damage = {
                 let is_zeroed = |expr: &str| expr != "zero" && !expr.is_empty();
                 is_zeroed(&ranged.minimum_damage)
                     || is_zeroed(&ranged.maximum_damage)
@@ -229,14 +228,15 @@ pub async fn generate_items() -> GeneratorFn {
 
             let mut base_declaration = format!(
                 "pub static {name_ssnake}_{riot_id}: CachedItem = CachedItem {{
-                    gold: {price},
+                    price: {price},
                     prettified_stats: &[{prettified_stats}],
                     damage_type: DamageType::{damage_type},
                     attributes: Attrs::{attributes:?},
                     metadata: {metadata},
                     stats: CachedItemStats {{ {stats} }},
-                    is_simulated: {is_simulated},
-                    is_damaging: {is_damaging},
+                    purchasable: {purchasable},
+                    deals_damage: {deals_damage},
+                    tier: {tier},
                     riot_id: {riot_id},"
             );
 
@@ -245,7 +245,7 @@ pub async fn generate_items() -> GeneratorFn {
                 ranged_closure: [{ranged_closures}],
                 melee_closure: [{melee_closures}], }};"
             )
-            .rust_fmt(80)
+            .rust_fmt()
             .drop_f32s()
             .rust_html()
             .as_const();
@@ -333,7 +333,18 @@ pub async fn generate_items() -> GeneratorFn {
 
         const_match_arms.push_str(&match_arm);
         item_id_to_riot_id.push_str(&format!("{riot_id},"));
-        item_id_enum_match_arms.push(format!("{riot_id} => Some(Self::{name_pascal})"));
+        item_id_enum_match_arms.push({
+            let str_id = riot_id.to_string();
+            let mut branches = Vec::with_capacity(3);
+            if !(str_id.starts_with("22") || str_id.starts_with("44")) {
+                branches.push(format!("44{riot_id}"));
+                branches.push(format!("22{riot_id}"));
+            }
+            branches.push(str_id);
+            branches.reverse();
+            let branches = branches.join("|");
+            format!("{branches} => Some(Self::{name_pascal})")
+        });
         item_id_enum_fields.push(name_pascal);
         item_id_to_name.push_str(&format!("{name:?},"));
         item_cache.push_str(&format!("&{name_ssnake}_{riot_id},"));
@@ -398,7 +409,7 @@ pub async fn generate_items() -> GeneratorFn {
             &const_eval,
         ]
         .concat()
-        .rust_fmt(80),
+        .rust_fmt(),
     )
     .await??;
 

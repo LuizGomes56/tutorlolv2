@@ -11,16 +11,28 @@ pub use data::*;
 pub use enums::*;
 pub use eval::*;
 
+pub const fn is_simulated_item(item: &CachedItem) -> bool {
+    let CachedItem {
+        purchasable,
+        tier,
+        price,
+        prettified_stats,
+        ..
+    } = *item;
+
+    tier >= 3 && price > 0 && purchasable && prettified_stats.len() > 0
+}
+
 /// Number of items that are compared and obey the rule:
 /// - `tier >= 3`
 /// - `price > 0`
+/// - `len(stats)` > 0
 /// - `purchasable`
 pub const NUMBER_OF_SIMULATED_ITEMS: usize = {
     let mut sum = 0;
     let mut i = 0;
     while i < NUMBER_OF_ITEMS {
-        let item = ITEM_CACHE[i];
-        if item.is_simulated {
+        if is_simulated_item(ITEM_CACHE[i]) {
             sum += 1;
         }
         i += 1;
@@ -37,9 +49,8 @@ pub const SIMULATED_ITEMS_ENUM: [ItemId; NUMBER_OF_SIMULATED_ITEMS] = {
     let mut i = 0;
     let mut j = 0;
     while i < NUMBER_OF_ITEMS {
-        let item = ITEM_CACHE[i];
-        if item.is_simulated {
-            result[j] = unsafe { ItemId::from_u16_unchecked(j as _) };
+        if is_simulated_item(ITEM_CACHE[i]) {
+            result[j] = unsafe { ItemId::from_u16_unchecked(i as _) };
             j += 1;
         }
         i += 1;
@@ -71,7 +82,7 @@ pub const NUMBER_OF_DAMAGING_ITEMS: usize = {
     let mut i = 0;
     while i < NUMBER_OF_RUNES {
         let item = ITEM_CACHE[i];
-        if !item.is_damaging {
+        if !item.deals_damage {
             sum += 1;
         }
         i += 1;
@@ -96,10 +107,6 @@ pub const DAMAGING_RUNES_ARRAY: [RuneId; NUMBER_OF_DAMAGING_RUNES] = {
     result
 };
 
-/// Calculates the appropriate size of the bitset that will store thte simulated items.
-/// A higher value would waste a few bytes of memory
-pub const DAMAGING_ITEMS_BITSET_SIZE: usize = NUMBER_OF_DAMAGING_ITEMS.div_ceil(64);
-
 /// Stores a bit set of all simulated items, very fast for lookup. Damaging items
 /// always have at least one of the following:
 /// - `ranged.minimum_damage != "zero"`
@@ -109,9 +116,6 @@ pub const DAMAGING_ITEMS_BITSET_SIZE: usize = NUMBER_OF_DAMAGING_ITEMS.div_ceil(
 /// Note that comparing the name of two functions and checking if they're equal to each
 /// other is still unstable, so the comparison `lhs == zero` does not work
 pub const DAMAGING_ITEMS: ItemsBitSet = bitset_items(SIMULATED_ITEMS_ENUM);
-
-/// Calculation of the appropriate size of the bitset that will store the damaging runes
-pub const DAMAGING_RUNES_BITSET_SIZE: usize = NUMBER_OF_DAMAGING_RUNES.div_ceil(64);
 pub const DAMAGING_RUNES: RunesBitSet = bitset_runes(DAMAGING_RUNES_ARRAY);
 
 /// How many champions we have in the game in the current patch

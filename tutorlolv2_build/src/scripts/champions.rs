@@ -93,7 +93,7 @@ fn declare_abilities(
                     damage: {damage},
                 }};"
             )
-            .rust_fmt(80)
+            .rust_fmt()
             .rust_html()
             .drop_f32s()
             .as_const();
@@ -296,7 +296,7 @@ pub async fn generate_champions() -> GeneratorFn {
             );
 
             let html_declaration = format!("{base_declaration}&[{closures}], }};")
-                .rust_fmt(80)
+                .rust_fmt()
                 .drop_f32s()
                 .rust_html();
 
@@ -503,7 +503,7 @@ pub async fn generate_champions() -> GeneratorFn {
             &const_eval,
         ]
         .concat()
-        .rust_fmt(80),
+        .rust_fmt(),
     )
     .await??;
 

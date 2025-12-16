@@ -1,4 +1,4 @@
-use crate::{ability_id_mod, const_model::*, eval_attacks, model::*};
+use crate::{ability_id_mod, model::*};
 use tutorlolv2_gen::*;
 
 /// Constant evaluation of abilities, similar to function [`crate::ability_id_eval_damage`]
@@ -74,30 +74,4 @@ pub const fn const_rune_id_eval_damage<const N: usize>(
         i += 1;
     }
     result
-}
-
-/// Constructs a new [`Damages`] struct that holds all the damage values against some entity
-/// that could be calculated. This function will cause undefined behavior if any
-/// metadata of closures vectors do not have the same length
-pub const fn const_get_damages<const ABILITIES: usize, const ITEMS: usize, const RUNES: usize>(
-    eval_ctx: &EvalContext,
-    attack_type: AttackType,
-    champion_id: ChampionId,
-    item_ids: [ItemId; ITEMS],
-    rune_ids: [RuneId; RUNES],
-    modifiers: Modifiers,
-) -> ConstDamages<ABILITIES, ITEMS, RUNES> {
-    let mut onhit = RangeDamage::default();
-
-    let abilities = const_ability_id_eval_damage(&eval_ctx, &mut onhit, champion_id, modifiers);
-    let items = const_item_id_eval_damage(&eval_ctx, &mut onhit, item_ids, attack_type, modifiers);
-    let runes = const_rune_id_eval_damage(&eval_ctx, rune_ids, attack_type, modifiers);
-    let attacks = eval_attacks(&eval_ctx, onhit, modifiers.damages.physical_mod);
-
-    ConstDamages {
-        abilities,
-        items,
-        runes,
-        attacks,
-    }
 }

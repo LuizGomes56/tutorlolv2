@@ -52,6 +52,8 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
         },
     } = game;
 
+    let current_player_stats = champion_stats.base100();
+
     let game_map = GameMap::from_u8(*map_number);
     let mut ability_modifiers = AbilityModifiers::default();
     let mut base_modifiers = DamageModifiers::default();
@@ -64,14 +66,14 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
     let current_player_cache =
         unsafe { CHAMPION_CACHE.get_unchecked(current_player_champion_id as usize) };
 
-    let is_mega_gnar =
-        current_player_champion_id == ChampionId::Gnar && champion_stats.attack_range >= 400.0;
+    let is_mega_gnar = current_player_champion_id == ChampionId::Gnar
+        && current_player_stats.attack_range >= 400.0;
 
     let current_player_base_stats =
         BasicStats::base_stats(current_player_champion_id, *level, is_mega_gnar);
 
     let current_player_bonus_stats = bonus_stats!(
-        BasicStats::<f32>(champion_stats, current_player_base_stats) {
+        BasicStats::<f32>(current_player_stats, current_player_base_stats) {
             armor,
             health,
             attack_damage,
@@ -82,7 +84,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
 
     let adaptative_type = RiotFormulas::adaptative_type(
         current_player_bonus_stats.attack_damage,
-        champion_stats.ability_power,
+        current_player_stats.ability_power,
     )
     .unwrap_or(current_player_cache.adaptative_type);
 
@@ -119,18 +121,18 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
     let dragons = get_dragons(&events, &all_players);
 
     let enemy_earth_dragons = dragons.enemy_earth_dragons;
-    let simulated_stats = get_simulated_stats(&champion_stats, dragons);
+    let simulated_stats = get_simulated_stats(&current_player_stats, dragons);
     let ability_levels = abilities.get_ability_levels();
     let current_player_position = Position::from_raw(current_player.position)
         .unwrap_or(unsafe { *current_player_cache.positions.get_unchecked(0) });
     let current_player_cache_attack_type = current_player_cache.attack_type;
 
     let current_player_team = Team::from(current_player.team);
-    let shred = ResistShred::new(champion_stats);
+    let shred = ResistShred::new(&current_player_stats);
 
     let mut scoreboard = Box::new_uninit_slice(all_players.len());
     let self_state = SelfState {
-        current_stats: *champion_stats,
+        current_stats: current_player_stats,
         bonus_stats: current_player_bonus_stats,
         base_stats: current_player_base_stats,
         adaptative_type,
@@ -304,9 +306,9 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
     Some(Realtime {
         current_player: CurrentPlayer {
             riot_id,
-            base_stats: current_player_base_stats.into(),
-            bonus_stats: current_player_bonus_stats.into(),
-            current_stats: (*champion_stats).into(),
+            base_stats: BasicStats::from_f32(&current_player_base_stats),
+            bonus_stats: BasicStats::from_f32(&current_player_bonus_stats),
+            current_stats: Stats::from_f32(&current_player_stats),
             level: *level,
             team: current_player_team,
             adaptative_type,
@@ -321,7 +323,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
         runes_meta: eval_data.runes.metadata,
         siml_meta: SIMULATED_ITEMS_METADATA,
         abilities_to_merge: current_player_cache.merge_data,
-        game_time: *game_time as u32,
+        game_time: *game_time as _,
         ability_levels,
         dragons,
     })

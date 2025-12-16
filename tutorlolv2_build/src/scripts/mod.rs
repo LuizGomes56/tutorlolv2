@@ -170,8 +170,8 @@ pub trait StringExt: AsRef<str> {
             .to_string()
     }
 
-    fn rust_fmt(&self, width: usize) -> String {
-        tutorlolv2_fmt::rustfmt(self.as_ref(), width)
+    fn rust_fmt(&self) -> String {
+        tutorlolv2_fmt::rustfmt(self.as_ref(), 80)
     }
 
     fn as_const(&self) -> String {

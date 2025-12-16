@@ -8,7 +8,6 @@ pub(crate) use alloc::boxed::Box;
 
 pub mod calculator;
 pub mod const_eval;
-pub mod const_model;
 pub mod helpers;
 mod math_test;
 pub mod model;
@@ -17,7 +16,6 @@ pub mod riot;
 
 pub use calculator::*;
 pub use const_eval::*;
-pub use const_model::*;
 pub use helpers::*;
 pub use model::*;
 pub use realtime::*;

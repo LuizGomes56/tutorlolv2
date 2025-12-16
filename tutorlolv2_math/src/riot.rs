@@ -65,6 +65,21 @@ pub struct Stats<T> {
     pub current_mana: T,
 }
 
+impl Stats<f32> {
+    /// Returns a new struct [`Stats`] with the same original values except the ones
+    /// that involve percent penetration, which are resolved and converted to the
+    /// `[0.0, 100.0]` range used in this library
+    pub const fn base100(&self) -> Self {
+        Self {
+            armor_penetration_percent: (1.0 - self.armor_penetration_percent).clamp(0.0, 1.0)
+                * 100.0,
+            magic_penetration_percent: (1.0 - self.magic_penetration_percent).clamp(0.0, 1.0)
+                * 100.0,
+            ..*self
+        }
+    }
+}
+
 /// Field `id` is the rune identifier in Riot's API,
 /// which has to be translated to enum [`tutorlolv2_gen::RuneId`],
 /// using the function [`tutorlolv2_gen::RuneId::from_riot_id`]

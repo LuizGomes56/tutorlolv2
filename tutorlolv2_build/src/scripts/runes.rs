@@ -71,7 +71,7 @@ pub async fn generate_runes() -> GeneratorFn {
                     melee_closure: {melee_closure},
                     ranged_closure: {ranged_closure} }};"
                 )
-                .rust_fmt(80)
+                .rust_fmt()
                 .drop_f32s()
                 .rust_html()
                 .as_const();
@@ -165,7 +165,7 @@ pub async fn generate_runes() -> GeneratorFn {
                 match_arm,
                 riot_id,
                 html_declaration: base_declaration
-                    .rust_fmt(80)
+                    .rust_fmt()
                     .drop_f32s()
                     .rust_html()
                     .as_const(),
@@ -288,7 +288,7 @@ pub async fn generate_runes() -> GeneratorFn {
             &const_eval,
         ]
         .concat()
-        .rust_fmt(80),
+        .rust_fmt(),
     )
     .await??;
 

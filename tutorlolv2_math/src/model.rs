@@ -192,6 +192,9 @@ pub struct ResistShred {
 }
 
 impl ResistShred {
+    /// Creates a [`ResistShred`] struct from the current player stats. This API
+    /// uses percent penetration as a value in range `[0.0, 100.0]`. Values over
+    /// `100.0` will be clamped
     pub const fn new(stats: &Stats<f32>) -> Self {
         let Stats {
             armor_penetration_flat,
@@ -201,10 +204,10 @@ impl ResistShred {
             ..
         } = *stats;
         Self {
-            armor_penetration_flat,
-            armor_penetration_percent,
-            magic_penetration_flat,
-            magic_penetration_percent,
+            armor_penetration_flat: armor_penetration_flat,
+            armor_penetration_percent: armor_penetration_percent.clamp(0.0, 100.0),
+            magic_penetration_flat: magic_penetration_flat,
+            magic_penetration_percent: magic_penetration_percent.clamp(0.0, 100.0),
         }
     }
 }
@@ -486,7 +489,7 @@ pub struct OutputGame {
 macro_rules! impl_cast_from {
     ($stru:ident, $($fields:ident),*) => {
         impl $stru<f32> {
-            pub const fn from_i32(value: $stru<i32>) -> Self {
+            pub const fn from_i32(value: &$stru<i32>) -> Self {
                 $stru {
                     $($fields: value.$fields as f32),*
                 }
@@ -494,7 +497,7 @@ macro_rules! impl_cast_from {
         }
 
         impl $stru<i32> {
-            pub const fn from_f32(value: $stru<f32>) -> Self {
+            pub const fn from_f32(value: &$stru<f32>) -> Self {
                 $stru {
                     $($fields: value.$fields as i32),*
                 }
@@ -503,12 +506,24 @@ macro_rules! impl_cast_from {
 
         impl From<$stru<f32>> for $stru<i32> {
             fn from(value: $stru<f32>) -> Self {
-                $stru::from_f32(value)
+                $stru::from_f32(&value)
             }
         }
 
         impl From<$stru<i32>> for $stru<f32> {
             fn from(value: $stru<i32>) -> Self {
+                $stru::from_i32(&value)
+            }
+        }
+
+        impl From<&$stru<f32>> for $stru<i32> {
+            fn from(value: &$stru<f32>) -> Self {
+                $stru::from_f32(value)
+            }
+        }
+
+        impl From<&$stru<i32>> for $stru<f32> {
+            fn from(value: &$stru<i32>) -> Self {
                 $stru::from_i32(value)
             }
         }

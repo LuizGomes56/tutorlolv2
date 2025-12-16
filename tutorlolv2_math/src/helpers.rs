@@ -330,7 +330,7 @@ pub const fn get_damaging_runes(input: &[RuneId]) -> RunesBitSet {
     while i < input.len() {
         let rune = input[i] as usize;
         if DAMAGING_RUNES.contains(rune) {
-            let _ = out.insert(rune);
+            out.insert(rune);
         }
         i += 1;
     }
@@ -345,7 +345,7 @@ pub const fn get_damaging_items(input: &[ItemId]) -> ItemsBitSet {
     while i < input.len() {
         let item = input[i] as usize;
         if DAMAGING_ITEMS.contains(item) {
-            let _ = out.insert(item);
+            out.insert(item);
         }
         i += 1;
     }
@@ -405,9 +405,7 @@ pub const fn get_enemy_state(
     } = shred;
 
     let mut e_current_stats = base_stats;
-
     let bonus_mana = get_enemy_current_stats(&mut e_current_stats, items, earth_dragons);
-
     let mut e_modifiers = DamageModifiers::default();
 
     let mut i = 0;

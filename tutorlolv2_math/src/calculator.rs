@@ -464,7 +464,7 @@ pub fn calculator(game: InputGame) -> OutputGame {
         enemy_players,
     } = game;
 
-    let champion_raw_stats = Stats::from_i32(champion_raw_stats_i32);
+    let champion_raw_stats = Stats::from_i32(&champion_raw_stats_i32);
     let mut modifiers = Modifiers::default();
 
     let current_player_cache = CHAMPION_CACHE[current_player_champion_id as usize];
@@ -569,9 +569,9 @@ pub fn calculator(game: InputGame) -> OutputGame {
 
     OutputGame {
         current_player: OutputCurrentPlayer {
-            base_stats: BasicStats::from_f32(current_player_base_stats),
-            bonus_stats: BasicStats::from_f32(current_player_bonus_stats),
-            current_stats: Stats::from_f32(champion_stats),
+            base_stats: BasicStats::from_f32(&current_player_base_stats),
+            bonus_stats: BasicStats::from_f32(&current_player_bonus_stats),
+            current_stats: Stats::from_f32(&champion_stats),
             champion_id: current_player_champion_id,
             adaptative_type,
             level,
@@ -608,7 +608,7 @@ pub fn get_calculator_enemies(
                 item_exceptions: e_item_exceptions,
             } = player;
 
-            let e_stats = SimpleStats::from_i32(e_raw_stats_i32);
+            let e_stats = SimpleStats::from_i32(&e_raw_stats_i32);
             let e_base_stats = SimpleStats::base_stats(e_champion_id, e_level, e_is_mega_gnar);
             let mut full_state = get_enemy_state(
                 EnemyState {
@@ -644,17 +644,19 @@ pub fn get_calculator_enemies(
                 ..modifiers
             };
 
+            // Everything const up to this point
+
             let damages = get_damages(&eval_ctx, eval_data, modifiers);
 
             OutputEnemy {
-                champion_id: e_champion_id,
-                damages,
-                base_stats: SimpleStats::from_f32(e_base_stats),
-                bonus_stats: SimpleStats::from_f32(full_state.bonus_stats),
-                current_stats: SimpleStats::from_f32(full_state.current_stats),
-                real_armor: full_state.armor_values.real as _,
+                current_stats: SimpleStats::from_f32(&full_state.current_stats),
+                bonus_stats: SimpleStats::from_f32(&full_state.bonus_stats),
+                base_stats: SimpleStats::from_f32(&e_base_stats),
                 real_magic_resist: full_state.magic_values.real as _,
+                real_armor: full_state.armor_values.real as _,
+                champion_id: e_champion_id,
                 level: e_level,
+                damages,
             }
         })
         .collect::<Box<[OutputEnemy]>>()

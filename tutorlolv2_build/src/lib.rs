@@ -120,7 +120,7 @@ impl CwdPath {
         Self::exists(&path).await;
 
         let data = tokio::fs::read_to_string(path).await?;
-        Ok(data.rust_fmt(80).rust_html())
+        Ok(data.rust_fmt().rust_html())
     }
 
     /// Returns a `T` that represents a deserialized JSON file, from some `origin` path.
@@ -342,7 +342,7 @@ pub async fn run() -> MayFail {
 
     for task in [
         CwdPath::fwrite("tutorlolv2_exports/assets/block.txt", full_block),
-        CwdPath::fwrite("tutorlolv2_exports/src/exports.rs", full_exports),
+        CwdPath::fwrite("tutorlolv2_exports/src/exports.rs", full_exports.rust_fmt()),
     ] {
         task.await??
     }

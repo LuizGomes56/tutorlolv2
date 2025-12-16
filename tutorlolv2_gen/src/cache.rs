@@ -115,9 +115,9 @@ impl GameMap {
 #[derive(Copy, Clone, Debug, Encode)]
 pub struct TypeMetadata<T> {
     /// Represents a variety of values:
-    /// - [`AbilityId`]: Which ability key it represents, and its name
-    /// - [`ItemId`]: Can be casted to [`usize`] and indexes into [`crate::ITEM_CACHE`]
-    /// - [`RuneId`]: Can be casted to [`usize`] and indexes into [`crate::RUNE_CACHE`]
+    /// - [`AbilityId`] Which ability key it represents, and its name
+    /// - [`ItemId`] Can be casted to [`usize`] and indexes into [`crate::ITEM_CACHE`]
+    /// - [`RuneId`] Can be casted to [`usize`] and indexes into [`crate::RUNE_CACHE`]
     pub kind: T,
     /// Represents the damage type of the current instance
     pub damage_type: DamageType,
@@ -183,7 +183,8 @@ pub struct CachedItemDamages {
 
 /// Generated data about some item, held in the static variable [`crate::ITEM_CACHE`]
 pub struct CachedItem {
-    pub gold: u16,
+    pub tier: u8,
+    pub price: u16,
     pub prettified_stats: &'static [StatName],
     pub damage_type: DamageType,
     pub stats: CachedItemStats,
@@ -191,8 +192,8 @@ pub struct CachedItem {
     pub ranged_closure: [ConstClosure; 2],
     pub melee_closure: [ConstClosure; 2],
     pub attributes: Attrs,
-    pub is_simulated: bool,
-    pub is_damaging: bool,
+    pub deals_damage: bool,
+    pub purchasable: bool,
     pub riot_id: u32,
 }
 

@@ -20,10 +20,3 @@ pub use items::*;
 pub use runes::*;
 pub(crate) use serde::{Deserialize, Serialize};
 pub(crate) use tutorlolv2_types::*;
-
-impl ChampionId {
-    pub const fn number_of_spells(&self) -> usize {
-        let champion = CHAMPION_CACHE[*self as usize];
-        champion.closures.len()
-    }
-}
