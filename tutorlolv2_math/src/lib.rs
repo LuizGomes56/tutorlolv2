@@ -9,7 +9,6 @@ pub(crate) use alloc::boxed::Box;
 pub mod calculator;
 pub mod const_eval;
 pub mod helpers;
-mod math_test;
 pub mod model;
 pub mod realtime;
 pub mod riot;

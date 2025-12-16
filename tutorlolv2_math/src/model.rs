@@ -24,7 +24,7 @@ impl From<&str> for Team {
     }
 }
 
-#[derive(Debug, Encode)]
+#[derive(Clone, Copy, Debug, Encode)]
 pub struct RangeDamage {
     pub minimum_damage: i32,
     pub maximum_damage: i32,
@@ -56,7 +56,7 @@ pub struct BasicStats<T> {
 }
 
 /// Holds the damage of the basic attack, critical strike damage, and onhits
-#[derive(Debug, Encode)]
+#[derive(Clone, Copy, Debug, Encode)]
 pub struct Attacks {
     /// Damage of the basic attack hit
     pub basic_attack: i32,
@@ -289,7 +289,7 @@ pub struct Enemy<'a> {
     pub position: Position,
 }
 
-#[derive(Debug, Encode)]
+#[derive(Clone, Debug, Encode)]
 pub struct Damages {
     pub attacks: Attacks,
     pub abilities: Box<[i32]>,
@@ -366,14 +366,14 @@ pub struct Dragons {
     pub enemy_earth_dragons: u16,
 }
 
-#[derive(Debug, Decode)]
+#[derive(Clone, Debug, Decode)]
 pub struct InputGame {
     pub active_player: InputActivePlayer,
     pub enemy_players: Box<[InputMinData<SimpleStats<i32>>]>,
     pub dragons: Dragons,
 }
 
-#[derive(Debug, Decode)]
+#[derive(Clone, Debug, Decode)]
 pub struct InputActivePlayer {
     pub runes: Box<[RuneId]>,
     pub rune_exceptions: Box<[ValueException]>,
@@ -388,7 +388,7 @@ pub struct InputActivePlayer {
 /// have effect if field `champion_id` is also of type [`ChampionId::Gnar`].
 /// Field `stacks` is useless if the associated champion does not have any special
 /// characteristics that are related to stack-scaling
-#[derive(Debug, Decode)]
+#[derive(Clone, Debug, Decode)]
 pub struct InputMinData<T> {
     pub stats: T,
     pub items: Box<[ItemId]>,
@@ -401,7 +401,7 @@ pub struct InputMinData<T> {
 }
 
 /// Returned data by the function [`calculator::calculator`]
-#[derive(Debug, Encode)]
+#[derive(Clone, Debug, Encode)]
 pub struct OutputEnemy {
     pub damages: Damages,
     pub base_stats: SimpleStats<i32>,
