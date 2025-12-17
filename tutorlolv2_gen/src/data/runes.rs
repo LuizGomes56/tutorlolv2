@@ -244,6 +244,7 @@ impl RuneId {
     }
 }
 pub static ABILITY_HASTE_9994: CachedRune = CachedRune {
+    name: "Ability Haste",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::AbilityHaste,
@@ -253,9 +254,11 @@ pub static ABILITY_HASTE_9994: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 9994,
+    internal_id: RuneId::AbilityHaste,
     undeclared: true,
 };
 pub static ABSOLUTE_FOCUS_8233: CachedRune = CachedRune {
+    name: "Absolute Focus",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::AbsoluteFocus,
@@ -265,9 +268,11 @@ pub static ABSOLUTE_FOCUS_8233: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 8233,
+    internal_id: RuneId::AbsoluteFocus,
     undeclared: true,
 };
 pub static ABSORB_LIFE_9101: CachedRune = CachedRune {
+    name: "Absorb Life",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::AbsorbLife,
@@ -277,9 +282,11 @@ pub static ABSORB_LIFE_9101: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 9101,
+    internal_id: RuneId::AbsorbLife,
     undeclared: true,
 };
 pub static ADAPTIVE_FORCE_9990: CachedRune = CachedRune {
+    name: "Adaptive Force",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::AdaptiveForce,
@@ -289,9 +296,11 @@ pub static ADAPTIVE_FORCE_9990: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 9990,
+    internal_id: RuneId::AdaptiveForce,
     undeclared: true,
 };
 pub static AFTERSHOCK_8439: CachedRune = CachedRune {
+    name: "Aftershock",
     damage_type: DamageType::Adaptative,
     metadata: TypeMetadata {
         kind: RuneId::Aftershock,
@@ -299,17 +308,21 @@ pub static AFTERSHOCK_8439: CachedRune = CachedRune {
         attributes: Attrs::Undefined,
     },
     riot_id: 8439,
+    internal_id: RuneId::Aftershock,
     undeclared: false,
     melee_closure: aftershock_melee,
     ranged_closure: aftershock_ranged,
 };
 pub const fn aftershock_ranged(ctx: &EvalContext) -> f32 {
-    (25f32 + 95f32 / 17f32 * (ctx.level - 1f32) + 0.08f32 * ctx.bonus_health) * ctx.magic_multiplier
+    (25f32 + 95f32 / 17f32 * (ctx.level - 1f32) + 0.08f32 * ctx.bonus_health)
+        * ctx.magic_multiplier
 }
 pub const fn aftershock_melee(ctx: &EvalContext) -> f32 {
-    (25f32 + 95f32 / 17f32 * (ctx.level - 1f32) + 0.08f32 * ctx.bonus_health) * ctx.magic_multiplier
+    (25f32 + 95f32 / 17f32 * (ctx.level - 1f32) + 0.08f32 * ctx.bonus_health)
+        * ctx.magic_multiplier
 }
 pub static APPROACH_VELOCITY_8410: CachedRune = CachedRune {
+    name: "Approach Velocity",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::ApproachVelocity,
@@ -319,9 +332,11 @@ pub static APPROACH_VELOCITY_8410: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 8410,
+    internal_id: RuneId::ApproachVelocity,
     undeclared: true,
 };
 pub static ARCANE_COMET_8229: CachedRune = CachedRune {
+    name: "Arcane Comet",
     damage_type: DamageType::Adaptative,
     metadata: TypeMetadata {
         kind: RuneId::ArcaneComet,
@@ -329,19 +344,25 @@ pub static ARCANE_COMET_8229: CachedRune = CachedRune {
         attributes: Attrs::Undefined,
     },
     riot_id: 8229,
+    internal_id: RuneId::ArcaneComet,
     undeclared: false,
     melee_closure: arcane_comet_melee,
     ranged_closure: arcane_comet_ranged,
 };
 pub const fn arcane_comet_ranged(ctx: &EvalContext) -> f32 {
-    (30f32 + 100f32 / 17f32 * (ctx.level - 1f32) + (0.1f32 * ctx.bonus_ad + 0.05f32 * ctx.ap))
+    (30f32
+        + 100f32 / 17f32 * (ctx.level - 1f32)
+        + (0.1f32 * ctx.bonus_ad + 0.05f32 * ctx.ap))
         * ctx.adaptative_damage
 }
 pub const fn arcane_comet_melee(ctx: &EvalContext) -> f32 {
-    (30f32 + 100f32 / 17f32 * (ctx.level - 1f32) + (0.1f32 * ctx.bonus_ad + 0.05f32 * ctx.ap))
+    (30f32
+        + 100f32 / 17f32 * (ctx.level - 1f32)
+        + (0.1f32 * ctx.bonus_ad + 0.05f32 * ctx.ap))
         * ctx.adaptative_damage
 }
 pub static ATTACK_SPEED_9992: CachedRune = CachedRune {
+    name: "Attack Speed",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::AttackSpeed,
@@ -351,9 +372,11 @@ pub static ATTACK_SPEED_9992: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 9992,
+    internal_id: RuneId::AttackSpeed,
     undeclared: true,
 };
 pub static AXIOM_ARCANIST_8224: CachedRune = CachedRune {
+    name: "Axiom Arcanist",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::AxiomArcanist,
@@ -363,9 +386,11 @@ pub static AXIOM_ARCANIST_8224: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 8224,
+    internal_id: RuneId::AxiomArcanist,
     undeclared: true,
 };
 pub static BISCUIT_DELIVERY_8345: CachedRune = CachedRune {
+    name: "Biscuit Delivery",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::BiscuitDelivery,
@@ -375,9 +400,11 @@ pub static BISCUIT_DELIVERY_8345: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 8345,
+    internal_id: RuneId::BiscuitDelivery,
     undeclared: true,
 };
 pub static BONE_PLATING_8473: CachedRune = CachedRune {
+    name: "Bone Plating",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::BonePlating,
@@ -387,9 +414,11 @@ pub static BONE_PLATING_8473: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 8473,
+    internal_id: RuneId::BonePlating,
     undeclared: true,
 };
 pub static CASH_BACK_8321: CachedRune = CachedRune {
+    name: "Cash Back",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::CashBack,
@@ -399,9 +428,11 @@ pub static CASH_BACK_8321: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 8321,
+    internal_id: RuneId::CashBack,
     undeclared: true,
 };
 pub static CELERITY_8234: CachedRune = CachedRune {
+    name: "Celerity",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::Celerity,
@@ -411,9 +442,11 @@ pub static CELERITY_8234: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 8234,
+    internal_id: RuneId::Celerity,
     undeclared: true,
 };
 pub static CHEAP_SHOT_8126: CachedRune = CachedRune {
+    name: "Cheap Shot",
     damage_type: DamageType::True,
     metadata: TypeMetadata {
         kind: RuneId::CheapShot,
@@ -421,6 +454,7 @@ pub static CHEAP_SHOT_8126: CachedRune = CachedRune {
         attributes: Attrs::Undefined,
     },
     riot_id: 8126,
+    internal_id: RuneId::CheapShot,
     undeclared: false,
     melee_closure: cheap_shot_melee,
     ranged_closure: cheap_shot_ranged,
@@ -432,6 +466,7 @@ pub const fn cheap_shot_melee(ctx: &EvalContext) -> f32 {
     10f32 + 35f32 / 17f32 * (ctx.level - 1f32)
 }
 pub static CONDITIONING_8429: CachedRune = CachedRune {
+    name: "Conditioning",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::Conditioning,
@@ -441,9 +476,11 @@ pub static CONDITIONING_8429: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 8429,
+    internal_id: RuneId::Conditioning,
     undeclared: true,
 };
 pub static CONQUEROR_8010: CachedRune = CachedRune {
+    name: "Conqueror",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::Conqueror,
@@ -453,9 +490,11 @@ pub static CONQUEROR_8010: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 8010,
+    internal_id: RuneId::Conqueror,
     undeclared: true,
 };
 pub static COSMIC_INSIGHT_8347: CachedRune = CachedRune {
+    name: "Cosmic Insight",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::CosmicInsight,
@@ -465,9 +504,11 @@ pub static COSMIC_INSIGHT_8347: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 8347,
+    internal_id: RuneId::CosmicInsight,
     undeclared: true,
 };
 pub static COUP_DE_GRACE_8014: CachedRune = CachedRune {
+    name: "Coup de Grace",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::CoupDeGrace,
@@ -477,9 +518,11 @@ pub static COUP_DE_GRACE_8014: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 8014,
+    internal_id: RuneId::CoupDeGrace,
     undeclared: true,
 };
 pub static CUT_DOWN_8017: CachedRune = CachedRune {
+    name: "Cut Down",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::CutDown,
@@ -489,9 +532,11 @@ pub static CUT_DOWN_8017: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 8017,
+    internal_id: RuneId::CutDown,
     undeclared: true,
 };
 pub static DARK_HARVEST_8128: CachedRune = CachedRune {
+    name: "Dark Harvest",
     damage_type: DamageType::Adaptative,
     metadata: TypeMetadata {
         kind: RuneId::DarkHarvest,
@@ -499,19 +544,27 @@ pub static DARK_HARVEST_8128: CachedRune = CachedRune {
         attributes: Attrs::Undefined,
     },
     riot_id: 8128,
+    internal_id: RuneId::DarkHarvest,
     undeclared: false,
     melee_closure: dark_harvest_melee,
     ranged_closure: dark_harvest_ranged,
 };
 pub const fn dark_harvest_ranged(ctx: &EvalContext) -> f32 {
-    (20f32 + 60f32 / 17f32 * (ctx.level - 1f32) + 0.1f32 * ctx.bonus_ad + 0.05f32 * ctx.ap)
+    (20f32
+        + 60f32 / 17f32 * (ctx.level - 1f32)
+        + 0.1f32 * ctx.bonus_ad
+        + 0.05f32 * ctx.ap)
         * ctx.adaptative_damage
 }
 pub const fn dark_harvest_melee(ctx: &EvalContext) -> f32 {
-    (20f32 + 60f32 / 17f32 * (ctx.level - 1f32) + 0.1f32 * ctx.bonus_ad + 0.05f32 * ctx.ap)
+    (20f32
+        + 60f32 / 17f32 * (ctx.level - 1f32)
+        + 0.1f32 * ctx.bonus_ad
+        + 0.05f32 * ctx.ap)
         * ctx.adaptative_damage
 }
 pub static DEEP_WARD_8141: CachedRune = CachedRune {
+    name: "Deep Ward",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::DeepWard,
@@ -521,9 +574,11 @@ pub static DEEP_WARD_8141: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 8141,
+    internal_id: RuneId::DeepWard,
     undeclared: true,
 };
 pub static DEMOLISH_8446: CachedRune = CachedRune {
+    name: "Demolish",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::Demolish,
@@ -533,9 +588,11 @@ pub static DEMOLISH_8446: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 8446,
+    internal_id: RuneId::Demolish,
     undeclared: true,
 };
 pub static ELECTROCUTE_8112: CachedRune = CachedRune {
+    name: "Electrocute",
     damage_type: DamageType::Adaptative,
     metadata: TypeMetadata {
         kind: RuneId::Electrocute,
@@ -543,19 +600,27 @@ pub static ELECTROCUTE_8112: CachedRune = CachedRune {
         attributes: Attrs::Undefined,
     },
     riot_id: 8112,
+    internal_id: RuneId::Electrocute,
     undeclared: false,
     melee_closure: electrocute_melee,
     ranged_closure: electrocute_ranged,
 };
 pub const fn electrocute_ranged(ctx: &EvalContext) -> f32 {
-    (30f32 + 190f32 / 17f32 * (ctx.level - 1f32) + 0.1f32 * ctx.bonus_ad + 0.05f32 * ctx.ap)
+    (30f32
+        + 190f32 / 17f32 * (ctx.level - 1f32)
+        + 0.1f32 * ctx.bonus_ad
+        + 0.05f32 * ctx.ap)
         * ctx.adaptative_damage
 }
 pub const fn electrocute_melee(ctx: &EvalContext) -> f32 {
-    (30f32 + 190f32 / 17f32 * (ctx.level - 1f32) + 0.1f32 * ctx.bonus_ad + 0.05f32 * ctx.ap)
+    (30f32
+        + 190f32 / 17f32 * (ctx.level - 1f32)
+        + 0.1f32 * ctx.bonus_ad
+        + 0.05f32 * ctx.ap)
         * ctx.adaptative_damage
 }
 pub static EYEBALL_COLLECTION_8120: CachedRune = CachedRune {
+    name: "Eyeball Collection",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::EyeballCollection,
@@ -565,9 +630,11 @@ pub static EYEBALL_COLLECTION_8120: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 8120,
+    internal_id: RuneId::EyeballCollection,
     undeclared: true,
 };
 pub static FIRST_STRIKE_8369: CachedRune = CachedRune {
+    name: "First Strike",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::FirstStrike,
@@ -577,9 +644,11 @@ pub static FIRST_STRIKE_8369: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 8369,
+    internal_id: RuneId::FirstStrike,
     undeclared: true,
 };
 pub static FLEET_FOOTWORK_8021: CachedRune = CachedRune {
+    name: "Fleet Footwork",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::FleetFootwork,
@@ -589,9 +658,11 @@ pub static FLEET_FOOTWORK_8021: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 8021,
+    internal_id: RuneId::FleetFootwork,
     undeclared: true,
 };
 pub static FONT_OF_LIFE_8463: CachedRune = CachedRune {
+    name: "Font of Life",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::FontOfLife,
@@ -601,9 +672,11 @@ pub static FONT_OF_LIFE_8463: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 8463,
+    internal_id: RuneId::FontOfLife,
     undeclared: true,
 };
 pub static GATHERING_STORM_8236: CachedRune = CachedRune {
+    name: "Gathering Storm",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::GatheringStorm,
@@ -613,9 +686,11 @@ pub static GATHERING_STORM_8236: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 8236,
+    internal_id: RuneId::GatheringStorm,
     undeclared: true,
 };
 pub static GHOST_PORO_8136: CachedRune = CachedRune {
+    name: "Ghost Poro",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::GhostPoro,
@@ -625,9 +700,11 @@ pub static GHOST_PORO_8136: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 8136,
+    internal_id: RuneId::GhostPoro,
     undeclared: true,
 };
 pub static GLACIAL_AUGMENT_8351: CachedRune = CachedRune {
+    name: "Glacial Augment",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::GlacialAugment,
@@ -637,9 +714,11 @@ pub static GLACIAL_AUGMENT_8351: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 8351,
+    internal_id: RuneId::GlacialAugment,
     undeclared: true,
 };
 pub static GRASP_OF_THE_UNDYING_8437: CachedRune = CachedRune {
+    name: "Grasp of the Undying",
     damage_type: DamageType::Magic,
     metadata: TypeMetadata {
         kind: RuneId::GraspOfTheUndying,
@@ -647,6 +726,7 @@ pub static GRASP_OF_THE_UNDYING_8437: CachedRune = CachedRune {
         attributes: Attrs::Undefined,
     },
     riot_id: 8437,
+    internal_id: RuneId::GraspOfTheUndying,
     undeclared: false,
     melee_closure: grasp_of_the_undying_melee,
     ranged_closure: grasp_of_the_undying_ranged,
@@ -658,6 +738,7 @@ pub const fn grasp_of_the_undying_melee(ctx: &EvalContext) -> f32 {
     0.035f32 * ctx.max_health * ctx.magic_multiplier
 }
 pub static GRISLY_MEMENTOS_8140: CachedRune = CachedRune {
+    name: "Grisly Mementos",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::GrislyMementos,
@@ -667,9 +748,11 @@ pub static GRISLY_MEMENTOS_8140: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 8140,
+    internal_id: RuneId::GrislyMementos,
     undeclared: true,
 };
 pub static GUARDIAN_8465: CachedRune = CachedRune {
+    name: "Guardian",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::Guardian,
@@ -679,9 +762,11 @@ pub static GUARDIAN_8465: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 8465,
+    internal_id: RuneId::Guardian,
     undeclared: true,
 };
 pub static HAIL_OF_BLADES_9923: CachedRune = CachedRune {
+    name: "Hail of Blades",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::HailOfBlades,
@@ -691,9 +776,11 @@ pub static HAIL_OF_BLADES_9923: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 9923,
+    internal_id: RuneId::HailOfBlades,
     undeclared: true,
 };
 pub static HEALTH_9993: CachedRune = CachedRune {
+    name: "Health",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::Health,
@@ -703,9 +790,11 @@ pub static HEALTH_9993: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 9993,
+    internal_id: RuneId::Health,
     undeclared: true,
 };
 pub static HEALTH_SCALING_9991: CachedRune = CachedRune {
+    name: "Health Scaling",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::HealthScaling,
@@ -715,9 +804,11 @@ pub static HEALTH_SCALING_9991: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 9991,
+    internal_id: RuneId::HealthScaling,
     undeclared: true,
 };
 pub static HEXTECH_FLASHTRAPTION_8306: CachedRune = CachedRune {
+    name: "Hextech Flashtraption",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::HextechFlashtraption,
@@ -727,9 +818,11 @@ pub static HEXTECH_FLASHTRAPTION_8306: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 8306,
+    internal_id: RuneId::HextechFlashtraption,
     undeclared: true,
 };
 pub static JACK_OF_ALL_TRADES_8316: CachedRune = CachedRune {
+    name: "Jack Of All Trades",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::JackOfAllTrades,
@@ -739,9 +832,11 @@ pub static JACK_OF_ALL_TRADES_8316: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 8316,
+    internal_id: RuneId::JackOfAllTrades,
     undeclared: true,
 };
 pub static LAST_STAND_8299: CachedRune = CachedRune {
+    name: "Last Stand",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::LastStand,
@@ -751,9 +846,11 @@ pub static LAST_STAND_8299: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 8299,
+    internal_id: RuneId::LastStand,
     undeclared: true,
 };
 pub static LEGEND_ALACRITY_9104: CachedRune = CachedRune {
+    name: "Legend: Alacrity",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::LegendAlacrity,
@@ -763,9 +860,11 @@ pub static LEGEND_ALACRITY_9104: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 9104,
+    internal_id: RuneId::LegendAlacrity,
     undeclared: true,
 };
 pub static LEGEND_BLOODLINE_9103: CachedRune = CachedRune {
+    name: "Legend: Bloodline",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::LegendBloodline,
@@ -775,9 +874,11 @@ pub static LEGEND_BLOODLINE_9103: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 9103,
+    internal_id: RuneId::LegendBloodline,
     undeclared: true,
 };
 pub static LEGEND_HASTE_9105: CachedRune = CachedRune {
+    name: "Legend: Haste",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::LegendHaste,
@@ -787,9 +888,11 @@ pub static LEGEND_HASTE_9105: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 9105,
+    internal_id: RuneId::LegendHaste,
     undeclared: true,
 };
 pub static LETHAL_TEMPO_8008: CachedRune = CachedRune {
+    name: "Lethal Tempo",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::LethalTempo,
@@ -799,9 +902,11 @@ pub static LETHAL_TEMPO_8008: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 8008,
+    internal_id: RuneId::LethalTempo,
     undeclared: true,
 };
 pub static MAGICAL_FOOTWEAR_8304: CachedRune = CachedRune {
+    name: "Magical Footwear",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::MagicalFootwear,
@@ -811,9 +916,11 @@ pub static MAGICAL_FOOTWEAR_8304: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 8304,
+    internal_id: RuneId::MagicalFootwear,
     undeclared: true,
 };
 pub static MANAFLOW_BAND_8226: CachedRune = CachedRune {
+    name: "Manaflow Band",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::ManaflowBand,
@@ -823,9 +930,11 @@ pub static MANAFLOW_BAND_8226: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 8226,
+    internal_id: RuneId::ManaflowBand,
     undeclared: true,
 };
 pub static MOVE_SPEED_9996: CachedRune = CachedRune {
+    name: "Move Speed",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::MoveSpeed,
@@ -835,9 +944,11 @@ pub static MOVE_SPEED_9996: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 9996,
+    internal_id: RuneId::MoveSpeed,
     undeclared: true,
 };
 pub static NIMBUS_CLOAK_8275: CachedRune = CachedRune {
+    name: "Nimbus Cloak",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::NimbusCloak,
@@ -847,9 +958,11 @@ pub static NIMBUS_CLOAK_8275: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 8275,
+    internal_id: RuneId::NimbusCloak,
     undeclared: true,
 };
 pub static OVERGROWTH_8451: CachedRune = CachedRune {
+    name: "Overgrowth",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::Overgrowth,
@@ -859,9 +972,11 @@ pub static OVERGROWTH_8451: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 8451,
+    internal_id: RuneId::Overgrowth,
     undeclared: true,
 };
 pub static PHASE_RUSH_8230: CachedRune = CachedRune {
+    name: "Phase Rush",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::PhaseRush,
@@ -871,9 +986,11 @@ pub static PHASE_RUSH_8230: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 8230,
+    internal_id: RuneId::PhaseRush,
     undeclared: true,
 };
 pub static PREDATOR_8124: CachedRune = CachedRune {
+    name: "Predator",
     damage_type: DamageType::Adaptative,
     metadata: TypeMetadata {
         kind: RuneId::Predator,
@@ -881,19 +998,25 @@ pub static PREDATOR_8124: CachedRune = CachedRune {
         attributes: Attrs::Undefined,
     },
     riot_id: 8124,
+    internal_id: RuneId::Predator,
     undeclared: false,
     melee_closure: predator_melee,
     ranged_closure: predator_ranged,
 };
 pub const fn predator_ranged(ctx: &EvalContext) -> f32 {
-    (20f32 + 160f32 / 17f32 * (ctx.level - 1f32) + (0.25f32 * ctx.bonus_ad + 0.15f32 * ctx.ap))
+    (20f32
+        + 160f32 / 17f32 * (ctx.level - 1f32)
+        + (0.25f32 * ctx.bonus_ad + 0.15f32 * ctx.ap))
         * ctx.adaptative_damage
 }
 pub const fn predator_melee(ctx: &EvalContext) -> f32 {
-    (20f32 + 160f32 / 17f32 * (ctx.level - 1f32) + (0.25f32 * ctx.bonus_ad + 0.15f32 * ctx.ap))
+    (20f32
+        + 160f32 / 17f32 * (ctx.level - 1f32)
+        + (0.25f32 * ctx.bonus_ad + 0.15f32 * ctx.ap))
         * ctx.adaptative_damage
 }
 pub static PRESENCE_OF_MIND_8009: CachedRune = CachedRune {
+    name: "Presence of Mind",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::PresenceOfMind,
@@ -903,9 +1026,11 @@ pub static PRESENCE_OF_MIND_8009: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 8009,
+    internal_id: RuneId::PresenceOfMind,
     undeclared: true,
 };
 pub static PRESS_THE_ATTACK_8005: CachedRune = CachedRune {
+    name: "Press The Attack",
     damage_type: DamageType::Adaptative,
     metadata: TypeMetadata {
         kind: RuneId::PressTheAttack,
@@ -913,6 +1038,7 @@ pub static PRESS_THE_ATTACK_8005: CachedRune = CachedRune {
         attributes: Attrs::Undefined,
     },
     riot_id: 8005,
+    internal_id: RuneId::PressTheAttack,
     undeclared: false,
     melee_closure: press_the_attack_melee,
     ranged_closure: press_the_attack_ranged,
@@ -924,6 +1050,7 @@ pub const fn press_the_attack_melee(ctx: &EvalContext) -> f32 {
     (40f32 + 120f32 / 17f32 * (ctx.level - 1f32)) * ctx.adaptative_damage
 }
 pub static RELENTLESS_HUNTER_8105: CachedRune = CachedRune {
+    name: "Relentless Hunter",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::RelentlessHunter,
@@ -933,9 +1060,11 @@ pub static RELENTLESS_HUNTER_8105: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 8105,
+    internal_id: RuneId::RelentlessHunter,
     undeclared: true,
 };
 pub static REVITALIZE_8453: CachedRune = CachedRune {
+    name: "Revitalize",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::Revitalize,
@@ -945,9 +1074,11 @@ pub static REVITALIZE_8453: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 8453,
+    internal_id: RuneId::Revitalize,
     undeclared: true,
 };
 pub static SCORCH_8237: CachedRune = CachedRune {
+    name: "Scorch",
     damage_type: DamageType::Magic,
     metadata: TypeMetadata {
         kind: RuneId::Scorch,
@@ -955,6 +1086,7 @@ pub static SCORCH_8237: CachedRune = CachedRune {
         attributes: Attrs::Undefined,
     },
     riot_id: 8237,
+    internal_id: RuneId::Scorch,
     undeclared: false,
     melee_closure: scorch_melee,
     ranged_closure: scorch_ranged,
@@ -966,6 +1098,7 @@ pub const fn scorch_melee(ctx: &EvalContext) -> f32 {
     (20f32 + 20f32 / 17f32 * (ctx.level - 1f32)) * ctx.magic_multiplier
 }
 pub static SECOND_WIND_8444: CachedRune = CachedRune {
+    name: "Second Wind",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::SecondWind,
@@ -975,9 +1108,11 @@ pub static SECOND_WIND_8444: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 8444,
+    internal_id: RuneId::SecondWind,
     undeclared: true,
 };
 pub static SHIELD_BASH_8401: CachedRune = CachedRune {
+    name: "Shield Bash",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::ShieldBash,
@@ -987,9 +1122,11 @@ pub static SHIELD_BASH_8401: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 8401,
+    internal_id: RuneId::ShieldBash,
     undeclared: true,
 };
 pub static SIXTH_SENSE_8137: CachedRune = CachedRune {
+    name: "Sixth Sense",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::SixthSense,
@@ -999,9 +1136,11 @@ pub static SIXTH_SENSE_8137: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 8137,
+    internal_id: RuneId::SixthSense,
     undeclared: true,
 };
 pub static SUDDEN_IMPACT_8143: CachedRune = CachedRune {
+    name: "Sudden Impact",
     damage_type: DamageType::True,
     metadata: TypeMetadata {
         kind: RuneId::SuddenImpact,
@@ -1009,6 +1148,7 @@ pub static SUDDEN_IMPACT_8143: CachedRune = CachedRune {
         attributes: Attrs::Undefined,
     },
     riot_id: 8143,
+    internal_id: RuneId::SuddenImpact,
     undeclared: false,
     melee_closure: sudden_impact_melee,
     ranged_closure: sudden_impact_ranged,
@@ -1020,6 +1160,7 @@ pub const fn sudden_impact_melee(ctx: &EvalContext) -> f32 {
     20f32 + 60f32 / 17f32 * (ctx.level - 1f32)
 }
 pub static SUMMON_AERY_8214: CachedRune = CachedRune {
+    name: "Summon Aery",
     damage_type: DamageType::Adaptative,
     metadata: TypeMetadata {
         kind: RuneId::SummonAery,
@@ -1027,19 +1168,27 @@ pub static SUMMON_AERY_8214: CachedRune = CachedRune {
         attributes: Attrs::Undefined,
     },
     riot_id: 8214,
+    internal_id: RuneId::SummonAery,
     undeclared: false,
     melee_closure: summon_aery_melee,
     ranged_closure: summon_aery_ranged,
 };
 pub const fn summon_aery_ranged(ctx: &EvalContext) -> f32 {
-    (10f32 + 40f32 / 17f32 * (ctx.level - 1f32) + 0.1f32 * ctx.bonus_ad + 0.05f32 * ctx.ap)
+    (10f32
+        + 40f32 / 17f32 * (ctx.level - 1f32)
+        + 0.1f32 * ctx.bonus_ad
+        + 0.05f32 * ctx.ap)
         * ctx.adaptative_damage
 }
 pub const fn summon_aery_melee(ctx: &EvalContext) -> f32 {
-    (10f32 + 40f32 / 17f32 * (ctx.level - 1f32) + 0.1f32 * ctx.bonus_ad + 0.05f32 * ctx.ap)
+    (10f32
+        + 40f32 / 17f32 * (ctx.level - 1f32)
+        + 0.1f32 * ctx.bonus_ad
+        + 0.05f32 * ctx.ap)
         * ctx.adaptative_damage
 }
 pub static TASTE_OF_BLOOD_8139: CachedRune = CachedRune {
+    name: "Taste of Blood",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::TasteOfBlood,
@@ -1049,9 +1198,11 @@ pub static TASTE_OF_BLOOD_8139: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 8139,
+    internal_id: RuneId::TasteOfBlood,
     undeclared: true,
 };
 pub static TENACITY_AND_SLOW_RESIST_9995: CachedRune = CachedRune {
+    name: "Tenacity and Slow Resist",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::TenacityAndSlowResist,
@@ -1061,9 +1212,11 @@ pub static TENACITY_AND_SLOW_RESIST_9995: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 9995,
+    internal_id: RuneId::TenacityAndSlowResist,
     undeclared: true,
 };
 pub static TIME_WARP_TONIC_8352: CachedRune = CachedRune {
+    name: "Time Warp Tonic",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::TimeWarpTonic,
@@ -1073,9 +1226,11 @@ pub static TIME_WARP_TONIC_8352: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 8352,
+    internal_id: RuneId::TimeWarpTonic,
     undeclared: true,
 };
 pub static TRANSCENDENCE_8210: CachedRune = CachedRune {
+    name: "Transcendence",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::Transcendence,
@@ -1085,9 +1240,11 @@ pub static TRANSCENDENCE_8210: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 8210,
+    internal_id: RuneId::Transcendence,
     undeclared: true,
 };
 pub static TREASURE_HUNTER_8135: CachedRune = CachedRune {
+    name: "Treasure Hunter",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::TreasureHunter,
@@ -1097,9 +1254,11 @@ pub static TREASURE_HUNTER_8135: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 8135,
+    internal_id: RuneId::TreasureHunter,
     undeclared: true,
 };
 pub static TRIPLE_TONIC_8313: CachedRune = CachedRune {
+    name: "Triple Tonic",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::TripleTonic,
@@ -1109,9 +1268,11 @@ pub static TRIPLE_TONIC_8313: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 8313,
+    internal_id: RuneId::TripleTonic,
     undeclared: true,
 };
 pub static TRIUMPH_9111: CachedRune = CachedRune {
+    name: "Triumph",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::Triumph,
@@ -1121,9 +1282,11 @@ pub static TRIUMPH_9111: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 9111,
+    internal_id: RuneId::Triumph,
     undeclared: true,
 };
 pub static ULTIMATE_HUNTER_8106: CachedRune = CachedRune {
+    name: "Ultimate Hunter",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::UltimateHunter,
@@ -1133,9 +1296,11 @@ pub static ULTIMATE_HUNTER_8106: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 8106,
+    internal_id: RuneId::UltimateHunter,
     undeclared: true,
 };
 pub static UNFLINCHING_8242: CachedRune = CachedRune {
+    name: "Unflinching",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::Unflinching,
@@ -1145,9 +1310,11 @@ pub static UNFLINCHING_8242: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 8242,
+    internal_id: RuneId::Unflinching,
     undeclared: true,
 };
 pub static UNSEALED_SPELLBOOK_8360: CachedRune = CachedRune {
+    name: "Unsealed Spellbook",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::UnsealedSpellbook,
@@ -1157,9 +1324,11 @@ pub static UNSEALED_SPELLBOOK_8360: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 8360,
+    internal_id: RuneId::UnsealedSpellbook,
     undeclared: true,
 };
 pub static WATERWALKING_8232: CachedRune = CachedRune {
+    name: "Waterwalking",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::Waterwalking,
@@ -1169,9 +1338,11 @@ pub static WATERWALKING_8232: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 8232,
+    internal_id: RuneId::Waterwalking,
     undeclared: true,
 };
 pub static ZOMBIE_WARD_8138: CachedRune = CachedRune {
+    name: "Zombie Ward",
     damage_type: DamageType::Unknown,
     metadata: TypeMetadata {
         kind: RuneId::ZombieWard,
@@ -1181,9 +1352,14 @@ pub static ZOMBIE_WARD_8138: CachedRune = CachedRune {
     melee_closure: zero,
     ranged_closure: zero,
     riot_id: 8138,
+    internal_id: RuneId::ZombieWard,
     undeclared: true,
 };
-pub const fn rune_const_eval(ctx: &EvalContext, rune_id: RuneId, attack_type: AttackType) -> f32 {
+pub const fn rune_const_eval(
+    ctx: &EvalContext,
+    rune_id: RuneId,
+    attack_type: AttackType,
+) -> f32 {
     match rune_id {
         RuneId::AbilityHaste => match attack_type {
             AttackType::Melee => zero(ctx),

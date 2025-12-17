@@ -657,7 +657,9 @@ impl ItemId {
             6660 | 226660 | 446660 => Some(Self::BamisCinder),
             4642 | 224642 | 444642 => Some(Self::BandleglassMirror),
             3102 | 223102 | 443102 => Some(Self::BansheesVeil),
-            1506 | 221506 | 441506 => Some(Self::BaseTurretReinforcedArmorTurretItem),
+            1506 | 221506 | 441506 => {
+                Some(Self::BaseTurretReinforcedArmorTurretItem)
+            }
             3006 | 223006 | 443006 => Some(Self::BerserkersGreaves),
             3071 | 223071 | 443071 => Some(Self::BlackCleaver),
             447122 => Some(Self::BlackHoleGauntlet),
@@ -970,6 +972,7 @@ impl ItemId {
     }
 }
 pub static ABYSSAL_MASK_8020: CachedItem = CachedItem {
+    name: "Abyssal Mask",
     price: 2650,
     prettified_stats: &[
         StatName::Health(350),
@@ -1004,11 +1007,13 @@ pub static ABYSSAL_MASK_8020: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::AbyssalMask,
     riot_id: 8020,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static AEGIS_OF_THE_LEGION_3105: CachedItem = CachedItem {
+    name: "Aegis of the Legion",
     price: 1100,
     prettified_stats: &[
         StatName::Armor(25),
@@ -1043,11 +1048,13 @@ pub static AEGIS_OF_THE_LEGION_3105: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::AegisOfTheLegion,
     riot_id: 3105,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static AETHER_WISP_3113: CachedItem = CachedItem {
+    name: "Aether Wisp",
     price: 900,
     prettified_stats: &[StatName::AbilityPower(30), StatName::MoveSpeed(4)],
     damage_type: DamageType::Unknown,
@@ -1078,11 +1085,13 @@ pub static AETHER_WISP_3113: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::AetherWisp,
     riot_id: 3113,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static AMPLIFYING_TOME_1052: CachedItem = CachedItem {
+    name: "Amplifying Tome",
     price: 400,
     prettified_stats: &[StatName::AbilityPower(20)],
     damage_type: DamageType::Unknown,
@@ -1113,11 +1122,13 @@ pub static AMPLIFYING_TOME_1052: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::AmplifyingTome,
     riot_id: 1052,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static ANATHEMAS_CHAINS_228001: CachedItem = CachedItem {
+    name: "Anathema's Chains",
     price: 2500,
     prettified_stats: &[StatName::Health(650), StatName::AbilityHaste(20)],
     damage_type: DamageType::Unknown,
@@ -1148,11 +1159,13 @@ pub static ANATHEMAS_CHAINS_228001: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::AnathemasChains,
     riot_id: 228001,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static ANTI_TOWER_SOCKS_1508: CachedItem = CachedItem {
+    name: "Anti-Tower Socks",
     price: 0,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -1183,11 +1196,13 @@ pub static ANTI_TOWER_SOCKS_1508: CachedItem = CachedItem {
     purchasable: false,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::AntiTowerSocks,
     riot_id: 1508,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static ARCANE_SWEEPER_TRINKET_3348: CachedItem = CachedItem {
+    name: "Arcane Sweeper (Trinket)",
     price: 0,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -1218,11 +1233,13 @@ pub static ARCANE_SWEEPER_TRINKET_3348: CachedItem = CachedItem {
     purchasable: false,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::ArcaneSweeperTrinket,
     riot_id: 3348,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static ARCHANGELS_STAFF_3003: CachedItem = CachedItem {
+    name: "Archangel's Staff",
     price: 2900,
     prettified_stats: &[
         StatName::AbilityHaste(25),
@@ -1257,11 +1274,13 @@ pub static ARCHANGELS_STAFF_3003: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::ArchangelsStaff,
     riot_id: 3003,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static ARDENT_CENSER_3504: CachedItem = CachedItem {
+    name: "Ardent Censer",
     price: 2200,
     prettified_stats: &[
         StatName::BaseManaRegen(125),
@@ -1297,11 +1316,13 @@ pub static ARDENT_CENSER_3504: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::ArdentCenser,
     riot_id: 3504,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static ARMORED_ADVANCE_3174: CachedItem = CachedItem {
+    name: "Armored Advance",
     price: 1700,
     prettified_stats: &[StatName::MoveSpeed(50), StatName::Armor(40)],
     damage_type: DamageType::Unknown,
@@ -1332,13 +1353,18 @@ pub static ARMORED_ADVANCE_3174: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::ArmoredAdvance,
     riot_id: 3174,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static ATMAS_RECKONING_223039: CachedItem = CachedItem {
+    name: "Atma's Reckoning",
     price: 2500,
-    prettified_stats: &[StatName::Health(700), StatName::CriticalStrikeChance(20)],
+    prettified_stats: &[
+        StatName::Health(700),
+        StatName::CriticalStrikeChance(20),
+    ],
     damage_type: DamageType::Unknown,
     attributes: Attrs::Undefined,
     metadata: TypeMetadata {
@@ -1367,11 +1393,13 @@ pub static ATMAS_RECKONING_223039: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::AtmasReckoning,
     riot_id: 223039,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static AXIOM_ARC_6696: CachedItem = CachedItem {
+    name: "Axiom Arc",
     price: 3000,
     prettified_stats: &[
         StatName::AttackDamage(55),
@@ -1406,11 +1434,13 @@ pub static AXIOM_ARC_6696: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::AxiomArc,
     riot_id: 6696,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static B_F_SWORD_1038: CachedItem = CachedItem {
+    name: "B. F. Sword",
     price: 1300,
     prettified_stats: &[StatName::AttackDamage(40)],
     damage_type: DamageType::Unknown,
@@ -1441,11 +1471,13 @@ pub static B_F_SWORD_1038: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::BFSword,
     riot_id: 1038,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static BAMIS_CINDER_6660: CachedItem = CachedItem {
+    name: "Bami's Cinder",
     price: 900,
     prettified_stats: &[StatName::AbilityHaste(5), StatName::Health(150)],
     damage_type: DamageType::Unknown,
@@ -1476,11 +1508,13 @@ pub static BAMIS_CINDER_6660: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::BamisCinder,
     riot_id: 6660,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static BANDLEGLASS_MIRROR_4642: CachedItem = CachedItem {
+    name: "Bandleglass Mirror",
     price: 900,
     prettified_stats: &[
         StatName::AbilityPower(20),
@@ -1515,11 +1549,13 @@ pub static BANDLEGLASS_MIRROR_4642: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::BandleglassMirror,
     riot_id: 4642,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static BANSHEES_VEIL_3102: CachedItem = CachedItem {
+    name: "Banshee's Veil",
     price: 3000,
     prettified_stats: &[StatName::AbilityPower(105), StatName::MagicResist(40)],
     damage_type: DamageType::Unknown,
@@ -1550,46 +1586,51 @@ pub static BANSHEES_VEIL_3102: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::BansheesVeil,
     riot_id: 3102,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
-pub static BASE_TURRET_REINFORCED_ARMOR_TURRET_ITEM_1506: CachedItem = CachedItem {
-    price: 0,
-    prettified_stats: &[],
-    damage_type: DamageType::Unknown,
-    attributes: Attrs::Undefined,
-    metadata: TypeMetadata {
-        kind: ItemId::BaseTurretReinforcedArmorTurretItem,
+pub static BASE_TURRET_REINFORCED_ARMOR_TURRET_ITEM_1506: CachedItem =
+    CachedItem {
+        name: "Base Turret Reinforced Armor (Turret Item)",
+        price: 0,
+        prettified_stats: &[],
         damage_type: DamageType::Unknown,
         attributes: Attrs::Undefined,
-    },
-    stats: CachedItemStats {
-        ability_power: 0f32,
-        armor: 0f32,
-        attack_damage: 0f32,
-        attack_speed: 0f32,
-        crit_chance: 0f32,
-        crit_damage: 0f32,
-        health: 0f32,
-        lifesteal: 0f32,
-        magic_resist: 0f32,
-        mana: 0f32,
-        movespeed: 0f32,
-        omnivamp: 0f32,
-        armor_penetration_flat: 0f32,
-        magic_penetration_flat: 0f32,
-        armor_penetration_percent: 0f32,
-        magic_penetration_percent: 0f32,
-    },
-    purchasable: false,
-    deals_damage: false,
-    tier: 1,
-    riot_id: 1506,
-    ranged_closure: [zero, zero],
-    melee_closure: [zero, zero],
-};
+        metadata: TypeMetadata {
+            kind: ItemId::BaseTurretReinforcedArmorTurretItem,
+            damage_type: DamageType::Unknown,
+            attributes: Attrs::Undefined,
+        },
+        stats: CachedItemStats {
+            ability_power: 0f32,
+            armor: 0f32,
+            attack_damage: 0f32,
+            attack_speed: 0f32,
+            crit_chance: 0f32,
+            crit_damage: 0f32,
+            health: 0f32,
+            lifesteal: 0f32,
+            magic_resist: 0f32,
+            mana: 0f32,
+            movespeed: 0f32,
+            omnivamp: 0f32,
+            armor_penetration_flat: 0f32,
+            magic_penetration_flat: 0f32,
+            armor_penetration_percent: 0f32,
+            magic_penetration_percent: 0f32,
+        },
+        purchasable: false,
+        deals_damage: false,
+        tier: 1,
+        internal_id: ItemId::BaseTurretReinforcedArmorTurretItem,
+        riot_id: 1506,
+        ranged_closure: [zero, zero],
+        melee_closure: [zero, zero],
+    };
 pub static BERSERKERS_GREAVES_3006: CachedItem = CachedItem {
+    name: "Berserker's Greaves",
     price: 1100,
     prettified_stats: &[StatName::MoveSpeed(45), StatName::AttackSpeed(25)],
     damage_type: DamageType::Unknown,
@@ -1620,11 +1661,13 @@ pub static BERSERKERS_GREAVES_3006: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::BerserkersGreaves,
     riot_id: 3006,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static BLACK_CLEAVER_3071: CachedItem = CachedItem {
+    name: "Black Cleaver",
     price: 3000,
     prettified_stats: &[
         StatName::AbilityHaste(20),
@@ -1659,11 +1702,13 @@ pub static BLACK_CLEAVER_3071: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::BlackCleaver,
     riot_id: 3071,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static BLACK_HOLE_GAUNTLET_447122: CachedItem = CachedItem {
+    name: "Black Hole Gauntlet",
     price: 0,
     prettified_stats: &[StatName::Health(900), StatName::AbilityHaste(25)],
     damage_type: DamageType::Unknown,
@@ -1694,11 +1739,13 @@ pub static BLACK_HOLE_GAUNTLET_447122: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::BlackHoleGauntlet,
     riot_id: 447122,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static BLACK_SPEAR_3599: CachedItem = CachedItem {
+    name: "Black Spear",
     price: 0,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -1729,11 +1776,13 @@ pub static BLACK_SPEAR_3599: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::BlackSpear,
     riot_id: 3599,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static BLACKFIRE_TORCH_2503: CachedItem = CachedItem {
+    name: "Blackfire Torch",
     price: 2800,
     prettified_stats: &[
         StatName::AbilityPower(80),
@@ -1768,11 +1817,13 @@ pub static BLACKFIRE_TORCH_2503: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::BlackfireTorch,
     riot_id: 2503,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static BLADE_OF_THE_RUINED_KING_3153: CachedItem = CachedItem {
+    name: "Blade of the Ruined King",
     price: 3200,
     prettified_stats: &[
         StatName::LifeSteal(10),
@@ -1807,23 +1858,31 @@ pub static BLADE_OF_THE_RUINED_KING_3153: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: true,
     tier: 3,
+    internal_id: ItemId::BladeOfTheRuinedKing,
     riot_id: 3153,
     ranged_closure: [blade_of_the_ruined_king_ranged_min, zero],
     melee_closure: [blade_of_the_ruined_king_melee_min, zero],
 };
 pub const fn blade_of_the_ruined_king_ranged_min(ctx: &EvalContext) -> f32 {
     ctx.enemy_current_health
-        - (0.06f32 * ctx.enemy_current_health * (1f32 - 0.06f32 * ctx.physical_multiplier) - ctx.ad
+        - (0.06f32
+            * ctx.enemy_current_health
+            * (1f32 - 0.06f32 * ctx.physical_multiplier)
+            - ctx.ad
             + ctx.ad * (1f32 - 0.06f32 * ctx.physical_multiplier))
             / 0.06f32
 }
 pub const fn blade_of_the_ruined_king_melee_min(ctx: &EvalContext) -> f32 {
     ctx.enemy_current_health
-        - (0.09f32 * ctx.enemy_current_health * (1f32 - 0.09f32 * ctx.physical_multiplier) - ctx.ad
+        - (0.09f32
+            * ctx.enemy_current_health
+            * (1f32 - 0.09f32 * ctx.physical_multiplier)
+            - ctx.ad
             + ctx.ad * (1f32 - 0.09f32 * ctx.physical_multiplier))
             / 0.09f32
 }
 pub static BLASTING_WAND_1026: CachedItem = CachedItem {
+    name: "Blasting Wand",
     price: 850,
     prettified_stats: &[StatName::AbilityPower(45)],
     damage_type: DamageType::Unknown,
@@ -1854,13 +1913,18 @@ pub static BLASTING_WAND_1026: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::BlastingWand,
     riot_id: 1026,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static BLIGHTING_JEWEL_4630: CachedItem = CachedItem {
+    name: "Blighting Jewel",
     price: 1100,
-    prettified_stats: &[StatName::MagicPenetration(13), StatName::AbilityPower(25)],
+    prettified_stats: &[
+        StatName::MagicPenetration(13),
+        StatName::AbilityPower(25),
+    ],
     damage_type: DamageType::Unknown,
     attributes: Attrs::Undefined,
     metadata: TypeMetadata {
@@ -1889,11 +1953,13 @@ pub static BLIGHTING_JEWEL_4630: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::BlightingJewel,
     riot_id: 4630,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static BLOODLETTERS_CURSE_8010: CachedItem = CachedItem {
+    name: "Bloodletter's Curse",
     price: 2900,
     prettified_stats: &[
         StatName::AbilityHaste(15),
@@ -1928,11 +1994,13 @@ pub static BLOODLETTERS_CURSE_8010: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::BloodlettersCurse,
     riot_id: 8010,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static BLOODSONG_3877: CachedItem = CachedItem {
+    name: "Bloodsong",
     price: 400,
     prettified_stats: &[
         StatName::Health(200),
@@ -1968,11 +2036,13 @@ pub static BLOODSONG_3877: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::Bloodsong,
     riot_id: 3877,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static BLOODTHIRSTER_3072: CachedItem = CachedItem {
+    name: "Bloodthirster",
     price: 3400,
     prettified_stats: &[StatName::AttackDamage(80), StatName::LifeSteal(15)],
     damage_type: DamageType::Unknown,
@@ -2003,11 +2073,13 @@ pub static BLOODTHIRSTER_3072: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::Bloodthirster,
     riot_id: 3072,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static BOOTS_1001: CachedItem = CachedItem {
+    name: "Boots",
     price: 300,
     prettified_stats: &[StatName::MoveSpeed(25)],
     damage_type: DamageType::Unknown,
@@ -2038,11 +2110,13 @@ pub static BOOTS_1001: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::Boots,
     riot_id: 1001,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static BOOTS_OF_SWIFTNESS_3009: CachedItem = CachedItem {
+    name: "Boots of Swiftness",
     price: 1000,
     prettified_stats: &[StatName::MoveSpeed(55)],
     damage_type: DamageType::Unknown,
@@ -2073,11 +2147,13 @@ pub static BOOTS_OF_SWIFTNESS_3009: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::BootsOfSwiftness,
     riot_id: 3009,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static BOUNTY_OF_WORLDS_3867: CachedItem = CachedItem {
+    name: "Bounty of Worlds",
     price: 400,
     prettified_stats: &[
         StatName::Health(200),
@@ -2113,11 +2189,13 @@ pub static BOUNTY_OF_WORLDS_3867: CachedItem = CachedItem {
     purchasable: false,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::BountyOfWorlds,
     riot_id: 3867,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static BRAMBLE_VEST_3076: CachedItem = CachedItem {
+    name: "Bramble Vest",
     price: 800,
     prettified_stats: &[StatName::Armor(30)],
     damage_type: DamageType::Unknown,
@@ -2148,11 +2226,13 @@ pub static BRAMBLE_VEST_3076: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::BrambleVest,
     riot_id: 3076,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static CAPPA_JUICE_2141: CachedItem = CachedItem {
+    name: "Cappa Juice",
     price: 300,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -2183,11 +2263,13 @@ pub static CAPPA_JUICE_2141: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::CappaJuice,
     riot_id: 2141,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static CATALYST_OF_AEONS_3803: CachedItem = CachedItem {
+    name: "Catalyst of Aeons",
     price: 1300,
     prettified_stats: &[StatName::Mana(375), StatName::Health(300)],
     damage_type: DamageType::Unknown,
@@ -2218,11 +2300,13 @@ pub static CATALYST_OF_AEONS_3803: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::CatalystOfAeons,
     riot_id: 3803,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static CAULFIELDS_WARHAMMER_3133: CachedItem = CachedItem {
+    name: "Caulfield's Warhammer",
     price: 1050,
     prettified_stats: &[StatName::AttackDamage(20), StatName::AbilityHaste(10)],
     damage_type: DamageType::Unknown,
@@ -2253,11 +2337,13 @@ pub static CAULFIELDS_WARHAMMER_3133: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::CaulfieldsWarhammer,
     riot_id: 3133,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static CELESTIAL_OPPOSITION_3869: CachedItem = CachedItem {
+    name: "Celestial Opposition",
     price: 400,
     prettified_stats: &[
         StatName::BaseManaRegen(75),
@@ -2293,11 +2379,13 @@ pub static CELESTIAL_OPPOSITION_3869: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::CelestialOpposition,
     riot_id: 3869,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static CHAIN_VEST_1031: CachedItem = CachedItem {
+    name: "Chain Vest",
     price: 800,
     prettified_stats: &[StatName::Armor(40)],
     damage_type: DamageType::Unknown,
@@ -2328,11 +2416,13 @@ pub static CHAIN_VEST_1031: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::ChainVest,
     riot_id: 1031,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static CHAINLACED_CRUSHERS_3173: CachedItem = CachedItem {
+    name: "Chainlaced Crushers",
     price: 1750,
     prettified_stats: &[
         StatName::MoveSpeed(50),
@@ -2367,11 +2457,13 @@ pub static CHAINLACED_CRUSHERS_3173: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::ChainlacedCrushers,
     riot_id: 3173,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static CHEMPUNK_CHAINSWORD_6609: CachedItem = CachedItem {
+    name: "Chempunk Chainsword",
     price: 3100,
     prettified_stats: &[
         StatName::AttackDamage(45),
@@ -2406,11 +2498,13 @@ pub static CHEMPUNK_CHAINSWORD_6609: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::ChempunkChainsword,
     riot_id: 6609,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static CLOAK_OF_AGILITY_1018: CachedItem = CachedItem {
+    name: "Cloak of Agility",
     price: 600,
     prettified_stats: &[StatName::CriticalStrikeChance(15)],
     damage_type: DamageType::Unknown,
@@ -2441,11 +2535,13 @@ pub static CLOAK_OF_AGILITY_1018: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::CloakOfAgility,
     riot_id: 1018,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static CLOAK_OF_STARRY_NIGHT_443059: CachedItem = CachedItem {
+    name: "Cloak of Starry Night",
     price: 0,
     prettified_stats: &[StatName::MagicResist(100), StatName::Health(300)],
     damage_type: DamageType::Unknown,
@@ -2476,11 +2572,13 @@ pub static CLOAK_OF_STARRY_NIGHT_443059: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::CloakOfStarryNight,
     riot_id: 443059,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static CLOTH_ARMOR_1029: CachedItem = CachedItem {
+    name: "Cloth Armor",
     price: 300,
     prettified_stats: &[StatName::Armor(15)],
     damage_type: DamageType::Unknown,
@@ -2511,11 +2609,13 @@ pub static CLOTH_ARMOR_1029: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::ClothArmor,
     riot_id: 1029,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static CONTROL_WARD_2055: CachedItem = CachedItem {
+    name: "Control Ward",
     price: 75,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -2546,11 +2646,13 @@ pub static CONTROL_WARD_2055: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::ControlWard,
     riot_id: 2055,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static COSMIC_DRIVE_4629: CachedItem = CachedItem {
+    name: "Cosmic Drive",
     price: 3000,
     prettified_stats: &[
         StatName::Health(350),
@@ -2586,11 +2688,13 @@ pub static COSMIC_DRIVE_4629: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::CosmicDrive,
     riot_id: 4629,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static CRIMSON_LUCIDITY_3171: CachedItem = CachedItem {
+    name: "Crimson Lucidity",
     price: 1400,
     prettified_stats: &[StatName::AbilityHaste(25), StatName::MoveSpeed(50)],
     damage_type: DamageType::Unknown,
@@ -2621,11 +2725,13 @@ pub static CRIMSON_LUCIDITY_3171: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::CrimsonLucidity,
     riot_id: 3171,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static CROWN_OF_THE_SHATTERED_QUEEN_444644: CachedItem = CachedItem {
+    name: "Crown of the Shattered Queen",
     price: 0,
     prettified_stats: &[
         StatName::Health(350),
@@ -2661,11 +2767,13 @@ pub static CROWN_OF_THE_SHATTERED_QUEEN_444644: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::CrownOfTheShatteredQueen,
     riot_id: 444644,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static CRUELTY_447109: CachedItem = CachedItem {
+    name: "Cruelty",
     price: 0,
     prettified_stats: &[
         StatName::Armor(30),
@@ -2700,11 +2808,13 @@ pub static CRUELTY_447109: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::Cruelty,
     riot_id: 447109,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static CRYPTBLOOM_3137: CachedItem = CachedItem {
+    name: "Cryptbloom",
     price: 3000,
     prettified_stats: &[
         StatName::AbilityPower(75),
@@ -2739,11 +2849,13 @@ pub static CRYPTBLOOM_3137: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::Cryptbloom,
     riot_id: 3137,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static CRYSTALLINE_BRACER_3801: CachedItem = CachedItem {
+    name: "Crystalline Bracer",
     price: 800,
     prettified_stats: &[StatName::Health(200), StatName::BaseHealthRegen(100)],
     damage_type: DamageType::Unknown,
@@ -2774,11 +2886,13 @@ pub static CRYSTALLINE_BRACER_3801: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::CrystallineBracer,
     riot_id: 3801,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static CULL_1083: CachedItem = CachedItem {
+    name: "Cull",
     price: 450,
     prettified_stats: &[StatName::AttackDamage(7)],
     damage_type: DamageType::Unknown,
@@ -2809,11 +2923,13 @@ pub static CULL_1083: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::Cull,
     riot_id: 1083,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static DAGGER_1042: CachedItem = CachedItem {
+    name: "Dagger",
     price: 250,
     prettified_stats: &[StatName::AttackSpeed(10)],
     damage_type: DamageType::Unknown,
@@ -2844,11 +2960,13 @@ pub static DAGGER_1042: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::Dagger,
     riot_id: 1042,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static DARK_SEAL_1082: CachedItem = CachedItem {
+    name: "Dark Seal",
     price: 350,
     prettified_stats: &[StatName::Health(50), StatName::AbilityPower(15)],
     damage_type: DamageType::Unknown,
@@ -2879,11 +2997,13 @@ pub static DARK_SEAL_1082: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::DarkSeal,
     riot_id: 1082,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static DARKSTEEL_TALONS_443054: CachedItem = CachedItem {
+    name: "Darksteel Talons",
     price: 0,
     prettified_stats: &[
         StatName::AttackSpeed(50),
@@ -2918,11 +3038,13 @@ pub static DARKSTEEL_TALONS_443054: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::DarksteelTalons,
     riot_id: 443054,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static DAWNCORE_6621: CachedItem = CachedItem {
+    name: "Dawncore",
     price: 2500,
     prettified_stats: &[
         StatName::AbilityPower(45),
@@ -2957,11 +3079,13 @@ pub static DAWNCORE_6621: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::Dawncore,
     riot_id: 6621,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static DEAD_MANS_PLATE_3742: CachedItem = CachedItem {
+    name: "Dead Man's Plate",
     price: 2900,
     prettified_stats: &[
         StatName::Armor(55),
@@ -2996,11 +3120,13 @@ pub static DEAD_MANS_PLATE_3742: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::DeadMansPlate,
     riot_id: 3742,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static DEATHS_DANCE_6333: CachedItem = CachedItem {
+    name: "Death's Dance",
     price: 3300,
     prettified_stats: &[
         StatName::AttackDamage(60),
@@ -3035,11 +3161,13 @@ pub static DEATHS_DANCE_6333: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::DeathsDance,
     riot_id: 6333,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static DEATHS_DAUGHTER_3902: CachedItem = CachedItem {
+    name: "Death's Daughter",
     price: 0,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -3070,11 +3198,13 @@ pub static DEATHS_DAUGHTER_3902: CachedItem = CachedItem {
     purchasable: false,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::DeathsDaughter,
     riot_id: 3902,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static DECAPITATOR_447107: CachedItem = CachedItem {
+    name: "Decapitator",
     price: 0,
     prettified_stats: &[
         StatName::AdaptiveForce(80),
@@ -3109,11 +3239,13 @@ pub static DECAPITATOR_447107: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::Decapitator,
     riot_id: 447107,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static DEMON_KINGS_CROWN_443056: CachedItem = CachedItem {
+    name: "Demon King's Crown",
     price: 0,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -3144,11 +3276,13 @@ pub static DEMON_KINGS_CROWN_443056: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::DemonKingsCrown,
     riot_id: 443056,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static DEMONIC_EMBRACE_444637: CachedItem = CachedItem {
+    name: "Demonic Embrace",
     price: 0,
     prettified_stats: &[StatName::AbilityPower(80), StatName::Health(700)],
     damage_type: DamageType::Unknown,
@@ -3179,11 +3313,13 @@ pub static DEMONIC_EMBRACE_444637: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::DemonicEmbrace,
     riot_id: 444637,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static DETONATION_ORB_447113: CachedItem = CachedItem {
+    name: "Detonation Orb",
     price: 0,
     prettified_stats: &[
         StatName::MagicPenetration(12),
@@ -3219,11 +3355,13 @@ pub static DETONATION_ORB_447113: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::DetonationOrb,
     riot_id: 447113,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static DIAMOND_TIPPED_SPEAR_447120: CachedItem = CachedItem {
+    name: "Diamond-Tipped Spear",
     price: 0,
     prettified_stats: &[StatName::AdaptiveForce(75), StatName::AttackSpeed(30)],
     damage_type: DamageType::Unknown,
@@ -3254,11 +3392,13 @@ pub static DIAMOND_TIPPED_SPEAR_447120: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::DiamondTippedSpear,
     riot_id: 447120,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static DIVINE_SUNDERER_446632: CachedItem = CachedItem {
+    name: "Divine Sunderer",
     price: 0,
     prettified_stats: &[
         StatName::AttackDamage(55),
@@ -3293,11 +3433,13 @@ pub static DIVINE_SUNDERER_446632: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::DivineSunderer,
     riot_id: 446632,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static DORANS_BLADE_1055: CachedItem = CachedItem {
+    name: "Doran's Blade",
     price: 450,
     prettified_stats: &[StatName::AttackDamage(10), StatName::Health(80)],
     damage_type: DamageType::Unknown,
@@ -3328,11 +3470,13 @@ pub static DORANS_BLADE_1055: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::DoransBlade,
     riot_id: 1055,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static DORANS_RING_1056: CachedItem = CachedItem {
+    name: "Doran's Ring",
     price: 400,
     prettified_stats: &[StatName::Health(90), StatName::AbilityPower(18)],
     damage_type: DamageType::Unknown,
@@ -3363,11 +3507,13 @@ pub static DORANS_RING_1056: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::DoransRing,
     riot_id: 1056,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static DORANS_SHIELD_1054: CachedItem = CachedItem {
+    name: "Doran's Shield",
     price: 450,
     prettified_stats: &[StatName::Health(110)],
     damage_type: DamageType::Unknown,
@@ -3398,11 +3544,13 @@ pub static DORANS_SHIELD_1054: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::DoransShield,
     riot_id: 1054,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static DRAGONHEART_447106: CachedItem = CachedItem {
+    name: "Dragonheart",
     price: 0,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -3433,11 +3581,13 @@ pub static DRAGONHEART_447106: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::Dragonheart,
     riot_id: 447106,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static DREAM_MAKER_3870: CachedItem = CachedItem {
+    name: "Dream Maker",
     price: 400,
     prettified_stats: &[
         StatName::Health(200),
@@ -3473,11 +3623,13 @@ pub static DREAM_MAKER_3870: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::DreamMaker,
     riot_id: 3870,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static DUSKBLADE_OF_DRAKTHARR_446691: CachedItem = CachedItem {
+    name: "Duskblade of Draktharr",
     price: 0,
     prettified_stats: &[
         StatName::Lethality(20),
@@ -3512,11 +3664,13 @@ pub static DUSKBLADE_OF_DRAKTHARR_446691: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::DuskbladeOfDraktharr,
     riot_id: 446691,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static ECHOES_OF_HELIA_6620: CachedItem = CachedItem {
+    name: "Echoes of Helia",
     price: 2200,
     prettified_stats: &[
         StatName::AbilityHaste(20),
@@ -3552,11 +3706,13 @@ pub static ECHOES_OF_HELIA_6620: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::EchoesOfHelia,
     riot_id: 6620,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static ECLIPSE_6692: CachedItem = CachedItem {
+    name: "Eclipse",
     price: 2900,
     prettified_stats: &[StatName::AttackDamage(60), StatName::AbilityHaste(15)],
     damage_type: DamageType::Unknown,
@@ -3587,11 +3743,13 @@ pub static ECLIPSE_6692: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::Eclipse,
     riot_id: 6692,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static EDGE_OF_NIGHT_3814: CachedItem = CachedItem {
+    name: "Edge of Night",
     price: 3000,
     prettified_stats: &[
         StatName::Health(250),
@@ -3626,11 +3784,13 @@ pub static EDGE_OF_NIGHT_3814: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::EdgeOfNight,
     riot_id: 3814,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static ELEISAS_MIRACLE_443063: CachedItem = CachedItem {
+    name: "Eleisa's Miracle",
     price: 0,
     prettified_stats: &[
         StatName::Armor(50),
@@ -3665,11 +3825,13 @@ pub static ELEISAS_MIRACLE_443063: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::EleisasMiracle,
     riot_id: 443063,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static ELIXIR_OF_AVARICE_2151: CachedItem = CachedItem {
+    name: "Elixir of Avarice",
     price: 0,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -3700,11 +3862,13 @@ pub static ELIXIR_OF_AVARICE_2151: CachedItem = CachedItem {
     purchasable: false,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::ElixirOfAvarice,
     riot_id: 2151,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static ELIXIR_OF_FORCE_2152: CachedItem = CachedItem {
+    name: "Elixir of Force",
     price: 0,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -3735,11 +3899,13 @@ pub static ELIXIR_OF_FORCE_2152: CachedItem = CachedItem {
     purchasable: false,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::ElixirOfForce,
     riot_id: 2152,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static ELIXIR_OF_IRON_2138: CachedItem = CachedItem {
+    name: "Elixir of Iron",
     price: 500,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -3770,11 +3936,13 @@ pub static ELIXIR_OF_IRON_2138: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::ElixirOfIron,
     riot_id: 2138,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static ELIXIR_OF_SKILL_2150: CachedItem = CachedItem {
+    name: "Elixir of Skill",
     price: 0,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -3805,11 +3973,13 @@ pub static ELIXIR_OF_SKILL_2150: CachedItem = CachedItem {
     purchasable: false,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::ElixirOfSkill,
     riot_id: 2150,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static ELIXIR_OF_SORCERY_2139: CachedItem = CachedItem {
+    name: "Elixir of Sorcery",
     price: 500,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -3840,11 +4010,13 @@ pub static ELIXIR_OF_SORCERY_2139: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::ElixirOfSorcery,
     riot_id: 2139,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static ELIXIR_OF_WRATH_2140: CachedItem = CachedItem {
+    name: "Elixir of Wrath",
     price: 500,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -3875,11 +4047,13 @@ pub static ELIXIR_OF_WRATH_2140: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::ElixirOfWrath,
     riot_id: 2140,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static EMPYREAN_PROMISE_447105: CachedItem = CachedItem {
+    name: "Empyrean Promise",
     price: 0,
     prettified_stats: &[
         StatName::AbilityPower(70),
@@ -3915,11 +4089,13 @@ pub static EMPYREAN_PROMISE_447105: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::EmpyreanPromise,
     riot_id: 447105,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static ENHANCED_LUCKY_DICE_2146: CachedItem = CachedItem {
+    name: "Enhanced Lucky Dice",
     price: 0,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -3950,11 +4126,13 @@ pub static ENHANCED_LUCKY_DICE_2146: CachedItem = CachedItem {
     purchasable: false,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::EnhancedLuckyDice,
     riot_id: 2146,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static ESSENCE_REAVER_3508: CachedItem = CachedItem {
+    name: "Essence Reaver",
     price: 2900,
     prettified_stats: &[
         StatName::AttackDamage(60),
@@ -3989,11 +4167,13 @@ pub static ESSENCE_REAVER_3508: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::EssenceReaver,
     riot_id: 3508,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static EVERFROST_446656: CachedItem = CachedItem {
+    name: "Everfrost",
     price: 0,
     prettified_stats: &[
         StatName::AbilityHaste(25),
@@ -4029,11 +4209,13 @@ pub static EVERFROST_446656: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::Everfrost,
     riot_id: 446656,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static EXECUTIONERS_CALLING_3123: CachedItem = CachedItem {
+    name: "Executioner's Calling",
     price: 800,
     prettified_stats: &[StatName::AttackDamage(15)],
     damage_type: DamageType::Unknown,
@@ -4064,11 +4246,13 @@ pub static EXECUTIONERS_CALLING_3123: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::ExecutionersCalling,
     riot_id: 3123,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static EXPERIMENTAL_HEXPLATE_3073: CachedItem = CachedItem {
+    name: "Experimental Hexplate",
     price: 3000,
     prettified_stats: &[
         StatName::Health(450),
@@ -4103,11 +4287,13 @@ pub static EXPERIMENTAL_HEXPLATE_3073: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::ExperimentalHexplate,
     riot_id: 3073,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static EYE_OF_THE_HERALD_3513: CachedItem = CachedItem {
+    name: "Eye of the Herald",
     price: 0,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -4138,11 +4324,13 @@ pub static EYE_OF_THE_HERALD_3513: CachedItem = CachedItem {
     purchasable: false,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::EyeOfTheHerald,
     riot_id: 3513,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static FAERIE_CHARM_1004: CachedItem = CachedItem {
+    name: "Faerie Charm",
     price: 200,
     prettified_stats: &[StatName::BaseManaRegen(50)],
     damage_type: DamageType::Unknown,
@@ -4173,11 +4361,13 @@ pub static FAERIE_CHARM_1004: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::FaerieCharm,
     riot_id: 1004,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static FARSIGHT_ALTERATION_3363: CachedItem = CachedItem {
+    name: "Farsight Alteration",
     price: 0,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -4208,11 +4398,13 @@ pub static FARSIGHT_ALTERATION_3363: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::FarsightAlteration,
     riot_id: 3363,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static FATED_ASHES_2508: CachedItem = CachedItem {
+    name: "Fated Ashes",
     price: 900,
     prettified_stats: &[StatName::AbilityPower(30)],
     damage_type: DamageType::Unknown,
@@ -4243,11 +4435,13 @@ pub static FATED_ASHES_2508: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::FatedAshes,
     riot_id: 2508,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static FIENDISH_CODEX_3108: CachedItem = CachedItem {
+    name: "Fiendish Codex",
     price: 850,
     prettified_stats: &[StatName::AbilityPower(25), StatName::AbilityHaste(10)],
     damage_type: DamageType::Unknown,
@@ -4278,11 +4472,13 @@ pub static FIENDISH_CODEX_3108: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::FiendishCodex,
     riot_id: 3108,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static FIMBULWINTER_3121: CachedItem = CachedItem {
+    name: "Fimbulwinter",
     price: 2400,
     prettified_stats: &[
         StatName::Health(550),
@@ -4317,11 +4513,13 @@ pub static FIMBULWINTER_3121: CachedItem = CachedItem {
     purchasable: false,
     deals_damage: false,
     tier: 4,
+    internal_id: ItemId::Fimbulwinter,
     riot_id: 3121,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static FIRE_AT_WILL_3901: CachedItem = CachedItem {
+    name: "Fire at Will",
     price: 0,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -4352,11 +4550,13 @@ pub static FIRE_AT_WILL_3901: CachedItem = CachedItem {
     purchasable: false,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::FireAtWill,
     riot_id: 3901,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static FLESHEATER_447112: CachedItem = CachedItem {
+    name: "Flesheater",
     price: 0,
     prettified_stats: &[
         StatName::Health(500),
@@ -4391,13 +4591,18 @@ pub static FLESHEATER_447112: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::Flesheater,
     riot_id: 447112,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static FORBIDDEN_IDOL_3114: CachedItem = CachedItem {
+    name: "Forbidden Idol",
     price: 600,
-    prettified_stats: &[StatName::BaseManaRegen(50), StatName::HealAndShieldPower(8)],
+    prettified_stats: &[
+        StatName::BaseManaRegen(50),
+        StatName::HealAndShieldPower(8),
+    ],
     damage_type: DamageType::Unknown,
     attributes: Attrs::Undefined,
     metadata: TypeMetadata {
@@ -4426,11 +4631,13 @@ pub static FORBIDDEN_IDOL_3114: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::ForbiddenIdol,
     riot_id: 3114,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static FORCE_OF_ENTROPY_443061: CachedItem = CachedItem {
+    name: "Force of Entropy",
     price: 0,
     prettified_stats: &[
         StatName::CriticalStrikeChance(25),
@@ -4465,11 +4672,13 @@ pub static FORCE_OF_ENTROPY_443061: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::ForceOfEntropy,
     riot_id: 443061,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static FORCE_OF_NATURE_4401: CachedItem = CachedItem {
+    name: "Force of Nature",
     price: 2800,
     prettified_stats: &[
         StatName::Health(400),
@@ -4504,11 +4713,13 @@ pub static FORCE_OF_NATURE_4401: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::ForceOfNature,
     riot_id: 4401,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static FOREVER_FORWARD_3176: CachedItem = CachedItem {
+    name: "Forever Forward",
     price: 1400,
     prettified_stats: &[StatName::MoveSpeed(55)],
     damage_type: DamageType::Unknown,
@@ -4539,11 +4750,13 @@ pub static FOREVER_FORWARD_3176: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::ForeverForward,
     riot_id: 3176,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static FROZEN_HEART_3110: CachedItem = CachedItem {
+    name: "Frozen Heart",
     price: 2500,
     prettified_stats: &[
         StatName::Mana(400),
@@ -4578,11 +4791,13 @@ pub static FROZEN_HEART_3110: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::FrozenHeart,
     riot_id: 3110,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static FULMINATION_443055: CachedItem = CachedItem {
+    name: "Fulmination",
     price: 0,
     prettified_stats: &[
         StatName::MoveSpeed(15),
@@ -4617,11 +4832,13 @@ pub static FULMINATION_443055: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::Fulmination,
     riot_id: 443055,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static GALEFORCE_446671: CachedItem = CachedItem {
+    name: "Galeforce",
     price: 0,
     prettified_stats: &[
         StatName::AttackSpeed(30),
@@ -4657,11 +4874,13 @@ pub static GALEFORCE_446671: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::Galeforce,
     riot_id: 446671,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static GAMBLERS_BLADE_447101: CachedItem = CachedItem {
+    name: "Gambler's Blade",
     price: 0,
     prettified_stats: &[
         StatName::MoveSpeed(8),
@@ -4696,11 +4915,13 @@ pub static GAMBLERS_BLADE_447101: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::GamblersBlade,
     riot_id: 447101,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static GARGOYLE_STONEPLATE_443193: CachedItem = CachedItem {
+    name: "Gargoyle Stoneplate",
     price: 0,
     prettified_stats: &[
         StatName::Armor(65),
@@ -4736,11 +4957,13 @@ pub static GARGOYLE_STONEPLATE_443193: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::GargoyleStoneplate,
     riot_id: 443193,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static GHOSTCRAWLERS_223005: CachedItem = CachedItem {
+    name: "Ghostcrawlers",
     price: 500,
     prettified_stats: &[StatName::MoveSpeed(70)],
     damage_type: DamageType::Unknown,
@@ -4771,11 +4994,13 @@ pub static GHOSTCRAWLERS_223005: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::Ghostcrawlers,
     riot_id: 223005,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static GIANTS_BELT_1011: CachedItem = CachedItem {
+    name: "Giant's Belt",
     price: 900,
     prettified_stats: &[StatName::Health(350)],
     damage_type: DamageType::Unknown,
@@ -4806,11 +5031,13 @@ pub static GIANTS_BELT_1011: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::GiantsBelt,
     riot_id: 1011,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static GLACIAL_BUCKLER_3024: CachedItem = CachedItem {
+    name: "Glacial Buckler",
     price: 900,
     prettified_stats: &[
         StatName::Armor(25),
@@ -4845,11 +5072,13 @@ pub static GLACIAL_BUCKLER_3024: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::GlacialBuckler,
     riot_id: 3024,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static GLOWING_MOTE_2022: CachedItem = CachedItem {
+    name: "Glowing Mote",
     price: 250,
     prettified_stats: &[StatName::AbilityHaste(5)],
     damage_type: DamageType::Unknown,
@@ -4880,11 +5109,13 @@ pub static GLOWING_MOTE_2022: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::GlowingMote,
     riot_id: 2022,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static GOREDRINKER_226630: CachedItem = CachedItem {
+    name: "Goredrinker",
     price: 0,
     prettified_stats: &[
         StatName::Health(400),
@@ -4920,11 +5151,13 @@ pub static GOREDRINKER_226630: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::Goredrinker,
     riot_id: 226630,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static GUARDIAN_ANGEL_3026: CachedItem = CachedItem {
+    name: "Guardian Angel",
     price: 3200,
     prettified_stats: &[StatName::Armor(45), StatName::AttackDamage(55)],
     damage_type: DamageType::Unknown,
@@ -4955,11 +5188,13 @@ pub static GUARDIAN_ANGEL_3026: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::GuardianAngel,
     riot_id: 3026,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static GUARDIANS_AMULET_2049: CachedItem = CachedItem {
+    name: "Guardian's Amulet",
     price: 500,
     prettified_stats: &[
         StatName::HealAndShieldPower(15),
@@ -4994,11 +5229,13 @@ pub static GUARDIANS_AMULET_2049: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::GuardiansAmulet,
     riot_id: 2049,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static GUARDIANS_BLADE_3177: CachedItem = CachedItem {
+    name: "Guardian's Blade",
     price: 950,
     prettified_stats: &[
         StatName::AttackDamage(30),
@@ -5033,11 +5270,13 @@ pub static GUARDIANS_BLADE_3177: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::GuardiansBlade,
     riot_id: 3177,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static GUARDIANS_DIRK_223185: CachedItem = CachedItem {
+    name: "Guardian's Dirk",
     price: 500,
     prettified_stats: &[
         StatName::Lethality(11),
@@ -5072,11 +5311,13 @@ pub static GUARDIANS_DIRK_223185: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::GuardiansDirk,
     riot_id: 223185,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static GUARDIANS_HAMMER_3184: CachedItem = CachedItem {
+    name: "Guardian's Hammer",
     price: 950,
     prettified_stats: &[
         StatName::Health(150),
@@ -5111,11 +5352,13 @@ pub static GUARDIANS_HAMMER_3184: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::GuardiansHammer,
     riot_id: 3184,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static GUARDIANS_HORN_2051: CachedItem = CachedItem {
+    name: "Guardian's Horn",
     price: 950,
     prettified_stats: &[StatName::Health(150)],
     damage_type: DamageType::Unknown,
@@ -5146,11 +5389,13 @@ pub static GUARDIANS_HORN_2051: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::GuardiansHorn,
     riot_id: 2051,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static GUARDIANS_ORB_3112: CachedItem = CachedItem {
+    name: "Guardian's Orb",
     price: 950,
     prettified_stats: &[StatName::AbilityPower(50), StatName::Health(150)],
     damage_type: DamageType::Unknown,
@@ -5181,11 +5426,13 @@ pub static GUARDIANS_ORB_3112: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::GuardiansOrb,
     riot_id: 3112,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static GUARDIANS_SHROUD_2050: CachedItem = CachedItem {
+    name: "Guardian's Shroud",
     price: 500,
     prettified_stats: &[
         StatName::AbilityPower(35),
@@ -5220,11 +5467,13 @@ pub static GUARDIANS_SHROUD_2050: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::GuardiansShroud,
     riot_id: 2050,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static GUINSOOS_RAGEBLADE_3124: CachedItem = CachedItem {
+    name: "Guinsoo's Rageblade",
     price: 3000,
     prettified_stats: &[
         StatName::AttackDamage(30),
@@ -5259,11 +5508,13 @@ pub static GUINSOOS_RAGEBLADE_3124: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::GuinsoosRageblade,
     riot_id: 3124,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static GUSTO_1509: CachedItem = CachedItem {
+    name: "Gusto",
     price: 0,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -5294,11 +5545,13 @@ pub static GUSTO_1509: CachedItem = CachedItem {
     purchasable: false,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::Gusto,
     riot_id: 1509,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static GUSTWALKER_HATCHLING_1102: CachedItem = CachedItem {
+    name: "Gustwalker Hatchling",
     price: 450,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -5329,11 +5582,13 @@ pub static GUSTWALKER_HATCHLING_1102: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::GustwalkerHatchling,
     riot_id: 1102,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static HAMSTRINGER_443069: CachedItem = CachedItem {
+    name: "Hamstringer",
     price: 0,
     prettified_stats: &[
         StatName::CriticalStrikeChance(25),
@@ -5368,11 +5623,13 @@ pub static HAMSTRINGER_443069: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::Hamstringer,
     riot_id: 443069,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static HAUNTING_GUISE_3147: CachedItem = CachedItem {
+    name: "Haunting Guise",
     price: 1300,
     prettified_stats: &[StatName::Health(200), StatName::AbilityPower(30)],
     damage_type: DamageType::Unknown,
@@ -5403,11 +5660,13 @@ pub static HAUNTING_GUISE_3147: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::HauntingGuise,
     riot_id: 3147,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static HEALTH_POTION_2003: CachedItem = CachedItem {
+    name: "Health Potion",
     price: 50,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -5438,11 +5697,13 @@ pub static HEALTH_POTION_2003: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::HealthPotion,
     riot_id: 2003,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static HEARTHBOUND_AXE_3051: CachedItem = CachedItem {
+    name: "Hearthbound Axe",
     price: 1200,
     prettified_stats: &[StatName::AttackDamage(20), StatName::AttackSpeed(20)],
     damage_type: DamageType::Unknown,
@@ -5473,11 +5734,13 @@ pub static HEARTHBOUND_AXE_3051: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::HearthboundAxe,
     riot_id: 3051,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static HEARTSTEEL_3084: CachedItem = CachedItem {
+    name: "Heartsteel",
     price: 3000,
     prettified_stats: &[StatName::Health(900), StatName::BaseHealthRegen(100)],
     damage_type: DamageType::Unknown,
@@ -5508,11 +5771,13 @@ pub static HEARTSTEEL_3084: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::Heartsteel,
     riot_id: 3084,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static HELLFIRE_HATCHET_4017: CachedItem = CachedItem {
+    name: "Hellfire Hatchet",
     price: 2500,
     prettified_stats: &[StatName::AttackDamage(35), StatName::Lethality(12)],
     damage_type: DamageType::Unknown,
@@ -5543,11 +5808,13 @@ pub static HELLFIRE_HATCHET_4017: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::HellfireHatchet,
     riot_id: 4017,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static HEMOMANCERS_HELM_447103: CachedItem = CachedItem {
+    name: "Hemomancer's Helm",
     price: 0,
     prettified_stats: &[
         StatName::AttackDamage(70),
@@ -5582,11 +5849,13 @@ pub static HEMOMANCERS_HELM_447103: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::HemomancersHelm,
     riot_id: 447103,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static HEXBOLT_COMPANION_443081: CachedItem = CachedItem {
+    name: "Hexbolt Companion",
     price: 0,
     prettified_stats: &[StatName::AttackSpeed(75), StatName::Health(500)],
     damage_type: DamageType::Unknown,
@@ -5617,11 +5886,13 @@ pub static HEXBOLT_COMPANION_443081: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::HexboltCompanion,
     riot_id: 443081,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static HEXDRINKER_3155: CachedItem = CachedItem {
+    name: "Hexdrinker",
     price: 1300,
     prettified_stats: &[StatName::AttackDamage(25), StatName::MagicResist(25)],
     damage_type: DamageType::Unknown,
@@ -5652,11 +5923,13 @@ pub static HEXDRINKER_3155: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::Hexdrinker,
     riot_id: 3155,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static HEXTECH_ALTERNATOR_3145: CachedItem = CachedItem {
+    name: "Hextech Alternator",
     price: 1100,
     prettified_stats: &[StatName::AbilityPower(45)],
     damage_type: DamageType::Unknown,
@@ -5687,11 +5960,13 @@ pub static HEXTECH_ALTERNATOR_3145: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::HextechAlternator,
     riot_id: 3145,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static HEXTECH_GUNBLADE_223146: CachedItem = CachedItem {
+    name: "Hextech Gunblade",
     price: 2500,
     prettified_stats: &[
         StatName::Omnivamp(15),
@@ -5726,11 +6001,13 @@ pub static HEXTECH_GUNBLADE_223146: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::HextechGunblade,
     riot_id: 223146,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static HEXTECH_ROCKETBELT_3152: CachedItem = CachedItem {
+    name: "Hextech Rocketbelt",
     price: 2650,
     prettified_stats: &[
         StatName::AbilityPower(70),
@@ -5765,11 +6042,13 @@ pub static HEXTECH_ROCKETBELT_3152: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::HextechRocketbelt,
     riot_id: 3152,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static HOLLOW_RADIANCE_6664: CachedItem = CachedItem {
+    name: "Hollow Radiance",
     price: 2800,
     prettified_stats: &[
         StatName::BaseHealthRegen(100),
@@ -5805,13 +6084,18 @@ pub static HOLLOW_RADIANCE_6664: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::HollowRadiance,
     riot_id: 6664,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static HORIZON_FOCUS_4628: CachedItem = CachedItem {
+    name: "Horizon Focus",
     price: 2800,
-    prettified_stats: &[StatName::AbilityPower(125), StatName::AbilityHaste(25)],
+    prettified_stats: &[
+        StatName::AbilityPower(125),
+        StatName::AbilityHaste(25),
+    ],
     damage_type: DamageType::Unknown,
     attributes: Attrs::Undefined,
     metadata: TypeMetadata {
@@ -5840,11 +6124,13 @@ pub static HORIZON_FOCUS_4628: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::HorizonFocus,
     riot_id: 4628,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static HUBRIS_6697: CachedItem = CachedItem {
+    name: "Hubris",
     price: 3000,
     prettified_stats: &[
         StatName::AttackDamage(60),
@@ -5879,11 +6165,13 @@ pub static HUBRIS_6697: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::Hubris,
     riot_id: 6697,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static HULLBREAKER_3181: CachedItem = CachedItem {
+    name: "Hullbreaker",
     price: 3000,
     prettified_stats: &[
         StatName::MoveSpeed(4),
@@ -5918,11 +6206,13 @@ pub static HULLBREAKER_3181: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::Hullbreaker,
     riot_id: 3181,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static ICEBORN_GAUNTLET_6662: CachedItem = CachedItem {
+    name: "Iceborn Gauntlet",
     price: 2900,
     prettified_stats: &[
         StatName::Armor(50),
@@ -5957,11 +6247,13 @@ pub static ICEBORN_GAUNTLET_6662: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::IcebornGauntlet,
     riot_id: 6662,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static IMMORTAL_SHIELDBOW_6673: CachedItem = CachedItem {
+    name: "Immortal Shieldbow",
     price: 3000,
     prettified_stats: &[
         StatName::AttackDamage(55),
@@ -5995,11 +6287,13 @@ pub static IMMORTAL_SHIELDBOW_6673: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::ImmortalShieldbow,
     riot_id: 6673,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static IMPERIAL_MANDATE_4005: CachedItem = CachedItem {
+    name: "Imperial Mandate",
     price: 2250,
     prettified_stats: &[
         StatName::AbilityHaste(20),
@@ -6034,11 +6328,13 @@ pub static IMPERIAL_MANDATE_4005: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::ImperialMandate,
     riot_id: 4005,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static INFINITY_EDGE_3031: CachedItem = CachedItem {
+    name: "Infinity Edge",
     price: 3450,
     prettified_stats: &[
         StatName::CriticalStrikeDamage(40),
@@ -6073,11 +6369,13 @@ pub static INFINITY_EDGE_3031: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::InfinityEdge,
     riot_id: 3031,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static INNERVATING_LOCKET_447104: CachedItem = CachedItem {
+    name: "Innervating Locket",
     price: 0,
     prettified_stats: &[
         StatName::Health(200),
@@ -6112,11 +6410,13 @@ pub static INNERVATING_LOCKET_447104: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::InnervatingLocket,
     riot_id: 447104,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static IONIAN_BOOTS_OF_LUCIDITY_3158: CachedItem = CachedItem {
+    name: "Ionian Boots of Lucidity",
     price: 900,
     prettified_stats: &[StatName::AbilityHaste(10), StatName::MoveSpeed(45)],
     damage_type: DamageType::Unknown,
@@ -6147,11 +6447,13 @@ pub static IONIAN_BOOTS_OF_LUCIDITY_3158: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::IonianBootsOfLucidity,
     riot_id: 3158,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static JAK_SHO_THE_PROTEAN_6665: CachedItem = CachedItem {
+    name: "Jak'Sho, The Protean",
     price: 3200,
     prettified_stats: &[
         StatName::Armor(45),
@@ -6186,11 +6488,13 @@ pub static JAK_SHO_THE_PROTEAN_6665: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::JakshoTheProtean,
     riot_id: 6665,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static JUICE_OF_HASTE_2144: CachedItem = CachedItem {
+    name: "Juice of Haste",
     price: 500,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -6221,11 +6525,13 @@ pub static JUICE_OF_HASTE_2144: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::JuiceOfHaste,
     riot_id: 2144,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static JUICE_OF_POWER_2142: CachedItem = CachedItem {
+    name: "Juice of Power",
     price: 500,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -6256,11 +6562,13 @@ pub static JUICE_OF_POWER_2142: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::JuiceOfPower,
     riot_id: 2142,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static JUICE_OF_VITALITY_2143: CachedItem = CachedItem {
+    name: "Juice of Vitality",
     price: 500,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -6291,11 +6599,13 @@ pub static JUICE_OF_VITALITY_2143: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::JuiceOfVitality,
     riot_id: 2143,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static KAENIC_ROOKERN_2504: CachedItem = CachedItem {
+    name: "Kaenic Rookern",
     price: 2900,
     prettified_stats: &[
         StatName::Health(400),
@@ -6330,11 +6640,13 @@ pub static KAENIC_ROOKERN_2504: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::KaenicRookern,
     riot_id: 2504,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static KINDLEGEM_3067: CachedItem = CachedItem {
+    name: "Kindlegem",
     price: 800,
     prettified_stats: &[StatName::AbilityHaste(10), StatName::Health(200)],
     damage_type: DamageType::Unknown,
@@ -6365,11 +6677,13 @@ pub static KINDLEGEM_3067: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::Kindlegem,
     riot_id: 3067,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static KINKOU_JITTE_447116: CachedItem = CachedItem {
+    name: "Kinkou Jitte",
     price: 0,
     prettified_stats: &[
         StatName::Health(400),
@@ -6404,11 +6718,13 @@ pub static KINKOU_JITTE_447116: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::KinkouJitte,
     riot_id: 447116,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static KNIGHTS_VOW_3109: CachedItem = CachedItem {
+    name: "Knight's Vow",
     price: 2300,
     prettified_stats: &[
         StatName::BaseHealthRegen(100),
@@ -6444,11 +6760,13 @@ pub static KNIGHTS_VOW_3109: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::KnightsVow,
     riot_id: 3109,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static KRAKEN_SLAYER_6672: CachedItem = CachedItem {
+    name: "Kraken Slayer",
     price: 3000,
     prettified_stats: &[
         StatName::MoveSpeed(4),
@@ -6483,11 +6801,13 @@ pub static KRAKEN_SLAYER_6672: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::KrakenSlayer,
     riot_id: 6672,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static LANE_SWAP_DETECTOR_1501: CachedItem = CachedItem {
+    name: "Lane Swap Detector",
     price: 0,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -6518,13 +6838,18 @@ pub static LANE_SWAP_DETECTOR_1501: CachedItem = CachedItem {
     purchasable: false,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::LaneSwapDetector,
     riot_id: 1501,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static LAST_WHISPER_3035: CachedItem = CachedItem {
+    name: "Last Whisper",
     price: 1450,
-    prettified_stats: &[StatName::AttackDamage(20), StatName::ArmorPenetration(18)],
+    prettified_stats: &[
+        StatName::AttackDamage(20),
+        StatName::ArmorPenetration(18),
+    ],
     damage_type: DamageType::Unknown,
     attributes: Attrs::Undefined,
     metadata: TypeMetadata {
@@ -6553,11 +6878,13 @@ pub static LAST_WHISPER_3035: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::LastWhisper,
     riot_id: 3035,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static LEGENDARY_ASSASSIN_ITEM_220003: CachedItem = CachedItem {
+    name: "Legendary Assassin Item",
     price: 2000,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -6588,11 +6915,13 @@ pub static LEGENDARY_ASSASSIN_ITEM_220003: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::LegendaryAssassinItem,
     riot_id: 220003,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static LEGENDARY_FIGHTER_ITEM_220001: CachedItem = CachedItem {
+    name: "Legendary Fighter Item",
     price: 2000,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -6623,11 +6952,13 @@ pub static LEGENDARY_FIGHTER_ITEM_220001: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::LegendaryFighterItem,
     riot_id: 220001,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static LEGENDARY_MAGE_ITEM_220004: CachedItem = CachedItem {
+    name: "Legendary Mage Item",
     price: 2000,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -6658,11 +6989,13 @@ pub static LEGENDARY_MAGE_ITEM_220004: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::LegendaryMageItem,
     riot_id: 220004,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static LEGENDARY_MARKSMAN_ITEM_220002: CachedItem = CachedItem {
+    name: "Legendary Marksman Item",
     price: 2000,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -6693,11 +7026,13 @@ pub static LEGENDARY_MARKSMAN_ITEM_220002: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::LegendaryMarksmanItem,
     riot_id: 220002,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static LEGENDARY_SUPPORT_ITEM_220006: CachedItem = CachedItem {
+    name: "Legendary Support Item",
     price: 2000,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -6728,11 +7063,13 @@ pub static LEGENDARY_SUPPORT_ITEM_220006: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::LegendarySupportItem,
     riot_id: 220006,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static LEGENDARY_TANK_ITEM_220005: CachedItem = CachedItem {
+    name: "Legendary Tank Item",
     price: 2000,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -6763,11 +7100,13 @@ pub static LEGENDARY_TANK_ITEM_220005: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::LegendaryTankItem,
     riot_id: 220005,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static LIANDRYS_TORMENT_6653: CachedItem = CachedItem {
+    name: "Liandry's Torment",
     price: 3000,
     prettified_stats: &[StatName::AbilityPower(60), StatName::Health(300)],
     damage_type: DamageType::Unknown,
@@ -6798,11 +7137,13 @@ pub static LIANDRYS_TORMENT_6653: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::LiandrysTorment,
     riot_id: 6653,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static LICH_BANE_3100: CachedItem = CachedItem {
+    name: "Lich Bane",
     price: 2900,
     prettified_stats: &[
         StatName::AbilityPower(100),
@@ -6837,11 +7178,13 @@ pub static LICH_BANE_3100: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::LichBane,
     riot_id: 3100,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static LIFELINE_4003: CachedItem = CachedItem {
+    name: "Lifeline",
     price: 1600,
     prettified_stats: &[
         StatName::AttackDamage(25),
@@ -6876,11 +7219,13 @@ pub static LIFELINE_4003: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::Lifeline,
     riot_id: 4003,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static LIGHTNING_ROD_447119: CachedItem = CachedItem {
+    name: "Lightning Rod",
     price: 0,
     prettified_stats: &[
         StatName::Health(500),
@@ -6916,11 +7261,13 @@ pub static LIGHTNING_ROD_447119: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::LightningRod,
     riot_id: 447119,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static LOCKET_OF_THE_IRON_SOLARI_3190: CachedItem = CachedItem {
+    name: "Locket of the Iron Solari",
     price: 2200,
     prettified_stats: &[
         StatName::Health(200),
@@ -6956,11 +7303,13 @@ pub static LOCKET_OF_THE_IRON_SOLARI_3190: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::LocketOfTheIronSolari,
     riot_id: 3190,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static LONG_SWORD_1036: CachedItem = CachedItem {
+    name: "Long Sword",
     price: 350,
     prettified_stats: &[StatName::AttackDamage(10)],
     damage_type: DamageType::Unknown,
@@ -6991,11 +7340,13 @@ pub static LONG_SWORD_1036: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::LongSword,
     riot_id: 1036,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static LORD_DOMINIKS_REGARDS_3036: CachedItem = CachedItem {
+    name: "Lord Dominik's Regards",
     price: 3100,
     prettified_stats: &[
         StatName::CriticalStrikeChance(25),
@@ -7030,11 +7381,13 @@ pub static LORD_DOMINIKS_REGARDS_3036: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::LordDominiksRegards,
     riot_id: 3036,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static LOST_CHAPTER_3802: CachedItem = CachedItem {
+    name: "Lost Chapter",
     price: 1200,
     prettified_stats: &[
         StatName::Mana(300),
@@ -7069,11 +7422,13 @@ pub static LOST_CHAPTER_3802: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::LostChapter,
     riot_id: 3802,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static LUCKY_DICE_2145: CachedItem = CachedItem {
+    name: "Lucky Dice",
     price: 0,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -7104,11 +7459,13 @@ pub static LUCKY_DICE_2145: CachedItem = CachedItem {
     purchasable: false,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::LuckyDice,
     riot_id: 2145,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static LUDENS_COMPANION_6655: CachedItem = CachedItem {
+    name: "Luden's Companion",
     price: 2750,
     prettified_stats: &[
         StatName::Mana(600),
@@ -7143,11 +7500,13 @@ pub static LUDENS_COMPANION_6655: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::LudensCompanion,
     riot_id: 6655,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static MALIGNANCE_3118: CachedItem = CachedItem {
+    name: "Malignance",
     price: 2700,
     prettified_stats: &[
         StatName::Mana(600),
@@ -7182,11 +7541,13 @@ pub static MALIGNANCE_3118: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::Malignance,
     riot_id: 3118,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static MANAMUNE_3004: CachedItem = CachedItem {
+    name: "Manamune",
     price: 2900,
     prettified_stats: &[
         StatName::Mana(500),
@@ -7221,11 +7582,13 @@ pub static MANAMUNE_3004: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::Manamune,
     riot_id: 3004,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static MAW_OF_MALMORTIUS_3156: CachedItem = CachedItem {
+    name: "Maw of Malmortius",
     price: 3100,
     prettified_stats: &[
         StatName::AttackDamage(60),
@@ -7260,11 +7623,13 @@ pub static MAW_OF_MALMORTIUS_3156: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::MawOfMalmortius,
     riot_id: 3156,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static MEJAIS_SOULSTEALER_3041: CachedItem = CachedItem {
+    name: "Mejai's Soulstealer",
     price: 1500,
     prettified_stats: &[StatName::Health(100), StatName::AbilityPower(20)],
     damage_type: DamageType::Unknown,
@@ -7295,11 +7660,13 @@ pub static MEJAIS_SOULSTEALER_3041: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::MejaisSoulstealer,
     riot_id: 3041,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static MERCURIAL_SCIMITAR_3139: CachedItem = CachedItem {
+    name: "Mercurial Scimitar",
     price: 3200,
     prettified_stats: &[
         StatName::AttackDamage(50),
@@ -7334,11 +7701,13 @@ pub static MERCURIAL_SCIMITAR_3139: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::MercurialScimitar,
     riot_id: 3139,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static MERCURYS_TREADS_3111: CachedItem = CachedItem {
+    name: "Mercury's Treads",
     price: 1250,
     prettified_stats: &[
         StatName::MoveSpeed(45),
@@ -7373,11 +7742,13 @@ pub static MERCURYS_TREADS_3111: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::MercurysTreads,
     riot_id: 3111,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static MIKAELS_BLESSING_3222: CachedItem = CachedItem {
+    name: "Mikael's Blessing",
     price: 2300,
     prettified_stats: &[
         StatName::BaseManaRegen(100),
@@ -7413,11 +7784,13 @@ pub static MIKAELS_BLESSING_3222: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::MikaelsBlessing,
     riot_id: 3222,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static MIRAGE_BLADE_447100: CachedItem = CachedItem {
+    name: "Mirage Blade",
     price: 0,
     prettified_stats: &[
         StatName::MoveSpeed(6),
@@ -7452,11 +7825,13 @@ pub static MIRAGE_BLADE_447100: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::MirageBlade,
     riot_id: 447100,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static MOONFLAIR_SPELLBLADE_447110: CachedItem = CachedItem {
+    name: "Moonflair Spellblade",
     price: 0,
     prettified_stats: &[
         StatName::AbilityPower(85),
@@ -7491,11 +7866,13 @@ pub static MOONFLAIR_SPELLBLADE_447110: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::MoonflairSpellblade,
     riot_id: 447110,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static MOONSTONE_RENEWER_6617: CachedItem = CachedItem {
+    name: "Moonstone Renewer",
     price: 2200,
     prettified_stats: &[
         StatName::AbilityPower(25),
@@ -7531,11 +7908,13 @@ pub static MOONSTONE_RENEWER_6617: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::MoonstoneRenewer,
     riot_id: 6617,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static MORELLONOMICON_3165: CachedItem = CachedItem {
+    name: "Morellonomicon",
     price: 2850,
     prettified_stats: &[
         StatName::AbilityHaste(15),
@@ -7570,11 +7949,13 @@ pub static MORELLONOMICON_3165: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::Morellonomicon,
     riot_id: 3165,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static MORTAL_REMINDER_3033: CachedItem = CachedItem {
+    name: "Mortal Reminder",
     price: 3300,
     prettified_stats: &[
         StatName::AttackDamage(35),
@@ -7609,11 +7990,13 @@ pub static MORTAL_REMINDER_3033: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::MortalReminder,
     riot_id: 3033,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static MOSSTOMPER_SEEDLING_1103: CachedItem = CachedItem {
+    name: "Mosstomper Seedling",
     price: 450,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -7644,11 +8027,13 @@ pub static MOSSTOMPER_SEEDLING_1103: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::MosstomperSeedling,
     riot_id: 1103,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static MURAMANA_3042: CachedItem = CachedItem {
+    name: "Muramana",
     price: 2900,
     prettified_stats: &[
         StatName::AbilityHaste(15),
@@ -7683,11 +8068,13 @@ pub static MURAMANA_3042: CachedItem = CachedItem {
     purchasable: false,
     deals_damage: false,
     tier: 4,
+    internal_id: ItemId::Muramana,
     riot_id: 3042,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static NASHORS_TOOTH_3115: CachedItem = CachedItem {
+    name: "Nashor's Tooth",
     price: 2900,
     prettified_stats: &[
         StatName::AbilityPower(80),
@@ -7722,6 +8109,7 @@ pub static NASHORS_TOOTH_3115: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: true,
     tier: 3,
+    internal_id: ItemId::NashorsTooth,
     riot_id: 3115,
     ranged_closure: [nashors_tooth_ranged_min, zero],
     melee_closure: [nashors_tooth_melee_min, zero],
@@ -7733,6 +8121,7 @@ pub const fn nashors_tooth_melee_min(ctx: &EvalContext) -> f32 {
     15f32 + 0.15f32 * ctx.ap
 }
 pub static NAVORI_FLICKERBLADE_6675: CachedItem = CachedItem {
+    name: "Navori Flickerblade",
     price: 2650,
     prettified_stats: &[
         StatName::CriticalStrikeChance(25),
@@ -7767,11 +8156,13 @@ pub static NAVORI_FLICKERBLADE_6675: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::NavoriFlickerblade,
     riot_id: 6675,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static NEEDLESSLY_LARGE_ROD_1058: CachedItem = CachedItem {
+    name: "Needlessly Large Rod",
     price: 1200,
     prettified_stats: &[StatName::AbilityPower(65)],
     damage_type: DamageType::Unknown,
@@ -7802,11 +8193,13 @@ pub static NEEDLESSLY_LARGE_ROD_1058: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::NeedlesslyLargeRod,
     riot_id: 1058,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static NEGATRON_CLOAK_1057: CachedItem = CachedItem {
+    name: "Negatron Cloak",
     price: 850,
     prettified_stats: &[StatName::MagicResist(45)],
     damage_type: DamageType::Unknown,
@@ -7837,11 +8230,13 @@ pub static NEGATRON_CLOAK_1057: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::NegatronCloak,
     riot_id: 1057,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static NIGHT_HARVESTER_444636: CachedItem = CachedItem {
+    name: "Night Harvester",
     price: 0,
     prettified_stats: &[
         StatName::AbilityPower(90),
@@ -7876,11 +8271,13 @@ pub static NIGHT_HARVESTER_444636: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::NightHarvester,
     riot_id: 444636,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static NOONQUIVER_6670: CachedItem = CachedItem {
+    name: "Noonquiver",
     price: 1300,
     prettified_stats: &[
         StatName::AttackDamage(15),
@@ -7914,11 +8311,13 @@ pub static NOONQUIVER_6670: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::Noonquiver,
     riot_id: 6670,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static NULL_MAGIC_MANTLE_1033: CachedItem = CachedItem {
+    name: "Null-Magic Mantle",
     price: 400,
     prettified_stats: &[StatName::MagicResist(20)],
     damage_type: DamageType::Unknown,
@@ -7949,11 +8348,13 @@ pub static NULL_MAGIC_MANTLE_1033: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::NullMagicMantle,
     riot_id: 1033,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static OBLIVION_ORB_3916: CachedItem = CachedItem {
+    name: "Oblivion Orb",
     price: 800,
     prettified_stats: &[StatName::AbilityPower(25)],
     damage_type: DamageType::Unknown,
@@ -7984,11 +8385,13 @@ pub static OBLIVION_ORB_3916: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::OblivionOrb,
     riot_id: 3916,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static OHMWRECKER_TURRET_ITEM_1500: CachedItem = CachedItem {
+    name: "Ohmwrecker (Turret Item)",
     price: 0,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -8019,11 +8422,13 @@ pub static OHMWRECKER_TURRET_ITEM_1500: CachedItem = CachedItem {
     purchasable: false,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::OhmwreckerTurretItem,
     riot_id: 1500,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static OPPORTUNITY_6701: CachedItem = CachedItem {
+    name: "Opportunity",
     price: 2700,
     prettified_stats: &[StatName::AttackDamage(55), StatName::Lethality(18)],
     damage_type: DamageType::Unknown,
@@ -8054,11 +8459,13 @@ pub static OPPORTUNITY_6701: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::Opportunity,
     riot_id: 6701,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static ORACLE_LENS_3364: CachedItem = CachedItem {
+    name: "Oracle Lens",
     price: 0,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -8089,11 +8496,13 @@ pub static ORACLE_LENS_3364: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::OracleLens,
     riot_id: 3364,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static OVERCHARGED_1507: CachedItem = CachedItem {
+    name: "Overcharged",
     price: 0,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -8124,11 +8533,13 @@ pub static OVERCHARGED_1507: CachedItem = CachedItem {
     purchasable: false,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::Overcharged,
     riot_id: 1507,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static OVERLORDS_BLOODMAIL_2501: CachedItem = CachedItem {
+    name: "Overlord's Bloodmail",
     price: 3300,
     prettified_stats: &[StatName::Health(550), StatName::AttackDamage(30)],
     damage_type: DamageType::Unknown,
@@ -8159,11 +8570,13 @@ pub static OVERLORDS_BLOODMAIL_2501: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::OverlordsBloodmail,
     riot_id: 2501,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static PERPLEXITY_4015: CachedItem = CachedItem {
+    name: "Perplexity",
     price: 2500,
     prettified_stats: &[
         StatName::MoveSpeed(5),
@@ -8199,11 +8612,13 @@ pub static PERPLEXITY_4015: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::Perplexity,
     riot_id: 4015,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static PHAGE_3044: CachedItem = CachedItem {
+    name: "Phage",
     price: 1100,
     prettified_stats: &[StatName::AttackDamage(15), StatName::Health(200)],
     damage_type: DamageType::Unknown,
@@ -8234,11 +8649,13 @@ pub static PHAGE_3044: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::Phage,
     riot_id: 3044,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static PHANTOM_DANCER_3046: CachedItem = CachedItem {
+    name: "Phantom Dancer",
     price: 2650,
     prettified_stats: &[
         StatName::AttackSpeed(65),
@@ -8273,11 +8690,13 @@ pub static PHANTOM_DANCER_3046: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::PhantomDancer,
     riot_id: 3046,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static PHREAKISH_GUSTO_1510: CachedItem = CachedItem {
+    name: "Phreakish Gusto",
     price: 0,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -8308,11 +8727,13 @@ pub static PHREAKISH_GUSTO_1510: CachedItem = CachedItem {
     purchasable: false,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::PhreakishGusto,
     riot_id: 1510,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static PICKAXE_1037: CachedItem = CachedItem {
+    name: "Pickaxe",
     price: 875,
     prettified_stats: &[StatName::AttackDamage(25)],
     damage_type: DamageType::Unknown,
@@ -8343,11 +8764,13 @@ pub static PICKAXE_1037: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::Pickaxe,
     riot_id: 1037,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static PLATED_STEELCAPS_3047: CachedItem = CachedItem {
+    name: "Plated Steelcaps",
     price: 1200,
     prettified_stats: &[StatName::MoveSpeed(45), StatName::Armor(25)],
     damage_type: DamageType::Unknown,
@@ -8378,11 +8801,13 @@ pub static PLATED_STEELCAPS_3047: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::PlatedSteelcaps,
     riot_id: 3047,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static PORO_SNAX_2052: CachedItem = CachedItem {
+    name: "Poro-Snax",
     price: 0,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -8413,11 +8838,13 @@ pub static PORO_SNAX_2052: CachedItem = CachedItem {
     purchasable: false,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::PoroSnax,
     riot_id: 2052,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static PRISMATIC_ITEM_220007: CachedItem = CachedItem {
+    name: "Prismatic Item",
     price: 4000,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -8448,11 +8875,13 @@ pub static PRISMATIC_ITEM_220007: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::PrismaticItem,
     riot_id: 220007,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static PROFANE_HYDRA_6698: CachedItem = CachedItem {
+    name: "Profane Hydra",
     price: 3200,
     prettified_stats: &[
         StatName::AttackDamage(55),
@@ -8487,11 +8916,13 @@ pub static PROFANE_HYDRA_6698: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::ProfaneHydra,
     riot_id: 6698,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static PROWLERS_CLAW_446693: CachedItem = CachedItem {
+    name: "Prowler's Claw",
     price: 0,
     prettified_stats: &[
         StatName::AttackDamage(60),
@@ -8526,11 +8957,13 @@ pub static PROWLERS_CLAW_446693: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::ProwlersClaw,
     riot_id: 446693,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static PUPPETEER_447123: CachedItem = CachedItem {
+    name: "Puppeteer",
     price: 0,
     prettified_stats: &[
         StatName::AttackSpeed(30),
@@ -8566,11 +8999,13 @@ pub static PUPPETEER_447123: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::Puppeteer,
     riot_id: 447123,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static PYROMANCERS_CLOAK_447118: CachedItem = CachedItem {
+    name: "Pyromancer's Cloak",
     price: 0,
     prettified_stats: &[
         StatName::Health(400),
@@ -8605,11 +9040,13 @@ pub static PYROMANCERS_CLOAK_447118: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::PyromancersCloak,
     riot_id: 447118,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static QUICKSILVER_SASH_3140: CachedItem = CachedItem {
+    name: "Quicksilver Sash",
     price: 1300,
     prettified_stats: &[StatName::MagicResist(30)],
     damage_type: DamageType::Unknown,
@@ -8640,11 +9077,13 @@ pub static QUICKSILVER_SASH_3140: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::QuicksilverSash,
     riot_id: 3140,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static RABADONS_DEATHCAP_3089: CachedItem = CachedItem {
+    name: "Rabadon's Deathcap",
     price: 3500,
     prettified_stats: &[StatName::AbilityPower(130)],
     damage_type: DamageType::Unknown,
@@ -8675,11 +9114,13 @@ pub static RABADONS_DEATHCAP_3089: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::RabadonsDeathcap,
     riot_id: 3089,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static RADIANT_VIRTUE_446667: CachedItem = CachedItem {
+    name: "Radiant Virtue",
     price: 0,
     prettified_stats: &[
         StatName::Health(400),
@@ -8715,11 +9156,13 @@ pub static RADIANT_VIRTUE_446667: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::RadiantVirtue,
     riot_id: 446667,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static RAISE_MORALE_3903: CachedItem = CachedItem {
+    name: "Raise Morale",
     price: 0,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -8750,11 +9193,13 @@ pub static RAISE_MORALE_3903: CachedItem = CachedItem {
     purchasable: false,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::RaiseMorale,
     riot_id: 3903,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static RANDUINS_OMEN_3143: CachedItem = CachedItem {
+    name: "Randuin's Omen",
     price: 2700,
     prettified_stats: &[StatName::Health(350), StatName::Armor(75)],
     damage_type: DamageType::Unknown,
@@ -8785,11 +9230,13 @@ pub static RANDUINS_OMEN_3143: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::RanduinsOmen,
     riot_id: 3143,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static RAPID_FIRECANNON_3094: CachedItem = CachedItem {
+    name: "Rapid Firecannon",
     price: 2650,
     prettified_stats: &[
         StatName::CriticalStrikeChance(25),
@@ -8824,11 +9271,13 @@ pub static RAPID_FIRECANNON_3094: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::RapidFirecannon,
     riot_id: 3094,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static RAVENOUS_HYDRA_3074: CachedItem = CachedItem {
+    name: "Ravenous Hydra",
     price: 3300,
     prettified_stats: &[
         StatName::AttackDamage(65),
@@ -8863,11 +9312,13 @@ pub static RAVENOUS_HYDRA_3074: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::RavenousHydra,
     riot_id: 3074,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static REALITY_FRACTURE_447102: CachedItem = CachedItem {
+    name: "Reality Fracture",
     price: 0,
     prettified_stats: &[
         StatName::AttackSpeed(40),
@@ -8902,11 +9353,13 @@ pub static REALITY_FRACTURE_447102: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::RealityFracture,
     riot_id: 447102,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static REAPERS_TOLL_443090: CachedItem = CachedItem {
+    name: "Reaper's Toll",
     price: 0,
     prettified_stats: &[
         StatName::AttackSpeed(50),
@@ -8941,11 +9394,13 @@ pub static REAPERS_TOLL_443090: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::ReapersToll,
     riot_id: 443090,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static RECTRIX_6690: CachedItem = CachedItem {
+    name: "Rectrix",
     price: 775,
     prettified_stats: &[StatName::MoveSpeed(4), StatName::AttackDamage(15)],
     damage_type: DamageType::Unknown,
@@ -8976,11 +9431,13 @@ pub static RECTRIX_6690: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::Rectrix,
     riot_id: 6690,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static RECURVE_BOW_1043: CachedItem = CachedItem {
+    name: "Recurve Bow",
     price: 700,
     prettified_stats: &[StatName::AttackSpeed(15)],
     damage_type: DamageType::Unknown,
@@ -9011,11 +9468,13 @@ pub static RECURVE_BOW_1043: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::RecurveBow,
     riot_id: 1043,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static REDEMPTION_3107: CachedItem = CachedItem {
+    name: "Redemption",
     price: 2300,
     prettified_stats: &[
         StatName::AbilityHaste(15),
@@ -9051,11 +9510,13 @@ pub static REDEMPTION_3107: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::Redemption,
     riot_id: 3107,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static REFILLABLE_POTION_2031: CachedItem = CachedItem {
+    name: "Refillable Potion",
     price: 150,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -9086,11 +9547,13 @@ pub static REFILLABLE_POTION_2031: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::RefillablePotion,
     riot_id: 2031,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static REGICIDE_447115: CachedItem = CachedItem {
+    name: "Regicide",
     price: 0,
     prettified_stats: &[
         StatName::AttackDamage(60),
@@ -9125,11 +9588,13 @@ pub static REGICIDE_447115: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::Regicide,
     riot_id: 447115,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static REINFORCED_ARMOR_TURRET_ITEM_1502: CachedItem = CachedItem {
+    name: "Reinforced Armor (Turret Item)",
     price: 0,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -9160,11 +9625,13 @@ pub static REINFORCED_ARMOR_TURRET_ITEM_1502: CachedItem = CachedItem {
     purchasable: false,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::ReinforcedArmorTurretItem,
     riot_id: 1502,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static REJUVENATION_BEAD_1006: CachedItem = CachedItem {
+    name: "Rejuvenation Bead",
     price: 300,
     prettified_stats: &[StatName::BaseHealthRegen(100)],
     damage_type: DamageType::Unknown,
@@ -9195,11 +9662,13 @@ pub static REJUVENATION_BEAD_1006: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::RejuvenationBead,
     riot_id: 1006,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static REVERBERATION_447114: CachedItem = CachedItem {
+    name: "Reverberation",
     price: 0,
     prettified_stats: &[
         StatName::MagicResist(35),
@@ -9234,11 +9703,13 @@ pub static REVERBERATION_447114: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::Reverberation,
     riot_id: 447114,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static RIFTMAKER_4633: CachedItem = CachedItem {
+    name: "Riftmaker",
     price: 3100,
     prettified_stats: &[
         StatName::AbilityPower(70),
@@ -9273,11 +9744,13 @@ pub static RIFTMAKER_4633: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::Riftmaker,
     riot_id: 4633,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static RITE_OF_RUIN_3430: CachedItem = CachedItem {
+    name: "Rite of Ruin",
     price: 2500,
     prettified_stats: &[
         StatName::CriticalStrikeChance(25),
@@ -9312,11 +9785,13 @@ pub static RITE_OF_RUIN_3430: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::RiteOfRuin,
     riot_id: 3430,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static ROD_OF_AGES_6657: CachedItem = CachedItem {
+    name: "Rod of Ages",
     price: 2600,
     prettified_stats: &[
         StatName::AbilityPower(45),
@@ -9351,11 +9826,13 @@ pub static ROD_OF_AGES_6657: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::RodOfAges,
     riot_id: 6657,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static RUBY_CRYSTAL_1028: CachedItem = CachedItem {
+    name: "Ruby Crystal",
     price: 400,
     prettified_stats: &[StatName::Health(150)],
     damage_type: DamageType::Unknown,
@@ -9386,11 +9863,13 @@ pub static RUBY_CRYSTAL_1028: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::RubyCrystal,
     riot_id: 1028,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static RUNAANS_HURRICANE_3085: CachedItem = CachedItem {
+    name: "Runaan's Hurricane",
     price: 2650,
     prettified_stats: &[
         StatName::AttackSpeed(40),
@@ -9425,11 +9904,13 @@ pub static RUNAANS_HURRICANE_3085: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::RunaansHurricane,
     riot_id: 3085,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static RUNECARVER_447108: CachedItem = CachedItem {
+    name: "Runecarver",
     price: 0,
     prettified_stats: &[
         StatName::AbilityPower(80),
@@ -9464,11 +9945,13 @@ pub static RUNECARVER_447108: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::Runecarver,
     riot_id: 447108,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static RUNIC_COMPASS_3866: CachedItem = CachedItem {
+    name: "Runic Compass",
     price: 400,
     prettified_stats: &[
         StatName::Health(100),
@@ -9504,11 +9987,13 @@ pub static RUNIC_COMPASS_3866: CachedItem = CachedItem {
     purchasable: false,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::RunicCompass,
     riot_id: 3866,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static RYLAIS_CRYSTAL_SCEPTER_3116: CachedItem = CachedItem {
+    name: "Rylai's Crystal Scepter",
     price: 2600,
     prettified_stats: &[StatName::Health(400), StatName::AbilityPower(65)],
     damage_type: DamageType::Unknown,
@@ -9539,11 +10024,13 @@ pub static RYLAIS_CRYSTAL_SCEPTER_3116: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::RylaisCrystalScepter,
     riot_id: 3116,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static SANGUINE_GIFT_443062: CachedItem = CachedItem {
+    name: "Sanguine Gift",
     price: 0,
     prettified_stats: &[
         StatName::AbilityHaste(20),
@@ -9578,11 +10065,13 @@ pub static SANGUINE_GIFT_443062: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::SanguineGift,
     riot_id: 443062,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static SAPPHIRE_CRYSTAL_1027: CachedItem = CachedItem {
+    name: "Sapphire Crystal",
     price: 300,
     prettified_stats: &[StatName::Mana(300)],
     damage_type: DamageType::Unknown,
@@ -9613,11 +10102,13 @@ pub static SAPPHIRE_CRYSTAL_1027: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::SapphireCrystal,
     riot_id: 1027,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static SCARECROW_EFFIGY_3330: CachedItem = CachedItem {
+    name: "Scarecrow Effigy",
     price: 0,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -9648,11 +10139,13 @@ pub static SCARECROW_EFFIGY_3330: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::ScarecrowEffigy,
     riot_id: 3330,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static SCORCHCLAW_PUP_1101: CachedItem = CachedItem {
+    name: "Scorchclaw Pup",
     price: 450,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -9683,11 +10176,13 @@ pub static SCORCHCLAW_PUP_1101: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::ScorchclawPup,
     riot_id: 1101,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static SCOUTS_SLINGSHOT_3144: CachedItem = CachedItem {
+    name: "Scout's Slingshot",
     price: 600,
     prettified_stats: &[StatName::AttackSpeed(20)],
     damage_type: DamageType::Unknown,
@@ -9718,11 +10213,13 @@ pub static SCOUTS_SLINGSHOT_3144: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::ScoutsSlingshot,
     riot_id: 3144,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static SEEKERS_ARMGUARD_2420: CachedItem = CachedItem {
+    name: "Seeker's Armguard",
     price: 1600,
     prettified_stats: &[StatName::Armor(25), StatName::AbilityPower(40)],
     damage_type: DamageType::Unknown,
@@ -9753,11 +10250,13 @@ pub static SEEKERS_ARMGUARD_2420: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::SeekersArmguard,
     riot_id: 2420,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static SERAPHS_EMBRACE_3040: CachedItem = CachedItem {
+    name: "Seraph's Embrace",
     price: 2900,
     prettified_stats: &[
         StatName::AbilityPower(70),
@@ -9792,11 +10291,13 @@ pub static SERAPHS_EMBRACE_3040: CachedItem = CachedItem {
     purchasable: false,
     deals_damage: false,
     tier: 4,
+    internal_id: ItemId::SeraphsEmbrace,
     riot_id: 3040,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static SERPENTS_FANG_6695: CachedItem = CachedItem {
+    name: "Serpent's Fang",
     price: 2500,
     prettified_stats: &[StatName::AttackDamage(55), StatName::Lethality(15)],
     damage_type: DamageType::Unknown,
@@ -9827,11 +10328,13 @@ pub static SERPENTS_FANG_6695: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::SerpentsFang,
     riot_id: 6695,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static SERRATED_DIRK_3134: CachedItem = CachedItem {
+    name: "Serrated Dirk",
     price: 1000,
     prettified_stats: &[StatName::AttackDamage(20), StatName::Lethality(10)],
     damage_type: DamageType::Unknown,
@@ -9862,11 +10365,13 @@ pub static SERRATED_DIRK_3134: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::SerratedDirk,
     riot_id: 3134,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static SERYLDAS_GRUDGE_6694: CachedItem = CachedItem {
+    name: "Serylda's Grudge",
     price: 3000,
     prettified_stats: &[
         StatName::ArmorPenetration(35),
@@ -9901,13 +10406,18 @@ pub static SERYLDAS_GRUDGE_6694: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::SeryldasGrudge,
     riot_id: 6694,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static SHADOWFLAME_4645: CachedItem = CachedItem {
+    name: "Shadowflame",
     price: 3200,
-    prettified_stats: &[StatName::MagicPenetration(15), StatName::AbilityPower(110)],
+    prettified_stats: &[
+        StatName::MagicPenetration(15),
+        StatName::AbilityPower(110),
+    ],
     damage_type: DamageType::Unknown,
     attributes: Attrs::Undefined,
     metadata: TypeMetadata {
@@ -9936,11 +10446,13 @@ pub static SHADOWFLAME_4645: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::Shadowflame,
     riot_id: 4645,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static SHATTERED_ARMGUARD_2421: CachedItem = CachedItem {
+    name: "Shattered Armguard",
     price: 1600,
     prettified_stats: &[StatName::AbilityPower(40), StatName::Armor(25)],
     damage_type: DamageType::Unknown,
@@ -9971,11 +10483,13 @@ pub static SHATTERED_ARMGUARD_2421: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::ShatteredArmguard,
     riot_id: 2421,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static SHEEN_3057: CachedItem = CachedItem {
+    name: "Sheen",
     price: 900,
     prettified_stats: &[StatName::AbilityHaste(10)],
     damage_type: DamageType::Unknown,
@@ -10006,11 +10520,13 @@ pub static SHEEN_3057: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::Sheen,
     riot_id: 3057,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static SHIELD_OF_MOLTEN_STONE_443058: CachedItem = CachedItem {
+    name: "Shield of Molten Stone",
     price: 0,
     prettified_stats: &[StatName::Health(300), StatName::Armor(100)],
     damage_type: DamageType::Unknown,
@@ -10041,11 +10557,13 @@ pub static SHIELD_OF_MOLTEN_STONE_443058: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::ShieldOfMoltenStone,
     riot_id: 443058,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static SHURELYAS_BATTLESONG_2065: CachedItem = CachedItem {
+    name: "Shurelya's Battlesong",
     price: 2200,
     prettified_stats: &[
         StatName::BaseManaRegen(125),
@@ -10081,11 +10599,13 @@ pub static SHURELYAS_BATTLESONG_2065: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::ShurelyasBattlesong,
     riot_id: 2065,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static SLIGHTLY_MAGICAL_BOOTS_2422: CachedItem = CachedItem {
+    name: "Slightly Magical Boots",
     price: 0,
     prettified_stats: &[StatName::MoveSpeed(25)],
     damage_type: DamageType::Unknown,
@@ -10116,11 +10636,13 @@ pub static SLIGHTLY_MAGICAL_BOOTS_2422: CachedItem = CachedItem {
     purchasable: false,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::SlightlyMagicalBoots,
     riot_id: 2422,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static SOLSTICE_SLEIGH_3876: CachedItem = CachedItem {
+    name: "Solstice Sleigh",
     price: 400,
     prettified_stats: &[
         StatName::BaseHealthRegen(75),
@@ -10156,13 +10678,18 @@ pub static SOLSTICE_SLEIGH_3876: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::SolsticeSleigh,
     riot_id: 3876,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static SORCERERS_SHOES_3020: CachedItem = CachedItem {
+    name: "Sorcerer's Shoes",
     price: 1100,
-    prettified_stats: &[StatName::MagicPenetration(12), StatName::MoveSpeed(45)],
+    prettified_stats: &[
+        StatName::MagicPenetration(12),
+        StatName::MoveSpeed(45),
+    ],
     damage_type: DamageType::Unknown,
     attributes: Attrs::Undefined,
     metadata: TypeMetadata {
@@ -10191,11 +10718,13 @@ pub static SORCERERS_SHOES_3020: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::SorcerersShoes,
     riot_id: 3020,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static SPEAR_OF_SHOJIN_3161: CachedItem = CachedItem {
+    name: "Spear of Shojin",
     price: 3100,
     prettified_stats: &[StatName::AttackDamage(45), StatName::Health(450)],
     damage_type: DamageType::Unknown,
@@ -10226,11 +10755,13 @@ pub static SPEAR_OF_SHOJIN_3161: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::SpearOfShojin,
     riot_id: 3161,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static SPECTRAL_CUTLASS_224004: CachedItem = CachedItem {
+    name: "Spectral Cutlass",
     price: 2800,
     prettified_stats: &[StatName::Lethality(21), StatName::AttackDamage(55)],
     damage_type: DamageType::Unknown,
@@ -10261,11 +10792,13 @@ pub static SPECTRAL_CUTLASS_224004: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::SpectralCutlass,
     riot_id: 224004,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static SPECTRES_COWL_3211: CachedItem = CachedItem {
+    name: "Spectre's Cowl",
     price: 1250,
     prettified_stats: &[
         StatName::Health(200),
@@ -10300,11 +10833,13 @@ pub static SPECTRES_COWL_3211: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::SpectresCowl,
     riot_id: 3211,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static SPELLSLINGERS_SHOES_3175: CachedItem = CachedItem {
+    name: "Spellslinger's Shoes",
     price: 1600,
     prettified_stats: &[StatName::MagicPenetration(7), StatName::MoveSpeed(50)],
     damage_type: DamageType::Unknown,
@@ -10335,11 +10870,13 @@ pub static SPELLSLINGERS_SHOES_3175: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::SpellslingersShoes,
     riot_id: 3175,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static SPIRIT_VISAGE_3065: CachedItem = CachedItem {
+    name: "Spirit Visage",
     price: 2700,
     prettified_stats: &[
         StatName::MagicResist(50),
@@ -10375,11 +10912,13 @@ pub static SPIRIT_VISAGE_3065: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::SpiritVisage,
     riot_id: 3065,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static STAFF_OF_FLOWING_WATER_6616: CachedItem = CachedItem {
+    name: "Staff of Flowing Water",
     price: 2250,
     prettified_stats: &[
         StatName::BaseManaRegen(125),
@@ -10415,11 +10954,13 @@ pub static STAFF_OF_FLOWING_WATER_6616: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::StaffOfFlowingWater,
     riot_id: 6616,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static STAT_BONUS_220000: CachedItem = CachedItem {
+    name: "Stat Bonus",
     price: 750,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -10450,11 +10991,13 @@ pub static STAT_BONUS_220000: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::StatBonus,
     riot_id: 220000,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static STATIKK_SHIV_3087: CachedItem = CachedItem {
+    name: "Statikk Shiv",
     price: 2700,
     prettified_stats: &[
         StatName::AttackSpeed(30),
@@ -10489,11 +11032,13 @@ pub static STATIKK_SHIV_3087: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::StatikkShiv,
     riot_id: 3087,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static STEALTH_WARD_3340: CachedItem = CachedItem {
+    name: "Stealth Ward",
     price: 0,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -10524,11 +11069,13 @@ pub static STEALTH_WARD_3340: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::StealthWard,
     riot_id: 3340,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static STEEL_SIGIL_2019: CachedItem = CachedItem {
+    name: "Steel Sigil",
     price: 1100,
     prettified_stats: &[StatName::Armor(30), StatName::AttackDamage(15)],
     damage_type: DamageType::Unknown,
@@ -10559,11 +11106,13 @@ pub static STEEL_SIGIL_2019: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::SteelSigil,
     riot_id: 2019,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static STERAKS_GAGE_3053: CachedItem = CachedItem {
+    name: "Sterak's Gage",
     price: 3200,
     prettified_stats: &[StatName::Health(400), StatName::Tenacity(20)],
     damage_type: DamageType::Unknown,
@@ -10594,11 +11143,13 @@ pub static STERAKS_GAGE_3053: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::SteraksGage,
     riot_id: 3053,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static STORMRAZOR_223095: CachedItem = CachedItem {
+    name: "Stormrazor",
     price: 2500,
     prettified_stats: &[
         StatName::CriticalStrikeChance(25),
@@ -10633,11 +11184,13 @@ pub static STORMRAZOR_223095: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::Stormrazor,
     riot_id: 223095,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static STORMSURGE_4646: CachedItem = CachedItem {
+    name: "Stormsurge",
     price: 2800,
     prettified_stats: &[
         StatName::MoveSpeed(6),
@@ -10672,11 +11225,13 @@ pub static STORMSURGE_4646: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::Stormsurge,
     riot_id: 4646,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static STRIDEBREAKER_6631: CachedItem = CachedItem {
+    name: "Stridebreaker",
     price: 3300,
     prettified_stats: &[
         StatName::AttackSpeed(25),
@@ -10711,11 +11266,13 @@ pub static STRIDEBREAKER_6631: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::Stridebreaker,
     riot_id: 6631,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static SUNDERED_SKY_6610: CachedItem = CachedItem {
+    name: "Sundered Sky",
     price: 3100,
     prettified_stats: &[
         StatName::AttackDamage(40),
@@ -10750,11 +11307,13 @@ pub static SUNDERED_SKY_6610: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::SunderedSky,
     riot_id: 6610,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static SUNFIRE_AEGIS_3068: CachedItem = CachedItem {
+    name: "Sunfire Aegis",
     price: 2700,
     prettified_stats: &[
         StatName::Health(350),
@@ -10789,11 +11348,13 @@ pub static SUNFIRE_AEGIS_3068: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::SunfireAegis,
     riot_id: 3068,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static SUPER_MECH_ARMOR_1511: CachedItem = CachedItem {
+    name: "Super Mech Armor",
     price: 0,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -10824,11 +11385,13 @@ pub static SUPER_MECH_ARMOR_1511: CachedItem = CachedItem {
     purchasable: false,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::SuperMechArmor,
     riot_id: 1511,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static SUPER_MECH_POWER_FIELD_1512: CachedItem = CachedItem {
+    name: "Super Mech Power Field",
     price: 0,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -10859,11 +11422,13 @@ pub static SUPER_MECH_POWER_FIELD_1512: CachedItem = CachedItem {
     purchasable: false,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::SuperMechPowerField,
     riot_id: 1512,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static SWIFTMARCH_3170: CachedItem = CachedItem {
+    name: "Swiftmarch",
     price: 1500,
     prettified_stats: &[StatName::MoveSpeed(65)],
     damage_type: DamageType::Unknown,
@@ -10894,11 +11459,13 @@ pub static SWIFTMARCH_3170: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::Swiftmarch,
     riot_id: 3170,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static SWORD_OF_BLOSSOMING_DAWN_4011: CachedItem = CachedItem {
+    name: "Sword of Blossoming Dawn",
     price: 2500,
     prettified_stats: &[
         StatName::AbilityPower(45),
@@ -10934,11 +11501,13 @@ pub static SWORD_OF_BLOSSOMING_DAWN_4011: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::SwordOfBlossomingDawn,
     riot_id: 4011,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static SWORD_OF_THE_DIVINE_443060: CachedItem = CachedItem {
+    name: "Sword of the Divine",
     price: 0,
     prettified_stats: &[
         StatName::AdaptiveForce(110),
@@ -10972,11 +11541,13 @@ pub static SWORD_OF_THE_DIVINE_443060: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::SwordOfTheDivine,
     riot_id: 443060,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static SYMBIOTIC_SOLES_3010: CachedItem = CachedItem {
+    name: "Symbiotic Soles",
     price: 900,
     prettified_stats: &[StatName::MoveSpeed(40)],
     damage_type: DamageType::Unknown,
@@ -11007,11 +11578,13 @@ pub static SYMBIOTIC_SOLES_3010: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::SymbioticSoles,
     riot_id: 3010,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static SYNCHRONIZED_SOULS_3013: CachedItem = CachedItem {
+    name: "Synchronized Souls",
     price: 900,
     prettified_stats: &[StatName::MoveSpeed(45)],
     damage_type: DamageType::Unknown,
@@ -11042,11 +11615,13 @@ pub static SYNCHRONIZED_SOULS_3013: CachedItem = CachedItem {
     purchasable: false,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::SynchronizedSouls,
     riot_id: 3013,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static TALISMAN_OF_ASCENSION_443064: CachedItem = CachedItem {
+    name: "Talisman of Ascension",
     price: 0,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -11077,11 +11652,13 @@ pub static TALISMAN_OF_ASCENSION_443064: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::TalismanOfAscension,
     riot_id: 443064,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static TEAR_OF_THE_GODDESS_3070: CachedItem = CachedItem {
+    name: "Tear of the Goddess",
     price: 400,
     prettified_stats: &[StatName::Mana(240)],
     damage_type: DamageType::Unknown,
@@ -11112,11 +11689,13 @@ pub static TEAR_OF_THE_GODDESS_3070: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::TearOfTheGoddess,
     riot_id: 3070,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static TERMINUS_3302: CachedItem = CachedItem {
+    name: "Terminus",
     price: 3000,
     prettified_stats: &[StatName::AttackDamage(30), StatName::AttackSpeed(35)],
     damage_type: DamageType::Unknown,
@@ -11147,11 +11726,13 @@ pub static TERMINUS_3302: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::Terminus,
     riot_id: 3302,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static THE_BRUTALIZER_2020: CachedItem = CachedItem {
+    name: "The Brutalizer",
     price: 1337,
     prettified_stats: &[
         StatName::AttackDamage(25),
@@ -11186,11 +11767,13 @@ pub static THE_BRUTALIZER_2020: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::TheBrutalizer,
     riot_id: 2020,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static THE_COLLECTOR_6676: CachedItem = CachedItem {
+    name: "The Collector",
     price: 3000,
     prettified_stats: &[
         StatName::AttackDamage(50),
@@ -11225,11 +11808,13 @@ pub static THE_COLLECTOR_6676: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::TheCollector,
     riot_id: 6676,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static THE_GOLDEN_SPATULA_224403: CachedItem = CachedItem {
+    name: "The Golden Spatula",
     price: 0,
     prettified_stats: &[
         StatName::Mana(250),
@@ -11274,11 +11859,13 @@ pub static THE_GOLDEN_SPATULA_224403: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::TheGoldenSpatula,
     riot_id: 224403,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static THORNMAIL_3075: CachedItem = CachedItem {
+    name: "Thornmail",
     price: 2450,
     prettified_stats: &[StatName::Health(150), StatName::Armor(75)],
     damage_type: DamageType::Unknown,
@@ -11309,11 +11896,13 @@ pub static THORNMAIL_3075: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::Thornmail,
     riot_id: 3075,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static TIAMAT_3077: CachedItem = CachedItem {
+    name: "Tiamat",
     price: 1200,
     prettified_stats: &[StatName::AttackDamage(20)],
     damage_type: DamageType::Unknown,
@@ -11344,11 +11933,13 @@ pub static TIAMAT_3077: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::Tiamat,
     riot_id: 3077,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static TITANIC_HYDRA_3748: CachedItem = CachedItem {
+    name: "Titanic Hydra",
     price: 3300,
     prettified_stats: &[StatName::AttackDamage(40), StatName::Health(600)],
     damage_type: DamageType::Unknown,
@@ -11379,11 +11970,13 @@ pub static TITANIC_HYDRA_3748: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::TitanicHydra,
     riot_id: 3748,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static TOTAL_BISCUIT_OF_EVERLASTING_WILL_2010: CachedItem = CachedItem {
+    name: "Total Biscuit of Everlasting Will",
     price: 0,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -11414,11 +12007,13 @@ pub static TOTAL_BISCUIT_OF_EVERLASTING_WILL_2010: CachedItem = CachedItem {
     purchasable: false,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::TotalBiscuitOfEverlastingWill,
     riot_id: 2010,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static TRAILBLAZER_3002: CachedItem = CachedItem {
+    name: "Trailblazer",
     price: 2400,
     prettified_stats: &[
         StatName::MoveSpeed(4),
@@ -11453,11 +12048,13 @@ pub static TRAILBLAZER_3002: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::Trailblazer,
     riot_id: 3002,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static TRINITY_FORCE_3078: CachedItem = CachedItem {
+    name: "Trinity Force",
     price: 3333,
     prettified_stats: &[
         StatName::AbilityHaste(15),
@@ -11493,11 +12090,13 @@ pub static TRINITY_FORCE_3078: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::TrinityForce,
     riot_id: 3078,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static TUNNELER_2021: CachedItem = CachedItem {
+    name: "Tunneler",
     price: 1150,
     prettified_stats: &[StatName::AttackDamage(15), StatName::Health(250)],
     damage_type: DamageType::Unknown,
@@ -11528,11 +12127,13 @@ pub static TUNNELER_2021: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::Tunneler,
     riot_id: 2021,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static TURBO_CHEMTANK_443079: CachedItem = CachedItem {
+    name: "Turbo Chemtank",
     price: 0,
     prettified_stats: &[StatName::AdaptiveForce(80), StatName::Health(600)],
     damage_type: DamageType::Unknown,
@@ -11563,11 +12164,13 @@ pub static TURBO_CHEMTANK_443079: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::TurboChemtank,
     riot_id: 443079,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static TURRET_PLATING_1515: CachedItem = CachedItem {
+    name: "Turret Plating",
     price: 0,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -11598,13 +12201,18 @@ pub static TURRET_PLATING_1515: CachedItem = CachedItem {
     purchasable: false,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::TurretPlating,
     riot_id: 1515,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static TWILIGHTS_EDGE_447121: CachedItem = CachedItem {
+    name: "Twilight's Edge",
     price: 0,
-    prettified_stats: &[StatName::AbilityPower(100), StatName::AttackDamage(70)],
+    prettified_stats: &[
+        StatName::AbilityPower(100),
+        StatName::AttackDamage(70),
+    ],
     damage_type: DamageType::Unknown,
     attributes: Attrs::Undefined,
     metadata: TypeMetadata {
@@ -11633,11 +12241,13 @@ pub static TWILIGHTS_EDGE_447121: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::TwilightsEdge,
     riot_id: 447121,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static TWIN_MASK_443080: CachedItem = CachedItem {
+    name: "Twin Mask",
     price: 0,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -11668,11 +12278,13 @@ pub static TWIN_MASK_443080: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::TwinMask,
     riot_id: 443080,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static UMBRAL_GLAIVE_3179: CachedItem = CachedItem {
+    name: "Umbral Glaive",
     price: 2500,
     prettified_stats: &[
         StatName::Lethality(15),
@@ -11707,11 +12319,13 @@ pub static UMBRAL_GLAIVE_3179: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::UmbralGlaive,
     riot_id: 3179,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static UNENDING_DESPAIR_2502: CachedItem = CachedItem {
+    name: "Unending Despair",
     price: 2800,
     prettified_stats: &[
         StatName::AbilityHaste(10),
@@ -11747,11 +12361,13 @@ pub static UNENDING_DESPAIR_2502: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::UnendingDespair,
     riot_id: 2502,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static VAMPIRIC_SCEPTER_1053: CachedItem = CachedItem {
+    name: "Vampiric Scepter",
     price: 900,
     prettified_stats: &[StatName::AttackDamage(15), StatName::LifeSteal(7)],
     damage_type: DamageType::Unknown,
@@ -11782,11 +12398,13 @@ pub static VAMPIRIC_SCEPTER_1053: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::VampiricScepter,
     riot_id: 1053,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static VERDANT_BARRIER_4632: CachedItem = CachedItem {
+    name: "Verdant Barrier",
     price: 1600,
     prettified_stats: &[StatName::AbilityPower(40), StatName::MagicResist(25)],
     damage_type: DamageType::Unknown,
@@ -11817,11 +12435,13 @@ pub static VERDANT_BARRIER_4632: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::VerdantBarrier,
     riot_id: 4632,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static VIGILANT_WARDSTONE_4643: CachedItem = CachedItem {
+    name: "Vigilant Wardstone",
     price: 2300,
     prettified_stats: &[
         StatName::MagicResist(30),
@@ -11857,13 +12477,18 @@ pub static VIGILANT_WARDSTONE_4643: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::VigilantWardstone,
     riot_id: 4643,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static VOID_STAFF_3135: CachedItem = CachedItem {
+    name: "Void Staff",
     price: 3000,
-    prettified_stats: &[StatName::MagicPenetration(40), StatName::AbilityPower(95)],
+    prettified_stats: &[
+        StatName::MagicPenetration(40),
+        StatName::AbilityPower(95),
+    ],
     damage_type: DamageType::Unknown,
     attributes: Attrs::Undefined,
     metadata: TypeMetadata {
@@ -11892,11 +12517,13 @@ pub static VOID_STAFF_3135: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::VoidStaff,
     riot_id: 3135,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static VOLTAIC_CYCLOSWORD_6699: CachedItem = CachedItem {
+    name: "Voltaic Cyclosword",
     price: 3000,
     prettified_stats: &[
         StatName::Lethality(18),
@@ -11931,11 +12558,13 @@ pub static VOLTAIC_CYCLOSWORD_6699: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::VoltaicCyclosword,
     riot_id: 6699,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static WARDENS_EYE_1503: CachedItem = CachedItem {
+    name: "Warden's Eye",
     price: 0,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -11966,11 +12595,13 @@ pub static WARDENS_EYE_1503: CachedItem = CachedItem {
     purchasable: false,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::WardensEye,
     riot_id: 1503,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static WARDENS_MAIL_3082: CachedItem = CachedItem {
+    name: "Warden's Mail",
     price: 1000,
     prettified_stats: &[StatName::Armor(40)],
     damage_type: DamageType::Unknown,
@@ -12001,11 +12632,13 @@ pub static WARDENS_MAIL_3082: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::WardensMail,
     riot_id: 3082,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static WARMOGS_ARMOR_3083: CachedItem = CachedItem {
+    name: "Warmog's Armor",
     price: 3100,
     prettified_stats: &[StatName::Health(1000), StatName::BaseHealthRegen(100)],
     damage_type: DamageType::Unknown,
@@ -12036,11 +12669,13 @@ pub static WARMOGS_ARMOR_3083: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::WarmogsArmor,
     riot_id: 3083,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static WATCHFUL_WARDSTONE_4638: CachedItem = CachedItem {
+    name: "Watchful Wardstone",
     price: 1100,
     prettified_stats: &[
         StatName::Armor(10),
@@ -12076,11 +12711,13 @@ pub static WATCHFUL_WARDSTONE_4638: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::WatchfulWardstone,
     riot_id: 4638,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static WINGED_MOONPLATE_3066: CachedItem = CachedItem {
+    name: "Winged Moonplate",
     price: 800,
     prettified_stats: &[StatName::MoveSpeed(4), StatName::Health(200)],
     damage_type: DamageType::Unknown,
@@ -12111,11 +12748,13 @@ pub static WINGED_MOONPLATE_3066: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::WingedMoonplate,
     riot_id: 3066,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static WINTERS_APPROACH_3119: CachedItem = CachedItem {
+    name: "Winter's Approach",
     price: 2400,
     prettified_stats: &[
         StatName::Mana(500),
@@ -12150,11 +12789,13 @@ pub static WINTERS_APPROACH_3119: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::WintersApproach,
     riot_id: 3119,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static WITS_END_3091: CachedItem = CachedItem {
+    name: "Wit's End",
     price: 2800,
     prettified_stats: &[
         StatName::AttackSpeed(50),
@@ -12189,11 +12830,13 @@ pub static WITS_END_3091: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::WitsEnd,
     riot_id: 3091,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static WOOGLETS_WITCHCAP_228002: CachedItem = CachedItem {
+    name: "Wooglet's Witchcap",
     price: 0,
     prettified_stats: &[
         StatName::AbilityPower(300),
@@ -12228,11 +12871,13 @@ pub static WOOGLETS_WITCHCAP_228002: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::WoogletsWitchcap,
     riot_id: 228002,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static WORDLESS_PROMISE_4016: CachedItem = CachedItem {
+    name: "Wordless Promise",
     price: 2500,
     prettified_stats: &[
         StatName::AbilityPower(50),
@@ -12267,11 +12912,13 @@ pub static WORDLESS_PROMISE_4016: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::WordlessPromise,
     riot_id: 4016,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static WORLD_ATLAS_3865: CachedItem = CachedItem {
+    name: "World Atlas",
     price: 400,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -12302,11 +12949,13 @@ pub static WORLD_ATLAS_3865: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::WorldAtlas,
     riot_id: 3865,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static YOUMUUS_GHOSTBLADE_3142: CachedItem = CachedItem {
+    name: "Youmuu's Ghostblade",
     price: 2800,
     prettified_stats: &[
         StatName::Lethality(18),
@@ -12341,11 +12990,13 @@ pub static YOUMUUS_GHOSTBLADE_3142: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::YoumuusGhostblade,
     riot_id: 3142,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static YOUR_CUT_3400: CachedItem = CachedItem {
+    name: "Your Cut",
     price: 0,
     prettified_stats: &[],
     damage_type: DamageType::Unknown,
@@ -12376,11 +13027,13 @@ pub static YOUR_CUT_3400: CachedItem = CachedItem {
     purchasable: false,
     deals_damage: false,
     tier: 1,
+    internal_id: ItemId::YourCut,
     riot_id: 3400,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static YUN_TAL_WILDARROWS_3032: CachedItem = CachedItem {
+    name: "Yun Tal Wildarrows",
     price: 3000,
     prettified_stats: &[
         StatName::CriticalStrikeChance(0),
@@ -12415,11 +13068,13 @@ pub static YUN_TAL_WILDARROWS_3032: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::YunTalWildarrows,
     riot_id: 3032,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static ZAZ_ZAKS_REALMSPIKE_3871: CachedItem = CachedItem {
+    name: "Zaz'Zak's Realmspike",
     price: 400,
     prettified_stats: &[
         StatName::GoldPer10Seconds(5),
@@ -12455,11 +13110,13 @@ pub static ZAZ_ZAKS_REALMSPIKE_3871: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::ZazZaksRealmspike,
     riot_id: 3871,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static ZEAL_3086: CachedItem = CachedItem {
+    name: "Zeal",
     price: 1200,
     prettified_stats: &[
         StatName::CriticalStrikeChance(15),
@@ -12494,11 +13151,13 @@ pub static ZEAL_3086: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 2,
+    internal_id: ItemId::Zeal,
     riot_id: 3086,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static ZEKES_CONVERGENCE_3050: CachedItem = CachedItem {
+    name: "Zeke's Convergence",
     price: 2200,
     prettified_stats: &[
         StatName::Health(300),
@@ -12534,11 +13193,13 @@ pub static ZEKES_CONVERGENCE_3050: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::ZekesConvergence,
     riot_id: 3050,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static ZEPHYR_3172: CachedItem = CachedItem {
+    name: "Zephyr",
     price: 2500,
     prettified_stats: &[StatName::AttackSpeed(40), StatName::MoveSpeed(50)],
     damage_type: DamageType::Unknown,
@@ -12569,11 +13230,13 @@ pub static ZEPHYR_3172: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::Zephyr,
     riot_id: 3172,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
 };
 pub static ZHONYAS_HOURGLASS_3157: CachedItem = CachedItem {
+    name: "Zhonya's Hourglass",
     price: 3250,
     prettified_stats: &[StatName::AbilityPower(105), StatName::Armor(50)],
     damage_type: DamageType::Unknown,
@@ -12604,6 +13267,7 @@ pub static ZHONYAS_HOURGLASS_3157: CachedItem = CachedItem {
     purchasable: true,
     deals_damage: false,
     tier: 3,
+    internal_id: ItemId::ZhonyasHourglass,
     riot_id: 3157,
     ranged_closure: [zero, zero],
     melee_closure: [zero, zero],
@@ -12703,8 +13367,12 @@ pub const fn item_const_eval(
             AttackType::Ranged => [zero(ctx), zero(ctx)],
         },
         ItemId::BladeOfTheRuinedKing => match attack_type {
-            AttackType::Melee => [blade_of_the_ruined_king_melee_min(ctx), zero(ctx)],
-            AttackType::Ranged => [blade_of_the_ruined_king_ranged_min(ctx), zero(ctx)],
+            AttackType::Melee => {
+                [blade_of_the_ruined_king_melee_min(ctx), zero(ctx)]
+            }
+            AttackType::Ranged => {
+                [blade_of_the_ruined_king_ranged_min(ctx), zero(ctx)]
+            }
         },
         ItemId::BlastingWand => match attack_type {
             AttackType::Melee => [zero(ctx), zero(ctx)],

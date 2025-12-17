@@ -228,6 +228,7 @@ pub async fn generate_items() -> GeneratorFn {
 
             let mut base_declaration = format!(
                 "pub static {name_ssnake}_{riot_id}: CachedItem = CachedItem {{
+                    name: {name:?},
                     price: {price},
                     prettified_stats: &[{prettified_stats}],
                     damage_type: DamageType::{damage_type},
@@ -237,6 +238,7 @@ pub async fn generate_items() -> GeneratorFn {
                     purchasable: {purchasable},
                     deals_damage: {deals_damage},
                     tier: {tier},
+                    internal_id: ItemId::{name_pascal},
                     riot_id: {riot_id},"
             );
 
@@ -441,6 +443,7 @@ pub async fn generate_items() -> GeneratorFn {
             item_id_to_name,
             item_formulas,
             item_id_to_riot_id,
+            item_generator,
         ]
         .concat();
 

@@ -289,12 +289,18 @@ impl<'a> Tracker<'a> {
 /// frontend application
 pub async fn run() -> MayFail {
     let mut full_block = String::with_capacity(8 * 1024 * 1024);
-    let mut full_exports = format!(
-        "use crate::*;
-        #[derive(Debug, Copy, Clone, Decode)]
-        pub enum Position {{
-            Top, Jungle, Middle, Bottom, Support
-        }}"
+    let mut full_exports = String::from(
+        r#"use crate::*;
+        #[derive(Copy, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+        #[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
+        #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+        pub enum Position {
+            Top,
+            Jungle,
+            Middle,
+            Bottom,
+            Support,
+        }"#,
     );
     let mut closures = Vec::new();
 
@@ -341,7 +347,7 @@ pub async fn run() -> MayFail {
     ));
 
     for task in [
-        CwdPath::fwrite("tutorlolv2_exports/assets/block.txt", full_block),
+        CwdPath::fwrite("tutorlolv2_exports/src/block.txt", full_block),
         CwdPath::fwrite("tutorlolv2_exports/src/exports.rs", full_exports.rust_fmt()),
     ] {
         task.await??

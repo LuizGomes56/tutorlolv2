@@ -19,9 +19,9 @@ pub const L_MSTR: usize = 7;
 /// Number of different plates a tower can have. Each tower can have `0..=5` plates
 pub const L_TWRD: usize = 6;
 
-/// Alias to the number of simulated items. See [`tutorlolv2_gen::SIMULATED_ITEMS_ENUM`]
+/// Alias to the number of simulated items. See [`SIMULATED_ITEMS_ENUM`]
 /// for more details about the usage of this constant
-pub const L_SIML: usize = tutorlolv2_gen::NUMBER_OF_SIMULATED_ITEMS;
+pub const L_SIML: usize = NUMBER_OF_SIMULATED_ITEMS;
 
 /// Enum that defines the team of some player.
 /// - `CHAOS` is converted to [`Team::Red`],
@@ -98,7 +98,7 @@ pub struct Attacks {
 }
 
 /// Holds the compile-time known metadata and closures of the current champion,
-/// obtained from the static variable [`tutorlolv2_gen::CHAMPION_CACHE`]. Note that
+/// obtained from the static variable [`CHAMPION_CACHE`]. Note that
 /// the current champion is only known at runtime, but since the application knowns
 /// all the possible champion's data at compile-time, the length of both metadata
 /// and closures is known and lives forever, unlike the ones in variant [`DamageKind`]
@@ -149,7 +149,7 @@ pub struct Realtime<'a> {
 
     /// Constant array of the [`TypeMetadata<AbilityId>`] of all abilities of the
     /// current champion. Note that this value lives at the static variable
-    /// [`tutorlolv2_gen::CHAMPION_CACHE`] at the index [`ChampionId`] when casting
+    /// [`CHAMPION_CACHE`] at the index [`ChampionId`] when casting
     /// this enum to type [`usize`]
     pub abilities_meta: &'static [TypeMetadata<AbilityId>],
 

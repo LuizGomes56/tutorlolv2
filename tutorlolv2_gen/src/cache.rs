@@ -265,6 +265,7 @@ pub struct CachedChampionStats {
 /// Generated data about some item, held in the static variable [`crate::ITEM_CACHE`]
 #[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
 pub struct CachedItem {
+    pub name: &'static str,
     pub tier: u8,
     pub price: u16,
     pub prettified_stats: &'static [StatName],
@@ -276,17 +277,20 @@ pub struct CachedItem {
     pub attributes: Attrs,
     pub deals_damage: bool,
     pub purchasable: bool,
+    pub internal_id: ItemId,
     pub riot_id: u32,
 }
 
 /// Generated data about some rune, held in the static variable [`crate::RUNE_CACHE`]
 #[derive(Clone, Copy, Debug)]
 pub struct CachedRune {
+    pub name: &'static str,
     pub damage_type: DamageType,
     pub metadata: TypeMetadata<RuneId>,
     pub melee_closure: ConstClosure,
     pub ranged_closure: ConstClosure,
     pub riot_id: u32,
+    pub internal_id: RuneId,
     pub undeclared: bool,
 }
 

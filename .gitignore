@@ -6,6 +6,7 @@
 *.js
 *.txt
 *.pdf
+*.html
 *.svg
 internal
 target

@@ -123,14 +123,17 @@ pub fn rust_html(rust_code: &str) -> String {
         "control",
         r"\b(break|continue|intrinsic|loop|match|return|yield|for|while|match|if|else|as|in)\b",
     );
-
+    h.keyword("constant", r"::[A-Z_][A-Za-z0-9_]*\b");
     h.keyword("constant", r"\b[A-Z]+\b");
     h.keyword("type", r"\b[A-Z][a-zA-Z0-9_]*\b");
     h.keyword(
         "primitive",
         r"\b(bool|usize|u8|u16|u32|u64|isize|i8|i16|i32|i64|f32|f64|char|str)\b",
     );
-    h.keyword("number", r"\b\d+\.?\d*\b");
+    h.keyword(
+        "number",
+        r"\b(?:0x[0-9A-Fa-f_]+|0o[0-7_]+|0b[01_]+|\d[\d_]*(?:\.\d[\d_]*)?(?:[eE][+-]?\d[\d_]*)?)(?:[iu](?:8|16|32|64|128|size)|f(?:32|64))?\b",
+    );
     h.keyword("boolean", r"\b(true|false)\b");
     h.keyword("macro", r"[a-zA-Z_][a-zA-Z0-9_]*!");
     h.keyword("function", r"\b[a-z][a-zA-Z0-9_]*\(");
@@ -147,19 +150,33 @@ pub fn rust_html(rust_code: &str) -> String {
     let mut out = String::new();
     for (i, line) in code.iter().enumerate() {
         let mut line_html = String::new();
+
         for token in h.line(i, line) {
             match token {
-                TokOpt::Some(text, kind) => {
-                    line_html.push_str(&format!("<span class=\"{kind}\">{text}</span>"));
-                }
+                TokOpt::Some(text, kind) => match kind {
+                    kind if kind == "function" && text.ends_with('(') => {
+                        let name = &text[..text.len() - 1];
+                        line_html.push_str(&format!("<span class=\"{kind}\">{name}</span>("));
+                    }
+                    kind if kind == "constant" && text.starts_with("::") => {
+                        let name = &text[2..];
+                        line_html.push_str("::");
+                        line_html.push_str(&format!("<span class=\"{kind}\">{name}</span>"));
+                    }
+                    kind => {
+                        line_html.push_str(&format!("<span class=\"{kind}\">{text}</span>"));
+                    }
+                },
                 TokOpt::None(text) => {
                     line_html.push_str(&text);
                 }
             }
         }
+
         out.push_str(&line_html);
-        out.push_str("\n");
+        out.push('\n');
     }
+
     format!("<pre>{}</pre>", out)
 }
 

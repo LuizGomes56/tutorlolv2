@@ -70,6 +70,10 @@ impl AbilityId {
         }
     }
 
+    pub fn as_const_lit(&self) -> String {
+        format!("{}::{:?}", self.as_char(), self.ability_name()).replace("_", "")
+    }
+
     pub fn as_literal(&self) -> String {
         format!(
             "AbilityId::{}(AbilityName::{:?})",

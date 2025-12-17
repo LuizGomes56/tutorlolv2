@@ -1,28 +1,6 @@
 #[allow(dead_code)]
 mod exports;
-mod html_gen;
 
-use bincode::{Decode, Encode};
-pub use html_gen::*;
-pub(self) use serde::{Deserialize, Serialize};
-use tutorlolv2_types::*;
-
-pub static MEGA_BLOCK: &str = include_str!("../assets/block.txt");
-
-macro_rules! impl_url {
-    ($($kind:ident),* $(,)?) => {
-        paste::paste! {
-            pub struct Url;
-
-            impl Url {
-                pub const BASE: &'static str = "http://localhost:8082";
-                $(
-                    pub const [<$kind:upper>]: &'static str =
-                        concat!("http://localhost:8082/img/", stringify!($kind));
-                )*
-            }
-        }
-    };
-}
-
-impl_url!(champions, items, runes);
+pub use exports::*;
+pub use tutorlolv2_types::{AbilityId, AbilityName};
+pub const RAW_BLOCK: &str = include_str!("block.txt");

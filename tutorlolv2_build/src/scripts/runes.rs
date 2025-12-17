@@ -60,9 +60,11 @@ pub async fn generate_runes() -> GeneratorFn {
 
                 let mut base_declaration = format!(
                     "pub static {name_ssnake}_{riot_id}: CachedRune = CachedRune {{
+                        name: {name:?},
                         damage_type: DamageType::{damage_type},
                         metadata: {metadata},
                         riot_id: {riot_id},
+                        internal_id: RuneId::{name_pascal},
                         undeclared: false,"
                 );
 
@@ -146,11 +148,13 @@ pub async fn generate_runes() -> GeneratorFn {
 
             let base_declaration = format!(
                 "pub static {name_ssnake}_{riot_id}: CachedRune = CachedRune {{
+                    name: {name:?},
                     damage_type: DamageType::Unknown,
                     metadata: {metadata},
                     melee_closure: zero,
                     ranged_closure: zero,
                     riot_id: {riot_id},
+                    internal_id: RuneId::{name_pascal},
                     undeclared: true
                 }};"
             );

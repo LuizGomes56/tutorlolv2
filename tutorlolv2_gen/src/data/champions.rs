@@ -11,11 +11,9 @@ impl ChampionId {
         }
     }
 }
-
 #[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
 #[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-#[repr(u8)]
 pub enum ChampionId {
     Aatrox,
     Ahri,
@@ -327,21 +325,36 @@ pub const fn aatrox_p_void(ctx: &EvalContext) -> f32 {
 }
 pub const fn aatrox_q_min(ctx: &EvalContext) -> f32 {
     match ctx.q_level {
-        1 => 10f32 + 0.6f32 * ctx.ad + (12.5f32 + 0.75f32 * ctx.ad) + (15f32 + 0.9f32 * ctx.ad),
+        1 => {
+            10f32
+                + 0.6f32 * ctx.ad
+                + (12.5f32 + 0.75f32 * ctx.ad)
+                + (15f32 + 0.9f32 * ctx.ad)
+        }
         2 => {
             25f32
                 + 0.675f32 * ctx.ad
                 + (31.25f32 + 0.84375f32 * ctx.ad)
                 + (37.5f32 + 1.0125f32 * ctx.ad)
         }
-        3 => 40f32 + 0.75f32 * ctx.ad + (50f32 + 0.9375f32 * ctx.ad) + (60f32 + 1.125f32 * ctx.ad),
+        3 => {
+            40f32
+                + 0.75f32 * ctx.ad
+                + (50f32 + 0.9375f32 * ctx.ad)
+                + (60f32 + 1.125f32 * ctx.ad)
+        }
         4 => {
             55f32
                 + 0.825f32 * ctx.ad
                 + (68.75f32 + 1.03125f32 * ctx.ad)
                 + (82.5f32 + 1.2375f32 * ctx.ad)
         }
-        5 => 70f32 + 0.9f32 * ctx.ad + (87.5f32 + 1.125f32 * ctx.ad) + (105f32 + 1.35f32 * ctx.ad),
+        5 => {
+            70f32
+                + 0.9f32 * ctx.ad
+                + (87.5f32 + 1.125f32 * ctx.ad)
+                + (105f32 + 1.35f32 * ctx.ad)
+        }
         _ => 0.0,
     }
 }
@@ -378,7 +391,10 @@ pub const fn aatrox_q_3min(ctx: &EvalContext) -> f32 {
 pub const fn aatrox_q_max(ctx: &EvalContext) -> f32 {
     match ctx.q_level {
         1 => {
-            17f32 + 1.02f32 * ctx.ad + (21.25f32 + 1.275f32 * ctx.ad) + (25.5f32 + 1.53f32 * ctx.ad)
+            17f32
+                + 1.02f32 * ctx.ad
+                + (21.25f32 + 1.275f32 * ctx.ad)
+                + (25.5f32 + 1.53f32 * ctx.ad)
         }
         2 => {
             42.5f32
@@ -563,11 +579,26 @@ pub const fn ahri_q_min(ctx: &EvalContext) -> f32 {
 }
 pub const fn ahri_q_max(ctx: &EvalContext) -> f32 {
     match ctx.q_level {
-        1 => (40f32 + 0.5f32 * ctx.ap) * ctx.magic_multiplier + (40f32 + 0.5f32 * ctx.ap),
-        2 => (65f32 + 0.5f32 * ctx.ap) * ctx.magic_multiplier + (65f32 + 0.5f32 * ctx.ap),
-        3 => (90f32 + 0.5f32 * ctx.ap) * ctx.magic_multiplier + (90f32 + 0.5f32 * ctx.ap),
-        4 => (115f32 + 0.5f32 * ctx.ap) * ctx.magic_multiplier + (115f32 + 0.5f32 * ctx.ap),
-        5 => (140f32 + 0.5f32 * ctx.ap) * ctx.magic_multiplier + (140f32 + 0.5f32 * ctx.ap),
+        1 => {
+            (40f32 + 0.5f32 * ctx.ap) * ctx.magic_multiplier
+                + (40f32 + 0.5f32 * ctx.ap)
+        }
+        2 => {
+            (65f32 + 0.5f32 * ctx.ap) * ctx.magic_multiplier
+                + (65f32 + 0.5f32 * ctx.ap)
+        }
+        3 => {
+            (90f32 + 0.5f32 * ctx.ap) * ctx.magic_multiplier
+                + (90f32 + 0.5f32 * ctx.ap)
+        }
+        4 => {
+            (115f32 + 0.5f32 * ctx.ap) * ctx.magic_multiplier
+                + (115f32 + 0.5f32 * ctx.ap)
+        }
+        5 => {
+            (140f32 + 0.5f32 * ctx.ap) * ctx.magic_multiplier
+                + (140f32 + 0.5f32 * ctx.ap)
+        }
         _ => 0.0,
     }
 }
@@ -1399,11 +1430,25 @@ pub const fn amumu_q_1(ctx: &EvalContext) -> f32 {
 }
 pub const fn amumu_w_1(ctx: &EvalContext) -> f32 {
     match ctx.w_level {
-        1 => 5f32 + 0.005f32 * ctx.enemy_max_health + 0.0025f32 * 0.01f32 * ctx.ap,
-        2 => 5f32 + 0.00625f32 * ctx.enemy_max_health + 0.0025f32 * 0.01f32 * ctx.ap,
-        3 => 5f32 + 0.0075f32 * ctx.enemy_max_health + 0.0025f32 * 0.01f32 * ctx.ap,
-        4 => 5f32 + 0.00875f32 * ctx.enemy_max_health + 0.0025f32 * 0.01f32 * ctx.ap,
-        5 => 5f32 + 0.01f32 * ctx.enemy_max_health + 0.0025f32 * 0.01f32 * ctx.ap,
+        1 => {
+            5f32 + 0.005f32 * ctx.enemy_max_health
+                + 0.0025f32 * 0.01f32 * ctx.ap
+        }
+        2 => {
+            5f32 + 0.00625f32 * ctx.enemy_max_health
+                + 0.0025f32 * 0.01f32 * ctx.ap
+        }
+        3 => {
+            5f32 + 0.0075f32 * ctx.enemy_max_health
+                + 0.0025f32 * 0.01f32 * ctx.ap
+        }
+        4 => {
+            5f32 + 0.00875f32 * ctx.enemy_max_health
+                + 0.0025f32 * 0.01f32 * ctx.ap
+        }
+        5 => {
+            5f32 + 0.01f32 * ctx.enemy_max_health + 0.0025f32 * 0.01f32 * ctx.ap
+        }
         _ => 0.0,
     }
 }
@@ -1514,7 +1559,8 @@ pub static ANIVIA: CachedChampion = CachedChampion {
     },
     merge_data: &[],
     closures: &[
-        anivia_q_1, anivia_q_2, anivia_q_3, anivia_e_1, anivia_e_2, anivia_r_1, anivia_r_2,
+        anivia_q_1, anivia_q_2, anivia_q_3, anivia_e_1, anivia_e_2, anivia_r_1,
+        anivia_r_2,
     ],
 };
 pub const fn anivia_q_1(ctx: &EvalContext) -> f32 {
@@ -2098,7 +2144,8 @@ pub static AURORA: CachedChampion = CachedChampion {
     },
     merge_data: &[],
     closures: &[
-        aurora_q_1, aurora_q_2, aurora_q_3, aurora_q_4, aurora_q_5, aurora_e_1, aurora_r_1,
+        aurora_q_1, aurora_q_2, aurora_q_3, aurora_q_4, aurora_q_5, aurora_e_1,
+        aurora_r_1,
     ],
 };
 pub const fn aurora_q_1(ctx: &EvalContext) -> f32 {
@@ -2977,7 +3024,8 @@ pub static BRIAR: CachedChampion = CachedChampion {
     },
     merge_data: &[],
     closures: &[
-        briar_q_1, briar_w_1, briar_e_1, briar_e_2, briar_e_3, briar_e_4, briar_r_1,
+        briar_q_1, briar_w_1, briar_e_1, briar_e_2, briar_e_3, briar_e_4,
+        briar_r_1,
     ],
 };
 pub const fn briar_q_1(ctx: &EvalContext) -> f32 {
@@ -3293,20 +3341,36 @@ pub const fn camille_w_1(ctx: &EvalContext) -> f32 {
 pub const fn camille_w_2(ctx: &EvalContext) -> f32 {
     match ctx.w_level {
         1 => 0.06f32 * ctx.enemy_max_health + 0.025f32 * 0.01f32 * ctx.bonus_ad,
-        2 => 0.065f32 * ctx.enemy_max_health + 0.025f32 * 0.01f32 * ctx.bonus_ad,
+        2 => {
+            0.065f32 * ctx.enemy_max_health + 0.025f32 * 0.01f32 * ctx.bonus_ad
+        }
         3 => 0.07f32 * ctx.enemy_max_health + 0.025f32 * 0.01f32 * ctx.bonus_ad,
-        4 => 0.075f32 * ctx.enemy_max_health + 0.025f32 * 0.01f32 * ctx.bonus_ad,
+        4 => {
+            0.075f32 * ctx.enemy_max_health + 0.025f32 * 0.01f32 * ctx.bonus_ad
+        }
         5 => 0.08f32 * ctx.enemy_max_health + 0.025f32 * 0.01f32 * ctx.bonus_ad,
         _ => 0.0,
     }
 }
 pub const fn camille_w_3(ctx: &EvalContext) -> f32 {
     match ctx.w_level {
-        1 => 0.03f32 * ctx.enemy_max_health + 0.0125f32 * 0.01f32 * ctx.bonus_ad,
-        2 => 0.0325f32 * ctx.enemy_max_health + 0.0125f32 * 0.01f32 * ctx.bonus_ad,
-        3 => 0.035f32 * ctx.enemy_max_health + 0.0125f32 * 0.01f32 * ctx.bonus_ad,
-        4 => 0.0375f32 * ctx.enemy_max_health + 0.0125f32 * 0.01f32 * ctx.bonus_ad,
-        5 => 0.04f32 * ctx.enemy_max_health + 0.0125f32 * 0.01f32 * ctx.bonus_ad,
+        1 => {
+            0.03f32 * ctx.enemy_max_health + 0.0125f32 * 0.01f32 * ctx.bonus_ad
+        }
+        2 => {
+            0.0325f32 * ctx.enemy_max_health
+                + 0.0125f32 * 0.01f32 * ctx.bonus_ad
+        }
+        3 => {
+            0.035f32 * ctx.enemy_max_health + 0.0125f32 * 0.01f32 * ctx.bonus_ad
+        }
+        4 => {
+            0.0375f32 * ctx.enemy_max_health
+                + 0.0125f32 * 0.01f32 * ctx.bonus_ad
+        }
+        5 => {
+            0.04f32 * ctx.enemy_max_health + 0.0125f32 * 0.01f32 * ctx.bonus_ad
+        }
         _ => 0.0,
     }
 }
@@ -3764,7 +3828,8 @@ pub static CORKI: CachedChampion = CachedChampion {
     },
     merge_data: &[],
     closures: &[
-        corki_q_1, corki_w_1, corki_w_2, corki_e_1, corki_e_2, corki_r_1, corki_r_2,
+        corki_q_1, corki_w_1, corki_w_2, corki_e_1, corki_e_2, corki_r_1,
+        corki_r_2,
     ],
 };
 pub const fn corki_q_1(ctx: &EvalContext) -> f32 {
@@ -4043,7 +4108,8 @@ pub static DIANA: CachedChampion = CachedChampion {
     },
     merge_data: &[],
     closures: &[
-        diana_q_1, diana_w_1, diana_w_2, diana_e_1, diana_r_1, diana_r_2, diana_r_3,
+        diana_q_1, diana_w_1, diana_w_2, diana_e_1, diana_r_1, diana_r_2,
+        diana_r_3,
     ],
 };
 pub const fn diana_q_1(ctx: &EvalContext) -> f32 {
@@ -4815,11 +4881,27 @@ pub const fn evelynn_w_1(ctx: &EvalContext) -> f32 {
 }
 pub const fn evelynn_e_2(ctx: &EvalContext) -> f32 {
     match ctx.e_level {
-        1 => 60f32 + 0.03f32 * ctx.enemy_max_health + 0.015f32 * 0.01f32 * ctx.ap,
-        2 => 90f32 + 0.03f32 * ctx.enemy_max_health + 0.015f32 * 0.01f32 * ctx.ap,
-        3 => 120f32 + 0.03f32 * ctx.enemy_max_health + 0.015f32 * 0.01f32 * ctx.ap,
-        4 => 150f32 + 0.03f32 * ctx.enemy_max_health + 0.015f32 * 0.01f32 * ctx.ap,
-        5 => 180f32 + 0.03f32 * ctx.enemy_max_health + 0.015f32 * 0.01f32 * ctx.ap,
+        1 => {
+            60f32 + 0.03f32 * ctx.enemy_max_health + 0.015f32 * 0.01f32 * ctx.ap
+        }
+        2 => {
+            90f32 + 0.03f32 * ctx.enemy_max_health + 0.015f32 * 0.01f32 * ctx.ap
+        }
+        3 => {
+            120f32
+                + 0.03f32 * ctx.enemy_max_health
+                + 0.015f32 * 0.01f32 * ctx.ap
+        }
+        4 => {
+            150f32
+                + 0.03f32 * ctx.enemy_max_health
+                + 0.015f32 * 0.01f32 * ctx.ap
+        }
+        5 => {
+            180f32
+                + 0.03f32 * ctx.enemy_max_health
+                + 0.015f32 * 0.01f32 * ctx.ap
+        }
         _ => 0.0,
     }
 }
@@ -5352,7 +5434,8 @@ pub static FIZZ: CachedChampion = CachedChampion {
     },
     merge_data: &[],
     closures: &[
-        fizz_q_1, fizz_w_1, fizz_w_2, fizz_w_3, fizz_w_4, fizz_e_1, fizz_r_1, fizz_r_2, fizz_r_3,
+        fizz_q_1, fizz_w_1, fizz_w_2, fizz_w_3, fizz_w_4, fizz_e_1, fizz_r_1,
+        fizz_r_2, fizz_r_3,
     ],
 };
 pub const fn fizz_q_1(ctx: &EvalContext) -> f32 {
@@ -5523,7 +5606,8 @@ pub static GALIO: CachedChampion = CachedChampion {
     },
     merge_data: &[],
     closures: &[
-        galio_q_1, galio_w_1, galio_w_2, galio_w_3, galio_w_4, galio_e_1, galio_e_2, galio_r_1,
+        galio_q_1, galio_w_1, galio_w_2, galio_w_3, galio_w_4, galio_e_1,
+        galio_e_2, galio_r_1,
     ],
 };
 pub const fn galio_q_1(ctx: &EvalContext) -> f32 {
@@ -6185,8 +6269,8 @@ pub static GRAGAS: CachedChampion = CachedChampion {
     },
     merge_data: &[],
     closures: &[
-        gragas_q_1, gragas_q_2, gragas_q_3, gragas_q_4, gragas_w_1, gragas_w_2, gragas_w_3,
-        gragas_e_1, gragas_r_1,
+        gragas_q_1, gragas_q_2, gragas_q_3, gragas_q_4, gragas_w_1, gragas_w_2,
+        gragas_w_3, gragas_e_1, gragas_r_1,
     ],
 };
 pub const fn gragas_q_1(ctx: &EvalContext) -> f32 {
@@ -6524,8 +6608,8 @@ pub static GWEN: CachedChampion = CachedChampion {
     },
     merge_data: &[],
     closures: &[
-        gwen_q_1, gwen_q_2, gwen_q_3, gwen_q_4, gwen_q_5, gwen_q_6, gwen_q_7, gwen_q_8, gwen_e_1,
-        gwen_r_1, gwen_r_2, gwen_r_3, gwen_r_4, gwen_r_5,
+        gwen_q_1, gwen_q_2, gwen_q_3, gwen_q_4, gwen_q_5, gwen_q_6, gwen_q_7,
+        gwen_q_8, gwen_e_1, gwen_r_1, gwen_r_2, gwen_r_3, gwen_r_4, gwen_r_5,
     ],
 };
 pub const fn gwen_q_1(ctx: &EvalContext) -> f32 {
@@ -6621,19 +6705,34 @@ pub const fn gwen_q_4(ctx: &EvalContext) -> f32 {
 pub const fn gwen_q_5(ctx: &EvalContext) -> f32 {
     match ctx.q_level {
         1 => {
-            110f32 + 0.45f32 * ctx.ap + 0.06f32 * ctx.enemy_max_health + 0.033f32 * 0.01f32 * ctx.ap
+            110f32
+                + 0.45f32 * ctx.ap
+                + 0.06f32 * ctx.enemy_max_health
+                + 0.033f32 * 0.01f32 * ctx.ap
         }
         2 => {
-            160f32 + 0.45f32 * ctx.ap + 0.06f32 * ctx.enemy_max_health + 0.033f32 * 0.01f32 * ctx.ap
+            160f32
+                + 0.45f32 * ctx.ap
+                + 0.06f32 * ctx.enemy_max_health
+                + 0.033f32 * 0.01f32 * ctx.ap
         }
         3 => {
-            210f32 + 0.45f32 * ctx.ap + 0.06f32 * ctx.enemy_max_health + 0.033f32 * 0.01f32 * ctx.ap
+            210f32
+                + 0.45f32 * ctx.ap
+                + 0.06f32 * ctx.enemy_max_health
+                + 0.033f32 * 0.01f32 * ctx.ap
         }
         4 => {
-            260f32 + 0.45f32 * ctx.ap + 0.06f32 * ctx.enemy_max_health + 0.033f32 * 0.01f32 * ctx.ap
+            260f32
+                + 0.45f32 * ctx.ap
+                + 0.06f32 * ctx.enemy_max_health
+                + 0.033f32 * 0.01f32 * ctx.ap
         }
         5 => {
-            310f32 + 0.45f32 * ctx.ap + 0.06f32 * ctx.enemy_max_health + 0.033f32 * 0.01f32 * ctx.ap
+            310f32
+                + 0.45f32 * ctx.ap
+                + 0.06f32 * ctx.enemy_max_health
+                + 0.033f32 * 0.01f32 * ctx.ap
         }
         _ => 0.0,
     }
@@ -6760,7 +6859,10 @@ pub const fn gwen_r_3(ctx: &EvalContext) -> f32 {
 pub const fn gwen_r_4(ctx: &EvalContext) -> f32 {
     match ctx.r_level {
         1 => {
-            90f32 + 0.24f32 * ctx.ap + 0.03f32 * ctx.enemy_max_health + 0.0165f32 * 0.01f32 * ctx.ap
+            90f32
+                + 0.24f32 * ctx.ap
+                + 0.03f32 * ctx.enemy_max_health
+                + 0.0165f32 * 0.01f32 * ctx.ap
         }
         2 => {
             180f32
@@ -6780,13 +6882,22 @@ pub const fn gwen_r_4(ctx: &EvalContext) -> f32 {
 pub const fn gwen_r_5(ctx: &EvalContext) -> f32 {
     match ctx.r_level {
         1 => {
-            150f32 + 0.4f32 * ctx.ap + 0.05f32 * ctx.enemy_max_health + 0.0275f32 * 0.01f32 * ctx.ap
+            150f32
+                + 0.4f32 * ctx.ap
+                + 0.05f32 * ctx.enemy_max_health
+                + 0.0275f32 * 0.01f32 * ctx.ap
         }
         2 => {
-            300f32 + 0.4f32 * ctx.ap + 0.05f32 * ctx.enemy_max_health + 0.0275f32 * 0.01f32 * ctx.ap
+            300f32
+                + 0.4f32 * ctx.ap
+                + 0.05f32 * ctx.enemy_max_health
+                + 0.0275f32 * 0.01f32 * ctx.ap
         }
         3 => {
-            450f32 + 0.4f32 * ctx.ap + 0.05f32 * ctx.enemy_max_health + 0.0275f32 * 0.01f32 * ctx.ap
+            450f32
+                + 0.4f32 * ctx.ap
+                + 0.05f32 * ctx.enemy_max_health
+                + 0.0275f32 * 0.01f32 * ctx.ap
         }
         _ => 0.0,
     }
@@ -8122,8 +8233,8 @@ pub static JHIN: CachedChampion = CachedChampion {
     },
     merge_data: &[],
     closures: &[
-        jhin_q_1, jhin_q_2, jhin_q_3, jhin_w_1, jhin_w_2, jhin_e_1, jhin_e_2, jhin_r_1, jhin_r_2,
-        jhin_r_3, jhin_r_4,
+        jhin_q_1, jhin_q_2, jhin_q_3, jhin_w_1, jhin_w_2, jhin_e_1, jhin_e_2,
+        jhin_r_1, jhin_r_2, jhin_r_3, jhin_r_4,
     ],
 };
 pub const fn jhin_q_1(ctx: &EvalContext) -> f32 {
@@ -8444,8 +8555,8 @@ pub static KSANTE: CachedChampion = CachedChampion {
     },
     merge_data: &[],
     closures: &[
-        ksante_q_1, ksante_w_1, ksante_w_2, ksante_w_3, ksante_w_4, ksante_w_5, ksante_r_1,
-        ksante_r_2, ksante_r_3,
+        ksante_q_1, ksante_w_1, ksante_w_2, ksante_w_3, ksante_w_4, ksante_w_5,
+        ksante_r_1, ksante_r_2, ksante_r_3,
     ],
 };
 pub const fn ksante_q_1(ctx: &EvalContext) -> f32 {
@@ -9477,7 +9588,8 @@ pub static KAYN: CachedChampion = CachedChampion {
     },
     merge_data: &[],
     closures: &[
-        kayn_q_1, kayn_q_2, kayn_q_3, kayn_q_4, kayn_q_5, kayn_q_6, kayn_w_1, kayn_r_1,
+        kayn_q_1, kayn_q_2, kayn_q_3, kayn_q_4, kayn_q_5, kayn_q_6, kayn_w_1,
+        kayn_r_1,
     ],
 };
 pub const fn kayn_q_1(ctx: &EvalContext) -> f32 {
@@ -9637,7 +9749,8 @@ pub static KENNEN: CachedChampion = CachedChampion {
     },
     merge_data: &[],
     closures: &[
-        kennen_q_1, kennen_w_1, kennen_w_2, kennen_e_1, kennen_e_2, kennen_r_1, kennen_r_2,
+        kennen_q_1, kennen_w_1, kennen_w_2, kennen_e_1, kennen_e_2, kennen_r_1,
+        kennen_r_2,
     ],
 };
 pub const fn kennen_q_1(ctx: &EvalContext) -> f32 {
@@ -10096,8 +10209,8 @@ pub static KLED: CachedChampion = CachedChampion {
     },
     merge_data: &[],
     closures: &[
-        kled_q_2, kled_q_4, kled_q_5, kled_q_6, kled_q_7, kled_w_1, kled_w_2, kled_e_1, kled_e_2,
-        kled_r_1, kled_r_2,
+        kled_q_2, kled_q_4, kled_q_5, kled_q_6, kled_q_7, kled_w_1, kled_w_2,
+        kled_e_1, kled_e_2, kled_r_1, kled_r_2,
     ],
 };
 pub const fn kled_q_2(ctx: &EvalContext) -> f32 {
@@ -10903,8 +11016,8 @@ pub static LILLIA: CachedChampion = CachedChampion {
     },
     merge_data: &[],
     closures: &[
-        lillia_q_1, lillia_q_2, lillia_w_1, lillia_w_2, lillia_w_3, lillia_w_4, lillia_e_1,
-        lillia_r_1,
+        lillia_q_1, lillia_q_2, lillia_w_1, lillia_w_2, lillia_w_3, lillia_w_4,
+        lillia_e_1, lillia_r_1,
     ],
 };
 pub const fn lillia_q_1(ctx: &EvalContext) -> f32 {
@@ -11172,8 +11285,8 @@ pub static LUCIAN: CachedChampion = CachedChampion {
     },
     merge_data: &[],
     closures: &[
-        lucian_q_1, lucian_w_1, lucian_r_1, lucian_r_2, lucian_r_3, lucian_r_4, lucian_r_5,
-        lucian_r_6,
+        lucian_q_1, lucian_w_1, lucian_r_1, lucian_r_2, lucian_r_3, lucian_r_4,
+        lucian_r_5, lucian_r_6,
     ],
 };
 pub const fn lucian_q_1(ctx: &EvalContext) -> f32 {
@@ -11942,8 +12055,8 @@ pub static MAOKAI: CachedChampion = CachedChampion {
     },
     merge_data: &[],
     closures: &[
-        maokai_q_1, maokai_q_2, maokai_q_3, maokai_w_1, maokai_e_1, maokai_e_2, maokai_e_3,
-        maokai_r_1,
+        maokai_q_1, maokai_q_2, maokai_q_3, maokai_w_1, maokai_e_1, maokai_e_2,
+        maokai_e_3, maokai_r_1,
     ],
 };
 pub const fn maokai_q_1(ctx: &EvalContext) -> f32 {
@@ -11988,11 +12101,31 @@ pub const fn maokai_w_1(ctx: &EvalContext) -> f32 {
 }
 pub const fn maokai_e_1(ctx: &EvalContext) -> f32 {
     match ctx.e_level {
-        1 => 33.33f32 + 0.0333f32 * ctx.bonus_health + 0.16670000000000001f32 * ctx.ap,
-        2 => 50f32 + 0.0333f32 * ctx.bonus_health + 0.16670000000000001f32 * ctx.ap,
-        3 => 66.67f32 + 0.0333f32 * ctx.bonus_health + 0.16670000000000001f32 * ctx.ap,
-        4 => 83.33f32 + 0.0333f32 * ctx.bonus_health + 0.16670000000000001f32 * ctx.ap,
-        5 => 100f32 + 0.0333f32 * ctx.bonus_health + 0.16670000000000001f32 * ctx.ap,
+        1 => {
+            33.33f32
+                + 0.0333f32 * ctx.bonus_health
+                + 0.16670000000000001f32 * ctx.ap
+        }
+        2 => {
+            50f32
+                + 0.0333f32 * ctx.bonus_health
+                + 0.16670000000000001f32 * ctx.ap
+        }
+        3 => {
+            66.67f32
+                + 0.0333f32 * ctx.bonus_health
+                + 0.16670000000000001f32 * ctx.ap
+        }
+        4 => {
+            83.33f32
+                + 0.0333f32 * ctx.bonus_health
+                + 0.16670000000000001f32 * ctx.ap
+        }
+        5 => {
+            100f32
+                + 0.0333f32 * ctx.bonus_health
+                + 0.16670000000000001f32 * ctx.ap
+        }
         _ => 0.0,
     }
 }
@@ -12344,8 +12477,8 @@ pub static MEL: CachedChampion = CachedChampion {
     },
     merge_data: &[],
     closures: &[
-        mel_q_1, mel_q_2, mel_q_3, mel_q_4, mel_w_1, mel_e_1, mel_e_2, mel_e_3, mel_e_4, mel_e_5,
-        mel_e_6, mel_r_1, mel_r_2, mel_r_3,
+        mel_q_1, mel_q_2, mel_q_3, mel_q_4, mel_w_1, mel_e_1, mel_e_2, mel_e_3,
+        mel_e_4, mel_e_5, mel_e_6, mel_r_1, mel_r_2, mel_r_3,
     ],
 };
 pub const fn mel_q_1(ctx: &EvalContext) -> f32 {
@@ -13838,7 +13971,8 @@ pub static NEEKO: CachedChampion = CachedChampion {
     },
     merge_data: &[],
     closures: &[
-        neeko_q_1, neeko_q_2, neeko_q_3, neeko_q_4, neeko_w_1, neeko_e_1, neeko_r_1,
+        neeko_q_1, neeko_q_2, neeko_q_3, neeko_q_4, neeko_w_1, neeko_e_1,
+        neeko_r_1,
     ],
 };
 pub const fn neeko_q_1(ctx: &EvalContext) -> f32 {
@@ -14114,7 +14248,8 @@ pub static NILAH: CachedChampion = CachedChampion {
     },
     merge_data: &[],
     closures: &[
-        nilah_q_1, nilah_q_2, nilah_e_1, nilah_r_1, nilah_r_2, nilah_r_3, nilah_r_4,
+        nilah_q_1, nilah_q_2, nilah_e_1, nilah_r_1, nilah_r_2, nilah_r_3,
+        nilah_r_4,
     ],
 };
 pub const fn nilah_q_1(ctx: &EvalContext) -> f32 {
@@ -14402,8 +14537,8 @@ pub static NUNU: CachedChampion = CachedChampion {
     },
     merge_data: &[],
     closures: &[
-        nunu_q_1, nunu_q_2, nunu_w_1, nunu_w_2, nunu_w_3, nunu_w_4, nunu_e_1, nunu_e_2, nunu_e_3,
-        nunu_e_4, nunu_r_1,
+        nunu_q_1, nunu_q_2, nunu_w_1, nunu_w_2, nunu_w_3, nunu_w_4, nunu_e_1,
+        nunu_e_2, nunu_e_3, nunu_e_4, nunu_r_1,
     ],
 };
 pub const fn nunu_q_1(ctx: &EvalContext) -> f32 {
@@ -14850,8 +14985,8 @@ pub static ORNN: CachedChampion = CachedChampion {
     },
     merge_data: &[],
     closures: &[
-        ornn_q_1, ornn_w_1, ornn_w_2, ornn_w_3, ornn_w_4, ornn_w_5, ornn_w_6, ornn_e_1, ornn_r_1,
-        ornn_r_2,
+        ornn_q_1, ornn_w_1, ornn_w_2, ornn_w_3, ornn_w_4, ornn_w_5, ornn_w_6,
+        ornn_e_1, ornn_r_1, ornn_r_2,
     ],
 };
 pub const fn ornn_q_1(ctx: &EvalContext) -> f32 {
@@ -15271,8 +15406,8 @@ pub static POPPY: CachedChampion = CachedChampion {
     },
     merge_data: &[],
     closures: &[
-        poppy_q_1, poppy_q_2, poppy_q_3, poppy_q_4, poppy_q_5, poppy_w_1, poppy_e_1, poppy_e_2,
-        poppy_r_1, poppy_r_2,
+        poppy_q_1, poppy_q_2, poppy_q_3, poppy_q_4, poppy_q_5, poppy_w_1,
+        poppy_e_1, poppy_e_2, poppy_r_1, poppy_r_2,
     ],
 };
 pub const fn poppy_q_1(ctx: &EvalContext) -> f32 {
@@ -16608,9 +16743,9 @@ pub static RUMBLE: CachedChampion = CachedChampion {
     },
     merge_data: &[],
     closures: &[
-        rumble_q_1, rumble_q_2, rumble_q_3, rumble_q_4, rumble_q_5, rumble_q_6, rumble_q_7,
-        rumble_q_8, rumble_e_1, rumble_e_2, rumble_e_3, rumble_e_4, rumble_r_1, rumble_r_2,
-        rumble_r_3,
+        rumble_q_1, rumble_q_2, rumble_q_3, rumble_q_4, rumble_q_5, rumble_q_6,
+        rumble_q_7, rumble_q_8, rumble_e_1, rumble_e_2, rumble_e_3, rumble_e_4,
+        rumble_r_1, rumble_r_2, rumble_r_3,
     ],
 };
 pub const fn rumble_q_1(ctx: &EvalContext) -> f32 {
@@ -16618,18 +16753,34 @@ pub const fn rumble_q_1(ctx: &EvalContext) -> f32 {
         1 => 5f32 + 0.0917f32 * ctx.ap + 0.005f32 * ctx.enemy_max_health,
         2 => 7.5f32 + 0.0917f32 * ctx.ap + 0.00567f32 * ctx.enemy_max_health,
         3 => 10f32 + 0.0917f32 * ctx.ap + 0.00633f32 * ctx.enemy_max_health,
-        4 => 12.5f32 + 0.0917f32 * ctx.ap + 0.006999999999999999f32 * ctx.enemy_max_health,
+        4 => {
+            12.5f32
+                + 0.0917f32 * ctx.ap
+                + 0.006999999999999999f32 * ctx.enemy_max_health
+        }
         5 => 15f32 + 0.0917f32 * ctx.ap + 0.00767f32 * ctx.enemy_max_health,
         _ => 0.0,
     }
 }
 pub const fn rumble_q_2(ctx: &EvalContext) -> f32 {
     match ctx.q_level {
-        1 => 3.5f32 + 0.06417f32 * ctx.ap + 0.0034999999999999996f32 * ctx.enemy_max_health,
-        2 => 5.25f32 + 0.06417f32 * ctx.ap + 0.0039700000000000004f32 * ctx.enemy_max_health,
+        1 => {
+            3.5f32
+                + 0.06417f32 * ctx.ap
+                + 0.0034999999999999996f32 * ctx.enemy_max_health
+        }
+        2 => {
+            5.25f32
+                + 0.06417f32 * ctx.ap
+                + 0.0039700000000000004f32 * ctx.enemy_max_health
+        }
         3 => 7f32 + 0.06417f32 * ctx.ap + 0.00443f32 * ctx.enemy_max_health,
         4 => 8.75f32 + 0.06417f32 * ctx.ap + 0.0049f32 * ctx.enemy_max_health,
-        5 => 10.5f32 + 0.06417f32 * ctx.ap + 0.005370000000000001f32 * ctx.enemy_max_health,
+        5 => {
+            10.5f32
+                + 0.06417f32 * ctx.ap
+                + 0.005370000000000001f32 * ctx.enemy_max_health
+        }
         _ => 0.0,
     }
 }
@@ -16646,8 +16797,16 @@ pub const fn rumble_q_3(ctx: &EvalContext) -> f32 {
 pub const fn rumble_q_4(ctx: &EvalContext) -> f32 {
     match ctx.q_level {
         1 => 42f32 + 0.77f32 * ctx.ap + 0.042f32 * ctx.enemy_max_health,
-        2 => 63f32 + 0.77f32 * ctx.ap + 0.047599999999999996f32 * ctx.enemy_max_health,
-        3 => 84f32 + 0.77f32 * ctx.ap + 0.053200000000000004f32 * ctx.enemy_max_health,
+        2 => {
+            63f32
+                + 0.77f32 * ctx.ap
+                + 0.047599999999999996f32 * ctx.enemy_max_health
+        }
+        3 => {
+            84f32
+                + 0.77f32 * ctx.ap
+                + 0.053200000000000004f32 * ctx.enemy_max_health
+        }
         4 => 105f32 + 0.77f32 * ctx.ap + 0.0588f32 * ctx.enemy_max_health,
         5 => 126f32 + 0.77f32 * ctx.ap + 0.0644f32 * ctx.enemy_max_health,
         _ => 0.0,
@@ -16666,9 +16825,19 @@ pub const fn rumble_q_5(ctx: &EvalContext) -> f32 {
 pub const fn rumble_q_6(ctx: &EvalContext) -> f32 {
     match ctx.q_level {
         1 => 5.25f32 + 0.09625f32 * ctx.ap + 0.00525f32 * ctx.enemy_max_health,
-        2 => 7.875f32 + 0.09625f32 * ctx.ap + 0.0059499999999999996f32 * ctx.enemy_max_health,
-        3 => 10.5f32 + 0.09625f32 * ctx.ap + 0.0066500000000000005f32 * ctx.enemy_max_health,
-        4 => 13.125f32 + 0.09625f32 * ctx.ap + 0.00735f32 * ctx.enemy_max_health,
+        2 => {
+            7.875f32
+                + 0.09625f32 * ctx.ap
+                + 0.0059499999999999996f32 * ctx.enemy_max_health
+        }
+        3 => {
+            10.5f32
+                + 0.09625f32 * ctx.ap
+                + 0.0066500000000000005f32 * ctx.enemy_max_health
+        }
+        4 => {
+            13.125f32 + 0.09625f32 * ctx.ap + 0.00735f32 * ctx.enemy_max_health
+        }
         5 => 15.75f32 + 0.09625f32 * ctx.ap + 0.00805f32 * ctx.enemy_max_health,
         _ => 0.0,
     }
@@ -16686,8 +16855,16 @@ pub const fn rumble_q_7(ctx: &EvalContext) -> f32 {
 pub const fn rumble_q_8(ctx: &EvalContext) -> f32 {
     match ctx.q_level {
         1 => 63f32 + 1.155f32 * ctx.ap + 0.063f32 * ctx.enemy_max_health,
-        2 => 94.5f32 + 1.155f32 * ctx.ap + 0.07139999999999999f32 * ctx.enemy_max_health,
-        3 => 126f32 + 1.155f32 * ctx.ap + 0.07980000000000001f32 * ctx.enemy_max_health,
+        2 => {
+            94.5f32
+                + 1.155f32 * ctx.ap
+                + 0.07139999999999999f32 * ctx.enemy_max_health
+        }
+        3 => {
+            126f32
+                + 1.155f32 * ctx.ap
+                + 0.07980000000000001f32 * ctx.enemy_max_health
+        }
         4 => 157.5f32 + 1.155f32 * ctx.ap + 0.0882f32 * ctx.enemy_max_health,
         5 => 189f32 + 1.155f32 * ctx.ap + 0.0966f32 * ctx.enemy_max_health,
         _ => 0.0,
@@ -16944,8 +17121,8 @@ pub static SAMIRA: CachedChampion = CachedChampion {
     },
     merge_data: &[],
     closures: &[
-        samira_q_1, samira_w_1, samira_w_2, samira_e_1, samira_r_1, samira_r_2, samira_r_3,
-        samira_r_4,
+        samira_q_1, samira_w_1, samira_w_2, samira_e_1, samira_r_1, samira_r_2,
+        samira_r_3, samira_r_4,
     ],
 };
 pub const fn samira_q_1(ctx: &EvalContext) -> f32 {
@@ -17633,8 +17810,8 @@ pub static SHACO: CachedChampion = CachedChampion {
     },
     merge_data: &[],
     closures: &[
-        shaco_q_1, shaco_w_1, shaco_w_2, shaco_w_3, shaco_w_4, shaco_w_5, shaco_e_1, shaco_e_2,
-        shaco_r_1, shaco_r_2, shaco_r_3,
+        shaco_q_1, shaco_w_1, shaco_w_2, shaco_w_3, shaco_w_4, shaco_w_5,
+        shaco_e_1, shaco_e_2, shaco_r_1, shaco_r_2, shaco_r_3,
     ],
 };
 pub const fn shaco_q_1(ctx: &EvalContext) -> f32 {
@@ -17828,11 +18005,29 @@ pub const fn shen_q_1(ctx: &EvalContext) -> f32 {
 }
 pub const fn shen_q_2(ctx: &EvalContext) -> f32 {
     match ctx.q_level {
-        1 => 10f32 + 0.05f32 * ctx.enemy_max_health + 0.02f32 * 0.01f32 * ctx.ap,
-        2 => 11.764705882352942f32 + 0.055f32 * ctx.enemy_max_health + 0.02f32 * 0.01f32 * ctx.ap,
-        3 => 13.529411764705882f32 + 0.06f32 * ctx.enemy_max_health + 0.02f32 * 0.01f32 * ctx.ap,
-        4 => 15.294117647058822f32 + 0.065f32 * ctx.enemy_max_health + 0.02f32 * 0.01f32 * ctx.ap,
-        5 => 17.058823529411764f32 + 0.07f32 * ctx.enemy_max_health + 0.02f32 * 0.01f32 * ctx.ap,
+        1 => {
+            10f32 + 0.05f32 * ctx.enemy_max_health + 0.02f32 * 0.01f32 * ctx.ap
+        }
+        2 => {
+            11.764705882352942f32
+                + 0.055f32 * ctx.enemy_max_health
+                + 0.02f32 * 0.01f32 * ctx.ap
+        }
+        3 => {
+            13.529411764705882f32
+                + 0.06f32 * ctx.enemy_max_health
+                + 0.02f32 * 0.01f32 * ctx.ap
+        }
+        4 => {
+            15.294117647058822f32
+                + 0.065f32 * ctx.enemy_max_health
+                + 0.02f32 * 0.01f32 * ctx.ap
+        }
+        5 => {
+            17.058823529411764f32
+                + 0.07f32 * ctx.enemy_max_health
+                + 0.02f32 * 0.01f32 * ctx.ap
+        }
         6 => 18.823529411764707f32,
         7 => 20.588235294117645f32,
         8 => 22.352941176470587f32,
@@ -17851,11 +18046,29 @@ pub const fn shen_q_2(ctx: &EvalContext) -> f32 {
 }
 pub const fn shen_q_3(ctx: &EvalContext) -> f32 {
     match ctx.q_level {
-        1 => 30f32 + 0.15f32 * ctx.enemy_max_health + 0.06f32 * 0.01f32 * ctx.ap,
-        2 => 35.294117647058826f32 + 0.165f32 * ctx.enemy_max_health + 0.06f32 * 0.01f32 * ctx.ap,
-        3 => 40.588235294117645f32 + 0.18f32 * ctx.enemy_max_health + 0.06f32 * 0.01f32 * ctx.ap,
-        4 => 45.88235294117647f32 + 0.195f32 * ctx.enemy_max_health + 0.06f32 * 0.01f32 * ctx.ap,
-        5 => 51.17647058823529f32 + 0.21f32 * ctx.enemy_max_health + 0.06f32 * 0.01f32 * ctx.ap,
+        1 => {
+            30f32 + 0.15f32 * ctx.enemy_max_health + 0.06f32 * 0.01f32 * ctx.ap
+        }
+        2 => {
+            35.294117647058826f32
+                + 0.165f32 * ctx.enemy_max_health
+                + 0.06f32 * 0.01f32 * ctx.ap
+        }
+        3 => {
+            40.588235294117645f32
+                + 0.18f32 * ctx.enemy_max_health
+                + 0.06f32 * 0.01f32 * ctx.ap
+        }
+        4 => {
+            45.88235294117647f32
+                + 0.195f32 * ctx.enemy_max_health
+                + 0.06f32 * 0.01f32 * ctx.ap
+        }
+        5 => {
+            51.17647058823529f32
+                + 0.21f32 * ctx.enemy_max_health
+                + 0.06f32 * 0.01f32 * ctx.ap
+        }
         6 => 56.47058823529411f32,
         7 => 61.76470588235294f32,
         8 => 67.05882352941177f32,
@@ -17874,11 +18087,29 @@ pub const fn shen_q_3(ctx: &EvalContext) -> f32 {
 }
 pub const fn shen_q_4(ctx: &EvalContext) -> f32 {
     match ctx.q_level {
-        1 => 10f32 + 0.02f32 * ctx.enemy_max_health + 0.015f32 * 0.01f32 * ctx.ap,
-        2 => 11.764705882352942f32 + 0.025f32 * ctx.enemy_max_health + 0.015f32 * 0.01f32 * ctx.ap,
-        3 => 13.529411764705882f32 + 0.03f32 * ctx.enemy_max_health + 0.015f32 * 0.01f32 * ctx.ap,
-        4 => 15.294117647058822f32 + 0.035f32 * ctx.enemy_max_health + 0.015f32 * 0.01f32 * ctx.ap,
-        5 => 17.058823529411764f32 + 0.04f32 * ctx.enemy_max_health + 0.015f32 * 0.01f32 * ctx.ap,
+        1 => {
+            10f32 + 0.02f32 * ctx.enemy_max_health + 0.015f32 * 0.01f32 * ctx.ap
+        }
+        2 => {
+            11.764705882352942f32
+                + 0.025f32 * ctx.enemy_max_health
+                + 0.015f32 * 0.01f32 * ctx.ap
+        }
+        3 => {
+            13.529411764705882f32
+                + 0.03f32 * ctx.enemy_max_health
+                + 0.015f32 * 0.01f32 * ctx.ap
+        }
+        4 => {
+            15.294117647058822f32
+                + 0.035f32 * ctx.enemy_max_health
+                + 0.015f32 * 0.01f32 * ctx.ap
+        }
+        5 => {
+            17.058823529411764f32
+                + 0.04f32 * ctx.enemy_max_health
+                + 0.015f32 * 0.01f32 * ctx.ap
+        }
         6 => 18.823529411764707f32,
         7 => 20.588235294117645f32,
         8 => 22.352941176470587f32,
@@ -17897,11 +18128,29 @@ pub const fn shen_q_4(ctx: &EvalContext) -> f32 {
 }
 pub const fn shen_q_5(ctx: &EvalContext) -> f32 {
     match ctx.q_level {
-        1 => 30f32 + 0.06f32 * ctx.enemy_max_health + 0.045f32 * 0.01f32 * ctx.ap,
-        2 => 35.294117647058826f32 + 0.075f32 * ctx.enemy_max_health + 0.045f32 * 0.01f32 * ctx.ap,
-        3 => 40.588235294117645f32 + 0.09f32 * ctx.enemy_max_health + 0.045f32 * 0.01f32 * ctx.ap,
-        4 => 45.88235294117647f32 + 0.105f32 * ctx.enemy_max_health + 0.045f32 * 0.01f32 * ctx.ap,
-        5 => 51.17647058823529f32 + 0.12f32 * ctx.enemy_max_health + 0.045f32 * 0.01f32 * ctx.ap,
+        1 => {
+            30f32 + 0.06f32 * ctx.enemy_max_health + 0.045f32 * 0.01f32 * ctx.ap
+        }
+        2 => {
+            35.294117647058826f32
+                + 0.075f32 * ctx.enemy_max_health
+                + 0.045f32 * 0.01f32 * ctx.ap
+        }
+        3 => {
+            40.588235294117645f32
+                + 0.09f32 * ctx.enemy_max_health
+                + 0.045f32 * 0.01f32 * ctx.ap
+        }
+        4 => {
+            45.88235294117647f32
+                + 0.105f32 * ctx.enemy_max_health
+                + 0.045f32 * 0.01f32 * ctx.ap
+        }
+        5 => {
+            51.17647058823529f32
+                + 0.12f32 * ctx.enemy_max_health
+                + 0.045f32 * 0.01f32 * ctx.ap
+        }
         6 => 56.47058823529411f32,
         7 => 61.76470588235294f32,
         8 => 67.05882352941177f32,
@@ -18270,8 +18519,8 @@ pub static SION: CachedChampion = CachedChampion {
     },
     merge_data: &[],
     closures: &[
-        sion_q_1, sion_q_2, sion_q_3, sion_q_4, sion_q_5, sion_q_6, sion_q_7, sion_w_1, sion_e_1,
-        sion_r_1, sion_r_2,
+        sion_q_1, sion_q_2, sion_q_3, sion_q_4, sion_q_5, sion_q_6, sion_q_7,
+        sion_w_1, sion_e_1, sion_r_1, sion_r_2,
     ],
 };
 pub const fn sion_q_1(ctx: &EvalContext) -> f32 {
@@ -18459,7 +18708,8 @@ pub static SIVIR: CachedChampion = CachedChampion {
     },
     merge_data: &[],
     closures: &[
-        sivir_q_1, sivir_q_2, sivir_q_3, sivir_w_1, sivir_w_2, sivir_w_3, sivir_w_4,
+        sivir_q_1, sivir_q_2, sivir_q_3, sivir_w_1, sivir_w_2, sivir_w_3,
+        sivir_w_4,
     ],
 };
 pub const fn sivir_q_1(ctx: &EvalContext) -> f32 {
@@ -19210,7 +19460,8 @@ pub static SWAIN: CachedChampion = CachedChampion {
     },
     merge_data: &[],
     closures: &[
-        swain_q_1, swain_q_2, swain_q_3, swain_w_1, swain_w_2, swain_e_1, swain_r_1,
+        swain_q_1, swain_q_2, swain_q_3, swain_w_1, swain_w_2, swain_e_1,
+        swain_r_1,
     ],
 };
 pub const fn swain_q_1(ctx: &EvalContext) -> f32 {
@@ -19502,8 +19753,8 @@ pub static SYNDRA: CachedChampion = CachedChampion {
     },
     merge_data: &[],
     closures: &[
-        syndra_q_1, syndra_w_1, syndra_w_2, syndra_w_3, syndra_e_1, syndra_r_1, syndra_r_2,
-        syndra_r_3,
+        syndra_q_1, syndra_w_1, syndra_w_2, syndra_w_3, syndra_e_1, syndra_r_1,
+        syndra_r_2, syndra_r_3,
     ],
 };
 pub const fn syndra_q_1(ctx: &EvalContext) -> f32 {
@@ -19922,7 +20173,8 @@ pub static TALON: CachedChampion = CachedChampion {
     },
     merge_data: &[],
     closures: &[
-        talon_q_1, talon_q_2, talon_w_1, talon_w_2, talon_w_3, talon_r_1, talon_r_2,
+        talon_q_1, talon_q_2, talon_w_1, talon_w_2, talon_w_3, talon_r_1,
+        talon_r_2,
     ],
 };
 pub const fn talon_q_1(ctx: &EvalContext) -> f32 {
@@ -20138,8 +20390,8 @@ pub static TEEMO: CachedChampion = CachedChampion {
     },
     merge_data: &[],
     closures: &[
-        teemo_q_1, teemo_e_1, teemo_e_2, teemo_e_3, teemo_e_4, teemo_e_5, teemo_e_6, teemo_r_1,
-        teemo_r_2,
+        teemo_q_1, teemo_e_1, teemo_e_2, teemo_e_3, teemo_e_4, teemo_e_5,
+        teemo_e_6, teemo_r_1, teemo_r_2,
     ],
 };
 pub const fn teemo_q_1(ctx: &EvalContext) -> f32 {
@@ -21309,8 +21561,9 @@ pub static VARUS: CachedChampion = CachedChampion {
     },
     merge_data: &[],
     closures: &[
-        varus_q_1, varus_q_2, varus_q_3, varus_q_4, varus_w_1, varus_w_2, varus_w_3, varus_w_4,
-        varus_w_5, varus_w_6, varus_w_7, varus_e_1, varus_r_1,
+        varus_q_1, varus_q_2, varus_q_3, varus_q_4, varus_w_1, varus_w_2,
+        varus_w_3, varus_w_4, varus_w_5, varus_w_6, varus_w_7, varus_e_1,
+        varus_r_1,
     ],
 };
 pub const fn varus_q_1(ctx: &EvalContext) -> f32 {
@@ -21520,7 +21773,8 @@ pub static VAYNE: CachedChampion = CachedChampion {
     },
     merge_data: &[],
     closures: &[
-        vayne_q_1, vayne_w_1, vayne_w_2, vayne_e_1, vayne_e_2, vayne_e_3, vayne_r_1,
+        vayne_q_1, vayne_w_1, vayne_w_2, vayne_e_1, vayne_e_2, vayne_e_3,
+        vayne_r_1,
     ],
 };
 pub const fn vayne_q_1(ctx: &EvalContext) -> f32 {
@@ -21771,7 +22025,8 @@ pub static VELKOZ: CachedChampion = CachedChampion {
     },
     merge_data: &[],
     closures: &[
-        velkoz_q_1, velkoz_w_1, velkoz_w_2, velkoz_w_3, velkoz_e_1, velkoz_r_1, velkoz_r_2,
+        velkoz_q_1, velkoz_w_1, velkoz_w_2, velkoz_w_3, velkoz_e_1, velkoz_r_1,
+        velkoz_r_2,
     ],
 };
 pub const fn velkoz_q_1(ctx: &EvalContext) -> f32 {
@@ -22171,7 +22426,8 @@ pub static VIEGO: CachedChampion = CachedChampion {
     },
     merge_data: &[],
     closures: &[
-        viego_q_1, viego_q_2, viego_q_3, viego_q_4, viego_q_5, viego_q_6, viego_w_1, viego_r_1,
+        viego_q_1, viego_q_2, viego_q_3, viego_q_4, viego_q_5, viego_q_6,
+        viego_w_1, viego_r_1,
     ],
 };
 pub const fn viego_q_1(ctx: &EvalContext) -> f32 {
@@ -22341,8 +22597,8 @@ pub static VIKTOR: CachedChampion = CachedChampion {
     },
     merge_data: &[],
     closures: &[
-        viktor_q_1, viktor_q_2, viktor_q_3, viktor_e_1, viktor_e_2, viktor_e_3, viktor_r_1,
-        viktor_r_2, viktor_r_3,
+        viktor_q_1, viktor_q_2, viktor_q_3, viktor_e_1, viktor_e_2, viktor_e_3,
+        viktor_r_1, viktor_r_2, viktor_r_3,
     ],
 };
 pub const fn viktor_q_1(ctx: &EvalContext) -> f32 {
@@ -22870,7 +23126,8 @@ pub static XAYAH: CachedChampion = CachedChampion {
     },
     merge_data: &[],
     closures: &[
-        xayah_q_1, xayah_q_2, xayah_q_3, xayah_q_4, xayah_e_1, xayah_e_2, xayah_r_1,
+        xayah_q_1, xayah_q_2, xayah_q_3, xayah_q_4, xayah_e_1, xayah_e_2,
+        xayah_r_1,
     ],
 };
 pub const fn xayah_q_1(ctx: &EvalContext) -> f32 {
@@ -23020,7 +23277,8 @@ pub static XERATH: CachedChampion = CachedChampion {
     },
     merge_data: &[],
     closures: &[
-        xerath_q_1, xerath_w_1, xerath_w_2, xerath_e_1, xerath_r_1, xerath_r_2, xerath_r_3,
+        xerath_q_1, xerath_w_1, xerath_w_2, xerath_e_1, xerath_r_1, xerath_r_2,
+        xerath_r_3,
     ],
 };
 pub const fn xerath_q_1(ctx: &EvalContext) -> f32 {
@@ -23237,9 +23495,24 @@ pub const fn xinzhao_e_1(ctx: &EvalContext) -> f32 {
 }
 pub const fn xinzhao_r_1(ctx: &EvalContext) -> f32 {
     match ctx.r_level {
-        1 => 75f32 + ctx.bonus_ad + 1.1f32 * ctx.ap + 0.15f32 * ctx.current_health,
-        2 => 175f32 + ctx.bonus_ad + 1.1f32 * ctx.ap + 0.15f32 * ctx.current_health,
-        3 => 275f32 + ctx.bonus_ad + 1.1f32 * ctx.ap + 0.15f32 * ctx.current_health,
+        1 => {
+            75f32
+                + ctx.bonus_ad
+                + 1.1f32 * ctx.ap
+                + 0.15f32 * ctx.current_health
+        }
+        2 => {
+            175f32
+                + ctx.bonus_ad
+                + 1.1f32 * ctx.ap
+                + 0.15f32 * ctx.current_health
+        }
+        3 => {
+            275f32
+                + ctx.bonus_ad
+                + 1.1f32 * ctx.ap
+                + 0.15f32 * ctx.current_health
+        }
         _ => 0.0,
     }
 }
@@ -23462,7 +23735,8 @@ pub static YONE: CachedChampion = CachedChampion {
     },
     merge_data: &[],
     closures: &[
-        yone_q_1, yone_w_1, yone_w_2, yone_w_3, yone_e_1, yone_r_1, yone_r_2, yone_r_3,
+        yone_q_1, yone_w_1, yone_w_2, yone_w_3, yone_e_1, yone_r_1, yone_r_2,
+        yone_r_3,
     ],
 };
 pub const fn yone_q_1(ctx: &EvalContext) -> f32 {
@@ -23733,8 +24007,8 @@ pub static YUNARA: CachedChampion = CachedChampion {
     },
     merge_data: &[],
     closures: &[
-        yunara_q_1, yunara_q_2, yunara_q_3, yunara_q_4, yunara_q_5, yunara_w_1, yunara_w_2,
-        yunara_w_3, yunara_r_1,
+        yunara_q_1, yunara_q_2, yunara_q_3, yunara_q_4, yunara_q_5, yunara_w_1,
+        yunara_w_2, yunara_w_3, yunara_r_1,
     ],
 };
 pub const fn yunara_q_1(ctx: &EvalContext) -> f32 {
@@ -24154,11 +24428,21 @@ pub const fn zac_w_1(ctx: &EvalContext) -> f32 {
 }
 pub const fn zac_w_2(ctx: &EvalContext) -> f32 {
     match ctx.w_level {
-        1 => 40f32 + 0.04f32 * ctx.enemy_max_health + 0.03f32 * 0.01f32 * ctx.ap,
-        2 => 50f32 + 0.05f32 * ctx.enemy_max_health + 0.03f32 * 0.01f32 * ctx.ap,
-        3 => 60f32 + 0.06f32 * ctx.enemy_max_health + 0.03f32 * 0.01f32 * ctx.ap,
-        4 => 70f32 + 0.07f32 * ctx.enemy_max_health + 0.03f32 * 0.01f32 * ctx.ap,
-        5 => 80f32 + 0.08f32 * ctx.enemy_max_health + 0.03f32 * 0.01f32 * ctx.ap,
+        1 => {
+            40f32 + 0.04f32 * ctx.enemy_max_health + 0.03f32 * 0.01f32 * ctx.ap
+        }
+        2 => {
+            50f32 + 0.05f32 * ctx.enemy_max_health + 0.03f32 * 0.01f32 * ctx.ap
+        }
+        3 => {
+            60f32 + 0.06f32 * ctx.enemy_max_health + 0.03f32 * 0.01f32 * ctx.ap
+        }
+        4 => {
+            70f32 + 0.07f32 * ctx.enemy_max_health + 0.03f32 * 0.01f32 * ctx.ap
+        }
+        5 => {
+            80f32 + 0.08f32 * ctx.enemy_max_health + 0.03f32 * 0.01f32 * ctx.ap
+        }
         _ => 0.0,
     }
 }

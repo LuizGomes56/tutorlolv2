@@ -6,7 +6,6 @@ publish = false
 
 [dependencies]
 tutorlolv2_types = { path = "../tutorlolv2_types", default-features = false }
-paste = "1.0.15"
 phf = { version = "0.13.1", features = ["macros"] }
 const_sized_bit_set = "0.3.0"
 
@@ -14,8 +13,10 @@ bincode = { version = "2.0.1", default-features = false, features = [
     "derive",
 ], optional = true }
 serde = { version = "1.0", features = ["derive"], optional = true }
+pastey = "0.2.1"
 
 [features]
 default = []
 bincode = ["dep:bincode"]
 serde = ["dep:serde"]
+dev = ["tutorlolv2_types/dev"]

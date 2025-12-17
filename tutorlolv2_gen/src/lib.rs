@@ -124,15 +124,15 @@ pub const DAMAGING_ITEMS: ItemsBitSet = bitset_items(SIMULATED_ITEMS_ENUM);
 pub const DAMAGING_RUNES: RunesBitSet = bitset_runes(DAMAGING_RUNES_ARRAY);
 
 /// How many champions we have in the game in the current patch
-pub const NUMBER_OF_CHAMPIONS: usize = CHAMPION_CACHE.len();
+pub const NUMBER_OF_CHAMPIONS: usize = ChampionId::VARIANTS;
 
 /// How many items are there in the current patch for the map `SummonersRift`, defined
 /// by [`GameMap::SummonersRift`]
-pub const NUMBER_OF_ITEMS: usize = ITEM_CACHE.len();
+pub const NUMBER_OF_ITEMS: usize = ItemId::VARIANTS;
 
 /// How many runes we have currently available in the standard gamemode `SummonersRift`,
 /// defined by [`GameMap::SummonersRift`]
-pub const NUMBER_OF_RUNES: usize = RUNE_CACHE.len();
+pub const NUMBER_OF_RUNES: usize = RuneId::VARIANTS;
 
 /// Counts how many damaging abilities ewe have across all champions. This is used to
 /// determine a proper size of how many abilities we should allow to live in the stack
@@ -147,3 +147,66 @@ pub const NUMBER_OF_ABILITIES: usize = {
     }
     sum
 };
+
+macro_rules! const_methods {
+    ($name:ident, $repr:ident) => {
+        pastey::paste! {
+            impl $name {
+                pub const VARIANTS: usize = [<$name:replace("Id", ""):upper _CACHE>].len();
+                pub const ARRAY: [Self; Self::VARIANTS] = {
+                    let mut i = 0;
+                    let mut result = [unsafe { Self::[<from_ $repr _unchecked>](0) }; _];
+                    while i < Self::VARIANTS {
+                        result[i] = unsafe { Self::[<from_ $repr _unchecked>](i as _) };
+                        i += 1;
+                    }
+                    result
+                };
+
+                pub const fn get_cache(&self) -> &'static [<Cached $name:replace("Id", "")>] {
+                    [<$name:replace("Id", ""):upper _CACHE>][self.offset()]
+                }
+
+                pub const fn name(&self) -> &'static str {
+                    self.get_cache().name
+                }
+
+                pub const fn offset(&self) -> usize {
+                    *self as _
+                }
+            }
+        }
+    };
+}
+
+const_methods!(ChampionId, u8);
+const_methods!(ItemId, u16);
+const_methods!(RuneId, u8);
+
+impl ChampionId {
+    /// Counts how many damaging abilities a champion has
+    pub const fn number_of_abilities(&self) -> usize {
+        self.get_cache().closures.len()
+    }
+}
+
+macro_rules! riot_id_array {
+    ($($enum:ty),*) => {
+        $(
+            impl $enum {
+                pub const RIOT_ID_ARRAY: [u32; Self::VARIANTS] = {
+                    let mut result = [0; _];
+                    let mut i = 0;
+                    while i < Self::VARIANTS {
+                        let value = Self::ARRAY[i];
+                        result[i] = value.to_riot_id();
+                        i += 1;
+                    }
+                    result
+                };
+            }
+        )*
+    };
+}
+
+riot_id_array!(ItemId, RuneId);
