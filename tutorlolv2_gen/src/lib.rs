@@ -11,6 +11,11 @@ pub use data::*;
 pub use enums::*;
 pub use eval::*;
 
+/// Verifies the following conditions
+/// - `tier >= 3`
+/// - `price > 0`
+/// - `len(stats)` > 0
+/// - `purchasable`
 pub const fn is_simulated_item(item: &CachedItem) -> bool {
     let CachedItem {
         purchasable,

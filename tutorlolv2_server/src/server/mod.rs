@@ -3,6 +3,7 @@ pub mod dev;
 pub mod embed;
 pub mod games;
 
+#[cfg(feature = "dev")]
 #[macro_export]
 macro_rules! dev_response {
     ($expr:expr) => {{

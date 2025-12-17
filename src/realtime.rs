@@ -1,10 +1,19 @@
-use crate::{L_SIML, RiotFormulas, helpers::*, model::*, riot::*, *};
+//! This module exports functions related to the `livegame` feature,
+//! and data that is obtained through Riot's endpoint for realtime
+//! game data. In local port 2999, you can find a json output that
+//! look like the struct [`RiotRealtime`], in which you can use
+//! `serde_json` library to turn it into a Rust's struct and call the
+//! function `realtime` exported in this module, obtaining a [`Realtime`]
+//! struct that contains the evaluated damage against every enemy in that
+//! live game.
+//!
+//! Check the module [`tutorlolv2::riot`] for more information about the
+//! types extracted from the json file in port 2999
+
+use crate::{helpers::*, model::*, riot::*};
+use alloc::boxed::Box;
 use core::mem::MaybeUninit;
-use tutorlolv2_gen::{
-    CHAMPION_CACHE, CHAMPION_NAME_TO_ID, ChampionId, DAMAGING_ITEMS, DAMAGING_RUNES, GameMap,
-    ITEM_CACHE, ItemId, ItemsBitSet, Position, RuneId, RunesBitSet, SIMULATED_ITEMS_ENUM,
-    TypeMetadata,
-};
+use tutorlolv2_gen::*;
 
 /// Contains the metadata of all items that have their stats compared to choose
 /// which one is best to buy considering the current game state. See [`TypeMetadata`]
@@ -31,9 +40,38 @@ pub const SIMULATED_ITEMS_METADATA: [TypeMetadata<ItemId>; L_SIML] = {
 /// Receives a reference to the current player's game, defined by the struct [`RiotRealtime`]
 /// and returns a new [`Option<Realtime>`], which contains all the information that could be
 /// extracted from the input struct. See [`Realtime`] for more information
+///
 /// This function assumes that the data in the input struct is valid, and does several
 /// memory assumptions and use unsafe blocks to avoid unnecessary branches, making this
-/// code faster, but requires the use of unsafe features
+/// code faster, but requires the use of unsafe features.
+///
+/// You can get these input values from port `2999` in the user's local machine if they're
+/// in an active League of Legends game. You may fetch the bytes contained in this route
+/// and deserialize them into [`RiotRealtime`] struct, and call this function afterwards
+/// to get the calculated data.
+///
+/// This function takes about 100 micro-seconds to run with an average input for a game
+/// at the 20 minutes mark.
+///
+/// ## Example of usage with `livegame` or `serde` features
+/// ```rs
+/// use reqwest::Client;
+/// use tutorlolv2::realtime;
+///
+/// // If feature `livegame` is enabled
+/// let port_2999_bytes = Client::get(
+///     "http://127.0.0.1:2999/liveclientdata/allgamedata"
+/// )
+/// .await?
+/// .bytes()
+/// .await?;
+/// let game = serde_json::from_slice(&port_2999_bytes)?;
+/// let data = realtime(&game).ok_or("Failed to run `tutorlolv2::realtime`")?;
+/// ```
+///
+/// If feature `livegame` or `serde` are not enabled, it is your job to get a
+/// struct [`RiotRealtime`] and call this function
+
 pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
     let RiotRealtime {
         active_player:

@@ -1,10 +1,13 @@
 use crate::AbilityId;
-use bincode::Encode;
-use serde::{Deserialize, Serialize};
 
 macro_rules! ability_name {
     ($($field:ident),+$(,)?) => {
-        #[derive(Clone, Copy, Serialize, Deserialize, Encode, Debug, Eq, PartialEq, Hash, PartialOrd, Ord)]
+        #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+        #[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
+        #[cfg_attr(
+            feature = "serde",
+            derive(serde::Serialize, serde::Deserialize),
+        )]
         #[repr(u8)]
         pub enum AbilityName { $($field),+ }
 

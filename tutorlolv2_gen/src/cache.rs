@@ -1,12 +1,12 @@
 use crate::{Attrs, DamageType, ItemId, RuneId, eval::EvalContext};
-use bincode::Encode;
-use serde::{Deserialize, Serialize};
 use tutorlolv2_types::*;
 
 /// A champion can have either melee or ranged damage. Ranged champions
 /// often have some damage penalty for items and runes, which are considered
 /// by branching over this enum
-#[derive(Copy, Clone, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
+#[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum AttackType {
     Melee,
     Ranged,
@@ -30,7 +30,14 @@ impl<T: AsRef<str>> From<T> for AdaptativeType {
     }
 }
 
-#[derive(Copy, Clone, Debug, Deserialize, Encode, Serialize)]
+/// Enum that holds the current adaptative type of some champion, which
+/// can be either physical or magic. It is mainly used to determine if runes
+/// should deal physical or magic damage, or to convert `Adaptative Force`
+/// stats to either `Attack Damage` or `Ability Power`. Check the enum [`StatName`]
+/// for more details about all the possibilities
+#[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
+#[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum AdaptativeType {
     Physical,
     Magic,
@@ -40,7 +47,9 @@ pub enum AdaptativeType {
 /// play in the standard gamemode `SummonersRift`, whose definition
 /// is [`GameMap::SummonersRift`]. If we don't know a champion's position,
 /// it is set to [`Position::Top`].
-#[derive(Copy, Clone, Debug, Default, Deserialize, Encode, Serialize)]
+#[derive(Clone, Copy, Debug, Default, Eq, Ord, PartialEq, PartialOrd)]
+#[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum Position {
     #[default]
     Top,
@@ -67,7 +76,9 @@ impl Position {
 /// All possible maps and codes that can be played. Most of them are
 /// event maps that may never return to the game, and don't have a
 /// deterministic code. [`GameMap::SummonersRift`] is the default map.
-#[derive(Debug, Default, Deserialize, Encode, Serialize)]
+#[derive(Clone, Copy, Debug, Default, Eq, Ord, PartialEq, PartialOrd)]
+#[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum GameMap {
     #[default]
     SummonersRift,
@@ -112,7 +123,9 @@ impl GameMap {
 
 /// A generic metadata holder for [`AbilityId`], [`ItemId`], or [`RuneId`].
 /// Contains its damage type, attributes, and which instance of the enum the value is.
-#[derive(Copy, Clone, Debug, Encode)]
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
+#[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct TypeMetadata<T> {
     /// Represents a variety of values:
     /// - [`AbilityId`] Which ability key it represents, and its name
@@ -135,29 +148,102 @@ pub struct TypeMetadata<T> {
 pub type ConstClosure = fn(&EvalContext) -> f32;
 
 /// Generated data about some champion, held in the static variable [`crate::CHAMPION_CACHE`]
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
 pub struct CachedChampion {
+    /// A champion's in-game display name in `English`. This application converts
+    /// names from other languages to English, but does not do the opposite, nor
+    /// store them internally. If you want to translate the name in English to
+    /// some other language, you will have to implement it on your own. Although
+    /// not recommended, you can use this field to get the enum [`crate::ChampionId`]
+    /// of the current champion by using the `phf map` [`crate::CHAMPION_NAME_TO_ID`].
     pub name: &'static str,
+
+    /// The adaptative force is determined by the current ability power and
+    /// bonus damage. However, when they tie (`ability_power == bonus_damage`),
+    /// the adaptative force is determined by this pre-assigned value. This is
+    /// very common to happen with tanks, who often do not build any items that
+    /// give any ability power or bonus damage
     pub adaptative_type: AdaptativeType,
+
+    /// Determines if this champion attacks are considered melee or ranged
     pub attack_type: AttackType,
+
+    /// Array representing what roles that champion commonly plays, sorted by
+    /// frequency. A champion that plays mostly on top, but commonly on middle
+    /// as well will have be assigned `&[Position::Top, Position::Middle]`
     pub positions: &'static [Position],
+
+    /// Holds basic information about the champion's base stats and growth rate
     pub stats: CachedChampionStats,
+    /// Sorted array that holds basic information about the abilities
+    /// of some cached champion, such as their internal id, damage type,
+    /// and special attributes, taking up at most 4 bytes of space. The order
+    /// of the abilities is based on priority, following the sequence:
+    /// - `P`, `Q`, `W`, `E`, `R`
+    ///
+    /// Note that not all abilities and passives will be represented in this
+    /// array because we're only worried about abilities and passives that deal
+    /// damage. If it doesn't affect the damage calculation, it will not appear
+    /// here, and will not be assigned a `closure`, since it would just waste
+    /// memory space by placing the [`zero`] constant as placeholder
     pub metadata: &'static [TypeMetadata<AbilityId>],
+
+    /// Sorted array that have the same length as the field `metadata`. Each
+    /// function pointer stored here matches the same index in the `metadata`
+    /// field, which means that for example, if the element zero in metadata,
+    /// or `metadata[0]` is [`Q::_1`], (alias to [`AbilityId::Q`] with name
+    /// [`AbilityName::_1`]), then `closures[0]` is a function that when evaluated
+    /// returns the damage of that ability before any modifier is applied, which
+    /// means that it is like if the ability dealt true damage
     pub closures: &'static [ConstClosure],
+
+    /// Some abilities have a minimum and maximum damage. The most common way to
+    /// identify it is if some ability has two elements of the same key [`AbilityId`]
+    /// while having two instances of [`AbilityName`] where one ends with `Min` and the
+    /// other one with `Max`.
+    ///
+    /// For example, if some champion has [`Q::_1Min`] and [`Q::_1Max`], then those
+    /// are considered separate abilities when evaluating their damage, but when displaying
+    /// in the frontend application, it is merged into a single cell that represents the key
+    /// [`Q::_1`], where it will look like `minimum damage - maximum damage`, replaced with
+    /// the calculated value. In other words, the user will see `Q::_1Min - Q::_1Max` in the
+    /// table cell <strong>Q<sub>1</sub></strong>
+    ///
+    /// Each tuple contains the offsets in the `metadata` array where those abilities
+    /// should be mergede. It is also ordered following the same sequence as defined
+    /// in `metadata`, and ignores abilities that deal no damage. Abilities that deal only
+    /// one damage will always count towards `minimum_damage` only, and the field
+    /// `maximum_damage` will be set to zero, which means it should be ignored
+    ///
+    /// Lets say suppose the following scenario:
+    /// ```rs
+    /// let closures = [|ctx| { ctx.ap + 50.0 }; 5];
+    /// let merge_data = [(0, 2), (4, 3)];
+    /// let metadata = [Q::_1Min, Q::_2, Q::_1Max, Q::_4Max, Q::_4Min];
+    /// let eval_ctx = EvalContext::default();
+    /// for (i, j) in merge_data {
+    ///     let min_dmg = closures[i](&eval_ctx);
+    ///     let max_dmg = closures[j](&eval_ctx);
+    ///     let min_ability = metadata[i];
+    ///     let max_ability = metadata[j];
+    ///     println!("[tab] {min_ability} - {max_ability}");
+    ///     println!("[dmg] {min_dmg} - {max_dmg}");
+    /// }
+    /// ```
     pub merge_data: &'static [(usize, usize)],
 }
 
-pub struct CachedChampionAbility {
-    pub damage_type: DamageType,
-    pub attributes: Attrs,
-    pub minimum_damage: ConstClosure,
-    pub maximum_damage: ConstClosure,
-}
-
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
+#[cfg_attr(feature = "bincode", derive(bincode::Encode))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize))]
 pub struct CachedChampionStatsMap {
     pub flat: f32,
     pub per_level: f32,
 }
 
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
+#[cfg_attr(feature = "bincode", derive(bincode::Encode))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize))]
 pub struct CachedChampionStats {
     pub health: CachedChampionStatsMap,
     pub mana: CachedChampionStatsMap,
@@ -176,12 +262,8 @@ pub struct CachedChampionStats {
     pub urf_damage_dealt: f32,
 }
 
-pub struct CachedItemDamages {
-    pub minimum_damage: ConstClosure,
-    pub maximum_damage: ConstClosure,
-}
-
 /// Generated data about some item, held in the static variable [`crate::ITEM_CACHE`]
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
 pub struct CachedItem {
     pub tier: u8,
     pub price: u16,
@@ -198,6 +280,7 @@ pub struct CachedItem {
 }
 
 /// Generated data about some rune, held in the static variable [`crate::RUNE_CACHE`]
+#[derive(Clone, Copy, Debug)]
 pub struct CachedRune {
     pub damage_type: DamageType,
     pub metadata: TypeMetadata<RuneId>,
@@ -207,6 +290,9 @@ pub struct CachedRune {
     pub undeclared: bool,
 }
 
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
+#[cfg_attr(feature = "bincode", derive(bincode::Encode))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize))]
 pub struct CachedItemStats {
     pub ability_power: f32,
     pub armor: f32,
