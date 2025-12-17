@@ -115,20 +115,105 @@ pub fn rust_html(rust_code: &str) -> String {
     h.keyword("comment", r"//.*$");
     h.bounded_interp("string", "\"", "\"", "\\{", "\\}", true);
     h.keyword("lifetime", r"'\w+");
+
+    fn regkw<const N: usize>(values: [&str; N]) -> String {
+        format!(r"\b({})\b", values.join("|"))
+    }
+
     h.keyword(
         "keyword",
-        r"\b(void|pub|use|crate|mut|static|ref|dyn|unsafe|extern|type|super|mod|struct|const|enum|fn|let|impl|trait|where|Self|self)\b",
+        &regkw([
+            "void", "pub", "use", "crate", "mut", "static", "ref", "dyn", "unsafe", "extern",
+            "type", "super", "mod", "struct", "const", "enum", "fn", "let", "impl", "trait",
+            "where", "Self", "self",
+        ]),
     );
     h.keyword(
         "control",
-        r"\b(break|continue|intrinsic|loop|match|return|yield|for|while|match|if|else|as|in)\b",
+        &regkw([
+            "break",
+            "continue",
+            "intrinsic",
+            "loop",
+            "match",
+            "return",
+            "yield",
+            "for",
+            "while",
+            "match",
+            "if",
+            "else",
+            "as",
+            "in",
+        ]),
     );
     h.keyword("constant", r"::[A-Z_][A-Za-z0-9_]*\b");
     h.keyword("constant", r"\b[A-Z]+\b");
+    h.keyword(
+        "constant",
+        &regkw([
+            "Some",
+            "None",
+            "Melee",
+            "Ranged",
+            "Physical",
+            "Undefined",
+            "Onhit",
+            "OnhitMin",
+            "OnhitMax",
+            "Area",
+            "AreaOnhit",
+            "AreaOnhitMin",
+            "AreaOnhitMax",
+            "Magic",
+            "Void",
+            "_1",
+            "_2",
+            "_3",
+            "_4",
+            "_5",
+            "_6",
+            "_7",
+            "_8",
+            "Min",
+            "_1Min",
+            "_2Min",
+            "_3Min",
+            "_4Min",
+            "_5Min",
+            "_6Min",
+            "_7Min",
+            "_8Min",
+            "Max",
+            "_1Max",
+            "_2Max",
+            "_3Max",
+            "_4Max",
+            "_5Max",
+            "_6Max",
+            "_7Max",
+            "_8Max",
+            "Mega",
+            "Minion",
+            "Minion1",
+            "Minion2",
+            "Minion3",
+            "MinionMax",
+            "Monster",
+            "Monster1",
+            "Monster2",
+            "Monster3",
+            "Monster4",
+            "MonsterMax",
+        ]),
+    );
     h.keyword("type", r"\b[A-Z][a-zA-Z0-9_]*\b");
     h.keyword(
         "primitive",
-        r"\b(bool|usize|u8|u16|u32|u64|isize|i8|i16|i32|i64|f32|f64|char|str)\b",
+        &regkw([
+            "bool", "usize", "u8", "u16", "u32", "u64", "isize", "i8", "i16", "i32", "i64", "f32",
+            "f64", "char", "str",
+        ]),
     );
     h.keyword(
         "number",
@@ -147,18 +232,45 @@ pub fn rust_html(rust_code: &str) -> String {
 
     h.run(&code);
 
+    let mut bracket_stack: Vec<u8> = Vec::new();
     let mut out = String::new();
     for (i, line) in code.iter().enumerate() {
         let mut line_html = String::new();
 
         for token in h.line(i, line) {
             match token {
-                TokOpt::Some(text, kind) => match kind {
-                    kind if kind == "function" && text.ends_with('(') => {
+                TokOpt::Some(text, kind) => match kind.as_str() {
+                    "function" if text.ends_with('(') => {
                         let name = &text[..text.len() - 1];
-                        line_html.push_str(&format!("<span class=\"{kind}\">{name}</span>("));
+                        line_html.push_str(&format!("<span class=\"{kind}\">{name}</span>"));
+                        let c = ((bracket_stack.len() % 3) + 1) as u8;
+                        bracket_stack.push(c);
+                        line_html.push_str(&format!(r#"<span class="bracket_{c}">(</span>"#));
                     }
-                    kind if kind == "constant" && text.starts_with("::") => {
+                    "string" => {
+                        let mut buf = String::new();
+                        let flush = |buf: &mut String, line_html: &mut String| {
+                            if !buf.is_empty() {
+                                line_html
+                                    .push_str(&format!(r#"<span class="string">{buf}</span>"#));
+                                buf.clear();
+                            }
+                        };
+                        for ch in text.chars() {
+                            match ch == '{' || ch == '}' {
+                                true => {
+                                    flush(&mut buf, &mut line_html);
+                                    line_html
+                                        .push_str(&format!(r#"<span class="keyword">{ch}</span>"#));
+                                }
+                                false => {
+                                    buf.push(ch);
+                                }
+                            }
+                        }
+                        flush(&mut buf, &mut line_html);
+                    }
+                    "constant" if text.starts_with("::") => {
                         let name = &text[2..];
                         line_html.push_str("::");
                         line_html.push_str(&format!("<span class=\"{kind}\">{name}</span>"));
@@ -168,7 +280,27 @@ pub fn rust_html(rust_code: &str) -> String {
                     }
                 },
                 TokOpt::None(text) => {
-                    line_html.push_str(&text);
+                    for ch in text.chars() {
+                        match ch {
+                            '(' | '[' | '{' => {
+                                let c = ((bracket_stack.len() % 3) + 1) as u8;
+                                bracket_stack.push(c);
+                                line_html
+                                    .push_str(&format!(r#"<span class="bracket_{c}">{ch}</span>"#));
+                            }
+                            ')' | ']' | '}' => match bracket_stack.pop() {
+                                Some(c) => {
+                                    line_html.push_str(&format!(
+                                        r#"<span class="bracket_{c}">{ch}</span>"#
+                                    ));
+                                }
+                                None => {
+                                    line_html.push(ch);
+                                }
+                            },
+                            _ => line_html.push(ch),
+                        }
+                    }
                 }
             }
         }
@@ -177,7 +309,7 @@ pub fn rust_html(rust_code: &str) -> String {
         out.push('\n');
     }
 
-    format!("<pre>{}</pre>", out)
+    format!("<pre>{out}</pre>")
 }
 
 /// Converts JSON code contained in the input [`str`] to an HTML [`String`]
@@ -191,16 +323,17 @@ pub fn json_html(input: &str) -> String {
     let lines = input.lines().map(str::to_string).collect::<Vec<String>>();
     h.run(&lines);
 
+    let mut bracket_stack: Vec<u8> = Vec::new();
     let mut out = String::new();
 
     for (i, line) in lines.iter().enumerate() {
         let mut toks = h.line(i, line).into_iter().collect::<Vec<_>>();
-
         for k in 0..toks.len() {
             let is_string = matches!(&toks[k], TokOpt::Some(_, kind) if kind == "string");
             if !is_string {
                 continue;
             }
+
             let mut next_non_ws = None::<char>;
             let mut idx = k + 1;
             while idx < toks.len() {
@@ -229,14 +362,37 @@ pub fn json_html(input: &str) -> String {
                 TokOpt::Some(text, kind) => {
                     line_html.push_str(&format!("<span class=\"{kind}\">{text}</span>"));
                 }
-                TokOpt::None(text) => line_html.push_str(&text),
+                TokOpt::None(text) => {
+                    for ch in text.chars() {
+                        match ch {
+                            '{' | '[' | '(' => {
+                                let c = ((bracket_stack.len() % 3) + 1) as u8;
+                                bracket_stack.push(c);
+                                line_html
+                                    .push_str(&format!(r#"<span class="bracket_{c}">{ch}</span>"#));
+                            }
+                            '}' | ']' | ')' => match bracket_stack.pop() {
+                                Some(c) => {
+                                    line_html.push_str(&format!(
+                                        r#"<span class="bracket_{c}">{ch}</span>"#
+                                    ));
+                                }
+                                None => {
+                                    line_html.push(ch);
+                                }
+                            },
+                            _ => line_html.push(ch),
+                        }
+                    }
+                }
             }
         }
+
         out.push_str(&line_html);
         out.push('\n');
     }
 
-    format!("<pre>{}</pre>", out)
+    format!("<pre>{out}</pre>")
 }
 
 /// Converts JSON code to a pretty-printed [`String`]. It does not turn it to HTML

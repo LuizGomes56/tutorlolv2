@@ -1,6 +1,11 @@
-use std::ops::{Deref, DerefMut};
-
+use std::{
+    fmt::Debug,
+    ops::{Deref, DerefMut},
+    path::Path,
+};
 use tutorlolv2_exports::RAW_BLOCK;
+
+use crate::ArrayItem;
 
 pub struct Html {
     inner: String,
@@ -21,6 +26,16 @@ impl Html {
 
     pub fn add_code(&mut self, offsets: (u32, u32)) {
         self.push_str(&Self::code_block(offsets));
+    }
+
+    pub async fn json(enumv: impl Debug + ArrayItem) -> String {
+        let file = format!("{enumv:?}");
+        let path = Path::new("../internal")
+            .join(enumv.folder())
+            .join(file)
+            .with_extension("json");
+        let json = tokio::fs::read_to_string(path).await.unwrap();
+        tutorlolv2_fmt::json_html(&json)
     }
 
     pub fn code_column(tag: &str, code: &str) -> String {

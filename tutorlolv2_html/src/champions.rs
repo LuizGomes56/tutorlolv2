@@ -3,7 +3,7 @@ use tutorlolv2_exports::{CHAMPION_ABILITIES, CHAMPION_FORMULAS, CHAMPION_GENERAT
 use tutorlolv2_gen::ChampionId as This;
 
 pub async fn champions_html() {
-    parallel_task(64, This::ARRAY, |champion_id| {
+    parallel_task(64, This::ARRAY, async |champion_id| {
         let name = champion_id.name();
         let number_of_abilities = champion_id.number_of_abilities();
         let mut html = Html::new(name);
@@ -25,10 +25,12 @@ pub async fn champions_html() {
         let main_code = Html::code_block(main_offsets);
         let generator_offsets = CHAMPION_GENERATOR[champion_id as usize];
         let generator_code = Html::code_block(generator_offsets);
+        let json_code = Html::json(champion_id).await;
 
         html.push_str(&main_code);
         html.push_str(&abilities);
         html.push_str(&generator_code);
+        html.push_str(&json_code);
         html.push_str(&format!(
             "This champion has {number_of_abilities} different damaging abilities"
         ));

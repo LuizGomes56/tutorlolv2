@@ -31,10 +31,11 @@ macro_rules! impl_array_item {
 
 impl_array_item!(ChampionId, ItemId, RuneId);
 
-pub async fn parallel_task<F, A, T>(permits: usize, array: A, f: F)
+pub async fn parallel_task<F, A, T, Fut>(permits: usize, array: A, f: F)
 where
     A: IntoIterator<Item = T>,
-    F: Copy + 'static + Send + Sync + Fn(T) -> Html,
+    Fut: Future<Output = Html> + Send,
+    F: Copy + 'static + Send + Sync + Fn(T) -> Fut,
     T: Copy + ArrayItem + Send + Sync + 'static,
 {
     let mut futures = Vec::new();
@@ -42,15 +43,11 @@ where
 
     let path = Path::new("__html");
 
-    if !tokio::fs::try_exists(path).await.unwrap() {
-        tokio::fs::create_dir(path).await.unwrap();
-    }
-
     for value in array {
         let semaphore = semaphore.clone();
         futures.push(tokio::task::spawn(async move {
             let _permit = semaphore.acquire().await.unwrap();
-            let html = f(value);
+            let html = f(value).await;
             let folder = path.join(value.folder());
 
             let target = folder.join(value.file()).with_extension("html");
