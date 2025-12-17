@@ -2,6 +2,7 @@
 name = "tutorlolv2_gen"
 version = "0.1.3"
 edition = "2024"
+publish = false
 
 [dependencies]
 tutorlolv2_types = { path = "../tutorlolv2_types", default-features = false }
