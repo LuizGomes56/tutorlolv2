@@ -17,8 +17,9 @@ impl Generator<ItemData> for BladeOfTheRuinedKing {
             )
         };
 
-        self.melee_min_dmg(&damage(melee_scaling));
-        self.ranged_min_dmg(&damage(ranged_scaling));
+        self.damage_type(Physical);
+        self.melee_min_dmg(damage(melee_scaling));
+        self.ranged_min_dmg(damage(ranged_scaling));
         self.end()
     }
 }

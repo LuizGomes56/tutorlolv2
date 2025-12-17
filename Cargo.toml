@@ -6,9 +6,6 @@ authors = ["Luiz Gustavo Santana Dias Gomes"]
 repository = "https://github.com/LuizGomes56/tutorlolv2"
 description = "League of Legends static library that evaluates damages of abilities, passives, items, and runes"
 
-[workspace]
-members = ["tutorlolv2_html", "tutorlolv2_build"]
-
 [dev-dependencies]
 serde_json = "1.0.145"
 bincode = "2.0.1"

@@ -1,7 +1,7 @@
 #![no_std]
-mod ability_name;
+pub mod ability_name;
 
-pub use ability_name::*;
+pub use ability_name::AbilityName;
 
 /// Enum that represents one ability of a champion, with a custom display name.
 /// - [`AbilityId::P`] represents the passive of a champion
