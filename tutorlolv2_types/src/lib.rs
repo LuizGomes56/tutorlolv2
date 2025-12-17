@@ -1,8 +1,11 @@
 #![no_std]
-pub mod ability_name;
+mod ability_name;
 
 pub use ability_name::*;
 
+/// Enum that represents one ability of a champion, with a custom display name.
+/// - [`AbilityId::P`] represents the passive of a champion
+/// - Other variants correspond to the abilities `Q`, `W`, `E`, and `R` (ultimate)
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 #[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
 #[cfg_attr(
@@ -76,6 +79,10 @@ impl AbilityId {
     }
 }
 
+/// A generic metadata holder that determines what buffs one item give
+/// to the current player when bought. For example `StatName::AbilityPower(80)`
+/// means that when bought, the player gets extra 80 ability power. This struct
+/// weighs 4 bytes and the maximum stat buff for one item is [`u16::MAX`]
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 #[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
 #[cfg_attr(

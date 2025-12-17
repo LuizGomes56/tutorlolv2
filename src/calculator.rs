@@ -1,3 +1,13 @@
+//! This module has functions related to the `calculator` section,
+//! which receives custom game information to evaluate damages.
+//! The functions exported in this module are more optimized than
+//! the ones in the [`crate::realtime`] module, and have more
+//! information, which means their results are more accurate.
+//!
+//! Note that this module have no dependencies on Riot's API,
+//! so all the function inputs have to be obtained through your
+//! own mechanism
+
 use crate::{helpers::*, model::*, riot::Stats};
 use alloc::boxed::Box;
 use tutorlolv2_gen::*;

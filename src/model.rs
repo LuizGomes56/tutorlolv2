@@ -1,3 +1,13 @@
+//! Declaration of structs, constants, enums and methods that are
+//! used in all other modules of this library.
+//!
+//! ### Features
+//! - `bincode` - implements `Encode` `Decode` or `BorrowDecode` traits
+//! to all eligible structs and enums
+//! - `serde` - implements `Serialize` `Deserialize` traits to all eligible
+//! structs and enums. Structs that have `'static` lifetimes do not implement
+//! `Deserialize`
+
 use crate::riot::Stats;
 use alloc::boxed::Box;
 use tutorlolv2_gen::*;
@@ -153,7 +163,8 @@ pub struct Realtime<'a> {
     /// were chosen to have their damages compared among each other, to determine
     /// which one is mathematically besst to buy next. Note that this value lives
     /// at the constant [`crate::realtime::SIMULATED_ITEMS_METADATA`]
-    pub siml_meta: SimulatedMetadata,
+    #[cfg_attr(feature = "serde", serde(with = "serde_arrays"))]
+    pub siml_meta: [TypeMetadata<ItemId>; L_SIML],
 
     /// Constant array of tuples that determines which abilities should
     /// be displayed in a single cell, in the format `{min} - {max}`. Doing it
@@ -310,28 +321,6 @@ pub struct DamageEvalData {
     pub runes: DamageKind<RuneId>,
 }
 
-/// Struct that implements [`serde::Serialize`] and [`serde::Deserialize`]
-/// since arrays with very large size such as [`L_SIML`] don't implement those
-/// via derive macro
-#[derive(Clone, Debug, PartialEq, PartialOrd)]
-#[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-#[repr(transparent)]
-pub struct SimulatedItems(
-    #[cfg_attr(feature = "serde", serde(with = "serde_arrays"))] pub [Damages; L_SIML],
-);
-
-/// Struct that implements [`serde::Serialize`] and [`serde::Deserialize`]
-/// since arrays with very large size such as [`L_SIML`] don't implement those
-/// via derive macro
-#[derive(Clone, Debug, PartialEq, PartialOrd)]
-#[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-#[repr(transparent)]
-pub struct SimulatedMetadata(
-    #[cfg_attr(feature = "serde", serde(with = "serde_arrays"))] pub [TypeMetadata<ItemId>; L_SIML],
-);
-
 #[derive(Clone, Debug, PartialEq, PartialOrd)]
 #[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::BorrowDecode))]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -339,7 +328,8 @@ pub struct Enemy<'a> {
     #[cfg_attr(feature = "serde", serde(borrow))]
     pub riot_id: &'a str,
     pub damages: Damages,
-    pub siml_items: SimulatedItems,
+    #[cfg_attr(feature = "serde", serde(with = "serde_arrays"))]
+    pub siml_items: [Damages; L_SIML],
     pub base_stats: SimpleStats<i32>,
     pub bonus_stats: SimpleStats<i32>,
     pub current_stats: SimpleStats<i32>,
@@ -697,7 +687,7 @@ impl RiotFormulas {
     }
 }
 
-/// Implements traits From<T<f32>> and From<T<i32>> for some struct
+/// Implements traits [`From<T<f32>>`] and [`From<T<i32>>`] for some struct
 /// in which all of its fields are numeric types with simple and
 /// deterministic castings from between [`f32`] and [`i32`]
 macro_rules! impl_cast_from {

@@ -1,3 +1,7 @@
+//! This module only have structs related to Riot's port 2999 endpoint,
+//! which can be used to deserialize the JSON data to this library's
+//! own data types
+
 use crate::model::*;
 use alloc::boxed::Box;
 

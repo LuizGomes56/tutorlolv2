@@ -1,3 +1,20 @@
+//! This module exports several helper functions that help get
+//! base stats, bonus stats, damaging abilities, damage against
+//! jungle monsters, turrets, other champions, etc.
+//!
+//! These are functions that are used internally in the functions
+//! [`crate::calculator`] and [`crate::realtime`], but if you want
+//! to customize the damage calculation process, this is the place
+//! to start
+//!
+//! Note that most functions have the `const` qualifier, which you
+//! should use to debug and check if the calculated values are correct
+//! without having to compile your project.
+//!
+//! Function pointers can't be called in const context, so if you still
+//! want to do it, you can use the [`crate::const_eval`] module to
+//! do it
+
 use crate::{calculator::MONSTER_RESISTS, model::*, riot::Stats};
 use alloc::boxed::Box;
 use core::mem::MaybeUninit;
@@ -300,6 +317,13 @@ pub fn get_runes_data(runes: &RunesBitSet, attack_type: AttackType) -> DamageKin
     }
 }
 
+/// Returns an instance [`DamageKind`] containing the closures and metadata of the items.
+/// Since the number of items is unknown at compile time, those values are dynamically
+/// allocated. This function does not evaluate any closures. Note that exclusively for
+/// items, every [`ItemId`] has two closures for a single metadata object. In other words
+/// ```rs
+/// assert!(metadata.len() == closures.len() / 2)
+/// ```
 pub fn get_items_data(items: &ItemsBitSet, attack_type: AttackType) -> DamageKind<ItemId> {
     let count = items.count() as usize;
     let mut metadata = Box::new_uninit_slice(count);
@@ -823,6 +847,9 @@ pub fn get_damages(eval_ctx: &EvalContext, data: &DamageEvalData, modifiers: Mod
     }
 }
 
+/// Returns the damage against monsters with different amounts of armor and magic resists.
+/// We assume no runes can damage jungle monsters, which is why they're not included in the
+/// [`MonsterDamage`] struct
 pub fn get_monster_damages(
     self_state: &SelfState,
     eval_data: &DamageEvalData,
@@ -857,6 +884,9 @@ pub fn get_monster_damages(
     })
 }
 
+/// Returns an array with the damage against turrets of different plates.
+/// The array has 6 ([`L_TWRD`]) elements because a tower can have zero,
+/// or up to 5 plates
 pub const fn get_tower_damages(
     adaptative_type: AdaptativeType,
     base_attack_damage: f32,

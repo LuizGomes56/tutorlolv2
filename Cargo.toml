@@ -7,6 +7,8 @@ repository = "https://github.com/LuizGomes56/tutorlolv2"
 
 [dev-dependencies]
 serde_json = "1.0.145"
+bincode = "2.0.1"
+tutorlolv2 = { path = ".", features = ["bincode", "livegame"] }
 
 [dependencies]
 tutorlolv2_types = { path = "tutorlolv2_types", default-features = false }
@@ -17,7 +19,7 @@ serde = { version = "1.0", default-features = false, optional = true }
 serde_arrays = { version = "0.2.0", optional = true }
 
 [features]
-default = ["livegame"]
+default = ["livegame", "serde"]
 bincode = [
     "dep:bincode",
     "bincode/derive",
