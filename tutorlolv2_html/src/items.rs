@@ -1,21 +1,17 @@
 use crate::{html::Html, parallel_task};
 use tutorlolv2_exports::{ITEM_FORMULAS, ITEM_GENERATOR};
-use tutorlolv2_gen::ItemId as This;
+use tutorlolv2_gen::ItemId;
 
 pub async fn items_html() {
-    parallel_task(64, This::ARRAY, async |item_id| {
-        let name = item_id.name();
-        let mut html = Html::new(name);
+    parallel_task(64, ItemId::ARRAY, async |item_id| {
+        let mut html = Html::new(item_id);
 
         let main_offsets = ITEM_FORMULAS[item_id as usize];
-        let main_code = Html::code_block(main_offsets);
-        let generator_offsets = ITEM_GENERATOR[item_id as usize];
-        let generator_code = Html::code_block(generator_offsets);
-        let json_code = Html::json(item_id).await;
+        html.push_code_block(main_offsets);
 
-        html.push_str(&main_code);
-        html.push_str(&generator_code);
-        html.push_str(&json_code);
+        let generator_offsets = ITEM_GENERATOR[item_id as usize];
+        html.push_code_block(generator_offsets);
+        html.push_json(item_id).await;
         html
     })
     .await;

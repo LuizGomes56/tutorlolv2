@@ -3,7 +3,8 @@ use std::{
     ops::{Deref, DerefMut},
     path::Path,
 };
-use tutorlolv2_exports::RAW_BLOCK;
+use tutorlolv2_exports::{ITEM_ID_TO_RIOT_ID, RAW_BLOCK, RUNE_ID_TO_RIOT_ID};
+use tutorlolv2_gen::{ChampionId, ItemId};
 
 use crate::ArrayItem;
 
@@ -12,6 +13,7 @@ pub struct Html {
 }
 
 impl Html {
+    const URL: &str = "http://localhost:8082";
     const CSS: &str = include_str!("style.css");
 
     pub fn into_inner(mut self) -> String {
@@ -28,7 +30,17 @@ impl Html {
         self.push_str(&Self::code_block(offsets));
     }
 
-    pub async fn json(enumv: impl Debug + ArrayItem) -> String {
+    pub async fn push_json(&mut self, enumv: impl Debug + ArrayItem) {
+        let json = Self::json(&enumv).await;
+        self.push_str(&format!(
+            "<section>
+                <h3>JSON-IR generated for {enumv:?}</h3>
+                {json}
+            </section>"
+        ));
+    }
+
+    pub async fn json(enumv: &(impl Debug + ArrayItem)) -> String {
         let file = format!("{enumv:?}");
         let path = Path::new("../internal")
             .join(enumv.folder())
@@ -42,13 +54,48 @@ impl Html {
         format!(r#"<div class="column"><h2>{tag}</h2>{code}</div>"#)
     }
 
+    pub fn push_code_block(&mut self, offsets: (u32, u32)) {
+        let code = Self::code_block(offsets);
+        self.push_str(&format!(
+            "<section>
+                <h3>Source code representation</h3>
+                {code}
+            </section>"
+        ));
+    }
+
     pub fn code_block(offsets: (u32, u32)) -> String {
         let (i, j) = offsets;
         let code = &RAW_BLOCK[i as _..j as _];
         format!("<pre><code>{code}</code></pre>")
     }
 
-    pub fn new(title: &str) -> Self {
+    pub fn redirect(value: impl ArrayItem) -> String {
+        let folder = value.folder();
+        let file = value.file();
+        let url = Self::URL;
+        format!("{url}/{folder}/{file}.html")
+    }
+
+    pub fn src(value: impl ArrayItem) -> String {
+        let folder = value.folder();
+        let type_id = value.type_id();
+        let tag = match ChampionId::is_champion_id(&type_id) {
+            true => value.file(),
+            false => match ItemId::is_item_id(&type_id) {
+                true => ITEM_ID_TO_RIOT_ID[value.offset()],
+                false => RUNE_ID_TO_RIOT_ID[value.offset()],
+            }
+            .to_string(),
+        };
+
+        let url = Self::URL;
+        format!("{url}/img/{folder}/{tag}.avif")
+    }
+
+    pub fn new(value: impl ArrayItem) -> Self {
+        let name = value.name();
+        let src = Self::src(value);
         let css = Html::CSS;
         let inner = format!(
             r#"
@@ -58,10 +105,14 @@ impl Html {
                 <meta charset="UTF-8">
                 <meta http-equiv="X-UA-Compatible" content="IE=edge">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>{title}</title>
+                <title>{name}</title>
             </head>
             <style>{css}</style>
             <body>
+            <header>
+                <img src="{src}" alt="{name}">
+                <h1>{name}</h1>
+            </header>
             "#
         );
         Self { inner }

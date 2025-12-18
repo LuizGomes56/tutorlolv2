@@ -233,19 +233,19 @@ pub async fn generate_items() -> GeneratorFn {
                     prettified_stats: &[{prettified_stats}],
                     damage_type: DamageType::{damage_type},
                     attributes: Attrs::{attributes:?},
-                    metadata: {metadata},
-                    stats: CachedItemStats {{ {stats} }},
-                    purchasable: {purchasable},
-                    deals_damage: {deals_damage},
                     tier: {tier},
+                    purchasable: {purchasable},
                     internal_id: ItemId::{name_pascal},
-                    riot_id: {riot_id},"
+                    riot_id: {riot_id},
+                    stats: CachedItemStats {{ {stats} }},
+                    metadata: {metadata},
+                    deals_damage: {deals_damage},"
             );
 
             let html_declaration = format!(
                 "{base_declaration}
-                ranged_closure: [{ranged_closures}],
-                melee_closure: [{melee_closures}], }};"
+                ranged_damages: [{ranged_closures}],
+                melee_damages: [{melee_closures}], }};"
             )
             .rust_fmt()
             .drop_f32s()
@@ -253,8 +253,8 @@ pub async fn generate_items() -> GeneratorFn {
             .as_const();
 
             base_declaration.push_str(&format!(
-                "ranged_closure: [{ranged_fn_names}],
-                melee_closure: [{melee_fn_names}], }};"
+                "ranged_damages: [{ranged_fn_names}],
+                melee_damages: [{melee_fn_names}], }};"
             ));
 
             base_declaration.push_str(&constfn_declaration);

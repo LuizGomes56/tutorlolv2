@@ -1,16 +1,13 @@
 use crate::{html::Html, parallel_task};
 use tutorlolv2_exports::RUNE_FORMULAS;
-use tutorlolv2_gen::RuneId as This;
+use tutorlolv2_gen::RuneId;
 
 pub async fn runes_html() {
-    parallel_task(64, This::ARRAY, async |rune_id| {
-        let name = rune_id.name();
-        let mut html = Html::new(name);
+    parallel_task(4, RuneId::ARRAY, async |rune_id| {
+        let mut html = Html::new(rune_id);
 
         let main_offsets = RUNE_FORMULAS[rune_id as usize];
-        let main_code = Html::code_block(main_offsets);
-
-        html.push_str(&main_code);
+        html.push_code_block(main_offsets);
         html
     })
     .await;

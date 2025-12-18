@@ -1,5 +1,5 @@
 use crate::{champions::champions_html, html::Html, items::items_html, runes::runes_html};
-use std::{path::Path, sync::Arc};
+use std::{any::Any, fmt::Debug, path::Path, sync::Arc};
 use tokio::sync::Semaphore;
 
 pub mod champions;
@@ -7,9 +7,11 @@ pub mod html;
 pub mod items;
 pub mod runes;
 
-pub trait ArrayItem {
+pub trait ArrayItem: Debug + Any {
     fn folder(&self) -> &'static str;
     fn file(&self) -> String;
+    fn name(&self) -> &'static str;
+    fn offset(&self) -> usize;
 }
 
 macro_rules! impl_array_item {
@@ -22,6 +24,12 @@ macro_rules! impl_array_item {
                     }
                     fn file(&self) -> String {
                         format!("{self:?}")
+                    }
+                    fn name(&self) -> &'static str {
+                        self.name()
+                    }
+                    fn offset(&self) -> usize {
+                        self.offset()
                     }
                 }
             )*

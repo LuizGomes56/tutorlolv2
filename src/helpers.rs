@@ -306,8 +306,8 @@ pub fn get_runes_data(runes: &RunesBitSet, attack_type: AttackType) -> DamageKin
         unsafe {
             metadata.get_unchecked_mut(i).write(rune.metadata);
             closures.get_unchecked_mut(i).write(match attack_type {
-                AttackType::Ranged => rune.ranged_closure,
-                AttackType::Melee => rune.melee_closure,
+                AttackType::Ranged => rune.ranged_damage,
+                AttackType::Melee => rune.melee_damage,
             });
         }
     }
@@ -331,8 +331,8 @@ pub fn get_items_data(items: &ItemsBitSet, attack_type: AttackType) -> DamageKin
     for (i, item_offset) in items.into_iter().enumerate() {
         let item = unsafe { ITEM_CACHE.get_unchecked(item_offset) };
         let slice = match attack_type {
-            AttackType::Ranged => item.ranged_closure,
-            AttackType::Melee => item.melee_closure,
+            AttackType::Ranged => item.ranged_damages,
+            AttackType::Melee => item.melee_damages,
         };
 
         unsafe {
@@ -801,8 +801,8 @@ const _: () = {
     let mut j = 0;
     while j < NUMBER_OF_ITEMS {
         let CachedItem {
-            melee_closure,
-            ranged_closure: range_closure,
+            melee_damages: melee_closure,
+            ranged_damages: range_closure,
             ..
         } = ITEM_CACHE[j];
         assert!(melee_closure.len() == range_closure.len());

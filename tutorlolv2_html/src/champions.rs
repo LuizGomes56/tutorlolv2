@@ -1,12 +1,11 @@
 use crate::{html::Html, parallel_task};
 use tutorlolv2_exports::{CHAMPION_ABILITIES, CHAMPION_FORMULAS, CHAMPION_GENERATOR};
-use tutorlolv2_gen::ChampionId as This;
+use tutorlolv2_gen::ChampionId;
 
 pub async fn champions_html() {
-    parallel_task(64, This::ARRAY, async |champion_id| {
-        let name = champion_id.name();
+    parallel_task(64, ChampionId::ARRAY, async |champion_id| {
         let number_of_abilities = champion_id.number_of_abilities();
-        let mut html = Html::new(name);
+        let mut html = Html::new(champion_id);
 
         let abilities = champion_id
             .get_cache()
@@ -22,15 +21,13 @@ pub async fn champions_html() {
             .collect::<String>();
 
         let main_offsets = CHAMPION_FORMULAS[champion_id as usize];
-        let main_code = Html::code_block(main_offsets);
-        let generator_offsets = CHAMPION_GENERATOR[champion_id as usize];
-        let generator_code = Html::code_block(generator_offsets);
-        let json_code = Html::json(champion_id).await;
-
-        html.push_str(&main_code);
+        html.push_code_block(main_offsets);
         html.push_str(&abilities);
-        html.push_str(&generator_code);
-        html.push_str(&json_code);
+
+        let generator_offsets = CHAMPION_GENERATOR[champion_id as usize];
+        html.push_code_block(generator_offsets);
+        html.push_json(champion_id).await;
+
         html.push_str(&format!(
             "This champion has {number_of_abilities} different damaging abilities"
         ));

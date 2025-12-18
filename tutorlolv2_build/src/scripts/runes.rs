@@ -70,8 +70,8 @@ pub async fn generate_runes() -> GeneratorFn {
 
                 let html_declaration = format!(
                     "{base_declaration}
-                    melee_closure: {melee_closure},
-                    ranged_closure: {ranged_closure} }};"
+                    melee_damage: {melee_closure},
+                    ranged_damage: {ranged_closure} }};"
                 )
                 .rust_fmt()
                 .drop_f32s()
@@ -82,8 +82,8 @@ pub async fn generate_runes() -> GeneratorFn {
                 let ranged_constfn_name = format!("{name_ssnake}_ranged").to_lowercase();
 
                 base_declaration.push_str(&format!(
-                    "melee_closure: {melee_constfn_name},
-                    ranged_closure: {ranged_constfn_name} }};"
+                    "melee_damage: {melee_constfn_name},
+                    ranged_damage: {ranged_constfn_name} }};"
                 ));
                 base_declaration.push_str(&constfn_declaration);
 
@@ -151,8 +151,8 @@ pub async fn generate_runes() -> GeneratorFn {
                     name: {name:?},
                     damage_type: DamageType::Unknown,
                     metadata: {metadata},
-                    melee_closure: zero,
-                    ranged_closure: zero,
+                    melee_damage: zero,
+                    ranged_damage: zero,
                     riot_id: {riot_id},
                     internal_id: RuneId::{name_pascal},
                     undeclared: true

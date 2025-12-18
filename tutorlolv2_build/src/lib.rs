@@ -326,7 +326,7 @@ pub async fn run() -> MayFail {
         ("TOWER_DAMAGE_OFFSET", TOWER_DAMAGE),
         ("CRITICAL_STRIKE_OFFSET", CRITICAL_STRIKE),
     ] {
-        let (start, end) = tracker.record(&value.rust_html());
+        let (start, end) = tracker.record(&value.rust_html().as_const());
         full_exports.push_str(&format!(
             "pub static {name}: (u32, u32) = ({start}, {end});"
         ));

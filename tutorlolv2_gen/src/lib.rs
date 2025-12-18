@@ -149,8 +149,40 @@ pub const NUMBER_OF_ABILITIES: usize = {
 };
 
 macro_rules! const_methods {
+    (inner $name:ident, $repr:ident, $($cast:ident),+) => {
+        pastey::paste! {
+            $(
+                impl Into<$cast> for $name {
+                    fn into(self) -> $cast {
+                        self.offset() as _
+                    }
+                }
+
+                impl TryFrom<$cast> for $name {
+                    type Error = &'static str;
+                    fn try_from(value: $cast) -> Result<Self, Self::Error> {
+                        Self::[<from_ $repr>](value as _).ok_or("Index out of bounds")
+                    }
+                }
+            )+
+        }
+    };
     ($name:ident, $repr:ident) => {
         pastey::paste! {
+            const_methods!(inner $name, $repr, u16, u32, u64, u128, usize);
+
+            impl Into<&'static str> for $name {
+                fn into(self) -> &'static str {
+                    self.name()
+                }
+            }
+
+            impl Into<&'static [<Cached $name:replace("Id", "")>]> for $name {
+                fn into(self) -> &'static [<Cached $name:replace("Id", "")>] {
+                    self.get_cache()
+                }
+            }
+
             impl $name {
                 pub const VARIANTS: usize = [<$name:replace("Id", ""):upper _CACHE>].len();
                 pub const ARRAY: [Self; Self::VARIANTS] = {
@@ -173,6 +205,10 @@ macro_rules! const_methods {
 
                 pub const fn offset(&self) -> usize {
                     *self as _
+                }
+
+                pub fn [<is_ $name:snake>](value: &core::any::TypeId) -> bool {
+                    *value == core::any::TypeId::of::<$name>()
                 }
             }
         }
