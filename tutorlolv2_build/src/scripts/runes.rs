@@ -1,6 +1,6 @@
 use crate::{
-    CwdPath, Generated, GeneratorFn, SrcFolder, Tracker, push_end,
-    scripts::{StringExt, USE_SUPER, model::Rune},
+    CwdPath, EVAL_FEAT, GLOB_FEAT, Generated, GeneratorFn, Tracker, push_end,
+    scripts::{StringExt, model::Rune},
 };
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
 use std::collections::HashMap;
@@ -50,7 +50,7 @@ pub async fn generate_runes() -> GeneratorFn {
                     let body = closure.to_lowercase();
                     let fn_name = format!("{name_ssnake}_{tag}").to_lowercase();
                     constfn_declaration.push_str(&format!(
-                        "pub const fn {fn_name}(ctx: &EvalContext) -> f32 {{ {body} }}"
+                        "{EVAL_FEAT} pub const fn {fn_name}(ctx: &EvalContext) -> f32 {{ {body} }}"
                     ));
                     format!("|{arg}| {body}")
                 };
@@ -59,7 +59,7 @@ pub async fn generate_runes() -> GeneratorFn {
                 let ranged_closure = get_closure(melee, "melee");
 
                 let mut base_declaration = format!(
-                    "pub static {name_ssnake}_{riot_id}: CachedRune = CachedRune {{
+                    "{EVAL_FEAT} pub static {name_ssnake}_{riot_id}: CachedRune = CachedRune {{
                         name: {name:?},
                         damage_type: DamageType::{damage_type},
                         metadata: {metadata},
@@ -147,7 +147,7 @@ pub async fn generate_runes() -> GeneratorFn {
             );
 
             let base_declaration = format!(
-                "pub static {name_ssnake}_{riot_id}: CachedRune = CachedRune {{
+                "{EVAL_FEAT} pub static {name_ssnake}_{riot_id}: CachedRune = CachedRune {{
                     name: {name:?},
                     damage_type: DamageType::Unknown,
                     metadata: {metadata},
@@ -192,13 +192,13 @@ pub async fn generate_runes() -> GeneratorFn {
         mut rune_formulas,
         mut rune_id_to_riot_id,
     ] = std::array::from_fn(|i| {
-        let (name, vtype) = [
-            ("RUNE_CACHE", "&CachedRune"),
-            ("RUNE_ID_TO_NAME", "&str"),
-            ("RUNE_FORMULAS", "(u32,u32)"),
-            ("RUNE_ID_TO_RIOT_ID", "u32"),
+        let (name, vtype, feature) = [
+            ("RUNE_CACHE", "&CachedRune", EVAL_FEAT),
+            ("RUNE_ID_TO_NAME", "&str", GLOB_FEAT),
+            ("RUNE_FORMULAS", "(u32,u32)", GLOB_FEAT),
+            ("RUNE_ID_TO_RIOT_ID", "u32", GLOB_FEAT),
         ][i];
-        format!("pub static {name}: [{vtype}; {len}] = [")
+        format!("{feature} pub static {name}: [{vtype}; RuneId::VARIANTS] = [")
     });
 
     let mut block = String::new();
@@ -247,9 +247,12 @@ pub async fn generate_runes() -> GeneratorFn {
         #[repr(u8)]
         pub enum RuneId {{ {fields} }}
         impl RuneId {{
+            pub const VARIANTS: usize = {len};
+            {EVAL_FEAT}
             pub const fn to_riot_id(&self) -> u32 {{
                 RUNE_CACHE[*self as usize].riot_id
             }}
+            {EVAL_FEAT}
             pub const fn from_riot_id(id: u32) -> Option<Self> {{
                 match id {{ {match_arms}, _ => None }}
             }}
@@ -257,7 +260,7 @@ pub async fn generate_runes() -> GeneratorFn {
                 unsafe {{ core::mem::transmute(id) }}
             }}
             pub const fn from_u8(id: u8) -> Option<Self> {{
-                if id < {len} as u8 {{
+                if id < Self::VARIANTS as u8 {{
                     Some(unsafe {{ Self::from_u8_unchecked(id) }})
                 }} else {{
                     None
@@ -276,7 +279,7 @@ pub async fn generate_runes() -> GeneratorFn {
     );
 
     let const_eval = format!(
-        "pub const fn rune_const_eval(
+        "{EVAL_FEAT} pub const fn rune_const_eval(
             ctx: &EvalContext, 
             rune_id: RuneId, 
             attack_type: AttackType
@@ -284,20 +287,6 @@ pub async fn generate_runes() -> GeneratorFn {
             match rune_id {{ {const_match_arms} }}
         }}"
     );
-
-    CwdPath::fwrite(
-        SrcFolder::Runes.import_file(),
-        [
-            USE_SUPER,
-            &rune_cache,
-            &rune_id_enum,
-            &rune_declarations,
-            &const_eval,
-        ]
-        .concat()
-        .rust_fmt(),
-    )
-    .await??;
 
     let callback = move |index: usize| {
         let add_offsets = |list: Vec<_>, target: &mut String| {
@@ -311,16 +300,19 @@ pub async fn generate_runes() -> GeneratorFn {
 
         add_offsets(formula_offsets, &mut rune_formulas);
 
-        let exports = [
-            rune_id_enum.replace(
-                "RUNE_CACHE[*self as usize].riot_id",
-                "RUNE_ID_TO_RIOT_ID[*self as usize]",
-            ),
+        let content = [
+            rune_cache,
+            rune_declarations,
+            rune_id_enum,
             rune_id_to_name,
             rune_formulas,
             rune_id_to_riot_id,
+            const_eval,
         ]
-        .concat();
+        .concat()
+        .rust_fmt();
+
+        let exports = format!("pub mod runes {{ use super::*; {content} }}");
 
         Generated { exports, block }
     };

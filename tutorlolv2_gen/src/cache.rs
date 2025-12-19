@@ -7,6 +7,7 @@ use tutorlolv2_types::*;
 #[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
 #[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[repr(u8)]
 pub enum AttackType {
     Melee,
     Ranged,
@@ -38,6 +39,7 @@ impl<T: AsRef<str>> From<T> for AdaptativeType {
 #[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
 #[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[repr(u8)]
 pub enum AdaptativeType {
     Physical,
     Magic,
@@ -50,6 +52,7 @@ pub enum AdaptativeType {
 #[derive(Clone, Copy, Debug, Default, Eq, Ord, PartialEq, PartialOrd)]
 #[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[repr(u8)]
 pub enum Position {
     #[default]
     Top,
@@ -60,6 +63,17 @@ pub enum Position {
 }
 
 impl Position {
+    pub const fn from_u8(value: u8) -> Option<Self> {
+        match value {
+            0..5 => Some(unsafe { Self::from_u8_unchecked(value) }),
+            _ => None,
+        }
+    }
+
+    pub const unsafe fn from_u8_unchecked(value: u8) -> Self {
+        unsafe { core::mem::transmute(value) }
+    }
+
     /// Converts a raw string into a [`Position`].
     pub fn from_raw(raw: &str) -> Option<Self> {
         match raw {
@@ -79,6 +93,8 @@ impl Position {
 #[derive(Clone, Copy, Debug, Default, Eq, Ord, PartialEq, PartialOrd)]
 #[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[repr(u8)]
+#[cfg(feature = "eval")]
 pub enum GameMap {
     #[default]
     SummonersRift,
@@ -145,10 +161,12 @@ pub struct TypeMetadata<T> {
 /// more than the necessary information to calculate the damage of some ability,
 /// item, passive, or rune, and they return an [`f32`], which represents the calculated
 /// damage. All of them must be qualified as `const`, capturing no variables
+#[cfg(feature = "eval")]
 pub type ConstClosure = fn(&EvalContext) -> f32;
 
 /// Generated data about some champion, held in the static variable [`crate::CHAMPION_CACHE`]
 #[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
+#[cfg(feature = "eval")]
 pub struct CachedChampion {
     /// A champion's in-game display name in `English`. This application converts
     /// names from other languages to English, but does not do the opposite, nor
@@ -236,6 +254,7 @@ pub struct CachedChampion {
 #[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
 #[cfg_attr(feature = "bincode", derive(bincode::Encode))]
 #[cfg_attr(feature = "serde", derive(serde::Serialize))]
+#[cfg(feature = "eval")]
 pub struct CachedChampionStatsMap {
     pub flat: f32,
     pub per_level: f32,
@@ -244,6 +263,7 @@ pub struct CachedChampionStatsMap {
 #[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
 #[cfg_attr(feature = "bincode", derive(bincode::Encode))]
 #[cfg_attr(feature = "serde", derive(serde::Serialize))]
+#[cfg(feature = "eval")]
 pub struct CachedChampionStats {
     pub health: CachedChampionStatsMap,
     pub mana: CachedChampionStatsMap,
@@ -264,6 +284,7 @@ pub struct CachedChampionStats {
 
 /// Generated data about some item, held in the static variable [`crate::ITEM_CACHE`]
 #[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
+#[cfg(feature = "eval")]
 pub struct CachedItem {
     pub name: &'static str,
     pub tier: u8,
@@ -283,6 +304,7 @@ pub struct CachedItem {
 
 /// Generated data about some rune, held in the static variable [`crate::RUNE_CACHE`]
 #[derive(Clone, Copy, Debug)]
+#[cfg(feature = "eval")]
 pub struct CachedRune {
     pub name: &'static str,
     pub damage_type: DamageType,
@@ -297,6 +319,7 @@ pub struct CachedRune {
 #[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
 #[cfg_attr(feature = "bincode", derive(bincode::Encode))]
 #[cfg_attr(feature = "serde", derive(serde::Serialize))]
+#[cfg(feature = "eval")]
 pub struct CachedItemStats {
     pub ability_power: f32,
     pub armor: f32,
@@ -321,6 +344,7 @@ pub struct CachedItemStats {
 /// in the static variable to meet the requirements of the compiler. In the best-case
 /// scenario, this function should never be called, to avoid wasting CPU time with
 /// a compile-time known result
+#[cfg(feature = "eval")]
 pub const fn zero(_: &EvalContext) -> f32 {
     0.0
 }

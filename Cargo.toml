@@ -11,22 +11,23 @@ serde_json = "1.0.145"
 bincode = "2.0.1"
 tutorlolv2 = { path = ".", features = ["bincode", "livegame"] }
 
-[workspace]
-members = [
-    "tutorlolv2_build",
-    "tutorlolv2_dev",
-    "tutorlolv2_exports",
-    "tutorlolv2_fmt",
-    "tutorlolv2_gen",
-    "tutorlolv2_html",
-    "tutorlolv2_macros",
-    "tutorlolv2_server",
-    "tutorlolv2_types",
-]
+# [workspace]
+# members = [
+#     "tutorlolv2_build",
+#     "tutorlolv2_dev",
+#     "tutorlolv2_fmt",
+#     "tutorlolv2_gen",
+#     "tutorlolv2_html",
+#     "tutorlolv2_macros",
+#     "tutorlolv2_server",
+#     "tutorlolv2_types",
+# ]
 
 [dependencies]
 tutorlolv2_types = { path = "tutorlolv2_types", default-features = false }
-tutorlolv2_gen = { path = "tutorlolv2_gen", default-features = false }
+tutorlolv2_gen = { path = "tutorlolv2_gen", default-features = false, features = [
+    "eval",
+] }
 const_sized_bit_set = "0.3.0"
 bincode = { version = "2.0.1", default-features = false, optional = true }
 serde = { version = "1.0", default-features = false, optional = true }

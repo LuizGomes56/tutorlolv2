@@ -1,12 +1,7 @@
-use std::{
-    fmt::Debug,
-    ops::{Deref, DerefMut},
-    path::Path,
-};
-use tutorlolv2_exports::{ITEM_ID_TO_RIOT_ID, RAW_BLOCK, RUNE_ID_TO_RIOT_ID};
-use tutorlolv2_gen::{ChampionId, ItemId};
-
 use crate::ArrayItem;
+use core::ops::{Deref, DerefMut};
+use std::path::Path;
+use tutorlolv2_gen::{ChampionId, ITEM_ID_TO_RIOT_ID, ItemId, RAW_BLOCK, RUNE_ID_TO_RIOT_ID};
 
 pub struct Html {
     inner: String,
@@ -30,7 +25,7 @@ impl Html {
         self.push_str(&Self::code_block(offsets));
     }
 
-    pub async fn push_json(&mut self, enumv: impl Debug + ArrayItem) {
+    pub async fn push_json(&mut self, enumv: impl ArrayItem) {
         let json = Self::json(&enumv).await;
         self.push_str(&format!(
             "<section>
@@ -40,7 +35,7 @@ impl Html {
         ));
     }
 
-    pub async fn json(enumv: &(impl Debug + ArrayItem)) -> String {
+    pub async fn json(enumv: &impl ArrayItem) -> String {
         let file = format!("{enumv:?}");
         let path = Path::new("../internal")
             .join(enumv.folder())

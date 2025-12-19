@@ -1,7 +1,8 @@
 use crate::{
-    CwdPath, Generated, GeneratorFn, SrcFolder, Tracker, parallel_task, push_end,
+    CwdPath, EVAL_FEAT, GLOB_FEAT, Generated, GeneratorFn, SrcFolder, Tracker, parallel_task,
+    push_end,
     scripts::{
-        StringExt, USE_SUPER,
+        StringExt,
         model::{DamageObject, Item, ItemStats},
     },
 };
@@ -47,7 +48,9 @@ fn declare_item(item: &Item) -> DeclaredItem {
             let closure = format!("|{ctx_param}| {body}");
             move |fn_name: &str| {
                 (
-                    format!("pub const fn {fn_name}(ctx: &EvalContext) -> f32 {{ {body} }}"),
+                    format!(
+                        "{EVAL_FEAT} pub const fn {fn_name}(ctx: &EvalContext) -> f32 {{ {body} }}"
+                    ),
                     closure,
                 )
             }
@@ -227,7 +230,7 @@ pub async fn generate_items() -> GeneratorFn {
             };
 
             let mut base_declaration = format!(
-                "pub static {name_ssnake}_{riot_id}: CachedItem = CachedItem {{
+                "{EVAL_FEAT} pub static {name_ssnake}_{riot_id}: CachedItem = CachedItem {{
                     name: {name:?},
                     price: {price},
                     prettified_stats: &[{prettified_stats}],
@@ -296,14 +299,14 @@ pub async fn generate_items() -> GeneratorFn {
         mut item_generator,
         mut item_id_to_riot_id,
     ] = std::array::from_fn(|i| {
-        let (name, vtype) = [
-            ("ITEM_CACHE", "&CachedItem"),
-            ("ITEM_ID_TO_NAME", "&str"),
-            ("ITEM_FORMULAS", "(u32,u32)"),
-            ("ITEM_GENERATOR", "(u32,u32)"),
-            ("ITEM_ID_TO_RIOT_ID", "u32"),
+        let (name, vtype, feature) = [
+            ("ITEM_CACHE", "&CachedItem", EVAL_FEAT),
+            ("ITEM_ID_TO_NAME", "&str", GLOB_FEAT),
+            ("ITEM_FORMULAS", "(u32,u32)", GLOB_FEAT),
+            ("ITEM_GENERATOR", "(u32,u32)", GLOB_FEAT),
+            ("ITEM_ID_TO_RIOT_ID", "u32", GLOB_FEAT),
         ][i];
-        format!("pub static {name}: [{vtype}; {len}] = [")
+        format!("{feature} pub static {name}: [{vtype}; ItemId::VARIANTS] = [")
     });
 
     let mut block = String::new();
@@ -366,9 +369,12 @@ pub async fn generate_items() -> GeneratorFn {
         #[repr(u16)]
         pub enum ItemId {{ {fields} }}
         impl ItemId {{
+            pub const VARIANTS: usize = {len};
+            {EVAL_FEAT}
             pub const fn to_riot_id(&self) -> u32 {{
                 ITEM_CACHE[*self as usize].riot_id
             }}
+            {EVAL_FEAT}
             pub const fn from_riot_id(id: u32) -> Option<Self> {{
                 match id {{ {match_arms}, _ => None }}
             }}
@@ -376,7 +382,7 @@ pub async fn generate_items() -> GeneratorFn {
                 unsafe {{ core::mem::transmute(id) }}
             }}
             pub const fn from_u16(id: u16) -> Option<Self> {{
-                if id < {len} as u16 {{
+                if id < Self::VARIANTS as u16 {{
                     Some(unsafe {{ Self::from_u16_unchecked(id) }})
                 }} else {{
                     None
@@ -386,7 +392,7 @@ pub async fn generate_items() -> GeneratorFn {
     );
 
     let const_eval = format!(
-        "pub const fn item_const_eval(
+        "{EVAL_FEAT} pub const fn item_const_eval(
             ctx: &EvalContext, 
             item_id: ItemId, 
             attack_type: AttackType
@@ -403,20 +409,6 @@ pub async fn generate_items() -> GeneratorFn {
         ],
         "];",
     );
-
-    CwdPath::fwrite(
-        SrcFolder::Items.import_file(),
-        [
-            USE_SUPER,
-            &item_cache,
-            &item_id_enum,
-            &item_declarations,
-            &const_eval,
-        ]
-        .concat()
-        .rust_fmt(),
-    )
-    .await??;
 
     let callback = move |index: usize| {
         let add_offsets = |(list, target): (Vec<_>, &mut String)| {
@@ -435,17 +427,20 @@ pub async fn generate_items() -> GeneratorFn {
         .into_iter()
         .for_each(add_offsets);
 
-        let exports = [
-            item_id_enum.replace(
-                "ITEM_CACHE[*self as usize].riot_id",
-                "ITEM_ID_TO_RIOT_ID[*self as usize]",
-            ),
+        let content = [
+            item_id_enum,
             item_id_to_name,
             item_formulas,
             item_id_to_riot_id,
             item_generator,
+            item_cache,
+            item_declarations,
+            const_eval,
         ]
-        .concat();
+        .concat()
+        .rust_fmt();
+
+        let exports = format!("pub mod items {{ use super::*; {content} }}");
 
         Generated { exports, block }
     };

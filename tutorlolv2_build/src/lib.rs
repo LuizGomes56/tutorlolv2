@@ -19,6 +19,9 @@ pub type MayFail<T = ()> = Result<T, Box<dyn std::error::Error>>;
 pub type GeneratorClosure = Box<dyn FnOnce(usize) -> Generated + Send + Sync + 'static>;
 pub type GeneratorFn = MayFail<GeneratorClosure>;
 
+const EVAL_FEAT: &str = r#"#[cfg(feature = "eval")]"#;
+const GLOB_FEAT: &str = r#"#[cfg(feature = "glob")]"#;
+
 /// Definition of what each generator function should return
 pub struct Generated {
     /// Refers to what will be written to the `exports` folder,
@@ -43,29 +46,6 @@ pub enum SrcFolder {
 }
 
 impl SrcFolder {
-    #[cfg(debug_assertions)]
-    const BASE_PATH: &str = "__build_dbg";
-    #[cfg(not(debug_assertions))]
-    const BASE_PATH: &str = "tutorlolv2_gen/src/data";
-
-    /// Creates a new resolved path to write at the library that
-    /// holds the generated data
-    pub fn new(path: impl AsRef<Path>) -> PathBuf {
-        Path::new(Self::BASE_PATH).join(path)
-    }
-
-    /// Gets a path that can be read to determine to where the
-    /// data should be saved at
-    pub fn import_file(self) -> PathBuf {
-        let base = Path::new(Self::BASE_PATH);
-        let file = match self {
-            Self::Champions => base.join("champions"),
-            Self::Items => base.join("items"),
-            Self::Runes => base.join("runes"),
-        };
-        file.with_extension("rs")
-    }
-
     /// Returns the name of the folder holding the generators of some
     /// definition of the enum [`SrcFolder`]
     pub fn gen_folder(self) -> impl AsRef<Path> {
@@ -289,19 +269,10 @@ impl<'a> Tracker<'a> {
 /// frontend application
 pub async fn run() -> MayFail {
     let mut full_block = String::with_capacity(8 * 1024 * 1024);
-    let mut full_exports = String::from(
-        r#"use crate::*;
-        #[derive(Copy, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-        #[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
-        #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-        pub enum Position {
-            Top,
-            Jungle,
-            Middle,
-            Bottom,
-            Support,
-        }"#,
-    );
+    let mut full_exports = String::with_capacity(4 * 1024 * 1024);
+
+    full_exports.push_str("use crate::*;");
+
     let mut closures = Vec::new();
 
     for task in [
@@ -328,16 +299,18 @@ pub async fn run() -> MayFail {
     ] {
         let (start, end) = tracker.record(&value.rust_html().as_const());
         full_exports.push_str(&format!(
-            "pub static {name}: (u32, u32) = ({start}, {end});"
+            "{GLOB_FEAT} pub static {name}: (u32, u32) = ({start}, {end});"
         ));
     }
 
     let offset = tracker.offset();
     let compressed_block = encode_brotli_11(full_block.as_bytes());
 
-    full_exports.push_str(&format!("pub const BLOCK_SIZE: usize = {offset};"));
     full_exports.push_str(&format!(
-        "pub const BLOCK: [u8; {size}] = [{bytes}];",
+        "{GLOB_FEAT} pub const BLOCK_SIZE: usize = {offset};"
+    ));
+    full_exports.push_str(&format!(
+        "{GLOB_FEAT} pub const BLOCK: [u8; {size}] = [{bytes}];",
         size = compressed_block.len(),
         bytes = compressed_block
             .iter()
@@ -345,10 +318,11 @@ pub async fn run() -> MayFail {
             .collect::<Vec<_>>()
             .join(",")
     ));
+    full_exports.push_str("pub use champions::*; pub use items::*; pub use runes::*;");
 
     for task in [
-        CwdPath::fwrite("tutorlolv2_exports/src/block.txt", full_block),
-        CwdPath::fwrite("tutorlolv2_exports/src/exports.rs", full_exports.rust_fmt()),
+        CwdPath::fwrite("tutorlolv2_gen/src/block.txt", full_block),
+        CwdPath::fwrite("tutorlolv2_gen/src/data.rs", full_exports.rust_fmt()),
     ] {
         task.await??
     }

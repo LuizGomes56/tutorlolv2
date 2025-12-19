@@ -1,13 +1,11 @@
+use core::fmt;
 use regex::{Captures, Regex};
-use std::fmt;
 use tutorlolv2_fmt::rust_html;
 
 pub mod champions;
 pub mod items;
 pub mod model;
 pub mod runes;
-
-pub static USE_SUPER: &str = "use super::*;";
 
 pub static TOWER_DAMAGE: &str = r#"intrinsic const TOWER_DAMAGE {
     damage_type: RiotFormulas::adaptative_type(
