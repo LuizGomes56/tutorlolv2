@@ -5,7 +5,7 @@ edition = "2024"
 publish = false
 
 [dependencies]
-tutorlolv2_types = { path = "../tutorlolv2_types", default-features = false }
+tutorlolv2_types = { path = "../tutorlolv2_types" }
 const_sized_bit_set = { version = "0.3.0", optional = true }
 phf = { version = "0.13.1", default-features = false, optional = true }
 bincode = { version = "2.0.1", default-features = false, features = ["derive"] }
@@ -14,6 +14,6 @@ pastey = "0.2.1"
 
 [features]
 default = []
-dev = ["tutorlolv2_types/dev"]
 glob = []
+dev = ["tutorlolv2_types/dev"]
 eval = ["dep:phf", "phf/macros", "dep:const_sized_bit_set"]

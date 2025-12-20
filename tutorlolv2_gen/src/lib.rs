@@ -12,7 +12,7 @@ pub mod eval;
 pub use bitset::*;
 pub use cache::*;
 pub use data::*;
-pub use enums::*;
+pub use enums::{Attrs, DamageType};
 #[cfg(feature = "eval")]
 pub use eval::*;
 pub use tutorlolv2_types::{AbilityId, AbilityName, StatName};
@@ -54,6 +54,15 @@ pub const NUMBER_OF_SIMULATED_ITEMS: usize = {
         i += 1;
     }
     sum
+};
+
+#[cfg(feature = "eval")]
+pub const L_SIML: usize = {
+    const N: usize = 118;
+    match NUMBER_OF_SIMULATED_ITEMS == N {
+        true => N,
+        false => panic!("Number of simulated items is outdated"),
+    }
 };
 
 /// Stores the simulated items as [`ItemId`], and only those that follow the rules:
