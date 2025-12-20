@@ -10,10 +10,11 @@
 //! Check the module [`tutorlolv2::riot`] for more information about the
 //! types extracted from the json file in port 2999
 
-use crate::{helpers::*, model::*, riot::*};
+use crate::{helpers::*, riot::*};
 use alloc::boxed::Box;
 use core::mem::MaybeUninit;
 use tutorlolv2_gen::*;
+use tutorlolv2_model::*;
 
 /// Contains the metadata of all items that have their stats compared to choose
 /// which one is best to buy considering the current game state. See [`TypeMetadata`]
@@ -108,7 +109,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
         && current_player_stats.attack_range >= 400.0;
 
     let current_player_base_stats =
-        BasicStats::base_stats(current_player_champion_id, *level, is_mega_gnar);
+        base_stats_bf32(current_player_champion_id, *level, is_mega_gnar);
 
     let current_player_bonus_stats = bonus_stats!(
         BasicStats::<f32>(current_player_stats, current_player_base_stats) {
@@ -270,7 +271,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
                 .filter_map(|riot_item| Some(ItemId::from_riot_id(riot_item.item_id)? as _))
                 .collect::<Box<[_]>>();
 
-            let e_base_stats = SimpleStats::base_stats(e_champion_id, *e_level, false);
+            let e_base_stats = base_stats_sf32(e_champion_id, *e_level, false);
             let full_state = get_enemy_state(
                 EnemyState {
                     base_stats: e_base_stats,

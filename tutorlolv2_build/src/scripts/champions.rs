@@ -409,8 +409,8 @@ pub async fn generate_champions() -> GeneratorFn {
             }}
         }}
         #[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
-        #[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
-        #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+        #[derive(bincode::Encode, bincode::Decode)]
+        #[derive(serde::Serialize, serde::Deserialize)]
         #[repr(u8)]
         pub enum ChampionId {{"#,
     );

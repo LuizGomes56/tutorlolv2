@@ -41,8 +41,8 @@ const_enum! {
     /// has.
     /// - [`DamageType::Unknown`] is the default value when no damage type is set
     #[derive(Clone, Copy, Debug, Default, Eq, Ord, PartialEq, PartialOrd)]
-    #[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
-    #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+    #[derive(bincode::Encode, bincode::Decode)]
+    #[derive(serde::Serialize, serde::Deserialize)]
     pub enum DamageType {
         Physical,
         Magic,
@@ -61,8 +61,8 @@ const_enum! {
     /// [`Attrs::Undefined`] is set to be the default variant, representing no extra data. This
     /// is also used to determine if some ability has area damage
     #[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
-    #[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
-    #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+    #[derive(bincode::Encode, bincode::Decode)]
+    #[derive(serde::Serialize, serde::Deserialize)]
     pub enum Attrs {
         Undefined,
         Onhit,

@@ -15,11 +15,11 @@
 //! want to do it, you can use the [`crate::const_eval`] module to
 //! do it
 
-use crate::{calculator::MONSTER_RESISTS, model::*, riot::Stats};
+use crate::calculator::MONSTER_RESISTS;
 use alloc::boxed::Box;
 use core::mem::MaybeUninit;
 use tutorlolv2_gen::*;
-use tutorlolv2_types::{AbilityId, AbilityName};
+use tutorlolv2_model::*;
 
 /// Rune [`RuneId::AxiomArcanist`] gives +12% bonus damage to `R`
 /// if it deals single target damage. The -3% penalty is not yet
@@ -219,26 +219,30 @@ pub const fn get_base_stats(champion_id: ChampionId, level: u8) -> BasicStats<f3
     BASE_STATS[champion_id as usize][const_clamp(level, 1..=URF_MAX_LEVEL as u8) - 1]
 }
 
-impl SimpleStats<f32> {
-    pub const fn base_stats(champion_id: ChampionId, level: u8, is_mega_gnar: bool) -> Self {
-        let stats = match is_mega_gnar {
-            true => MEGA_GNAR_BASE_STATS[const_clamp(level, 1..=URF_MAX_LEVEL as u8) - 1],
-            false => get_base_stats(champion_id, level),
-        };
-        Self {
-            health: stats.health,
-            armor: stats.armor,
-            magic_resist: stats.magic_resist,
-        }
+pub const fn base_stats_sf32(
+    champion_id: ChampionId,
+    level: u8,
+    is_mega_gnar: bool,
+) -> SimpleStats<f32> {
+    let stats = match is_mega_gnar {
+        true => MEGA_GNAR_BASE_STATS[const_clamp(level, 1..=URF_MAX_LEVEL as u8) - 1],
+        false => get_base_stats(champion_id, level),
+    };
+    SimpleStats {
+        health: stats.health,
+        armor: stats.armor,
+        magic_resist: stats.magic_resist,
     }
 }
 
-impl BasicStats<f32> {
-    pub const fn base_stats(champion_id: ChampionId, level: u8, is_mega_gnar: bool) -> Self {
-        match is_mega_gnar {
-            true => MEGA_GNAR_BASE_STATS[const_clamp(level, 1..=URF_MAX_LEVEL as u8) - 1],
-            false => get_base_stats(champion_id, level),
-        }
+pub const fn base_stats_bf32(
+    champion_id: ChampionId,
+    level: u8,
+    is_mega_gnar: bool,
+) -> BasicStats<f32> {
+    match is_mega_gnar {
+        true => MEGA_GNAR_BASE_STATS[const_clamp(level, 1..=URF_MAX_LEVEL as u8) - 1],
+        false => get_base_stats(champion_id, level),
     }
 }
 

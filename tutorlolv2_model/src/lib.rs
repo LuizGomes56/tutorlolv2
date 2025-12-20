@@ -8,10 +8,12 @@
 //! structs and enums. Structs that have `'static` lifetimes do not implement
 //! `Deserialize`
 
-use crate::riot::Stats;
+extern crate alloc;
+
 use alloc::boxed::Box;
+use bincode::{BorrowDecode, Decode, Encode};
+use serde::{Deserialize, Serialize};
 use tutorlolv2_gen::*;
-use tutorlolv2_types::AbilityId;
 
 /// Exact number of resistence variations for jungle monsters
 pub const L_MSTR: usize = 7;
@@ -23,12 +25,56 @@ pub const L_TWRD: usize = 6;
 /// for more details about the usage of this constant
 pub const L_SIML: usize = NUMBER_OF_SIMULATED_ITEMS;
 
+/// Holds all champion stats provided by Riot's API.
+/// Generic parameter `T` is intended to be a numeric type,
+/// like [`f32`], [`f64`], or [`i32`]
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Ord, PartialEq, PartialOrd, Encode, Decode)]
+#[serde(rename_all = "camelCase")]
+#[derive(Serialize)]
+pub struct Stats<T> {
+    pub ability_power: T,
+    pub armor: T,
+    #[serde(rename = "physicalLethality")]
+    pub armor_penetration_flat: T,
+    pub armor_penetration_percent: T,
+    pub attack_damage: T,
+    pub attack_range: T,
+    pub attack_speed: T,
+    pub crit_chance: T,
+    pub crit_damage: T,
+    pub current_health: T,
+    pub magic_penetration_flat: T,
+    pub magic_penetration_percent: T,
+    pub magic_resist: T,
+    #[serde(rename = "maxHealth")]
+    pub health: T,
+    #[serde(rename = "resourceMax")]
+    pub mana: T,
+    #[serde(rename = "resourceValue")]
+    pub current_mana: T,
+}
+
+impl Stats<f32> {
+    /// Returns a new struct [`Stats`] with the same original values except the ones
+    /// that involve percent penetration, which are resolved and converted to the
+    /// `[0.0, 100.0]` range used in this library
+    pub const fn base100(&self) -> Self {
+        Self {
+            armor_penetration_percent: (1.0 - self.armor_penetration_percent).clamp(0.0, 1.0)
+                * 100.0,
+            magic_penetration_percent: (1.0 - self.magic_penetration_percent).clamp(0.0, 1.0)
+                * 100.0,
+            ..*self
+        }
+    }
+}
+
 /// Enum that defines the team of some player.
 /// - `CHAOS` is converted to [`Team::Red`],
 /// - `ORDER` and any other variant matches [`Team::Blue`]
-#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-#[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[derive(
+    Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize,
+)]
 pub enum Team {
     Blue,
     Red,
@@ -43,9 +89,9 @@ impl From<&str> for Team {
     }
 }
 
-#[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
-#[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[derive(
+    Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize,
+)]
 pub struct RangeDamage {
     pub minimum_damage: i32,
     pub maximum_damage: i32,
@@ -71,9 +117,9 @@ impl RangeDamage {
 
 /// Struct holding the core champion stats of a player, where `T` is a
 /// numeric type
-#[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
-#[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[derive(
+    Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize,
+)]
 pub struct BasicStats<T> {
     pub armor: T,
     pub health: T,
@@ -83,9 +129,9 @@ pub struct BasicStats<T> {
 }
 
 /// Holds the damage of the basic attack, critical strike damage, and onhits
-#[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
-#[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[derive(
+    Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize,
+)]
 pub struct Attacks {
     /// Damage of the basic attack hit
     pub basic_attack: i32,
@@ -131,9 +177,7 @@ pub struct DamageKind<T> {
 /// the size of this struct is often larger than `70 KB`, and it is created every
 /// second, while part of its fields live in the caller function, which is why it
 /// has lifetime annotations.
-#[derive(Clone, Debug, PartialEq, PartialOrd)]
-#[cfg_attr(feature = "bincode", derive(bincode::Encode))]
-#[cfg_attr(feature = "serde", derive(serde::Serialize))]
+#[derive(Clone, Debug, PartialEq, PartialOrd, Encode, Serialize)]
 pub struct Realtime<'a> {
     /// Contains the information about the current player
     pub current_player: CurrentPlayer<'a>,
@@ -163,7 +207,7 @@ pub struct Realtime<'a> {
     /// were chosen to have their damages compared among each other, to determine
     /// which one is mathematically besst to buy next. Note that this value lives
     /// at the constant [`crate::realtime::SIMULATED_ITEMS_METADATA`]
-    #[cfg_attr(feature = "serde", serde(with = "serde_arrays"))]
+    #[serde(with = "serde_arrays")]
     pub siml_meta: [TypeMetadata<ItemId>; L_SIML],
 
     /// Constant array of tuples that determines which abilities should
@@ -186,11 +230,11 @@ pub struct Realtime<'a> {
     pub dragons: Dragons,
 }
 
-#[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
-#[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::BorrowDecode))]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[derive(
+    Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd, Encode, BorrowDecode, Serialize, Deserialize,
+)]
 pub struct Scoreboard<'a> {
-    #[cfg_attr(feature = "serde", serde(borrow))]
+    #[serde(borrow)]
     pub riot_id: &'a str,
     pub assists: u8,
     pub creep_score: u16,
@@ -201,11 +245,9 @@ pub struct Scoreboard<'a> {
     pub team: Team,
 }
 
-#[derive(Clone, Debug, PartialEq, PartialOrd)]
-#[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::BorrowDecode))]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[derive(Clone, Debug, PartialEq, PartialOrd, Encode, BorrowDecode, Serialize, Deserialize)]
 pub struct CurrentPlayer<'a> {
-    #[cfg_attr(feature = "serde", serde(borrow))]
+    #[serde(borrow)]
     pub riot_id: &'a str,
     pub base_stats: BasicStats<i32>,
     pub bonus_stats: BasicStats<i32>,
@@ -221,9 +263,7 @@ pub struct CurrentPlayer<'a> {
 
 /// Struct that holds the values that can reduce the enemie's armor or
 /// magic resistence benefits
-#[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
-#[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
 pub struct ResistShred {
     pub armor_penetration_flat: f32,
     pub armor_penetration_percent: f32,
@@ -252,9 +292,7 @@ impl ResistShred {
     }
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
-#[cfg_attr(feature = "bincode", derive(bincode::Encode))]
-#[cfg_attr(feature = "serde", derive(serde::Serialize))]
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Serialize)]
 pub struct EnemyState<'a> {
     pub base_stats: SimpleStats<f32>,
     pub items: &'a [ItemId],
@@ -269,9 +307,7 @@ pub struct EnemyState<'a> {
 /// Defines the state of the current player, that will be used
 /// to calculate the final necessary evaluation data of the enemy
 /// player. This struct should be the same used for all champions
-#[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
-#[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
 pub struct SelfState {
     pub ability_levels: AbilityLevels,
     pub current_stats: Stats<f32>,
@@ -285,9 +321,7 @@ pub struct SelfState {
 /// Holds the intermediary data of some enemy champion, including fields
 /// necessary to have a more precise calculation of the damage against this
 /// target. Each enemy champion should have their own instance of this struct
-#[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
-#[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
 pub struct EnemyFullState {
     pub current_stats: SimpleStats<f32>,
     pub bonus_stats: SimpleStats<f32>,
@@ -305,9 +339,9 @@ pub struct EnemyFullState {
 /// [`BasicStats`], but without the `attack_damage` and `mana` fields,
 /// which are fields that do not quantify any damage reduction the enemy
 /// champion may take. Generic parameter `T` is supposed to be a numeric type
-#[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
-#[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[derive(
+    Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize,
+)]
 pub struct SimpleStats<T> {
     pub armor: T,
     pub health: T,
@@ -321,14 +355,12 @@ pub struct DamageEvalData {
     pub runes: DamageKind<RuneId>,
 }
 
-#[derive(Clone, Debug, PartialEq, PartialOrd)]
-#[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::BorrowDecode))]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[derive(Clone, Debug, PartialEq, PartialOrd, Encode, BorrowDecode, Serialize, Deserialize)]
 pub struct Enemy<'a> {
-    #[cfg_attr(feature = "serde", serde(borrow))]
+    #[serde(borrow)]
     pub riot_id: &'a str,
     pub damages: Damages,
-    #[cfg_attr(feature = "serde", serde(with = "serde_arrays"))]
+    #[serde(with = "serde_arrays")]
     pub siml_items: [Damages; L_SIML],
     pub base_stats: SimpleStats<i32>,
     pub bonus_stats: SimpleStats<i32>,
@@ -341,9 +373,7 @@ pub struct Enemy<'a> {
     pub position: Position,
 }
 
-#[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd)]
-#[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
 pub struct Damages {
     pub attacks: Attacks,
     pub abilities: Box<[i32]>,
@@ -354,9 +384,9 @@ pub struct Damages {
 /// Wrapper around the type [`u32`], whose first [`Self::DISC_BITS`] are used to
 /// identify the enum type of the current value, which is either [`ItemId`] or [`RuneId`],
 /// and the remaining [`Self::VAL_BITS`] are used to store the actual number of stacks held
-#[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
-#[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[derive(
+    Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize,
+)]
 #[repr(transparent)]
 pub struct ValueException(u32);
 
@@ -414,9 +444,9 @@ impl ValueException {
 }
 
 /// Holds the number of dragons and their types, associated to the ally or enemy team.
-#[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
-#[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[derive(
+    Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize,
+)]
 pub struct Dragons {
     pub ally_fire_dragons: u16,
     pub ally_earth_dragons: u16,
@@ -424,18 +454,14 @@ pub struct Dragons {
     pub enemy_earth_dragons: u16,
 }
 
-#[derive(Clone, Debug, PartialEq, PartialOrd)]
-#[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[derive(Clone, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
 pub struct InputGame {
     pub active_player: InputActivePlayer,
     pub enemy_players: Box<[InputMinData<SimpleStats<i32>>]>,
     pub dragons: Dragons,
 }
 
-#[derive(Clone, Debug, PartialEq, PartialOrd)]
-#[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[derive(Clone, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
 pub struct InputActivePlayer {
     pub runes: Box<[RuneId]>,
     pub rune_exceptions: Box<[ValueException]>,
@@ -450,9 +476,7 @@ pub struct InputActivePlayer {
 /// have effect if field `champion_id` is also of type [`ChampionId::Gnar`].
 /// Field `stacks` is useless if the associated champion does not have any special
 /// characteristics that are related to stack-scaling
-#[derive(Clone, Debug, PartialEq, PartialOrd)]
-#[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[derive(Clone, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
 pub struct InputMinData<T> {
     pub stats: T,
     pub items: Box<[ItemId]>,
@@ -465,9 +489,7 @@ pub struct InputMinData<T> {
 }
 
 /// Returned data by the function [`crate::calculator::calculator`]
-#[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd)]
-#[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
 pub struct OutputEnemy {
     pub damages: Damages,
     pub base_stats: SimpleStats<i32>,
@@ -483,9 +505,7 @@ pub struct OutputEnemy {
 /// damage types, defined by the metadata [`tutorlolv2_gen::DamageType`]. Note
 /// that the value `1.0` means no modifiers, and `global_mod` is applied regardless
 /// of the damage type provided
-#[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
-#[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
 pub struct DamageModifiers {
     pub physical_mod: f32,
     pub magic_mod: f32,
@@ -505,9 +525,7 @@ impl DamageModifiers {
     }
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
-#[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
 pub struct Modifiers {
     pub damages: DamageModifiers,
     pub abilities: AbilityModifiers,
@@ -516,9 +534,7 @@ pub struct Modifiers {
 /// Holds float values that will be multiplied by the damages of each ability
 /// depending on their letters, which can be obtained through the method
 /// [`AbilityId::as_char`] with simple branching. Values of `1.0` mean no modifiers
-#[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
-#[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
 pub struct AbilityModifiers {
     pub q: f32,
     pub w: f32,
@@ -526,9 +542,7 @@ pub struct AbilityModifiers {
     pub r: f32,
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
-#[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
 pub struct OutputCurrentPlayer {
     pub current_stats: Stats<i32>,
     pub base_stats: BasicStats<i32>,
@@ -538,18 +552,14 @@ pub struct OutputCurrentPlayer {
     pub champion_id: ChampionId,
 }
 
-#[derive(Clone, Debug, PartialEq, PartialOrd)]
-#[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[derive(Clone, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
 pub struct MonsterDamage {
     pub attacks: Attacks,
     pub abilities: Box<[i32]>,
     pub items: Box<[i32]>,
 }
 
-#[derive(Clone, Debug, PartialEq, PartialOrd)]
-#[cfg_attr(feature = "bincode", derive(bincode::Encode))]
-#[cfg_attr(feature = "serde", derive(serde::Serialize))]
+#[derive(Clone, Debug, PartialEq, PartialOrd, Encode, Serialize)]
 pub struct OutputGame {
     pub monster_damages: [MonsterDamage; L_MSTR],
     pub current_player: OutputCurrentPlayer,
@@ -562,9 +572,9 @@ pub struct OutputGame {
 }
 
 /// Holds the levels of the abilities of a champion
-#[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
-#[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[derive(
+    Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize,
+)]
 pub struct AbilityLevels {
     pub q: u8,
     pub w: u8,
@@ -577,9 +587,7 @@ pub struct AbilityLevels {
 /// penalties applied. Field `modifier` is a value between `0.0` and `1.0` that
 /// represents the number that will be multiplied by the raw damage to obtain
 /// the precise final damage
-#[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
-#[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
 pub struct ResistValue {
     pub real: f32,
     pub modifier: f32,

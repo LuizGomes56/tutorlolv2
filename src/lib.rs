@@ -120,7 +120,6 @@ pub use tutorlolv2_gen::{
     AdaptativeType, AttackType, Attrs, ChampionId, DamageType, EvalContext, GameMap, ItemId,
     Position, RuneId,
 };
-pub use tutorlolv2_types::{AbilityId, AbilityName, StatName};
 
 pub mod constants {
     //! This module exports static variables that represent the data generated
@@ -187,6 +186,5 @@ extern crate alloc;
 pub mod calculator;
 pub mod const_eval;
 pub mod helpers;
-pub mod model;
 pub mod realtime;
 pub mod riot;

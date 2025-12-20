@@ -1,4 +1,5 @@
 #![no_std]
+#![allow(unused_imports)]
 
 #[cfg(feature = "eval")]
 pub mod bitset;
@@ -14,7 +15,7 @@ pub use data::*;
 pub use enums::*;
 #[cfg(feature = "eval")]
 pub use eval::*;
-pub(crate) use tutorlolv2_types::*;
+pub use tutorlolv2_types::{AbilityId, AbilityName, StatName};
 
 #[cfg(feature = "glob")]
 pub const RAW_BLOCK: &str = include_str!("block.txt");
@@ -173,9 +174,15 @@ macro_rules! const_methods {
     (inner $name:ident, $repr:ident, $($cast:ident),+) => {
         pastey::paste! {
             $(
-                impl Into<$cast> for $name {
-                    fn into(self) -> $cast {
-                        self.offset() as _
+                impl From<&$name> for $cast {
+                    fn from(value: &$name) -> Self {
+                        value.offset() as _
+                    }
+                }
+
+                impl From<$name> for $cast {
+                    fn from(value: $name) -> Self {
+                        value.offset() as _
                     }
                 }
 
@@ -254,6 +261,22 @@ impl ChampionId {
     #[cfg(feature = "eval")]
     pub const fn number_of_abilities(&self) -> usize {
         self.get_cache().closures.len()
+    }
+
+    #[cfg(feature = "glob")]
+    pub const fn recommended_items(
+        champion_id: ChampionId,
+        position: Position,
+    ) -> &'static [ItemId] {
+        RECOMMENDED_ITEMS[champion_id as usize][position as usize]
+    }
+
+    #[cfg(feature = "glob")]
+    pub const fn recommended_runes(
+        champion_id: ChampionId,
+        position: Position,
+    ) -> &'static [RuneId] {
+        RECOMMENDED_RUNES[champion_id as usize][position as usize]
     }
 }
 

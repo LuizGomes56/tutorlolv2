@@ -1,12 +1,25 @@
-use crate::{Attrs, DamageType, ItemId, RuneId, eval::EvalContext};
+use crate::{Attrs, DamageType};
+#[cfg(feature = "eval")]
+use crate::{ItemId, RuneId, eval::EvalContext};
+#[cfg(feature = "eval")]
 use tutorlolv2_types::*;
 
 /// A champion can have either melee or ranged damage. Ranged champions
 /// often have some damage penalty for items and runes, which are considered
 /// by branching over this enum
-#[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
-#[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[derive(
+    Clone,
+    Copy,
+    Debug,
+    Eq,
+    Ord,
+    PartialEq,
+    PartialOrd,
+    bincode::Encode,
+    bincode::Decode,
+    serde::Serialize,
+    serde::Deserialize,
+)]
 #[repr(u8)]
 pub enum AttackType {
     Melee,
@@ -36,9 +49,19 @@ impl<T: AsRef<str>> From<T> for AdaptativeType {
 /// should deal physical or magic damage, or to convert `Adaptative Force`
 /// stats to either `Attack Damage` or `Ability Power`. Check the enum [`StatName`]
 /// for more details about all the possibilities
-#[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
-#[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[derive(
+    Clone,
+    Copy,
+    Debug,
+    Eq,
+    Ord,
+    PartialEq,
+    PartialOrd,
+    bincode::Encode,
+    bincode::Decode,
+    serde::Serialize,
+    serde::Deserialize,
+)]
 #[repr(u8)]
 pub enum AdaptativeType {
     Physical,
@@ -49,9 +72,20 @@ pub enum AdaptativeType {
 /// play in the standard gamemode `SummonersRift`, whose definition
 /// is [`GameMap::SummonersRift`]. If we don't know a champion's position,
 /// it is set to [`Position::Top`].
-#[derive(Clone, Copy, Debug, Default, Eq, Ord, PartialEq, PartialOrd)]
-#[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[derive(
+    Clone,
+    Copy,
+    Debug,
+    Default,
+    Eq,
+    Ord,
+    PartialEq,
+    PartialOrd,
+    bincode::Encode,
+    bincode::Decode,
+    serde::Serialize,
+    serde::Deserialize,
+)]
 #[repr(u8)]
 pub enum Position {
     #[default]
@@ -90,9 +124,20 @@ impl Position {
 /// All possible maps and codes that can be played. Most of them are
 /// event maps that may never return to the game, and don't have a
 /// deterministic code. [`GameMap::SummonersRift`] is the default map.
-#[derive(Clone, Copy, Debug, Default, Eq, Ord, PartialEq, PartialOrd)]
-#[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[derive(
+    Clone,
+    Copy,
+    Debug,
+    Default,
+    Eq,
+    Ord,
+    PartialEq,
+    PartialOrd,
+    bincode::Encode,
+    bincode::Decode,
+    serde::Serialize,
+    serde::Deserialize,
+)]
 #[repr(u8)]
 #[cfg(feature = "eval")]
 pub enum GameMap {
@@ -113,6 +158,7 @@ pub enum GameMap {
     Urf,
 }
 
+#[cfg(feature = "eval")]
 impl GameMap {
     /// Constant conversion of a [`u8`] into a [`GameMap`] enum,
     /// where the byte represents the code of the current map
@@ -139,9 +185,17 @@ impl GameMap {
 
 /// A generic metadata holder for [`AbilityId`], [`ItemId`], or [`RuneId`].
 /// Contains its damage type, attributes, and which instance of the enum the value is.
-#[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
-#[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[derive(
+    Clone,
+    Copy,
+    Debug,
+    PartialEq,
+    PartialOrd,
+    bincode::Encode,
+    bincode::Decode,
+    serde::Serialize,
+    serde::Deserialize,
+)]
 pub struct TypeMetadata<T> {
     /// Represents a variety of values:
     /// - [`AbilityId`] Which ability key it represents, and its name
@@ -251,18 +305,14 @@ pub struct CachedChampion {
     pub merge_data: &'static [(usize, usize)],
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
-#[cfg_attr(feature = "bincode", derive(bincode::Encode))]
-#[cfg_attr(feature = "serde", derive(serde::Serialize))]
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, bincode::Encode, serde::Serialize)]
 #[cfg(feature = "eval")]
 pub struct CachedChampionStatsMap {
     pub flat: f32,
     pub per_level: f32,
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
-#[cfg_attr(feature = "bincode", derive(bincode::Encode))]
-#[cfg_attr(feature = "serde", derive(serde::Serialize))]
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, bincode::Encode, serde::Serialize)]
 #[cfg(feature = "eval")]
 pub struct CachedChampionStats {
     pub health: CachedChampionStatsMap,
@@ -316,9 +366,7 @@ pub struct CachedRune {
     pub undeclared: bool,
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
-#[cfg_attr(feature = "bincode", derive(bincode::Encode))]
-#[cfg_attr(feature = "serde", derive(serde::Serialize))]
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, bincode::Encode, serde::Serialize)]
 #[cfg(feature = "eval")]
 pub struct CachedItemStats {
     pub ability_power: f32,

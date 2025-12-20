@@ -364,8 +364,8 @@ pub async fn generate_items() -> GeneratorFn {
     let item_id_enum = format!(
         r#"
         #[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
-        #[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
-        #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+        #[derive(bincode::Encode, bincode::Decode)]
+        #[derive(serde::Serialize, serde::Deserialize)]
         #[repr(u16)]
         pub enum ItemId {{ {fields} }}
         impl ItemId {{
