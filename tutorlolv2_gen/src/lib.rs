@@ -56,13 +56,14 @@ pub const NUMBER_OF_SIMULATED_ITEMS: usize = {
     sum
 };
 
-#[cfg(feature = "eval")]
 pub const L_SIML: usize = {
     const N: usize = 118;
+    #[cfg(feature = "eval")]
     match NUMBER_OF_SIMULATED_ITEMS == N {
         true => N,
         false => panic!("Number of simulated items is outdated"),
     }
+    N
 };
 
 /// Stores the simulated items as [`ItemId`], and only those that follow the rules:

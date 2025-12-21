@@ -11,18 +11,18 @@ serde_json = "1.0.145"
 bincode = "2.0.1"
 tutorlolv2 = { path = "." }
 
-[workspace]
-members = [
-    "tutorlolv2_model",
-    # "tutorlolv2_build",
-    # "tutorlolv2_dev",
-    # "tutorlolv2_fmt",
-    # "tutorlolv2_gen",
-    # "tutorlolv2_html",
-    # "tutorlolv2_macros",
-    # "tutorlolv2_server",
-    # "tutorlolv2_types",
-]
+# [workspace]
+# members = [
+# "tutorlolv2_model",
+# "tutorlolv2_build",
+# "tutorlolv2_dev",
+# "tutorlolv2_fmt",
+# "tutorlolv2_gen",
+# "tutorlolv2_html",
+# "tutorlolv2_macros",
+# "tutorlolv2_server",
+# "tutorlolv2_types",
+# ]
 
 [dependencies]
 tutorlolv2_model = { path = "tutorlolv2_model", features = ["recv"] }

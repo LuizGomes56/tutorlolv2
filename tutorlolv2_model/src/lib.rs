@@ -215,7 +215,8 @@ pub struct Damages {
 pub struct ValueException(u32);
 
 impl ValueException {
-    pub const DISC_BITS: u32 = Self::find_disc_bits(NUMBER_OF_ITEMS as u32, NUMBER_OF_RUNES as u32);
+    pub const DISC_BITS: u32 =
+        Self::find_disc_bits(ItemId::VARIANTS as u32, RuneId::VARIANTS as u32);
     pub const VAL_BITS: u32 = 32 - Self::DISC_BITS;
     pub const VAL_MASK: u32 = (1u32 << Self::VAL_BITS) - 1;
     pub const DISC_MASK: u32 = !Self::VAL_MASK;

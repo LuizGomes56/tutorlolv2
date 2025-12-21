@@ -139,7 +139,6 @@ impl Position {
     serde::Deserialize,
 )]
 #[repr(u8)]
-#[cfg(feature = "eval")]
 pub enum GameMap {
     #[default]
     SummonersRift,
