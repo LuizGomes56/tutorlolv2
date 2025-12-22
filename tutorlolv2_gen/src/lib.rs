@@ -222,7 +222,6 @@ macro_rules! const_methods {
                 }
             }
 
-            #[cfg(feature = "eval")]
             impl Into<&'static str> for $name {
                 fn into(self) -> &'static str {
                     self.name()
@@ -261,6 +260,11 @@ macro_rules! const_methods {
                 #[cfg(feature = "eval")]
                 pub const fn name(&self) -> &'static str {
                     self.get_cache().name
+                }
+
+                #[cfg(all(not(feature = "eval"), feature = "glob"))]
+                pub const fn name(&self) -> &'static str {
+                    [<$name:replace("Id", ""):upper _ID_TO_NAME>][self.offset()]
                 }
 
                 pub const fn offset(&self) -> usize {
