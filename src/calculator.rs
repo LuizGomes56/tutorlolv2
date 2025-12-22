@@ -9,9 +9,9 @@
 //! own mechanism
 
 use crate::helpers::*;
+use crate::model::*;
 use alloc::boxed::Box;
 use tutorlolv2_gen::*;
-use tutorlolv2_model::*;
 
 /// Constant array containing the armor and magic resistences of jungle monsters.
 /// Note that there's no specific name to each monster since the damage against

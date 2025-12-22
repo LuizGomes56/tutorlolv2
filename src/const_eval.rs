@@ -10,8 +10,8 @@
 //! for more details
 
 use crate::helpers::ability_id_mod;
+use crate::model::{Modifiers, RangeDamage};
 use tutorlolv2_gen::*;
-use tutorlolv2_model::{Modifiers, RangeDamage};
 
 /// Constant evaluation of abilities, similar to function [`crate::helpers::ability_id_eval_damage`]
 /// Let's say you're trying to evaluate the damage of Neeko, which means you'll provide

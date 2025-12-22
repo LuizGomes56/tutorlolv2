@@ -121,6 +121,8 @@ pub use tutorlolv2_gen::{
     Position, RuneId,
 };
 
+pub mod model;
+
 pub mod constants {
     //! This module exports static variables that represent the data generated
     //! by the build script. All of those variables are arrays that can be indexed

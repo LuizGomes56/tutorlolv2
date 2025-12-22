@@ -10,11 +10,11 @@
 //! Check the module [`tutorlolv2::riot`] for more information about the
 //! types extracted from the json file in port 2999
 
+use crate::model::*;
 use crate::{helpers::*, riot::*};
 use alloc::boxed::Box;
 use core::mem::MaybeUninit;
 use tutorlolv2_gen::*;
-use tutorlolv2_model::*;
 
 /// Contains the metadata of all items that have their stats compared to choose
 /// which one is best to buy considering the current game state. See [`TypeMetadata`]

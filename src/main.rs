@@ -1,6 +1,5 @@
 #![no_std]
-use tutorlolv2::riot::RiotRealtime;
-use tutorlolv2_model::InputGame;
+use tutorlolv2::{model::InputGame, riot::RiotRealtime};
 
 fn main() {
     unsafe {

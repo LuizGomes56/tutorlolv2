@@ -2,10 +2,10 @@
 //! which can be used to deserialize the JSON data to this library's
 //! own data types
 
+use crate::model::*;
 use alloc::boxed::Box;
 use bincode::{BorrowDecode, Decode, Encode};
 use serde::{Deserialize, Serialize};
-use tutorlolv2_model::*;
 
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Encode, Decode, Deserialize)]
 #[serde(rename_all = "camelCase")]

@@ -25,8 +25,14 @@ tutorlolv2 = { path = "." }
 # ]
 
 [dependencies]
-tutorlolv2_model = { path = "tutorlolv2_model", features = ["recv"] }
 tutorlolv2_gen = { path = "tutorlolv2_gen", features = ["eval"] }
 const_sized_bit_set = "0.3.0"
-serde = { version = "1.0", default-features = false, features = ["derive"] }
-bincode = { version = "2.0.1", default-features = false, features = ["derive"] }
+bincode = { version = "2.0.1", default-features = false, features = [
+    "derive",
+    "alloc",
+] }
+serde = { version = "1.0", default-features = false, features = [
+    "derive",
+    "alloc",
+] }
+serde_arrays = { version = "0.2.0", default-features = false }

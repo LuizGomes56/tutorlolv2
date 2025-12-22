@@ -16,10 +16,10 @@
 //! do it
 
 use crate::calculator::MONSTER_RESISTS;
+use crate::model::*;
 use alloc::boxed::Box;
 use core::mem::MaybeUninit;
 use tutorlolv2_gen::*;
-use tutorlolv2_model::*;
 
 /// Rune [`RuneId::AxiomArcanist`] gives +12% bonus damage to `R`
 /// if it deals single target damage. The -3% penalty is not yet
@@ -81,7 +81,7 @@ pub const fn get_fire_multiplier(x: u16) -> f32 {
 /// BASE_STATS[my_champion_id as usize][6];
 /// ```
 pub static BASE_STATS: [[BasicStats<f32>; URF_MAX_LEVEL]; NUMBER_OF_CHAMPIONS] = {
-    let mut base_stats = [[BasicStats::default(); URF_MAX_LEVEL]; NUMBER_OF_CHAMPIONS];
+    let mut base_stats = [[BasicStats::<f32>::default(); URF_MAX_LEVEL]; NUMBER_OF_CHAMPIONS];
     let mut champion_index = 0;
     while champion_index < NUMBER_OF_CHAMPIONS {
         let mut level = 0;

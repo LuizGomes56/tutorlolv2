@@ -63,6 +63,7 @@ pub const L_SIML: usize = {
         true => N,
         false => panic!("Number of simulated items is outdated"),
     }
+    #[cfg(not(feature = "eval"))]
     N
 };
 
@@ -208,6 +209,18 @@ macro_rules! const_methods {
     ($name:ident, $repr:ident) => {
         pastey::paste! {
             const_methods!(inner $name, $repr, u16, u32, u64, u128, usize);
+
+            impl $name {
+                pub const fn default() -> Self {
+                    unsafe { Self::[<from_ $repr _unchecked>](0) }
+                }
+            }
+
+            impl Default for $name {
+                fn default() -> Self {
+                    Self::default()
+                }
+            }
 
             #[cfg(feature = "eval")]
             impl Into<&'static str> for $name {
