@@ -1,0 +1,42 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><attention>400</attention> Health<br><attention>50</attention> Armor<br><attention>15</attention> Ability Haste</stats><br><br><passive>Sacrifice</passive><br>While near your <attention>Worthy</attention> ally, take 12% of the damage they receive and <healing>heal</healing> for 10% of the damage they deal to Champions.<br><br><active>ACTIVE</active> (0s)<br><active>Pledge</active><br>Designate an ally who is <attention>Worthy</attention>.</mainText>",
+  "gold": {
+    "base": 2500,
+    "purchasable": true,
+    "sell": 1250,
+    "total": 2500
+  },
+  "image": {
+    "full": "223109.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item1.png",
+    "w": 48,
+    "x": 0,
+    "y": 288
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": false
+  },
+  "name": "Knight's Vow",
+  "plaintext": "",
+  "stats": {
+    "FlatArmorMod": 50,
+    "FlatHPPoolMod": 400
+  },
+  "tags": [
+    "Health",
+    "Armor",
+    "Aura",
+    "Active",
+    "CooldownReduction",
+    "AbilityHaste"
+  ]
+}

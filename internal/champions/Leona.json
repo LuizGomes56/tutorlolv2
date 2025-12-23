@@ -1,0 +1,161 @@
+{
+  "name": "Leona",
+  "adaptative_type": "Physical",
+  "attack_type": "Melee",
+  "positions": [
+    "Support"
+  ],
+  "stats": {
+    "health": {
+      "flat": 646.0,
+      "perLevel": 101.0
+    },
+    "mana": {
+      "flat": 302.0,
+      "perLevel": 40.0
+    },
+    "armor": {
+      "flat": 43.0,
+      "perLevel": 4.8
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 60.0,
+      "perLevel": 3.0
+    },
+    "attackSpeed": {
+      "flat": 0.625,
+      "perLevel": 2.9
+    },
+    "movespeed": {
+      "flat": 335.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.625,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 125.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.05,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 0.95,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": [
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Eclipse",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "8",
+          "12",
+          "16",
+          "20",
+          "24"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_2"
+      },
+      {
+        "name": "Eclipse",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "55 + (0.4 * ctx.ap)",
+          "85 + (0.4 * ctx.ap)",
+          "115 + (0.4 * ctx.ap)",
+          "145 + (0.4 * ctx.ap)",
+          "175 + (0.4 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Solar Flare",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "150 + (0.8 * ctx.ap)",
+          "225 + (0.8 * ctx.ap)",
+          "300 + (0.8 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Shield of Daybreak",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "10 + (0.3 * ctx.ap)",
+          "35 + (0.3 * ctx.ap)",
+          "60 + (0.3 * ctx.ap)",
+          "85 + (0.3 * ctx.ap)",
+          "110 + (0.3 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Zenith Blade",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "50 + (0.4 * ctx.ap)",
+          "90 + (0.4 * ctx.ap)",
+          "130 + (0.4 * ctx.ap)",
+          "170 + (0.4 * ctx.ap)",
+          "210 + (0.4 * ctx.ap)"
+        ]
+      }
+    ]
+  ],
+  "merge_data": []
+}

@@ -1,0 +1,537 @@
+{
+  "name": "Kayle",
+  "attackType": "MELEE",
+  "adaptiveType": "PHYSICAL_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 670.0,
+      "perLevel": 92.0
+    },
+    "mana": {
+      "flat": 330.0,
+      "perLevel": 50.0
+    },
+    "armor": {
+      "flat": 26.0,
+      "perLevel": 4.2
+    },
+    "magicResistance": {
+      "flat": 22.0,
+      "perLevel": 1.3
+    },
+    "attackDamage": {
+      "flat": 50.0,
+      "perLevel": 2.5
+    },
+    "attackSpeed": {
+      "flat": 0.625,
+      "perLevel": 1.5
+    },
+    "movespeed": {
+      "flat": 335.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.666999995708465,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.1,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 0.95,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.1,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 0.85,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": null,
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Innate: Kayle ascends through four forms that each grant additional bonuses. She ascends upon spending a skill point at levels 1, 6, 11, and 16.",
+            "leveling": []
+          },
+          {
+            "description": "Level 1 - Zealous: Kayle's basic attacks on-attack generate a stack of Zeal for 5 seconds, refreshing on subsequent attacks and stacking up to 5 times. For each stack, she gains 6% (+ 1% per 100 AP) bonus attack speed, up to a maximum of 30% (+ 5% per 100 AP). At max stacks, she becomes Exalted, gaining 10% bonus movement speed.",
+            "leveling": []
+          },
+          {
+            "description": "Level 11 - Aflame: Kayle gains 10% bonus size. While Kayle is Exalted, her basic attacks on-attack also launch a wave of fire forward that deals 20 : 41 (based on level) (+ 10% bonus AD) (+ 25% AP) magic damage to all enemies it passes through. The wave is affected by critical strike modifiers.",
+            "leveling": []
+          },
+          {
+            "description": "Level 16 - Transcendent: Kayle gains an additional 100 bonus attack range for a total of 625, and permanently gains the full effects of Zealous.",
+            "leveling": []
+          },
+          {
+            "description": "Level 6 - Arisen: Kayle becomes ranged and gains 350 bonus attack range for a total of 525.",
+            "leveling": []
+          }
+        ],
+        "name": "Divine Ascent"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                12.0,
+                11.0,
+                10.0,
+                9.0,
+                8.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Kayle conjures a portal in front of her that faces the target direction, from which a celestial sword launches forward.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      60.0,
+                      100.0,
+                      140.0,
+                      180.0,
+                      220.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      60.0,
+                      60.0,
+                      60.0,
+                      60.0,
+                      60.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      50.0,
+                      50.0,
+                      50.0,
+                      50.0,
+                      50.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Slow",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      26.0,
+                      32.0,
+                      38.0,
+                      44.0,
+                      50.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "The sword expands upon hitting an enemy, targets struck in the area are dealt magic damage, slowed for 2 seconds, and inflicted with 15% reduced armor and magic resistance for 4 seconds.",
+            "leveling": []
+          }
+        ],
+        "name": "Radiant Blast"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                15.0,
+                15.0,
+                15.0,
+                15.0,
+                15.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: Kayle and the target allied champion are healed and gain bonus movement speed for 2 seconds.",
+            "leveling": [
+              {
+                "attribute": "Bonus Movement Speed",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      24.0,
+                      28.0,
+                      32.0,
+                      36.0,
+                      40.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% per 100 AP",
+                      "% per 100 AP",
+                      "% per 100 AP",
+                      "% per 100 AP",
+                      "% per 100 AP"
+                    ],
+                    "values": [
+                      8.0,
+                      8.0,
+                      8.0,
+                      8.0,
+                      8.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Heal",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      55.0,
+                      80.0,
+                      105.0,
+                      130.0,
+                      155.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      25.0,
+                      25.0,
+                      25.0,
+                      25.0,
+                      25.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "If cast without a valid target, or self-cast, Celestial Blessing will automatically target the closest allied champion in range, prioritizing the one with the lowest health.",
+            "leveling": []
+          }
+        ],
+        "name": "Celestial Blessing"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                8.0,
+                7.5,
+                7.0,
+                6.5,
+                6.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Kayle kindles her blade, empowering her next basic attack within 6 seconds to have an uncancellable windup and deal additional bonus magic damage on-hit that is capped at 400 against monsters. If Kayle is not yet Arisen, this attack becomes ranged with 525 range.",
+            "leveling": [
+              {
+                "attribute": "Bonus Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%  of target's missing health",
+                      "%  of target's missing health",
+                      "%  of target's missing health",
+                      "%  of target's missing health",
+                      "%  of target's missing health"
+                    ],
+                    "values": [
+                      8.0,
+                      8.5,
+                      9.0,
+                      9.5,
+                      10.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% per 100 AP",
+                      "% per 100 AP",
+                      "% per 100 AP",
+                      "% per 100 AP",
+                      "% per 100 AP"
+                    ],
+                    "values": [
+                      1.5,
+                      1.5,
+                      1.5,
+                      1.5,
+                      1.5
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Aflame Bonus: The attack explodes upon the target, dealing its damage to surrounding enemies and applying on-hit effects. This is affected by critical strike modifiers.",
+            "leveling": []
+          },
+          {
+            "description": "Passive: Kayle deals bonus magic damage on-hit.",
+            "leveling": [
+              {
+                "attribute": "Passive Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      15.0,
+                      20.0,
+                      25.0,
+                      30.0,
+                      35.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      10.0,
+                      10.0,
+                      10.0,
+                      10.0,
+                      10.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      20.0,
+                      20.0,
+                      20.0,
+                      20.0,
+                      20.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Starfire Spellblade resets Kayle's basic attack timer. Starfire Spellblade does not deal bonus damage against structures.",
+            "leveling": []
+          }
+        ],
+        "name": "Starfire Spellblade"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                160.0,
+                120.0,
+                80.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Kayle grants herself or a target allied champion invulnerability for 2.5 seconds and conjures swords of fire.",
+            "leveling": []
+          },
+          {
+            "description": "After 2.5 seconds, she rains the swords down around the target, dealing magic damage to nearby enemies.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      200.0,
+                      300.0,
+                      400.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      100.0,
+                      100.0,
+                      100.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      70.0,
+                      70.0,
+                      70.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Divine Judgment"
+      }
+    ]
+  },
+  "positions": [
+    "TOP"
+  ]
+}

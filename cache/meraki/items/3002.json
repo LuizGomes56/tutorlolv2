@@ -1,0 +1,82 @@
+{
+  "active": [],
+  "buildsFrom": [
+    3066,
+    1031
+  ],
+  "buildsInto": [],
+  "name": "Trailblazer",
+  "tier": 3,
+  "passives": [
+    {
+      "effects": "While moving, generate 7 stacks of ''Momentum'' every {{fd|0.25}} seconds, granting up to {{as|20 '''bonus''' movement speed}} at 100 stacks after {{fd|3.75}} seconds of moving. At '''maximum''' stacks, you leave behind a path briefly that grants {{as|15% of your '''total''' movement speed}} as {{as|'''bonus''' movement speed}} to allied champions within. Basic attacks consume all stacks. If you are {{tip|melee}} and at '''maximum''' stacks, your next basic attack {{tip|slow|slows}} the target by 50% for 1 second.",
+      "name": "Lead the Way",
+      "unique": true
+    }
+  ],
+  "id": 3002,
+  "stats": {
+    "abilityPower": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 40.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 250.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 4.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "shop": {
+    "purchasable": true,
+    "prices": {
+      "total": 2400
+    }
+  }
+}

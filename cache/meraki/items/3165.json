@@ -1,0 +1,83 @@
+{
+  "active": [],
+  "buildsFrom": [
+    3916,
+    1026,
+    3067
+  ],
+  "buildsInto": [],
+  "name": "Morellonomicon",
+  "tier": 3,
+  "passives": [
+    {
+      "effects": "Dealing {{as|magic damage}} to enemy champions inflicts them with {{tip|Grievous Wounds}} for 3 seconds.",
+      "name": "Grievous Wounds",
+      "unique": true
+    }
+  ],
+  "id": 3165,
+  "stats": {
+    "abilityPower": {
+      "flat": 75.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 350.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "shop": {
+    "purchasable": true,
+    "prices": {
+      "total": 2850
+    }
+  }
+}

@@ -1,0 +1,128 @@
+{
+  "name": "Rengar",
+  "adaptative_type": "Physical",
+  "attack_type": "Melee",
+  "positions": [
+    "Jungle",
+    "Top"
+  ],
+  "stats": {
+    "health": {
+      "flat": 590.0,
+      "perLevel": 104.0
+    },
+    "mana": {
+      "flat": 4.0,
+      "perLevel": 0.0
+    },
+    "armor": {
+      "flat": 34.0,
+      "perLevel": 4.2
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 68.0,
+      "perLevel": 3.0
+    },
+    "attackSpeed": {
+      "flat": 0.667,
+      "perLevel": 3.0
+    },
+    "movespeed": {
+      "flat": 345.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.666999995708465,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 125.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 0.92,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.05,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": [
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Savagery",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "30 + (0 * ctx.ad)",
+          "60 + (0.0375 * ctx.ad)",
+          "90 + (0.075 * ctx.ad)",
+          "120 + (0.1125 * ctx.ad)",
+          "150 + (0.15 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Battle Roar",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "50 + (0.8 * ctx.ap)",
+          "80 + (0.8 * ctx.ap)",
+          "110 + (0.8 * ctx.ap)",
+          "140 + (0.8 * ctx.ap)",
+          "170 + (0.8 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Bola Strike",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "55 + (0.8 * ctx.bonus_ad)",
+          "100 + (0.8 * ctx.bonus_ad)",
+          "145 + (0.8 * ctx.bonus_ad)",
+          "190 + (0.8 * ctx.bonus_ad)",
+          "235 + (0.8 * ctx.bonus_ad)"
+        ]
+      }
+    ]
+  ],
+  "merge_data": []
+}

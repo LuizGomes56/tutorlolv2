@@ -1,0 +1,45 @@
+{
+  "colloq": ";",
+  "depth": 3,
+  "description": "<mainText><stats><attention>350</attention> Health<br><attention>50</attention> Armor<br><attention>10</attention> Ability Haste</stats><br><br><passive>Immolate</passive><br>After taking or dealing damage, deal <magicDamage>magic damage</magicDamage> per second to nearby enemies for 3 seconds. </mainText>",
+  "from": [
+    "6660",
+    "1031"
+  ],
+  "gold": {
+    "base": 1000,
+    "purchasable": true,
+    "sell": 1890,
+    "total": 2700
+  },
+  "image": {
+    "full": "3068.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item2.png",
+    "w": 48,
+    "x": 192,
+    "y": 432
+  },
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Sunfire Aegis",
+  "plaintext": "High armor. Constantly deals damage to nearby enemies. Immobilize enemies to release a wave of damaging flame",
+  "stats": {
+    "FlatArmorMod": 50,
+    "FlatHPPoolMod": 350
+  },
+  "tags": [
+    "Health",
+    "Armor",
+    "Aura",
+    "AbilityHaste"
+  ]
+}

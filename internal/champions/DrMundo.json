@@ -1,0 +1,235 @@
+{
+  "name": "Dr. Mundo",
+  "adaptative_type": "Physical",
+  "attack_type": "Melee",
+  "positions": [
+    "Top"
+  ],
+  "stats": {
+    "health": {
+      "flat": 640.0,
+      "perLevel": 103.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "perLevel": 0.0
+    },
+    "armor": {
+      "flat": 32.0,
+      "perLevel": 3.7
+    },
+    "magicResistance": {
+      "flat": 29.0,
+      "perLevel": 2.3
+    },
+    "attackDamage": {
+      "flat": 61.0,
+      "perLevel": 2.5
+    },
+    "attackSpeed": {
+      "flat": 0.67,
+      "perLevel": 3.3
+    },
+    "movespeed": {
+      "flat": 345.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.625,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 125.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.05,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 0.9,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": [
+    [
+      {
+        "type": "Q",
+        "name": "_3"
+      },
+      {
+        "name": "Infected Bonesaw",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "80",
+          "130",
+          "180",
+          "230",
+          "280"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_3"
+      },
+      {
+        "name": "Blunt Force Trauma",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "(0.02 * ctx.max_health)",
+          "(0.022000000000000002 * ctx.max_health)",
+          "(0.024 * ctx.max_health)",
+          "(0.026000000000000002 * ctx.max_health)",
+          "(0.027999999999999997 * ctx.max_health)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "Infected Bonesaw",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "350",
+          "425",
+          "500",
+          "575",
+          "650"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Infected Bonesaw",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "(0.2 * ctx.current_health)",
+          "(0.225 * ctx.current_health)",
+          "(0.25 * ctx.current_health)",
+          "(0.275 * ctx.current_health)",
+          "(0.3 * ctx.current_health)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_3"
+      },
+      {
+        "name": "Heart Zapper",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "20 + (0.07 * ctx.bonus_health)",
+          "35 + (0.07 * ctx.bonus_health)",
+          "50 + (0.07 * ctx.bonus_health)",
+          "65 + (0.07 * ctx.bonus_health)",
+          "80 + (0.07 * ctx.bonus_health)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Blunt Force Trauma",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "7 + (0.098 * ctx.bonus_health)",
+          "21 + (0.098 * ctx.bonus_health)",
+          "35 + (0.098 * ctx.bonus_health)",
+          "49 + (0.098 * ctx.bonus_health)",
+          "63 + (0.098 * ctx.bonus_health)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_2"
+      },
+      {
+        "name": "Blunt Force Trauma",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "5 + (0.07 * ctx.bonus_health)",
+          "15 + (0.07 * ctx.bonus_health)",
+          "25 + (0.07 * ctx.bonus_health)",
+          "35 + (0.07 * ctx.bonus_health)",
+          "45 + (0.07 * ctx.bonus_health)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Heart Zapper",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "5",
+          "8.75",
+          "12.5",
+          "16.25",
+          "20"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_2"
+      },
+      {
+        "name": "Heart Zapper",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "80",
+          "140",
+          "200",
+          "260",
+          "320"
+        ]
+      }
+    ]
+  ],
+  "merge_data": []
+}

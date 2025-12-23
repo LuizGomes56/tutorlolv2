@@ -1,0 +1,45 @@
+{
+  "colloq": "",
+  "depth": 3,
+  "description": "<mainText><stats><attention>250</attention> Health<br><attention>40</attention> Armor<br><attention>4%</attention> Move Speed</stats><br><br><passive>Lead the Way</passive><br>While moving, build up to <speed>20 bonus Move Speed</speed>. <br>At max speed:<li>Create a trail that grants allied champions <speed>Move Speed equal to 15%</speed> of yours. <li>If you are Melee, your next Attack <keyword>Slows</keyword> the target by 50% for 1 second.<br><br></mainText>",
+  "from": [
+    "3066",
+    "1031"
+  ],
+  "gold": {
+    "base": 800,
+    "purchasable": true,
+    "sell": 1680,
+    "total": 2400
+  },
+  "image": {
+    "full": "3002.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item2.png",
+    "w": 48,
+    "x": 48,
+    "y": 288
+  },
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Trailblazer",
+  "plaintext": "",
+  "stats": {
+    "FlatArmorMod": 40,
+    "FlatHPPoolMod": 250,
+    "PercentMovementSpeedMod": 0.04
+  },
+  "tags": [
+    "Health",
+    "Armor",
+    "NonbootsMovement"
+  ]
+}

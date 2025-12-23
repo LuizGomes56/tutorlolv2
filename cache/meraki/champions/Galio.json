@@ -1,0 +1,641 @@
+{
+  "name": "Galio",
+  "attackType": "MELEE",
+  "adaptiveType": "MAGIC_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 600.0,
+      "perLevel": 126.0
+    },
+    "mana": {
+      "flat": 410.0,
+      "perLevel": 40.0
+    },
+    "armor": {
+      "flat": 24.0,
+      "perLevel": 4.7
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 59.0,
+      "perLevel": 3.5
+    },
+    "attackSpeed": {
+      "flat": 0.625,
+      "perLevel": 1.5
+    },
+    "movespeed": {
+      "flat": 340.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.625,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 150.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.05,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 0.9,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                5.0,
+                5.0,
+                5.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Colossal Smash's damage based on its AD ratio can critically strike for (175% + 40%) damage to all targets hit.",
+            "leveling": []
+          },
+          {
+            "description": "Innate: Periodically, Galio's next basic attack is empowered to have an uncancellable windup, gain 40% bonus attack speed and deal 15 : 115 (based on level) (+ 100% AD) (+ 45% AP) (+ 60% bonus magic resistance) modified magic damage to the target and all enemies near them.",
+            "leveling": []
+          },
+          {
+            "description": "Whenever Galio hits at least one enemy champion or epic monster with an ability, the cooldown of Colossal Smash is reduced by 3 seconds. This may occur only once per cast.",
+            "leveling": []
+          }
+        ],
+        "name": "Colossal Smash"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                11.0,
+                10.0,
+                9.0,
+                8.0,
+                7.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Galio creates two windblasts 250 units to either side of him that arc out before converging to the target location, dealing magic damage to all enemies they pass through.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      70.0,
+                      105.0,
+                      140.0,
+                      175.0,
+                      210.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      70.0,
+                      70.0,
+                      70.0,
+                      70.0,
+                      70.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "When the blasts meet, the gusts form a tornado that persists for 2 seconds, slowly moving forward and dealing magic damage equal to[ 2.5% (+ 1% per 100 AP) of target's maximum health every 0.5 seconds ][ 10% (+ 4% per 100 AP) of target's maximum health over the duration ]to enemies within the area, capped at[ 150 per tick ][ 600 total ]against monsters.",
+            "leveling": []
+          }
+        ],
+        "name": "Winds of War"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                18.0,
+                17.0,
+                16.0,
+                15.0,
+                14.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Galio charges for up to 2 seconds, slowing himself by 15%, and gaining magic damage reduction and half of that amount as physical damage reduction; charging increases Shield of Durand's radius, damage and taunt duration over the first 1.25 seconds of the channel.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage Reduction",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      25.0,
+                      30.0,
+                      35.0,
+                      40.0,
+                      45.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% per 100 AP",
+                      "% per 100 AP",
+                      "% per 100 AP",
+                      "% per 100 AP",
+                      "% per 100 AP"
+                    ],
+                    "values": [
+                      4.0,
+                      4.0,
+                      4.0,
+                      4.0,
+                      4.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% per 100 bonus magic resistance",
+                      "% per 100 bonus magic resistance",
+                      "% per 100 bonus magic resistance",
+                      "% per 100 bonus magic resistance",
+                      "% per 100 bonus magic resistance"
+                    ],
+                    "values": [
+                      8.0,
+                      8.0,
+                      8.0,
+                      8.0,
+                      8.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% per 100 bonus health",
+                      "% per 100 bonus health",
+                      "% per 100 bonus health",
+                      "% per 100 bonus health",
+                      "% per 100 bonus health"
+                    ],
+                    "values": [
+                      1.0,
+                      1.0,
+                      1.0,
+                      1.0,
+                      1.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Physical Damage Reduction",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      12.5,
+                      15.0,
+                      17.5,
+                      20.0,
+                      22.5
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% per 100 AP",
+                      "% per 100 AP",
+                      "% per 100 AP",
+                      "% per 100 AP",
+                      "% per 100 AP"
+                    ],
+                    "values": [
+                      1.5,
+                      1.5,
+                      1.5,
+                      1.5,
+                      1.5
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% per 100 bonus magic resistance",
+                      "% per 100 bonus magic resistance",
+                      "% per 100 bonus magic resistance",
+                      "% per 100 bonus magic resistance",
+                      "% per 100 bonus magic resistance"
+                    ],
+                    "values": [
+                      4.0,
+                      4.0,
+                      4.0,
+                      4.0,
+                      4.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% per 100 bonus health",
+                      "% per 100 bonus health",
+                      "% per 100 bonus health",
+                      "% per 100 bonus health",
+                      "% per 100 bonus health"
+                    ],
+                    "values": [
+                      0.5,
+                      0.5,
+                      0.5,
+                      0.5,
+                      0.5
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Passive: Galio gains Anti-Magic Bulwark, and restores it after 12 / 10 / 8 (based on level) seconds without taking damage.Anti-Magic Bulwark: Gain a shield that absorbs magic damage.",
+            "leveling": [
+              {
+                "attribute": "Magic Shield Strength",
+                "modifiers": [
+                  {
+                    "units": [
+                      "% of maximum health",
+                      "% of maximum health",
+                      "% of maximum health",
+                      "% of maximum health",
+                      "% of maximum health"
+                    ],
+                    "values": [
+                      7.5,
+                      9.0,
+                      10.5,
+                      12.0,
+                      13.5
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Recast: Galio refreshes the damage reduction for 2 seconds and deals magic damage to nearby enemy champions, increased by 0% : 200% (based on channel time), as well as taunts them for 0.5 : 1.5 (based on channel time) seconds and, after a brief delay, sets their movement speed to a static 60 for the same duration but slightly longer.",
+            "leveling": [
+              {
+                "attribute": "Maximum Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      60.0,
+                      90.0,
+                      120.0,
+                      150.0,
+                      180.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      90.0,
+                      90.0,
+                      90.0,
+                      90.0,
+                      90.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Minimum Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      20.0,
+                      30.0,
+                      40.0,
+                      50.0,
+                      60.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      30.0,
+                      30.0,
+                      30.0,
+                      30.0,
+                      30.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Shield of Durand can be recast within the duration and does so automatically afterwards or if it is interrupted.",
+            "leveling": []
+          }
+        ],
+        "name": "Shield of Durand"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                11.0,
+                10.0,
+                9.0,
+                8.0,
+                7.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Galio steps backwards in the opposite direction over the cast time, then dashes to the target location until he hits an enemy champion or terrain.",
+            "leveling": []
+          },
+          {
+            "description": "Galio deals magic damage to enemies he passes through, reduced to 80% against non-champions, and knocks them up for 0.75 seconds as well as reveals them for the same duration.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      90.0,
+                      130.0,
+                      170.0,
+                      210.0,
+                      250.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      90.0,
+                      90.0,
+                      90.0,
+                      90.0,
+                      90.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Non-Champion Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      72.0,
+                      104.0,
+                      136.0,
+                      168.0,
+                      200.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      72.0,
+                      72.0,
+                      72.0,
+                      72.0,
+                      72.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Justice Punch"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                180.0,
+                160.0,
+                140.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Galio prepares to make an entrance, channeling for 2.75 seconds and designating the target allied champion's location at the time of cast as his landing spot. Additionally, he resets Shield of Durand's passive shield for himself and grants it to all allied champions within the area for 5 seconds.",
+            "leveling": []
+          },
+          {
+            "description": "After channeling for 1.25 seconds, he gains crowd control immunity for the remaining duration, becomes untargetable, and leaps into the air for 0.8 seconds before dashing to his destination over 0.2 seconds. Afterwards, he lands and becomes targetable again, dealing magic damage to all nearby enemies upon impact, knocking them back 100 units over 0.75 seconds, and remaining in place for 0.5 seconds.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      150.0,
+                      250.0,
+                      350.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      70.0,
+                      70.0,
+                      70.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Hero's Entrance"
+      }
+    ]
+  },
+  "positions": [
+    "MIDDLE",
+    "SUPPORT"
+  ]
+}

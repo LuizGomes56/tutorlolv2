@@ -1,0 +1,683 @@
+{
+  "name": "Gangplank",
+  "attackType": "MELEE",
+  "adaptiveType": "PHYSICAL_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 630.0,
+      "perLevel": 114.0
+    },
+    "mana": {
+      "flat": 280.0,
+      "perLevel": 60.0
+    },
+    "armor": {
+      "flat": 31.0,
+      "perLevel": 4.7
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 64.0,
+      "perLevel": 4.2
+    },
+    "attackSpeed": {
+      "flat": 0.658,
+      "perLevel": 3.2
+    },
+    "movespeed": {
+      "flat": 345.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.69,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 125.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.05,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                15.0,
+                15.0,
+                15.0
+              ]
+            }
+          ]
+        },
+        "damageType": "TRUE_DAMAGE",
+        "effects": [
+          {
+            "description": "If Gangplank successfully hits a target with Trial by Fire, he gains 15% : 30% (based on level) bonus movement speed for 2 seconds. Every time a Powder Keg explodes, the cooldown for Trial by Fire resets and Gangplank gains its bonus movement speed.",
+            "leveling": []
+          },
+          {
+            "description": "Innate: Periodically, Gangplank empowers his next basic attack to set the target on fire, dealing them[ 50 : 250 (based on level) (+ 100% bonus AD) (+ 2 per 1% critical strike chance) bonus true damage over 2.5 seconds. ][ 5 : 25 (based on level) (+ 10% bonus AD) (+ 0.2 per 1% critical strike chance) bonus true damage every 0.25 seconds over 2.5 seconds. ] Turrets are dealt 50% damage.",
+            "leveling": []
+          },
+          {
+            "description": "Trial by Fire cannot be applied with Parrrley nor Powder Keg.",
+            "leveling": []
+          }
+        ],
+        "name": "Trial by Fire"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                4.5,
+                4.5,
+                4.5,
+                4.5,
+                4.5
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Gangplank fires a shot at the target enemy that deals physical damage, applies on-hit effects as a ranged attack, and triggers on-attack effects. Parrrley can critically strike for (175% + 40%) damage.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      10.0,
+                      40.0,
+                      70.0,
+                      100.0,
+                      130.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "If Parrrley kills the target, Gangplank plunders gold and Silver Serpents. Each enemy killed by a Powder Keg explosion that was originally set off by Parrrley also counts for the plunder.",
+            "leveling": [
+              {
+                "attribute": "Gold Plunder",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      3.0,
+                      4.0,
+                      5.0,
+                      6.0,
+                      7.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Silver Serpent Plunder",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      4.0,
+                      5.0,
+                      6.0,
+                      7.0,
+                      8.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Silver Serpents can be spent in the shop to upgrade Cannon Barrage.",
+            "leveling": []
+          }
+        ],
+        "name": "Parrrley"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                22.0,
+                20.0,
+                18.0,
+                16.0,
+                14.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: Gangplank consumes a large quantity of citrus fruit, cleansing himself from all crowd control and healing himself.",
+            "leveling": [
+              {
+                "attribute": "Heal",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      45.0,
+                      70.0,
+                      95.0,
+                      120.0,
+                      145.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      90.0,
+                      90.0,
+                      90.0,
+                      90.0,
+                      90.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% missing health",
+                      "% missing health",
+                      "% missing health",
+                      "% missing health",
+                      "% missing health"
+                    ],
+                    "values": [
+                      13.0,
+                      13.0,
+                      13.0,
+                      13.0,
+                      13.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Remove Scurvy"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Gangplank consumes a charge to place a powder keg at the target location that lasts for 25 seconds and will connect to other kegs with overlapping connection radius through a trail of black powder. The keg starts with 3 health and loses 1 every 2 / 1 / 0.5 (based on level) seconds until it is left with 1 health.",
+            "leveling": []
+          },
+          {
+            "description": "Enemies caught in an explosion are slowed for 2 seconds, and are dealt the triggering attack's damage, dealing bonus physical damage against champions. Each enemy can only be hit once per chain and the damage dealt ignores 40% of the target's armor.",
+            "leveling": [
+              {
+                "attribute": "Bonus Champion Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      75.0,
+                      105.0,
+                      135.0,
+                      165.0,
+                      195.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Slow",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      40.0,
+                      50.0,
+                      60.0,
+                      70.0,
+                      80.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Gangplank periodically stocks a Powder Keg charge, up to a maximum.",
+            "leveling": [
+              {
+                "attribute": "Maximum charges",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      3.0,
+                      3.0,
+                      4.0,
+                      4.0,
+                      5.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "If the triggering attack was a critical strike, the explosions deal 5% more damage on top of the critical damage.",
+            "leveling": []
+          },
+          {
+            "description": "Kegs can be basic attacked by enemies or Gangplank (including his Parrrley), dealing 1 damage to it. When an enemy destroys it, it is safely defused. When Gangplank destroys it, it explodes and also triggers a chain reaction that explodes other nearby connected kegs with a 0.33 seconds-delay between explosions. The explosions also grant sight of their radiuses for 2 seconds.",
+            "leveling": []
+          }
+        ],
+        "name": "Powder Keg"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                160.0,
+                140.0,
+                120.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Gangplank shoots a flare into the air, signaling his ship off-shore to fire upon the target location for 8 seconds, calling down 12 waves of cannonballs in clusters of 3 every 2 seconds, and granting sight of the area for the duration. Each wave deals magic damage to all enemies within the area and slows them by 30% for 0.5 seconds.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage Per Cluster",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      120.0,
+                      210.0,
+                      300.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      30.0,
+                      30.0,
+                      30.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Magic Damage Per Wave",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      40.0,
+                      70.0,
+                      100.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      10.0,
+                      10.0,
+                      10.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      480.0,
+                      840.0,
+                      1200.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      120.0,
+                      120.0,
+                      120.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Death's Daughter: A large cannonball lands in the center of the barrage after the first cluster of waves occur, dealing a cluster's worth of true damage to enemies within the impact and slowing them by 75% for 1 second.",
+            "leveling": [
+              {
+                "attribute": "Total Mixed Damage with Death's Daughter",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      600.0,
+                      1050.0,
+                      1500.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      150.0,
+                      150.0,
+                      150.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "True Damage with Death's Daughter",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      120.0,
+                      210.0,
+                      300.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      30.0,
+                      30.0,
+                      30.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Fire at Will: Cannon Barrage fires[ 6 additional waves ][ 2 additional clusters ] over its duration; 18 waves of cannonballs are called down in clusters of 3 every 1.33 seconds.",
+            "leveling": [
+              {
+                "attribute": "Maximum Mixed Total Damage with Fire at Will and Death's Daughter",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      840.0,
+                      1470.0,
+                      2100.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      210.0,
+                      210.0,
+                      210.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Magic Damage with Fire at Will",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      720.0,
+                      1260.0,
+                      1800.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      180.0,
+                      180.0,
+                      180.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Gangplank can purchase upgrades for his ship in the store at the cost of 500 Silver Serpents each, which improve Cannon Barrage:",
+            "leveling": []
+          },
+          {
+            "description": "Raise Morale: Cannon Barrage grants Gangplank and all allies within the area 40% bonus movement speed, lingering for 2 seconds.",
+            "leveling": []
+          }
+        ],
+        "name": "Cannon Barrage"
+      }
+    ]
+  },
+  "positions": [
+    "TOP"
+  ]
+}

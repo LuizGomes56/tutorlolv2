@@ -1,0 +1,49 @@
+{
+  "colloq": "",
+  "depth": 2,
+  "description": "<mainText><stats><attention>200</attention> Health<br><attention>4%</attention> Move Speed</stats><br><br></mainText>",
+  "from": [
+    "1028"
+  ],
+  "gold": {
+    "base": 400,
+    "purchasable": true,
+    "sell": 560,
+    "total": 800
+  },
+  "image": {
+    "full": "3066.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item2.png",
+    "w": 48,
+    "x": 96,
+    "y": 432
+  },
+  "into": [
+    "3742",
+    "323002",
+    "3002",
+    "3181",
+    "4401"
+  ],
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Winged Moonplate",
+  "plaintext": "",
+  "stats": {
+    "FlatHPPoolMod": 200,
+    "PercentMovementSpeedMod": 0.04
+  },
+  "tags": [
+    "Health",
+    "NonbootsMovement"
+  ]
+}

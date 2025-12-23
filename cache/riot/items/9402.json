@@ -1,0 +1,33 @@
+{
+  "colloq": "",
+  "consumed": true,
+  "description": "<mainText><stats></stats><br><br>Waves now come back upon reaching their end point, dealing damage again and shooting past Seraphine<br><br><rules>Damage, Ability Haste, Crit Chance, Projectile Count, Duration </rules></mainText>",
+  "gold": {
+    "base": 0,
+    "purchasable": true,
+    "sell": 0,
+    "total": 0
+  },
+  "image": {
+    "full": "9402.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item6.png",
+    "w": 48,
+    "x": 96,
+    "y": 144
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": false,
+    "33": true,
+    "35": false
+  },
+  "name": "Anima Echo",
+  "plaintext": "",
+  "stats": {},
+  "tags": []
+}

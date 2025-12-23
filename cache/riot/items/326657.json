@@ -1,0 +1,47 @@
+{
+  "colloq": "",
+  "depth": 3,
+  "description": "<mainText><stats><attention>45</attention> Ability Power<br><attention>350</attention> Health<br><attention>500</attention> Mana</stats><br><br><passive>Timeless</passive><br>This item gains <scaleHealth>10 Health</scaleHealth>, <scaleMana>30 Mana</scaleMana> and <scaleAP>3 Ability Power</scaleAP> every 60 seconds up to 10 times. Upon reaching max stacks, gain a level.<br><br><passive>Eternity</passive><br>Taking damage from champions restores <scaleMana>10%</scaleMana> of the damage as <scaleMana>Mana</scaleMana>. <br>Casting an ability <healing>heals for 25%</healing> of Mana spent.</mainText>",
+  "from": [
+    "1026",
+    "3803"
+  ],
+  "gold": {
+    "base": 450,
+    "purchasable": true,
+    "sell": 1820,
+    "total": 2600
+  },
+  "image": {
+    "full": "326657.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item3.png",
+    "w": 48,
+    "x": 96,
+    "y": 432
+  },
+  "maps": {
+    "11": true,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": false
+  },
+  "name": "Rod of Ages",
+  "plaintext": "",
+  "stats": {
+    "FlatHPPoolMod": 350,
+    "FlatMPPoolMod": 500,
+    "FlatMagicDamageMod": 45
+  },
+  "tags": [
+    "Health",
+    "HealthRegen",
+    "SpellDamage",
+    "Mana",
+    "ManaRegen"
+  ]
+}

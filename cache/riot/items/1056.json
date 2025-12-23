@@ -1,0 +1,40 @@
+{
+  "colloq": ";dring",
+  "description": "<mainText><stats><attention>18</attention> Ability Power<br><attention>90</attention> Health</stats><br><br><passive>Drain</passive><br>Restore <scaleMana>1 Mana</scaleMana> every second, increased to <scaleMana>2 Mana</scaleMana> per second for 5 seconds after dealing damage to an enemy champion. If you can't gain Mana, <healing>heal for 45%</healing> of this value instead.<br><br><passive>Helping Hand</passive><br>Attacks deal <physicalDamage>5 bonus physical damage</physicalDamage> to minions.</mainText>",
+  "gold": {
+    "base": 400,
+    "purchasable": true,
+    "sell": 160,
+    "total": 400
+  },
+  "image": {
+    "full": "1056.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item0.png",
+    "w": 48,
+    "x": 144,
+    "y": 96
+  },
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": false
+  },
+  "name": "Doran's Ring",
+  "plaintext": "Good starting item for casters",
+  "stats": {
+    "FlatHPPoolMod": 90,
+    "FlatMagicDamageMod": 18
+  },
+  "tags": [
+    "Health",
+    "Lane",
+    "ManaRegen",
+    "SpellDamage"
+  ]
+}

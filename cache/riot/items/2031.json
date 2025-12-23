@@ -1,0 +1,41 @@
+{
+  "colloq": ";",
+  "description": "<mainText><stats></stats><br><br><active>Active</active> (2 charges)<br>Restores <healing>100 Health</healing> over 12 seconds. <br>Refills upon visiting the shop.</mainText>",
+  "gold": {
+    "base": 150,
+    "purchasable": true,
+    "sell": 60,
+    "total": 150
+  },
+  "image": {
+    "full": "2031.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item0.png",
+    "w": 48,
+    "x": 336,
+    "y": 288
+  },
+  "into": [
+    "2033"
+  ],
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": false
+  },
+  "name": "Refillable Potion",
+  "plaintext": "Restores Health over time. Refills at shop.",
+  "stats": {},
+  "tags": [
+    "HealthRegen",
+    "Consumable",
+    "Active",
+    "Lane",
+    "Jungle"
+  ]
+}

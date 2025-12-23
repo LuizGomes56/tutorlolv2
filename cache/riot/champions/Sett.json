@@ -1,0 +1,678 @@
+{
+  "allytips": [],
+  "blurb": "A leader of Ionia's growing criminal underworld, Sett rose to prominence in the wake of the war with Noxus. Though he began as a humble challenger in the fighting pits of Navori, he quickly gained notoriety for his savage strength, and his ability to...",
+  "enemytips": [],
+  "id": "Sett",
+  "image": {
+    "full": "Sett.png",
+    "group": "champion",
+    "h": 48,
+    "sprite": "champion3.png",
+    "w": 48,
+    "x": 384,
+    "y": 96
+  },
+  "info": {
+    "attack": 8,
+    "defense": 5,
+    "difficulty": 2,
+    "magic": 1
+  },
+  "key": "875",
+  "lore": "A leader of Ionia's growing criminal underworld, Sett rose to prominence in the wake of the war with Noxus. Though he began as a humble challenger in the fighting pits of Navori, he quickly gained notoriety for his savage strength, and his ability to take seemingly endless amounts of punishment. Now, having climbed through the ranks of local combatants, Sett has muscled to the top, reigning over the pits he once fought in.",
+  "name": "Sett",
+  "partype": "Grit",
+  "passive": {
+    "description": "Sett's basic attacks alternate between left and right punch. Right punch is slightly stronger and faster. Sett also hates losing, gaining additional health regeneration based off of his missing health.",
+    "image": {
+      "full": "Sett_P.png",
+      "group": "passive",
+      "h": 48,
+      "sprite": "passive3.png",
+      "w": 48,
+      "x": 384,
+      "y": 96
+    },
+    "name": "Pit Grit"
+  },
+  "recommended": [],
+  "skins": [
+    {
+      "chromas": false,
+      "id": "875000",
+      "name": "default",
+      "num": 0
+    },
+    {
+      "chromas": true,
+      "id": "875001",
+      "name": "Mecha Kingdoms Sett",
+      "num": 1
+    },
+    {
+      "chromas": true,
+      "id": "875008",
+      "name": "Obsidian Dragon Sett",
+      "num": 8
+    },
+    {
+      "chromas": false,
+      "id": "875009",
+      "name": "Prestige Obsidian Dragon Sett",
+      "num": 9
+    },
+    {
+      "chromas": true,
+      "id": "875010",
+      "name": "Pool Party Sett",
+      "num": 10
+    },
+    {
+      "chromas": true,
+      "id": "875019",
+      "name": "Firecracker Sett",
+      "num": 19
+    },
+    {
+      "chromas": true,
+      "id": "875038",
+      "name": "Spirit Blossom Sett",
+      "num": 38
+    },
+    {
+      "chromas": true,
+      "id": "875045",
+      "name": "Soul Fighter Sett",
+      "num": 45
+    },
+    {
+      "chromas": true,
+      "id": "875056",
+      "name": "HEARTSTEEL Sett",
+      "num": 56
+    },
+    {
+      "chromas": false,
+      "id": "875066",
+      "name": "Radiant Serpent Sett",
+      "num": 66
+    },
+    {
+      "chromas": true,
+      "id": "875067",
+      "name": "Spirit Blossom Springs Sett",
+      "num": 67
+    }
+  ],
+  "spells": [
+    {
+      "cooldown": [
+        9,
+        8,
+        7,
+        6,
+        5
+      ],
+      "cooldownBurn": "9/8/7/6/5",
+      "cost": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "costBurn": "0",
+      "costType": "No Cost",
+      "datavalues": {},
+      "description": "Sett's next two attacks deal additional damage based off of the target's max health. Sett also gains Move Speed while moving towards enemy champions.",
+      "effect": [
+        null,
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "effectBurn": [
+        null,
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "id": "SettQ",
+      "image": {
+        "full": "SettQ.png",
+        "group": "spell",
+        "h": 48,
+        "sprite": "spell12.png",
+        "w": 48,
+        "x": 0,
+        "y": 48
+      },
+      "leveltip": {
+        "effect": [
+          "{{ cooldown }} -> {{ cooldownNL }}",
+          "{{ basedamage }} -> {{ basedamageNL }}",
+          "{{ maxhealthtadratiotooltip }}% -> {{ maxhealthtadratiotooltipNL }}%"
+        ],
+        "label": [
+          "Cooldown",
+          "Base Damage",
+          "% Max Health Per 100 AD"
+        ]
+      },
+      "maxammo": "-1",
+      "maxrank": 5,
+      "name": "Knuckle Down",
+      "range": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "rangeBurn": "0",
+      "resource": "No Cost",
+      "tooltip": "Sett itches for a fight, gaining <speed>{{ msamount*100 }}% Move Speed</speed> towards enemy champions for {{ msduration }} seconds.<br /><br />Additionally Sett's next two Attacks deal an additional <physicalDamage>{{ basedamage }} plus {{ maxhealthdamagecalc }} max Health physical damage</physicalDamage>.{{ spellmodifierdescriptionappend }}",
+      "vars": []
+    },
+    {
+      "cooldown": [
+        18,
+        16.5,
+        15,
+        13.5,
+        12
+      ],
+      "cooldownBurn": "18/16.5/15/13.5/12",
+      "cost": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "costBurn": "0",
+      "costType": "No Cost",
+      "datavalues": {},
+      "description": "Sett passively stores damage he takes as Grit. On cast, Sett expends all stored Grit to gain a shield and punch an area, dealing true damage in the center and physical damage on the sides.",
+      "effect": [
+        null,
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "effectBurn": [
+        null,
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "id": "SettW",
+      "image": {
+        "full": "SettW.png",
+        "group": "spell",
+        "h": 48,
+        "sprite": "spell12.png",
+        "w": 48,
+        "x": 48,
+        "y": 48
+      },
+      "leveltip": {
+        "effect": [
+          "{{ cooldown }} -> {{ cooldownNL }}",
+          "{{ basedamage }} -> {{ basedamageNL }}"
+        ],
+        "label": [
+          "Cooldown",
+          "Base Damage"
+        ]
+      },
+      "maxammo": "-1",
+      "maxrank": 5,
+      "name": "Haymaker",
+      "range": [
+        25000,
+        25000,
+        25000,
+        25000,
+        25000
+      ],
+      "rangeBurn": "25000",
+      "resource": "No Cost",
+      "tooltip": "<spellPassive>Passive:</spellPassive> Sett stores {{ damagestored*100 }}% of damage taken as <keywordMajor>Grit</keywordMajor>, up to <keywordMajor>{{ maxgrit }}</keywordMajor>. <keywordMajor>Grit</keywordMajor> decays quickly {{ adrenalinestoragewindow }} seconds after the damage was taken.<br /><br /><spellActive>Active:</spellActive> Sett consumes all <keywordMajor>Grit</keywordMajor>, gaining a <shield>{{ shieldconversion*100 }}% Grit consumed Shield</shield> decaying over {{ shieldmaxduration }} seconds. Sett then delivers a massive punch, dealing <trueDamage>{{ damagecalc }} plus {{ damageconversion }} Grit consumed true damage</trueDamage> to enemies in the center (max <trueDamage>{{ f1 }} damage</trueDamage>). Enemies not in the center instead take <physicalDamage>physical damage</physicalDamage>.{{ spellmodifierdescriptionappend }}",
+      "vars": []
+    },
+    {
+      "cooldown": [
+        16,
+        14.5,
+        13,
+        11.5,
+        10
+      ],
+      "cooldownBurn": "16/14.5/13/11.5/10",
+      "cost": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "costBurn": "0",
+      "costType": "No Cost",
+      "datavalues": {},
+      "description": "Sett pulls in all enemies on opposite sides of him, dealing damage and stunning them. If enemies were only on one side, they are slowed instead of stunned.",
+      "effect": [
+        null,
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "effectBurn": [
+        null,
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "id": "SettE",
+      "image": {
+        "full": "SettE.png",
+        "group": "spell",
+        "h": 48,
+        "sprite": "spell12.png",
+        "w": 48,
+        "x": 96,
+        "y": 48
+      },
+      "leveltip": {
+        "effect": [
+          "{{ cooldown }} -> {{ cooldownNL }}",
+          "{{ basedamage }} -> {{ basedamageNL }}"
+        ],
+        "label": [
+          "Cooldown",
+          "Base Damage"
+        ]
+      },
+      "maxammo": "-1",
+      "maxrank": 5,
+      "name": "Facebreaker",
+      "range": [
+        490,
+        490,
+        490,
+        490,
+        490
+      ],
+      "rangeBurn": "490",
+      "resource": "No Cost",
+      "tooltip": "Sett smashes enemies on either side of him into each other, dealing <physicalDamage>{{ damagecalc }} physical damage</physicalDamage> and <status>Slowing</status> them by {{ slowamount*100 }}% for {{ slowduration }} seconds. If Sett grabbed at least one enemy on each side, all enemies are <status>Stunned</status> for {{ stunduration }} second.{{ spellmodifierdescriptionappend }}",
+      "vars": []
+    },
+    {
+      "cooldown": [
+        120,
+        100,
+        80
+      ],
+      "cooldownBurn": "120/100/80",
+      "cost": [
+        0,
+        0,
+        0
+      ],
+      "costBurn": "0",
+      "costType": "No Cost",
+      "datavalues": {},
+      "description": "Sett carries an enemy champion through the air and slams them into the ground, dealing damage and slowing all enemies near where they land.",
+      "effect": [
+        null,
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "effectBurn": [
+        null,
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "id": "SettR",
+      "image": {
+        "full": "SettR.png",
+        "group": "spell",
+        "h": 48,
+        "sprite": "spell12.png",
+        "w": 48,
+        "x": 144,
+        "y": 48
+      },
+      "leveltip": {
+        "effect": [
+          "{{ cooldown }} -> {{ cooldownNL }}",
+          "{{ maxhealthdamage*100.000000 }}% -> {{ maxhealthdamagenl*100.000000 }}%",
+          "{{ basedamage }} -> {{ basedamageNL }}"
+        ],
+        "label": [
+          "Cooldown",
+          "Bonus Health Damage",
+          "Base Damage"
+        ]
+      },
+      "maxammo": "-1",
+      "maxrank": 3,
+      "name": "The Show Stopper",
+      "range": [
+        400,
+        400,
+        400
+      ],
+      "rangeBurn": "400",
+      "resource": "No Cost",
+      "tooltip": "Sett grabs an enemy champion and <status>Suppresses</status> them as he carries them forward, then slams them into the ground, dealing <physicalDamage>{{ damagecalc }} plus {{ maxhealthdamage*100 }}% of the grabbed enemy's bonus Health physical damage</physicalDamage> to surrounding enemies and <status>Slowing</status> them by {{ slowamount*100 }}% for {{ slowduration }} second. Enemies take less damage the further they are from where Sett lands.{{ spellmodifierdescriptionappend }}",
+      "vars": []
+    }
+  ],
+  "stats": {
+    "armor": 33,
+    "armorperlevel": 4.7,
+    "attackdamage": 60,
+    "attackdamageperlevel": 4,
+    "attackrange": 125,
+    "attackspeed": 0.625,
+    "attackspeedperlevel": 1.75,
+    "crit": 0,
+    "critperlevel": 0,
+    "hp": 670,
+    "hpperlevel": 114,
+    "hpregen": 7,
+    "hpregenperlevel": 0.5,
+    "movespeed": 340,
+    "mp": 0,
+    "mpperlevel": 0,
+    "mpregen": 0,
+    "mpregenperlevel": 0,
+    "spellblock": 28,
+    "spellblockperlevel": 2.05
+  },
+  "tags": [
+    "Fighter",
+    "Tank"
+  ],
+  "title": "the Boss"
+}

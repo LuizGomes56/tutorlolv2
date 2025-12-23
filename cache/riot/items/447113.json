@@ -1,0 +1,40 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><attention>90</attention> Ability Power<br><attention>12</attention> Magic Penetration<br><attention>600</attention> Mana<br><attention>20</attention> Ability Haste</stats><br><br><passive>The Bomb</passive><br>Ability damage marks the target, storing 20% of the damage dealt (increased to 25% against <keyword>Immobilized</keyword> enemies). <br><br>3 seconds after you last damage the target with an ability, detonate the stored damage on them. If at any point the damage is enough to kill the target, detonate immediately.</mainText>",
+  "gold": {
+    "base": 1000,
+    "purchasable": true,
+    "sell": 400,
+    "total": 1000
+  },
+  "image": {
+    "full": "447113.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item4.png",
+    "w": 48,
+    "x": 144,
+    "y": 432
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": false
+  },
+  "name": "Detonation Orb",
+  "plaintext": "",
+  "specialRecipe": 220007,
+  "stats": {
+    "FlatMPPoolMod": 600,
+    "FlatMagicDamageMod": 90
+  },
+  "tags": [
+    "SpellDamage",
+    "Mana",
+    "MagicPenetration"
+  ]
+}

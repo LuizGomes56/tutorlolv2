@@ -1,0 +1,91 @@
+{
+  "active": [],
+  "buildsFrom": [
+    1052,
+    1027,
+    2022
+  ],
+  "buildsInto": [
+    323003,
+    3003,
+    3118,
+    2503,
+    4644,
+    6655,
+    6656
+  ],
+  "name": "Lost Chapter",
+  "tier": 2,
+  "passives": [
+    {
+      "effects": "Upon leveling up, restores {{as|20% of '''maximum''' mana}} over 3 seconds.",
+      "name": "Enlighten",
+      "unique": true
+    }
+  ],
+  "id": 3802,
+  "stats": {
+    "abilityPower": {
+      "flat": 40.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 300.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "shop": {
+    "purchasable": true,
+    "prices": {
+      "total": 1200
+    }
+  }
+}

@@ -1,0 +1,162 @@
+{
+  "name": "Seraphine",
+  "adaptative_type": "Magic",
+  "attack_type": "Ranged",
+  "positions": [
+    "Bottom",
+    "Support"
+  ],
+  "stats": {
+    "health": {
+      "flat": 570.0,
+      "perLevel": 90.0
+    },
+    "mana": {
+      "flat": 360.0,
+      "perLevel": 25.0
+    },
+    "armor": {
+      "flat": 26.0,
+      "perLevel": 4.2
+    },
+    "magicResistance": {
+      "flat": 30.0,
+      "perLevel": 1.3
+    },
+    "attackDamage": {
+      "flat": 50.0,
+      "perLevel": 3.0
+    },
+    "attackSpeed": {
+      "flat": 0.669,
+      "perLevel": 2.0
+    },
+    "movespeed": {
+      "flat": 330.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.625,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 525.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.2,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 0.92,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": [
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Beat Drop",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "70 + (0.5 * ctx.ap)",
+          "100 + (0.5 * ctx.ap)",
+          "130 + (0.5 * ctx.ap)",
+          "160 + (0.5 * ctx.ap)",
+          "190 + (0.5 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Encore",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "150 + (0.4 * ctx.ap)",
+          "200 + (0.4 * ctx.ap)",
+          "250 + (0.4 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "High Note",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "60 + (0.5 * ctx.ap)",
+          "85 + (0.5 * ctx.ap)",
+          "110 + (0.5 * ctx.ap)",
+          "135 + (0.5 * ctx.ap)",
+          "160 + (0.5 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_2"
+      },
+      {
+        "name": "Beat Drop",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "49 + (0.35 * ctx.ap)",
+          "70 + (0.35 * ctx.ap)",
+          "91 + (0.35 * ctx.ap)",
+          "112 + (0.35 * ctx.ap)",
+          "133 + (0.35 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "High Note",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "105 + (0.875 * ctx.ap)",
+          "148.75 + (0.875 * ctx.ap)",
+          "192.5 + (0.875 * ctx.ap)",
+          "236.25 + (0.875 * ctx.ap)",
+          "280 + (0.875 * ctx.ap)"
+        ]
+      }
+    ]
+  ],
+  "merge_data": []
+}

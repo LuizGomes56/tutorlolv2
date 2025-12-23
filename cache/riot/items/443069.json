@@ -1,0 +1,41 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><attention>45</attention> Attack Damage<br><attention>40%</attention> Attack Speed<br><attention>25%</attention> Critical Strike Chance</stats><br><br><passive>Scour</passive><br>On Critical Strike:<li> Apply a bleed, dealing 25% of the damage done +  physical damage on hit over 2 seconds. This effect stacks any number of times.<li> Apply a 7% Slow for 2 seconds. This effect stacks up to 35%.</mainText>",
+  "gold": {
+    "base": 1000,
+    "purchasable": true,
+    "sell": 400,
+    "total": 1000
+  },
+  "image": {
+    "full": "443069.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item4.png",
+    "w": 48,
+    "x": 192,
+    "y": 288
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": false
+  },
+  "name": "Hamstringer",
+  "plaintext": "",
+  "specialRecipe": 220007,
+  "stats": {
+    "FlatCritChanceMod": 0.25,
+    "FlatPhysicalDamageMod": 45,
+    "PercentAttackSpeedMod": 0.4
+  },
+  "tags": [
+    "Damage",
+    "CriticalStrike",
+    "AttackSpeed"
+  ]
+}

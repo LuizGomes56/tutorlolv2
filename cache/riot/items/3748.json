@@ -1,0 +1,46 @@
+{
+  "colloq": ";juggernaut",
+  "depth": 3,
+  "description": "<mainText><stats><attention>40</attention> Attack Damage<br><attention>600</attention> Health</stats><br><br><passive>Cleave</passive><br>Attacks deal <physicalDamage>physical damage</physicalDamage> on-hit and to enemies behind the target.<br><active>Titanic Crescent</active><br>Empower your next <passive>Cleave</passive> to deal <physicalDamage>bonus physical damage</physicalDamage> <OnHit>On-Hit</OnHit> and deal <physicalDamage>bonus physical damage</physicalDamage> to enemies behind the target.</mainText>",
+  "from": [
+    "3077",
+    "2021",
+    "1011"
+  ],
+  "gold": {
+    "base": 50,
+    "purchasable": true,
+    "sell": 2310,
+    "total": 3300
+  },
+  "image": {
+    "full": "3748.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item4.png",
+    "w": 48,
+    "x": 48,
+    "y": 48
+  },
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Titanic Hydra",
+  "plaintext": "Deals area of effect damage based on owner's health",
+  "stats": {
+    "FlatHPPoolMod": 600,
+    "FlatPhysicalDamageMod": 40
+  },
+  "tags": [
+    "Health",
+    "HealthRegen",
+    "Damage",
+    "OnHit"
+  ]
+}

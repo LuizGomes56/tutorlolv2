@@ -1,0 +1,84 @@
+{
+  "active": [],
+  "buildsFrom": [],
+  "buildsInto": [],
+  "name": "Muramana",
+  "tier": 4,
+  "passives": [
+    {
+      "effects": "Basic attacks [[on-hit]] against champions deal {{as|{{as|{{fd|1.2}}% '''maximum''' mana}} '''bonus''' physical damage}}. Dealing [[Ability_effects#Triggering_from_champion_ability_damage|ability damage]] to champions deals {{as|{{as|{{rd|4%|3%}} '''maximum''' mana}} '''bonus''' physical damage|physical damage}}. Can only be triggered on the same target once every {{fd|6.5}} seconds from the same attack or cast.",
+      "name": "Shock",
+      "unique": true
+    },
+    {
+      "effects": "Grants {{as|'''bonus''' attack damage}} equal to {{as|2% '''maximum''' mana}}.",
+      "name": "Awe",
+      "unique": true
+    }
+  ],
+  "id": 3042,
+  "stats": {
+    "abilityPower": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 35.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 860.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "shop": {
+    "purchasable": false,
+    "prices": {
+      "total": 2900
+    }
+  }
+}

@@ -1,0 +1,456 @@
+{
+  "name": "Rakan",
+  "attackType": "MELEE",
+  "adaptiveType": "MAGIC_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 610.0,
+      "perLevel": 99.0
+    },
+    "mana": {
+      "flat": 315.0,
+      "perLevel": 50.0
+    },
+    "armor": {
+      "flat": 30.0,
+      "perLevel": 4.9
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 62.0,
+      "perLevel": 3.5
+    },
+    "attackSpeed": {
+      "flat": 0.635,
+      "perLevel": 3.0
+    },
+    "movespeed": {
+      "flat": 335.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.634999990463256,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 300.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 0.95,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                40.0,
+                38.5,
+                37.0,
+                35.5,
+                34.0,
+                32.5,
+                31.0,
+                29.5,
+                28.0,
+                26.5,
+                25.0,
+                23.5,
+                22.0,
+                20.5,
+                19.0,
+                17.5,
+                16.0,
+                14.5
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Innate - Lover's Leap: If either Rakan or Xayah is channeling Recall, the other may move nearby and channel their own to join alongside them. Both reach base at the time of which the initiator's Recall completes.",
+            "leveling": []
+          },
+          {
+            "description": "Innate: Periodically, Rakan grants himself a shield for 30 : 225 (based on level) (+ 95% AP) that lasts until broken. After being out of combat for 5 seconds, any leftover shield will be restored to maximum value.",
+            "leveling": []
+          },
+          {
+            "description": "Rakan's basic attacks and ability hits reduce Fey Feathers' cooldown by 1 second for each enemy champion hit.",
+            "leveling": []
+          }
+        ],
+        "name": "Fey Feathers"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                11.0,
+                10.0,
+                9.0,
+                8.0,
+                7.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Rakan slings an enchanted feather in the target direction that deals magic damage to the first enemy hit.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      70.0,
+                      115.0,
+                      160.0,
+                      205.0,
+                      250.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      70.0,
+                      70.0,
+                      70.0,
+                      70.0,
+                      70.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "If the target was an enemy champion or epic monster, a radius is marked around Rakan. After 3 seconds or if an allied champion enters the radius, Rakan heals himself and nearby allied champions for 40 : 210 (based on level) (+ 55% AP).",
+            "leveling": []
+          }
+        ],
+        "name": "Gleaming Quill"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                14.0,
+                13.0,
+                12.0,
+                11.0,
+                10.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Rakan dashes to the target location. After a 0.35-second delay upon arrival, he deals magic damage to nearby enemies and knocks them up for 1 second.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      70.0,
+                      120.0,
+                      170.0,
+                      220.0,
+                      270.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      80.0,
+                      80.0,
+                      80.0,
+                      80.0,
+                      80.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Rakan will be knocked down by any immobilizing or polymorphing crowd control during the dash.",
+            "leveling": []
+          }
+        ],
+        "name": "Grand Entrance"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                20.0,
+                18.0,
+                16.0,
+                14.0,
+                12.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: Rakan grants a shield to the target allied champion for 3 seconds and then dashes to and around them. Battle Dance can be recast within 5 seconds at no additional cost.",
+            "leveling": [
+              {
+                "attribute": "Shield Strength",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      50.0,
+                      75.0,
+                      100.0,
+                      125.0,
+                      150.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      70.0,
+                      70.0,
+                      70.0,
+                      70.0,
+                      70.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "If Xayah is the target, Battle Dance can be cast from an increased range.",
+            "leveling": []
+          },
+          {
+            "description": "Rakan will be knocked down by any immobilizing or polymorphing crowd control during the dash.",
+            "leveling": []
+          },
+          {
+            "description": "Recast: Rakan mimics the first cast's effects.",
+            "leveling": []
+          }
+        ],
+        "name": "Battle Dance"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                130.0,
+                110.0,
+                90.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Rakan breaks into a captivating sprint for 4 seconds, gaining ghosting and 75% bonus movement speed for the duration. During this time, he deals magic damage to enemies he collides with and charms and slows them by 75% for a duration. This cannot affect the same enemy more than once.",
+            "leveling": [
+              {
+                "attribute": "Disable Duration",
+                "modifiers": [
+                  {
+                    "units": [
+                      " seconds",
+                      " seconds",
+                      " seconds"
+                    ],
+                    "values": [
+                      1.0,
+                      1.25,
+                      1.5
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      100.0,
+                      200.0,
+                      300.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      50.0,
+                      50.0,
+                      50.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Colliding with an enemy champion extends The Quickness' duration by 0.25 seconds, which can occur once per champion. When Rakan collides with his first enemy champion, he gains an additional 75% bonus movement speed that decays after 0.5 seconds by 20% every 0.5 seconds, then by 15% after decaying by 60% over 1.5 seconds.",
+            "leveling": []
+          },
+          {
+            "description": "During The Quickness, Rakan cannot basic attack enemy champions he did not collide with, unless the attack command was inputted before the ability was activated.",
+            "leveling": []
+          }
+        ],
+        "name": "The Quickness"
+      }
+    ]
+  },
+  "positions": [
+    "SUPPORT"
+  ]
+}

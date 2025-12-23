@@ -1,0 +1,48 @@
+{
+  "colloq": ";",
+  "depth": 2,
+  "description": "<mainText><stats><attention>20%</attention> Attack Speed</stats><br><br><passive>Bullseye</passive><br>Damaging a champion deals <magicDamage>bonus magic damage</magicDamage>. <br>Attacks reduce this cooldown by 1 second.</mainText>",
+  "from": [
+    "1042",
+    "1042"
+  ],
+  "gold": {
+    "base": 100,
+    "purchasable": true,
+    "sell": 420,
+    "total": 600
+  },
+  "image": {
+    "full": "3144.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item3.png",
+    "w": 48,
+    "x": 144,
+    "y": 192
+  },
+  "into": [
+    "3094",
+    "3032",
+    "3085",
+    "3087",
+    "3095"
+  ],
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Scout's Slingshot",
+  "plaintext": "Activate to deal magic damage and slow target champion",
+  "stats": {
+    "PercentAttackSpeedMod": 0.2
+  },
+  "tags": [
+    "AttackSpeed"
+  ]
+}

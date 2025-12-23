@@ -1,0 +1,79 @@
+{
+  "active": [],
+  "buildsFrom": [],
+  "buildsInto": [],
+  "name": "Hamstringer",
+  "tier": 3,
+  "passives": [
+    {
+      "effects": "{{tip|Critical strike|Critical strikes}} inflict a bleed on the target for 2 seconds, dealing {{as|'''bonus''' physical damage}} equal to{{ft|{{pp|20/4 to 80/4|color=physical damage}} plus {{ap|25/4}}% of the {{tt|pre-mitigation|Damage calculated before resistances and reductions.}} {{tip|critical strike}} instance every {{fd|0.5}} seconds,|{{pp|20 to 80|color=physical damage}} plus 25% of the {{tip|critical strike}} instance over the duration,}}as well as applies a 7% {{tip|slow}} for the same duration. The bleed's damage is affected by {{tip|critical strike}} modifiers and stacks infinitely; the slow stacks up to 35%.",
+      "name": "Scour",
+      "unique": true
+    }
+  ],
+  "id": 443069,
+  "stats": {
+    "abilityPower": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 45.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 40.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 25.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "shop": {
+    "purchasable": true,
+    "prices": {
+      "total": 0
+    }
+  }
+}

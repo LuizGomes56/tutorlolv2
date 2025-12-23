@@ -1,0 +1,72 @@
+{
+  "name": "Zoe",
+  "adaptative_type": "Magic",
+  "attack_type": "Ranged",
+  "positions": [
+    "Middle"
+  ],
+  "stats": {
+    "health": {
+      "flat": 630.0,
+      "perLevel": 106.0
+    },
+    "mana": {
+      "flat": 425.0,
+      "perLevel": 25.0
+    },
+    "armor": {
+      "flat": 21.0,
+      "perLevel": 4.7
+    },
+    "magicResistance": {
+      "flat": 30.0,
+      "perLevel": 1.3
+    },
+    "attackDamage": {
+      "flat": 58.0,
+      "perLevel": 3.3
+    },
+    "attackSpeed": {
+      "flat": 0.658,
+      "perLevel": 2.5
+    },
+    "movespeed": {
+      "flat": 340.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.625,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 550.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 0.95,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.1,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": [],
+  "merge_data": []
+}

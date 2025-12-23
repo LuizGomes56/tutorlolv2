@@ -1,0 +1,139 @@
+{
+  "riot_id": 3113,
+  "item_id": "AetherWisp",
+  "name": "Aether Wisp",
+  "price": 900,
+  "sell": 630,
+  "tier": 2,
+  "maps": [
+    [
+      "NexusBlitz",
+      true
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "Aram",
+      true
+    ],
+    [
+      "Tft",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "Arena",
+      false
+    ]
+  ],
+  "prettified_stats": [
+    {
+      "name": "AbilityPower",
+      "value": 30
+    },
+    {
+      "name": "MoveSpeed",
+      "value": 4
+    }
+  ],
+  "damage_type": "Unknown",
+  "stats": {
+    "abilityPower": {
+      "flat": 30.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 4.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "builds_from_riot_ids": [
+    1052
+  ],
+  "builds_from_item_ids": [
+    "AmplifyingTome"
+  ],
+  "builds_into_riot_ids": [
+    322065,
+    4646,
+    3504,
+    2065,
+    3100,
+    323504,
+    4629
+  ],
+  "builds_into_item_ids": [
+    "Stormsurge",
+    "ArdentCenser",
+    "ShurelyasBattlesong",
+    "LichBane",
+    "CosmicDrive"
+  ],
+  "ranged": {
+    "minimum_damage": "zero",
+    "maximum_damage": "zero"
+  },
+  "melee": {
+    "minimum_damage": "zero",
+    "maximum_damage": "zero"
+  },
+  "attributes": "Undefined",
+  "purchasable": true
+}

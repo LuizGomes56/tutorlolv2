@@ -1,0 +1,737 @@
+{
+  "name": "Heimerdinger",
+  "attackType": "RANGED",
+  "adaptiveType": "MAGIC_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 558.0,
+      "perLevel": 101.0
+    },
+    "mana": {
+      "flat": 385.0,
+      "perLevel": 20.0
+    },
+    "armor": {
+      "flat": 19.0,
+      "perLevel": 4.2
+    },
+    "magicResistance": {
+      "flat": 30.0,
+      "perLevel": 1.3
+    },
+    "attackDamage": {
+      "flat": 56.0,
+      "perLevel": 2.7
+    },
+    "attackSpeed": {
+      "flat": 0.658,
+      "perLevel": 1.36
+    },
+    "movespeed": {
+      "flat": 340.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.625,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 550.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.1,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 0.9,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": null,
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Innate: Heimerdinger gains 20% bonus movement speed while near an allied turret or a H-28G Evolution Turret or H-28Q Apex Turret deployed by him.",
+            "leveling": []
+          }
+        ],
+        "name": "Hextech Affinity"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                ""
+              ],
+              "values": [
+                1.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Heimerdinger deploys a H-28G Evolution Turret at the target location, which lasts until destroyed.",
+            "leveling": []
+          },
+          {
+            "description": "Heimerdinger periodically stocks a Turret Kit charge, up to a maximum of 3.",
+            "leveling": []
+          },
+          {
+            "description": "See Pets for more details about H-28G Evolution Turrets.",
+            "leveling": []
+          },
+          {
+            "description": "Up to 3 H-28G Evolution Turrets can be deployed at a time, with those deployed beyond the maximum destroying the oldest one.",
+            "leveling": []
+          }
+        ],
+        "name": "H-28G Evolution Turret"
+      },
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                ""
+              ],
+              "values": [
+                1.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "H-28Q Apex Turret scales with UPGRADE!!!'s rank.",
+            "leveling": []
+          },
+          {
+            "description": "See Pets for more details about the H-28Q Apex Turret.",
+            "leveling": []
+          },
+          {
+            "description": "UPGRADE!!! - Active: Heimerdinger deploys a H-28Q Apex Turret at the target location, which lasts for 8 seconds.",
+            "leveling": []
+          }
+        ],
+        "name": "H-28Q Apex Turret"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                11.0,
+                10.0,
+                9.0,
+                8.0,
+                7.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Heimerdinger launches a wave of 5 rockets that converge upon the target location and fan beyond it up to a maximum range, with each one dealing magic damage to the first enemy it hits. Every rocket hitting an enemy champion grants 20% beam charge to all turrets within 1000 range, up to a maximum of 100% beam charge when hitting 5 rockets on an enemy champion.",
+            "leveling": [
+              {
+                "attribute": "Initial Rocket Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      40.0,
+                      65.0,
+                      90.0,
+                      115.0,
+                      140.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP"
+                    ],
+                    "values": [
+                      55.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Enemies can be hit by multiple rockets, but receive less damage from ones beyond the first. Against minions, this lesser damage is increased by 200%.",
+            "leveling": [
+              {
+                "attribute": "Combined Total Minion Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      160.0,
+                      245.0,
+                      330.0,
+                      415.0,
+                      500.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP"
+                    ],
+                    "values": [
+                      199.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Combined Total Non-Minion Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      80.0,
+                      125.0,
+                      170.0,
+                      215.0,
+                      260.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP"
+                    ],
+                    "values": [
+                      103.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Subsequent Rocket Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      10.0,
+                      15.0,
+                      20.0,
+                      25.0,
+                      30.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP"
+                    ],
+                    "values": [
+                      12.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Subsequent Rocket Minion Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      30.0,
+                      45.0,
+                      60.0,
+                      75.0,
+                      90.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP"
+                    ],
+                    "values": [
+                      36.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Subsequent Minion Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      120.0,
+                      180.0,
+                      240.0,
+                      300.0,
+                      360.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP"
+                    ],
+                    "values": [
+                      144.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Subsequent Non-Minion Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      40.0,
+                      60.0,
+                      80.0,
+                      100.0,
+                      120.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP"
+                    ],
+                    "values": [
+                      48.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Hextech Micro-Rockets"
+      },
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                11.0,
+                10.0,
+                9.0,
+                8.0,
+                7.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Enemies can be hit by multiple rockets. Champions and monsters receive less damage from the second to fifth rockets that hit them, which is reduced by 50% for rockets beyond the fifth. Minions instead always receive 100% of the initial damage from every single rocket.",
+            "leveling": [
+              {
+                "attribute": "Combined Total Minion Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      2700.0,
+                      3600.0,
+                      4500.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP"
+                    ],
+                    "values": [
+                      900.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Combined Total Non-Minion Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      503.0,
+                      697.5,
+                      892.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP"
+                    ],
+                    "values": [
+                      183.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Minion Damage per Rocket",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      135.0,
+                      180.0,
+                      225.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Rockets 2:5 Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      32.0,
+                      45.0,
+                      58.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP"
+                    ],
+                    "values": [
+                      12.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Rockets 6:20 Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      16.0,
+                      22.5,
+                      29.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP"
+                    ],
+                    "values": [
+                      6.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Hextech Rocket Swarm scales with UPGRADE!!!'s rank.",
+            "leveling": []
+          },
+          {
+            "description": "UPGRADE!!! - Active: Heimerdinger unleashes 4 waves of 5 rockets in quick succession that converge upon the target location. Each rocket deals magic damage to the first enemy hit.",
+            "leveling": [
+              {
+                "attribute": "Initial Rocket Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      135.0,
+                      180.0,
+                      225.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP"
+                    ],
+                    "values": [
+                      45.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Hextech Rocket Swarm"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                ""
+              ],
+              "values": [
+                11.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Heimerdinger hurls a grenade at the target location that detonates upon impact, dealing magic damage to nearby enemies and slowing them by 35% for 2 seconds. If the grenade hits an enemy champion, all turrets within 1000 range of the impact gain 100% beam charge.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      60.0,
+                      100.0,
+                      140.0,
+                      180.0,
+                      220.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP"
+                    ],
+                    "values": [
+                      60.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Enemies hit at the center of the grenade's impact are also stunned for 1.5 seconds.",
+            "leveling": []
+          }
+        ],
+        "name": "CH-2 Electron Storm Grenade"
+      },
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                ""
+              ],
+              "values": [
+                11.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "CH-3X Lightning Grenade scales with UPGRADE!!!'s rank.",
+            "leveling": []
+          },
+          {
+            "description": "Enemy champions can only be damaged once per cast, but can be slowed and stunned multiple times if circumstances permit.",
+            "leveling": []
+          },
+          {
+            "description": "UPGRADE!!! - Active: Heimerdinger hurls a massive grenade at the target location that bounces a fixed distance 3 times in the cast direction. The grenade explodes upon landing each time to deal magic damage to nearby enemies and slow them by 35% for 2 seconds. Enemies hit at the center of the grenade's impact are additionally stunned for 1.5 seconds.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      100.0,
+                      200.0,
+                      300.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP"
+                    ],
+                    "values": [
+                      60.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "CH-3X Lightning Grenade"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                100.0,
+                92.5,
+                85.0,
+                77.5,
+                70.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: Heimerdinger empowers his next basic ability for an additional effect, consuming the empowerment upon cast and placing UPGRADE!!! on full cooldown. These empowered abilities have the same cooldowns as their basic forms, deal modified damage, and do not have a mana cost. UPGRADE!!! can be recast after 3 seconds while the empowerment is available.",
+            "leveling": []
+          },
+          {
+            "description": "Recast: Heimerdinger ends UPGRADE!!! and puts it on a 3-second cooldown.",
+            "leveling": []
+          },
+          {
+            "description": "UPGRADE!!! can be used while affected by cast-inhibiting crowd control.",
+            "leveling": []
+          }
+        ],
+        "name": "UPGRADE!!!"
+      }
+    ]
+  },
+  "positions": [
+    "MIDDLE",
+    "SUPPORT",
+    "TOP"
+  ]
+}

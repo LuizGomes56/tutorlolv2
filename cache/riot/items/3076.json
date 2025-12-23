@@ -1,0 +1,45 @@
+{
+  "colloq": "",
+  "depth": 2,
+  "description": "<mainText><stats><attention>30</attention> Armor</stats><br><br><passive>Thorns</passive><br>When hit by an Attack, deal <magicDamage> magic damage</magicDamage> to the attacker and apply <keyword>40% Wounds</keyword> for 3 seconds if they are a champion.</mainText>",
+  "from": [
+    "1029",
+    "1029"
+  ],
+  "gold": {
+    "base": 200,
+    "purchasable": true,
+    "sell": 560,
+    "total": 800
+  },
+  "image": {
+    "full": "3076.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item3.png",
+    "w": 48,
+    "x": 48,
+    "y": 0
+  },
+  "into": [
+    "323075",
+    "3075"
+  ],
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Bramble Vest",
+  "plaintext": "",
+  "stats": {
+    "FlatArmorMod": 30
+  },
+  "tags": [
+    "Armor"
+  ]
+}

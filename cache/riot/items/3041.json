@@ -1,0 +1,43 @@
+{
+  "colloq": ";",
+  "depth": 2,
+  "description": "<mainText><stats><attention>20</attention> Ability Power<br><attention>100</attention> Health</stats><br><br><passive>Glory</passive><br><keyword>Takedowns</keyword> grant <passive>Glory</passive>, up to 25. 10 <passive>Glory</passive> is lost on death.<br>Gain <scaleAP>5 Ability Power</scaleAP> per <passive>Glory</passive> and <speed>10% Move Speed</speed> at 10 or higher <passive>Glory</passive>.</mainText>",
+  "from": [
+    "1082"
+  ],
+  "gold": {
+    "base": 1150,
+    "purchasable": true,
+    "sell": 1050,
+    "total": 1500
+  },
+  "image": {
+    "full": "3041.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item2.png",
+    "w": 48,
+    "x": 96,
+    "y": 384
+  },
+  "maps": {
+    "11": true,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": false
+  },
+  "name": "Mejai's Soulstealer",
+  "plaintext": "Grants Ability Power for kills and assists",
+  "stats": {
+    "FlatHPPoolMod": 100,
+    "FlatMagicDamageMod": 20
+  },
+  "tags": [
+    "Health",
+    "SpellDamage",
+    "NonbootsMovement"
+  ]
+}

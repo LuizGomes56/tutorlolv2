@@ -1,0 +1,44 @@
+{
+  "colloq": ";",
+  "depth": 3,
+  "description": "<mainText><stats><attention>90</attention> Ability Power<br><attention>600</attention> Mana<br><attention>15</attention> Ability Haste</stats><br><br><passive>Scorn</passive><br>Gain 20 Ultimate Ability Haste.<br><br><passive>Hatefog</passive><br>Damaging a champion with your Ultimate burns the ground beneath them for 3s, dealing <magicDamage>magic damage</magicDamage> per second and reducing their <scaleMR>Magic Resist</scaleMR>. <br></mainText>",
+  "from": [
+    "3802",
+    "1026"
+  ],
+  "gold": {
+    "base": 650,
+    "purchasable": true,
+    "sell": 1890,
+    "total": 2700
+  },
+  "image": {
+    "full": "3118.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item3.png",
+    "w": 48,
+    "x": 384,
+    "y": 96
+  },
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Malignance",
+  "plaintext": "Partner with an ally to protect each other",
+  "stats": {
+    "FlatMPPoolMod": 600,
+    "FlatMagicDamageMod": 90
+  },
+  "tags": [
+    "SpellDamage",
+    "Mana",
+    "AbilityHaste"
+  ]
+}

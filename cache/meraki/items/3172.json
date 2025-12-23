@@ -1,0 +1,81 @@
+{
+  "active": [],
+  "buildsFrom": [
+    3006
+  ],
+  "buildsInto": [],
+  "name": "Zephyr",
+  "tier": 3,
+  "passives": [
+    {
+      "effects": "Basic attacks [[on-hit]] grant a stack of ''Like The Wind'' for 6 seconds, refreshing on subsequent attacks. For each stack, gain {{as|5% '''bonus''' movement speed|ms}}, stacking up to 5 times for a total of {{as|25%|ms}}.",
+      "name": "Like the Wind",
+      "unique": true
+    }
+  ],
+  "id": 3172,
+  "stats": {
+    "abilityPower": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 50.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 10.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "shop": {
+    "purchasable": true,
+    "prices": {
+      "total": 2500
+    }
+  }
+}

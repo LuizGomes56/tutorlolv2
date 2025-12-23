@@ -1,0 +1,79 @@
+{
+  "active": [],
+  "buildsFrom": [],
+  "buildsInto": [],
+  "name": "Dragonheart",
+  "tier": 3,
+  "passives": [
+    {
+      "effects": "Every 2 rounds, gain a random {{bi|Dragon Soul}}. Additionally, increase your '''total''' {{as|attack damage}}, {{as|ability power}}, {{as|attack speed}}, {{as|'''maximum''' health}}, {{as|armor}}, {{as|magic resistance}}, and {{as|ability haste}} by 4% for each {{bi|Dragon Soul}} you possess, up to 30% at maximum souls.<br><br>Once you have obtained all 6 {{bi|Dragon Soul|Dragon Souls}}, you also gain the {{bi|Aspect of the Dragon}} buff permanently at the next round interval. This buff counts as a soul for this effect, for a total stat increase of 35%.",
+      "name": "Inner Flame",
+      "unique": true
+    }
+  ],
+  "id": 447106,
+  "stats": {
+    "abilityPower": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "shop": {
+    "purchasable": true,
+    "prices": {
+      "total": 0
+    }
+  }
+}

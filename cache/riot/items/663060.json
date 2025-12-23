@@ -1,0 +1,39 @@
+{
+  "colloq": "",
+  "consumeOnFull": true,
+  "description": "<mainText><stats><attention>90</attention> Adaptive Force<br><attention>50%</attention> Critical Strike Chance</stats><br><br><passive>Excoriate</passive><br>Each Critical strike deals random <keyword>bonus Critical Strike Damage</keyword>, scaling up to 50% of your Critical Strike Chance.</mainText>",
+  "gold": {
+    "base": 2500,
+    "purchasable": true,
+    "sell": 1000,
+    "total": 2500
+  },
+  "image": {
+    "full": "663060.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item5.png",
+    "w": 48,
+    "x": 144,
+    "y": 144
+  },
+  "maps": {
+    "11": true,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": false
+  },
+  "name": "Sword of the Divine",
+  "plaintext": "",
+  "stats": {
+    "FlatCritChanceMod": 0.5
+  },
+  "tags": [
+    "Damage",
+    "CriticalStrike",
+    "SpellDamage"
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "active": [],
+  "buildsFrom": [
+    3113,
+    3114
+  ],
+  "buildsInto": [],
+  "name": "Ardent Censer",
+  "tier": 3,
+  "passives": [
+    {
+      "effects": "{{tip|Heal|Healing}} or {{tip|shield|shielding}} allied champions (''excluding yourself'') enhances you and them for 6 seconds, granting {{as|25% '''bonus''' attack speed|attack speed}} and {{as|20 '''bonus''' magic damage}} [[on-hit]] on basic attacks.",
+      "name": "Sanctify",
+      "unique": true
+    }
+  ],
+  "id": 3504,
+  "stats": {
+    "abilityPower": {
+      "flat": 45.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 4.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "shop": {
+    "purchasable": true,
+    "prices": {
+      "total": 2200
+    }
+  }
+}

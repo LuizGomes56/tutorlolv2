@@ -1,0 +1,462 @@
+{
+  "name": "Singed",
+  "attackType": "MELEE",
+  "adaptiveType": "MAGIC_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 650.0,
+      "perLevel": 96.0
+    },
+    "mana": {
+      "flat": 330.0,
+      "perLevel": 45.0
+    },
+    "armor": {
+      "flat": 34.0,
+      "perLevel": 4.2
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 63.0,
+      "perLevel": 3.4
+    },
+    "attackSpeed": {
+      "flat": 0.7,
+      "perLevel": 1.9
+    },
+    "movespeed": {
+      "flat": 345.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.625,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 125.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.08,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 0.9,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": null,
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Innate: Whenever Singed moves near a champion, he gains a stack of Noxious Slipstream for 2 seconds, refreshing on subsequent passes and stacking up to 25 times.",
+            "leveling": []
+          },
+          {
+            "description": "Noxious Slipstream: For each stack, Singed gains 25% bonus movement speed, up to a maximum of 625%.",
+            "leveling": []
+          },
+          {
+            "description": "This effect cannot occur on the same target more than once every few seconds.",
+            "leveling": []
+          }
+        ],
+        "name": "Noxious Slipstream"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Singed earns the kill credit of enemy minions that are poisoned and would die to the damage of allied minions within the time before the next damage instance.",
+            "leveling": []
+          },
+          {
+            "description": "Toggle: Singed continually creates a toxic cloud in his wake that lingers for 3.25 seconds. The cloud inflicts poison to enemies within, and resets the duration every 0.5 seconds while they remain.",
+            "leveling": []
+          },
+          {
+            "description": "poison: The target takes magic damage every 0.25 seconds over 2 seconds. Subsequent inflictions refresh the duration.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage per Tick",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      5.0,
+                      7.5,
+                      10.0,
+                      12.5,
+                      15.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      10.625,
+                      10.625,
+                      10.625,
+                      10.625,
+                      10.625
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      40.0,
+                      60.0,
+                      80.0,
+                      100.0,
+                      120.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      85.0,
+                      85.0,
+                      85.0,
+                      85.0,
+                      85.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Poison Trail"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                17.0,
+                16.0,
+                15.0,
+                14.0,
+                13.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: Singed spills a potent adhesive that lands at the target location after 0.375 seconds, creating a field for 3 seconds that grounds enemies within and slows them.",
+            "leveling": [
+              {
+                "attribute": "Slow",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      50.0,
+                      55.0,
+                      60.0,
+                      65.0,
+                      70.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Mega Adhesive"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                10.0,
+                9.5,
+                9.0,
+                8.5,
+                8.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Singed flings the target enemy 550 units over himself over 0.693 seconds, dealing magic damage. The damage based on the target's health ratio is capped at 300 against minions and monsters.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      50.0,
+                      60.0,
+                      70.0,
+                      80.0,
+                      90.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% of target's maximum health",
+                      "% of target's maximum health",
+                      "% of target's maximum health",
+                      "% of target's maximum health",
+                      "% of target's maximum health"
+                    ],
+                    "values": [
+                      6.0,
+                      6.5,
+                      7.0,
+                      7.5,
+                      8.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      55.0,
+                      55.0,
+                      55.0,
+                      55.0,
+                      55.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "If the target lands on Mega Adhesive's area of effect after the displacement, they are rooted for a duration.",
+            "leveling": [
+              {
+                "attribute": "Root Duration",
+                "modifiers": [
+                  {
+                    "units": [
+                      " seconds",
+                      " seconds",
+                      " seconds",
+                      " seconds",
+                      " seconds"
+                    ],
+                    "values": [
+                      1.0,
+                      1.25,
+                      1.5,
+                      1.75,
+                      2.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Fling"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                100.0,
+                100.0,
+                100.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: Singed empowers himself for 25 seconds with ability power, bonus armor, bonus magic resistance, bonus movement speed, bonus health regeneration, and bonus mana regeneration.",
+            "leveling": [
+              {
+                "attribute": "Bonus Stats",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      25.0,
+                      60.0,
+                      95.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "HP/Mana Regenerated per 0.5 Seconds",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      2.5,
+                      6.0,
+                      9.5
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total HP/Mana Regeneration (per 5 Seconds)",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      125.0,
+                      300.0,
+                      475.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "During this time, Poison Trail additionally applies Grievous Wounds for 1 second, which refreshes every 0.25 seconds while the poison persists.",
+            "leveling": []
+          }
+        ],
+        "name": "Insanity Potion"
+      }
+    ]
+  },
+  "positions": [
+    "TOP"
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "colloq": "",
+  "description": "",
+  "effect": {
+    "Effect1Amount": "3",
+    "Effect2Amount": "3",
+    "Effect3Amount": "0",
+    "Effect4Amount": "0",
+    "Effect5Amount": "40",
+    "Effect6Amount": "40",
+    "Effect7Amount": "9",
+    "Effect8Amount": "12"
+  },
+  "gold": {
+    "base": 0,
+    "purchasable": false,
+    "sell": 0,
+    "total": 0
+  },
+  "image": {
+    "full": "1522.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item0.png",
+    "w": 48,
+    "x": 384,
+    "y": 240
+  },
+  "inStore": false,
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": true
+  },
+  "name": "Tower Power-Up",
+  "plaintext": "",
+  "stats": {},
+  "tags": [
+    "Armor",
+    "Damage"
+  ]
+}

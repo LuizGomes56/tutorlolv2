@@ -1,0 +1,39 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><attention>15</attention> Attack Damage<br><attention>7%</attention> Life Steal</stats><br><br></mainText>",
+  "gold": {
+    "base": 500,
+    "purchasable": false,
+    "sell": 350,
+    "total": 500
+  },
+  "image": {
+    "full": "221053.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item1.png",
+    "w": 48,
+    "x": 384,
+    "y": 0
+  },
+  "inStore": false,
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": false
+  },
+  "name": "Vampiric Scepter",
+  "plaintext": "",
+  "stats": {
+    "FlatPhysicalDamageMod": 15,
+    "PercentLifeStealMod": 0.07
+  },
+  "tags": [
+    "Damage",
+    "LifeSteal"
+  ]
+}

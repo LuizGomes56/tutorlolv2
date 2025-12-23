@@ -1,0 +1,530 @@
+{
+  "name": "Olaf",
+  "attackType": "MELEE",
+  "adaptiveType": "PHYSICAL_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 645.0,
+      "perLevel": 119.0
+    },
+    "mana": {
+      "flat": 316.0,
+      "perLevel": 50.0
+    },
+    "armor": {
+      "flat": 35.0,
+      "perLevel": 4.2
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 68.0,
+      "perLevel": 4.7
+    },
+    "attackSpeed": {
+      "flat": 0.694,
+      "perLevel": 2.7
+    },
+    "movespeed": {
+      "flat": 350.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.694000005722045,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 125.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.05,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": null,
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Innate: Olaf gains bonus attack speed and life steal based on his missing health, up to 50% : 100% (based on level) bonus attack speed and 8% : 25% (based on level) life steal at 70% missing health.",
+            "leveling": []
+          }
+        ],
+        "name": "Berserker Rage"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                9.0,
+                9.0,
+                9.0,
+                9.0,
+                9.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Olaf throws an axe to the target location that deals physical damage to enemies it passes through and slows them for 1.5 : 2.5 (based on distance traveled) seconds. Enemy champions hit are also inflicted with 20% armor reduction for 4 seconds.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      60.0,
+                      110.0,
+                      160.0,
+                      210.0,
+                      260.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Slow",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      25.0,
+                      30.0,
+                      35.0,
+                      40.0,
+                      45.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Nearby monsters are granted ghosting for 5 seconds upon Undertow's cast.",
+            "leveling": []
+          },
+          {
+            "description": "The axe remains in place for a duration equal to Undertow's cooldown, granting sight of its surroundings for 0.5 seconds. Olaf can pick up the axe to reduce Undertow's current cooldown to 2.5 : 0 (based on seconds elapsed since axe landed).",
+            "leveling": []
+          },
+          {
+            "description": "Undertow deals bonus physical damage against monsters.",
+            "leveling": [
+              {
+                "attribute": "Monster Bonus Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      10.0,
+                      25.0,
+                      40.0,
+                      55.0,
+                      70.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Monster Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      70.0,
+                      135.0,
+                      200.0,
+                      265.0,
+                      330.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Undertow"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                16.0,
+                15.0,
+                14.0,
+                13.0,
+                12.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: Olaf gains bonus attack speed for 5 seconds.",
+            "leveling": [
+              {
+                "attribute": "Bonus Attack Speed",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      40.0,
+                      50.0,
+                      60.0,
+                      70.0,
+                      80.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Gaining Tough It Out's attack speed buff resets Olaf's basic attack timer.",
+            "leveling": []
+          },
+          {
+            "description": "He also grants himself a shield for 2.5 seconds for an amount that is capped at 70% missing health.",
+            "leveling": [
+              {
+                "attribute": "Shield Strength",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      10.0,
+                      40.0,
+                      70.0,
+                      100.0,
+                      130.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% missing health",
+                      "% missing health",
+                      "% missing health",
+                      "% missing health",
+                      "% missing health"
+                    ],
+                    "values": [
+                      17.5,
+                      17.5,
+                      17.5,
+                      17.5,
+                      17.5
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Tough It Out"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                11.0,
+                10.0,
+                9.0,
+                8.0,
+                7.0
+              ]
+            }
+          ]
+        },
+        "damageType": "TRUE_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Olaf strikes thunder onto the target enemy, dealing true damage.",
+            "leveling": [
+              {
+                "attribute": "True Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      70.0,
+                      115.0,
+                      160.0,
+                      205.0,
+                      250.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      50.0,
+                      50.0,
+                      50.0,
+                      50.0,
+                      50.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Basic attacks reduce Reckless Swing's cooldown by 1 second, increased to 2 against monsters.",
+            "leveling": []
+          },
+          {
+            "description": "If Reckless Swing kills the target, Olaf heals himself equal to the health cost.",
+            "leveling": []
+          }
+        ],
+        "name": "Reckless Swing"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                100.0,
+                90.0,
+                80.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: Olaf becomes enraged for 3 seconds, cleansing himself of all crowd control and becoming immune to them, as well as gaining bonus attack damage and 10% increased size. For the first second of Ragnarok, he also gains bonus movement speed while facing visible enemy champions within 2000 units.",
+            "leveling": [
+              {
+                "attribute": "Bonus Attack Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      10.0,
+                      20.0,
+                      30.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      25.0,
+                      25.0,
+                      25.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Bonus Movement Speed",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      20.0,
+                      45.0,
+                      70.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Passive: Olaf gains bonus armor and bonus magic resistance.",
+            "leveling": [
+              {
+                "attribute": "Bonus Resistances",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      10.0,
+                      15.0,
+                      20.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Ragnarok's duration is increased by and up to 2.5 seconds for each basic attack on-hit or cast of Reckless Swing against an enemy champion.",
+            "leveling": []
+          }
+        ],
+        "name": "Ragnarok"
+      }
+    ]
+  },
+  "positions": [
+    "TOP"
+  ]
+}

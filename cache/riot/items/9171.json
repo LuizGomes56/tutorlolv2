@@ -1,0 +1,32 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats></stats><br><br>Orbiting projectiles damage and knock back enemies.<br><br><status>Evolve:</status> Health Regeneration<br><br><rules>Damage, Ability Haste, Area Size, Projectile Count, Duration</rules></mainText>",
+  "gold": {
+    "base": 0,
+    "purchasable": true,
+    "sell": 0,
+    "total": 0
+  },
+  "image": {
+    "full": "9171.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item5.png",
+    "w": 48,
+    "x": 48,
+    "y": 384
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": false,
+    "33": true,
+    "35": false
+  },
+  "name": "Cyclonic Slicers",
+  "plaintext": "",
+  "stats": {},
+  "tags": []
+}

@@ -1,0 +1,44 @@
+{
+  "colloq": "",
+  "depth": 3,
+  "description": "<mainText><stats><attention>700</attention> Health<br><attention>20%</attention> Critical Strike Chance</stats><br><br><passive>Big Hands</passive><br>Gain 0-30% Critical Strike Chance, scaling with your <scaleHealth>bonus Health</scaleHealth>.</mainText>",
+  "from": [
+    "1011",
+    "1018",
+    "1011"
+  ],
+  "gold": {
+    "base": 500,
+    "purchasable": true,
+    "sell": 2030,
+    "total": 2900
+  },
+  "image": {
+    "full": "3039.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item2.png",
+    "w": 48,
+    "x": 0,
+    "y": 384
+  },
+  "maps": {
+    "11": false,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": false
+  },
+  "name": "Atma's Reckoning",
+  "plaintext": "",
+  "stats": {
+    "FlatCritChanceMod": 0.2,
+    "FlatHPPoolMod": 700
+  },
+  "tags": [
+    "Health",
+    "CriticalStrike"
+  ]
+}

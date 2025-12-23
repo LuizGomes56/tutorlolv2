@@ -1,0 +1,37 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><attention>40</attention> Ability Haste<br><attention>45</attention> Move Speed</stats><br><br>Gain 10 Summoner Spell Haste.</mainText>",
+  "gold": {
+    "base": 500,
+    "purchasable": true,
+    "sell": 350,
+    "total": 500
+  },
+  "image": {
+    "full": "223158.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item1.png",
+    "w": 48,
+    "x": 0,
+    "y": 384
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": false
+  },
+  "name": "Ionian Boots of Lucidity",
+  "plaintext": "",
+  "stats": {
+    "FlatMovementSpeedMod": 45
+  },
+  "tags": [
+    "Boots",
+    "CooldownReduction"
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><attention>15</attention> Attack Damage<br><attention>250</attention> Health<br><attention>100%</attention> Base Health Regen<br><attention>3</attention> Gold Per 10 Seconds</stats><br><br><br><br><rules>This item grants reduced gold from minions if anyone on your team with this item kill excessive numbers of them.</rules><br><br><br><br><active>ACTIVE</active><br><active>Ward</active> <br>Place an <keywordStealth>Invisible</keywordStealth> Stealth Ward that grants vision. Stores 0 Stealth Wards, which refill upon visiting the shop. </mainText>",
+  "effect": {
+    "Effect1Amount": "3"
+  },
+  "gold": {
+    "base": 400,
+    "purchasable": false,
+    "sell": 160,
+    "total": 400
+  },
+  "image": {
+    "full": "3857.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item4.png",
+    "w": 48,
+    "x": 48,
+    "y": 96
+  },
+  "inStore": false,
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": false
+  },
+  "name": "Pauldrons of Whiterock",
+  "plaintext": "",
+  "specialRecipe": 3855,
+  "stats": {
+    "FlatHPPoolMod": 250,
+    "FlatPhysicalDamageMod": 15
+  },
+  "tags": [
+    "Health",
+    "HealthRegen",
+    "GoldPer",
+    "Lane"
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "active": [],
+  "buildsFrom": [
+    3086,
+    3144
+  ],
+  "buildsInto": [],
+  "name": "Runaan's Hurricane",
+  "tier": 3,
+  "passives": [
+    {
+      "effects": "Basic attacks [[on-attack]] fire additional bolts at up to 2 enemies {{tt|in front of you|180{{degree}}}}, each dealing {{as|55% AD}} {{as|physical damage}}. Bolts apply {{tip|on-hit}} effects and are affected by {{tip|critical strike}} modifiers.",
+      "name": "Wind's Fury",
+      "unique": true
+    }
+  ],
+  "id": 3085,
+  "stats": {
+    "abilityPower": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 40.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 25.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 4.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "shop": {
+    "purchasable": true,
+    "prices": {
+      "total": 2650
+    }
+  }
+}

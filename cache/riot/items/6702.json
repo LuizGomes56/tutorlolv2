@@ -1,0 +1,39 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats></stats><br><br><mainText><active>UNIQUE Active:</active> Scout target area, granting vision for 5 seconds. Reveal enemy champions and grant <font color='#ee91d7'>True Sight</font> of traps in the area for 3 seconds (60 second cooldown).</mainText></mainText>",
+  "gold": {
+    "base": 0,
+    "purchasable": false,
+    "sell": 0,
+    "total": 0
+  },
+  "image": {
+    "full": "6702.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item5.png",
+    "w": 48,
+    "x": 240,
+    "y": 336
+  },
+  "inStore": false,
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Scouting Ahead",
+  "plaintext": "",
+  "stats": {},
+  "tags": [
+    "Active",
+    "Jungle",
+    "Lane",
+    "Trinket",
+    "Vision"
+  ]
+}

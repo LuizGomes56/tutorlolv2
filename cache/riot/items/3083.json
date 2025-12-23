@@ -1,0 +1,43 @@
+{
+  "colloq": ";",
+  "depth": 3,
+  "description": "<mainText><stats><attention>1000</attention> Health<br><attention>100%</attention> Base Health Regen</stats><br><br><passive>Warmog's Heart</passive> <br>If you have 2000 bonus Health and have not taken damage within 8 seconds, restore <healing></healing> Health per second.<br><br><passive>Warmog's Vitality</passive><br>Gain bonus Health equal to 12% of your Item Health (<healing>0</healing>).</mainText>",
+  "from": [
+    "1011",
+    "1011",
+    "3801"
+  ],
+  "gold": {
+    "base": 500,
+    "purchasable": true,
+    "sell": 2170,
+    "total": 3100
+  },
+  "image": {
+    "full": "3083.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item3.png",
+    "w": 48,
+    "x": 240,
+    "y": 0
+  },
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Warmog's Armor",
+  "plaintext": "Grants massive Health and Health Regen",
+  "stats": {
+    "FlatHPPoolMod": 1000
+  },
+  "tags": [
+    "Health",
+    "HealthRegen"
+  ]
+}

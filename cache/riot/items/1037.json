@@ -1,0 +1,59 @@
+{
+  "colloq": ";",
+  "description": "<mainText><stats><attention>25</attention> Attack Damage</stats><br><br></mainText>",
+  "gold": {
+    "base": 875,
+    "purchasable": true,
+    "sell": 613,
+    "total": 875
+  },
+  "image": {
+    "full": "1037.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item0.png",
+    "w": 48,
+    "x": 144,
+    "y": 48
+  },
+  "into": [
+    "667666",
+    "3071",
+    "6333",
+    "3031",
+    "3153",
+    "6701",
+    "2020",
+    "3053",
+    "3508",
+    "3072",
+    "3087",
+    "3124",
+    "3181",
+    "3139",
+    "3161",
+    "6029",
+    "6035",
+    "6673",
+    "6676",
+    "6692",
+    "6695"
+  ],
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Pickaxe",
+  "plaintext": "Moderately increases Attack Damage",
+  "stats": {
+    "FlatPhysicalDamageMod": 25
+  },
+  "tags": [
+    "Damage"
+  ]
+}

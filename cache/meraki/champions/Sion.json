@@ -1,0 +1,785 @@
+{
+  "name": "Sion",
+  "attackType": "MELEE",
+  "adaptiveType": "PHYSICAL_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 655.0,
+      "perLevel": 87.0
+    },
+    "mana": {
+      "flat": 400.0,
+      "perLevel": 52.0
+    },
+    "armor": {
+      "flat": 36.0,
+      "perLevel": 4.2
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 68.0,
+      "perLevel": 4.0
+    },
+    "attackSpeed": {
+      "flat": 0.679,
+      "perLevel": 1.3
+    },
+    "movespeed": {
+      "flat": 345.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.67900002002716,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.1,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 0.9,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 0.92,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.1,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": null,
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Innate: Upon taking fatal damage, Sion enters stasis for 1.5 seconds to reanimate into a frenzy, restoring 100% of his maximum health but losing 2.3 : 24.4 (based on level) health every 0.264 seconds, increasing by[ 70% of the base value ][ 1.61 : 17.08 (based on level) ]per subsequent tick. Sion's health regeneration and any healing (except life steal) he receives during this time is 0% effective.",
+            "leveling": []
+          },
+          {
+            "description": "Sion can only move and use his basic attacks and item actives, and empowers himself with the following effects:\n 1.75 attack speed minimum and maximum\n 100% life steal\nDeals bonus physical damage on-hit equal to 10% of the target's maximum health, capped at 75 against non-champions\n Ghosting\nOne cast of Death Surge, which replaces all of his abilities",
+            "leveling": []
+          },
+          {
+            "description": "Sion's damage to structures is reduced to 40% under the effects of Glory in Death.",
+            "leveling": []
+          }
+        ],
+        "name": "Glory in Death"
+      },
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                100.0,
+                100.0,
+                100.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: Sion gains 67% bonus movement speed that decays over 2.376 seconds.\nOnce at least one ability has been learned, Death Surge can be cast using any ability key, even for the abilities that haven't been learned yet.",
+            "leveling": []
+          }
+        ],
+        "name": "Death Surge"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                10.0,
+                9.0,
+                8.0,
+                7.0,
+                6.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Sion prepares a strike in the target direction, charging for up to 2 seconds to increase Decimating Smash's range over an area, knock up duration, stun duration, and damage every 0.25 seconds, which has up to a maximum bonus for the base damage and up to a 200% bonus for the scaling damage.",
+            "leveling": [
+              {
+                "attribute": "Maximum Base Damage Increase",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      125.0,
+                      158.33,
+                      175.0,
+                      185.0,
+                      191.67
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Maximum Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      90.0,
+                      155.0,
+                      220.0,
+                      285.0,
+                      350.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      120.0,
+                      150.0,
+                      180.0,
+                      210.0,
+                      240.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Minimum Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      40.0,
+                      60.0,
+                      80.0,
+                      100.0,
+                      120.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      40.0,
+                      50.0,
+                      60.0,
+                      70.0,
+                      80.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Decimating Smash can be recast within the duration, and does so automatically afterwards. If the charge is interrupted, Decimating Smash is placed on a 2-second cooldown.",
+            "leveling": []
+          },
+          {
+            "description": "If Decimating Smash was charged for at least 1 second, Sion instead slams his axe down, dealing physical damage to enemies hit, knocking them up for 0.5 : 1 (based on channel time) seconds, and stunning them for 1.25 : 2.25 (based on channel time) seconds.",
+            "leveling": []
+          },
+          {
+            "description": "Recast: Sion flails his axe in the direction he targeted at the time of cast, dealing physical damage to enemies hit and slowing them by 50% for 0.25 seconds. Decimating Smash deals 150% damage against monsters and 60% damage against minions.",
+            "leveling": [
+              {
+                "attribute": "Maximum Minion Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      54.0,
+                      93.0,
+                      132.0,
+                      171.0,
+                      210.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      72.0,
+                      90.0,
+                      108.0,
+                      126.0,
+                      144.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Maximum Monster Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      135.0,
+                      232.5,
+                      330.0,
+                      427.5,
+                      525.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      180.0,
+                      225.0,
+                      270.0,
+                      315.0,
+                      360.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Minimum Minion Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      24.0,
+                      36.0,
+                      48.0,
+                      60.0,
+                      72.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      24.0,
+                      30.0,
+                      36.0,
+                      42.0,
+                      48.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Minimum Monster Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      60.0,
+                      90.0,
+                      120.0,
+                      150.0,
+                      180.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      60.0,
+                      75.0,
+                      90.0,
+                      105.0,
+                      120.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Decimating Smash"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                15.0,
+                14.0,
+                13.0,
+                12.0,
+                11.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Sion grants himself a shield that lasts for up to 6 seconds. Soul Furnace can be recast after 3 seconds while the shield holds, and does so automatically at the end of the duration.",
+            "leveling": [
+              {
+                "attribute": "Shield Strength",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      60.0,
+                      75.0,
+                      90.0,
+                      105.0,
+                      120.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      40.0,
+                      40.0,
+                      40.0,
+                      40.0,
+                      40.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% maximum health",
+                      "% maximum health",
+                      "% maximum health",
+                      "% maximum health",
+                      "% maximum health"
+                    ],
+                    "values": [
+                      8.0,
+                      10.0,
+                      12.0,
+                      14.0,
+                      16.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Both of Soul Furnace's casts can be activated during Sion's other abilities.",
+            "leveling": []
+          },
+          {
+            "description": "Passive: Sion gains 4 bonus health whenever he kills an enemy, increased to 15 for large enemies and takedowns against enemy champions.",
+            "leveling": []
+          },
+          {
+            "description": "Recast: Sion consumes the shield to deal magic damage to nearby enemies, capped at 400 against minions and monsters.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      40.0,
+                      65.0,
+                      90.0,
+                      115.0,
+                      140.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      40.0,
+                      40.0,
+                      40.0,
+                      40.0,
+                      40.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% of target's maximum health",
+                      "% of target's maximum health",
+                      "% of target's maximum health",
+                      "% of target's maximum health",
+                      "% of target's maximum health"
+                    ],
+                    "values": [
+                      14.0,
+                      14.0,
+                      14.0,
+                      14.0,
+                      14.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Soul Furnace"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                12.0,
+                11.0,
+                10.0,
+                9.0,
+                8.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Sion bellows a shockwave in the target direction that deals magic damage to the first enemy hit, slows them for 2.5 seconds and inflicts them with 20% armor reduction for 4 seconds.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      65.0,
+                      100.0,
+                      135.0,
+                      170.0,
+                      205.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      55.0,
+                      55.0,
+                      55.0,
+                      55.0,
+                      55.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Slow",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      40.0,
+                      45.0,
+                      50.0,
+                      55.0,
+                      60.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "If the target is a minion or non-epic monster, they are also stunned for 0.75 seconds and knocked back for up to 1350 units further, though not through terrain, applying Roar of the Slayer's effects to enemies they pass through as well as briefly granting sight of the area around their trajectory.",
+            "leveling": []
+          }
+        ],
+        "name": "Roar of the Slayer"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                140.0,
+                100.0,
+                60.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Sion becomes immune to crowd control and ghosted and, after a brief delay, charges forward in the direction of the cursor for up to 8 seconds, during which he is able to steer at a slow turn rate while automatically navigating his movement. Unstoppable Onslaught can be recast after 0.4 seconds during the channel.",
+            "leveling": []
+          },
+          {
+            "description": "At the end of the charge's duration, Sion leaps forward 300 units, landing after 0.55 seconds and slamming the ground beneath him. Sion will stop upon colliding with an enemy champion or terrain during the charge, ending Unstoppable Onslaught with a slam. Crashing into terrain stuns Sion for 0.5 seconds.",
+            "leveling": []
+          },
+          {
+            "description": "Enemies hit by Sion's charge are dealt physical damage. The base damage increases by 0% : 166.67% (based on channel time) and the scaling increases by 0% : 100% (based on channel time).",
+            "leveling": [
+              {
+                "attribute": "Maximum Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      400.0,
+                      800.0,
+                      1200.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      80.0,
+                      80.0,
+                      80.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Minimum Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      150.0,
+                      300.0,
+                      450.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      40.0,
+                      40.0,
+                      40.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Enemies, including turrets, hit by the slam are dealt the same damage and are slowed for 3 seconds. Enemies in a smaller radius are also pulled towards Sion over 0.5 seconds and become stunned after a brief delay for 0.25 : 1.75 (based on channel time) seconds.",
+            "leveling": [
+              {
+                "attribute": "Slow",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      40.0,
+                      45.0,
+                      50.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Recast: Sion stops charging, causing him to leap forward and slam the ground beneath him as if Unstoppable Onslaught had reached the end of its duration.",
+            "leveling": []
+          },
+          {
+            "description": "The charge ramps up Sion's movement speed at the time of cast by 40 movement speed every 0.1 seconds, up to 950 total movement speed.",
+            "leveling": []
+          }
+        ],
+        "name": "Unstoppable Onslaught"
+      }
+    ]
+  },
+  "positions": [
+    "TOP"
+  ]
+}

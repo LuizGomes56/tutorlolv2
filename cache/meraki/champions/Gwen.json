@@ -1,0 +1,874 @@
+{
+  "name": "Gwen",
+  "attackType": "MELEE",
+  "adaptiveType": "MAGIC_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 600.0,
+      "perLevel": 110.0
+    },
+    "mana": {
+      "flat": 330.0,
+      "perLevel": 40.0
+    },
+    "armor": {
+      "flat": 36.0,
+      "perLevel": 4.9
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 63.0,
+      "perLevel": 3.0
+    },
+    "attackSpeed": {
+      "flat": 0.69,
+      "perLevel": 2.25
+    },
+    "movespeed": {
+      "flat": 340.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.69,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 150.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.02,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": null,
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "A Thousand Cuts is modified based on the target:\n Heals Gwen for 50% of post-mitigation damage dealt against champions, capped at 10 : 25 (based on level) (+ 6.5% AP) per instance.\nDeals an additional 8 : 30 (based on level) bonus magic damage against minions that are below 40% health.\nDeals a maximum of 5 (+ 10% AP) magic damage against monsters.",
+            "leveling": []
+          },
+          {
+            "description": "Innate: Gwen's basic attacks on-hit, the center of Snip Snip!, and Needlework deal bonus magic damage equal to 1% (+ 0.55% per 100 AP) of the target's maximum health.",
+            "leveling": []
+          }
+        ],
+        "name": "A Thousand Cuts"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                6.5,
+                5.75,
+                5.0,
+                4.25,
+                3.5
+              ]
+            }
+          ]
+        },
+        "damageType": "OTHER_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Gwen snips at least twice with her scissors in a cone in the target direction over the cast time, dealing magic damage per snip to all enemies within the area, with the final snip dealing increased damage. The center of each snip converts 50% of the damage to true damage, then applies A Thousand Cuts. Snip Snip! deals 75% damage against minions, and executes them on the first damage instance if they are below 20% health.",
+            "leveling": [
+              {
+                "attribute": "Center Damage per Snip",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      10.0,
+                      15.0,
+                      20.0,
+                      25.0,
+                      30.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      2.0,
+                      2.0,
+                      2.0,
+                      2.0,
+                      2.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% (+ 0.55% per 100 AP) of the target's maximum health",
+                      "% (+ 0.55% per 100 AP) of the target's maximum health",
+                      "% (+ 0.55% per 100 AP) of the target's maximum health",
+                      "% (+ 0.55% per 100 AP) of the target's maximum health",
+                      "% (+ 0.55% per 100 AP) of the target's maximum health"
+                    ],
+                    "values": [
+                      1.0,
+                      1.0,
+                      1.0,
+                      1.0,
+                      1.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Damage per Snip",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      10.0,
+                      15.0,
+                      20.0,
+                      25.0,
+                      30.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      2.0,
+                      2.0,
+                      2.0,
+                      2.0,
+                      2.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Final Snip Center Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      60.0,
+                      85.0,
+                      110.0,
+                      135.0,
+                      160.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      35.0,
+                      35.0,
+                      35.0,
+                      35.0,
+                      35.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% (+ 0.55% per 100 AP) of the target's maximum health",
+                      "% (+ 0.55% per 100 AP) of the target's maximum health",
+                      "% (+ 0.55% per 100 AP) of the target's maximum health",
+                      "% (+ 0.55% per 100 AP) of the target's maximum health",
+                      "% (+ 0.55% per 100 AP) of the target's maximum health"
+                    ],
+                    "values": [
+                      1.0,
+                      1.0,
+                      1.0,
+                      1.0,
+                      1.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Final Snip Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      60.0,
+                      85.0,
+                      110.0,
+                      135.0,
+                      160.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      35.0,
+                      35.0,
+                      35.0,
+                      35.0,
+                      35.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "If Gwen has any Snippy stacks, she consumes them to snip an additional time for each.",
+            "leveling": [
+              {
+                "attribute": "Maximum Center Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      110.0,
+                      160.0,
+                      210.0,
+                      260.0,
+                      310.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      45.0,
+                      45.0,
+                      45.0,
+                      45.0,
+                      45.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% (+ 3.3% per 100 AP) of the target's maximum health",
+                      "% (+ 3.3% per 100 AP) of the target's maximum health",
+                      "% (+ 3.3% per 100 AP) of the target's maximum health",
+                      "% (+ 3.3% per 100 AP) of the target's maximum health",
+                      "% (+ 3.3% per 100 AP) of the target's maximum health"
+                    ],
+                    "values": [
+                      6.0,
+                      6.0,
+                      6.0,
+                      6.0,
+                      6.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Maximum Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      110.0,
+                      160.0,
+                      210.0,
+                      260.0,
+                      310.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      45.0,
+                      45.0,
+                      45.0,
+                      45.0,
+                      45.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Minimum Center Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      70.0,
+                      100.0,
+                      130.0,
+                      160.0,
+                      190.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      37.0,
+                      37.0,
+                      37.0,
+                      37.0,
+                      37.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% (+ 1.1% per 100 AP) of the target's maximum health",
+                      "% (+ 1.1% per 100 AP) of the target's maximum health",
+                      "% (+ 1.1% per 100 AP) of the target's maximum health",
+                      "% (+ 1.1% per 100 AP) of the target's maximum health",
+                      "% (+ 1.1% per 100 AP) of the target's maximum health"
+                    ],
+                    "values": [
+                      2.0,
+                      2.0,
+                      2.0,
+                      2.0,
+                      2.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Minimum Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      70.0,
+                      100.0,
+                      130.0,
+                      160.0,
+                      190.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      37.0,
+                      37.0,
+                      37.0,
+                      37.0,
+                      37.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Passive: Gwen's basic attacks generate a stack of Snippy on-hit for 6 seconds, stacking up to 4 times and refreshing on subsequent attacks.",
+            "leveling": []
+          }
+        ],
+        "name": "Snip Snip!"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                24.0,
+                22.5,
+                21.0,
+                19.5,
+                18.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: Gwen summons the Hallowed Mist upon her current location, lasting for 4 seconds. Hallowed Mist can be recast after 0.5 seconds, and does so automatically if Gwen attempts to leave the area.",
+            "leveling": []
+          },
+          {
+            "description": "Gwen negates all attacks by monsters outside of the mist.",
+            "leveling": []
+          },
+          {
+            "description": "Recast: Gwen commands the mist to move to her current location.",
+            "leveling": []
+          },
+          {
+            "description": "While inside the mist, Gwen becomes ghosted, gains 22 (+ 7% AP) bonus armor and bonus magic resistance and is untargetable to all enemies (except turrets and monsters) outside of the mist.",
+            "leveling": []
+          }
+        ],
+        "name": "Hallowed Mist"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                12.0,
+                11.0,
+                10.0,
+                9.0,
+                8.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Gwen dashes to the target location, then empowers her basic attacks within the next 4 seconds to deal bonus magic damage on-hit and gain bonus attack speed and 75 bonus attack range.",
+            "leveling": [
+              {
+                "attribute": "Bonus Attack Speed",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      20.0,
+                      35.0,
+                      50.0,
+                      65.0,
+                      80.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Bonus Magic Damage On-Hit",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      8.0,
+                      11.0,
+                      14.0,
+                      17.0,
+                      20.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      25.0,
+                      25.0,
+                      25.0,
+                      25.0,
+                      25.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Gwen's first basic attack within the duration reduces Skip 'n Slash's cooldown by 50%.",
+            "leveling": []
+          },
+          {
+            "description": "Skip 'n Slash resets Gwen's basic attack timer, and can be cast during any of her abilities, and vice versa.",
+            "leveling": []
+          }
+        ],
+        "name": "Skip 'n Slash"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                120.0,
+                100.0,
+                80.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Gwen launches a needle in the target direction that deals magic damage to enemies hit and slows them by 60% for 1.5 seconds.",
+            "leveling": [
+              {
+                "attribute": "Damage with A Thousand Cuts",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      30.0,
+                      60.0,
+                      90.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      8.0,
+                      8.0,
+                      8.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% (+ 0.55% per 100 AP) of the target's maximum health",
+                      "% (+ 0.55% per 100 AP) of the target's maximum health",
+                      "% (+ 0.55% per 100 AP) of the target's maximum health"
+                    ],
+                    "values": [
+                      1.0,
+                      1.0,
+                      1.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Magic Damage per Needle",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      30.0,
+                      60.0,
+                      90.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      8.0,
+                      8.0,
+                      8.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Gwen can move during Needlework's cast times.",
+            "leveling": []
+          },
+          {
+            "description": "Needlework can be recast twice more within 6 seconds of the activation at no additional cost, with a 1-second static cooldown between casts. Each subsequent cast refreshes the duration and increases the number of needles launched by 2. Needle hits beyond the first apply a slow of 25% against each individual target.",
+            "leveling": []
+          },
+          {
+            "description": "Recast: Gwen mimics the first cast's effects, while barraging three needles on the second cast and five on the third cast.",
+            "leveling": [
+              {
+                "attribute": "Maximum Total Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      270.0,
+                      540.0,
+                      810.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      72.0,
+                      72.0,
+                      72.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% (+ 4.95% per 100 AP) of the target's maximum health",
+                      "% (+ 4.95% per 100 AP) of the target's maximum health",
+                      "% (+ 4.95% per 100 AP) of the target's maximum health"
+                    ],
+                    "values": [
+                      9.0,
+                      9.0,
+                      9.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Second Cast Total Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      90.0,
+                      180.0,
+                      270.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      24.0,
+                      24.0,
+                      24.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% (+ 1.65% per 100 AP) of the target's maximum health",
+                      "% (+ 1.65% per 100 AP) of the target's maximum health",
+                      "% (+ 1.65% per 100 AP) of the target's maximum health"
+                    ],
+                    "values": [
+                      3.0,
+                      3.0,
+                      3.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Third Cast Total Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      150.0,
+                      300.0,
+                      450.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      40.0,
+                      40.0,
+                      40.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% (+ 2.75% per 100 AP) of the target's maximum health",
+                      "% (+ 2.75% per 100 AP) of the target's maximum health",
+                      "% (+ 2.75% per 100 AP) of the target's maximum health"
+                    ],
+                    "values": [
+                      5.0,
+                      5.0,
+                      5.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Needlework"
+      }
+    ]
+  },
+  "positions": [
+    "JUNGLE",
+    "TOP"
+  ]
+}

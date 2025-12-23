@@ -1,0 +1,88 @@
+{
+  "active": [],
+  "buildsFrom": [
+    3144,
+    6690,
+    1037
+  ],
+  "buildsInto": [],
+  "name": "Statikk Shiv",
+  "tier": 3,
+  "passives": [
+    {
+      "effects": "Scoring a {{tip|takedown}} against an enemy champion within 3 seconds of damaging them resets ''Electrospark's'' cooldown.",
+      "name": "Electroshock",
+      "unique": true
+    },
+    {
+      "effects": "Your next 3 basic attacks {{tip|on-hit}} within 8 seconds are empowered to deal {{as|60 '''bonus''' magic damage}}, increased to {{as|85|magic damage}} against non-champions. This bounces to the closest target within 500 units, repeating from the new target to strike up to 5 targets ({{pp|25 to 10 for 6|1;8 to 12}} second cooldown, starts after using the first empowered attack).",
+      "name": "Electrospark",
+      "unique": true
+    }
+  ],
+  "id": 3087,
+  "stats": {
+    "abilityPower": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 45.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 30.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 4.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "shop": {
+    "purchasable": true,
+    "prices": {
+      "total": 2700
+    }
+  }
+}

@@ -1,0 +1,169 @@
+{
+  "name": "Jayce",
+  "adaptative_type": "Physical",
+  "attack_type": "Ranged",
+  "positions": [
+    "Middle",
+    "Top"
+  ],
+  "stats": {
+    "health": {
+      "flat": 590.0,
+      "perLevel": 109.0
+    },
+    "mana": {
+      "flat": 375.0,
+      "perLevel": 45.0
+    },
+    "armor": {
+      "flat": 22.0,
+      "perLevel": 5.0
+    },
+    "magicResistance": {
+      "flat": 30.0,
+      "perLevel": 1.3
+    },
+    "attackDamage": {
+      "flat": 59.0,
+      "perLevel": 4.25
+    },
+    "attackSpeed": {
+      "flat": 0.658,
+      "perLevel": 3.0
+    },
+    "movespeed": {
+      "flat": 335.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.657999992370605,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 125.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.05,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.05,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 0.92,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": [
+    [
+      {
+        "type": "W",
+        "name": "_3"
+      },
+      {
+        "name": "Lightning Field",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "35 + (0.25 * ctx.ap)",
+          "50 + (0.25 * ctx.ap)",
+          "65 + (0.25 * ctx.ap)",
+          "80 + (0.25 * ctx.ap)",
+          "95 + (0.25 * ctx.ap)",
+          "110 + (0.25 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Thundering Blow",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "(0.08 * ctx.enemy_max_health) + ctx.bonus_ad",
+          "(0.10800000000000001 * ctx.enemy_max_health) + ctx.bonus_ad",
+          "(0.136 * ctx.enemy_max_health) + ctx.bonus_ad",
+          "(0.16399999999999998 * ctx.enemy_max_health) + ctx.bonus_ad",
+          "(0.192 * ctx.enemy_max_health) + ctx.bonus_ad",
+          "(0.22 * ctx.enemy_max_health) + ctx.bonus_ad"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_2"
+      },
+      {
+        "name": "Thundering Blow",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "200",
+          "300",
+          "400",
+          "500",
+          "600",
+          "700"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "To the Skies!",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "60 + (1.35 * ctx.bonus_ad)",
+          "105 + (1.35 * ctx.bonus_ad)",
+          "150 + (1.35 * ctx.bonus_ad)",
+          "195 + (1.35 * ctx.bonus_ad)",
+          "240 + (1.35 * ctx.bonus_ad)",
+          "285 + (1.35 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_2"
+      },
+      {
+        "name": "Lightning Field",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "140 + ctx.ap",
+          "200 + ctx.ap",
+          "260 + ctx.ap",
+          "320 + ctx.ap",
+          "380 + ctx.ap",
+          "440 + ctx.ap"
+        ]
+      }
+    ]
+  ],
+  "merge_data": []
+}

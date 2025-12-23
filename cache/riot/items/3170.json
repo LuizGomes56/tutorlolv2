@@ -1,0 +1,40 @@
+{
+  "colloq": ";",
+  "depth": 3,
+  "description": "<mainText><stats><attention>65</attention> Move Speed</stats><br><br><passive>Fleetfooted</passive><br>Reduce the effectiveness of <keyword>Slows</keyword> by 25%.<br><br><passive>Noxian Fervor</passive><br>Gain 5% of your <speed>Move Speed</speed> as Adaptive Force. </mainText>",
+  "from": [
+    "3009"
+  ],
+  "gold": {
+    "base": 500,
+    "purchasable": true,
+    "sell": 1050,
+    "total": 1500
+  },
+  "image": {
+    "full": "3170.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item3.png",
+    "w": 48,
+    "x": 240,
+    "y": 240
+  },
+  "maps": {
+    "11": true,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": false
+  },
+  "name": "Swiftmarch",
+  "plaintext": "Improves defense and reduces duration of disabling effects",
+  "stats": {
+    "FlatMovementSpeedMod": 65
+  },
+  "tags": [
+    "Boots"
+  ]
+}

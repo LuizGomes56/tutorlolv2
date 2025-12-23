@@ -1,0 +1,177 @@
+{
+  "name": "Cho'Gath",
+  "adaptative_type": "Magic",
+  "attack_type": "Melee",
+  "positions": [
+    "Top"
+  ],
+  "stats": {
+    "health": {
+      "flat": 644.0,
+      "perLevel": 94.0
+    },
+    "mana": {
+      "flat": 270.0,
+      "perLevel": 60.0
+    },
+    "armor": {
+      "flat": 38.0,
+      "perLevel": 4.5
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 69.0,
+      "perLevel": 4.2
+    },
+    "attackSpeed": {
+      "flat": 0.658,
+      "perLevel": 1.44
+    },
+    "movespeed": {
+      "flat": 345.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.625,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 125.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.1,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": [
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Feral Scream",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "80 + (0.7 * ctx.ap)",
+          "130 + (0.7 * ctx.ap)",
+          "180 + (0.7 * ctx.ap)",
+          "230 + (0.7 * ctx.ap)",
+          "280 + (0.7 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_2"
+      },
+      {
+        "name": "Vorpal Spikes",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "60 + (0.9 * ctx.ap) + (0.075 * ctx.enemy_max_health) + (0.015 * ctx.chogath_stacks)",
+          "120 + (0.9 * ctx.ap) + (0.0855 * ctx.enemy_max_health) + (0.015 * ctx.chogath_stacks)",
+          "180 + (0.9 * ctx.ap) + (0.096 * ctx.enemy_max_health) + (0.015 * ctx.chogath_stacks)",
+          "240 + (0.9 * ctx.ap) + (0.1065 * ctx.enemy_max_health) + (0.015 * ctx.chogath_stacks)",
+          "300 + (0.9 * ctx.ap) + (0.11699999999999999 * ctx.enemy_max_health) + (0.015 * ctx.chogath_stacks)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_2"
+      },
+      {
+        "name": "Feast",
+        "damage_type": "True",
+        "attributes": "Undefined",
+        "damage": [
+          "1200 + (0.5 * ctx.ap) + (0.1 * ctx.bonus_health)",
+          "1200 + (0.5 * ctx.ap) + (0.1 * ctx.bonus_health)",
+          "1200 + (0.5 * ctx.ap) + (0.1 * ctx.bonus_health)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Feast",
+        "damage_type": "True",
+        "attributes": "Undefined",
+        "damage": [
+          "300 + (0.5 * ctx.ap) + (0.1 * ctx.bonus_health)",
+          "475 + (0.5 * ctx.ap) + (0.1 * ctx.bonus_health)",
+          "650 + (0.5 * ctx.ap) + (0.1 * ctx.bonus_health)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Vorpal Spikes",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "20 + (0.3 * ctx.ap) + (0.025 * ctx.enemy_max_health) + (0.005 * ctx.chogath_stacks)",
+          "40 + (0.3 * ctx.ap) + (0.0285 * ctx.enemy_max_health) + (0.005 * ctx.chogath_stacks)",
+          "60 + (0.3 * ctx.ap) + (0.032 * ctx.enemy_max_health) + (0.005 * ctx.chogath_stacks)",
+          "80 + (0.3 * ctx.ap) + (0.0355 * ctx.enemy_max_health) + (0.005 * ctx.chogath_stacks)",
+          "100 + (0.3 * ctx.ap) + (0.039 * ctx.enemy_max_health) + (0.005 * ctx.chogath_stacks)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Rupture",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "80 + ctx.ap",
+          "135 + ctx.ap",
+          "190 + ctx.ap",
+          "245 + ctx.ap",
+          "300 + ctx.ap"
+        ]
+      }
+    ]
+  ],
+  "merge_data": []
+}

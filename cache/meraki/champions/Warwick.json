@@ -1,0 +1,525 @@
+{
+  "name": "Warwick",
+  "attackType": "MELEE",
+  "adaptiveType": "PHYSICAL_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 620.0,
+      "perLevel": 99.0
+    },
+    "mana": {
+      "flat": 280.0,
+      "perLevel": 35.0
+    },
+    "armor": {
+      "flat": 33.0,
+      "perLevel": 4.4
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 60.0,
+      "perLevel": 2.75
+    },
+    "attackSpeed": {
+      "flat": 0.638,
+      "perLevel": 2.3
+    },
+    "movespeed": {
+      "flat": 335.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.638000011444091,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 125.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 0.95,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.05,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": null,
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Innate: Warwick deals 12 : 46 (based on level) (+ 15% bonus AD) (+ 10% AP) bonus magic damage on-hit.\nWhile below 50% maximum health, Warwick also heals for 100% of the post-mitigation damage dealt by Eternal Hunger, increased to 250% while below 25% maximum health.",
+            "leveling": []
+          }
+        ],
+        "name": "Eternal Hunger"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                8.0,
+                7.5,
+                7.0,
+                6.5,
+                6.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Warwick lunges at the target enemy over 0.264 seconds and bites them, dealing magic damage, healing himself for a percentage of the post-mitigation damage dealt, applying on-hit effects and life steal at 100% effectiveness, and triggering on-attack effects. The damage based on the target's health ratio is capped against monsters.",
+            "leveling": [
+              {
+                "attribute": "Healing Percentage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      25.0,
+                      37.5,
+                      50.0,
+                      62.5,
+                      75.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "% of target's maximum health",
+                      "% of target's maximum health",
+                      "% of target's maximum health",
+                      "% of target's maximum health",
+                      "% of target's maximum health"
+                    ],
+                    "values": [
+                      6.0,
+                      7.0,
+                      8.0,
+                      9.0,
+                      10.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      120.0,
+                      120.0,
+                      120.0,
+                      120.0,
+                      120.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Maximum Monster Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      150.0,
+                      165.0,
+                      180.0,
+                      195.0,
+                      210.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      120.0,
+                      120.0,
+                      120.0,
+                      120.0,
+                      120.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Hold: Warwick performs the bite, and then begins to charge for 0.5 seconds, extended if the target is under effects of a dash or displacement. During the charge, he leaps behind the target.",
+            "leveling": []
+          },
+          {
+            "description": "While Jaws of the Beast is active, Warwick is displacement immune and clamps his jaw on the target, following all of their movement. The ability can be held for additional effects.",
+            "leveling": []
+          }
+        ],
+        "name": "Jaws of the Beast"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                80.0,
+                70.0,
+                60.0,
+                50.0,
+                40.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: Warwick senses the nearest enemy champion in the area at the start of the cast time, marking them with Blood Hunt for 8 seconds, gaining both passive bonuses against them regardless of their current health.",
+            "leveling": []
+          },
+          {
+            "description": "Blood Hunt's cooldown is reduced by 30% if no enemy champions are found within range.",
+            "leveling": []
+          },
+          {
+            "description": "Passive: Warwick gains bonus attack speed for 1.25 seconds upon damaging a target to or while they are below 50% of their maximum health with a basic attack or ability damage, refreshing with subsequent damaging basic attacks or ability damage to enemies below the threshold. If Warwick does not have the bonus attack speed already, he also gains it upon initiating an attack windup against an enemy below the threshold.",
+            "leveling": [
+              {
+                "attribute": "Bonus Attack Speed",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      70.0,
+                      80.0,
+                      90.0,
+                      100.0,
+                      110.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Passive: Warwick senses all enemy champions on the map who are damaged below 50% of their maximum health by him or an allied source, marking them with Blood Hunt until they regenerate or heal above this threshold again. He sees trails leading toward them and gains bonus movement speed while following a trail. This bonus is lost for 0.5 seconds upon entering champion combat, but will build up again over 3.5 seconds.",
+            "leveling": [
+              {
+                "attribute": "Bonus Movement Speed",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      35.0,
+                      42.5,
+                      50.0,
+                      57.5,
+                      65.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "The attack speed and movement speed bonuses granted by both passives are doubled against enemies who are below 25% of their maximum health.",
+            "leveling": [
+              {
+                "attribute": "Increased Attack Speed",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      140.0,
+                      160.0,
+                      180.0,
+                      200.0,
+                      220.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Increased Movement Speed",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      70.0,
+                      85.0,
+                      100.0,
+                      115.0,
+                      130.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Blood Hunt"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                15.0,
+                14.0,
+                13.0,
+                12.0,
+                11.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: Warwick gains damage reduction for up to 2.5 seconds. Primal Howl can be recast after 1 second, and does so automatically after the duration.",
+            "leveling": [
+              {
+                "attribute": "Damage Reduction",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      35.0,
+                      40.0,
+                      45.0,
+                      50.0,
+                      55.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Recast: Warwick howls, ending Primal Howl's effects and fearing nearby enemies for 1 second, slowing them by 90%.",
+            "leveling": []
+          },
+          {
+            "description": "Starting Infinite Duress' channel while Primal Howl is active will initiate the recast without ending the damage reduction buff prematurely.",
+            "leveling": []
+          }
+        ],
+        "name": "Primal Howl"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                110.0,
+                90.0,
+                70.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Warwick leaps in the target direction with crowd control immunity, stopping upon hitting an enemy champion. He then knocks them down and channels for up to 1.5 seconds to suppress, reveal, and deal magic damage every 0.25 seconds, revealing himself in the process.",
+            "leveling": [
+              {
+                "attribute": "Total Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      175.0,
+                      350.0,
+                      525.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      167.0,
+                      167.0,
+                      167.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Infinite Duress applies on-hit effects and life steal at 100% effectiveness, as well as triggers on-attack effects, 3 times.",
+            "leveling": []
+          },
+          {
+            "description": "Primal Howl can be cast during the dash.",
+            "leveling": []
+          },
+          {
+            "description": "Warwick heals for 100% of all post-mitigation damage he deals to the target during Infinite Duress.",
+            "leveling": []
+          }
+        ],
+        "name": "Infinite Duress"
+      }
+    ]
+  },
+  "positions": [
+    "JUNGLE",
+    "TOP"
+  ]
+}

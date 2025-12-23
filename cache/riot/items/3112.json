@@ -1,0 +1,43 @@
+{
+  "colloq": ";",
+  "description": "<mainText><stats><attention>50</attention> Ability Power<br><attention>150</attention> Health</stats><br><br><br><li><passive>Recovery:</passive> Restores <scaleMana>10 Mana</scaleMana> every 5 seconds. If you can't gain mana, restores <healing>15 Health</healing> instead.<br></mainText>",
+  "effect": {
+    "Effect1Amount": "3"
+  },
+  "gold": {
+    "base": 950,
+    "purchasable": true,
+    "sell": 665,
+    "total": 950
+  },
+  "image": {
+    "full": "3112.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item3.png",
+    "w": 48,
+    "x": 96,
+    "y": 96
+  },
+  "maps": {
+    "11": false,
+    "12": true,
+    "21": false,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Guardian's Orb",
+  "plaintext": "Good starting item for mages",
+  "stats": {
+    "FlatHPPoolMod": 150,
+    "FlatMagicDamageMod": 50
+  },
+  "tags": [
+    "Health",
+    "SpellDamage",
+    "ManaRegen",
+    "Lane"
+  ]
+}

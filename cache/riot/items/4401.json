@@ -1,0 +1,46 @@
+{
+  "colloq": ";fon",
+  "depth": 3,
+  "description": "<mainText><stats><attention>400</attention> Health<br><attention>55</attention> Magic Resist<br><attention>4%</attention> Move Speed</stats><br><br><passive>Steadfast</passive><br>Gain <scaleMR>70 Magic Resist</scaleMR> and <speed>6% bonus Move Speed</speed> after taking magic damage from Champions 8 times.</mainText>",
+  "from": [
+    "1057",
+    "1028",
+    "3066"
+  ],
+  "gold": {
+    "base": 750,
+    "purchasable": true,
+    "sell": 1960,
+    "total": 2800
+  },
+  "image": {
+    "full": "4401.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item4.png",
+    "w": 48,
+    "x": 48,
+    "y": 240
+  },
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Force of Nature",
+  "plaintext": "Move Speed, Magic Resist, and max Health Regeneration",
+  "stats": {
+    "FlatHPPoolMod": 400,
+    "FlatSpellBlockMod": 55,
+    "PercentMovementSpeedMod": 0.04
+  },
+  "tags": [
+    "Health",
+    "SpellBlock",
+    "NonbootsMovement"
+  ]
+}

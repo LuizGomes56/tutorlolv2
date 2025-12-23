@@ -1,0 +1,40 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><attention>55</attention> Adaptive Force<br><attention>10</attention> Ability Haste<br><attention>15</attention> Lethality<br><attention>15</attention> Magic Penetration<br><attention>15%</attention> Move Speed</stats><br><br><passive>Playing for Time</passive><br>Champion takedowns while using Gambler's Blade delays Doom-boss Veigar's arrival by an additional 10 seconds. Deaths while carrying the Blade accelerate it by 10 seconds. (Will not lose time past the 14:30 minute mark)<br><br><passive>Double Down</passive><br>Champion takedowns grant a stack, each granting<gold> 10 bonus gold</gold> on kill. Also take 5% increased damage per stack. Lose all stacks on death.</mainText>",
+  "gold": {
+    "base": 2500,
+    "purchasable": true,
+    "sell": 0,
+    "total": 2500
+  },
+  "image": {
+    "full": "667101.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item5.png",
+    "w": 48,
+    "x": 192,
+    "y": 240
+  },
+  "maps": {
+    "11": true,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": false
+  },
+  "name": "Gambler's Blade",
+  "plaintext": "",
+  "stats": {
+    "PercentMovementSpeedMod": 0.15
+  },
+  "tags": [
+    "Damage",
+    "NonbootsMovement",
+    "MagicPenetration",
+    "ArmorPenetration",
+    "AbilityHaste"
+  ]
+}

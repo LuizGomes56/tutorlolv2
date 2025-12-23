@@ -1,0 +1,46 @@
+{
+  "colloq": "",
+  "consumeOnFull": true,
+  "consumed": true,
+  "description": "<mainText><stats><attention>80</attention> Health<br><attention>25%</attention> Base Mana Regen</stats><br><br><br><li><passive>Arcane Cache:</passive> This item can store up to 2 purchased Control Wards.<br><br></mainText>",
+  "gold": {
+    "base": 350,
+    "purchasable": false,
+    "sell": 140,
+    "total": 350
+  },
+  "image": {
+    "full": "4641.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item5.png",
+    "w": 48,
+    "x": 96,
+    "y": 48
+  },
+  "inStore": false,
+  "maps": {
+    "11": true,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": false
+  },
+  "name": "Stirring Wardstone",
+  "plaintext": "",
+  "stats": {
+    "FlatHPPoolMod": 80
+  },
+  "tags": [
+    "Health",
+    "Damage",
+    "SpellDamage",
+    "ManaRegen",
+    "Vision",
+    "Active",
+    "CooldownReduction",
+    "AbilityHaste"
+  ]
+}

@@ -1,0 +1,197 @@
+{
+  "name": "Hecarim",
+  "adaptative_type": "Physical",
+  "attack_type": "Melee",
+  "positions": [
+    "Jungle"
+  ],
+  "stats": {
+    "health": {
+      "flat": 625.0,
+      "perLevel": 106.0
+    },
+    "mana": {
+      "flat": 280.0,
+      "perLevel": 40.0
+    },
+    "armor": {
+      "flat": 32.0,
+      "perLevel": 5.45
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 66.0,
+      "perLevel": 3.7
+    },
+    "attackSpeed": {
+      "flat": 0.67,
+      "perLevel": 2.5
+    },
+    "movespeed": {
+      "flat": 345.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.6700000166893,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 0.9,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.05,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": [
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Spirit of Dread",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "20 + (0.2 * ctx.ap)",
+          "30 + (0.2 * ctx.ap)",
+          "40 + (0.2 * ctx.ap)",
+          "50 + (0.2 * ctx.ap)",
+          "60 + (0.2 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_2"
+      },
+      {
+        "name": "Spirit of Dread",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "100 + ctx.ap",
+          "150 + ctx.ap",
+          "200 + ctx.ap",
+          "250 + ctx.ap",
+          "300 + ctx.ap"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Devastating Charge",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "60 + ctx.bonus_ad",
+          "90 + ctx.bonus_ad",
+          "120 + ctx.bonus_ad",
+          "150 + ctx.bonus_ad",
+          "180 + ctx.bonus_ad"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "Rampage",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "60 + (0.9 * ctx.bonus_ad)",
+          "85 + (0.9 * ctx.bonus_ad)",
+          "110 + (0.9 * ctx.bonus_ad)",
+          "135 + (0.9 * ctx.bonus_ad)",
+          "160 + (0.9 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_2"
+      },
+      {
+        "name": "Devastating Charge",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "30 + (0.5 * ctx.bonus_ad)",
+          "45 + (0.5 * ctx.bonus_ad)",
+          "60 + (0.5 * ctx.bonus_ad)",
+          "75 + (0.5 * ctx.bonus_ad)",
+          "90 + (0.5 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Onslaught of Shadows",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "150 + ctx.ap",
+          "250 + ctx.ap",
+          "350 + ctx.ap"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Rampage",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "36 + (0.54 * ctx.bonus_ad)",
+          "51 + (0.54 * ctx.bonus_ad)",
+          "66 + (0.54 * ctx.bonus_ad)",
+          "81 + (0.54 * ctx.bonus_ad)",
+          "96 + (0.54 * ctx.bonus_ad)"
+        ]
+      }
+    ]
+  ],
+  "merge_data": []
+}

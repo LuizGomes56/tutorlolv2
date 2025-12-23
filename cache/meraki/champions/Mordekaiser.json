@@ -1,0 +1,424 @@
+{
+  "name": "Mordekaiser",
+  "attackType": "MELEE",
+  "adaptiveType": "MAGIC_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 645.0,
+      "perLevel": 104.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "perLevel": 0.0
+    },
+    "armor": {
+      "flat": 37.0,
+      "perLevel": 4.2
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 61.0,
+      "perLevel": 4.0
+    },
+    "attackSpeed": {
+      "flat": 0.625,
+      "perLevel": 1.0
+    },
+    "movespeed": {
+      "flat": 335.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.625,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.02,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 0.95,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 0.85,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": null,
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Darkness Rise: Mordekaiser gains 3% / 6% / 9% (based on level) bonus movement speed and deals[ 5 (+ 30% AP) (+ 1% : 5% (based on level) of target's maximum health) magic damage every second ][ 0.625 (+ 3.75% AP) (+ 0.13% : 0.63% (based on level) of target's maximum health) magic damage every 0.125 seconds ]to nearby enemies. Against monsters, the damage is capped at[ 40 : 200 (based on level) per second. ][ 5 : 25 (based on level) per 0.125 seconds. ]",
+            "leveling": []
+          },
+          {
+            "description": "Innate: Mordekaiser generates a stack for each enemy champion or large monster hit by his damaging basic attacks or basic abilities, lasting for 4 seconds, refreshing on subsequent hits, and stacking up to 3 times. At 3 stacks, he gains Darkness Rise.",
+            "leveling": []
+          },
+          {
+            "description": "Innate: Mordekaiser's basic attacks are empowered to deal 40% AP bonus magic damage on-hit.",
+            "leveling": []
+          }
+        ],
+        "name": "Darkness Rise"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                8.0,
+                7.0,
+                6.0,
+                5.0,
+                4.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Mordekaiser strikes his mace down in a line in the target direction, dealing magic damage to enemies within, increased if only one enemy is hit.",
+            "leveling": [
+              {
+                "attribute": "Damage Increase",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      30.0,
+                      35.0,
+                      40.0,
+                      45.0,
+                      50.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      0.0,
+                      2.6470588235294117,
+                      5.294117647058823,
+                      7.9411764705882355,
+                      10.588235294117649,
+                      13.235294117647058,
+                      15.882352941176473,
+                      18.52941176470588,
+                      21.176470588235293,
+                      23.823529411764707,
+                      26.470588235294116,
+                      29.11764705882353,
+                      31.764705882352946,
+                      34.411764705882355,
+                      37.05882352941176,
+                      39.705882352941174,
+                      42.35294117647059,
+                      45.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      80.0,
+                      115.0,
+                      150.0,
+                      185.0,
+                      220.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      70.0,
+                      70.0,
+                      70.0,
+                      70.0,
+                      70.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Obliterate"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                12.0,
+                11.0,
+                10.0,
+                9.0,
+                8.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: Mordekaiser consumes his Potential Shield to grant himself a shield for the same amount for 4 seconds. The shield decays exponentially over the duration. Indestructible can be recast after 0.5 seconds while the shield is active.",
+            "leveling": []
+          },
+          {
+            "description": "Passive: Mordekaiser stores 45% of the post-mitigation damage he deals and 7.5% of the pre-mitigation damage he takes,[ reduced by 75% for non-champion sources, ][ reduced to 11.25% of damage dealt and 3.75% of damage taken for non-champion sources, ]as Potential Shield on his secondary resource bar, up to 30% of his maximum health. The Potential Shield decays by 8 : 25 (based on level) every second after not dealing or taking damage for 1 second. While Indestructible is not on cooldown, the Potential Shield will not decay below a minimum of 5% of his maximum health, and it will be set to that amount when it comes off cooldown if it was previously below it.",
+            "leveling": []
+          },
+          {
+            "description": "Recast: Mordekaiser consumes the remaining shield, healing for a portion of the amount.",
+            "leveling": [
+              {
+                "attribute": "Shield to Healing",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      35.0,
+                      37.5,
+                      40.0,
+                      42.5,
+                      45.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Indestructible"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                18.0,
+                16.0,
+                14.0,
+                12.0,
+                10.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Mordekaiser summons a claw in the target direction that grants sight of the area. After 0.5 seconds, it deals magic damage to enemies within and pulls them 250 units.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      60.0,
+                      75.0,
+                      90.0,
+                      105.0,
+                      120.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      40.0,
+                      40.0,
+                      40.0,
+                      40.0,
+                      40.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Passive: Mordekaiser gains magic penetration.",
+            "leveling": [
+              {
+                "attribute": "Magic Penetration",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      5.0,
+                      7.5,
+                      10.0,
+                      12.5,
+                      15.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Death's Grasp"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                140.0,
+                120.0,
+                100.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: Mordekaiser aims his mace towards the target enemy champion, slowing them by 75% and revealing them over the cast time, and then banishing them with him to the Death Realm for 7 seconds. Mordekaiser also consumes the target's soul for 7 seconds, healing himself for 10% of their maximum health and reducing their current attack damage, ability power, total attack speed, maximum health, armor, magic resist, and size by 10%, in addition to gaining them for himself. If the target dies while inside the Death Realm, Mordekaiser keeps their partial stats until they respawn.",
+            "leveling": []
+          },
+          {
+            "description": "If one of the two affected champions leave the Death Realm, because of having died or having it dispelled, the other will do so as well.",
+            "leveling": []
+          },
+          {
+            "description": "Units between realms see each other as spirits, considering each other dead and negating any interactions between each other. Only Mordekaiser and the target will enter the realm; other champions cannot follow them. Everything that occurs inside the Death Realm is hidden to units outside of it, and vice versa. All pets still inside the realm are killed at its end.",
+            "leveling": []
+          }
+        ],
+        "name": "Realm of Death"
+      }
+    ]
+  },
+  "positions": [
+    "TOP"
+  ]
+}

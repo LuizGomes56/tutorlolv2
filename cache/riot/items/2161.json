@@ -1,0 +1,37 @@
+{
+  "colloq": "",
+  "consumeOnFull": true,
+  "consumed": true,
+  "description": "<mainText><stats></stats><br><br>Drink to permanently gain <scaleAP>20+ 3% bonus Ability Power</scaleAP> or <scaleAD>12+ 3% bonus Attack Damage</scaleAD>. And a hat!<br><br><flavorText>Made with 100% real cherries. Warning: May cause imbiber to deal tons of damage.</flavorText></mainText>",
+  "gold": {
+    "base": 1000,
+    "purchasable": true,
+    "sell": 1000,
+    "total": 1000
+  },
+  "image": {
+    "full": "2161.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item0.png",
+    "w": 48,
+    "x": 384,
+    "y": 384
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Bandle Juice of Power",
+  "plaintext": "",
+  "stats": {},
+  "tags": [
+    "SpellDamage",
+    "Consumable"
+  ]
+}

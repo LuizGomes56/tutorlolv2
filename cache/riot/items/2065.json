@@ -1,0 +1,47 @@
+{
+  "colloq": ";shurelya;reverie;",
+  "depth": 3,
+  "description": "<mainText><stats><attention>50</attention> Ability Power<br><attention>15</attention> Ability Haste<br><attention>4%</attention> Move Speed<br><attention>125%</attention> Base Mana Regen</stats><br><br><active>Inspiring Speech</active><br>Grant nearby allies <speed>30% Move Speed</speed> for 4 seconds.</mainText>",
+  "from": [
+    "3113",
+    "4642"
+  ],
+  "gold": {
+    "base": 400,
+    "purchasable": true,
+    "sell": 1540,
+    "total": 2200
+  },
+  "image": {
+    "full": "2065.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item0.png",
+    "w": 48,
+    "x": 240,
+    "y": 336
+  },
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Shurelya's Battlesong",
+  "plaintext": "Activate to speed up nearby allies.",
+  "stats": {
+    "FlatMagicDamageMod": 50,
+    "PercentMovementSpeedMod": 0.04
+  },
+  "tags": [
+    "SpellDamage",
+    "ManaRegen",
+    "Active",
+    "CooldownReduction",
+    "NonbootsMovement",
+    "AbilityHaste"
+  ]
+}

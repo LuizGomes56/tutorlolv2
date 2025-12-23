@@ -1,0 +1,40 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><attention>60</attention> Ability Power<br><attention>600</attention> Mana<br><attention>20</attention> Ability Haste</stats><br><br><passive>Baleful Blaze</passive><br>Dealing damage with Abilities causes enemies to burn. This damage increases to Monsters.<br><br><passive>Blackfire</passive><br>For each enemy Champion, Epic Monster, and Large Monster affected by your <passive>Baleful Blaze</passive>, gain <scaleAP>Ability Power</scaleAP>. </mainText>",
+  "gold": {
+    "base": 2500,
+    "purchasable": true,
+    "sell": 1250,
+    "total": 2500
+  },
+  "image": {
+    "full": "222503.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item1.png",
+    "w": 48,
+    "x": 288,
+    "y": 48
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": false
+  },
+  "name": "Blackfire Torch",
+  "plaintext": "",
+  "stats": {
+    "FlatMPPoolMod": 600,
+    "FlatMagicDamageMod": 60
+  },
+  "tags": [
+    "SpellDamage",
+    "Mana",
+    "CooldownReduction",
+    "AbilityHaste"
+  ]
+}

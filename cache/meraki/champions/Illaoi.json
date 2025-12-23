@@ -1,0 +1,456 @@
+{
+  "name": "Illaoi",
+  "attackType": "MELEE",
+  "adaptiveType": "PHYSICAL_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 656.0,
+      "perLevel": 115.0
+    },
+    "mana": {
+      "flat": 350.0,
+      "perLevel": 50.0
+    },
+    "armor": {
+      "flat": 35.0,
+      "perLevel": 5.0
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 65.0,
+      "perLevel": 5.0
+    },
+    "attackSpeed": {
+      "flat": 0.625,
+      "perLevel": 2.5
+    },
+    "movespeed": {
+      "flat": 350.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.625,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 125.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.05,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 0.95,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 0.9,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                20.0,
+                19.25,
+                18.5,
+                17.75,
+                17.0,
+                16.25,
+                15.5,
+                14.75,
+                14.0,
+                13.25,
+                12.5,
+                11.75,
+                11.0,
+                10.25,
+                9.5,
+                8.75,
+                8.0,
+                7.25
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Each Tentacle also heals Illaoi for 5% of her missing health if it hits at least one enemy champion.",
+            "leveling": []
+          },
+          {
+            "description": "Innate: Periodically, Illaoi spawns a Tentacle on the nearest terrain perpendicular to her location, if no other Tentacles are already nearby it. Tentacles fully spawn after a 2 second delay and are untargetable in the meantime.",
+            "leveling": []
+          },
+          {
+            "description": "See Pets for more details about Tentacles.",
+            "leveling": []
+          },
+          {
+            "description": "Tentacles are commanded to attack by Illaoi's abilities, dealing 9 : 162 (based on level) (+ 105% AD) (+ 40% AP) physical damage to all enemies struck, increased by 0% : 30% (based on Tentacle Smash's rank).Enemies struck by multiple slams within 0.5 seconds of another, take 50% damage for the second and 25% damage for all other additional slams.",
+            "leveling": []
+          }
+        ],
+        "name": "Prophet of an Elder God"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                10.0,
+                9.0,
+                8.0,
+                7.0,
+                6.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Illaoi slams down a Tentacle in the target direction.",
+            "leveling": []
+          },
+          {
+            "description": "Passive: Tentacle damage is increased.",
+            "leveling": [
+              {
+                "attribute": "Damage Increase",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      10.0,
+                      15.0,
+                      20.0,
+                      25.0,
+                      30.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Tentacle Smash"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                4.0,
+                4.0,
+                4.0,
+                4.0,
+                4.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Illaoi's next basic attack within 6 seconds gains 225 bonus range and causes her to leap to the target's location if they're beyond her normal basic attack range.",
+            "leveling": []
+          },
+          {
+            "description": "Harsh Lesson can be activated during Illaoi's other abilities, other than while pulling a Spirit.",
+            "leveling": []
+          },
+          {
+            "description": "Harsh Lesson resets Illaoi's basic attack timer.",
+            "leveling": []
+          },
+          {
+            "description": "The attack deals bonus physical damage, with a minimum threshold, and capped at 300 against non-champions, and commands all Tentacles in range to attack the target. The minimum bonus damage can also be applied against turrets.",
+            "leveling": [
+              {
+                "attribute": "Bonus Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%  of target's maximum health",
+                      "%  of target's maximum health",
+                      "%  of target's maximum health",
+                      "%  of target's maximum health",
+                      "%  of target's maximum health"
+                    ],
+                    "values": [
+                      3.0,
+                      3.5,
+                      4.0,
+                      4.5,
+                      5.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% per 100 AD",
+                      "% per 100 AD",
+                      "% per 100 AD",
+                      "% per 100 AD",
+                      "% per 100 AD"
+                    ],
+                    "values": [
+                      4.0,
+                      4.0,
+                      4.0,
+                      4.0,
+                      4.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Minimum Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      20.0,
+                      30.0,
+                      40.0,
+                      50.0,
+                      60.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Harsh Lesson"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                16.0,
+                15.0,
+                14.0,
+                13.0,
+                12.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MIXED_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Illaoi launches a tendril in the target direction that stops at the first enemy hit, pulling their Spirit out in front of Illaoi over 0.75 seconds if they are a champion. The target is tethered to the Spirit for 7 seconds, revealing them in addition to granting sight of the area around them while the tether remains.",
+            "leveling": []
+          },
+          {
+            "description": "Enemies made a Vessel also spawn a Tentacle near themselves. Tentacles can spawn 250 units closer to each other than when spawned by Illaoi.",
+            "leveling": []
+          },
+          {
+            "description": "Illaoi is unable to act while firing the projectile and while the target's Spirit is being pulled. Vessels can dispel their mark by scoring a takedown against Illaoi. Test of Spirit cannot be cast again until the Spirit dies.",
+            "leveling": []
+          },
+          {
+            "description": "The Spirit spawns with the target's current health, armor and magic resist, and redirects a portion of the pre-mitigation damage received to the tethered champion.",
+            "leveling": [
+              {
+                "attribute": "Damage Transmission",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      25.0,
+                      30.0,
+                      35.0,
+                      40.0,
+                      45.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% per 100 AD",
+                      "% per 100 AD",
+                      "% per 100 AD",
+                      "% per 100 AD",
+                      "% per 100 AD"
+                    ],
+                    "values": [
+                      8.0,
+                      8.0,
+                      8.0,
+                      8.0,
+                      8.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "When the Spirit is killed or the target leaves tether range, the tether is severed, marking the target as a Vessel for 3 seconds and slowing them by 80% for 1.5 seconds once the tether returns back to them. Each Tentacle autonomously attacks the closest Vessel or Spirit, prioritizing the latter, once every 4.5 / 4 / 3.5 (based on level) seconds.",
+            "leveling": []
+          }
+        ],
+        "name": "Test of Spirit"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                120.0,
+                95.0,
+                70.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Illaoi gains displacement immunity and leaps into the air for the cast time. She then slams her idol into the ground, dealing physical damage to nearby enemies. For each enemy champion hit, a Tentacle is summoned for 8 seconds (up to a maximum of 6 summons).",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      150.0,
+                      250.0,
+                      350.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      50.0,
+                      50.0,
+                      50.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "For the duration, Harsh Lesson's cooldown is halved, all Tentacles awakened by Illaoi are untargetable, will not show their hitboxes, nor go dormant, and will take half the amount of time to make an attack. This however does not affect the Tentacle attack from Tentacle Smash.",
+            "leveling": []
+          }
+        ],
+        "name": "Leap of Faith"
+      }
+    ]
+  },
+  "positions": [
+    "TOP"
+  ]
+}

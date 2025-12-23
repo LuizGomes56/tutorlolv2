@@ -1,0 +1,725 @@
+{
+  "allytips": [
+    "Dash through a minion to have Sweeping Blade available to chase your opponent should they flee; Dash directly to your opponent to preserve a minion as your escape route.",
+    "At level 18, Yasuo's Steel Tempest reaches its Attack Speed cap with 55% Attack Speed from items.",
+    "Last Breath can be cast on any target that is knocked Airborne, even by one of your allies."
+  ],
+  "blurb": "An Ionian of deep resolve, Yasuo is an agile swordsman who wields the air itself against his enemies. As a proud young man, he was falsely accused of murdering his master—unable to prove his innocence, he was forced to slay his own brother in self...",
+  "enemytips": [
+    "Steel Tempest is very narrow. Dodge laterally if possible. ",
+    "When Yasuo lands two Steel Tempests in a row, his next will fire a tornado. Watch and listen for the associated sound to prepare to dodge.",
+    "Yasuo is at his weakest just after he has launched a whirlwind. Engage at that point.",
+    "Yasuo's shield from Resolve lasts only 2 seconds. Dealing damage to him will trigger it. Wait it out, then engage."
+  ],
+  "id": "Yasuo",
+  "image": {
+    "full": "Yasuo.png",
+    "group": "champion",
+    "h": 48,
+    "sprite": "champion5.png",
+    "w": 48,
+    "x": 432,
+    "y": 0
+  },
+  "info": {
+    "attack": 8,
+    "defense": 4,
+    "difficulty": 10,
+    "magic": 4
+  },
+  "key": "157",
+  "lore": "An Ionian of deep resolve, Yasuo is an agile swordsman who wields the air itself against his enemies. As a proud young man, he was falsely accused of murdering his master—unable to prove his innocence, he was forced to slay his own brother in self defense. Even after his master's true killer was revealed, Yasuo still could not forgive himself for all he had done, and now wanders his homeland with only the wind to guide his blade.",
+  "name": "Yasuo",
+  "partype": "Flow",
+  "passive": {
+    "description": "Yasuo's Critical Strike Chance is increased. Additionally, Yasuo builds toward a shield whenever he is moving. The shield triggers when he takes damage from a champion or monster.",
+    "image": {
+      "full": "Yasuo_Passive.png",
+      "group": "passive",
+      "h": 48,
+      "sprite": "passive5.png",
+      "w": 48,
+      "x": 432,
+      "y": 0
+    },
+    "name": "Way of the Wanderer"
+  },
+  "recommended": [],
+  "skins": [
+    {
+      "chromas": false,
+      "id": "157000",
+      "name": "default",
+      "num": 0
+    },
+    {
+      "chromas": true,
+      "id": "157001",
+      "name": "High Noon Yasuo",
+      "num": 1
+    },
+    {
+      "chromas": false,
+      "id": "157002",
+      "name": "PROJECT: Yasuo",
+      "num": 2
+    },
+    {
+      "chromas": false,
+      "id": "157003",
+      "name": "Blood Moon Yasuo",
+      "num": 3
+    },
+    {
+      "chromas": true,
+      "id": "157009",
+      "name": "Nightbringer Yasuo",
+      "num": 9
+    },
+    {
+      "chromas": true,
+      "id": "157010",
+      "name": "Odyssey Yasuo",
+      "num": 10
+    },
+    {
+      "chromas": true,
+      "id": "157017",
+      "name": "Battle Boss Yasuo",
+      "num": 17
+    },
+    {
+      "chromas": true,
+      "id": "157018",
+      "name": "True Damage Yasuo",
+      "num": 18
+    },
+    {
+      "chromas": false,
+      "id": "157035",
+      "name": "Prestige True Damage Yasuo",
+      "num": 35
+    },
+    {
+      "chromas": true,
+      "id": "157036",
+      "name": "Spirit Blossom Yasuo",
+      "num": 36
+    },
+    {
+      "chromas": true,
+      "id": "157045",
+      "name": "Sea Dog Yasuo",
+      "num": 45
+    },
+    {
+      "chromas": false,
+      "id": "157054",
+      "name": "Truth Dragon Yasuo",
+      "num": 54
+    },
+    {
+      "chromas": false,
+      "id": "157055",
+      "name": "Dream Dragon Yasuo",
+      "num": 55
+    },
+    {
+      "chromas": true,
+      "id": "157056",
+      "name": "Inkshadow Yasuo",
+      "num": 56
+    },
+    {
+      "chromas": false,
+      "id": "157057",
+      "name": "Prestige Inkshadow Yasuo",
+      "num": 57
+    },
+    {
+      "chromas": true,
+      "id": "157068",
+      "name": "Foreseen Yasuo",
+      "num": 68
+    },
+    {
+      "chromas": true,
+      "id": "157077",
+      "name": "Battle Wolf Yasuo",
+      "num": 77
+    },
+    {
+      "chromas": false,
+      "id": "157087",
+      "name": "Genesis Nightbringer Yasuo",
+      "num": 87
+    }
+  ],
+  "spells": [
+    {
+      "cooldown": [
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "cooldownBurn": "4",
+      "cost": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "costBurn": "0",
+      "costType": "No Cost",
+      "datavalues": {},
+      "description": "Thrusts forward, damaging all enemies in a line.<br><br>On hit, grants a stack of Gathering Storm for a few seconds. At 2 stacks, Steel Tempest fires a whirlwind that knocks <font color='#6655CC'>Airborne</font>.<br><br>Steel Tempest is treated as a basic attack and scales with all the same things.",
+      "effect": [
+        null,
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "effectBurn": [
+        null,
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "id": "YasuoQ1Wrapper",
+      "image": {
+        "full": "YasuoQ1Wrapper.png",
+        "group": "spell",
+        "h": 48,
+        "sprite": "spell16.png",
+        "w": 48,
+        "x": 192,
+        "y": 48
+      },
+      "leveltip": {
+        "effect": [
+          "{{ basedamage }} -> {{ basedamageNL }}"
+        ],
+        "label": [
+          "Damage"
+        ]
+      },
+      "maxammo": "-1",
+      "maxrank": 5,
+      "name": "Steel Tempest",
+      "range": [
+        475,
+        475,
+        475,
+        475,
+        475
+      ],
+      "rangeBurn": "475",
+      "resource": "No Cost",
+      "tooltip": "Yasuo thrusts, dealing <physicalDamage>{{ totaldamage }} physical damage</physicalDamage>. If he hits, he gains a stack for {{ gatheringstormduration }} seconds. While he has 2 stacks, his next use of this Ability fires a whirlwind from range, dealing the same damage and <status>Knocking Up</status> for {{ knockupdurationtooltiponly }} second.<br /><br />If used while dashing, this Ability strikes in a circle rather than a stab.{{ spellmodifierdescriptionappend }}",
+      "vars": []
+    },
+    {
+      "cooldown": [
+        25,
+        23,
+        21,
+        19,
+        17
+      ],
+      "cooldownBurn": "25/23/21/19/17",
+      "cost": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "costBurn": "0",
+      "costType": "No Cost",
+      "datavalues": {},
+      "description": "Creates a moving wall that blocks all enemy projectiles for 4 seconds.",
+      "effect": [
+        null,
+        [
+          15,
+          20,
+          25,
+          30,
+          35
+        ],
+        [
+          60,
+          90,
+          120,
+          150,
+          180
+        ],
+        [
+          3,
+          6,
+          9,
+          12,
+          15
+        ],
+        [
+          300,
+          350,
+          400,
+          450,
+          500
+        ],
+        [
+          320,
+          390,
+          460,
+          530,
+          600
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "effectBurn": [
+        null,
+        "15/20/25/30/35",
+        "60/90/120/150/180",
+        "3/6/9/12/15",
+        "300/350/400/450/500",
+        "320/390/460/530/600",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "id": "YasuoW",
+      "image": {
+        "full": "YasuoW.png",
+        "group": "spell",
+        "h": 48,
+        "sprite": "spell16.png",
+        "w": 48,
+        "x": 240,
+        "y": 48
+      },
+      "leveltip": {
+        "effect": [
+          "{{ e5 }} -> {{ e5NL }}",
+          "{{ cooldown }} -> {{ cooldownNL }}"
+        ],
+        "label": [
+          "Width",
+          "Cooldown"
+        ]
+      },
+      "maxammo": "-1",
+      "maxrank": 5,
+      "name": "Wind Wall",
+      "range": [
+        400,
+        400,
+        400,
+        400,
+        400
+      ],
+      "rangeBurn": "400",
+      "resource": "No Cost",
+      "tooltip": "Yasuo creates a drifting wall of wind that blocks all enemy projectiles for 4 seconds.{{ spellmodifierdescriptionappend }}",
+      "vars": []
+    },
+    {
+      "cooldown": [
+        0.5,
+        0.4,
+        0.3,
+        0.2,
+        0.1
+      ],
+      "cooldownBurn": "0.5/0.4/0.3/0.2/0.1",
+      "cost": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "costBurn": "0",
+      "costType": "No Cost",
+      "datavalues": {},
+      "description": "Dashes through target enemy, dealing magic damage. Each cast increases subsequent dash's damage, up to a max amount.<br><br>Cannot be re-cast on the same enemy for a few seconds.<br><br><font color='#99FF99'>If Steel Tempest is cast while dashing, it will strike as a circle.</font>",
+      "effect": [
+        null,
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          10,
+          9,
+          8,
+          7,
+          6
+        ],
+        [
+          0.5,
+          0.4,
+          0.3,
+          0.2,
+          0.1
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          750,
+          750,
+          750,
+          750,
+          750
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "effectBurn": [
+        null,
+        "0",
+        "10/9/8/7/6",
+        "0.5/0.4/0.3/0.2/0.1",
+        "0",
+        "0",
+        "750",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "id": "YasuoE",
+      "image": {
+        "full": "YasuoE.png",
+        "group": "spell",
+        "h": 48,
+        "sprite": "spell16.png",
+        "w": 48,
+        "x": 288,
+        "y": 48
+      },
+      "leveltip": {
+        "effect": [
+          "{{ basedamage }} -> {{ basedamageNL }}",
+          "{{ e2 }} -> {{ e2NL }}",
+          "{{ e3 }} -> {{ e3NL }}"
+        ],
+        "label": [
+          "Damage",
+          "Per Unit Cooldown",
+          "Cooldown"
+        ]
+      },
+      "maxammo": "-1",
+      "maxrank": 5,
+      "name": "Sweeping Blade",
+      "range": [
+        475,
+        475,
+        475,
+        475,
+        475
+      ],
+      "rangeBurn": "475",
+      "resource": "No Cost",
+      "tooltip": "Yasuo dashes through a target, dealing <magicDamage>{{ totaldamage }} magic damage</magicDamage>. Each use of this Ability grants <magicDamage>{{ bonusdamageperstack }}</magicDamage> bonus damage to subsequent uses for {{ stackduration }} seconds, stacking up to {{ maxstacks }} times.<br /><br />This Ability has a {{ e2 }} second per-target Cooldown.{{ spellmodifierdescriptionappend }}",
+      "vars": []
+    },
+    {
+      "cooldown": [
+        70,
+        50,
+        30
+      ],
+      "cooldownBurn": "70/50/30",
+      "cost": [
+        0,
+        0,
+        0
+      ],
+      "costBurn": "0",
+      "costType": "No Cost",
+      "datavalues": {},
+      "description": "Blinks to an <factionIonia1>Airborne</factionIonia1> enemy champion, dealing physical damage and holding all <factionIonia1>Airborne</factionIonia1> enemies in the area in the air. Grants maximum Flow but resets all stacks of Gathering Storm.<br><br>For a moderate time afterwards, Yasuo's critical strikes gain significant Bonus Armor Penetration.",
+      "effect": [
+        null,
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "effectBurn": [
+        null,
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "id": "YasuoR",
+      "image": {
+        "full": "YasuoR.png",
+        "group": "spell",
+        "h": 48,
+        "sprite": "spell16.png",
+        "w": 48,
+        "x": 336,
+        "y": 48
+      },
+      "leveltip": {
+        "effect": [
+          "{{ rbasedamage }} -> {{ rbasedamageNL }}",
+          "{{ cooldown }} -> {{ cooldownNL }}"
+        ],
+        "label": [
+          "Damage",
+          "Cooldown"
+        ]
+      },
+      "maxammo": "-1",
+      "maxrank": 3,
+      "name": "Last Breath",
+      "range": [
+        1400,
+        1400,
+        1400
+      ],
+      "rangeBurn": "1400",
+      "resource": "No Cost",
+      "tooltip": "Yasuo teleports to an <status>Airborne</status> enemy champion, dealing <physicalDamage>{{ damage }} physical damage</physicalDamage> and holding all nearby <status>Airborne</status> enemies up for an additional {{ rknockupduration }} second. Yasuo also gains maximum <keywordMajor>Flow</keywordMajor>, but loses all <spellName>Steel Tempest</spellName> stacks.<br /><br />Afterwards, Yasuo's critical strikes ignore <scaleArmor>{{ rpercentarmorpen }}% bonus Armor</scaleArmor> for {{ rbuffduration }} seconds.{{ spellmodifierdescriptionappend }}",
+      "vars": []
+    }
+  ],
+  "stats": {
+    "armor": 32,
+    "armorperlevel": 4.6,
+    "attackdamage": 60,
+    "attackdamageperlevel": 2.5,
+    "attackrange": 175,
+    "attackspeed": 0.697,
+    "attackspeedperlevel": 3.5,
+    "crit": 0,
+    "critperlevel": 0,
+    "hp": 590,
+    "hpperlevel": 110,
+    "hpregen": 6.5,
+    "hpregenperlevel": 0.9,
+    "movespeed": 345,
+    "mp": 100,
+    "mpperlevel": 0,
+    "mpregen": 0,
+    "mpregenperlevel": 0,
+    "spellblock": 32,
+    "spellblockperlevel": 2.05
+  },
+  "tags": [
+    "Fighter",
+    "Assassin"
+  ],
+  "title": "the Unforgiven"
+}

@@ -1,0 +1,88 @@
+{
+  "active": [],
+  "buildsFrom": [
+    2021,
+    3044,
+    1042
+  ],
+  "buildsInto": [],
+  "name": "Experimental Hexplate",
+  "tier": 3,
+  "passives": [
+    {
+      "effects": "Gain 30 [[Haste#Ultimate haste|ultimate haste]].",
+      "name": "Hexcharged",
+      "unique": true
+    },
+    {
+      "effects": "Upon casting your ultimate ability, enter ''Overdrive'' to gain {{as|30% '''bonus''' attack speed}} and {{as|15% '''bonus''' movement speed}} for 8 seconds (30 second cooldown, starts on ultimate cast).",
+      "name": "Overdrive",
+      "unique": true
+    }
+  ],
+  "id": 3073,
+  "stats": {
+    "abilityPower": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 40.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 20.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 450.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "shop": {
+    "purchasable": true,
+    "prices": {
+      "total": 3000
+    }
+  }
+}

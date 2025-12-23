@@ -1,0 +1,38 @@
+{
+  "colloq": "",
+  "consumed": true,
+  "description": "<mainText><stats></stats><br><br><active>Active - Consume:</active> Gain 0 gold.<br><br><rules>Bonus gold given to an ally when Pyke executes an enemy champion using his Ultimate Ability. If no ally was involved in the kill, Pyke gets to keep the Cut!</rules></mainText>",
+  "gold": {
+    "base": 0,
+    "purchasable": false,
+    "sell": 0,
+    "total": 0
+  },
+  "hideFromAll": true,
+  "image": {
+    "full": "3400.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item4.png",
+    "w": 48,
+    "x": 144,
+    "y": 0
+  },
+  "inStore": false,
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": true
+  },
+  "name": "Your Cut",
+  "plaintext": "",
+  "stats": {},
+  "tags": [
+    "Consumable",
+    "GoldPer"
+  ]
+}

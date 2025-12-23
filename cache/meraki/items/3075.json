@@ -1,0 +1,83 @@
+{
+  "active": [],
+  "buildsFrom": [
+    3076,
+    1031,
+    1028
+  ],
+  "buildsInto": [],
+  "name": "Thornmail",
+  "tier": 3,
+  "passives": [
+    {
+      "effects": "When struck by a basic attack [[on-hit]], deal {{as|20 {{as|(+ 10% '''bonus''' armor)}} magic damage|magic damage}} to the attacker and, if they are a champion, inflict them with {{tip|Grievous Wounds}} for 3 seconds.",
+      "name": "Thorns",
+      "unique": true
+    }
+  ],
+  "id": 3075,
+  "stats": {
+    "abilityPower": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 75.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 150.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "shop": {
+    "purchasable": true,
+    "prices": {
+      "total": 2450
+    }
+  }
+}

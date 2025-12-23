@@ -1,0 +1,49 @@
+{
+  "colloq": "",
+  "depth": 2,
+  "description": "<mainText><stats><attention>20</attention> Attack Damage<br><attention>20%</attention> Attack Speed</stats><br><br></mainText>",
+  "from": [
+    "1036",
+    "1042",
+    "1036"
+  ],
+  "gold": {
+    "base": 250,
+    "purchasable": true,
+    "sell": 840,
+    "total": 1200
+  },
+  "image": {
+    "full": "3051.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item2.png",
+    "w": 48,
+    "x": 384,
+    "y": 384
+  },
+  "into": [
+    "3078",
+    "6672",
+    "3302"
+  ],
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Hearthbound Axe",
+  "plaintext": "",
+  "stats": {
+    "FlatPhysicalDamageMod": 20,
+    "PercentAttackSpeedMod": 0.2
+  },
+  "tags": [
+    "Damage",
+    "AttackSpeed"
+  ]
+}

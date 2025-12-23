@@ -1,0 +1,41 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><attention>80</attention> Adaptive Force<br><attention>50%</attention> Attack Speed<br><attention>8%</attention> Move Speed</stats><br><br>Attacks and Non-Ultimate Abilities grant stacks. Gain Ultimate Damage and Ultimate Ability Haste per stack.</mainText>",
+  "gold": {
+    "base": 1000,
+    "purchasable": true,
+    "sell": 400,
+    "total": 1000
+  },
+  "image": {
+    "full": "447107.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item4.png",
+    "w": 48,
+    "x": 336,
+    "y": 384
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": false
+  },
+  "name": "Decapitator",
+  "plaintext": "",
+  "specialRecipe": 220007,
+  "stats": {
+    "PercentAttackSpeedMod": 0.5,
+    "PercentMovementSpeedMod": 0.08
+  },
+  "tags": [
+    "Damage",
+    "AttackSpeed",
+    "SpellDamage",
+    "NonbootsMovement"
+  ]
+}

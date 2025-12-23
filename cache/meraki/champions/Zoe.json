@@ -1,0 +1,664 @@
+{
+  "name": "Zoe",
+  "attackType": "RANGED",
+  "adaptiveType": "MAGIC_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 630.0,
+      "perLevel": 106.0
+    },
+    "mana": {
+      "flat": 425.0,
+      "perLevel": 25.0
+    },
+    "armor": {
+      "flat": 21.0,
+      "perLevel": 4.7
+    },
+    "magicResistance": {
+      "flat": 30.0,
+      "perLevel": 1.3
+    },
+    "attackDamage": {
+      "flat": 58.0,
+      "perLevel": 3.3
+    },
+    "attackSpeed": {
+      "flat": 0.658,
+      "perLevel": 2.5
+    },
+    "movespeed": {
+      "flat": 340.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.625,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 550.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 0.95,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.1,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": null,
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Innate: After casting an ability, Zoe empowers her next basic attack or Spell Thief bolt within 5 seconds to become non-projectile and deal 16 : 130 (based on level) (+ 20% AP) bonus magic damage.",
+            "leveling": []
+          }
+        ],
+        "name": "More Sparkles!"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                8.5,
+                8.0,
+                7.5,
+                7.0,
+                6.5
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Zoe shoots a star in the target direction that explodes upon hitting an enemy, dealing magic damage to nearby enemies hit. The total damage is increased by 0% : 150% (based on distance traveled).",
+            "leveling": [
+              {
+                "attribute": "Maximum Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      5.0,
+                      12.058823529411764,
+                      19.11764705882353,
+                      26.176470588235293,
+                      33.23529411764706,
+                      40.294117647058826,
+                      47.35294117647059,
+                      54.41176470588235,
+                      61.47058823529411,
+                      68.52941176470588,
+                      75.58823529411765,
+                      82.6470588235294,
+                      89.70588235294117,
+                      96.76470588235294,
+                      103.8235294117647,
+                      110.88235294117646,
+                      117.94117647058825,
+                      125.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      125.0,
+                      200.0,
+                      275.0,
+                      350.0,
+                      425.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      150.0,
+                      150.0,
+                      150.0,
+                      150.0,
+                      150.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Minimum Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      2.0,
+                      4.8235294117647065,
+                      7.647058823529412,
+                      10.470588235294118,
+                      13.294117647058824,
+                      16.11764705882353,
+                      18.941176470588236,
+                      21.764705882352946,
+                      24.58823529411765,
+                      27.411764705882355,
+                      30.23529411764706,
+                      33.05882352941177,
+                      35.88235294117647,
+                      38.70588235294118,
+                      41.52941176470589,
+                      44.352941176470594,
+                      47.1764705882353,
+                      50.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      50.0,
+                      80.0,
+                      110.0,
+                      140.0,
+                      170.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      60.0,
+                      60.0,
+                      60.0,
+                      60.0,
+                      60.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Paddle Star!'s recast can be used while affected by cast-inhibiting crowd control.",
+            "leveling": []
+          },
+          {
+            "description": "Recast: Zoe redirects the star in the target path, empowering it with increased speed and radius, and resetting its damage modifier on cast. The redirected star can travel until it reaches 800-units outbound from Zoe.",
+            "leveling": []
+          },
+          {
+            "description": "The star lingers at maximum range for 1 second, during which Paddle Star! can be recast after 0.25 seconds in the duration.",
+            "leveling": []
+          }
+        ],
+        "name": "Paddle Star!"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                0.25,
+                0.25,
+                0.25,
+                0.25,
+                0.25
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Zoe mimics the active effect of the collected Spell Shard.",
+            "leveling": []
+          },
+          {
+            "description": "If Zoe is not affected by complete crowd control, she shoots one bolt at a time at the nearest non- sleeping enemy in range, prioritizing her attack target, dealing magic damage with each bolt.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage Per Bolt",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      20.0,
+                      30.0,
+                      40.0,
+                      50.0,
+                      60.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      15.0,
+                      15.0,
+                      15.0,
+                      15.0,
+                      15.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      60.0,
+                      90.0,
+                      120.0,
+                      150.0,
+                      180.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      45.0,
+                      45.0,
+                      45.0,
+                      45.0,
+                      45.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Passive - Wheeeee: Whenever Zoe casts Spell Thief or a summoner spell, she gains bonus movement speed for a duration, and summons three bolts that orbit her for the next 10 seconds.",
+            "leveling": [
+              {
+                "attribute": "Bonus Movement Speed",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      30.0,
+                      40.0,
+                      50.0,
+                      60.0,
+                      70.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Bonus Movement Speed Duration",
+                "modifiers": [
+                  {
+                    "units": [
+                      " seconds",
+                      " seconds",
+                      " seconds",
+                      " seconds",
+                      " seconds"
+                    ],
+                    "values": [
+                      2.0,
+                      2.25,
+                      2.5,
+                      2.75,
+                      3.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Passive: Whenever a nearby enemy champion casts a specific summoner spell or item active, they drop the corresponding Spell Shard onto the ground that grants sight over a 100-radius area and remains for 40 seconds. Enemy minions have a 10% chance to spawn with a random Spell Shard that drops and remains for 20 seconds if Zoe kills them. Allied champions that kill them will cause the orb to drop only if Zoe is nearby.",
+            "leveling": []
+          },
+          {
+            "description": "Zoe can collect a Spell Shard by moving directly onto it, holding it for up to 60 seconds. Collecting a new Spell Shard replaces the current one.",
+            "leveling": []
+          }
+        ],
+        "name": "Spell Thief"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                16.0,
+                15.0,
+                14.0,
+                13.0,
+                12.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Zoe kicks a bubble in the target direction that bursts upon the first enemy hit, otherwise lingering at maximum range over 1 second, then becoming a trap for 5 seconds that bursts upon contact with an enemy. The bubble can move through terrain only once, but travels the entire distance as bonus range, and will fall short if it would enter terrain again.",
+            "leveling": []
+          },
+          {
+            "description": "The burst deals magic damage to the target and inflicts them with drowsy for 1.4 seconds, which gradually slows them until they fall asleep for 2.25 seconds. While the target is asleep, they are inflicted with 30% magic resistance reduction.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      70.0,
+                      110.0,
+                      150.0,
+                      190.0,
+                      230.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      45.0,
+                      45.0,
+                      45.0,
+                      45.0,
+                      45.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Maximum Slow",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      10.0,
+                      15.0,
+                      20.0,
+                      25.0,
+                      30.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "The next instance of non- persistent damage that the sleeping target takes from champions, large monsters or turrets consumes the debuff to deal bonus true damage equal to the post-mitigation damage dealt, capped at Sleepy Trouble Bubble's damage.",
+            "leveling": [
+              {
+                "attribute": "Bonus Damage Cap",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      70.0,
+                      110.0,
+                      150.0,
+                      190.0,
+                      230.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      45.0,
+                      45.0,
+                      45.0,
+                      45.0,
+                      45.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Maximum Mixed Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      140.0,
+                      220.0,
+                      300.0,
+                      380.0,
+                      460.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      90.0,
+                      90.0,
+                      90.0,
+                      90.0,
+                      90.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Sleepy Trouble Bubble"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                11.0,
+                8.0,
+                5.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: After a 0.15-second delay, Zoe blinks in the target direction and remains there for 0.95 seconds to 1.25 seconds, during which she sets her movement speed to a static 0 and has unobstructed vision. Afterwards, she blinks back to her casting position.",
+            "leveling": []
+          },
+          {
+            "description": "Portal Jump resets Zoe's basic attack timer. Zoe briefly becomes unable to act after casting Portal Jump as well as after blinking back.",
+            "leveling": []
+          }
+        ],
+        "name": "Portal Jump"
+      }
+    ]
+  },
+  "positions": [
+    "MIDDLE"
+  ]
+}

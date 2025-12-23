@@ -1,0 +1,56 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><ornnBonus>65</ornnBonus> Attack Damage<br><ornnBonus>85</ornnBonus> Ability Power<br><ornnBonus>30%</ornnBonus> Attack Speed<br><ornnBonus>25</ornnBonus> Ability Haste<br><ornnBonus>600</ornnBonus> Health<br><ornnBonus>50</ornnBonus> Armor<br><ornnBonus>10%</ornnBonus> Move Speed<br><attention>20%</attention> Critical Strike Chance</stats><br><br></mainText>",
+  "effect": {
+    "Effect1Amount": "25",
+    "Effect2Amount": "60",
+    "Effect3Amount": "2",
+    "Effect4Amount": "1.5",
+    "Effect5Amount": "1.5"
+  },
+  "gold": {
+    "base": 9000,
+    "purchasable": false,
+    "sell": 6300,
+    "total": 9000
+  },
+  "image": {
+    "full": "228008.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item2.png",
+    "w": 48,
+    "x": 432,
+    "y": 192
+  },
+  "inStore": false,
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": false
+  },
+  "name": "Runeglaive",
+  "plaintext": "",
+  "stats": {
+    "FlatArmorMod": 50,
+    "FlatCritChanceMod": 0.2,
+    "FlatHPPoolMod": 600,
+    "FlatMagicDamageMod": 85,
+    "FlatPhysicalDamageMod": 65,
+    "PercentAttackSpeedMod": 0.3,
+    "PercentMovementSpeedMod": 0.1
+  },
+  "tags": [
+    "Health",
+    "Damage",
+    "AttackSpeed",
+    "CooldownReduction",
+    "OnHit",
+    "NonbootsMovement",
+    "AbilityHaste"
+  ]
+}

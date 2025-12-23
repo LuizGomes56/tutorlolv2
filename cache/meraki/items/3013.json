@@ -1,0 +1,88 @@
+{
+  "active": [],
+  "buildsFrom": [
+    3010
+  ],
+  "buildsInto": [
+    3176
+  ],
+  "name": "Synchronized Souls",
+  "tier": 3,
+  "passives": [
+    {
+      "effects": "Gain {{as|45 '''bonus''' movement speed}} while out-of-combat.",
+      "name": "Synchrony",
+      "unique": true
+    },
+    {
+      "effects": "Gain {{si|Empowered Recall}}.",
+      "name": "Voidborn",
+      "unique": true
+    }
+  ],
+  "id": 3013,
+  "stats": {
+    "abilityPower": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 45.0,
+      "percent": 0.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "shop": {
+    "purchasable": false,
+    "prices": {
+      "total": 900
+    }
+  }
+}

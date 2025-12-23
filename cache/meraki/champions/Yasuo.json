@@ -1,0 +1,567 @@
+{
+  "name": "Yasuo",
+  "attackType": "MELEE",
+  "adaptiveType": "PHYSICAL_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 590.0,
+      "perLevel": 110.0
+    },
+    "mana": {
+      "flat": 100.0,
+      "perLevel": 0.0
+    },
+    "armor": {
+      "flat": 32.0,
+      "perLevel": 4.6
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 60.0,
+      "perLevel": 2.5
+    },
+    "attackSpeed": {
+      "flat": 0.697,
+      "perLevel": 3.5
+    },
+    "movespeed": {
+      "flat": 345.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.6700000166893,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 0.9,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": null,
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Innate - Intent: Yasuo's total critical strike chance is doubled from all other sources. Additionally,[ every 1% critical strike chance in excess of 100% is converted into 0.5 bonus attack damage. ][ every 50% critical strike chance in excess of 100% is converted into 25 bonus attack damage. ]",
+            "leveling": []
+          },
+          {
+            "description": "Innate - Resolve: Yasuo generates a stack of Flow for every 59 / 52.5 / 46 (based on level) units he travels by any means. At[ 100 stacks ][ 5900 / 5250 / 4600 (based on level) units traveled ]and upon taking damage from an enemy champion or monster, Yasuo consumes all Flow to grant himself a shield for 125 : 600 (based on level) that lasts for 1 second.",
+            "leveling": []
+          }
+        ],
+        "name": "Way of the Wanderer"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                " x (1 - (0.01 per 1.67% bonus attack speed)). This is capped at 67% reduction at 111.1% bonus attack speed.",
+                " x (1 - (0.01 per 1.67% bonus attack speed)). This is capped at 67% reduction at 111.1% bonus attack speed.",
+                " x (1 - (0.01 per 1.67% bonus attack speed)). This is capped at 67% reduction at 111.1% bonus attack speed.",
+                " x (1 - (0.01 per 1.67% bonus attack speed)). This is capped at 67% reduction at 111.1% bonus attack speed.",
+                " x (1 - (0.01 per 1.67% bonus attack speed)). This is capped at 67% reduction at 111.1% bonus attack speed."
+              ],
+              "values": [
+                4.0,
+                4.0,
+                4.0,
+                4.0,
+                4.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Yasuo thrusts his sword in a line in the target direction that deals physical damage to enemies hit, applies on-hit effects to the first enemy hit, and triggers on-attack effects once. Steel Tempest's damage based on its AD ratio can critically strike for (175% + 40%) damage.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      20.0,
+                      45.0,
+                      70.0,
+                      95.0,
+                      120.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      105.0,
+                      105.0,
+                      105.0,
+                      105.0,
+                      105.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Gathering Storm Bonus: Yasuo unleashes a whirlwind in the target direction that deals the same damage to enemies hit and knocks them up for 0.75 seconds, or 0.9 seconds in combination with Sweeping Blade.",
+            "leveling": []
+          },
+          {
+            "description": "If Steel Tempest is cast during Sweeping Blade, it will instead affect enemies around Yasuo at the end of the dash, or doing so immediately at his landing location after blinking while ending the dash prematurely. Steel Tempest's cast time is not incurred in this case.",
+            "leveling": []
+          },
+          {
+            "description": "Steel Tempest's thrust will fail to hit targets after the cast time if Yasuo was affected by disarming crowd control during it, but the cooldown of the ability is reset to 0.1 seconds.",
+            "leveling": []
+          },
+          {
+            "description": "Steel Wind Rising: If this hits at least one enemy, Yasuo generates a stack of Gathering Storm for 6 seconds, stacking up to 2 times and refreshing on subsequent hits. At 2 stacks, the next Steel Tempest cast consumes them all to become empowered with a new effect.",
+            "leveling": []
+          }
+        ],
+        "name": "Steel Tempest"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                25.0,
+                23.0,
+                21.0,
+                19.0,
+                17.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: Yasuo raises a wall of wind that travels in the target direction over 0.6 seconds. It then drifts another 50 units over 3.4 seconds, blocking all hostile non- turret projectiles that hit it and granting sight of its surroundings.",
+            "leveling": [
+              {
+                "attribute": "Wall Width",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      320.0,
+                      390.0,
+                      460.0,
+                      530.0,
+                      600.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Wind Wall"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                0.5,
+                0.4,
+                0.3,
+                0.2,
+                0.1
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Yasuo dashes a fixed distance in the direction of the target enemy and becomes ghosted for 2 seconds, refreshing on subsequent casts. Upon impact, he deals magic damage to the target and generates a stack of Ride the Wind for 5 seconds, which refreshes on subsequent hits and stacks up to 4 times.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      70.0,
+                      85.0,
+                      100.0,
+                      115.0,
+                      130.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      20.0,
+                      20.0,
+                      20.0,
+                      20.0,
+                      20.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      60.0,
+                      60.0,
+                      60.0,
+                      60.0,
+                      60.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Last Breath can be cast during the dash.",
+            "leveling": []
+          },
+          {
+            "description": "Ride the Wind: Sweeping Blade's damage is increased by 25% per stack, up to 100% at maximum stacks.",
+            "leveling": [
+              {
+                "attribute": "Bonus Damage per Stack",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      17.5,
+                      21.25,
+                      25.0,
+                      28.75,
+                      32.5
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      5.0,
+                      5.0,
+                      5.0,
+                      5.0,
+                      5.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      15.0,
+                      15.0,
+                      15.0,
+                      15.0,
+                      15.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Maximum Bonus Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      70.0,
+                      85.0,
+                      100.0,
+                      115.0,
+                      130.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      20.0,
+                      20.0,
+                      20.0,
+                      20.0,
+                      20.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      60.0,
+                      60.0,
+                      60.0,
+                      60.0,
+                      60.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Combined Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      140.0,
+                      170.0,
+                      200.0,
+                      230.0,
+                      260.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      40.0,
+                      40.0,
+                      40.0,
+                      40.0,
+                      40.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      120.0,
+                      120.0,
+                      120.0,
+                      120.0,
+                      120.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Sweeping Blade can be cast on the same target only once every few seconds.",
+            "leveling": []
+          },
+          {
+            "description": "Yasuo will be knocked down by any immobilizing or polymorphing crowd control during the dash.",
+            "leveling": []
+          }
+        ],
+        "name": "Sweeping Blade"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                70.0,
+                50.0,
+                30.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "A nearby airborne enemy champion is required to cast this ability. If Yasuo would blink inside the attack range of an enemy turret (excluding the Nexus Obelisk), Last Breath will instead attempt to position him outside of it.",
+            "leveling": []
+          },
+          {
+            "description": "Active: Yasuo blinks to the opposite side of a visible airborne enemy champion nearest to the cursor, instantly generating maximum Flow while resetting Gathering Storm stacks.",
+            "leveling": []
+          },
+          {
+            "description": "For the next 15 seconds, the damage dealt by Yasuo's critical strikes ignores 60% of the target's bonus armor.",
+            "leveling": []
+          },
+          {
+            "description": "Upon arrival, he knocks up all nearby airborne enemy champions for 1 second, revealing them, becoming unable to act himself, and slashing them with his sword over the duration to deal physical damage thereafter. Surrounding enemy champions that become airborne during this time will also be affected by Last Breath through the remaining duration.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      200.0,
+                      350.0,
+                      500.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      150.0,
+                      150.0,
+                      150.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Last Breath"
+      }
+    ]
+  },
+  "positions": [
+    "BOTTOM",
+    "MIDDLE",
+    "TOP"
+  ]
+}

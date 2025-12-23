@@ -1,0 +1,806 @@
+{
+  "name": "Smolder",
+  "attackType": "RANGED",
+  "adaptiveType": "PHYSICAL_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 575.0,
+      "perLevel": 100.0
+    },
+    "mana": {
+      "flat": 300.0,
+      "perLevel": 40.0
+    },
+    "armor": {
+      "flat": 24.0,
+      "perLevel": 4.7
+    },
+    "magicResistance": {
+      "flat": 30.0,
+      "perLevel": 1.3
+    },
+    "attackDamage": {
+      "flat": 60.0,
+      "perLevel": 2.3
+    },
+    "attackSpeed": {
+      "flat": 0.638,
+      "perLevel": 4.0
+    },
+    "movespeed": {
+      "flat": 330.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.638,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 550.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.02,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": null,
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Innate: Smolder generates a stack of Dragon Practice each time he hits an enemy champion with an ability, or whenever Super Scorcher Breath kills a minion or monster. His basic abilities deal bonus magic damage based on stacks.\n Super Scorcher Breath: Deals bonus magic damage equal to 40% : 70% (+ 0% : 16%) (based on critical strike chance) of Dragon Practice stacks.\n Achooo!: Explosions deal bonus magic damage equal to 55% of Dragon Practice stacks.\n Flap, Flap, Flap: Attacks each deal bonus magic damage equal to 12% of Dragon Practice stacks.",
+            "leveling": []
+          }
+        ],
+        "name": "Dragon Practice"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                5.5,
+                5.0,
+                4.5,
+                4.0,
+                3.5
+              ]
+            }
+          ]
+        },
+        "damageType": "OTHER_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Smolder spits a fireball at the target enemy that deals physical damage, increased by 0% : 75% (+ 0% : 40%) (based on critical strike chance); applies on-hit effects; applies life steal at 50% effectiveness; and triggers on-attack effects. If Super Scorcher Breath kills at least one target, Smolder restores 15 mana.",
+            "leveling": [
+              {
+                "attribute": "Maximum Damage with Infinity Edge",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      139.75,
+                      172.0,
+                      204.25,
+                      236.5,
+                      268.75
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      279.5,
+                      279.5,
+                      279.5,
+                      279.5,
+                      279.5
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Maximum Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      113.75,
+                      140.0,
+                      166.25,
+                      192.5,
+                      218.75
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      227.5,
+                      227.5,
+                      227.5,
+                      227.5,
+                      227.5
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      65.0,
+                      80.0,
+                      95.0,
+                      110.0,
+                      125.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      130.0,
+                      130.0,
+                      130.0,
+                      130.0,
+                      130.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Super Scorcher Breath becomes empowered with new effects based on the number of Dragon Practice stacks:",
+            "leveling": []
+          },
+          {
+            "description": "Tier 1 - 25 stacks: The fireball explodes upon collision to deal the same physical damage to nearby enemies. The explosion benefits from life steal at 50% effectiveness and applies on-hit effects.",
+            "leveling": []
+          },
+          {
+            "description": "Tier 2 - 125 stacks: The fireball sends forth 2 (+ 0.8 per 100 Dragon Practice stacks) bolts of fire in an arc upon collision that explode at maximum range, dealing 50% of the same damage to enemies hit. The bolts benefit from life steal at 50% effectiveness and apply on-hit effects.",
+            "leveling": [
+              {
+                "attribute": "Maximum Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      56.875,
+                      70.0,
+                      83.125,
+                      96.25,
+                      109.375
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      113.75,
+                      113.75,
+                      113.75,
+                      113.75,
+                      113.75
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Maximum Physical Damage with Infinity Edge",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      69.875,
+                      86.0,
+                      102.125,
+                      118.25,
+                      134.375
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      139.75,
+                      139.75,
+                      139.75,
+                      139.75,
+                      139.75
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      32.5,
+                      40.0,
+                      47.5,
+                      55.0,
+                      62.5
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      65.0,
+                      65.0,
+                      65.0,
+                      65.0,
+                      65.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Tier 3 - 225 stacks: Enemies hit are set on fire for 3 seconds, causing them to take bonus true damage equal to[ 2.5% per 100 bonus AD (+ 0.5% per 100 Dragon Practice stacks) of their maximum health over the duration, capped at 300 against monsters. ][ 0.83% per 100 bonus AD (+ 0.17% per 100 Dragon Practice stacks) of their maximum health each second, capped at 100 per tick against monsters. ]Subsequent applications of the burn stack, though not refreshing the duration of the previous burn. Enemy champions afflicted with the burn are also executed once Smolder deals damage to them that would leave them below 6.5% of their maximum health.",
+            "leveling": []
+          }
+        ],
+        "name": "Super Scorcher Breath"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                14.0,
+                13.0,
+                12.0,
+                11.0,
+                10.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Smolder sneezes a fiery glob in the target direction that deals physical damage to enemies hit and slows them by 35% for 1.5 seconds, slowing down in missile speed after travelling 1200 units. Hitting an enemy champion creates an explosion that deals physical damage to nearby enemies, with subsequent explosions against the same target dealing 75% damage of the previous explosion's damage.",
+            "leveling": [
+              {
+                "attribute": "Explosion Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      10.0,
+                      35.0,
+                      60.0,
+                      85.0,
+                      110.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      65.0,
+                      65.0,
+                      65.0,
+                      65.0,
+                      65.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      80.0,
+                      80.0,
+                      80.0,
+                      80.0,
+                      80.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Glob Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      60.0,
+                      70.0,
+                      80.0,
+                      90.0,
+                      100.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      60.0,
+                      60.0,
+                      60.0,
+                      60.0,
+                      60.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Physical Damage On Champion Hit",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      70.0,
+                      105.0,
+                      140.0,
+                      175.0,
+                      210.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      125.0,
+                      125.0,
+                      125.0,
+                      125.0,
+                      125.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      80.0,
+                      80.0,
+                      80.0,
+                      80.0,
+                      80.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Achooo!"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                24.0,
+                22.0,
+                20.0,
+                18.0,
+                16.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Smolder takes flight for 1.25 seconds, becoming ghosted and gaining 75% bonus movement speed, unobstructed vision, and the ability to ignore terrain collision. While in flight, he automatically fires up to 5 (+ 1 per 100 Dragon Practice stacks) bolts at the nearest and most wounded visible enemy, dealing physical damage with each hit and prioritizing enemy champions.",
+            "leveling": [
+              {
+                "attribute": "Minimum Total Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      50.0,
+                      75.0,
+                      100.0,
+                      125.0,
+                      150.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      150.0,
+                      150.0,
+                      150.0,
+                      150.0,
+                      150.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Physical Damage per Hit",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      10.0,
+                      15.0,
+                      20.0,
+                      25.0,
+                      30.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      30.0,
+                      30.0,
+                      30.0,
+                      30.0,
+                      30.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Flap, Flap, Flap ends immediately if Smolder casts one of his abilities or becomes immobilized.",
+            "leveling": []
+          }
+        ],
+        "name": "Flap, Flap, Flap"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                120.0,
+                110.0,
+                100.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Smolder shouts for his mother to attack from above, causing her to exhale a wave of fire from behind him and towards the target direction, granting sight of its surroundings as it travels. The wave heals Smolder and deals physical damage to enemies hit, with those in the center taking 50% increased damage and becoming slowed by 40% for 2 seconds.",
+            "leveling": [
+              {
+                "attribute": "Increased Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      300.0,
+                      450.0,
+                      600.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      165.0,
+                      165.0,
+                      165.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      150.0,
+                      150.0,
+                      150.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      200.0,
+                      300.0,
+                      400.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      110.0,
+                      110.0,
+                      110.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      100.0,
+                      100.0,
+                      100.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Self Heal",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      100.0,
+                      135.0,
+                      170.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      50.0,
+                      50.0,
+                      50.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      75.0,
+                      75.0,
+                      75.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "MMOOOMMMM! deals 50% damage against minions and monsters.",
+            "leveling": []
+          }
+        ],
+        "name": "MMOOOMMMM!"
+      }
+    ]
+  },
+  "positions": [
+    "BOTTOM",
+    "MIDDLE",
+    "TOP"
+  ]
+}

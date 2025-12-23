@@ -1,0 +1,87 @@
+{
+  "active": [],
+  "buildsFrom": [
+    3802,
+    1026
+  ],
+  "buildsInto": [],
+  "name": "Malignance",
+  "tier": 3,
+  "passives": [
+    {
+      "effects": "Dealing [[ability damage]] to enemy champions with your [[champion ability|ultimate ability]] creates a {{pp|type=ultimate's damage instance|251;251.8;253.1;255.5;259.8;267.3;280.7;304.2;345.9;419.7;550|0 to 823|formula=250 + 2^(damage dealt/100)}} radius scorched zone beneath them for 3 seconds, applying a ''Curse'' to enemies within that deals {{ft|{{as|{{ap|60/4}}|magic damage}} {{as|(+ {{ap|5/4}}% AP)}} {{as|magic damage}} every {{fd|0.25}} seconds|{{as|{{ap|60*3}}|magic damage}} {{as|(+ {{ap|5*3}}% AP)}} {{as|'''total''' magic damage}} over the duration}} and reduces their {{as|magic resistance by 10}} (3 second cooldown per target, starts on zone creation).",
+      "name": "Hatefog",
+      "unique": true
+    },
+    {
+      "effects": "Gain 20 [[Haste#Ultimate haste|ultimate haste]].",
+      "name": "Scorn",
+      "unique": true
+    }
+  ],
+  "id": 3118,
+  "stats": {
+    "abilityPower": {
+      "flat": 90.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 600.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "shop": {
+    "purchasable": true,
+    "prices": {
+      "total": 2700
+    }
+  }
+}

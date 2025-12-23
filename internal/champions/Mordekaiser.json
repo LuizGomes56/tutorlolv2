@@ -1,0 +1,140 @@
+{
+  "name": "Mordekaiser",
+  "adaptative_type": "Magic",
+  "attack_type": "Melee",
+  "positions": [
+    "Top"
+  ],
+  "stats": {
+    "health": {
+      "flat": 645.0,
+      "perLevel": 104.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "perLevel": 0.0
+    },
+    "armor": {
+      "flat": 37.0,
+      "perLevel": 4.2
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 61.0,
+      "perLevel": 4.0
+    },
+    "attackSpeed": {
+      "flat": 0.625,
+      "perLevel": 1.0
+    },
+    "movespeed": {
+      "flat": 335.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.625,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.02,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 0.95,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 0.85,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": [
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Obliterate",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "0.3",
+          "0.35",
+          "0.4",
+          "0.45",
+          "0.5"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "Obliterate",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "0 + 80 + (0.7 * ctx.ap)",
+          "2.6470588235294117 + 115 + (0.7 * ctx.ap)",
+          "5.294117647058823 + 150 + (0.7 * ctx.ap)",
+          "7.9411764705882355 + 185 + (0.7 * ctx.ap)",
+          "10.588235294117649 + 220 + (0.7 * ctx.ap)",
+          "13.235294117647058",
+          "15.882352941176473",
+          "18.52941176470588",
+          "21.176470588235293",
+          "23.823529411764707",
+          "26.470588235294116",
+          "29.11764705882353",
+          "31.764705882352946",
+          "34.411764705882355",
+          "37.05882352941176",
+          "39.705882352941174",
+          "42.35294117647059",
+          "45"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Death's Grasp",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "60 + (0.4 * ctx.ap)",
+          "75 + (0.4 * ctx.ap)",
+          "90 + (0.4 * ctx.ap)",
+          "105 + (0.4 * ctx.ap)",
+          "120 + (0.4 * ctx.ap)"
+        ]
+      }
+    ]
+  ],
+  "merge_data": []
+}

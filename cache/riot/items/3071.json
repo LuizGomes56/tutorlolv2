@@ -1,0 +1,61 @@
+{
+  "colloq": ";bc",
+  "depth": 3,
+  "description": "<mainText><stats><attention>40</attention> Attack Damage<br><attention>400</attention> Health<br><attention>20</attention> Ability Haste</stats><br><br><passive>Carve</passive><br>Dealing <physicalDamage>physical damage</physicalDamage> to champions reduces their <scaleArmor>Armor by 6%</scaleArmor> for 6 seconds. (stacks 5 times).<br><br><passive>Fervor</passive><br>Dealing <physicalDamage>physical damage</physicalDamage> grants <speed>20 Move Speed</speed> for 2 seconds.</mainText>",
+  "effect": {
+    "Effect10Amount": "0.01",
+    "Effect1Amount": "0",
+    "Effect2Amount": "0.06",
+    "Effect3Amount": "6",
+    "Effect4Amount": "5",
+    "Effect5Amount": "0.3",
+    "Effect6Amount": "0",
+    "Effect7Amount": "0",
+    "Effect8Amount": "0",
+    "Effect9Amount": "0"
+  },
+  "from": [
+    "3044",
+    "3067",
+    "1037"
+  ],
+  "gold": {
+    "base": 225,
+    "purchasable": true,
+    "sell": 2100,
+    "total": 3000
+  },
+  "image": {
+    "full": "3071.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item2.png",
+    "w": 48,
+    "x": 288,
+    "y": 432
+  },
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Black Cleaver",
+  "plaintext": "Dealing physical damage to enemy champions reduces their Armor",
+  "stats": {
+    "FlatHPPoolMod": 400,
+    "FlatPhysicalDamageMod": 40
+  },
+  "tags": [
+    "Health",
+    "Damage",
+    "CooldownReduction",
+    "OnHit",
+    "NonbootsMovement",
+    "ArmorPenetration",
+    "AbilityHaste"
+  ]
+}

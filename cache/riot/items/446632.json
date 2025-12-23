@@ -1,0 +1,44 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><attention>55</attention> Attack Damage<br><attention>350</attention> Health<br><attention>20</attention> Ability Haste</stats><br><br><passive>Spellblade</passive><br>After using an Ability, your next Attack is enhanced with additional damage. If the target is a champion, also heal.<br><br></mainText>",
+  "gold": {
+    "base": 1000,
+    "purchasable": true,
+    "sell": 400,
+    "total": 1000
+  },
+  "image": {
+    "full": "446632.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item4.png",
+    "w": 48,
+    "x": 192,
+    "y": 336
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": false
+  },
+  "name": "Divine Sunderer",
+  "plaintext": "",
+  "specialRecipe": 220007,
+  "stats": {
+    "FlatHPPoolMod": 350,
+    "FlatPhysicalDamageMod": 55
+  },
+  "tags": [
+    "Health",
+    "Damage",
+    "CooldownReduction",
+    "OnHit",
+    "MagicPenetration",
+    "ArmorPenetration",
+    "AbilityHaste"
+  ]
+}

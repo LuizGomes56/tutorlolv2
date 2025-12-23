@@ -1,0 +1,40 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><attention>90</attention> Ability Power<br><attention>15</attention> Magic Penetration<br><attention>4%</attention> Move Speed</stats><br><br><passive>Stormraider</passive><br>Dealing 25% of a champion's maximum Health within 2.5s applies <passive>Squall</passive> to them and grants <speed>25% Move Speed</speed> for 1.5 seconds.<br><br><passive>Squall</passive><br>After 2 seconds, deal <magicDamage>magic damage</magicDamage>. If the target dies before <passive>Squall</passive> triggers, it damages nearby enemies and you gain <speed>25% Move Speed</speed> for 1.5 seconds.</mainText>",
+  "gold": {
+    "base": 2500,
+    "purchasable": true,
+    "sell": 1250,
+    "total": 2500
+  },
+  "image": {
+    "full": "224646.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item2.png",
+    "w": 48,
+    "x": 384,
+    "y": 0
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": false
+  },
+  "name": "Stormsurge",
+  "plaintext": "",
+  "stats": {
+    "FlatMagicDamageMod": 90,
+    "PercentMovementSpeedMod": 0.04
+  },
+  "tags": [
+    "SpellDamage",
+    "GoldPer",
+    "NonbootsMovement",
+    "MagicPenetration"
+  ]
+}

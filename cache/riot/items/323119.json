@@ -1,0 +1,45 @@
+{
+  "colloq": "",
+  "depth": 3,
+  "description": "<mainText><stats><attention>550</attention> Health<br><attention>500</attention> Mana<br><attention>15</attention> Ability Haste</stats><br><br><passive>Awe</passive><br>Gain <scaleHealth> Health</scaleHealth>.<br><br><passive>Manaflow</passive> (8s, max 4 charges)<br>Landing Attacks and Abilities grant <scaleMana>6.5 max Mana</scaleMana> (doubled vs. champions).<br>Transforms into <rarityLegendary>Fimbulwinter</rarityLegendary> at <scaleMana>360 max Mana</scaleMana>.</mainText>",
+  "from": [
+    "323070",
+    "1011",
+    "3067"
+  ],
+  "gold": {
+    "base": 300,
+    "purchasable": true,
+    "sell": 1680,
+    "total": 2400
+  },
+  "image": {
+    "full": "323119.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item3.png",
+    "w": 48,
+    "x": 96,
+    "y": 384
+  },
+  "maps": {
+    "11": true,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": false
+  },
+  "name": "Winter's Approach",
+  "plaintext": "",
+  "stats": {
+    "FlatHPPoolMod": 550,
+    "FlatMPPoolMod": 500
+  },
+  "tags": [
+    "Health",
+    "Mana",
+    "AbilityHaste"
+  ]
+}

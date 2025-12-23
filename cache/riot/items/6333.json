@@ -1,0 +1,46 @@
+{
+  "colloq": "",
+  "depth": 3,
+  "description": "<mainText><stats><attention>60</attention> Attack Damage<br><attention>50</attention> Armor<br><attention>15</attention> Ability Haste</stats><br><br><passive>Ignore Pain</passive><br>A percentage of damage taken is dealt to you over 3 seconds instead.<br><br><passive>Defy</passive><br>When a champion that you damaged within 3 seconds dies, cleanse <passive>Ignore Pain's</passive> remaining damage and restore <healing>Health</healing> over 2 seconds.</mainText>",
+  "from": [
+    "2019",
+    "1037",
+    "3133"
+  ],
+  "gold": {
+    "base": 275,
+    "purchasable": true,
+    "sell": 2310,
+    "total": 3300
+  },
+  "image": {
+    "full": "6333.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item5.png",
+    "w": 48,
+    "x": 48,
+    "y": 96
+  },
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Death's Dance",
+  "plaintext": "",
+  "stacks": 0,
+  "stats": {
+    "FlatArmorMod": 50,
+    "FlatPhysicalDamageMod": 60
+  },
+  "tags": [
+    "Armor",
+    "Damage",
+    "AbilityHaste"
+  ]
+}

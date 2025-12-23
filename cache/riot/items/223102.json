@@ -1,0 +1,46 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><attention>80</attention> Ability Power<br><attention>40</attention> Magic Resist</stats><br><br><passive>Annul</passive><br>Grants a Spell Shield that blocks the next enemy Ability.<br><br><rules>Item cooldown is restarted if you take damage from champions before it is completed.</rules></mainText>",
+  "effect": {
+    "Effect1Amount": "40",
+    "Effect2Amount": "45",
+    "Effect3Amount": "10",
+    "Effect4Amount": "-0.1",
+    "Effect5Amount": "8",
+    "Effect6Amount": "2"
+  },
+  "gold": {
+    "base": 2500,
+    "purchasable": true,
+    "sell": 1250,
+    "total": 2500
+  },
+  "image": {
+    "full": "223102.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item1.png",
+    "w": 48,
+    "x": 336,
+    "y": 240
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": false
+  },
+  "name": "Banshee's Veil",
+  "plaintext": "",
+  "stats": {
+    "FlatMagicDamageMod": 80,
+    "FlatSpellBlockMod": 40
+  },
+  "tags": [
+    "SpellBlock",
+    "SpellDamage"
+  ]
+}

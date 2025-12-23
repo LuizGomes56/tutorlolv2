@@ -1,0 +1,79 @@
+{
+  "active": [
+    {
+      "effects": "Summons a mist over the target location for 5 seconds, granting {{tip|sight}} of the area in a 375 radius and {{tip|true sight|revealing}} enemy {{tip|stealthed trap|traps}} within for 3 seconds.",
+      "name": null,
+      "unique": false
+    }
+  ],
+  "buildsFrom": [],
+  "buildsInto": [],
+  "name": "Arcane Sweeper (Trinket)",
+  "tier": 1,
+  "passives": [],
+  "id": 3348,
+  "stats": {
+    "abilityPower": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "shop": {
+    "purchasable": false,
+    "prices": {
+      "total": 0
+    }
+  }
+}

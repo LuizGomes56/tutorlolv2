@@ -1,0 +1,46 @@
+{
+  "colloq": "",
+  "depth": 2,
+  "description": "<mainText><stats><attention>40</attention> Armor</stats><br><br><passive>Rock Solid</passive><br>Reduce incoming damage from Attacks.</mainText>",
+  "from": [
+    "1029",
+    "1029"
+  ],
+  "gold": {
+    "base": 400,
+    "purchasable": true,
+    "sell": 700,
+    "total": 1000
+  },
+  "image": {
+    "full": "3082.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item3.png",
+    "w": 48,
+    "x": 192,
+    "y": 0
+  },
+  "into": [
+    "323110",
+    "3110",
+    "3143"
+  ],
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Warden's Mail",
+  "plaintext": "",
+  "stats": {
+    "FlatArmorMod": 40
+  },
+  "tags": [
+    "Armor"
+  ]
+}

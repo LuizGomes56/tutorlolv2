@@ -1,0 +1,54 @@
+{
+  "colloq": ";",
+  "depth": 3,
+  "description": "<mainText><stats><attention>50</attention> Attack Damage<br><attention>35</attention> Magic Resist<br><attention>10%</attention> Life Steal</stats><br><br><br><br><active>ACTIVE</active><br><active>Quicksilver</active><br>Removes all crowd control debuffs (excluding <keyword>Airborne</keyword>) and grants Move Speed.</mainText>",
+  "effect": {
+    "Effect1Amount": "0.5",
+    "Effect2Amount": "2",
+    "Effect3Amount": "90"
+  },
+  "from": [
+    "3140",
+    "1037",
+    "1053"
+  ],
+  "gold": {
+    "base": 125,
+    "purchasable": true,
+    "sell": 2240,
+    "total": 3200
+  },
+  "image": {
+    "full": "3139.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item3.png",
+    "w": 48,
+    "x": 432,
+    "y": 144
+  },
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Mercurial Scimitar",
+  "plaintext": "Activate to remove all crowd control debuffs and grant massive Move Speed",
+  "stats": {
+    "FlatPhysicalDamageMod": 50,
+    "FlatSpellBlockMod": 35,
+    "PercentLifeStealMod": 0.1
+  },
+  "tags": [
+    "SpellBlock",
+    "Damage",
+    "LifeSteal",
+    "Active",
+    "NonbootsMovement",
+    "Tenacity"
+  ]
+}

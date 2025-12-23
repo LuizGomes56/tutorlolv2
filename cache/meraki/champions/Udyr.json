@@ -1,0 +1,1010 @@
+{
+  "name": "Udyr",
+  "attackType": "MELEE",
+  "adaptiveType": "PHYSICAL_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 664.0,
+      "perLevel": 92.0
+    },
+    "mana": {
+      "flat": 271.0,
+      "perLevel": 50.0
+    },
+    "armor": {
+      "flat": 31.0,
+      "perLevel": 4.7
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 62.0,
+      "perLevel": 4.0
+    },
+    "attackSpeed": {
+      "flat": 0.65,
+      "perLevel": 3.0
+    },
+    "movespeed": {
+      "flat": 350.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.6499999761581421,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 125.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 0.92,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.1,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": null,
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Innate - Awakened Spirit: Udyr has no ultimate ability and instead has 4 basic abilities that each incur a 1.5-second global cooldown when cast. Each ability grants a Stance that empowers his basic attacks, and switching Stances will replace the empowered attacks of the previous Stance.",
+            "leveling": []
+          },
+          {
+            "description": "Innate - Monk Training: After casting an ability, Udyr empowers his next two basic attacks within 4 seconds to gain 30% bonus attack speed and refund 5% of Awakened Spirit's total cooldown, though not if the remaining cooldown is less than 1 second.",
+            "leveling": []
+          },
+          {
+            "description": "Periodically, after Udyr enters a Stance, he can cast it again at no cost after 0.25 seconds and within the following 5 seconds to Awaken it, empowering the Stance with an additional effect and placing the effect on cooldown.If Udyr does not consume the Awaken cast within the duration and has not switched Stances, his current Stance's respective ability incurs a 0.25-second cooldown. Awakened Spirit is placed on full cooldown at the start of the game.",
+            "leveling": []
+          }
+        ],
+        "name": "Bridge Between"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                6.0,
+                6.0,
+                6.0,
+                6.0,
+                6.0,
+                6.0
+              ]
+            }
+          ]
+        },
+        "damageType": "OTHER_DAMAGE",
+        "effects": [
+          {
+            "description": "Active - Stance: Udyr enters Claw Stance, empowering his next two basic attacks to gain 50 bonus range and deal bonus physical damage, capped at 15 (+ 100% bonus AD) (+ 50% AP) against monsters.",
+            "leveling": [
+              {
+                "attribute": "Bonus Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%  of target's maximum health",
+                      "%  of target's maximum health",
+                      "%  of target's maximum health",
+                      "%  of target's maximum health",
+                      "%  of target's maximum health",
+                      "%  of target's maximum health"
+                    ],
+                    "values": [
+                      3.0,
+                      4.0,
+                      5.0,
+                      6.0,
+                      7.0,
+                      8.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% per 100 bonus AD",
+                      "% per 100 bonus AD",
+                      "% per 100 bonus AD",
+                      "% per 100 bonus AD",
+                      "% per 100 bonus AD",
+                      "% per 100 bonus AD"
+                    ],
+                    "values": [
+                      4.0,
+                      4.0,
+                      4.0,
+                      4.0,
+                      4.0,
+                      4.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%  of target's maximum health",
+                      "%  of target's maximum health",
+                      "%  of target's maximum health",
+                      "%  of target's maximum health",
+                      "%  of target's maximum health",
+                      "%  of target's maximum health"
+                    ],
+                    "values": [
+                      6.0,
+                      8.0,
+                      10.0,
+                      12.0,
+                      14.0,
+                      16.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% per 100 bonus AD",
+                      "% per 100 bonus AD",
+                      "% per 100 bonus AD",
+                      "% per 100 bonus AD",
+                      "% per 100 bonus AD",
+                      "% per 100 bonus AD"
+                    ],
+                    "values": [
+                      8.0,
+                      8.0,
+                      8.0,
+                      8.0,
+                      8.0,
+                      8.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Additionally, Udyr gains bonus attack speed and deals bonus physical damage on-hit for 4 seconds.",
+            "leveling": [
+              {
+                "attribute": "Bonus Attack Speed",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      20.0,
+                      32.0,
+                      44.0,
+                      56.0,
+                      68.0,
+                      80.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Bonus Physical Damage On-Hit",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      5.0,
+                      11.0,
+                      17.0,
+                      23.0,
+                      29.0,
+                      35.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      25.0,
+                      25.0,
+                      25.0,
+                      25.0,
+                      25.0,
+                      25.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Recast - Awaken: Udyr gains an additional 20% : 70% (based on level) bonus attack speed. The empowered attacks deal an additional 2% : 4% (based on level) (+ 3% per 100 bonus AD) of the target's maximum health bonus physical damage. Udyr's next two basic attacks in any Stance within 4 seconds are each empowered to strike with lightning[ 6 times over 1 second, ][ every 0.2 seconds over 1 second, ]dealing bonus magic damage equal to 1.5% : 3% (based on level) (+ 0.8% per 100 AP) of the target's maximum health per hit, chaining to up to 3 nearby visible enemies and being able to hit the same target multiple times, for a total of 9% : 18% (based on level) (+ 4.8% per 100 AP) of the target's maximum health. Each lightning strike deals a minimum of 40 : 160 (based on level) against minions and is capped at 15 (+ 100% bonus AD) (+ 50% AP) against monsters.",
+            "leveling": []
+          }
+        ],
+        "name": "Wilding Claw"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                6.0,
+                6.0,
+                6.0,
+                6.0,
+                6.0,
+                6.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active - Stance: Udyr enters Mantle Stance, empowering his next two basic attacks to gain life steal and heal him for 1.2% of his maximum health (+ 8% AP) on-hit.",
+            "leveling": [
+              {
+                "attribute": "Life Steal",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      15.0,
+                      16.0,
+                      17.0,
+                      18.0,
+                      19.0,
+                      20.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Additionally, Udyr grants himself a shield for 4 seconds.",
+            "leveling": [
+              {
+                "attribute": "Shield Strength",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      45.0,
+                      60.0,
+                      75.0,
+                      90.0,
+                      105.0,
+                      120.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      40.0,
+                      40.0,
+                      40.0,
+                      40.0,
+                      40.0,
+                      40.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% maximum health",
+                      "% maximum health",
+                      "% maximum health",
+                      "% maximum health",
+                      "% maximum health",
+                      "% maximum health"
+                    ],
+                    "values": [
+                      2.0,
+                      2.3,
+                      2.6,
+                      2.9,
+                      3.2,
+                      3.5
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Healing on-hit is reduced to 60% against minions.",
+            "leveling": []
+          },
+          {
+            "description": "Recast - Awaken: Udyr increases the shield's strength, stacking with the remaining shield from the first cast, and heals every 0.25 seconds over the next 4 seconds, as well as causes the empowered attacks to instead gain doubled life steal and heal him for 2.4% of his maximum health (+ 16% AP) on-hit.",
+            "leveling": [
+              {
+                "attribute": "Heal per Tick",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      0.63,
+                      0.8688235294117648,
+                      1.1076470588235294,
+                      1.3464705882352943,
+                      1.585294117647059,
+                      1.8241176470588236,
+                      2.0629411764705883,
+                      2.3017647058823534,
+                      2.540588235294118,
+                      2.7794117647058827,
+                      3.0182352941176473,
+                      3.257058823529412,
+                      3.4958823529411767,
+                      3.7347058823529418,
+                      3.9735294117647064,
+                      4.212352941176471,
+                      4.451176470588236,
+                      4.69
+                    ]
+                  },
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      1.41,
+                      1.88,
+                      2.34,
+                      2.81,
+                      3.28,
+                      3.75
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      2.03,
+                      2.03,
+                      2.03,
+                      2.03,
+                      2.03,
+                      2.03
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% maximum health",
+                      "% maximum health",
+                      "% maximum health",
+                      "% maximum health",
+                      "% maximum health",
+                      "% maximum health"
+                    ],
+                    "values": [
+                      0.25,
+                      0.25,
+                      0.25,
+                      0.25,
+                      0.25,
+                      0.25
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Increased Life Steal",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      30.0,
+                      32.0,
+                      34.0,
+                      36.0,
+                      38.0,
+                      40.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Increased Shield Strength",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      20.0,
+                      27.647058823529413,
+                      35.294117647058826,
+                      42.94117647058823,
+                      50.58823529411765,
+                      58.23529411764706,
+                      65.88235294117646,
+                      73.52941176470588,
+                      81.1764705882353,
+                      88.82352941176471,
+                      96.47058823529412,
+                      104.11764705882354,
+                      111.76470588235294,
+                      119.41176470588236,
+                      127.05882352941175,
+                      134.7058823529412,
+                      142.3529411764706,
+                      150.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      45.0,
+                      60.0,
+                      75.0,
+                      90.0,
+                      105.0,
+                      120.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      65.0,
+                      65.0,
+                      65.0,
+                      65.0,
+                      65.0,
+                      65.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% maximum health",
+                      "% maximum health",
+                      "% maximum health",
+                      "% maximum health",
+                      "% maximum health",
+                      "% maximum health"
+                    ],
+                    "values": [
+                      8.0,
+                      8.0,
+                      8.0,
+                      8.0,
+                      8.0,
+                      8.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Healing",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      10.0,
+                      13.823529411764708,
+                      17.647058823529413,
+                      21.470588235294116,
+                      25.294117647058822,
+                      29.11764705882353,
+                      32.94117647058823,
+                      36.76470588235294,
+                      40.58823529411765,
+                      44.411764705882355,
+                      48.23529411764706,
+                      52.05882352941177,
+                      55.88235294117647,
+                      59.70588235294118,
+                      63.52941176470589,
+                      67.3529411764706,
+                      71.1764705882353,
+                      75.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      22.5,
+                      30.0,
+                      37.5,
+                      45.0,
+                      52.5,
+                      60.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      32.5,
+                      32.5,
+                      32.5,
+                      32.5,
+                      32.5,
+                      32.5
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% maximum health",
+                      "% maximum health",
+                      "% maximum health",
+                      "% maximum health",
+                      "% maximum health",
+                      "% maximum health"
+                    ],
+                    "values": [
+                      4.0,
+                      4.0,
+                      4.0,
+                      4.0,
+                      4.0,
+                      4.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Iron Mantle"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                6.0,
+                6.0,
+                6.0,
+                6.0,
+                6.0,
+                6.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active - Stance: Udyr enters Stampede Stance, empowering his basic attacks to have an uncancellable windup and pounce on the target to stun them for 0.75 seconds. This cannot affect the same target more than once every few seconds.",
+            "leveling": []
+          },
+          {
+            "description": "Additionally, Udyr becomes ghosted and gains bonus movement speed for 4 seconds, which decays to 30% effectiveness over 1.5 seconds.",
+            "leveling": [
+              {
+                "attribute": "Bonus Movement Speed",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      25.0,
+                      31.0,
+                      37.0,
+                      43.0,
+                      49.0,
+                      55.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Decayed Bonus Movement Speed",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      7.5,
+                      9.3,
+                      11.1,
+                      12.9,
+                      14.7,
+                      16.5
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Recast - Awaken: Udyr gains 75 bonus attack range and an additional 30% : 40% (based on level) bonus movement speed. He also gains immunity to crowd control for 1.5 seconds.",
+            "leveling": []
+          }
+        ],
+        "name": "Blazing Stampede"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                6.0,
+                6.0,
+                6.0,
+                6.0,
+                6.0,
+                6.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active - Stance: Udyr enters Storm Stance, empowering his next two basic attacks to deal 10 : 40 (based on level) (+ 35% AP) magic damage to nearby enemies.",
+            "leveling": []
+          },
+          {
+            "description": "Additionally, Udyr summons a blizzard around himself for 4 seconds that deals magic damage every 0.5 seconds to nearby enemies and slows them while they remain within. Minions take 50% / 60% / 70% / 80% (based on level) damage.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage per Tick",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      10.0,
+                      18.0,
+                      26.0,
+                      34.0,
+                      42.0,
+                      50.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      17.5,
+                      17.5,
+                      17.5,
+                      17.5,
+                      17.5,
+                      17.5
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Slow",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      15.0,
+                      18.0,
+                      21.0,
+                      24.0,
+                      27.0,
+                      30.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      80.0,
+                      144.0,
+                      208.0,
+                      272.0,
+                      336.0,
+                      400.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      140.0,
+                      140.0,
+                      140.0,
+                      140.0,
+                      140.0,
+                      140.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Recast - Awaken: Udyr ends the blizzard if it is active and unleashes a glacial storm for 4 seconds that is able to move on its own, as well as causes the empowered attacks to instead deal their damage to enemies within that storm. The storm applies the same effects as the blizzard but deals bonus magic damage equal to[ 1% : 1.75% (based on level) (+ 0.4375% per 100 AP) of the target's maximum health per tick ][ 8% : 14% (based on level) (+ 3.5% per 100 AP) of the target's maximum health over the duration ]and slows by an additional 5%. Against monsters, the storm deals a minimum of [ 5 : 35 (based on level) per tick, and is capped at 10 : 50 (based on level) ][ 40 : 280 (based on level) over the duration, and is capped at 80 : 400 (based on level) ].",
+            "leveling": [
+              {
+                "attribute": "Increased Slow",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      20.0,
+                      23.0,
+                      26.0,
+                      29.0,
+                      32.0,
+                      35.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "The storm grants sight of its surroundings and prioritizes following the last enemy Udyr attacked while it was active, then enemy champions, then non-champions, then Udyr. The storm can only follow visible enemies.",
+            "leveling": []
+          }
+        ],
+        "name": "Wingborne Storm"
+      }
+    ]
+  },
+  "positions": [
+    "JUNGLE",
+    "TOP"
+  ]
+}

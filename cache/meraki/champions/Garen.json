@@ -1,0 +1,474 @@
+{
+  "name": "Garen",
+  "attackType": "MELEE",
+  "adaptiveType": "PHYSICAL_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 690.0,
+      "perLevel": 98.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "perLevel": 0.0
+    },
+    "armor": {
+      "flat": 38.0,
+      "perLevel": 4.2
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 1.55
+    },
+    "attackDamage": {
+      "flat": 69.0,
+      "perLevel": 4.5
+    },
+    "attackSpeed": {
+      "flat": 0.625,
+      "perLevel": 3.65
+    },
+    "movespeed": {
+      "flat": 340.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.625,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 0.95,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 0.95,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.1,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": null,
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Innate: Garen regenerates an additional[ 1.5% : 10.1% (based on level) of his maximum health every 5 seconds. ][ 0.15% : 1.01% (based on level) of his maximum health every 0.5 seconds. ]",
+            "leveling": []
+          },
+          {
+            "description": "Perseverance is lost for 8 seconds if Garen takes damage from champions, epic monsters, or turrets, or if he is hit by an enemy ability or affected by an enemy summoner spell, refreshing on subsequent damage and hits taken from them.",
+            "leveling": []
+          }
+        ],
+        "name": "Perseverance"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                8.0,
+                8.0,
+                8.0,
+                8.0,
+                8.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Garen cleanses himself of all slows and gains 35% bonus movement speed for a duration.",
+            "leveling": [
+              {
+                "attribute": "Movement Speed Duration",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      1.0,
+                      1.65,
+                      2.3,
+                      2.95,
+                      3.6
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Additionally, Garen empowers his next basic attack within 4.5 seconds to have an uncancellable windup, lunge at the target, deal bonus physical damage, and silence them for 1.5 seconds.",
+            "leveling": [
+              {
+                "attribute": "Bonus Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      30.0,
+                      60.0,
+                      90.0,
+                      120.0,
+                      150.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      50.0,
+                      50.0,
+                      50.0,
+                      50.0,
+                      50.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Decisive Strike resets Garen's basic attack timer.",
+            "leveling": []
+          }
+        ],
+        "name": "Decisive Strike"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                22.0,
+                19.5,
+                17.0,
+                14.5,
+                12.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: Garen reduces incoming damage for 4 seconds. For the first 0.75 seconds, Garen additionally grants himself a shield and 60% tenacity.",
+            "leveling": [
+              {
+                "attribute": "Damage Reduction",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      25.0,
+                      29.0,
+                      33.0,
+                      37.0,
+                      41.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Shield Strength",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      65.0,
+                      85.0,
+                      105.0,
+                      125.0,
+                      145.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus health",
+                      "% bonus health",
+                      "% bonus health",
+                      "% bonus health",
+                      "% bonus health"
+                    ],
+                    "values": [
+                      18.0,
+                      18.0,
+                      18.0,
+                      18.0,
+                      18.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Courage: For each stack, Garen gains 0.2 bonus armor and 0.2 bonus magic resistance, up to a maximum of 30 bonus resistances each.",
+            "leveling": []
+          },
+          {
+            "description": "Passive: Whenever Garen kills an enemy, he generates a stack of Courage, stacking up to 150 times.",
+            "leveling": []
+          }
+        ],
+        "name": "Courage"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                9.0,
+                8.25,
+                7.5,
+                6.75,
+                6.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Garen rapidly spins his sword around himself 7 (+ 1 per 25% bonus attack speed) times over 3 seconds, becoming unable to declare basic attacks but gaining ghosting and dealing physical damage to nearby enemies periodically. Judgment can be recast after 1 second while active, and does so automatically after it ends.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage Per Spin",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      4.0,
+                      7.0,
+                      10.0,
+                      13.0,
+                      16.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      36.0,
+                      39.0,
+                      42.0,
+                      45.0,
+                      48.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Enemy champions hit 6 times by Judgment are inflicted with 25% armor reduction for 6 seconds, with the duration refreshing upon the 7th hit and every 6th hit thereafter.",
+            "leveling": []
+          },
+          {
+            "description": "Judgment can critically strike for[ (140% + 32%) damage. ][ 80% total critical damage. ]",
+            "leveling": []
+          },
+          {
+            "description": "Judgment deals 25% increased damage against the nearest enemy hit.",
+            "leveling": [
+              {
+                "attribute": "Increased Damage Per Spin",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      5.0,
+                      8.75,
+                      12.5,
+                      16.25,
+                      20.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      45.0,
+                      48.75,
+                      52.5,
+                      56.25,
+                      60.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Recast: Garen ends Judgment.",
+            "leveling": []
+          }
+        ],
+        "name": "Judgment"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                120.0,
+                100.0,
+                80.0
+              ]
+            }
+          ]
+        },
+        "damageType": "TRUE_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Garen calls upon the might of Demacia onto the target enemy champion, dealing them true damage as well as revealing them for 1 second at the start of the cast time.",
+            "leveling": [
+              {
+                "attribute": "True Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      150.0,
+                      250.0,
+                      350.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% of target's missing health",
+                      "% of target's missing health",
+                      "% of target's missing health"
+                    ],
+                    "values": [
+                      25.0,
+                      30.0,
+                      35.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Demacian Justice"
+      }
+    ]
+  },
+  "positions": [
+    "TOP"
+  ]
+}

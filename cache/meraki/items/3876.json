@@ -1,0 +1,92 @@
+{
+  "active": [
+    {
+      "effects": "Consumes a charge to place a {{tip|Stealth Ward}} at the target location, which grants {{tip|sight}} of the surrounding area. Charges refill upon visiting the shop.",
+      "name": "Ward",
+      "unique": true
+    }
+  ],
+  "buildsFrom": [
+    3867
+  ],
+  "buildsInto": [],
+  "name": "Solstice Sleigh",
+  "tier": 3,
+  "passives": [
+    {
+      "effects": "Receives diminishing gold from excessive minion kills.",
+      "name": null,
+      "unique": true
+    },
+    {
+      "effects": "{{tip|Slow|Slowing}} or {{tip|immobilize|immobilizing}} an enemy champion causes you and the most wounded allied champion within 1500 units to gain {{as|20% '''bonus''' movement speed}} decaying over {{fd|2.5}} seconds and {{as|{{pp|50 to 230 for 13|1;7 to 18|type=your level}}|hp}} {{as|'''bonus''' health}} for {{fd|2.5}} seconds.",
+      "name": "Going Sledding",
+      "unique": true
+    }
+  ],
+  "id": 3876,
+  "stats": {
+    "abilityPower": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 200.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "shop": {
+    "purchasable": true,
+    "prices": {
+      "total": 400
+    }
+  }
+}

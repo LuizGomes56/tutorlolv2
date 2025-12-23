@@ -1,0 +1,759 @@
+{
+  "allytips": [
+    "Lux has great zone control abilities. Try to set up Lucent Singularity to prevent an enemy's advance or escape.",
+    "If you have trouble landing Prismatic Barrier, remember that it returns to you after it reaches max range. Try positioning yourself to hit your allies with its return trip.",
+    "Lucent Singularity is a great scouting tool. Try throwing it into brush before walking into it to check for ambushes."
+  ],
+  "blurb": "Luxanna Crownguard hails from Demacia, an insular realm where magical abilities are viewed with fear and suspicion. Able to bend light to her will, she grew up dreading discovery and exile, and was forced to keep her power secret, in order to preserve...",
+  "enemytips": [
+    "Lux has powerful zone control abilities. Try to spread out and attack from different directions so she cannot lock down a specific area.",
+    "When retreating with low health, be prepared to dodge Lux's Final Spark, a red targeting beam fires prior to the main beam, so try to move to the side if possible."
+  ],
+  "id": "Lux",
+  "image": {
+    "full": "Lux.png",
+    "group": "champion",
+    "h": 48,
+    "sprite": "champion2.png",
+    "w": 48,
+    "x": 288,
+    "y": 48
+  },
+  "info": {
+    "attack": 2,
+    "defense": 4,
+    "difficulty": 5,
+    "magic": 9
+  },
+  "key": "99",
+  "lore": "Luxanna Crownguard hails from Demacia, an insular realm where magical abilities are viewed with fear and suspicion. Able to bend light to her will, she grew up dreading discovery and exile, and was forced to keep her power secret, in order to preserve her family's noble status. Nonetheless, Lux's optimism and resilience have led her to embrace her unique talents, and she now covertly wields them in service of her homeland.",
+  "name": "Lux",
+  "partype": "Mana",
+  "passive": {
+    "description": "Lux's damaging spells charge the target with energy for a few seconds. Lux's next attack ignites the energy, dealing bonus magic damage (depending on Lux's level) to the target.",
+    "image": {
+      "full": "LuxIlluminatingFraulein.png",
+      "group": "passive",
+      "h": 48,
+      "sprite": "passive2.png",
+      "w": 48,
+      "x": 288,
+      "y": 48
+    },
+    "name": "Illumination"
+  },
+  "recommended": [],
+  "skins": [
+    {
+      "chromas": false,
+      "id": "99000",
+      "name": "default",
+      "num": 0
+    },
+    {
+      "chromas": false,
+      "id": "99001",
+      "name": "Sorceress Lux",
+      "num": 1
+    },
+    {
+      "chromas": false,
+      "id": "99002",
+      "name": "Spellthief Lux",
+      "num": 2
+    },
+    {
+      "chromas": false,
+      "id": "99003",
+      "name": "Commando Lux",
+      "num": 3
+    },
+    {
+      "chromas": false,
+      "id": "99004",
+      "name": "Imperial Lux",
+      "num": 4
+    },
+    {
+      "chromas": false,
+      "id": "99005",
+      "name": "Steel Legion Lux",
+      "num": 5
+    },
+    {
+      "chromas": false,
+      "id": "99006",
+      "name": "Star Guardian Lux",
+      "num": 6
+    },
+    {
+      "chromas": false,
+      "id": "99007",
+      "name": "Elementalist Lux",
+      "num": 7
+    },
+    {
+      "chromas": true,
+      "id": "99008",
+      "name": "Lunar Empress Lux",
+      "num": 8
+    },
+    {
+      "chromas": false,
+      "id": "99014",
+      "name": "Pajama Guardian Lux",
+      "num": 14
+    },
+    {
+      "chromas": false,
+      "id": "99015",
+      "name": "Battle Academia Lux",
+      "num": 15
+    },
+    {
+      "chromas": false,
+      "id": "99016",
+      "name": "Prestige Battle Academia Lux",
+      "num": 16
+    },
+    {
+      "chromas": false,
+      "id": "99017",
+      "name": "Dark Cosmic Lux",
+      "num": 17
+    },
+    {
+      "chromas": false,
+      "id": "99018",
+      "name": "Cosmic Lux",
+      "num": 18
+    },
+    {
+      "chromas": true,
+      "id": "99019",
+      "name": "Space Groove Lux",
+      "num": 19
+    },
+    {
+      "chromas": true,
+      "id": "99029",
+      "name": "Porcelain Lux",
+      "num": 29
+    },
+    {
+      "chromas": true,
+      "id": "99038",
+      "name": "Soul Fighter Lux",
+      "num": 38
+    },
+    {
+      "chromas": false,
+      "id": "99039",
+      "name": "Prestige Battle Academia Lux (2022)",
+      "num": 39
+    },
+    {
+      "chromas": false,
+      "id": "99040",
+      "name": "Prestige Porcelain Lux",
+      "num": 40
+    },
+    {
+      "chromas": true,
+      "id": "99042",
+      "name": "Empyrean Lux",
+      "num": 42
+    },
+    {
+      "chromas": true,
+      "id": "99061",
+      "name": "Faerie Court Lux",
+      "num": 61
+    },
+    {
+      "chromas": true,
+      "id": "99070",
+      "name": "Prestige Spirit Blossom Lux",
+      "num": 70
+    },
+    {
+      "chromas": true,
+      "id": "99072",
+      "name": "Panda Pal Lux",
+      "num": 72
+    }
+  ],
+  "spells": [
+    {
+      "cooldown": [
+        11,
+        10.5,
+        10,
+        9.5,
+        9
+      ],
+      "cooldownBurn": "11/10.5/10/9.5/9",
+      "cost": [
+        50,
+        50,
+        50,
+        50,
+        50
+      ],
+      "costBurn": "50",
+      "costType": " {{ abilityresourcename }}",
+      "datavalues": {},
+      "description": "Lux releases a sphere of light that binds and deals damage to up to two enemy units.",
+      "effect": [
+        null,
+        [
+          80,
+          120,
+          160,
+          200,
+          240
+        ],
+        [
+          50,
+          50,
+          50,
+          50,
+          50
+        ],
+        [
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "effectBurn": [
+        null,
+        "80/120/160/200/240",
+        "50",
+        "2",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "id": "LuxLightBinding",
+      "image": {
+        "full": "LuxLightBinding.png",
+        "group": "spell",
+        "h": 48,
+        "sprite": "spell8.png",
+        "w": 48,
+        "x": 96,
+        "y": 0
+      },
+      "leveltip": {
+        "effect": [
+          "{{ e1 }} -> {{ e1NL }}",
+          "{{ cooldown }} -> {{ cooldownNL }}"
+        ],
+        "label": [
+          "Damage",
+          "Cooldown"
+        ]
+      },
+      "maxammo": "-1",
+      "maxrank": 5,
+      "name": "Light Binding",
+      "range": [
+        1175,
+        1175,
+        1175,
+        1175,
+        1175
+      ],
+      "rangeBurn": "1175",
+      "resource": "{{ cost }} {{ abilityresourcename }}",
+      "tooltip": "Lux fires a ball of light, <status>Rooting</status> the first two enemies for {{ e3 }} seconds and dealing <magicDamage>{{ totaldamagett }} magic damage</magicDamage> to each.{{ spellmodifierdescriptionappend }}",
+      "vars": []
+    },
+    {
+      "cooldown": [
+        14,
+        13,
+        12,
+        11,
+        10
+      ],
+      "cooldownBurn": "14/13/12/11/10",
+      "cost": [
+        60,
+        65,
+        70,
+        75,
+        80
+      ],
+      "costBurn": "60/65/70/75/80",
+      "costType": " {{ abilityresourcename }}",
+      "datavalues": {},
+      "description": "Lux throws her wand and bends the light around any friendly target it touches, protecting them from enemy damage.",
+      "effect": [
+        null,
+        [
+          2,
+          4,
+          6,
+          8,
+          10
+        ],
+        [
+          40,
+          55,
+          70,
+          85,
+          100
+        ],
+        [
+          2.5,
+          2.5,
+          2.5,
+          2.5,
+          2.5
+        ],
+        [
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "effectBurn": [
+        null,
+        "2/4/6/8/10",
+        "40/55/70/85/100",
+        "2.5",
+        "100",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "id": "LuxPrismaticWave",
+      "image": {
+        "full": "LuxPrismaticWave.png",
+        "group": "spell",
+        "h": 48,
+        "sprite": "spell8.png",
+        "w": 48,
+        "x": 144,
+        "y": 0
+      },
+      "leveltip": {
+        "effect": [
+          "{{ e2 }} -> {{ e2NL }}",
+          "{{ cooldown }} -> {{ cooldownNL }}",
+          "{{ cost }} -> {{ costNL }}"
+        ],
+        "label": [
+          "Shield Amount",
+          "Cooldown",
+          "@AbilityResourceName@ Cost"
+        ]
+      },
+      "maxammo": "-1",
+      "maxrank": 5,
+      "name": "Prismatic Barrier",
+      "range": [
+        1150,
+        1150,
+        1150,
+        1150,
+        1150
+      ],
+      "rangeBurn": "1150",
+      "resource": "{{ cost }} {{ abilityresourcename }}",
+      "tooltip": "Lux throws her wand, granting <shield>{{ totalshieldtt }} Shield</shield> for {{ e3 }} seconds to allies it passes through. Then it returns, granting the same <shield>Shield</shield> on its return.{{ spellmodifierdescriptionappend }}",
+      "vars": []
+    },
+    {
+      "cooldown": [
+        10,
+        9.5,
+        9,
+        8.5,
+        8
+      ],
+      "cooldownBurn": "10/9.5/9/8.5/8",
+      "cost": [
+        70,
+        80,
+        90,
+        100,
+        110
+      ],
+      "costBurn": "70/80/90/100/110",
+      "costType": " {{ abilityresourcename }}",
+      "datavalues": {},
+      "description": "Fires an anomaly of twisted light to an area, which slows nearby enemies. Lux can detonate it to damage enemies in the area of effect.",
+      "effect": [
+        null,
+        [
+          25,
+          30,
+          35,
+          40,
+          45
+        ],
+        [
+          65,
+          115,
+          165,
+          215,
+          265
+        ],
+        [
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        [
+          310,
+          310,
+          310,
+          310,
+          310
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "effectBurn": [
+        null,
+        "25/30/35/40/45",
+        "65/115/165/215/265",
+        "5",
+        "310",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "id": "LuxLightStrikeKugel",
+      "image": {
+        "full": "LuxLightStrikeKugel.png",
+        "group": "spell",
+        "h": 48,
+        "sprite": "spell8.png",
+        "w": 48,
+        "x": 192,
+        "y": 0
+      },
+      "leveltip": {
+        "effect": [
+          "{{ e2 }} -> {{ e2NL }}",
+          "{{ slowpercent }}% -> {{ slowpercentNL }}%",
+          "{{ cost }} -> {{ costNL }}",
+          "{{ cooldown }} -> {{ cooldownNL }}"
+        ],
+        "label": [
+          "Damage",
+          "Movement Slow",
+          "@AbilityResourceName@ Cost",
+          "Cooldown"
+        ]
+      },
+      "maxammo": "-1",
+      "maxrank": 5,
+      "name": "Lucent Singularity",
+      "range": [
+        1100,
+        1100,
+        1100,
+        1100,
+        1100
+      ],
+      "rangeBurn": "1100",
+      "resource": "{{ cost }} {{ abilityresourcename }}",
+      "tooltip": "Lux creates a light zone that <status>Slows</status> by {{ e1 }}% and reveals the area. After {{ e3 }} seconds or on <recast>Recasting</recast> this Ability, it detonates, dealing <magicDamage>{{ totaldamagett }} magic damage</magicDamage> and <status>Slowing</status> for an additional {{ slowlingerduration }} second.{{ spellmodifierdescriptionappend }}",
+      "vars": []
+    },
+    {
+      "cooldown": [
+        60,
+        50,
+        40
+      ],
+      "cooldownBurn": "60/50/40",
+      "cost": [
+        100,
+        100,
+        100
+      ],
+      "costBurn": "100",
+      "costType": " {{ abilityresourcename }}",
+      "datavalues": {},
+      "description": "After gathering energy, Lux fires a beam of light that deals damage to all targets in the area. In addition, triggers Lux's passive ability and refreshes the Illumination debuff duration.",
+      "effect": [
+        null,
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "effectBurn": [
+        null,
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "id": "LuxR",
+      "image": {
+        "full": "LuxR.png",
+        "group": "spell",
+        "h": 48,
+        "sprite": "spell8.png",
+        "w": 48,
+        "x": 240,
+        "y": 0
+      },
+      "leveltip": {
+        "effect": [
+          "{{ damage }} -> {{ damageNL }}",
+          "{{ cooldown }} -> {{ cooldownNL }}"
+        ],
+        "label": [
+          "Damage",
+          "Cooldown"
+        ]
+      },
+      "maxammo": "-1",
+      "maxrank": 3,
+      "name": "Final Spark",
+      "range": [
+        3340,
+        3340,
+        3340
+      ],
+      "rangeBurn": "3340",
+      "resource": "{{ cost }} {{ abilityresourcename }}",
+      "tooltip": "Lux fires a dazzling ray of light, dealing <magicDamage>{{ totaldamage }} magic damage</magicDamage> to all enemies in a line.{{ spellmodifierdescriptionappend }}",
+      "vars": []
+    }
+  ],
+  "stats": {
+    "armor": 21,
+    "armorperlevel": 5.2,
+    "attackdamage": 54,
+    "attackdamageperlevel": 3.3,
+    "attackrange": 550,
+    "attackspeed": 0.669,
+    "attackspeedperlevel": 3,
+    "crit": 0,
+    "critperlevel": 0,
+    "hp": 580,
+    "hpperlevel": 99,
+    "hpregen": 5.5,
+    "hpregenperlevel": 0.55,
+    "movespeed": 330,
+    "mp": 480,
+    "mpperlevel": 23.5,
+    "mpregen": 7,
+    "mpregenperlevel": 0.8,
+    "spellblock": 30,
+    "spellblockperlevel": 1.3
+  },
+  "tags": [
+    "Mage",
+    "Support"
+  ],
+  "title": "the Lady of Luminosity"
+}

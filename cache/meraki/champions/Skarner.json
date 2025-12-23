@@ -1,0 +1,640 @@
+{
+  "name": "Skarner",
+  "attackType": "MELEE",
+  "adaptiveType": "PHYSICAL_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 630.0,
+      "perLevel": 110.0
+    },
+    "mana": {
+      "flat": 320.0,
+      "perLevel": 40.0
+    },
+    "armor": {
+      "flat": 33.0,
+      "perLevel": 4.5
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 63.0,
+      "perLevel": 3.0
+    },
+    "attackSpeed": {
+      "flat": 0.625,
+      "perLevel": 2.0
+    },
+    "movespeed": {
+      "flat": 335.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.625,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 150.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.1,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": null,
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Innate: Skarner's basic attacks on-hit, Shattered Earth, Upheaval, and Impale apply a stack of Quaking to enemies hit for 4 seconds, refreshing on subsequent applications and stacking up to 3 times. Enemies afflicted with 3 stacks take magic damage equal to [ 5% : 9% (based on level) of their maximum health over the duration, capped at 100 : 300 (based on level) against monsters. ][ 0.63% : 1.13% (based on level) of their maximum health every 0.5 seconds over the duration, capped at 12.5 : 37.5 (based on level) per tick against monsters. ]",
+            "leveling": []
+          }
+        ],
+        "name": "Threads of Vibration"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                13.0,
+                11.5,
+                10.0,
+                8.5,
+                7.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Skarner rips a boulder from the ground, empowering up to three of his next basic attacks within 5 seconds of each other. These attacks gain 25 bonus range, bonus attack speed, and deal bonus physical damage to the target and surrounding enemies, including structures.",
+            "leveling": [
+              {
+                "attribute": "Bonus Attack Speed",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      20.0,
+                      25.0,
+                      30.0,
+                      35.0,
+                      40.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Bonus Physical Damage per Hit",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      10.0,
+                      20.0,
+                      30.0,
+                      40.0,
+                      50.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      80.0,
+                      80.0,
+                      80.0,
+                      80.0,
+                      80.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% of his bonus health",
+                      "% of his bonus health",
+                      "% of his bonus health",
+                      "% of his bonus health",
+                      "% of his bonus health"
+                    ],
+                    "values": [
+                      3.0,
+                      3.0,
+                      3.0,
+                      3.0,
+                      3.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Bonus Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      30.0,
+                      60.0,
+                      90.0,
+                      120.0,
+                      150.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      240.0,
+                      240.0,
+                      240.0,
+                      240.0,
+                      240.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% of his bonus health",
+                      "% of his bonus health",
+                      "% of his bonus health",
+                      "% of his bonus health",
+                      "% of his bonus health"
+                    ],
+                    "values": [
+                      9.0,
+                      9.0,
+                      9.0,
+                      9.0,
+                      9.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "After 0.5 seconds of the cast, Skarner gains the ability to use Upheaval during Shattered Earth.",
+            "leveling": []
+          },
+          {
+            "description": "Shattered Earth's duration is paused during Ixtal's Impact.",
+            "leveling": []
+          },
+          {
+            "description": "The final attack slams the boulder, dealing an additional 8% of each target's maximum health physical damage and slowing afflicted enemies by 40% for 1 second. The additional damage is capped against monsters and is not applied against structures.",
+            "leveling": [
+              {
+                "attribute": "Monster Percent Health Damage Cap",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      150.0,
+                      200.0,
+                      250.0,
+                      300.0,
+                      350.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Shattered Earth"
+      },
+      {
+        "cooldown": null,
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Skarner ends Shattered Earth by throwing his boulder in the target direction. It explodes upon colliding with the first enemy hit, applying the same damage and slow to the target and surrounding enemies as the final attack would.",
+            "leveling": [
+              {
+                "attribute": "Maximum Monster Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      160.0,
+                      220.0,
+                      280.0,
+                      340.0,
+                      400.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      80.0,
+                      80.0,
+                      80.0,
+                      80.0,
+                      80.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% of his bonus health",
+                      "% of his bonus health",
+                      "% of his bonus health",
+                      "% of his bonus health",
+                      "% of his bonus health"
+                    ],
+                    "values": [
+                      3.0,
+                      3.0,
+                      3.0,
+                      3.0,
+                      3.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      10.0,
+                      20.0,
+                      30.0,
+                      40.0,
+                      50.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      80.0,
+                      80.0,
+                      80.0,
+                      80.0,
+                      80.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% of his bonus health",
+                      "% of his bonus health",
+                      "% of his bonus health",
+                      "% of his bonus health",
+                      "% of his bonus health"
+                    ],
+                    "values": [
+                      3.0,
+                      3.0,
+                      3.0,
+                      3.0,
+                      3.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% of target's maximum health",
+                      "% of target's maximum health",
+                      "% of target's maximum health",
+                      "% of target's maximum health",
+                      "% of target's maximum health"
+                    ],
+                    "values": [
+                      8.0,
+                      8.0,
+                      8.0,
+                      8.0,
+                      8.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Upheaval"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                10.0,
+                9.0,
+                8.0,
+                7.0,
+                6.0
+              ]
+            }
+          ]
+        },
+        "damageType": "OTHER_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Skarner slams his claws into the ground, shielding himself equal to 8% of his maximum health for 2.5 seconds and releasing a shockwave that quickly expands in a radius around him to deal magic damage to enemies hit and slow them by 20% for 1 second.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      50.0,
+                      70.0,
+                      90.0,
+                      110.0,
+                      130.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      80.0,
+                      80.0,
+                      80.0,
+                      80.0,
+                      80.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Skarner can move during Seismic Bastion's cast time.",
+            "leveling": []
+          }
+        ],
+        "name": "Seismic Bastion"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                22.0,
+                21.0,
+                20.0,
+                19.0,
+                18.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Skarner charges forward in the direction of the cursor for up to 2.75 seconds, during which he gains slow immunity, becomes ghosted, ignores terrain collision, and has unobstructed vision of the surrounding 650 units. He automatically navigates his movement along the way and is able to steer himself with a slow turn rate that increases over time, resetting upon changing direction. Ixtal's Impact can be recast after 1 second, and does so automatically after the duration.",
+            "leveling": []
+          },
+          {
+            "description": "If Skarner's attached target collides with terrain, the charge ends, detaching them from him, dealing physical damage, stunning them for 1.1 seconds, and reducing Ixtal's Impact's cooldown by 35%.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      30.0,
+                      60.0,
+                      90.0,
+                      120.0,
+                      150.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% of his maximum health",
+                      "% of his maximum health",
+                      "% of his maximum health",
+                      "% of his maximum health",
+                      "% of his maximum health"
+                    ],
+                    "values": [
+                      6.0,
+                      6.0,
+                      6.0,
+                      6.0,
+                      6.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Ixtal's Impact ends immediately if Skarner becomes immobilized, grounded, or silenced during the charge, detaching the grabbed target. While the target is grabbed, they are attached to Skarner in a position that is directly in front of him.",
+            "leveling": []
+          },
+          {
+            "description": "Recast: Skarner ends Ixtal's Impact. If a target has been grabbed, he detaches them from himself.",
+            "leveling": []
+          },
+          {
+            "description": "Skarner begins the charge at a static amount of 150 movement speed that increases by 100 every 0.264 seconds, up to 950 total movement speed by the end of the duration. If Skarner collides with an enemy champion or large monster, he grabs them with his claws for the time of the remaining charge, attaching them to himself, suppressing them, revealing them, increasing the charge's turn rate to the maximum, and gaining 300 bonus movement speed, with a minimum total of 650 and a maximum total of 1150. If a target has been grabbed before the first 1.75 seconds of the charge, the remaining duration is set to 1 second, and set to 0.5 seconds otherwise. The charge does not ramp up in speed while a target is grabbed.",
+            "leveling": []
+          }
+        ],
+        "name": "Ixtal's Impact"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                120.0,
+                105.0,
+                90.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Skarner winds up his stingers over the cast time, then lashes them forward in an isosceles trapezoid in the target direction, dealing magic damage to enemies hit and impaling up to 3 of the closest enemy champions within the area to suppress them for 1.5 seconds. While suppressed, the targets are revealed and attached to Skarner. If he successfully impales at least one enemy champion, Skarner gains 40% bonus movement speed for the same duration.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      150.0,
+                      250.0,
+                      350.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      100.0,
+                      100.0,
+                      100.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "If Impale is cast during Shattered Earth, Skarner automatically casts Upheaval in the direction of Impale's cast. Skarner is unable to basic attack, cast Shattered Earth or Ixtal's Impact, or use Flash during Impale. While the targets are impaled, they are attached to Skarner 300 units in front of him. Targets are placed 200 units in the same direction at the end of the effect.",
+            "leveling": []
+          }
+        ],
+        "name": "Impale"
+      }
+    ]
+  },
+  "positions": [
+    "JUNGLE",
+    "TOP"
+  ]
+}

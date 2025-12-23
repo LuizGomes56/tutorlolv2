@@ -1,0 +1,46 @@
+{
+  "colloq": ";",
+  "depth": 3,
+  "description": "<mainText><stats><attention>100</attention> Ability Power<br><attention>4%</attention> Move Speed<br><attention>10</attention> Ability Haste</stats><br><br><passive>Spellblade</passive><br>After using an Ability, your next Attack deals <magicDamage>bonus magic damage</magicDamage> <OnHit>On-Hit</OnHit>.</mainText>",
+  "from": [
+    "3057",
+    "3113",
+    "1026"
+  ],
+  "gold": {
+    "base": 250,
+    "purchasable": true,
+    "sell": 2030,
+    "total": 2900
+  },
+  "image": {
+    "full": "3100.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item3.png",
+    "w": 48,
+    "x": 192,
+    "y": 48
+  },
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Lich Bane",
+  "plaintext": "Grants a bonus to next attack after spell cast",
+  "stats": {
+    "FlatMagicDamageMod": 100,
+    "PercentMovementSpeedMod": 0.04
+  },
+  "tags": [
+    "SpellDamage",
+    "OnHit",
+    "NonbootsMovement",
+    "AbilityHaste"
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "colloq": "",
+  "depth": 2,
+  "description": "<mainText><stats><attention>300</attention> Health<br><attention>375</attention> Mana</stats><br><br><passive>Eternity</passive><br>Restores <scaleMana>10% of the damage taken</scaleMana> from champions as <scaleMana>Mana</scaleMana>. <br>Casting an Ability <healing>heals for 25% of Mana</healing> spent.</mainText>",
+  "from": [
+    "1028",
+    "1028",
+    "1027"
+  ],
+  "gold": {
+    "base": 200,
+    "purchasable": true,
+    "sell": 910,
+    "total": 1300
+  },
+  "image": {
+    "full": "3803.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item4.png",
+    "w": 48,
+    "x": 192,
+    "y": 48
+  },
+  "into": [
+    "4402",
+    "326657",
+    "6657"
+  ],
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Catalyst of Aeons",
+  "plaintext": "",
+  "stats": {
+    "FlatHPPoolMod": 300,
+    "FlatMPPoolMod": 375
+  },
+  "tags": [
+    "Health",
+    "HealthRegen",
+    "Mana",
+    "ManaRegen"
+  ]
+}

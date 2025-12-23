@@ -1,0 +1,38 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><attention>50</attention> Ability Power<br><attention>25%</attention> Heal and Shield Power<br><attention>25</attention> Ability Haste</stats><br><br><passive>Promise</passive><br>Gain 20% of your <attention>Promised</attention> <scaleAP>ally's Ability Power</scaleAP>, and grant your <attention>Promised</attention> ally 20% of your Ability Haste.<br><br><active>ACTIVE</active> (0s)<br><active>Promise</active><br>Make a <attention>Promise</attention> to an ally.</mainText>",
+  "gold": {
+    "base": 2500,
+    "purchasable": true,
+    "sell": 1250,
+    "total": 2500
+  },
+  "image": {
+    "full": "4016.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item4.png",
+    "w": 48,
+    "x": 432,
+    "y": 192
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": false
+  },
+  "name": "Wordless Promise",
+  "plaintext": "",
+  "stats": {
+    "FlatMagicDamageMod": 50
+  },
+  "tags": [
+    "SpellDamage",
+    "CooldownReduction",
+    "AbilityHaste"
+  ]
+}

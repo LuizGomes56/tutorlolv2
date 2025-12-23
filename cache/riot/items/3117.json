@@ -1,0 +1,51 @@
+{
+  "colloq": ";",
+  "depth": 2,
+  "description": "<mainText><stats></stats><br><br><attention>25</attention> Move Speed <br>When out of combat for at least 5 seconds, increase this item's effect to <attention>45</attention>.</mainText>",
+  "effect": {
+    "Effect1Amount": "0",
+    "Effect2Amount": "0",
+    "Effect3Amount": "0",
+    "Effect4Amount": "0",
+    "Effect5Amount": "0",
+    "Effect6Amount": "0",
+    "Effect7Amount": "0",
+    "Effect8Amount": "25"
+  },
+  "from": [
+    "1001"
+  ],
+  "gold": {
+    "base": 700,
+    "purchasable": false,
+    "sell": 700,
+    "total": 1000
+  },
+  "image": {
+    "full": "3117.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item3.png",
+    "w": 48,
+    "x": 336,
+    "y": 96
+  },
+  "inStore": false,
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Mobility Boots",
+  "plaintext": "Greatly enhances Move Speed when out of combat",
+  "stats": {
+    "FlatMovementSpeedMod": 45
+  },
+  "tags": [
+    "Boots"
+  ]
+}

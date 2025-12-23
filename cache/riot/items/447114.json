@@ -1,0 +1,43 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><attention>35</attention> Armor<br><attention>35</attention> Magic Resist<br><attention>40%</attention> Attack Speed</stats><br><br><passive>Reverberate</passive><br>At combat start gain <healing>50 max Health</healing> per <attackSpeed>10% bonus Attack Speed</attackSpeed>.<br><br><passive>Resonate</passive><br>Attacks deal <magicDamage> magic damage <OnHit>On-Hit</OnHit></magicDamage>.<br><br><passive>Rumble</passive><br><status>Immobilizing</status> or <status>Grounding</status> an enemy champion grants 25 stacks for 10 seconds. While at 100 stacks, <status>Immobilizing</status> an enemy champion applies <OnHit>On-Hit</OnHit> effects 3 times.</mainText>",
+  "gold": {
+    "base": 1000,
+    "purchasable": true,
+    "sell": 400,
+    "total": 1000
+  },
+  "image": {
+    "full": "447114.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item4.png",
+    "w": 48,
+    "x": 192,
+    "y": 432
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": false
+  },
+  "name": "Reverberation",
+  "plaintext": "",
+  "specialRecipe": 220007,
+  "stats": {
+    "FlatArmorMod": 35,
+    "FlatSpellBlockMod": 35,
+    "PercentAttackSpeedMod": 0.4
+  },
+  "tags": [
+    "Health",
+    "Armor",
+    "AttackSpeed",
+    "OnHit",
+    "MagicResist"
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "colloq": "",
+  "description": "",
+  "effect": {
+    "Effect1Amount": "3"
+  },
+  "gold": {
+    "base": 400,
+    "purchasable": true,
+    "sell": 160,
+    "total": 400
+  },
+  "image": {
+    "full": "3865.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item4.png",
+    "w": 48,
+    "x": 384,
+    "y": 96
+  },
+  "maps": {
+    "11": true,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": false
+  },
+  "name": "World Atlas",
+  "plaintext": "",
+  "stats": {
+    "FlatHPPoolMod": 30
+  },
+  "tags": [
+    "Health",
+    "ManaRegen",
+    "Vision",
+    "GoldPer",
+    "Lane"
+  ]
+}

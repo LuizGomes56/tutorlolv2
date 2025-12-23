@@ -1,0 +1,145 @@
+{
+  "name": "Kha'Zix",
+  "adaptative_type": "Physical",
+  "attack_type": "Melee",
+  "positions": [
+    "Jungle"
+  ],
+  "stats": {
+    "health": {
+      "flat": 643.0,
+      "perLevel": 99.0
+    },
+    "mana": {
+      "flat": 327.0,
+      "perLevel": 40.0
+    },
+    "armor": {
+      "flat": 32.0,
+      "perLevel": 4.2
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 60.0,
+      "perLevel": 3.1
+    },
+    "attackSpeed": {
+      "flat": 0.668,
+      "perLevel": 2.7
+    },
+    "movespeed": {
+      "flat": 350.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.667999982833862,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 125.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 0.9,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.1,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": [
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Leap",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "65 + (0.4 * ctx.bonus_ad)",
+          "100 + (0.4 * ctx.bonus_ad)",
+          "135 + (0.4 * ctx.bonus_ad)",
+          "170 + (0.4 * ctx.bonus_ad)",
+          "205 + (0.4 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Void Spike",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "85 + ctx.bonus_ad",
+          "115 + ctx.bonus_ad",
+          "145 + ctx.bonus_ad",
+          "175 + ctx.bonus_ad",
+          "205 + ctx.bonus_ad"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Taste Their Fear",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "168 + (2.31 * ctx.bonus_ad)",
+          "220.5 + (2.31 * ctx.bonus_ad)",
+          "273 + (2.31 * ctx.bonus_ad)",
+          "325.5 + (2.31 * ctx.bonus_ad)",
+          "378 + (2.31 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "Taste Their Fear",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "80 + (1.1 * ctx.bonus_ad)",
+          "105 + (1.1 * ctx.bonus_ad)",
+          "130 + (1.1 * ctx.bonus_ad)",
+          "155 + (1.1 * ctx.bonus_ad)",
+          "180 + (1.1 * ctx.bonus_ad)"
+        ]
+      }
+    ]
+  ],
+  "merge_data": []
+}

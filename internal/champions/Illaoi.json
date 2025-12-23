@@ -1,0 +1,161 @@
+{
+  "name": "Illaoi",
+  "adaptative_type": "Physical",
+  "attack_type": "Melee",
+  "positions": [
+    "Top"
+  ],
+  "stats": {
+    "health": {
+      "flat": 656.0,
+      "perLevel": 115.0
+    },
+    "mana": {
+      "flat": 350.0,
+      "perLevel": 50.0
+    },
+    "armor": {
+      "flat": 35.0,
+      "perLevel": 5.0
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 65.0,
+      "perLevel": 5.0
+    },
+    "attackSpeed": {
+      "flat": 0.625,
+      "perLevel": 2.5
+    },
+    "movespeed": {
+      "flat": 350.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.625,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 125.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.05,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 0.95,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 0.9,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": [
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Tentacle Smash",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "0.1",
+          "0.15",
+          "0.2",
+          "0.25",
+          "0.3"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_2"
+      },
+      {
+        "name": "Harsh Lesson",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "20",
+          "30",
+          "40",
+          "50",
+          "60"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Leap of Faith",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "150 + (0.5 * ctx.bonus_ad)",
+          "250 + (0.5 * ctx.bonus_ad)",
+          "350 + (0.5 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Test of Spirit",
+        "damage_type": "Mixed",
+        "attributes": "Undefined",
+        "damage": [
+          "0.25 + (0.08 * 0.01 * ctx.ad)",
+          "0.3 + (0.08 * 0.01 * ctx.ad)",
+          "0.35 + (0.08 * 0.01 * ctx.ad)",
+          "0.4 + (0.08 * 0.01 * ctx.ad)",
+          "0.45 + (0.08 * 0.01 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Harsh Lesson",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "(0.03 * ctx.enemy_max_health) + (0.04 * 0.01 * ctx.ad)",
+          "(0.035 * ctx.enemy_max_health) + (0.04 * 0.01 * ctx.ad)",
+          "(0.04 * ctx.enemy_max_health) + (0.04 * 0.01 * ctx.ad)",
+          "(0.045 * ctx.enemy_max_health) + (0.04 * 0.01 * ctx.ad)",
+          "(0.05 * ctx.enemy_max_health) + (0.04 * 0.01 * ctx.ad)"
+        ]
+      }
+    ]
+  ],
+  "merge_data": []
+}

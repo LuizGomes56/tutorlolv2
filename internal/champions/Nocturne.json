@@ -1,0 +1,161 @@
+{
+  "name": "Nocturne",
+  "adaptative_type": "Physical",
+  "attack_type": "Melee",
+  "positions": [
+    "Jungle"
+  ],
+  "stats": {
+    "health": {
+      "flat": 655.0,
+      "perLevel": 109.0
+    },
+    "mana": {
+      "flat": 275.0,
+      "perLevel": 35.0
+    },
+    "armor": {
+      "flat": 38.0,
+      "perLevel": 4.7
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 1.55
+    },
+    "attackDamage": {
+      "flat": 62.0,
+      "perLevel": 2.6
+    },
+    "attackSpeed": {
+      "flat": 0.721,
+      "perLevel": 2.7
+    },
+    "movespeed": {
+      "flat": 345.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.721,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 125.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 0.9,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.1,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 0.95,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": [
+    [
+      {
+        "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "Duskbringer",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "20",
+          "30",
+          "40",
+          "50",
+          "60"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_2"
+      },
+      {
+        "name": "Unspeakable Horror",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "80 + ctx.ap",
+          "125 + ctx.ap",
+          "170 + ctx.ap",
+          "215 + ctx.ap",
+          "260 + ctx.ap"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Unspeakable Horror",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "20 + (0.25 * ctx.ap)",
+          "31.25 + (0.25 * ctx.ap)",
+          "42.5 + (0.25 * ctx.ap)",
+          "53.75 + (0.25 * ctx.ap)",
+          "65 + (0.25 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Duskbringer",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "65 + (0.85 * ctx.bonus_ad)",
+          "110 + (0.85 * ctx.bonus_ad)",
+          "155 + (0.85 * ctx.bonus_ad)",
+          "200 + (0.85 * ctx.bonus_ad)",
+          "245 + (0.85 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Paranoia",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "150 + (1.2 * ctx.bonus_ad)",
+          "275 + (1.2 * ctx.bonus_ad)",
+          "400 + (1.2 * ctx.bonus_ad)"
+        ]
+      }
+    ]
+  ],
+  "merge_data": []
+}

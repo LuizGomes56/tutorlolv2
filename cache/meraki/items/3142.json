@@ -1,0 +1,89 @@
+{
+  "active": [
+    {
+      "effects": "Gain {{as|{{rd|20%|15%}} '''bonus''' movement speed}} and {{tip|ghosted|ghosting}} for {{rd|6|4}} seconds.",
+      "name": "Wraith Step",
+      "unique": true
+    }
+  ],
+  "buildsFrom": [
+    3134,
+    6690,
+    1036
+  ],
+  "buildsInto": [],
+  "name": "Youmuu's Ghostblade",
+  "tier": 3,
+  "passives": [
+    {
+      "effects": "Gain {{as|{{rd|20|10}} '''bonus''' movement speed}} while out-of-combat with enemy champions for 3 seconds.",
+      "name": "Haunt",
+      "unique": true
+    }
+  ],
+  "id": 3142,
+  "stats": {
+    "abilityPower": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 55.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 4.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "shop": {
+    "purchasable": true,
+    "prices": {
+      "total": 2800
+    }
+  }
+}

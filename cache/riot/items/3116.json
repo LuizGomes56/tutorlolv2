@@ -1,0 +1,53 @@
+{
+  "colloq": ";",
+  "depth": 3,
+  "description": "<mainText><stats><attention>65</attention> Ability Power<br><attention>400</attention> Health</stats><br><br><passive>Rimefrost</passive><br>Damaging Abilities <keyword>Slow</keyword> enemies by 30% for 1 second.</mainText>",
+  "effect": {
+    "Effect1Amount": "-0.3",
+    "Effect2Amount": "-0.3",
+    "Effect3Amount": "-0.3",
+    "Effect4Amount": "1",
+    "Effect5Amount": "1",
+    "Effect6Amount": "1"
+  },
+  "from": [
+    "1026",
+    "1011",
+    "1052"
+  ],
+  "gold": {
+    "base": 450,
+    "purchasable": true,
+    "sell": 1820,
+    "total": 2600
+  },
+  "image": {
+    "full": "3116.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item3.png",
+    "w": 48,
+    "x": 288,
+    "y": 96
+  },
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Rylai's Crystal Scepter",
+  "plaintext": "Abilities slow enemies",
+  "stats": {
+    "FlatHPPoolMod": 400,
+    "FlatMagicDamageMod": 65
+  },
+  "tags": [
+    "Health",
+    "SpellDamage",
+    "Slow"
+  ]
+}

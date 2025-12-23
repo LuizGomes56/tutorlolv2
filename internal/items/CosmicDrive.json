@@ -1,0 +1,137 @@
+{
+  "riot_id": 4629,
+  "item_id": "CosmicDrive",
+  "name": "Cosmic Drive",
+  "price": 3000,
+  "sell": 2100,
+  "tier": 3,
+  "maps": [
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "NexusBlitz",
+      true
+    ],
+    [
+      "Aram",
+      true
+    ],
+    [
+      "Tft",
+      false
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
+      "SummonersRift",
+      true
+    ]
+  ],
+  "prettified_stats": [
+    {
+      "name": "Health",
+      "value": 350
+    },
+    {
+      "name": "AbilityPower",
+      "value": 70
+    },
+    {
+      "name": "AbilityHaste",
+      "value": 25
+    },
+    {
+      "name": "MoveSpeed",
+      "value": 4
+    }
+  ],
+  "damage_type": "Unknown",
+  "stats": {
+    "abilityPower": {
+      "flat": 70.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 350.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 4.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "builds_from_riot_ids": [
+    3067,
+    3113,
+    3108
+  ],
+  "builds_from_item_ids": [
+    "Kindlegem",
+    "AetherWisp",
+    "FiendishCodex"
+  ],
+  "builds_into_riot_ids": [],
+  "builds_into_item_ids": [],
+  "ranged": {
+    "minimum_damage": "zero",
+    "maximum_damage": "zero"
+  },
+  "melee": {
+    "minimum_damage": "zero",
+    "maximum_damage": "zero"
+  },
+  "attributes": "Undefined",
+  "purchasable": true
+}

@@ -1,0 +1,82 @@
+{
+  "active": [],
+  "buildsFrom": [
+    3067,
+    4642
+  ],
+  "buildsInto": [],
+  "name": "Echoes of Helia",
+  "tier": 3,
+  "passives": [
+    {
+      "effects": "Damaging an enemy champion with a basic attack or [[ability damage]] grants a ''Soul Shard'', up to 2. {{tip|Heal|Healing}} or {{tip|shield|shielding}} an allied champion (''excluding yourself'') consumes all ''Soul Shards'' to heal them for 65 per shard and deal {{as|50 magic damage}} per shard to the nearest enemy champion within 1100 units of the ally.",
+      "name": "Soul Siphon",
+      "unique": true
+    }
+  ],
+  "id": 6620,
+  "stats": {
+    "abilityPower": {
+      "flat": 35.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 200.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "shop": {
+    "purchasable": true,
+    "prices": {
+      "total": 2200
+    }
+  }
+}

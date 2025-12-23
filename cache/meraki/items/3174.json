@@ -1,0 +1,86 @@
+{
+  "active": [],
+  "buildsFrom": [
+    3047
+  ],
+  "buildsInto": [],
+  "name": "Armored Advance",
+  "tier": 3,
+  "passives": [
+    {
+      "effects": "Reduces incoming [[damage]] from all [[basic attack]]s by 10% (''excluding [[turret]] attacks'').",
+      "name": "Plating",
+      "unique": true
+    },
+    {
+      "effects": "Taking {{as|physical damage}} from champions grants you a {{tip|shield}} that absorbs {{pp|10 to 120|color=pd}} {{as|(+ 4% '''maximum''' health)}} {{as|physical damage}} for 4 seconds.",
+      "name": "Noxian Endurance",
+      "unique": true
+    }
+  ],
+  "id": 3174,
+  "stats": {
+    "abilityPower": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 40.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 50.0,
+      "percent": 0.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "shop": {
+    "purchasable": true,
+    "prices": {
+      "total": 1700
+    }
+  }
+}

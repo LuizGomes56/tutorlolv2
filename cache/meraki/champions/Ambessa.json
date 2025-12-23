@@ -1,0 +1,760 @@
+{
+  "name": "Ambessa",
+  "attackType": "MELEE",
+  "adaptiveType": "PHYSICAL_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 630.0,
+      "perLevel": 110.0
+    },
+    "mana": {
+      "flat": 200.0,
+      "perLevel": 0.0
+    },
+    "armor": {
+      "flat": 35.0,
+      "perLevel": 4.9
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 63.0,
+      "perLevel": 3.0
+    },
+    "attackSpeed": {
+      "flat": 0.625,
+      "perLevel": 2.5
+    },
+    "movespeed": {
+      "flat": 335.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.625,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 125.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.05,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": null,
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Innate: During the lockout of Ambessa's abilities, inputting an attack or movement command causes her to dash to or towards the target or location, respectively, after the lockout ends. This dash cannot pass through terrain.Ambessa cannot dash while immobilized or grounded.",
+            "leveling": []
+          },
+          {
+            "description": "Innate: Whenever Ambessa casts an ability, she generates a stack of Medarda Maxim after the ability's respective lockout for 4 seconds, refreshing with subsequent casts and stacking up to 3 times. Basic attacks consume one stack each to become empowered.",
+            "leveling": []
+          },
+          {
+            "description": "Medarda Maxim: Ambessa's next basic attack on-attack is empowered to have an uncancellable windup, gain 75 bonus range and 50% bonus attack speed, and deal 5 : 30 (based on level) (+ 30% bonus AD) bonus physical damage and restore 40 / 55 / 70 (based on level) energy.",
+            "leveling": []
+          }
+        ],
+        "name": "Drakehound's Step"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                14.0,
+                13.0,
+                12.0,
+                11.0,
+                10.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Ambessa enters a 0.225-second lockout, at the end of which she slashes with her twin drakehounds in a cone in the target direction, dealing physical damage to enemies hit. The damage is doubled against enemies hit by the outer edge. Drakehound's Step's dash may be buffered during the lockout or initiated within 0.275 seconds of the lockout ending, and Ambessa will perform the dash after her slash completes.",
+            "leveling": [
+              {
+                "attribute": "Increased Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      40.0,
+                      60.0,
+                      80.0,
+                      100.0,
+                      120.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      60.0,
+                      60.0,
+                      60.0,
+                      60.0,
+                      60.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% (+ 3% per 100 bonus AD) of the target's maximum health",
+                      "% (+ 3% per 100 bonus AD) of the target's maximum health",
+                      "% (+ 3% per 100 bonus AD) of the target's maximum health",
+                      "% (+ 3% per 100 bonus AD) of the target's maximum health",
+                      "% (+ 3% per 100 bonus AD) of the target's maximum health"
+                    ],
+                    "values": [
+                      2.0,
+                      3.0,
+                      4.0,
+                      5.0,
+                      6.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      20.0,
+                      30.0,
+                      40.0,
+                      50.0,
+                      60.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      30.0,
+                      30.0,
+                      30.0,
+                      30.0,
+                      30.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% (+ 1.5% per 100 bonus AD) of the target's maximum health",
+                      "% (+ 1.5% per 100 bonus AD) of the target's maximum health",
+                      "% (+ 1.5% per 100 bonus AD) of the target's maximum health",
+                      "% (+ 1.5% per 100 bonus AD) of the target's maximum health",
+                      "% (+ 1.5% per 100 bonus AD) of the target's maximum health"
+                    ],
+                    "values": [
+                      1.0,
+                      1.5,
+                      2.0,
+                      2.5,
+                      3.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Against monsters, Cunning Sweep deals 125 bonus physical damage and the damage based on their health ratio is capped at 100 : 300 (based on level).",
+            "leveling": []
+          },
+          {
+            "description": "If this hits at least one enemy, Ambessa can cast Sundering Slam within the next 4 seconds.",
+            "leveling": []
+          }
+        ],
+        "name": "Cunning Sweep"
+      },
+      {
+        "cooldown": null,
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Ambessa enters a 0.225-second lockout, at the end of which she slams her twin drakehounds in a line in the target direction, dealing physical damage to enemies hit. The damage is doubled against the first enemy hit. Drakehound's Step's dash may be buffered during the lockout or initiated within 0.275 seconds of the lockout ending, and Ambessa will perform the dash after her slam completes.",
+            "leveling": [
+              {
+                "attribute": "Increased Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      50.0,
+                      75.0,
+                      100.0,
+                      125.0,
+                      150.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      90.0,
+                      90.0,
+                      90.0,
+                      90.0,
+                      90.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% (+ 4% per 100 bonus AD) of the target's maximum health",
+                      "% (+ 4% per 100 bonus AD) of the target's maximum health",
+                      "% (+ 4% per 100 bonus AD) of the target's maximum health",
+                      "% (+ 4% per 100 bonus AD) of the target's maximum health",
+                      "% (+ 4% per 100 bonus AD) of the target's maximum health"
+                    ],
+                    "values": [
+                      2.0,
+                      3.0,
+                      4.0,
+                      5.0,
+                      6.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      25.0,
+                      37.5,
+                      50.0,
+                      62.5,
+                      75.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      45.0,
+                      45.0,
+                      45.0,
+                      45.0,
+                      45.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% (+ 2% per 100 bonus AD) of the target's maximum health",
+                      "% (+ 2% per 100 bonus AD) of the target's maximum health",
+                      "% (+ 2% per 100 bonus AD) of the target's maximum health",
+                      "% (+ 2% per 100 bonus AD) of the target's maximum health",
+                      "% (+ 2% per 100 bonus AD) of the target's maximum health"
+                    ],
+                    "values": [
+                      1.0,
+                      1.5,
+                      2.0,
+                      2.5,
+                      3.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Against monsters, Sundering Slam deals 125 bonus physical damage and the damage based on their health ratio is capped at 100 : 300 (based on level).",
+            "leveling": []
+          }
+        ],
+        "name": "Sundering Slam"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                18.0,
+                17.0,
+                16.0,
+                15.0,
+                14.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Ambessa braces herself for up to 0.5 seconds, during which in the first 0.225 seconds she is unable to act. After Ambessa finishes bracing, she smashes the ground beneath her, dealing physical damage to nearby enemies. Drakehound's Step's dash may be buffered during the lockout or initiated within 0.25 seconds of the lockout ending.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      50.0,
+                      75.0,
+                      100.0,
+                      125.0,
+                      150.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      50.0,
+                      50.0,
+                      50.0,
+                      50.0,
+                      50.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Additionally, Ambessa shields herself at the time of cast for 50 : 320 (based on level) (+ 150% bonus AD) for 1.5 seconds. If the shield mitigates any amount of damage taken from champions, large monsters, or turrets before Ambessa smashes the ground, Repudiation's damage is increased by 50%.",
+            "leveling": [
+              {
+                "attribute": "Increased Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      75.0,
+                      112.5,
+                      150.0,
+                      187.5,
+                      225.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      75.0,
+                      75.0,
+                      75.0,
+                      75.0,
+                      75.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Ambessa will smash the ground at the end of Drakehound's Step's dash if she would finish bracing during it, and otherwise always smashes the ground from wherever she is at the end of the bracing time.",
+            "leveling": []
+          }
+        ],
+        "name": "Repudiation"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                13.0,
+                12.0,
+                11.0,
+                10.0,
+                9.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Ambessa enters a 0.225-second lockout and spins her twin drakehounds around her to deal physical damage to nearby enemies and slow them by 99% decaying over 1 second. Drakehound's Step's dash may be buffered during the lockout or initiated within 0.275 seconds of the lockout ending; in either case, she will spin a second time at the end of the dash to apply the same effects at no additional cost.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      40.0,
+                      60.0,
+                      80.0,
+                      100.0,
+                      120.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      40.0,
+                      45.0,
+                      50.0,
+                      55.0,
+                      60.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      80.0,
+                      120.0,
+                      160.0,
+                      200.0,
+                      240.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      80.0,
+                      90.0,
+                      100.0,
+                      110.0,
+                      120.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Lacerate"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                130.0,
+                115.0,
+                100.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Ambessa prepares a strike in a line in the target direction, then blinks behind the farthest enemy champion within the area and seizes them. If she successfully seizes the target, Ambessa attaches them to herself and suppresses them for 0.75 seconds. While the target is suppressed, they are revealed and Ambessa picks them up off the ground before crashing them back down, afterwards dealing physical damage and stunning them for 0.4 seconds.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      150.0,
+                      250.0,
+                      350.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      80.0,
+                      80.0,
+                      80.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Ambessa is displacement immune and unable to act during the cast time and while the target is suppressed, lingering for 0.1 seconds afterwards. Drakehound's Step's dash may be buffered during the cast time or lockout, as well as initiated within 0.275 seconds of the lockout ending.",
+            "leveling": []
+          },
+          {
+            "description": "Passive: Ambessa gains armor penetration and heals herself for a percentage of the post-mitigation damage she deals to enemies with her active abilities. The healing effectiveness is reduced to 25% against minions and 40% against monsters.",
+            "leveling": [
+              {
+                "attribute": "Armor Penetration",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      10.0,
+                      20.0,
+                      30.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Healing Percentage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      10.0,
+                      12.5,
+                      15.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% life steal",
+                      "% life steal",
+                      "% life steal"
+                    ],
+                    "values": [
+                      50.0,
+                      50.0,
+                      50.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Minion Healing Percentage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      2.5,
+                      3.125,
+                      3.75
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% life steal",
+                      "% life steal",
+                      "% life steal"
+                    ],
+                    "values": [
+                      12.5,
+                      12.5,
+                      12.5
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Monster Healing Percentage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      4.0,
+                      5.0,
+                      6.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% life steal",
+                      "% life steal",
+                      "% life steal"
+                    ],
+                    "values": [
+                      20.0,
+                      20.0,
+                      20.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Public Execution"
+      }
+    ]
+  },
+  "positions": [
+    "TOP"
+  ]
+}

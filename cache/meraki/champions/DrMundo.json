@@ -1,0 +1,632 @@
+{
+  "name": "Dr. Mundo",
+  "attackType": "MELEE",
+  "adaptiveType": "PHYSICAL_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 640.0,
+      "perLevel": 103.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "perLevel": 0.0
+    },
+    "armor": {
+      "flat": 32.0,
+      "perLevel": 3.7
+    },
+    "magicResistance": {
+      "flat": 29.0,
+      "perLevel": 2.3
+    },
+    "attackDamage": {
+      "flat": 61.0,
+      "perLevel": 2.5
+    },
+    "attackSpeed": {
+      "flat": 0.67,
+      "perLevel": 3.3
+    },
+    "movespeed": {
+      "flat": 345.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.625,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 125.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.05,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 0.9,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                60.0,
+                57.35294117647059,
+                54.705882352941174,
+                52.05882352941177,
+                49.411764705882355,
+                46.76470588235294,
+                44.11764705882353,
+                41.47058823529411,
+                38.82352941176471,
+                36.17647058823529,
+                33.529411764705884,
+                30.88235294117647,
+                28.235294117647054,
+                25.588235294117645,
+                22.94117647058824,
+                20.294117647058822,
+                17.647058823529413,
+                15.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Dr. Mundo can move near the canister to consume it, healing himself for 4% of his maximum health and reducing the cooldown of Goes Where He Pleases by 15 seconds. Enemy champions can move near it to destroy it.",
+            "leveling": []
+          },
+          {
+            "description": "Goes Where He Pleases' cooldown resets upon respawning.",
+            "leveling": []
+          },
+          {
+            "description": "Innate: Dr. Mundo regenerates an additional[ 0.4% : 2.3% (based on level) of his maximum health every 5 seconds. ][ 0.04% : 0.23% (based on level) of his maximum health every 0.5 seconds. ]",
+            "leveling": []
+          },
+          {
+            "description": "Passive: Periodically, Dr. Mundo gains immunity to the next hostile immobilizing effect to affect him. Upon resisting one, Dr. Mundo pays a health cost equal to 4% of his current health and propels a canister that lands 525 units in the general direction of its source, remaining on the ground for 7 seconds.",
+            "leveling": []
+          }
+        ],
+        "name": "Goes Where He Pleases"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                4.0,
+                4.0,
+                4.0,
+                4.0,
+                4.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Dr. Mundo throws an infected bonesaw in the target direction that deals magic damage to the first enemy hit and slows them by 40% for 2 seconds.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "% of target's current health",
+                      "% of target's current health",
+                      "% of target's current health",
+                      "% of target's current health",
+                      "% of target's current health"
+                    ],
+                    "values": [
+                      20.0,
+                      22.5,
+                      25.0,
+                      27.5,
+                      30.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "If the bonesaw hits an enemy, Dr. Mundo heals for 50% of the health cost, increased to 100% against champions or monsters.",
+            "leveling": []
+          },
+          {
+            "description": "Infected Bonesaw has a minimum damage threshold, and is capped against monsters.",
+            "leveling": [
+              {
+                "attribute": "Capped Monster Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      350.0,
+                      425.0,
+                      500.0,
+                      575.0,
+                      650.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Minimum Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      80.0,
+                      130.0,
+                      180.0,
+                      230.0,
+                      280.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Infected Bonesaw"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                17.0,
+                16.5,
+                16.0,
+                15.5,
+                15.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Dr. Mundo charges up a defibrillator for up to 3 seconds, dealing magic damage every 0.25 seconds to nearby enemies and storing 80% : 95% (based on level) of post-mitigation damage he takes as grey health on his health bar, reduced to 25% after the first 0.75 seconds.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage per Tick",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      5.0,
+                      8.75,
+                      12.5,
+                      16.25,
+                      20.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      80.0,
+                      140.0,
+                      200.0,
+                      260.0,
+                      320.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Heart Zapper can be recast after 0.5 seconds within the duration, and does so automatically after the duration.",
+            "leveling": []
+          },
+          {
+            "description": "Recast: Dr. Mundo detonates the defibrillator, dealing magic damage to nearby enemies and healing for 50% of grey health, increased to 100% if at least one enemy champion or large monster is hit.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      20.0,
+                      35.0,
+                      50.0,
+                      65.0,
+                      80.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus health",
+                      "% bonus health",
+                      "% bonus health",
+                      "% bonus health",
+                      "% bonus health"
+                    ],
+                    "values": [
+                      7.0,
+                      7.0,
+                      7.0,
+                      7.0,
+                      7.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Heart Zapper"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                9.0,
+                8.25,
+                7.5,
+                6.75,
+                6.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Dr. Mundo empowers his next basic attack within 4 seconds to have an uncancellable windup, gain 50 bonus range, and deal bonus physical damage, increased by 0% : 40% (based on Dr. Mundo's missing health). If the target dies or is a small monster, they are sent flying away in a line, though not through terrain, causing all enemies they pass through to take 100% AD physical damage plus Blunt Force Trauma's minimum bonus damage.",
+            "leveling": [
+              {
+                "attribute": "Maximum Bonus Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      7.0,
+                      21.0,
+                      35.0,
+                      49.0,
+                      63.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus health",
+                      "% bonus health",
+                      "% bonus health",
+                      "% bonus health",
+                      "% bonus health"
+                    ],
+                    "values": [
+                      9.8,
+                      9.8,
+                      9.8,
+                      9.8,
+                      9.8
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Minimum Bonus Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      5.0,
+                      15.0,
+                      25.0,
+                      35.0,
+                      45.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus health",
+                      "% bonus health",
+                      "% bonus health",
+                      "% bonus health",
+                      "% bonus health"
+                    ],
+                    "values": [
+                      7.0,
+                      7.0,
+                      7.0,
+                      7.0,
+                      7.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Blunt Force Trauma as well as the triggering attack's damage is increased to 140% against minions and 200% against monsters.",
+            "leveling": []
+          },
+          {
+            "description": "Blunt Force Trauma resets Dr. Mundo's basic attack timer.",
+            "leveling": []
+          },
+          {
+            "description": "Passive: Dr. Mundo gains bonus attack damage.",
+            "leveling": [
+              {
+                "attribute": "Bonus Attack Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "% maximum health",
+                      "% maximum health",
+                      "% maximum health",
+                      "% maximum health",
+                      "% maximum health"
+                    ],
+                    "values": [
+                      2.0,
+                      2.2,
+                      2.4,
+                      2.6,
+                      2.8
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Blunt Force Trauma"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                120.0,
+                120.0,
+                120.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: Dr. Mundo injects himself with chemicals to become enhanced for 10 seconds, gaining increased base health, bonus movement speed, and bonus health regeneration.",
+            "leveling": [
+              {
+                "attribute": "Bonus Health Regeneration",
+                "modifiers": [
+                  {
+                    "units": [
+                      "% maximum health",
+                      "% maximum health",
+                      "% maximum health"
+                    ],
+                    "values": [
+                      10.0,
+                      20.0,
+                      30.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Bonus Movement Speed",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      15.0,
+                      25.0,
+                      35.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Health Regenerated per 0.5 Seconds",
+                "modifiers": [
+                  {
+                    "units": [
+                      "% maximum health",
+                      "% maximum health",
+                      "% maximum health"
+                    ],
+                    "values": [
+                      1.0,
+                      2.0,
+                      3.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Increased Base Health",
+                "modifiers": [
+                  {
+                    "units": [
+                      "% missing health",
+                      "% missing health",
+                      "% missing health"
+                    ],
+                    "values": [
+                      15.0,
+                      20.0,
+                      25.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Health Regenerated",
+                "modifiers": [
+                  {
+                    "units": [
+                      "% maximum health",
+                      "% maximum health",
+                      "% maximum health"
+                    ],
+                    "values": [
+                      20.0,
+                      40.0,
+                      60.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "At rank 3, Maximum Dosage's increased base health and bonus health regeneration are both increased by 5% for each enemy champion within 1200 units at the time of cast.",
+            "leveling": []
+          }
+        ],
+        "name": "Maximum Dosage"
+      }
+    ]
+  },
+  "positions": [
+    "TOP"
+  ]
+}

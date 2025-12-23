@@ -1,0 +1,684 @@
+{
+  "name": "Vladimir",
+  "attackType": "RANGED",
+  "adaptiveType": "MAGIC_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 607.0,
+      "perLevel": 110.0
+    },
+    "mana": {
+      "flat": 2.0,
+      "perLevel": 0.0
+    },
+    "armor": {
+      "flat": 27.0,
+      "perLevel": 4.5
+    },
+    "magicResistance": {
+      "flat": 30.0,
+      "perLevel": 1.3
+    },
+    "attackDamage": {
+      "flat": 55.0,
+      "perLevel": 3.0
+    },
+    "attackSpeed": {
+      "flat": 0.658,
+      "perLevel": 2.0
+    },
+    "movespeed": {
+      "flat": 330.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.657999992370605,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 450.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.05,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.05,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 0.92,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": null,
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Innate: Vladimir gains (3.3% bonus health) as ability power and (160% AP) as bonus health. These two bonuses do not stack with each other.",
+            "leveling": []
+          }
+        ],
+        "name": "Crimson Pact"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                9.0,
+                7.9,
+                6.8,
+                5.7,
+                4.6
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Vladimir drains blood from the target enemy, dealing magic damage and healing himself. He then generates 1 point of Crimson Rush over the cooldown.",
+            "leveling": [
+              {
+                "attribute": "Heal",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      20.0,
+                      25.0,
+                      30.0,
+                      35.0,
+                      40.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      35.0,
+                      35.0,
+                      35.0,
+                      35.0,
+                      35.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      80.0,
+                      100.0,
+                      120.0,
+                      140.0,
+                      160.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      60.0,
+                      60.0,
+                      60.0,
+                      60.0,
+                      60.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "At 2 points of Crimson Rush, Vladimir surges, gaining 10% / 20% / 30% / 40% (based on level) bonus movement speed decaying over 0.5 seconds while the Crimson Rush depletes over 2.5 seconds. Crimson Rush depletes 75% slower during Sanguine Pool, Tides of Blood, or stasis.",
+            "leveling": []
+          },
+          {
+            "description": "Casting Transfusion during the surge consumes all Crimson Rush to deal 85% increased damage and heal Vladimir for an additional 30 : 200 (based on level) (+ 5% (+ 4% per 100 AP) of his missing health). The bonus healing is reduced to[ 35% ][ 10.5 : 70 (based on level) (+ 1.75% (+ 1.4% per 100 AP) of his missing health) ]against minions.",
+            "leveling": [
+              {
+                "attribute": "Increased Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      148.0,
+                      185.0,
+                      222.0,
+                      259.0,
+                      296.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      111.0,
+                      111.0,
+                      111.0,
+                      111.0,
+                      111.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Transfusion"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                28.0,
+                25.0,
+                22.0,
+                19.0,
+                16.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Vladimir sinks into a pool of blood, becoming untargetable and ghosted for 2 seconds. He also gains 37.5% bonus movement speed that decays exponentially over 1 second.",
+            "leveling": []
+          },
+          {
+            "description": "Enemies within the pool are dealt magic damage every 0.5 seconds over the duration and are slowed by 40%. Vladimir heals himself for 30% of the pre-mitigation damage dealt, reduced to 18% against minions.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage Per Tick",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      20.0,
+                      33.75,
+                      47.5,
+                      61.25,
+                      75.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus health",
+                      "% bonus health",
+                      "% bonus health",
+                      "% bonus health",
+                      "% bonus health"
+                    ],
+                    "values": [
+                      3.75,
+                      3.75,
+                      3.75,
+                      3.75,
+                      3.75
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      80.0,
+                      135.0,
+                      190.0,
+                      245.0,
+                      300.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus health",
+                      "% bonus health",
+                      "% bonus health",
+                      "% bonus health",
+                      "% bonus health"
+                    ],
+                    "values": [
+                      15.0,
+                      15.0,
+                      15.0,
+                      15.0,
+                      15.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Vladimir cannot use basic attacks nor abilities during Sanguine Pool, but he can still move. If Tides of Blood is charging at the time of Sanguine Pool's activation, that ability may still be recast.",
+            "leveling": []
+          }
+        ],
+        "name": "Sanguine Pool"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                13.0,
+                11.0,
+                9.0,
+                7.0,
+                5.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Vladimir charges for up to 1.5 seconds, during which he increases Tides of Blood's damage over the first second of the channel, and becomes slowed by 20% afterwards for the remaining duration. Tides of Blood can be recast within the duration, and does so automatically afterwards or if it is interrupted.",
+            "leveling": []
+          },
+          {
+            "description": "Enemies can intercept multiple bolts, but can be damaged only once.",
+            "leveling": []
+          },
+          {
+            "description": "If Tides of Blood was charged for at least 1 second, enemies hit are also slowed for 0.5 seconds.",
+            "leveling": [
+              {
+                "attribute": "Slow",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      40.0,
+                      45.0,
+                      50.0,
+                      55.0,
+                      60.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "If Vladimir is below 12% of his maximum health, Tides of Blood will not cost any health.",
+            "leveling": []
+          },
+          {
+            "description": "Recast: Vladimir unleashes a nova of 15 blood bolts around himself that each deal magic damage to the first enemy hit, increased based on charge time up to the first second.",
+            "leveling": [
+              {
+                "attribute": "Maximum Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      60.0,
+                      90.0,
+                      120.0,
+                      150.0,
+                      180.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% maximum health",
+                      "% maximum health",
+                      "% maximum health",
+                      "% maximum health",
+                      "% maximum health"
+                    ],
+                    "values": [
+                      6.0,
+                      6.0,
+                      6.0,
+                      6.0,
+                      6.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      80.0,
+                      80.0,
+                      80.0,
+                      80.0,
+                      80.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Minimum Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      30.0,
+                      45.0,
+                      60.0,
+                      75.0,
+                      90.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% maximum health",
+                      "% maximum health",
+                      "% maximum health",
+                      "% maximum health",
+                      "% maximum health"
+                    ],
+                    "values": [
+                      1.5,
+                      1.5,
+                      1.5,
+                      1.5,
+                      1.5
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      35.0,
+                      35.0,
+                      35.0,
+                      35.0,
+                      35.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Tides of Blood"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                120.0,
+                120.0,
+                120.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Vladimir spreads a virulent plague at the target location that infects enemies hit for 4 seconds, increasing the damage they take from all sources by 10%.",
+            "leveling": []
+          },
+          {
+            "description": "After the duration, the infection bursts to deal magic damage to all affected targets and, after a 0.4-second delay, heal Vladimir for each infected champion, reduced by 40% for champions beyond the first.",
+            "leveling": [
+              {
+                "attribute": "Heal",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      150.0,
+                      250.0,
+                      350.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      70.0,
+                      70.0,
+                      70.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Magic damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      150.0,
+                      250.0,
+                      350.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      70.0,
+                      70.0,
+                      70.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Maximum Total Heal",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      390.0,
+                      650.0,
+                      910.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      182.0,
+                      182.0,
+                      182.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Reduced Heal",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      60.0,
+                      100.0,
+                      140.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      28.0,
+                      28.0,
+                      28.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Hemoplague"
+      }
+    ]
+  },
+  "positions": [
+    "MIDDLE",
+    "TOP"
+  ]
+}

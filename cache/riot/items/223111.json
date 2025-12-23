@@ -1,0 +1,39 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><attention>30</attention> Magic Resist<br><attention>30</attention> Move Speed<br><attention>30%</attention> Tenacity</stats><br><br></mainText>",
+  "gold": {
+    "base": 500,
+    "purchasable": true,
+    "sell": 350,
+    "total": 500
+  },
+  "image": {
+    "full": "223111.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item1.png",
+    "w": 48,
+    "x": 96,
+    "y": 288
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": false
+  },
+  "name": "Mercury's Treads",
+  "plaintext": "",
+  "stats": {
+    "FlatMovementSpeedMod": 30,
+    "FlatSpellBlockMod": 30
+  },
+  "tags": [
+    "Boots",
+    "SpellBlock",
+    "Tenacity"
+  ]
+}

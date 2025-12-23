@@ -1,0 +1,33 @@
+{
+  "colloq": "",
+  "consumed": true,
+  "description": "<mainText><stats></stats><br><br>A train randomly drives through enemies. Trains generate explosions in their wake and knock up enemies. Enemies killed have a chance to drop gold.<br><br><rules>Damage, Ability Haste, Crit Chance, Armor</rules></mainText>",
+  "gold": {
+    "base": 0,
+    "purchasable": true,
+    "sell": 0,
+    "total": 0
+  },
+  "image": {
+    "full": "9289.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item6.png",
+    "w": 48,
+    "x": 336,
+    "y": 48
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": false,
+    "33": true,
+    "35": false
+  },
+  "name": "FC Limited Express",
+  "plaintext": "",
+  "stats": {},
+  "tags": []
+}

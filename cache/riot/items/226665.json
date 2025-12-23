@@ -1,0 +1,41 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><attention>350</attention> Health<br><attention>35</attention> Armor<br><attention>35</attention> Magic Resist</stats><br><br><passive>Voidborn Resilience</passive><br>After 5 seconds of champion combat, increase your bonus <scaleArmor>Armor</scaleArmor> and <scaleMR>Magic Resist</scaleMR> by 40% until end of combat.<br><br></mainText>",
+  "gold": {
+    "base": 2500,
+    "purchasable": true,
+    "sell": 1250,
+    "total": 2500
+  },
+  "image": {
+    "full": "226665.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item2.png",
+    "w": 48,
+    "x": 288,
+    "y": 96
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": false
+  },
+  "name": "Jak'Sho, The Protean",
+  "plaintext": "",
+  "stats": {
+    "FlatArmorMod": 35,
+    "FlatHPPoolMod": 350,
+    "FlatSpellBlockMod": 35
+  },
+  "tags": [
+    "Health",
+    "SpellBlock",
+    "Armor",
+    "MagicResist"
+  ]
+}

@@ -1,0 +1,538 @@
+{
+  "name": "Braum",
+  "attackType": "MELEE",
+  "adaptiveType": "MAGIC_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 610.0,
+      "perLevel": 112.0
+    },
+    "mana": {
+      "flat": 311.0,
+      "perLevel": 45.0
+    },
+    "armor": {
+      "flat": 35.0,
+      "perLevel": 5.0
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 55.0,
+      "perLevel": 3.2
+    },
+    "attackSpeed": {
+      "flat": 0.644,
+      "perLevel": 3.5
+    },
+    "movespeed": {
+      "flat": 335.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.643999993801116,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 125.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 0.82,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.05,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": null,
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Innate: Braum's basic attacks and Winter's Bite each apply a stack of Concussive Blows to their target for 4 seconds, refreshing on subsequent applications and stacking up to 4 times. Once the first stack has been applied, any allied champion's basic attack applies an additional stack to the target on-hit.",
+            "leveling": []
+          },
+          {
+            "description": "The fourth stack against a target consumes them all to deal 26 : 196 (based on his level) magic damage and stun them for 1.25 : 1.75 (based on his level) seconds.",
+            "leveling": []
+          },
+          {
+            "description": "This effect cannot apply to the same target more than once every few seconds. During this immunity period, affected targets take[ bonus magic damage equal to 20% of the trigger damage ][ 5.2 : 39.2 (based on level) bonus magic damage ]from Braum's basic attacks.",
+            "leveling": []
+          }
+        ],
+        "name": "Concussive Blows"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                8.0,
+                7.5,
+                7.0,
+                6.5,
+                6.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Braum propels ice from his shield in the target direction, dealing magic damage to the first enemy hit and slowing them by 70% decaying over 2 seconds.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      75.0,
+                      125.0,
+                      175.0,
+                      225.0,
+                      275.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% of Braum's maximum health",
+                      "% of Braum's maximum health",
+                      "% of Braum's maximum health",
+                      "% of Braum's maximum health",
+                      "% of Braum's maximum health"
+                    ],
+                    "values": [
+                      2.5,
+                      2.5,
+                      2.5,
+                      2.5,
+                      2.5
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Winter's Bite"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                12.0,
+                11.0,
+                10.0,
+                9.0,
+                8.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: Braum dashes to put himself between the target ally and the closest visible enemy champion within 1500 units, and upon arrival grants himself and the ally bonus armor and bonus magic resistance for 3 seconds.",
+            "leveling": [
+              {
+                "attribute": "Ally Bonus Armor",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      20.0,
+                      25.0,
+                      30.0,
+                      35.0,
+                      40.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus armor",
+                      "% bonus armor",
+                      "% bonus armor",
+                      "% bonus armor",
+                      "% bonus armor"
+                    ],
+                    "values": [
+                      12.0,
+                      12.0,
+                      12.0,
+                      12.0,
+                      12.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Ally Bonus Magic Resistance",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      20.0,
+                      25.0,
+                      30.0,
+                      35.0,
+                      40.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus magic resistance",
+                      "% bonus magic resistance",
+                      "% bonus magic resistance",
+                      "% bonus magic resistance",
+                      "% bonus magic resistance"
+                    ],
+                    "values": [
+                      12.0,
+                      12.0,
+                      12.0,
+                      12.0,
+                      12.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Stand Behind Me can be self cast to instantly grant Braum the bonus resistances.",
+            "leveling": [
+              {
+                "attribute": "Self Bonus Armor",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      20.0,
+                      25.0,
+                      30.0,
+                      35.0,
+                      40.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus armor",
+                      "% bonus armor",
+                      "% bonus armor",
+                      "% bonus armor",
+                      "% bonus armor"
+                    ],
+                    "values": [
+                      36.0,
+                      36.0,
+                      36.0,
+                      36.0,
+                      36.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Self Bonus Magic Resistance",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      20.0,
+                      25.0,
+                      30.0,
+                      35.0,
+                      40.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus magic resistance",
+                      "% bonus magic resistance",
+                      "% bonus magic resistance",
+                      "% bonus magic resistance",
+                      "% bonus magic resistance"
+                    ],
+                    "values": [
+                      36.0,
+                      36.0,
+                      36.0,
+                      36.0,
+                      36.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Unbreakable can be cast during the dash.",
+            "leveling": []
+          }
+        ],
+        "name": "Stand Behind Me"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                16.0,
+                14.0,
+                12.0,
+                10.0,
+                8.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: Braum sets his shield in the target direction for a duration, creating a barrier in front of him that intercepts all incoming hostile projectiles and reduces the damage Braum takes through it. The first instance of damage dealt by a champion from this direction is reduced by 100%. Unbreakable does not affect turrets.",
+            "leveling": [
+              {
+                "attribute": "Barrier Duration",
+                "modifiers": [
+                  {
+                    "units": [
+                      " seconds",
+                      " seconds",
+                      " seconds",
+                      " seconds",
+                      " seconds"
+                    ],
+                    "values": [
+                      3.0,
+                      3.25,
+                      3.5,
+                      3.75,
+                      4.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Damage reduction",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      35.0,
+                      40.0,
+                      45.0,
+                      50.0,
+                      55.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "While his shield is raised, Braum also gains 10% bonus movement speed and ghosting.",
+            "leveling": []
+          }
+        ],
+        "name": "Unbreakable"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                120.0,
+                100.0,
+                80.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "A field of ice is created along the fissure's path, lasting for 4 seconds and slowing enemies within the area every 0.25 seconds. The field disappears after the duration ends in the same order and speed it was created with.",
+            "leveling": [
+              {
+                "attribute": "Slow",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      40.0,
+                      50.0,
+                      60.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Active: Braum leaps into the air and slams his shield into the ground, creating a fissure from the impact that travels forth in the target direction, dealing magic damage to enemies within its path as well as those around Braum.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      150.0,
+                      300.0,
+                      450.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      60.0,
+                      60.0,
+                      60.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "The first target hit is knocked up for at least 0.6 seconds, increased if they are further away from Braum. All other enemies hit are knocked up for 0.6 seconds.",
+            "leveling": [
+              {
+                "attribute": "Maximum Knockup Duration",
+                "modifiers": [
+                  {
+                    "units": [
+                      " seconds",
+                      " seconds",
+                      " seconds"
+                    ],
+                    "values": [
+                      1.0,
+                      1.5,
+                      2.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Glacial Fissure"
+      }
+    ]
+  },
+  "positions": [
+    "SUPPORT"
+  ]
+}

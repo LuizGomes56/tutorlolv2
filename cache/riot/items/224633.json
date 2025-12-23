@@ -1,0 +1,40 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><attention>60</attention> Ability Power<br><attention>350</attention> Health<br><attention>15</attention> Ability Haste</stats><br><br><passive>Void Corruption</passive><br>For each second in combat with enemy champions, deal 2% bonus damage, up to 8%. At maximum strength, gain <omnivamp>Omnivamp</omnivamp>.<br><br><passive>Void Infusion</passive><br>Gain 2% of your <scaleHealth>bonus Health</scaleHealth> as <scaleAP>Ability Power</scaleAP>.</mainText>",
+  "gold": {
+    "base": 2500,
+    "purchasable": true,
+    "sell": 1250,
+    "total": 2500
+  },
+  "image": {
+    "full": "224633.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item2.png",
+    "w": 48,
+    "x": 144,
+    "y": 0
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": false
+  },
+  "name": "Riftmaker",
+  "plaintext": "",
+  "stats": {
+    "FlatHPPoolMod": 350,
+    "FlatMagicDamageMod": 60
+  },
+  "tags": [
+    "Health",
+    "SpellDamage",
+    "CooldownReduction",
+    "SpellVamp"
+  ]
+}

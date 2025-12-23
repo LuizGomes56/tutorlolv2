@@ -1,0 +1,35 @@
+{
+  "colloq": ";spear",
+  "description": "<mainText><stats></stats><br><br><active>Active - Consume:</active> Bind with an ally for the remainder of the game, becoming Oathsworn Allies. Oathsworn empowers you both while near one another.</mainText>",
+  "gold": {
+    "base": 0,
+    "purchasable": true,
+    "sell": 0,
+    "total": 0
+  },
+  "image": {
+    "full": "3599.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item4.png",
+    "w": 48,
+    "x": 384,
+    "y": 0
+  },
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": true
+  },
+  "name": "Kalista's Black Spear",
+  "plaintext": "Kalista's spear that binds an Oathsworn Ally.",
+  "requiredChampion": "Kalista",
+  "stats": {},
+  "tags": [
+    "Consumable"
+  ]
+}

@@ -1,0 +1,197 @@
+{
+  "name": "Ambessa",
+  "adaptative_type": "Physical",
+  "attack_type": "Melee",
+  "positions": [
+    "Top"
+  ],
+  "stats": {
+    "health": {
+      "flat": 630.0,
+      "perLevel": 110.0
+    },
+    "mana": {
+      "flat": 200.0,
+      "perLevel": 0.0
+    },
+    "armor": {
+      "flat": 35.0,
+      "perLevel": 4.9
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 63.0,
+      "perLevel": 3.0
+    },
+    "attackSpeed": {
+      "flat": 0.625,
+      "perLevel": 2.5
+    },
+    "movespeed": {
+      "flat": 335.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.625,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 125.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.05,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": [
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Repudiation",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "50 + (0.5 * ctx.bonus_ad)",
+          "75 + (0.5 * ctx.bonus_ad)",
+          "100 + (0.5 * ctx.bonus_ad)",
+          "125 + (0.5 * ctx.bonus_ad)",
+          "150 + (0.5 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_2"
+      },
+      {
+        "name": "Repudiation",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "75 + (0.75 * ctx.bonus_ad)",
+          "112.5 + (0.75 * ctx.bonus_ad)",
+          "150 + (0.75 * ctx.bonus_ad)",
+          "187.5 + (0.75 * ctx.bonus_ad)",
+          "225 + (0.75 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Lacerate",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "40 + (0.4 * ctx.bonus_ad)",
+          "60 + (0.45 * ctx.bonus_ad)",
+          "80 + (0.5 * ctx.bonus_ad)",
+          "100 + (0.55 * ctx.bonus_ad)",
+          "120 + (0.6 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_2"
+      },
+      {
+        "name": "Lacerate",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "80 + (0.8 * ctx.bonus_ad)",
+          "120 + (0.9 * ctx.bonus_ad)",
+          "160 + ctx.bonus_ad",
+          "200 + (1.1 * ctx.bonus_ad)",
+          "240 + (1.2 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_4"
+      },
+      {
+        "name": "Cunning Sweep",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "20 + (0.3 * ctx.bonus_ad) + (0.01 * ctx.enemy_max_health) + (0.015 * 0.01 * ctx.bonus_ad)",
+          "30 + (0.3 * ctx.bonus_ad) + (0.015 * ctx.enemy_max_health) + (0.015 * 0.01 * ctx.bonus_ad)",
+          "40 + (0.3 * ctx.bonus_ad) + (0.02 * ctx.enemy_max_health) + (0.015 * 0.01 * ctx.bonus_ad)",
+          "50 + (0.3 * ctx.bonus_ad) + (0.025 * ctx.enemy_max_health) + (0.015 * 0.01 * ctx.bonus_ad)",
+          "60 + (0.3 * ctx.bonus_ad) + (0.03 * ctx.enemy_max_health) + (0.015 * 0.01 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Public Execution",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "150 + (0.8 * ctx.bonus_ad)",
+          "250 + (0.8 * ctx.bonus_ad)",
+          "350 + (0.8 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_3"
+      },
+      {
+        "name": "Cunning Sweep",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "40 + (0.6 * ctx.bonus_ad) + (0.02 * ctx.enemy_max_health) + (0.03 * 0.01 * ctx.bonus_ad)",
+          "60 + (0.6 * ctx.bonus_ad) + (0.03 * ctx.enemy_max_health) + (0.03 * 0.01 * ctx.bonus_ad)",
+          "80 + (0.6 * ctx.bonus_ad) + (0.04 * ctx.enemy_max_health) + (0.03 * 0.01 * ctx.bonus_ad)",
+          "100 + (0.6 * ctx.bonus_ad) + (0.05 * ctx.enemy_max_health) + (0.03 * 0.01 * ctx.bonus_ad)",
+          "120 + (0.6 * ctx.bonus_ad) + (0.06 * ctx.enemy_max_health) + (0.03 * 0.01 * ctx.bonus_ad)"
+        ]
+      }
+    ]
+  ],
+  "merge_data": []
+}

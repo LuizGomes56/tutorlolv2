@@ -1,0 +1,64 @@
+{
+  "colloq": ";",
+  "depth": 2,
+  "description": "<mainText><stats><attention>25</attention> Ability Power<br><attention>10</attention> Ability Haste</stats><br><br></mainText>",
+  "effect": {
+    "Effect1Amount": "-0.1"
+  },
+  "from": [
+    "1052",
+    "2022"
+  ],
+  "gold": {
+    "base": 200,
+    "purchasable": true,
+    "sell": 595,
+    "total": 850
+  },
+  "image": {
+    "full": "3108.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item3.png",
+    "w": 48,
+    "x": 384,
+    "y": 48
+  },
+  "into": [
+    "123430",
+    "4633",
+    "4636",
+    "4628",
+    "3115",
+    "323003",
+    "4629",
+    "324005",
+    "4005",
+    "3003",
+    "6616",
+    "326616",
+    "3152",
+    "3128",
+    "3137",
+    "8010"
+  ],
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Fiendish Codex",
+  "plaintext": "Increases Ability Power and Cooldown Reduction",
+  "stats": {
+    "FlatMagicDamageMod": 25
+  },
+  "tags": [
+    "SpellDamage",
+    "CooldownReduction",
+    "AbilityHaste"
+  ]
+}

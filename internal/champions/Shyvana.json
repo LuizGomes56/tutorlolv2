@@ -1,0 +1,192 @@
+{
+  "name": "Shyvana",
+  "adaptative_type": "Physical",
+  "attack_type": "Melee",
+  "positions": [
+    "Jungle"
+  ],
+  "stats": {
+    "health": {
+      "flat": 665.0,
+      "perLevel": 104.0
+    },
+    "mana": {
+      "flat": 100.0,
+      "perLevel": 0.0
+    },
+    "armor": {
+      "flat": 38.0,
+      "perLevel": 4.55
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 1.5
+    },
+    "attackDamage": {
+      "flat": 66.0,
+      "perLevel": 3.0
+    },
+    "attackSpeed": {
+      "flat": 0.658,
+      "perLevel": 2.5
+    },
+    "movespeed": {
+      "flat": 350.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.657999992370605,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 125.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 0.95,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 0.85,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": [
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Twin Bite",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "(0.2 * ctx.ad) + (0.25 * ctx.ap)",
+          "(0.4 * ctx.ad) + (0.25 * ctx.ap)",
+          "(0.6 * ctx.ad) + (0.25 * ctx.ap)",
+          "(0.8 * ctx.ad) + (0.25 * ctx.ap)",
+          "ctx.ad + (0.25 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Burnout",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "10 + (0.1 * ctx.bonus_ad)",
+          "15 + (0.1 * ctx.bonus_ad)",
+          "20 + (0.1 * ctx.bonus_ad)",
+          "25 + (0.1 * ctx.bonus_ad)",
+          "30 + (0.1 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_2"
+      },
+      {
+        "name": "Burnout",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "5 + (0.05 * ctx.bonus_ad)",
+          "7 + (0.05 * ctx.bonus_ad)",
+          "9 + (0.05 * ctx.bonus_ad)",
+          "11 + (0.05 * ctx.bonus_ad)",
+          "13 + (0.05 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Flame Breath",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "85 + (0.5 * ctx.bonus_ad) + (0.7 * ctx.ap)",
+          "125 + (0.5 * ctx.bonus_ad) + (0.7 * ctx.ap)",
+          "165 + (0.5 * ctx.bonus_ad) + (0.7 * ctx.ap)",
+          "205 + (0.5 * ctx.bonus_ad) + (0.7 * ctx.ap)",
+          "245 + (0.5 * ctx.bonus_ad) + (0.7 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_2"
+      },
+      {
+        "name": "Flame Breath",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "75 + 85 + ctx.bonus_ad + (0.9 * ctx.ap)",
+          "78.52941176470588 + 125 + ctx.bonus_ad + (0.9 * ctx.ap)",
+          "82.05882352941177 + 165 + ctx.bonus_ad + (0.9 * ctx.ap)",
+          "85.58823529411765 + 205 + ctx.bonus_ad + (0.9 * ctx.ap)",
+          "89.11764705882354 + 245 + ctx.bonus_ad + (0.9 * ctx.ap)",
+          "92.64705882352942",
+          "96.17647058823528",
+          "99.70588235294116",
+          "103.23529411764706",
+          "106.76470588235294",
+          "110.29411764705884",
+          "113.8235294117647",
+          "117.35294117647058",
+          "120.88235294117646",
+          "124.41176470588236",
+          "127.94117647058825",
+          "131.47058823529412",
+          "135"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Dragon's Descent",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "150 + ctx.ap",
+          "250 + ctx.ap",
+          "350 + ctx.ap"
+        ]
+      }
+    ]
+  ],
+  "merge_data": []
+}

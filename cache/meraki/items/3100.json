@@ -1,0 +1,83 @@
+{
+  "active": [],
+  "buildsFrom": [
+    3057,
+    3113,
+    1026
+  ],
+  "buildsInto": [],
+  "name": "Lich Bane",
+  "tier": 3,
+  "passives": [
+    {
+      "effects": "After using an [[Champion ability|ability]], your next basic attack within 10 seconds gains {{as|50% '''bonus''' attack speed}} and deals {{as|75% '''base''' AD}} {{as|(+ 40% AP)}} {{as|'''bonus''' magic damage}} [[on-hit]] ({{fd|1.5}} second cooldown, starts after using the empowered attack).",
+      "name": "Spellblade",
+      "unique": true
+    }
+  ],
+  "id": 3100,
+  "stats": {
+    "abilityPower": {
+      "flat": 100.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 4.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "shop": {
+    "purchasable": true,
+    "prices": {
+      "total": 2900
+    }
+  }
+}

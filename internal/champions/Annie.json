@@ -1,0 +1,143 @@
+{
+  "name": "Annie",
+  "adaptative_type": "Magic",
+  "attack_type": "Ranged",
+  "positions": [
+    "Middle"
+  ],
+  "stats": {
+    "health": {
+      "flat": 560.0,
+      "perLevel": 96.0
+    },
+    "mana": {
+      "flat": 418.0,
+      "perLevel": 25.0
+    },
+    "armor": {
+      "flat": 23.0,
+      "perLevel": 4.0
+    },
+    "magicResistance": {
+      "flat": 30.0,
+      "perLevel": 1.3
+    },
+    "attackDamage": {
+      "flat": 50.0,
+      "perLevel": 2.65
+    },
+    "attackSpeed": {
+      "flat": 0.61,
+      "perLevel": 1.36
+    },
+    "movespeed": {
+      "flat": 335.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.625,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 625.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.05,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 0.95,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.1,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 0.9,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": [
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Summon: Tibbers",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "150 + (0.75 * ctx.ap)",
+          "275 + (0.75 * ctx.ap)",
+          "400 + (0.75 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Incinerate",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "70 + (0.8 * ctx.ap)",
+          "115 + (0.8 * ctx.ap)",
+          "160 + (0.8 * ctx.ap)",
+          "205 + (0.8 * ctx.ap)",
+          "250 + (0.8 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Disintegrate",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "80 + (0.8 * ctx.ap)",
+          "120 + (0.8 * ctx.ap)",
+          "160 + (0.8 * ctx.ap)",
+          "200 + (0.8 * ctx.ap)",
+          "240 + (0.8 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Molten Shield",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "25 + (0.4 * ctx.ap)",
+          "35 + (0.4 * ctx.ap)",
+          "45 + (0.4 * ctx.ap)",
+          "55 + (0.4 * ctx.ap)",
+          "65 + (0.4 * ctx.ap)"
+        ]
+      }
+    ]
+  ],
+  "merge_data": []
+}

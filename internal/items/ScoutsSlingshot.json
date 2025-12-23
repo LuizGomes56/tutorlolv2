@@ -1,0 +1,133 @@
+{
+  "riot_id": 3144,
+  "item_id": "ScoutsSlingshot",
+  "name": "Scout's Slingshot",
+  "price": 600,
+  "sell": 420,
+  "tier": 2,
+  "maps": [
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "Aram",
+      true
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
+      "Tft",
+      false
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "NexusBlitz",
+      true
+    ]
+  ],
+  "prettified_stats": [
+    {
+      "name": "AttackSpeed",
+      "value": 20
+    }
+  ],
+  "damage_type": "Unknown",
+  "stats": {
+    "abilityPower": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 20.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "builds_from_riot_ids": [
+    1042,
+    1042
+  ],
+  "builds_from_item_ids": [
+    "Dagger",
+    "Dagger"
+  ],
+  "builds_into_riot_ids": [
+    3032,
+    3087,
+    3085,
+    3094
+  ],
+  "builds_into_item_ids": [
+    "YunTalWildarrows",
+    "StatikkShiv",
+    "RunaansHurricane",
+    "RapidFirecannon"
+  ],
+  "ranged": {
+    "minimum_damage": "zero",
+    "maximum_damage": "zero"
+  },
+  "melee": {
+    "minimum_damage": "zero",
+    "maximum_damage": "zero"
+  },
+  "attributes": "Undefined",
+  "purchasable": true
+}

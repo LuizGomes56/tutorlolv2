@@ -1,0 +1,39 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><attention>75%</attention> Attack Speed<br><attention>500</attention> Health</stats><br><br><passive>Covering Fire</passive><br>While near an allied champion, <OnHit>On-Hit</OnHit> gain a stack of Edict, At 1 stacks, the next time you would apply an <OnHit>On-Hit</OnHit>, your teammate also fires a bolt at the target, dealing <physicalDamage> physical damage</physicalDamage> and applying their <OnHit>On-Hit</OnHit> effects.<br><br><keywordMajor>Covering Fire</keywordMajor> cannot trigger other <keywordMajor>Covering Fire</keywordMajor>.</mainText>",
+  "gold": {
+    "base": 1000,
+    "purchasable": true,
+    "sell": 400,
+    "total": 1000
+  },
+  "image": {
+    "full": "443081.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item4.png",
+    "w": 48,
+    "x": 336,
+    "y": 288
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": false
+  },
+  "name": "Hexbolt Companion",
+  "plaintext": "",
+  "specialRecipe": 220007,
+  "stats": {
+    "FlatHPPoolMod": 500,
+    "PercentAttackSpeedMod": 0.75
+  },
+  "tags": [
+    "Health",
+    "AttackSpeed"
+  ]
+}

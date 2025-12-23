@@ -1,0 +1,84 @@
+{
+  "active": [],
+  "buildsFrom": [],
+  "buildsInto": [],
+  "name": "Diamond-Tipped Spear",
+  "tier": 3,
+  "passives": [
+    {
+      "effects": "Basic attacks deal {{pp|0 to 30 for 11|0 to 1000|key=%|type=distance|label1=units}} increased damage and abilities deal {{pp|0 to 40 for 11|0 to 1000|key=%|type=distance|label1=units}} increased damage. The distance is calculated from your {{tip|cr|icononly=true}} current position to the target's position when the triggering attack or ability hits them.",
+      "name": "Sweet Spot",
+      "unique": true
+    },
+    {
+      "effects": "Gain {{sti|range|75 '''bonus''' attack range}}.",
+      "name": "Reach Weapon",
+      "unique": true
+    }
+  ],
+  "id": 447120,
+  "stats": {
+    "abilityPower": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 30.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "shop": {
+    "purchasable": true,
+    "prices": {
+      "total": 0
+    }
+  }
+}

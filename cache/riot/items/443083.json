@@ -1,0 +1,40 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><attention>1100</attention> Health<br><attention>4%</attention> Move Speed</stats><br><br><passive>Warmog's Heart</passive><br>Requires 1350 <healing>bonus Health</healing>.<br><br>Restore <healing> Health</healing> per second. If you have not taken damage within 4 seconds, restore an additional <healing> Health</healing> per second.</mainText>",
+  "gold": {
+    "base": 1000,
+    "purchasable": true,
+    "sell": 400,
+    "total": 1000
+  },
+  "image": {
+    "full": "443083.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item4.png",
+    "w": 48,
+    "x": 384,
+    "y": 288
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": false
+  },
+  "name": "Warmog's Armor",
+  "plaintext": "",
+  "specialRecipe": 220007,
+  "stats": {
+    "FlatHPPoolMod": 1100,
+    "PercentMovementSpeedMod": 0.04
+  },
+  "tags": [
+    "Health",
+    "HealthRegen",
+    "NonbootsMovement"
+  ]
+}

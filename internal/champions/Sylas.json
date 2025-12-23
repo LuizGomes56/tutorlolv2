@@ -1,0 +1,182 @@
+{
+  "name": "Sylas",
+  "adaptative_type": "Magic",
+  "attack_type": "Melee",
+  "positions": [
+    "Middle",
+    "Top"
+  ],
+  "stats": {
+    "health": {
+      "flat": 600.0,
+      "perLevel": 122.0
+    },
+    "mana": {
+      "flat": 400.0,
+      "perLevel": 70.0
+    },
+    "armor": {
+      "flat": 29.0,
+      "perLevel": 5.2
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 2.55
+    },
+    "attackDamage": {
+      "flat": 61.0,
+      "perLevel": 3.0
+    },
+    "attackSpeed": {
+      "flat": 0.645,
+      "perLevel": 3.5
+    },
+    "movespeed": {
+      "flat": 340.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.644999980926513,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.05,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 0.95,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": [
+    [
+      {
+        "type": "Q",
+        "name": "_5"
+      },
+      {
+        "name": "Chain Lash",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "64 + (0.72 * ctx.ap)",
+          "106 + (0.72 * ctx.ap)",
+          "148 + (0.72 * ctx.ap)",
+          "190 + (0.72 * ctx.ap)",
+          "232 + (0.72 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Chain Lash",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "40 + (0.4 * ctx.ap)",
+          "60 + (0.4 * ctx.ap)",
+          "80 + (0.4 * ctx.ap)",
+          "100 + (0.4 * ctx.ap)",
+          "120 + (0.4 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_3"
+      },
+      {
+        "name": "Chain Lash",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "24 + (0.32 * ctx.ap)",
+          "46 + (0.32 * ctx.ap)",
+          "68 + (0.32 * ctx.ap)",
+          "90 + (0.32 * ctx.ap)",
+          "112 + (0.32 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Kingslayer",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "75 + (0.6 * ctx.ap)",
+          "110 + (0.6 * ctx.ap)",
+          "145 + (0.6 * ctx.ap)",
+          "180 + (0.6 * ctx.ap)",
+          "215 + (0.6 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_4"
+      },
+      {
+        "name": "Chain Lash",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "100 + (1.2 * ctx.ap)",
+          "175 + (1.2 * ctx.ap)",
+          "250 + (1.2 * ctx.ap)",
+          "325 + (1.2 * ctx.ap)",
+          "400 + (1.2 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "Chain Lash",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "60 + (0.8 * ctx.ap)",
+          "115 + (0.8 * ctx.ap)",
+          "170 + (0.8 * ctx.ap)",
+          "225 + (0.8 * ctx.ap)",
+          "280 + (0.8 * ctx.ap)"
+        ]
+      }
+    ]
+  ],
+  "merge_data": []
+}

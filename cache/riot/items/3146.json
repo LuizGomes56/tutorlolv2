@@ -1,0 +1,46 @@
+{
+  "colloq": ";",
+  "depth": 2,
+  "description": "<mainText><stats><attention>80</attention> Ability Power<br><attention>40</attention> Attack Damage<br><attention>15%</attention> Omnivamp</stats><br><br><br><br><active>ACTIVE</active> (0s)<br><active>Lightning Bolt</active><br>Shocks the target enemy champion, dealing  magic damage and slowing them by 40% for 2 seconds.</mainText>",
+  "from": [
+    "1038",
+    "1058"
+  ],
+  "gold": {
+    "base": 750,
+    "purchasable": true,
+    "sell": 2275,
+    "total": 3250
+  },
+  "image": {
+    "full": "3146.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item3.png",
+    "w": 48,
+    "x": 240,
+    "y": 192
+  },
+  "maps": {
+    "11": false,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": false
+  },
+  "name": "Hextech Gunblade",
+  "plaintext": "Increases Attack Damage and Ability Power, activate to slow a target",
+  "stats": {
+    "FlatMagicDamageMod": 80,
+    "FlatPhysicalDamageMod": 40
+  },
+  "tags": [
+    "Damage",
+    "LifeSteal",
+    "SpellDamage",
+    "Active",
+    "SpellVamp"
+  ]
+}

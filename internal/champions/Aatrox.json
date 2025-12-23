@@ -1,0 +1,335 @@
+{
+  "name": "Aatrox",
+  "adaptative_type": "Physical",
+  "attack_type": "Melee",
+  "positions": [
+    "Top"
+  ],
+  "stats": {
+    "health": {
+      "flat": 650.0,
+      "perLevel": 114.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "perLevel": 0.0
+    },
+    "armor": {
+      "flat": 38.0,
+      "perLevel": 4.8
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 60.0,
+      "perLevel": 5.0
+    },
+    "attackSpeed": {
+      "flat": 0.651,
+      "perLevel": 2.5
+    },
+    "movespeed": {
+      "flat": 345.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.651000022888183,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.05,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 0.7,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.15,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": [
+    [
+      {
+        "type": "W",
+        "name": "Max"
+      },
+      {
+        "name": "Infernal Chains",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "60 + (0.8 * ctx.ad)",
+          "80 + (0.8 * ctx.ad)",
+          "100 + (0.8 * ctx.ad)",
+          "120 + (0.8 * ctx.ad)",
+          "140 + (0.8 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "P",
+        "name": "Void"
+      },
+      {
+        "name": "Deathbringer Stance",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "(0.04 * ctx.enemy_bonus_health)",
+          "(0.042352941176470586 * ctx.enemy_bonus_health)",
+          "(0.04470588235294118 * ctx.enemy_bonus_health)",
+          "(0.047058823529411764 * ctx.enemy_bonus_health)",
+          "(0.049411764705882356 * ctx.enemy_bonus_health)",
+          "(0.05176470588235294 * ctx.enemy_bonus_health)",
+          "(0.05411764705882353 * ctx.enemy_bonus_health)",
+          "(0.05647058823529412 * ctx.enemy_bonus_health)",
+          "(0.058823529411764705 * ctx.enemy_bonus_health)",
+          "(0.06117647058823529 * ctx.enemy_bonus_health)",
+          "(0.06352941176470589 * ctx.enemy_bonus_health)",
+          "(0.06588235294117648 * ctx.enemy_bonus_health)",
+          "(0.06823529411764706 * ctx.enemy_bonus_health)",
+          "(0.07058823529411765 * ctx.enemy_bonus_health)",
+          "(0.07294117647058823 * ctx.enemy_bonus_health)",
+          "(0.07529411764705882 * ctx.enemy_bonus_health)",
+          "(0.07764705882352942 * ctx.enemy_bonus_health)",
+          "(0.08 * ctx.enemy_bonus_health)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_2Min"
+      },
+      {
+        "name": "The Darkin Blade",
+        "damage_type": "Physical",
+        "attributes": "Area",
+        "damage": [
+          "12.5 + (0.75 * ctx.ad)",
+          "31.25 + (0.84375 * ctx.ad)",
+          "50 + (0.9375 * ctx.ad)",
+          "68.75 + (1.03125 * ctx.ad)",
+          "87.5 + (1.125 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_2Max"
+      },
+      {
+        "name": "The Darkin Blade",
+        "damage_type": "Physical",
+        "attributes": "Area",
+        "damage": [
+          "21.25 + (1.275 * ctx.ad)",
+          "53.125 + (1.434375 * ctx.ad)",
+          "85 + (1.59375 * ctx.ad)",
+          "116.875 + (1.753125 * ctx.ad)",
+          "148.75 + (1.9125 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_3Max"
+      },
+      {
+        "name": "The Darkin Blade",
+        "damage_type": "Physical",
+        "attributes": "Area",
+        "damage": [
+          "25.5 + (1.53 * ctx.ad)",
+          "63.75 + (1.72125 * ctx.ad)",
+          "102 + (1.9125 * ctx.ad)",
+          "140.25 + (2.10375 * ctx.ad)",
+          "178.5 + (2.295 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1Max"
+      },
+      {
+        "name": "The Darkin Blade",
+        "damage_type": "Physical",
+        "attributes": "Area",
+        "damage": [
+          "17 + (1.02 * ctx.ad)",
+          "42.5 + (1.1475 * ctx.ad)",
+          "68 + (1.275 * ctx.ad)",
+          "93.5 + (1.4025 * ctx.ad)",
+          "119 + (1.53 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_3Min"
+      },
+      {
+        "name": "The Darkin Blade",
+        "damage_type": "Physical",
+        "attributes": "Area",
+        "damage": [
+          "15 + (0.9 * ctx.ad)",
+          "37.5 + (1.0125 * ctx.ad)",
+          "60 + (1.125 * ctx.ad)",
+          "82.5 + (1.2375 * ctx.ad)",
+          "105 + (1.35 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "Min"
+      },
+      {
+        "name": "Infernal Chains",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "30 + (0.4 * ctx.ad)",
+          "40 + (0.4 * ctx.ad)",
+          "50 + (0.4 * ctx.ad)",
+          "60 + (0.4 * ctx.ad)",
+          "70 + (0.4 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1Min"
+      },
+      {
+        "name": "The Darkin Blade",
+        "damage_type": "Physical",
+        "attributes": "Area",
+        "damage": [
+          "10 + (0.6 * ctx.ad)",
+          "25 + (0.675 * ctx.ad)",
+          "40 + (0.75 * ctx.ad)",
+          "55 + (0.825 * ctx.ad)",
+          "70 + (0.9 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "Max"
+      },
+      {
+        "name": "The Darkin Blade",
+        "damage_type": "Physical",
+        "attributes": "Area",
+        "damage": [
+          "(17 + (1.02 * ctx.ad)) + (21.25 + (1.275 * ctx.ad)) + (25.5 + (1.53 * ctx.ad))",
+          "(42.5 + (1.1475 * ctx.ad)) + (53.125 + (1.434375 * ctx.ad)) + (63.75 + (1.72125 * ctx.ad))",
+          "(68 + (1.275 * ctx.ad)) + (85 + (1.59375 * ctx.ad)) + (102 + (1.9125 * ctx.ad))",
+          "(93.5 + (1.4025 * ctx.ad)) + (116.875 + (1.753125 * ctx.ad)) + (140.25 + (2.10375 * ctx.ad))",
+          "(119 + (1.53 * ctx.ad)) + (148.75 + (1.9125 * ctx.ad)) + (178.5 + (2.295 * ctx.ad))"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "Min"
+      },
+      {
+        "name": "The Darkin Blade",
+        "damage_type": "Physical",
+        "attributes": "Area",
+        "damage": [
+          "(10 + (0.6 * ctx.ad)) + (12.5 + (0.75 * ctx.ad)) + (15 + (0.9 * ctx.ad))",
+          "(25 + (0.675 * ctx.ad)) + (31.25 + (0.84375 * ctx.ad)) + (37.5 + (1.0125 * ctx.ad))",
+          "(40 + (0.75 * ctx.ad)) + (50 + (0.9375 * ctx.ad)) + (60 + (1.125 * ctx.ad))",
+          "(55 + (0.825 * ctx.ad)) + (68.75 + (1.03125 * ctx.ad)) + (82.5 + (1.2375 * ctx.ad))",
+          "(70 + (0.9 * ctx.ad)) + (87.5 + (1.125 * ctx.ad)) + (105 + (1.35 * ctx.ad))"
+        ]
+      }
+    ]
+  ],
+  "merge_data": [
+    [
+      {
+        "type": "Q",
+        "name": "_2Min"
+      },
+      {
+        "type": "Q",
+        "name": "_2Max"
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_3Min"
+      },
+      {
+        "type": "Q",
+        "name": "_3Max"
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "Min"
+      },
+      {
+        "type": "W",
+        "name": "Max"
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1Min"
+      },
+      {
+        "type": "Q",
+        "name": "_1Max"
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "Min"
+      },
+      {
+        "type": "Q",
+        "name": "Max"
+      }
+    ]
+  ]
+}

@@ -1,0 +1,84 @@
+{
+  "active": [],
+  "buildsFrom": [],
+  "buildsInto": [],
+  "name": "Puppeteer",
+  "tier": 3,
+  "passives": [
+    {
+      "effects": "Basic attacks [[on-hit]] against enemy champions apply a ''Puppeteer'' stack for 15 seconds, stacking up to 4 times. The fourth stack against a target consumes them all to render the target {{tip|berserk}} for 2 seconds, causing them to gain {{as|50%|as}} {{as|(+ 150% of your heal and shield power)}} {{as|'''bonus''' attack speed}} and {{as|40% '''bonus''' movement speed}} (25 second cooldown). If only one champion is alive on the enemy team, instead {{tip|fear}} the target for the same duration.",
+      "name": "Pull Their Strings",
+      "unique": true
+    },
+    {
+      "effects": "Granting yourself or an ally a {{tip|heal}}, {{tip|shield}}, or [[champion ability|ability-sourced]] buff reduces the cooldown of ''Pull Their Strings'' by 5 seconds, once per cast.",
+      "name": null,
+      "unique": true
+    }
+  ],
+  "id": 447123,
+  "stats": {
+    "abilityPower": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 30.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "shop": {
+    "purchasable": true,
+    "prices": {
+      "total": 0
+    }
+  }
+}

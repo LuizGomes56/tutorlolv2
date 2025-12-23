@@ -1,0 +1,38 @@
+{
+  "colloq": "",
+  "consumed": true,
+  "description": "<mainText><stats></stats><br><br><active>Consume</active><br>Grants <trueDamage>5 true damage</trueDamage> on hit against minions for 60 seconds. When this effect expires, gain 60 gold. </mainText>",
+  "gold": {
+    "base": 50,
+    "purchasable": false,
+    "sell": 20,
+    "total": 50
+  },
+  "image": {
+    "full": "2151.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item0.png",
+    "w": 48,
+    "x": 288,
+    "y": 384
+  },
+  "inStore": false,
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Elixir of Avarice",
+  "plaintext": "",
+  "stats": {},
+  "tags": [
+    "Health",
+    "Consumable",
+    "Tenacity"
+  ]
+}

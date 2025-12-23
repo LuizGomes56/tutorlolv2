@@ -1,0 +1,635 @@
+{
+  "name": "K'Sante",
+  "attackType": "MELEE",
+  "adaptiveType": "PHYSICAL_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 625.0,
+      "perLevel": 120.0
+    },
+    "mana": {
+      "flat": 320.0,
+      "perLevel": 60.0
+    },
+    "armor": {
+      "flat": 36.0,
+      "perLevel": 5.2
+    },
+    "magicResistance": {
+      "flat": 30.0,
+      "perLevel": 2.1
+    },
+    "attackDamage": {
+      "flat": 64.0,
+      "perLevel": 3.5
+    },
+    "attackSpeed": {
+      "flat": 0.688,
+      "perLevel": 2.5
+    },
+    "movespeed": {
+      "flat": 330.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.625,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 150.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.05,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.05,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": null,
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "All Out Bonus: K'Sante's basic attacks and ability damage, as well as Dauntless Instinct's mark consumption, are empowered to deal bonus physical damage equal to 1% (+ 1% per 100 bonus armor) (+ 1% per 100 bonus magic resistance) of the target's maximum health.",
+            "leveling": []
+          },
+          {
+            "description": "Innate: K'Sante's abilities mark enemies hit for 4 seconds. His basic attacks against marked enemies are empowered to consume the mark on-hit, dealing 12 (+ 1% : 2% (based on level) of target's maximum health) bonus physical damage. The damage based on the target's health has a minimum of 15 : 100 (based on level) against minions and is capped at 20 : 105 (based on level) against monsters.",
+            "leveling": []
+          }
+        ],
+        "name": "Dauntless Instinct"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                " - 0.0125 x bonus resistances, capped at 120 bonus resistances",
+                " - 0.0125 x bonus resistances, capped at 120 bonus resistances",
+                " - 0.0125 x bonus resistances, capped at 120 bonus resistances",
+                " - 0.0125 x bonus resistances, capped at 120 bonus resistances",
+                " - 0.0125 x bonus resistances, capped at 120 bonus resistances"
+              ],
+              "values": [
+                3.5,
+                3.5,
+                3.5,
+                3.5,
+                3.5
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: K'Sante slams his ntofo down in the target direction that deals physical damage to enemies hit and slows them by 80% for 0.5 seconds.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      70.0,
+                      100.0,
+                      130.0,
+                      160.0,
+                      190.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus armor",
+                      "% bonus armor",
+                      "% bonus armor",
+                      "% bonus armor",
+                      "% bonus armor"
+                    ],
+                    "values": [
+                      40.0,
+                      40.0,
+                      40.0,
+                      40.0,
+                      40.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus magic resistance",
+                      "% bonus magic resistance",
+                      "% bonus magic resistance",
+                      "% bonus magic resistance",
+                      "% bonus magic resistance"
+                    ],
+                    "values": [
+                      40.0,
+                      40.0,
+                      40.0,
+                      40.0,
+                      40.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "All Out Bonus: Ntofo Strikes' cooldown is reduced by 33%, with a minimum total cooldown of 1.33 seconds. Upon entering All Out, Ntofo Strikes' stacks are reset. Ntofo Strikes' cooldown is reset if K'Sante had 2 stacks before entering All Out.",
+            "leveling": []
+          },
+          {
+            "description": "Empowered Active: K'Sante fires a shockwave in the target direction that applies the same effects to enemies hit, but also pulls them towards him over 0.65 seconds and stuns them for 0.8 seconds.",
+            "leveling": []
+          },
+          {
+            "description": "If this hits at least one enemy, K'Sante generates a stack for 6 seconds, stacking up to 2 times and refreshing on subsequent hits. At 2 stacks, the next Ntofo Strikes cast consumes them all to become empowered with a new effect.",
+            "leveling": []
+          },
+          {
+            "description": "Ntofo Strikes resets K'Sante's basic attack timer.",
+            "leveling": []
+          }
+        ],
+        "name": "Ntofo Strikes"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                14.0,
+                13.0,
+                12.0,
+                11.0,
+                10.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: K'Sante raises his ntofos defensively and prepares to dash in the target direction, charging for a minimum of 0.4 seconds and up to 1 second. During this time, he gains displacement immunity and 30% damage reduction; additionally, Path Maker's range, stun duration, and All Out bonus true damage modifier increase over the first 0.9 seconds of the channel.",
+            "leveling": []
+          },
+          {
+            "description": "All Out Bonus: Path Maker no longer applies its knock back and stun, but its damage reduction is increased to 75%, the dash deals 10% : 80% (based on channel time) bonus true damage, and the dash speed is increased by 20%. Upon entering All Out, Path Maker's cooldown is refreshed.",
+            "leveling": [
+              {
+                "attribute": "Maximum Bonus True Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      36.0,
+                      60.0,
+                      84.0,
+                      108.0,
+                      132.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% (+ 1.6% per 100 bonus armor) (+ 1.6% per 100 bonus magic resistance) of target's maximum health",
+                      "% (+ 1.6% per 100 bonus armor) (+ 1.6% per 100 bonus magic resistance) of target's maximum health",
+                      "% (+ 1.6% per 100 bonus armor) (+ 1.6% per 100 bonus magic resistance) of target's maximum health",
+                      "% (+ 1.6% per 100 bonus armor) (+ 1.6% per 100 bonus magic resistance) of target's maximum health",
+                      "% (+ 1.6% per 100 bonus armor) (+ 1.6% per 100 bonus magic resistance) of target's maximum health"
+                    ],
+                    "values": [
+                      6.4,
+                      6.4,
+                      6.4,
+                      6.4,
+                      6.4
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Minimum Bonus True Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      4.5,
+                      7.5,
+                      10.5,
+                      13.5,
+                      16.5
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% (+ 0.2% per 100 bonus armor) (+ 0.2% per 100 bonus magic resistance) of target's maximum health",
+                      "% (+ 0.2% per 100 bonus armor) (+ 0.2% per 100 bonus magic resistance) of target's maximum health",
+                      "% (+ 0.2% per 100 bonus armor) (+ 0.2% per 100 bonus magic resistance) of target's maximum health",
+                      "% (+ 0.2% per 100 bonus armor) (+ 0.2% per 100 bonus magic resistance) of target's maximum health",
+                      "% (+ 0.2% per 100 bonus armor) (+ 0.2% per 100 bonus magic resistance) of target's maximum health"
+                    ],
+                    "values": [
+                      0.8,
+                      0.8,
+                      0.8,
+                      0.8,
+                      0.8
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Maximum Mixed Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      81.0,
+                      135.0,
+                      189.0,
+                      243.0,
+                      297.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% (+ 3.6% per 100 bonus armor) (+ 3.6% per 100 bonus magic resistance) of target's maximum health",
+                      "% (+ 3.6% per 100 bonus armor) (+ 3.6% per 100 bonus magic resistance) of target's maximum health",
+                      "% (+ 3.6% per 100 bonus armor) (+ 3.6% per 100 bonus magic resistance) of target's maximum health",
+                      "% (+ 3.6% per 100 bonus armor) (+ 3.6% per 100 bonus magic resistance) of target's maximum health",
+                      "% (+ 3.6% per 100 bonus armor) (+ 3.6% per 100 bonus magic resistance) of target's maximum health"
+                    ],
+                    "values": [
+                      14.4,
+                      14.4,
+                      14.4,
+                      14.4,
+                      14.4
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Ntofo Strikes and All Out can be cast during the dash. Path Maker's recast can be used while affected by cast-inhibiting crowd control.",
+            "leveling": []
+          },
+          {
+            "description": "Path Maker can be recast within the duration, and does so automatically afterwards. Path Maker's charge cannot be interrupted by crowd control.",
+            "leveling": []
+          },
+          {
+            "description": "Recast: K'Sante dashes in the direction he targeted at the time of cast, though not through terrain, dealing physical damage to enemies he passes through, carrying them alongside him, and stunning them for 0.5 : 1.75 (based on channel time) seconds. This damage is capped against monsters.",
+            "leveling": [
+              {
+                "attribute": "Monster Damage Cap",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      180.0,
+                      260.0,
+                      340.0,
+                      420.0,
+                      500.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      45.0,
+                      75.0,
+                      105.0,
+                      135.0,
+                      165.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% (+ 2% per 100 bonus armor) (+ 2% per 100 bonus magic resistance) of target's maximum health",
+                      "% (+ 2% per 100 bonus armor) (+ 2% per 100 bonus magic resistance) of target's maximum health",
+                      "% (+ 2% per 100 bonus armor) (+ 2% per 100 bonus magic resistance) of target's maximum health",
+                      "% (+ 2% per 100 bonus armor) (+ 2% per 100 bonus magic resistance) of target's maximum health",
+                      "% (+ 2% per 100 bonus armor) (+ 2% per 100 bonus magic resistance) of target's maximum health"
+                    ],
+                    "values": [
+                      8.0,
+                      8.0,
+                      8.0,
+                      8.0,
+                      8.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Path Maker"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                10.0,
+                9.5,
+                9.0,
+                8.5,
+                8.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: K'Sante dashes to the target location, though not through terrain, and grants himself a shield for 2 seconds.",
+            "leveling": [
+              {
+                "attribute": "Shield Strength",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      80.0,
+                      120.0,
+                      160.0,
+                      200.0,
+                      240.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus health",
+                      "% bonus health",
+                      "% bonus health",
+                      "% bonus health",
+                      "% bonus health"
+                    ],
+                    "values": [
+                      15.0,
+                      15.0,
+                      15.0,
+                      15.0,
+                      15.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "All Out Bonus: Footwork's dash speed is increased, and its cooldown is reduced by 50%.",
+            "leveling": []
+          },
+          {
+            "description": "Footwork can also be cast on allies with increased range and speed, and the ability to dash through terrain. If the target ally is a champion, they receive the shield as well.",
+            "leveling": []
+          },
+          {
+            "description": "K'Sante can cast any of his abilities during the dash.",
+            "leveling": []
+          }
+        ],
+        "name": "Footwork"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                120.0,
+                100.0,
+                80.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: K'Sante roots the target enemy champion for 0.5 seconds and gains displacement immunity over the cast time. He then shatters his ntofos, pulling the target to a location that is 300 units in the cast direction from their location at the time of cast, during which they are revealed, and blinking 175 units behind that location. The target is dealt physical damage near the end of the displacement and is stunned for 0.3 seconds once it ends.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      80.0,
+                      115.0,
+                      150.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "After K'Sante blinks, he enters All Out for 15 seconds.",
+            "leveling": []
+          },
+          {
+            "description": "All Out: K'Sante gains a health threshold equal to 65% maximum health which cannot be modified nor exceeded by any means. Upon entering All Out, his current health is reduced to this threshold if it is above it. Additionally, his base armor and base magic resistance are reduced by 85% bonus armor and 85% bonus magic resistance, respectively. In return, he gains bonus attack speed, 50% bonus-armor penetration, and 20% omnivamp, and modifies his basic abilities which can be cast at no cost.Upon entering All Out, K'Sante is restored to 100% maximum mana. His mana then decays to 0 over the duration of the buff, after which the amount of mana he had prior to entering All Out is restored.",
+            "leveling": [
+              {
+                "attribute": "Bonus Attack Speed",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      40.0,
+                      60.0,
+                      80.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "If there is valid map-generated terrain 350 units in the cast direction from the target's location at the time of cast, the target is instead pulled to a location that is directly 450 units away from the edge of the other side of the terrain and K'Sante blinks 100 units behind that location, dealing them the physical damage near their emergence from the terrain. At the end of the displacement, they remain airborne for 0.264 seconds, after which they are stunned for 0.5 seconds. K'Sante strikes them after 0.132 seconds into the airborne duration to deal physical damage.",
+            "leveling": [
+              {
+                "attribute": "Strike Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      80.0,
+                      115.0,
+                      150.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% of his bonus health",
+                      "% of his bonus health",
+                      "% of his bonus health"
+                    ],
+                    "values": [
+                      5.0,
+                      5.0,
+                      5.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      160.0,
+                      230.0,
+                      300.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% of his bonus health",
+                      "% of his bonus health",
+                      "% of his bonus health"
+                    ],
+                    "values": [
+                      5.0,
+                      5.0,
+                      5.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "K'Sante retains his maximum health and bonus resistances during All Out. Health lost from gaining the health threshold is not restored after the effect ends. If the target is pulled over terrain that is longer than 2000 units, K'Sante will vanish during their displacement and reappear near the end of it.",
+            "leveling": []
+          }
+        ],
+        "name": "All Out"
+      }
+    ]
+  },
+  "positions": [
+    "TOP"
+  ]
+}

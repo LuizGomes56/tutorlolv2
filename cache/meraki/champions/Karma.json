@@ -1,0 +1,729 @@
+{
+  "name": "Karma",
+  "attackType": "RANGED",
+  "adaptiveType": "MAGIC_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 630.0,
+      "perLevel": 109.0
+    },
+    "mana": {
+      "flat": 374.0,
+      "perLevel": 40.0
+    },
+    "armor": {
+      "flat": 28.0,
+      "perLevel": 5.0
+    },
+    "magicResistance": {
+      "flat": 30.0,
+      "perLevel": 1.3
+    },
+    "attackDamage": {
+      "flat": 51.0,
+      "perLevel": 3.3
+    },
+    "attackSpeed": {
+      "flat": 0.625,
+      "perLevel": 2.3
+    },
+    "movespeed": {
+      "flat": 335.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.625,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 525.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": null,
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Innate: Mantra's current cooldown is reduced by 4 seconds for each enemy champion hit by Karma's damaging abilities.",
+            "leveling": []
+          }
+        ],
+        "name": "Gathering Fire"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                9.0,
+                8.0,
+                7.0,
+                6.0,
+                5.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Karma fires a bolt in the target direction that explodes on the first enemy hit, dealing magic damage to nearby enemies and slowing them by 40% for 1.5 seconds.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      60.0,
+                      110.0,
+                      160.0,
+                      210.0,
+                      260.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP"
+                    ],
+                    "values": [
+                      70.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Inner Flame"
+      },
+      {
+        "cooldown": null,
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Mantra Bonus: Inner Flame deals increased damage, and fires a larger bolt that also explodes at maximum range.",
+            "leveling": [
+              {
+                "attribute": "Bonus Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      40.0,
+                      100.0,
+                      160.0,
+                      220.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP"
+                    ],
+                    "values": [
+                      30.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      60.0,
+                      110.0,
+                      160.0,
+                      210.0,
+                      260.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      40.0,
+                      100.0,
+                      160.0,
+                      220.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP"
+                    ],
+                    "values": [
+                      100.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Soulflare scales with Mantra's rank.",
+            "leveling": []
+          },
+          {
+            "description": "The explosion creates a field for 1.5 seconds that slows enemies within by 50%, which then ruptures to deal magic damage.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      40.0,
+                      130.0,
+                      220.0,
+                      310.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP"
+                    ],
+                    "values": [
+                      50.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Bonus Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      80.0,
+                      230.0,
+                      380.0,
+                      530.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP"
+                    ],
+                    "values": [
+                      80.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      60.0,
+                      110.0,
+                      160.0,
+                      210.0,
+                      260.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      80.0,
+                      230.0,
+                      380.0,
+                      530.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP"
+                    ],
+                    "values": [
+                      150.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Soulflare"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                ""
+              ],
+              "values": [
+                12.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Karma deals magic damage to the target enemy champion, monster or pet and forms a tether between her and them for 2 seconds, during which they are revealed.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      40.0,
+                      65.0,
+                      90.0,
+                      115.0,
+                      140.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP"
+                    ],
+                    "values": [
+                      45.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "If the tether is not broken by the end of its duration, the target is dealt the same magic damage again and is rooted for a duration, during which they are revealed.",
+            "leveling": [
+              {
+                "attribute": "Root Duration",
+                "modifiers": [
+                  {
+                    "units": [
+                      " seconds",
+                      " seconds",
+                      " seconds",
+                      " seconds",
+                      " seconds"
+                    ],
+                    "values": [
+                      1.6,
+                      1.7,
+                      1.8,
+                      1.9,
+                      2.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      80.0,
+                      130.0,
+                      180.0,
+                      230.0,
+                      280.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP"
+                    ],
+                    "values": [
+                      90.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Focused Resolve"
+      },
+      {
+        "cooldown": null,
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Mantra Bonus: Focused Resolve's root duration is increased. Karma heals for 17% (+ 1% per 100 AP) of her missing health once on-cast, and again once the tether lasts its full duration or the target dies while tethered.",
+            "leveling": [
+              {
+                "attribute": "Root Duration Increase",
+                "modifiers": [
+                  {
+                    "units": [
+                      " seconds",
+                      " seconds",
+                      " seconds",
+                      " seconds"
+                    ],
+                    "values": [
+                      0.5,
+                      0.75,
+                      1.0,
+                      1.25
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Root Duration",
+                "modifiers": [
+                  {
+                    "units": [
+                      "  seconds",
+                      "  seconds",
+                      "  seconds",
+                      "  seconds",
+                      "  seconds"
+                    ],
+                    "values": [
+                      1.6,
+                      1.7,
+                      1.8,
+                      1.9,
+                      2.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      0.5,
+                      0.75,
+                      1.0,
+                      1.25
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Renewal scales with Mantra's rank.",
+            "leveling": []
+          }
+        ],
+        "name": "Renewal"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                10.0,
+                9.5,
+                9.0,
+                8.5,
+                8.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: Karma grants a shield to herself or the target allied champion for 2.5 seconds as well as 40% bonus movement speed for 2 seconds.",
+            "leveling": [
+              {
+                "attribute": "Shield Strength",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      80.0,
+                      130.0,
+                      180.0,
+                      230.0,
+                      280.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP"
+                    ],
+                    "values": [
+                      60.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Inspire"
+      },
+      {
+        "cooldown": null,
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Defiance scales with Mantra's rank.",
+            "leveling": []
+          },
+          {
+            "description": "Mantra - Active: Inspire grants a bonus amount of shielding.Inspire spreads to surrounding allied champions, granting them a shield for 2.5 seconds and 15% bonus movement speed for 2 seconds.",
+            "leveling": [
+              {
+                "attribute": "Bonus Primary Target Shield",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      50.0,
+                      100.0,
+                      150.0,
+                      200.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP"
+                    ],
+                    "values": [
+                      45.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Secondary Target Shield",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      50.0,
+                      100.0,
+                      150.0,
+                      200.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP"
+                    ],
+                    "values": [
+                      45.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Primary Target Shield",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      80.0,
+                      130.0,
+                      180.0,
+                      230.0,
+                      280.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      50.0,
+                      100.0,
+                      150.0,
+                      200.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP"
+                    ],
+                    "values": [
+                      105.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Defiance"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                40.0,
+                38.0,
+                36.0,
+                34.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: Karma empowers her next basic ability within 8 seconds for an additional effect. Mantra can be used while affected by cast-inhibiting crowd control.",
+            "leveling": []
+          },
+          {
+            "description": "Karma begins the game with one rank in Mantra. Her empowered abilities scale based on Mantra's rank.",
+            "leveling": []
+          }
+        ],
+        "name": "Mantra"
+      }
+    ]
+  },
+  "positions": [
+    "MIDDLE",
+    "SUPPORT",
+    "TOP"
+  ]
+}

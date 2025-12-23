@@ -1,0 +1,50 @@
+{
+  "colloq": ";hat",
+  "depth": 2,
+  "description": "<mainText><stats><attention>200</attention> Health<br><attention>35</attention> Magic Resist<br><attention>100%</attention> Base Health Regen</stats><br><br></mainText>",
+  "from": [
+    "1028",
+    "1033",
+    "1006"
+  ],
+  "gold": {
+    "base": 150,
+    "purchasable": true,
+    "sell": 875,
+    "total": 1250
+  },
+  "image": {
+    "full": "3211.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item3.png",
+    "w": 48,
+    "x": 384,
+    "y": 288
+  },
+  "into": [
+    "2504",
+    "3065",
+    "6664"
+  ],
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Spectre's Cowl",
+  "plaintext": "Improves defense and grants regeneration upon being damaged",
+  "stats": {
+    "FlatHPPoolMod": 200,
+    "FlatSpellBlockMod": 35
+  },
+  "tags": [
+    "Health",
+    "HealthRegen",
+    "SpellBlock"
+  ]
+}

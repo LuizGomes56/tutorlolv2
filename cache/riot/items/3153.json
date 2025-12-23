@@ -1,0 +1,48 @@
+{
+  "colloq": ";brk;bork;bork;bork;botrk",
+  "depth": 3,
+  "description": "<mainText><stats><attention>40</attention> Attack Damage<br><attention>25%</attention> Attack Speed<br><attention>10%</attention> Life Steal</stats><br><br><passive>Mist's Edge</passive><br>Attacks deal <physicalDamage>a percentage</physicalDamage> of enemy's current Health as <physicalDamage>bonus physical damage</physicalDamage> <OnHit>On-Hit</OnHit>.<br><br><passive>Clawing Shadows</passive><br>Attacking a champion 3 times <status>Slows</status> them by 30% for 1 second.</mainText>",
+  "from": [
+    "1053",
+    "1043",
+    "1037"
+  ],
+  "gold": {
+    "base": 725,
+    "purchasable": true,
+    "sell": 2240,
+    "total": 3200
+  },
+  "image": {
+    "full": "3153.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item3.png",
+    "w": 48,
+    "x": 384,
+    "y": 192
+  },
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Blade of The Ruined King",
+  "plaintext": "Deals damage based on target's Health, can steal Move Speed",
+  "stats": {
+    "FlatPhysicalDamageMod": 40,
+    "PercentAttackSpeedMod": 0.25,
+    "PercentLifeStealMod": 0.1
+  },
+  "tags": [
+    "Damage",
+    "AttackSpeed",
+    "LifeSteal",
+    "Slow",
+    "OnHit"
+  ]
+}

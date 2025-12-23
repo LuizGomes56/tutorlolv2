@@ -1,0 +1,47 @@
+{
+  "colloq": ";",
+  "depth": 2,
+  "description": "<mainText><stats><attention>20</attention> Magic Resist<br><attention>45</attention> Move Speed<br><attention>30%</attention> Tenacity</stats><br><br></mainText>",
+  "from": [
+    "1001",
+    "1033"
+  ],
+  "gold": {
+    "base": 550,
+    "purchasable": true,
+    "sell": 875,
+    "total": 1250
+  },
+  "image": {
+    "full": "3111.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item3.png",
+    "w": 48,
+    "x": 48,
+    "y": 96
+  },
+  "into": [
+    "3173"
+  ],
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Mercury's Treads",
+  "plaintext": "Increases Move Speed and reduces duration of disabling effects",
+  "stats": {
+    "FlatMovementSpeedMod": 45,
+    "FlatSpellBlockMod": 20
+  },
+  "tags": [
+    "Boots",
+    "SpellBlock",
+    "Tenacity"
+  ]
+}

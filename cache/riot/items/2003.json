@@ -1,0 +1,39 @@
+{
+  "colloq": ";",
+  "consumed": true,
+  "description": "<mainText><stats></stats><br><br><active>Consume</active><br>Restores <healing>120 Health</healing> over 15 seconds.</mainText>",
+  "gold": {
+    "base": 50,
+    "purchasable": true,
+    "sell": 20,
+    "total": 50
+  },
+  "image": {
+    "full": "2003.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item0.png",
+    "w": 48,
+    "x": 0,
+    "y": 288
+  },
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": false
+  },
+  "name": "Health Potion",
+  "plaintext": "Consume to restore Health over time",
+  "stacks": 5,
+  "stats": {},
+  "tags": [
+    "HealthRegen",
+    "Consumable",
+    "Lane",
+    "Jungle"
+  ]
+}

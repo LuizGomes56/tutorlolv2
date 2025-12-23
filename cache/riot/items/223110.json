@@ -1,0 +1,41 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><attention>90</attention> Armor<br><attention>450</attention> Mana<br><attention>15</attention> Ability Haste</stats><br><br><passive>Winter's Caress</passive><br>Reduces the <attackSpeed>Attack Speed</attackSpeed> of nearby enemies.</mainText>",
+  "gold": {
+    "base": 2500,
+    "purchasable": true,
+    "sell": 1250,
+    "total": 2500
+  },
+  "image": {
+    "full": "223110.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item1.png",
+    "w": 48,
+    "x": 48,
+    "y": 288
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": false
+  },
+  "name": "Frozen Heart",
+  "plaintext": "",
+  "stats": {
+    "FlatArmorMod": 90,
+    "FlatMPPoolMod": 450
+  },
+  "tags": [
+    "Armor",
+    "Mana",
+    "Aura",
+    "CooldownReduction",
+    "AbilityHaste"
+  ]
+}

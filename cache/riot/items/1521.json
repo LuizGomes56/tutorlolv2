@@ -1,0 +1,38 @@
+{
+  "colloq": "",
+  "description": "",
+  "effect": {
+    "Effect1Amount": "0.35"
+  },
+  "gold": {
+    "base": 0,
+    "purchasable": false,
+    "sell": 0,
+    "total": 0
+  },
+  "image": {
+    "full": "1521.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item0.png",
+    "w": 48,
+    "x": 336,
+    "y": 240
+  },
+  "inStore": false,
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": true
+  },
+  "name": "Fortification",
+  "plaintext": "",
+  "stats": {},
+  "tags": [
+    "OnHit"
+  ]
+}

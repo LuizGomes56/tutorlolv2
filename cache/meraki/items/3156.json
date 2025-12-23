@@ -1,0 +1,82 @@
+{
+  "active": [],
+  "buildsFrom": [
+    3155,
+    3133
+  ],
+  "buildsInto": [],
+  "name": "Maw of Malmortius",
+  "tier": 3,
+  "passives": [
+    {
+      "effects": "If you would take {{as|magic damage}} that would reduce you below {{as|30% of your '''maximum''' health}}, you first gain a {{tip|shield}} that absorbs {{as|{{rd|200|150}}|magic damage}} {{as|(+ {{rd|150%|{{fd|112.5}}%}} '''bonus''' AD)}} {{as|magic damage}} for 3 seconds. Additionally, triggering this effect grants you {{as|10% omnivamp}} until the end of [[combat status|combat]].",
+      "name": "Lifeline",
+      "unique": true
+    }
+  ],
+  "id": 3156,
+  "stats": {
+    "abilityPower": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 60.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 40.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "shop": {
+    "purchasable": true,
+    "prices": {
+      "total": 3100
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "colloq": "",
+  "consumeOnFull": true,
+  "consumed": true,
+  "description": "<mainText><stats></stats><br><br>Redeem during a Shopping Phase to gain a Stat Anvil!</mainText>",
+  "gold": {
+    "base": 750,
+    "purchasable": false,
+    "sell": 0,
+    "total": 750
+  },
+  "image": {
+    "full": "220010.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item1.png",
+    "w": 48,
+    "x": 48,
+    "y": 0
+  },
+  "inStore": false,
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": false
+  },
+  "name": "Prismatic Stat Voucher",
+  "plaintext": "",
+  "stacks": 10,
+  "stats": {},
+  "tags": []
+}
