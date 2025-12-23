@@ -1,0 +1,42 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><attention>30</attention> Attack Damage<br><attention>20%</attention> Attack Speed<br><attention>10%</attention> Life Steal</stats><br><br><passive>Mist's Edge</passive><br>Attacks apply an additional enemy current Health physical damage <OnHit>On-Hit</OnHit>.<br><br><passive>Clawing Shadows</passive> (0s)<br>Attacking a champion 3 times Slows them.</mainText>",
+  "gold": {
+    "base": 2500,
+    "purchasable": true,
+    "sell": 1250,
+    "total": 2500
+  },
+  "image": {
+    "full": "223153.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item1.png",
+    "w": 48,
+    "x": 336,
+    "y": 336
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": false
+  },
+  "name": "Blade of The Ruined King",
+  "plaintext": "",
+  "stats": {
+    "FlatPhysicalDamageMod": 30,
+    "PercentAttackSpeedMod": 0.2,
+    "PercentLifeStealMod": 0.1
+  },
+  "tags": [
+    "Damage",
+    "AttackSpeed",
+    "LifeSteal",
+    "Slow",
+    "OnHit"
+  ]
+}

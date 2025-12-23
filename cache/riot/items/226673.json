@@ -1,0 +1,38 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><attention>55</attention> Attack Damage<br><attention>25%</attention> Critical Strike Chance</stats><br><br><passive>Lifeline</passive><br>Taking damage that would reduce your Health below 30% grants a <shield>Shield</shield> for 3 seconds.</mainText>",
+  "gold": {
+    "base": 2500,
+    "purchasable": true,
+    "sell": 1250,
+    "total": 2500
+  },
+  "image": {
+    "full": "226673.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item2.png",
+    "w": 48,
+    "x": 0,
+    "y": 144
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": false
+  },
+  "name": "Immortal Shieldbow",
+  "plaintext": "",
+  "stats": {
+    "FlatCritChanceMod": 0.25,
+    "FlatPhysicalDamageMod": 55
+  },
+  "tags": [
+    "Damage",
+    "CriticalStrike"
+  ]
+}

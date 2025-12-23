@@ -1,0 +1,493 @@
+{
+  "name": "Thresh",
+  "attackType": "RANGED",
+  "adaptiveType": "PHYSICAL_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 620.0,
+      "perLevel": 120.0
+    },
+    "mana": {
+      "flat": 274.0,
+      "perLevel": 44.0
+    },
+    "armor": {
+      "flat": 33.0,
+      "perLevel": 0.0
+    },
+    "magicResistance": {
+      "flat": 30.0,
+      "perLevel": 1.55
+    },
+    "attackDamage": {
+      "flat": 56.0,
+      "perLevel": 2.2
+    },
+    "attackSpeed": {
+      "flat": 0.625,
+      "perLevel": 3.5
+    },
+    "movespeed": {
+      "flat": 330.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.625,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 450.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.05,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 0.87,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": null,
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Innate: Enemy champions, large minions and large monsters that die near Thresh drop a Soul for 8 seconds. Epic monsters drop 2 Souls while lesser minions and monsters have a 33.3% chance to drop a Soul.",
+            "leveling": []
+          },
+          {
+            "description": "Innate: Thresh's armor does not increase through growth (per level).",
+            "leveling": []
+          },
+          {
+            "description": "Soul: For each stack, Thresh gains 1 ability power and 1 bonus armor.",
+            "leveling": []
+          },
+          {
+            "description": "Thresh automatically collects Souls near him or a placed Dark Passage.",
+            "leveling": []
+          }
+        ],
+        "name": "Damnation"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                19.0,
+                16.5,
+                14.0,
+                11.5,
+                9.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Thresh throws out his scythe in the target direction, becoming unable to move or attack while it is in flight.",
+            "leveling": []
+          },
+          {
+            "description": "Recast - Deathly Leap: Thresh stops tugging his hook and dashes to the Shackled enemy, becoming able to attack again upon arrival. He can cast Dark Passage and Flay during the dash.",
+            "leveling": []
+          },
+          {
+            "description": "The scythe catches the first enemy hit to deal magic damage, stun and reveal them for 1.5 seconds, and render them airborne for 0.4 seconds, as well as reduce Death Sentence's current cooldown by 2 seconds. Thresh will also mark the target Shackled for 1.5 seconds, during which he is unable to declare basic attacks, and is slowed by 20% for 1 second.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      100.0,
+                      150.0,
+                      200.0,
+                      250.0,
+                      300.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      90.0,
+                      90.0,
+                      90.0,
+                      90.0,
+                      90.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "While the target is stunned, Thresh tugs his hook towards him twice, once after a 0.1-second delay and again 0.6 seconds after that. With each tug, the target is pulled a short distance towards Thresh. After 0.5 seconds of hitting an enemy, or instantly after hitting a minion or monster, Thresh can recast the ability while the target is Shackled.",
+            "leveling": []
+          }
+        ],
+        "name": "Death Sentence"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                21.0,
+                20.0,
+                19.0,
+                18.0,
+                17.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: Thresh throws his lantern to the target location over 0.5 seconds, lasting for 6 seconds while he remains nearby and granting sight of its surroundings. If Thresh moves too far away from the lantern, it returns back to him immediately.",
+            "leveling": []
+          },
+          {
+            "description": "An ally cannot select the lantern while immobilized, grounded, or silenced. The lantern will not expire from Thresh moving too far away if he is dashing with Deathly Leap.",
+            "leveling": []
+          },
+          {
+            "description": "Thresh and the first allied champion to come near the lantern are granted a shield for 4 seconds. An ally can select the lantern while in proximity of it, dashing to Thresh and gaining the shield.",
+            "leveling": [
+              {
+                "attribute": "Shield Strength",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      50.0,
+                      70.0,
+                      90.0,
+                      110.0,
+                      130.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      " per Soul collected",
+                      " per Soul collected",
+                      " per Soul collected",
+                      " per Soul collected",
+                      " per Soul collected"
+                    ],
+                    "values": [
+                      2.0,
+                      2.0,
+                      2.0,
+                      2.0,
+                      2.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Dark Passage"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                13.0,
+                12.25,
+                11.5,
+                10.75,
+                10.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Thresh sweeps his chain across the ground in a broad line and a radius around him, starting behind him and towards the target direction. Enemies hit are dealt magic damage and knocked 200 units in the target direction, and then are slowed for 1 second.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      75.0,
+                      120.0,
+                      165.0,
+                      210.0,
+                      255.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      70.0,
+                      70.0,
+                      70.0,
+                      70.0,
+                      70.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Slow",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      20.0,
+                      25.0,
+                      30.0,
+                      35.0,
+                      40.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Passive: Thresh's basic attacks are empowered to deal bonus magic damage, with the AD ratio increasing over 10 seconds without basic attacking enemies.",
+            "leveling": [
+              {
+                "attribute": "Maximum Bonus Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      " per Soul collected",
+                      " per Soul collected",
+                      " per Soul collected",
+                      " per Soul collected",
+                      " per Soul collected"
+                    ],
+                    "values": [
+                      1.7,
+                      1.7,
+                      1.7,
+                      1.7,
+                      1.7
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      90.0,
+                      120.0,
+                      150.0,
+                      180.0,
+                      210.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Minimum Bonus Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      " per Soul collected",
+                      " per Soul collected",
+                      " per Soul collected",
+                      " per Soul collected",
+                      " per Soul collected"
+                    ],
+                    "values": [
+                      1.7,
+                      1.7,
+                      1.7,
+                      1.7,
+                      1.7
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Flay"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                120.0,
+                100.0,
+                80.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Thresh erects a pentagon of spectral walls around him that each last for 5 seconds. A wall will break upon enemy champion contact, dealing magic damage and slowing them by 99% for 2 seconds. After the first wall breaks, the rest will deal no damage and slow for only 1 second.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      250.0,
+                      400.0,
+                      550.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      100.0,
+                      100.0,
+                      100.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Enemies that break a wall cannot do so again for 1 second.",
+            "leveling": []
+          }
+        ],
+        "name": "The Box"
+      }
+    ]
+  },
+  "positions": [
+    "SUPPORT"
+  ]
+}

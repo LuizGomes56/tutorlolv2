@@ -1,0 +1,44 @@
+{
+  "colloq": ";lethality",
+  "depth": 4,
+  "description": "<mainText><stats><attention>50</attention> Attack Damage<br><attention>15</attention> Lethality<br><attention>4%</attention> Move Speed</stats><br><br><active>Active -</active> <active>Soul Anchor</active> (0s)<br>Mark your current location. After 4 seconds, return to that location. You may recast at any point during <active>Soul Anchor's</active> duration to return to your marked location early.</mainText>",
+  "from": [
+    "4003",
+    "3134"
+  ],
+  "gold": {
+    "base": 200,
+    "purchasable": true,
+    "sell": 1960,
+    "total": 2800
+  },
+  "image": {
+    "full": "4004.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item4.png",
+    "w": 48,
+    "x": 48,
+    "y": 192
+  },
+  "maps": {
+    "11": false,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Spectral Cutlass",
+  "plaintext": "Marks the ground, and returns you there after a few moments",
+  "stats": {
+    "FlatPhysicalDamageMod": 50,
+    "PercentMovementSpeedMod": 0.04
+  },
+  "tags": [
+    "Damage",
+    "NonbootsMovement",
+    "ArmorPenetration"
+  ]
+}

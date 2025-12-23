@@ -1,0 +1,41 @@
+{
+  "colloq": ";dblade",
+  "description": "<mainText><stats><attention>25</attention> Attack Damage<br><attention>150</attention> Health<br><attention>5%</attention> Life Steal</stats><br><br></mainText>",
+  "gold": {
+    "base": 950,
+    "purchasable": true,
+    "sell": 665,
+    "total": 950
+  },
+  "image": {
+    "full": "3184.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item3.png",
+    "w": 48,
+    "x": 240,
+    "y": 288
+  },
+  "maps": {
+    "11": false,
+    "12": true,
+    "21": false,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Guardian's Hammer",
+  "plaintext": "Good starting item for attackers",
+  "stats": {
+    "FlatHPPoolMod": 150,
+    "FlatPhysicalDamageMod": 25,
+    "PercentLifeStealMod": 0.05
+  },
+  "tags": [
+    "Health",
+    "Damage",
+    "LifeSteal",
+    "Lane"
+  ]
+}

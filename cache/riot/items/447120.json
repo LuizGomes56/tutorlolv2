@@ -1,0 +1,38 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><attention>75</attention> Adaptive Force<br><attention>30%</attention> Attack Speed</stats><br><br><passive>Reach Weapon</passive><br>Increase your attack range by 75.<br><br><passive>Sweet Spot</passive><br>Deal up to 30% increased damage with Attacks and 40% with Abilities based on how far your target is from you. Damage caps at 1000 units. </mainText>",
+  "gold": {
+    "base": 1000,
+    "purchasable": true,
+    "sell": 400,
+    "total": 1000
+  },
+  "image": {
+    "full": "447120.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item4.png",
+    "w": 48,
+    "x": 432,
+    "y": 432
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": false
+  },
+  "name": "Diamond-Tipped Spear",
+  "plaintext": "",
+  "specialRecipe": 220007,
+  "stats": {
+    "PercentAttackSpeedMod": 0.3
+  },
+  "tags": [
+    "Damage",
+    "AttackSpeed"
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><attention>35</attention> Attack Damage<br><attention>12</attention> Lethality</stats><br><br><passive>Char</passive> (0s)<br>Your next Ability hit <keywordMajor>Burns</keywordMajor> enemies for <scaleAD>% to % current Health physical damage</scaleAD> over 4 seconds, based on how much more <scaleHealth>max Health</scaleHealth> they have than you.<br><br><rules>Bonus damage maximum is reached at 2000 health difference</rules></mainText>",
+  "gold": {
+    "base": 2500,
+    "purchasable": true,
+    "sell": 1250,
+    "total": 2500
+  },
+  "image": {
+    "full": "4017.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item4.png",
+    "w": 48,
+    "x": 0,
+    "y": 240
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": false
+  },
+  "name": "Hellfire Hatchet",
+  "plaintext": "",
+  "stats": {
+    "FlatPhysicalDamageMod": 35
+  },
+  "tags": [
+    "Damage",
+    "ArmorPenetration"
+  ]
+}

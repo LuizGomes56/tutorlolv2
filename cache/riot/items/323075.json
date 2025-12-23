@@ -1,0 +1,44 @@
+{
+  "colloq": "",
+  "depth": 3,
+  "description": "<mainText><stats><attention>200</attention> Health<br><attention>85</attention> Armor</stats><br><br><passive>Thorns</passive><br>When struck by an Attack, deal <magicDamage>magic damage</magicDamage> to the attacker and apply 40% <keyword>Wounds</keyword> for 3 seconds if they are a champion.</mainText>",
+  "from": [
+    "3076",
+    "1031",
+    "1028"
+  ],
+  "gold": {
+    "base": 650,
+    "purchasable": true,
+    "sell": 1855,
+    "total": 2650
+  },
+  "image": {
+    "full": "323075.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item3.png",
+    "w": 48,
+    "x": 384,
+    "y": 336
+  },
+  "maps": {
+    "11": true,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": false
+  },
+  "name": "Thornmail",
+  "plaintext": "",
+  "stats": {
+    "FlatArmorMod": 85,
+    "FlatHPPoolMod": 200
+  },
+  "tags": [
+    "Health",
+    "Armor"
+  ]
+}

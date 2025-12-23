@@ -1,0 +1,44 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><attention>80</attention> Ability Power<br><attention>50</attention> Armor</stats><br><br><active>Active -</active> <active>Stasis:</active> You become <status>Invulnerable</status> and <status>Untargetable</status> for 2.5 seconds, but are prevented from taking any other actions during this time <buffedStat>(120s)</buffedStat>.</mainText>",
+  "effect": {
+    "Effect1Amount": "0",
+    "Effect2Amount": "2.5",
+    "Effect3Amount": "120"
+  },
+  "gold": {
+    "base": 2500,
+    "purchasable": true,
+    "sell": 1250,
+    "total": 2500
+  },
+  "image": {
+    "full": "223157.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item1.png",
+    "w": 48,
+    "x": 432,
+    "y": 336
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": false
+  },
+  "name": "Zhonya's Hourglass",
+  "plaintext": "",
+  "stats": {
+    "FlatArmorMod": 50,
+    "FlatMagicDamageMod": 80
+  },
+  "tags": [
+    "Armor",
+    "SpellDamage",
+    "Active"
+  ]
+}

@@ -1,0 +1,693 @@
+{
+  "allytips": [],
+  "blurb": "A magical cat from Bandle City, Yuumi was once the familiar of a yordle enchantress, Norra. When her master mysteriously disappeared, Yuumi became the Keeper of Norra's sentient Book of Thresholds, traveling through portals in its pages to search for...",
+  "enemytips": [],
+  "id": "Yuumi",
+  "image": {
+    "full": "Yuumi.png",
+    "group": "champion",
+    "h": 48,
+    "sprite": "champion5.png",
+    "w": 48,
+    "x": 144,
+    "y": 48
+  },
+  "info": {
+    "attack": 5,
+    "defense": 1,
+    "difficulty": 2,
+    "magic": 8
+  },
+  "key": "350",
+  "lore": "A magical cat from Bandle City, Yuumi was once the familiar of a yordle enchantress, Norra. When her master mysteriously disappeared, Yuumi became the Keeper of Norra's sentient Book of Thresholds, traveling through portals in its pages to search for her. Yearning for affection, Yuumi seeks friendly companions to partner with on her journey, protecting them with luminous shields and fierce resolve. While Book strives to keep her on task, Yuumi is often drawn to worldly comforts, such as naps and fish. In the end, however, she always returns to her quest to find her friend.",
+  "name": "Yuumi",
+  "partype": "Mana",
+  "passive": {
+    "description": "Periodically, when Yuumi strikes a champion with an attack or ability, she restores health to herself and the next ally she Attaches to.<br><br>While Attached, Yuumi generates a special bond with her allies. The ally with the strongest bond enhances Yuumi's abilities while she is Attached to them.",
+    "image": {
+      "full": "YuumiP2.png",
+      "group": "passive",
+      "h": 48,
+      "sprite": "passive5.png",
+      "w": 48,
+      "x": 144,
+      "y": 48
+    },
+    "name": "Feline Friendship"
+  },
+  "recommended": [],
+  "skins": [
+    {
+      "chromas": false,
+      "id": "350000",
+      "name": "default",
+      "num": 0
+    },
+    {
+      "chromas": true,
+      "id": "350001",
+      "name": "Battle Principal Yuumi",
+      "num": 1
+    },
+    {
+      "chromas": true,
+      "id": "350011",
+      "name": "Heartseeker Yuumi",
+      "num": 11
+    },
+    {
+      "chromas": true,
+      "id": "350019",
+      "name": "Yuubee",
+      "num": 19
+    },
+    {
+      "chromas": true,
+      "id": "350028",
+      "name": "Bewitching Yuumi",
+      "num": 28
+    },
+    {
+      "chromas": true,
+      "id": "350037",
+      "name": "EDG Yuumi",
+      "num": 37
+    },
+    {
+      "chromas": true,
+      "id": "350039",
+      "name": "Shiba Yuumi",
+      "num": 39
+    },
+    {
+      "chromas": true,
+      "id": "350049",
+      "name": "Cyber Cat Yuumi",
+      "num": 49
+    },
+    {
+      "chromas": false,
+      "id": "350050",
+      "name": "Prestige Cyber Cat Yuumi",
+      "num": 50
+    },
+    {
+      "chromas": true,
+      "id": "350061",
+      "name": "Nightbringer Yuumi",
+      "num": 61
+    }
+  ],
+  "spells": [
+    {
+      "cooldown": [
+        6.5,
+        6.5,
+        6.5,
+        6.5,
+        6.5,
+        6.5
+      ],
+      "cooldownBurn": "6.5",
+      "cost": [
+        50,
+        55,
+        60,
+        65,
+        70,
+        75
+      ],
+      "costBurn": "50/55/60/65/70/75",
+      "costType": " {{ abilityresourcename }}",
+      "datavalues": {},
+      "description": "Yuumi fires a missile, dealing damage and slowing first target hit. It deals bonus damage and an enchanced slow if it takes at least 1.35 seconds to get to its target. While on her Best Friend, the slow is always enhanced and grants bonus On-Hit damage to her ally.<br><br>While Attached, the missile can be controlled with your cursor for a brief period.",
+      "effect": [
+        null,
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "effectBurn": [
+        null,
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "id": "YuumiQ",
+      "image": {
+        "full": "YuumiQ.png",
+        "group": "spell",
+        "h": 48,
+        "sprite": "spell16.png",
+        "w": 48,
+        "x": 0,
+        "y": 144
+      },
+      "leveltip": {
+        "effect": [
+          "{{ missiledamage }} -> {{ missiledamageNL }}",
+          "{{ empoweredmissiledamage }} -> {{ empoweredmissiledamageNL }}",
+          "{{ empoweredslowamount }}% -> {{ empoweredslowamountNL }}%",
+          "{{ onhitbase }} -> {{ onhitbaseNL }}",
+          "{{ cost }} -> {{ costNL }}"
+        ],
+        "label": [
+          "Base Damage",
+          "Empowered Damage",
+          "Empowered Slow Amount",
+          "On-Hit Damage",
+          "Mana Cost"
+        ]
+      },
+      "maxammo": "-1",
+      "maxrank": 6,
+      "name": "Prowling Projectile",
+      "range": [
+        25000,
+        25000,
+        25000,
+        25000,
+        25000,
+        25000
+      ],
+      "rangeBurn": "25000",
+      "resource": "{{ cost }} {{ abilityresourcename }}",
+      "tooltip": "Yuumi summons an errant missile that deals <magicDamage>{{ totalmissiledamage }} magic damage</magicDamage> to the first enemy and <status>Slows</status> the target for {{ slowamount }}%.<br /><br />If cast while <keywordMajor>Attached</keywordMajor>, Yuumi can control the missile using her mouse for a short period before it accelerates in a straight line. The accelerated missile deals <magicDamage>{{ totalmissiledamageempowered }} magic damage</magicDamage> and <status>Slows</status> the target for {{ empoweredslowamount }}% for {{ empoweredslowduration }} seconds, instead.<br /><br /><keywordMajor>Best Friend Bonus:</keywordMajor> <spellName>Prowling Projectile's</spellName> <status>Slow</status> will always be enhanced and hitting an enemy champion also grants them <magicDamage>{{ onhitdamagecalc }} magic damage</magicDamage> <OnHit>On-Hit %i:OnHit%</OnHit> for {{ buffduration }} seconds.<br /><br /><rules>The bonus On-Hit damage can be increased by {{ allycritchancemaxamp*100 }}% based her ally's Critical Strike Chance.</rules>{{ spellmodifierdescriptionappend }}",
+      "vars": []
+    },
+    {
+      "cooldown": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "cooldownBurn": "0",
+      "cost": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "costBurn": "0",
+      "costType": "No Cost",
+      "datavalues": {},
+      "description": "Yuumi dashes to a target ally, becoming untargetable from everything except turrets. While on her Best Friend, she gains Heal & Shield Power and grants her Ally On-Hit healing.",
+      "effect": [
+        null,
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "effectBurn": [
+        null,
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "id": "YuumiW",
+      "image": {
+        "full": "YuumiW.png",
+        "group": "spell",
+        "h": 48,
+        "sprite": "spell16.png",
+        "w": 48,
+        "x": 48,
+        "y": 144
+      },
+      "leveltip": {
+        "effect": [
+          "{{ basehealthonhit }} -> {{ basehealthonhitNL }}",
+          "{{ healandshieldpower*100.000000 }}% -> {{ healandshieldpowernl*100.000000 }}%"
+        ],
+        "label": [
+          "On-Hit Healing",
+          "Bonus Heal & Shield Power"
+        ]
+      },
+      "maxammo": "-1",
+      "maxrank": 5,
+      "name": "You and Me!",
+      "range": [
+        25000,
+        25000,
+        25000,
+        25000,
+        25000
+      ],
+      "rangeBurn": "25000",
+      "resource": "No Cost",
+      "tooltip": "<spellPassive>Passive:</spellPassive> While on her <keywordMajor>Best Friend</keywordMajor>, Yuumi gains an additional <keywordMajor>{{ healandshieldpower*100 }}% Heal & Shield Power</keywordMajor> and her ally also restores <healing>{{ healthonhit }} health</healing> <OnHit>On-Hit %i:OnHit%</OnHit>.<br /><br /><spellActive>Active:</spellActive> Yuumi dashes to an ally champion and <keywordMajor>Attaches</keywordMajor> to them. While Yuumi is <keywordMajor>Attached</keywordMajor>, she follows her partner's movement and is Untargetable except from towers.<br /><br /><status>Immobilizing</status> effects on Yuumi place this Ability on a {{ ccattachlockout }} second Cooldown.{{ spellmodifierdescriptionappend }}",
+      "vars": []
+    },
+    {
+      "cooldown": [
+        10,
+        10,
+        10,
+        10,
+        10
+      ],
+      "cooldownBurn": "10",
+      "cost": [
+        80,
+        90,
+        100,
+        110,
+        120
+      ],
+      "costBurn": "80/90/100/110/120",
+      "costType": " {{ abilityresourcename }}",
+      "datavalues": {},
+      "description": "Shields Yuumi and boosts Move Speed and Attack Speed. If she's attached, she passes it to her ally instead.<br>",
+      "effect": [
+        null,
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "effectBurn": [
+        null,
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "id": "YuumiE",
+      "image": {
+        "full": "YuumiE.png",
+        "group": "spell",
+        "h": 48,
+        "sprite": "spell16.png",
+        "w": 48,
+        "x": 96,
+        "y": 144
+      },
+      "leveltip": {
+        "effect": [
+          "{{ baseshielding }} -> {{ baseshieldingNL }}",
+          "{{ attackspeedamount }}% -> {{ attackspeedamountNL }}%",
+          "{{ manarestore }} -> {{ manarestoreNL }}",
+          "{{ cost }} -> {{ costNL }}"
+        ],
+        "label": [
+          "Shield Amount",
+          "Attack Speed",
+          "Mana Restore",
+          "Mana Cost"
+        ]
+      },
+      "maxammo": "0",
+      "maxrank": 5,
+      "name": "Zoomies",
+      "range": [
+        25000,
+        25000,
+        25000,
+        25000,
+        25000
+      ],
+      "rangeBurn": "25000",
+      "resource": "{{ cost }} {{ abilityresourcename }}",
+      "tooltip": "Yuumi shields herself, blocking <shield>{{ totalshielding }} damage</shield> and gains <attackSpeed>{{ totalattackspeed }}% Attack Speed</attackSpeed> for {{ msduration }} seconds. While the shield persists, the target also gains <speed>{{ msamount }}% Move Speed</speed>.<br /><br />If Yuumi is <keywordMajor>Attached</keywordMajor>, this Ability affects her ally instead and also restores <magicDamage>{{ manarestore }} Mana</magicDamage> to them, increased by up to {{ maxmanapercincrease*100 }}% based on the target's missing Mana.{{ spellmodifierdescriptionappend }}",
+      "vars": []
+    },
+    {
+      "cooldown": [
+        120,
+        110,
+        100
+      ],
+      "cooldownBurn": "120/110/100",
+      "cost": [
+        100,
+        100,
+        100
+      ],
+      "costBurn": "100",
+      "costType": " {{ abilityresourcename }}",
+      "datavalues": {},
+      "description": "Yuumi channels five waves that damage enemies and heal allies. Yuumi can move, attach, and cast Zoomies! while channeling. While on her Best Friend, this spell also follows her mouse.",
+      "effect": [
+        null,
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "effectBurn": [
+        null,
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "id": "YuumiR",
+      "image": {
+        "full": "YuumiR.png",
+        "group": "spell",
+        "h": 48,
+        "sprite": "spell16.png",
+        "w": 48,
+        "x": 144,
+        "y": 144
+      },
+      "leveltip": {
+        "effect": [
+          "{{ cooldown }} -> {{ cooldownNL }}",
+          "{{ basemissiledamage }} -> {{ basemissiledamageNL }}",
+          "{{ basehealperwave }} -> {{ basehealperwaveNL }}"
+        ],
+        "label": [
+          "Cooldown",
+          "Base Damage Per Missile:",
+          "Base Healing Per Wave"
+        ]
+      },
+      "maxammo": "-1",
+      "maxrank": 3,
+      "name": "Final Chapter",
+      "range": [
+        1100,
+        1100,
+        1100
+      ],
+      "rangeBurn": "1100",
+      "resource": "{{ cost }} {{ abilityresourcename }}",
+      "tooltip": "Yuumi channels for {{ ultduration }} seconds, launching {{ numberofwaves }} magical waves affecting both teams. If initially cast while <keywordMajor>Attached</keywordMajor>, Yuumi can steer the waves to follow her mouse.<br /><br />Enemies struck are dealt <magicDamage>{{ totalmissiledamage }} magic damage</magicDamage> and <status>Slowed</status> by {{ baseslow*-100 }}% for {{ ccduration }} seconds, increased by {{ bonusslowperwave*-100 }}% per wave hit.<br /><br />Ally champions are healed for <healing>{{ totalhealperwave }} health</healing> per wave. Excess healing is converted to a <shield>Shield</shield> instead.<br /><br /><keywordMajor>Best Friend Bonus:</keywordMajor> For her <keywordMajor>Best Friend</keywordMajor>, the heal is increased to <healing>{{ enhancedhealperwave }} health</healing>.<br /><br /><rules>Casting <spellName>You and Me!</spellName> will locks the waves in the current direction.<br />Yuumi can move and cast <spellName>Zoomies</spellName> while channeling.</rules><br />{{ spellmodifierdescriptionappend }}",
+      "vars": []
+    }
+  ],
+  "stats": {
+    "armor": 25,
+    "armorperlevel": 4.2,
+    "attackdamage": 49,
+    "attackdamageperlevel": 3.1,
+    "attackrange": 425,
+    "attackspeed": 0.625,
+    "attackspeedperlevel": 1,
+    "crit": 0,
+    "critperlevel": 0,
+    "hp": 500,
+    "hpperlevel": 69,
+    "hpregen": 5,
+    "hpregenperlevel": 0.55,
+    "movespeed": 330,
+    "mp": 440,
+    "mpperlevel": 45,
+    "mpregen": 10,
+    "mpregenperlevel": 0.4,
+    "spellblock": 25,
+    "spellblockperlevel": 1.1
+  },
+  "tags": [
+    "Support",
+    "Mage"
+  ],
+  "title": "the Magical Cat"
+}

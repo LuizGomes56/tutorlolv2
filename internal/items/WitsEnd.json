@@ -1,0 +1,133 @@
+{
+  "riot_id": 3091,
+  "item_id": "WitsEnd",
+  "name": "Wit's End",
+  "price": 2800,
+  "sell": 1960,
+  "tier": 3,
+  "maps": [
+    [
+      "Tft",
+      false
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "NexusBlitz",
+      true
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "Aram",
+      true
+    ]
+  ],
+  "prettified_stats": [
+    {
+      "name": "AttackSpeed",
+      "value": 50
+    },
+    {
+      "name": "Tenacity",
+      "value": 20
+    },
+    {
+      "name": "MagicResist",
+      "value": 45
+    }
+  ],
+  "damage_type": "Unknown",
+  "stats": {
+    "abilityPower": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 50.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 45.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "builds_from_riot_ids": [
+    1043,
+    1057,
+    1043
+  ],
+  "builds_from_item_ids": [
+    "RecurveBow",
+    "NegatronCloak",
+    "RecurveBow"
+  ],
+  "builds_into_riot_ids": [],
+  "builds_into_item_ids": [],
+  "ranged": {
+    "minimum_damage": "zero",
+    "maximum_damage": "zero"
+  },
+  "melee": {
+    "minimum_damage": "zero",
+    "maximum_damage": "zero"
+  },
+  "attributes": "Undefined",
+  "purchasable": true
+}

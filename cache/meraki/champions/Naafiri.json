@@ -1,0 +1,831 @@
+{
+  "name": "Naafiri",
+  "attackType": "MELEE",
+  "adaptiveType": "PHYSICAL_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 610.0,
+      "perLevel": 105.0
+    },
+    "mana": {
+      "flat": 400.0,
+      "perLevel": 55.0
+    },
+    "armor": {
+      "flat": 28.0,
+      "perLevel": 4.2
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 55.0,
+      "perLevel": 2.0
+    },
+    "attackSpeed": {
+      "flat": 0.663,
+      "perLevel": 2.1
+    },
+    "movespeed": {
+      "flat": 340.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.625,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 125.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.1,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                " (based on level)",
+                " (based on level)",
+                " (based on level)"
+              ],
+              "values": [
+                30.0,
+                20.0,
+                10.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Hitting champions or large monsters with abilities reduces the cooldown by 4 seconds. Killing enemies reduces it by 1 second.",
+            "leveling": []
+          },
+          {
+            "description": "Innate: Periodically, Naafiri summons a Packmate that fights alongside her. She may have up to 2 / 3 / 4 / 5 (based on level) Packmates at a time. Naafiri summons the maximum number of Packmates when the game starts and upon respawning.",
+            "leveling": []
+          },
+          {
+            "description": "See Pets for full details on Packmates.",
+            "leveling": []
+          }
+        ],
+        "name": "We Are More"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                9.0,
+                8.5,
+                8.0,
+                7.5,
+                7.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Naafiri hurls a dagger in the target direction that deals physical damage to enemies hit and inflicts them with a bleed that deals bonus physical damage every 0.5 seconds for 5 seconds. The bleed executes minions and non-epic monsters if they would be damaged below 30 : 70 (based on level) health. Darkin Daggers can be recast after 0.5 seconds and within 4 seconds at no additional cost.",
+            "leveling": [
+              {
+                "attribute": "Bleed Physical Damage per Tick",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      3.5,
+                      6.0,
+                      8.5,
+                      11.0,
+                      13.5
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      8.0,
+                      8.0,
+                      8.0,
+                      8.0,
+                      8.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Initial Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      35.0,
+                      40.0,
+                      45.0,
+                      50.0,
+                      55.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      20.0,
+                      20.0,
+                      20.0,
+                      20.0,
+                      20.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Bleed Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      35.0,
+                      60.0,
+                      85.0,
+                      110.0,
+                      135.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      80.0,
+                      80.0,
+                      80.0,
+                      80.0,
+                      80.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      70.0,
+                      100.0,
+                      130.0,
+                      160.0,
+                      190.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "If the dagger hits a target that is already bleeding, they are instead dealt the remaining bleed damage plus additional bonus physical damage, with the base bonus damage increased by 0% : 100% (based on target's missing health) and the scaling for the bonus damage increased by 0% : 250% (based on target's missing health). If that target is also a champion or large monster, Naafiri heals herself.",
+            "leveling": [
+              {
+                "attribute": "Heal",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      45.0,
+                      60.0,
+                      75.0,
+                      90.0,
+                      105.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      40.0,
+                      40.0,
+                      40.0,
+                      40.0,
+                      40.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Maximum Bonus Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      60.0,
+                      90.0,
+                      120.0,
+                      150.0,
+                      180.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      140.0,
+                      140.0,
+                      140.0,
+                      140.0,
+                      140.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Maximum Total Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      130.0,
+                      190.0,
+                      250.0,
+                      310.0,
+                      370.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      240.0,
+                      240.0,
+                      240.0,
+                      240.0,
+                      240.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Minimum Bonus Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      30.0,
+                      45.0,
+                      60.0,
+                      75.0,
+                      90.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      40.0,
+                      40.0,
+                      40.0,
+                      40.0,
+                      40.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Minimum Total Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      100.0,
+                      145.0,
+                      190.0,
+                      235.0,
+                      280.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      140.0,
+                      140.0,
+                      140.0,
+                      140.0,
+                      140.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Recast: Naafiri mimics the first cast's effects.",
+            "leveling": []
+          }
+        ],
+        "name": "Darkin Daggers"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                26.0,
+                24.0,
+                22.0,
+                20.0,
+                18.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: Naafiri goes on the hunt for the next 5 seconds, becoming untargetable for the first 1 second and vanishing all of her active Packmates in the first 0.9 seconds. Her active Packmates will reappear near her after their vanish.",
+            "leveling": []
+          },
+          {
+            "description": "After 1.25 seconds into the hunt, Naafiri summons 2 additional Packmates that last for the remaining duration and can exceed We Are More's summon cap.",
+            "leveling": []
+          },
+          {
+            "description": "Casting Hounds' Pursuit extends The Call of the Pack's hunt duration by 1.75 seconds, up to its original duration.",
+            "leveling": []
+          },
+          {
+            "description": "Naafiri can move during The Call of the Pack's cast time.",
+            "leveling": []
+          },
+          {
+            "description": "While on the hunt, Naafiri gains 20% AD bonus attack damage and grants herself and all Packmates bonus movement speed.",
+            "leveling": [
+              {
+                "attribute": "Bonus Movement Speed",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      20.0,
+                      22.5,
+                      25.0,
+                      27.5,
+                      30.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "The Call of the Pack"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                11.0,
+                10.0,
+                9.0,
+                8.0,
+                7.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Naafiri dashes in the target direction and deals physical damage to enemies she passes through. Upon arrival, she explodes in a flurry of blades to deal physical damage to nearby enemies.",
+            "leveling": [
+              {
+                "attribute": "Dash Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      15.0,
+                      25.0,
+                      35.0,
+                      45.0,
+                      55.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      40.0,
+                      40.0,
+                      40.0,
+                      40.0,
+                      40.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Flurry Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      60.0,
+                      85.0,
+                      110.0,
+                      135.0,
+                      160.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      80.0,
+                      80.0,
+                      80.0,
+                      80.0,
+                      80.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      75.0,
+                      110.0,
+                      145.0,
+                      180.0,
+                      215.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      120.0,
+                      120.0,
+                      120.0,
+                      120.0,
+                      120.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Packmates vanish during the dash and reappear near Naafiri on her arrival. They are also healed to full health upon their reappearance.",
+            "leveling": []
+          }
+        ],
+        "name": "Eviscerate"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                110.0,
+                95.0,
+                80.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Naafiri and her Packmates channel for 0.75 seconds to single out the target enemy champion, revealing them in the duration. Upon completion of the channel, they dash to the target; upon arrival Naafiri deals physical damage and slows the target by 99% for 0.25 seconds, whereas each Packmate deals 10% of that damage. Packmates become untargetable during their channel and dash.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      150.0,
+                      250.0,
+                      350.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      120.0,
+                      120.0,
+                      120.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Physical Damage per Packmate",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      15.0,
+                      25.0,
+                      35.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      12.0,
+                      12.0,
+                      12.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "If Naafiri scores a champion takedown within 7 seconds of cast, she triggers a pulse that grants sight of the surrounding area for 1 second and reveals enemy champions within for 4 seconds. She can also recast Hounds' Pursuit once from triggering this effect within 12 seconds at no cost.",
+            "leveling": []
+          },
+          {
+            "description": "Recast: Naafiri immediately grants herself a shield for 3 seconds before mimicking the first cast's effects.",
+            "leveling": [
+              {
+                "attribute": "Shield",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      100.0,
+                      150.0,
+                      200.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      150.0,
+                      150.0,
+                      150.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Hounds' Pursuit"
+      }
+    ]
+  },
+  "positions": [
+    "MIDDLE"
+  ]
+}

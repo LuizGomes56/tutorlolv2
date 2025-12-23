@@ -1,0 +1,512 @@
+{
+  "name": "Nocturne",
+  "attackType": "MELEE",
+  "adaptiveType": "PHYSICAL_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 655.0,
+      "perLevel": 109.0
+    },
+    "mana": {
+      "flat": 275.0,
+      "perLevel": 35.0
+    },
+    "armor": {
+      "flat": 38.0,
+      "perLevel": 4.7
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 1.55
+    },
+    "attackDamage": {
+      "flat": 62.0,
+      "perLevel": 2.6
+    },
+    "attackSpeed": {
+      "flat": 0.721,
+      "perLevel": 2.7
+    },
+    "movespeed": {
+      "flat": 345.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.721,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 125.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 0.9,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.1,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 0.95,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                13.0,
+                13.0,
+                13.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Basic attacks reduce Umbra Blades' cooldown by 1 second, increased to 3 against enemy champions and monsters.",
+            "leveling": []
+          },
+          {
+            "description": "Innate: Periodically, Nocturne empowers his next basic attack to slash in a circle, dealing 120% AD physical damage to the target and nearby enemies and healing himself for 13 : 30 (based on level) (+ 30% AP) per enemy hit. Against minions, Umbra Blade's damage to secondary targets and healing are reduced by 50% and it applies on-hit effects to all targets(note) at 100% effectiveness.",
+            "leveling": []
+          },
+          {
+            "description": "Umbra Blades can critically strike against the primary target, modifying the physical damage dealt to[ (192.5% + 44%) AD. ][ 110% AD × total critical damage. ]",
+            "leveling": []
+          }
+        ],
+        "name": "Umbra Blades"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                8.0,
+                8.0,
+                8.0,
+                8.0,
+                8.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Nocturne casts out a shadow blade in the target direction that leaves a Dusk Trail in its wake, dealing physical damage to enemies hit. Enemy champions and large monsters hit will leave a Dusk Trail behind while moving. Dusk Trails last 5 seconds and will slowly disappear afterwards.",
+            "leveling": [
+              {
+                "attribute": "Physical damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      65.0,
+                      110.0,
+                      155.0,
+                      200.0,
+                      245.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      85.0,
+                      85.0,
+                      85.0,
+                      85.0,
+                      85.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "While on the Dusk Trail, Nocturne is ghosted and gains bonus attack damage and bonus total movement speed.",
+            "leveling": [
+              {
+                "attribute": "Bonus Attack Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      20.0,
+                      30.0,
+                      40.0,
+                      50.0,
+                      60.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Bonus Movement Speed",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      15.0,
+                      20.0,
+                      25.0,
+                      30.0,
+                      35.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Duskbringer"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                20.0,
+                18.0,
+                16.0,
+                14.0,
+                12.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: Nocturne gains a spell shield for 1.5 seconds. Upon successfully blocking a hostile effect, Shroud of Darkness' bonus attack speed is doubled for 5 seconds.",
+            "leveling": []
+          },
+          {
+            "description": "Passive: Nocturne gains bonus attack speed.",
+            "leveling": [
+              {
+                "attribute": "Bonus Attack Speed",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      30.0,
+                      35.0,
+                      40.0,
+                      45.0,
+                      50.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Enhanced Bonus Attack Speed",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      60.0,
+                      70.0,
+                      80.0,
+                      90.0,
+                      100.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Shroud of Darkness"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                15.0,
+                14.0,
+                13.0,
+                12.0,
+                11.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Nocturne torments the target, forming a tether between himself and the target for 2 seconds, during which the target takes magic damage every 0.5 seconds over the duration.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage per Tick",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      20.0,
+                      31.25,
+                      42.5,
+                      53.75,
+                      65.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      25.0,
+                      25.0,
+                      25.0,
+                      25.0,
+                      25.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      80.0,
+                      125.0,
+                      170.0,
+                      215.0,
+                      260.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "If the tether is not broken by the end of its duration, the target is feared for a duration while being slowed by 90%.",
+            "leveling": [
+              {
+                "attribute": "Disable Duration",
+                "modifiers": [
+                  {
+                    "units": [
+                      " seconds",
+                      " seconds",
+                      " seconds",
+                      " seconds",
+                      " seconds"
+                    ],
+                    "values": [
+                      1.25,
+                      1.5,
+                      1.75,
+                      2.0,
+                      2.25
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Passive: Nocturne gains 90% bonus movement speed while facing nearby feared targets.",
+            "leveling": []
+          }
+        ],
+        "name": "Unspeakable Horror"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                140.0,
+                115.0,
+                90.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Nocturne terrorizes all enemy champions, nearsighting them for 6 seconds. He can recast Paranoia for the same duration after 0.25 seconds.",
+            "leveling": []
+          },
+          {
+            "description": "Nocturne can cast any of his abilities during the dash.",
+            "leveling": []
+          },
+          {
+            "description": "Recast: Nocturne dashes with displacement immunity to the target enemy champion, dealing physical damage upon arrival.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      150.0,
+                      275.0,
+                      400.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      120.0,
+                      120.0,
+                      120.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Paranoia"
+      }
+    ]
+  },
+  "positions": [
+    "JUNGLE"
+  ]
+}

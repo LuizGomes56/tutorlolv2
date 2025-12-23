@@ -4,7 +4,7 @@
 /// generated closures contained in cache static variables
 macro_rules! create_eval_struct {
     ($($type:ident($($value:ident),*$(,)?)),+$(,)?) => {
-        paste::paste! {
+        pastey::paste! {
             /// Defines a standard type that implements trait [`core::fmt::Display`]
             /// and is used to create constant closures in the static variables of
             /// this module. For example:

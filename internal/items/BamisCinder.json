@@ -1,0 +1,133 @@
+{
+  "riot_id": 6660,
+  "item_id": "BamisCinder",
+  "name": "Bami's Cinder",
+  "price": 900,
+  "sell": 630,
+  "tier": 2,
+  "maps": [
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "Aram",
+      true
+    ],
+    [
+      "Tft",
+      false
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "NexusBlitz",
+      true
+    ],
+    [
+      "SummonersRift",
+      false
+    ]
+  ],
+  "prettified_stats": [
+    {
+      "name": "AbilityHaste",
+      "value": 5
+    },
+    {
+      "name": "Health",
+      "value": 150
+    }
+  ],
+  "damage_type": "Unknown",
+  "stats": {
+    "abilityPower": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 150.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "builds_from_riot_ids": [
+    1028,
+    2022
+  ],
+  "builds_from_item_ids": [
+    "RubyCrystal",
+    "GlowingMote"
+  ],
+  "builds_into_riot_ids": [
+    3068,
+    6664
+  ],
+  "builds_into_item_ids": [
+    "SunfireAegis",
+    "HollowRadiance"
+  ],
+  "ranged": {
+    "minimum_damage": "zero",
+    "maximum_damage": "zero"
+  },
+  "melee": {
+    "minimum_damage": "zero",
+    "maximum_damage": "zero"
+  },
+  "attributes": "Undefined",
+  "purchasable": true
+}

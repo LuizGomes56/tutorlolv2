@@ -1,0 +1,89 @@
+{
+  "active": [
+    {
+      "effects": "Designate the target allied champion as being ''Worthy'', forming a {{tip|tether}} between you and them. Champions can only be designated as ''Worthy'' by one '''Knight's Vow''' at a time. You cannot be designated as ''Worthy'' by an ally's '''Knight's Vow'''.",
+      "name": "Pledge",
+      "unique": true
+    }
+  ],
+  "buildsFrom": [
+    3067,
+    1031,
+    1006
+  ],
+  "buildsInto": [],
+  "name": "Knight's Vow",
+  "tier": 3,
+  "passives": [
+    {
+      "effects": "While your ''Worthy'' ally is {{tt|tethered to you|1250 units, center to edge}} and you are above {{as|30% of your '''maximum''' health}}, redirect 12% of the {{tt|pre-mitigation|Damage calculated before the Worthy ally's modifiers}} {{as|physical|physical damage}} and {{as|magic|magic damage}} damage they take to you as the respective damage type. Additionally, you {{tip|heal}} for 10% of the {{tt|post-mitigation damage|Damage calculated after modifiers}} dealt by your ''Worthy'' ally to champions.",
+      "name": "Sacrifice",
+      "unique": true
+    }
+  ],
+  "id": 3109,
+  "stats": {
+    "abilityPower": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 40.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 200.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "shop": {
+    "purchasable": true,
+    "prices": {
+      "total": 2300
+    }
+  }
+}

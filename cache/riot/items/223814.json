@@ -1,0 +1,46 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><attention>45</attention> Attack Damage<br><attention>14</attention> Lethality<br><attention>375</attention> Health</stats><br><br><passive>Annul</passive> (0s)<br>Gain a Spell Shield that blocks the next enemy Ability.<br><br><rules>Item's cooldown is restarted if you take damage before it is completed.</rules></mainText>",
+  "effect": {
+    "Effect1Amount": "0",
+    "Effect2Amount": "0",
+    "Effect3Amount": "0",
+    "Effect4Amount": "20"
+  },
+  "gold": {
+    "base": 2500,
+    "purchasable": true,
+    "sell": 1250,
+    "total": 2500
+  },
+  "image": {
+    "full": "223814.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item1.png",
+    "w": 48,
+    "x": 288,
+    "y": 432
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": false
+  },
+  "name": "Edge of Night",
+  "plaintext": "",
+  "stacks": 0,
+  "stats": {
+    "FlatHPPoolMod": 375,
+    "FlatPhysicalDamageMod": 45
+  },
+  "tags": [
+    "Health",
+    "Damage",
+    "ArmorPenetration"
+  ]
+}

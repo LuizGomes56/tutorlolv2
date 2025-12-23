@@ -1,0 +1,329 @@
+{
+  "name": "Pyke",
+  "attackType": "MELEE",
+  "adaptiveType": "PHYSICAL_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 670.0,
+      "perLevel": 110.0
+    },
+    "mana": {
+      "flat": 415.0,
+      "perLevel": 50.0
+    },
+    "armor": {
+      "flat": 43.0,
+      "perLevel": 4.7
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 62.0,
+      "perLevel": 2.0
+    },
+    "attackSpeed": {
+      "flat": 0.667,
+      "perLevel": 2.5
+    },
+    "movespeed": {
+      "flat": 330.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.666999995708465,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 150.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 0.9,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.1,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 0.95,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": null,
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Innate: Pyke gains 1 bonus movement speed while in the river.",
+            "leveling": []
+          },
+          {
+            "description": "Innate: Pyke stores 9% (+ 0.2% per 1 Lethality) of the post-mitigation damage he takes from enemy champions as grey health on his health bar, increased to 40% (+ 0.4% per 1 Lethality) while there are two or more visible enemy champions nearby. He can store up to 80 (+ 800% bonus AD) grey health, with an upper cap of 55% of his maximum health.",
+            "leveling": []
+          },
+          {
+            "description": "Innate: Pyke's maximum health cannot increase except through growth (per level), instead he gains[ 1 bonus attack damage per 14 bonus health. ][ bonus attack damage equal to 7.143% of bonus health. ]",
+            "leveling": []
+          },
+          {
+            "description": "While Pyke is not visible to enemies, he rapidly consumes his grey health to heal for the same amount.",
+            "leveling": []
+          }
+        ],
+        "name": "Gift of the Drowned Ones"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                10.0,
+                9.5,
+                9.0,
+                8.5,
+                8.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Pyke charges while being slowed by 20% for up to 3 seconds to increase Bone Skewer's range over the first second of the channel. Bone Skewer can be recast within the duration.",
+            "leveling": []
+          },
+          {
+            "description": "If the charge is interrupted or completes without reactivation, Bone Skewer is cancelled and the ability is put on full cooldown but refunds 75% of the mana cost. Bone Skewer's mana cost is also refunded if it hits an enemy champion.",
+            "leveling": []
+          },
+          {
+            "description": "Recast: Pyke hurls his harpoon in the target direction, becoming unable to act while it is in flight and dealing physical damage to the first enemy hit and pulling them, during which they are also revealed, then slowing them by 90% for 1 second.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      100.0,
+                      150.0,
+                      200.0,
+                      250.0,
+                      300.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      75.0,
+                      75.0,
+                      75.0,
+                      75.0,
+                      75.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Releasing the ability within 0.4 seconds causes Pyke to instead thrust his blade in the target direction, dealing the same damage to the closest enemy champion, or closest enemy otherwise.",
+            "leveling": []
+          }
+        ],
+        "name": "Bone Skewer"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                14.0,
+                13.0,
+                12.0,
+                11.0,
+                10.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: Pyke submerges into water for 5 seconds, entering camouflage and gaining 45% (+ 2% per 1 Lethality) bonus movement speed that decays over the duration. Attacking or casting abilities ends Ghostwater Dive immediately.",
+            "leveling": []
+          },
+          {
+            "description": "Enemy champions within 1500 units of Pyke are alerted of his presence and whether he can execute them with Death from Below.",
+            "leveling": []
+          }
+        ],
+        "name": "Ghostwater Dive"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                15.0,
+                14.0,
+                13.0,
+                12.0,
+                11.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Pyke dashes in the target direction, leaving behind a Phantom. Pyke is ghosted while the Phantom is active.",
+            "leveling": []
+          },
+          {
+            "description": "After 1 second, the Phantom homes back to Pyke to stun enemies around it and those it passes through along the way for 1.25 (+ 0.1 per 10 Lethality) seconds. Enemy champions hit also take physical damage.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      100.0,
+                      150.0,
+                      200.0,
+                      250.0,
+                      300.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Phantom Undertow"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                100.0,
+                85.0,
+                70.0
+              ]
+            }
+          ]
+        },
+        "damageType": "OTHER_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Pyke marks the target location with the shape of an X before striking it, executing enemy champions within the area that are below 250 : 550 (based on level) (+ 80% bonus AD) (+ 1.5 per 1 Lethality) health. Other enemies hit and enemy champions above the threshold are instead dealt[ 50% of the amount as physical damage. ][ 125 : 275 (based on level) (+ 40% bonus AD) (+ 0.75 per 1 Lethality) physical damage. ]",
+            "leveling": []
+          },
+          {
+            "description": "Each successful execution grants one Your Cut to the last assisting ally, instead of its natural assist gold. Otherwise, Pyke is granted a Your Cut for each enemy champion killed inside the X by an ally during Death from Below's cast time.",
+            "leveling": []
+          },
+          {
+            "description": "If Death from Below hits an enemy champion or at least one is killed inside the X by the execution or an ally, Pyke will blink to the center of the X. For the latter case Pyke can also recast the ability within 20 seconds at no cost.",
+            "leveling": []
+          }
+        ],
+        "name": "Death from Below"
+      }
+    ]
+  },
+  "positions": [
+    "SUPPORT"
+  ]
+}

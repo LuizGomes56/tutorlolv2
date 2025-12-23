@@ -1,0 +1,681 @@
+{
+  "name": "Poppy",
+  "attackType": "MELEE",
+  "adaptiveType": "PHYSICAL_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 610.0,
+      "perLevel": 110.0
+    },
+    "mana": {
+      "flat": 280.0,
+      "perLevel": 40.0
+    },
+    "armor": {
+      "flat": 35.0,
+      "perLevel": 5.0
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 60.0,
+      "perLevel": 4.0
+    },
+    "attackSpeed": {
+      "flat": 0.658,
+      "perLevel": 2.5
+    },
+    "movespeed": {
+      "flat": 345.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.625,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 125.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                " (based on level)",
+                " (based on level)",
+                " (based on level)"
+              ],
+              "values": [
+                16.0,
+                12.0,
+                8.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Innate: Periodically, Poppy's next basic attack is empowered to throw her buckler, gaining 350 bonus range and dealing 20 : 180 (based on level) bonus magic damage. After it hits, the buckler then falls to a location near the target over 1 second, landing and remaining there for up to 4 seconds.",
+            "leveling": []
+          },
+          {
+            "description": "Poppy can move over the buckler to retrieve it, gaining a shield for 11% : 20% (based on level) of her maximum health for 3 seconds. If the buckler kills the target, or if the target is already dead when the buckler hits it, the buckler will bounce back to Poppy instead of falling. Enemy champions can move over the buckler to destroy it.",
+            "leveling": []
+          }
+        ],
+        "name": "Iron Ambassador"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                8.0,
+                7.0,
+                6.0,
+                5.0,
+                4.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Poppy smashes the area in the target direction, dealing physical damage to enemies hit. Against minions and monsters, the damage based on their health ratio is capped.",
+            "leveling": [
+              {
+                "attribute": "Capped Minion/Monster Health Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      75.0,
+                      105.0,
+                      135.0,
+                      165.0,
+                      195.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Maximum Minion/Monster Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      105.0,
+                      160.0,
+                      215.0,
+                      270.0,
+                      325.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      30.0,
+                      55.0,
+                      80.0,
+                      105.0,
+                      130.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% of target's maximum health",
+                      "% of target's maximum health",
+                      "% of target's maximum health",
+                      "% of target's maximum health",
+                      "% of target's maximum health"
+                    ],
+                    "values": [
+                      9.0,
+                      9.0,
+                      9.0,
+                      9.0,
+                      9.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "The impact creates a field for 1 second that slows enemies within, which then ruptures to deal the same physical damage.",
+            "leveling": [
+              {
+                "attribute": "Slow",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      20.0,
+                      25.0,
+                      30.0,
+                      35.0,
+                      40.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Maximum Minion/Monster Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      210.0,
+                      320.0,
+                      430.0,
+                      540.0,
+                      650.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      200.0,
+                      200.0,
+                      200.0,
+                      200.0,
+                      200.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      60.0,
+                      110.0,
+                      160.0,
+                      210.0,
+                      260.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      200.0,
+                      200.0,
+                      200.0,
+                      200.0,
+                      200.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% of target's maximum health",
+                      "% of target's maximum health",
+                      "% of target's maximum health",
+                      "% of target's maximum health",
+                      "% of target's maximum health"
+                    ],
+                    "values": [
+                      18.0,
+                      18.0,
+                      18.0,
+                      18.0,
+                      18.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Hammer Shock"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                20.0,
+                18.0,
+                16.0,
+                14.0,
+                12.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Poppy gains 40% bonus movement speed and creates an aura around herself for 2 seconds, causing all enemies who attempt to dash into or within it to be dealt magic damage and knocked up for 0.5 seconds. If a target was successfully interrupted, they become grounded and slowed by 25% for 2 seconds.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      70.0,
+                      110.0,
+                      150.0,
+                      190.0,
+                      230.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      70.0,
+                      70.0,
+                      70.0,
+                      70.0,
+                      70.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Passive - Stubborn to a Fault: Poppy increases her total armor and total magic resistance by 12%, doubled to 24% while she is below 40% maximum health.",
+            "leveling": []
+          },
+          {
+            "description": "Steadfast Presence can only block a single dash per enemy per cast.",
+            "leveling": []
+          }
+        ],
+        "name": "Steadfast Presence"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                14.0,
+                13.0,
+                12.0,
+                11.0,
+                10.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Poppy dashes to the target enemy's location. If they are in range upon arrival, she deals physical damage and carries them along with her for up to 400 units.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      40.0,
+                      60.0,
+                      80.0,
+                      100.0,
+                      120.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      60.0,
+                      60.0,
+                      60.0,
+                      60.0,
+                      60.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "If the target hits terrain, she stops to deal the same physical damage again and stuns them for a duration.",
+            "leveling": [
+              {
+                "attribute": "Stun Duration",
+                "modifiers": [
+                  {
+                    "units": [
+                      " seconds",
+                      " seconds",
+                      " seconds",
+                      " seconds",
+                      " seconds"
+                    ],
+                    "values": [
+                      1.6,
+                      1.7,
+                      1.8,
+                      1.9,
+                      2.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      80.0,
+                      120.0,
+                      160.0,
+                      200.0,
+                      240.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      120.0,
+                      120.0,
+                      120.0,
+                      120.0,
+                      120.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Heroic Charge"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                140.0,
+                120.0,
+                100.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Poppy charges while being slowed by 15% for up to 4 seconds to increase Keeper's Verdict's range and knock back distance over 0.5 seconds after the first 0.5 seconds of the channel. Keeper's Verdict can be recast within the duration.",
+            "leveling": []
+          },
+          {
+            "description": "If Keeper's Verdict was charged for at least 0.5 seconds, it deals 100% increased damage and enemies hit are knocked back up-to 3400 units toward the enemy team's fountain, during which they are revealed and rendered untargetable. Additionally, if no enemies are hit in front of Poppy, she sends a shockwave that travels in the target direction until it collides with an enemy champion, which causes a hammer to erupt. Targets hit by the shockwave or the eruption receive the charged effects.",
+            "leveling": [
+              {
+                "attribute": "Increased Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      200.0,
+                      300.0,
+                      400.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      90.0,
+                      90.0,
+                      90.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "If the charge is interrupted or completes without reactivation, Keeper's Verdict is cancelled and the ability is put on a 15-second cooldown.",
+            "leveling": []
+          },
+          {
+            "description": "Recast: Poppy releases the charge to launch her hammer upwards, dealing physical damage to enemies nearby and in an area in front of her and knocking them up for 1 second.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      100.0,
+                      150.0,
+                      200.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      45.0,
+                      45.0,
+                      45.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Keeper's Verdict"
+      }
+    ]
+  },
+  "positions": [
+    "JUNGLE",
+    "TOP"
+  ]
+}

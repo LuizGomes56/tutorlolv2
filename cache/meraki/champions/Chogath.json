@@ -1,0 +1,594 @@
+{
+  "name": "Cho'Gath",
+  "attackType": "MELEE",
+  "adaptiveType": "MAGIC_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 644.0,
+      "perLevel": 94.0
+    },
+    "mana": {
+      "flat": 270.0,
+      "perLevel": 60.0
+    },
+    "armor": {
+      "flat": 38.0,
+      "perLevel": 4.5
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 69.0,
+      "perLevel": 4.2
+    },
+    "attackSpeed": {
+      "flat": 0.658,
+      "perLevel": 1.44
+    },
+    "movespeed": {
+      "flat": 345.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.625,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 125.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.1,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": null,
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Innate: Whenever Cho'Gath kills an enemy, it heals for 18 : 52 (based on level) and restores 4.72 : 9.48 (based on level) mana.",
+            "leveling": []
+          }
+        ],
+        "name": "Carnivore"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                6.0,
+                6.0,
+                6.0,
+                6.0,
+                6.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Cho'Gath ruptures the target location after a 0.627 seconds delay, granting sight of the area before dealing magic damage to enemies within and knocking them up for 1 second, and afterwards slowing them by 60% for 1.5 seconds.",
+            "leveling": [
+              {
+                "attribute": "Magic damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      80.0,
+                      135.0,
+                      190.0,
+                      245.0,
+                      300.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Rupture"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                11.0,
+                10.5,
+                10.0,
+                9.5,
+                9.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Cho'Gath roars in a cone in the target direction, dealing magic damage to enemies hit.",
+            "leveling": [
+              {
+                "attribute": "Magic damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      80.0,
+                      130.0,
+                      180.0,
+                      230.0,
+                      280.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      70.0,
+                      70.0,
+                      70.0,
+                      70.0,
+                      70.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Enemy champions and Rift Scuttlers hit are also silenced for a duration.",
+            "leveling": [
+              {
+                "attribute": "Silence Duration",
+                "modifiers": [
+                  {
+                    "units": [
+                      " seconds",
+                      " seconds",
+                      " seconds",
+                      " seconds",
+                      " seconds"
+                    ],
+                    "values": [
+                      1.6,
+                      1.7,
+                      1.8,
+                      1.9,
+                      2.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Feral Scream"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                8.0,
+                7.0,
+                6.0,
+                5.0,
+                4.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Cho'Gath empowers its next 3 basic attacks within 6 seconds to gain 50 bonus range and launch a blast of spikes on-attack in the target's direction. Enemies struck are dealt magic damage and slowed by an amount that decays over 1.5 seconds. The damage based on the target's health ratio is capped at 200 against monsters.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      20.0,
+                      40.0,
+                      60.0,
+                      80.0,
+                      100.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      30.0,
+                      30.0,
+                      30.0,
+                      30.0,
+                      30.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% (+ 0.5% per Feast stack) of target's maximum health",
+                      "% (+ 0.5% per Feast stack) of target's maximum health",
+                      "% (+ 0.5% per Feast stack) of target's maximum health",
+                      "% (+ 0.5% per Feast stack) of target's maximum health",
+                      "% (+ 0.5% per Feast stack) of target's maximum health"
+                    ],
+                    "values": [
+                      2.5,
+                      2.85,
+                      3.2,
+                      3.55,
+                      3.9
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Slow",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      30.0,
+                      35.0,
+                      40.0,
+                      45.0,
+                      50.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      60.0,
+                      120.0,
+                      180.0,
+                      240.0,
+                      300.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      90.0,
+                      90.0,
+                      90.0,
+                      90.0,
+                      90.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% (+ 1.5% per Feast stack) of target's maximum health",
+                      "% (+ 1.5% per Feast stack) of target's maximum health",
+                      "% (+ 1.5% per Feast stack) of target's maximum health",
+                      "% (+ 1.5% per Feast stack) of target's maximum health",
+                      "% (+ 1.5% per Feast stack) of target's maximum health"
+                    ],
+                    "values": [
+                      7.5,
+                      8.55,
+                      9.6,
+                      10.65,
+                      11.7
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "The width of the blast of spikes increases based on Cho'Gath's character size modifier when they launch, including but not limited to the bonus from Feast stacks.",
+            "leveling": []
+          },
+          {
+            "description": "Vorpal Spikes resets Cho'Gath's basic attack timer.",
+            "leveling": []
+          }
+        ],
+        "name": "Vorpal Spikes"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                80.0,
+                70.0,
+                60.0
+              ]
+            }
+          ]
+        },
+        "damageType": "TRUE_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Cho'Gath attempts to eat the target enemy, dealing them true damage. Against non- champions, the base damage is modified.",
+            "leveling": [
+              {
+                "attribute": "Champion True Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      300.0,
+                      475.0,
+                      650.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      50.0,
+                      50.0,
+                      50.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus health",
+                      "% bonus health",
+                      "% bonus health"
+                    ],
+                    "values": [
+                      10.0,
+                      10.0,
+                      10.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Non-Champion True Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      1200.0,
+                      1200.0,
+                      1200.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      50.0,
+                      50.0,
+                      50.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus health",
+                      "% bonus health",
+                      "% bonus health"
+                    ],
+                    "values": [
+                      10.0,
+                      10.0,
+                      10.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Each stack of Feast increases the cast range of the ability by 2.5, for a maximum increase of 25 at 10 stacks, and grants Cho'Gath bonus health as well as bonus attack range and increased size, capping at 75 bonus attack range and 100% increased size.",
+            "leveling": [
+              {
+                "attribute": "Bonus Attack Range Per Stack",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      4.7,
+                      6.2,
+                      7.7
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Bonus Health Per Stack",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      80.0,
+                      120.0,
+                      160.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Bonus Size Per Stack",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      6.0,
+                      8.0,
+                      10.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "If the target is killed, Cho'Gath gains a stack of Feast. Only 6 stacks can be gained from non-epic monsters or minions.",
+            "leveling": []
+          }
+        ],
+        "name": "Feast"
+      }
+    ]
+  },
+  "positions": [
+    "TOP"
+  ]
+}

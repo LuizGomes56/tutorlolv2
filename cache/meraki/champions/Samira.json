@@ -1,0 +1,554 @@
+{
+  "name": "Samira",
+  "attackType": "RANGED",
+  "adaptiveType": "PHYSICAL_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 630.0,
+      "perLevel": 108.0
+    },
+    "mana": {
+      "flat": 349.0,
+      "perLevel": 38.0
+    },
+    "armor": {
+      "flat": 26.0,
+      "perLevel": 4.7
+    },
+    "magicResistance": {
+      "flat": 30.0,
+      "perLevel": 1.3
+    },
+    "attackDamage": {
+      "flat": 57.0,
+      "perLevel": 3.0
+    },
+    "attackSpeed": {
+      "flat": 0.658,
+      "perLevel": 3.3
+    },
+    "movespeed": {
+      "flat": 335.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.658,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 500.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 0.95,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": null,
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Innate: Samira's basic attacks against targets within 200 units of her use her blade, becoming non-projectile. Blade attacks post-hit, Blade Whirl, Wild Rush, and the slash and explosives of Flair deal 2 : 19 (based on level) (+ 3.5% : 10.5% (based on level) AD) bonus magic damage, increased by 0% : 100% (based on target's missing health).",
+            "leveling": []
+          },
+          {
+            "description": "Innate: Samira's damaging basic attacks and abilities against at least one enemy champion different from the previous damaging hit made against champions generate a stack of Style for 6 seconds, refreshing on subsequent hits and stacking up to 6 times.",
+            "leveling": []
+          },
+          {
+            "description": "Samira's basic attack against an immobilized target is empowered to have an uncancellable windup and deal the attack's damage over 6 strikes in 0.5 seconds. If the target is a monster or is airborne, the attack also knocks them up for 0.5 seconds. Samira will dash into her attack range of the target if they are nearby.",
+            "leveling": []
+          },
+          {
+            "description": "Style: For each stack, Samira gains 2.75% / 3% / 3.25% / 3.5% (based on level) bonus movement speed, up to a maximum of 16.5% / 18% / 19.5% / 21% (based on level). At maximum stacks, Samira can cast Inferno Trigger.",
+            "leveling": []
+          },
+          {
+            "description": "The empowered attack resets Samira's basic attack timer, is affected by critical strike modifiers, applies on-hit effects only once, and cannot occur on the same target more than once every few seconds.",
+            "leveling": []
+          }
+        ],
+        "name": "Daredevil Impulse"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                6.0,
+                5.0,
+                4.0,
+                3.0,
+                2.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Samira fires a shot in the target direction that deals physical damage to the first enemy hit.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      5.0,
+                      10.0,
+                      15.0,
+                      20.0,
+                      25.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      95.0,
+                      102.5,
+                      110.0,
+                      117.5,
+                      125.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Flair can critically strike for (125% + 40%) damage and will apply life steal at 80% effectiveness.",
+            "leveling": []
+          },
+          {
+            "description": "If Flair is cast during Wild Rush, Samira deploys explosives in her wake that detonate upon the end of the dash, dealing the same damage to enemies hit.",
+            "leveling": []
+          },
+          {
+            "description": "If a targetable enemy is in front of Samira at the time of cast, she will instead slash with her blade in a cone, dealing the same damage to enemies hit.",
+            "leveling": []
+          }
+        ],
+        "name": "Flair"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                30.0,
+                28.0,
+                26.0,
+                24.0,
+                22.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Samira spins her blade over 0.75 seconds, destroying all hostile non- turret projectiles within the area for the duration.",
+            "leveling": []
+          },
+          {
+            "description": "Samira cannot basic attack nor cast Flair during Blade Whirl. Casting Inferno Trigger will end Blade Whirl early.",
+            "leveling": []
+          },
+          {
+            "description": "Samira slashes twice during Blade Whirl, each one dealing physical damage to all nearby enemies. The first slash occurs immediately and the second one occurs after the duration.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage per Hit",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      20.0,
+                      35.0,
+                      50.0,
+                      65.0,
+                      80.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      50.0,
+                      50.0,
+                      50.0,
+                      50.0,
+                      50.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      40.0,
+                      70.0,
+                      100.0,
+                      130.0,
+                      160.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Blade Whirl"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                20.0,
+                18.0,
+                16.0,
+                14.0,
+                12.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Samira dashes a fixed distance in the direction of the target enemy or enemy structure, dealing magic damage to enemies she passes through. She also gains bonus attack speed for 5 seconds.",
+            "leveling": [
+              {
+                "attribute": "Bonus Attack Speed",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      20.0,
+                      25.0,
+                      30.0,
+                      35.0,
+                      40.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      50.0,
+                      60.0,
+                      70.0,
+                      80.0,
+                      90.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      20.0,
+                      20.0,
+                      20.0,
+                      20.0,
+                      20.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Flair and Inferno Trigger can be cast during the dash. Casting Blade Whirl will buffer it to cast at the end of the dash.",
+            "leveling": []
+          },
+          {
+            "description": "Scoring a takedown against an enemy champion within 3 seconds of damaging them resets Wild Rush's cooldown.",
+            "leveling": []
+          }
+        ],
+        "name": "Wild Rush"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                5.0,
+                5.0,
+                5.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "A nearby visible enemy is required to cast this ability, and targets do not have to be visible to be shot at. Style stacks are consumed at the end of the effect.",
+            "leveling": []
+          },
+          {
+            "description": "Active: Samira unleashes a torrent of shots for 2.277 seconds, reducing her movement speed by 30% and rapidly shooting at nearby enemies over 2.013 seconds at sporadic times in 0.2-second intervals each (up to 10 times per enemy), dealing physical damage with each shot, reduced by 75% against minions. This damage is affected by critical strike modifiers and applies life steal at 80% effectiveness.",
+            "leveling": [
+              {
+                "attribute": "Minion Damage Per Shot",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      1.25,
+                      3.75,
+                      6.25
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      11.25,
+                      11.25,
+                      11.25
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Physical Damage Per Shot",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      5.0,
+                      15.0,
+                      25.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      45.0,
+                      45.0,
+                      45.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Minion Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      12.5,
+                      37.5,
+                      62.5
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      112.5,
+                      112.5,
+                      112.5
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      50.0,
+                      150.0,
+                      250.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      450.0,
+                      450.0,
+                      450.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Samira cannot basic attack nor cast Flair and Blade Whirl during Inferno Trigger, but she can still move. Inferno Trigger will end prematurely by all forms of cast-inhibiting crowd control as well as disarm. Inferno Trigger cannot be cast while Samira is disarmed.",
+            "leveling": []
+          }
+        ],
+        "name": "Inferno Trigger"
+      }
+    ]
+  },
+  "positions": [
+    "BOTTOM"
+  ]
+}

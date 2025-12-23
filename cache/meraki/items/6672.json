@@ -1,0 +1,83 @@
+{
+  "active": [],
+  "buildsFrom": [
+    6690,
+    3051,
+    1043
+  ],
+  "buildsInto": [],
+  "name": "Kraken Slayer",
+  "tier": 3,
+  "passives": [
+    {
+      "effects": "Basic attacks [[on-hit]] grant a stack for 3 seconds, up to 2 stacks. At 2 stacks, the next basic attack consumes all stacks to deal {{as|{{rd|150 to 200 for 11|150*0.8 to 200*0.8 for 11|levels=1;9 to 18|pp=true}} '''bonus''' physical damage|physical damage}} on-hit, increased by {{pp|0 to 75 by 5|0 to 100|key=%|color=health|type=target's '''missing''' health|key1=%}}, for up to {{as|{{rd|150*1.75 to 200*1.75 for 11|150*0.8*1.75 to 200*0.8*1.75 for 11|levels=1;9 to 18|pp=true}} '''bonus''' physical damage|physical damage}}.",
+      "name": "Bring It Down",
+      "unique": true
+    }
+  ],
+  "id": 6672,
+  "stats": {
+    "abilityPower": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 45.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 40.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 4.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "shop": {
+    "purchasable": true,
+    "prices": {
+      "total": 3000
+    }
+  }
+}

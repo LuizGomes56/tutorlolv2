@@ -1,0 +1,706 @@
+{
+  "name": "Qiyana",
+  "attackType": "MELEE",
+  "adaptiveType": "PHYSICAL_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 590.0,
+      "perLevel": 124.0
+    },
+    "mana": {
+      "flat": 375.0,
+      "perLevel": 60.0
+    },
+    "armor": {
+      "flat": 31.0,
+      "perLevel": 4.7
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 66.0,
+      "perLevel": 3.1
+    },
+    "attackSpeed": {
+      "flat": 0.688,
+      "perLevel": 2.1
+    },
+    "movespeed": {
+      "flat": 335.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.625,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 150.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 0.9,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.15,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 0.9,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": null,
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Gathering an Element with Terrashape resets Royal Privilege's per-target cooldown for enemies affected by Royal Privilege using a different Element (or no Element).",
+            "leveling": []
+          },
+          {
+            "description": "Innate: Qiyana's basic attacks and basic abilities deal 15 : 83 (based on level) (+ 30% bonus AD) (+ 30% AP) bonus physical damage. This effect cannot occur on the same target more than once every few seconds.",
+            "leveling": []
+          }
+        ],
+        "name": "Royal Privilege"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                7.0,
+                7.0,
+                7.0,
+                7.0,
+                7.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Qiyana slashes forward in the target direction, dealing physical damage to enemies in a line, reduced to 75% damage against targets beyond the first. Edge of Ixtal deals 175% damage against monsters.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      60.0,
+                      90.0,
+                      120.0,
+                      150.0,
+                      180.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      90.0,
+                      90.0,
+                      90.0,
+                      90.0,
+                      90.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Reduced Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      45.0,
+                      67.5,
+                      90.0,
+                      112.5,
+                      135.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      67.5,
+                      67.5,
+                      67.5,
+                      67.5,
+                      67.5
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Gathering an Element with Terrashape resets Edge of Ixtal's cooldown and upgrades it into Elemental Wrath.",
+            "leveling": []
+          },
+          {
+            "description": "If cast during Audacity's dash towards an enemy champion and the target is within 150 units of Qiyana at the end of the dash, Edge of Ixtal will autonomously aim at the target.",
+            "leveling": []
+          }
+        ],
+        "name": "Edge of Ixtal"
+      },
+      {
+        "cooldown": null,
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Qiyana hurls her blade in the target direction that blasts in a line upon hitting an enemy or maximum range, consuming the current Element to empower the blade with an additional effect.",
+            "leveling": []
+          },
+          {
+            "description": "Brush: The blade creates a grass field around Qiyana that lasts for up to 3 seconds, granting her invisibility and 20% bonus movement speed until she attacks, casts an ability other than Terrashape, or exits the field.",
+            "leveling": []
+          },
+          {
+            "description": "Enemies hit are dealt Edge of Ixtal's damage, reduced to 75% against subsequent enemies beyond the closest. Elemental Wrath deals 175% damage against monsters.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      60.0,
+                      90.0,
+                      120.0,
+                      150.0,
+                      180.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      90.0,
+                      90.0,
+                      90.0,
+                      90.0,
+                      90.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Reduced Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      45.0,
+                      67.5,
+                      90.0,
+                      112.5,
+                      135.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      67.5,
+                      67.5,
+                      67.5,
+                      67.5,
+                      67.5
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "River: The blast roots enemies hit for 0.5 seconds, then slows them by 20% for 1 second.",
+            "leveling": []
+          },
+          {
+            "description": "Terrain: The blast deals 60% increased damage against enemies below 50% of their maximum health. Subsequent targets beyond the closest that are below the threshold take 35% increased damage instead.",
+            "leveling": [
+              {
+                "attribute": "Increased Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      96.0,
+                      144.0,
+                      192.0,
+                      240.0,
+                      288.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      144.0,
+                      144.0,
+                      144.0,
+                      144.0,
+                      144.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Subsequent Increased Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      81.0,
+                      121.5,
+                      162.0,
+                      202.5,
+                      243.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      121.5,
+                      121.5,
+                      121.5,
+                      121.5,
+                      121.5
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Elemental Wrath"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                7.0,
+                7.0,
+                7.0,
+                7.0,
+                7.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "A target Element is required to cast this ability.",
+            "leveling": []
+          },
+          {
+            "description": "Active: Qiyana dashes up to 300 units towards the target location to gather the Element of the nearest Brush, River or Terrain she targeted.",
+            "leveling": []
+          },
+          {
+            "description": "Once Terrashape has been learned, Qiyana is automatically given the Terrain element upon respawning.",
+            "leveling": []
+          },
+          {
+            "description": "Passive: While holding an Element, Qiyana gains bonus attack speed, 25 bonus attack range and bonus magic damage on her basic attacks on-hit and basic abilities. While out-of-combat and moving near the Element currently being held, she gains bonus movement speed.",
+            "leveling": [
+              {
+                "attribute": "Bonus Attack Speed",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      5.0,
+                      10.0,
+                      15.0,
+                      20.0,
+                      25.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Bonus Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      8.0,
+                      16.0,
+                      24.0,
+                      32.0,
+                      40.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      20.0,
+                      20.0,
+                      20.0,
+                      20.0,
+                      20.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      45.0,
+                      45.0,
+                      45.0,
+                      45.0,
+                      45.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Bonus Movement Speed",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      3.0,
+                      5.0,
+                      7.0,
+                      9.0,
+                      11.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Qiyana can cast any of her abilities during the dash.",
+            "leveling": []
+          }
+        ],
+        "name": "Terrashape"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                11.0,
+                10.0,
+                9.0,
+                8.0,
+                7.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Qiyana dashes a fixed distance in the direction of the target enemy. If they are in range upon arrival, she deals physical damage.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      50.0,
+                      90.0,
+                      130.0,
+                      170.0,
+                      210.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      50.0,
+                      50.0,
+                      50.0,
+                      50.0,
+                      50.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Qiyana can cast any of her abilities during the dash.",
+            "leveling": []
+          }
+        ],
+        "name": "Audacity"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                120.0,
+                120.0,
+                120.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Qiyana sweeps a windblast in the target direction that knocks back enemies hit by 375 units, though not through terrain, and stops upon hitting Terrain.",
+            "leveling": []
+          },
+          {
+            "description": "The windblast creates a cascading shockwave across any River or Brush it passes through, as well as around the borders of Terrain it reaches, dealing physical damage to enemies hit, stunning them for 0.5 : 1 (based on proximity) seconds, and briefly granting sight of the area along its path. The damage based on the target's health ratio is capped against monsters.",
+            "leveling": [
+              {
+                "attribute": "Capped Monster Health Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      500.0,
+                      750.0,
+                      1000.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      125.0,
+                      125.0,
+                      125.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      100.0,
+                      200.0,
+                      300.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      125.0,
+                      125.0,
+                      125.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% of target's maximum health",
+                      "% of target's maximum health",
+                      "% of target's maximum health"
+                    ],
+                    "values": [
+                      10.0,
+                      10.0,
+                      10.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Supreme Display of Talent"
+      }
+    ]
+  },
+  "positions": [
+    "MIDDLE"
+  ]
+}

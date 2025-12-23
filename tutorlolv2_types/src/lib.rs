@@ -1,18 +1,26 @@
 #![no_std]
-mod ability_name;
+pub mod ability_name;
 
-pub use ability_name::*;
+pub use ability_name::AbilityName;
 
 /// Enum that represents one ability of a champion, with a custom display name.
 /// - [`AbilityId::P`] represents the passive of a champion
 /// - Other variants correspond to the abilities `Q`, `W`, `E`, and `R` (ultimate)
-#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-#[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
-#[cfg_attr(
-    feature = "serde",
-    derive(serde::Serialize, serde::Deserialize),
-    serde(tag = "type", content = "name")
+#[derive(
+    Clone,
+    Copy,
+    Debug,
+    Eq,
+    Hash,
+    Ord,
+    PartialEq,
+    PartialOrd,
+    bincode::Encode,
+    bincode::Decode,
+    serde::Serialize,
+    serde::Deserialize,
 )]
+#[serde(tag = "type", content = "name")]
 pub enum AbilityId {
     P(AbilityName),
     Q(AbilityName),
@@ -70,6 +78,10 @@ impl AbilityId {
         }
     }
 
+    pub fn as_const_lit(&self) -> String {
+        format!("{}::{:?}", self.as_char(), self.ability_name()).replace("_", "")
+    }
+
     pub fn as_literal(&self) -> String {
         format!(
             "AbilityId::{}(AbilityName::{:?})",
@@ -83,13 +95,21 @@ impl AbilityId {
 /// to the current player when bought. For example `StatName::AbilityPower(80)`
 /// means that when bought, the player gets extra 80 ability power. This struct
 /// weighs 4 bytes and the maximum stat buff for one item is [`u16::MAX`]
-#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-#[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
-#[cfg_attr(
-    feature = "serde",
-    derive(serde::Serialize, serde::Deserialize),
-    serde(tag = "name", content = "value")
+#[derive(
+    Clone,
+    Copy,
+    Debug,
+    Eq,
+    Hash,
+    Ord,
+    PartialEq,
+    PartialOrd,
+    bincode::Encode,
+    bincode::Decode,
+    serde::Serialize,
+    serde::Deserialize,
 )]
+#[serde(tag = "name", content = "value")]
 pub enum StatName {
     AbilityHaste(u16),
     AbilityPower(u16),

@@ -1,0 +1,45 @@
+{
+  "colloq": "",
+  "depth": 3,
+  "description": "<mainText><stats><attention>55</attention> Attack Damage<br><attention>18</attention> Lethality</stats><br><br><passive>Preparation</passive><br>After being out of combat with Champions for 8 seconds gain <scaleLethality>Lethality</scaleLethality>. This Lethality lasts for 3 seconds after dealing damage to champions.<br><br><passive>Extraction</passive><br>When a champion that you damaged within 3 seconds dies, gain <speed>200 decaying Move Speed</speed> for 1.5 seconds.<br></mainText>",
+  "from": [
+    "1037",
+    "3134",
+    "1036"
+  ],
+  "gold": {
+    "base": 475,
+    "purchasable": true,
+    "sell": 1890,
+    "total": 2700
+  },
+  "image": {
+    "full": "6701.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item5.png",
+    "w": 48,
+    "x": 192,
+    "y": 336
+  },
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Opportunity",
+  "plaintext": "",
+  "stats": {
+    "FlatPhysicalDamageMod": 55
+  },
+  "tags": [
+    "Damage",
+    "Active",
+    "NonbootsMovement",
+    "ArmorPenetration"
+  ]
+}

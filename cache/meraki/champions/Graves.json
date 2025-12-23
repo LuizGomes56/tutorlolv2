@@ -1,0 +1,507 @@
+{
+  "name": "Graves",
+  "attackType": "RANGED",
+  "adaptiveType": "PHYSICAL_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 625.0,
+      "perLevel": 106.0
+    },
+    "mana": {
+      "flat": 325.0,
+      "perLevel": 40.0
+    },
+    "armor": {
+      "flat": 33.0,
+      "perLevel": 4.6
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 68.0,
+      "perLevel": 4.0
+    },
+    "attackSpeed": {
+      "flat": 0.475,
+      "perLevel": 3.0
+    },
+    "movespeed": {
+      "flat": 340.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.490000009536743,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 425.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": null,
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Critical strikes spray 6 pellets over a 25% wider cone, with each pellet dealing[ (33.75% + 18%) increased damage, ][ increased damage equal to 45% bonus critical damage, ]resulting in[ 178.312% (+ 23.997%) total damage ][ 249.52% : 356.48% (based on level) (+ 33.58% : 47.97% (based on level)) AD total physical damage ]if all pellets hit a single target.",
+            "leveling": []
+          },
+          {
+            "description": "Innate - 12-Gauge: Graves' basic attack sprays 4 pellets in a cone, each colliding with the first enemy unit in their path, dealing 70% : 100.01% (based on level) AD physical damage plus[ 23.31% : 33.3% (based on level) AD additional physical damage ][ about one-third of the damage ]for each subsequent pellet hitting the same target, up to 139.93% : 199.92% (based on level) AD total physical damage against a single target. Pellets deal 25% reduced damage against structures.",
+            "leveling": []
+          },
+          {
+            "description": "Innate - Buckshot: Non-champion units hit by more than one pellet are knocked back, though not through terrain.",
+            "leveling": []
+          },
+          {
+            "description": "Innate - Double Barrel: Graves' basic attacks fire his shotgun to consume ammunition within 2 shells. He will reload over a few seconds immediately after expending all shells or withholding leftover shells for a while. The reload time is reduced by Graves' level and bonus attack speed, and can be interrupted by declaring an attack or casting an ability.",
+            "leveling": []
+          },
+          {
+            "description": "Pellets apply life steal at 100% effectiveness. Only the first pellet to hit each enemy applies on-hit effects.",
+            "leveling": []
+          }
+        ],
+        "name": "New Destiny"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                13.0,
+                11.25,
+                9.5,
+                7.75,
+                6.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Graves fires a round in the target direction that deals physical damage to enemies it passes through and leaves behind a powder trail.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      45.0,
+                      65.0,
+                      85.0,
+                      105.0,
+                      125.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      80.0,
+                      80.0,
+                      80.0,
+                      80.0,
+                      80.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "After 2 seconds, or 0.231 seconds upon colliding with terrain, the round detonates to deal physical damage to enemies within a wide perpendicular area and in a reverse wave along the powder trail.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      85.0,
+                      120.0,
+                      155.0,
+                      190.0,
+                      225.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      40.0,
+                      65.0,
+                      90.0,
+                      115.0,
+                      140.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      130.0,
+                      185.0,
+                      240.0,
+                      295.0,
+                      350.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      120.0,
+                      145.0,
+                      170.0,
+                      195.0,
+                      220.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "End of the Line"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                26.0,
+                24.0,
+                22.0,
+                20.0,
+                18.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Graves fires a smoke canister at the target location that upon impact deals magic damage to enemies within the area and slows them by 50% for 0.5 seconds.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      60.0,
+                      110.0,
+                      160.0,
+                      210.0,
+                      260.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      60.0,
+                      60.0,
+                      60.0,
+                      60.0,
+                      60.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "The canister creates a cloud of smoke for 4 seconds that applies nearsight of outside the area to all enemies within every 0.25 seconds, reducing their sight radius relative to the center.",
+            "leveling": []
+          }
+        ],
+        "name": "Smoke Screen"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                16.0,
+                15.0,
+                14.0,
+                13.0,
+                12.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: Graves dashes to the target location, reloading one shell while generating a stack of True Grit for 4 seconds, stacking up to 8 times. Dashing towards an enemy champion generates 2 stacks of True Grit.",
+            "leveling": []
+          },
+          {
+            "description": "Quickdraw resets Graves' basic attack timer.",
+            "leveling": []
+          },
+          {
+            "description": "Quickdraw's current cooldown is reduced by 0.5 seconds for every pellet impacting an enemy.",
+            "leveling": []
+          },
+          {
+            "description": "True Grit: For each stack, Graves gains bonus armor. Subsequent casts of Quickdraw and attacks versus non- minions will refresh the duration of True Grit.",
+            "leveling": [
+              {
+                "attribute": "Bonus Armor",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      4.0,
+                      7.0,
+                      10.0,
+                      13.0,
+                      16.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Maximum Bonus Armor",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      32.0,
+                      56.0,
+                      80.0,
+                      104.0,
+                      128.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Quickdraw"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                100.0,
+                80.0,
+                60.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Graves fires an explosive shell in the target direction that deals physical damage to enemies hit and causes him to recoil 400 units in the opposite direction.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      275.0,
+                      425.0,
+                      575.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      150.0,
+                      150.0,
+                      150.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Upon hitting an enemy champion or reaching the end of its range, the shell explodes in a cone to deal reduced damage to additional enemies.",
+            "leveling": [
+              {
+                "attribute": "Reduced Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      200.0,
+                      320.0,
+                      440.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      120.0,
+                      120.0,
+                      120.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Collateral Damage"
+      }
+    ]
+  },
+  "positions": [
+    "JUNGLE"
+  ]
+}

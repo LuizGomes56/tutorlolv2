@@ -1,0 +1,49 @@
+{
+  "colloq": ";",
+  "depth": 2,
+  "description": "<mainText><stats><attention>15</attention> Attack Damage<br><attention>7%</attention> Life Steal</stats><br><br></mainText>",
+  "from": [
+    "1036"
+  ],
+  "gold": {
+    "base": 550,
+    "purchasable": true,
+    "sell": 630,
+    "total": 900
+  },
+  "image": {
+    "full": "1053.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item0.png",
+    "w": 48,
+    "x": 0,
+    "y": 96
+  },
+  "into": [
+    "3153",
+    "3072",
+    "3074",
+    "3139",
+    "4403"
+  ],
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Vampiric Scepter",
+  "plaintext": "Basic attacks restore Health",
+  "stats": {
+    "FlatPhysicalDamageMod": 15,
+    "PercentLifeStealMod": 0.07
+  },
+  "tags": [
+    "Damage",
+    "LifeSteal"
+  ]
+}

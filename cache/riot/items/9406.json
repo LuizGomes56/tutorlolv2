@@ -1,0 +1,33 @@
+{
+  "colloq": "",
+  "consumed": true,
+  "description": "<mainText><stats></stats><br><br>Xayah now also throws a familiar dagger behind her. This special dagger will bounce from enemy to enemy, dealing damage and then return to Xayah granting her a small shield.<br><br><rules>Damage, Ability Haste, Crit Chance, Projectile Count, Duration</rules></mainText>",
+  "gold": {
+    "base": 0,
+    "purchasable": true,
+    "sell": 0,
+    "total": 0
+  },
+  "image": {
+    "full": "9406.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item6.png",
+    "w": 48,
+    "x": 288,
+    "y": 144
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": false,
+    "33": true,
+    "35": false
+  },
+  "name": "Lover's Ricochet",
+  "plaintext": "",
+  "stats": {},
+  "tags": []
+}

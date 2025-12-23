@@ -1,0 +1,162 @@
+{
+  "name": "Irelia",
+  "adaptative_type": "Physical",
+  "attack_type": "Melee",
+  "positions": [
+    "Middle",
+    "Top"
+  ],
+  "stats": {
+    "health": {
+      "flat": 630.0,
+      "perLevel": 115.0
+    },
+    "mana": {
+      "flat": 350.0,
+      "perLevel": 50.0
+    },
+    "armor": {
+      "flat": 36.0,
+      "perLevel": 4.7
+    },
+    "magicResistance": {
+      "flat": 30.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 65.0,
+      "perLevel": 3.5
+    },
+    "attackSpeed": {
+      "flat": 0.656,
+      "perLevel": 2.5
+    },
+    "movespeed": {
+      "flat": 335.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.656000018119812,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 200.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.05,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": [
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Defiant Dance",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "30 + (1.2 * ctx.ad) + (1.2 * ctx.ap)",
+          "60 + (1.2 * ctx.ad) + (1.2 * ctx.ap)",
+          "90 + (1.2 * ctx.ad) + (1.2 * ctx.ap)",
+          "120 + (1.2 * ctx.ad) + (1.2 * ctx.ap)",
+          "150 + (1.2 * ctx.ad) + (1.2 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Bladesurge",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "5 + (0.7 * ctx.ad)",
+          "25 + (0.7 * ctx.ad)",
+          "45 + (0.7 * ctx.ad)",
+          "65 + (0.7 * ctx.ad)",
+          "85 + (0.7 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Vanguard's Edge",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "125 + (0.7 * ctx.ap)",
+          "200 + (0.7 * ctx.ap)",
+          "275 + (0.7 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_2"
+      },
+      {
+        "name": "Defiant Dance",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "10 + (0.4 * ctx.ad) + (0.4 * ctx.ap)",
+          "20 + (0.4 * ctx.ad) + (0.4 * ctx.ap)",
+          "30 + (0.4 * ctx.ad) + (0.4 * ctx.ap)",
+          "40 + (0.4 * ctx.ad) + (0.4 * ctx.ap)",
+          "50 + (0.4 * ctx.ad) + (0.4 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Flawless Duet",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "70 + (0.8 * ctx.ap)",
+          "110 + (0.8 * ctx.ap)",
+          "150 + (0.8 * ctx.ap)",
+          "190 + (0.8 * ctx.ap)",
+          "230 + (0.8 * ctx.ap)"
+        ]
+      }
+    ]
+  ],
+  "merge_data": []
+}

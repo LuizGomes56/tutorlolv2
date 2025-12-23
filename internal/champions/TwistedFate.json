@@ -1,0 +1,165 @@
+{
+  "name": "Twisted Fate",
+  "adaptative_type": "Magic",
+  "attack_type": "Ranged",
+  "positions": [
+    "Bottom",
+    "Middle",
+    "Top"
+  ],
+  "stats": {
+    "health": {
+      "flat": 604.0,
+      "perLevel": 108.0
+    },
+    "mana": {
+      "flat": 333.0,
+      "perLevel": 39.0
+    },
+    "armor": {
+      "flat": 24.0,
+      "perLevel": 4.35
+    },
+    "magicResistance": {
+      "flat": 30.0,
+      "perLevel": 1.3
+    },
+    "attackDamage": {
+      "flat": 52.0,
+      "perLevel": 2.5
+    },
+    "attackSpeed": {
+      "flat": 0.625,
+      "perLevel": 2.5
+    },
+    "movespeed": {
+      "flat": 330.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.651000022888183,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 525.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 0.95,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": [
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Stacked Deck",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "65 + (0.2 * ctx.bonus_ad) + (0.4 * ctx.ap)",
+          "90 + (0.2 * ctx.bonus_ad) + (0.4 * ctx.ap)",
+          "115 + (0.2 * ctx.bonus_ad) + (0.4 * ctx.ap)",
+          "140 + (0.2 * ctx.bonus_ad) + (0.4 * ctx.ap)",
+          "165 + (0.2 * ctx.bonus_ad) + (0.4 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_3"
+      },
+      {
+        "name": "Pick a Card",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "30 + ctx.ad + (0.7 * ctx.ap)",
+          "45 + ctx.ad + (0.7 * ctx.ap)",
+          "60 + ctx.ad + (0.7 * ctx.ap)",
+          "75 + ctx.ad + (0.7 * ctx.ap)",
+          "90 + ctx.ad + (0.7 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Pick a Card",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "40 + ctx.ad + ctx.ap",
+          "60 + ctx.ad + ctx.ap",
+          "80 + ctx.ad + ctx.ap",
+          "100 + ctx.ad + ctx.ap",
+          "120 + ctx.ad + ctx.ap"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Wild Cards",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "60 + (0.5 * ctx.bonus_ad) + (0.85 * ctx.ap)",
+          "105 + (0.5 * ctx.bonus_ad) + (0.85 * ctx.ap)",
+          "150 + (0.5 * ctx.bonus_ad) + (0.85 * ctx.ap)",
+          "195 + (0.5 * ctx.bonus_ad) + (0.85 * ctx.ap)",
+          "240 + (0.5 * ctx.bonus_ad) + (0.85 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_2"
+      },
+      {
+        "name": "Pick a Card",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "15 + ctx.ad + (0.5 * ctx.ap)",
+          "22.5 + ctx.ad + (0.5 * ctx.ap)",
+          "30 + ctx.ad + (0.5 * ctx.ap)",
+          "37.5 + ctx.ad + (0.5 * ctx.ap)",
+          "45 + ctx.ad + (0.5 * ctx.ap)"
+        ]
+      }
+    ]
+  ],
+  "merge_data": []
+}

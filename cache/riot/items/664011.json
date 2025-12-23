@@ -1,0 +1,41 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><attention>35</attention> Ability Power<br><attention>150</attention> Health<br><attention>10%</attention> Heal and Shield Power<br><attention>10</attention> Ability Haste</stats><br><br><passive>Effervescence</passive><br>Gain +1% Attack Speed for every <healing>1% Heal and Shield Power</healing> you have. <br><br><passive>Peppermint</passive><br><OnHit>On-Hit</OnHit>, <healing>heal the lowest health</healing> ally champion near you for , prioritizing lower health allies.</mainText>",
+  "gold": {
+    "base": 2500,
+    "purchasable": true,
+    "sell": 1250,
+    "total": 2500
+  },
+  "image": {
+    "full": "664011.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item5.png",
+    "w": 48,
+    "x": 0,
+    "y": 192
+  },
+  "maps": {
+    "11": true,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": false
+  },
+  "name": "Sword of Blossoming Dawn",
+  "plaintext": "",
+  "stats": {
+    "FlatHPPoolMod": 150,
+    "FlatMagicDamageMod": 35
+  },
+  "tags": [
+    "Health",
+    "SpellDamage",
+    "CooldownReduction",
+    "OnHit",
+    "AbilityHaste"
+  ]
+}

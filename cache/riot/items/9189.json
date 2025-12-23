@@ -1,0 +1,32 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats></stats><br><br>Fires a rotating stream of projectiles.<br><br><status>Evolve:</status> Health Regeneration<br><br><rules>Damage, Crit Chance, Projectile Count</rules></mainText>",
+  "gold": {
+    "base": 0,
+    "purchasable": true,
+    "sell": 0,
+    "total": 0
+  },
+  "image": {
+    "full": "9189.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item5.png",
+    "w": 48,
+    "x": 336,
+    "y": 432
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": false,
+    "33": true,
+    "35": false
+  },
+  "name": "Final City Transit",
+  "plaintext": "",
+  "stats": {},
+  "tags": []
+}

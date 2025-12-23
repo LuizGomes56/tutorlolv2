@@ -1,0 +1,32 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats></stats><br><br>Fires orbital strikes with bonus crit chance at random enemies, dealing high damage in a small area.<br><br><status>Evolve:</status> Crit Chance<br><br><rules>Damage, Ability Haste, Area Size, Crit Chance</rules></mainText>",
+  "gold": {
+    "base": 0,
+    "purchasable": true,
+    "sell": 0,
+    "total": 0
+  },
+  "image": {
+    "full": "9184.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item5.png",
+    "w": 48,
+    "x": 144,
+    "y": 432
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": false,
+    "33": true,
+    "35": false
+  },
+  "name": "Bunny Mega-Blast",
+  "plaintext": "",
+  "stats": {},
+  "tags": []
+}

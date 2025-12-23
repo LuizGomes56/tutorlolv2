@@ -8,10 +8,10 @@
 //! so all the function inputs have to be obtained through your
 //! own mechanism
 
-use crate::{helpers::*, model::*, riot::Stats};
+use crate::helpers::*;
+use crate::model::*;
 use alloc::boxed::Box;
 use tutorlolv2_gen::*;
-use tutorlolv2_types::StatName;
 
 /// Constant array containing the armor and magic resistences of jungle monsters.
 /// Note that there's no specific name to each monster since the damage against
@@ -478,7 +478,7 @@ pub fn calculator(game: InputGame) -> OutputGame {
     let current_player_cache = CHAMPION_CACHE[current_player_champion_id as usize];
 
     let current_player_base_stats =
-        BasicStats::base_stats(current_player_champion_id, level, is_mega_gnar);
+        base_stats_bf32(current_player_champion_id, level, is_mega_gnar);
 
     let mut champion_stats = match infer_stats {
         true => get_item_bonus_stats(&current_player_raw_items, &mut modifiers, dragons),
@@ -617,7 +617,7 @@ pub fn get_calculator_enemies(
             } = player;
 
             let e_stats = SimpleStats::from_i32(&e_raw_stats_i32);
-            let e_base_stats = SimpleStats::base_stats(e_champion_id, e_level, e_is_mega_gnar);
+            let e_base_stats = base_stats_sf32(e_champion_id, e_level, e_is_mega_gnar);
             let mut full_state = get_enemy_state(
                 EnemyState {
                     base_stats: e_base_stats,

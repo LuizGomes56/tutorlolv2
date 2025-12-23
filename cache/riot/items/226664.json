@@ -1,0 +1,41 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><attention>450</attention> Health<br><attention>40</attention> Magic Resist<br><attention>10</attention> Ability Haste</stats><br><br><passive>Immolate</passive><br>After taking or dealing damage, deal <magicDamage>magic damage</magicDamage> per second to nearby enemies for 3 seconds. <br><br><passive>Desolate</passive><br>Killing an enemy deals <magicDamage>magic damage</magicDamage> around them.</mainText>",
+  "gold": {
+    "base": 2500,
+    "purchasable": true,
+    "sell": 1250,
+    "total": 2500
+  },
+  "image": {
+    "full": "226664.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item2.png",
+    "w": 48,
+    "x": 240,
+    "y": 96
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": false
+  },
+  "name": "Hollow Radiance",
+  "plaintext": "",
+  "stats": {
+    "FlatHPPoolMod": 450,
+    "FlatSpellBlockMod": 40
+  },
+  "tags": [
+    "Health",
+    "SpellBlock",
+    "Aura",
+    "MagicResist",
+    "AbilityHaste"
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><attention>300</attention> Health<br><attention>15</attention> Ability Haste<br><attention>100%</attention> Base Mana Regen<br><attention>16%</attention> Heal and Shield Power</stats><br><br><br><br><active>ACTIVE</active> (0s)<br><active>Intervention</active><br>Target an area within. After 2.5 seconds, call down a beam of light to restore Health to allies and damage enemy champions.</mainText>",
+  "effect": {
+    "Effect1Amount": "0",
+    "Effect2Amount": "0",
+    "Effect3Amount": "0",
+    "Effect4Amount": "0",
+    "Effect5Amount": "0",
+    "Effect6Amount": "90"
+  },
+  "gold": {
+    "base": 2500,
+    "purchasable": true,
+    "sell": 1250,
+    "total": 2500
+  },
+  "image": {
+    "full": "223107.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item1.png",
+    "w": 48,
+    "x": 432,
+    "y": 240
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": false
+  },
+  "name": "Redemption",
+  "plaintext": "",
+  "stats": {
+    "FlatHPPoolMod": 300
+  },
+  "tags": [
+    "Health",
+    "ManaRegen",
+    "CooldownReduction",
+    "AbilityHaste"
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "colloq": "",
+  "consumeOnFull": true,
+  "consumed": true,
+  "description": "<mainText><stats></stats><br><br><active>Active - Consume:</active> Automatically open a semi-random selection for a permanent stat bonus.</mainText>",
+  "gold": {
+    "base": 750,
+    "purchasable": true,
+    "sell": 375,
+    "total": 750
+  },
+  "image": {
+    "full": "220000.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item0.png",
+    "w": 48,
+    "x": 48,
+    "y": 432
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": false
+  },
+  "name": "Stat Bonus",
+  "plaintext": "",
+  "stats": {},
+  "tags": [
+    "Health",
+    "SpellBlock",
+    "Armor",
+    "Damage",
+    "CriticalStrike",
+    "AttackSpeed",
+    "SpellDamage",
+    "Mana",
+    "Consumable",
+    "CooldownReduction",
+    "SpellVamp",
+    "NonbootsMovement",
+    "Tenacity",
+    "MagicPenetration",
+    "ArmorPenetration",
+    "MagicResist",
+    "AbilityHaste"
+  ]
+}

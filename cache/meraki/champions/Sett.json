@@ -1,0 +1,524 @@
+{
+  "name": "Sett",
+  "attackType": "MELEE",
+  "adaptiveType": "PHYSICAL_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 670.0,
+      "perLevel": 114.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "perLevel": 0.0
+    },
+    "armor": {
+      "flat": 33.0,
+      "perLevel": 4.7
+    },
+    "magicResistance": {
+      "flat": 28.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 60.0,
+      "perLevel": 4.0
+    },
+    "attackSpeed": {
+      "flat": 0.625,
+      "perLevel": 1.75
+    },
+    "movespeed": {
+      "flat": 340.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.625,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 125.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.1,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 0.92,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.05,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": null,
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Innate - Heart of the Half-Beast: Sett regenerates[ an additional 0.075 / 0.25 / 0.5 / 1 (based on level) health every 0.5 seconds per 5% of his missing health. ][ up-to an additional 1.425 / 4.75 / 9.5 / 19 (based on level) health per 0.5 seconds, with the maximum reached at the threshold of 95% missing health. ]",
+            "leveling": []
+          },
+          {
+            "description": "Innate - Heavy Hands: Sett's basic attacks alternate between his Left Punch and a Right Punch on-attack. Sett begins attacking with his Left Punch, and will reset back to it after 2 seconds of not performing a Right Punch.",
+            "leveling": []
+          },
+          {
+            "description": "Sett's Right Punch is empowered to gain 50 bonus range (unless Knuckle Down is active), attack at 8 times the Left Punch's attack speed, and deal 5 : 90 (based on level) (+ 55% bonus AD) bonus physical damage.",
+            "leveling": []
+          }
+        ],
+        "name": "Pit Grit"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                9.0,
+                8.0,
+                7.0,
+                6.0,
+                5.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Sett empowers his next two basic attacks within 5 seconds to gain 50 bonus range and deal bonus physical damage, capped at 400 total damage of each attack against monsters.",
+            "leveling": [
+              {
+                "attribute": "Bonus Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      10.0,
+                      20.0,
+                      30.0,
+                      40.0,
+                      50.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% (+ 1 / 1.5 / 2 / 2.5 / 3% per 100 AD) of target's maximum health",
+                      "% (+ 1 / 1.5 / 2 / 2.5 / 3% per 100 AD) of target's maximum health",
+                      "% (+ 1 / 1.5 / 2 / 2.5 / 3% per 100 AD) of target's maximum health",
+                      "% (+ 1 / 1.5 / 2 / 2.5 / 3% per 100 AD) of target's maximum health",
+                      "% (+ 1 / 1.5 / 2 / 2.5 / 3% per 100 AD) of target's maximum health"
+                    ],
+                    "values": [
+                      1.0,
+                      1.0,
+                      1.0,
+                      1.0,
+                      1.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Bonus Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      20.0,
+                      40.0,
+                      60.0,
+                      80.0,
+                      100.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% (+ 2 / 3 / 4 / 5 / 6% per 100 AD) of target's maximum health",
+                      "% (+ 2 / 3 / 4 / 5 / 6% per 100 AD) of target's maximum health",
+                      "% (+ 2 / 3 / 4 / 5 / 6% per 100 AD) of target's maximum health",
+                      "% (+ 2 / 3 / 4 / 5 / 6% per 100 AD) of target's maximum health",
+                      "% (+ 2 / 3 / 4 / 5 / 6% per 100 AD) of target's maximum health"
+                    ],
+                    "values": [
+                      2.0,
+                      2.0,
+                      2.0,
+                      2.0,
+                      2.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "For 1.5 seconds, Sett also gains 30% bonus movement speed while facing visible enemy champions within 2000 units.",
+            "leveling": []
+          },
+          {
+            "description": "Knuckle Down resets Sett's basic attack timer. The empowered attacks are guaranteed to be a Left Punch followed by a Right Punch, resetting Sett's current Pit Grit state (if applicable) and ignoring the usual time-out period for a follow-up Right Punch.",
+            "leveling": []
+          }
+        ],
+        "name": "Knuckle Down"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                18.0,
+                16.5,
+                15.0,
+                13.5,
+                12.0
+              ]
+            }
+          ]
+        },
+        "damageType": "OTHER_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Sett charges up a strike over the cast time. Additionally, he immediately consumes all of his stored Grit to grant himself a shield at the start of the cast time that is equal to the expended Grit for 3 seconds, decaying in strength over the duration after 0.75 seconds.",
+            "leveling": []
+          },
+          {
+            "description": "After the cast time, he unleashes a massive blast in an area in the target direction, dealing physical damage to enemies hit; those hit in a line in the middle are dealt true damage instead.",
+            "leveling": [
+              {
+                "attribute": "Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      80.0,
+                      100.0,
+                      120.0,
+                      140.0,
+                      160.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% (+ 25% per 100 bonus AD) of expended Grit",
+                      "% (+ 25% per 100 bonus AD) of expended Grit",
+                      "% (+ 25% per 100 bonus AD) of expended Grit",
+                      "% (+ 25% per 100 bonus AD) of expended Grit",
+                      "% (+ 25% per 100 bonus AD) of expended Grit"
+                    ],
+                    "values": [
+                      25.0,
+                      25.0,
+                      25.0,
+                      25.0,
+                      25.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Passive: Sett stores 100% of post-mitigation damage taken as Grit on his resource bar, up to a cap of 50% of his maximum health. Each instance of stored Grit decays in value by 30% every second after 4 seconds.",
+            "leveling": []
+          }
+        ],
+        "name": "Haymaker"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                16.0,
+                14.5,
+                13.0,
+                11.5,
+                10.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Sett pulls in enemies at his front and back along the target direction, dealing physical damage and slowing them by 70% for 0.5 seconds. Facebreaker deals 100 bonus physical damage to monsters.",
+            "leveling": [
+              {
+                "attribute": "Monster Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      150.0,
+                      170.0,
+                      190.0,
+                      210.0,
+                      230.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      60.0,
+                      60.0,
+                      60.0,
+                      60.0,
+                      60.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      50.0,
+                      70.0,
+                      90.0,
+                      110.0,
+                      130.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      60.0,
+                      60.0,
+                      60.0,
+                      60.0,
+                      60.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "If Facebreaker affects at least one enemy on each side, all enemies are stunned for 1 second upon landing.",
+            "leveling": []
+          },
+          {
+            "description": "Sett becomes unable to move or attack for 0.25 seconds after Facebreaker's cast time.",
+            "leveling": []
+          }
+        ],
+        "name": "Facebreaker"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                120.0,
+                100.0,
+                80.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Sett suppresses and reveals the target enemy champion while dashing with displacement immunity to their location and attaching them to himself upon arrival. He leaps another 600 units in the same direction to slam the target into the ground, creating a massive shockwave and quickly sliding forward 250 units beyond the impact.",
+            "leveling": []
+          },
+          {
+            "description": "Enemies within the epicenter take physical damage, and other enemies hit by the shockwave take physical damage that is reduced by up to 75% based on proximity. All targets hit are slowed by 99% for 1 second.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      200.0,
+                      300.0,
+                      400.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      120.0,
+                      120.0,
+                      120.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% of primary target's bonus health",
+                      "% of primary target's bonus health",
+                      "% of primary target's bonus health"
+                    ],
+                    "values": [
+                      40.0,
+                      50.0,
+                      60.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Reduced Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      50.0,
+                      75.0,
+                      100.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      30.0,
+                      30.0,
+                      30.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% of primary target's bonus health",
+                      "% of primary target's bonus health",
+                      "% of primary target's bonus health"
+                    ],
+                    "values": [
+                      10.0,
+                      12.5,
+                      15.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "The leap will end and create the impact prematurely upon encountering terrain that cannot be dashed through, whether by distance or invalid space.",
+            "leveling": []
+          }
+        ],
+        "name": "The Show Stopper"
+      }
+    ]
+  },
+  "positions": [
+    "TOP"
+  ]
+}

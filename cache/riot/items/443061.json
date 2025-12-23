@@ -1,0 +1,41 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><attention>900</attention> Health<br><attention>30</attention> Ability Haste<br><attention>25%</attention> Critical Strike Chance</stats><br><br><passive>Atrophy</passive><br>Immobilizing Crowd Control effects you apply roll your <keyword>Critical Chance</keyword> to increase their duration by 0.25 +33% seconds.</mainText>",
+  "gold": {
+    "base": 1000,
+    "purchasable": true,
+    "sell": 400,
+    "total": 1000
+  },
+  "image": {
+    "full": "443061.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item4.png",
+    "w": 48,
+    "x": 0,
+    "y": 288
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": false
+  },
+  "name": "Force Of Entropy",
+  "plaintext": "",
+  "specialRecipe": 220007,
+  "stats": {
+    "FlatCritChanceMod": 0.25,
+    "FlatHPPoolMod": 900
+  },
+  "tags": [
+    "Health",
+    "SpellBlock",
+    "Armor",
+    "CriticalStrike"
+  ]
+}

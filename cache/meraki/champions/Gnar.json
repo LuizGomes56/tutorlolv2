@@ -1,0 +1,814 @@
+{
+  "name": "Gnar",
+  "attackType": "RANGED",
+  "adaptiveType": "PHYSICAL_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 540.0,
+      "perLevel": 79.0
+    },
+    "mana": {
+      "flat": 100.0,
+      "perLevel": 0.0
+    },
+    "armor": {
+      "flat": 32.0,
+      "perLevel": 3.7
+    },
+    "magicResistance": {
+      "flat": 30.0,
+      "perLevel": 1.3
+    },
+    "attackDamage": {
+      "flat": 60.0,
+      "perLevel": 3.2
+    },
+    "attackSpeed": {
+      "flat": 0.625,
+      "perLevel": 6.0
+    },
+    "movespeed": {
+      "flat": 335.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.625,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 175.0,
+      "perLevel": 5.882
+    },
+    "aramDamageTaken": {
+      "flat": 0.95,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.05,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 0.9,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.1,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": null,
+        "damageType": null,
+        "effects": [
+          {
+            "description": "At maximum Rage, Gnar's abilities switch to Mega Gnar's abilities for 4 seconds and until transforming back to his Mini Gnar form. Casting any of them during this time also causes Gnar to transform into Mega Gnar instantly, else he will transform automatically after the 4 seconds have elapsed.",
+            "leveling": []
+          },
+          {
+            "description": "Gnar gains different stat bonuses based on whether he is in Mini or Mega form. Both of Gnar's forms share their ability cooldowns.",
+            "leveling": []
+          },
+          {
+            "description": "Gnar's Mega form lasts for 15 seconds, with his Rage bar depleting as an indication of remaining time. Rage cannot be generated while in this form. Afterwards, Gnar returns to Mini Gnar, retaining his current percentage health and becoming too tired to generate Rage for 15 seconds.",
+            "leveling": []
+          },
+          {
+            "description": "Innate - Rage Gene: Mini Gnar generates 4 / 7 / 11 (based on level) Rage over 2 seconds upon dealing or receiving damage, up to 100. Against non-champions, basic attacks and Boomerang Throw instantly generate[ 0.5 / 0.875 / 1.375 (based on level) Rage. ][ 12.5% of the amount. ] Against champions, Boomerang Throw instantly generates[ 1 / 1.75 / 2.75 (based on level) Rage, ][ 25% of the amount, ]and basic attacks instantly generate[ 2 / 3.5 / 5.5 (based on level). ][ 50% of the amount. ] Boomerang Throw can only generate Rage once per cast, and grants Rage based on the first enemy hit. Gnar's Rage decays after being out of combat for 13 seconds.",
+            "leveling": []
+          }
+        ],
+        "name": "Rage Gene"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                20.0,
+                17.5,
+                15.0,
+                12.5,
+                10.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Gnar throws a boomerang in a line in the target direction that deals physical damage to enemies in its path and slows them for 2 seconds. After reaching its maximum range or hitting an enemy, the boomerang flies back toward Gnar based on his current movement, dealing 50% damage to subsequent targets.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      5.0,
+                      45.0,
+                      85.0,
+                      125.0,
+                      165.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      125.0,
+                      125.0,
+                      125.0,
+                      125.0,
+                      125.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Reduced Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      2.5,
+                      22.5,
+                      42.5,
+                      62.5,
+                      82.5
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      62.5,
+                      62.5,
+                      62.5,
+                      62.5,
+                      62.5
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Slow",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      15.0,
+                      20.0,
+                      25.0,
+                      30.0,
+                      35.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Catching the boomerang while it is returning back refunds 40% of the ability's total cooldown.",
+            "leveling": []
+          },
+          {
+            "description": "Enemies can be hit only once per pass.",
+            "leveling": []
+          }
+        ],
+        "name": "Boomerang Throw"
+      },
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                20.0,
+                17.5,
+                15.0,
+                12.5,
+                10.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Gnar throws a boulder in the target direction that stops upon hitting an enemy, dealing physical damage to nearby enemies upon impact and slowing them for 2 seconds. The boulder then remains on the ground for 6 seconds.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      45.0,
+                      90.0,
+                      135.0,
+                      180.0,
+                      225.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      140.0,
+                      140.0,
+                      140.0,
+                      140.0,
+                      140.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Slow",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      30.0,
+                      35.0,
+                      40.0,
+                      45.0,
+                      50.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "After 0.3 seconds, Gnar can pick up the boulder by moving within 90 units of it, refunding 70% of the ability's total cooldown.",
+            "leveling": []
+          }
+        ],
+        "name": "Boulder Toss"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": null,
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Gnar gains Hyper's bonus movement speed when he leaves Mega form.",
+            "leveling": []
+          },
+          {
+            "description": "Passive: Gnar's basic attacks on-hit and ability hits apply a stack of Hyper to enemies for 3.5 seconds, refreshing on subsequent applications and stacking up to 3 times.",
+            "leveling": []
+          },
+          {
+            "description": "The third stack against a target consumes them all to deal bonus magic damage, capped at 300 against monsters, and grant Gnar 20% / 40% / 60% / 80% (based on GNAR!'s rank) bonus movement speed that decays over 3 seconds.",
+            "leveling": [
+              {
+                "attribute": "Bonus Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      0.0,
+                      10.0,
+                      20.0,
+                      30.0,
+                      40.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% of target's maximum health",
+                      "% of target's maximum health",
+                      "% of target's maximum health",
+                      "% of target's maximum health",
+                      "% of target's maximum health"
+                    ],
+                    "values": [
+                      6.0,
+                      8.0,
+                      10.0,
+                      12.0,
+                      14.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Hyper"
+      },
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                7.0,
+                7.0,
+                7.0,
+                7.0,
+                7.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Gnar slams his arm down in the target direction, dealing physical damage to all enemies struck within the area and stunning them for 1.25 seconds.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      45.0,
+                      75.0,
+                      105.0,
+                      135.0,
+                      165.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Wallop"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                22.0,
+                19.5,
+                17.0,
+                14.5,
+                12.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Gnar leaps to the target location, then gains bonus attack speed for 6 seconds.",
+            "leveling": [
+              {
+                "attribute": "Bonus Attack Speed",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      40.0,
+                      45.0,
+                      50.0,
+                      55.0,
+                      60.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Boomerang Throw can be cast during the dash.",
+            "leveling": []
+          },
+          {
+            "description": "Gnar will not bounce if he is immobilized during the first leap.",
+            "leveling": []
+          },
+          {
+            "description": "If Gnar lands on a unit he will bounce 500 units further in the same direction.",
+            "leveling": []
+          },
+          {
+            "description": "Landing on an enemy deals them physical damage and slows them by 80% for 0.5 seconds.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      50.0,
+                      85.0,
+                      120.0,
+                      155.0,
+                      190.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% maximum health",
+                      "% maximum health",
+                      "% maximum health",
+                      "% maximum health",
+                      "% maximum health"
+                    ],
+                    "values": [
+                      6.0,
+                      6.0,
+                      6.0,
+                      6.0,
+                      6.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Hop"
+      },
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                22.0,
+                19.5,
+                17.0,
+                14.5,
+                12.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Gnar leaps to the target location and deals physical damage to nearby enemies upon impact. After a 0.25-second delay, Gnar sends out a shockwave, dealing the same damage to additional enemies in a larger radius.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      80.0,
+                      115.0,
+                      150.0,
+                      185.0,
+                      220.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% of his maximum health",
+                      "% of his maximum health",
+                      "% of his maximum health",
+                      "% of his maximum health",
+                      "% of his maximum health"
+                    ],
+                    "values": [
+                      6.0,
+                      6.0,
+                      6.0,
+                      6.0,
+                      6.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Enemies Gnar lands directly on top of are affected by Hop's slow.",
+            "leveling": []
+          },
+          {
+            "description": "If Crunch is used to transform, Gnar will still be able to bounce as per Hop. The shockwave will occur where Gnar lands.",
+            "leveling": []
+          }
+        ],
+        "name": "Crunch"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                90.0,
+                60.0,
+                30.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Enemies that collide with terrain take 50% increased damage immediately and are stunned instantly instead of slowed after a delay.",
+            "leveling": [
+              {
+                "attribute": "Increased Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      300.0,
+                      450.0,
+                      600.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      75.0,
+                      75.0,
+                      75.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      150.0,
+                      150.0,
+                      150.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Mega Gnar - Active: Gnar thrusts in the target direction, knocking away nearby enemies up to 590 units in that direction, though not through terrain, and afterwards dealing them physical damage, as well as slowing them by 45% after a 0.4-second delay for a duration.",
+            "leveling": [
+              {
+                "attribute": "Disable Duration",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      1.25,
+                      1.5,
+                      1.75
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      200.0,
+                      300.0,
+                      400.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      50.0,
+                      50.0,
+                      50.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      100.0,
+                      100.0,
+                      100.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Mini Gnar - Passive: Hyper's bonus movement speed is increased.",
+            "leveling": [
+              {
+                "attribute": "Hyper Bonus Movement Speed",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      40.0,
+                      60.0,
+                      80.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "GNAR!"
+      }
+    ]
+  },
+  "positions": [
+    "TOP"
+  ]
+}

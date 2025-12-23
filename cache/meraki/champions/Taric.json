@@ -1,0 +1,350 @@
+{
+  "name": "Taric",
+  "attackType": "MELEE",
+  "adaptiveType": "PHYSICAL_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 645.0,
+      "perLevel": 99.0
+    },
+    "mana": {
+      "flat": 300.0,
+      "perLevel": 60.0
+    },
+    "armor": {
+      "flat": 40.0,
+      "perLevel": 4.3
+    },
+    "magicResistance": {
+      "flat": 28.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 55.0,
+      "perLevel": 3.5
+    },
+    "attackSpeed": {
+      "flat": 0.625,
+      "perLevel": 2.0
+    },
+    "movespeed": {
+      "flat": 340.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.625,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 150.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.1,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": null,
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Innate: After casting an ability, Taric empowers his next two basic attacks within 5 seconds to each gain 100% total attack speed, deal 25 : 93 (based on level) (+ 15% bonus armor) bonus magic damage, and reduce the remaining cooldowns of his basic abilities by 1 : 2 (based on ability haste)\nseconds.",
+            "leveling": []
+          }
+        ],
+        "name": "Bravado"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                3.0,
+                3.0,
+                3.0,
+                3.0,
+                3.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: Taric heals himself and nearby allied champions for 25 (+ 15% AP) (+ 1% of his maximum health) per charge of Starlight's Touch that he periodically stocks, up to a maximum amount. Bravado's empowered attacks each grant one charge.",
+            "leveling": [
+              {
+                "attribute": "Maximum Charges",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      1.0,
+                      2.0,
+                      3.0,
+                      4.0,
+                      5.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Starlight's Touch can heal up to a maximum of 125 (+ 75% AP) (+ 5% of Taric's maximum health) at 5 charges.",
+            "leveling": []
+          }
+        ],
+        "name": "Starlight's Touch"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                15.0,
+                15.0,
+                15.0,
+                15.0,
+                15.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: Taric grants himself and the target allied champion a shield for 2.5 seconds, binding them with Bastion.",
+            "leveling": [
+              {
+                "attribute": "Shield Strength",
+                "modifiers": [
+                  {
+                    "units": [
+                      "% of target's maximum health",
+                      "% of target's maximum health",
+                      "% of target's maximum health",
+                      "% of target's maximum health",
+                      "% of target's maximum health"
+                    ],
+                    "values": [
+                      7.0,
+                      8.0,
+                      9.0,
+                      10.0,
+                      11.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Passive: Taric gains bonus armor and forms a tether between him and the ally bound by Bastion. While the tether persists, the ally also gains the bonus armor and Taric's abilities are mimicked to them, though the effects do not stack.",
+            "leveling": [
+              {
+                "attribute": "Bonus Armor",
+                "modifiers": [
+                  {
+                    "units": [
+                      "% of Taric's armor",
+                      "% of Taric's armor",
+                      "% of Taric's armor",
+                      "% of Taric's armor",
+                      "% of Taric's armor"
+                    ],
+                    "values": [
+                      6.0,
+                      7.0,
+                      8.0,
+                      9.0,
+                      10.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Taric can also self-cast to shield himself; if he self-casts and is untethered, he will become tethered to the nearest ally. Similarly, if he is tethered to an ally and self-casts, both he and the ally will be shielded. Only one ally can be bound at a time, and selecting a new ally overrides the previous bind.",
+            "leveling": []
+          }
+        ],
+        "name": "Bastion"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                16.0,
+                15.0,
+                14.0,
+                13.0,
+                12.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Taric winds up over 1 second, granting ghosting to nearby units, then projects a beam of starlight in the target direction that deals magic damage to enemies hit and stuns them for 1.5 seconds.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      90.0,
+                      130.0,
+                      170.0,
+                      210.0,
+                      250.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      50.0,
+                      50.0,
+                      50.0,
+                      50.0,
+                      50.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus armor",
+                      "% bonus armor",
+                      "% bonus armor",
+                      "% bonus armor",
+                      "% bonus armor"
+                    ],
+                    "values": [
+                      50.0,
+                      50.0,
+                      50.0,
+                      50.0,
+                      50.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Taric can move during Dazzle.",
+            "leveling": []
+          }
+        ],
+        "name": "Dazzle"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                180.0,
+                150.0,
+                120.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: Taric calls down a star from above that descends to him over 2.5 seconds. Afterwards, he and nearby allied champions become invulnerable for 2.5 seconds.",
+            "leveling": []
+          }
+        ],
+        "name": "Cosmic Radiance"
+      }
+    ]
+  },
+  "positions": [
+    "MIDDLE",
+    "SUPPORT"
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "colloq": ";dfg",
+  "depth": 3,
+  "description": "<mainText><stats><attention>120</attention> Ability Power<br><attention>10</attention> Ability Haste</stats><br><br><br><br><active>Active -</active> <active>The Silence:</active> Deal magic damage equal to <magicDamage>15% of the Target's Max Health</magicDamage>, and then amplify damage they take by 15% for 4 seconds (90(0s)).</mainText>",
+  "from": [
+    "1058",
+    "3108"
+  ],
+  "gold": {
+    "base": 850,
+    "purchasable": true,
+    "sell": 2030,
+    "total": 2900
+  },
+  "image": {
+    "full": "3128.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item3.png",
+    "w": 48,
+    "x": 144,
+    "y": 144
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": false
+  },
+  "name": "Deathfire Grasp",
+  "plaintext": "Activate to increase all magic damage dealt to an enemy champion",
+  "stats": {
+    "FlatMagicDamageMod": 120
+  },
+  "tags": [
+    "SpellDamage",
+    "CooldownReduction"
+  ]
+}

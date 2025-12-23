@@ -1,0 +1,179 @@
+{
+  "name": "Nami",
+  "adaptative_type": "Magic",
+  "attack_type": "Ranged",
+  "positions": [
+    "Support"
+  ],
+  "stats": {
+    "health": {
+      "flat": 560.0,
+      "perLevel": 88.0
+    },
+    "mana": {
+      "flat": 365.0,
+      "perLevel": 43.0
+    },
+    "armor": {
+      "flat": 29.0,
+      "perLevel": 5.2
+    },
+    "magicResistance": {
+      "flat": 30.0,
+      "perLevel": 1.3
+    },
+    "attackDamage": {
+      "flat": 54.0,
+      "perLevel": 3.1
+    },
+    "attackSpeed": {
+      "flat": 0.644,
+      "perLevel": 2.61
+    },
+    "movespeed": {
+      "flat": 335.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.643999993801116,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 550.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.05,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 0.95,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": [
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Ebb and Flow",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "60 + (0.5 * ctx.ap)",
+          "95 + (0.5 * ctx.ap)",
+          "130 + (0.5 * ctx.ap)",
+          "165 + (0.5 * ctx.ap)",
+          "200 + (0.5 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_2"
+      },
+      {
+        "name": "Ebb and Flow",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "48 + (0.4 * ctx.ap)",
+          "76 + (0.4 * ctx.ap)",
+          "104 + (0.4 * ctx.ap)",
+          "132 + (0.4 * ctx.ap)",
+          "160 + (0.4 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Aqua Prison",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "90 + (0.5 * ctx.ap)",
+          "145 + (0.5 * ctx.ap)",
+          "200 + (0.5 * ctx.ap)",
+          "255 + (0.5 * ctx.ap)",
+          "310 + (0.5 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Tidecaller's Blessing",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "20 + (0.2 * ctx.ap)",
+          "30 + (0.2 * ctx.ap)",
+          "40 + (0.2 * ctx.ap)",
+          "50 + (0.2 * ctx.ap)",
+          "60 + (0.2 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_2"
+      },
+      {
+        "name": "Tidecaller's Blessing",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "60 + (0.6 * ctx.ap)",
+          "90 + (0.6 * ctx.ap)",
+          "120 + (0.6 * ctx.ap)",
+          "150 + (0.6 * ctx.ap)",
+          "180 + (0.6 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Tidal Wave",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "150 + (0.6 * ctx.ap)",
+          "250 + (0.6 * ctx.ap)",
+          "350 + (0.6 * ctx.ap)"
+        ]
+      }
+    ]
+  ],
+  "merge_data": []
+}

@@ -1,0 +1,548 @@
+{
+  "name": "Ziggs",
+  "attackType": "RANGED",
+  "adaptiveType": "MAGIC_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 606.0,
+      "perLevel": 106.0
+    },
+    "mana": {
+      "flat": 480.0,
+      "perLevel": 23.5
+    },
+    "armor": {
+      "flat": 21.0,
+      "perLevel": 4.7
+    },
+    "magicResistance": {
+      "flat": 30.0,
+      "perLevel": 1.3
+    },
+    "attackDamage": {
+      "flat": 55.0,
+      "perLevel": 3.1
+    },
+    "attackSpeed": {
+      "flat": 0.656,
+      "perLevel": 2.0
+    },
+    "movespeed": {
+      "flat": 325.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.656000018119812,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 550.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.2,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 0.87,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                12.0,
+                12.0,
+                12.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Innate: Periodically, Ziggs empowers his next basic attack to deal 20 : 160 (based on level) (+ 50% AP) bonus magic damage,[ increased by 75% against structures. ][ increased to 35 : 280 (based on level) (+ 87.5% AP) against structures. ]",
+            "leveling": []
+          },
+          {
+            "description": "Short Fuse's cooldown is reduced by 4 / 5 / 6 (based on level) seconds whenever Ziggs casts an ability.",
+            "leveling": []
+          }
+        ],
+        "name": "Short Fuse"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                6.0,
+                5.5,
+                5.0,
+                4.5,
+                4.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Ziggs throws a bomb to the target location that bounces forward up to two times, with the distance traveled each time being based on how far it was originally thrown.",
+            "leveling": []
+          },
+          {
+            "description": "The bomb explodes upon landing near an enemy, within terrain, or the final bounce, dealing magic damage to nearby enemies.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      80.0,
+                      130.0,
+                      180.0,
+                      230.0,
+                      280.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      60.0,
+                      65.0,
+                      70.0,
+                      75.0,
+                      80.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Bouncing Bomb"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                20.0,
+                18.0,
+                16.0,
+                14.0,
+                12.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Ziggs hurls a charge to the target location, remaining there for 4 seconds and granting sight of the area. Satchel Charge can be recast within the duration, and does so automatically afterwards. If recast while in flight, the charge will explode immediately upon landing.",
+            "leveling": []
+          },
+          {
+            "description": "Recast: Ziggs detonates the charge, causing it to explode to deal magic damage to nearby enemies and knock them back over 0.5 seconds up to 500 units away from the center of the explosion, though not through terrain. If this hits Ziggs, he will dash up to 825 units away from the center.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      70.0,
+                      105.0,
+                      140.0,
+                      175.0,
+                      210.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      50.0,
+                      50.0,
+                      50.0,
+                      50.0,
+                      50.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Turret Explosion: The explosion also executes enemy turrets within that are below a maximum health threshold.",
+            "leveling": [
+              {
+                "attribute": "Demolition Threshold",
+                "modifiers": [
+                  {
+                    "units": [
+                      "% of turret's maximum health",
+                      "% of turret's maximum health",
+                      "% of turret's maximum health",
+                      "% of turret's maximum health",
+                      "% of turret's maximum health"
+                    ],
+                    "values": [
+                      25.0,
+                      27.5,
+                      30.0,
+                      32.5,
+                      35.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Ziggs does not dash if he is immobilized or grounded. He can cast any of his abilities during the dash.",
+            "leveling": []
+          }
+        ],
+        "name": "Satchel Charge"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                16.0,
+                16.0,
+                16.0,
+                16.0,
+                16.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Ziggs scatters a cluster of 11 proximity mines over the target location that grant sight of the area for 2 seconds, arming after 0.5 seconds and lasting for up to 10 seconds.",
+            "leveling": []
+          },
+          {
+            "description": "Each mine within the area explodes upon contact with terrain or an enemy, dealing magic damage and slowing them for 1.5 seconds, as well as granting sight of the area around the explosion for 2 seconds. An enemy takes 40% damage from subsequent mines.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage per Mine",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      30.0,
+                      70.0,
+                      110.0,
+                      150.0,
+                      190.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      25.0,
+                      30.0,
+                      35.0,
+                      40.0,
+                      45.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Maximum Total Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      150.0,
+                      350.0,
+                      550.0,
+                      750.0,
+                      950.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      125.0,
+                      150.0,
+                      175.0,
+                      200.0,
+                      225.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Reduced Damage per Mine",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      12.0,
+                      28.0,
+                      44.0,
+                      60.0,
+                      76.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      10.0,
+                      12.0,
+                      14.0,
+                      16.0,
+                      18.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Slow",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      10.0,
+                      20.0,
+                      30.0,
+                      40.0,
+                      50.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Hexplosive Minefield"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                120.0,
+                95.0,
+                70.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Ziggs catapults the Mega Inferno Bomb to the target location, granting sight within a 600 radius around its destination for 4 seconds.",
+            "leveling": []
+          },
+          {
+            "description": "The bomb explodes upon arrival to deal magic damage to enemies hit, reduced to 65% against those outside of the epicenter.",
+            "leveling": [
+              {
+                "attribute": "Epicenter Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      300.0,
+                      500.0,
+                      700.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      100.0,
+                      100.0,
+                      100.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Reduced Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      195.0,
+                      325.0,
+                      455.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      65.0,
+                      65.0,
+                      65.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Mega Inferno Bomb"
+      }
+    ]
+  },
+  "positions": [
+    "BOTTOM",
+    "MIDDLE"
+  ]
+}

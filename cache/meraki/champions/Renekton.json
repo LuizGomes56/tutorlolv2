@@ -1,0 +1,965 @@
+{
+  "name": "Renekton",
+  "attackType": "MELEE",
+  "adaptiveType": "PHYSICAL_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 660.0,
+      "perLevel": 111.0
+    },
+    "mana": {
+      "flat": 100.0,
+      "perLevel": 0.0
+    },
+    "armor": {
+      "flat": 35.0,
+      "perLevel": 5.2
+    },
+    "magicResistance": {
+      "flat": 28.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 69.0,
+      "perLevel": 4.15
+    },
+    "attackSpeed": {
+      "flat": 0.665,
+      "perLevel": 2.75
+    },
+    "movespeed": {
+      "flat": 345.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.665000021457672,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 125.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 0.95,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 0.95,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": null,
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Innate: Renekton's basic attacks against any enemy except structures generate 5 Fury on-hit. After 12 seconds of not generating any Fury, he loses 1 Fury every 0.25 seconds.",
+            "leveling": []
+          },
+          {
+            "description": "Renekton generates 50% bonus Fury from all sources while below 50% of his maximum health.",
+            "leveling": []
+          },
+          {
+            "description": "While Renekton has at least 50 Fury, his next basic ability consumes 50 Fury to become empowered with an additional effect. Empowered abilities do not generate Fury.",
+            "leveling": []
+          }
+        ],
+        "name": "Reign of Anger"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                7.0,
+                7.0,
+                7.0,
+                7.0,
+                7.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Renekton cleaves around himself, dealing physical damage to nearby enemies and healing himself for each enemy hit, up to a cap.",
+            "leveling": [
+              {
+                "attribute": "Enhanced Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      90.0,
+                      135.0,
+                      180.0,
+                      225.0,
+                      270.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      140.0,
+                      140.0,
+                      140.0,
+                      140.0,
+                      140.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Enhanced Healing Cap",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      200.0,
+                      300.0,
+                      400.0,
+                      500.0,
+                      600.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Enhanced Non-Champion Healing",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      6.0,
+                      9.0,
+                      12.0,
+                      15.0,
+                      18.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      6.0,
+                      6.0,
+                      6.0,
+                      6.0,
+                      6.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Healing Cap",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      50.0,
+                      75.0,
+                      100.0,
+                      125.0,
+                      150.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Non-Champion Healing",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      2.0,
+                      3.0,
+                      4.0,
+                      5.0,
+                      6.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      2.0,
+                      2.0,
+                      2.0,
+                      2.0,
+                      2.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      60.0,
+                      90.0,
+                      120.0,
+                      150.0,
+                      180.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Against champions, the healing is increased.",
+            "leveling": [
+              {
+                "attribute": "Champion Healing",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      12.0,
+                      20.0,
+                      28.0,
+                      36.0,
+                      44.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      17.0,
+                      17.0,
+                      17.0,
+                      17.0,
+                      17.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Enhanced Champion Healing",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      36.0,
+                      60.0,
+                      84.0,
+                      108.0,
+                      132.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      51.0,
+                      51.0,
+                      51.0,
+                      51.0,
+                      51.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Reign of Anger Bonus: Cull the Meek has increased damage, tripled total healing, and a quadrupled healing cap.",
+            "leveling": []
+          },
+          {
+            "description": "Renekton cannot basic attack nor cast Slice, Dice, or Dominus for 0.25 seconds after Cull the Meek's activation.",
+            "leveling": []
+          },
+          {
+            "description": "Renekton generates 2.5 Fury for each non-champion hit and 10 Fury for each champion hit, up to 30 total per cast.",
+            "leveling": []
+          }
+        ],
+        "name": "Cull the Meek"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                16.0,
+                14.0,
+                12.0,
+                10.0,
+                8.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Renekton empowers his next basic attack within 7 seconds to have a 0.2-second cast time, have 175 range and strike the target twice, dealing modified physical damage and stunning them for 0.75 seconds. Each strike applies on-hit effects and generates Fury. Hitting an enemy champion generates 10 bonus Fury.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage Per Hit",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      5.0,
+                      20.0,
+                      35.0,
+                      50.0,
+                      65.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      75.0,
+                      75.0,
+                      75.0,
+                      75.0,
+                      75.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      10.0,
+                      40.0,
+                      70.0,
+                      100.0,
+                      130.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      150.0,
+                      150.0,
+                      150.0,
+                      150.0,
+                      150.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Reign of Anger Bonus: Renekton instead strikes 3 times, completely destroying damage-mitigating shields on the target upon the first strike if they are not a monster, as well as increasing the stun duration to 1.5 seconds.",
+            "leveling": [
+              {
+                "attribute": "Total Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      15.0,
+                      60.0,
+                      105.0,
+                      150.0,
+                      195.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      225.0,
+                      225.0,
+                      225.0,
+                      225.0,
+                      225.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Ruthless Predator resets Renekton's basic attack timer. After Ruthless Predator's standard and empowered attack cast time, Renekton cannot move nor cast Cull the Meek, Slice, nor Dice for 0.528 seconds. Casting Dominus ends this lockout prematurely.",
+            "leveling": []
+          },
+          {
+            "description": "Ruthless Predator's first strike can critically strike for (75% + 40%) AD bonus physical damage.",
+            "leveling": []
+          }
+        ],
+        "name": "Ruthless Predator"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                16.0,
+                14.5,
+                13.0,
+                11.5,
+                10.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Renekton dashes a fixed distance in the target direction, dealing physical damage to enemies he passes through.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      40.0,
+                      70.0,
+                      100.0,
+                      130.0,
+                      160.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      90.0,
+                      90.0,
+                      90.0,
+                      90.0,
+                      90.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "If Renekton hits an enemy, he can cast Dice within the next 4 seconds.",
+            "leveling": []
+          }
+        ],
+        "name": "Slice"
+      },
+      {
+        "cooldown": null,
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Renekton dashes a fixed distance in the target direction, dealing the same physical damage to enemies he passes through.",
+            "leveling": [
+              {
+                "attribute": "Total Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      80.0,
+                      140.0,
+                      200.0,
+                      260.0,
+                      320.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      180.0,
+                      180.0,
+                      180.0,
+                      180.0,
+                      180.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Both Slice and Dice generate 2 Fury for each non-champion hit and 10 Fury for each champion hit, up to 30 total per cast.",
+            "leveling": []
+          },
+          {
+            "description": "Reign of Anger Bonus: Dice deals bonus physical damage and inflicts armor reduction to enemies hit for 4 seconds.",
+            "leveling": [
+              {
+                "attribute": "Armor Reduction",
+                "modifiers": [
+                  {
+                    "units": [
+                      "% of target's armor",
+                      "% of target's armor",
+                      "% of target's armor",
+                      "% of target's armor",
+                      "% of target's armor"
+                    ],
+                    "values": [
+                      25.0,
+                      27.5,
+                      30.0,
+                      32.5,
+                      35.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Bonus Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      30.0,
+                      45.0,
+                      60.0,
+                      75.0,
+                      90.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      45.0,
+                      45.0,
+                      45.0,
+                      45.0,
+                      45.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Bonus Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      70.0,
+                      115.0,
+                      160.0,
+                      205.0,
+                      250.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      135.0,
+                      135.0,
+                      135.0,
+                      135.0,
+                      135.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      110.0,
+                      185.0,
+                      260.0,
+                      335.0,
+                      410.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      225.0,
+                      225.0,
+                      225.0,
+                      225.0,
+                      225.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Dice"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                120.0,
+                100.0,
+                80.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Renekton empowers himself for 15 seconds, gaining bonus health, 20% increased size, 25 bonus attack range, and 20 Fury, as well as increasing Cull the Meek's effect radius.",
+            "leveling": [
+              {
+                "attribute": "Bonus Health",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      300.0,
+                      500.0,
+                      700.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "During this time, he deals magic damage every 0.5 seconds to nearby enemies and generates 5 Fury per second, up to a maximum of 75 Fury.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage Per Tick",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      30.0,
+                      75.0,
+                      120.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      5.0,
+                      5.0,
+                      5.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      5.0,
+                      5.0,
+                      5.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      900.0,
+                      2250.0,
+                      3600.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      150.0,
+                      150.0,
+                      150.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      150.0,
+                      150.0,
+                      150.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Dominus"
+      }
+    ]
+  },
+  "positions": [
+    "TOP"
+  ]
+}

@@ -1,0 +1,178 @@
+{
+  "name": "Jax",
+  "adaptative_type": "Physical",
+  "attack_type": "Melee",
+  "positions": [
+    "Jungle",
+    "Top"
+  ],
+  "stats": {
+    "health": {
+      "flat": 665.0,
+      "perLevel": 103.0
+    },
+    "mana": {
+      "flat": 339.0,
+      "perLevel": 52.0
+    },
+    "armor": {
+      "flat": 36.0,
+      "perLevel": 4.2
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 68.0,
+      "perLevel": 4.25
+    },
+    "attackSpeed": {
+      "flat": 0.638,
+      "perLevel": 3.4
+    },
+    "movespeed": {
+      "flat": 350.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.638000011444091,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 125.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 0.97,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.05,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.15,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 0.9,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": [
+    [
+      {
+        "type": "R",
+        "name": "_2"
+      },
+      {
+        "name": "Grandmaster-at-Arms",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "75 + (0.6 * ctx.ap)",
+          "130 + (0.6 * ctx.ap)",
+          "185 + (0.6 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_2"
+      },
+      {
+        "name": "Counter Strike",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "40 + (0.7 * ctx.ap) + (0.035 * ctx.enemy_max_health)",
+          "70 + (0.7 * ctx.ap) + (0.035 * ctx.enemy_max_health)",
+          "100 + (0.7 * ctx.ap) + (0.035 * ctx.enemy_max_health)",
+          "130 + (0.7 * ctx.ap) + (0.035 * ctx.enemy_max_health)",
+          "160 + (0.7 * ctx.ap) + (0.035 * ctx.enemy_max_health)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Grandmaster-at-Arms",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "100 + ctx.ap",
+          "175 + ctx.ap",
+          "250 + ctx.ap"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Empower",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "50 + (0.6 * ctx.ap)",
+          "85 + (0.6 * ctx.ap)",
+          "120 + (0.6 * ctx.ap)",
+          "155 + (0.6 * ctx.ap)",
+          "190 + (0.6 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Counter Strike",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "80 + (1.4 * ctx.ap) + (0.07 * ctx.enemy_max_health)",
+          "140 + (1.4 * ctx.ap) + (0.07 * ctx.enemy_max_health)",
+          "200 + (1.4 * ctx.ap) + (0.07 * ctx.enemy_max_health)",
+          "260 + (1.4 * ctx.ap) + (0.07 * ctx.enemy_max_health)",
+          "320 + (1.4 * ctx.ap) + (0.07 * ctx.enemy_max_health)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Leap Strike",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "65 + ctx.bonus_ad",
+          "105 + ctx.bonus_ad",
+          "145 + ctx.bonus_ad",
+          "185 + ctx.bonus_ad",
+          "225 + ctx.bonus_ad"
+        ]
+      }
+    ]
+  ],
+  "merge_data": []
+}

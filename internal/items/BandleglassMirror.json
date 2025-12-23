@@ -1,0 +1,147 @@
+{
+  "riot_id": 4642,
+  "item_id": "BandleglassMirror",
+  "name": "Bandleglass Mirror",
+  "price": 900,
+  "sell": 630,
+  "tier": 3,
+  "maps": [
+    [
+      "Arena",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "NexusBlitz",
+      true
+    ],
+    [
+      "Tft",
+      false
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "Aram",
+      true
+    ]
+  ],
+  "prettified_stats": [
+    {
+      "name": "AbilityPower",
+      "value": 20
+    },
+    {
+      "name": "AbilityHaste",
+      "value": 10
+    },
+    {
+      "name": "BaseManaRegen",
+      "value": 100
+    }
+  ],
+  "damage_type": "Unknown",
+  "stats": {
+    "abilityPower": {
+      "flat": 20.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "builds_from_riot_ids": [
+    1004,
+    1052,
+    2022
+  ],
+  "builds_from_item_ids": [
+    "FaerieCharm",
+    "AmplifyingTome",
+    "GlowingMote"
+  ],
+  "builds_into_riot_ids": [
+    322065,
+    2065,
+    6620,
+    324005,
+    326617,
+    326620,
+    4005,
+    6617
+  ],
+  "builds_into_item_ids": [
+    "ShurelyasBattlesong",
+    "EchoesofHelia",
+    "ImperialMandate",
+    "MoonstoneRenewer"
+  ],
+  "ranged": {
+    "minimum_damage": "zero",
+    "maximum_damage": "zero"
+  },
+  "melee": {
+    "minimum_damage": "zero",
+    "maximum_damage": "zero"
+  },
+  "attributes": "Undefined",
+  "purchasable": true
+}

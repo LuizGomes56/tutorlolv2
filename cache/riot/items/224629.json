@@ -1,0 +1,41 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><attention>65</attention> Ability Power<br><attention>350</attention> Health<br><attention>35</attention> Ability Haste<br><attention>4%</attention> Move Speed</stats><br><br><passive>Spelldance</passive><br>Dealing <magicDamage>magic</magicDamage> or <trueDamage>true damage</trueDamage> to champions grants <speed> Move Speed</speed> for 4 seconds.</mainText>",
+  "gold": {
+    "base": 2500,
+    "purchasable": true,
+    "sell": 1250,
+    "total": 2500
+  },
+  "image": {
+    "full": "224629.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item2.png",
+    "w": 48,
+    "x": 96,
+    "y": 0
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": false
+  },
+  "name": "Cosmic Drive",
+  "plaintext": "",
+  "stats": {
+    "FlatHPPoolMod": 350,
+    "FlatMagicDamageMod": 65,
+    "PercentMovementSpeedMod": 0.04
+  },
+  "tags": [
+    "Health",
+    "SpellDamage",
+    "NonbootsMovement",
+    "AbilityHaste"
+  ]
+}

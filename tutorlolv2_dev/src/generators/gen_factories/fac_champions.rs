@@ -536,7 +536,7 @@ impl ChampionData {
     /// Adds the attribute to all abilities in the provided array. If any ability in that
     /// array does not exist in [`Self::hashmap`], this function will fail.
     /// If there's an ability with a different [`AbilityId`] kind, you may want to use the
-    /// macro [`dynvec`]
+    /// macro [`dynarr`]
     pub fn attr<const N: usize>(&mut self, attr: Attrs, set: [impl Into<AbilityId>; N]) -> MayFail {
         for key in set {
             self.get_mut(key.into())?.attributes = attr;
@@ -590,9 +590,11 @@ impl ChampionData {
     }
 
     /// Returns the current passive details and its description in a tuple, given its offsets
-    pub fn get_passive_description(&self, offsets: (usize, usize)) -> (&MerakiAbility, &str) {
-        let (ability_index, effect_index) = offsets;
-
+    pub fn get_passive_description(
+        &self,
+        ability_index: usize,
+        effect_index: usize,
+    ) -> (&MerakiAbility, &str) {
         let passive = self
             .data
             .abilities
@@ -700,7 +702,9 @@ impl ChampionData {
         postfix: Option<String>,
         scalings: Option<usize>,
     ) {
-        let (passive, passive_description) = self.get_passive_description(offsets);
+        let (ability_index, effect_index) = offsets;
+        let (passive, passive_description) =
+            self.get_passive_description(ability_index, effect_index);
 
         let description = match scalings {
             Some(scalings) => &passive.effects[scalings].description,

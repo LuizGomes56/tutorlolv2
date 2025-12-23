@@ -1,0 +1,50 @@
+{
+  "colloq": "",
+  "depth": 3,
+  "description": "<mainText><stats><attention>40</attention> Attack Damage<br><attention>300</attention> Health<br><attention>20</attention> Ability Haste</stats><br><br><br><li><passive>Spellblade:</passive> After using an Ability, your next Attack is enhanced with an additional <physicalDamage> + {{ Item_Melee_Ranged_Split_B }} target max Health physical damage</physicalDamage> {{ Item_Cooldown }}. If the target is a champion, also heal for <healing>55% of the premitigation damage</healing>.<br><br>{{ Item_Mythic_Passive }} <attention>3%</attention> Armor Penetration and <attention>3%</attention> Magic Penetration.<br><br><rules><passive>Spellblade</passive> deals  min damage to units, but no more than  damage to Monsters. {{ Item_Melee_Ranged_Rules }}</rules></mainText>",
+  "from": [
+    "3133",
+    "3057",
+    "3067"
+  ],
+  "gold": {
+    "base": 700,
+    "purchasable": false,
+    "sell": 2415,
+    "total": 3450
+  },
+  "image": {
+    "full": "6632.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item5.png",
+    "w": 48,
+    "x": 432,
+    "y": 144
+  },
+  "inStore": false,
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": false
+  },
+  "name": "Divine Sunderer",
+  "plaintext": "",
+  "stats": {
+    "FlatHPPoolMod": 300,
+    "FlatPhysicalDamageMod": 40
+  },
+  "tags": [
+    "Health",
+    "Damage",
+    "CooldownReduction",
+    "OnHit",
+    "MagicPenetration",
+    "ArmorPenetration",
+    "AbilityHaste"
+  ]
+}

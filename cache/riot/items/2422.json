@@ -1,0 +1,46 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><attention>25</attention> Move Speed</stats><br><br>Grants an additional <speed>10 Move Speed</speed>. Boots that build from Slightly Magical Footwear retain this bonus Move Speed.</mainText>",
+  "gold": {
+    "base": 300,
+    "purchasable": false,
+    "sell": 90,
+    "total": 300
+  },
+  "image": {
+    "full": "2422.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item2.png",
+    "w": 48,
+    "x": 192,
+    "y": 240
+  },
+  "inStore": false,
+  "into": [
+    "3006",
+    "3047",
+    "3020",
+    "3158",
+    "3111",
+    "3117",
+    "3009"
+  ],
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Slightly Magical Footwear",
+  "plaintext": "",
+  "stats": {
+    "FlatMovementSpeedMod": 25
+  },
+  "tags": [
+    "Boots"
+  ]
+}

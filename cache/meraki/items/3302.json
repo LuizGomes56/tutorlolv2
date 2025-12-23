@@ -1,0 +1,87 @@
+{
+  "active": [],
+  "buildsFrom": [
+    3051,
+    1043
+  ],
+  "buildsInto": [],
+  "name": "Terminus",
+  "tier": 3,
+  "passives": [
+    {
+      "effects": "Basic attacks deal {{as|30 '''bonus''' magic damage}} [[on-hit]].",
+      "name": "Shadow",
+      "unique": true
+    },
+    {
+      "effects": "Basic attacks {{tip|on-hit}} against champions alternate between ''Light'' and ''Dark'' hits, each one granting a bonus for 5 seconds that stacks up to 3 times. ''Light'' hits grant {{pp|6 to 8 for 3|1;11;14|type=level}} {{as|'''bonus''' armor}} and {{as|'''bonus''' magic resistance}} while ''Dark'' hits grant 10% {{as|armor penetration}} and {{as|magic penetration}}, for a total of {{pp|6*3 to 8*3}} '''bonus''' resistances and 30% resistances penetration at maximum stacks of each.",
+      "name": "Juxtaposition",
+      "unique": true
+    }
+  ],
+  "id": 3302,
+  "stats": {
+    "abilityPower": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 30.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 35.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "shop": {
+    "purchasable": true,
+    "prices": {
+      "total": 3000
+    }
+  }
+}

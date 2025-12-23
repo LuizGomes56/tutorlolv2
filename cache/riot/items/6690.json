@@ -1,0 +1,49 @@
+{
+  "colloq": "",
+  "depth": 2,
+  "description": "<mainText><stats><attention>15</attention> Attack Damage<br><attention>4%</attention> Move Speed</stats><br><br></mainText>",
+  "from": [
+    "1036"
+  ],
+  "gold": {
+    "base": 425,
+    "purchasable": true,
+    "sell": 543,
+    "total": 775
+  },
+  "image": {
+    "full": "6690.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item5.png",
+    "w": 48,
+    "x": 144,
+    "y": 288
+  },
+  "into": [
+    "6700",
+    "6672",
+    "3142",
+    "4003",
+    "3087"
+  ],
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Rectrix",
+  "plaintext": "",
+  "stats": {
+    "FlatPhysicalDamageMod": 15,
+    "PercentMovementSpeedMod": 0.04
+  },
+  "tags": [
+    "Damage",
+    "NonbootsMovement"
+  ]
+}

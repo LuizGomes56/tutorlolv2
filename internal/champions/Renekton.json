@@ -1,0 +1,213 @@
+{
+  "name": "Renekton",
+  "adaptative_type": "Physical",
+  "attack_type": "Melee",
+  "positions": [
+    "Top"
+  ],
+  "stats": {
+    "health": {
+      "flat": 660.0,
+      "perLevel": 111.0
+    },
+    "mana": {
+      "flat": 100.0,
+      "perLevel": 0.0
+    },
+    "armor": {
+      "flat": 35.0,
+      "perLevel": 5.2
+    },
+    "magicResistance": {
+      "flat": 28.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 69.0,
+      "perLevel": 4.15
+    },
+    "attackSpeed": {
+      "flat": 0.665,
+      "perLevel": 2.75
+    },
+    "movespeed": {
+      "flat": 345.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.665000021457672,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 125.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 0.95,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 0.95,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": [
+    [
+      {
+        "type": "W",
+        "name": "_3"
+      },
+      {
+        "name": "Ruthless Predator",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "15 + (2.25 * ctx.ad)",
+          "60 + (2.25 * ctx.ad)",
+          "105 + (2.25 * ctx.ad)",
+          "150 + (2.25 * ctx.ad)",
+          "195 + (2.25 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_2"
+      },
+      {
+        "name": "Ruthless Predator",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "10 + (1.5 * ctx.ad)",
+          "40 + (1.5 * ctx.ad)",
+          "70 + (1.5 * ctx.ad)",
+          "100 + (1.5 * ctx.ad)",
+          "130 + (1.5 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_2"
+      },
+      {
+        "name": "Dominus",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "900 + (1.5 * ctx.bonus_ad) + (1.5 * ctx.ap)",
+          "2250 + (1.5 * ctx.bonus_ad) + (1.5 * ctx.ap)",
+          "3600 + (1.5 * ctx.bonus_ad) + (1.5 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Dominus",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "30 + (0.05 * ctx.bonus_ad) + (0.05 * ctx.ap)",
+          "75 + (0.05 * ctx.bonus_ad) + (0.05 * ctx.ap)",
+          "120 + (0.05 * ctx.bonus_ad) + (0.05 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Cull the Meek",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "90 + (1.4 * ctx.bonus_ad)",
+          "135 + (1.4 * ctx.bonus_ad)",
+          "180 + (1.4 * ctx.bonus_ad)",
+          "225 + (1.4 * ctx.bonus_ad)",
+          "270 + (1.4 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "Cull the Meek",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "60 + ctx.bonus_ad",
+          "90 + ctx.bonus_ad",
+          "120 + ctx.bonus_ad",
+          "150 + ctx.bonus_ad",
+          "180 + ctx.bonus_ad"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Ruthless Predator",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "5 + (0.75 * ctx.ad)",
+          "20 + (0.75 * ctx.ad)",
+          "35 + (0.75 * ctx.ad)",
+          "50 + (0.75 * ctx.ad)",
+          "65 + (0.75 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_2"
+      },
+      {
+        "name": "Slice",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "40 + (0.9 * ctx.bonus_ad)",
+          "70 + (0.9 * ctx.bonus_ad)",
+          "100 + (0.9 * ctx.bonus_ad)",
+          "130 + (0.9 * ctx.bonus_ad)",
+          "160 + (0.9 * ctx.bonus_ad)"
+        ]
+      }
+    ]
+  ],
+  "merge_data": []
+}

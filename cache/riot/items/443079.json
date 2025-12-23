@@ -1,0 +1,39 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><attention>600</attention> Health<br><attention>80</attention> Adaptive Force</stats><br><br><br><br><active>ACTIVE</active> (0s)<br><active>Supercharged</active><br>Remove all crowd control debuffs (excluding <status>Airborne</status>) and become Unstoppable for 3 seconds.</mainText>",
+  "gold": {
+    "base": 1000,
+    "purchasable": true,
+    "sell": 400,
+    "total": 1000
+  },
+  "image": {
+    "full": "443079.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item4.png",
+    "w": 48,
+    "x": 240,
+    "y": 288
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": false
+  },
+  "name": "Turbo Chemtank",
+  "plaintext": "",
+  "specialRecipe": 220007,
+  "stats": {
+    "FlatHPPoolMod": 600
+  },
+  "tags": [
+    "Health",
+    "Active",
+    "NonbootsMovement"
+  ]
+}

@@ -1,0 +1,685 @@
+{
+  "name": "Shyvana",
+  "attackType": "MELEE",
+  "adaptiveType": "PHYSICAL_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 665.0,
+      "perLevel": 104.0
+    },
+    "mana": {
+      "flat": 100.0,
+      "perLevel": 0.0
+    },
+    "armor": {
+      "flat": 38.0,
+      "perLevel": 4.55
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 1.5
+    },
+    "attackDamage": {
+      "flat": 66.0,
+      "perLevel": 3.0
+    },
+    "attackSpeed": {
+      "flat": 0.658,
+      "perLevel": 2.5
+    },
+    "movespeed": {
+      "flat": 350.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.657999992370605,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 125.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 0.95,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 0.85,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": null,
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Additionally, Shyvana deals 20% increased damage to Dragons.",
+            "leveling": []
+          },
+          {
+            "description": "Innate: Shyvana gains 5 bonus armor and 5 bonus magic resistance, which are each increased by 5 for every elemental drake and Elder Dragon her team slays.",
+            "leveling": []
+          }
+        ],
+        "name": "Fury of the Dragonborn"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                8.0,
+                7.5,
+                7.0,
+                6.5,
+                6.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Shyvana empowers her next basic attack within 6 seconds to gain 25 bonus range, deal 100% AD (+ 50% AP) physical damage, and cause her to strike again after 0.25 seconds to deal bonus physical damage.The second strike applies on-hit effects, triggers on-attack effects, and can critically strike for (175% + 40%) damage if the triggering attack does.",
+            "leveling": [
+              {
+                "attribute": "Bonus Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      20.0,
+                      40.0,
+                      60.0,
+                      80.0,
+                      100.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      25.0,
+                      25.0,
+                      25.0,
+                      25.0,
+                      25.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "After consuming the empowered attack, her next two basic attacks within 5 seconds gain bonus attack speed.",
+            "leveling": [
+              {
+                "attribute": "Bonus Attack Speed",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      50.0,
+                      55.0,
+                      60.0,
+                      65.0,
+                      70.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Basic attacks reduce Twin Bite's current cooldown by 0.5 seconds on-hit.",
+            "leveling": []
+          },
+          {
+            "description": "Dragon Form Bonus: Shyvana attacks enemies in a cone in front of her and additionally applies the second strike to enemies surrounding the primary target. Both the attack and the strike occur at the same time and each of them apply Twin Bite's respective effects to all targets hit, with the exception of the second strike not triggering on-attack effects for secondary targets struck. The attack is affected by critical strike modifiers, applies on-hit effects to all enemies hit, and triggers on-attack effects for every target hit. Additionally, Twin Bite's empowered attack has an uncancellable windup.",
+            "leveling": []
+          },
+          {
+            "description": "Twin Bite resets Shyvana's basic attack timer.",
+            "leveling": []
+          }
+        ],
+        "name": "Twin Bite"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                12.0,
+                12.0,
+                12.0,
+                12.0,
+                12.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Shyvana surrounds herself in flames for 3 seconds, gaining decaying bonus movement speed and dealing magic damage every 0.5 seconds to nearby enemies.",
+            "leveling": [
+              {
+                "attribute": "Bonus Movement Speed",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      30.0,
+                      35.0,
+                      40.0,
+                      45.0,
+                      50.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% per 100 AP",
+                      "% per 100 AP",
+                      "% per 100 AP",
+                      "% per 100 AP",
+                      "% per 100 AP"
+                    ],
+                    "values": [
+                      10.0,
+                      10.0,
+                      10.0,
+                      10.0,
+                      10.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Bonus Movement Speed Decay",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      4.5,
+                      5.25,
+                      6.0,
+                      6.75,
+                      7.5
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Magic Damage Per Tick",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      10.0,
+                      15.0,
+                      20.0,
+                      25.0,
+                      30.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      10.0,
+                      10.0,
+                      10.0,
+                      10.0,
+                      10.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Dragon Form Bonus: Burnout's radius increases, scaling with Dragon's Descent's rank.",
+            "leveling": []
+          },
+          {
+            "description": "During this time, Shyvana's basic attacks deal bonus magic damage on-hit to surrounding enemies and extend the duration of Burnout by 1 second, which can occur up to 4 times for a total of 4 additional seconds.",
+            "leveling": [
+              {
+                "attribute": "Bonus Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      5.0,
+                      7.0,
+                      9.0,
+                      11.0,
+                      13.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      5.0,
+                      5.0,
+                      5.0,
+                      5.0,
+                      5.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Burnout"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                12.0,
+                11.0,
+                10.0,
+                9.0,
+                8.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Shyvana unleashes a fireball in the target direction that stops upon hitting an enemy champion, dealing magic damage to all enemies hit and marking them for 5 seconds.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      85.0,
+                      125.0,
+                      165.0,
+                      205.0,
+                      245.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      50.0,
+                      50.0,
+                      50.0,
+                      50.0,
+                      50.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      70.0,
+                      70.0,
+                      70.0,
+                      70.0,
+                      70.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Dragon Form Bonus: The fireball explodes upon hitting an enemy champion or reaching the target location, dealing increased magic damage and creating a scorched field for 4 seconds. Enemies within the field are marked once and dealt 20 : 50 (based on level) (+ 7.5% bonus AD) (+ 10% AP) magic damage every 0.5 seconds.",
+            "leveling": [
+              {
+                "attribute": "Increased Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      75.0,
+                      78.52941176470588,
+                      82.05882352941177,
+                      85.58823529411765,
+                      89.11764705882354,
+                      92.64705882352942,
+                      96.17647058823528,
+                      99.70588235294116,
+                      103.23529411764706,
+                      106.76470588235294,
+                      110.29411764705884,
+                      113.8235294117647,
+                      117.35294117647058,
+                      120.88235294117646,
+                      124.41176470588236,
+                      127.94117647058825,
+                      131.47058823529412,
+                      135.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      85.0,
+                      125.0,
+                      165.0,
+                      205.0,
+                      245.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      90.0,
+                      90.0,
+                      90.0,
+                      90.0,
+                      90.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Shyvana's basic attacks against marked enemies are empowered to deal bonus magic damage on-hit equal to 3% (+ 1% per 100 bonus AD) of the target's maximum health, capped at 150 against monsters.",
+            "leveling": []
+          }
+        ],
+        "name": "Flame Breath"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": null,
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Shyvana transforms into Dragon Form and dashes with displacement immunity to the target location, dealing magic damage to enemies she passes through and carrying them alongside her.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      150.0,
+                      250.0,
+                      350.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      100.0,
+                      100.0,
+                      100.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Dragon Form: Shyvana gains bonus health, bonus attack range, and increased size. Her abilities are also empowered to apply an additional effect. She maintains Dragon Form at a recurring cost of Fury, returning to Human Form once all Fury has been depleted.",
+            "leveling": [
+              {
+                "attribute": "Bonus Health",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      150.0,
+                      250.0,
+                      350.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Bonus Range",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      50.0,
+                      65.0,
+                      80.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Size Increase",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      0.0,
+                      8.5,
+                      16.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Passive - Fury: Dragon's Descent requires 100 Fury to be cast. Shyvana generates Fury per second while alive and in Human form and 2 Fury per basic attack on-hit in either form. Shyvana gains 100 Fury upon learning Dragon's Descent.",
+            "leveling": [
+              {
+                "attribute": "Fury Generation per Second",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      1.0,
+                      1.5,
+                      2.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Dragon's Descent"
+      }
+    ]
+  },
+  "positions": [
+    "JUNGLE"
+  ]
+}

@@ -1,0 +1,729 @@
+{
+  "allytips": [
+    "Lead the charge and mark your foes with Sunlight before your allies deal damage.",
+    "Shield of Daybreak and Zenith Blade form a powerful offensive combo.",
+    "You can absorb a huge amount of damage using Eclipse, but you must stay near enemies to gain the bonus duration."
+  ],
+  "blurb": "Imbued with the fire of the sun, Leona is a holy warrior of the Solari who defends Mount Targon with her Zenith Blade and the Shield of Daybreak. Her skin shimmers with starfire while her eyes burn with the power of the celestial Aspect within her...",
+  "enemytips": [
+    "When Leona activates Eclipse, you have three seconds to get away from her before she deals damage.",
+    "Only foes in the center of Solar Flare get stunned, so you can often avoid this if you're quick."
+  ],
+  "id": "Leona",
+  "image": {
+    "full": "Leona.png",
+    "group": "champion",
+    "h": 48,
+    "sprite": "champion2.png",
+    "w": 48,
+    "x": 48,
+    "y": 48
+  },
+  "info": {
+    "attack": 4,
+    "defense": 8,
+    "difficulty": 4,
+    "magic": 3
+  },
+  "key": "89",
+  "lore": "Imbued with the fire of the sun, Leona is a holy warrior of the Solari who defends Mount Targon with her Zenith Blade and the Shield of Daybreak. Her skin shimmers with starfire while her eyes burn with the power of the celestial Aspect within her. Armored in gold and bearing a terrible burden of ancient knowledge, Leona brings enlightenment to some, death to others.",
+  "name": "Leona",
+  "partype": "Mana",
+  "passive": {
+    "description": "Damaging spells afflict enemies with Sunlight for 1.5 seconds. When allied Champions deal damage to those targets, they consume the Sunlight to deal additional magic damage.",
+    "image": {
+      "full": "LeonaSunlight.png",
+      "group": "passive",
+      "h": 48,
+      "sprite": "passive2.png",
+      "w": 48,
+      "x": 48,
+      "y": 48
+    },
+    "name": "Sunlight"
+  },
+  "recommended": [],
+  "skins": [
+    {
+      "chromas": false,
+      "id": "89000",
+      "name": "default",
+      "num": 0
+    },
+    {
+      "chromas": false,
+      "id": "89001",
+      "name": "Valkyrie Leona",
+      "num": 1
+    },
+    {
+      "chromas": false,
+      "id": "89002",
+      "name": "Defender Leona",
+      "num": 2
+    },
+    {
+      "chromas": false,
+      "id": "89003",
+      "name": "Iron Solari Leona",
+      "num": 3
+    },
+    {
+      "chromas": true,
+      "id": "89004",
+      "name": "Pool Party Leona",
+      "num": 4
+    },
+    {
+      "chromas": false,
+      "id": "89008",
+      "name": "PROJECT: Leona",
+      "num": 8
+    },
+    {
+      "chromas": false,
+      "id": "89009",
+      "name": "Barbecue Leona",
+      "num": 9
+    },
+    {
+      "chromas": false,
+      "id": "89010",
+      "name": "Solar Eclipse Leona",
+      "num": 10
+    },
+    {
+      "chromas": false,
+      "id": "89011",
+      "name": "Lunar Eclipse Leona",
+      "num": 11
+    },
+    {
+      "chromas": true,
+      "id": "89012",
+      "name": "Mecha Kingdoms Leona",
+      "num": 12
+    },
+    {
+      "chromas": true,
+      "id": "89021",
+      "name": "Battle Academia Leona",
+      "num": 21
+    },
+    {
+      "chromas": true,
+      "id": "89022",
+      "name": "DWG Leona",
+      "num": 22
+    },
+    {
+      "chromas": false,
+      "id": "89023",
+      "name": "Prestige Battle Academia Leona",
+      "num": 23
+    },
+    {
+      "chromas": true,
+      "id": "89033",
+      "name": "Debonair Leona",
+      "num": 33
+    },
+    {
+      "chromas": true,
+      "id": "89034",
+      "name": "High Noon Leona",
+      "num": 34
+    },
+    {
+      "chromas": true,
+      "id": "89050",
+      "name": "Crystalis Motus Leona",
+      "num": 50
+    },
+    {
+      "chromas": true,
+      "id": "89052",
+      "name": "Battle Lion Leona",
+      "num": 52
+    },
+    {
+      "chromas": false,
+      "id": "89053",
+      "name": "Prestige Battle Lion Leona",
+      "num": 53
+    }
+  ],
+  "spells": [
+    {
+      "cooldown": [
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "cooldownBurn": "5",
+      "cost": [
+        30,
+        35,
+        40,
+        45,
+        50
+      ],
+      "costBurn": "30/35/40/45/50",
+      "costType": " {{ abilityresourcename }}",
+      "datavalues": {},
+      "description": "Leona uses her shield to perform her next basic attack, dealing bonus magic damage and stunning the target.",
+      "effect": [
+        null,
+        [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        [
+          10,
+          35,
+          60,
+          85,
+          110
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "effectBurn": [
+        null,
+        "1",
+        "10/35/60/85/110",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "id": "LeonaShieldOfDaybreak",
+      "image": {
+        "full": "LeonaShieldOfDaybreak.png",
+        "group": "spell",
+        "h": 48,
+        "sprite": "spell7.png",
+        "w": 48,
+        "x": 96,
+        "y": 96
+      },
+      "leveltip": {
+        "effect": [
+          "{{ e2 }} -> {{ e2NL }}",
+          "{{ cost }} -> {{ costNL }}"
+        ],
+        "label": [
+          "Damage",
+          "@AbilityResourceName@ Cost"
+        ]
+      },
+      "maxammo": "-1",
+      "maxrank": 5,
+      "name": "Shield of Daybreak",
+      "range": [
+        100,
+        100,
+        100,
+        100,
+        100
+      ],
+      "rangeBurn": "100",
+      "resource": "{{ cost }} {{ abilityresourcename }}",
+      "tooltip": "Leona's next Attack <status>Stuns</status> for {{ e1 }} seconds and deals an additional <magicDamage>{{ totaldamagetooltip }}</magicDamage> magic damage.{{ spellmodifierdescriptionappend }}",
+      "vars": []
+    },
+    {
+      "cooldown": [
+        14,
+        13,
+        12,
+        11,
+        10
+      ],
+      "cooldownBurn": "14/13/12/11/10",
+      "cost": [
+        60,
+        60,
+        60,
+        60,
+        60
+      ],
+      "costBurn": "60",
+      "costType": " {{ abilityresourcename }}",
+      "datavalues": {},
+      "description": "Leona raises her shield to gain Damage Reduction, Armor, and Magic Resist. When the duration first ends, if there are nearby enemies, she will deal magic damage to them and prolong the duration of the effect.",
+      "effect": [
+        null,
+        [
+          55,
+          85,
+          115,
+          145,
+          175
+        ],
+        [
+          20,
+          27.5,
+          35,
+          42.5,
+          50
+        ],
+        [
+          3,
+          3,
+          3,
+          3,
+          3
+        ],
+        [
+          20,
+          27.5,
+          35,
+          42.5,
+          50
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "effectBurn": [
+        null,
+        "55/85/115/145/175",
+        "20/27.5/35/42.5/50",
+        "3",
+        "20/27.5/35/42.5/50",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "id": "LeonaSolarBarrier",
+      "image": {
+        "full": "LeonaSolarBarrier.png",
+        "group": "spell",
+        "h": 48,
+        "sprite": "spell7.png",
+        "w": 48,
+        "x": 144,
+        "y": 96
+      },
+      "leveltip": {
+        "effect": [
+          "{{ e1 }} -> {{ e1NL }}",
+          "{{ e4 }} -> {{ e4NL }}",
+          "{{ flatdamagereduction }} -> {{ flatdamagereductionNL }}",
+          "{{ cooldown }} -> {{ cooldownNL }}"
+        ],
+        "label": [
+          "Damage",
+          "Armor and Magic Resist",
+          "Damage Reduction",
+          "Cooldown"
+        ]
+      },
+      "maxammo": "-1",
+      "maxrank": 5,
+      "name": "Eclipse",
+      "range": [
+        450,
+        450,
+        450,
+        450,
+        450
+      ],
+      "rangeBurn": "450",
+      "resource": "{{ cost }} {{ abilityresourcename }}",
+      "tooltip": "Leona raises her shield, reducing incoming damage by {{ flatdamagereduction }} and gaining <scaleArmor>{{ bonusarmortooltip }} Armor</scaleArmor> and <scaleMR>{{ bonusmrtooltip }} Magic Resist</scaleMR> for {{ e3 }} seconds. Afterwards, her shield detonates, dealing <magicDamage>{{ totaldamagetooltip }} magic damage</magicDamage> to nearby enemies. If she hits at least one, she retains the <scaleArmor>Armor</scaleArmor> and <scaleMR>Magic Resist</scaleMR> bonuses for an additional {{ e3 }} seconds.<br />{{ spellmodifierdescriptionappend }}",
+      "vars": []
+    },
+    {
+      "cooldown": [
+        12,
+        10.5,
+        9,
+        7.5,
+        6
+      ],
+      "cooldownBurn": "12/10.5/9/7.5/6",
+      "cost": [
+        40,
+        45,
+        50,
+        55,
+        60
+      ],
+      "costBurn": "40/45/50/55/60",
+      "costType": " {{ abilityresourcename }}",
+      "datavalues": {},
+      "description": "Leona projects a solar image of her sword, dealing magic damage to all enemies in a line. When the image fades, the last enemy champion struck will be briefly immobilized and Leona will dash to them.",
+      "effect": [
+        null,
+        [
+          50,
+          90,
+          130,
+          170,
+          210
+        ],
+        [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "effectBurn": [
+        null,
+        "50/90/130/170/210",
+        "0.5",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "id": "LeonaZenithBlade",
+      "image": {
+        "full": "LeonaZenithBlade.png",
+        "group": "spell",
+        "h": 48,
+        "sprite": "spell7.png",
+        "w": 48,
+        "x": 192,
+        "y": 96
+      },
+      "leveltip": {
+        "effect": [
+          "{{ e1 }} -> {{ e1NL }}",
+          "{{ cooldown }} -> {{ cooldownNL }}",
+          "{{ cost }} -> {{ costNL }}"
+        ],
+        "label": [
+          "Damage",
+          "Cooldown",
+          "@AbilityResourceName@ Cost"
+        ]
+      },
+      "maxammo": "-1",
+      "maxrank": 5,
+      "name": "Zenith Blade",
+      "range": [
+        875,
+        875,
+        875,
+        875,
+        875
+      ],
+      "rangeBurn": "875",
+      "resource": "{{ cost }} {{ abilityresourcename }}",
+      "tooltip": "Leona thrusts with a sword of light, dealing <magicDamage>{{ totaldamagetooltip }} magic damage</magicDamage>. The last champion struck will be <status>Rooted</status> for {{ e2 }} seconds and Leona will dash to them.{{ spellmodifierdescriptionappend }}",
+      "vars": []
+    },
+    {
+      "cooldown": [
+        90,
+        75,
+        60
+      ],
+      "cooldownBurn": "90/75/60",
+      "cost": [
+        100,
+        100,
+        100
+      ],
+      "costBurn": "100",
+      "costType": " {{ abilityresourcename }}",
+      "datavalues": {},
+      "description": "Leona calls down a beam of solar energy, dealing damage to enemies in an area. Enemies in the center of the area are stunned, while enemies on the outside are slowed.",
+      "effect": [
+        null,
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          100,
+          100,
+          100
+        ],
+        [
+          3,
+          3,
+          3
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "effectBurn": [
+        null,
+        "0",
+        "0",
+        "0",
+        "100",
+        "3",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "id": "LeonaSolarFlare",
+      "image": {
+        "full": "LeonaSolarFlare.png",
+        "group": "spell",
+        "h": 48,
+        "sprite": "spell7.png",
+        "w": 48,
+        "x": 240,
+        "y": 96
+      },
+      "leveltip": {
+        "effect": [
+          "{{ explosionbasedamage }} -> {{ explosionbasedamageNL }}",
+          "{{ cooldown }} -> {{ cooldownNL }}"
+        ],
+        "label": [
+          "Damage",
+          "Cooldown"
+        ]
+      },
+      "maxammo": "-1",
+      "maxrank": 3,
+      "name": "Solar Flare",
+      "range": [
+        1200,
+        1200,
+        1200
+      ],
+      "rangeBurn": "1200",
+      "resource": "{{ cost }} {{ abilityresourcename }}",
+      "tooltip": "Leona calls down a radiant beam of solar energy dealing <magicDamage>{{ explosioncalculateddamage }} magic damage</magicDamage> and <status>Slowing</status> by {{ slowpercent }}% for {{ ccduration }} seconds. Enemies in the center of the flare are <status>Stunned</status> instead of <status>Slowed</status>.{{ spellmodifierdescriptionappend }}",
+      "vars": []
+    }
+  ],
+  "stats": {
+    "armor": 43,
+    "armorperlevel": 4.8,
+    "attackdamage": 60,
+    "attackdamageperlevel": 3,
+    "attackrange": 125,
+    "attackspeed": 0.625,
+    "attackspeedperlevel": 2.9,
+    "crit": 0,
+    "critperlevel": 0,
+    "hp": 646,
+    "hpperlevel": 101,
+    "hpregen": 8.5,
+    "hpregenperlevel": 0.85,
+    "movespeed": 335,
+    "mp": 302,
+    "mpperlevel": 40,
+    "mpregen": 6,
+    "mpregenperlevel": 0.8,
+    "spellblock": 32,
+    "spellblockperlevel": 2.05
+  },
+  "tags": [
+    "Tank",
+    "Support"
+  ],
+  "title": "the Radiant Dawn"
+}

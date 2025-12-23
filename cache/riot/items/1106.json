@@ -1,0 +1,40 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats></stats><br><br><passive>Jungle Companions</passive><br>Summon a <font color='#38A8E8'>Gustwalker</font> that assists you against monsters.<br><br><passive>Gustwalker's Gait</passive><br>The companion grows as you hunt monsters, empowering your <spellName>Smite</spellName>. When fully grown, it grants <speed>Move Speed</speed> upon entering brush, increased when killing large monsters.</mainText>",
+  "effect": {
+    "Effect1Amount": "60",
+    "Effect2Amount": "25",
+    "Effect3Amount": "5",
+    "Effect4Amount": "8"
+  },
+  "gold": {
+    "base": 450,
+    "purchasable": true,
+    "sell": 180,
+    "total": 450
+  },
+  "image": {
+    "full": "1106.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item0.png",
+    "w": 48,
+    "x": 144,
+    "y": 144
+  },
+  "maps": {
+    "11": true,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": false
+  },
+  "name": "Gustwalker Hatchling",
+  "plaintext": "",
+  "stats": {},
+  "tags": [
+    "Jungle"
+  ]
+}

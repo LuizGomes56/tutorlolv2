@@ -1,0 +1,47 @@
+{
+  "colloq": ";",
+  "description": "<mainText><stats><attention>25</attention> Move Speed</stats><br><br></mainText>",
+  "gold": {
+    "base": 300,
+    "purchasable": true,
+    "sell": 210,
+    "total": 300
+  },
+  "image": {
+    "full": "1001.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item0.png",
+    "w": 48,
+    "x": 0,
+    "y": 0
+  },
+  "into": [
+    "3005",
+    "3047",
+    "3006",
+    "3009",
+    "3010",
+    "3020",
+    "3111",
+    "3117",
+    "3158"
+  ],
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Boots",
+  "plaintext": "Slightly increases Move Speed",
+  "stats": {
+    "FlatMovementSpeedMod": 25
+  },
+  "tags": [
+    "Boots"
+  ]
+}

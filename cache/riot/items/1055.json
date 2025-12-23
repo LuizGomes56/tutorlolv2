@@ -1,0 +1,40 @@
+{
+  "colloq": ";dblade",
+  "description": "<mainText><stats><attention>10</attention> Attack Damage<br><attention>80</attention> Health</stats><br><br><passive>Life Draining</passive><br>Return 2.5% of damage dealt as <healing>Health</healing>. Reduced to 33.3% effectiveness for area of effect spells and pet damage.</mainText>",
+  "gold": {
+    "base": 450,
+    "purchasable": true,
+    "sell": 180,
+    "total": 450
+  },
+  "image": {
+    "full": "1055.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item0.png",
+    "w": 48,
+    "x": 96,
+    "y": 96
+  },
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": false
+  },
+  "name": "Doran's Blade",
+  "plaintext": "Good starting item for attackers",
+  "stats": {
+    "FlatHPPoolMod": 80,
+    "FlatPhysicalDamageMod": 10
+  },
+  "tags": [
+    "Health",
+    "Damage",
+    "SpellVamp",
+    "Lane"
+  ]
+}

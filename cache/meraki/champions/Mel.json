@@ -1,0 +1,777 @@
+{
+  "name": "Mel",
+  "attackType": "RANGED",
+  "adaptiveType": "MAGIC_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 630.0,
+      "perLevel": 93.0
+    },
+    "mana": {
+      "flat": 480.0,
+      "perLevel": 28.0
+    },
+    "armor": {
+      "flat": 21.0,
+      "perLevel": 5.2
+    },
+    "magicResistance": {
+      "flat": 30.0,
+      "perLevel": 1.3
+    },
+    "attackDamage": {
+      "flat": 54.0,
+      "perLevel": 3.3
+    },
+    "attackSpeed": {
+      "flat": 0.625,
+      "perLevel": 2.5
+    },
+    "movespeed": {
+      "flat": 330.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.4,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 550.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 0.9,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": null,
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Innate - Searing Brilliance: Mel's ability casts each generate 3 stacks of Searing Brilliance for 5 seconds, refreshing on subsequent casts and stacking up to 9 times. Her next basic attack consumes all stacks of Searing Brilliance to additionally fire an equal number of blazing projectiles at the target. Each projectile deals 8 : 25 (based on level) (+ 1% AP) magic damage.",
+            "leveling": []
+          },
+          {
+            "description": "Innate: Mel's damaging basic attacks and abilities apply a stack of Overwhelm to enemies for 5 seconds, refreshing on subsequent applications and stacking infinitely.",
+            "leveling": []
+          },
+          {
+            "description": "Overwhelm: Store 50 / 60 / 70 / 80 (based on Golden Eclipse's rank) (+ 10% AP) magic damage on the affected enemy with the first stack, reduced[ to 60% ][ to 30 / 36 / 42 / 48 (based on Golden Eclipse's rank) (+ 6% AP) ]against minions. For each stack, store an additional 2 / 3 / 4 / 5 (based on Golden Eclipse's rank) (+ 0.75% AP) magic damage on the target. If the total post-mitigation damage stored exceeds the target's current health and shields, the next stack will consume them all to deal the damage.",
+            "leveling": []
+          }
+        ],
+        "name": "Searing Brilliance"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                10.0,
+                9.0,
+                8.0,
+                7.0,
+                6.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Mel launches a barrage of luminous bolts at the target location over 0.7 seconds which distribute evenly in the area. Each bolt explodes upon landing to deal magic damage to nearby enemies, reduced to 75% against minions.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage per Explosion",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      13.0,
+                      15.5,
+                      18.0,
+                      20.5,
+                      23.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      8.5,
+                      8.5,
+                      8.5,
+                      8.5,
+                      8.5
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Minion Damage per Explosion",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      9.75,
+                      11.625,
+                      13.5,
+                      15.375,
+                      17.25
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      6.375,
+                      6.375,
+                      6.375,
+                      6.375,
+                      6.375
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Number of Bolts",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      6.0,
+                      7.0,
+                      8.0,
+                      9.0,
+                      10.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      78.0,
+                      108.5,
+                      144.0,
+                      184.5,
+                      230.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      51.0,
+                      59.5,
+                      68.0,
+                      76.5,
+                      85.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Minion Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      58.5,
+                      81.375,
+                      108.0,
+                      138.375,
+                      172.5
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      38.25,
+                      44.625,
+                      51.0,
+                      57.375,
+                      63.75
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "The bolts momentarily grant sight during their travel, while the explosions grant sight over their target area. Both can see through brush and terrain.",
+            "leveling": []
+          }
+        ],
+        "name": "Radiant Volley"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                35.0,
+                32.0,
+                29.0,
+                26.0,
+                23.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Mel forms a protective barrier around herself for 0.75 seconds, becoming invulnerable to non- turret damage and gaining 30% decaying bonus movement speed. All hostile non-turret projectiles that collide with the barrier will be destroyed instantly before Mel fires the same projectiles as her own, either toward or in the direction of the original sources, or toward herself.",
+            "leveling": []
+          },
+          {
+            "description": "Replicated projectiles have the same features that the original ones do, but they retain a ratio of the damage that the original ones would deal, and all of their damage is converted to magic.",
+            "leveling": [
+              {
+                "attribute": "Replicated Projectile Damage Modifier",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%  of the original damage",
+                      "%  of the original damage",
+                      "%  of the original damage",
+                      "%  of the original damage",
+                      "%  of the original damage"
+                    ],
+                    "values": [
+                      40.0,
+                      45.0,
+                      50.0,
+                      55.0,
+                      60.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% per 100 AP",
+                      "% per 100 AP",
+                      "% per 100 AP",
+                      "% per 100 AP",
+                      "% per 100 AP"
+                    ],
+                    "values": [
+                      5.0,
+                      5.0,
+                      5.0,
+                      5.0,
+                      5.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Rebuttal"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                12.0,
+                11.5,
+                11.0,
+                10.5,
+                10.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Mel fires an orb in the target direction that grants sight of its surroundings for 0.25 seconds as it travels. Enemies hit by the orb are dealt magic damage and rooted for a duration.",
+            "leveling": [
+              {
+                "attribute": "Orb Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      60.0,
+                      105.0,
+                      150.0,
+                      195.0,
+                      240.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      60.0,
+                      60.0,
+                      60.0,
+                      60.0,
+                      60.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Orb Root Duration",
+                "modifiers": [
+                  {
+                    "units": [
+                      " seconds",
+                      " seconds",
+                      " seconds",
+                      " seconds",
+                      " seconds"
+                    ],
+                    "values": [
+                      1.25,
+                      1.5,
+                      1.75,
+                      2.0,
+                      2.25
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Both the orb and the field of Solar Snare deal 50% damage against minions.",
+            "leveling": [
+              {
+                "attribute": "Field Magic Damage per Second",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      8.0,
+                      16.0,
+                      24.0,
+                      32.0,
+                      40.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      4.0,
+                      4.0,
+                      4.0,
+                      4.0,
+                      4.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Field Minion Magic Damage per Tick",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      1.0,
+                      2.0,
+                      3.0,
+                      4.0,
+                      5.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      0.5,
+                      0.5,
+                      0.5,
+                      0.5,
+                      0.5
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Orb Minion Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      30.0,
+                      52.5,
+                      75.0,
+                      97.5,
+                      120.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      30.0,
+                      30.0,
+                      30.0,
+                      30.0,
+                      30.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "The orb emanates a field of solar radiation that additionally expands after a 0.5-second delay. Enemies within the field are dealt magic damage and slowed by 30% every 0.125 seconds, lingering for 0.75 seconds after exiting.",
+            "leveling": [
+              {
+                "attribute": "Field Magic Damage per Second",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      16.0,
+                      32.0,
+                      48.0,
+                      64.0,
+                      80.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      8.0,
+                      8.0,
+                      8.0,
+                      8.0,
+                      8.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Field Magic Damage per Tick",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      2.0,
+                      4.0,
+                      6.0,
+                      8.0,
+                      10.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      1.0,
+                      1.0,
+                      1.0,
+                      1.0,
+                      1.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Solar Snare"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                120.0,
+                100.0,
+                80.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Mel unleashes a radiant blast on all enemies affected by Overwhelm, dealing magic damage to each. Enemies are also revealed for 1 second from the start of the cast time.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      100.0,
+                      150.0,
+                      200.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      30.0,
+                      30.0,
+                      30.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      " (+ 3.5% AP) per Overwhelm stack on the target",
+                      " (+ 3.5% AP) per Overwhelm stack on the target",
+                      " (+ 3.5% AP) per Overwhelm stack on the target"
+                    ],
+                    "values": [
+                      4.0,
+                      7.0,
+                      10.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "An enemy champion affected by Overwhelm is required to cast this ability. The target does not have to be visible to be hit by this ability.",
+            "leveling": []
+          },
+          {
+            "description": "Passive: Overwhelm stacks store more damage.",
+            "leveling": [
+              {
+                "attribute": "Increased Stored Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      10.0,
+                      20.0,
+                      30.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Stored Damage Increase per Stack",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      1.0,
+                      2.0,
+                      3.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Golden Eclipse"
+      }
+    ]
+  },
+  "positions": [
+    "MIDDLE",
+    "SUPPORT"
+  ]
+}

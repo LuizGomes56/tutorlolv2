@@ -1,0 +1,465 @@
+{
+  "name": "Trundle",
+  "attackType": "MELEE",
+  "adaptiveType": "PHYSICAL_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 650.0,
+      "perLevel": 110.0
+    },
+    "mana": {
+      "flat": 340.0,
+      "perLevel": 45.0
+    },
+    "armor": {
+      "flat": 37.0,
+      "perLevel": 3.9
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 68.0,
+      "perLevel": 4.0
+    },
+    "attackSpeed": {
+      "flat": 0.67,
+      "perLevel": 2.9
+    },
+    "movespeed": {
+      "flat": 350.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.6700000166893,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.05,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 0.95,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 0.95,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": null,
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Innate: Whenever a nearby enemy dies, Trundle heals himself for 1.8% : 5.5% (based on level) of the target's maximum health.",
+            "leveling": []
+          }
+        ],
+        "name": "King's Tribute"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                3.5,
+                3.5,
+                3.5,
+                3.5,
+                3.5
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Trundle empowers his next basic attack within 7 seconds to have an uncancellable windup, gain 25 bonus range, deal bonus physical damage and slow the target by 75% for 0.1 seconds.",
+            "leveling": [
+              {
+                "attribute": "Bonus Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      10.0,
+                      30.0,
+                      50.0,
+                      70.0,
+                      90.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      15.0,
+                      25.0,
+                      35.0,
+                      45.0,
+                      55.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "After using the empowered attack, Trundle gains bonus attack damage for 5 seconds and reduces the target's bonus attack damage by half that amount for the same duration.",
+            "leveling": [
+              {
+                "attribute": "Attack Damage Reduction",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      10.0,
+                      12.5,
+                      15.0,
+                      17.5,
+                      20.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Bonus Attack Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      20.0,
+                      25.0,
+                      30.0,
+                      35.0,
+                      40.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Chomp resets Trundle's basic attack timer.",
+            "leveling": []
+          }
+        ],
+        "name": "Chomp"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                16.0,
+                15.0,
+                14.0,
+                13.0,
+                12.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: Trundle coats the target location in ice for 8 seconds. While he is within the area, he gains bonus attack speed, bonus movement speed, and 25% increased healing from all sources.",
+            "leveling": [
+              {
+                "attribute": "Bonus Attack Speed",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      30.0,
+                      50.0,
+                      70.0,
+                      90.0,
+                      110.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Bonus Movement Speed",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      20.0,
+                      28.0,
+                      36.0,
+                      44.0,
+                      52.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Frozen Domain"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                21.0,
+                19.5,
+                18.0,
+                16.5,
+                15.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: Trundle erects a pillar of ice at the target location for 6 seconds, which knocks back units hit to 225 units from its center. The pillar acts as terrain and slows nearby enemies.",
+            "leveling": [
+              {
+                "attribute": "Slow",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      34.0,
+                      38.0,
+                      42.0,
+                      46.0,
+                      50.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Pillar of Ice"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                120.0,
+                100.0,
+                80.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Trundle drains the life force out of the target enemy champion, dealing magic damage and healing himself for the same amount. He also steals 40% of their current armor and magic resistance, and increases in size by 18% while reducing the target's size by 9.9%.",
+            "leveling": [
+              {
+                "attribute": "Total Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%  of the target's maximum health",
+                      "%  of the target's maximum health",
+                      "%  of the target's maximum health"
+                    ],
+                    "values": [
+                      20.0,
+                      25.0,
+                      30.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% per 100 AP",
+                      "% per 100 AP",
+                      "% per 100 AP"
+                    ],
+                    "values": [
+                      2.0,
+                      2.0,
+                      2.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Half of the total damage and stealing are applied instantly, and the other half, as well as the size modifiers, are applied every second over the next 4 seconds, even if the target has died.",
+            "leveling": [
+              {
+                "attribute": "Initial Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%  of the target's maximum health",
+                      "%  of the target's maximum health",
+                      "%  of the target's maximum health"
+                    ],
+                    "values": [
+                      10.0,
+                      12.5,
+                      15.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% per 100 AP",
+                      "% per 100 AP",
+                      "% per 100 AP"
+                    ],
+                    "values": [
+                      1.0,
+                      1.0,
+                      1.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Magic Damage Per Second",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%  of the target's maximum health",
+                      "%  of the target's maximum health",
+                      "%  of the target's maximum health"
+                    ],
+                    "values": [
+                      2.5,
+                      3.125,
+                      3.75
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% per 100 AP",
+                      "% per 100 AP",
+                      "% per 100 AP"
+                    ],
+                    "values": [
+                      0.25,
+                      0.25,
+                      0.25
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "The armor and magic resistance will remain stolen for 4 seconds after the drain has ended.",
+            "leveling": []
+          }
+        ],
+        "name": "Subjugate"
+      }
+    ]
+  },
+  "positions": [
+    "JUNGLE",
+    "TOP"
+  ]
+}

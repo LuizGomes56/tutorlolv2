@@ -1,0 +1,53 @@
+{
+  "colloq": ";",
+  "depth": 2,
+  "description": "<mainText><stats><attention>50%</attention> Base Mana Regen<br><attention>8%</attention> Heal and Shield Power</stats><br><br></mainText>",
+  "from": [
+    "1004"
+  ],
+  "gold": {
+    "base": 400,
+    "purchasable": true,
+    "sell": 420,
+    "total": 600
+  },
+  "image": {
+    "full": "3114.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item3.png",
+    "w": 48,
+    "x": 192,
+    "y": 96
+  },
+  "into": [
+    "124011",
+    "326621",
+    "223011",
+    "323222",
+    "323107",
+    "3011",
+    "6616",
+    "326616",
+    "3107",
+    "3222",
+    "323504",
+    "3504",
+    "6621"
+  ],
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Forbidden Idol",
+  "plaintext": "Increases Heal and Shield Power, Mana Regeneration, and Cooldown Reduction",
+  "stats": {},
+  "tags": [
+    "ManaRegen"
+  ]
+}

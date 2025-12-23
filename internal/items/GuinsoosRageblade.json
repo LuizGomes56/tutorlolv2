@@ -1,0 +1,133 @@
+{
+  "riot_id": 3124,
+  "item_id": "GuinsoosRageblade",
+  "name": "Guinsoo's Rageblade",
+  "price": 3000,
+  "sell": 2100,
+  "tier": 3,
+  "maps": [
+    [
+      "Aram",
+      true
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "Tft",
+      false
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
+      "NexusBlitz",
+      true
+    ]
+  ],
+  "prettified_stats": [
+    {
+      "name": "AttackDamage",
+      "value": 30
+    },
+    {
+      "name": "AttackSpeed",
+      "value": 25
+    },
+    {
+      "name": "AbilityPower",
+      "value": 30
+    }
+  ],
+  "damage_type": "Unknown",
+  "stats": {
+    "abilityPower": {
+      "flat": 30.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 30.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 25.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "builds_from_riot_ids": [
+    1052,
+    1043,
+    1037
+  ],
+  "builds_from_item_ids": [
+    "AmplifyingTome",
+    "RecurveBow",
+    "Pickaxe"
+  ],
+  "builds_into_riot_ids": [],
+  "builds_into_item_ids": [],
+  "ranged": {
+    "minimum_damage": "zero",
+    "maximum_damage": "zero"
+  },
+  "melee": {
+    "minimum_damage": "zero",
+    "maximum_damage": "zero"
+  },
+  "attributes": "Undefined",
+  "purchasable": true
+}

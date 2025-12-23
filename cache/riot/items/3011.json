@@ -1,0 +1,44 @@
+{
+  "colloq": "",
+  "depth": 3,
+  "description": "<mainText><stats><attention>35</attention> Ability Power<br><attention>10%</attention> Heal and Shield Power<br><attention>75%</attention> Base Mana Regen<br><attention>15</attention> Ability Haste</stats><br><br><br><li><passive>Puffcap Toxin:</passive> Dealing damage applies <status>40% Grievous Wounds</status> to champions for 3 seconds.<br><br><rules><status>Grievous Wounds</status> reduces the effectiveness of Healing and Regeneration effects.</rules></mainText>",
+  "from": [
+    "3916",
+    "3114"
+  ],
+  "gold": {
+    "base": 500,
+    "purchasable": false,
+    "sell": 1330,
+    "total": 1900
+  },
+  "image": {
+    "full": "3011.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item2.png",
+    "w": 48,
+    "x": 384,
+    "y": 288
+  },
+  "inStore": false,
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Chemtech Putrifier",
+  "plaintext": "",
+  "stats": {
+    "FlatMagicDamageMod": 35
+  },
+  "tags": [
+    "SpellDamage",
+    "ManaRegen",
+    "AbilityHaste"
+  ]
+}

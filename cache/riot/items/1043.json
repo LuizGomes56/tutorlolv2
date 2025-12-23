@@ -1,0 +1,49 @@
+{
+  "colloq": ";",
+  "depth": 2,
+  "description": "<mainText><stats><attention>15%</attention> Attack Speed</stats><br><br><passive>Sting</passive><br>Attacks deal <physicalDamage>15 bonus physical damage</physicalDamage> <OnHit>On-Hit</OnHit>.</mainText>",
+  "from": [
+    "1042"
+  ],
+  "gold": {
+    "base": 450,
+    "purchasable": true,
+    "sell": 490,
+    "total": 700
+  },
+  "image": {
+    "full": "1043.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item0.png",
+    "w": 48,
+    "x": 384,
+    "y": 48
+  },
+  "into": [
+    "3153",
+    "3115",
+    "6672",
+    "3091",
+    "3124",
+    "3302"
+  ],
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Recurve Bow",
+  "plaintext": "Greatly increases Attack Speed",
+  "stats": {
+    "PercentAttackSpeedMod": 0.15
+  },
+  "tags": [
+    "AttackSpeed",
+    "OnHit"
+  ]
+}

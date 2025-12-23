@@ -1,0 +1,58 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><attention>90</attention> Attack Damage<br><attention>125</attention> Ability Power<br><attention>30%</attention> Attack Speed<br><attention>25%</attention> Critical Strike Chance<br><attention>250</attention> Health<br><attention>10</attention> Armor<br><attention>10</attention> Magic Resist<br><attention>250</attention> Mana<br><attention>20</attention> Ability Haste<br><attention>10%</attention> Life Steal<br><attention>100%</attention> Base Health Regen<br><attention>100%</attention> Base Mana Regen</stats><br><br><flavorText>\"It must do something...<br>Declined, it does EVERYTHING\"</flavorText></mainText>",
+  "gold": {
+    "base": 2500,
+    "purchasable": false,
+    "sell": 1750,
+    "total": 2500
+  },
+  "image": {
+    "full": "664403.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item5.png",
+    "w": 48,
+    "x": 48,
+    "y": 192
+  },
+  "inStore": false,
+  "maps": {
+    "11": true,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": false
+  },
+  "name": "The Golden Spatula",
+  "plaintext": "",
+  "specialRecipe": 663064,
+  "stats": {
+    "FlatArmorMod": 10,
+    "FlatCritChanceMod": 0.25,
+    "FlatHPPoolMod": 250,
+    "FlatMPPoolMod": 250,
+    "FlatMagicDamageMod": 125,
+    "FlatPhysicalDamageMod": 90,
+    "FlatSpellBlockMod": 10,
+    "PercentAttackSpeedMod": 0.3,
+    "PercentLifeStealMod": 0.1
+  },
+  "tags": [
+    "Health",
+    "SpellBlock",
+    "HealthRegen",
+    "Armor",
+    "Damage",
+    "CriticalStrike",
+    "AttackSpeed",
+    "LifeSteal",
+    "SpellDamage",
+    "Mana",
+    "ManaRegen",
+    "CooldownReduction",
+    "NonbootsMovement"
+  ]
+}

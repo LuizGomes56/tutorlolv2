@@ -1,0 +1,161 @@
+{
+  "name": "Vi",
+  "adaptative_type": "Physical",
+  "attack_type": "Melee",
+  "positions": [
+    "Jungle"
+  ],
+  "stats": {
+    "health": {
+      "flat": 655.0,
+      "perLevel": 99.0
+    },
+    "mana": {
+      "flat": 295.0,
+      "perLevel": 65.0
+    },
+    "armor": {
+      "flat": 30.0,
+      "perLevel": 4.7
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 63.0,
+      "perLevel": 3.0
+    },
+    "attackSpeed": {
+      "flat": 0.644,
+      "perLevel": 2.0
+    },
+    "movespeed": {
+      "flat": 340.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.643999993801116,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 125.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 0.95,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.05,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.05,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 0.95,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": [
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Relentless Force",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "10 + (1.1 * ctx.ad) + ctx.ap",
+          "30 + (1.1 * ctx.ad) + ctx.ap",
+          "50 + (1.1 * ctx.ad) + ctx.ap",
+          "70 + (1.1 * ctx.ad) + ctx.ap",
+          "90 + (1.1 * ctx.ad) + ctx.ap"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "Vault Breaker",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "40 + (0.6 * ctx.bonus_ad)",
+          "60 + (0.6 * ctx.bonus_ad)",
+          "80 + (0.6 * ctx.bonus_ad)",
+          "100 + (0.6 * ctx.bonus_ad)",
+          "120 + (0.6 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Vault Breaker",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "100 + (1.5 * ctx.bonus_ad)",
+          "150 + (1.5 * ctx.bonus_ad)",
+          "200 + (1.5 * ctx.bonus_ad)",
+          "250 + (1.5 * ctx.bonus_ad)",
+          "300 + (1.5 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Denting Blows",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "(0.04 * ctx.enemy_max_health) + (0.035 * 0.01 * ctx.bonus_ad)",
+          "(0.05 * ctx.enemy_max_health) + (0.035 * 0.01 * ctx.bonus_ad)",
+          "(0.06 * ctx.enemy_max_health) + (0.035 * 0.01 * ctx.bonus_ad)",
+          "(0.07 * ctx.enemy_max_health) + (0.035 * 0.01 * ctx.bonus_ad)",
+          "(0.08 * ctx.enemy_max_health) + (0.035 * 0.01 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Cease and Desist",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "150 + (0.9 * ctx.bonus_ad)",
+          "250 + (0.9 * ctx.bonus_ad)",
+          "350 + (0.9 * ctx.bonus_ad)"
+        ]
+      }
+    ]
+  ],
+  "merge_data": []
+}

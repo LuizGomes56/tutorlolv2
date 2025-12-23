@@ -1,0 +1,159 @@
+{
+  "name": "Rell",
+  "adaptative_type": "Magic",
+  "attack_type": "Melee",
+  "positions": [
+    "Support"
+  ],
+  "stats": {
+    "health": {
+      "flat": 620.0,
+      "perLevel": 104.0
+    },
+    "mana": {
+      "flat": 320.0,
+      "perLevel": 40.0
+    },
+    "armor": {
+      "flat": 30.0,
+      "perLevel": 4.0
+    },
+    "magicResistance": {
+      "flat": 28.0,
+      "perLevel": 1.8
+    },
+    "attackDamage": {
+      "flat": 55.0,
+      "perLevel": 3.0
+    },
+    "attackSpeed": {
+      "flat": 0.625,
+      "perLevel": 2.0
+    },
+    "movespeed": {
+      "flat": 315.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.625,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 0.95,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": [
+    [
+      {
+        "type": "R",
+        "name": "_2"
+      },
+      {
+        "name": "Magnet Storm",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "120 + (1.1 * ctx.ap)",
+          "200 + (1.1 * ctx.ap)",
+          "280 + (1.1 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Magnet Storm",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "15 + (0.1375 * ctx.ap)",
+          "25 + (0.1375 * ctx.ap)",
+          "35 + (0.1375 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Shattering Strike",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "60 + (0.6 * ctx.ap)",
+          "100 + (0.6 * ctx.ap)",
+          "140 + (0.6 * ctx.ap)",
+          "180 + (0.6 * ctx.ap)",
+          "220 + (0.6 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Full Tilt",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "(0.05 * ctx.enemy_max_health) + (0.03 * 0.01 * ctx.ap)",
+          "(0.055 * ctx.enemy_max_health) + (0.03 * 0.01 * ctx.ap)",
+          "(0.06 * ctx.enemy_max_health) + (0.03 * 0.01 * ctx.ap)",
+          "(0.065 * ctx.enemy_max_health) + (0.03 * 0.01 * ctx.ap)",
+          "(0.07 * ctx.enemy_max_health) + (0.03 * 0.01 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_2"
+      },
+      {
+        "name": "Ferromancy: Crash Down",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "60 + (0.6 * ctx.ap)",
+          "90 + (0.6 * ctx.ap)",
+          "120 + (0.6 * ctx.ap)",
+          "150 + (0.6 * ctx.ap)",
+          "180 + (0.6 * ctx.ap)"
+        ]
+      }
+    ]
+  ],
+  "merge_data": []
+}

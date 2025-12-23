@@ -56,40 +56,40 @@ impl ItemData {
     }
 
     /// Sets the damage only for the `melee` and `minimum_damage` fields
-    pub fn melee_min_dmg(&mut self, dmg: &str) {
-        self.current_data.melee.minimum_damage = dmg.to_string();
+    pub fn melee_min_dmg<S: AsRef<str>>(&mut self, dmg: S) {
+        self.current_data.melee.minimum_damage = dmg.as_ref().to_string();
     }
 
     /// Sets the damage only for the `melee` and `maximum_damage` fields
-    pub fn melee_max_dmg(&mut self, dmg: &str) {
-        self.current_data.melee.maximum_damage = dmg.to_string();
+    pub fn melee_max_dmg<S: AsRef<str>>(&mut self, dmg: S) {
+        self.current_data.melee.maximum_damage = dmg.as_ref().to_string();
     }
 
     /// Sets the damage only for the `ranged` and `minimum_damage` fields
-    pub fn ranged_min_dmg(&mut self, dmg: &str) {
-        self.current_data.ranged.minimum_damage = dmg.to_string();
+    pub fn ranged_min_dmg<S: AsRef<str>>(&mut self, dmg: S) {
+        self.current_data.ranged.minimum_damage = dmg.as_ref().to_string();
     }
 
     /// Sets the damage only for the `ranged` and `maximum_damage` fields
-    pub fn ranged_max_dmg(&mut self, dmg: &str) {
-        self.current_data.ranged.maximum_damage = dmg.to_string();
+    pub fn ranged_max_dmg<S: AsRef<str>>(&mut self, dmg: S) {
+        self.current_data.ranged.maximum_damage = dmg.as_ref().to_string();
     }
 
     /// Sets only the `minimum_damage` field for both `melee` and `ranged` fields
-    pub fn const_min_dmg(&mut self, dmg: &str) {
-        self.melee_min_dmg(dmg);
+    pub fn const_min_dmg<S: AsRef<str>>(&mut self, dmg: S) {
+        self.melee_min_dmg(&dmg);
         self.ranged_min_dmg(dmg);
     }
 
     /// Sets only the `maximum_damage` field for both `melee` and `ranged` fields
-    pub fn const_max_dmg(&mut self, dmg: &str) {
-        self.melee_max_dmg(dmg);
+    pub fn const_max_dmg<S: AsRef<str>>(&mut self, dmg: S) {
+        self.melee_max_dmg(&dmg);
         self.ranged_max_dmg(dmg);
     }
 
     /// Sets the `minimum_damage` and `maximum_damage` to both `melee` and `ranged`
     /// fields according to the provided values
-    pub fn const_dmg(&mut self, min_dmg: &str, max_dmg: &str) {
+    pub fn const_dmg<S: AsRef<str>>(&mut self, min_dmg: S, max_dmg: S) {
         self.const_min_dmg(min_dmg);
         self.const_max_dmg(max_dmg);
     }

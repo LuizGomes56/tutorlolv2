@@ -1,0 +1,36 @@
+{
+  "colloq": "",
+  "consumed": true,
+  "description": "<mainText><stats></stats><br><br><active>Active - Consume:</active> Roll to gain 5 additional rerolls.<br><br><flavorText>For when skill isn't enough.</flavorText></mainText>",
+  "gold": {
+    "base": 0,
+    "purchasable": false,
+    "sell": 0,
+    "total": 0
+  },
+  "image": {
+    "full": "2146.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item0.png",
+    "w": 48,
+    "x": 192,
+    "y": 384
+  },
+  "inStore": false,
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": false
+  },
+  "name": "Enhanced Lucky Dice",
+  "plaintext": "",
+  "stats": {},
+  "tags": [
+    "Consumable"
+  ]
+}

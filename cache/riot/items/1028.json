@@ -1,0 +1,65 @@
+{
+  "colloq": ";red",
+  "description": "<mainText><stats><attention>150</attention> Health</stats><br><br></mainText>",
+  "gold": {
+    "base": 400,
+    "purchasable": true,
+    "sell": 280,
+    "total": 400
+  },
+  "image": {
+    "full": "1028.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item0.png",
+    "w": 48,
+    "x": 336,
+    "y": 0
+  },
+  "into": [
+    "3742",
+    "1011",
+    "2021",
+    "323222",
+    "323075",
+    "326617",
+    "323107",
+    "3012",
+    "3147",
+    "3023",
+    "3044",
+    "3053",
+    "3066",
+    "3067",
+    "3075",
+    "3211",
+    "3152",
+    "3161",
+    "323050",
+    "3801",
+    "3803",
+    "4401",
+    "4635",
+    "6035",
+    "6610",
+    "6660",
+    "6662"
+  ],
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Ruby Crystal",
+  "plaintext": "Increases Health",
+  "stats": {
+    "FlatHPPoolMod": 150
+  },
+  "tags": [
+    "Health"
+  ]
+}

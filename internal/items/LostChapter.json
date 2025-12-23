@@ -1,0 +1,146 @@
+{
+  "riot_id": 3802,
+  "item_id": "LostChapter",
+  "name": "Lost Chapter",
+  "price": 1200,
+  "sell": 840,
+  "tier": 2,
+  "maps": [
+    [
+      "Aram",
+      true
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "Tft",
+      false
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "NexusBlitz",
+      true
+    ],
+    [
+      "SummonersRift",
+      false
+    ]
+  ],
+  "prettified_stats": [
+    {
+      "name": "Mana",
+      "value": 300
+    },
+    {
+      "name": "AbilityHaste",
+      "value": 10
+    },
+    {
+      "name": "AbilityPower",
+      "value": 40
+    }
+  ],
+  "damage_type": "Unknown",
+  "stats": {
+    "abilityPower": {
+      "flat": 40.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 300.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "builds_from_riot_ids": [
+    1052,
+    1027,
+    2022
+  ],
+  "builds_from_item_ids": [
+    "AmplifyingTome",
+    "SapphireCrystal",
+    "GlowingMote"
+  ],
+  "builds_into_riot_ids": [
+    323003,
+    3003,
+    3118,
+    2503,
+    4644,
+    6655,
+    6656
+  ],
+  "builds_into_item_ids": [
+    "ArchangelsStaff",
+    "Malignance",
+    "BlackfireTorch",
+    "LudensCompanion"
+  ],
+  "ranged": {
+    "minimum_damage": "zero",
+    "maximum_damage": "zero"
+  },
+  "melee": {
+    "minimum_damage": "zero",
+    "maximum_damage": "zero"
+  },
+  "attributes": "Undefined",
+  "purchasable": true
+}

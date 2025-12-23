@@ -4,9 +4,9 @@ pub(self) use crate::{
     model::champions::{Ability, Champion},
 };
 pub(self) use tutorlolv2_gen::{enums::*, eval::*};
-pub(self) use tutorlolv2_types::{AbilityId, AbilityName, E, P, Q, R, W, ability_name::*};
+pub(self) use tutorlolv2_types::{AbilityId, AbilityName, ability_name::*};
 
-macro_rules! dynvec {
+macro_rules! dynarr {
     ($($field:expr),+) => {
         [$({
             let value: AbilityId = $field.into();

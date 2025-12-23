@@ -1,0 +1,41 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><attention>400</attention> Health<br><attention>1000</attention> Mana<br><attention>15</attention> Ability Haste</stats><br><br><li><passive>Awe:</passive> Gain bonus Health based on Mana.<li><passive>Everlasting:</passive> <status>Immobilizing</status> or <status>Slowing</status> an enemy champion grants a Shield. The Shield is increased if more than one enemy is nearby.</mainText>",
+  "gold": {
+    "base": 2500,
+    "purchasable": false,
+    "sell": 1750,
+    "total": 2500
+  },
+  "image": {
+    "full": "223121.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item1.png",
+    "w": 48,
+    "x": 384,
+    "y": 288
+  },
+  "inStore": false,
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": false
+  },
+  "name": "Fimbulwinter",
+  "plaintext": "",
+  "specialRecipe": 3119,
+  "stats": {
+    "FlatHPPoolMod": 400,
+    "FlatMPPoolMod": 1000
+  },
+  "tags": [
+    "Health",
+    "Mana",
+    "AbilityHaste"
+  ]
+}

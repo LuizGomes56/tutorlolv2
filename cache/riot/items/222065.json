@@ -1,0 +1,47 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><attention>55</attention> Ability Power<br><attention>15</attention> Ability Haste<br><attention>6%</attention> Move Speed<br><attention>150%</attention> Base Mana Regen</stats><br><br><active>Inspiring Speech</active><br>Grants nearby allies Move Speed for a few seconds.</mainText>",
+  "effect": {
+    "Effect1Amount": "0",
+    "Effect2Amount": "0",
+    "Effect3Amount": "30"
+  },
+  "gold": {
+    "base": 2500,
+    "purchasable": true,
+    "sell": 1250,
+    "total": 2500
+  },
+  "image": {
+    "full": "222065.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item1.png",
+    "w": 48,
+    "x": 144,
+    "y": 48
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": false
+  },
+  "name": "Shurelya's Battlesong",
+  "plaintext": "",
+  "stats": {
+    "FlatMagicDamageMod": 55,
+    "PercentMovementSpeedMod": 0.06
+  },
+  "tags": [
+    "SpellDamage",
+    "ManaRegen",
+    "Active",
+    "CooldownReduction",
+    "NonbootsMovement",
+    "AbilityHaste"
+  ]
+}

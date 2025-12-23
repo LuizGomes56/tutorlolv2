@@ -1,0 +1,637 @@
+{
+  "name": "Gragas",
+  "attackType": "MELEE",
+  "adaptiveType": "MAGIC_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 640.0,
+      "perLevel": 115.0
+    },
+    "mana": {
+      "flat": 400.0,
+      "perLevel": 47.0
+    },
+    "armor": {
+      "flat": 38.0,
+      "perLevel": 5.0
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 64.0,
+      "perLevel": 3.5
+    },
+    "attackSpeed": {
+      "flat": 0.675,
+      "perLevel": 2.05
+    },
+    "movespeed": {
+      "flat": 330.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.625,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 125.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 0.95,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                " (based on level)",
+                " (based on level)",
+                " (based on level)",
+                " (based on level)"
+              ],
+              "values": [
+                12.0,
+                10.0,
+                8.0,
+                6.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Innate: Periodically, after casting an ability, Gragas heals himself for 5.5% of his maximum health.",
+            "leveling": []
+          }
+        ],
+        "name": "Happy Hour"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                10.0,
+                9.0,
+                8.0,
+                7.0,
+                6.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Gragas rolls a cask to the target location, remaining there for 4 seconds and granting sight of the area. Upon arrival, the cask starts to ferment over the first 2 seconds of its duration to increase its damage and the effectiveness of its slow, up to a maximum of 150% of their initial values. Barrel Roll can be recast at any time within its duration after the cask has fully travelled, and does so automatically after its duration ends.",
+            "leveling": []
+          },
+          {
+            "description": "Recast: Gragas detonates the cask, dealing magic damage to nearby enemies, reduced by 30% against minions, and slowing them for 2 seconds.",
+            "leveling": [
+              {
+                "attribute": "Maximum Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      120.0,
+                      180.0,
+                      240.0,
+                      300.0,
+                      360.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      120.0,
+                      120.0,
+                      120.0,
+                      120.0,
+                      120.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Maximum Minion Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      84.0,
+                      126.0,
+                      168.0,
+                      210.0,
+                      252.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      84.0,
+                      84.0,
+                      84.0,
+                      84.0,
+                      84.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Maximum Slow",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      60.0,
+                      67.5,
+                      75.0,
+                      82.5,
+                      90.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Minimum Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      80.0,
+                      120.0,
+                      160.0,
+                      200.0,
+                      240.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      80.0,
+                      80.0,
+                      80.0,
+                      80.0,
+                      80.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Minimum Minion Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      56.0,
+                      84.0,
+                      112.0,
+                      140.0,
+                      168.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      56.0,
+                      56.0,
+                      56.0,
+                      56.0,
+                      56.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Minimum Slow",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      40.0,
+                      45.0,
+                      50.0,
+                      55.0,
+                      60.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Barrel Roll"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                5.0,
+                5.0,
+                5.0,
+                5.0,
+                5.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Gragas channels for 0.75 seconds, drinking out of his brew, and gains damage reduction for 2.5 seconds.",
+            "leveling": [
+              {
+                "attribute": "Damage Reduction",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      10.0,
+                      12.0,
+                      14.0,
+                      16.0,
+                      18.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% per 100 AP",
+                      "% per 100 AP",
+                      "% per 100 AP",
+                      "% per 100 AP",
+                      "% per 100 AP"
+                    ],
+                    "values": [
+                      4.0,
+                      4.0,
+                      4.0,
+                      4.0,
+                      4.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Upon completing the channel, Gragas empowers his next basic attack within 5 seconds to have an uncancellable windup, gain 50 bonus range and deal bonus magic damage to the target and nearby enemies, reduced to 50% against structures and capped at 300 against monsters.",
+            "leveling": [
+              {
+                "attribute": "Bonus Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      20.0,
+                      50.0,
+                      80.0,
+                      110.0,
+                      140.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% of target's maximum health",
+                      "% of target's maximum health",
+                      "% of target's maximum health",
+                      "% of target's maximum health",
+                      "% of target's maximum health"
+                    ],
+                    "values": [
+                      7.0,
+                      7.0,
+                      7.0,
+                      7.0,
+                      7.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      70.0,
+                      70.0,
+                      70.0,
+                      70.0,
+                      70.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Capped Monster Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      320.0,
+                      350.0,
+                      380.0,
+                      410.0,
+                      440.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      70.0,
+                      70.0,
+                      70.0,
+                      70.0,
+                      70.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Drunken Rage"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                14.0,
+                13.5,
+                13.0,
+                12.5,
+                12.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Gragas charges in the target direction and stops upon colliding with an enemy, dealing magic damage to all nearby enemies, knocking them back, though not through terrain, and stunning them for 1 second.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      80.0,
+                      125.0,
+                      170.0,
+                      215.0,
+                      260.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      60.0,
+                      60.0,
+                      60.0,
+                      60.0,
+                      60.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Barrel Roll and Explosive Cask can be cast during the dash.",
+            "leveling": []
+          },
+          {
+            "description": "Body Slam's current cooldown is reduced by 40% if Gragas hits an enemy.",
+            "leveling": []
+          }
+        ],
+        "name": "Body Slam"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                100.0,
+                85.0,
+                70.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Gragas hurls a cask that travels to the target location over 0.5 seconds, exploding on impact to deal magic damage to all enemies within the area and knock them back 900 units, though not through terrain, from the epicenter of the explosion, as well as granting sight of the area for 1 second.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      200.0,
+                      300.0,
+                      400.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      80.0,
+                      80.0,
+                      80.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Explosive Cask"
+      }
+    ]
+  },
+  "positions": [
+    "JUNGLE",
+    "MIDDLE",
+    "TOP"
+  ]
+}

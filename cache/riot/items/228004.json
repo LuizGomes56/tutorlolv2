@@ -1,0 +1,43 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><ornnBonus>800</ornnBonus> Health<br><ornnBonus>50</ornnBonus> Armor<br><ornnBonus>100</ornnBonus> Magic Resist</stats><br><br><br><li><passive>Voidborn Resilience:</passive> For each second in champion combat gain a stack granting 2 <scaleArmor>Armor</scaleArmor> and <scaleMR>Magic Resist</scaleMR>, up to 8 stacks max. At max stacks become empowered, instantly draining enemies around you for <magicDamage>magic damage</magicDamage> (healing you for the same amount), and increasing your bonus resists by 20% until end of combat. The drain repeats every 4s as long as you stay in combat.<li><passive>Absorb:</passive> Taking <magicDamage>magic damage</magicDamage> from enemy Champions grants a stack of <attention>Steadfast</attention> (max 8) for 7 seconds. Enemy <status>Immobilizing</status> effects grant an additional 2 stacks.<li><passive>Dissipate:</passive> While at 8 stacks of <attention>Steadfast</attention>, gain <scaleMR>50 Magic Resist</scaleMR> and 14% increased Move Speed.<br><rules>One spell can add a new stack of <attention>Steadfast</attention> every 1 second.</rules></mainText>",
+  "gold": {
+    "base": 6000,
+    "purchasable": false,
+    "sell": 4200,
+    "total": 6000
+  },
+  "image": {
+    "full": "228004.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item2.png",
+    "w": 48,
+    "x": 288,
+    "y": 192
+  },
+  "inStore": false,
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": false
+  },
+  "name": "Adaptive Helm",
+  "plaintext": "",
+  "stats": {
+    "FlatArmorMod": 50,
+    "FlatHPPoolMod": 800,
+    "FlatSpellBlockMod": 100,
+    "PercentMovementSpeedMod": 0.05
+  },
+  "tags": [
+    "Health",
+    "SpellBlock",
+    "Armor",
+    "MagicResist"
+  ]
+}

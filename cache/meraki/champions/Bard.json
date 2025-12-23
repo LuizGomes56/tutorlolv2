@@ -1,0 +1,410 @@
+{
+  "name": "Bard",
+  "attackType": "RANGED",
+  "adaptiveType": "MAGIC_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 630.0,
+      "perLevel": 103.0
+    },
+    "mana": {
+      "flat": 350.0,
+      "perLevel": 50.0
+    },
+    "armor": {
+      "flat": 34.0,
+      "perLevel": 5.0
+    },
+    "magicResistance": {
+      "flat": 30.0,
+      "perLevel": 1.3
+    },
+    "attackDamage": {
+      "flat": 52.0,
+      "perLevel": 3.0
+    },
+    "attackSpeed": {
+      "flat": 0.658,
+      "perLevel": 2.0
+    },
+    "movespeed": {
+      "flat": 335.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.658,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 500.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 0.85,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.15,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 0.85,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.15,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                " : 4 (based on number of Chimes)",
+                " : 4 (based on number of Chimes)"
+              ],
+              "values": [
+                50.0,
+                8.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Bard can have up to 1 : 9 (based on number of Chimes) Meeps at a time.",
+            "leveling": []
+          },
+          {
+            "description": "Innate - Ancient Chimes: Bard's presence causes sacred Chimes to appear at random locations on the map, lingering for up to 10 minutes. Collecting a Chime restores 12% maximum mana and grants Bard 20 + (1 per minute after 5 minutes) experience, as well as 24% bonus movement speed out of combat for 20 seconds, which stacks up to 10 times. Each Chime collected beyond the first instead grants an additional 14% bonus movement speed, up to a total of 150% bonus movement speed. Bard empowers his Meeps each time he collects 5 Chimes.",
+            "leveling": []
+          },
+          {
+            "description": "Innate - Meeps: Bard's presence attracts Meeps, which are small spirits that come to his side. While he has Meeps, his basic attacks are empowered to each consume a Meep on-attack to deal 35 (+ 10 per 5 Chimes collected) (+ 40% AP) bonus magic damage.\nAt 5 Chimes, Meeps slow damaged enemies by 25% : 75% (based on number of Chimes) for 1 second.\nAt 15 Chimes, Meeps deal the damage to enemies within 150 units of the primary target as well as those in a cone behind them.\nAt 35 Chimes, the cone's radius increases.",
+            "leveling": []
+          }
+        ],
+        "name": "Traveler's Call"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                11.0,
+                10.0,
+                9.0,
+                8.0,
+                7.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Bard fires an energy bolt in the target direction that deals magic damage to the first enemy hit and slows them by 60% for a duration.",
+            "leveling": [
+              {
+                "attribute": "Disable Duration",
+                "modifiers": [
+                  {
+                    "units": [
+                      " seconds",
+                      " seconds",
+                      " seconds",
+                      " seconds",
+                      " seconds"
+                    ],
+                    "values": [
+                      1.0,
+                      1.2,
+                      1.4,
+                      1.6,
+                      1.8
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      80.0,
+                      120.0,
+                      160.0,
+                      200.0,
+                      240.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      80.0,
+                      80.0,
+                      80.0,
+                      80.0,
+                      80.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "After Cosmic Binding hits an enemy, the bolt continues behind them for 300 units. If the bolt hits terrain or a second enemy, it stuns both targets for the same duration, dealing the same damage to the secondary target.",
+            "leveling": []
+          }
+        ],
+        "name": "Cosmic Binding"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": null,
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: Bard conjures a shrine at the target location that gathers power over 5 seconds and grants sight of its surroundings for 1 second. Shrines last until they are consumed by champions moving over them. Up to 3 shrines may be active at a time.",
+            "leveling": []
+          },
+          {
+            "description": "Bard periodically stocks a Caretaker's Shrine charge, up to a maximum of 2.",
+            "leveling": []
+          },
+          {
+            "description": "If the champion was an ally or Bard himself, they are healed for an amount based on the shrine's power and gain bonus movement speed decaying over 1.5 seconds. The bonus movement speed can stack with subsequent shrines triggered.",
+            "leveling": [
+              {
+                "attribute": "Bonus Movement Speed",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      20.0,
+                      22.5,
+                      25.0,
+                      27.5,
+                      30.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% per 100 AP",
+                      "% per 100 AP",
+                      "% per 100 AP",
+                      "% per 100 AP",
+                      "% per 100 AP"
+                    ],
+                    "values": [
+                      5.0,
+                      5.0,
+                      5.0,
+                      5.0,
+                      5.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Maximum Heal",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      50.0,
+                      87.5,
+                      125.0,
+                      162.5,
+                      200.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      60.0,
+                      60.0,
+                      60.0,
+                      60.0,
+                      60.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Minimum Heal",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      25.0,
+                      50.0,
+                      75.0,
+                      100.0,
+                      125.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      30.0,
+                      30.0,
+                      30.0,
+                      30.0,
+                      30.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Caretaker's Shrine"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                22.0,
+                20.5,
+                19.0,
+                17.5,
+                16.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "A champion can pass through the corridor by selecting it while within proximity of it, becoming revealed during the travel. Bard and allies travel through the portal at 33% increased speed.",
+            "leveling": []
+          },
+          {
+            "description": "A valid piece of terrain within the target range is required to cast this ability. Magical Journey cannot be taken while immobilized or grounded.",
+            "leveling": []
+          },
+          {
+            "description": "Active: Bard opens a one-way magical corridor through a piece of terrain in the target direction for 10 seconds.",
+            "leveling": []
+          }
+        ],
+        "name": "Magical Journey"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                110.0,
+                95.0,
+                80.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: Bard sends magical energy arcing to the target location, granting sight of the area during travel. Upon impact, it puts all units within into stasis for 2.5 seconds, as well as stunning all enemy champions, minions, and turrets struck for the same duration. Enemies hit are revealed for the duration.",
+            "leveling": []
+          },
+          {
+            "description": "Epic monsters and turrets are affected by Tempered Fate despite being immune to crowd control.",
+            "leveling": []
+          }
+        ],
+        "name": "Tempered Fate"
+      }
+    ]
+  },
+  "positions": [
+    "SUPPORT"
+  ]
+}

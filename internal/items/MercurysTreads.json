@@ -1,0 +1,135 @@
+{
+  "riot_id": 3111,
+  "item_id": "MercurysTreads",
+  "name": "Mercury's Treads",
+  "price": 1250,
+  "sell": 875,
+  "tier": 2,
+  "maps": [
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "Aram",
+      true
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "NexusBlitz",
+      true
+    ],
+    [
+      "Tft",
+      false
+    ],
+    [
+      "Arena",
+      false
+    ]
+  ],
+  "prettified_stats": [
+    {
+      "name": "MoveSpeed",
+      "value": 45
+    },
+    {
+      "name": "MagicResist",
+      "value": 20
+    },
+    {
+      "name": "Tenacity",
+      "value": 30
+    }
+  ],
+  "damage_type": "Unknown",
+  "stats": {
+    "abilityPower": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 20.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 45.0,
+      "percent": 0.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "builds_from_riot_ids": [
+    1001,
+    1033
+  ],
+  "builds_from_item_ids": [
+    "Boots",
+    "NullMagicMantle"
+  ],
+  "builds_into_riot_ids": [
+    3173
+  ],
+  "builds_into_item_ids": [
+    "ChainlacedCrushers"
+  ],
+  "ranged": {
+    "minimum_damage": "zero",
+    "maximum_damage": "zero"
+  },
+  "melee": {
+    "minimum_damage": "zero",
+    "maximum_damage": "zero"
+  },
+  "attributes": "Undefined",
+  "purchasable": true
+}

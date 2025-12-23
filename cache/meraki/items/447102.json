@@ -1,0 +1,79 @@
+{
+  "active": [],
+  "buildsFrom": [],
+  "buildsInto": [],
+  "name": "Reality Fracture",
+  "tier": 3,
+  "passives": [
+    {
+      "effects": "Basic attacks [[on-attack]] and damaging abilities against enemies summon 8 allied {{ui|Voidmite|Voidmites}} that are {{tip|untargetable}} and attack the target (15 second cooldown). {{ui|Voidmite|Voidmites}} deal {{as|6|magic damage}} {{as|(+ 4% of your AD)}} {{as|(+ 8% of your AP)}} {{as|magic damage}} with each of their basic attacks and last for up to 3 seconds. Additionally, summon 6 {{ui|Voidmite|Voidmites}} upon your death.",
+      "name": "ZZ'Rot",
+      "unique": true
+    }
+  ],
+  "id": 447102,
+  "stats": {
+    "abilityPower": {
+      "flat": 80.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 40.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 300.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "shop": {
+    "purchasable": true,
+    "prices": {
+      "total": 0
+    }
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "active": [],
+  "buildsFrom": [
+    3067,
+    1029,
+    1033
+  ],
+  "buildsInto": [],
+  "name": "Zeke's Convergence",
+  "tier": 3,
+  "passives": [
+    {
+      "effects": "Upon casting your ultimate ability, you summon a storm of flame and ice around you for 5 seconds, dealing{{ft|{{as|{{ap|30/4}} magic damage}} every {{fd|0.25}} seconds|{{as|{{ap|30*5}} '''total''' magic damage}} over the duration}}to enemies within {{tip|cr|icononly=true}} 350 units and {{tip|slow|slowing}} them by 30% (45 second cooldown, starts on ultimate cast).",
+      "name": "Frostfire Tempest",
+      "unique": true
+    }
+  ],
+  "id": 3050,
+  "stats": {
+    "abilityPower": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 25.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 300.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 25.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "shop": {
+    "purchasable": true,
+    "prices": {
+      "total": 2200
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "colloq": "",
+  "consumed": true,
+  "description": "<mainText><stats></stats><br><br>Summons Enraged Robo-Tibbers. Robo-Tibbers swipes, dealing area damage. Enraged Robo-Tibbers focuses on enemies with the most health and grows larger, faster and deals more damage over the duration.<br><br><rules>Damage, Ability Haste, Area Size, Duration, Movement Speed</rules></mainText>",
+  "gold": {
+    "base": 0,
+    "purchasable": true,
+    "sell": 0,
+    "total": 0
+  },
+  "image": {
+    "full": "9287.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item6.png",
+    "w": 48,
+    "x": 240,
+    "y": 48
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": false,
+    "33": true,
+    "35": false
+  },
+  "name": "T.I.B.B.E.R.S (B.E.E.G Edition)",
+  "plaintext": "",
+  "stats": {},
+  "tags": []
+}

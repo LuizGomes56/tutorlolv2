@@ -1,6 +1,6 @@
 [package]
 name = "tutorlolv2"
-version = "0.5.5"
+version = "0.5.6"
 edition = "2024"
 authors = ["Luiz Gustavo Santana Dias Gomes"]
 repository = "https://github.com/LuizGomes56/tutorlolv2"
@@ -9,30 +9,29 @@ description = "League of Legends static library that evaluates damages of abilit
 [dev-dependencies]
 serde_json = "1.0.145"
 bincode = "2.0.1"
-tutorlolv2 = { path = ".", features = ["bincode", "livegame"] }
+tutorlolv2 = { path = "." }
+
+[workspace]
+members = [
+    "tutorlolv2_build",
+    "tutorlolv2_dev",
+    "tutorlolv2_fmt",
+    "tutorlolv2_gen",
+    "tutorlolv2_html",
+    "tutorlolv2_macros",
+    "tutorlolv2_server",
+    "tutorlolv2_types",
+]
 
 [dependencies]
-tutorlolv2_types = { path = "tutorlolv2_types", default-features = false }
-tutorlolv2_gen = { path = "tutorlolv2_gen", default-features = false }
+tutorlolv2_gen = { path = "tutorlolv2_gen", features = ["eval"] }
 const_sized_bit_set = "0.3.0"
-bincode = { version = "2.0.1", default-features = false, optional = true }
-serde = { version = "1.0", default-features = false, optional = true }
-serde_arrays = { version = "0.2.0", optional = true }
-
-[features]
-default = ["livegame", "serde"]
-bincode = [
-    "dep:bincode",
-    "bincode/derive",
-    "bincode/alloc",
-    "tutorlolv2_gen/bincode",
-    "tutorlolv2_types/bincode",
-]
-serde = [
-    "dep:serde",
-    "serde/derive",
-    "dep:serde_arrays",
-    "tutorlolv2_gen/serde",
-    "tutorlolv2_types/serde",
-]
-livegame = ["dep:serde", "serde/derive"]
+bincode = { version = "2.0.1", default-features = false, features = [
+    "derive",
+    "alloc",
+] }
+serde = { version = "1.0", default-features = false, features = [
+    "derive",
+    "alloc",
+] }
+serde_arrays = { version = "0.2.0", default-features = false }

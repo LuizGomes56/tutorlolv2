@@ -1,0 +1,562 @@
+{
+  "name": "Ornn",
+  "attackType": "MELEE",
+  "adaptiveType": "PHYSICAL_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 660.0,
+      "perLevel": 109.0
+    },
+    "mana": {
+      "flat": 341.0,
+      "perLevel": 65.0
+    },
+    "armor": {
+      "flat": 33.0,
+      "perLevel": 5.2
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 69.0,
+      "perLevel": 3.5
+    },
+    "attackSpeed": {
+      "flat": 0.625,
+      "perLevel": 2.0
+    },
+    "movespeed": {
+      "flat": 335.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.625,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.05,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 0.9,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 0.95,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.05,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": null,
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Innate - Living Forge: Ornn can purchase non-consumable items from anywhere on the field by forging them himself, and is also presented a Forge Menu to quickly forge his recommended items. Once Ornn selects an item to forge, he channels for 4 seconds, building the item and paying its gold cost upon completion. The channel is interrupted if Ornn takes damage from enemy champions or turrets. Living Forge is disabled for 4 seconds after starting the channel.",
+            "leveling": []
+          },
+          {
+            "description": "Innate - Master Craftsman: Ornn uses his craftsmanship in forgery to upgrade most Legendary items that he and his teammates own into Masterwork items, increasing the gold value of all upgradeable stats by exactly 1000, shared equally among them. When Ornn reaches level 13, the first eligible Legendary item in his inventory is upgraded automatically. For each level after 13 and before 18 (levels 14:17, total of 4, once per ally per game), Ornn can upgrade the first eligible Legendary item in an allied champion's inventory into its Masterwork variant. He can do so by selecting the ally while within 600 range, and forges the item by performing Living Forge's channel.Additionally, Ornn increases his bonus armor, bonus magic resistance and bonus health by 10% from all sources, further increased by 4% each time he upgrades a Legendary item into a Masterwork item, for a total increase of 30% to each stat after the maximum of 5 upgrades.",
+            "leveling": []
+          },
+          {
+            "description": "Innate - Temper: Ornn's basic attacks against Brittle enemies knock them back a short distance. Ornn's and allies' immobilizing effects against Brittle enemies will consume the debuff to deal bonus magic damage equal to 10% : 18% (based on Ornn's level) of the target's maximum health, capped at 250 against monsters, and cause the crowd control to last 30% longer (if applicable).",
+            "leveling": []
+          },
+          {
+            "description": "Ornn will prioritize upgrading the first Legendary item eligible for a Masterwork upgrade based on its position in the inventory, detecting each slot until an eligible item is found.",
+            "leveling": []
+          }
+        ],
+        "name": "Living Forge"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                9.0,
+                8.5,
+                8.0,
+                7.5,
+                7.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Ornn sends a fissure in the target direction that deals physical damage to enemies hit and slows them by 40% for 2 seconds.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      20.0,
+                      45.0,
+                      70.0,
+                      95.0,
+                      120.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      110.0,
+                      110.0,
+                      110.0,
+                      110.0,
+                      110.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "The fissure stops at maximum range or 200 units behind the first enemy champion struck. After a 1.125-second delay, a magma pillar then erupts to knock aside enemies, though not through terrain, and linger as impassible terrain for 4 seconds.",
+            "leveling": []
+          },
+          {
+            "description": "The pillar will not expire while Ornn is charging.",
+            "leveling": []
+          }
+        ],
+        "name": "Volcanic Rupture"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                12.0,
+                11.5,
+                11.0,
+                10.5,
+                10.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Ornn marches forward in the target direction over 0.75 seconds, gaining displacement immunity and becoming unable to act for the duration.",
+            "leveling": []
+          },
+          {
+            "description": "Bellows Breath has a minimum damage threshold, which is also the damage dealt to minions, and is capped against monsters.",
+            "leveling": [
+              {
+                "attribute": "Minimum/Minion Damage Per Tick",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      16.0,
+                      26.0,
+                      36.0,
+                      46.0,
+                      56.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Monster Damage Cap Per Tick",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      31.0,
+                      36.0,
+                      41.0,
+                      46.0,
+                      51.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Minimum/Minion Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      80.0,
+                      130.0,
+                      180.0,
+                      230.0,
+                      280.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Monster Damage Cap",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      155.0,
+                      180.0,
+                      205.0,
+                      230.0,
+                      255.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Over the march he belches fire over a cone in front of him, dealing magic damage every 0.15 seconds to enemies hit. The final gout of flame can reach slightly farther and will apply Brittle for 3 seconds.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage Per Tick",
+                "modifiers": [
+                  {
+                    "units": [
+                      "% of target's maximum health",
+                      "% of target's maximum health",
+                      "% of target's maximum health",
+                      "% of target's maximum health",
+                      "% of target's maximum health"
+                    ],
+                    "values": [
+                      2.4,
+                      2.6,
+                      2.8,
+                      3.0,
+                      3.2
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "% of target's maximum health",
+                      "% of target's maximum health",
+                      "% of target's maximum health",
+                      "% of target's maximum health",
+                      "% of target's maximum health"
+                    ],
+                    "values": [
+                      12.0,
+                      13.0,
+                      14.0,
+                      15.0,
+                      16.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Bellows Breath"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                14.0,
+                13.5,
+                13.0,
+                12.5,
+                12.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Ornn charges in the target direction, dealing physical damage to enemies he passes through and stopping upon colliding with terrain.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      80.0,
+                      125.0,
+                      170.0,
+                      215.0,
+                      260.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus armor",
+                      "% bonus armor",
+                      "% bonus armor",
+                      "% bonus armor",
+                      "% bonus armor"
+                    ],
+                    "values": [
+                      40.0,
+                      40.0,
+                      40.0,
+                      40.0,
+                      40.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus magic resistance",
+                      "% bonus magic resistance",
+                      "% bonus magic resistance",
+                      "% bonus magic resistance",
+                      "% bonus magic resistance"
+                    ],
+                    "values": [
+                      40.0,
+                      40.0,
+                      40.0,
+                      40.0,
+                      40.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "If Ornn collides with terrain during the charge, he creates a shockwave that knocks up and stuns nearby enemies for 1.25 seconds and deals the same damage if they were not already hit by the charge.",
+            "leveling": []
+          },
+          {
+            "description": "Ornn cannot basic attack nor cast abilities for 0.5 seconds after the dash ends.",
+            "leveling": []
+          },
+          {
+            "description": "The shockwave destroys the pillar formed by Volcanic Rupture and partially destroys terrain created by enemy champions.",
+            "leveling": []
+          }
+        ],
+        "name": "Searing Charge"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                140.0,
+                120.0,
+                100.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Ornn sounds his horn, summoning a lava elemental at maximum range from the target direction that stampedes towards his casting position at increasing speed. The elemental deals magic damage to enemies it passes through and slows them for 2 seconds.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      125.0,
+                      175.0,
+                      225.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      20.0,
+                      20.0,
+                      20.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Slow",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      40.0,
+                      50.0,
+                      60.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Call of the Forge God can be recast after 1.25 seconds while the elemental is active.",
+            "leveling": []
+          },
+          {
+            "description": "Each pass applies Brittle to targets for 3 seconds and can affect enemies only once. The elemental briefly grants sight around its trajectory as it travels.",
+            "leveling": []
+          },
+          {
+            "description": "Recast: Ornn dashes in the target direction, though not through terrain. If he collides with the elemental, he sends it stampeding in the same direction. The elemental deals the same damage to enemies it passes through and knocks them up and stuns them for 1 second, reduced to 0.5 seconds after the first enemy champion hit.",
+            "leveling": [
+              {
+                "attribute": "Total Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      250.0,
+                      350.0,
+                      450.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      40.0,
+                      40.0,
+                      40.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Call of the Forge God"
+      }
+    ]
+  },
+  "positions": [
+    "TOP"
+  ]
+}

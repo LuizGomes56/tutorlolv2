@@ -1,0 +1,79 @@
+{
+  "active": [],
+  "buildsFrom": [],
+  "buildsInto": [],
+  "name": "Kinkou Jitte",
+  "tier": 3,
+  "passives": [
+    {
+      "effects": "You can now identify the ''Weakpoints'' of nearby enemy champions, marked as an arc around them and pointing towards a specific direction. ''Weakpoints'' on targets take 4 seconds to become exposed and linger for {{fd|11.25}} seconds afterwards. Dealing damage in the direction of an exposed ''Weakpoint'' will consume it to deal {{as|'''bonus''' true damage}} equal to {{as|3%|hp}} {{as|(+ 3% per 100 AD)}} {{as|(+ 2% per 100 AP)}} {{as|of the target's '''maximum''' health}} and grant you {{as|{{pp|30 to 75|key=%}} '''bonus''' movement speed}} for {{fd|1.5}} seconds. Once a target's ''Weakpoint'' is consumed or expires, you identify a new ''Weakpoint'' on them.",
+      "name": "Between the Ribs",
+      "unique": true
+    }
+  ],
+  "id": 447116,
+  "stats": {
+    "abilityPower": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 400.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "shop": {
+    "purchasable": true,
+    "prices": {
+      "total": 0
+    }
+  }
+}

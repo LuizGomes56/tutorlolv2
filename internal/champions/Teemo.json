@@ -1,0 +1,233 @@
+{
+  "name": "Teemo",
+  "adaptative_type": "Magic",
+  "attack_type": "Ranged",
+  "positions": [
+    "Jungle",
+    "Support",
+    "Top"
+  ],
+  "stats": {
+    "health": {
+      "flat": 615.0,
+      "perLevel": 104.0
+    },
+    "mana": {
+      "flat": 334.0,
+      "perLevel": 25.0
+    },
+    "armor": {
+      "flat": 24.0,
+      "perLevel": 4.95
+    },
+    "magicResistance": {
+      "flat": 30.0,
+      "perLevel": 1.3
+    },
+    "attackDamage": {
+      "flat": 54.0,
+      "perLevel": 3.0
+    },
+    "attackSpeed": {
+      "flat": 0.69,
+      "perLevel": 3.38
+    },
+    "movespeed": {
+      "flat": 330.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.689999997615814,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 500.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.1,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 0.95,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 0.9,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": [
+    [
+      {
+        "type": "R",
+        "name": "_2"
+      },
+      {
+        "name": "Noxious Trap",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "200 + (0.5 * ctx.ap)",
+          "325 + (0.5 * ctx.ap)",
+          "450 + (0.5 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_3"
+      },
+      {
+        "name": "Toxic Shot",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "24 + (0.4 * ctx.ap)",
+          "48 + (0.4 * ctx.ap)",
+          "72 + (0.4 * ctx.ap)",
+          "96 + (0.4 * ctx.ap)",
+          "120 + (0.4 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_6"
+      },
+      {
+        "name": "Toxic Shot",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "34.8 + (0.58 * ctx.ap)",
+          "69.6 + (0.58 * ctx.ap)",
+          "104.4 + (0.58 * ctx.ap)",
+          "139.2 + (0.58 * ctx.ap)",
+          "174 + (0.58 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_5"
+      },
+      {
+        "name": "Toxic Shot",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "8.7 + (0.145 * ctx.ap)",
+          "17.4 + (0.145 * ctx.ap)",
+          "26.1 + (0.145 * ctx.ap)",
+          "34.8 + (0.145 * ctx.ap)",
+          "43.5 + (0.145 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_2"
+      },
+      {
+        "name": "Toxic Shot",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "6 + (0.1 * ctx.ap)",
+          "12 + (0.1 * ctx.ap)",
+          "18 + (0.1 * ctx.ap)",
+          "24 + (0.1 * ctx.ap)",
+          "30 + (0.1 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Noxious Trap",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "50 + (0.125 * ctx.ap)",
+          "81.25 + (0.125 * ctx.ap)",
+          "112.5 + (0.125 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Blinding Dart",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "80 + (0.7 * ctx.ap)",
+          "125 + (0.7 * ctx.ap)",
+          "170 + (0.7 * ctx.ap)",
+          "215 + (0.7 * ctx.ap)",
+          "260 + (0.7 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Toxic Shot",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "9 + (0.3 * ctx.ap)",
+          "23 + (0.3 * ctx.ap)",
+          "37 + (0.3 * ctx.ap)",
+          "51 + (0.3 * ctx.ap)",
+          "65 + (0.3 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_4"
+      },
+      {
+        "name": "Toxic Shot",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "13.05 + (0.435 * ctx.ap)",
+          "33.35 + (0.435 * ctx.ap)",
+          "53.65 + (0.435 * ctx.ap)",
+          "73.95 + (0.435 * ctx.ap)",
+          "94.25 + (0.435 * ctx.ap)"
+        ]
+      }
+    ]
+  ],
+  "merge_data": []
+}

@@ -1,0 +1,44 @@
+{
+  "colloq": ";",
+  "depth": 3,
+  "description": "<mainText><stats><attention>60</attention> Ability Power<br><attention>20</attention> Ability Haste<br><attention>125%</attention> Base Mana Regen</stats><br><br><passive>Coordinated Fire</passive> (0s) per target<br><keyword>Slowing</keyword> or <keyword>Immobilizing</keyword> an enemy champion marks them for 5 seconds. Ally champion damage detonates the mark, dealing <magicDamage>magic damage equal to 10% of current health</magicDamage>. </mainText>",
+  "from": [
+    "3108",
+    "4642"
+  ],
+  "gold": {
+    "base": 500,
+    "purchasable": true,
+    "sell": 1575,
+    "total": 2250
+  },
+  "image": {
+    "full": "4005.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item4.png",
+    "w": 48,
+    "x": 96,
+    "y": 192
+  },
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Imperial Mandate",
+  "plaintext": "Defer damage until later.",
+  "stats": {
+    "FlatMagicDamageMod": 60
+  },
+  "tags": [
+    "SpellDamage",
+    "ManaRegen",
+    "CooldownReduction",
+    "AbilityHaste"
+  ]
+}

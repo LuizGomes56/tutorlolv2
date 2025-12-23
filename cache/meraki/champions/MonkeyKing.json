@@ -1,0 +1,513 @@
+{
+  "name": "Wukong",
+  "attackType": "MELEE",
+  "adaptiveType": "PHYSICAL_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 610.0,
+      "perLevel": 99.0
+    },
+    "mana": {
+      "flat": 330.0,
+      "perLevel": 65.0
+    },
+    "armor": {
+      "flat": 31.0,
+      "perLevel": 4.7
+    },
+    "magicResistance": {
+      "flat": 28.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 66.0,
+      "perLevel": 3.5
+    },
+    "attackSpeed": {
+      "flat": 0.69,
+      "perLevel": 3.0
+    },
+    "movespeed": {
+      "flat": 340.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.657999992370605,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.1,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 0.9,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": null,
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Innate: Wukong gains 6 : 10 (based on level) bonus armor and regenerates an additional[ 0.35% of his maximum health every 5 seconds. ][ 0.035% of his maximum health every 0.5 seconds. ]Whenever Wukong or his clone damage an enemy champion or monster, he generates a stack of Strength of Stone for 5 seconds, refreshing on subsequent hits and stacking up to 5 times. Stacks expire by one every second when the duration ends.",
+            "leveling": []
+          },
+          {
+            "description": "Strength of Stone: For each stack,[ Stone Skin's effects are increased by 100%, ][ Wukong gains 6 : 10 (based on level) additional bonus armor and further regenerates an additional 0.35% of his maximum health every 5 seconds, ]up to a maximum of 36 : 60 (based on level) bonus armor and total additional regeneration of[ 2.1% maximum health every 5 seconds. ][ 0.21% maximum health every 0.5 seconds. ]",
+            "leveling": []
+          }
+        ],
+        "name": "Stone Skin"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                8.0,
+                7.5,
+                7.0,
+                6.5,
+                6.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Wukong empowers his next basic attack within 5 seconds to have an uncancellable windup, gain bonus range, deal bonus physical damage, and inflict armor reduction for 3 seconds.",
+            "leveling": [
+              {
+                "attribute": "Armor Reduction",
+                "modifiers": [
+                  {
+                    "units": [
+                      "% of target's armor",
+                      "% of target's armor",
+                      "% of target's armor",
+                      "% of target's armor",
+                      "% of target's armor"
+                    ],
+                    "values": [
+                      10.0,
+                      15.0,
+                      20.0,
+                      25.0,
+                      30.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Bonus Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      20.0,
+                      45.0,
+                      70.0,
+                      95.0,
+                      120.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      55.0,
+                      55.0,
+                      55.0,
+                      55.0,
+                      55.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Bonus Range",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      135.0,
+                      145.0,
+                      155.0,
+                      165.0,
+                      175.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Crushing Blow resets Wukong's and his clone's basic attack timer. Other abilities can be used during the attack's animation.",
+            "leveling": []
+          },
+          {
+            "description": "Crushing Blow's cooldown is reduced by 0.5 seconds whenever Wukong or his clone damage an enemy.",
+            "leveling": []
+          }
+        ],
+        "name": "Crushing Blow"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                20.0,
+                19.0,
+                18.0,
+                17.0,
+                16.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Wukong enters invisibility for 1 second and dashes in the target direction, leaving behind a clone of himself at his casting position for 3.25 seconds.",
+            "leveling": []
+          },
+          {
+            "description": "See Pets for more details about Wukong's clone. Wukong can cast any of his abilities during the dash.",
+            "leveling": []
+          },
+          {
+            "description": "The clone deals reduced damage.",
+            "leveling": [
+              {
+                "attribute": "Clone Outgoing Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      35.0,
+                      40.0,
+                      45.0,
+                      50.0,
+                      55.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "The clone is untargetable to allies and can basic attack autonomously, prioritizing the last enemy Wukong damaged. It can also gain the effects of Crushing Blow, Nimbus Strike's bonus attack speed, and casts Cyclone whenever Wukong does.",
+            "leveling": []
+          }
+        ],
+        "name": "Warrior Trickster"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                10.0,
+                9.25,
+                8.5,
+                7.75,
+                7.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Wukong dashes to the target enemy's location and sends out untargetable clones to strike up to two additional enemies near the target's location, dealing magic damage.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      80.0,
+                      110.0,
+                      140.0,
+                      170.0,
+                      200.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Crushing Blow can be cast during the dash.",
+            "leveling": []
+          },
+          {
+            "description": "Upon arrival, Wukong gains bonus attack speed for 5 seconds.",
+            "leveling": [
+              {
+                "attribute": "Bonus Attack Speed",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      35.0,
+                      40.0,
+                      45.0,
+                      50.0,
+                      55.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Nimbus Strike"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                130.0,
+                110.0,
+                90.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Wukong spins his staff around for up to 2 seconds, becoming ghosted and gaining 20% bonus movement speed. The staff deals physical damage every 0.25 seconds to enemies hit, and can knock them up once for 0.6 seconds. Cyclone will not knock up enemies who were already hit by either Wukong or his clone within the same cast.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage Per Tick",
+                "modifiers": [
+                  {
+                    "units": [
+                      "% of target's maximum health",
+                      "% of target's maximum health",
+                      "% of target's maximum health"
+                    ],
+                    "values": [
+                      1.0,
+                      1.5,
+                      2.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      34.375,
+                      34.375,
+                      34.375
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "% of target's maximum health",
+                      "% of target's maximum health",
+                      "% of target's maximum health"
+                    ],
+                    "values": [
+                      8.0,
+                      12.0,
+                      16.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      275.0,
+                      275.0,
+                      275.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Cyclone can be recast after 0.5 seconds within the duration, and does so automatically afterwards or by casting another ability.",
+            "leveling": []
+          },
+          {
+            "description": "Cyclone's damage is capped at 200 / 400 / 600 (based on level) per second against monsters.",
+            "leveling": []
+          },
+          {
+            "description": "Nimbus Strike's bonus attack speed duration is continuously refreshed while spinning.",
+            "leveling": []
+          },
+          {
+            "description": "Recast: Wukong ends Cyclone. After 1 second, he can cast Cyclone a second time within 8 seconds of the first cast.",
+            "leveling": [
+              {
+                "attribute": "Maximum Total Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "% of target's maximum health",
+                      "% of target's maximum health",
+                      "% of target's maximum health"
+                    ],
+                    "values": [
+                      16.0,
+                      24.0,
+                      32.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      550.0,
+                      550.0,
+                      550.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Cyclone"
+      }
+    ]
+  },
+  "positions": [
+    "JUNGLE",
+    "TOP"
+  ]
+}

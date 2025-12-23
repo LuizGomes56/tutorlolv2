@@ -1,0 +1,652 @@
+{
+  "name": "Sylas",
+  "attackType": "MELEE",
+  "adaptiveType": "MAGIC_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 600.0,
+      "perLevel": 122.0
+    },
+    "mana": {
+      "flat": 400.0,
+      "perLevel": 70.0
+    },
+    "armor": {
+      "flat": 29.0,
+      "perLevel": 5.2
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 2.55
+    },
+    "attackDamage": {
+      "flat": 61.0,
+      "perLevel": 3.0
+    },
+    "attackSpeed": {
+      "flat": 0.645,
+      "perLevel": 3.5
+    },
+    "movespeed": {
+      "flat": 340.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.644999980926513,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.05,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 0.95,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": null,
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Damage to secondary targets executes minions that would be left below 25 health.",
+            "leveling": []
+          },
+          {
+            "description": "Innate: Whenever Sylas casts an ability, he generates a stack of Unshackled for 4 seconds, refreshing on subsequent casts and stacking up to 3 times.",
+            "leveling": []
+          },
+          {
+            "description": "Petricite Burst can critically strike for (175% + 40%) damage only against the primary target.",
+            "leveling": []
+          },
+          {
+            "description": "Unshackled: Sylas' next basic attack gains 125% bonus attack speed and is empowered to consume a stack to whirl his chains around him, which has an uncancellable windup and deals 130% AD (+ 30% AP) magic damage to the primary target and 40% AD (+ 20% AP) magic damage to nearby enemies.",
+            "leveling": []
+          }
+        ],
+        "name": "Petricite Burst"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                10.0,
+                9.0,
+                8.0,
+                7.0,
+                6.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Sylas lashes out two chains that converge to the target location and extend beyond it up to a maximum range, dealing magic damage to enemies hit and slowing them for 1.5 seconds.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      40.0,
+                      60.0,
+                      80.0,
+                      100.0,
+                      120.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      40.0,
+                      40.0,
+                      40.0,
+                      40.0,
+                      40.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Slow",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      15.0,
+                      20.0,
+                      25.0,
+                      30.0,
+                      35.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "After a 0.6-second delay, the chains' intersection explodes to deal magic damage to enemies within, reduced to 40% against minions.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      60.0,
+                      115.0,
+                      170.0,
+                      225.0,
+                      280.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      80.0,
+                      80.0,
+                      80.0,
+                      80.0,
+                      80.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Minion Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      24.0,
+                      46.0,
+                      68.0,
+                      90.0,
+                      112.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      32.0,
+                      32.0,
+                      32.0,
+                      32.0,
+                      32.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      100.0,
+                      175.0,
+                      250.0,
+                      325.0,
+                      400.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      120.0,
+                      120.0,
+                      120.0,
+                      120.0,
+                      120.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Minion Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      64.0,
+                      106.0,
+                      148.0,
+                      190.0,
+                      232.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      72.0,
+                      72.0,
+                      72.0,
+                      72.0,
+                      72.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Chain Lash"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                12.0,
+                10.5,
+                9.0,
+                7.5,
+                6.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Sylas dashes to the front of the target enemy's location then strikes them to deal magic damage.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      75.0,
+                      110.0,
+                      145.0,
+                      180.0,
+                      215.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      60.0,
+                      60.0,
+                      60.0,
+                      60.0,
+                      60.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "If this damages a champion, Sylas is also healed, increased by 0% : 100% (based on his missing health).",
+            "leveling": [
+              {
+                "attribute": "Maximum Heal",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      40.0,
+                      80.0,
+                      120.0,
+                      160.0,
+                      200.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      40.0,
+                      40.0,
+                      40.0,
+                      40.0,
+                      40.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% of his bonus health",
+                      "% of his bonus health",
+                      "% of his bonus health",
+                      "% of his bonus health",
+                      "% of his bonus health"
+                    ],
+                    "values": [
+                      10.0,
+                      10.0,
+                      10.0,
+                      10.0,
+                      10.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Minimum Heal",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      20.0,
+                      40.0,
+                      60.0,
+                      80.0,
+                      100.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      20.0,
+                      20.0,
+                      20.0,
+                      20.0,
+                      20.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% of his bonus health",
+                      "% of his bonus health",
+                      "% of his bonus health",
+                      "% of his bonus health",
+                      "% of his bonus health"
+                    ],
+                    "values": [
+                      5.0,
+                      5.0,
+                      5.0,
+                      5.0,
+                      5.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Kingslayer"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                13.0,
+                12.0,
+                11.0,
+                10.0,
+                9.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: Sylas dashes to the target location. Within 3.5 seconds, he can cast Abduct after a 0.2-second delay from casting Abscond.",
+            "leveling": []
+          },
+          {
+            "description": "Kingslayer can be cast during the dash.",
+            "leveling": []
+          }
+        ],
+        "name": "Abscond"
+      },
+      {
+        "cooldown": null,
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Sylas whips out his chains in the target direction that deal magic damage to the first enemy hit and reveal and stun them for 0.5 seconds. Upon hitting the target, Sylas dashes to their location and knocks them up for 0.5 seconds upon arrival.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      80.0,
+                      130.0,
+                      180.0,
+                      230.0,
+                      280.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      80.0,
+                      80.0,
+                      80.0,
+                      80.0,
+                      80.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Sylas is unable to cast Chain Lash while the chains are in flight.",
+            "leveling": []
+          }
+        ],
+        "name": "Abduct"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                80.0,
+                55.0,
+                30.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: Sylas launches his chains at the target enemy champion, gaining a copy of their ultimate ability and revealing them for 0.825 seconds at the start of the cast time. Sylas cannot select the same champion again for a set duration, and can hold the hijacked ultimate for up to 90 seconds, during which he can recast Hijack.",
+            "leveling": []
+          },
+          {
+            "description": "Hijacked ultimates and abilities that do not scale with ability power have their attack damage ratios converted to ability power ratios, scaling with 0.6% AP per 1% total AD, and 0.4% AP per 1% bonus AD respectively.",
+            "leveling": []
+          },
+          {
+            "description": "Recast: Sylas casts his hijacked ultimate ability at no cost, scaling based on Hijack's rank and his own statistics.",
+            "leveling": []
+          }
+        ],
+        "name": "Hijack"
+      }
+    ]
+  },
+  "positions": [
+    "MIDDLE",
+    "TOP"
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "colloq": "",
+  "depth": 3,
+  "description": "<mainText><stats><attention>30</attention> Attack Damage<br><attention>30</attention> Ability Power<br><attention>25%</attention> Attack Speed</stats><br><br><passive>Wrath</passive><br>Attacks deal <magicDamage>30 bonus magic damage <OnHit>On-Hit</OnHit></magicDamage>.<br><br><passive>Seething Strike</passive><br>Attacks grant <attackSpeed>8% Attack Speed</attackSpeed> for 3 seconds. (stacks 4 times). <br>While fully stacked, every third Attack applies <OnHit>On-Hit</OnHit> effects twice.</mainText>",
+  "effect": {
+    "Effect10Amount": "3",
+    "Effect11Amount": "0",
+    "Effect12Amount": "0",
+    "Effect13Amount": "3",
+    "Effect1Amount": "0.08",
+    "Effect2Amount": "2.5",
+    "Effect3Amount": "2.5",
+    "Effect4Amount": "3",
+    "Effect5Amount": "4",
+    "Effect6Amount": "0.1",
+    "Effect7Amount": "0.1",
+    "Effect8Amount": "15",
+    "Effect9Amount": "1"
+  },
+  "from": [
+    "1052",
+    "1043",
+    "1037"
+  ],
+  "gold": {
+    "base": 1025,
+    "purchasable": true,
+    "sell": 2100,
+    "total": 3000
+  },
+  "image": {
+    "full": "3124.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item3.png",
+    "w": 48,
+    "x": 96,
+    "y": 144
+  },
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Guinsoo's Rageblade",
+  "plaintext": "",
+  "stats": {
+    "FlatMagicDamageMod": 30,
+    "FlatPhysicalDamageMod": 30,
+    "PercentAttackSpeedMod": 0.25
+  },
+  "tags": [
+    "Damage",
+    "AttackSpeed",
+    "SpellDamage",
+    "OnHit"
+  ]
+}

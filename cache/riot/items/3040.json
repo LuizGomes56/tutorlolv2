@@ -1,0 +1,41 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><attention>70</attention> Ability Power<br><attention>1000</attention> Mana<br><attention>25</attention> Ability Haste</stats><br><br><passive>Awe</passive><br>Gain <scaleAP> Ability Power</scaleAP>.<br><br><passive>Lifeline</passive> (0s)<br>Taking damage that would reduce your Health below 30% grants a <shield> Shield</shield> for 3 seconds.</mainText>",
+  "gold": {
+    "base": 2900,
+    "purchasable": false,
+    "sell": 2030,
+    "total": 2900
+  },
+  "image": {
+    "full": "3040.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item2.png",
+    "w": 48,
+    "x": 48,
+    "y": 384
+  },
+  "inStore": false,
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Seraph's Embrace",
+  "plaintext": "",
+  "specialRecipe": 3003,
+  "stats": {
+    "FlatMPPoolMod": 1000,
+    "FlatMagicDamageMod": 70
+  },
+  "tags": [
+    "SpellDamage",
+    "Mana",
+    "AbilityHaste"
+  ]
+}

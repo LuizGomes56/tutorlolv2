@@ -1,0 +1,49 @@
+{
+  "colloq": ";red",
+  "consumeOnFull": true,
+  "consumed": true,
+  "description": "<mainText><stats></stats><br><br><active>Consume</active><br>Grants <scaleAD>30 Attack Damage</scaleAD> and <lifeSteal>12% Physical Vamp</lifeSteal> against champions for 3 minutes.</mainText>",
+  "effect": {
+    "Effect1Amount": "30",
+    "Effect2Amount": "30",
+    "Effect3Amount": "0.12",
+    "Effect4Amount": "3",
+    "Effect5Amount": "0",
+    "Effect6Amount": "0",
+    "Effect7Amount": "0",
+    "Effect8Amount": "9"
+  },
+  "gold": {
+    "base": 500,
+    "purchasable": true,
+    "sell": 200,
+    "total": 500
+  },
+  "image": {
+    "full": "2140.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item0.png",
+    "w": 48,
+    "x": 384,
+    "y": 336
+  },
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": false
+  },
+  "name": "Elixir of Wrath",
+  "plaintext": "Temporarily grants Attack Damage and heals you when dealing physical damage to champions.",
+  "stats": {},
+  "tags": [
+    "Consumable",
+    "Damage",
+    "LifeSteal",
+    "SpellVamp"
+  ]
+}

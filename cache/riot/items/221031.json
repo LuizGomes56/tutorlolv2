@@ -1,0 +1,37 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><attention>40</attention> Armor</stats><br><br></mainText>",
+  "gold": {
+    "base": 500,
+    "purchasable": false,
+    "sell": 350,
+    "total": 500
+  },
+  "image": {
+    "full": "221031.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item1.png",
+    "w": 48,
+    "x": 240,
+    "y": 0
+  },
+  "inStore": false,
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": false
+  },
+  "name": "Chain Vest",
+  "plaintext": "",
+  "stats": {
+    "FlatArmorMod": 40
+  },
+  "tags": [
+    "Armor"
+  ]
+}

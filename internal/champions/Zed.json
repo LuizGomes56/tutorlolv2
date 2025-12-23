@@ -1,0 +1,126 @@
+{
+  "name": "Zed",
+  "adaptative_type": "Physical",
+  "attack_type": "Melee",
+  "positions": [
+    "Jungle",
+    "Middle"
+  ],
+  "stats": {
+    "health": {
+      "flat": 654.0,
+      "perLevel": 99.0
+    },
+    "mana": {
+      "flat": 200.0,
+      "perLevel": 0.0
+    },
+    "armor": {
+      "flat": 32.0,
+      "perLevel": 4.7
+    },
+    "magicResistance": {
+      "flat": 29.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 63.0,
+      "perLevel": 3.4
+    },
+    "attackSpeed": {
+      "flat": 0.651,
+      "perLevel": 3.3
+    },
+    "movespeed": {
+      "flat": 345.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.651000022888183,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 125.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 0.95,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.05,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.1,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 0.85,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": [
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Razor Shuriken",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "80 + ctx.bonus_ad",
+          "120 + ctx.bonus_ad",
+          "160 + ctx.bonus_ad",
+          "200 + ctx.bonus_ad",
+          "240 + ctx.bonus_ad"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "Razor Shuriken",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "48 + (0.6 * ctx.bonus_ad)",
+          "72 + (0.6 * ctx.bonus_ad)",
+          "96 + (0.6 * ctx.bonus_ad)",
+          "120 + (0.6 * ctx.bonus_ad)",
+          "144 + (0.6 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_3"
+      },
+      {
+        "name": "Death Mark",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "ctx.ad + (0.25 * 100.0)",
+          "ctx.ad + (0.4 * 100.0)",
+          "ctx.ad + (0.55 * 100.0)"
+        ]
+      }
+    ]
+  ],
+  "merge_data": []
+}

@@ -1,0 +1,701 @@
+{
+  "allytips": [
+    "You only have very slight turning ability during Unstoppable Onslaught, so make sure to use it in straight paths.",
+    "Roar of the Slayer is a great setup ability to land a very powerful Decimating Smash.",
+    "The Soul Furnace buff displays how much shield strength is remaining, use this information to time its explosion perfectly."
+  ],
+  "blurb": "A war hero from a bygone era, Sion was revered in Noxus for choking the life out of a Demacian king with his bare hands—but, denied oblivion, he was resurrected to serve his empire even in death. His indiscriminate slaughter claimed all who stood in his...",
+  "enemytips": [
+    "Even if Sion still hits a Decimating Smash, making him release the charge earlier reduces its impact.",
+    "Use the time after Sion has died to reposition and prepare for his return."
+  ],
+  "id": "Sion",
+  "image": {
+    "full": "Sion.png",
+    "group": "champion",
+    "h": 48,
+    "sprite": "champion4.png",
+    "w": 48,
+    "x": 144,
+    "y": 0
+  },
+  "info": {
+    "attack": 5,
+    "defense": 9,
+    "difficulty": 5,
+    "magic": 3
+  },
+  "key": "14",
+  "lore": "A war hero from a bygone era, Sion was revered in Noxus for choking the life out of a Demacian king with his bare hands—but, denied oblivion, he was resurrected to serve his empire even in death. His indiscriminate slaughter claimed all who stood in his way, regardless of allegiance, proving he no longer retained his former humanity. Even so, with crude armor bolted onto rotten flesh, Sion continues to charge into battle with reckless abandon, struggling to remember his true self between the swings of his mighty axe.",
+  "name": "Sion",
+  "partype": "Mana",
+  "passive": {
+    "description": "After being killed, Sion will temporarily reanimate with rapidly decaying Health. His attacks become very rapid, heal him, and deal bonus damage based on his target's maximum Health.",
+    "image": {
+      "full": "Sion_Passive1.png",
+      "group": "passive",
+      "h": 48,
+      "sprite": "passive4.png",
+      "w": 48,
+      "x": 144,
+      "y": 0
+    },
+    "name": "Glory in Death"
+  },
+  "recommended": [],
+  "skins": [
+    {
+      "chromas": false,
+      "id": "14000",
+      "name": "default",
+      "num": 0
+    },
+    {
+      "chromas": false,
+      "id": "14001",
+      "name": "Hextech Sion",
+      "num": 1
+    },
+    {
+      "chromas": false,
+      "id": "14002",
+      "name": "Barbarian Sion",
+      "num": 2
+    },
+    {
+      "chromas": false,
+      "id": "14003",
+      "name": "Lumberjack Sion",
+      "num": 3
+    },
+    {
+      "chromas": false,
+      "id": "14004",
+      "name": "Warmonger Sion",
+      "num": 4
+    },
+    {
+      "chromas": true,
+      "id": "14005",
+      "name": "Mecha Zero Sion",
+      "num": 5
+    },
+    {
+      "chromas": true,
+      "id": "14014",
+      "name": "Worldbreaker Sion",
+      "num": 14
+    },
+    {
+      "chromas": true,
+      "id": "14022",
+      "name": "Blackfrost Sion",
+      "num": 22
+    },
+    {
+      "chromas": true,
+      "id": "14030",
+      "name": "High Noon Sion",
+      "num": 30
+    },
+    {
+      "chromas": true,
+      "id": "14040",
+      "name": "Cosmic Paladin Sion",
+      "num": 40
+    },
+    {
+      "chromas": false,
+      "id": "14049",
+      "name": "Grand Reckoning Sion",
+      "num": 49
+    }
+  ],
+  "spells": [
+    {
+      "cooldown": [
+        10,
+        9,
+        8,
+        7,
+        6
+      ],
+      "cooldownBurn": "10/9/8/7/6",
+      "cost": [
+        45,
+        45,
+        45,
+        45,
+        45
+      ],
+      "costBurn": "45",
+      "costType": " {{ abilityresourcename }}",
+      "datavalues": {},
+      "description": "Sion charges a powerful swing in an area in front of himself that will deal damage to enemies when released. If he charges for enough time, enemies hit by the swing will also be knocked up and stunned.",
+      "effect": [
+        null,
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          2.5,
+          2.5,
+          2.5,
+          2.5,
+          2.5
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          7.5,
+          7.5,
+          7.5,
+          7.5,
+          7.5
+        ],
+        [
+          60,
+          60,
+          60,
+          60,
+          60
+        ],
+        [
+          150,
+          150,
+          150,
+          150,
+          150
+        ],
+        [
+          -0.8,
+          -0.8,
+          -0.8,
+          -0.8,
+          -0.8
+        ]
+      ],
+      "effectBurn": [
+        null,
+        "0",
+        "0",
+        "0",
+        "0",
+        "2.5",
+        "0",
+        "7.5",
+        "60",
+        "150",
+        "-0.8"
+      ],
+      "id": "SionQ",
+      "image": {
+        "full": "SionQ.png",
+        "group": "spell",
+        "h": 48,
+        "sprite": "spell12.png",
+        "w": 48,
+        "x": 0,
+        "y": 144
+      },
+      "leveltip": {
+        "effect": [
+          "{{ lowdamage }} -> {{ lowdamageNL }}",
+          "{{ highdamage }} -> {{ highdamageNL }}",
+          "{{ adratiomin*100.000000 }}% -> {{ adratiominnl*100.000000 }}%",
+          "{{ adratiomax*100.000000 }}% -> {{ adratiomaxnl*100.000000 }}%",
+          "{{ cooldown }} -> {{ cooldownNL }}"
+        ],
+        "label": [
+          "Minimum Damage",
+          "Maximum Damage",
+          "Attack Damage Ratio",
+          "Attack Damage Ratio",
+          "Cooldown"
+        ]
+      },
+      "maxammo": "-1",
+      "maxrank": 5,
+      "name": "Decimating Smash",
+      "range": [
+        10000,
+        10000,
+        10000,
+        10000,
+        10000
+      ],
+      "rangeBurn": "10000",
+      "resource": "{{ cost }} {{ abilityresourcename }}",
+      "tooltip": "<charge>Begin Charging</charge>: Sion charges a heavy blow for up to 2 seconds.<br /><br /><release>Release</release>: Sion slams his axe down, briefly <status>Slowing</status> and dealing between <physicalDamage>{{ mindamagetotal }} and {{ maxdamagetotal }} physical damage</physicalDamage> based on charge time. If Sion charged for at least 1 second, enemies are <status>Knocked Up</status> and <status>Stunned</status> for between {{ basestuntime }} and 2.25 seconds based on charge time.{{ spellmodifierdescriptionappend }}",
+      "vars": []
+    },
+    {
+      "cooldown": [
+        15,
+        14,
+        13,
+        12,
+        11
+      ],
+      "cooldownBurn": "15/14/13/12/11",
+      "cost": [
+        65,
+        70,
+        75,
+        80,
+        85
+      ],
+      "costBurn": "65/70/75/80/85",
+      "costType": " {{ abilityresourcename }}",
+      "datavalues": {},
+      "description": "Sion shields himself and can reactivate after 3 seconds to deal Magic Damage to enemies nearby. When Sion kills enemies, he passively gains maximum Health.",
+      "effect": [
+        null,
+        [
+          60,
+          75,
+          90,
+          105,
+          120
+        ],
+        [
+          40,
+          65,
+          90,
+          115,
+          140
+        ],
+        [
+          8,
+          10,
+          12,
+          14,
+          16
+        ],
+        [
+          14,
+          14,
+          14,
+          14,
+          14
+        ],
+        [
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        [
+          15,
+          15,
+          15,
+          15,
+          15
+        ],
+        [
+          3,
+          3,
+          3,
+          3,
+          3
+        ],
+        [
+          15,
+          15,
+          15,
+          15,
+          15
+        ],
+        [
+          6,
+          6,
+          6,
+          6,
+          6
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "effectBurn": [
+        null,
+        "60/75/90/105/120",
+        "40/65/90/115/140",
+        "8/10/12/14/16",
+        "14",
+        "4",
+        "15",
+        "3",
+        "15",
+        "6",
+        "0"
+      ],
+      "id": "SionW",
+      "image": {
+        "full": "SionW.png",
+        "group": "spell",
+        "h": 48,
+        "sprite": "spell12.png",
+        "w": 48,
+        "x": 48,
+        "y": 144
+      },
+      "leveltip": {
+        "effect": [
+          "{{ e1 }} -> {{ e1NL }}",
+          "{{ e2 }} -> {{ e2NL }}",
+          "{{ shieldpercenthealthtooltip*100.000000 }}% -> {{ shieldpercenthealthtooltipnl*100.000000 }}%",
+          "{{ cost }} -> {{ costNL }}",
+          "{{ cooldown }} -> {{ cooldownNL }}"
+        ],
+        "label": [
+          "Shield Amount",
+          "Damage",
+          "Max Health Shield Ratio",
+          "Mana Cost",
+          "Cooldown"
+        ]
+      },
+      "maxammo": "-1",
+      "maxrank": 5,
+      "name": "Soul Furnace",
+      "range": [
+        500,
+        500,
+        500,
+        500,
+        500
+      ],
+      "rangeBurn": "500",
+      "resource": "{{ cost }} {{ abilityresourcename }}",
+      "tooltip": "<spellPassive>Passive</spellPassive>: Sion gains <scaleHealth>{{ hpperkill }} max Health</scaleHealth> when he kills a unit, or {{ hpperchampkill }} for champion takedowns, large minions and large monsters.<br /><br /><spellActive>Active</spellActive>: Sion gains <shield>{{ totalshield }} Shield</shield> for 6 seconds. After {{ e7 }} seconds if the shield still holds, Sion can <recast>Recast</recast> to detonate the shield to deal <magicDamage>{{ totaldamage }} plus {{ e4 }}% max Health magic damage</magicDamage>.{{ spellmodifierdescriptionappend }}",
+      "vars": []
+    },
+    {
+      "cooldown": [
+        12,
+        11,
+        10,
+        9,
+        8
+      ],
+      "cooldownBurn": "12/11/10/9/8",
+      "cost": [
+        35,
+        40,
+        45,
+        50,
+        55
+      ],
+      "costBurn": "35/40/45/50/55",
+      "costType": " {{ abilityresourcename }}",
+      "datavalues": {},
+      "description": "Sion fires a short range shockwave that damages and slows and reduces the Armor of the first enemy hit. If the shockwave hits a minion or monster, it will be knocked back, damaging, slowing, and reducing the Armor of all enemies that it passes through.",
+      "effect": [
+        null,
+        [
+          65,
+          100,
+          135,
+          170,
+          205
+        ],
+        [
+          40,
+          45,
+          50,
+          55,
+          60
+        ],
+        [
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        [
+          40,
+          45,
+          50,
+          55,
+          60
+        ],
+        [
+          25,
+          25,
+          25,
+          25,
+          25
+        ],
+        [
+          30,
+          30,
+          30,
+          30,
+          30
+        ],
+        [
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        [
+          2.5,
+          2.5,
+          2.5,
+          2.5,
+          2.5
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "effectBurn": [
+        null,
+        "65/100/135/170/205",
+        "40/45/50/55/60",
+        "5",
+        "40/45/50/55/60",
+        "25",
+        "30",
+        "4",
+        "2.5",
+        "0",
+        "0"
+      ],
+      "id": "SionE",
+      "image": {
+        "full": "SionE.png",
+        "group": "spell",
+        "h": 48,
+        "sprite": "spell12.png",
+        "w": 48,
+        "x": 96,
+        "y": 144
+      },
+      "leveltip": {
+        "effect": [
+          "{{ e1 }} -> {{ e1NL }}",
+          "{{ slowamount }}% -> {{ slowamountNL }}%",
+          "{{ cooldown }} -> {{ cooldownNL }}",
+          "{{ cost }} -> {{ costNL }}"
+        ],
+        "label": [
+          "Damage",
+          "Slow",
+          "Cooldown",
+          "@AbilityResourceName@ Cost"
+        ]
+      },
+      "maxammo": "-1",
+      "maxrank": 5,
+      "name": "Roar of the Slayer",
+      "range": [
+        800,
+        800,
+        800,
+        800,
+        800
+      ],
+      "rangeBurn": "800",
+      "resource": "{{ cost }} {{ abilityresourcename }}",
+      "tooltip": "Sion fires a shockwave, dealing <magicDamage>{{ totaldamage }} magic damage</magicDamage>, <status>Slowing</status> them by {{ slowamount }}% for {{ slowduration }} seconds and removing <scaleArmor>{{ armorshred }}% Armor</scaleArmor> for {{ armorshredduration }} seconds. Non-champions hit are <status>Knocked Back</status>. Enemies hit by a <status>Knocked Back</status> unit take the same damage and effects.{{ spellmodifierdescriptionappend }}",
+      "vars": []
+    },
+    {
+      "cooldown": [
+        140,
+        100,
+        60
+      ],
+      "cooldownBurn": "140/100/60",
+      "cost": [
+        100,
+        100,
+        100
+      ],
+      "costBurn": "100",
+      "costType": " {{ abilityresourcename }}",
+      "datavalues": {},
+      "description": "Sion charges in a direction, ramping up speed over time. He can steer his charge slightly with the mouse cursor location. When he collides with an enemy he deals damage and knocks them up based on the distance he has charged.",
+      "effect": [
+        null,
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "effectBurn": [
+        null,
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "id": "SionR",
+      "image": {
+        "full": "SionR.png",
+        "group": "spell",
+        "h": 48,
+        "sprite": "spell12.png",
+        "w": 48,
+        "x": 144,
+        "y": 144
+      },
+      "leveltip": {
+        "effect": [
+          "{{ mindamage }} -> {{ mindamageNL }}",
+          "{{ maxdamage }} -> {{ maxdamageNL }}",
+          "{{ slowamount }}% -> {{ slowamountNL }}%",
+          "{{ cooldown }} -> {{ cooldownNL }}"
+        ],
+        "label": [
+          "Minimum Damage",
+          "Maximum Damage",
+          "Slow",
+          "Cooldown"
+        ]
+      },
+      "maxammo": "-1",
+      "maxrank": 3,
+      "name": "Unstoppable Onslaught",
+      "range": [
+        7500,
+        7500,
+        7500
+      ],
+      "rangeBurn": "7500",
+      "resource": "{{ cost }} {{ abilityresourcename }}",
+      "tooltip": "Sion charges Unstoppably in a direction for 8 seconds, turning towards the mouse cursor. Sion stops on colliding with an enemy champion or wall or on <recast>Recasting</recast> this Ability.  <br /><br />At the end of the charge, Sion deals between <physicalDamage>{{ mindamagetotal }} and {{ maxdamagetotal }} physical damage</physicalDamage> based on distance travelled. Enemies close to Sion are <status>Stunned</status> for between {{ minstunduration }} and {{ maxstunduration }} seconds based on distance travelled. Enemies in a larger area are <status>Slowed</status> by {{ slowamount }}% for 3 seconds.{{ spellmodifierdescriptionappend }}",
+      "vars": []
+    }
+  ],
+  "stats": {
+    "armor": 36,
+    "armorperlevel": 4.2,
+    "attackdamage": 68,
+    "attackdamageperlevel": 4,
+    "attackrange": 175,
+    "attackspeed": 0.679,
+    "attackspeedperlevel": 1.3,
+    "crit": 0,
+    "critperlevel": 0,
+    "hp": 655,
+    "hpperlevel": 87,
+    "hpregen": 9,
+    "hpregenperlevel": 0.8,
+    "movespeed": 345,
+    "mp": 400,
+    "mpperlevel": 52,
+    "mpregen": 8,
+    "mpregenperlevel": 0.6,
+    "spellblock": 32,
+    "spellblockperlevel": 2.05
+  },
+  "tags": [
+    "Tank",
+    "Fighter"
+  ],
+  "title": "The Undead Juggernaut"
+}

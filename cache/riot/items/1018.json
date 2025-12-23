@@ -1,0 +1,48 @@
+{
+  "colloq": ";",
+  "description": "<mainText><stats><attention>15%</attention> Critical Strike Chance</stats><br><br></mainText>",
+  "gold": {
+    "base": 600,
+    "purchasable": true,
+    "sell": 420,
+    "total": 600
+  },
+  "image": {
+    "full": "1018.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item0.png",
+    "w": 48,
+    "x": 192,
+    "y": 0
+  },
+  "into": [
+    "123430",
+    "667666",
+    "3031",
+    "3086",
+    "6670",
+    "3033",
+    "3039",
+    "3508",
+    "3095",
+    "6676"
+  ],
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Cloak of Agility",
+  "plaintext": "Increases critical strike chance",
+  "stats": {
+    "FlatCritChanceMod": 0.15
+  },
+  "tags": [
+    "CriticalStrike"
+  ]
+}

@@ -1,0 +1,125 @@
+{
+  "riot_id": 443069,
+  "item_id": "Hamstringer",
+  "name": "Hamstringer",
+  "price": 0,
+  "sell": 400,
+  "tier": 3,
+  "maps": [
+    [
+      "Aram",
+      false
+    ],
+    [
+      "NexusBlitz",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "Tft",
+      false
+    ],
+    [
+      "Arena",
+      true
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ]
+  ],
+  "prettified_stats": [
+    {
+      "name": "CriticalStrikeChance",
+      "value": 25
+    },
+    {
+      "name": "AttackDamage",
+      "value": 45
+    },
+    {
+      "name": "AttackSpeed",
+      "value": 40
+    }
+  ],
+  "damage_type": "Unknown",
+  "stats": {
+    "abilityPower": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 45.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 40.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 25.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "builds_from_riot_ids": [],
+  "builds_from_item_ids": [],
+  "builds_into_riot_ids": [],
+  "builds_into_item_ids": [],
+  "ranged": {
+    "minimum_damage": "zero",
+    "maximum_damage": "zero"
+  },
+  "melee": {
+    "minimum_damage": "zero",
+    "maximum_damage": "zero"
+  },
+  "attributes": "Undefined",
+  "purchasable": true
+}

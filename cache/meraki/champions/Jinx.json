@@ -1,0 +1,594 @@
+{
+  "name": "Jinx",
+  "attackType": "RANGED",
+  "adaptiveType": "PHYSICAL_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 630.0,
+      "perLevel": 105.0
+    },
+    "mana": {
+      "flat": 260.0,
+      "perLevel": 50.0
+    },
+    "armor": {
+      "flat": 26.0,
+      "perLevel": 4.7
+    },
+    "magicResistance": {
+      "flat": 30.0,
+      "perLevel": 1.3
+    },
+    "attackDamage": {
+      "flat": 59.0,
+      "perLevel": 3.25
+    },
+    "attackSpeed": {
+      "flat": 0.625,
+      "perLevel": 1.4
+    },
+    "movespeed": {
+      "flat": 325.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.625,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 525.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.05,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 0.9,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": null,
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Additionally, she is allowed to exceed the attack speed cap and gains a stack of Get Excited! for the same duration, stacking up to 5 times. Only takedowns against enemy champions can grant stacks beyond the first.",
+            "leveling": []
+          },
+          {
+            "description": "Get Excited!: For each stack, Jinx gains 25% total attack speed, up to a maximum of 125%.",
+            "leveling": []
+          },
+          {
+            "description": "Innate: Whenever Jinx scores a takedown against an enemy champion, epic monster, turret, or inhibitor within 3 seconds of damaging them, she gains 175% bonus movement speed decaying over 6 seconds.",
+            "leveling": []
+          }
+        ],
+        "name": "Get Excited!"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                0.9,
+                0.9,
+                0.9,
+                0.9,
+                0.9
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Fishbones: Basic attacks with Fishbones cost mana on-attack to deal 110% AD modified physical damage to the target and nearby enemies. The damage is affected by critical strike modifiers. While Fishbones is equipped, Jinx gains bonus range but loses 10% of her bonus attack speed.",
+            "leveling": [
+              {
+                "attribute": "Bonus Range",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      80.0,
+                      110.0,
+                      140.0,
+                      170.0,
+                      200.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Only the first attack after switching to Fishbones will benefit from Rev'd up.",
+            "leveling": []
+          },
+          {
+            "description": "Pow-Pow: Basic attacks with Pow-Pow generate a stack of Rev'd up for 2.5 seconds, refreshing on subsequent attacks with Pow-Pow and stacking up to 3 times. Each stack of Rev'd up grants bonus attack speed, with all stacks beyond the first one being 50% effective. Stacks expire by one when the duration ends.",
+            "leveling": [
+              {
+                "attribute": "Attack Speed per Subsequent Stack",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      7.5,
+                      13.75,
+                      20.0,
+                      26.25,
+                      32.5
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Bonus Attack Speed",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      15.0,
+                      27.5,
+                      40.0,
+                      52.5,
+                      65.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Maximum Attack Speed",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      30.0,
+                      55.0,
+                      80.0,
+                      105.0,
+                      130.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Toggle: Jinx switches between Pow-Pow, her minigun, and Fishbones, her rocket launcher.",
+            "leveling": []
+          }
+        ],
+        "name": "Switcheroo!"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                8.0,
+                7.0,
+                6.0,
+                5.0,
+                4.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Jinx fires a shock blast in the target direction that deals physical damage to the first enemy it hits and reveals and slows them for 2 seconds.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      10.0,
+                      60.0,
+                      110.0,
+                      160.0,
+                      210.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      140.0,
+                      140.0,
+                      140.0,
+                      140.0,
+                      140.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Slow",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      40.0,
+                      50.0,
+                      60.0,
+                      70.0,
+                      80.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Zap!"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                24.0,
+                20.5,
+                17.0,
+                13.5,
+                10.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Jinx tosses out 3 Chompers centered at the target location, landing after 0.4 seconds, arming after 0.75 seconds, and exploding after 5 seconds to deal magic damage to nearby enemies.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      70.0,
+                      120.0,
+                      170.0,
+                      220.0,
+                      270.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Each Chomper explodes on contact with an enemy champion, knocking them down and rooting them for 1.5 seconds. Enemy champions can be affected by only one Chomper.",
+            "leveling": []
+          }
+        ],
+        "name": "Flame Chompers!"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                85.0,
+                65.0,
+                45.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Jinx fires a massive rocket in the target direction, briefly granting sight of its surroundings and exploding upon colliding with an enemy champion. The explosion deals physical damage to nearby enemies and grants sight of the area for 2 seconds.",
+            "leveling": []
+          },
+          {
+            "description": "Enemies surrounding the primary target take 80% damage. The bonus damage based on the target's missing health is capped at 1200 against monsters.",
+            "leveling": [
+              {
+                "attribute": "Maximum Secondary Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      240.0,
+                      360.0,
+                      480.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      124.0,
+                      124.0,
+                      124.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% of target's missing health",
+                      "% of target's missing health",
+                      "% of target's missing health"
+                    ],
+                    "values": [
+                      20.0,
+                      24.0,
+                      28.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Minimum Secondary Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      24.0,
+                      36.0,
+                      48.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      12.4,
+                      12.4,
+                      12.4
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% of target's missing health",
+                      "% of target's missing health",
+                      "% of target's missing health"
+                    ],
+                    "values": [
+                      20.0,
+                      24.0,
+                      28.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Super Mega Death Rocket! deals 10% : 100% (based on distance traveled) damage. This does not affect the bonus damage based on the target's missing health.",
+            "leveling": [
+              {
+                "attribute": "Maximum Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      300.0,
+                      450.0,
+                      600.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      155.0,
+                      155.0,
+                      155.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% of target's missing health",
+                      "% of target's missing health",
+                      "% of target's missing health"
+                    ],
+                    "values": [
+                      25.0,
+                      30.0,
+                      35.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Minimum Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      30.0,
+                      45.0,
+                      60.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      15.5,
+                      15.5,
+                      15.5
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% of target's missing health",
+                      "% of target's missing health",
+                      "% of target's missing health"
+                    ],
+                    "values": [
+                      25.0,
+                      30.0,
+                      35.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Super Mega Death Rocket!"
+      }
+    ]
+  },
+  "positions": [
+    "BOTTOM"
+  ]
+}

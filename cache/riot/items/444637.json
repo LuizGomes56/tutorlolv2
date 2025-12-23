@@ -1,0 +1,39 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><attention>80</attention> Ability Power<br><attention>700</attention> Health</stats><br><br><passive>Sinister Pact</passive><br>Gain +1.5% <scaleAP>Ability Power</scaleAP> and 1.5% Move Speed per 100 Missing Health, up to 45%.</mainText>",
+  "gold": {
+    "base": 1000,
+    "purchasable": true,
+    "sell": 400,
+    "total": 1000
+  },
+  "image": {
+    "full": "444637.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item4.png",
+    "w": 48,
+    "x": 96,
+    "y": 336
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": false
+  },
+  "name": "Demonic Embrace",
+  "plaintext": "",
+  "specialRecipe": 220007,
+  "stats": {
+    "FlatHPPoolMod": 700,
+    "FlatMagicDamageMod": 80
+  },
+  "tags": [
+    "Health",
+    "SpellDamage"
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "active": [
+    {
+      "effects": "Consume a charge to place a visible {{tip|Effigy}} at the target location, which grants {{tip|sight}} over the surrounding area for {{pp|130 to 280|type=level}} seconds. For enemies, it visually appears identical to {{ci|Fiddlesticks}} (including on the minimap) and has no visible [[health bar]] until it ''activates''. Enemy {{tip|champion|champions}} that approach it will activate it, causing it to automatically sound a Danger [[ping]] to its allies as well as fake a random action for up to 2 seconds. If not destroyed by that time, it will deal 1 damage to itself.",
+      "name": "Trinket",
+      "unique": true
+    }
+  ],
+  "buildsFrom": [],
+  "buildsInto": [],
+  "name": "Scarecrow Effigy",
+  "tier": 1,
+  "passives": [],
+  "id": 3330,
+  "stats": {
+    "abilityPower": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "shop": {
+    "purchasable": true,
+    "prices": {
+      "total": 0
+    }
+  }
+}

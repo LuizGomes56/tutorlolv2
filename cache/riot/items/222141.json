@@ -1,0 +1,38 @@
+{
+  "colloq": "",
+  "consumeOnFull": true,
+  "consumed": true,
+  "description": "<mainText><stats></stats><br><br><rules>Helps you get on a head.</rules><active>Active - Consume:</active> This juice does nothing.<br></mainText>",
+  "gold": {
+    "base": 500,
+    "purchasable": true,
+    "sell": 500,
+    "total": 500
+  },
+  "image": {
+    "full": "222141.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item1.png",
+    "w": 48,
+    "x": 192,
+    "y": 48
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": false
+  },
+  "name": "Cappa Juice",
+  "plaintext": "",
+  "stacks": 100,
+  "stats": {},
+  "tags": [
+    "Damage",
+    "Consumable"
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "colloq": "",
+  "consumed": true,
+  "description": "<mainText><stats></stats><br><br>Fires projectiles that bounce off walls, damaging all enemies they pass through. Arrows deal more damage each time they bounce.<br><br><rules>Damage, Ability Haste, Crit Chance, Projectile Count</rules></mainText>",
+  "gold": {
+    "base": 0,
+    "purchasable": true,
+    "sell": 0,
+    "total": 0
+  },
+  "image": {
+    "full": "9290.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item6.png",
+    "w": 48,
+    "x": 384,
+    "y": 48
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": false,
+    "33": true,
+    "35": false
+  },
+  "name": "Vayne's Chromablades",
+  "plaintext": "",
+  "stats": {},
+  "tags": []
+}

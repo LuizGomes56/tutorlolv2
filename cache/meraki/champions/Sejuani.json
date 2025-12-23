@@ -1,0 +1,550 @@
+{
+  "name": "Sejuani",
+  "attackType": "MELEE",
+  "adaptiveType": "MAGIC_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 630.0,
+      "perLevel": 114.0
+    },
+    "mana": {
+      "flat": 400.0,
+      "perLevel": 40.0
+    },
+    "armor": {
+      "flat": 34.0,
+      "perLevel": 5.45
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 66.0,
+      "perLevel": 4.0
+    },
+    "attackSpeed": {
+      "flat": 0.688,
+      "perLevel": 3.5
+    },
+    "movespeed": {
+      "flat": 340.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.625,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 150.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": null,
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Frost Armor: Sejuani gains slow immunity, cripple immunity, 10 (+ 75% bonus armor) bonus armor, and 10 (+ 75% bonus magic resistance) bonus magic resistance.",
+            "leveling": []
+          },
+          {
+            "description": "Innate - Frost Armor: Sejuani gains Frost Armor, which lingers for 3 seconds after taking damage from enemy champions, turrets, or large monsters. She restores it after 12 : 6 (based on level) seconds without taking damage from them.",
+            "leveling": []
+          },
+          {
+            "description": "Innate - Icebreaker: Enemies stunned by Sejuani are marked Frozen for the disable's duration. Sejuani's next basic attack or ability against a Frozen enemy will consume the mark to deal bonus magic damage equal to 10% of their maximum health, capped at 250 against epic monsters.",
+            "leveling": []
+          }
+        ],
+        "name": "Fury of the North"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                19.0,
+                17.5,
+                16.0,
+                14.5,
+                13.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Bristle dashes to the target location until he collides with an enemy champion, dealing magic damage to enemies he passes through and knocking them up for 0.5 seconds.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      90.0,
+                      140.0,
+                      190.0,
+                      240.0,
+                      290.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      60.0,
+                      60.0,
+                      60.0,
+                      60.0,
+                      60.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Arctic Assault can be cast during her other abilities without cancelling them and vice versa.",
+            "leveling": []
+          }
+        ],
+        "name": "Arctic Assault"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                9.0,
+                8.0,
+                7.0,
+                6.0,
+                5.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: After 0.25 seconds into the cast time, Sejuani swings her flail in a cone in the target direction that deals physical damage to enemies hit and knocks back minions and monsters hit, though not through terrain.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      5.0,
+                      15.0,
+                      25.0,
+                      35.0,
+                      45.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      20.0,
+                      20.0,
+                      20.0,
+                      20.0,
+                      20.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% of her maximum health",
+                      "% of her maximum health",
+                      "% of her maximum health",
+                      "% of her maximum health",
+                      "% of her maximum health"
+                    ],
+                    "values": [
+                      4.0,
+                      4.0,
+                      4.0,
+                      4.0,
+                      4.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "After the cast time, Sejuani lashes out with her flail in a line in the same direction, dealing physical damage to enemies hit and slowing them by 75% for 0.25 seconds.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      5.0,
+                      25.0,
+                      45.0,
+                      65.0,
+                      85.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      60.0,
+                      60.0,
+                      60.0,
+                      60.0,
+                      60.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% of her maximum health",
+                      "% of her maximum health",
+                      "% of her maximum health",
+                      "% of her maximum health",
+                      "% of her maximum health"
+                    ],
+                    "values": [
+                      8.0,
+                      8.0,
+                      8.0,
+                      8.0,
+                      8.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      10.0,
+                      40.0,
+                      70.0,
+                      100.0,
+                      130.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      80.0,
+                      80.0,
+                      80.0,
+                      80.0,
+                      80.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% of her maximum health",
+                      "% of her maximum health",
+                      "% of her maximum health",
+                      "% of her maximum health",
+                      "% of her maximum health"
+                    ],
+                    "values": [
+                      12.0,
+                      12.0,
+                      12.0,
+                      12.0,
+                      12.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Sejuani can move during Winter's Wrath's cast time.",
+            "leveling": []
+          }
+        ],
+        "name": "Winter's Wrath"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                1.5,
+                1.5,
+                1.5,
+                1.5,
+                1.5
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Sejuani hurls a trap at the visible enemy with 4 stacks of Frost closest to the cursor, which deals magic damage, displaces slightly, and stuns them for 1 second.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      55.0,
+                      105.0,
+                      155.0,
+                      205.0,
+                      255.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      60.0,
+                      60.0,
+                      60.0,
+                      60.0,
+                      60.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Passive: Winter's Wrath and both Sejuani's and nearby allied melee champions' basic attacks on-hit apply stacks of Frost to enemy champions, medium or large monsters, and large minions for 5 seconds, refreshing on subsequent applications and stacking up to 4 times, though not applying if the target is Frozen. Enemies hit by Permafrost or Glacial Prison's bola have all of their Frost stacks consumed. Enemy champions cannot be affected by Frost for 8 seconds after having it consumed. Sejuani can cast Permafrost against an enemy with 4 stacks.",
+            "leveling": []
+          },
+          {
+            "description": "Permafrost resets Sejuani's basic attack timer.",
+            "leveling": []
+          }
+        ],
+        "name": "Permafrost"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                130.0,
+                110.0,
+                90.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Sejuani throws an ice bola in the target direction that stops upon hitting an enemy champion, dealing magic damage and stunning them for 1 second.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      125.0,
+                      150.0,
+                      175.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      40.0,
+                      40.0,
+                      40.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "After 2 seconds, the storm shatters to deal the increased magic damage to enemies within and slow them by 80% for 1 second, as well as revealing them and granting sight of the area for 0.5 seconds.",
+            "leveling": []
+          },
+          {
+            "description": "If the bola travels at least 425 units, it becomes empowered to detonate upon reaching maximum range or hitting an enemy champion, dealing increased magic damage and stunning for 1.5 seconds instead. For the same duration, a frost storm is created around the location of the detonation that slows enemies within by 30% and grants sight of the area in a smaller radius.",
+            "leveling": [
+              {
+                "attribute": "Increased Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      200.0,
+                      300.0,
+                      400.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      80.0,
+                      80.0,
+                      80.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "The enemy hit by the bola is not affected by the storm's effects.",
+            "leveling": []
+          }
+        ],
+        "name": "Glacial Prison"
+      }
+    ]
+  },
+  "positions": [
+    "JUNGLE"
+  ]
+}

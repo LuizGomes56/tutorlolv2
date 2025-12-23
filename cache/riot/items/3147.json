@@ -1,0 +1,48 @@
+{
+  "colloq": ";lethality",
+  "depth": 2,
+  "description": "<mainText><stats><attention>30</attention> Ability Power<br><attention>200</attention> Health</stats><br><br><passive>Madness</passive><br>For each second in combat with enemy champions, deal 2% bonus damage, up to 6%. </mainText>",
+  "from": [
+    "1052",
+    "1028"
+  ],
+  "gold": {
+    "base": 500,
+    "purchasable": true,
+    "sell": 910,
+    "total": 1300
+  },
+  "image": {
+    "full": "3147.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item3.png",
+    "w": 48,
+    "x": 288,
+    "y": 192
+  },
+  "into": [
+    "4633",
+    "8010",
+    "6653"
+  ],
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Haunting Guise",
+  "plaintext": "Deals additional physical damage when ambushing enemies",
+  "stats": {
+    "FlatHPPoolMod": 200,
+    "FlatMagicDamageMod": 30
+  },
+  "tags": [
+    "Health",
+    "SpellDamage"
+  ]
+}

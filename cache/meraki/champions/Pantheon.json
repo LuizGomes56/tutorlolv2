@@ -1,0 +1,733 @@
+{
+  "name": "Pantheon",
+  "attackType": "MELEE",
+  "adaptiveType": "PHYSICAL_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 650.0,
+      "perLevel": 109.0
+    },
+    "mana": {
+      "flat": 317.0,
+      "perLevel": 31.0
+    },
+    "armor": {
+      "flat": 40.0,
+      "perLevel": 4.95
+    },
+    "magicResistance": {
+      "flat": 28.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 64.0,
+      "perLevel": 3.3
+    },
+    "attackSpeed": {
+      "flat": 0.658,
+      "perLevel": 2.95
+    },
+    "movespeed": {
+      "flat": 345.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.658,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": null,
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Innate: Pantheon generates a stack of Mortal Will whenever he lands a basic attack on-hit or casts an ability, stacking up to 5 times. At 5 stacks, Pantheon's next basic ability consumes the stacks to become empowered with an additional effect.",
+            "leveling": []
+          },
+          {
+            "description": "Pantheon gains maximum stacks of Mortal Will upon starting the game, completing a Recall channel, and respawning.",
+            "leveling": []
+          }
+        ],
+        "name": "Mortal Will"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                11.0,
+                10.25,
+                9.5,
+                8.75,
+                8.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Pantheon charges while being slowed by 10% for up to 4 seconds to increase Comet Spear's range after 0.35 seconds of channeling. Comet Spear can be recast within the duration.",
+            "leveling": []
+          },
+          {
+            "description": "Comet Spear's total damage is reduced to 90% against monsters and to 70% against minions.",
+            "leveling": []
+          },
+          {
+            "description": "If the charge is interrupted or completes without reactivation, Comet Spear is cancelled and the ability is put on full cooldown but refunds half the mana cost.",
+            "leveling": []
+          },
+          {
+            "description": "Mortal Will: Comet Spear deals 20 : 240 (based on level) (+ 115% bonus AD) bonus physical damage, affected by the previous damage reductions. Consumes the stacks upon recasting.",
+            "leveling": []
+          },
+          {
+            "description": "Recast: Pantheon hurls his spear in the target direction that deals physical damage to enemies hit, increased against enemies below 20% of their maximum health but reduced by 50% against enemies beyond the first.",
+            "leveling": [
+              {
+                "attribute": "Hurl Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      70.0,
+                      100.0,
+                      130.0,
+                      160.0,
+                      190.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      115.0,
+                      115.0,
+                      115.0,
+                      115.0,
+                      115.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      50.0,
+                      50.0,
+                      50.0,
+                      50.0,
+                      50.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Hurl Secondary Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      35.0,
+                      50.0,
+                      65.0,
+                      80.0,
+                      95.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      57.5,
+                      57.5,
+                      57.5,
+                      57.5,
+                      57.5
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      25.0,
+                      25.0,
+                      25.0,
+                      25.0,
+                      25.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Increased Hurl Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      155.0,
+                      230.0,
+                      305.0,
+                      380.0,
+                      455.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      230.0,
+                      230.0,
+                      230.0,
+                      230.0,
+                      230.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Increased Hurl Secondary Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      77.5,
+                      115.0,
+                      152.5,
+                      190.0,
+                      227.5
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      115.0,
+                      115.0,
+                      115.0,
+                      115.0,
+                      115.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      50.0,
+                      50.0,
+                      50.0,
+                      50.0,
+                      50.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Releasing the ability within 0.35 seconds causes Pantheon to instead thrust his spear in the target direction, dealing physical damage to enemies hit, increased against enemies below 20% of their maximum health, and refunding 60% of Comet Spear's cooldown. The thrust's damage is not reduced against enemies beyond the first.",
+            "leveling": [
+              {
+                "attribute": "Increased Thrust Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      155.0,
+                      230.0,
+                      305.0,
+                      380.0,
+                      455.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      230.0,
+                      230.0,
+                      230.0,
+                      230.0,
+                      230.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Thrust Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      70.0,
+                      100.0,
+                      130.0,
+                      160.0,
+                      190.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      115.0,
+                      115.0,
+                      115.0,
+                      115.0,
+                      115.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Comet Spear"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                13.0,
+                12.0,
+                11.0,
+                10.0,
+                9.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Pantheon leaps to the front of the target enemy's location. If the target is within 800 units upon arrival, he deals physical damage and stuns them for 1 second. Against minions and monsters, Shield Vault has a minimum damage of 60 and is capped at 200.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "% of target's maximum health",
+                      "% of target's maximum health",
+                      "% of target's maximum health",
+                      "% of target's maximum health",
+                      "% of target's maximum health"
+                    ],
+                    "values": [
+                      6.0,
+                      6.5,
+                      7.0,
+                      7.5,
+                      8.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% per 100 AP",
+                      "% per 100 AP",
+                      "% per 100 AP",
+                      "% per 100 AP",
+                      "% per 100 AP"
+                    ],
+                    "values": [
+                      1.5,
+                      1.5,
+                      1.5,
+                      1.5,
+                      1.5
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% per 100 Pantheon's bonus health",
+                      "% per 100 Pantheon's bonus health",
+                      "% per 100 Pantheon's bonus health",
+                      "% per 100 Pantheon's bonus health",
+                      "% per 100 Pantheon's bonus health"
+                    ],
+                    "values": [
+                      0.4,
+                      0.4,
+                      0.4,
+                      0.4,
+                      0.4
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Empowered Shield Vault resets Pantheon's basic attack timer. Pantheon will attempt to basic attack the target at the end of the leap.",
+            "leveling": []
+          },
+          {
+            "description": "Mortal Will: Pantheon empowers his next basic attack within 4 seconds to have a cast time and strike the target 3 times over a brief period, dealing 40% : 55% (based on level) AD physical damage per hit, up to 120% : 165% (based on level) AD. Each hit is affected by critical strike modifiers and applies on-hit effects.",
+            "leveling": []
+          }
+        ],
+        "name": "Shield Vault"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                22.0,
+                21.0,
+                20.0,
+                19.0,
+                18.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Pantheon braces his shield in the target direction and channels for 1.5 seconds, during which he becomes invulnerable to non- turret damage dealt by enemies from the target direction. He also continually performs strikes in a cone in front of him, dealing 8.3% AD physical damage every 0.125 seconds to enemies hit, reduced by 50% against minions and up to 100% AD total physical damage.",
+            "leveling": []
+          },
+          {
+            "description": "Aegis Assault can be recast after 0.3 seconds, and does so automatically after the duration. Aegis Assault's channel cannot be interrupted by crowd control.",
+            "leveling": []
+          },
+          {
+            "description": "Mortal Will: After recasting, Pantheon gains 5 : 30 (based on level) (+ 2.5% bonus health) bonus armor and bonus magic resistance for 4 seconds as well as 60% bonus movement speed for 1.5 seconds.",
+            "leveling": []
+          },
+          {
+            "description": "Recast: Pantheon slams with his shield in a cone in front of him, dealing physical damage to enemies hit.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      55.0,
+                      105.0,
+                      155.0,
+                      205.0,
+                      255.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      150.0,
+                      150.0,
+                      150.0,
+                      150.0,
+                      150.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Aegis Assault"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                180.0,
+                165.0,
+                150.0
+              ]
+            }
+          ]
+        },
+        "damageType": "OTHER_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Pantheon channels for 2 seconds, then leaps high into the air, vanishing and becoming immune to crowd control until he reappears. While in the air, Pantheon channels again for 2.25 seconds and grants sight around the target location 0.5 seconds into the channel.",
+            "leveling": []
+          },
+          {
+            "description": "After 0.8 seconds into the channel, Pantheon prepares for landing by hurling his spear to the target location over 0.2 seconds that deals 40 : 190 (based on Comet Spear's rank) (+ 115% bonus AD) (+ 50% AP) physical damage to enemies near its landing point and slows them by 50% for 2 seconds.",
+            "leveling": []
+          },
+          {
+            "description": "Grand Starfall is placed on a 30-second cooldown if the first channel is canceled.",
+            "leveling": []
+          },
+          {
+            "description": "Over the remaining 1.25 seconds, Pantheon crashes down after 0.55 seconds and creates a shockwave alongside himself that travels toward the target location over 0.7 seconds, dealing magic damage to enemies hit, reduced by up to 50% for those hit at the edge of the area. Upon completion of the channel, Pantheon reappears at the target location and gains maximum stacks of Mortal Will.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      300.0,
+                      500.0,
+                      700.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      100.0,
+                      100.0,
+                      100.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Reduced Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      150.0,
+                      250.0,
+                      350.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      50.0,
+                      50.0,
+                      50.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Passive: Pantheon gains armor penetration.",
+            "leveling": [
+              {
+                "attribute": "Armor Penetration",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      10.0,
+                      20.0,
+                      30.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Grand Starfall"
+      }
+    ]
+  },
+  "positions": [
+    "JUNGLE",
+    "MIDDLE",
+    "SUPPORT",
+    "TOP"
+  ]
+}

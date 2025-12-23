@@ -1,0 +1,41 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats></stats><br><br><mainText><unique>Reinforced:</unique> Reduces incoming damage by 66%, including True Damage, when no enemy Lane Minions or Rift Herald are nearby.<br><unique>Regeneration: </unique>Base turrets have health regeneration, but cannot regenerate past their current segment. Base turrets are segmented at 33%, 66% and 100% health.</mainText></mainText>",
+  "effect": {
+    "Effect1Amount": "66",
+    "Effect2Amount": "66"
+  },
+  "gold": {
+    "base": 0,
+    "purchasable": false,
+    "sell": 0,
+    "total": 0
+  },
+  "image": {
+    "full": "1506.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item0.png",
+    "w": 48,
+    "x": 192,
+    "y": 192
+  },
+  "inStore": false,
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": true
+  },
+  "name": "Reinforced Armor",
+  "plaintext": "",
+  "stats": {},
+  "tags": [
+    "Armor",
+    "ManaRegen",
+    "OnHit"
+  ]
+}

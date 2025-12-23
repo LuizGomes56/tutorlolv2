@@ -1,0 +1,41 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><attention>55</attention> Attack Damage<br><attention>45%</attention> Attack Speed<br><attention>15%</attention> Move Speed</stats><br><br><passive>Polarity</passive><br>On Attack, if the target is different from the target you most recently triggered an <keyword>Energized Attack</keyword> on, ready Energize. <br><br><passive>Dynamo</passive><br><keyword>Energized Attacks</keyword> deal an additional magic damage based on the <magicDamage>Target's Current Health</magicDamage>.</mainText>",
+  "gold": {
+    "base": 1000,
+    "purchasable": true,
+    "sell": 400,
+    "total": 1000
+  },
+  "image": {
+    "full": "443055.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item4.png",
+    "w": 48,
+    "x": 240,
+    "y": 240
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": false
+  },
+  "name": "Fulmination",
+  "plaintext": "",
+  "specialRecipe": 220007,
+  "stats": {
+    "FlatPhysicalDamageMod": 55,
+    "PercentAttackSpeedMod": 0.45,
+    "PercentMovementSpeedMod": 0.15
+  },
+  "tags": [
+    "Damage",
+    "AttackSpeed",
+    "NonbootsMovement"
+  ]
+}

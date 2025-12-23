@@ -1,0 +1,629 @@
+{
+  "name": "Kai'Sa",
+  "attackType": "RANGED",
+  "adaptiveType": "MAGIC_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 640.0,
+      "perLevel": 102.0
+    },
+    "mana": {
+      "flat": 345.0,
+      "perLevel": 40.0
+    },
+    "armor": {
+      "flat": 27.0,
+      "perLevel": 4.2
+    },
+    "magicResistance": {
+      "flat": 30.0,
+      "perLevel": 1.3
+    },
+    "attackDamage": {
+      "flat": 59.0,
+      "perLevel": 2.6
+    },
+    "attackSpeed": {
+      "flat": 0.644,
+      "perLevel": 1.8
+    },
+    "movespeed": {
+      "flat": 335.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.643999993801116,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 525.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 0.9,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.1,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 0.9,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": null,
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Innate - Caustic Wounds: Plasma stacks applied by Kai'Sa's basic attacks or Void Seeker deal 4 : 24 (based on level) (+ 1 : 6 (based on level) per Plasma stack before application) (+ 12% : 24% (based on Plasma stacks before application) AP) bonus magic damage. The fifth stack against a target consumes them all to deal additional bonus magic damage equal to 15% (+ 6% per 100 AP) of the target's missing health, capped at 400 against monsters.",
+            "leveling": []
+          },
+          {
+            "description": "Innate - Living Weapon: Kai'Sa can evolve each of her basic abilities by gaining a set amount of permanent stats from items and stat growth, granting them additional effects. Evolving an ability causes her to enter a 2-second cast time. The upgrade is lost if the stat requirement is no longer met.",
+            "leveling": []
+          },
+          {
+            "description": "Innate - Plasma: Kai'Sa's basic attacks on-hit and Void Seeker apply stacks of Plasma to enemies for 4 seconds, refreshing on subsequent applications and stacking up to 5 times. Basic attacks each apply 1 stack and Void Seeker applies 2 stacks, increased to 3 if it is evolved. Her and nearby allies' immobilizing effects and polymorphs against enemy champions will also apply a stack of Plasma.",
+            "leveling": []
+          }
+        ],
+        "name": "Second Skin"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                10.0,
+                9.0,
+                8.0,
+                7.0,
+                6.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "A nearby enemy is required to cast this ability.",
+            "leveling": []
+          },
+          {
+            "description": "Active: Kai'Sa releases a swarm of 6 missiles that evenly distributes among nearby visible enemies, each one hitting their target after 0.4 seconds to deal physical damage. Minions below 35% health take double damage.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage Per Missile",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      40.0,
+                      55.0,
+                      70.0,
+                      85.0,
+                      100.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      55.0,
+                      55.0,
+                      55.0,
+                      55.0,
+                      55.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      20.0,
+                      20.0,
+                      20.0,
+                      20.0,
+                      20.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Evolution: Requires[ 100 : 56 (based on level) attack damage from items ][ 100 attack damage from items and stat growth ]to upgrade : Icathian Rain instead fires 12 missiles.",
+            "leveling": [
+              {
+                "attribute": "Total Evolved Single-Target Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      150.0,
+                      206.25,
+                      262.5,
+                      318.75,
+                      375.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      206.25,
+                      206.25,
+                      206.25,
+                      206.25,
+                      206.25
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      75.0,
+                      75.0,
+                      75.0,
+                      75.0,
+                      75.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Non-minions take 25% damage from missiles beyond their first.",
+            "leveling": [
+              {
+                "attribute": "Reduced Damage Per Missile",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      10.0,
+                      13.75,
+                      17.5,
+                      21.25,
+                      25.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      13.75,
+                      13.75,
+                      13.75,
+                      13.75,
+                      13.75
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      5.0,
+                      5.0,
+                      5.0,
+                      5.0,
+                      5.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Single-Target Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      90.0,
+                      123.75,
+                      157.5,
+                      191.25,
+                      225.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      123.75,
+                      123.75,
+                      123.75,
+                      123.75,
+                      123.75
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      45.0,
+                      45.0,
+                      45.0,
+                      45.0,
+                      45.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Icathian Rain"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                22.0,
+                20.0,
+                18.0,
+                16.0,
+                14.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Kai'Sa fires a void bolt in the target direction that briefly grants sight around its trajectory as it travels, deals magic damage to the first enemy hit, applies 2 Plasma, and reveals them for 4 seconds.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      30.0,
+                      55.0,
+                      80.0,
+                      105.0,
+                      130.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      130.0,
+                      130.0,
+                      130.0,
+                      130.0,
+                      130.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      45.0,
+                      45.0,
+                      45.0,
+                      45.0,
+                      45.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Evolution: Requires 100 ability power from items to upgrade : Void Seeker applies 3 Plasma instead and refunds 75% of its cooldown if it hits an enemy champion.",
+            "leveling": []
+          }
+        ],
+        "name": "Void Seeker"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                16.0,
+                14.5,
+                13.0,
+                11.5,
+                10.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: Kai'Sa charges up over the cast time, during which she is still able to move, becoming ghosted and gaining bonus movement speed for the duration, with the effectiveness increased by 0% : 100% (based on bonus attack speed).",
+            "leveling": [
+              {
+                "attribute": "Maximum Movement Speed",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      110.0,
+                      120.0,
+                      130.0,
+                      140.0,
+                      150.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Minimum Movement Speed",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      55.0,
+                      60.0,
+                      65.0,
+                      70.0,
+                      75.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "After completing the charge, she gains bonus attack speed for 4 seconds, during which her attacks have a lower windup of 6.44% and an increased missile speed.",
+            "leveling": [
+              {
+                "attribute": "Bonus Attack Speed",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      40.0,
+                      50.0,
+                      60.0,
+                      70.0,
+                      80.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Evolution: Requires[ 100% : 70% (based on level) attack speed from items ][ 100% attack speed from items and stat growth ]to upgrade : Supercharge grants invisibility at the start of the cast time for 0.5 seconds.",
+            "leveling": []
+          },
+          {
+            "description": "Supercharge's current cooldown is reduced by 0.5 seconds on-attack.",
+            "leveling": []
+          }
+        ],
+        "name": "Supercharge"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                120.0,
+                90.0,
+                60.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: Kai'Sa grants herself a shield for 2 seconds and dashes to a target location near a visible enemy champion that was affected by Plasma within the last 4 seconds. The shield's duration is refreshed when the dash ends.",
+            "leveling": [
+              {
+                "attribute": "Shield Strength",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      70.0,
+                      90.0,
+                      110.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      90.0,
+                      135.0,
+                      180.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      120.0,
+                      120.0,
+                      120.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "An enemy champion within range and affected by Plasma is required to cast this ability. Killer Instinct resets Kai'Sa's basic attack timer. Kai'Sa can cast any of her abilities during the dash.",
+            "leveling": []
+          }
+        ],
+        "name": "Killer Instinct"
+      }
+    ]
+  },
+  "positions": [
+    "BOTTOM"
+  ]
+}

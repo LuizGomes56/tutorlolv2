@@ -1,0 +1,84 @@
+{
+  "active": [],
+  "buildsFrom": [],
+  "buildsInto": [],
+  "name": "Scorchclaw Pup",
+  "tier": 1,
+  "passives": [
+    {
+      "effects": "Feed your companion enough treats to evolve it and upgrade your {{si|Smite}}. Upon the companion reaching its final evolution, this item is consumed, granting you the {{bi|Scorchclaw's Slash}} buff.",
+      "name": "Scorchclaw's Slash",
+      "unique": true
+    },
+    {
+      "effects": "Summon a ''Scorchclaw Pup'' companion to assist you in combat against monsters.",
+      "name": "Jungle Companions",
+      "unique": true
+    }
+  ],
+  "id": 1101,
+  "stats": {
+    "abilityPower": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "shop": {
+    "purchasable": true,
+    "prices": {
+      "total": 450
+    }
+  }
+}

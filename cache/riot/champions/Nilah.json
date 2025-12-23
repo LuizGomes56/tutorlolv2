@@ -1,0 +1,636 @@
+{
+  "allytips": [],
+  "blurb": "Nilah is an ascetic warrior from a distant land, seeking the world's deadliest, most titanic opponents so that she might challenge and destroy them. Having won her power through an encounter with the long-imprisoned demon of joy, she has no emotions...",
+  "enemytips": [],
+  "id": "Nilah",
+  "image": {
+    "full": "Nilah.png",
+    "group": "champion",
+    "h": 48,
+    "sprite": "champion3.png",
+    "w": 48,
+    "x": 144,
+    "y": 0
+  },
+  "info": {
+    "attack": 8,
+    "defense": 4,
+    "difficulty": 10,
+    "magic": 4
+  },
+  "key": "895",
+  "lore": "Nilah is an ascetic warrior from a distant land, seeking the world's deadliest, most titanic opponents so that she might challenge and destroy them. Having won her power through an encounter with the long-imprisoned demon of joy, she has no emotions other than unceasing jubilation—a small price to pay for the vast strength she now possesses. Channeling the demon's liquid form into a blade of unparalleled might, she stands defiant against ancient threats long forgotten.",
+  "name": "Nilah",
+  "partype": "Mana",
+  "passive": {
+    "description": "Nilah gains increased experience from last-hitting minions along with the ability to enhance and share nearby healing and shielding from her allies.",
+    "image": {
+      "full": "NIlahP.png",
+      "group": "passive",
+      "h": 48,
+      "sprite": "passive3.png",
+      "w": 48,
+      "x": 144,
+      "y": 0
+    },
+    "name": "Joy Unending"
+  },
+  "recommended": [],
+  "skins": [
+    {
+      "chromas": false,
+      "id": "895000",
+      "name": "default",
+      "num": 0
+    },
+    {
+      "chromas": true,
+      "id": "895001",
+      "name": "Star Guardian Nilah",
+      "num": 1
+    },
+    {
+      "chromas": true,
+      "id": "895011",
+      "name": "Coven Nilah",
+      "num": 11
+    },
+    {
+      "chromas": true,
+      "id": "895021",
+      "name": "Inkshadow Nilah",
+      "num": 21
+    }
+  ],
+  "spells": [
+    {
+      "cooldown": [
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "cooldownBurn": "4",
+      "cost": [
+        30,
+        30,
+        30,
+        30,
+        30
+      ],
+      "costBurn": "30",
+      "costType": " {{ abilityresourcename }}",
+      "datavalues": {},
+      "description": "With a snap of her whip-blade, Nilah damages any enemies she hits in a straight line in her chosen direction. This action extends her attack range for a short duration.",
+      "effect": [
+        null,
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "effectBurn": [
+        null,
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "id": "NilahQ",
+      "image": {
+        "full": "NilahQ.png",
+        "group": "spell",
+        "h": 48,
+        "sprite": "spell9.png",
+        "w": 48,
+        "x": 0,
+        "y": 144
+      },
+      "leveltip": {
+        "effect": [
+          "{{ basedamage }} -> {{ basedamageNL }}",
+          "{{ qadratio*100.000000 }}% -> {{ qadrationl*100.000000 }}%"
+        ],
+        "label": [
+          "Damage",
+          "Damage: <physicalDamage>@TargetDamage@</physicalDamage> = <scaleLevel>@PercentAD*100@% (%i:scaleAD%)</scaleLevel>"
+        ]
+      },
+      "maxammo": "-1",
+      "maxrank": 5,
+      "name": "Formless Blade",
+      "range": [
+        600,
+        600,
+        600,
+        600,
+        600
+      ],
+      "rangeBurn": "600",
+      "resource": "{{ cost }} {{ abilityresourcename }}",
+      "tooltip": "<spellPassive>Passive:</spellPassive> Nilah gains {{ critarmorpen }} Armor Penetration, and her Attacks against champions restore <healing>{{ critlifesteal }} damage dealt as Health</healing>. Overhealing from this is converted into a <shield>Shield</shield> for {{ shieldduration }} seconds.<br /><br /><spellActive>Active:</spellActive> Nilah cracks her whip-blade, dealing <physicalDamage>{{ damagecalc }} physical damage</physicalDamage>, increased by her Critical Strike Chance. If an enemy unit or structure is hit, Nilah gains 125 Attack Range and <attackSpeed>{{ bonusattackspeedcalc }}% Attack Speed</attackSpeed>, and her Attacks hit in a cone as <physicalDamage>{{ attacktotaldamagetooltip }} physical damage</physicalDamage> for {{ buffduration }} seconds.<br />{{ spellmodifierdescriptionappend }}",
+      "vars": []
+    },
+    {
+      "cooldown": [
+        26,
+        25,
+        24,
+        23,
+        22
+      ],
+      "cooldownBurn": "26/25/24/23/22",
+      "cost": [
+        60,
+        45,
+        30,
+        15,
+        0
+      ],
+      "costBurn": "60/45/30/15/0",
+      "costType": " {{ abilityresourcename }}",
+      "datavalues": {},
+      "description": "Nilah envelops herself in mist, increasing her movement speed and allowing her to gracefully dodge all incoming attacks. Any allies she touches during the mist's duration will also gain this effect.",
+      "effect": [
+        null,
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "effectBurn": [
+        null,
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "id": "NilahW",
+      "image": {
+        "full": "NilahW.png",
+        "group": "spell",
+        "h": 48,
+        "sprite": "spell9.png",
+        "w": 48,
+        "x": 48,
+        "y": 144
+      },
+      "leveltip": {
+        "effect": [
+          "{{ cooldown }} -> {{ cooldownNL }}",
+          "{{ movespeedpercent*100.000000 }}% -> {{ movespeedpercentnl*100.000000 }}%",
+          "{{ cost }} -> {{ costNL }}"
+        ],
+        "label": [
+          "Cooldown",
+          "Move Speed",
+          "@AbilityResourceName@ Cost"
+        ]
+      },
+      "maxammo": "-1",
+      "maxrank": 5,
+      "name": "Jubilant Veil",
+      "range": [
+        150,
+        150,
+        150,
+        150,
+        150
+      ],
+      "rangeBurn": "150",
+      "resource": "{{ cost }} {{ abilityresourcename }}",
+      "tooltip": "Nilah envelops herself in mist for {{ baseduration }} seconds, becoming Ghosted, gaining <speed>{{ movespeedpercent*100 }}% Move Speed</speed>, dodging Attacks, and reducing <magicDamage>magic damage</magicDamage> taken by {{ magicdamagereduction*100 }}%.<br /><br />While active, touching allied champions envelops them in mist, granting the same benefits for {{ sharebaseduration }} seconds.<br />{{ spellmodifierdescriptionappend }}",
+      "vars": []
+    },
+    {
+      "cooldown": [
+        0.5,
+        0.5,
+        0.5,
+        0.5,
+        0.5
+      ],
+      "cooldownBurn": "0.5",
+      "cost": [
+        40,
+        40,
+        40,
+        40,
+        40
+      ],
+      "costBurn": "40",
+      "costType": " {{ abilityresourcename }}",
+      "datavalues": {},
+      "description": "Nilah enthusiastically dashes toward her target, dealing damage to any enemies she passes through on the way.",
+      "effect": [
+        null,
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "effectBurn": [
+        null,
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "id": "NilahE",
+      "image": {
+        "full": "NilahE.png",
+        "group": "spell",
+        "h": 48,
+        "sprite": "spell9.png",
+        "w": 48,
+        "x": 96,
+        "y": 144
+      },
+      "leveltip": {
+        "effect": [
+          "{{ basedamage }} -> {{ basedamageNL }}",
+          "{{ ammorechargetime }} -> {{ ammorechargetimeNL }}"
+        ],
+        "label": [
+          "Damage",
+          "Recharge Time"
+        ]
+      },
+      "maxammo": "2",
+      "maxrank": 5,
+      "name": "Slipstream",
+      "range": [
+        550,
+        550,
+        550,
+        550,
+        550
+      ],
+      "rangeBurn": "550",
+      "resource": "{{ cost }} {{ abilityresourcename }}",
+      "tooltip": "Nilah dashes through a unit, dealing <physicalDamage>{{ dashdamage }} physical damage</physicalDamage> to any enemies she passes through.{{ spellmodifierdescriptionappend }}",
+      "vars": []
+    },
+    {
+      "cooldown": [
+        110,
+        95,
+        80
+      ],
+      "cooldownBurn": "110/95/80",
+      "cost": [
+        80,
+        80,
+        80
+      ],
+      "costBurn": "80",
+      "costType": " {{ abilityresourcename }}",
+      "datavalues": {},
+      "description": "Twirling her whip-blade in joyful exuberance, Nilah deals damage to enemies around her before pulling them closer with her weapon.",
+      "effect": [
+        null,
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "effectBurn": [
+        null,
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "id": "NilahR",
+      "image": {
+        "full": "NilahR.png",
+        "group": "spell",
+        "h": 48,
+        "sprite": "spell9.png",
+        "w": 48,
+        "x": 144,
+        "y": 144
+      },
+      "leveltip": {
+        "effect": [
+          "{{ cooldown }} -> {{ cooldownNL }}",
+          "{{ damagebase }} -> {{ damagebaseNL }}",
+          "{{ damagepertick }} -> {{ damagepertickNL }}"
+        ],
+        "label": [
+          "Cooldown",
+          "Damage",
+          "Damage per Tick"
+        ]
+      },
+      "maxammo": "-1",
+      "maxrank": 3,
+      "name": "Apotheosis",
+      "range": [
+        400,
+        400,
+        400
+      ],
+      "rangeBurn": "400",
+      "resource": "{{ cost }} {{ abilityresourcename }}",
+      "tooltip": "Nilah whirls her whip-blade, dealing <physicalDamage>{{ damagepertickcalctooltip }} physical damage</physicalDamage> over 1 second, then finishes with a burst of <physicalDamage>{{ damagecalc }} physical damage</physicalDamage> that also <status>Pulls</status> nearby enemies toward her.<br /><br />Nilah heals herself and nearby allies by <healing>{{ champhealingpercent }} (+{{ spell.nilahq:critlifesteal }} Formless Blade) of her damage dealt to enemy champions' Health ({{ otherhealingpercent*100 }}% for non-champions)</healing>, converting any overhealing into a <shield>Shield</shield> for {{ duration }} seconds.<br />{{ spellmodifierdescriptionappend }}",
+      "vars": []
+    }
+  ],
+  "stats": {
+    "armor": 27,
+    "armorperlevel": 4.5,
+    "attackdamage": 60,
+    "attackdamageperlevel": 2,
+    "attackrange": 225,
+    "attackspeed": 0.697,
+    "attackspeedperlevel": 2.25,
+    "crit": 0,
+    "critperlevel": 0,
+    "hp": 570,
+    "hpperlevel": 101,
+    "hpregen": 6,
+    "hpregenperlevel": 0.9,
+    "movespeed": 340,
+    "mp": 350,
+    "mpperlevel": 35,
+    "mpregen": 8.2,
+    "mpregenperlevel": 0.7,
+    "spellblock": 32,
+    "spellblockperlevel": 2.05
+  },
+  "tags": [
+    "Fighter",
+    "Assassin"
+  ],
+  "title": "the Joy Unbound"
+}

@@ -1,0 +1,162 @@
+{
+  "name": "Amumu",
+  "adaptative_type": "Magic",
+  "attack_type": "Melee",
+  "positions": [
+    "Jungle",
+    "Support"
+  ],
+  "stats": {
+    "health": {
+      "flat": 685.0,
+      "perLevel": 94.0
+    },
+    "mana": {
+      "flat": 285.0,
+      "perLevel": 40.0
+    },
+    "armor": {
+      "flat": 33.0,
+      "perLevel": 4.0
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 57.0,
+      "perLevel": 3.8
+    },
+    "attackSpeed": {
+      "flat": 0.736,
+      "perLevel": 2.18
+    },
+    "movespeed": {
+      "flat": 335.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.638000011444091,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 125.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 0.9,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.1,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": [
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Curse of the Sad Mummy",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "200 + (0.8 * ctx.ap)",
+          "300 + (0.8 * ctx.ap)",
+          "400 + (0.8 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Despair",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "5 + (0.005 * ctx.enemy_max_health) + (0.0025 * 0.01 * ctx.ap)",
+          "5 + (0.00625 * ctx.enemy_max_health) + (0.0025 * 0.01 * ctx.ap)",
+          "5 + (0.0075 * ctx.enemy_max_health) + (0.0025 * 0.01 * ctx.ap)",
+          "5 + (0.00875 * ctx.enemy_max_health) + (0.0025 * 0.01 * ctx.ap)",
+          "5 + (0.01 * ctx.enemy_max_health) + (0.0025 * 0.01 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Tantrum",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "65 + (0.5 * ctx.ap)",
+          "95 + (0.5 * ctx.ap)",
+          "125 + (0.5 * ctx.ap)",
+          "155 + (0.5 * ctx.ap)",
+          "185 + (0.5 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Bandage Toss",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "70 + (0.85 * ctx.ap)",
+          "95 + (0.85 * ctx.ap)",
+          "120 + (0.85 * ctx.ap)",
+          "145 + (0.85 * ctx.ap)",
+          "170 + (0.85 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_2"
+      },
+      {
+        "name": "Tantrum",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "5 + (0.03 * ctx.bonus_ctx.armor) + (0.03 * ctx.bonus_magic_resist)",
+          "7 + (0.03 * ctx.bonus_ctx.armor) + (0.03 * ctx.bonus_magic_resist)",
+          "9 + (0.03 * ctx.bonus_ctx.armor) + (0.03 * ctx.bonus_magic_resist)",
+          "11 + (0.03 * ctx.bonus_ctx.armor) + (0.03 * ctx.bonus_magic_resist)",
+          "13 + (0.03 * ctx.bonus_ctx.armor) + (0.03 * ctx.bonus_magic_resist)"
+        ]
+      }
+    ]
+  ],
+  "merge_data": []
+}

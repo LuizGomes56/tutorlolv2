@@ -1,0 +1,535 @@
+{
+  "name": "Talon",
+  "attackType": "MELEE",
+  "adaptiveType": "PHYSICAL_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 658.0,
+      "perLevel": 109.0
+    },
+    "mana": {
+      "flat": 400.0,
+      "perLevel": 37.0
+    },
+    "armor": {
+      "flat": 30.0,
+      "perLevel": 4.7
+    },
+    "magicResistance": {
+      "flat": 36.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 68.0,
+      "perLevel": 3.1
+    },
+    "attackSpeed": {
+      "flat": 0.625,
+      "perLevel": 2.9
+    },
+    "movespeed": {
+      "flat": 335.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.625,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 125.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 0.95,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.05,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": null,
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Innate: Talon's abilities apply a stack of Wound to enemy champions and large monsters hit for 6 seconds, refreshing on basic attacks and subsequent applications and stacking up to 3 times.",
+            "leveling": []
+          },
+          {
+            "description": "Talon's next basic attack against an enemy with 3 Wound stacks is empowered to consume them all to cause the target to bleed, dealing[ 80 : 280 (based on level) (+ 210% bonus AD) total physical damage over 2 seconds, ][ 5 : 17.5 (based on level) (+ 13.125% bonus AD) physical damage every 0.125 seconds over 2 seconds, ]increased to 110% damage against monsters. The target cannot gain Wound stacks during this time.",
+            "leveling": []
+          }
+        ],
+        "name": "Blade's End"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                8.0,
+                7.5,
+                7.0,
+                6.5,
+                6.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Talon dashes toward the target enemy, stabbing the target upon arrival to deal physical damage. If cast within close range, Talon dashes to the target over the cast time instead and Noxian Diplomacy critically strikes for (150% + 40%) damage, as well as grants him 75 bonus attack range on his next basic attack within 1 second.",
+            "leveling": [
+              {
+                "attribute": "Critical Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      97.5,
+                      127.5,
+                      157.5,
+                      187.5,
+                      217.5
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      150.0,
+                      150.0,
+                      150.0,
+                      150.0,
+                      150.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      65.0,
+                      85.0,
+                      105.0,
+                      125.0,
+                      145.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "If Noxian Diplomacy kills the target, Talon heals for 9 : 55 (based on level) and the ability's cooldown is reduced by 50%.",
+            "leveling": []
+          },
+          {
+            "description": "Noxian Diplomacy resets Talon's basic attack timer. Shadow Assault can be cast during the dash.",
+            "leveling": []
+          }
+        ],
+        "name": "Noxian Diplomacy"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                9.0,
+                8.5,
+                8.0,
+                7.5,
+                7.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Talon throws a fan of daggers in a cone in the target direction that deals physical damage to enemies hit.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      50.0,
+                      60.0,
+                      70.0,
+                      80.0,
+                      90.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      40.0,
+                      40.0,
+                      40.0,
+                      40.0,
+                      40.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "At maximum range, the daggers linger for 0.7 seconds before homing back to Talon, dealing physical damage to enemies hit and slowing them for 1 second.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      60.0,
+                      90.0,
+                      120.0,
+                      150.0,
+                      180.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      90.0,
+                      90.0,
+                      90.0,
+                      90.0,
+                      90.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Slow",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      40.0,
+                      45.0,
+                      50.0,
+                      55.0,
+                      60.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      110.0,
+                      150.0,
+                      190.0,
+                      230.0,
+                      270.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      130.0,
+                      130.0,
+                      130.0,
+                      130.0,
+                      130.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Enemies can be hit only once per pass.",
+            "leveling": []
+          }
+        ],
+        "name": "Rake"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                2.0,
+                2.0,
+                2.0,
+                2.0,
+                2.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: Talon dashes up to 800 units over the target area of terrain while within proximity of it, during which he gains unobstructed vision.",
+            "leveling": []
+          },
+          {
+            "description": "Shadow Assault can be cast during the dash.",
+            "leveling": []
+          },
+          {
+            "description": "Talon cannot cast Assassin's Path on the same area of terrain for a set duration.",
+            "leveling": []
+          }
+        ],
+        "name": "Assassin's Path"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                100.0,
+                80.0,
+                60.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Talon disperses a ring of blades around him that deals physical damage to enemies hit and lingers at maximum range for up to 2.5 seconds, during which he gains invisibility and bonus movement speed.",
+            "leveling": [
+              {
+                "attribute": "Bonus Movement Speed",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      40.0,
+                      55.0,
+                      70.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      90.0,
+                      135.0,
+                      180.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      100.0,
+                      100.0,
+                      100.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Recast: Talon breaks stealth and converges the blades to him, dealing the same physical damage to enemies hit. Breaking stealth with a basic attack or Noxian Diplomacy will converge the blades to the target instead.",
+            "leveling": [
+              {
+                "attribute": "Total Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      180.0,
+                      270.0,
+                      360.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      200.0,
+                      200.0,
+                      200.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Shadow Assault can be recast after 1 second within the duration, and does so automatically after the duration or if Talon breaks stealth.",
+            "leveling": []
+          }
+        ],
+        "name": "Shadow Assault"
+      }
+    ]
+  },
+  "positions": [
+    "JUNGLE"
+  ]
+}

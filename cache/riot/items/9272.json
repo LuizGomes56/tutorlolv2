@@ -1,0 +1,33 @@
+{
+  "colloq": "",
+  "consumed": true,
+  "description": "<mainText><stats></stats><br><br>Summons a Yuum.Ai drone. Yuum.Ai damages and knocks up enemies, and also gathers XP. After dealing enough damage it will drop a healing pickup.<br><br><rules>Damage, Ability Haste, Area Size, Duration, Pickup Radius</rules></mainText>",
+  "gold": {
+    "base": 0,
+    "purchasable": true,
+    "sell": 0,
+    "total": 0
+  },
+  "image": {
+    "full": "9272.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item6.png",
+    "w": 48,
+    "x": 96,
+    "y": 0
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": false,
+    "33": true,
+    "35": false
+  },
+  "name": "YuumiBot_Final_FINAL",
+  "plaintext": "",
+  "stats": {},
+  "tags": []
+}

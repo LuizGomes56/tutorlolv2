@@ -1,0 +1,485 @@
+{
+  "name": "Katarina",
+  "attackType": "MELEE",
+  "adaptiveType": "MAGIC_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 672.0,
+      "perLevel": 108.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "perLevel": 0.0
+    },
+    "armor": {
+      "flat": 28.0,
+      "perLevel": 4.7
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 58.0,
+      "perLevel": 3.2
+    },
+    "attackSpeed": {
+      "flat": 0.658,
+      "perLevel": 2.74
+    },
+    "movespeed": {
+      "flat": 335.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.657999992370605,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 125.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 0.95,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.1,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": null,
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Daggers grant sight of their radius and will disappear after being on the ground for 4 seconds.",
+            "leveling": []
+          },
+          {
+            "description": "Innate - Sinister Steel: Whenever Katarina retrieves a Dagger, she slashes around herself to deal 68 : 240 (based on level) (+ 60% bonus AD) (+ 70% / 80% / 90% / 100% (based on level) AP) magic damage to nearby enemies, apply on-hit effects to enemy champions hit, and reduce Shunpo's current cooldown by 78% / 84% / 90% / 96% (based on level) of its total cooldown.",
+            "leveling": []
+          },
+          {
+            "description": "Innate: Scoring a champion takedown within 3 seconds of damaging them will reduce the current cooldowns of Katarina's abilities by 15 seconds.",
+            "leveling": []
+          }
+        ],
+        "name": "Voracity"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                11.0,
+                10.0,
+                9.0,
+                8.0,
+                7.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Katarina throws a Dagger at the target enemy that deals magic damage and can bounce to up to two additional visible nearby enemies.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      80.0,
+                      115.0,
+                      150.0,
+                      185.0,
+                      220.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      40.0,
+                      40.0,
+                      40.0,
+                      40.0,
+                      40.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "The Dagger lands 1.023 seconds after striking the first target, about 350 units opposite from their position when it struck them.",
+            "leveling": []
+          }
+        ],
+        "name": "Bouncing Blade"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                15.0,
+                14.0,
+                13.0,
+                12.0,
+                11.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: Katarina tosses a Dagger into the air above her current location and gains bonus movement speed that decays until it lands after 1.25 seconds, becoming ghosted for the same duration.",
+            "leveling": [
+              {
+                "attribute": "Bonus Movement speed",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      50.0,
+                      60.0,
+                      70.0,
+                      80.0,
+                      90.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Preparation"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                12.0,
+                11.0,
+                10.0,
+                9.0,
+                8.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Katarina blinks to a target location near the unit or Dagger closest to the cursor, dealing magic damage to the nearest enemy in range and applying on-hit effects.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      20.0,
+                      30.0,
+                      40.0,
+                      50.0,
+                      60.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      40.0,
+                      40.0,
+                      40.0,
+                      40.0,
+                      40.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      25.0,
+                      25.0,
+                      25.0,
+                      25.0,
+                      25.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Katarina prioritizes blinking to the location near Daggers, then enemy champions, then enemy non-champions, and then any other unit.",
+            "leveling": []
+          },
+          {
+            "description": "Shunpo resets Katarina's basic attack timer. Upon blinking, Katarina enters a 0.15-second cast time.",
+            "leveling": []
+          }
+        ],
+        "name": "Shunpo"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                75.0,
+                60.0,
+                45.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Katarina channels for up to 2.5 seconds, rapidly throwing a dagger every 0.166 seconds to up to 3 of the closest nearby enemy champions, revealing herself in the process.Each dagger deals physical damage and magic damage, applies on-hit effects, with on-hit damage reduced in effectiveness, triggers on-attack effects, and inflicts Grievous Wounds on the target for 3 seconds.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage Per Dagger",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      25.0,
+                      37.5,
+                      50.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      19.0,
+                      19.0,
+                      19.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Maximum Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      375.0,
+                      562.5,
+                      750.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      285.0,
+                      285.0,
+                      285.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Maximum Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%  bonus AD",
+                      "%  bonus AD",
+                      "%  bonus AD"
+                    ],
+                    "values": [
+                      240.0,
+                      240.0,
+                      240.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% per 100% bonus attack speed",
+                      "% per 100% bonus attack speed",
+                      "% per 100% bonus attack speed"
+                    ],
+                    "values": [
+                      750.0,
+                      750.0,
+                      750.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "On-Hit Damage Effectiveness",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      25.0,
+                      30.0,
+                      35.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Physical Damage Per Dagger",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%  bonus AD",
+                      "%  bonus AD",
+                      "%  bonus AD"
+                    ],
+                    "values": [
+                      16.0,
+                      16.0,
+                      16.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% per 100% bonus attack speed",
+                      "% per 100% bonus attack speed",
+                      "% per 100% bonus attack speed"
+                    ],
+                    "values": [
+                      50.0,
+                      50.0,
+                      50.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "An enemy champion within 500 units is required to cast this ability. The target does not have to be visible to be hit by this ability.",
+            "leveling": []
+          }
+        ],
+        "name": "Death Lotus"
+      }
+    ]
+  },
+  "positions": [
+    "MIDDLE"
+  ]
+}

@@ -1,0 +1,181 @@
+{
+  "name": "Yasuo",
+  "adaptative_type": "Physical",
+  "attack_type": "Melee",
+  "positions": [
+    "Bottom",
+    "Middle",
+    "Top"
+  ],
+  "stats": {
+    "health": {
+      "flat": 590.0,
+      "perLevel": 110.0
+    },
+    "mana": {
+      "flat": 100.0,
+      "perLevel": 0.0
+    },
+    "armor": {
+      "flat": 32.0,
+      "perLevel": 4.6
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 60.0,
+      "perLevel": 2.5
+    },
+    "attackSpeed": {
+      "flat": 0.697,
+      "perLevel": 3.5
+    },
+    "movespeed": {
+      "flat": 345.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.6700000166893,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 0.9,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": [
+    [
+      {
+        "type": "E",
+        "name": "_3"
+      },
+      {
+        "name": "Sweeping Blade",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "70 + (0.2 * ctx.bonus_ad) + (0.6 * ctx.ap)",
+          "85 + (0.2 * ctx.bonus_ad) + (0.6 * ctx.ap)",
+          "100 + (0.2 * ctx.bonus_ad) + (0.6 * ctx.ap)",
+          "115 + (0.2 * ctx.bonus_ad) + (0.6 * ctx.ap)",
+          "130 + (0.2 * ctx.bonus_ad) + (0.6 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Sweeping Blade",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "70 + (0.2 * ctx.bonus_ad) + (0.6 * ctx.ap)",
+          "85 + (0.2 * ctx.bonus_ad) + (0.6 * ctx.ap)",
+          "100 + (0.2 * ctx.bonus_ad) + (0.6 * ctx.ap)",
+          "115 + (0.2 * ctx.bonus_ad) + (0.6 * ctx.ap)",
+          "130 + (0.2 * ctx.bonus_ad) + (0.6 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Steel Tempest",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "20 + (1.05 * ctx.ad)",
+          "45 + (1.05 * ctx.ad)",
+          "70 + (1.05 * ctx.ad)",
+          "95 + (1.05 * ctx.ad)",
+          "120 + (1.05 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_4"
+      },
+      {
+        "name": "Sweeping Blade",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "140 + (0.4 * ctx.bonus_ad) + (1.2 * ctx.ap)",
+          "170 + (0.4 * ctx.bonus_ad) + (1.2 * ctx.ap)",
+          "200 + (0.4 * ctx.bonus_ad) + (1.2 * ctx.ap)",
+          "230 + (0.4 * ctx.bonus_ad) + (1.2 * ctx.ap)",
+          "260 + (0.4 * ctx.bonus_ad) + (1.2 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Last Breath",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "200 + (1.5 * ctx.bonus_ad)",
+          "350 + (1.5 * ctx.bonus_ad)",
+          "500 + (1.5 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_2"
+      },
+      {
+        "name": "Sweeping Blade",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "17.5 + (0.05 * ctx.bonus_ad) + (0.15 * ctx.ap)",
+          "21.25 + (0.05 * ctx.bonus_ad) + (0.15 * ctx.ap)",
+          "25 + (0.05 * ctx.bonus_ad) + (0.15 * ctx.ap)",
+          "28.75 + (0.05 * ctx.bonus_ad) + (0.15 * ctx.ap)",
+          "32.5 + (0.05 * ctx.bonus_ad) + (0.15 * ctx.ap)"
+        ]
+      }
+    ]
+  ],
+  "merge_data": []
+}

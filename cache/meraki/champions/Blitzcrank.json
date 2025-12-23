@@ -1,0 +1,398 @@
+{
+  "name": "Blitzcrank",
+  "attackType": "MELEE",
+  "adaptiveType": "PHYSICAL_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 600.0,
+      "perLevel": 109.0
+    },
+    "mana": {
+      "flat": 267.0,
+      "perLevel": 40.0
+    },
+    "armor": {
+      "flat": 37.0,
+      "perLevel": 4.7
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 62.0,
+      "perLevel": 3.5
+    },
+    "attackSpeed": {
+      "flat": 0.625,
+      "perLevel": 1.13
+    },
+    "movespeed": {
+      "flat": 325.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.625,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 125.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                90.0,
+                90.0,
+                90.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Innate: Periodically, when damaged to 30% maximum health, Blitzcrank generates a shield equal to 35% of maximum mana, lasting for up to 10 seconds.",
+            "leveling": []
+          }
+        ],
+        "name": "Mana Barrier"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                20.0,
+                19.0,
+                18.0,
+                17.0,
+                16.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Blitzcrank fires their right hand in the target direction that catches the first enemy hit, dealing them magic damage, stunning them for 0.65 seconds, and pulling them towards Blitzcrank, during which they are revealed.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      110.0,
+                      160.0,
+                      210.0,
+                      260.0,
+                      310.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      120.0,
+                      120.0,
+                      120.0,
+                      120.0,
+                      120.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Blitzcrank is unable to move or attack while Rocket Grab is in flight.",
+            "leveling": []
+          }
+        ],
+        "name": "Rocket Grab"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                15.0,
+                15.0,
+                15.0,
+                15.0,
+                15.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Blitzcrank shifts into overdrive, gaining bonus attack speed for 5 seconds and bonus movement speed that decays to 10% over the first 2.9 seconds.",
+            "leveling": [
+              {
+                "attribute": "Bonus Attack Speed",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      30.0,
+                      40.0,
+                      50.0,
+                      60.0,
+                      70.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Initial Bonus Movement Speed",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      60.0,
+                      65.0,
+                      70.0,
+                      75.0,
+                      80.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "When Overdrive ends, Blitzcrank is slowed by 30% for 1.5 seconds.",
+            "leveling": []
+          }
+        ],
+        "name": "Overdrive"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                9.0,
+                8.0,
+                7.0,
+                6.0,
+                5.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Blitzcrank empowers their next basic attack within 5 seconds to have an uncancellable windup, deal 100% AD (+ 25% AP) bonus physical damage and knock up the target for 1 second. This damage is affected by critical strike modifiers.",
+            "leveling": []
+          },
+          {
+            "description": "Power Fist resets Blitzcrank's basic attack timer.",
+            "leveling": []
+          }
+        ],
+        "name": "Power Fist"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                60.0,
+                40.0,
+                20.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Blitzcrank detonates a static field that destroys the damage-mitigating shields of all nearby enemies, excluding the shields of monsters, and then deals them magic damage and silences them for 0.5 seconds.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      275.0,
+                      400.0,
+                      525.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      100.0,
+                      100.0,
+                      100.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Passive: While Static Field is not on cooldown, Blitzcrank's basic attacks apply a stack to the target on-hit. After every 1 second, one stack is consumed to deal them magic damage.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      50.0,
+                      100.0,
+                      150.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      30.0,
+                      40.0,
+                      50.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% maximum mana",
+                      "% maximum mana",
+                      "% maximum mana"
+                    ],
+                    "values": [
+                      2.0,
+                      2.0,
+                      2.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Static Field"
+      }
+    ]
+  },
+  "positions": [
+    "SUPPORT"
+  ]
+}

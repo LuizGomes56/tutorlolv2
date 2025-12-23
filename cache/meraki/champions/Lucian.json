@@ -1,0 +1,662 @@
+{
+  "name": "Lucian",
+  "attackType": "RANGED",
+  "adaptiveType": "PHYSICAL_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 641.0,
+      "perLevel": 100.0
+    },
+    "mana": {
+      "flat": 320.0,
+      "perLevel": 43.0
+    },
+    "armor": {
+      "flat": 28.0,
+      "perLevel": 4.2
+    },
+    "magicResistance": {
+      "flat": 30.0,
+      "perLevel": 1.3
+    },
+    "attackDamage": {
+      "flat": 60.0,
+      "perLevel": 2.9
+    },
+    "attackSpeed": {
+      "flat": 0.638,
+      "perLevel": 3.3
+    },
+    "movespeed": {
+      "flat": 335.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.638000011444091,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 500.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 0.95,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.05,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.05,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 0.95,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": null,
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Innate - Vigilance: Whenever Lucian is healed or shielded by an ally, or an enemy champion within 1000 units is immobilized, his next two shots within 6 seconds are empowered to deal 15 (+ 20% AD) bonus magic damage on-hit. He can store up to 4 empowered shots at a time.",
+            "leveling": []
+          },
+          {
+            "description": "Innate: After casting an ability, Lucian's next basic attack within 3.5 seconds fires an additional shot on-attack after 0.25 seconds, which deals 50% / 55% / 60% (based on level) AD physical damage, increased to 100% AD against minions. He will shoot the same target, else another target within 50 units beyond his basic attack range automatically.",
+            "leveling": []
+          },
+          {
+            "description": "The second shot applies on-hit effects, triggers on-attack effects, and is affected by critical strike modifiers.",
+            "leveling": []
+          }
+        ],
+        "name": "Lightslinger"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                9.0,
+                8.0,
+                7.0,
+                6.0,
+                5.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Lucian fires a laser in a line in the direction of the target enemy that deals physical damage to enemies hit.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      85.0,
+                      115.0,
+                      145.0,
+                      175.0,
+                      205.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      60.0,
+                      75.0,
+                      90.0,
+                      105.0,
+                      120.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Piercing Light"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                14.0,
+                13.0,
+                12.0,
+                11.0,
+                10.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Lucian fires a missile in the target direction that explodes in a cross pattern upon hitting an enemy or reaching maximum range, dealing magic damage to enemies hit and granting sight of the area for 1 second.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      75.0,
+                      110.0,
+                      145.0,
+                      180.0,
+                      215.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      90.0,
+                      90.0,
+                      90.0,
+                      90.0,
+                      90.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Enemies hit are marked for 6 seconds.",
+            "leveling": []
+          },
+          {
+            "description": "Lucian gains bonus movement speed for 1 second when he or allied champions damage a marked target. Allied champions triggering this effect grant Lucian Vigilance.",
+            "leveling": [
+              {
+                "attribute": "Bonus Movement Speed",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      60.0,
+                      65.0,
+                      70.0,
+                      75.0,
+                      80.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Ardent Blaze"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                18.0,
+                17.0,
+                16.0,
+                15.0,
+                14.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: Lucian dashes in the target direction.",
+            "leveling": []
+          },
+          {
+            "description": "Passive: Relentless Pursuit's current cooldown is reduced by 1 second for each Lightslinger shot hit, doubled to 2 seconds against enemy champions.",
+            "leveling": []
+          },
+          {
+            "description": "Relentless Pursuit resets Lucian's basic attack timer. Lucian can cast any of his abilities during the dash. Relentless Pursuit can be cast during Ardent Blaze's cast time and during The Culling's channel.",
+            "leveling": []
+          }
+        ],
+        "name": "Relentless Pursuit"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                110.0,
+                100.0,
+                90.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Lucian channels for up to 3 seconds, rapidly firing up to 22 (+ 1 per 4% critical strike chance) shots in the target direction. Each shot deals physical damage to the first enemy hit, doubled against minions. The Culling can be recast after 0.75 seconds during the channel, and does so automatically when the channel ends.",
+            "leveling": [
+              {
+                "attribute": "Additional Damage per 20% Crit Chance",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      75.0,
+                      150.0,
+                      225.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      125.0,
+                      125.0,
+                      125.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      75.0,
+                      75.0,
+                      75.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Additional Minion Damage per 20% Crit Chance",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      150.0,
+                      300.0,
+                      450.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      250.0,
+                      250.0,
+                      250.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      150.0,
+                      150.0,
+                      150.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Minion Damage Per Shot",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      30.0,
+                      60.0,
+                      90.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      50.0,
+                      50.0,
+                      50.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      30.0,
+                      30.0,
+                      30.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Physical Damage Per Shot",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      15.0,
+                      30.0,
+                      45.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      25.0,
+                      25.0,
+                      25.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      15.0,
+                      15.0,
+                      15.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Minion Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "  ",
+                      "  ",
+                      "  "
+                    ],
+                    "values": [
+                      660.0,
+                      1320.0,
+                      1980.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "   per 4% critical strike chance",
+                      "   per 4% critical strike chance",
+                      "   per 4% critical strike chance"
+                    ],
+                    "values": [
+                      30.0,
+                      60.0,
+                      90.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      1100.0,
+                      1100.0,
+                      1100.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      660.0,
+                      660.0,
+                      660.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      50.0,
+                      50.0,
+                      50.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      30.0,
+                      30.0,
+                      30.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "  ",
+                      "  ",
+                      "  "
+                    ],
+                    "values": [
+                      330.0,
+                      660.0,
+                      990.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "   per 4% critical strike chance",
+                      "   per 4% critical strike chance",
+                      "   per 4% critical strike chance"
+                    ],
+                    "values": [
+                      15.0,
+                      30.0,
+                      45.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      550.0,
+                      550.0,
+                      550.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      330.0,
+                      330.0,
+                      330.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      25.0,
+                      25.0,
+                      25.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      15.0,
+                      15.0,
+                      15.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Recast: Lucian ends The Culling.",
+            "leveling": []
+          },
+          {
+            "description": "While channeling, Lucian is ghosted and may still move.",
+            "leveling": []
+          }
+        ],
+        "name": "The Culling"
+      }
+    ]
+  },
+  "positions": [
+    "BOTTOM"
+  ]
+}

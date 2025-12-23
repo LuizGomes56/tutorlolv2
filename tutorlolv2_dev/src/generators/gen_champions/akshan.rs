@@ -5,7 +5,7 @@ use super::*;
 impl Generator<Champion> for Akshan {
     fn generate(mut self: Box<Self>) -> MayFail<Champion> {
         {
-            let (passive, passive_description) = self.get_passive_description((0, 0));
+            let (passive, passive_description) = self.get_passive_description(0, 0);
             let passive_numbers = passive_description.capture_numbers_slash();
             let passive_scaling = passive_description
                 .get_scalings()

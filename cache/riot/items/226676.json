@@ -1,0 +1,39 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><attention>45</attention> Attack Damage<br><attention>12</attention> Lethality<br><attention>25%</attention> Critical Strike Chance</stats><br><br><passive>Death</passive><br>Your damage executes champions that are below 5% Health.<br><br><passive>Taxes</passive><br>Champion kills grant <gold>125 bonus gold</gold>.</mainText>",
+  "gold": {
+    "base": 2500,
+    "purchasable": true,
+    "sell": 1250,
+    "total": 2500
+  },
+  "image": {
+    "full": "226676.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item2.png",
+    "w": 48,
+    "x": 96,
+    "y": 144
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": false
+  },
+  "name": "The Collector",
+  "plaintext": "",
+  "stats": {
+    "FlatCritChanceMod": 0.25,
+    "FlatPhysicalDamageMod": 45
+  },
+  "tags": [
+    "Damage",
+    "CriticalStrike",
+    "ArmorPenetration"
+  ]
+}

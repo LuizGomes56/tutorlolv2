@@ -1,0 +1,79 @@
+{
+  "active": [],
+  "buildsFrom": [],
+  "buildsInto": [],
+  "name": "Cruelty",
+  "tier": 3,
+  "passives": [
+    {
+      "effects": "{{tip|Immobilize|Immobilizing}} or {{tip|ground|grounding}} an enemy champion summons a comet above them that lands at their current location after 1 second, dealing {{as|{{pp|50 to 150}}|magic damage}} {{as|(+ 40% AP)}} {{as|(+ 4% of your '''maximum''' health)}} {{as|magic damage}} to enemies within the area (6 second cooldown per target per {{tip|cast instance}}).",
+      "name": "Watch Them Fall",
+      "unique": true
+    }
+  ],
+  "id": 447109,
+  "stats": {
+    "abilityPower": {
+      "flat": 80.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 30.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 30.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "shop": {
+    "purchasable": true,
+    "prices": {
+      "total": 0
+    }
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "colloq": ";ie",
+  "depth": 2,
+  "description": "<mainText><stats><attention>65</attention> Attack Damage<br><attention>25%</attention> Critical Strike Chance<br><attention>40%</attention> Critical Strike Damage</stats><br><br></mainText>",
+  "from": [
+    "1038",
+    "1037",
+    "1018"
+  ],
+  "gold": {
+    "base": 675,
+    "purchasable": true,
+    "sell": 2415,
+    "total": 3450
+  },
+  "image": {
+    "full": "3031.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item2.png",
+    "w": 48,
+    "x": 240,
+    "y": 336
+  },
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Infinity Edge",
+  "plaintext": "Massively enhances critical strikes",
+  "stats": {
+    "FlatCritChanceMod": 0.25,
+    "FlatPhysicalDamageMod": 65
+  },
+  "tags": [
+    "CriticalStrike",
+    "Damage"
+  ]
+}

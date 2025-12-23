@@ -1,0 +1,83 @@
+{
+  "active": [],
+  "buildsFrom": [
+    1026,
+    3114,
+    3114
+  ],
+  "buildsInto": [],
+  "name": "Dawncore",
+  "tier": 3,
+  "passives": [
+    {
+      "effects": "Gain {{as|2% heal and shield power|hsp}} and {{as|10 ability power}} for every additional {{as|100% '''base''' mana regeneration}}.",
+      "name": "First Light",
+      "unique": true
+    }
+  ],
+  "id": 6621,
+  "stats": {
+    "abilityPower": {
+      "flat": 45.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "shop": {
+    "purchasable": true,
+    "prices": {
+      "total": 2500
+    }
+  }
+}

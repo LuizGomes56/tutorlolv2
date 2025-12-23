@@ -2,16 +2,12 @@ use crate::{
     dev_response,
     server::dev::images::{IMG_FOLDERS, img_convert_avif},
 };
-use actix_web::{
-    HttpResponse, Responder, get,
-    rt::{spawn, task::spawn_blocking},
-};
+use actix_web::{HttpResponse, Responder, get, rt::spawn};
 use tutorlolv2_dev::{
     HTTP_CLIENT,
     gen_factories::{fac_champions::ChampionFactory, fac_items::ItemFactory},
     setup::update::*,
 };
-use tutorlolv2_exports::*;
 
 #[get("/project")]
 pub async fn setup_project() -> impl Responder {
@@ -56,13 +52,7 @@ pub async fn setup_project() -> impl Responder {
 
 #[get("/docs")]
 pub async fn setup_docs() -> impl Responder {
-    for future in [
-        spawn_blocking(generate_champion_html),
-        spawn_blocking(generate_item_html),
-        spawn_blocking(generate_rune_html),
-    ] {
-        future.await.unwrap();
-    }
+    tutorlolv2_html::run().await;
     HttpResponse::Ok().body("Html docs setup finished")
 }
 

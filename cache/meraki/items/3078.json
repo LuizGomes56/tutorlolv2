@@ -1,0 +1,88 @@
+{
+  "active": [],
+  "buildsFrom": [
+    3057,
+    3044,
+    3051
+  ],
+  "buildsInto": [],
+  "name": "Trinity Force",
+  "tier": 3,
+  "passives": [
+    {
+      "effects": "After using an [[Champion ability|ability]], your next basic attack within 10 seconds deals {{as|200% '''base''' AD}} {{as|'''bonus''' physical damage}} [[on-hit]] ({{fd|1.5}} second cooldown, starts after using the empowered attack).",
+      "name": "Spellblade",
+      "unique": true
+    },
+    {
+      "effects": "Basic attacks [[on-hit]] grant {{as|20 '''bonus''' movement speed}} for 2 seconds",
+      "name": "Quicken",
+      "unique": true
+    }
+  ],
+  "id": 3078,
+  "stats": {
+    "abilityPower": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 36.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 30.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 333.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "shop": {
+    "purchasable": true,
+    "prices": {
+      "total": 3333
+    }
+  }
+}

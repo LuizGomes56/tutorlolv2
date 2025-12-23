@@ -1,0 +1,177 @@
+{
+  "name": "Qiyana",
+  "adaptative_type": "Physical",
+  "attack_type": "Melee",
+  "positions": [
+    "Middle"
+  ],
+  "stats": {
+    "health": {
+      "flat": 590.0,
+      "perLevel": 124.0
+    },
+    "mana": {
+      "flat": 375.0,
+      "perLevel": 60.0
+    },
+    "armor": {
+      "flat": 31.0,
+      "perLevel": 4.7
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 66.0,
+      "perLevel": 3.1
+    },
+    "attackSpeed": {
+      "flat": 0.688,
+      "perLevel": 2.1
+    },
+    "movespeed": {
+      "flat": 335.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.625,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 150.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 0.9,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.15,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 0.9,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": [
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Audacity",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "50 + (0.5 * ctx.bonus_ad)",
+          "90 + (0.5 * ctx.bonus_ad)",
+          "130 + (0.5 * ctx.bonus_ad)",
+          "170 + (0.5 * ctx.bonus_ad)",
+          "210 + (0.5 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_2"
+      },
+      {
+        "name": "Supreme Display of Talent",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "100 + (1.25 * ctx.bonus_ad) + (0.1 * ctx.enemy_max_health)",
+          "200 + (1.25 * ctx.bonus_ad) + (0.1 * ctx.enemy_max_health)",
+          "300 + (1.25 * ctx.bonus_ad) + (0.1 * ctx.enemy_max_health)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Supreme Display of Talent",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "500 + (1.25 * ctx.bonus_ad)",
+          "750 + (1.25 * ctx.bonus_ad)",
+          "1000 + (1.25 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Terrashape",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "8 + (0.2 * ctx.bonus_ad) + (0.45 * ctx.ap)",
+          "16 + (0.2 * ctx.bonus_ad) + (0.45 * ctx.ap)",
+          "24 + (0.2 * ctx.bonus_ad) + (0.45 * ctx.ap)",
+          "32 + (0.2 * ctx.bonus_ad) + (0.45 * ctx.ap)",
+          "40 + (0.2 * ctx.bonus_ad) + (0.45 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "Edge of Ixtal",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "45 + (0.675 * ctx.bonus_ad)",
+          "67.5 + (0.675 * ctx.bonus_ad)",
+          "90 + (0.675 * ctx.bonus_ad)",
+          "112.5 + (0.675 * ctx.bonus_ad)",
+          "135 + (0.675 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Edge of Ixtal",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "60 + (0.9 * ctx.bonus_ad)",
+          "90 + (0.9 * ctx.bonus_ad)",
+          "120 + (0.9 * ctx.bonus_ad)",
+          "150 + (0.9 * ctx.bonus_ad)",
+          "180 + (0.9 * ctx.bonus_ad)"
+        ]
+      }
+    ]
+  ],
+  "merge_data": []
+}

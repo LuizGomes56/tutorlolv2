@@ -1,0 +1,41 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats></stats><br><br><passive>Unanimity</passive><br>Gain a percent of your teammate's Health, Armor, Magic Resist, Attack Damage, Ability Power, Attack Speed, and Ability Haste, increased significantly if they also have <keywordMajor>Twin Mask</keywordMajor> and are alive.</mainText>",
+  "gold": {
+    "base": 1000,
+    "purchasable": true,
+    "sell": 400,
+    "total": 1000
+  },
+  "image": {
+    "full": "443080.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item4.png",
+    "w": 48,
+    "x": 288,
+    "y": 288
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": false
+  },
+  "name": "Twin Mask",
+  "plaintext": "",
+  "specialRecipe": 220007,
+  "stats": {},
+  "tags": [
+    "Health",
+    "Armor",
+    "Damage",
+    "AttackSpeed",
+    "SpellDamage",
+    "MagicResist",
+    "AbilityHaste"
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "colloq": ";",
+  "depth": 2,
+  "description": "<mainText><stats><attention>10</attention> Ability Haste</stats><br><br><passive>Spellblade</passive><br>After using an Ability, your next Attack deals <physicalDamage>bonus physical damage</physicalDamage> <OnHit>On-Hit</OnHit>.<br></mainText>",
+  "from": [
+    "2022"
+  ],
+  "gold": {
+    "base": 650,
+    "purchasable": true,
+    "sell": 630,
+    "total": 900
+  },
+  "image": {
+    "full": "3057.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item2.png",
+    "w": 48,
+    "x": 0,
+    "y": 432
+  },
+  "into": [
+    "3078",
+    "3100",
+    "6632",
+    "6662"
+  ],
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Sheen",
+  "plaintext": "Grants a bonus to next attack after spell cast",
+  "stats": {},
+  "tags": [
+    "OnHit",
+    "AbilityHaste"
+  ]
+}

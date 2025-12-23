@@ -1,0 +1,52 @@
+{
+  "colloq": ";",
+  "depth": 2,
+  "description": "<mainText><stats><attention>30</attention> Ability Power<br><attention>4%</attention> Move Speed</stats><br><br></mainText>",
+  "from": [
+    "1052"
+  ],
+  "gold": {
+    "base": 500,
+    "purchasable": true,
+    "sell": 630,
+    "total": 900
+  },
+  "image": {
+    "full": "3113.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item3.png",
+    "w": 48,
+    "x": 144,
+    "y": 96
+  },
+  "into": [
+    "123430",
+    "2065",
+    "322065",
+    "4629",
+    "3100",
+    "323504",
+    "3504",
+    "4646"
+  ],
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Aether Wisp",
+  "plaintext": "Increases Ability Power and Move Speed",
+  "stats": {
+    "FlatMagicDamageMod": 30,
+    "PercentMovementSpeedMod": 0.04
+  },
+  "tags": [
+    "NonbootsMovement",
+    "SpellDamage"
+  ]
+}

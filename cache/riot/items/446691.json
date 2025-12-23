@@ -1,0 +1,42 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><attention>50</attention> Attack Damage<br><attention>20</attention> Lethality<br><attention>20</attention> Ability Haste</stats><br><br><passive>Nightstalker</passive><br>Your Abilities deal up to an additional percent damage based on the target's missing health. When a champion that you have damaged within the last 3 seconds dies, you become <keywordStealth>Untargetable</keywordStealth> from non-structures for 1.5 seconds (0s).</mainText>",
+  "gold": {
+    "base": 1000,
+    "purchasable": true,
+    "sell": 400,
+    "total": 1000
+  },
+  "image": {
+    "full": "446691.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item4.png",
+    "w": 48,
+    "x": 384,
+    "y": 336
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": false
+  },
+  "name": "Duskblade of Draktharr",
+  "plaintext": "",
+  "specialRecipe": 220007,
+  "stats": {
+    "FlatPhysicalDamageMod": 50
+  },
+  "tags": [
+    "Damage",
+    "Stealth",
+    "CooldownReduction",
+    "Slow",
+    "ArmorPenetration",
+    "AbilityHaste"
+  ]
+}

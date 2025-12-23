@@ -1,0 +1,53 @@
+{
+  "colloq": "blue; totem; trinket",
+  "description": "<mainText><stats></stats><br><br><active>Active</active> (<scaleLevel>198 - 99</scaleLevel>s)<br>Reveals a distant area for 2 seconds and leaves a Ward that expires upon spotting an enemy champion.</mainText>",
+  "effect": {
+    "Effect10Amount": "198",
+    "Effect11Amount": "99",
+    "Effect12Amount": "60",
+    "Effect13Amount": "180",
+    "Effect14Amount": "10",
+    "Effect15Amount": "45",
+    "Effect1Amount": "4000",
+    "Effect2Amount": "2",
+    "Effect3Amount": "5",
+    "Effect4Amount": "198",
+    "Effect5Amount": "60",
+    "Effect6Amount": "9",
+    "Effect7Amount": "30",
+    "Effect8Amount": "120",
+    "Effect9Amount": "6.5"
+  },
+  "gold": {
+    "base": 0,
+    "purchasable": true,
+    "sell": 0,
+    "total": 0
+  },
+  "image": {
+    "full": "3363.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item3.png",
+    "w": 48,
+    "x": 432,
+    "y": 432
+  },
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": false
+  },
+  "name": "Farsight Alteration",
+  "plaintext": "Grants increased range and reveals the targetted area",
+  "stats": {},
+  "tags": [
+    "Active",
+    "Trinket",
+    "Vision"
+  ]
+}

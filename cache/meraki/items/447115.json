@@ -1,0 +1,79 @@
+{
+  "active": [],
+  "buildsFrom": [],
+  "buildsInto": [],
+  "name": "Regicide",
+  "tier": 3,
+  "passives": [
+    {
+      "effects": "At the start of the combat phase in each round, declare the enemy champion with the lowest {{as|'''total maximum''' health}} as the ''Regent''. Scoring a {{tip|takedown}} against the ''Regent'' for the first time in the combat phase grants you {{as|10 '''bonus''' attack damage}} permanently and sets the '''current''' cooldown of your ultimate ability to {{fd|0.5}} seconds.",
+      "name": "End the Line",
+      "unique": true
+    }
+  ],
+  "id": 447115,
+  "stats": {
+    "abilityPower": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 60.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 8.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "shop": {
+    "purchasable": true,
+    "prices": {
+      "total": 0
+    }
+  }
+}

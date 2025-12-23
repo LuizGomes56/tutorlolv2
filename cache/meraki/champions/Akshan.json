@@ -1,0 +1,759 @@
+{
+  "name": "Akshan",
+  "attackType": "RANGED",
+  "adaptiveType": "PHYSICAL_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 630.0,
+      "perLevel": 107.0
+    },
+    "mana": {
+      "flat": 350.0,
+      "perLevel": 40.0
+    },
+    "armor": {
+      "flat": 26.0,
+      "perLevel": 4.7
+    },
+    "magicResistance": {
+      "flat": 30.0,
+      "perLevel": 1.3
+    },
+    "attackDamage": {
+      "flat": 52.0,
+      "perLevel": 3.0
+    },
+    "attackSpeed": {
+      "flat": 0.638,
+      "perLevel": 4.0
+    },
+    "movespeed": {
+      "flat": 330.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.4,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 500.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 0.95,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.05,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.05,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": null,
+        "damageType": "OTHER_DAMAGE",
+        "effects": [
+          {
+            "description": "Innate: Akshan's basic attacks on-hit and ability hits apply a stack of Dirty Fighting to enemies for 5 seconds, refreshing on subsequent applications and stacking up to 3 times. The third stack against a target consumes them all to deal them 15 / 40 / 80 / 150 (based on level) (+ 60% AP) bonus magic damage; if the target is a champion, Akshan will also gain a 40 : 280 (based on level) (+ 35% bonus AD) shield for 2 seconds. The shield may be gained only once every few seconds.",
+            "leveling": []
+          },
+          {
+            "description": "Innate: Whenever Akshan uses a basic attack, he fires an additional shot after a delay that deals 50% AD physical damage, increased to 100% AD against minions. Issuing an attack order on a different target before the additional shot has been launched causes Akshan to fire it at the new target. If the second shot is cancelled instead, he gains 20 : 75 (based on level) × (1 + 100% bonus attack speed) bonus movement speed decaying over 1 second.",
+            "leveling": []
+          },
+          {
+            "description": "The additional shot applies on-hit effects, triggers on-attack effects, and can critically strike[ for (22.5% + 12%) bonus damage. ][ 100% base damage + 30% bonus critical damage. ]",
+            "leveling": []
+          }
+        ],
+        "name": "Dirty Fighting"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                8.0,
+                7.25,
+                6.5,
+                5.75,
+                5.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Akshan throws a boomerang in the target direction that briefly grants sight around its trajectory and deals physical damage to enemies hit, revealing them for 1 second and extending its range each time it hits a target. If this hits an enemy champion, Akshan gains 20% (+ 5% per 100 AP) bonus movement speed that decays over 1 second.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      5.0,
+                      25.0,
+                      45.0,
+                      65.0,
+                      85.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      80.0,
+                      80.0,
+                      80.0,
+                      80.0,
+                      80.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Avengerang deals reduced damage against non-champions.",
+            "leveling": [
+              {
+                "attribute": "Non-Champion Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      40.0,
+                      50.0,
+                      60.0,
+                      70.0,
+                      80.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Enemies can be hit only once per pass.",
+            "leveling": []
+          },
+          {
+            "description": "Once the boomerang has passed its original range and has not hit a target in the last 500 units of travelling, it homes back to Akshan and applies the same effects to enemies hit.",
+            "leveling": [
+              {
+                "attribute": "Total Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      10.0,
+                      50.0,
+                      90.0,
+                      130.0,
+                      170.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      160.0,
+                      160.0,
+                      160.0,
+                      160.0,
+                      160.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Avengerang"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                18.0,
+                14.0,
+                10.0,
+                6.0,
+                2.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: Akshan enters camouflage, which lasts indefinitely while he is near terrain or inside brush, and for 2 seconds otherwise. During this time. he can see trails leading toward Scoundrels, and while facing them if they are within 5000 units, he gains bonus mana regeneration equal to 12% of his missing mana as well as bonus movement speed.",
+            "leveling": [
+              {
+                "attribute": "Bonus Movement Speed",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      80.0,
+                      90.0,
+                      100.0,
+                      110.0,
+                      120.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Akshan can move during Going Rogue's cast time.",
+            "leveling": []
+          },
+          {
+            "description": "Going Rogue can be recast after 1 second, and does so automatically after its duration. Attacking or casting abilities ends Going Rogue immediately.",
+            "leveling": []
+          },
+          {
+            "description": "Passive: Akshan marks enemy champions that kill allied champions as Scoundrels for 60 seconds. If Akshan scores a takedown against a Scoundrel while alive and within 3 seconds of damaging them, he receives an additional 100 and resurrects all dead allied champions that they have slain after 1 second.",
+            "leveling": []
+          },
+          {
+            "description": "Recast: Akshan ends Going Rogue.",
+            "leveling": []
+          },
+          {
+            "description": "When Akshan claims a Scoundrel's bounty he removes the marks of all other enemies. Scoundrels refresh their mark duration on subsequent kills, and will have their mark removed when they die by any means. Akshan cannot mark enemies as Scoundrels while they are dead. Allies are resurrected at their summoning platform.",
+            "leveling": []
+          }
+        ],
+        "name": "Going Rogue"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                18.0,
+                16.5,
+                15.0,
+                13.5,
+                12.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Akshan can activate Heroic Swing three times before the ability goes on cooldown, and can use the third cast only after 0.5 seconds of the second cast. Akshan may input an attack or movement command to use the second and third casts.",
+            "leveling": []
+          },
+          {
+            "description": "Avengerang and Going Rogue can be cast during the third cast's dash. Comeuppance can be cast at all points during Heroic Swing, though Akshan cannot fire during the swing while it is active. Akshan prioritizes firing at enemy champions with stacks of Dirty Fighting, then those damaged by his targeted spells in the last 4 seconds, then the nearest enemy. Heroic Swing can be cast during Akshan's other abilities.",
+            "leveling": []
+          },
+          {
+            "description": "First Cast: Akshan fires a hook in the target direction that embeds in the first terrain hit, and enters preparation for up to 2.125 seconds. Heroic Swing's second cast can be used while the hook is attached. If the hook fails to attach or Akshan is moved or becomes immobilized, grounded, or polymorphed within the duration, the preparation will end prematurely, cancelling Heroic Swing in the process.",
+            "leveling": []
+          },
+          {
+            "description": "Scoring an enemy champion takedown reduces Heroic Swing's current cooldown to 0.5 seconds. The shots can critically strike for[ (157.5% + 36%) damage ][ 90% total critical damage ]and apply life steal at 100% effectiveness.",
+            "leveling": []
+          },
+          {
+            "description": "Second Cast: Akshan swings around the terrain in either a clockwise or counterclockwise direction based on the position of the cursor relative to his facing direction, stopping upon colliding with an enemy champion or terrain. While swinging, he fires at the nearest visible enemy every 0.231 seconds to deal them physical damage and apply on-hit effects for each shot, with on-hit damage reduced to 25% effectiveness.Akshan will be knocked down by any immobilizing or polymorphing crowd control during the dash.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage per Shot",
+                "modifiers": [
+                  {
+                    "units": [
+                      "  ×",
+                      "  ×",
+                      "  ×",
+                      "  ×",
+                      "  ×"
+                    ],
+                    "values": [
+                      15.0,
+                      30.0,
+                      45.0,
+                      60.0,
+                      75.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      15.0,
+                      15.0,
+                      15.0,
+                      15.0,
+                      15.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      " + 0.3 per 100% bonus attack speed",
+                      " + 0.3 per 100% bonus attack speed",
+                      " + 0.3 per 100% bonus attack speed",
+                      " + 0.3 per 100% bonus attack speed",
+                      " + 0.3 per 100% bonus attack speed"
+                    ],
+                    "values": [
+                      1.0,
+                      1.0,
+                      1.0,
+                      1.0,
+                      1.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Third Cast: Akshan ends the swing by jumping to the target location and fires one last shot at a nearby visible enemy.",
+            "leveling": []
+          }
+        ],
+        "name": "Heroic Swing"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                100.0,
+                85.0,
+                70.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Akshan locks onto the target enemy champion and begins channeling for 2.5 seconds, revealing them as well as revealing himself. He gradually stores bullets into his weapon over the duration.",
+            "leveling": [
+              {
+                "attribute": "Bullet Storing Interval Time",
+                "modifiers": [
+                  {
+                    "units": [
+                      " seconds",
+                      " seconds",
+                      " seconds"
+                    ],
+                    "values": [
+                      0.625,
+                      0.5208,
+                      0.4167
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Maximum Bullets Stored",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      5.0,
+                      6.0,
+                      7.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Akshan can move while channeling Comeuppance.",
+            "leveling": []
+          },
+          {
+            "description": "Comeuppance will recast after the duration, or can be recast early after 0.5 seconds. Comeuppance is placed on a 5-second cooldown if the channel is cancelled.",
+            "leveling": []
+          },
+          {
+            "description": "Each bullet's damage applies life steal at 100% effectiveness and executes minions.",
+            "leveling": []
+          },
+          {
+            "description": "Recast: Akshan fires all stored bullets at the target, each briefly granting sight around their trajectory and dealing physical damage to the first enemy hit, increased by 50% of critical chance and critical damage bonuses as well as by 0% : 200% (based on target's missing health). The shots can hit structures.",
+            "leveling": [
+              {
+                "attribute": "Damage to target on 67% missing hp",
+                "modifiers": [
+                  {
+                    "units": [
+                      "[375 / 630 / 945 ] × [1",
+                      "[375 / 630 / 945 ] × [1",
+                      "[375 / 630 / 945 ] × [1"
+                    ],
+                    "values": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "0 : 0.5 ",
+                      "0 : 0.5 ",
+                      "0 : 0.5 "
+                    ],
+                    "values": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "]",
+                      "]",
+                      "]"
+                    ],
+                    "values": [
+                      0.2,
+                      0.2,
+                      0.2
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      225.0,
+                      270.0,
+                      315.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "based on critical strike chance",
+                      "based on critical strike chance",
+                      "based on critical strike chance"
+                    ],
+                    "values": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Maximum Physical Damage per Bullet",
+                "modifiers": [
+                  {
+                    "units": [
+                      "[75 / 90 / 105 / 120 / 135 ] × [1",
+                      "[75 / 90 / 105 / 120 / 135 ] × [1",
+                      "[75 / 90 / 105 / 120 / 135 ] × [1"
+                    ],
+                    "values": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "0 : 0.5 ",
+                      "0 : 0.5 ",
+                      "0 : 0.5 "
+                    ],
+                    "values": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "]",
+                      "]",
+                      "]"
+                    ],
+                    "values": [
+                      0.2,
+                      0.2,
+                      0.2
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      45.0,
+                      45.0,
+                      45.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "based on critical strike chance",
+                      "based on critical strike chance",
+                      "based on critical strike chance"
+                    ],
+                    "values": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Minimum Charged Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "[125 / 210 / 315 ] × [1",
+                      "[125 / 210 / 315 ] × [1",
+                      "[125 / 210 / 315 ] × [1"
+                    ],
+                    "values": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "0 : 0.5 ",
+                      "0 : 0.5 ",
+                      "0 : 0.5 "
+                    ],
+                    "values": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "]",
+                      "]",
+                      "]"
+                    ],
+                    "values": [
+                      0.2,
+                      0.2,
+                      0.2
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      75.0,
+                      90.0,
+                      105.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "based on critical strike chance",
+                      "based on critical strike chance",
+                      "based on critical strike chance"
+                    ],
+                    "values": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Minimum Physical Damage per Bullet",
+                "modifiers": [
+                  {
+                    "units": [
+                      "[25 / 30 / 35 / 40 / 45 ] × [1",
+                      "[25 / 30 / 35 / 40 / 45 ] × [1",
+                      "[25 / 30 / 35 / 40 / 45 ] × [1"
+                    ],
+                    "values": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "0 : 0.5 ",
+                      "0 : 0.5 ",
+                      "0 : 0.5 "
+                    ],
+                    "values": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "]",
+                      "]",
+                      "]"
+                    ],
+                    "values": [
+                      0.2,
+                      0.2,
+                      0.2
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      15.0,
+                      15.0,
+                      15.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "based on critical strike chance",
+                      "based on critical strike chance",
+                      "based on critical strike chance"
+                    ],
+                    "values": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Comeuppance"
+      }
+    ]
+  },
+  "positions": [
+    "MIDDLE"
+  ]
+}

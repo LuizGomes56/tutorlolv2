@@ -1,0 +1,83 @@
+{
+  "active": [
+    {
+      "effects": "Grants you and allied champions within {{tip|cr|icononly=true}} 850 units a {{tip|shield}} for {{pp|200 to 360|type=target's level}} that decays over {{fd|2.5}} seconds.",
+      "name": "Devotion",
+      "unique": true
+    }
+  ],
+  "buildsFrom": [
+    3067,
+    1029,
+    1033
+  ],
+  "buildsInto": [],
+  "name": "Locket of the Iron Solari",
+  "tier": 3,
+  "passives": [],
+  "id": 3190,
+  "stats": {
+    "abilityPower": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 25.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 200.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 25.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "shop": {
+    "purchasable": true,
+    "prices": {
+      "total": 2200
+    }
+  }
+}

@@ -3,11 +3,8 @@ use crate::AbilityId;
 macro_rules! ability_name {
     ($($field:ident),+$(,)?) => {
         #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-        #[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
-        #[cfg_attr(
-            feature = "serde",
-            derive(serde::Serialize, serde::Deserialize),
-        )]
+        #[derive(bincode::Encode, bincode::Decode)]
+        #[derive(serde::Serialize, serde::Deserialize)]
         #[repr(u8)]
         pub enum AbilityName { $($field),+ }
 

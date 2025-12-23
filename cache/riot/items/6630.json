@@ -1,0 +1,50 @@
+{
+  "colloq": "",
+  "depth": 3,
+  "description": "<mainText><stats><attention>55</attention> Attack Damage<br><attention>400</attention> Health<br><attention>20</attention> Ability Haste<br><attention>8%</attention> Omnivamp</stats><br><br><br><br><rarityMythic>Mythic Passive:</rarityMythic> Grants all other <rarityLegendary>Legendary</rarityLegendary> items <attention>75 Health</attention> and <attention>3</attention> Ability Haste.<br><br><active>Active -</active> <active>Thirsting Slash:</active> Deal damage to nearby enemies. Restore Health for each champion hit.</mainText>",
+  "from": [
+    "6029",
+    "3044",
+    "3067"
+  ],
+  "gold": {
+    "base": 200,
+    "purchasable": false,
+    "sell": 2240,
+    "total": 3200
+  },
+  "image": {
+    "full": "6630.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item5.png",
+    "w": 48,
+    "x": 384,
+    "y": 96
+  },
+  "inStore": false,
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": false
+  },
+  "name": "Goredrinker",
+  "plaintext": "",
+  "stats": {
+    "FlatHPPoolMod": 400,
+    "FlatPhysicalDamageMod": 55
+  },
+  "tags": [
+    "Health",
+    "Damage",
+    "LifeSteal",
+    "Active",
+    "CooldownReduction",
+    "SpellVamp",
+    "AbilityHaste"
+  ]
+}

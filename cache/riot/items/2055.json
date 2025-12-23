@@ -1,0 +1,44 @@
+{
+  "colloq": "orange;",
+  "consumeOnFull": true,
+  "consumed": true,
+  "description": "<mainText><stats></stats><br><br><active>Consume</active><br>Places a Control Ward that grants vision and reveals enemy Stealth Wards, traps and <keywordStealth>Camouflaged</keywordStealth> enemies.</mainText>",
+  "effect": {
+    "Effect1Amount": "1",
+    "Effect2Amount": "2"
+  },
+  "gold": {
+    "base": 75,
+    "purchasable": true,
+    "sell": 30,
+    "total": 75
+  },
+  "image": {
+    "full": "2055.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item0.png",
+    "w": 48,
+    "x": 144,
+    "y": 336
+  },
+  "maps": {
+    "11": true,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": false
+  },
+  "name": "Control Ward",
+  "plaintext": "Used to disable wards and invisible traps in an area.",
+  "stacks": 2,
+  "stats": {},
+  "tags": [
+    "Consumable",
+    "Lane",
+    "Stealth",
+    "Vision"
+  ]
+}

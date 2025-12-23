@@ -1,0 +1,39 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><attention>400</attention> Health<br><attention>600</attention> Mana<br><attention>15</attention> Ability Haste</stats><br><br><li><passive>Awe:</passive> Gain bonus <scaleHealth>Health equal to Total Mana</scaleHealth>.<li><passive>Mana Charge:</passive> <buffedStat>After 2 combat rounds</buffedStat>, this item transforms into <rarityLegendary>Fimbulwinter</rarityLegendary>.</mainText>",
+  "gold": {
+    "base": 2500,
+    "purchasable": true,
+    "sell": 1250,
+    "total": 2500
+  },
+  "image": {
+    "full": "223119.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item1.png",
+    "w": 48,
+    "x": 336,
+    "y": 288
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": false
+  },
+  "name": "Winter's Approach",
+  "plaintext": "",
+  "stats": {
+    "FlatHPPoolMod": 400,
+    "FlatMPPoolMod": 600
+  },
+  "tags": [
+    "Health",
+    "Mana",
+    "AbilityHaste"
+  ]
+}

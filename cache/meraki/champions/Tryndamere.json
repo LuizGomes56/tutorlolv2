@@ -1,0 +1,550 @@
+{
+  "name": "Tryndamere",
+  "attackType": "MELEE",
+  "adaptiveType": "PHYSICAL_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 696.0,
+      "perLevel": 108.0
+    },
+    "mana": {
+      "flat": 100.0,
+      "perLevel": 0.0
+    },
+    "armor": {
+      "flat": 33.0,
+      "perLevel": 4.8
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 66.0,
+      "perLevel": 4.0
+    },
+    "attackSpeed": {
+      "flat": 0.67,
+      "perLevel": 3.4
+    },
+    "movespeed": {
+      "flat": 345.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.694,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 0.9,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.1,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": null,
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Innate: Tryndamere generates 5 Fury on his basic attacks, and 10 Fury on critical strikes and each time he kills an enemy. After 8 seconds without dealing or taking damage, Tryndamere loses 5 Fury per second.",
+            "leveling": []
+          },
+          {
+            "description": "Tryndamere gains 0% : 50% (based on Fury) critical strike chance.",
+            "leveling": []
+          }
+        ],
+        "name": "Battle Fury"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                12.0,
+                12.0,
+                12.0,
+                12.0,
+                12.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: Tryndamere consumes all of his Fury to heal himself, increased for every point of Fury consumed.",
+            "leveling": [
+              {
+                "attribute": "Heal Per 1 Fury",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      0.5,
+                      0.95,
+                      1.4,
+                      1.85,
+                      2.3
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      1.2,
+                      1.2,
+                      1.2,
+                      1.2,
+                      1.2
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Maximum Heal",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      80.0,
+                      135.0,
+                      190.0,
+                      245.0,
+                      300.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      150.0,
+                      150.0,
+                      150.0,
+                      150.0,
+                      150.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Minimum Heal",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      30.0,
+                      40.0,
+                      50.0,
+                      60.0,
+                      70.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      30.0,
+                      30.0,
+                      30.0,
+                      30.0,
+                      30.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Passive: Tryndamere gains bonus attack damage, plus an additional amount based on his missing health.",
+            "leveling": [
+              {
+                "attribute": "Additional Bonus AD",
+                "modifiers": [
+                  {
+                    "units": [
+                      " per 1% missing health",
+                      " per 1% missing health",
+                      " per 1% missing health",
+                      " per 1% missing health",
+                      " per 1% missing health"
+                    ],
+                    "values": [
+                      0.15,
+                      0.25,
+                      0.35,
+                      0.45,
+                      0.55
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Bonus Attack Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      5.0,
+                      10.0,
+                      15.0,
+                      20.0,
+                      25.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Maximum Total Bonus AD",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      20.0,
+                      35.0,
+                      50.0,
+                      65.0,
+                      80.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Bloodlust"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                14.0,
+                14.0,
+                14.0,
+                14.0,
+                14.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "A nearby enemy champion is required to cast this ability. The target does not have to be visible to be targeted by this ability.",
+            "leveling": []
+          },
+          {
+            "description": "Active: Tryndamere reduces the bonus attack damage of nearby enemy champions for 4 seconds.",
+            "leveling": [
+              {
+                "attribute": "Attack Damage Reduction",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      20.0,
+                      35.0,
+                      50.0,
+                      65.0,
+                      80.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Targets facing in the opposite direction of Tryndamere are also slowed for the duration.",
+            "leveling": [
+              {
+                "attribute": "Slow",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      30.0,
+                      37.5,
+                      45.0,
+                      52.5,
+                      60.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Mocking Shout"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                12.0,
+                11.0,
+                10.0,
+                9.0,
+                8.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Tryndamere dashes to the target location, dealing physical damage to enemies hit and generating 2 Fury per enemy hit, increased to 5 Fury against champions.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      75.0,
+                      105.0,
+                      135.0,
+                      165.0,
+                      195.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      130.0,
+                      130.0,
+                      130.0,
+                      130.0,
+                      130.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      80.0,
+                      80.0,
+                      80.0,
+                      80.0,
+                      80.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Bloodlust and Undying Rage can be cast during the dash.",
+            "leveling": []
+          },
+          {
+            "description": "Critical strikes on-hit reduce Spinning Slash's current cooldown by 0.75 seconds, doubled to 1.5 seconds against champions.",
+            "leveling": []
+          }
+        ],
+        "name": "Spinning Slash"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                120.0,
+                100.0,
+                80.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: Tryndamere becomes enraged, instantly gaining Fury and a minimum health threshold for 5 seconds.",
+            "leveling": [
+              {
+                "attribute": "Fury Gained",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      50.0,
+                      75.0,
+                      100.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Minimum Health Threshold",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      30.0,
+                      50.0,
+                      70.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Undying Rage can be used while affected by cast-inhibiting crowd control.",
+            "leveling": []
+          }
+        ],
+        "name": "Undying Rage"
+      }
+    ]
+  },
+  "positions": [
+    "TOP"
+  ]
+}

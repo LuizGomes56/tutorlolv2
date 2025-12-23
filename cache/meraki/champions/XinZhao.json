@@ -1,0 +1,582 @@
+{
+  "name": "Xin Zhao",
+  "attackType": "MELEE",
+  "adaptiveType": "PHYSICAL_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 640.0,
+      "perLevel": 106.0
+    },
+    "mana": {
+      "flat": 274.0,
+      "perLevel": 55.0
+    },
+    "armor": {
+      "flat": 35.0,
+      "perLevel": 4.4
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 63.0,
+      "perLevel": 3.0
+    },
+    "attackSpeed": {
+      "flat": 0.645,
+      "perLevel": 3.5
+    },
+    "movespeed": {
+      "flat": 345.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.644999980926513,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 0.95,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.1,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": null,
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Innate: Xin Zhao's basic attacks on-hit and Wind Becomes Lightning strikes generate a stack of Determination, stacking up to 3 times. The third stack consumes them all to deal 15% / 30% / 45% / 60% (based on level) AD bonus physical damage on-attack and heal Xin Zhao for 3% / 3.5% / 4% (based on level) of his maximum health (+ 65% AP) on-hit.",
+            "leveling": []
+          }
+        ],
+        "name": "Determination"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                7.0,
+                6.5,
+                6.0,
+                5.5,
+                5.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Xin Zhao empowers his next three basic attacks on-attack within 5 seconds to each have an uncancellable windup, deal bonus physical damage and reduce his other abilities' current cooldowns by 1 second. Each attack refreshes the duration.",
+            "leveling": [
+              {
+                "attribute": "Bonus Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      20.0,
+                      35.0,
+                      50.0,
+                      65.0,
+                      80.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      40.0,
+                      40.0,
+                      40.0,
+                      40.0,
+                      40.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Bonus Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      60.0,
+                      105.0,
+                      150.0,
+                      195.0,
+                      240.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      120.0,
+                      120.0,
+                      120.0,
+                      120.0,
+                      120.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "The third attack knocks up the target for 0.75 seconds.",
+            "leveling": []
+          },
+          {
+            "description": "Three Talon Strike resets Xin Zhao's basic attack timer.",
+            "leveling": []
+          },
+          {
+            "description": "Three Talon Strike's bonus damage is affected by critical strike modifiers.",
+            "leveling": []
+          }
+        ],
+        "name": "Three Talon Strike"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                12.0,
+                11.0,
+                10.0,
+                9.0,
+                8.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Xin Zhao slashes in an arc and, after the cast time, thrusts his spear in a line in the target direction. Each strike deals physical damage to enemies hit, modified to 50% : 100% (based on level) against minions.\nThe thrust deals increased damage, further by 0% : 33.3% (based on critical strike chance), and slows enemies hit by 50% for 1.5 seconds. Enemy champions and monsters hit are also marked Challenged for 3 seconds, during which they are revealed.",
+            "leveling": [
+              {
+                "attribute": "Slash Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      30.0,
+                      40.0,
+                      50.0,
+                      60.0,
+                      70.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      30.0,
+                      30.0,
+                      30.0,
+                      30.0,
+                      30.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Thrust Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      50.0,
+                      85.0,
+                      120.0,
+                      155.0,
+                      190.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      90.0,
+                      90.0,
+                      90.0,
+                      90.0,
+                      90.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      65.0,
+                      65.0,
+                      65.0,
+                      65.0,
+                      65.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      80.0,
+                      125.0,
+                      170.0,
+                      215.0,
+                      260.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      120.0,
+                      120.0,
+                      120.0,
+                      120.0,
+                      120.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      65.0,
+                      65.0,
+                      65.0,
+                      65.0,
+                      65.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "The durations of Three Talon Strike, Audacious Charge's bonus attack speed, and Crescent Guard are delayed relative to Wind Becomes Lightning's cast time after 0.2 seconds of its activation.",
+            "leveling": []
+          },
+          {
+            "description": "Wind Becomes Lightning's damage heals Xin Zhao for 33.3% of his life steal.",
+            "leveling": []
+          }
+        ],
+        "name": "Wind Becomes Lightning"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                11.0,
+                11.0,
+                11.0,
+                11.0,
+                11.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Xin Zhao dashes to the target enemy's location, dealing magic damage to enemies near them and slowing them by 30% for 0.5 seconds. Audacious Charge's range is increased against Challenged targets.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      50.0,
+                      75.0,
+                      100.0,
+                      125.0,
+                      150.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      60.0,
+                      60.0,
+                      60.0,
+                      60.0,
+                      60.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Three Talon Strike and Crescent Guard can be cast during the dash.",
+            "leveling": []
+          },
+          {
+            "description": "Xin Zhao then gains bonus attack speed for 5 seconds.",
+            "leveling": [
+              {
+                "attribute": "Bonus Attack Speed",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      40.0,
+                      45.0,
+                      50.0,
+                      55.0,
+                      60.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Audacious Charge"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                120.0,
+                110.0,
+                100.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Xin Zhao sweeps his spear around him, dealing physical damage to nearby enemies, capped at 600 against monsters, and knocking back all non-Challenged targets hit up-to 700 units over 0.75 seconds, as well as stunning them for the same duration.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      75.0,
+                      175.0,
+                      275.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      100.0,
+                      100.0,
+                      100.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      110.0,
+                      110.0,
+                      110.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% of target's current health",
+                      "% of target's current health",
+                      "% of target's current health"
+                    ],
+                    "values": [
+                      15.0,
+                      15.0,
+                      15.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "For the next 4 seconds, Xin Zhao is invulnerable against enemy champions far away from him.",
+            "leveling": []
+          },
+          {
+            "description": "Passive - Challenge: The last enemy champion hit by Xin Zhao's basic attacks or Audacious Charge is marked Challenged for 3 seconds.",
+            "leveling": []
+          }
+        ],
+        "name": "Crescent Guard"
+      }
+    ]
+  },
+  "positions": [
+    "JUNGLE"
+  ]
+}

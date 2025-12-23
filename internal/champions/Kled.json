@@ -1,0 +1,280 @@
+{
+  "name": "Kled",
+  "adaptative_type": "Physical",
+  "attack_type": "Melee",
+  "positions": [
+    "Top"
+  ],
+  "stats": {
+    "health": {
+      "flat": 410.0,
+      "perLevel": 84.0
+    },
+    "mana": {
+      "flat": 100.0,
+      "perLevel": 0.0
+    },
+    "armor": {
+      "flat": 35.0,
+      "perLevel": 5.2
+    },
+    "magicResistance": {
+      "flat": 28.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 65.0,
+      "perLevel": 3.5
+    },
+    "attackSpeed": {
+      "flat": 0.625,
+      "perLevel": 3.5
+    },
+    "movespeed": {
+      "flat": 305.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.625,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 250.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.05,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 0.9,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": [
+    [
+      {
+        "type": "Q",
+        "name": "_4"
+      },
+      {
+        "name": "Bear Trap on a Rope",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "90 + (1.8 * ctx.bonus_ad)",
+          "165 + (1.8 * ctx.bonus_ad)",
+          "240 + (1.8 * ctx.bonus_ad)",
+          "315 + (1.8 * ctx.bonus_ad)",
+          "390 + (1.8 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Violent Tendencies",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "62 + 0",
+          "63.75 + 15",
+          "65.5 + 30",
+          "67.25 + 45",
+          "69 + 60",
+          "70.75",
+          "72.5",
+          "74.25",
+          "76",
+          "77.75",
+          "79.5",
+          "81.25",
+          "83",
+          "84.75",
+          "86.5",
+          "88.25",
+          "90",
+          "91.75"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "Bear Trap on a Rope",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "30 + (0.6 * ctx.bonus_ad)",
+          "55 + (0.6 * ctx.bonus_ad)",
+          "80 + (0.6 * ctx.bonus_ad)",
+          "105 + (0.6 * ctx.bonus_ad)",
+          "130 + (0.6 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_2"
+      },
+      {
+        "name": "Chaaaaaaaarge!!!",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "(0.04 * ctx.enemy_max_health) + (0.03 * 0.01 * ctx.bonus_ad)",
+          "(0.06 * ctx.enemy_max_health) + (0.03 * 0.01 * ctx.bonus_ad)",
+          "(0.08 * ctx.enemy_max_health) + (0.03 * 0.01 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Chaaaaaaaarge!!!",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "(0.12 * ctx.enemy_max_health) + (0.09 * 0.01 * ctx.bonus_ad)",
+          "(0.18 * ctx.enemy_max_health) + (0.09 * 0.01 * ctx.bonus_ad)",
+          "(0.24 * ctx.enemy_max_health) + (0.09 * 0.01 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_7"
+      },
+      {
+        "name": "Bear Trap on a Rope",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "0.3",
+          "0.35",
+          "0.4",
+          "0.45",
+          "0.5"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_2"
+      },
+      {
+        "name": "Violent Tendencies",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "20 + (0.045 * ctx.enemy_max_health) + (0.02 * 0.01 * ctx.bonus_ad) + (0.004 * 0.01 * ctx.bonus_health)",
+          "30 + (0.05 * ctx.enemy_max_health) + (0.02 * 0.01 * ctx.bonus_ad) + (0.004 * 0.01 * ctx.bonus_health)",
+          "40 + (0.055 * ctx.enemy_max_health) + (0.02 * 0.01 * ctx.bonus_ad) + (0.004 * 0.01 * ctx.bonus_health)",
+          "50 + (0.06 * ctx.enemy_max_health) + (0.02 * 0.01 * ctx.bonus_ad) + (0.004 * 0.01 * ctx.bonus_health)",
+          "60 + (0.065 * ctx.enemy_max_health) + (0.02 * 0.01 * ctx.bonus_ad) + (0.004 * 0.01 * ctx.bonus_health)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Jousting",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "35 + (0.55 * ctx.bonus_ad)",
+          "60 + (0.55 * ctx.bonus_ad)",
+          "85 + (0.55 * ctx.bonus_ad)",
+          "110 + (0.55 * ctx.bonus_ad)",
+          "135 + (0.55 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_6"
+      },
+      {
+        "name": "Bear Trap on a Rope",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "60 + (1.2 * ctx.bonus_ad)",
+          "110 + (1.2 * ctx.bonus_ad)",
+          "160 + (1.2 * ctx.bonus_ad)",
+          "210 + (1.2 * ctx.bonus_ad)",
+          "260 + (1.2 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_5"
+      },
+      {
+        "name": "Bear Trap on a Rope",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "45 + (0.9 * ctx.bonus_ad)",
+          "82.5 + (0.9 * ctx.bonus_ad)",
+          "120 + (0.9 * ctx.bonus_ad)",
+          "157.5 + (0.9 * ctx.bonus_ad)",
+          "195 + (0.9 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_2"
+      },
+      {
+        "name": "Jousting",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "70 + (1.1 * ctx.bonus_ad)",
+          "120 + (1.1 * ctx.bonus_ad)",
+          "170 + (1.1 * ctx.bonus_ad)",
+          "220 + (1.1 * ctx.bonus_ad)",
+          "270 + (1.1 * ctx.bonus_ad)"
+        ]
+      }
+    ]
+  ],
+  "merge_data": []
+}

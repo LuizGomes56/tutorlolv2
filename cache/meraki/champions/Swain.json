@@ -1,0 +1,662 @@
+{
+  "name": "Swain",
+  "attackType": "RANGED",
+  "adaptiveType": "MAGIC_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 595.0,
+      "perLevel": 99.0
+    },
+    "mana": {
+      "flat": 400.0,
+      "perLevel": 29.0
+    },
+    "armor": {
+      "flat": 25.0,
+      "perLevel": 4.7
+    },
+    "magicResistance": {
+      "flat": 31.0,
+      "perLevel": 1.55
+    },
+    "attackDamage": {
+      "flat": 58.0,
+      "perLevel": 2.7
+    },
+    "attackSpeed": {
+      "flat": 0.625,
+      "perLevel": 2.11
+    },
+    "movespeed": {
+      "flat": 330.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.625,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 525.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.15,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 0.95,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": null,
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Innate: Enemy champions that die will leave behind a Soul Fragment for 16 seconds. Swain's ravens will collect nearby dropped Soul Fragments, as well as rip the Soul Fragments out of champions hit by Vision of Empire or Nevermove's recast. Once a raven has collected a Soul Fragment, it will fly towards Swain to grant it to him, while also granting sight of its surroundings during the travel.\nSoul Fragment: For each stack, Swain gains 15 bonus health permanently. Upon claiming the fragment, he will heal for 3% : 6% (based on level) of his maximum health.",
+            "leveling": []
+          }
+        ],
+        "name": "Ravenous Flock"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                7.0,
+                6.0,
+                5.0,
+                4.0,
+                3.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Swain unleashes five bolts of eldritch power over 0.264 seconds in a cone in the target direction that deal magic damage to enemies hit. Subsequent bolts against an enemy deal 25% bonus damage.",
+            "leveling": [
+              {
+                "attribute": "Bonus Damage Per Bolt",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      15.0,
+                      22.5,
+                      30.0,
+                      37.5,
+                      45.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      11.25,
+                      11.25,
+                      11.25,
+                      11.25,
+                      11.25
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      60.0,
+                      90.0,
+                      120.0,
+                      150.0,
+                      180.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      45.0,
+                      45.0,
+                      45.0,
+                      45.0,
+                      45.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      120.0,
+                      180.0,
+                      240.0,
+                      300.0,
+                      360.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      90.0,
+                      90.0,
+                      90.0,
+                      90.0,
+                      90.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Death's Hand"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                22.0,
+                21.0,
+                20.0,
+                19.0,
+                18.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Swain summons a demonic eye at the target location that grants sight of the area for 2 seconds and explodes after 1.5 seconds, dealing magic damage to enemies within, halved against minions, and slowing them for 1.5 seconds.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      70.0,
+                      105.0,
+                      140.0,
+                      175.0,
+                      210.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      60.0,
+                      60.0,
+                      60.0,
+                      60.0,
+                      60.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Minion Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      35.0,
+                      52.5,
+                      70.0,
+                      87.5,
+                      105.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      30.0,
+                      30.0,
+                      30.0,
+                      30.0,
+                      30.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Slow",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      50.0,
+                      55.0,
+                      60.0,
+                      65.0,
+                      70.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Enemy champions hit are also revealed for 6 seconds and have a Soul Fragment collected from them.",
+            "leveling": []
+          }
+        ],
+        "name": "Vision of Empire"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                12.0,
+                11.5,
+                11.0,
+                10.5,
+                10.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Swain launches a demonic wave in the target direction.",
+            "leveling": []
+          },
+          {
+            "description": "At maximum range, the wave homes back to Swain and detonates upon the first enemy hit, dealing magic damage to nearby enemies and rooting them for 1.5 seconds, during which they are revealed. Nevermove can be recast while champions hit are rooted.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      80.0,
+                      120.0,
+                      160.0,
+                      200.0,
+                      240.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      70.0,
+                      70.0,
+                      70.0,
+                      70.0,
+                      70.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Recast: Swain pulls the rooted champions over 290 units and collects a Soul Fragment from each of them. If the targets would be brought past Swain, they are instead knocked back the excess distance.",
+            "leveling": []
+          }
+        ],
+        "name": "Nevermove"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                120.0,
+                120.0,
+                120.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Swain frees the demon within himself, gaining Demonic Ascension and generating 50 Demonic Energy. Demonic Ascension is maintained with Demonic Energy, which decays by 5 every 0.5 seconds, increased to 7.5 after 5 seconds have elapsed, and is lost once all Demonic Energy is depleted to 0. Swain generates 10 Demonic Energy every 0.5 seconds while draining from at least one enemy champion, and fully restores it to the maximum of 50 upon scoring a champion takedown.",
+            "leveling": []
+          },
+          {
+            "description": "After 2 seconds, Swain gains the ability to cast Demonflare, up to 100 times, and does so automatically when Demonic Ascension expires.",
+            "leveling": []
+          },
+          {
+            "description": "Demonic Ascension: Swain is ghosted and drains the lifeforce of nearby enemies, both dealing magic damage and healing himself every 0.5 seconds per target affected. The heal is reduced by 90% against minions and monsters.",
+            "leveling": [
+              {
+                "attribute": "Heal per Tick",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      7.5,
+                      15.0,
+                      22.5
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      2.5,
+                      2.5,
+                      2.5
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% of his bonus health",
+                      "% of his bonus health",
+                      "% of his bonus health"
+                    ],
+                    "values": [
+                      0.75,
+                      0.75,
+                      0.75
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Magic Damage per Tick",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      7.5,
+                      12.5,
+                      17.5
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      2.5,
+                      2.5,
+                      2.5
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Reduced Heal per Tick",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      0.75,
+                      1.5,
+                      2.25
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      0.25,
+                      0.25,
+                      0.25
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% of his bonus health",
+                      "% of his bonus health",
+                      "% of his bonus health"
+                    ],
+                    "values": [
+                      0.075,
+                      0.075,
+                      0.075
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Swain can move during Demonic Ascension's cast time.",
+            "leveling": []
+          },
+          {
+            "description": "The targets do not have to be visible to be hit by this ability.",
+            "leveling": []
+          }
+        ],
+        "name": "Demonic Ascension"
+      },
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                8.0,
+                8.0,
+                8.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Swain releases a nova of soulfire that deals magic damage to nearby enemies and slows them by 75%, decaying over 1.5 seconds.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      150.0,
+                      250.0,
+                      350.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      50.0,
+                      50.0,
+                      50.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Swain can move during Demonflare's cast time.",
+            "leveling": []
+          }
+        ],
+        "name": "Demonflare"
+      }
+    ]
+  },
+  "positions": [
+    "BOTTOM",
+    "MIDDLE",
+    "SUPPORT"
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><attention>300</attention> Health<br><attention>100</attention> Armor</stats><br><br><passive>Immovable as the Earth</passive><br>Increase your armor by 20%, and gain Block Chance based on your Armor.</mainText>",
+  "gold": {
+    "base": 1000,
+    "purchasable": true,
+    "sell": 400,
+    "total": 1000
+  },
+  "image": {
+    "full": "443058.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item4.png",
+    "w": 48,
+    "x": 336,
+    "y": 240
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": false
+  },
+  "name": "Shield of Molten Stone",
+  "plaintext": "",
+  "specialRecipe": 220007,
+  "stats": {
+    "FlatArmorMod": 100,
+    "FlatHPPoolMod": 300
+  },
+  "tags": [
+    "Health",
+    "Armor"
+  ]
+}

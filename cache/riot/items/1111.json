@@ -1,0 +1,46 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><attention>25%</attention> Attack Speed<br><attention>100</attention> Move Speed<br><attention>10</attention> Ability Haste<br><attention>12</attention> Magic Penetration<br><attention>25</attention> Armor<br><attention>20</attention> Magic Resist<br><attention>30%</attention> Tenacity</stats><br><br><passive>Jarvan One</passive><br>Give you stats and passives from all boots.<br><br><b>Requires Augment: <prismatic>Quest: SneakerHead</prismatic></b></mainText>",
+  "gold": {
+    "base": 300,
+    "purchasable": false,
+    "sell": 210,
+    "total": 300
+  },
+  "image": {
+    "full": "1111.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item0.png",
+    "w": 48,
+    "x": 240,
+    "y": 144
+  },
+  "inStore": false,
+  "maps": {
+    "11": false,
+    "12": true,
+    "21": false,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": false
+  },
+  "name": "Jarvan I's",
+  "plaintext": "",
+  "stats": {
+    "FlatArmorMod": 25,
+    "FlatMovementSpeedMod": 100,
+    "FlatSpellBlockMod": 20,
+    "PercentAttackSpeedMod": 0.25
+  },
+  "tags": [
+    "Armor",
+    "AttackSpeed",
+    "Boots",
+    "Tenacity",
+    "MagicPenetration",
+    "MagicResist",
+    "AbilityHaste"
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><ornnBonus>150</ornnBonus> Attack Damage<br><attention>20%</attention> Critical Strike Chance<br><attention>45%</attention> Critical Strike Damage<br><ornnBonus>20</ornnBonus> Lethality</stats><br><br><br><li><passive>Death and Taxes:</passive> Dealing damage that would leave an enemy champion below 7% Health executes them. Champion kills grant an additional 250 gold and heal you for 30% of the targets max health.</mainText>",
+  "gold": {
+    "base": 9000,
+    "purchasable": false,
+    "sell": 6300,
+    "total": 9000
+  },
+  "image": {
+    "full": "228003.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item2.png",
+    "w": 48,
+    "x": 240,
+    "y": 192
+  },
+  "inStore": false,
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": false
+  },
+  "name": "Deathblade",
+  "plaintext": "",
+  "stats": {
+    "FlatCritChanceMod": 0.2,
+    "FlatPhysicalDamageMod": 150
+  },
+  "tags": [
+    "Damage",
+    "CriticalStrike",
+    "ArmorPenetration"
+  ]
+}

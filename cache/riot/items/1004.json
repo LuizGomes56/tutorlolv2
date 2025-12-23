@@ -1,0 +1,39 @@
+{
+  "colloq": ";",
+  "description": "<mainText><stats><attention>50%</attention> Base Mana Regen</stats><br><br></mainText>",
+  "gold": {
+    "base": 200,
+    "purchasable": true,
+    "sell": 140,
+    "total": 200
+  },
+  "image": {
+    "full": "1004.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item0.png",
+    "w": 48,
+    "x": 48,
+    "y": 0
+  },
+  "into": [
+    "3114",
+    "3012",
+    "4642"
+  ],
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Faerie Charm",
+  "plaintext": "Slightly increases Mana Regen",
+  "stats": {},
+  "tags": [
+    "ManaRegen"
+  ]
+}

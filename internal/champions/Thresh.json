@@ -1,0 +1,161 @@
+{
+  "name": "Thresh",
+  "adaptative_type": "Physical",
+  "attack_type": "Ranged",
+  "positions": [
+    "Support"
+  ],
+  "stats": {
+    "health": {
+      "flat": 620.0,
+      "perLevel": 120.0
+    },
+    "mana": {
+      "flat": 274.0,
+      "perLevel": 44.0
+    },
+    "armor": {
+      "flat": 33.0,
+      "perLevel": 0.0
+    },
+    "magicResistance": {
+      "flat": 30.0,
+      "perLevel": 1.55
+    },
+    "attackDamage": {
+      "flat": 56.0,
+      "perLevel": 2.2
+    },
+    "attackSpeed": {
+      "flat": 0.625,
+      "perLevel": 3.5
+    },
+    "movespeed": {
+      "flat": 330.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.625,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 450.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.05,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 0.87,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": [
+    [
+      {
+        "type": "E",
+        "name": "_2"
+      },
+      {
+        "name": "Flay",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "1.7*ctx.thresh_stacks + (0.9 * ctx.ad)",
+          "1.7*ctx.thresh_stacks + (1.2 * ctx.ad)",
+          "1.7*ctx.thresh_stacks + (1.5 * ctx.ad)",
+          "1.7*ctx.thresh_stacks + (1.8 * ctx.ad)",
+          "1.7*ctx.thresh_stacks + (2.1 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "The Box",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "250 + ctx.ap",
+          "400 + ctx.ap",
+          "550 + ctx.ap"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Death Sentence",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "100 + (0.9 * ctx.ap)",
+          "150 + (0.9 * ctx.ap)",
+          "200 + (0.9 * ctx.ap)",
+          "250 + (0.9 * ctx.ap)",
+          "300 + (0.9 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Flay",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "75 + (0.7 * ctx.ap)",
+          "120 + (0.7 * ctx.ap)",
+          "165 + (0.7 * ctx.ap)",
+          "210 + (0.7 * ctx.ap)",
+          "255 + (0.7 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_3"
+      },
+      {
+        "name": "Flay",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "1.7*ctx.thresh_stacks + (0 * ctx.ad)",
+          "1.7*ctx.thresh_stacks + (0 * ctx.ad)",
+          "1.7*ctx.thresh_stacks + (0 * ctx.ad)",
+          "1.7*ctx.thresh_stacks + (0 * ctx.ad)",
+          "1.7*ctx.thresh_stacks + (0 * ctx.ad)"
+        ]
+      }
+    ]
+  ],
+  "merge_data": []
+}

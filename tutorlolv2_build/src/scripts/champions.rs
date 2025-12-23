@@ -1,7 +1,8 @@
 use crate::{
-    CwdPath, Generated, GeneratorFn, MayFail, SrcFolder, Tracker, parallel_task, push_end,
+    CwdPath, EVAL_FEAT, GLOB_FEAT, Generated, GeneratorFn, MayFail, SrcFolder, Tracker,
+    parallel_task, push_end,
     scripts::{
-        StringExt, USE_SUPER,
+        StringExt,
         model::{Ability, Champion, MerakiChampionStats},
     },
 };
@@ -78,7 +79,7 @@ fn declare_abilities(
             .to_lowercase();
 
             let constfn_declaration = format!(
-                "pub const fn {constfn_name}(ctx: &EvalContext) -> f32 {body}",
+                "{EVAL_FEAT} pub const fn {constfn_name}(ctx: &EvalContext) -> f32 {body}",
                 body = damage.trim_start_matches("|ctx|")
             );
 
@@ -282,7 +283,7 @@ pub async fn generate_champions() -> GeneratorFn {
                 .join(",");
 
             let mut base_declaration = format!(
-                "pub static {champion_id_upper}: CachedChampion = CachedChampion {{
+                "{EVAL_FEAT} pub static {champion_id_upper}: CachedChampion = CachedChampion {{
                     name: {name:?},
                     adaptative_type: AdaptativeType::{adaptative_type},
                     attack_type: AttackType::{attack_type},
@@ -373,15 +374,15 @@ pub async fn generate_champions() -> GeneratorFn {
         mut champion_generator,
         mut champion_abilities,
     ] = std::array::from_fn(|i| {
-        let (name, vtype) = [
-            ("CHAMPION_CACHE", "&CachedChampion"),
-            ("CHAMPION_POSITIONS", "&[Position]"),
-            ("CHAMPION_ID_TO_NAME", "&str"),
-            ("CHAMPION_FORMULAS", "(u32,u32)"),
-            ("CHAMPION_GENERATOR", "(u32,u32)"),
-            ("CHAMPION_ABILITIES", "&[(AbilityId,(u32,u32))]"),
+        let (name, vtype, feature) = [
+            ("CHAMPION_CACHE", "&CachedChampion", EVAL_FEAT),
+            ("CHAMPION_POSITIONS", "&[Position]", GLOB_FEAT),
+            ("CHAMPION_ID_TO_NAME", "&str", GLOB_FEAT),
+            ("CHAMPION_FORMULAS", "(u32,u32)", GLOB_FEAT),
+            ("CHAMPION_GENERATOR", "(u32,u32)", GLOB_FEAT),
+            ("CHAMPION_ABILITIES", "&[(AbilityId,(u32,u32))]", GLOB_FEAT),
         ][i];
-        format!("pub static {name}: [{vtype}; {len}] = [")
+        format!("{feature} pub static {name}: [{vtype}; ChampionId::VARIANTS] = [")
     });
 
     let mut block = String::new();
@@ -395,11 +396,12 @@ pub async fn generate_champions() -> GeneratorFn {
 
     let mut champion_id_enum = format!(
         r#"impl ChampionId {{
+            pub const VARIANTS: usize = {len};
             pub const unsafe fn from_u8_unchecked(id: u8) -> Self {{
                 unsafe {{ core::mem::transmute(id) }}
             }}
             pub const fn from_u8(id: u8) -> Option<Self> {{
-                if id < {len} as u8 {{
+                if id < Self::VARIANTS as u8 {{
                     Some(unsafe {{ Self::from_u8_unchecked(id) }})
                 }} else {{
                     None
@@ -407,8 +409,9 @@ pub async fn generate_champions() -> GeneratorFn {
             }}
         }}
         #[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
-        #[cfg_attr(feature = "bincode", derive(bincode::Encode, bincode::Decode))]
-        #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+        #[derive(bincode::Encode, bincode::Decode)]
+        #[derive(serde::Serialize, serde::Deserialize)]
+        #[repr(u8)]
         pub enum ChampionId {{"#,
     );
 
@@ -467,7 +470,7 @@ pub async fn generate_champions() -> GeneratorFn {
     }
 
     let const_eval = format!(
-        "pub const fn ability_const_eval(
+        "{EVAL_FEAT} pub const fn ability_const_eval(
             ctx: &EvalContext, 
             champion_id: ChampionId, 
             kind: AbilityId
@@ -477,7 +480,7 @@ pub async fn generate_champions() -> GeneratorFn {
     );
 
     let champion_name_to_id = format!(
-        "pub static CHAMPION_NAME_TO_ID: phf::Map<&str, ChampionId> = phf::phf_map! {{
+        "{EVAL_FEAT} pub static CHAMPION_NAME_TO_ID: phf::Map<&str, ChampionId> = phf::phf_map! {{
             {arms}
         }};",
         arms = language_arms.join(",")
@@ -492,21 +495,6 @@ pub async fn generate_champions() -> GeneratorFn {
         ],
         "];",
     );
-
-    CwdPath::fwrite(
-        SrcFolder::Champions.import_file(),
-        [
-            USE_SUPER,
-            &champion_id_enum,
-            &champion_declarations,
-            &champion_name_to_id,
-            &champion_cache,
-            &const_eval,
-        ]
-        .concat()
-        .rust_fmt(),
-    )
-    .await??;
 
     let callback = move |index: usize| {
         let add_offsets = |(list, target): (Vec<_>, &mut String)| {
@@ -538,7 +526,7 @@ pub async fn generate_champions() -> GeneratorFn {
         }
         push_end([&mut champion_abilities], "];");
 
-        let exports = [
+        let content = [
             champion_id_enum,
             champion_id_to_name,
             champion_positions,
@@ -546,8 +534,15 @@ pub async fn generate_champions() -> GeneratorFn {
             champion_abilities,
             champion_formulas,
             recommendations,
+            champion_declarations,
+            champion_name_to_id,
+            champion_cache,
+            const_eval,
         ]
-        .concat();
+        .concat()
+        .rust_fmt();
+
+        let exports = format!("pub mod champions {{ use super::*; {content} }}");
 
         Generated { exports, block }
     };
@@ -564,7 +559,7 @@ pub async fn get_recommendations(len: usize) -> MayFail<String> {
     let mut globals = std::array::from_fn::<_, 2, _>(|i| {
         let enumv = enum_ids[i];
         let var = declaration[i];
-        format!("pub static {var}: [[&[{enumv}]; 5]; {len}] = [")
+        format!("{GLOB_FEAT} pub static {var}: [[&[{enumv}]; 5]; {len}] = [")
     });
 
     let json = CwdPath::deserialize::<BTreeMap<String, HashMap<String, [Vec<String>; 2]>>>(

@@ -1,0 +1,556 @@
+{
+  "name": "Azir",
+  "attackType": "RANGED",
+  "adaptiveType": "MAGIC_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 575.0,
+      "perLevel": 119.0
+    },
+    "mana": {
+      "flat": 320.0,
+      "perLevel": 40.0
+    },
+    "armor": {
+      "flat": 25.0,
+      "perLevel": 5.0
+    },
+    "magicResistance": {
+      "flat": 30.0,
+      "perLevel": 1.3
+    },
+    "attackDamage": {
+      "flat": 56.0,
+      "perLevel": 3.5
+    },
+    "attackSpeed": {
+      "flat": 0.625,
+      "perLevel": 5.5
+    },
+    "movespeed": {
+      "flat": 330.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.694,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 525.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 0.95,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                90.0,
+                90.0,
+                90.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Azir cannot construct a Sun Disc with the marker while he is unable to cast abilities.",
+            "leveling": []
+          },
+          {
+            "description": "Innate - Disc of the Sun: Azir can select a marker to construct the Sun Disc above the ruins after a 0.5-second cast time. The Sun Disc will activate after being assembled over 5 seconds.",
+            "leveling": []
+          },
+          {
+            "description": "Innate: Whenever a turret outside the enemy team's base is destroyed, a marker is placed above its ruins which can be targeted by Azir.",
+            "leveling": []
+          },
+          {
+            "description": "See Pets for more details about the Sun Disc.",
+            "leveling": []
+          },
+          {
+            "description": "The Sun Disc functions the same as a standard inner turret but deals magic damage, gains 40% AP bonus attack damage, and grants its kill credit to Azir. The Sun Disc's health decays over 45 seconds and loses 100 armor and 100 magic resistance while Azir is not alive or is too far away.",
+            "leveling": []
+          }
+        ],
+        "name": "Shurima's Legacy"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                14.0,
+                12.0,
+                10.0,
+                8.0,
+                6.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "A summoned Sand Soldier is required to cast this ability.",
+            "leveling": []
+          },
+          {
+            "description": "Active: Azir orders all Sand Soldiers to dash toward the target location, dealing magic damage to all enemies they pass through as well as those in front of them upon arrival, and slowing them by 25% for 1 second.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      60.0,
+                      80.0,
+                      100.0,
+                      120.0,
+                      140.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      35.0,
+                      35.0,
+                      35.0,
+                      35.0,
+                      35.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Enemies hit by subsequent soldiers take no additional damage and are instead slowed by an additional 25% per soldier.",
+            "leveling": []
+          }
+        ],
+        "name": "Conquering Sands"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                1.5,
+                1.5,
+                1.5,
+                1.5,
+                1.5
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Azir summons a Sand Soldier at the target location that is untargetable, lasts 10 seconds, and grants sight of its surroundings. The Sand Soldier expires twice as fast while within range of an enemy turret, and does so instantly if Azir is too far away.Azir periodically stocks a Sand Soldier, up to a maximum of 2.",
+            "leveling": []
+          },
+          {
+            "description": "Sand Soldiers cannot attack structures, wards, nor traps.",
+            "leveling": []
+          },
+          {
+            "description": "See Pets for more details about Sand Soldiers.",
+            "leveling": []
+          },
+          {
+            "description": "When Azir declares a basic attack against an enemy in a soldier's attack range, the Sand Soldier attacks in his stead, thrusting their spear in the target's direction to deal magic damage to enemies struck in a line, applying on-hit effects to the primary target, with on-hit damage reduced to 50% effectiveness, and triggering on-attack effects once. Targets hit beyond the closest take 25% / 50% / 75% / 100% (based on level) damage. Subsequent Sand Soldiers against the same target deal 25% damage.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      0.0,
+                      2.6470588235294117,
+                      5.294117647058823,
+                      7.9411764705882355,
+                      10.588235294117649,
+                      13.235294117647058,
+                      15.882352941176473,
+                      18.52941176470588,
+                      21.176470588235293,
+                      23.823529411764707,
+                      26.470588235294116,
+                      29.11764705882353,
+                      31.764705882352946,
+                      34.411764705882355,
+                      37.05882352941176,
+                      39.705882352941174,
+                      42.35294117647059,
+                      45.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      50.0,
+                      65.0,
+                      80.0,
+                      95.0,
+                      110.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      45.0,
+                      50.0,
+                      55.0,
+                      60.0,
+                      65.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Arise!"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                22.0,
+                20.5,
+                19.0,
+                17.5,
+                16.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "A summoned Sand Soldier is required to cast this ability. Azir can cast of any of his abilities during the dash.",
+            "leveling": []
+          },
+          {
+            "description": "Active: Azir grants himself a shield for 1.5 seconds and dashes to the Sand Soldier closest to the cursor, dealing magic damage to enemies within his path.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      60.0,
+                      100.0,
+                      140.0,
+                      180.0,
+                      220.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      40.0,
+                      40.0,
+                      40.0,
+                      40.0,
+                      40.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Shield Strength",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      70.0,
+                      110.0,
+                      150.0,
+                      190.0,
+                      230.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      60.0,
+                      60.0,
+                      60.0,
+                      60.0,
+                      60.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "If Azir dashes into an enemy champion, he stops and gains a charge of Arise!.",
+            "leveling": []
+          }
+        ],
+        "name": "Shifting Sands"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                120.0,
+                105.0,
+                90.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Azir calls forth a phalanx of soldiers from 175 units behind him, catching enemies from up to 325 units behind him and charging forward 575 units in the target direction.",
+            "leveling": [
+              {
+                "attribute": "Width",
+                "modifiers": [
+                  {
+                    "units": [
+                      " soldiers",
+                      " soldiers",
+                      " soldiers"
+                    ],
+                    "values": [
+                      6.0,
+                      7.0,
+                      8.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Width (charge)",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      620.0,
+                      720.0,
+                      820.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Width (impassable wall)",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      750.0,
+                      850.0,
+                      950.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Enemies impacted by the charge are dealt magic damage and knocked away over 1 second to a line 650 units in front of Azir.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      200.0,
+                      400.0,
+                      600.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      75.0,
+                      75.0,
+                      75.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Upon finishing their charge, the soldiers stand as a wall for 5 seconds, acting as impassible terrain against enemies and granting sight of their surroundings. Azir and his allies can move through these soldiers.",
+            "leveling": []
+          }
+        ],
+        "name": "Emperor's Divide"
+      }
+    ]
+  },
+  "positions": [
+    "MIDDLE"
+  ]
+}

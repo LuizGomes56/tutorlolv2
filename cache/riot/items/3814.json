@@ -1,0 +1,51 @@
+{
+  "colloq": ";lethality",
+  "depth": 3,
+  "description": "<mainText><stats><attention>50</attention> Attack Damage<br><attention>15</attention> Lethality<br><attention>250</attention> Health</stats><br><br><passive>Annul</passive><br>Grants a Spell Shield that blocks the next enemy Ability.</mainText>",
+  "effect": {
+    "Effect1Amount": "0",
+    "Effect2Amount": "0",
+    "Effect3Amount": "0",
+    "Effect4Amount": "40"
+  },
+  "from": [
+    "3134",
+    "2021"
+  ],
+  "gold": {
+    "base": 850,
+    "purchasable": true,
+    "sell": 2100,
+    "total": 3000
+  },
+  "image": {
+    "full": "3814.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item4.png",
+    "w": 48,
+    "x": 240,
+    "y": 48
+  },
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Edge of Night",
+  "plaintext": "Periodically blocks enemy abilities",
+  "stacks": 0,
+  "stats": {
+    "FlatHPPoolMod": 250,
+    "FlatPhysicalDamageMod": 50
+  },
+  "tags": [
+    "Health",
+    "Damage",
+    "ArmorPenetration"
+  ]
+}

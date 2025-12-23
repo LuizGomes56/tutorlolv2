@@ -1,0 +1,759 @@
+{
+  "name": "Jayce",
+  "attackType": "RANGED",
+  "adaptiveType": "PHYSICAL_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 590.0,
+      "perLevel": 109.0
+    },
+    "mana": {
+      "flat": 375.0,
+      "perLevel": 45.0
+    },
+    "armor": {
+      "flat": 22.0,
+      "perLevel": 5.0
+    },
+    "magicResistance": {
+      "flat": 30.0,
+      "perLevel": 1.3
+    },
+    "attackDamage": {
+      "flat": 59.0,
+      "perLevel": 4.25
+    },
+    "attackSpeed": {
+      "flat": 0.658,
+      "perLevel": 3.0
+    },
+    "movespeed": {
+      "flat": 335.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.657999992370605,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 125.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.05,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.05,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 0.92,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": null,
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Innate: Whenever Jayce switches between either Hammer Stance or Cannon Stance, he gains ghosting and 40 bonus movement speed for 0.75 seconds.",
+            "leveling": []
+          }
+        ],
+        "name": "Hextech Capacitor"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                16.0,
+                14.0,
+                12.0,
+                10.0,
+                8.0,
+                6.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Jayce leaps to the target enemy's location over 0.5 seconds. Upon arrival, he smashes his hammer to the ground to deal physical damage to all enemies within an area and slow them for 2 seconds.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      60.0,
+                      105.0,
+                      150.0,
+                      195.0,
+                      240.0,
+                      285.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      135.0,
+                      135.0,
+                      135.0,
+                      135.0,
+                      135.0,
+                      135.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Slow",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      35.0,
+                      40.0,
+                      45.0,
+                      50.0,
+                      55.0,
+                      60.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Lightning Field can be cast during the dash.",
+            "leveling": []
+          }
+        ],
+        "name": "To the Skies!"
+      },
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                8.0,
+                8.0,
+                8.0,
+                8.0,
+                8.0,
+                8.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Jayce fires an electric bolt in the target direction that detonates upon hitting an enemy or reaching maximum range, dealing physical damage to nearby enemies and granting sight of the area for 1.25 seconds.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      60.0,
+                      110.0,
+                      160.0,
+                      210.0,
+                      260.0,
+                      310.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      140.0,
+                      140.0,
+                      140.0,
+                      140.0,
+                      140.0,
+                      140.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "If the bolt passes through Acceleration Gate, it becomes supercharged: increasing its damage by 40% as well as its speed, range and explosion radius.",
+            "leveling": [
+              {
+                "attribute": "Increased Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      84.0,
+                      154.0,
+                      224.0,
+                      294.0,
+                      364.0,
+                      434.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      196.0,
+                      196.0,
+                      196.0,
+                      196.0,
+                      196.0,
+                      196.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Shock Blast"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                10.0,
+                10.0,
+                10.0,
+                10.0,
+                10.0,
+                10.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Jayce surrounds himself with an electric field for 4 seconds that deals magic damage every second to nearby enemies.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage Per Tick",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      35.0,
+                      50.0,
+                      65.0,
+                      80.0,
+                      95.0,
+                      110.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      25.0,
+                      25.0,
+                      25.0,
+                      25.0,
+                      25.0,
+                      25.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      140.0,
+                      200.0,
+                      260.0,
+                      320.0,
+                      380.0,
+                      440.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Passive: Jayce's basic attacks restore mana on-hit.",
+            "leveling": [
+              {
+                "attribute": "Mana Restored",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      15.0,
+                      17.0,
+                      19.0,
+                      21.0,
+                      23.0,
+                      25.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Lightning Field"
+      },
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                13.0,
+                11.4,
+                9.8,
+                8.2,
+                6.6,
+                5.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Jayce empowers his next 3 basic attacks within 4 seconds to deal modified physical damage and gain 360% bonus attack speed.Hyper Charge's total damage is affected by critical strike modifiers.",
+            "leveling": [
+              {
+                "attribute": "Damage Modifier",
+                "modifiers": [
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      70.0,
+                      78.0,
+                      86.0,
+                      94.0,
+                      102.0,
+                      110.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Hyper Charge resets Jayce's basic attack timer.",
+            "leveling": []
+          }
+        ],
+        "name": "Hyper Charge"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                20.0,
+                18.0,
+                16.0,
+                14.0,
+                12.0,
+                10.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Jayce roots the target enemy over the cast time, then swings his hammer at them to deal magic damage, capped against monsters, and knock them back 600 units.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "% of target's maximum health",
+                      "% of target's maximum health",
+                      "% of target's maximum health",
+                      "% of target's maximum health",
+                      "% of target's maximum health",
+                      "% of target's maximum health"
+                    ],
+                    "values": [
+                      8.0,
+                      10.8,
+                      13.6,
+                      16.4,
+                      19.2,
+                      22.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Maximum Monster Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      200.0,
+                      300.0,
+                      400.0,
+                      500.0,
+                      600.0,
+                      700.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Jayce is unable to cast To the Skies! or Shock Blast for 0.4 seconds after Thundering Blow's cast time.",
+            "leveling": []
+          }
+        ],
+        "name": "Thundering Blow"
+      },
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                16.0,
+                16.0,
+                16.0,
+                16.0,
+                16.0,
+                16.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: Jayce deploys an energy gate centered at the target location, lasting for 4 seconds and granting sight of its surroundings. Jayce and all allied champions can move through it to gain bonus movement speed that decays over 3 seconds.",
+            "leveling": [
+              {
+                "attribute": "Bonus Movement Speed",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      35.0,
+                      40.0,
+                      45.0,
+                      50.0,
+                      55.0,
+                      60.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "The buff is continuously refreshed while inside the gate.",
+            "leveling": []
+          }
+        ],
+        "name": "Acceleration Gate"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                6.0,
+                6.0,
+                6.0,
+                6.0,
+                6.0,
+                6.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: Jayce transforms into Cannon Stance, receiving access to its abilities, becoming ranged with 500 attack range, and empowering his next basic attack to reduce the target's armor and magic resistance by 10% / 15% / 20% / 25% (based on level) for 5 seconds.",
+            "leveling": []
+          },
+          {
+            "description": "Jayce begins the game with Transform but cannot increase its rank. Instead, his basic abilities each have 6 ranks.",
+            "leveling": []
+          }
+        ],
+        "name": "Transform Mercury Cannon"
+      },
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                6.0,
+                6.0,
+                6.0,
+                6.0,
+                6.0,
+                6.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: Jayce transforms into Hammer Stance, receiving access to its abilities, becoming melee with 125 attack range, gaining 5 / 15 / 25 / 35 (based on level) (+ 7.5% bonus AD) bonus armor and bonus magic resistance, and empowering his next basic attack to deal 25 / 60 / 95 / 130 (based on level) (+ 30% bonus AD) bonus magic damage.",
+            "leveling": []
+          },
+          {
+            "description": "Jayce begins the game with Transform but cannot increase its rank. Instead, his basic abilities each have 6 ranks.",
+            "leveling": []
+          }
+        ],
+        "name": "Transform Mercury Hammer"
+      }
+    ]
+  },
+  "positions": [
+    "MIDDLE",
+    "TOP"
+  ]
+}

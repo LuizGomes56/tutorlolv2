@@ -1,0 +1,32 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats></stats><br><br>Briar sweeps in front of her, dealing damage that scales with her Max Health.<br><br><status>Evolve: </status> Max Health<br><br><rules>Damage, Ability Haste, Area Size, Crit Chance, Max Health </rules></mainText>",
+  "gold": {
+    "base": 0,
+    "purchasable": true,
+    "sell": 0,
+    "total": 0
+  },
+  "image": {
+    "full": "9303.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item6.png",
+    "w": 48,
+    "x": 192,
+    "y": 96
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": false,
+    "33": true,
+    "35": false
+  },
+  "name": "Pillory Swipe",
+  "plaintext": "",
+  "stats": {},
+  "tags": []
+}

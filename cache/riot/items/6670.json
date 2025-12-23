@@ -1,0 +1,47 @@
+{
+  "colloq": "",
+  "depth": 2,
+  "description": "<mainText><stats><attention>15</attention> Attack Damage<br><attention>20%</attention> Critical Strike Chance</stats><br><br></mainText>",
+  "from": [
+    "1036",
+    "1018"
+  ],
+  "gold": {
+    "base": 350,
+    "purchasable": true,
+    "sell": 910,
+    "total": 1300
+  },
+  "image": {
+    "full": "6670.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item5.png",
+    "w": 48,
+    "x": 96,
+    "y": 240
+  },
+  "into": [
+    "3036",
+    "6673"
+  ],
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": true
+  },
+  "name": "Noonquiver",
+  "plaintext": "",
+  "stats": {
+    "FlatCritChanceMod": 0.2,
+    "FlatPhysicalDamageMod": 15
+  },
+  "tags": [
+    "Damage",
+    "CriticalStrike"
+  ]
+}

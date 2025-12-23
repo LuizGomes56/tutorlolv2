@@ -1,0 +1,38 @@
+{
+  "colloq": "",
+  "consumeOnFull": true,
+  "consumed": true,
+  "description": "",
+  "gold": {
+    "base": 0,
+    "purchasable": false,
+    "sell": 0,
+    "total": 0
+  },
+  "hideFromAll": true,
+  "image": {
+    "full": "7050.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item5.png",
+    "w": 48,
+    "x": 288,
+    "y": 336
+  },
+  "inStore": false,
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": true
+  },
+  "name": "Gangplank Placeholder",
+  "plaintext": "New Gangplank interface coming soon!",
+  "requiredChampion": "Gangplank",
+  "stacks": 0,
+  "stats": {},
+  "tags": []
+}

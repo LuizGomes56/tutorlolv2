@@ -1,0 +1,470 @@
+{
+  "name": "Caitlyn",
+  "attackType": "RANGED",
+  "adaptiveType": "PHYSICAL_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 580.0,
+      "perLevel": 107.0
+    },
+    "mana": {
+      "flat": 315.0,
+      "perLevel": 40.0
+    },
+    "armor": {
+      "flat": 27.0,
+      "perLevel": 4.7
+    },
+    "magicResistance": {
+      "flat": 30.0,
+      "perLevel": 1.3
+    },
+    "attackDamage": {
+      "flat": 60.0,
+      "perLevel": 3.8
+    },
+    "attackSpeed": {
+      "flat": 0.681,
+      "perLevel": 4.0
+    },
+    "movespeed": {
+      "flat": 325.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.625,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 650.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": null,
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Enemies that step over a Yordle Snap Trap or are hit by 90 Caliber Net can grant an additional Headshot against them at 1300 range within 1.8 seconds, without consuming stacks. Each method grants only one Headshot at a time.",
+            "leveling": []
+          },
+          {
+            "description": "Headshot: Caitlyn's basic attack is empowered to have an uncancellable windup and deal 60% / 90% / 120% (based on level) (+ (148.75% + 34%) critical strike chance) AD bonus physical damage, increased to 110% / 115% / 120% (based on level) (+ (148.75% + 34%) critical strike chance) AD against non-champions.",
+            "leveling": []
+          },
+          {
+            "description": "Innate: Caitlyn's basic attacks generate a stack of Count on-attack, doubled if she is within brush. At 5 stacks, or 4 while in brush, her next basic attack consumes all stacks on-attack to become a Headshot.",
+            "leveling": []
+          }
+        ],
+        "name": "Headshot"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                10.0,
+                9.0,
+                8.0,
+                7.0,
+                6.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Caitlyn fires a piercing shot in the target direction that deals physical damage to the first enemy it passes through, after which it expands in width but deals only 60% damage to enemies it hits thereafter.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      50.0,
+                      90.0,
+                      130.0,
+                      170.0,
+                      210.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      125.0,
+                      145.0,
+                      165.0,
+                      185.0,
+                      205.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Reduced Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      30.0,
+                      54.0,
+                      78.0,
+                      102.0,
+                      126.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      75.0,
+                      87.0,
+                      99.0,
+                      111.0,
+                      123.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Enemies revealed by Yordle Snap Trap always take full damage from Piltover Peacemaker.",
+            "leveling": []
+          }
+        ],
+        "name": "Piltover Peacemaker"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: Caitlyn sets a visible trap at the target location that is untargetable and arms after 1 second, lasting for a duration. The trap grants sight of the area for 1 second after being placed.",
+            "leveling": [
+              {
+                "attribute": "Trap Duration",
+                "modifiers": [
+                  {
+                    "units": [
+                      " seconds",
+                      " seconds",
+                      " seconds",
+                      " seconds",
+                      " seconds"
+                    ],
+                    "values": [
+                      30.0,
+                      35.0,
+                      40.0,
+                      45.0,
+                      50.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Caitlyn periodically stocks a Yordle Snap Trap charge, up to a maximum amount. Deploying traps beyond the maximum destroys the oldest one.",
+            "leveling": [
+              {
+                "attribute": "Maximum Number of Traps",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      3.0,
+                      3.0,
+                      4.0,
+                      4.0,
+                      5.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "The next enemy champion that springs the trap is rooted for 1.5 seconds and revealed for 3 seconds, as well as takes additional damage from the Headshot granted by this ability. Trapped targets become immune to further Yordle Snap Traps for 3 seconds, preventing them from springing subsequent traps for the duration.",
+            "leveling": [
+              {
+                "attribute": "Headshot Damage Increase",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      35.0,
+                      80.0,
+                      125.0,
+                      170.0,
+                      215.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      30.0,
+                      30.0,
+                      30.0,
+                      30.0,
+                      30.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Yordle Snap Trap"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                16.0,
+                14.0,
+                12.0,
+                10.0,
+                8.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Caitlyn fires a net in the target direction and recoils 390 units in the opposite direction. The net deals magic damage to the first enemy hit and slows them by 50% for 1 second.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      80.0,
+                      130.0,
+                      180.0,
+                      230.0,
+                      280.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      80.0,
+                      80.0,
+                      80.0,
+                      80.0,
+                      80.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Caitlyn will not dash backwards if she is immobilized or grounded during the cast time. She can cast any of her abilities during the dash.",
+            "leveling": []
+          }
+        ],
+        "name": "90 Caliber Net"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                90.0,
+                90.0,
+                90.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Ace in the Hole is placed on a 5-second cooldown if canceled.",
+            "leveling": []
+          },
+          {
+            "description": "Active: Caitlyn locks onto the target enemy champion and channels for 1 second, revealing them as well as revealing herself.",
+            "leveling": []
+          },
+          {
+            "description": "Once Caitlyn completes the channel, she fires a homing bullet toward the target that deals physical damage to the first enemy champion it hits, increased by 0% : 50% (based on critical strike chance).",
+            "leveling": [
+              {
+                "attribute": "Physical damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      300.0,
+                      475.0,
+                      650.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      100.0,
+                      100.0,
+                      100.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Ace in the Hole"
+      }
+    ]
+  },
+  "positions": [
+    "BOTTOM"
+  ]
+}

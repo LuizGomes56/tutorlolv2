@@ -1,0 +1,39 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><attention>200</attention> Health<br><attention>10</attention> Ability Haste</stats><br><br></mainText>",
+  "gold": {
+    "base": 500,
+    "purchasable": false,
+    "sell": 350,
+    "total": 500
+  },
+  "image": {
+    "full": "223067.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item1.png",
+    "w": 48,
+    "x": 48,
+    "y": 192
+  },
+  "inStore": false,
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": false
+  },
+  "name": "Kindlegem",
+  "plaintext": "",
+  "stats": {
+    "FlatHPPoolMod": 200
+  },
+  "tags": [
+    "Health",
+    "CooldownReduction",
+    "AbilityHaste"
+  ]
+}

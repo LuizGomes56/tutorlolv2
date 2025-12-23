@@ -1,0 +1,410 @@
+{
+  "name": "Alistar",
+  "attackType": "MELEE",
+  "adaptiveType": "MAGIC_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 685.0,
+      "perLevel": 120.0
+    },
+    "mana": {
+      "flat": 350.0,
+      "perLevel": 40.0
+    },
+    "armor": {
+      "flat": 40.0,
+      "perLevel": 4.7
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 62.0,
+      "perLevel": 3.75
+    },
+    "attackSpeed": {
+      "flat": 0.625,
+      "perLevel": 2.125
+    },
+    "movespeed": {
+      "flat": 330.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.625,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 125.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.05,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 0.95,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 0.95,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                3.0,
+                3.0,
+                3.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "At 7 stacks, Alistar consumes them all to heal himself for 5% of his maximum health and nearby allied champions for 7% of his maximum health.",
+            "leveling": []
+          },
+          {
+            "description": "Innate: Alistar generates a stack of Triumph for each enemy champion he stuns or displaces with his abilities, and each time a nearby enemy minion or non-epic monster dies. He generates 7 stacks if a nearby enemy champion or epic monster dies.",
+            "leveling": []
+          },
+          {
+            "description": "Triumphant Roar can occur only once every few seconds, though Alistar may still generate stacks before then.",
+            "leveling": []
+          }
+        ],
+        "name": "Triumphant Roar"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                14.0,
+                13.0,
+                12.0,
+                11.0,
+                10.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Alistar smashes the ground beneath him, dealing magic damage to nearby enemies and stunning and knocking them up simultaneously for 1 second.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      60.0,
+                      100.0,
+                      140.0,
+                      180.0,
+                      220.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      80.0,
+                      80.0,
+                      80.0,
+                      80.0,
+                      80.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Pulverize"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                14.0,
+                13.0,
+                12.0,
+                11.0,
+                10.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Alistar dashes to the target enemy's location. If they are within 400 units upon arrival, he deals them magic damage and knocks them back 700 units over 0.5 seconds while also stunning them for 0.75 seconds.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      55.0,
+                      110.0,
+                      165.0,
+                      220.0,
+                      275.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Headbutt"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                12.0,
+                11.5,
+                11.0,
+                10.5,
+                10.0
+              ]
+            }
+          ]
+        },
+        "damageType": "MAGIC_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Alistar tramples the ground around him every 0.5 seconds over 5 seconds, becoming ghosted and dealing magic damage to nearby enemies. Each time this damages at least one enemy champion, he generates a stack of Trample that lasts for the remaining duration, stacking up to 5 times.",
+            "leveling": [
+              {
+                "attribute": "Magic Damage Per Tick",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      8.0,
+                      11.0,
+                      14.0,
+                      17.0,
+                      20.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      7.0,
+                      7.0,
+                      7.0,
+                      7.0,
+                      7.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      80.0,
+                      110.0,
+                      140.0,
+                      170.0,
+                      200.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      70.0,
+                      70.0,
+                      70.0,
+                      70.0,
+                      70.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "At 5 stacks, Alistar's next basic attack on-hit against a champion within 6 seconds ends Trample's effects to deal 20 : 275 (based on level) bonus magic damage and stun the target for 1 second.",
+            "leveling": []
+          }
+        ],
+        "name": "Trample"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                120.0,
+                100.0,
+                80.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Active: Alistar cleanses himself of all crowd control. For the next 7 seconds, he reduces incoming damage taken.",
+            "leveling": [
+              {
+                "attribute": "Damage Reduction",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      55.0,
+                      65.0,
+                      75.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Unbreakable Will"
+      }
+    ]
+  },
+  "positions": [
+    "SUPPORT"
+  ]
+}

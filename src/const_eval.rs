@@ -9,10 +9,8 @@
 //! a generic parameter to the function. See its documentation
 //! for more details
 
-use crate::{
-    helpers::ability_id_mod,
-    model::{Modifiers, RangeDamage},
-};
+use crate::helpers::ability_id_mod;
+use crate::model::{Modifiers, RangeDamage};
 use tutorlolv2_gen::*;
 
 /// Constant evaluation of abilities, similar to function [`crate::helpers::ability_id_eval_damage`]

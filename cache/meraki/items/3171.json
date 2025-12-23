@@ -1,0 +1,86 @@
+{
+  "active": [],
+  "buildsFrom": [
+    3158
+  ],
+  "buildsInto": [],
+  "name": "Crimson Lucidity",
+  "tier": 3,
+  "passives": [
+    {
+      "effects": "Gain 10 [[Haste#Summoner spell haste|summoner spell haste]].",
+      "name": "Ionian Insight",
+      "unique": true
+    },
+    {
+      "effects": "{{tip|heal|Healing}}, {{tip|shield|shielding}} or buffing an ally, damaging abilities against champions, and using [[summoner spell]]s grants you {{as|{{rd|10%|8%}} '''bonus''' movement speed}} for 4 seconds. This can be triggered from the same {{tip|cast instance}} only once every 4 seconds.",
+      "name": "Noxian Haste",
+      "unique": true
+    }
+  ],
+  "id": 3171,
+  "stats": {
+    "abilityPower": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 50.0,
+      "percent": 0.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "shop": {
+    "purchasable": true,
+    "prices": {
+      "total": 1400
+    }
+  }
+}

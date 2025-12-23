@@ -1,0 +1,79 @@
+{
+  "active": [],
+  "buildsFrom": [],
+  "buildsInto": [],
+  "name": "Radiant Virtue",
+  "tier": 3,
+  "passives": [
+    {
+      "effects": "Upon casting your [[champion ability|ultimate]], you ''Transcend'' for 9 seconds. While ''Transcended'', increase your {{as|'''maximum''' health by {{fd|12.5}}%}} and cause you and all allies within {{tip|cr|icononly=true}} 1200 units to {{tip|heal}} for {{as|{{fd|2.5}}% of your '''maximum''' health}} upon you ''Transcending'' and every 3 seconds thereafter, for a total healing of {{as|{{ap|2.5*4}}% of your '''maximum''' health}}.",
+      "name": "Guiding Light",
+      "unique": true
+    }
+  ],
+  "id": 446667,
+  "stats": {
+    "abilityPower": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 35.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 400.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 35.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "shop": {
+    "purchasable": true,
+    "prices": {
+      "total": 0
+    }
+  }
+}
