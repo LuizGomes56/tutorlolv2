@@ -6,13 +6,8 @@
 *.txt
 *.pdf
 *.html
-*.svg
 imports
 target
 html
-safety_copy
 raw_img
-sprite
 cache_*
-img
-__build_dbg
