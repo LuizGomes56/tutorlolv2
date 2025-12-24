@@ -7,7 +7,7 @@
 Takes as function argument a parsed struct that can be created from the JSON object provided by Riot's API on port 2999 while some player is playing a League of Legends game, for any game mode.
 
 - The official endpoint is located at the following url, only available if the current machine has an ongoing match being played (replays do not work)
-https://127.0.0.1:2999/liveclientdata/allgamedata
+    - https://127.0.0.1:2999/liveclientdata/allgamedata
     - To see an example of how this data look like, check the following url:
     https://static.developer.riotgames.com/docs/lol/liveclientdata_sample.json
 
@@ -94,7 +94,7 @@ impl Generator<Champion> for Neeko {
 
 After this function is called, it generates a JSON file at location `internal/champions/Neeko.json` that look like the following
 
-```json
+```jsonc
 {
   "name": "Neeko",
   "adaptative_type": "Magic",
@@ -136,11 +136,13 @@ After this function is called, it generates a JSON file at location `internal/ch
 Note that if the function runs successfully, the damage formula of all abilities is recovered. To call some generator specifically, you can do:
 
 ```rs
-let neeko_data = ChampionFactory::run(ChampionId::Neeko);
+ChampionFactory::run(ChampionId::Neeko);
+let data = std::fs::read("internal/champions/Neeko.json")?;
+let neeko_data = serde_json::from_slice::<Champion>(&data)?;
 let neeko_q1 = neeko_data.abilities[0];
 
-assert_eq!(neeko_q1[0], Q::_1);
-assert_eq!(neeko_q1[1].damage[5], "260 + (0.6 * ctx.ap)");
+assert_eq!(neeko_q1.0, Q::_1);
+assert_eq!(neeko_q1.1.damage[4], "260 + (0.6 * ctx.ap)");
 
 // to run all generators
 ChampionFactory::run_all()?;
@@ -153,7 +155,7 @@ Also, this module scrapes from the internet the usual combos for every champion,
 
 ### Example of scraped data
 
-```json
+```jsonc
 "Aurora": {
   "jungle": [
     [
@@ -214,7 +216,7 @@ pub enum ChampionId {
 
 pub static CHAMPION_ID_TO_NAME: [&str; ChampionId::VARIANTS];
 // To get the name of some champion, you can do:
-let neeko = CHAMPION_ID_TO_NAME[ChampionId::Neeko as usize];
+let neeko = CHAMPION_ID_TO_NAME[ChampionId::Neeko];
 
 pub static RECOMMENDED_ITEMS: [[&[ItemId]; 5]; 172];
 // to get the recommended items of some champion, for

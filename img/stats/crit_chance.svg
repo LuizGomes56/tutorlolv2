@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="499.3 7586.2 8144.3 8175.2"
+     width="100%" height="100%">
+
+  <defs>
+    <!-- Gradient -->
+    <linearGradient id="grad" x1="100%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#FF9541"/>
+      <stop offset="100%" stop-color="#BA3E38"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Área externa preenchida com gradiente e contornada com 250px de stroke preto -->
+  <polygon
+    points="
+      1399.7,15761.4
+      8643.6,15676.2
+      8643.6,8551.6
+      7416.5,11182.8
+      7416.5,8269.3
+      6290.2,11090.4
+      5238.7,8971.8
+      4776.9,10232.2
+      499.3,7586.2
+      3208.7,11903.9
+      1897.1,12333
+      3962.3,13405.7
+      1157,14511
+      4427.4,14511
+      7319.3,14413.8
+      7416.5,11182.8
+      8643.6,8551.6
+      8643.6,15676.2
+      1399.7,15761.4
+      4427.4,14511
+    "
+    fill="url(#grad)"
+    stroke="black"
+    stroke-width="250"
+    stroke-linejoin="miter"
+  />
+
+  <!-- Região interna preta sobreposta -->
+  <polygon
+    points="
+      1399.7,15761.4
+      4427.4,14511
+      7319.3,14413.8
+      7416.5,11182.8
+      8643.6,8551.6
+      8643.6,15676.2
+      1399.7,15761.4
+    "
+    fill="black"
+    stroke="none"
+  />
+
+  <!-- Desenho da linha por cima -->
+  <polyline
+    points="
+      1399.7,15761.4
+      8643.6,15676.2
+      8643.6,8551.6
+      7416.5,11182.8
+      7416.5,8269.3
+      6290.2,11090.4
+      5238.7,8971.8
+      4776.9,10232.2
+      499.3,7586.2
+      3208.7,11903.9
+      1897.1,12333
+      3962.3,13405.7
+      1157,14511
+      4427.4,14511
+      7319.3,14413.8
+      7416.5,11182.8
+      8643.6,8551.6
+      8643.6,15676.2
+      1399.7,15761.4
+      4427.4,14511
+    "
+    fill="none"
+    stroke="#000"
+    stroke-width="12"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+</svg>
