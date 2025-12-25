@@ -39,6 +39,16 @@ impl AbilityId {
             AbilityId::R(_) => 'R',
         }
     }
+
+    pub const fn ability_name(&self) -> AbilityName {
+        match self {
+            AbilityId::P(v) => *v,
+            AbilityId::Q(v) => *v,
+            AbilityId::W(v) => *v,
+            AbilityId::E(v) => *v,
+            AbilityId::R(v) => *v,
+        }
+    }
 }
 
 #[cfg(feature = "dev")]
@@ -65,16 +75,6 @@ impl AbilityId {
             AbilityId::W(_) => AbilityId::W(ability_name),
             AbilityId::E(_) => AbilityId::E(ability_name),
             AbilityId::R(_) => AbilityId::R(ability_name),
-        }
-    }
-
-    pub const fn ability_name(&self) -> AbilityName {
-        match self {
-            AbilityId::P(v) => *v,
-            AbilityId::Q(v) => *v,
-            AbilityId::W(v) => *v,
-            AbilityId::E(v) => *v,
-            AbilityId::R(v) => *v,
         }
     }
 

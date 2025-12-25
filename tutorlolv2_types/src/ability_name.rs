@@ -45,6 +45,41 @@ macro_rules! ability_name {
     };
 }
 
+impl AbilityName {
+    pub const fn display(&self) -> Option<&'static str> {
+        match self {
+            AbilityName::_1 => Some("1"),
+            AbilityName::_2 => Some("2"),
+            AbilityName::_3 => Some("3"),
+            AbilityName::_4 => Some("4"),
+            AbilityName::_5 => Some("5"),
+            AbilityName::_6 => Some("6"),
+            AbilityName::_7 => Some("7"),
+            AbilityName::_8 => Some("8"),
+            AbilityName::Min => Some("MIN"),
+            AbilityName::Max => Some("MAX"),
+            AbilityName::Mega => Some("MEGA"),
+            AbilityName::_1Min => Some("1-MIN"),
+            AbilityName::_2Min => Some("2-MIN"),
+            AbilityName::_3Min => Some("3-MIN"),
+            AbilityName::_4Min => Some("4-MIN"),
+            AbilityName::_5Min => Some("5-MIN"),
+            AbilityName::_6Min => Some("6-MIN"),
+            AbilityName::_7Min => Some("7-MIN"),
+            AbilityName::_8Min => Some("8-MIN"),
+            AbilityName::_1Max => Some("1-MAX"),
+            AbilityName::_2Max => Some("2-MAX"),
+            AbilityName::_3Max => Some("3-MAX"),
+            AbilityName::_4Max => Some("4-MAX"),
+            AbilityName::_5Max => Some("5-MAX"),
+            AbilityName::_6Max => Some("6-MAX"),
+            AbilityName::_7Max => Some("7-MAX"),
+            AbilityName::_8Max => Some("8-MAX"),
+            _ => None,
+        }
+    }
+}
+
 ability_name! {
     Void,
     _1,
