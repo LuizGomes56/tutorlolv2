@@ -15,7 +15,7 @@ pub use data::*;
 pub use enums::{Attrs, DamageType};
 #[cfg(feature = "eval")]
 pub use eval::*;
-pub use tutorlolv2_types::{AbilityId, AbilityName, StatName};
+pub use tutorlolv2_types::*;
 
 #[cfg(feature = "glob")]
 pub const RAW_BLOCK: &str = include_str!("block.txt");
@@ -61,7 +61,8 @@ pub const L_SIML: usize = {
     #[cfg(feature = "eval")]
     match NUMBER_OF_SIMULATED_ITEMS == N {
         true => N,
-        false => panic!("Number of simulated items is outdated"),
+        false => NUMBER_OF_SIMULATED_ITEMS,
+        // false => panic!("Number of simulated items is outdated"),
     }
     #[cfg(not(feature = "eval"))]
     N

@@ -11,7 +11,7 @@ use std::{
     cmp::Ordering,
     collections::{BTreeMap, HashMap},
 };
-use tutorlolv2_types::{AbilityId, MergeData};
+use tutorlolv2_types::{AbilityId, DevMergeData};
 
 struct DeclaredAbility {
     ability_id: AbilityId,
@@ -172,7 +172,7 @@ pub fn get_stats(stats: &MerakiChampionStats) -> String {
     all_stats.join(",")
 }
 
-pub fn define_merge_indexes(merge_data: Vec<MergeData>, ability_data: &[AbilityId]) -> String {
+pub fn define_merge_indexes(merge_data: Vec<DevMergeData>, ability_data: &[AbilityId]) -> String {
     let mut index = HashMap::with_capacity(ability_data.len());
     for (i, ability_id) in ability_data.into_iter().enumerate() {
         index.entry(ability_id).or_insert(i);
@@ -181,13 +181,20 @@ pub fn define_merge_indexes(merge_data: Vec<MergeData>, ability_data: &[AbilityI
     merge_data
         .into_iter()
         .filter_map(|value| {
-            let MergeData {
+            let DevMergeData {
                 minimum_damage,
                 maximum_damage,
-                ..
+                alias,
             } = value;
+            let alias = alias.as_literal();
             match (index.get(&minimum_damage), index.get(&maximum_damage)) {
-                (Some(ia), Some(ib)) => Some(format!("({ia}, {ib})")),
+                (Some(ia), Some(ib)) => Some(format!(
+                    "DevMergeData {{
+                        minimum_damage: {ia},
+                        maximum_damage: {ib},
+                        alias: {alias}
+                    }}"
+                )),
                 _ => None,
             }
         })

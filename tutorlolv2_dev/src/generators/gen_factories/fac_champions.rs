@@ -14,14 +14,14 @@ use std::{
 };
 use tutorlolv2_fmt::rustfmt;
 use tutorlolv2_gen::{Attrs, CHAMPION_CACHE, ChampionId, DamageType, Position};
-use tutorlolv2_types::{AbilityId, AbilityName, MergeData};
+use tutorlolv2_types::{AbilityId, AbilityName, DevMergeData};
 
 pub const GENERATOR_FOLDER: &str = "tutorlolv2_dev/src/generators/gen_champions";
 
 pub struct ChampionData {
     pub data: MerakiChampion,
     pub hashmap: HashMap<AbilityId, Ability>,
-    pub mergevec: Vec<MergeData>,
+    pub mergevec: Vec<DevMergeData>,
 }
 
 /// Struct that creates and runs files that implement the trait [`Generator`].
@@ -656,7 +656,7 @@ impl ChampionData {
                     unsafe { std::mem::transmute::<_, AbilityName>(index - MAX_MATCH) };
                 let alias = make(name_alias);
                 if self.hashmap.contains_key(&ability_id) {
-                    self.mergevec.push(MergeData {
+                    self.mergevec.push(DevMergeData {
                         minimum_damage: key,
                         maximum_damage: ability_id,
                         alias,
@@ -674,7 +674,7 @@ impl ChampionData {
         // contain all keys that are present in the mergevec. If it doesn't, the function
         // returns a fail and prints a message to the console.
         if !self.mergevec.iter().all(|value| {
-            let MergeData {
+            let DevMergeData {
                 minimum_damage,
                 maximum_damage,
                 ..

@@ -86,7 +86,7 @@ pub struct Realtime<'a> {
     /// has more flexibility in which it can choose to insert only the minimum damage
     /// of some ability, the maximum damage, or both, while maintaining the table
     /// display in a very deterministic format
-    pub abilities_to_merge: &'static [(usize, usize)],
+    pub abilities_to_merge: &'static [MergeData],
 
     /// Game time in seconds
     pub game_time: u32,
@@ -561,7 +561,7 @@ pub struct OutputGame {
     pub enemies: Box<[OutputEnemy]>,
     pub tower_damages: [i32; L_TWRD],
     pub abilities_meta: &'static [TypeMetadata<AbilityId>],
-    pub abilities_to_merge: &'static [(usize, usize)],
+    pub abilities_to_merge: &'static [MergeData],
     pub items_meta: Box<[TypeMetadata<ItemId>]>,
     pub runes_meta: Box<[TypeMetadata<RuneId>]>,
 }

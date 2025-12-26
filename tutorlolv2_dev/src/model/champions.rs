@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use tutorlolv2_gen::{AdaptativeType, AttackType, Attrs, DamageType, Position};
-use tutorlolv2_types::{AbilityId, MergeData};
+use tutorlolv2_types::{AbilityId, DevMergeData};
 
 #[derive(Deserialize, Serialize)]
 pub struct Modifiers {
@@ -86,7 +86,7 @@ impl MerakiChampion {
     pub fn format(
         self,
         abilities: HashMap<AbilityId, Ability>,
-        merge_data: Vec<MergeData>,
+        merge_data: Vec<DevMergeData>,
     ) -> Champion {
         Champion {
             name: self.name,
@@ -120,7 +120,7 @@ pub struct Champion {
     pub positions: Vec<Position>,
     pub stats: MerakiChampionStats,
     pub abilities: Vec<(AbilityId, Ability)>,
-    pub merge_data: Vec<MergeData>,
+    pub merge_data: Vec<DevMergeData>,
 }
 
 #[derive(Serialize, Deserialize)]

@@ -295,13 +295,13 @@ pub struct CachedChampion {
     /// for (i, j) in merge_data {
     ///     let min_dmg = closures[i](&eval_ctx);
     ///     let max_dmg = closures[j](&eval_ctx);
-    ///     let min_ability = metadata[i];
-    ///     let max_ability = metadata[j];
+    ///     let min_ability = metadata[i].alias;
+    ///     let max_ability = metadata[j].alias;
     ///     println!("[tab] {min_ability} - {max_ability}");
     ///     println!("[dmg] {min_dmg} - {max_dmg}");
     /// }
     /// ```
-    pub merge_data: &'static [(usize, usize)],
+    pub merge_data: &'static [MergeData],
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, PartialOrd, bincode::Encode, serde::Serialize)]
