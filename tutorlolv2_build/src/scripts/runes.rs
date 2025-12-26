@@ -58,8 +58,8 @@ pub async fn generate_runes() -> GeneratorFn {
                 let melee_closure = get_closure(ranged, "ranged");
                 let ranged_closure = get_closure(melee, "melee");
 
-                let mut base_declaration = format!(
-                    "{EVAL_FEAT} pub static {name_ssnake}_{riot_id}: CachedRune = CachedRune {{
+                let base_declaration = format!(
+                    "pub static {name_ssnake}_{riot_id}: CachedRune = CachedRune {{
                         name: {name:?},
                         damage_type: DamageType::{damage_type},
                         metadata: {metadata},
@@ -81,11 +81,12 @@ pub async fn generate_runes() -> GeneratorFn {
                 let melee_constfn_name = format!("{name_ssnake}_melee").to_lowercase();
                 let ranged_constfn_name = format!("{name_ssnake}_ranged").to_lowercase();
 
-                base_declaration.push_str(&format!(
-                    "melee_damage: {melee_constfn_name},
-                    ranged_damage: {ranged_constfn_name} }};"
-                ));
-                base_declaration.push_str(&constfn_declaration);
+                let base_declaration = format!(
+                    "{EVAL_FEAT}{base_declaration}
+                    melee_damage: {melee_constfn_name},
+                    ranged_damage: {ranged_constfn_name} }};
+                    {constfn_declaration}"
+                );
 
                 let match_arm = format!(
                     "AttackType::Melee => {melee_constfn_name}(ctx),

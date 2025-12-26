@@ -229,8 +229,8 @@ pub async fn generate_items() -> GeneratorFn {
                     || is_zeroed(&melee.maximum_damage)
             };
 
-            let mut base_declaration = format!(
-                "{EVAL_FEAT} pub static {name_ssnake}_{riot_id}: CachedItem = CachedItem {{
+            let base_declaration = format!(
+                "pub static {name_ssnake}_{riot_id}: CachedItem = CachedItem {{
                     name: {name:?},
                     price: {price},
                     prettified_stats: &[{prettified_stats}],
@@ -255,12 +255,12 @@ pub async fn generate_items() -> GeneratorFn {
             .rust_html()
             .as_const();
 
-            base_declaration.push_str(&format!(
-                "ranged_damages: [{ranged_fn_names}],
-                melee_damages: [{melee_fn_names}], }};"
-            ));
-
-            base_declaration.push_str(&constfn_declaration);
+            let base_declaration = format!(
+                "{EVAL_FEAT}{base_declaration}
+                ranged_damages: [{ranged_fn_names}],
+                melee_damages: [{melee_fn_names}] }};
+                {constfn_declaration}"
+            );
 
             let generator =
                 CwdPath::get_generator(SrcFolder::Items, name_ssnake.to_lowercase()).await?;

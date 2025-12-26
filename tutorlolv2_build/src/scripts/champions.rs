@@ -189,7 +189,7 @@ pub fn define_merge_indexes(merge_data: Vec<DevMergeData>, ability_data: &[Abili
             let alias = alias.as_literal();
             match (index.get(&minimum_damage), index.get(&maximum_damage)) {
                 (Some(ia), Some(ib)) => Some(format!(
-                    "DevMergeData {{
+                    "MergeData {{
                         minimum_damage: {ia},
                         maximum_damage: {ib},
                         alias: {alias}
@@ -293,8 +293,8 @@ pub async fn generate_champions() -> GeneratorFn {
                 .collect::<Vec<_>>()
                 .join(",");
 
-            let mut base_declaration = format!(
-                "{EVAL_FEAT} pub static {champion_id_upper}: CachedChampion = CachedChampion {{
+            let base_declaration = format!(
+                "pub static {champion_id_upper}: CachedChampion = CachedChampion {{
                     name: {name:?},
                     adaptative_type: AdaptativeType::{adaptative_type},
                     attack_type: AttackType::{attack_type},
@@ -307,12 +307,12 @@ pub async fn generate_champions() -> GeneratorFn {
                 merge_data = define_merge_indexes(merge_data, &ability_names),
             );
 
-            let html_declaration = format!("{base_declaration}&[{closures}], }};")
+            let html_declaration = format!("{base_declaration}&[{closures}] }};")
                 .rust_fmt()
                 .drop_f32s()
                 .rust_html();
 
-            base_declaration.push_str(&format!("&[{fn_names}], }};"));
+            let mut base_declaration = format!("{EVAL_FEAT}{base_declaration}&[{fn_names}] }};");
 
             let mut match_arm_kind = Vec::with_capacity(constfns.len());
             for ConstFn {
@@ -384,6 +384,7 @@ pub async fn generate_champions() -> GeneratorFn {
         mut champion_formulas,
         mut champion_generator,
         mut champion_abilities,
+        mut ability_formulas,
     ] = std::array::from_fn(|i| {
         let (name, vtype, feature) = [
             ("CHAMPION_CACHE", "&CachedChampion", EVAL_FEAT),
@@ -391,7 +392,8 @@ pub async fn generate_champions() -> GeneratorFn {
             ("CHAMPION_ID_TO_NAME", "&str", GLOB_FEAT),
             ("CHAMPION_FORMULAS", "(u32,u32)", GLOB_FEAT),
             ("CHAMPION_GENERATOR", "(u32,u32)", GLOB_FEAT),
-            ("CHAMPION_ABILITIES", "&[(AbilityId,(u32,u32))]", GLOB_FEAT),
+            ("CHAMPION_ABILITIES", "&[AbilityId]", GLOB_FEAT),
+            ("ABILITY_FORMULAS", "&[(u32,u32)]", GLOB_FEAT),
         ][i];
         format!("{feature} pub static {name}: [{vtype}; ChampionId::VARIANTS] = [")
     });
@@ -525,17 +527,25 @@ pub async fn generate_champions() -> GeneratorFn {
         .for_each(add_offsets);
 
         for ability in ability_offsets {
+            let mut recorded_offsets = Vec::with_capacity(ability.len());
             let mut recorded_abilities = Vec::with_capacity(ability.len());
             for (ability_id, (start, end)) in ability {
                 let literal = ability_id.as_literal();
                 let new_start = start + index;
                 let new_end = end + index;
-                recorded_abilities.push(format!("({literal}, ({new_start}, {new_end}))"));
+                recorded_offsets.push(format!("({new_start}, {new_end})"));
+                recorded_abilities.push(literal);
             }
-            let result = recorded_abilities.join(",");
-            champion_abilities.push_str(&format!("&[{result}],"));
+            ability_formulas.push_str(&format!(
+                "&[{result}],",
+                result = recorded_offsets.join(",")
+            ));
+            champion_abilities.push_str(&format!(
+                "&[{result}],",
+                result = recorded_abilities.join(",")
+            ));
         }
-        push_end([&mut champion_abilities], "];");
+        push_end([&mut champion_abilities, &mut ability_formulas], "];");
 
         let content = [
             champion_id_enum,
@@ -544,6 +554,7 @@ pub async fn generate_champions() -> GeneratorFn {
             champion_generator,
             champion_abilities,
             champion_formulas,
+            ability_formulas,
             recommendations,
             champion_declarations,
             champion_name_to_id,
