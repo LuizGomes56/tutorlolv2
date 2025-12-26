@@ -71,62 +71,8 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Blooming Burst",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "60 + (0.6 * ctx.ap)",
-          "110 + (0.6 * ctx.ap)",
-          "160 + (0.6 * ctx.ap)",
-          "210 + (0.6 * ctx.ap)",
-          "260 + (0.6 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_4"
-      },
-      {
-        "name": "Blooming Burst",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "130 + (1.1 * ctx.ap)",
-          "230 + (1.1 * ctx.ap)",
-          "330 + (1.1 * ctx.ap)",
-          "430 + (1.1 * ctx.ap)",
-          "530 + (1.1 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_3"
-      },
-      {
-        "name": "Blooming Burst",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "35 + (0.25 * ctx.ap)",
-          "60 + (0.25 * ctx.ap)",
-          "85 + (0.25 * ctx.ap)",
-          "110 + (0.25 * ctx.ap)",
-          "135 + (0.25 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "W",
-        "name": "_1"
+        "name": "Void"
       },
       {
         "name": "Shapesplitter",
@@ -144,12 +90,12 @@
     [
       {
         "type": "E",
-        "name": "_1"
+        "name": "Void"
       },
       {
         "name": "Tangle-Barbs",
         "damage_type": "Magic",
-        "attributes": "Undefined",
+        "attributes": "Area",
         "damage": [
           "70 + (0.65 * ctx.ap)",
           "105 + (0.65 * ctx.ap)",
@@ -162,37 +108,88 @@
     [
       {
         "type": "Q",
-        "name": "_2"
+        "name": "Min"
       },
       {
         "name": "Blooming Burst",
         "damage_type": "Magic",
-        "attributes": "Undefined",
+        "attributes": "Area",
         "damage": [
-          "35",
-          "50",
-          "65",
-          "80",
-          "95"
+          "35 + (0.25 * ctx.ap)",
+          "60 + (0.25 * ctx.ap)",
+          "85 + (0.25 * ctx.ap)",
+          "110 + (0.25 * ctx.ap)",
+          "135 + (0.25 * ctx.ap)"
         ]
       }
     ],
     [
       {
         "type": "R",
-        "name": "_1"
+        "name": "Void"
       },
       {
         "name": "Pop Blossom",
         "damage_type": "Magic",
-        "attributes": "Undefined",
+        "attributes": "Area",
         "damage": [
           "150 + (1.2 * ctx.ap)",
           "350 + (1.2 * ctx.ap)",
           "550 + (1.2 * ctx.ap)"
         ]
       }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Blooming Burst",
+        "damage_type": "Magic",
+        "attributes": "Area",
+        "damage": [
+          "60 + (0.6 * ctx.ap)",
+          "110 + (0.6 * ctx.ap)",
+          "160 + (0.6 * ctx.ap)",
+          "210 + (0.6 * ctx.ap)",
+          "260 + (0.6 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "Max"
+      },
+      {
+        "name": "Blooming Burst",
+        "damage_type": "Magic",
+        "attributes": "Area",
+        "damage": [
+          "130 + (1.1 * ctx.ap)",
+          "230 + (1.1 * ctx.ap)",
+          "330 + (1.1 * ctx.ap)",
+          "430 + (1.1 * ctx.ap)",
+          "530 + (1.1 * ctx.ap)"
+        ]
+      }
     ]
   ],
-  "merge_data": []
+  "merge_data": [
+    {
+      "minimum_damage": {
+        "type": "Q",
+        "name": "Min"
+      },
+      "maximum_damage": {
+        "type": "Q",
+        "name": "Max"
+      },
+      "alias": {
+        "type": "Q",
+        "name": "Void"
+      }
+    }
+  ]
 }

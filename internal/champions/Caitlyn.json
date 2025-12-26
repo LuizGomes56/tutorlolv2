@@ -70,58 +70,6 @@
   "abilities": [
     [
       {
-        "type": "E",
-        "name": "_1"
-      },
-      {
-        "name": "90 Caliber Net",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "80 + (0.8 * ctx.ap)",
-          "130 + (0.8 * ctx.ap)",
-          "180 + (0.8 * ctx.ap)",
-          "230 + (0.8 * ctx.ap)",
-          "280 + (0.8 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Piltover Peacemaker",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "50 + (1.25 * ctx.ad)",
-          "90 + (1.45 * ctx.ad)",
-          "130 + (1.65 * ctx.ad)",
-          "170 + (1.85 * ctx.ad)",
-          "210 + (2.05 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_1"
-      },
-      {
-        "name": "Ace in the Hole",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "300 + ctx.bonus_ad",
-          "475 + ctx.bonus_ad",
-          "650 + ctx.bonus_ad"
-        ]
-      }
-    ],
-    [
-      {
         "type": "W",
         "name": "_1"
       },
@@ -153,6 +101,58 @@
           "78 + (0.99 * ctx.ad)",
           "102 + (1.11 * ctx.ad)",
           "126 + (1.23 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "90 Caliber Net",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "80 + (0.8 * ctx.ap)",
+          "130 + (0.8 * ctx.ap)",
+          "180 + (0.8 * ctx.ap)",
+          "230 + (0.8 * ctx.ap)",
+          "280 + (0.8 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Ace in the Hole",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "300 + ctx.bonus_ad",
+          "475 + ctx.bonus_ad",
+          "650 + ctx.bonus_ad"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Piltover Peacemaker",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "50 + (1.25 * ctx.ad)",
+          "90 + (1.45 * ctx.ad)",
+          "130 + (1.65 * ctx.ad)",
+          "170 + (1.85 * ctx.ad)",
+          "210 + (2.05 * ctx.ad)"
         ]
       }
     ]

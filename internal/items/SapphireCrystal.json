@@ -11,12 +11,16 @@
       true
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
       "Aram",
       true
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "Arena",
+      false
     ],
     [
       "Tft",
@@ -24,23 +28,14 @@
     ],
     [
       "SummonersRift",
-      true
+      false
     ],
     [
       "NexusBlitz",
       true
-    ],
-    [
-      "Arena",
-      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Mana",
-      "value": 300
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -108,7 +103,7 @@
     3802
   ],
   "builds_into_item_ids": [
-    "CatalystofAeons",
+    "CatalystOfAeons",
     "GlacialBuckler",
     "LostChapter"
   ],

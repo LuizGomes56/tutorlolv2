@@ -7,7 +7,7 @@
   "tier": 3,
   "maps": [
     [
-      "SummonersRift",
+      "Aram",
       false
     ],
     [
@@ -27,7 +27,7 @@
       true
     ],
     [
-      "Aram",
+      "SummonersRift",
       false
     ],
     [
@@ -35,24 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 25
-    },
-    {
-      "name": "Health",
-      "value": 250
-    },
-    {
-      "name": "AbilityPower",
-      "value": 100
-    },
-    {
-      "name": "Mana",
-      "value": 600
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

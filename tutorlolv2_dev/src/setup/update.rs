@@ -119,8 +119,14 @@ pub fn setup_internal_items() -> MayFail {
     }
 
     for (_, item) in common_items {
-        let item_id = ItemId::from_riot_id(item.meraki_item.id)
-            .ok_or("[fail] ItemId::from_riot_id(item.meraki_item.id)")?;
+        let id = item.meraki_item.id;
+        let item_id = match ItemId::from_riot_id(id) {
+            Some(id) => id,
+            None => {
+                println!("[fail] ItemId::from_riot_id({id})");
+                continue;
+            }
+        };
 
         let ItemCache {
             meraki_item,

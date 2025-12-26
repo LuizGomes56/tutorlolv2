@@ -14,14 +14,14 @@ use std::{
 };
 use tutorlolv2_fmt::rustfmt;
 use tutorlolv2_gen::{Attrs, CHAMPION_CACHE, ChampionId, DamageType, Position};
-use tutorlolv2_types::{AbilityId, AbilityName};
+use tutorlolv2_types::{AbilityId, AbilityName, MergeData};
 
 pub const GENERATOR_FOLDER: &str = "tutorlolv2_dev/src/generators/gen_champions";
 
 pub struct ChampionData {
     pub data: MerakiChampion,
     pub hashmap: HashMap<AbilityId, Ability>,
-    pub mergevec: Vec<(AbilityId, AbilityId)>,
+    pub mergevec: Vec<MergeData>,
 }
 
 /// Struct that creates and runs files that implement the trait [`Generator`].
@@ -651,9 +651,16 @@ impl ChampionData {
                 let mut found = false;
                 let ability_name =
                     unsafe { std::mem::transmute::<_, AbilityName>(index + MAX_MATCH) };
-                let ability_like = make(ability_name);
-                if self.hashmap.contains_key(&ability_like) {
-                    self.mergevec.push((key, ability_like));
+                let ability_id = make(ability_name);
+                let name_alias =
+                    unsafe { std::mem::transmute::<_, AbilityName>(index - MAX_MATCH) };
+                let alias = make(name_alias);
+                if self.hashmap.contains_key(&ability_id) {
+                    self.mergevec.push(MergeData {
+                        minimum_damage: key,
+                        maximum_damage: ability_id,
+                        alias,
+                    });
                     found = true;
                 }
 
@@ -666,11 +673,14 @@ impl ChampionData {
         // Verifies if the mergevec makes sense. It means that the generated hashmap should
         // contain all keys that are present in the mergevec. If it doesn't, the function
         // returns a fail and prints a message to the console.
-        if !self
-            .mergevec
-            .iter()
-            .all(|(a, b)| self.hashmap.contains_key(a) && self.hashmap.contains_key(b))
-        {
+        if !self.mergevec.iter().all(|value| {
+            let MergeData {
+                minimum_damage,
+                maximum_damage,
+                ..
+            } = value;
+            self.hashmap.contains_key(minimum_damage) && self.hashmap.contains_key(maximum_damage)
+        }) {
             println!(
                 "{name}: inconsistent data inserted in macro `merge!`.\nmerge_vec: {:?},\n`hashmap_keys: {:?}",
                 self.mergevec,

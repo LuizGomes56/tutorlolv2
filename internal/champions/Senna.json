@@ -71,22 +71,6 @@
   "abilities": [
     [
       {
-        "type": "R",
-        "name": "_1"
-      },
-      {
-        "name": "Dawning Shadow",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "250 + (1.15 * ctx.bonus_ad) + (0.7 * ctx.ap)",
-          "400 + (1.15 * ctx.bonus_ad) + (0.7 * ctx.ap)",
-          "550 + (1.15 * ctx.bonus_ad) + (0.7 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "W",
         "name": "_1"
       },
@@ -100,6 +84,22 @@
           "160 + (0.7 * ctx.bonus_ad)",
           "205 + (0.7 * ctx.bonus_ad)",
           "250 + (0.7 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Dawning Shadow",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "250 + (1.15 * ctx.bonus_ad) + (0.7 * ctx.ap)",
+          "400 + (1.15 * ctx.bonus_ad) + (0.7 * ctx.ap)",
+          "550 + (1.15 * ctx.bonus_ad) + (0.7 * ctx.ap)"
         ]
       }
     ],

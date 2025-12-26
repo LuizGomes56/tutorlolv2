@@ -7,16 +7,16 @@
   "tier": 1,
   "maps": [
     [
+      "SummonersRift",
+      false
+    ],
+    [
+      "Tft",
+      false
+    ],
+    [
       "Arena",
       false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
     ],
     [
       "Aram",
@@ -27,20 +27,15 @@
       true
     ],
     [
-      "NexusBlitz",
+      "SummonersRift",
       true
     ],
     [
-      "Tft",
-      false
+      "NexusBlitz",
+      true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "MoveSpeed",
-      "value": 25
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -114,11 +109,11 @@
     3020
   ],
   "builds_into_item_ids": [
-    "IonianBootsofLucidity",
+    "IonianBootsOfLucidity",
     "PlatedSteelcaps",
     "MercurysTreads",
     "BerserkersGreaves",
-    "BootsofSwiftness",
+    "BootsOfSwiftness",
     "SymbioticSoles",
     "SorcerersShoes"
   ],

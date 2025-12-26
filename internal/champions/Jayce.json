@@ -71,25 +71,6 @@
   "abilities": [
     [
       {
-        "type": "W",
-        "name": "_3"
-      },
-      {
-        "name": "Lightning Field",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "35 + (0.25 * ctx.ap)",
-          "50 + (0.25 * ctx.ap)",
-          "65 + (0.25 * ctx.ap)",
-          "80 + (0.25 * ctx.ap)",
-          "95 + (0.25 * ctx.ap)",
-          "110 + (0.25 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "E",
         "name": "_1"
       },
@@ -123,6 +104,25 @@
           "500",
           "600",
           "700"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_3"
+      },
+      {
+        "name": "Lightning Field",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "35 + (0.25 * ctx.ap)",
+          "50 + (0.25 * ctx.ap)",
+          "65 + (0.25 * ctx.ap)",
+          "80 + (0.25 * ctx.ap)",
+          "95 + (0.25 * ctx.ap)",
+          "110 + (0.25 * ctx.ap)"
         ]
       }
     ],

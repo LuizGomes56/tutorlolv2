@@ -1,13 +1,17 @@
 {
   "riot_id": 4401,
-  "item_id": "ForceofNature",
+  "item_id": "ForceOfNature",
   "name": "Force of Nature",
   "price": 2800,
   "sell": 1960,
   "tier": 3,
   "maps": [
     [
-      "NexusBlitz",
+      "Arena",
+      false
+    ],
+    [
+      "Aram",
       true
     ],
     [
@@ -23,32 +27,15 @@
       false
     ],
     [
-      "SummonersRift",
+      "NexusBlitz",
       true
     ],
     [
-      "Arena",
-      false
-    ],
-    [
-      "Aram",
+      "SummonersRift",
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Health",
-      "value": 400
-    },
-    {
-      "name": "MagicResist",
-      "value": 55
-    },
-    {
-      "name": "MoveSpeed",
-      "value": 4
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

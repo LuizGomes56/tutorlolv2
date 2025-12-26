@@ -7,8 +7,20 @@
   "tier": 2,
   "maps": [
     [
+      "NexusBlitz",
+      true
+    ],
+    [
       "SummonersRift",
       true
+    ],
+    [
+      "Aram",
+      true
+    ],
+    [
+      "SummonersRift",
+      false
     ],
     [
       "Tft",
@@ -19,28 +31,11 @@
       false
     ],
     [
-      "NexusBlitz",
-      true
-    ],
-    [
       "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Aram",
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "MagicResist",
-      "value": 45
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -115,10 +110,10 @@
     8020
   ],
   "builds_into_item_ids": [
-    "ForceofNature",
+    "ForceOfNature",
     "KaenicRookern",
     "WitsEnd",
-    "JakShoTheProtean",
+    "JakshoTheProtean",
     "AbyssalMask"
   ],
   "ranged": {

@@ -7,15 +7,23 @@
   "tier": 1,
   "maps": [
     [
-      "Arena",
-      false
+      "SummonersRift",
+      true
     ],
     [
       "SummonersRift",
       true
     ],
     [
-      "SummonersRift",
+      "Arena",
+      false
+    ],
+    [
+      "NexusBlitz",
+      true
+    ],
+    [
+      "Aram",
       true
     ],
     [
@@ -25,22 +33,9 @@
     [
       "SummonersRift",
       false
-    ],
-    [
-      "Aram",
-      true
-    ],
-    [
-      "NexusBlitz",
-      true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Armor",
-      "value": 15
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -124,12 +119,12 @@
     "SteelSigil",
     "ShatteredArmguard",
     "WardensMail",
-    "LocketoftheIronSolari",
+    "LocketOfTheIronSolari",
     "SeekersArmguard",
     "GlacialBuckler",
     "ZekesConvergence",
     "BrambleVest",
-    "AegisoftheLegion"
+    "AegisOfTheLegion"
   ],
   "ranged": {
     "minimum_damage": "zero",

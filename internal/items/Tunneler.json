@@ -7,16 +7,8 @@
   "tier": 2,
   "maps": [
     [
-      "SummonersRift",
+      "Arena",
       false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
     ],
     [
       "Aram",
@@ -27,24 +19,23 @@
       false
     ],
     [
-      "Arena",
+      "SummonersRift",
       false
+    ],
+    [
+      "SummonersRift",
+      true
     ],
     [
       "NexusBlitz",
       true
+    ],
+    [
+      "SummonersRift",
+      true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackDamage",
-      "value": 15
-    },
-    {
-      "name": "Health",
-      "value": 250
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -124,8 +115,8 @@
   ],
   "builds_into_item_ids": [
     "TitanicHydra",
-    "SpearofShojin",
-    "EdgeofNight",
+    "SpearOfShojin",
+    "EdgeOfNight",
     "Hullbreaker",
     "OverlordsBloodmail",
     "SteraksGage",

@@ -90,18 +90,18 @@
     [
       {
         "type": "Q",
-        "name": "_2"
+        "name": "_1"
       },
       {
         "name": "Ranger's Focus",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "(1.1 * ctx.ad)",
-          "(1.175 * ctx.ad)",
-          "(1.25 * ctx.ad)",
-          "(1.325 * ctx.ad)",
-          "(1.4 * ctx.ad)"
+          "(0.22 * ctx.ad)",
+          "(0.235 * ctx.ad)",
+          "(0.25 * ctx.ad)",
+          "(0.265 * ctx.ad)",
+          "(0.28 * ctx.ad)"
         ]
       }
     ],
@@ -124,18 +124,18 @@
     [
       {
         "type": "Q",
-        "name": "_1"
+        "name": "_2"
       },
       {
         "name": "Ranger's Focus",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "(0.22 * ctx.ad)",
-          "(0.235 * ctx.ad)",
-          "(0.25 * ctx.ad)",
-          "(0.265 * ctx.ad)",
-          "(0.28 * ctx.ad)"
+          "(1.1 * ctx.ad)",
+          "(1.175 * ctx.ad)",
+          "(1.25 * ctx.ad)",
+          "(1.325 * ctx.ad)",
+          "(1.4 * ctx.ad)"
         ]
       }
     ]

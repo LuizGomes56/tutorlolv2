@@ -70,6 +70,22 @@
   "abilities": [
     [
       {
+        "type": "R",
+        "name": "_2"
+      },
+      {
+        "name": "Super Mega Death Rocket!",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "24 + (0.124 * ctx.bonus_ad) + (0.2 * ctx.missing_health)",
+          "36 + (0.124 * ctx.bonus_ad) + (0.24 * ctx.missing_health)",
+          "48 + (0.124 * ctx.bonus_ad) + (0.28 * ctx.missing_health)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "E",
         "name": "_1"
       },
@@ -88,6 +104,22 @@
     ],
     [
       {
+        "type": "R",
+        "name": "_3"
+      },
+      {
+        "name": "Super Mega Death Rocket!",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "300 + (1.55 * ctx.bonus_ad) + (0.25 * ctx.missing_health)",
+          "450 + (1.55 * ctx.bonus_ad) + (0.3 * ctx.missing_health)",
+          "600 + (1.55 * ctx.bonus_ad) + (0.35 * ctx.missing_health)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "W",
         "name": "_1"
       },
@@ -101,22 +133,6 @@
           "110 + (1.4 * ctx.ad)",
           "160 + (1.4 * ctx.ad)",
           "210 + (1.4 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_2"
-      },
-      {
-        "name": "Super Mega Death Rocket!",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "24 + (0.124 * ctx.bonus_ad) + (0.2 * ctx.missing_health)",
-          "36 + (0.124 * ctx.bonus_ad) + (0.24 * ctx.missing_health)",
-          "48 + (0.124 * ctx.bonus_ad) + (0.28 * ctx.missing_health)"
         ]
       }
     ],
@@ -149,22 +165,6 @@
           "240 + (1.24 * ctx.bonus_ad) + (0.2 * ctx.missing_health)",
           "360 + (1.24 * ctx.bonus_ad) + (0.24 * ctx.missing_health)",
           "480 + (1.24 * ctx.bonus_ad) + (0.28 * ctx.missing_health)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_3"
-      },
-      {
-        "name": "Super Mega Death Rocket!",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "300 + (1.55 * ctx.bonus_ad) + (0.25 * ctx.missing_health)",
-          "450 + (1.55 * ctx.bonus_ad) + (0.3 * ctx.missing_health)",
-          "600 + (1.55 * ctx.bonus_ad) + (0.35 * ctx.missing_health)"
         ]
       }
     ]

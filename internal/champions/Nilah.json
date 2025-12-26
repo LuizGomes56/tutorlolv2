@@ -71,6 +71,24 @@
     [
       {
         "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "Formless Blade",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "5 + (0.9 * ctx.ad)",
+          "10 + (0.95 * ctx.ad)",
+          "15 + ctx.ad",
+          "20 + (1.05 * ctx.ad)",
+          "25 + (1.1 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
         "name": "_1"
       },
       {
@@ -83,6 +101,22 @@
           "30 + (2 * ctx.ad)",
           "40 + (2.1 * ctx.ad)",
           "50 + (2.2 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_2"
+      },
+      {
+        "name": "Apotheosis",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "185 + (1.4 * ctx.bonus_ad)",
+          "325 + (1.4 * ctx.bonus_ad)",
+          "465 + (1.4 * ctx.bonus_ad)"
         ]
       }
     ],
@@ -107,56 +141,6 @@
     [
       {
         "type": "R",
-        "name": "_3"
-      },
-      {
-        "name": "Apotheosis",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "15 + (0.1 * ctx.bonus_ad)",
-          "25 + (0.1 * ctx.bonus_ad)",
-          "35 + (0.1 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_2"
-      },
-      {
-        "name": "Formless Blade",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "5 + (0.9 * ctx.ad)",
-          "10 + (0.95 * ctx.ad)",
-          "15 + ctx.ad",
-          "20 + (1.05 * ctx.ad)",
-          "25 + (1.1 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_4"
-      },
-      {
-        "name": "Apotheosis",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "60 + (0.4 * ctx.bonus_ad)",
-          "100 + (0.4 * ctx.bonus_ad)",
-          "140 + (0.4 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
         "name": "_1"
       },
       {
@@ -173,16 +157,32 @@
     [
       {
         "type": "R",
-        "name": "_2"
+        "name": "_3"
       },
       {
         "name": "Apotheosis",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "185 + (1.4 * ctx.bonus_ad)",
-          "325 + (1.4 * ctx.bonus_ad)",
-          "465 + (1.4 * ctx.bonus_ad)"
+          "15 + (0.1 * ctx.bonus_ad)",
+          "25 + (0.1 * ctx.bonus_ad)",
+          "35 + (0.1 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_4"
+      },
+      {
+        "name": "Apotheosis",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "60 + (0.4 * ctx.bonus_ad)",
+          "100 + (0.4 * ctx.bonus_ad)",
+          "140 + (0.4 * ctx.bonus_ad)"
         ]
       }
     ]

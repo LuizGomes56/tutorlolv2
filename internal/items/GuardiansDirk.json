@@ -15,7 +15,7 @@
       false
     ],
     [
-      "SummonersRift",
+      "Tft",
       false
     ],
     [
@@ -23,32 +23,19 @@
       false
     ],
     [
+      "Arena",
+      true
+    ],
+    [
       "SummonersRift",
       false
     ],
     [
-      "Tft",
+      "SummonersRift",
       false
-    ],
-    [
-      "Arena",
-      true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Lethality",
-      "value": 11
-    },
-    {
-      "name": "AbilityHaste",
-      "value": 10
-    },
-    {
-      "name": "AttackDamage",
-      "value": 25
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

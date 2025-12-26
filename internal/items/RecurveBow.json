@@ -11,7 +11,7 @@
       true
     ],
     [
-      "Arena",
+      "SummonersRift",
       false
     ],
     [
@@ -19,7 +19,11 @@
       false
     ],
     [
-      "SummonersRift",
+      "Aram",
+      true
+    ],
+    [
+      "Arena",
       false
     ],
     [
@@ -29,18 +33,9 @@
     [
       "SummonersRift",
       true
-    ],
-    [
-      "Aram",
-      true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackSpeed",
-      "value": 15
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -119,7 +114,7 @@
     "Terminus",
     "WitsEnd",
     "GuinsoosRageblade",
-    "BladeoftheRuinedKing",
+    "BladeOfTheRuinedKing",
     "KrakenSlayer"
   ],
   "ranged": {

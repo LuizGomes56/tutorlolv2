@@ -1,22 +1,26 @@
 {
   "riot_id": 3901,
-  "item_id": "FireatWill",
+  "item_id": "FireAtWill",
   "name": "Fire at Will",
   "price": 0,
   "sell": 0,
   "tier": 1,
   "maps": [
     [
+      "Aram",
+      true
+    ],
+    [
       "SummonersRift",
       true
     ],
     [
-      "Arena",
-      true
+      "Tft",
+      false
     ],
     [
-      "Aram",
-      true
+      "SummonersRift",
+      false
     ],
     [
       "SummonersRift",
@@ -27,12 +31,8 @@
       true
     ],
     [
-      "Tft",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
+      "Arena",
+      true
     ]
   ],
   "prettified_stats": [],

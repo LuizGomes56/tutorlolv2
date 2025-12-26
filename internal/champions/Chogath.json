@@ -70,19 +70,17 @@
   "abilities": [
     [
       {
-        "type": "W",
+        "type": "R",
         "name": "_1"
       },
       {
-        "name": "Feral Scream",
-        "damage_type": "Magic",
+        "name": "Feast",
+        "damage_type": "True",
         "attributes": "Undefined",
         "damage": [
-          "80 + (0.7 * ctx.ap)",
-          "130 + (0.7 * ctx.ap)",
-          "180 + (0.7 * ctx.ap)",
-          "230 + (0.7 * ctx.ap)",
-          "280 + (0.7 * ctx.ap)"
+          "300 + (0.5 * ctx.ap) + (0.1 * ctx.bonus_health)",
+          "475 + (0.5 * ctx.ap) + (0.1 * ctx.bonus_health)",
+          "650 + (0.5 * ctx.ap) + (0.1 * ctx.bonus_health)"
         ]
       }
     ],
@@ -122,17 +120,37 @@
     ],
     [
       {
-        "type": "R",
+        "type": "Q",
         "name": "_1"
       },
       {
-        "name": "Feast",
-        "damage_type": "True",
+        "name": "Rupture",
+        "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "300 + (0.5 * ctx.ap) + (0.1 * ctx.bonus_health)",
-          "475 + (0.5 * ctx.ap) + (0.1 * ctx.bonus_health)",
-          "650 + (0.5 * ctx.ap) + (0.1 * ctx.bonus_health)"
+          "80 + ctx.ap",
+          "135 + ctx.ap",
+          "190 + ctx.ap",
+          "245 + ctx.ap",
+          "300 + ctx.ap"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Feral Scream",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "80 + (0.7 * ctx.ap)",
+          "130 + (0.7 * ctx.ap)",
+          "180 + (0.7 * ctx.ap)",
+          "230 + (0.7 * ctx.ap)",
+          "280 + (0.7 * ctx.ap)"
         ]
       }
     ],
@@ -151,24 +169,6 @@
           "60 + (0.3 * ctx.ap) + (0.032 * ctx.enemy_max_health) + (0.005 * ctx.chogath_stacks)",
           "80 + (0.3 * ctx.ap) + (0.0355 * ctx.enemy_max_health) + (0.005 * ctx.chogath_stacks)",
           "100 + (0.3 * ctx.ap) + (0.039 * ctx.enemy_max_health) + (0.005 * ctx.chogath_stacks)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Rupture",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "80 + ctx.ap",
-          "135 + ctx.ap",
-          "190 + ctx.ap",
-          "245 + ctx.ap",
-          "300 + ctx.ap"
         ]
       }
     ]

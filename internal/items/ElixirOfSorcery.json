@@ -1,17 +1,21 @@
 {
   "riot_id": 2139,
-  "item_id": "ElixirofSorcery",
+  "item_id": "ElixirOfSorcery",
   "name": "Elixir of Sorcery",
   "price": 500,
   "sell": 200,
   "tier": 1,
   "maps": [
     [
-      "Arena",
+      "Tft",
       false
     ],
     [
       "SummonersRift",
+      false
+    ],
+    [
+      "Aram",
       true
     ],
     [
@@ -19,7 +23,7 @@
       true
     ],
     [
-      "SummonersRift",
+      "Arena",
       false
     ],
     [
@@ -27,11 +31,7 @@
       false
     ],
     [
-      "Tft",
-      false
-    ],
-    [
-      "Aram",
+      "SummonersRift",
       true
     ]
   ],

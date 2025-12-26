@@ -71,18 +71,18 @@
     [
       {
         "type": "E",
-        "name": "_2"
+        "name": "_3"
       },
       {
         "name": "Flay",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "1.7*ctx.thresh_stacks + (0.9 * ctx.ad)",
-          "1.7*ctx.thresh_stacks + (1.2 * ctx.ad)",
-          "1.7*ctx.thresh_stacks + (1.5 * ctx.ad)",
-          "1.7*ctx.thresh_stacks + (1.8 * ctx.ad)",
-          "1.7*ctx.thresh_stacks + (2.1 * ctx.ad)"
+          "1.7*ctx.thresh_stacks + (0 * ctx.ad)",
+          "1.7*ctx.thresh_stacks + (0 * ctx.ad)",
+          "1.7*ctx.thresh_stacks + (0 * ctx.ad)",
+          "1.7*ctx.thresh_stacks + (0 * ctx.ad)",
+          "1.7*ctx.thresh_stacks + (0 * ctx.ad)"
         ]
       }
     ],
@@ -99,24 +99,6 @@
           "250 + ctx.ap",
           "400 + ctx.ap",
           "550 + ctx.ap"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Death Sentence",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "100 + (0.9 * ctx.ap)",
-          "150 + (0.9 * ctx.ap)",
-          "200 + (0.9 * ctx.ap)",
-          "250 + (0.9 * ctx.ap)",
-          "300 + (0.9 * ctx.ap)"
         ]
       }
     ],
@@ -141,18 +123,36 @@
     [
       {
         "type": "E",
-        "name": "_3"
+        "name": "_2"
       },
       {
         "name": "Flay",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "1.7*ctx.thresh_stacks + (0 * ctx.ad)",
-          "1.7*ctx.thresh_stacks + (0 * ctx.ad)",
-          "1.7*ctx.thresh_stacks + (0 * ctx.ad)",
-          "1.7*ctx.thresh_stacks + (0 * ctx.ad)",
-          "1.7*ctx.thresh_stacks + (0 * ctx.ad)"
+          "1.7*ctx.thresh_stacks + (0.9 * ctx.ad)",
+          "1.7*ctx.thresh_stacks + (1.2 * ctx.ad)",
+          "1.7*ctx.thresh_stacks + (1.5 * ctx.ad)",
+          "1.7*ctx.thresh_stacks + (1.8 * ctx.ad)",
+          "1.7*ctx.thresh_stacks + (2.1 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Death Sentence",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "100 + (0.9 * ctx.ap)",
+          "150 + (0.9 * ctx.ap)",
+          "200 + (0.9 * ctx.ap)",
+          "250 + (0.9 * ctx.ap)",
+          "300 + (0.9 * ctx.ap)"
         ]
       }
     ]

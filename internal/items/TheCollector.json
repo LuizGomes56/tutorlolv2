@@ -8,18 +8,14 @@
   "maps": [
     [
       "SummonersRift",
-      false
+      true
     ],
     [
       "SummonersRift",
-      true
+      false
     ],
     [
       "NexusBlitz",
-      true
-    ],
-    [
-      "Aram",
       true
     ],
     [
@@ -31,24 +27,15 @@
       false
     ],
     [
+      "Aram",
+      true
+    ],
+    [
       "Arena",
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackDamage",
-      "value": 50
-    },
-    {
-      "name": "Lethality",
-      "value": 10
-    },
-    {
-      "name": "CriticalStrikeChance",
-      "value": 25
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -116,7 +103,7 @@
   "builds_from_item_ids": [
     "Pickaxe",
     "SerratedDirk",
-    "CloakofAgility"
+    "CloakOfAgility"
   ],
   "builds_into_riot_ids": [],
   "builds_into_item_ids": [],

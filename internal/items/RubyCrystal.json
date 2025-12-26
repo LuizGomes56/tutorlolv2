@@ -8,14 +8,10 @@
   "maps": [
     [
       "SummonersRift",
-      true
+      false
     ],
     [
       "SummonersRift",
-      true
-    ],
-    [
-      "Aram",
       true
     ],
     [
@@ -23,8 +19,12 @@
       true
     ],
     [
+      "Aram",
+      true
+    ],
+    [
       "SummonersRift",
-      false
+      true
     ],
     [
       "Tft",
@@ -35,12 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Health",
-      "value": 150
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -135,11 +130,11 @@
     "GiantsBelt",
     "Tunneler",
     "SpectresCowl",
-    "ForceofNature",
-    "SpearofShojin",
+    "ForceOfNature",
+    "SpearOfShojin",
     "IcebornGauntlet",
     "BamisCinder",
-    "CatalystofAeons",
+    "CatalystOfAeons",
     "Phage",
     "SteraksGage",
     "WingedMoonplate",

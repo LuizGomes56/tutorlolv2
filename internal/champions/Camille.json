@@ -71,22 +71,6 @@
   "abilities": [
     [
       {
-        "type": "R",
-        "name": "_1"
-      },
-      {
-        "name": "The Hextech Ultimatum",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "(0.04 * ctx.current_health)",
-          "(0.06 * ctx.current_health)",
-          "(0.08 * ctx.current_health)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "Q",
         "name": "_1"
       },
@@ -105,19 +89,35 @@
     ],
     [
       {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "The Hextech Ultimatum",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "(0.04 * ctx.current_health)",
+          "(0.06 * ctx.current_health)",
+          "(0.08 * ctx.current_health)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "W",
-        "name": "_3"
+        "name": "_2"
       },
       {
         "name": "Tactical Sweep",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "(0.03 * ctx.enemy_max_health) + (0.0125 * 0.01 * ctx.bonus_ad)",
-          "(0.0325 * ctx.enemy_max_health) + (0.0125 * 0.01 * ctx.bonus_ad)",
-          "(0.035 * ctx.enemy_max_health) + (0.0125 * 0.01 * ctx.bonus_ad)",
-          "(0.0375 * ctx.enemy_max_health) + (0.0125 * 0.01 * ctx.bonus_ad)",
-          "(0.04 * ctx.enemy_max_health) + (0.0125 * 0.01 * ctx.bonus_ad)"
+          "(0.06 * ctx.enemy_max_health) + (0.025 * 0.01 * ctx.bonus_ad)",
+          "(0.065 * ctx.enemy_max_health) + (0.025 * 0.01 * ctx.bonus_ad)",
+          "(0.07 * ctx.enemy_max_health) + (0.025 * 0.01 * ctx.bonus_ad)",
+          "(0.075 * ctx.enemy_max_health) + (0.025 * 0.01 * ctx.bonus_ad)",
+          "(0.08 * ctx.enemy_max_health) + (0.025 * 0.01 * ctx.bonus_ad)"
         ]
       }
     ],
@@ -178,18 +178,18 @@
     [
       {
         "type": "W",
-        "name": "_2"
+        "name": "_3"
       },
       {
         "name": "Tactical Sweep",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "(0.06 * ctx.enemy_max_health) + (0.025 * 0.01 * ctx.bonus_ad)",
-          "(0.065 * ctx.enemy_max_health) + (0.025 * 0.01 * ctx.bonus_ad)",
-          "(0.07 * ctx.enemy_max_health) + (0.025 * 0.01 * ctx.bonus_ad)",
-          "(0.075 * ctx.enemy_max_health) + (0.025 * 0.01 * ctx.bonus_ad)",
-          "(0.08 * ctx.enemy_max_health) + (0.025 * 0.01 * ctx.bonus_ad)"
+          "(0.03 * ctx.enemy_max_health) + (0.0125 * 0.01 * ctx.bonus_ad)",
+          "(0.0325 * ctx.enemy_max_health) + (0.0125 * 0.01 * ctx.bonus_ad)",
+          "(0.035 * ctx.enemy_max_health) + (0.0125 * 0.01 * ctx.bonus_ad)",
+          "(0.0375 * ctx.enemy_max_health) + (0.0125 * 0.01 * ctx.bonus_ad)",
+          "(0.04 * ctx.enemy_max_health) + (0.0125 * 0.01 * ctx.bonus_ad)"
         ]
       }
     ]

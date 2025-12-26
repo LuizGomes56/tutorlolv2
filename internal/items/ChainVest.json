@@ -7,7 +7,7 @@
   "tier": 2,
   "maps": [
     [
-      "NexusBlitz",
+      "Aram",
       true
     ],
     [
@@ -15,11 +15,11 @@
       false
     ],
     [
-      "Aram",
-      true
+      "Arena",
+      false
     ],
     [
-      "SummonersRift",
+      "NexusBlitz",
       true
     ],
     [
@@ -31,16 +31,11 @@
       true
     ],
     [
-      "Arena",
-      false
+      "SummonersRift",
+      true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Armor",
-      "value": 40
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -125,7 +120,7 @@
     "Thornmail",
     "KnightsVow",
     "DeadMansPlate",
-    "JakShoTheProtean"
+    "JakshoTheProtean"
   ],
   "ranged": {
     "minimum_damage": "zero",

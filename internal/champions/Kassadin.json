@@ -70,19 +70,17 @@
   "abilities": [
     [
       {
-        "type": "W",
-        "name": "_1"
+        "type": "R",
+        "name": "_4"
       },
       {
-        "name": "Nether Blade",
+        "name": "Riftwalk",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "50 + (0.8 * ctx.ap)",
-          "75 + (0.8 * ctx.ap)",
-          "100 + (0.8 * ctx.ap)",
-          "125 + (0.8 * ctx.ap)",
-          "150 + (0.8 * ctx.ap)"
+          "210 + (0.78 * ctx.ap) + (0.06 * ctx.max_mana)",
+          "270 + (0.78 * ctx.ap) + (0.06 * ctx.max_mana)",
+          "330 + (0.78 * ctx.ap) + (0.06 * ctx.max_mana)"
         ]
       }
     ],
@@ -101,6 +99,24 @@
           "125 + (0.6 * ctx.ap)",
           "155 + (0.6 * ctx.ap)",
           "185 + (0.6 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Nether Blade",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "50 + (0.8 * ctx.ap)",
+          "75 + (0.8 * ctx.ap)",
+          "100 + (0.8 * ctx.ap)",
+          "125 + (0.8 * ctx.ap)",
+          "150 + (0.8 * ctx.ap)"
         ]
       }
     ],
@@ -125,16 +141,16 @@
     [
       {
         "type": "R",
-        "name": "_1"
+        "name": "_2"
       },
       {
         "name": "Riftwalk",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "70 + (0.5 * ctx.ap) + (0.02 * ctx.max_mana)",
-          "90 + (0.5 * ctx.ap) + (0.02 * ctx.max_mana)",
-          "110 + (0.5 * ctx.ap) + (0.02 * ctx.max_mana)"
+          "35 + (0.07 * ctx.ap) + (0.01 * ctx.max_mana)",
+          "45 + (0.07 * ctx.ap) + (0.01 * ctx.max_mana)",
+          "55 + (0.07 * ctx.ap) + (0.01 * ctx.max_mana)"
         ]
       }
     ],
@@ -157,32 +173,16 @@
     [
       {
         "type": "R",
-        "name": "_4"
+        "name": "_1"
       },
       {
         "name": "Riftwalk",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "210 + (0.78 * ctx.ap) + (0.06 * ctx.max_mana)",
-          "270 + (0.78 * ctx.ap) + (0.06 * ctx.max_mana)",
-          "330 + (0.78 * ctx.ap) + (0.06 * ctx.max_mana)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_2"
-      },
-      {
-        "name": "Riftwalk",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "35 + (0.07 * ctx.ap) + (0.01 * ctx.max_mana)",
-          "45 + (0.07 * ctx.ap) + (0.01 * ctx.max_mana)",
-          "55 + (0.07 * ctx.ap) + (0.01 * ctx.max_mana)"
+          "70 + (0.5 * ctx.ap) + (0.02 * ctx.max_mana)",
+          "90 + (0.5 * ctx.ap) + (0.02 * ctx.max_mana)",
+          "110 + (0.5 * ctx.ap) + (0.02 * ctx.max_mana)"
         ]
       }
     ]

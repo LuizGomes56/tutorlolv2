@@ -70,24 +70,6 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Gleaming Quill",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "70 + (0.7 * ctx.ap)",
-          "115 + (0.7 * ctx.ap)",
-          "160 + (0.7 * ctx.ap)",
-          "205 + (0.7 * ctx.ap)",
-          "250 + (0.7 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "W",
         "name": "_1"
       },
@@ -117,6 +99,24 @@
           "100 + (0.5 * ctx.ap)",
           "200 + (0.5 * ctx.ap)",
           "300 + (0.5 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Gleaming Quill",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "70 + (0.7 * ctx.ap)",
+          "115 + (0.7 * ctx.ap)",
+          "160 + (0.7 * ctx.ap)",
+          "205 + (0.7 * ctx.ap)",
+          "250 + (0.7 * ctx.ap)"
         ]
       }
     ]

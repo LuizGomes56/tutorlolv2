@@ -11,11 +11,7 @@
       true
     ],
     [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
+      "Tft",
       false
     ],
     [
@@ -23,7 +19,7 @@
       true
     ],
     [
-      "Tft",
+      "SummonersRift",
       false
     ],
     [
@@ -33,22 +29,13 @@
     [
       "NexusBlitz",
       true
+    ],
+    [
+      "Arena",
+      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "CriticalStrikeChance",
-      "value": 15
-    },
-    {
-      "name": "MoveSpeed",
-      "value": 4
-    },
-    {
-      "name": "AttackSpeed",
-      "value": 15
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -113,7 +100,7 @@
     1042
   ],
   "builds_from_item_ids": [
-    "CloakofAgility",
+    "CloakOfAgility",
     "Dagger"
   ],
   "builds_into_riot_ids": [

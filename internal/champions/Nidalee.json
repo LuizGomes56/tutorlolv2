@@ -70,24 +70,6 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_4"
-      },
-      {
-        "name": "Javelin Toss",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "70 + (0.5 * ctx.ap)",
-          "90",
-          "110",
-          "130",
-          "150"
-        ]
-      }
-    ],
-    [
-      {
         "type": "W",
         "name": "_2"
       },
@@ -101,6 +83,42 @@
           "120",
           "160",
           "200"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_3"
+      },
+      {
+        "name": "Bushwhack",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "10 + (0.05 * ctx.ap)",
+          "20",
+          "30",
+          "40",
+          "50"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_4"
+      },
+      {
+        "name": "Javelin Toss",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "70 + (0.5 * ctx.ap)",
+          "90",
+          "110",
+          "130",
+          "150"
         ]
       }
     ],
@@ -137,24 +155,6 @@
           "0.5",
           "0.6",
           "0.7"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_3"
-      },
-      {
-        "name": "Bushwhack",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "10 + (0.05 * ctx.ap)",
-          "20",
-          "30",
-          "40",
-          "50"
         ]
       }
     ]

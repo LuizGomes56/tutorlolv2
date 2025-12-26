@@ -15,14 +15,6 @@
       false
     ],
     [
-      "NexusBlitz",
-      true
-    ],
-    [
-      "Arena",
-      false
-    ],
-    [
       "SummonersRift",
       true
     ],
@@ -31,16 +23,19 @@
       true
     ],
     [
+      "Arena",
+      false
+    ],
+    [
       "SummonersRift",
       false
+    ],
+    [
+      "NexusBlitz",
+      true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "MagicResist",
-      "value": 20
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -121,10 +116,10 @@
     "SpectresCowl",
     "MercurysTreads",
     "VerdantBarrier",
-    "LocketoftheIronSolari",
+    "LocketOfTheIronSolari",
     "Hexdrinker",
     "ZekesConvergence",
-    "AegisoftheLegion",
+    "AegisOfTheLegion",
     "QuicksilverSash"
   ],
   "ranged": {

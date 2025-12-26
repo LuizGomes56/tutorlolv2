@@ -1,11 +1,15 @@
 {
   "riot_id": 443060,
-  "item_id": "SwordoftheDivine",
+  "item_id": "SwordOfTheDivine",
   "name": "Sword of the Divine",
   "price": 0,
   "sell": 400,
   "tier": 3,
   "maps": [
+    [
+      "Arena",
+      true
+    ],
     [
       "SummonersRift",
       false
@@ -13,14 +17,6 @@
     [
       "Aram",
       false
-    ],
-    [
-      "Tft",
-      false
-    ],
-    [
-      "Arena",
-      true
     ],
     [
       "SummonersRift",
@@ -33,18 +29,13 @@
     [
       "SummonersRift",
       false
+    ],
+    [
+      "Tft",
+      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AdaptiveForce",
-      "value": 110
-    },
-    {
-      "name": "CriticalStrikeChance",
-      "value": 50
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

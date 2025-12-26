@@ -11,8 +11,8 @@
       false
     ],
     [
-      "Aram",
-      true
+      "Arena",
+      false
     ],
     [
       "SummonersRift",
@@ -27,28 +27,15 @@
       true
     ],
     [
-      "Arena",
-      false
+      "Aram",
+      true
     ],
     [
       "SummonersRift",
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackSpeed",
-      "value": 25
-    },
-    {
-      "name": "Health",
-      "value": 450
-    },
-    {
-      "name": "AttackDamage",
-      "value": 40
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

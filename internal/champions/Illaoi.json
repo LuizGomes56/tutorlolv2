@@ -70,6 +70,24 @@
   "abilities": [
     [
       {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Harsh Lesson",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "(0.03 * ctx.enemy_max_health) + (0.04 * 0.01 * ctx.ad)",
+          "(0.035 * ctx.enemy_max_health) + (0.04 * 0.01 * ctx.ad)",
+          "(0.04 * ctx.enemy_max_health) + (0.04 * 0.01 * ctx.ad)",
+          "(0.045 * ctx.enemy_max_health) + (0.04 * 0.01 * ctx.ad)",
+          "(0.05 * ctx.enemy_max_health) + (0.04 * 0.01 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "Q",
         "name": "_1"
       },
@@ -135,24 +153,6 @@
           "0.35 + (0.08 * 0.01 * ctx.ad)",
           "0.4 + (0.08 * 0.01 * ctx.ad)",
           "0.45 + (0.08 * 0.01 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_1"
-      },
-      {
-        "name": "Harsh Lesson",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "(0.03 * ctx.enemy_max_health) + (0.04 * 0.01 * ctx.ad)",
-          "(0.035 * ctx.enemy_max_health) + (0.04 * 0.01 * ctx.ad)",
-          "(0.04 * ctx.enemy_max_health) + (0.04 * 0.01 * ctx.ad)",
-          "(0.045 * ctx.enemy_max_health) + (0.04 * 0.01 * ctx.ad)",
-          "(0.05 * ctx.enemy_max_health) + (0.04 * 0.01 * ctx.ad)"
         ]
       }
     ]

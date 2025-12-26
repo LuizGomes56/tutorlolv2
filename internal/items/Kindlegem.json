@@ -7,8 +7,20 @@
   "tier": 2,
   "maps": [
     [
+      "SummonersRift",
+      false
+    ],
+    [
+      "NexusBlitz",
+      true
+    ],
+    [
       "Tft",
       false
+    ],
+    [
+      "SummonersRift",
+      true
     ],
     [
       "Arena",
@@ -19,32 +31,11 @@
       true
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "NexusBlitz",
-      true
-    ],
-    [
       "Aram",
-      true
-    ],
-    [
-      "SummonersRift",
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 10
-    },
-    {
-      "name": "Health",
-      "value": 200
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -144,8 +135,8 @@
   "builds_into_item_ids": [
     "WintersApproach",
     "BlackCleaver",
-    "LocketoftheIronSolari",
-    "EchoesofHelia",
+    "LocketOfTheIronSolari",
+    "EchoesOfHelia",
     "ZekesConvergence",
     "SpiritVisage",
     "Redemption",

@@ -71,6 +71,22 @@
     [
       {
         "type": "R",
+        "name": "_2"
+      },
+      {
+        "name": "Endless Banquet",
+        "damage_type": "True",
+        "attributes": "Undefined",
+        "damage": [
+          "6 + (0.12 * ctx.bonus_ad)",
+          "8 + (0.12 * ctx.bonus_ad)",
+          "10 + (0.12 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
         "name": "_1"
       },
       {
@@ -87,18 +103,18 @@
     [
       {
         "type": "Q",
-        "name": "_2"
+        "name": "_1"
       },
       {
         "name": "Void Surge",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "0.6",
-          "0.7",
-          "0.8",
-          "0.9",
-          "1"
+          "0 + ctx.ad",
+          "5 + ctx.ad",
+          "10 + ctx.ad",
+          "15 + ctx.ad",
+          "20 + ctx.ad"
         ]
       }
     ],
@@ -122,19 +138,19 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "type": "Q",
+        "name": "_2"
       },
       {
-        "name": "Above and Below",
-        "damage_type": "Magic",
+        "name": "Void Surge",
+        "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "70 + ctx.bonus_ad + (1.25 * ctx.ap)",
-          "110 + ctx.bonus_ad + (1.25 * ctx.ap)",
-          "150 + ctx.bonus_ad + (1.25 * ctx.ap)",
-          "190 + ctx.bonus_ad + (1.25 * ctx.ap)",
-          "230 + ctx.bonus_ad + (1.25 * ctx.ap)"
+          "0.6",
+          "0.7",
+          "0.8",
+          "0.9",
+          "1"
         ]
       }
     ],
@@ -189,24 +205,6 @@
           "8 + (0.08 * ctx.ad)",
           "9 + (0.08 * ctx.ad)",
           "10 + (0.08 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Void Surge",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "0 + ctx.ad",
-          "5 + ctx.ad",
-          "10 + ctx.ad",
-          "15 + ctx.ad",
-          "20 + ctx.ad"
         ]
       }
     ],
@@ -267,22 +265,6 @@
     [
       {
         "type": "R",
-        "name": "_2"
-      },
-      {
-        "name": "Endless Banquet",
-        "damage_type": "True",
-        "attributes": "Undefined",
-        "damage": [
-          "6 + (0.12 * ctx.bonus_ad)",
-          "8 + (0.12 * ctx.bonus_ad)",
-          "10 + (0.12 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
         "name": "_3"
       },
       {
@@ -293,6 +275,24 @@
           "30 + (0.6 * ctx.bonus_ad)",
           "40 + (0.6 * ctx.bonus_ad)",
           "50 + (0.6 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Above and Below",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "70 + ctx.bonus_ad + (1.25 * ctx.ap)",
+          "110 + ctx.bonus_ad + (1.25 * ctx.ap)",
+          "150 + ctx.bonus_ad + (1.25 * ctx.ap)",
+          "190 + ctx.bonus_ad + (1.25 * ctx.ap)",
+          "230 + ctx.bonus_ad + (1.25 * ctx.ap)"
         ]
       }
     ]

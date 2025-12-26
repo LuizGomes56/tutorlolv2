@@ -1,17 +1,13 @@
 {
   "riot_id": 3814,
-  "item_id": "EdgeofNight",
+  "item_id": "EdgeOfNight",
   "name": "Edge of Night",
   "price": 3000,
   "sell": 2100,
   "tier": 3,
   "maps": [
     [
-      "NexusBlitz",
-      true
-    ],
-    [
-      "Aram",
+      "SummonersRift",
       true
     ],
     [
@@ -31,24 +27,15 @@
       false
     ],
     [
-      "SummonersRift",
+      "Aram",
+      true
+    ],
+    [
+      "NexusBlitz",
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Health",
-      "value": 250
-    },
-    {
-      "name": "AttackDamage",
-      "value": 50
-    },
-    {
-      "name": "Lethality",
-      "value": 15
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

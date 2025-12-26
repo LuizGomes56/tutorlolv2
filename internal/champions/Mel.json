@@ -72,24 +72,6 @@
     [
       {
         "type": "Q",
-        "name": "_3"
-      },
-      {
-        "name": "Radiant Volley",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "78 + (0.51 * ctx.ap)",
-          "108.5 + (0.595 * ctx.ap)",
-          "144 + (0.68 * ctx.ap)",
-          "184.5 + (0.765 * ctx.ap)",
-          "230 + (0.85 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
         "name": "_1"
       },
       {
@@ -108,70 +90,18 @@
     [
       {
         "type": "E",
-        "name": "_6"
+        "name": "_2"
       },
       {
         "name": "Solar Snare",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "2 + (0.01 * ctx.ap)",
-          "4 + (0.01 * ctx.ap)",
-          "6 + (0.01 * ctx.ap)",
-          "8 + (0.01 * ctx.ap)",
-          "10 + (0.01 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_1"
-      },
-      {
-        "name": "Solar Snare",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "60 + (0.6 * ctx.ap)",
-          "105 + (0.6 * ctx.ap)",
-          "150 + (0.6 * ctx.ap)",
-          "195 + (0.6 * ctx.ap)",
-          "240 + (0.6 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_1"
-      },
-      {
-        "name": "Golden Eclipse",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "100 + (0.3 * ctx.ap) + 4 1.0 + (0.035 * ctx.ap)",
-          "150 + (0.3 * ctx.ap) + 7 1.0 + (0.035 * ctx.ap)",
-          "200 + (0.3 * ctx.ap) + 10 1.0 + (0.035 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_5"
-      },
-      {
-        "name": "Solar Snare",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "16 + (0.08 * ctx.ap)",
-          "32 + (0.08 * ctx.ap)",
-          "48 + (0.08 * ctx.ap)",
-          "64 + (0.08 * ctx.ap)",
-          "80 + (0.08 * ctx.ap)"
+          "8 + (0.04 * ctx.ap)",
+          "16 + (0.04 * ctx.ap)",
+          "24 + (0.04 * ctx.ap)",
+          "32 + (0.04 * ctx.ap)",
+          "40 + (0.04 * ctx.ap)"
         ]
       }
     ],
@@ -196,34 +126,36 @@
     [
       {
         "type": "E",
-        "name": "_2"
+        "name": "_3"
       },
       {
         "name": "Solar Snare",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "8 + (0.04 * ctx.ap)",
-          "16 + (0.04 * ctx.ap)",
-          "24 + (0.04 * ctx.ap)",
-          "32 + (0.04 * ctx.ap)",
-          "40 + (0.04 * ctx.ap)"
+          "1 + (0.005 * ctx.ap)",
+          "2 + (0.005 * ctx.ap)",
+          "3 + (0.005 * ctx.ap)",
+          "4 + (0.005 * ctx.ap)",
+          "5 + (0.005 * ctx.ap)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_3"
+        "type": "E",
+        "name": "_1"
       },
       {
-        "name": "Golden Eclipse",
+        "name": "Solar Snare",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "1",
-          "2",
-          "3"
+          "60 + (0.6 * ctx.ap)",
+          "105 + (0.6 * ctx.ap)",
+          "150 + (0.6 * ctx.ap)",
+          "195 + (0.6 * ctx.ap)",
+          "240 + (0.6 * ctx.ap)"
         ]
       }
     ],
@@ -247,6 +179,76 @@
     ],
     [
       {
+        "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "Radiant Volley",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "9.75 + (0.06375 * ctx.ap)",
+          "11.625 + (0.06375 * ctx.ap)",
+          "13.5 + (0.06375 * ctx.ap)",
+          "15.375 + (0.06375 * ctx.ap)",
+          "17.25 + (0.06375 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_3"
+      },
+      {
+        "name": "Radiant Volley",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "78 + (0.51 * ctx.ap)",
+          "108.5 + (0.595 * ctx.ap)",
+          "144 + (0.68 * ctx.ap)",
+          "184.5 + (0.765 * ctx.ap)",
+          "230 + (0.85 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_5"
+      },
+      {
+        "name": "Solar Snare",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "16 + (0.08 * ctx.ap)",
+          "32 + (0.08 * ctx.ap)",
+          "48 + (0.08 * ctx.ap)",
+          "64 + (0.08 * ctx.ap)",
+          "80 + (0.08 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Golden Eclipse",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "100 + (0.3 * ctx.ap) + 4 1.0 + (0.035 * ctx.ap)",
+          "150 + (0.3 * ctx.ap) + 7 1.0 + (0.035 * ctx.ap)",
+          "200 + (0.3 * ctx.ap) + 10 1.0 + (0.035 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "R",
         "name": "_2"
       },
@@ -258,6 +260,22 @@
           "10",
           "20",
           "30"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_3"
+      },
+      {
+        "name": "Golden Eclipse",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "1",
+          "2",
+          "3"
         ]
       }
     ],
@@ -282,36 +300,18 @@
     [
       {
         "type": "E",
-        "name": "_3"
+        "name": "_6"
       },
       {
         "name": "Solar Snare",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "1 + (0.005 * ctx.ap)",
-          "2 + (0.005 * ctx.ap)",
-          "3 + (0.005 * ctx.ap)",
-          "4 + (0.005 * ctx.ap)",
-          "5 + (0.005 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_2"
-      },
-      {
-        "name": "Radiant Volley",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "9.75 + (0.06375 * ctx.ap)",
-          "11.625 + (0.06375 * ctx.ap)",
-          "13.5 + (0.06375 * ctx.ap)",
-          "15.375 + (0.06375 * ctx.ap)",
-          "17.25 + (0.06375 * ctx.ap)"
+          "2 + (0.01 * ctx.ap)",
+          "4 + (0.01 * ctx.ap)",
+          "6 + (0.01 * ctx.ap)",
+          "8 + (0.01 * ctx.ap)",
+          "10 + (0.01 * ctx.ap)"
         ]
       }
     ]

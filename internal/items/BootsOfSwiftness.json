@@ -1,6 +1,6 @@
 {
   "riot_id": 3009,
-  "item_id": "BootsofSwiftness",
+  "item_id": "BootsOfSwiftness",
   "name": "Boots of Swiftness",
   "price": 1000,
   "sell": 700,
@@ -19,7 +19,7 @@
       true
     ],
     [
-      "NexusBlitz",
+      "Aram",
       true
     ],
     [
@@ -27,20 +27,15 @@
       true
     ],
     [
-      "Tft",
-      false
+      "NexusBlitz",
+      true
     ],
     [
-      "Aram",
-      true
+      "Tft",
+      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "MoveSpeed",
-      "value": 55
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

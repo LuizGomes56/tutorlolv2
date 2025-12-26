@@ -88,6 +88,24 @@
     ],
     [
       {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Decisive Strike",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "30 + (0.5 * ctx.ad)",
+          "60 + (0.5 * ctx.ad)",
+          "90 + (0.5 * ctx.ad)",
+          "120 + (0.5 * ctx.ad)",
+          "150 + (0.5 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "R",
         "name": "_1"
       },
@@ -117,24 +135,6 @@
           "10 + (0.42 * ctx.ad)",
           "13 + (0.45 * ctx.ad)",
           "16 + (0.48 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Decisive Strike",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "30 + (0.5 * ctx.ad)",
-          "60 + (0.5 * ctx.ad)",
-          "90 + (0.5 * ctx.ad)",
-          "120 + (0.5 * ctx.ad)",
-          "150 + (0.5 * ctx.ad)"
         ]
       }
     ],

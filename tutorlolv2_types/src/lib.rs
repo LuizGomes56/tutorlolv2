@@ -134,3 +134,10 @@ pub enum StatName {
     Tenacity(u16),
     HealAndShieldPower(u16),
 }
+
+#[derive(Debug, serde::Serialize, serde::Deserialize)]
+pub struct MergeData {
+    pub minimum_damage: AbilityId,
+    pub maximum_damage: AbilityId,
+    pub alias: AbilityId,
+}

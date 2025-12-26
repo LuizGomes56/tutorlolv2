@@ -7,12 +7,16 @@
   "tier": 3,
   "maps": [
     [
-      "Arena",
+      "Tft",
       false
     ],
     [
       "SummonersRift",
       false
+    ],
+    [
+      "SummonersRift",
+      true
     ],
     [
       "SummonersRift",
@@ -23,32 +27,15 @@
       true
     ],
     [
-      "Tft",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
       "Aram",
       true
+    ],
+    [
+      "Arena",
+      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityPower",
-      "value": 20
-    },
-    {
-      "name": "AbilityHaste",
-      "value": 10
-    },
-    {
-      "name": "BaseManaRegen",
-      "value": 100
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -130,7 +117,7 @@
   ],
   "builds_into_item_ids": [
     "ShurelyasBattlesong",
-    "EchoesofHelia",
+    "EchoesOfHelia",
     "ImperialMandate",
     "MoonstoneRenewer"
   ],

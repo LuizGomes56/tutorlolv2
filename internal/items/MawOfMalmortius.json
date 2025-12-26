@@ -1,25 +1,25 @@
 {
   "riot_id": 3156,
-  "item_id": "MawofMalmortius",
+  "item_id": "MawOfMalmortius",
   "name": "Maw of Malmortius",
   "price": 3100,
   "sell": 2170,
   "tier": 3,
   "maps": [
     [
-      "Aram",
+      "SummonersRift",
       true
     ],
     [
-      "NexusBlitz",
-      true
+      "SummonersRift",
+      false
     ],
     [
       "Tft",
       false
     ],
     [
-      "SummonersRift",
+      "Aram",
       true
     ],
     [
@@ -28,27 +28,14 @@
     ],
     [
       "SummonersRift",
-      false
+      true
     ],
     [
-      "SummonersRift",
+      "NexusBlitz",
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackDamage",
-      "value": 60
-    },
-    {
-      "name": "AbilityHaste",
-      "value": 15
-    },
-    {
-      "name": "MagicResist",
-      "value": 40
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

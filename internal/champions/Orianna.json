@@ -70,19 +70,19 @@
   "abilities": [
     [
       {
-        "type": "W",
+        "type": "Q",
         "name": "_1"
       },
       {
-        "name": "Command: Dissonance",
+        "name": "Command: Attack",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "70 + (0.7 * ctx.ap)",
-          "120 + (0.7 * ctx.ap)",
-          "170 + (0.7 * ctx.ap)",
-          "220 + (0.7 * ctx.ap)",
-          "270 + (0.7 * ctx.ap)"
+          "60 + (0.55 * ctx.ap)",
+          "90 + (0.55 * ctx.ap)",
+          "120 + (0.55 * ctx.ap)",
+          "150 + (0.55 * ctx.ap)",
+          "180 + (0.55 * ctx.ap)"
         ]
       }
     ],
@@ -104,37 +104,19 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_2"
-      },
-      {
-        "name": "Command: Attack",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "42 + (0.385 * ctx.ap)",
-          "63 + (0.385 * ctx.ap)",
-          "84 + (0.385 * ctx.ap)",
-          "105 + (0.385 * ctx.ap)",
-          "126 + (0.385 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
+        "type": "W",
         "name": "_1"
       },
       {
-        "name": "Command: Attack",
+        "name": "Command: Dissonance",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "60 + (0.55 * ctx.ap)",
-          "90 + (0.55 * ctx.ap)",
-          "120 + (0.55 * ctx.ap)",
-          "150 + (0.55 * ctx.ap)",
-          "180 + (0.55 * ctx.ap)"
+          "70 + (0.7 * ctx.ap)",
+          "120 + (0.7 * ctx.ap)",
+          "170 + (0.7 * ctx.ap)",
+          "220 + (0.7 * ctx.ap)",
+          "270 + (0.7 * ctx.ap)"
         ]
       }
     ],
@@ -153,6 +135,24 @@
           "120 + (0.3 * ctx.ap)",
           "150 + (0.3 * ctx.ap)",
           "180 + (0.3 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "Command: Attack",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "42 + (0.385 * ctx.ap)",
+          "63 + (0.385 * ctx.ap)",
+          "84 + (0.385 * ctx.ap)",
+          "105 + (0.385 * ctx.ap)",
+          "126 + (0.385 * ctx.ap)"
         ]
       }
     ]

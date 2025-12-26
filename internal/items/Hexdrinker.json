@@ -11,8 +11,8 @@
       true
     ],
     [
-      "Arena",
-      false
+      "SummonersRift",
+      true
     ],
     [
       "Aram",
@@ -23,11 +23,11 @@
       true
     ],
     [
-      "SummonersRift",
-      true
+      "Tft",
+      false
     ],
     [
-      "Tft",
+      "Arena",
       false
     ],
     [
@@ -35,16 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackDamage",
-      "value": 25
-    },
-    {
-      "name": "MagicResist",
-      "value": 25
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -118,7 +109,7 @@
     3156
   ],
   "builds_into_item_ids": [
-    "MawofMalmortius"
+    "MawOfMalmortius"
   ],
   "ranged": {
     "minimum_damage": "zero",

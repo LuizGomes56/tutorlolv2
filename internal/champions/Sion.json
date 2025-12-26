@@ -71,36 +71,18 @@
     [
       {
         "type": "Q",
-        "name": "_4"
+        "name": "_1"
       },
       {
         "name": "Decimating Smash",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "54 + (0.72 * ctx.ad)",
-          "93 + (0.9 * ctx.ad)",
-          "132 + (1.08 * ctx.ad)",
-          "171 + (1.26 * ctx.ad)",
-          "210 + (1.44 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_3"
-      },
-      {
-        "name": "Decimating Smash",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "40 + (0.4 * ctx.ad)",
-          "60 + (0.5 * ctx.ad)",
-          "80 + (0.6 * ctx.ad)",
-          "100 + (0.7 * ctx.ad)",
-          "120 + (0.8 * ctx.ad)"
+          "1.25",
+          "1.5833000000000002",
+          "1.75",
+          "1.85",
+          "1.9166999999999998"
         ]
       }
     ],
@@ -124,19 +106,17 @@
     ],
     [
       {
-        "type": "Q",
+        "type": "R",
         "name": "_1"
       },
       {
-        "name": "Decimating Smash",
+        "name": "Unstoppable Onslaught",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "1.25",
-          "1.5833000000000002",
-          "1.75",
-          "1.85",
-          "1.9166999999999998"
+          "400 + (0.8 * ctx.bonus_ad)",
+          "800 + (0.8 * ctx.bonus_ad)",
+          "1200 + (0.8 * ctx.bonus_ad)"
         ]
       }
     ],
@@ -160,69 +140,19 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_2"
-      },
-      {
-        "name": "Unstoppable Onslaught",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "150 + (0.4 * ctx.bonus_ad)",
-          "300 + (0.4 * ctx.bonus_ad)",
-          "450 + (0.4 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_1"
-      },
-      {
-        "name": "Unstoppable Onslaught",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "400 + (0.8 * ctx.bonus_ad)",
-          "800 + (0.8 * ctx.bonus_ad)",
-          "1200 + (0.8 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "Q",
-        "name": "_2"
+        "name": "_6"
       },
       {
         "name": "Decimating Smash",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "90 + (1.2 * ctx.ad)",
-          "155 + (1.5 * ctx.ad)",
-          "220 + (1.8 * ctx.ad)",
-          "285 + (2.1 * ctx.ad)",
-          "350 + (2.4 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_7"
-      },
-      {
-        "name": "Decimating Smash",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "60 + (0.6 * ctx.ad)",
-          "90 + (0.75 * ctx.ad)",
-          "120 + (0.9 * ctx.ad)",
-          "150 + (1.05 * ctx.ad)",
-          "180 + (1.2 * ctx.ad)"
+          "24 + (0.24 * ctx.ad)",
+          "36 + (0.3 * ctx.ad)",
+          "48 + (0.36 * ctx.ad)",
+          "60 + (0.42 * ctx.ad)",
+          "72 + (0.48 * ctx.ad)"
         ]
       }
     ],
@@ -247,18 +177,88 @@
     [
       {
         "type": "Q",
-        "name": "_6"
+        "name": "_7"
       },
       {
         "name": "Decimating Smash",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "24 + (0.24 * ctx.ad)",
-          "36 + (0.3 * ctx.ad)",
-          "48 + (0.36 * ctx.ad)",
-          "60 + (0.42 * ctx.ad)",
-          "72 + (0.48 * ctx.ad)"
+          "60 + (0.6 * ctx.ad)",
+          "90 + (0.75 * ctx.ad)",
+          "120 + (0.9 * ctx.ad)",
+          "150 + (1.05 * ctx.ad)",
+          "180 + (1.2 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_3"
+      },
+      {
+        "name": "Decimating Smash",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "40 + (0.4 * ctx.ad)",
+          "60 + (0.5 * ctx.ad)",
+          "80 + (0.6 * ctx.ad)",
+          "100 + (0.7 * ctx.ad)",
+          "120 + (0.8 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_2"
+      },
+      {
+        "name": "Unstoppable Onslaught",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "150 + (0.4 * ctx.bonus_ad)",
+          "300 + (0.4 * ctx.bonus_ad)",
+          "450 + (0.4 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "Decimating Smash",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "90 + (1.2 * ctx.ad)",
+          "155 + (1.5 * ctx.ad)",
+          "220 + (1.8 * ctx.ad)",
+          "285 + (2.1 * ctx.ad)",
+          "350 + (2.4 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_4"
+      },
+      {
+        "name": "Decimating Smash",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "54 + (0.72 * ctx.ad)",
+          "93 + (0.9 * ctx.ad)",
+          "132 + (1.08 * ctx.ad)",
+          "171 + (1.26 * ctx.ad)",
+          "210 + (1.44 * ctx.ad)"
         ]
       }
     ]

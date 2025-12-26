@@ -1,6 +1,6 @@
 {
   "riot_id": 3105,
-  "item_id": "AegisoftheLegion",
+  "item_id": "AegisOfTheLegion",
   "name": "Aegis of the Legion",
   "price": 1100,
   "sell": 770,
@@ -12,14 +12,10 @@
     ],
     [
       "SummonersRift",
-      true
-    ],
-    [
-      "Tft",
       false
     ],
     [
-      "NexusBlitz",
+      "SummonersRift",
       true
     ],
     [
@@ -31,24 +27,15 @@
       true
     ],
     [
-      "SummonersRift",
+      "NexusBlitz",
+      true
+    ],
+    [
+      "Tft",
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Armor",
-      "value": 25
-    },
-    {
-      "name": "AbilityHaste",
-      "value": 10
-    },
-    {
-      "name": "MagicResist",
-      "value": 25
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

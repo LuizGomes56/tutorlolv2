@@ -15,6 +15,10 @@
       false
     ],
     [
+      "Arena",
+      false
+    ],
+    [
       "SummonersRift",
       false
     ],
@@ -27,24 +31,11 @@
       true
     ],
     [
-      "Arena",
-      false
-    ],
-    [
       "SummonersRift",
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "BaseManaRegen",
-      "value": 50
-    },
-    {
-      "name": "HealAndShieldPower",
-      "value": 8
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -128,7 +119,7 @@
     "ArdentCenser",
     "Redemption",
     "MikaelsBlessing",
-    "StaffofFlowingWater",
+    "StaffOfFlowingWater",
     "Dawncore"
   ],
   "ranged": {

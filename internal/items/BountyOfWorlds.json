@@ -1,30 +1,18 @@
 {
   "riot_id": 3867,
-  "item_id": "BountyofWorlds",
+  "item_id": "BountyOfWorlds",
   "name": "Bounty of Worlds",
   "price": 400,
   "sell": 160,
   "tier": 3,
   "maps": [
     [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
       "NexusBlitz",
       false
     ],
     [
       "SummonersRift",
-      false
+      true
     ],
     [
       "Tft",
@@ -33,26 +21,21 @@
     [
       "Aram",
       false
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Health",
-      "value": 200
-    },
-    {
-      "name": "GoldPer10Seconds",
-      "value": 5
-    },
-    {
-      "name": "BaseHealthRegen",
-      "value": 75
-    },
-    {
-      "name": "BaseManaRegen",
-      "value": 75
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

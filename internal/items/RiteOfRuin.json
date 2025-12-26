@@ -1,6 +1,6 @@
 {
   "riot_id": 3430,
-  "item_id": "RiteofRuin",
+  "item_id": "RiteOfRuin",
   "name": "Rite of Ruin",
   "price": 2500,
   "sell": 1250,
@@ -9,6 +9,10 @@
     [
       "SummonersRift",
       false
+    ],
+    [
+      "Arena",
+      true
     ],
     [
       "SummonersRift",
@@ -23,32 +27,15 @@
       false
     ],
     [
-      "Tft",
+      "NexusBlitz",
       false
     ],
     [
-      "Arena",
-      true
-    ],
-    [
-      "NexusBlitz",
+      "Tft",
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "CriticalStrikeChance",
-      "value": 25
-    },
-    {
-      "name": "AbilityPower",
-      "value": 50
-    },
-    {
-      "name": "AbilityHaste",
-      "value": 15
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

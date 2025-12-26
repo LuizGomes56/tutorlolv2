@@ -1,29 +1,17 @@
 {
   "riot_id": 3070,
-  "item_id": "TearoftheGoddess",
+  "item_id": "TearOfTheGoddess",
   "name": "Tear of the Goddess",
   "price": 400,
   "sell": 280,
   "tier": 1,
   "maps": [
     [
-      "NexusBlitz",
-      true
-    ],
-    [
-      "SummonersRift",
+      "Tft",
       false
     ],
     [
-      "Aram",
-      true
-    ],
-    [
       "SummonersRift",
-      true
-    ],
-    [
-      "Tft",
       false
     ],
     [
@@ -33,14 +21,21 @@
     [
       "Arena",
       false
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "Aram",
+      true
+    ],
+    [
+      "NexusBlitz",
+      true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Mana",
-      "value": 240
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

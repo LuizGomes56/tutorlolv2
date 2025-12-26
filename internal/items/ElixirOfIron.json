@@ -1,6 +1,6 @@
 {
   "riot_id": 2138,
-  "item_id": "ElixirofIron",
+  "item_id": "ElixirOfIron",
   "name": "Elixir of Iron",
   "price": 500,
   "sell": 200,
@@ -15,8 +15,8 @@
       false
     ],
     [
-      "Tft",
-      false
+      "NexusBlitz",
+      true
     ],
     [
       "SummonersRift",
@@ -31,8 +31,8 @@
       true
     ],
     [
-      "NexusBlitz",
-      true
+      "Tft",
+      false
     ]
   ],
   "prettified_stats": [],

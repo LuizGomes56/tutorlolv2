@@ -88,24 +88,6 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Starcall",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "85 + (0.35 * ctx.ap)",
-          "120 + (0.35 * ctx.ap)",
-          "155 + (0.35 * ctx.ap)",
-          "190 + (0.35 * ctx.ap)",
-          "225 + (0.35 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "E",
         "name": "_2"
       },
@@ -119,6 +101,24 @@
           "240 + (0.8 * ctx.ap)",
           "290 + (0.8 * ctx.ap)",
           "340 + (0.8 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Starcall",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "85 + (0.35 * ctx.ap)",
+          "120 + (0.35 * ctx.ap)",
+          "155 + (0.35 * ctx.ap)",
+          "190 + (0.35 * ctx.ap)",
+          "225 + (0.35 * ctx.ap)"
         ]
       }
     ]

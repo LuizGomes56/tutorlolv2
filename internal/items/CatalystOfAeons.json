@@ -1,14 +1,18 @@
 {
   "riot_id": 3803,
-  "item_id": "CatalystofAeons",
+  "item_id": "CatalystOfAeons",
   "name": "Catalyst of Aeons",
   "price": 1300,
   "sell": 910,
   "tier": 2,
   "maps": [
     [
-      "Arena",
+      "Tft",
       false
+    ],
+    [
+      "NexusBlitz",
+      true
     ],
     [
       "SummonersRift",
@@ -19,32 +23,19 @@
       true
     ],
     [
-      "NexusBlitz",
+      "SummonersRift",
       true
-    ],
-    [
-      "Tft",
-      false
     ],
     [
       "SummonersRift",
       false
     ],
     [
-      "SummonersRift",
-      true
+      "Arena",
+      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Mana",
-      "value": 375
-    },
-    {
-      "name": "Health",
-      "value": 300
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -120,7 +111,7 @@
     6657
   ],
   "builds_into_item_ids": [
-    "RodofAges"
+    "RodOfAges"
   ],
   "ranged": {
     "minimum_damage": "zero",

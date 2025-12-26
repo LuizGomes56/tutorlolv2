@@ -7,19 +7,7 @@
   "tier": 1,
   "maps": [
     [
-      "Arena",
-      false
-    ],
-    [
       "Aram",
-      true
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
       true
     ],
     [
@@ -27,20 +15,27 @@
       false
     ],
     [
+      "NexusBlitz",
+      true
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
       "SummonersRift",
       true
     ],
     [
-      "NexusBlitz",
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "MoveSpeed",
-      "value": 25
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -115,9 +110,9 @@
     "BerserkersGreaves",
     "PlatedSteelcaps",
     "SorcerersShoes",
-    "IonianBootsofLucidity",
+    "IonianBootsOfLucidity",
     "MercurysTreads",
-    "BootsofSwiftness"
+    "BootsOfSwiftness"
   ],
   "ranged": {
     "minimum_damage": "zero",

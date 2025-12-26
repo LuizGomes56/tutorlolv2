@@ -7,15 +7,11 @@
   "tier": 3,
   "maps": [
     [
-      "NexusBlitz",
+      "SummonersRift",
       true
     ],
     [
       "SummonersRift",
-      false
-    ],
-    [
-      "Arena",
       false
     ],
     [
@@ -23,32 +19,23 @@
       true
     ],
     [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
       "Tft",
       false
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
+      "NexusBlitz",
+      true
+    ],
+    [
+      "SummonersRift",
+      true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 25
-    },
-    {
-      "name": "AbilityPower",
-      "value": 70
-    },
-    {
-      "name": "Mana",
-      "value": 600
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -114,7 +101,7 @@
     3108
   ],
   "builds_from_item_ids": [
-    "TearoftheGoddess",
+    "TearOfTheGoddess",
     "LostChapter",
     "FiendishCodex"
   ],

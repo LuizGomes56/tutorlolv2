@@ -7,12 +7,20 @@
   "tier": 2,
   "maps": [
     [
-      "SummonersRift",
-      true
+      "Tft",
+      false
     ],
     [
       "SummonersRift",
       true
+    ],
+    [
+      "NexusBlitz",
+      true
+    ],
+    [
+      "Arena",
+      false
     ],
     [
       "SummonersRift",
@@ -23,28 +31,11 @@
       true
     ],
     [
-      "Tft",
-      false
-    ],
-    [
-      "NexusBlitz",
+      "SummonersRift",
       true
-    ],
-    [
-      "Arena",
-      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackDamage",
-      "value": 15
-    },
-    {
-      "name": "LifeSteal",
-      "value": 7
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -121,7 +112,7 @@
     "MercurialScimitar",
     "Bloodthirster",
     "RavenousHydra",
-    "BladeoftheRuinedKing"
+    "BladeOfTheRuinedKing"
   ],
   "ranged": {
     "minimum_damage": "zero",

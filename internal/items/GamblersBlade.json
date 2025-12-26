@@ -11,11 +11,19 @@
       false
     ],
     [
+      "NexusBlitz",
+      false
+    ],
+    [
       "SummonersRift",
       false
     ],
     [
       "Tft",
+      false
+    ],
+    [
+      "SummonersRift",
       false
     ],
     [
@@ -25,30 +33,9 @@
     [
       "SummonersRift",
       false
-    ],
-    [
-      "NexusBlitz",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "MoveSpeed",
-      "value": 8
-    },
-    {
-      "name": "AttackSpeed",
-      "value": 70
-    },
-    {
-      "name": "AbilityHaste",
-      "value": 40
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

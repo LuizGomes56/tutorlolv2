@@ -70,6 +70,40 @@
   "abilities": [
     [
       {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Siphoning Strike",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "35 + ctx.nasus_stacks",
+          "55 + ctx.nasus_stacks",
+          "75 + ctx.nasus_stacks",
+          "95 + ctx.nasus_stacks",
+          "115 + ctx.nasus_stacks"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Fury of the Sands",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "(0.015 * ctx.enemy_max_health) + (0.005 * 0.01 * ctx.ap)",
+          "(0.02 * ctx.enemy_max_health) + (0.005 * 0.01 * ctx.ap)",
+          "(0.025 * ctx.enemy_max_health) + (0.005 * 0.01 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "E",
         "name": "_2"
       },
@@ -106,24 +140,6 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
-      },
-      {
-        "name": "Spirit Fire",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "50 + (0.6 * ctx.ap)",
-          "80 + (0.6 * ctx.ap)",
-          "110 + (0.6 * ctx.ap)",
-          "140 + (0.6 * ctx.ap)",
-          "170 + (0.6 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "R",
         "name": "_2"
       },
@@ -140,35 +156,19 @@
     ],
     [
       {
-        "type": "Q",
+        "type": "E",
         "name": "_1"
       },
       {
-        "name": "Siphoning Strike",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "35 + ctx.nasus_stacks",
-          "55 + ctx.nasus_stacks",
-          "75 + ctx.nasus_stacks",
-          "95 + ctx.nasus_stacks",
-          "115 + ctx.nasus_stacks"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_1"
-      },
-      {
-        "name": "Fury of the Sands",
+        "name": "Spirit Fire",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "(0.015 * ctx.enemy_max_health) + (0.005 * 0.01 * ctx.ap)",
-          "(0.02 * ctx.enemy_max_health) + (0.005 * 0.01 * ctx.ap)",
-          "(0.025 * ctx.enemy_max_health) + (0.005 * 0.01 * ctx.ap)"
+          "50 + (0.6 * ctx.ap)",
+          "80 + (0.6 * ctx.ap)",
+          "110 + (0.6 * ctx.ap)",
+          "140 + (0.6 * ctx.ap)",
+          "170 + (0.6 * ctx.ap)"
         ]
       }
     ]

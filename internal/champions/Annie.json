@@ -70,40 +70,6 @@
   "abilities": [
     [
       {
-        "type": "R",
-        "name": "_1"
-      },
-      {
-        "name": "Summon: Tibbers",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "150 + (0.75 * ctx.ap)",
-          "275 + (0.75 * ctx.ap)",
-          "400 + (0.75 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_1"
-      },
-      {
-        "name": "Incinerate",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "70 + (0.8 * ctx.ap)",
-          "115 + (0.8 * ctx.ap)",
-          "160 + (0.8 * ctx.ap)",
-          "205 + (0.8 * ctx.ap)",
-          "250 + (0.8 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "Q",
         "name": "_1"
       },
@@ -135,6 +101,40 @@
           "45 + (0.4 * ctx.ap)",
           "55 + (0.4 * ctx.ap)",
           "65 + (0.4 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Summon: Tibbers",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "150 + (0.75 * ctx.ap)",
+          "275 + (0.75 * ctx.ap)",
+          "400 + (0.75 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Incinerate",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "70 + (0.8 * ctx.ap)",
+          "115 + (0.8 * ctx.ap)",
+          "160 + (0.8 * ctx.ap)",
+          "205 + (0.8 * ctx.ap)",
+          "250 + (0.8 * ctx.ap)"
         ]
       }
     ]

@@ -90,70 +90,16 @@
     [
       {
         "type": "R",
-        "name": "_3"
+        "name": "_2"
       },
       {
         "name": "Hallucinate",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "150 + (0.7 * ctx.ap)",
-          "225 + (0.7 * ctx.ap)",
-          "300 + (0.7 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_1"
-      },
-      {
-        "name": "Two-Shiv Poison",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "105 + (1.2 * ctx.bonus_ad) + (0.9 * ctx.ap)",
-          "142.5 + (1.2 * ctx.bonus_ad) + (0.9 * ctx.ap)",
-          "180 + (1.2 * ctx.bonus_ad) + (0.9 * ctx.ap)",
-          "217.5 + (1.2 * ctx.bonus_ad) + (0.9 * ctx.ap)",
-          "255 + (1.2 * ctx.bonus_ad) + (0.9 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_4"
-      },
-      {
-        "name": "Jack in the Box",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "10 + (0.12 * ctx.ap)",
-          "15 + (0.12 * ctx.ap)",
-          "20 + (0.12 * ctx.ap)",
-          "25 + (0.12 * ctx.ap)",
-          "30 + (0.12 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_1"
-      },
-      {
-        "name": "Jack in the Box",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "20",
-          "35",
-          "50",
-          "65",
-          "80"
+          "10 + (0.1 * ctx.ap)",
+          "20 + (0.1 * ctx.ap)",
+          "30 + (0.1 * ctx.ap)"
         ]
       }
     ],
@@ -172,6 +118,24 @@
           "105 + (0.18 * ctx.ap)",
           "135 + (0.18 * ctx.ap)",
           "165 + (0.18 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_5"
+      },
+      {
+        "name": "Jack in the Box",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "30 + (0.12 * ctx.ap)",
+          "50 + (0.12 * ctx.ap)",
+          "70 + (0.12 * ctx.ap)",
+          "90 + (0.12 * ctx.ap)",
+          "110 + (0.12 * ctx.ap)"
         ]
       }
     ],
@@ -213,19 +177,55 @@
     ],
     [
       {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Two-Shiv Poison",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "105 + (1.2 * ctx.bonus_ad) + (0.9 * ctx.ap)",
+          "142.5 + (1.2 * ctx.bonus_ad) + (0.9 * ctx.ap)",
+          "180 + (1.2 * ctx.bonus_ad) + (0.9 * ctx.ap)",
+          "217.5 + (1.2 * ctx.bonus_ad) + (0.9 * ctx.ap)",
+          "255 + (1.2 * ctx.bonus_ad) + (0.9 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "W",
-        "name": "_5"
+        "name": "_1"
       },
       {
         "name": "Jack in the Box",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "30 + (0.12 * ctx.ap)",
-          "50 + (0.12 * ctx.ap)",
-          "70 + (0.12 * ctx.ap)",
-          "90 + (0.12 * ctx.ap)",
-          "110 + (0.12 * ctx.ap)"
+          "20",
+          "35",
+          "50",
+          "65",
+          "80"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_4"
+      },
+      {
+        "name": "Jack in the Box",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "10 + (0.12 * ctx.ap)",
+          "15 + (0.12 * ctx.ap)",
+          "20 + (0.12 * ctx.ap)",
+          "25 + (0.12 * ctx.ap)",
+          "30 + (0.12 * ctx.ap)"
         ]
       }
     ],
@@ -248,16 +248,16 @@
     [
       {
         "type": "R",
-        "name": "_2"
+        "name": "_3"
       },
       {
         "name": "Hallucinate",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "10 + (0.1 * ctx.ap)",
-          "20 + (0.1 * ctx.ap)",
-          "30 + (0.1 * ctx.ap)"
+          "150 + (0.7 * ctx.ap)",
+          "225 + (0.7 * ctx.ap)",
+          "300 + (0.7 * ctx.ap)"
         ]
       }
     ]

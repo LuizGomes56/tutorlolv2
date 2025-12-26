@@ -8,18 +8,6 @@
   "maps": [
     [
       "SummonersRift",
-      false
-    ],
-    [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
       true
     ],
     [
@@ -33,26 +21,21 @@
     [
       "NexusBlitz",
       false
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Health",
-      "value": 200
-    },
-    {
-      "name": "GoldPer10Seconds",
-      "value": 5
-    },
-    {
-      "name": "BaseHealthRegen",
-      "value": 75
-    },
-    {
-      "name": "BaseManaRegen",
-      "value": 75
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -116,7 +99,7 @@
     3867
   ],
   "builds_from_item_ids": [
-    "BountyofWorlds"
+    "BountyOfWorlds"
   ],
   "builds_into_riot_ids": [],
   "builds_into_item_ids": [],

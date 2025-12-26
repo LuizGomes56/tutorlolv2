@@ -70,60 +70,6 @@
   "abilities": [
     [
       {
-        "type": "W",
-        "name": "_1"
-      },
-      {
-        "name": "Repudiation",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "50 + (0.5 * ctx.bonus_ad)",
-          "75 + (0.5 * ctx.bonus_ad)",
-          "100 + (0.5 * ctx.bonus_ad)",
-          "125 + (0.5 * ctx.bonus_ad)",
-          "150 + (0.5 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_2"
-      },
-      {
-        "name": "Repudiation",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "75 + (0.75 * ctx.bonus_ad)",
-          "112.5 + (0.75 * ctx.bonus_ad)",
-          "150 + (0.75 * ctx.bonus_ad)",
-          "187.5 + (0.75 * ctx.bonus_ad)",
-          "225 + (0.75 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_1"
-      },
-      {
-        "name": "Lacerate",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "40 + (0.4 * ctx.bonus_ad)",
-          "60 + (0.45 * ctx.bonus_ad)",
-          "80 + (0.5 * ctx.bonus_ad)",
-          "100 + (0.55 * ctx.bonus_ad)",
-          "120 + (0.6 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "E",
         "name": "_2"
       },
@@ -160,6 +106,42 @@
     ],
     [
       {
+        "type": "Q",
+        "name": "_3"
+      },
+      {
+        "name": "Cunning Sweep",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "40 + (0.6 * ctx.bonus_ad) + (0.02 * ctx.enemy_max_health) + (0.03 * 0.01 * ctx.bonus_ad)",
+          "60 + (0.6 * ctx.bonus_ad) + (0.03 * ctx.enemy_max_health) + (0.03 * 0.01 * ctx.bonus_ad)",
+          "80 + (0.6 * ctx.bonus_ad) + (0.04 * ctx.enemy_max_health) + (0.03 * 0.01 * ctx.bonus_ad)",
+          "100 + (0.6 * ctx.bonus_ad) + (0.05 * ctx.enemy_max_health) + (0.03 * 0.01 * ctx.bonus_ad)",
+          "120 + (0.6 * ctx.bonus_ad) + (0.06 * ctx.enemy_max_health) + (0.03 * 0.01 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_2"
+      },
+      {
+        "name": "Repudiation",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "75 + (0.75 * ctx.bonus_ad)",
+          "112.5 + (0.75 * ctx.bonus_ad)",
+          "150 + (0.75 * ctx.bonus_ad)",
+          "187.5 + (0.75 * ctx.bonus_ad)",
+          "225 + (0.75 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "R",
         "name": "_1"
       },
@@ -176,19 +158,37 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_3"
+        "type": "E",
+        "name": "_1"
       },
       {
-        "name": "Cunning Sweep",
+        "name": "Lacerate",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "40 + (0.6 * ctx.bonus_ad) + (0.02 * ctx.enemy_max_health) + (0.03 * 0.01 * ctx.bonus_ad)",
-          "60 + (0.6 * ctx.bonus_ad) + (0.03 * ctx.enemy_max_health) + (0.03 * 0.01 * ctx.bonus_ad)",
-          "80 + (0.6 * ctx.bonus_ad) + (0.04 * ctx.enemy_max_health) + (0.03 * 0.01 * ctx.bonus_ad)",
-          "100 + (0.6 * ctx.bonus_ad) + (0.05 * ctx.enemy_max_health) + (0.03 * 0.01 * ctx.bonus_ad)",
-          "120 + (0.6 * ctx.bonus_ad) + (0.06 * ctx.enemy_max_health) + (0.03 * 0.01 * ctx.bonus_ad)"
+          "40 + (0.4 * ctx.bonus_ad)",
+          "60 + (0.45 * ctx.bonus_ad)",
+          "80 + (0.5 * ctx.bonus_ad)",
+          "100 + (0.55 * ctx.bonus_ad)",
+          "120 + (0.6 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Repudiation",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "50 + (0.5 * ctx.bonus_ad)",
+          "75 + (0.5 * ctx.bonus_ad)",
+          "100 + (0.5 * ctx.bonus_ad)",
+          "125 + (0.5 * ctx.bonus_ad)",
+          "150 + (0.5 * ctx.bonus_ad)"
         ]
       }
     ]

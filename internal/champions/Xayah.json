@@ -70,6 +70,24 @@
   "abilities": [
     [
       {
+        "type": "Q",
+        "name": "_3"
+      },
+      {
+        "name": "Double Daggers",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "22.5 + (0.25 * ctx.bonus_ad)",
+          "30 + (0.25 * ctx.bonus_ad)",
+          "37.5 + (0.25 * ctx.bonus_ad)",
+          "45 + (0.25 * ctx.bonus_ad)",
+          "52.5 + (0.25 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "E",
         "name": "_1"
       },
@@ -88,19 +106,19 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_2"
+        "type": "Q",
+        "name": "_1"
       },
       {
-        "name": "Bladecaller",
+        "name": "Double Daggers",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "55 + (0.6 * ctx.bonus_ad)",
-          "65 + (0.6 * ctx.bonus_ad)",
-          "75 + (0.6 * ctx.bonus_ad)",
-          "85 + (0.6 * ctx.bonus_ad)",
-          "95 + (0.6 * ctx.bonus_ad)"
+          "45 + (0.5 * ctx.bonus_ad)",
+          "60 + (0.5 * ctx.bonus_ad)",
+          "75 + (0.5 * ctx.bonus_ad)",
+          "90 + (0.5 * ctx.bonus_ad)",
+          "105 + (0.5 * ctx.bonus_ad)"
         ]
       }
     ],
@@ -119,24 +137,6 @@
           "75 + (0.5 * ctx.bonus_ad)",
           "90 + (0.5 * ctx.bonus_ad)",
           "105 + (0.5 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_3"
-      },
-      {
-        "name": "Double Daggers",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "22.5 + (0.25 * ctx.bonus_ad)",
-          "30 + (0.25 * ctx.bonus_ad)",
-          "37.5 + (0.25 * ctx.bonus_ad)",
-          "45 + (0.25 * ctx.bonus_ad)",
-          "52.5 + (0.25 * ctx.bonus_ad)"
         ]
       }
     ],
@@ -176,19 +176,19 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "type": "E",
+        "name": "_2"
       },
       {
-        "name": "Double Daggers",
+        "name": "Bladecaller",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "45 + (0.5 * ctx.bonus_ad)",
-          "60 + (0.5 * ctx.bonus_ad)",
-          "75 + (0.5 * ctx.bonus_ad)",
-          "90 + (0.5 * ctx.bonus_ad)",
-          "105 + (0.5 * ctx.bonus_ad)"
+          "55 + (0.6 * ctx.bonus_ad)",
+          "65 + (0.6 * ctx.bonus_ad)",
+          "75 + (0.6 * ctx.bonus_ad)",
+          "85 + (0.6 * ctx.bonus_ad)",
+          "95 + (0.6 * ctx.bonus_ad)"
         ]
       }
     ]

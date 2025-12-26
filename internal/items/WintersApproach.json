@@ -8,6 +8,14 @@
   "maps": [
     [
       "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "SummonersRift",
       true
     ],
     [
@@ -15,15 +23,7 @@
       true
     ],
     [
-      "SummonersRift",
-      true
-    ],
-    [
       "Tft",
-      false
-    ],
-    [
-      "Arena",
       false
     ],
     [
@@ -31,24 +31,11 @@
       true
     ],
     [
-      "SummonersRift",
+      "Arena",
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Mana",
-      "value": 500
-    },
-    {
-      "name": "AbilityHaste",
-      "value": 15
-    },
-    {
-      "name": "Health",
-      "value": 550
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -114,7 +101,7 @@
     3067
   ],
   "builds_from_item_ids": [
-    "TearoftheGoddess",
+    "TearOfTheGoddess",
     "GiantsBelt",
     "Kindlegem"
   ],

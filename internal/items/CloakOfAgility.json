@@ -1,11 +1,27 @@
 {
   "riot_id": 1018,
-  "item_id": "CloakofAgility",
+  "item_id": "CloakOfAgility",
   "name": "Cloak of Agility",
   "price": 600,
   "sell": 420,
   "tier": 1,
   "maps": [
+    [
+      "Tft",
+      false
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
     [
       "SummonersRift",
       true
@@ -15,32 +31,11 @@
       true
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
       "NexusBlitz",
       true
-    ],
-    [
-      "Arena",
-      false
-    ],
-    [
-      "Tft",
-      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "CriticalStrikeChance",
-      "value": 15
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

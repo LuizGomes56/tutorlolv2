@@ -11,20 +11,20 @@
       true
     ],
     [
-      "SummonersRift",
-      true
-    ],
-    [
-      "NexusBlitz",
-      true
-    ],
-    [
       "Aram",
       true
     ],
     [
       "Tft",
       false
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "NexusBlitz",
+      true
     ],
     [
       "Arena",
@@ -35,12 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackDamage",
-      "value": 25
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -132,7 +127,7 @@
     "BlackCleaver",
     "Bloodthirster",
     "ImmortalShieldbow",
-    "SpearofShojin",
+    "SpearOfShojin",
     "Hullbreaker",
     "TheCollector",
     "InfinityEdge",
@@ -140,7 +135,7 @@
     "EssenceReaver",
     "StatikkShiv",
     "GuinsoosRageblade",
-    "BladeoftheRuinedKing",
+    "BladeOfTheRuinedKing",
     "SerpentsFang",
     "DeathsDance",
     "Opportunity"

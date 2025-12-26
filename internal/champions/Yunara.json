@@ -70,35 +70,19 @@
   "abilities": [
     [
       {
-        "type": "R",
-        "name": "_1"
-      },
-      {
-        "name": "Transcend One's Self",
-        "damage_type": "Unknown",
-        "attributes": "Undefined",
-        "damage": [
-          "50",
-          "200",
-          "350"
-        ]
-      }
-    ],
-    [
-      {
         "type": "W",
-        "name": "_2"
+        "name": "_1"
       },
       {
         "name": "Arc of Judgment",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "1.25 + (0.1 * ctx.ad) + (0.0625 * ctx.ap)",
-          "5 + (0.1 * ctx.ad) + (0.0625 * ctx.ap)",
-          "8.75 + (0.1 * ctx.ad) + (0.0625 * ctx.ap)",
-          "12.5 + (0.1 * ctx.ad) + (0.0625 * ctx.ap)",
-          "16.25 + (0.1 * ctx.ad) + (0.0625 * ctx.ap)"
+          "5 + (0.85 * ctx.ad) + (0.5 * ctx.ap)",
+          "30 + (0.85 * ctx.ad) + (0.5 * ctx.ap)",
+          "55 + (0.85 * ctx.ad) + (0.5 * ctx.ap)",
+          "80 + (0.85 * ctx.ad) + (0.5 * ctx.ap)",
+          "105 + (0.85 * ctx.ad) + (0.5 * ctx.ap)"
         ]
       }
     ],
@@ -123,24 +107,6 @@
     [
       {
         "type": "W",
-        "name": "_1"
-      },
-      {
-        "name": "Arc of Judgment",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "5 + (0.85 * ctx.ad) + (0.5 * ctx.ap)",
-          "30 + (0.85 * ctx.ad) + (0.5 * ctx.ap)",
-          "55 + (0.85 * ctx.ad) + (0.5 * ctx.ap)",
-          "80 + (0.85 * ctx.ad) + (0.5 * ctx.ap)",
-          "105 + (0.85 * ctx.ad) + (0.5 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
         "name": "_3"
       },
       {
@@ -158,8 +124,26 @@
     ],
     [
       {
+        "type": "W",
+        "name": "_2"
+      },
+      {
+        "name": "Arc of Judgment",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "1.25 + (0.1 * ctx.ad) + (0.0625 * ctx.ap)",
+          "5 + (0.1 * ctx.ad) + (0.0625 * ctx.ap)",
+          "8.75 + (0.1 * ctx.ad) + (0.0625 * ctx.ap)",
+          "12.5 + (0.1 * ctx.ad) + (0.0625 * ctx.ap)",
+          "16.25 + (0.1 * ctx.ad) + (0.0625 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "Q",
-        "name": "_1"
+        "name": "_5"
       },
       {
         "name": "Cultivation of Spirit",
@@ -195,24 +179,6 @@
     [
       {
         "type": "Q",
-        "name": "_5"
-      },
-      {
-        "name": "Cultivation of Spirit",
-        "damage_type": "Unknown",
-        "attributes": "Undefined",
-        "damage": [
-          "5 + (0.2 * ctx.ap)",
-          "10 + (0.2 * ctx.ap)",
-          "15 + (0.2 * ctx.ap)",
-          "20 + (0.2 * ctx.ap)",
-          "25 + (0.2 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
         "name": "_2"
       },
       {
@@ -225,6 +191,40 @@
           "37.5 + (0.5 * ctx.ap)",
           "50 + (0.5 * ctx.ap)",
           "62.5 + (0.5 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Transcend One's Self",
+        "damage_type": "Unknown",
+        "attributes": "Undefined",
+        "damage": [
+          "50",
+          "200",
+          "350"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Cultivation of Spirit",
+        "damage_type": "Unknown",
+        "attributes": "Undefined",
+        "damage": [
+          "5 + (0.2 * ctx.ap)",
+          "10 + (0.2 * ctx.ap)",
+          "15 + (0.2 * ctx.ap)",
+          "20 + (0.2 * ctx.ap)",
+          "25 + (0.2 * ctx.ap)"
         ]
       }
     ]
