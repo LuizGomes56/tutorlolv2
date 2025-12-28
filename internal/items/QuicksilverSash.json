@@ -8,10 +8,6 @@
   "maps": [
     [
       "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
       true
     ],
     [
@@ -28,6 +24,10 @@
     ],
     [
       "Arena",
+      false
+    ],
+    [
+      "SummonersRift",
       false
     ],
     [

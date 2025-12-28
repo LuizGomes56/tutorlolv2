@@ -71,6 +71,24 @@
     [
       {
         "type": "Q",
+        "name": "_3"
+      },
+      {
+        "name": "Reaping Slash",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "115 + (0.85 * ctx.bonus_ad)",
+          "140 + (0.85 * ctx.bonus_ad)",
+          "165 + (0.85 * ctx.bonus_ad)",
+          "190 + (0.85 * ctx.bonus_ad)",
+          "215 + (0.85 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
         "name": "_4"
       },
       {
@@ -83,24 +101,6 @@
           "330 + (1.7 * ctx.bonus_ad)",
           "380 + (1.7 * ctx.bonus_ad)",
           "430 + (1.7 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_1"
-      },
-      {
-        "name": "Blade's Reach",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "85 + (1.1 * ctx.bonus_ad)",
-          "130 + (1.1 * ctx.bonus_ad)",
-          "175 + (1.1 * ctx.bonus_ad)",
-          "220 + (1.1 * ctx.bonus_ad)",
-          "265 + (1.1 * ctx.bonus_ad)"
         ]
       }
     ],
@@ -125,6 +125,24 @@
     [
       {
         "type": "Q",
+        "name": "_6"
+      },
+      {
+        "name": "Reaping Slash",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "400",
+          "500",
+          "600",
+          "700",
+          "800"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
         "name": "_5"
       },
       {
@@ -137,6 +155,24 @@
           "300",
           "350",
           "400"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Blade's Reach",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "85 + (1.1 * ctx.bonus_ad)",
+          "130 + (1.1 * ctx.bonus_ad)",
+          "175 + (1.1 * ctx.bonus_ad)",
+          "220 + (1.1 * ctx.bonus_ad)",
+          "265 + (1.1 * ctx.bonus_ad)"
         ]
       }
     ],
@@ -159,24 +195,6 @@
     [
       {
         "type": "Q",
-        "name": "_3"
-      },
-      {
-        "name": "Reaping Slash",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "115 + (0.85 * ctx.bonus_ad)",
-          "140 + (0.85 * ctx.bonus_ad)",
-          "165 + (0.85 * ctx.bonus_ad)",
-          "190 + (0.85 * ctx.bonus_ad)",
-          "215 + (0.85 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
         "name": "_2"
       },
       {
@@ -189,24 +207,6 @@
           "250 + (1.7 * ctx.bonus_ad)",
           "300 + (1.7 * ctx.bonus_ad)",
           "350 + (1.7 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_6"
-      },
-      {
-        "name": "Reaping Slash",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "400",
-          "500",
-          "600",
-          "700",
-          "800"
         ]
       }
     ]

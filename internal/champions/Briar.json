@@ -88,40 +88,6 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
-      },
-      {
-        "name": "Certain Death",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "150 + (0.5 * ctx.bonus_ad) + (1.2 * ctx.ap)",
-          "250 + (0.5 * ctx.bonus_ad) + (1.2 * ctx.ap)",
-          "350 + (0.5 * ctx.bonus_ad) + (1.2 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_4"
-      },
-      {
-        "name": "Chilling Scream",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "2 + (0.025 * ctx.bonus_ad) + (0.025 * ctx.ap)",
-          "2.875 + (0.025 * ctx.bonus_ad) + (0.025 * ctx.ap)",
-          "3.75 + (0.025 * ctx.bonus_ad) + (0.025 * ctx.ap)",
-          "4.625 + (0.025 * ctx.bonus_ad) + (0.025 * ctx.ap)",
-          "5.5 + (0.025 * ctx.bonus_ad) + (0.025 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "W",
         "name": "_1"
       },
@@ -141,18 +107,18 @@
     [
       {
         "type": "E",
-        "name": "_3"
+        "name": "_1"
       },
       {
         "name": "Chilling Scream",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "80 + ctx.bonus_ad + ctx.ap",
-          "115 + ctx.bonus_ad + ctx.ap",
-          "150 + ctx.bonus_ad + ctx.ap",
-          "185 + ctx.bonus_ad + ctx.ap",
-          "220 + ctx.bonus_ad + ctx.ap"
+          "140 + (2.4 * ctx.bonus_ad) + (2.4 * ctx.ap)",
+          "215 + (2.4 * ctx.bonus_ad) + (2.4 * ctx.ap)",
+          "290 + (2.4 * ctx.bonus_ad) + (2.4 * ctx.ap)",
+          "365 + (2.4 * ctx.bonus_ad) + (2.4 * ctx.ap)",
+          "440 + (2.4 * ctx.bonus_ad) + (2.4 * ctx.ap)"
         ]
       }
     ],
@@ -177,18 +143,52 @@
     [
       {
         "type": "E",
-        "name": "_1"
+        "name": "_4"
       },
       {
         "name": "Chilling Scream",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "140 + (2.4 * ctx.bonus_ad) + (2.4 * ctx.ap)",
-          "215 + (2.4 * ctx.bonus_ad) + (2.4 * ctx.ap)",
-          "290 + (2.4 * ctx.bonus_ad) + (2.4 * ctx.ap)",
-          "365 + (2.4 * ctx.bonus_ad) + (2.4 * ctx.ap)",
-          "440 + (2.4 * ctx.bonus_ad) + (2.4 * ctx.ap)"
+          "2 + (0.025 * ctx.bonus_ad) + (0.025 * ctx.ap)",
+          "2.875 + (0.025 * ctx.bonus_ad) + (0.025 * ctx.ap)",
+          "3.75 + (0.025 * ctx.bonus_ad) + (0.025 * ctx.ap)",
+          "4.625 + (0.025 * ctx.bonus_ad) + (0.025 * ctx.ap)",
+          "5.5 + (0.025 * ctx.bonus_ad) + (0.025 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_3"
+      },
+      {
+        "name": "Chilling Scream",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "80 + ctx.bonus_ad + ctx.ap",
+          "115 + ctx.bonus_ad + ctx.ap",
+          "150 + ctx.bonus_ad + ctx.ap",
+          "185 + ctx.bonus_ad + ctx.ap",
+          "220 + ctx.bonus_ad + ctx.ap"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Certain Death",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "150 + (0.5 * ctx.bonus_ad) + (1.2 * ctx.ap)",
+          "250 + (0.5 * ctx.bonus_ad) + (1.2 * ctx.ap)",
+          "350 + (0.5 * ctx.bonus_ad) + (1.2 * ctx.ap)"
         ]
       }
     ]

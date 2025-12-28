@@ -88,78 +88,6 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_2"
-      },
-      {
-        "name": "Spirit of Dread",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "100 + ctx.ap",
-          "150 + ctx.ap",
-          "200 + ctx.ap",
-          "250 + ctx.ap",
-          "300 + ctx.ap"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_2"
-      },
-      {
-        "name": "Devastating Charge",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "30 + (0.5 * ctx.bonus_ad)",
-          "45 + (0.5 * ctx.bonus_ad)",
-          "60 + (0.5 * ctx.bonus_ad)",
-          "75 + (0.5 * ctx.bonus_ad)",
-          "90 + (0.5 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_1"
-      },
-      {
-        "name": "Devastating Charge",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "60 + ctx.bonus_ad",
-          "90 + ctx.bonus_ad",
-          "120 + ctx.bonus_ad",
-          "150 + ctx.bonus_ad",
-          "180 + ctx.bonus_ad"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Rampage",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "36 + (0.54 * ctx.bonus_ad)",
-          "51 + (0.54 * ctx.bonus_ad)",
-          "66 + (0.54 * ctx.bonus_ad)",
-          "81 + (0.54 * ctx.bonus_ad)",
-          "96 + (0.54 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "R",
         "name": "_1"
       },
@@ -189,6 +117,78 @@
           "110 + (0.9 * ctx.bonus_ad)",
           "135 + (0.9 * ctx.bonus_ad)",
           "160 + (0.9 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_2"
+      },
+      {
+        "name": "Devastating Charge",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "30 + (0.5 * ctx.bonus_ad)",
+          "45 + (0.5 * ctx.bonus_ad)",
+          "60 + (0.5 * ctx.bonus_ad)",
+          "75 + (0.5 * ctx.bonus_ad)",
+          "90 + (0.5 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_2"
+      },
+      {
+        "name": "Spirit of Dread",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "100 + ctx.ap",
+          "150 + ctx.ap",
+          "200 + ctx.ap",
+          "250 + ctx.ap",
+          "300 + ctx.ap"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Rampage",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "36 + (0.54 * ctx.bonus_ad)",
+          "51 + (0.54 * ctx.bonus_ad)",
+          "66 + (0.54 * ctx.bonus_ad)",
+          "81 + (0.54 * ctx.bonus_ad)",
+          "96 + (0.54 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Devastating Charge",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "60 + ctx.bonus_ad",
+          "90 + ctx.bonus_ad",
+          "120 + ctx.bonus_ad",
+          "150 + ctx.bonus_ad",
+          "180 + ctx.bonus_ad"
         ]
       }
     ]

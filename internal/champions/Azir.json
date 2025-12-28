@@ -70,40 +70,6 @@
   "abilities": [
     [
       {
-        "type": "R",
-        "name": "_1"
-      },
-      {
-        "name": "Emperor's Divide",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "200 + (0.75 * ctx.ap)",
-          "400 + (0.75 * ctx.ap)",
-          "600 + (0.75 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_1"
-      },
-      {
-        "name": "Shifting Sands",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "60 + (0.4 * ctx.ap)",
-          "100 + (0.4 * ctx.ap)",
-          "140 + (0.4 * ctx.ap)",
-          "180 + (0.4 * ctx.ap)",
-          "220 + (0.4 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "W",
         "name": "_1"
       },
@@ -135,6 +101,24 @@
     ],
     [
       {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Shifting Sands",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "60 + (0.4 * ctx.ap)",
+          "100 + (0.4 * ctx.ap)",
+          "140 + (0.4 * ctx.ap)",
+          "180 + (0.4 * ctx.ap)",
+          "220 + (0.4 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "Q",
         "name": "_1"
       },
@@ -148,6 +132,22 @@
           "100 + (0.35 * ctx.ap)",
           "120 + (0.35 * ctx.ap)",
           "140 + (0.35 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Emperor's Divide",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "200 + (0.75 * ctx.ap)",
+          "400 + (0.75 * ctx.ap)",
+          "600 + (0.75 * ctx.ap)"
         ]
       }
     ]

@@ -11,19 +11,15 @@
       false
     ],
     [
-      "Aram",
+      "SummonersRift",
       false
-    ],
-    [
-      "Arena",
-      true
     ],
     [
       "SummonersRift",
       false
     ],
     [
-      "NexusBlitz",
+      "Aram",
       false
     ],
     [
@@ -31,7 +27,11 @@
       false
     ],
     [
-      "SummonersRift",
+      "Arena",
+      true
+    ],
+    [
+      "NexusBlitz",
       false
     ]
   ],

@@ -79,8 +79,14 @@ fn declare_item(item: &Item) -> DeclaredItem {
         })
     };
 
-    let ranged_closures = get_closure(&ranged, &mut ranged_fn_names, "ranged").join(",");
-    let melee_closures = get_closure(&melee, &mut melee_fn_names, "melee").join(",");
+    let ranged_closures = {
+        let [min, max] = get_closure(&ranged, &mut ranged_fn_names, "ranged");
+        format!("ranged_min_dmg: {min}, ranged_max_dmg: {max},")
+    };
+    let melee_closures = {
+        let [min, max] = get_closure(&melee, &mut melee_fn_names, "melee");
+        format!("melee_min_dmg: {min}, melee_max_dmg: {max}, }};")
+    };
 
     let get_fn_call = |names: &[String]| {
         names
@@ -245,15 +251,11 @@ pub async fn generate_items() -> GeneratorFn {
                     deals_damage: {deals_damage},"
             );
 
-            let html_declaration = format!(
-                "{base_declaration}
-                ranged_damages: [{ranged_closures}],
-                melee_damages: [{melee_closures}], }};"
-            )
-            .rust_fmt()
-            .drop_f32s()
-            .rust_html()
-            .as_const();
+            let html_declaration = format!("{base_declaration}{ranged_closures}{melee_closures}")
+                .rust_fmt()
+                .drop_f32s()
+                .rust_html()
+                .as_const();
 
             let base_declaration = format!(
                 "{EVAL_FEAT}{base_declaration}

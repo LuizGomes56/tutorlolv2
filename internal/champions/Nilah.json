@@ -70,19 +70,17 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_2"
+        "type": "R",
+        "name": "_4"
       },
       {
-        "name": "Formless Blade",
+        "name": "Apotheosis",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "5 + (0.9 * ctx.ad)",
-          "10 + (0.95 * ctx.ad)",
-          "15 + ctx.ad",
-          "20 + (1.05 * ctx.ad)",
-          "25 + (1.1 * ctx.ad)"
+          "60 + (0.4 * ctx.bonus_ad)",
+          "100 + (0.4 * ctx.bonus_ad)",
+          "140 + (0.4 * ctx.bonus_ad)"
         ]
       }
     ],
@@ -117,6 +115,24 @@
           "185 + (1.4 * ctx.bonus_ad)",
           "325 + (1.4 * ctx.bonus_ad)",
           "465 + (1.4 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "Formless Blade",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "5 + (0.9 * ctx.ad)",
+          "10 + (0.95 * ctx.ad)",
+          "15 + ctx.ad",
+          "20 + (1.05 * ctx.ad)",
+          "25 + (1.1 * ctx.ad)"
         ]
       }
     ],
@@ -167,22 +183,6 @@
           "15 + (0.1 * ctx.bonus_ad)",
           "25 + (0.1 * ctx.bonus_ad)",
           "35 + (0.1 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_4"
-      },
-      {
-        "name": "Apotheosis",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "60 + (0.4 * ctx.bonus_ad)",
-          "100 + (0.4 * ctx.bonus_ad)",
-          "140 + (0.4 * ctx.bonus_ad)"
         ]
       }
     ]

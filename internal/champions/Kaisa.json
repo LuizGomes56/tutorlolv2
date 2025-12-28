@@ -70,24 +70,6 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_2"
-      },
-      {
-        "name": "Icathian Rain",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "150 + (2.0625 * ctx.bonus_ad) + (0.75 * ctx.ap)",
-          "206.25 + (2.0625 * ctx.bonus_ad) + (0.75 * ctx.ap)",
-          "262.5 + (2.0625 * ctx.bonus_ad) + (0.75 * ctx.ap)",
-          "318.75 + (2.0625 * ctx.bonus_ad) + (0.75 * ctx.ap)",
-          "375 + (2.0625 * ctx.bonus_ad) + (0.75 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "W",
         "name": "_1"
       },
@@ -125,18 +107,18 @@
     [
       {
         "type": "Q",
-        "name": "_4"
+        "name": "_2"
       },
       {
         "name": "Icathian Rain",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "90 + (1.2375 * ctx.bonus_ad) + (0.45 * ctx.ap)",
-          "123.75 + (1.2375 * ctx.bonus_ad) + (0.45 * ctx.ap)",
-          "157.5 + (1.2375 * ctx.bonus_ad) + (0.45 * ctx.ap)",
-          "191.25 + (1.2375 * ctx.bonus_ad) + (0.45 * ctx.ap)",
-          "225 + (1.2375 * ctx.bonus_ad) + (0.45 * ctx.ap)"
+          "150 + (2.0625 * ctx.bonus_ad) + (0.75 * ctx.ap)",
+          "206.25 + (2.0625 * ctx.bonus_ad) + (0.75 * ctx.ap)",
+          "262.5 + (2.0625 * ctx.bonus_ad) + (0.75 * ctx.ap)",
+          "318.75 + (2.0625 * ctx.bonus_ad) + (0.75 * ctx.ap)",
+          "375 + (2.0625 * ctx.bonus_ad) + (0.75 * ctx.ap)"
         ]
       }
     ],
@@ -155,6 +137,24 @@
           "70 + (0.55 * ctx.bonus_ad) + (0.2 * ctx.ap)",
           "85 + (0.55 * ctx.bonus_ad) + (0.2 * ctx.ap)",
           "100 + (0.55 * ctx.bonus_ad) + (0.2 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_4"
+      },
+      {
+        "name": "Icathian Rain",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "90 + (1.2375 * ctx.bonus_ad) + (0.45 * ctx.ap)",
+          "123.75 + (1.2375 * ctx.bonus_ad) + (0.45 * ctx.ap)",
+          "157.5 + (1.2375 * ctx.bonus_ad) + (0.45 * ctx.ap)",
+          "191.25 + (1.2375 * ctx.bonus_ad) + (0.45 * ctx.ap)",
+          "225 + (1.2375 * ctx.bonus_ad) + (0.45 * ctx.ap)"
         ]
       }
     ]

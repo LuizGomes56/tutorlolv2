@@ -7,7 +7,7 @@
   "tier": 3,
   "maps": [
     [
-      "Aram",
+      "NexusBlitz",
       true
     ],
     [
@@ -15,15 +15,15 @@
       false
     ],
     [
+      "Aram",
+      true
+    ],
+    [
       "Arena",
       false
     ],
     [
       "SummonersRift",
-      true
-    ],
-    [
-      "NexusBlitz",
       true
     ],
     [
@@ -36,7 +36,7 @@
     ]
   ],
   "prettified_stats": [],
-  "damage_type": "Unknown",
+  "damage_type": "Magic",
   "stats": {
     "abilityPower": {
       "flat": 80.0,
@@ -108,13 +108,13 @@
   "builds_into_riot_ids": [],
   "builds_into_item_ids": [],
   "ranged": {
-    "minimum_damage": "zero",
+    "minimum_damage": "15 + (0.15 * ctx.ap)",
     "maximum_damage": "zero"
   },
   "melee": {
-    "minimum_damage": "zero",
+    "minimum_damage": "15 + (0.15 * ctx.ap)",
     "maximum_damage": "zero"
   },
-  "attributes": "Undefined",
+  "attributes": "Onhit",
   "purchasable": true
 }

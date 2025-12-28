@@ -11,6 +11,18 @@
       true
     ],
     [
+      "NexusBlitz",
+      true
+    ],
+    [
+      "Tft",
+      false
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
       "SummonersRift",
       false
     ],
@@ -20,18 +32,6 @@
     ],
     [
       "Aram",
-      true
-    ],
-    [
-      "Arena",
-      false
-    ],
-    [
-      "Tft",
-      false
-    ],
-    [
-      "NexusBlitz",
       true
     ]
   ],

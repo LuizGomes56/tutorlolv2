@@ -87,24 +87,6 @@
     [
       {
         "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Lay Waste",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "80 + (0.7 * ctx.ap)",
-          "118 + (0.7 * ctx.ap)",
-          "156 + (0.7 * ctx.ap)",
-          "194 + (0.7 * ctx.ap)",
-          "232 + (0.7 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
         "name": "_2"
       },
       {
@@ -117,6 +99,24 @@
           "78 + (0.35 * ctx.ap)",
           "97 + (0.35 * ctx.ap)",
           "116 + (0.35 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Lay Waste",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "80 + (0.7 * ctx.ap)",
+          "118 + (0.7 * ctx.ap)",
+          "156 + (0.7 * ctx.ap)",
+          "194 + (0.7 * ctx.ap)",
+          "232 + (0.7 * ctx.ap)"
         ]
       }
     ],

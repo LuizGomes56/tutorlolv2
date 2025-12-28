@@ -70,6 +70,24 @@
   "abilities": [
     [
       {
+        "type": "W",
+        "name": "_3"
+      },
+      {
+        "name": "Winter's Wrath",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "10 + (0.8 * ctx.ap) + (0.12 * ctx.max_health)",
+          "40 + (0.8 * ctx.ap) + (0.12 * ctx.max_health)",
+          "70 + (0.8 * ctx.ap) + (0.12 * ctx.max_health)",
+          "100 + (0.8 * ctx.ap) + (0.12 * ctx.max_health)",
+          "130 + (0.8 * ctx.ap) + (0.12 * ctx.max_health)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "R",
         "name": "_2"
       },
@@ -81,24 +99,6 @@
           "200 + (0.8 * ctx.ap)",
           "300 + (0.8 * ctx.ap)",
           "400 + (0.8 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Arctic Assault",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "90 + (0.6 * ctx.ap)",
-          "140 + (0.6 * ctx.ap)",
-          "190 + (0.6 * ctx.ap)",
-          "240 + (0.6 * ctx.ap)",
-          "290 + (0.6 * ctx.ap)"
         ]
       }
     ],
@@ -138,6 +138,24 @@
     ],
     [
       {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Permafrost",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "55 + (0.6 * ctx.ap)",
+          "105 + (0.6 * ctx.ap)",
+          "155 + (0.6 * ctx.ap)",
+          "205 + (0.6 * ctx.ap)",
+          "255 + (0.6 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "W",
         "name": "_2"
       },
@@ -156,37 +174,19 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_3"
-      },
-      {
-        "name": "Winter's Wrath",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "10 + (0.8 * ctx.ap) + (0.12 * ctx.max_health)",
-          "40 + (0.8 * ctx.ap) + (0.12 * ctx.max_health)",
-          "70 + (0.8 * ctx.ap) + (0.12 * ctx.max_health)",
-          "100 + (0.8 * ctx.ap) + (0.12 * ctx.max_health)",
-          "130 + (0.8 * ctx.ap) + (0.12 * ctx.max_health)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
+        "type": "Q",
         "name": "_1"
       },
       {
-        "name": "Permafrost",
+        "name": "Arctic Assault",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "55 + (0.6 * ctx.ap)",
-          "105 + (0.6 * ctx.ap)",
-          "155 + (0.6 * ctx.ap)",
-          "205 + (0.6 * ctx.ap)",
-          "255 + (0.6 * ctx.ap)"
+          "90 + (0.6 * ctx.ap)",
+          "140 + (0.6 * ctx.ap)",
+          "190 + (0.6 * ctx.ap)",
+          "240 + (0.6 * ctx.ap)",
+          "290 + (0.6 * ctx.ap)"
         ]
       }
     ]

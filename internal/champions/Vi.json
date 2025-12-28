@@ -105,6 +105,24 @@
     [
       {
         "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "Vault Breaker",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "40 + (0.6 * ctx.bonus_ad)",
+          "60 + (0.6 * ctx.bonus_ad)",
+          "80 + (0.6 * ctx.bonus_ad)",
+          "100 + (0.6 * ctx.bonus_ad)",
+          "120 + (0.6 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
         "name": "_1"
       },
       {
@@ -135,24 +153,6 @@
           "50 + (1.1 * ctx.ad) + ctx.ap",
           "70 + (1.1 * ctx.ad) + ctx.ap",
           "90 + (1.1 * ctx.ad) + ctx.ap"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_2"
-      },
-      {
-        "name": "Vault Breaker",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "40 + (0.6 * ctx.bonus_ad)",
-          "60 + (0.6 * ctx.bonus_ad)",
-          "80 + (0.6 * ctx.bonus_ad)",
-          "100 + (0.6 * ctx.bonus_ad)",
-          "120 + (0.6 * ctx.bonus_ad)"
         ]
       }
     ]

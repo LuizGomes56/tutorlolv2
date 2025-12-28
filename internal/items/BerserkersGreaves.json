@@ -11,7 +11,7 @@
       true
     ],
     [
-      "SummonersRift",
+      "NexusBlitz",
       true
     ],
     [
@@ -19,20 +19,20 @@
       true
     ],
     [
-      "Tft",
-      false
-    ],
-    [
       "Arena",
       false
     ],
     [
-      "NexusBlitz",
-      true
+      "Tft",
+      false
     ],
     [
       "SummonersRift",
       false
+    ],
+    [
+      "SummonersRift",
+      true
     ]
   ],
   "prettified_stats": [],

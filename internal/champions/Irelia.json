@@ -72,42 +72,6 @@
     [
       {
         "type": "W",
-        "name": "_2"
-      },
-      {
-        "name": "Defiant Dance",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "10 + (0.4 * ctx.ad) + (0.4 * ctx.ap)",
-          "20 + (0.4 * ctx.ad) + (0.4 * ctx.ap)",
-          "30 + (0.4 * ctx.ad) + (0.4 * ctx.ap)",
-          "40 + (0.4 * ctx.ad) + (0.4 * ctx.ap)",
-          "50 + (0.4 * ctx.ad) + (0.4 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Bladesurge",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "5 + (0.7 * ctx.ad)",
-          "25 + (0.7 * ctx.ad)",
-          "45 + (0.7 * ctx.ad)",
-          "65 + (0.7 * ctx.ad)",
-          "85 + (0.7 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
         "name": "_1"
       },
       {
@@ -154,6 +118,42 @@
           "125 + (0.7 * ctx.ap)",
           "200 + (0.7 * ctx.ap)",
           "275 + (0.7 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Bladesurge",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "5 + (0.7 * ctx.ad)",
+          "25 + (0.7 * ctx.ad)",
+          "45 + (0.7 * ctx.ad)",
+          "65 + (0.7 * ctx.ad)",
+          "85 + (0.7 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_2"
+      },
+      {
+        "name": "Defiant Dance",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "10 + (0.4 * ctx.ad) + (0.4 * ctx.ap)",
+          "20 + (0.4 * ctx.ad) + (0.4 * ctx.ap)",
+          "30 + (0.4 * ctx.ad) + (0.4 * ctx.ap)",
+          "40 + (0.4 * ctx.ad) + (0.4 * ctx.ap)",
+          "50 + (0.4 * ctx.ad) + (0.4 * ctx.ap)"
         ]
       }
     ]

@@ -87,19 +87,19 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_2"
+        "type": "Q",
+        "name": "_1"
       },
       {
-        "name": "Tantrum",
+        "name": "Bandage Toss",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "5 + (0.03 * ctx.bonus_ctx.armor) + (0.03 * ctx.bonus_magic_resist)",
-          "7 + (0.03 * ctx.bonus_ctx.armor) + (0.03 * ctx.bonus_magic_resist)",
-          "9 + (0.03 * ctx.bonus_ctx.armor) + (0.03 * ctx.bonus_magic_resist)",
-          "11 + (0.03 * ctx.bonus_ctx.armor) + (0.03 * ctx.bonus_magic_resist)",
-          "13 + (0.03 * ctx.bonus_ctx.armor) + (0.03 * ctx.bonus_magic_resist)"
+          "70 + (0.85 * ctx.ap)",
+          "95 + (0.85 * ctx.ap)",
+          "120 + (0.85 * ctx.ap)",
+          "145 + (0.85 * ctx.ap)",
+          "170 + (0.85 * ctx.ap)"
         ]
       }
     ],
@@ -123,19 +123,19 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "type": "E",
+        "name": "_2"
       },
       {
-        "name": "Bandage Toss",
+        "name": "Tantrum",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "70 + (0.85 * ctx.ap)",
-          "95 + (0.85 * ctx.ap)",
-          "120 + (0.85 * ctx.ap)",
-          "145 + (0.85 * ctx.ap)",
-          "170 + (0.85 * ctx.ap)"
+          "5 + (0.03 * ctx.bonus_ctx.armor) + (0.03 * ctx.bonus_magic_resist)",
+          "7 + (0.03 * ctx.bonus_ctx.armor) + (0.03 * ctx.bonus_magic_resist)",
+          "9 + (0.03 * ctx.bonus_ctx.armor) + (0.03 * ctx.bonus_magic_resist)",
+          "11 + (0.03 * ctx.bonus_ctx.armor) + (0.03 * ctx.bonus_magic_resist)",
+          "13 + (0.03 * ctx.bonus_ctx.armor) + (0.03 * ctx.bonus_magic_resist)"
         ]
       }
     ],

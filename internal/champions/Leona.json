@@ -88,6 +88,40 @@
     ],
     [
       {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Solar Flare",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "150 + (0.8 * ctx.ap)",
+          "225 + (0.8 * ctx.ap)",
+          "300 + (0.8 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Eclipse",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "8",
+          "12",
+          "16",
+          "20",
+          "24"
+        ]
+      }
+    ],
+    [
+      {
         "type": "W",
         "name": "_2"
       },
@@ -119,40 +153,6 @@
           "60 + (0.3 * ctx.ap)",
           "85 + (0.3 * ctx.ap)",
           "110 + (0.3 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_1"
-      },
-      {
-        "name": "Eclipse",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "8",
-          "12",
-          "16",
-          "20",
-          "24"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_1"
-      },
-      {
-        "name": "Solar Flare",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "150 + (0.8 * ctx.ap)",
-          "225 + (0.8 * ctx.ap)",
-          "300 + (0.8 * ctx.ap)"
         ]
       }
     ]

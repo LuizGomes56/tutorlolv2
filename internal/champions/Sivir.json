@@ -88,6 +88,42 @@
     ],
     [
       {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Ricochet",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "(0.7 * ctx.ad)",
+          "(0.74375 * ctx.ad)",
+          "(0.7875 * ctx.ad)",
+          "(0.83125 * ctx.ad)",
+          "(0.875 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Boomerang Blade",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "60 + ctx.bonus_ad + (0.6 * ctx.ap)",
+          "85 + ctx.bonus_ad + (0.6 * ctx.ap)",
+          "110 + ctx.bonus_ad + (0.6 * ctx.ap)",
+          "135 + ctx.bonus_ad + (0.6 * ctx.ap)",
+          "160 + ctx.bonus_ad + (0.6 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "Q",
         "name": "_2"
       },
@@ -124,24 +160,6 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Boomerang Blade",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "60 + ctx.bonus_ad + (0.6 * ctx.ap)",
-          "85 + ctx.bonus_ad + (0.6 * ctx.ap)",
-          "110 + ctx.bonus_ad + (0.6 * ctx.ap)",
-          "135 + ctx.bonus_ad + (0.6 * ctx.ap)",
-          "160 + ctx.bonus_ad + (0.6 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "W",
         "name": "_4"
       },
@@ -173,24 +191,6 @@
           "220 + (2 * ctx.bonus_ad) + (1.2 * ctx.ap)",
           "270 + (2 * ctx.bonus_ad) + (1.2 * ctx.ap)",
           "320 + (2 * ctx.bonus_ad) + (1.2 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_1"
-      },
-      {
-        "name": "Ricochet",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "(0.7 * ctx.ad)",
-          "(0.74375 * ctx.ad)",
-          "(0.7875 * ctx.ad)",
-          "(0.83125 * ctx.ad)",
-          "(0.875 * ctx.ad)"
         ]
       }
     ]

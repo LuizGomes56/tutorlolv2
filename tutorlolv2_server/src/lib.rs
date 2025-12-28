@@ -1,7 +1,7 @@
 mod server;
 
 #[cfg(feature = "dev")]
-use crate::server::dev::{images::*, internal::*, setup::*, statics::*, update::*};
+use crate::server::dev::{images::*, internal::*, setup::*, update::*};
 use actix_cors::Cors;
 use actix_web::{
     App, HttpResponse, HttpServer,
@@ -30,7 +30,6 @@ fn api_scope() -> impl HttpServiceFactory + 'static {
     #[cfg(feature = "dev")]
     let api_routes = api_routes.service(
         scope("")
-            .service(scope("/static").service(static_comptime))
             .service(
                 scope("/setup")
                     .service(setup_champions)

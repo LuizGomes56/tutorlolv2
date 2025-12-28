@@ -72,24 +72,6 @@
   "abilities": [
     [
       {
-        "type": "E",
-        "name": "_2"
-      },
-      {
-        "name": "Sweeping Blade",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "17.5 + (0.05 * ctx.bonus_ad) + (0.15 * ctx.ap)",
-          "21.25 + (0.05 * ctx.bonus_ad) + (0.15 * ctx.ap)",
-          "25 + (0.05 * ctx.bonus_ad) + (0.15 * ctx.ap)",
-          "28.75 + (0.05 * ctx.bonus_ad) + (0.15 * ctx.ap)",
-          "32.5 + (0.05 * ctx.bonus_ad) + (0.15 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "R",
         "name": "_1"
       },
@@ -143,6 +125,24 @@
     [
       {
         "type": "E",
+        "name": "_4"
+      },
+      {
+        "name": "Sweeping Blade",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "140 + (0.4 * ctx.bonus_ad) + (1.2 * ctx.ap)",
+          "170 + (0.4 * ctx.bonus_ad) + (1.2 * ctx.ap)",
+          "200 + (0.4 * ctx.bonus_ad) + (1.2 * ctx.ap)",
+          "230 + (0.4 * ctx.bonus_ad) + (1.2 * ctx.ap)",
+          "260 + (0.4 * ctx.bonus_ad) + (1.2 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
         "name": "_1"
       },
       {
@@ -161,18 +161,18 @@
     [
       {
         "type": "E",
-        "name": "_4"
+        "name": "_2"
       },
       {
         "name": "Sweeping Blade",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "140 + (0.4 * ctx.bonus_ad) + (1.2 * ctx.ap)",
-          "170 + (0.4 * ctx.bonus_ad) + (1.2 * ctx.ap)",
-          "200 + (0.4 * ctx.bonus_ad) + (1.2 * ctx.ap)",
-          "230 + (0.4 * ctx.bonus_ad) + (1.2 * ctx.ap)",
-          "260 + (0.4 * ctx.bonus_ad) + (1.2 * ctx.ap)"
+          "17.5 + (0.05 * ctx.bonus_ad) + (0.15 * ctx.ap)",
+          "21.25 + (0.05 * ctx.bonus_ad) + (0.15 * ctx.ap)",
+          "25 + (0.05 * ctx.bonus_ad) + (0.15 * ctx.ap)",
+          "28.75 + (0.05 * ctx.bonus_ad) + (0.15 * ctx.ap)",
+          "32.5 + (0.05 * ctx.bonus_ad) + (0.15 * ctx.ap)"
         ]
       }
     ]

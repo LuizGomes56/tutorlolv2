@@ -72,6 +72,60 @@
   "abilities": [
     [
       {
+        "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "Barrel Roll",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "84 + (0.84 * ctx.ap)",
+          "126 + (0.84 * ctx.ap)",
+          "168 + (0.84 * ctx.ap)",
+          "210 + (0.84 * ctx.ap)",
+          "252 + (0.84 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_4"
+      },
+      {
+        "name": "Barrel Roll",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "56 + (0.56 * ctx.ap)",
+          "84 + (0.56 * ctx.ap)",
+          "112 + (0.56 * ctx.ap)",
+          "140 + (0.56 * ctx.ap)",
+          "168 + (0.56 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Barrel Roll",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "120 + (1.2 * ctx.ap)",
+          "180 + (1.2 * ctx.ap)",
+          "240 + (1.2 * ctx.ap)",
+          "300 + (1.2 * ctx.ap)",
+          "360 + (1.2 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "W",
         "name": "_3"
       },
@@ -108,19 +162,19 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "type": "Q",
+        "name": "_3"
       },
       {
-        "name": "Drunken Rage",
+        "name": "Barrel Roll",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "0.1 + (0.04 * 0.01 * ctx.ap)",
-          "0.12 + (0.04 * 0.01 * ctx.ap)",
-          "0.14 + (0.04 * 0.01 * ctx.ap)",
-          "0.16 + (0.04 * 0.01 * ctx.ap)",
-          "0.18 + (0.04 * 0.01 * ctx.ap)"
+          "80 + (0.8 * ctx.ap)",
+          "120 + (0.8 * ctx.ap)",
+          "160 + (0.8 * ctx.ap)",
+          "200 + (0.8 * ctx.ap)",
+          "240 + (0.8 * ctx.ap)"
         ]
       }
     ],
@@ -142,73 +196,19 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_3"
-      },
-      {
-        "name": "Barrel Roll",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "80 + (0.8 * ctx.ap)",
-          "120 + (0.8 * ctx.ap)",
-          "160 + (0.8 * ctx.ap)",
-          "200 + (0.8 * ctx.ap)",
-          "240 + (0.8 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_4"
-      },
-      {
-        "name": "Barrel Roll",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "56 + (0.56 * ctx.ap)",
-          "84 + (0.56 * ctx.ap)",
-          "112 + (0.56 * ctx.ap)",
-          "140 + (0.56 * ctx.ap)",
-          "168 + (0.56 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_2"
-      },
-      {
-        "name": "Barrel Roll",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "84 + (0.84 * ctx.ap)",
-          "126 + (0.84 * ctx.ap)",
-          "168 + (0.84 * ctx.ap)",
-          "210 + (0.84 * ctx.ap)",
-          "252 + (0.84 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
+        "type": "W",
         "name": "_1"
       },
       {
-        "name": "Barrel Roll",
+        "name": "Drunken Rage",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "120 + (1.2 * ctx.ap)",
-          "180 + (1.2 * ctx.ap)",
-          "240 + (1.2 * ctx.ap)",
-          "300 + (1.2 * ctx.ap)",
-          "360 + (1.2 * ctx.ap)"
+          "0.1 + (0.04 * 0.01 * ctx.ap)",
+          "0.12 + (0.04 * 0.01 * ctx.ap)",
+          "0.14 + (0.04 * 0.01 * ctx.ap)",
+          "0.16 + (0.04 * 0.01 * ctx.ap)",
+          "0.18 + (0.04 * 0.01 * ctx.ap)"
         ]
       }
     ],

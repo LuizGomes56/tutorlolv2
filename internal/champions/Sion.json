@@ -88,24 +88,6 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
-      },
-      {
-        "name": "Roar of the Slayer",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "65 + (0.55 * ctx.ap)",
-          "100 + (0.55 * ctx.ap)",
-          "135 + (0.55 * ctx.ap)",
-          "170 + (0.55 * ctx.ap)",
-          "205 + (0.55 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "R",
         "name": "_1"
       },
@@ -117,112 +99,6 @@
           "400 + (0.8 * ctx.bonus_ad)",
           "800 + (0.8 * ctx.bonus_ad)",
           "1200 + (0.8 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_5"
-      },
-      {
-        "name": "Decimating Smash",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "135 + (1.8 * ctx.ad)",
-          "232.5 + (2.25 * ctx.ad)",
-          "330 + (2.7 * ctx.ad)",
-          "427.5 + (3.15 * ctx.ad)",
-          "525 + (3.6 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_6"
-      },
-      {
-        "name": "Decimating Smash",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "24 + (0.24 * ctx.ad)",
-          "36 + (0.3 * ctx.ad)",
-          "48 + (0.36 * ctx.ad)",
-          "60 + (0.42 * ctx.ad)",
-          "72 + (0.48 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_1"
-      },
-      {
-        "name": "Soul Furnace",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "40 + (0.4 * ctx.ap) + (0.14 * ctx.enemy_max_health)",
-          "65 + (0.4 * ctx.ap) + (0.14 * ctx.enemy_max_health)",
-          "90 + (0.4 * ctx.ap) + (0.14 * ctx.enemy_max_health)",
-          "115 + (0.4 * ctx.ap) + (0.14 * ctx.enemy_max_health)",
-          "140 + (0.4 * ctx.ap) + (0.14 * ctx.enemy_max_health)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_7"
-      },
-      {
-        "name": "Decimating Smash",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "60 + (0.6 * ctx.ad)",
-          "90 + (0.75 * ctx.ad)",
-          "120 + (0.9 * ctx.ad)",
-          "150 + (1.05 * ctx.ad)",
-          "180 + (1.2 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_3"
-      },
-      {
-        "name": "Decimating Smash",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "40 + (0.4 * ctx.ad)",
-          "60 + (0.5 * ctx.ad)",
-          "80 + (0.6 * ctx.ad)",
-          "100 + (0.7 * ctx.ad)",
-          "120 + (0.8 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_2"
-      },
-      {
-        "name": "Unstoppable Onslaught",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "150 + (0.4 * ctx.bonus_ad)",
-          "300 + (0.4 * ctx.bonus_ad)",
-          "450 + (0.4 * ctx.bonus_ad)"
         ]
       }
     ],
@@ -259,6 +135,130 @@
           "132 + (1.08 * ctx.ad)",
           "171 + (1.26 * ctx.ad)",
           "210 + (1.44 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_7"
+      },
+      {
+        "name": "Decimating Smash",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "60 + (0.6 * ctx.ad)",
+          "90 + (0.75 * ctx.ad)",
+          "120 + (0.9 * ctx.ad)",
+          "150 + (1.05 * ctx.ad)",
+          "180 + (1.2 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_6"
+      },
+      {
+        "name": "Decimating Smash",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "24 + (0.24 * ctx.ad)",
+          "36 + (0.3 * ctx.ad)",
+          "48 + (0.36 * ctx.ad)",
+          "60 + (0.42 * ctx.ad)",
+          "72 + (0.48 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_3"
+      },
+      {
+        "name": "Decimating Smash",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "40 + (0.4 * ctx.ad)",
+          "60 + (0.5 * ctx.ad)",
+          "80 + (0.6 * ctx.ad)",
+          "100 + (0.7 * ctx.ad)",
+          "120 + (0.8 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Roar of the Slayer",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "65 + (0.55 * ctx.ap)",
+          "100 + (0.55 * ctx.ap)",
+          "135 + (0.55 * ctx.ap)",
+          "170 + (0.55 * ctx.ap)",
+          "205 + (0.55 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_5"
+      },
+      {
+        "name": "Decimating Smash",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "135 + (1.8 * ctx.ad)",
+          "232.5 + (2.25 * ctx.ad)",
+          "330 + (2.7 * ctx.ad)",
+          "427.5 + (3.15 * ctx.ad)",
+          "525 + (3.6 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Soul Furnace",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "40 + (0.4 * ctx.ap) + (0.14 * ctx.enemy_max_health)",
+          "65 + (0.4 * ctx.ap) + (0.14 * ctx.enemy_max_health)",
+          "90 + (0.4 * ctx.ap) + (0.14 * ctx.enemy_max_health)",
+          "115 + (0.4 * ctx.ap) + (0.14 * ctx.enemy_max_health)",
+          "140 + (0.4 * ctx.ap) + (0.14 * ctx.enemy_max_health)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_2"
+      },
+      {
+        "name": "Unstoppable Onslaught",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "150 + (0.4 * ctx.bonus_ad)",
+          "300 + (0.4 * ctx.bonus_ad)",
+          "450 + (0.4 * ctx.bonus_ad)"
         ]
       }
     ]

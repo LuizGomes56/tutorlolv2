@@ -72,42 +72,6 @@
     [
       {
         "type": "E",
-        "name": "_3"
-      },
-      {
-        "name": "Contaminate",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "35 + (0.35 * ctx.bonus_ad) + (0.35 * ctx.ap)",
-          "50 + (0.35 * ctx.bonus_ad) + (0.35 * ctx.ap)",
-          "65 + (0.35 * ctx.bonus_ad) + (0.35 * ctx.ap)",
-          "80 + (0.35 * ctx.bonus_ad) + (0.35 * ctx.ap)",
-          "95 + (0.35 * ctx.bonus_ad) + (0.35 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_4"
-      },
-      {
-        "name": "Contaminate",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "15 + (0.35 * ctx.bonus_ad)",
-          "20 + (0.35 * ctx.bonus_ad)",
-          "25 + (0.35 * ctx.bonus_ad)",
-          "30 + (0.35 * ctx.bonus_ad)",
-          "35 + (0.35 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
         "name": "_1"
       },
       {
@@ -154,6 +118,42 @@
           "30",
           "45",
           "60"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_4"
+      },
+      {
+        "name": "Contaminate",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "15 + (0.35 * ctx.bonus_ad)",
+          "20 + (0.35 * ctx.bonus_ad)",
+          "25 + (0.35 * ctx.bonus_ad)",
+          "30 + (0.35 * ctx.bonus_ad)",
+          "35 + (0.35 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_3"
+      },
+      {
+        "name": "Contaminate",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "35 + (0.35 * ctx.bonus_ad) + (0.35 * ctx.ap)",
+          "50 + (0.35 * ctx.bonus_ad) + (0.35 * ctx.ap)",
+          "65 + (0.35 * ctx.bonus_ad) + (0.35 * ctx.ap)",
+          "80 + (0.35 * ctx.bonus_ad) + (0.35 * ctx.ap)",
+          "95 + (0.35 * ctx.bonus_ad) + (0.35 * ctx.ap)"
         ]
       }
     ]

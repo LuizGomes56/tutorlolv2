@@ -88,19 +88,19 @@
     ],
     [
       {
-        "type": "W",
+        "type": "Q",
         "name": "_3"
       },
       {
-        "name": "Bushwhack",
+        "name": "Javelin Toss",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "10 + (0.05 * ctx.ap)",
-          "20",
-          "30",
-          "40",
-          "50"
+          "227.5 + (1.625 * ctx.ap)",
+          "292.5",
+          "357.5",
+          "422.5",
+          "487.5"
         ]
       }
     ],
@@ -124,19 +124,19 @@
     ],
     [
       {
-        "type": "Q",
+        "type": "W",
         "name": "_3"
       },
       {
-        "name": "Javelin Toss",
+        "name": "Bushwhack",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "227.5 + (1.625 * ctx.ap)",
-          "292.5",
-          "357.5",
-          "422.5",
-          "487.5"
+          "10 + (0.05 * ctx.ap)",
+          "20",
+          "30",
+          "40",
+          "50"
         ]
       }
     ],

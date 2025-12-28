@@ -70,22 +70,6 @@
   "abilities": [
     [
       {
-        "type": "R",
-        "name": "_2"
-      },
-      {
-        "name": "Static Field",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "50 + (0.3 * ctx.ap) + (0.02 * ctx.max_mana)",
-          "100 + (0.4 * ctx.ap) + (0.02 * ctx.max_mana)",
-          "150 + (0.5 * ctx.ap) + (0.02 * ctx.max_mana)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "Q",
         "name": "_1"
       },
@@ -115,6 +99,22 @@
           "275 + ctx.ap",
           "400 + ctx.ap",
           "525 + ctx.ap"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_2"
+      },
+      {
+        "name": "Static Field",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "50 + (0.3 * ctx.ap) + (0.02 * ctx.max_mana)",
+          "100 + (0.4 * ctx.ap) + (0.02 * ctx.max_mana)",
+          "150 + (0.5 * ctx.ap) + (0.02 * ctx.max_mana)"
         ]
       }
     ]

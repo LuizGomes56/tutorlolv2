@@ -7,11 +7,7 @@
   "tier": 3,
   "maps": [
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "Aram",
+      "NexusBlitz",
       false
     ],
     [
@@ -19,7 +15,7 @@
       true
     ],
     [
-      "SummonersRift",
+      "Aram",
       false
     ],
     [
@@ -31,7 +27,11 @@
       false
     ],
     [
-      "NexusBlitz",
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
       false
     ]
   ],

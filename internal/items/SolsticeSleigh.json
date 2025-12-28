@@ -12,6 +12,10 @@
     ],
     [
       "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
       true
     ],
     [
@@ -20,10 +24,6 @@
     ],
     [
       "Tft",
-      false
-    ],
-    [
-      "SummonersRift",
       false
     ],
     [

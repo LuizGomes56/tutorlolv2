@@ -11,15 +11,7 @@
       false
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Aram",
+      "Arena",
       true
     ],
     [
@@ -31,7 +23,15 @@
       true
     ],
     [
-      "Arena",
+      "Aram",
+      true
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
       true
     ]
   ],

@@ -70,89 +70,6 @@
   "abilities": [
     [
       {
-        "type": "W",
-        "name": "_1"
-      },
-      {
-        "name": "Miasma",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "20 + (0.1 * ctx.ap)",
-          "25 + (0.1 * ctx.ap)",
-          "30 + (0.1 * ctx.ap)",
-          "35 + (0.1 * ctx.ap)",
-          "40 + (0.1 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_1"
-      },
-      {
-        "name": "Twin Fang",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "20 + (0.55 * ctx.ap)",
-          "40 + (0.55 * ctx.ap)",
-          "60 + (0.55 * ctx.ap)",
-          "80 + (0.55 * ctx.ap)",
-          "100 + (0.55 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_2"
-      },
-      {
-        "name": "Twin Fang",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "52 + 20 + (0.65 * ctx.ap)",
-          "56 + 40 + (0.65 * ctx.ap)",
-          "60 + 60 + (0.65 * ctx.ap)",
-          "64 + 80 + (0.65 * ctx.ap)",
-          "68 + 100 + (0.65 * ctx.ap)",
-          "72",
-          "76",
-          "80",
-          "84",
-          "88",
-          "92",
-          "96",
-          "100",
-          "104",
-          "108",
-          "112",
-          "116",
-          "120"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_1"
-      },
-      {
-        "name": "Petrifying Gaze",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "150 + (0.5 * ctx.ap)",
-          "250 + (0.5 * ctx.ap)",
-          "350 + (0.5 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "Q",
         "name": "_2"
       },
@@ -190,6 +107,24 @@
     [
       {
         "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Miasma",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "20 + (0.1 * ctx.ap)",
+          "25 + (0.1 * ctx.ap)",
+          "30 + (0.1 * ctx.ap)",
+          "35 + (0.1 * ctx.ap)",
+          "40 + (0.1 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
         "name": "_2"
       },
       {
@@ -202,6 +137,71 @@
           "150 + (0.5 * ctx.ap)",
           "175 + (0.5 * ctx.ap)",
           "200 + (0.5 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Twin Fang",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "20 + (0.55 * ctx.ap)",
+          "40 + (0.55 * ctx.ap)",
+          "60 + (0.55 * ctx.ap)",
+          "80 + (0.55 * ctx.ap)",
+          "100 + (0.55 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Petrifying Gaze",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "150 + (0.5 * ctx.ap)",
+          "250 + (0.5 * ctx.ap)",
+          "350 + (0.5 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_2"
+      },
+      {
+        "name": "Twin Fang",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "52 + 20 + (0.65 * ctx.ap)",
+          "56 + 40 + (0.65 * ctx.ap)",
+          "60 + 60 + (0.65 * ctx.ap)",
+          "64 + 80 + (0.65 * ctx.ap)",
+          "68 + 100 + (0.65 * ctx.ap)",
+          "72",
+          "76",
+          "80",
+          "84",
+          "88",
+          "92",
+          "96",
+          "100",
+          "104",
+          "108",
+          "112",
+          "116",
+          "120"
         ]
       }
     ]

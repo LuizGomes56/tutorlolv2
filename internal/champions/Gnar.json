@@ -70,24 +70,6 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_2"
-      },
-      {
-        "name": "Boomerang Throw",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "2.5 + (0.625 * ctx.ad)",
-          "22.5 + (0.625 * ctx.ad)",
-          "42.5 + (0.625 * ctx.ad)",
-          "62.5 + (0.625 * ctx.ad)",
-          "82.5 + (0.625 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "W",
         "name": "_1"
       },
@@ -106,40 +88,6 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_2"
-      },
-      {
-        "name": "GNAR!",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "200 + (0.5 * ctx.bonus_ad) + ctx.ap",
-          "300 + (0.5 * ctx.bonus_ad) + ctx.ap",
-          "400 + (0.5 * ctx.bonus_ad) + ctx.ap"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_1"
-      },
-      {
-        "name": "Hop",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "50 + (0.06 * ctx.max_health)",
-          "85 + (0.06 * ctx.max_health)",
-          "120 + (0.06 * ctx.max_health)",
-          "155 + (0.06 * ctx.max_health)",
-          "190 + (0.06 * ctx.max_health)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "E",
         "name": "_2"
       },
@@ -153,6 +101,24 @@
           "0.5",
           "0.55",
           "0.6"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "Boomerang Throw",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "2.5 + (0.625 * ctx.ad)",
+          "22.5 + (0.625 * ctx.ad)",
+          "42.5 + (0.625 * ctx.ad)",
+          "62.5 + (0.625 * ctx.ad)",
+          "82.5 + (0.625 * ctx.ad)"
         ]
       }
     ],
@@ -187,6 +153,40 @@
           "300 + (0.75 * ctx.bonus_ad) + (1.5 * ctx.ap)",
           "450 + (0.75 * ctx.bonus_ad) + (1.5 * ctx.ap)",
           "600 + (0.75 * ctx.bonus_ad) + (1.5 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Hop",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "50 + (0.06 * ctx.max_health)",
+          "85 + (0.06 * ctx.max_health)",
+          "120 + (0.06 * ctx.max_health)",
+          "155 + (0.06 * ctx.max_health)",
+          "190 + (0.06 * ctx.max_health)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_2"
+      },
+      {
+        "name": "GNAR!",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "200 + (0.5 * ctx.bonus_ad) + ctx.ap",
+          "300 + (0.5 * ctx.bonus_ad) + ctx.ap",
+          "400 + (0.5 * ctx.bonus_ad) + ctx.ap"
         ]
       }
     ]

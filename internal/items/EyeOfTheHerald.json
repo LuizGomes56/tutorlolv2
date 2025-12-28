@@ -7,7 +7,15 @@
   "tier": 1,
   "maps": [
     [
+      "Aram",
+      false
+    ],
+    [
       "NexusBlitz",
+      false
+    ],
+    [
+      "Arena",
       false
     ],
     [
@@ -15,15 +23,7 @@
       false
     ],
     [
-      "Aram",
-      false
-    ],
-    [
       "Tft",
-      false
-    ],
-    [
-      "Arena",
       false
     ],
     [

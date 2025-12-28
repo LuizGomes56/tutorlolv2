@@ -19,7 +19,7 @@
       true
     ],
     [
-      "Aram",
+      "SummonersRift",
       true
     ],
     [
@@ -27,12 +27,12 @@
       false
     ],
     [
-      "SummonersRift",
-      false
+      "Aram",
+      true
     ],
     [
       "SummonersRift",
-      true
+      false
     ]
   ],
   "prettified_stats": [],

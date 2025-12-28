@@ -70,6 +70,42 @@
   "abilities": [
     [
       {
+        "type": "W",
+        "name": "_2"
+      },
+      {
+        "name": "Ebb and Flow",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "48 + (0.4 * ctx.ap)",
+          "76 + (0.4 * ctx.ap)",
+          "104 + (0.4 * ctx.ap)",
+          "132 + (0.4 * ctx.ap)",
+          "160 + (0.4 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Aqua Prison",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "90 + (0.5 * ctx.ap)",
+          "145 + (0.5 * ctx.ap)",
+          "200 + (0.5 * ctx.ap)",
+          "255 + (0.5 * ctx.ap)",
+          "310 + (0.5 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "E",
         "name": "_2"
       },
@@ -117,42 +153,6 @@
           "150 + (0.6 * ctx.ap)",
           "250 + (0.6 * ctx.ap)",
           "350 + (0.6 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_2"
-      },
-      {
-        "name": "Ebb and Flow",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "48 + (0.4 * ctx.ap)",
-          "76 + (0.4 * ctx.ap)",
-          "104 + (0.4 * ctx.ap)",
-          "132 + (0.4 * ctx.ap)",
-          "160 + (0.4 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Aqua Prison",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "90 + (0.5 * ctx.ap)",
-          "145 + (0.5 * ctx.ap)",
-          "200 + (0.5 * ctx.ap)",
-          "255 + (0.5 * ctx.ap)",
-          "310 + (0.5 * ctx.ap)"
         ]
       }
     ],

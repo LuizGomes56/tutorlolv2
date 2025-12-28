@@ -71,19 +71,19 @@
   "abilities": [
     [
       {
-        "type": "Q",
+        "type": "W",
         "name": "_1"
       },
       {
-        "name": "Savagery",
-        "damage_type": "Physical",
+        "name": "Battle Roar",
+        "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "30 + (0 * ctx.ad)",
-          "60 + (0.0375 * ctx.ad)",
-          "90 + (0.075 * ctx.ad)",
-          "120 + (0.1125 * ctx.ad)",
-          "150 + (0.15 * ctx.ad)"
+          "50 + (0.8 * ctx.ap)",
+          "80 + (0.8 * ctx.ap)",
+          "110 + (0.8 * ctx.ap)",
+          "140 + (0.8 * ctx.ap)",
+          "170 + (0.8 * ctx.ap)"
         ]
       }
     ],
@@ -107,19 +107,19 @@
     ],
     [
       {
-        "type": "W",
+        "type": "Q",
         "name": "_1"
       },
       {
-        "name": "Battle Roar",
-        "damage_type": "Magic",
+        "name": "Savagery",
+        "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "50 + (0.8 * ctx.ap)",
-          "80 + (0.8 * ctx.ap)",
-          "110 + (0.8 * ctx.ap)",
-          "140 + (0.8 * ctx.ap)",
-          "170 + (0.8 * ctx.ap)"
+          "30 + (0 * ctx.ad)",
+          "60 + (0.0375 * ctx.ad)",
+          "90 + (0.075 * ctx.ad)",
+          "120 + (0.1125 * ctx.ad)",
+          "150 + (0.15 * ctx.ad)"
         ]
       }
     ]

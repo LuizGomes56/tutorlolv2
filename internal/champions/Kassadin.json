@@ -71,6 +71,38 @@
     [
       {
         "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Riftwalk",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "70 + (0.5 * ctx.ap) + (0.02 * ctx.max_mana)",
+          "90 + (0.5 * ctx.ap) + (0.02 * ctx.max_mana)",
+          "110 + (0.5 * ctx.ap) + (0.02 * ctx.max_mana)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_2"
+      },
+      {
+        "name": "Riftwalk",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "35 + (0.07 * ctx.ap) + (0.01 * ctx.max_mana)",
+          "45 + (0.07 * ctx.ap) + (0.01 * ctx.max_mana)",
+          "55 + (0.07 * ctx.ap) + (0.01 * ctx.max_mana)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
         "name": "_4"
       },
       {
@@ -81,24 +113,6 @@
           "210 + (0.78 * ctx.ap) + (0.06 * ctx.max_mana)",
           "270 + (0.78 * ctx.ap) + (0.06 * ctx.max_mana)",
           "330 + (0.78 * ctx.ap) + (0.06 * ctx.max_mana)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Null Sphere",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "65 + (0.6 * ctx.ap)",
-          "95 + (0.6 * ctx.ap)",
-          "125 + (0.6 * ctx.ap)",
-          "155 + (0.6 * ctx.ap)",
-          "185 + (0.6 * ctx.ap)"
         ]
       }
     ],
@@ -140,17 +154,19 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_2"
+        "type": "Q",
+        "name": "_1"
       },
       {
-        "name": "Riftwalk",
+        "name": "Null Sphere",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "35 + (0.07 * ctx.ap) + (0.01 * ctx.max_mana)",
-          "45 + (0.07 * ctx.ap) + (0.01 * ctx.max_mana)",
-          "55 + (0.07 * ctx.ap) + (0.01 * ctx.max_mana)"
+          "65 + (0.6 * ctx.ap)",
+          "95 + (0.6 * ctx.ap)",
+          "125 + (0.6 * ctx.ap)",
+          "155 + (0.6 * ctx.ap)",
+          "185 + (0.6 * ctx.ap)"
         ]
       }
     ],
@@ -167,22 +183,6 @@
           "140 + (0.28 * ctx.ap) + (0.04 * ctx.max_mana)",
           "180 + (0.28 * ctx.ap) + (0.04 * ctx.max_mana)",
           "220 + (0.28 * ctx.ap) + (0.04 * ctx.max_mana)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_1"
-      },
-      {
-        "name": "Riftwalk",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "70 + (0.5 * ctx.ap) + (0.02 * ctx.max_mana)",
-          "90 + (0.5 * ctx.ap) + (0.02 * ctx.max_mana)",
-          "110 + (0.5 * ctx.ap) + (0.02 * ctx.max_mana)"
         ]
       }
     ]

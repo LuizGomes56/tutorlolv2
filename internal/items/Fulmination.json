@@ -7,19 +7,19 @@
   "tier": 3,
   "maps": [
     [
-      "Arena",
-      true
-    ],
-    [
       "SummonersRift",
       false
+    ],
+    [
+      "Arena",
+      true
     ],
     [
       "Tft",
       false
     ],
     [
-      "SummonersRift",
+      "Aram",
       false
     ],
     [
@@ -31,7 +31,7 @@
       false
     ],
     [
-      "Aram",
+      "SummonersRift",
       false
     ]
   ],

@@ -70,19 +70,73 @@
   "abilities": [
     [
       {
-        "type": "W",
+        "type": "Q",
         "name": "_2"
+      },
+      {
+        "name": "Three Talon Strike",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "60 + (1.2 * ctx.bonus_ad)",
+          "105 + (1.2 * ctx.bonus_ad)",
+          "150 + (1.2 * ctx.bonus_ad)",
+          "195 + (1.2 * ctx.bonus_ad)",
+          "240 + (1.2 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_3"
       },
       {
         "name": "Wind Becomes Lightning",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "50 + (0.9 * ctx.ad) + (0.65 * ctx.ap)",
-          "85 + (0.9 * ctx.ad) + (0.65 * ctx.ap)",
-          "120 + (0.9 * ctx.ad) + (0.65 * ctx.ap)",
-          "155 + (0.9 * ctx.ad) + (0.65 * ctx.ap)",
-          "190 + (0.9 * ctx.ad) + (0.65 * ctx.ap)"
+          "80 + (1.2 * ctx.ad) + (0.65 * ctx.ap)",
+          "125 + (1.2 * ctx.ad) + (0.65 * ctx.ap)",
+          "170 + (1.2 * ctx.ad) + (0.65 * ctx.ap)",
+          "215 + (1.2 * ctx.ad) + (0.65 * ctx.ap)",
+          "260 + (1.2 * ctx.ad) + (0.65 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Wind Becomes Lightning",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "30 + (0.3 * ctx.ad)",
+          "40 + (0.3 * ctx.ad)",
+          "50 + (0.3 * ctx.ad)",
+          "60 + (0.3 * ctx.ad)",
+          "70 + (0.3 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Audacious Charge",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "50 + (0.6 * ctx.ap)",
+          "75 + (0.6 * ctx.ap)",
+          "100 + (0.6 * ctx.ap)",
+          "125 + (0.6 * ctx.ap)",
+          "150 + (0.6 * ctx.ap)"
         ]
       }
     ],
@@ -122,73 +176,19 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
-      },
-      {
-        "name": "Audacious Charge",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "50 + (0.6 * ctx.ap)",
-          "75 + (0.6 * ctx.ap)",
-          "100 + (0.6 * ctx.ap)",
-          "125 + (0.6 * ctx.ap)",
-          "150 + (0.6 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
+        "type": "W",
         "name": "_2"
       },
       {
-        "name": "Three Talon Strike",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "60 + (1.2 * ctx.bonus_ad)",
-          "105 + (1.2 * ctx.bonus_ad)",
-          "150 + (1.2 * ctx.bonus_ad)",
-          "195 + (1.2 * ctx.bonus_ad)",
-          "240 + (1.2 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_1"
-      },
-      {
         "name": "Wind Becomes Lightning",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "30 + (0.3 * ctx.ad)",
-          "40 + (0.3 * ctx.ad)",
-          "50 + (0.3 * ctx.ad)",
-          "60 + (0.3 * ctx.ad)",
-          "70 + (0.3 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_3"
-      },
-      {
-        "name": "Wind Becomes Lightning",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "80 + (1.2 * ctx.ad) + (0.65 * ctx.ap)",
-          "125 + (1.2 * ctx.ad) + (0.65 * ctx.ap)",
-          "170 + (1.2 * ctx.ad) + (0.65 * ctx.ap)",
-          "215 + (1.2 * ctx.ad) + (0.65 * ctx.ap)",
-          "260 + (1.2 * ctx.ad) + (0.65 * ctx.ap)"
+          "50 + (0.9 * ctx.ad) + (0.65 * ctx.ap)",
+          "85 + (0.9 * ctx.ad) + (0.65 * ctx.ap)",
+          "120 + (0.9 * ctx.ad) + (0.65 * ctx.ap)",
+          "155 + (0.9 * ctx.ad) + (0.65 * ctx.ap)",
+          "190 + (0.9 * ctx.ad) + (0.65 * ctx.ap)"
         ]
       }
     ]

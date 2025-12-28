@@ -7,7 +7,11 @@
   "tier": 3,
   "maps": [
     [
-      "NexusBlitz",
+      "SummonersRift",
+      false
+    ],
+    [
+      "Aram",
       false
     ],
     [
@@ -23,16 +27,12 @@
       false
     ],
     [
+      "NexusBlitz",
+      false
+    ],
+    [
       "Arena",
       true
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "Aram",
-      false
     ]
   ],
   "prettified_stats": [],

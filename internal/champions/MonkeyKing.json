@@ -71,6 +71,24 @@
   "abilities": [
     [
       {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Crushing Blow",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "20 + (0.55 * ctx.bonus_ad)",
+          "45 + (0.55 * ctx.bonus_ad)",
+          "70 + (0.55 * ctx.bonus_ad)",
+          "95 + (0.55 * ctx.bonus_ad)",
+          "120 + (0.55 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "R",
         "name": "_2"
       },
@@ -82,6 +100,40 @@
           "(0.08 * ctx.enemy_max_health) + (2.75 * ctx.ad)",
           "(0.12 * ctx.enemy_max_health) + (2.75 * ctx.ad)",
           "(0.16 * ctx.enemy_max_health) + (2.75 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Cyclone",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "(0.01 * ctx.enemy_max_health) + (0.34375 * ctx.ad)",
+          "(0.015 * ctx.enemy_max_health) + (0.34375 * ctx.ad)",
+          "(0.02 * ctx.enemy_max_health) + (0.34375 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Nimbus Strike",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "80 + ctx.ap",
+          "110 + ctx.ap",
+          "140 + ctx.ap",
+          "170 + ctx.ap",
+          "200 + ctx.ap"
         ]
       }
     ],
@@ -116,58 +168,6 @@
           "(0.16 * ctx.enemy_max_health) + (5.5 * ctx.ad)",
           "(0.24 * ctx.enemy_max_health) + (5.5 * ctx.ad)",
           "(0.32 * ctx.enemy_max_health) + (5.5 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_1"
-      },
-      {
-        "name": "Nimbus Strike",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "80 + ctx.ap",
-          "110 + ctx.ap",
-          "140 + ctx.ap",
-          "170 + ctx.ap",
-          "200 + ctx.ap"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Crushing Blow",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "20 + (0.55 * ctx.bonus_ad)",
-          "45 + (0.55 * ctx.bonus_ad)",
-          "70 + (0.55 * ctx.bonus_ad)",
-          "95 + (0.55 * ctx.bonus_ad)",
-          "120 + (0.55 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_1"
-      },
-      {
-        "name": "Cyclone",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "(0.01 * ctx.enemy_max_health) + (0.34375 * ctx.ad)",
-          "(0.015 * ctx.enemy_max_health) + (0.34375 * ctx.ad)",
-          "(0.02 * ctx.enemy_max_health) + (0.34375 * ctx.ad)"
         ]
       }
     ]
