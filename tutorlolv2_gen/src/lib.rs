@@ -188,13 +188,13 @@ macro_rules! const_methods {
             $(
                 impl From<&$name> for $cast {
                     fn from(value: &$name) -> Self {
-                        value.offset() as _
+                        value.index() as _
                     }
                 }
 
                 impl From<$name> for $cast {
                     fn from(value: $name) -> Self {
-                        value.offset() as _
+                        value.index() as _
                     }
                 }
 
@@ -255,7 +255,7 @@ macro_rules! const_methods {
 
                 #[cfg(feature = "eval")]
                 pub const fn get_cache(&self) -> &'static [<Cached $name:replace("Id", "")>] {
-                    [<$name:replace("Id", ""):upper _CACHE>][self.offset()]
+                    [<$name:replace("Id", ""):upper _CACHE>][self.index()]
                 }
 
                 #[cfg(feature = "eval")]
@@ -265,10 +265,10 @@ macro_rules! const_methods {
 
                 #[cfg(all(not(feature = "eval"), feature = "glob"))]
                 pub const fn name(&self) -> &'static str {
-                    [<$name:replace("Id", ""):upper _ID_TO_NAME>][self.offset()]
+                    [<$name:replace("Id", ""):upper _ID_TO_NAME>][self.index()]
                 }
 
-                pub const fn offset(&self) -> usize {
+                pub const fn index(&self) -> usize {
                     *self as _
                 }
 

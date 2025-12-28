@@ -148,7 +148,7 @@ pub async fn generate_runes() -> GeneratorFn {
             );
 
             let base_declaration = format!(
-                "{EVAL_FEAT} pub static {name_ssnake}_{riot_id}: CachedRune = CachedRune {{
+                "pub static {name_ssnake}_{riot_id}: CachedRune = CachedRune {{
                     name: {name:?},
                     damage_type: DamageType::Unknown,
                     metadata: {metadata},
@@ -160,6 +160,14 @@ pub async fn generate_runes() -> GeneratorFn {
                 }};"
             );
 
+            let html_declaration = base_declaration
+                .rust_fmt()
+                .drop_f32s()
+                .rust_html()
+                .as_const();
+
+            let base_declaration = format!("{EVAL_FEAT}{base_declaration}");
+
             let match_arm = format!(
                 "AttackType::Melee => zero(ctx),
                 AttackType::Ranged => zero(ctx)",
@@ -169,11 +177,7 @@ pub async fn generate_runes() -> GeneratorFn {
                 name_pascal,
                 match_arm,
                 riot_id,
-                html_declaration: base_declaration
-                    .rust_fmt()
-                    .drop_f32s()
-                    .rust_html()
-                    .as_const(),
+                html_declaration,
                 base_declaration,
                 name_ssnake,
                 name,
