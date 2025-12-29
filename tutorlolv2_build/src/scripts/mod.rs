@@ -151,18 +151,21 @@ pub trait StringExt: AsRef<str> {
         let input = self.as_ref();
         let re_f32 = Regex::new(r"(\d+(?:\.\d+)?)(f32)").unwrap();
         let no_suffix = re_f32.replace_all(input, "$1");
-        let re_decimal = Regex::new(r"\d+\.\d+").unwrap();
+        let re_decimal = Regex::new(r"\d+\.\d+|\d+").unwrap();
+
         re_decimal
             .replace_all(&no_suffix, |caps: &regex::Captures| {
                 let full = &caps[0];
-                if let Some((whole, decimal)) = full.split_once('.') {
-                    if decimal.chars().all(|c| c == '0') && decimal.len() <= 10 {
-                        whole.to_string()
-                    } else {
-                        full.to_string()
+                match full.parse::<f64>() {
+                    Ok(num) => {
+                        let rounded = (num * 1000.0).round() / 1000.0;
+                        let mut s = rounded.to_string();
+                        if s.ends_with(".0") {
+                            s.truncate(s.len() - 2);
+                        }
+                        s
                     }
-                } else {
-                    full.to_string()
+                    Err(_) => full.to_string(),
                 }
             })
             .to_string()
@@ -308,7 +311,7 @@ pub trait StringExt: AsRef<str> {
 
     fn as_closure(&self) -> String {
         if !self.is_math_expr() {
-            return "0.0".to_string();
+            return "unknown".to_string();
         }
         let tokens = self.tokenize();
         let (parsed, _) = parse_expression(&tokens);
@@ -329,3 +332,88 @@ pub trait StringExt: AsRef<str> {
 }
 
 impl StringExt for str {}
+
+pub fn generalize(arms: &[String]) -> String {
+    let unrecognized = "_ => unrecognized".to_string();
+    if arms.is_empty() {
+        return unrecognized;
+    }
+
+    let part_re = Regex::new(r"([+-]?\s*\d*\.?\d+)\s*(\*?\s*ctx\.[a-z_]+)?").unwrap();
+    let mut sequences = Vec::<Vec<(f64, String)>>::new();
+
+    for arm in arms {
+        let mut parts = Vec::new();
+
+        for cap in part_re.captures_iter(arm) {
+            let val = cap[1].replace(' ', "").parse().unwrap_or(0.0);
+            let var = cap
+                .get(2)
+                .map(|m| m.as_str().trim().to_string())
+                .unwrap_or_default();
+            parts.push((val, var));
+        }
+        sequences.push(parts);
+    }
+
+    let first_len = sequences[0].len();
+    if !sequences.iter().all(|s| s.len() == first_len) {
+        return "_ => impossible".to_string();
+    }
+
+    let mut final_parts = Vec::new();
+
+    for i in 0..first_len {
+        let vals = sequences.iter().map(|s| s[i].0).collect::<Vec<f64>>();
+        let var_name = &sequences[0][i].1;
+
+        match detect_arithmetic_progression(&vals) {
+            Some((base, diff)) => match diff.abs() < 1e-9 {
+                true => {
+                    final_parts.push(format!("{base}{var_name}"));
+                }
+                false => {
+                    let constant_part = base - diff;
+                    match constant_part.abs() < 1e-9 {
+                        true => {
+                            final_parts.push(format!("({diff} * ctx.const){var_name}"));
+                        }
+                        false => {
+                            final_parts
+                                .push(format!("({constant_part} + {diff} * ctx.const){var_name}"));
+                        }
+                    }
+                }
+            },
+            None => return "_ => impossible".to_string(),
+        }
+    }
+
+    let closure = final_parts.join(" + ").replace("+ -", "- ").as_closure();
+
+    let varies = closure.contains("ctx.const");
+    let pattern = closure.replace("ctx.const", "n as f32").add_f32s();
+
+    match pattern.is_empty() {
+        true => unrecognized,
+        false => match varies {
+            true if pattern.is_empty() => unrecognized,
+            true => format!("n => {pattern}"),
+            false => format!("_ => {pattern}"),
+        },
+    }
+}
+
+fn detect_arithmetic_progression(values: &[f64]) -> Option<(f64, f64)> {
+    if values.len() < 2 {
+        return Some((values[0], 0.0));
+    }
+
+    let diff = values[1] - values[0];
+    for i in 1..values.len() {
+        if ((values[i] - values[i - 1]) - diff).abs() > 1e-6 {
+            return None;
+        }
+    }
+    Some((values[0], diff))
+}

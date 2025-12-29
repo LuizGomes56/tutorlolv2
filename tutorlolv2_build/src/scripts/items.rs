@@ -238,9 +238,9 @@ pub async fn generate_items() -> GeneratorFn {
             let rest = format!(
                 "internal_id: ItemId::{name_pascal},
                 riot_id: {riot_id},
+                deals_damage: {deals_damage},
                 stats: CachedItemStats {{ {stats} }},
-                metadata: {metadata},
-                deals_damage: {deals_damage} }};"
+                metadata: {metadata} }};"
             );
 
             let base_declaration = format!(

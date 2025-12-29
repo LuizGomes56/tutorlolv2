@@ -2,7 +2,7 @@ use crate::{
     CwdPath, EVAL_FEAT, GLOB_FEAT, Generated, GeneratorFn, MayFail, SrcFolder, Tracker,
     parallel_task, push_end,
     scripts::{
-        StringExt,
+        StringExt, generalize,
         model::{Ability, Champion, MerakiChampionStats},
     },
 };
@@ -44,8 +44,10 @@ fn declare_abilities(
 
                     let expression = damage
                         .iter()
-                        .map(|dmg| dmg.as_closure().add_f32s())
+                        .map(|dmg| dmg.as_closure())
                         .collect::<Vec<_>>();
+
+                    let default_arm = generalize(&expression);
 
                     let ctx_match = match letter {
                         'P' => "level as u8".into(),
@@ -57,11 +59,16 @@ fn declare_abilities(
                     let arms = expression
                         .into_iter()
                         .enumerate()
-                        .map(|(i, expr)| format!("{level} => {expr}", level = i + 1))
-                        .collect::<Vec<_>>()
-                        .join(",");
+                        .map(|(i, value)| {
+                            let expr = value.add_f32s();
+                            let level = i + 1;
+                            format!("{level} => {expr}")
+                        })
+                        .collect::<Vec<_>>();
 
-                    result.push_str(&format!("{arms}, _ => 0.0 }}}}"));
+                    let branches = arms.join(",");
+
+                    result.push_str(&format!("{branches}, {default_arm} }}}}"));
                     result
                 }
             };
@@ -85,6 +92,7 @@ fn declare_abilities(
 
             let damage_type = format_args!("DamageType::{damage_type}");
             let attributes = format_args!("Attrs::{attributes:?}");
+            let damage = damage.replace(" as f32", "").replace(" as u8", "");
 
             let declaration = format!(
                 "static {champion_id_upper}_{discriminant}: Intrinsic = Intrinsic {{

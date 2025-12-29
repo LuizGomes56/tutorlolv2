@@ -8,6 +8,17 @@ pub mod data;
 pub mod enums;
 pub mod eval;
 
+macro_rules! intrinsic_constants {
+    ($($name:ident),+) => {
+        $(
+            #[allow(non_upper_case_globals, dead_code)]
+            pub(crate) const $name: f32 = 0.0;
+        )+
+    };
+}
+
+intrinsic_constants!(unrecognized, impossible, unknown);
+
 #[cfg(feature = "eval")]
 pub use bitset::*;
 pub use cache::*;
