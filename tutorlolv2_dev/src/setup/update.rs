@@ -1,6 +1,5 @@
 use crate::{
     JsonRead, JsonWrite, MayFail,
-    gen_factories::fac_items::ItemFactory,
     model::{
         items::{Item, MerakiItem},
         riot::RiotCdnItem,
@@ -169,7 +168,7 @@ pub fn setup_internal_items() -> MayFail {
         result.into_file(format!("internal/items/{item_id:?}.json"))?;
     }
 
-    ItemFactory::run_all()
+    Ok(())
 }
 
 /// Reads the cached runes json extracted from Riot's API and generates a new file containing

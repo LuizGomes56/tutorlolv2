@@ -7,16 +7,20 @@
   "tier": 3,
   "maps": [
     [
+      "SummonersRift",
+      false
+    ],
+    [
+      "Aram",
+      true
+    ],
+    [
       "NexusBlitz",
       true
     ],
     [
       "Tft",
       false
-    ],
-    [
-      "Aram",
-      true
     ],
     [
       "Arena",
@@ -28,14 +32,23 @@
     ],
     [
       "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
       true
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AbilityPower",
+      "value": 80
+    },
+    {
+      "name": "AttackSpeed",
+      "value": 50
+    },
+    {
+      "name": "AbilityHaste",
+      "value": 15
+    }
+  ],
   "damage_type": "Magic",
   "stats": {
     "abilityPower": {

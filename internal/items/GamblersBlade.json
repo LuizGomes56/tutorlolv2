@@ -7,15 +7,15 @@
   "tier": 3,
   "maps": [
     [
-      "Arena",
-      true
+      "SummonersRift",
+      false
     ],
     [
       "Aram",
       false
     ],
     [
-      "NexusBlitz",
+      "SummonersRift",
       false
     ],
     [
@@ -23,19 +23,32 @@
       false
     ],
     [
-      "SummonersRift",
-      false
+      "Arena",
+      true
     ],
     [
       "SummonersRift",
       false
     ],
     [
-      "SummonersRift",
+      "NexusBlitz",
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AbilityHaste",
+      "value": 40
+    },
+    {
+      "name": "AttackSpeed",
+      "value": 70
+    },
+    {
+      "name": "MoveSpeed",
+      "value": 8
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

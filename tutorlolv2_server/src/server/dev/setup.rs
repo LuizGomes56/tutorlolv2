@@ -27,8 +27,8 @@ pub async fn setup_project() -> impl Responder {
         let _ = prettify_internal_items().await;
         let _ = setup_damaging_items();
         let _ = ItemFactory::run_all();
-        let _ = ChampionFactory::create_all();
-        let _ = ChampionFactory::run_all();
+        let _ = ChampionFactory::create_all().await;
+        let _ = ChampionFactory::run_all().await;
 
         spawn(async move { HTTP_CLIENT.call_scraper().await });
         spawn(async move { HTTP_CLIENT.combo_scraper().await });
@@ -63,7 +63,7 @@ pub async fn setup_folders() -> impl Responder {
 
 #[get("/champions")]
 pub async fn setup_champions() -> impl Responder {
-    dev_response!(ChampionFactory::run_all())
+    dev_response!(ChampionFactory::run_all().await)
 }
 
 #[get("/items")]

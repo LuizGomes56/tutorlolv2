@@ -70,24 +70,6 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Dark Sphere",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "75 + (0.6 * ctx.ap)",
-          "110 + (0.6 * ctx.ap)",
-          "145 + (0.6 * ctx.ap)",
-          "180 + (0.6 * ctx.ap)",
-          "215 + (0.6 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "W",
         "name": "_3"
       },
@@ -107,16 +89,34 @@
     [
       {
         "type": "R",
-        "name": "_2"
+        "name": "_3"
       },
       {
         "name": "Unleashed Power",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "630 + (1.4 * ctx.ap)",
-          "910 + (1.4 * ctx.ap)",
-          "1190 + (1.4 * ctx.ap)"
+          "270 + (0.6 * ctx.ap)",
+          "390 + (0.6 * ctx.ap)",
+          "510 + (0.6 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Dark Sphere",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "75 + (0.6 * ctx.ap)",
+          "110 + (0.6 * ctx.ap)",
+          "145 + (0.6 * ctx.ap)",
+          "180 + (0.6 * ctx.ap)",
+          "215 + (0.6 * ctx.ap)"
         ]
       }
     ],
@@ -193,16 +193,16 @@
     [
       {
         "type": "R",
-        "name": "_3"
+        "name": "_2"
       },
       {
         "name": "Unleashed Power",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "270 + (0.6 * ctx.ap)",
-          "390 + (0.6 * ctx.ap)",
-          "510 + (0.6 * ctx.ap)"
+          "630 + (1.4 * ctx.ap)",
+          "910 + (1.4 * ctx.ap)",
+          "1190 + (1.4 * ctx.ap)"
         ]
       }
     ]

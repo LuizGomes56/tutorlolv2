@@ -277,11 +277,12 @@ pub async fn generate_champions() -> GeneratorFn {
             let mut ability_declarations = Vec::with_capacity(abilities.len());
 
             for ability in abilities {
-                fn_names.push_str(&format!("{name},", name = ability.constfn.name));
-                constfns.push(ability.constfn);
-                closures.push_str(&ability.damage);
+                let fn_name = &ability.constfn.name;
+                let damage = &ability.damage;
+                fn_names.push_str(&format!("{fn_name},"));
                 metadata.push_str(&ability.metadata);
-                closures.push(',');
+                closures.push_str(&format!("{fn_name}: {damage},"));
+                constfns.push(ability.constfn);
                 metadata.push(',');
                 ability_names.push(ability.ability_id);
                 ability_declarations.push((ability.ability_id, ability.declaration));
@@ -293,26 +294,29 @@ pub async fn generate_champions() -> GeneratorFn {
                 .collect::<Vec<_>>()
                 .join(",");
 
+            let rest = format!(
+                "metadata: &[{metadata}],
+                stats: CachedChampionStats {{{stats}}},
+                merge_data: &[{merge_data}]",
+                stats = get_stats(&stats),
+                merge_data = define_merge_indexes(merge_data, &ability_names),
+            );
+
             let base_declaration = format!(
                 "pub static {champion_id_upper}: CachedChampion = CachedChampion {{
                     name: {name:?},
                     adaptative_type: AdaptativeType::{adaptative_type},
                     attack_type: AttackType::{attack_type},
-                    positions: &[{positions}],
-                    metadata: &[{metadata}],
-                    stats: CachedChampionStats {{{stats}}},
-                    merge_data: &[{merge_data}],
-                    closures: ",
-                stats = get_stats(&stats),
-                merge_data = define_merge_indexes(merge_data, &ability_names),
+                    positions: &[{positions}],"
             );
 
-            let html_declaration = format!("{base_declaration}&[{closures}] }};")
+            let html_declaration = format!("{base_declaration}{closures}{rest} }};")
                 .rust_fmt()
                 .drop_f32s()
                 .rust_html();
 
-            let mut base_declaration = format!("{EVAL_FEAT}{base_declaration}&[{fn_names}] }};");
+            let mut base_declaration =
+                format!("{EVAL_FEAT}{base_declaration}closures: &[{fn_names}], {rest} }};");
 
             let mut match_arm_kind = Vec::with_capacity(constfns.len());
             for ConstFn {

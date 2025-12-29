@@ -70,40 +70,6 @@
   "abilities": [
     [
       {
-        "type": "W",
-        "name": "_1"
-      },
-      {
-        "name": "Denting Blows",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "(0.04 * ctx.enemy_max_health) + (0.035 * 0.01 * ctx.bonus_ad)",
-          "(0.05 * ctx.enemy_max_health) + (0.035 * 0.01 * ctx.bonus_ad)",
-          "(0.06 * ctx.enemy_max_health) + (0.035 * 0.01 * ctx.bonus_ad)",
-          "(0.07 * ctx.enemy_max_health) + (0.035 * 0.01 * ctx.bonus_ad)",
-          "(0.08 * ctx.enemy_max_health) + (0.035 * 0.01 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_1"
-      },
-      {
-        "name": "Cease and Desist",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "150 + (0.9 * ctx.bonus_ad)",
-          "250 + (0.9 * ctx.bonus_ad)",
-          "350 + (0.9 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "Q",
         "name": "_2"
       },
@@ -153,6 +119,40 @@
           "50 + (1.1 * ctx.ad) + ctx.ap",
           "70 + (1.1 * ctx.ad) + ctx.ap",
           "90 + (1.1 * ctx.ad) + ctx.ap"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Denting Blows",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "(0.04 * ctx.enemy_max_health) + (0.035 * 0.01 * ctx.bonus_ad)",
+          "(0.05 * ctx.enemy_max_health) + (0.035 * 0.01 * ctx.bonus_ad)",
+          "(0.06 * ctx.enemy_max_health) + (0.035 * 0.01 * ctx.bonus_ad)",
+          "(0.07 * ctx.enemy_max_health) + (0.035 * 0.01 * ctx.bonus_ad)",
+          "(0.08 * ctx.enemy_max_health) + (0.035 * 0.01 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Cease and Desist",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "150 + (0.9 * ctx.bonus_ad)",
+          "250 + (0.9 * ctx.bonus_ad)",
+          "350 + (0.9 * ctx.bonus_ad)"
         ]
       }
     ]

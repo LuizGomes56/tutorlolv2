@@ -104,24 +104,6 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
-      },
-      {
-        "name": "Winter's Wrath",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "5 + (0.2 * ctx.ap) + (0.04 * ctx.max_health)",
-          "15 + (0.2 * ctx.ap) + (0.04 * ctx.max_health)",
-          "25 + (0.2 * ctx.ap) + (0.04 * ctx.max_health)",
-          "35 + (0.2 * ctx.ap) + (0.04 * ctx.max_health)",
-          "45 + (0.2 * ctx.ap) + (0.04 * ctx.max_health)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "R",
         "name": "_1"
       },
@@ -151,6 +133,24 @@
           "155 + (0.6 * ctx.ap)",
           "205 + (0.6 * ctx.ap)",
           "255 + (0.6 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Winter's Wrath",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "5 + (0.2 * ctx.ap) + (0.04 * ctx.max_health)",
+          "15 + (0.2 * ctx.ap) + (0.04 * ctx.max_health)",
+          "25 + (0.2 * ctx.ap) + (0.04 * ctx.max_health)",
+          "35 + (0.2 * ctx.ap) + (0.04 * ctx.max_health)",
+          "45 + (0.2 * ctx.ap) + (0.04 * ctx.max_health)"
         ]
       }
     ],

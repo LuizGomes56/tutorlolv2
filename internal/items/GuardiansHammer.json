@@ -8,19 +8,15 @@
   "maps": [
     [
       "SummonersRift",
-      true
-    ],
-    [
-      "Aram",
-      true
+      false
     ],
     [
       "NexusBlitz",
       false
     ],
     [
-      "SummonersRift",
-      false
+      "Aram",
+      true
     ],
     [
       "Tft",
@@ -33,9 +29,26 @@
     [
       "SummonersRift",
       false
+    ],
+    [
+      "SummonersRift",
+      true
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AttackSpeed",
+      "value": 35
+    },
+    {
+      "name": "AttackDamage",
+      "value": 25
+    },
+    {
+      "name": "LifeSteal",
+      "value": 5
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

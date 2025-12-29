@@ -71,6 +71,24 @@
     [
       {
         "type": "E",
+        "name": "_2"
+      },
+      {
+        "name": "Rend",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "5 + (0.7 * ctx.ad) + (0.2 * ctx.ap)",
+          "15 + (0.7 * ctx.ad) + (0.2 * ctx.ap)",
+          "25 + (0.7 * ctx.ad) + (0.2 * ctx.ap)",
+          "35 + (0.7 * ctx.ad) + (0.2 * ctx.ap)",
+          "45 + (0.7 * ctx.ad) + (0.2 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
         "name": "_1"
       },
       {
@@ -83,24 +101,6 @@
           "21 + (0.3 * ctx.ad) + (0.2 * ctx.ap)",
           "28 + (0.35 * ctx.ad) + (0.2 * ctx.ap)",
           "35 + (0.4 * ctx.ad) + (0.2 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_2"
-      },
-      {
-        "name": "Sentinel",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "100",
-          "125",
-          "150",
-          "175",
-          "200"
         ]
       }
     ],
@@ -124,6 +124,24 @@
     ],
     [
       {
+        "type": "W",
+        "name": "_2"
+      },
+      {
+        "name": "Sentinel",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "100",
+          "125",
+          "150",
+          "175",
+          "200"
+        ]
+      }
+    ],
+    [
+      {
         "type": "Q",
         "name": "_1"
       },
@@ -137,24 +155,6 @@
           "140 + (1.05 * ctx.ad)",
           "205 + (1.05 * ctx.ad)",
           "270 + (1.05 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_2"
-      },
-      {
-        "name": "Rend",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "5 + (0.7 * ctx.ad) + (0.2 * ctx.ap)",
-          "15 + (0.7 * ctx.ad) + (0.2 * ctx.ap)",
-          "25 + (0.7 * ctx.ad) + (0.2 * ctx.ap)",
-          "35 + (0.7 * ctx.ad) + (0.2 * ctx.ap)",
-          "45 + (0.7 * ctx.ad) + (0.2 * ctx.ap)"
         ]
       }
     ]

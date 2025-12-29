@@ -8,7 +8,7 @@
   "maps": [
     [
       "SummonersRift",
-      true
+      false
     ],
     [
       "SummonersRift",
@@ -19,10 +19,6 @@
       true
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
       "Tft",
       false
     ],
@@ -31,11 +27,20 @@
       false
     ],
     [
+      "SummonersRift",
+      true
+    ],
+    [
       "NexusBlitz",
       true
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "BaseManaRegen",
+      "value": 50
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

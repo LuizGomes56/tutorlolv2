@@ -70,19 +70,17 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "type": "R",
+        "name": "_2"
       },
       {
-        "name": "Rocket Grab",
+        "name": "Static Field",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "110 + (1.2 * ctx.ap)",
-          "160 + (1.2 * ctx.ap)",
-          "210 + (1.2 * ctx.ap)",
-          "260 + (1.2 * ctx.ap)",
-          "310 + (1.2 * ctx.ap)"
+          "50 + (0.3 * ctx.ap) + (0.02 * ctx.max_mana)",
+          "100 + (0.4 * ctx.ap) + (0.02 * ctx.max_mana)",
+          "150 + (0.5 * ctx.ap) + (0.02 * ctx.max_mana)"
         ]
       }
     ],
@@ -104,17 +102,19 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_2"
+        "type": "Q",
+        "name": "_1"
       },
       {
-        "name": "Static Field",
+        "name": "Rocket Grab",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "50 + (0.3 * ctx.ap) + (0.02 * ctx.max_mana)",
-          "100 + (0.4 * ctx.ap) + (0.02 * ctx.max_mana)",
-          "150 + (0.5 * ctx.ap) + (0.02 * ctx.max_mana)"
+          "110 + (1.2 * ctx.ap)",
+          "160 + (1.2 * ctx.ap)",
+          "210 + (1.2 * ctx.ap)",
+          "260 + (1.2 * ctx.ap)",
+          "310 + (1.2 * ctx.ap)"
         ]
       }
     ]

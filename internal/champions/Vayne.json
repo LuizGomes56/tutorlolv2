@@ -71,42 +71,6 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Tumble",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "(0.75 * ctx.ad) + (0.5 * ctx.ap)",
-          "(0.85 * ctx.ad) + (0.5 * ctx.ap)",
-          "(0.95 * ctx.ad) + (0.5 * ctx.ap)",
-          "(1.05 * ctx.ad) + (0.5 * ctx.ap)",
-          "(1.15 * ctx.ad) + (0.5 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_1"
-      },
-      {
-        "name": "Silver Bolts",
-        "damage_type": "True",
-        "attributes": "Undefined",
-        "damage": [
-          "(0.06 * ctx.enemy_max_health)",
-          "(0.07 * ctx.enemy_max_health)",
-          "(0.08 * ctx.enemy_max_health)",
-          "(0.09 * ctx.enemy_max_health)",
-          "(0.1 * ctx.enemy_max_health)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "W",
         "name": "_2"
       },
@@ -120,6 +84,24 @@
           "80",
           "95",
           "110"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_3"
+      },
+      {
+        "name": "Condemn",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "125 + (1.25 * ctx.bonus_ad)",
+          "212.5 + (1.25 * ctx.bonus_ad)",
+          "300 + (1.25 * ctx.bonus_ad)",
+          "387.5 + (1.25 * ctx.bonus_ad)",
+          "475 + (1.25 * ctx.bonus_ad)"
         ]
       }
     ],
@@ -160,24 +142,6 @@
     [
       {
         "type": "E",
-        "name": "_3"
-      },
-      {
-        "name": "Condemn",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "125 + (1.25 * ctx.bonus_ad)",
-          "212.5 + (1.25 * ctx.bonus_ad)",
-          "300 + (1.25 * ctx.bonus_ad)",
-          "387.5 + (1.25 * ctx.bonus_ad)",
-          "475 + (1.25 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
         "name": "_2"
       },
       {
@@ -190,6 +154,42 @@
           "180 + (0.75 * ctx.bonus_ad)",
           "232.5 + (0.75 * ctx.bonus_ad)",
           "285 + (0.75 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Tumble",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "(0.75 * ctx.ad) + (0.5 * ctx.ap)",
+          "(0.85 * ctx.ad) + (0.5 * ctx.ap)",
+          "(0.95 * ctx.ad) + (0.5 * ctx.ap)",
+          "(1.05 * ctx.ad) + (0.5 * ctx.ap)",
+          "(1.15 * ctx.ad) + (0.5 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Silver Bolts",
+        "damage_type": "True",
+        "attributes": "Undefined",
+        "damage": [
+          "(0.06 * ctx.enemy_max_health)",
+          "(0.07 * ctx.enemy_max_health)",
+          "(0.08 * ctx.enemy_max_health)",
+          "(0.09 * ctx.enemy_max_health)",
+          "(0.1 * ctx.enemy_max_health)"
         ]
       }
     ]

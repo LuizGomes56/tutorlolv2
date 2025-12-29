@@ -71,19 +71,37 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_2"
+        "type": "E",
+        "name": "_3"
       },
       {
-        "name": "Threaded Volley",
+        "name": "Unraveled Earth",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "22.4 + (0.2 * ctx.ap)",
-          "29.8 + (0.2 * ctx.ap)",
-          "37.2 + (0.2 * ctx.ap)",
-          "44.6 + (0.2 * ctx.ap)",
-          "52 + (0.2 * ctx.ap)"
+          "25 + (0.3 * ctx.ap)",
+          "45 + (0.3 * ctx.ap)",
+          "65 + (0.3 * ctx.ap)",
+          "85 + (0.3 * ctx.ap)",
+          "105 + (0.3 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Unraveled Earth",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "60 + (0.6 * ctx.ap)",
+          "105 + (0.6 * ctx.ap)",
+          "150 + (0.6 * ctx.ap)",
+          "195 + (0.6 * ctx.ap)",
+          "240 + (0.6 * ctx.ap)"
         ]
       }
     ],
@@ -108,60 +126,6 @@
     [
       {
         "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Threaded Volley",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "56 + (0.5 * ctx.ap)",
-          "74.5 + (0.5 * ctx.ap)",
-          "93 + (0.5 * ctx.ap)",
-          "111.5 + (0.5 * ctx.ap)",
-          "130 + (0.5 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_1"
-      },
-      {
-        "name": "Unraveled Earth",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "60 + (0.6 * ctx.ap)",
-          "105 + (0.6 * ctx.ap)",
-          "150 + (0.6 * ctx.ap)",
-          "195 + (0.6 * ctx.ap)",
-          "240 + (0.6 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_3"
-      },
-      {
-        "name": "Unraveled Earth",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "25 + (0.3 * ctx.ap)",
-          "45 + (0.3 * ctx.ap)",
-          "65 + (0.3 * ctx.ap)",
-          "85 + (0.3 * ctx.ap)",
-          "105 + (0.3 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
         "name": "_4"
       },
       {
@@ -174,6 +138,42 @@
           "167.4 + (0.9 * ctx.ap)",
           "200.7 + (0.9 * ctx.ap)",
           "234 + (0.9 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "Threaded Volley",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "22.4 + (0.2 * ctx.ap)",
+          "29.8 + (0.2 * ctx.ap)",
+          "37.2 + (0.2 * ctx.ap)",
+          "44.6 + (0.2 * ctx.ap)",
+          "52 + (0.2 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Threaded Volley",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "56 + (0.5 * ctx.ap)",
+          "74.5 + (0.5 * ctx.ap)",
+          "93 + (0.5 * ctx.ap)",
+          "111.5 + (0.5 * ctx.ap)",
+          "130 + (0.5 * ctx.ap)"
         ]
       }
     ],

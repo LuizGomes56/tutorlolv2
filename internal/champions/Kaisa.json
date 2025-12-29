@@ -70,6 +70,24 @@
   "abilities": [
     [
       {
+        "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "Icathian Rain",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "150 + (2.0625 * ctx.bonus_ad) + (0.75 * ctx.ap)",
+          "206.25 + (2.0625 * ctx.bonus_ad) + (0.75 * ctx.ap)",
+          "262.5 + (2.0625 * ctx.bonus_ad) + (0.75 * ctx.ap)",
+          "318.75 + (2.0625 * ctx.bonus_ad) + (0.75 * ctx.ap)",
+          "375 + (2.0625 * ctx.bonus_ad) + (0.75 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "W",
         "name": "_1"
       },
@@ -89,42 +107,6 @@
     [
       {
         "type": "Q",
-        "name": "_3"
-      },
-      {
-        "name": "Icathian Rain",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "10 + (0.1375 * ctx.bonus_ad) + (0.05 * ctx.ap)",
-          "13.75 + (0.1375 * ctx.bonus_ad) + (0.05 * ctx.ap)",
-          "17.5 + (0.1375 * ctx.bonus_ad) + (0.05 * ctx.ap)",
-          "21.25 + (0.1375 * ctx.bonus_ad) + (0.05 * ctx.ap)",
-          "25 + (0.1375 * ctx.bonus_ad) + (0.05 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_2"
-      },
-      {
-        "name": "Icathian Rain",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "150 + (2.0625 * ctx.bonus_ad) + (0.75 * ctx.ap)",
-          "206.25 + (2.0625 * ctx.bonus_ad) + (0.75 * ctx.ap)",
-          "262.5 + (2.0625 * ctx.bonus_ad) + (0.75 * ctx.ap)",
-          "318.75 + (2.0625 * ctx.bonus_ad) + (0.75 * ctx.ap)",
-          "375 + (2.0625 * ctx.bonus_ad) + (0.75 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
         "name": "_1"
       },
       {
@@ -137,6 +119,24 @@
           "70 + (0.55 * ctx.bonus_ad) + (0.2 * ctx.ap)",
           "85 + (0.55 * ctx.bonus_ad) + (0.2 * ctx.ap)",
           "100 + (0.55 * ctx.bonus_ad) + (0.2 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_3"
+      },
+      {
+        "name": "Icathian Rain",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "10 + (0.1375 * ctx.bonus_ad) + (0.05 * ctx.ap)",
+          "13.75 + (0.1375 * ctx.bonus_ad) + (0.05 * ctx.ap)",
+          "17.5 + (0.1375 * ctx.bonus_ad) + (0.05 * ctx.ap)",
+          "21.25 + (0.1375 * ctx.bonus_ad) + (0.05 * ctx.ap)",
+          "25 + (0.1375 * ctx.bonus_ad) + (0.05 * ctx.ap)"
         ]
       }
     ],

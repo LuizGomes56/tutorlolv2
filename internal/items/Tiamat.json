@@ -16,10 +16,14 @@
     ],
     [
       "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
       true
     ],
     [
-      "Aram",
+      "SummonersRift",
       true
     ],
     [
@@ -27,15 +31,16 @@
       false
     ],
     [
-      "SummonersRift",
+      "Aram",
       true
-    ],
-    [
-      "SummonersRift",
-      false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AttackDamage",
+      "value": 20
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

@@ -11,15 +11,7 @@
       true
     ],
     [
-      "NexusBlitz",
-      true
-    ],
-    [
       "Tft",
-      false
-    ],
-    [
-      "Arena",
       false
     ],
     [
@@ -33,9 +25,30 @@
     [
       "Aram",
       true
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
+      "NexusBlitz",
+      true
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AbilityPower",
+      "value": 90
+    },
+    {
+      "name": "MoveSpeed",
+      "value": 4
+    },
+    {
+      "name": "MagicPenetration",
+      "value": 15
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

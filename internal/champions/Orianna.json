@@ -70,17 +70,19 @@
   "abilities": [
     [
       {
-        "type": "R",
-        "name": "_1"
+        "type": "Q",
+        "name": "_2"
       },
       {
-        "name": "Command: Shockwave",
+        "name": "Command: Attack",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "250 + (0.95 * ctx.ap)",
-          "400 + (0.95 * ctx.ap)",
-          "550 + (0.95 * ctx.ap)"
+          "42 + (0.385 * ctx.ap)",
+          "63 + (0.385 * ctx.ap)",
+          "84 + (0.385 * ctx.ap)",
+          "105 + (0.385 * ctx.ap)",
+          "126 + (0.385 * ctx.ap)"
         ]
       }
     ],
@@ -104,19 +106,17 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_2"
+        "type": "R",
+        "name": "_1"
       },
       {
-        "name": "Command: Attack",
+        "name": "Command: Shockwave",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "42 + (0.385 * ctx.ap)",
-          "63 + (0.385 * ctx.ap)",
-          "84 + (0.385 * ctx.ap)",
-          "105 + (0.385 * ctx.ap)",
-          "126 + (0.385 * ctx.ap)"
+          "250 + (0.95 * ctx.ap)",
+          "400 + (0.95 * ctx.ap)",
+          "550 + (0.95 * ctx.ap)"
         ]
       }
     ],

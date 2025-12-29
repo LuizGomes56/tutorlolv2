@@ -11,7 +11,11 @@
       false
     ],
     [
-      "SummonersRift",
+      "Arena",
+      true
+    ],
+    [
+      "NexusBlitz",
       false
     ],
     [
@@ -23,11 +27,7 @@
       false
     ],
     [
-      "Arena",
-      true
-    ],
-    [
-      "NexusBlitz",
+      "SummonersRift",
       false
     ],
     [
@@ -35,7 +35,16 @@
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "Lethality",
+      "value": 21
+    },
+    {
+      "name": "AttackDamage",
+      "value": 55
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

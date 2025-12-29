@@ -11,31 +11,44 @@
       true
     ],
     [
+      "Arena",
+      false
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
       "NexusBlitz",
+      true
+    ],
+    [
+      "Aram",
       true
     ],
     [
       "Tft",
       false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "Arena",
-      false
-    ],
-    [
-      "Aram",
-      true
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AttackDamage",
+      "value": 30
+    },
+    {
+      "name": "LifeSteal",
+      "value": 10
+    },
+    {
+      "name": "AttackSpeed",
+      "value": 20
+    }
+  ],
   "damage_type": "Physical",
   "stats": {
     "abilityPower": {

@@ -70,19 +70,37 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_4"
+        "type": "W",
+        "name": "_5"
       },
       {
-        "name": "Piercing Arrow",
-        "damage_type": "Physical",
+        "name": "Blighted Quiver",
+        "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "19.8 + (0.28600000000000003 * ctx.bonus_ad)",
-          "35.2 + (0.308 * ctx.bonus_ad)",
-          "50.6 + (0.33 * ctx.bonus_ad)",
-          "66 + (0.35200000000000004 * ctx.bonus_ad)",
-          "81.4 + (0.374 * ctx.bonus_ad)"
+          "(0.135 * ctx.enemy_max_health) + (0.0675 * 0.01 * ctx.ap)",
+          "(0.1575 * ctx.enemy_max_health) + (0.0675 * 0.01 * ctx.ap)",
+          "(0.18 * ctx.enemy_max_health) + (0.0675 * 0.01 * ctx.ap)",
+          "(0.2025 * ctx.enemy_max_health) + (0.0675 * 0.01 * ctx.ap)",
+          "(0.225 * ctx.enemy_max_health) + (0.0675 * 0.01 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_2"
+      },
+      {
+        "name": "Blighted Quiver",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "(0.06 * ctx.missing_health)",
+          "(0.08 * ctx.missing_health)",
+          "(0.1 * ctx.missing_health)",
+          "(0.12 * ctx.missing_health)",
+          "(0.14 * ctx.missing_health)"
         ]
       }
     ],
@@ -101,6 +119,58 @@
           "230 + (1.5 * ctx.bonus_ad)",
           "300 + (1.6 * ctx.bonus_ad)",
           "370 + (1.7 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Hail of Arrows",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "60 + ctx.bonus_ad",
+          "100 + ctx.bonus_ad",
+          "140 + ctx.bonus_ad",
+          "180 + ctx.bonus_ad",
+          "220 + ctx.bonus_ad"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Chain of Corruption",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "150 + ctx.ap",
+          "250 + ctx.ap",
+          "350 + ctx.ap"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_3"
+      },
+      {
+        "name": "Piercing Arrow",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "60 + (0.8667 * ctx.bonus_ad)",
+          "106.67 + (0.9333 * ctx.bonus_ad)",
+          "153.33 + ctx.bonus_ad",
+          "200 + (1.0667 * ctx.bonus_ad)",
+          "246.67 + (1.1333 * ctx.bonus_ad)"
         ]
       }
     ],
@@ -142,58 +212,6 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_7"
-      },
-      {
-        "name": "Blighted Quiver",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "6 + (0.35 * ctx.ap)",
-          "12 + (0.35 * ctx.ap)",
-          "18 + (0.35 * ctx.ap)",
-          "24 + (0.35 * ctx.ap)",
-          "30 + (0.35 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_2"
-      },
-      {
-        "name": "Blighted Quiver",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "(0.06 * ctx.missing_health)",
-          "(0.08 * ctx.missing_health)",
-          "(0.1 * ctx.missing_health)",
-          "(0.12 * ctx.missing_health)",
-          "(0.14 * ctx.missing_health)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_1"
-      },
-      {
-        "name": "Chain of Corruption",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "150 + ctx.ap",
-          "250 + ctx.ap",
-          "350 + ctx.ap"
-        ]
-      }
-    ],
-    [
-      {
         "type": "Q",
         "name": "_2"
       },
@@ -213,54 +231,36 @@
     [
       {
         "type": "Q",
-        "name": "_3"
+        "name": "_4"
       },
       {
         "name": "Piercing Arrow",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "60 + (0.8667 * ctx.bonus_ad)",
-          "106.67 + (0.9333 * ctx.bonus_ad)",
-          "153.33 + ctx.bonus_ad",
-          "200 + (1.0667 * ctx.bonus_ad)",
-          "246.67 + (1.1333 * ctx.bonus_ad)"
+          "19.8 + (0.28600000000000003 * ctx.bonus_ad)",
+          "35.2 + (0.308 * ctx.bonus_ad)",
+          "50.6 + (0.33 * ctx.bonus_ad)",
+          "66 + (0.35200000000000004 * ctx.bonus_ad)",
+          "81.4 + (0.374 * ctx.bonus_ad)"
         ]
       }
     ],
     [
       {
         "type": "W",
-        "name": "_5"
+        "name": "_7"
       },
       {
         "name": "Blighted Quiver",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "(0.135 * ctx.enemy_max_health) + (0.0675 * 0.01 * ctx.ap)",
-          "(0.1575 * ctx.enemy_max_health) + (0.0675 * 0.01 * ctx.ap)",
-          "(0.18 * ctx.enemy_max_health) + (0.0675 * 0.01 * ctx.ap)",
-          "(0.2025 * ctx.enemy_max_health) + (0.0675 * 0.01 * ctx.ap)",
-          "(0.225 * ctx.enemy_max_health) + (0.0675 * 0.01 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_4"
-      },
-      {
-        "name": "Blighted Quiver",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "(0.03 * ctx.enemy_max_health) + (0.015 * 0.01 * ctx.ap)",
-          "(0.035 * ctx.enemy_max_health) + (0.015 * 0.01 * ctx.ap)",
-          "(0.04 * ctx.enemy_max_health) + (0.015 * 0.01 * ctx.ap)",
-          "(0.045 * ctx.enemy_max_health) + (0.015 * 0.01 * ctx.ap)",
-          "(0.05 * ctx.enemy_max_health) + (0.015 * 0.01 * ctx.ap)"
+          "6 + (0.35 * ctx.ap)",
+          "12 + (0.35 * ctx.ap)",
+          "18 + (0.35 * ctx.ap)",
+          "24 + (0.35 * ctx.ap)",
+          "30 + (0.35 * ctx.ap)"
         ]
       }
     ],
@@ -284,19 +284,19 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "type": "W",
+        "name": "_4"
       },
       {
-        "name": "Hail of Arrows",
+        "name": "Blighted Quiver",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "60 + ctx.bonus_ad",
-          "100 + ctx.bonus_ad",
-          "140 + ctx.bonus_ad",
-          "180 + ctx.bonus_ad",
-          "220 + ctx.bonus_ad"
+          "(0.03 * ctx.enemy_max_health) + (0.015 * 0.01 * ctx.ap)",
+          "(0.035 * ctx.enemy_max_health) + (0.015 * 0.01 * ctx.ap)",
+          "(0.04 * ctx.enemy_max_health) + (0.015 * 0.01 * ctx.ap)",
+          "(0.045 * ctx.enemy_max_health) + (0.015 * 0.01 * ctx.ap)",
+          "(0.05 * ctx.enemy_max_health) + (0.015 * 0.01 * ctx.ap)"
         ]
       }
     ]

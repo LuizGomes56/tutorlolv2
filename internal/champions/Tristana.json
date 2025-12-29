@@ -72,6 +72,42 @@
     [
       {
         "type": "E",
+        "name": "_5"
+      },
+      {
+        "name": "Explosive Charge",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "120 + (2 * ctx.bonus_ad) + ctx.ap",
+          "140 + (2.2 * ctx.bonus_ad) + ctx.ap",
+          "160 + (2.4 * ctx.bonus_ad) + ctx.ap",
+          "180 + (2.6 * ctx.bonus_ad) + ctx.ap",
+          "200 + (2.8 * ctx.bonus_ad) + ctx.ap"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Rocket Jump",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "70 + ctx.bonus_ad + (0.5 * ctx.ap)",
+          "105 + ctx.bonus_ad + (0.5 * ctx.ap)",
+          "140 + ctx.bonus_ad + (0.5 * ctx.ap)",
+          "175 + ctx.bonus_ad + (0.5 * ctx.ap)",
+          "210 + ctx.bonus_ad + (0.5 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
         "name": "_4"
       },
       {
@@ -107,37 +143,19 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
-      },
-      {
-        "name": "Rocket Jump",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "70 + ctx.bonus_ad + (0.5 * ctx.ap)",
-          "105 + ctx.bonus_ad + (0.5 * ctx.ap)",
-          "140 + ctx.bonus_ad + (0.5 * ctx.ap)",
-          "175 + ctx.bonus_ad + (0.5 * ctx.ap)",
-          "210 + ctx.bonus_ad + (0.5 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "E",
-        "name": "_5"
+        "name": "_3"
       },
       {
         "name": "Explosive Charge",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "120 + (2 * ctx.bonus_ad) + ctx.ap",
-          "140 + (2.2 * ctx.bonus_ad) + ctx.ap",
-          "160 + (2.4 * ctx.bonus_ad) + ctx.ap",
-          "180 + (2.6 * ctx.bonus_ad) + ctx.ap",
-          "200 + (2.8 * ctx.bonus_ad) + ctx.ap"
+          "15 + (0.25 * ctx.bonus_ad) + (0.125 * ctx.ap)",
+          "17.5 + (0.275 * ctx.bonus_ad) + (0.125 * ctx.ap)",
+          "20 + (0.3 * ctx.bonus_ad) + (0.125 * ctx.ap)",
+          "22.5 + (0.325 * ctx.bonus_ad) + (0.125 * ctx.ap)",
+          "25 + (0.35 * ctx.bonus_ad) + (0.125 * ctx.ap)"
         ]
       }
     ],
@@ -154,24 +172,6 @@
           "225 + (0.7 * ctx.bonus_ad) + ctx.ap",
           "275 + (0.7 * ctx.bonus_ad) + ctx.ap",
           "325 + (0.7 * ctx.bonus_ad) + ctx.ap"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_3"
-      },
-      {
-        "name": "Explosive Charge",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "15 + (0.25 * ctx.bonus_ad) + (0.125 * ctx.ap)",
-          "17.5 + (0.275 * ctx.bonus_ad) + (0.125 * ctx.ap)",
-          "20 + (0.3 * ctx.bonus_ad) + (0.125 * ctx.ap)",
-          "22.5 + (0.325 * ctx.bonus_ad) + (0.125 * ctx.ap)",
-          "25 + (0.35 * ctx.bonus_ad) + (0.125 * ctx.ap)"
         ]
       }
     ],

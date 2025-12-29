@@ -70,6 +70,42 @@
   "abilities": [
     [
       {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Burnout",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "10 + (0.1 * ctx.bonus_ad)",
+          "15 + (0.1 * ctx.bonus_ad)",
+          "20 + (0.1 * ctx.bonus_ad)",
+          "25 + (0.1 * ctx.bonus_ad)",
+          "30 + (0.1 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Twin Bite",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "(0.2 * ctx.ad) + (0.25 * ctx.ap)",
+          "(0.4 * ctx.ad) + (0.25 * ctx.ap)",
+          "(0.6 * ctx.ad) + (0.25 * ctx.ap)",
+          "(0.8 * ctx.ad) + (0.25 * ctx.ap)",
+          "ctx.ad + (0.25 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "E",
         "name": "_2"
       },
@@ -148,42 +184,6 @@
           "9 + (0.05 * ctx.bonus_ad)",
           "11 + (0.05 * ctx.bonus_ad)",
           "13 + (0.05 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_1"
-      },
-      {
-        "name": "Burnout",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "10 + (0.1 * ctx.bonus_ad)",
-          "15 + (0.1 * ctx.bonus_ad)",
-          "20 + (0.1 * ctx.bonus_ad)",
-          "25 + (0.1 * ctx.bonus_ad)",
-          "30 + (0.1 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Twin Bite",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "(0.2 * ctx.ad) + (0.25 * ctx.ap)",
-          "(0.4 * ctx.ad) + (0.25 * ctx.ap)",
-          "(0.6 * ctx.ad) + (0.25 * ctx.ap)",
-          "(0.8 * ctx.ad) + (0.25 * ctx.ap)",
-          "ctx.ad + (0.25 * ctx.ap)"
         ]
       }
     ]

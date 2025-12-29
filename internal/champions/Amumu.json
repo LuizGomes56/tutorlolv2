@@ -124,24 +124,6 @@
     [
       {
         "type": "E",
-        "name": "_2"
-      },
-      {
-        "name": "Tantrum",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "5 + (0.03 * ctx.bonus_ctx.armor) + (0.03 * ctx.bonus_magic_resist)",
-          "7 + (0.03 * ctx.bonus_ctx.armor) + (0.03 * ctx.bonus_magic_resist)",
-          "9 + (0.03 * ctx.bonus_ctx.armor) + (0.03 * ctx.bonus_magic_resist)",
-          "11 + (0.03 * ctx.bonus_ctx.armor) + (0.03 * ctx.bonus_magic_resist)",
-          "13 + (0.03 * ctx.bonus_ctx.armor) + (0.03 * ctx.bonus_magic_resist)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
         "name": "_1"
       },
       {
@@ -154,6 +136,24 @@
           "125 + (0.5 * ctx.ap)",
           "155 + (0.5 * ctx.ap)",
           "185 + (0.5 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_2"
+      },
+      {
+        "name": "Tantrum",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "5 + (0.03 * ctx.bonus_ctx.armor) + (0.03 * ctx.bonus_magic_resist)",
+          "7 + (0.03 * ctx.bonus_ctx.armor) + (0.03 * ctx.bonus_magic_resist)",
+          "9 + (0.03 * ctx.bonus_ctx.armor) + (0.03 * ctx.bonus_magic_resist)",
+          "11 + (0.03 * ctx.bonus_ctx.armor) + (0.03 * ctx.bonus_magic_resist)",
+          "13 + (0.03 * ctx.bonus_ctx.armor) + (0.03 * ctx.bonus_magic_resist)"
         ]
       }
     ]

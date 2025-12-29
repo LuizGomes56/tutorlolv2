@@ -11,6 +11,10 @@
       false
     ],
     [
+      "Arena",
+      true
+    ],
+    [
       "Tft",
       false
     ],
@@ -23,19 +27,28 @@
       false
     ],
     [
-      "Arena",
-      true
+      "Aram",
+      false
     ],
     [
       "SummonersRift",
       false
-    ],
-    [
-      "Aram",
-      false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "Health",
+      "value": 400
+    },
+    {
+      "name": "AdaptiveForce",
+      "value": 85
+    },
+    {
+      "name": "AbilityHaste",
+      "value": 30
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

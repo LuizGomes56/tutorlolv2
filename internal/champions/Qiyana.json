@@ -70,19 +70,35 @@
   "abilities": [
     [
       {
-        "type": "Q",
+        "type": "R",
         "name": "_2"
+      },
+      {
+        "name": "Supreme Display of Talent",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "100 + (1.25 * ctx.bonus_ad) + (0.1 * ctx.enemy_max_health)",
+          "200 + (1.25 * ctx.bonus_ad) + (0.1 * ctx.enemy_max_health)",
+          "300 + (1.25 * ctx.bonus_ad) + (0.1 * ctx.enemy_max_health)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
       },
       {
         "name": "Edge of Ixtal",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "45 + (0.675 * ctx.bonus_ad)",
-          "67.5 + (0.675 * ctx.bonus_ad)",
-          "90 + (0.675 * ctx.bonus_ad)",
-          "112.5 + (0.675 * ctx.bonus_ad)",
-          "135 + (0.675 * ctx.bonus_ad)"
+          "60 + (0.9 * ctx.bonus_ad)",
+          "90 + (0.9 * ctx.bonus_ad)",
+          "120 + (0.9 * ctx.bonus_ad)",
+          "150 + (0.9 * ctx.bonus_ad)",
+          "180 + (0.9 * ctx.bonus_ad)"
         ]
       }
     ],
@@ -106,33 +122,19 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
-      },
-      {
-        "name": "Supreme Display of Talent",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "500 + (1.25 * ctx.bonus_ad)",
-          "750 + (1.25 * ctx.bonus_ad)",
-          "1000 + (1.25 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
+        "type": "Q",
         "name": "_2"
       },
       {
-        "name": "Supreme Display of Talent",
+        "name": "Edge of Ixtal",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "100 + (1.25 * ctx.bonus_ad) + (0.1 * ctx.enemy_max_health)",
-          "200 + (1.25 * ctx.bonus_ad) + (0.1 * ctx.enemy_max_health)",
-          "300 + (1.25 * ctx.bonus_ad) + (0.1 * ctx.enemy_max_health)"
+          "45 + (0.675 * ctx.bonus_ad)",
+          "67.5 + (0.675 * ctx.bonus_ad)",
+          "90 + (0.675 * ctx.bonus_ad)",
+          "112.5 + (0.675 * ctx.bonus_ad)",
+          "135 + (0.675 * ctx.bonus_ad)"
         ]
       }
     ],
@@ -156,19 +158,17 @@
     ],
     [
       {
-        "type": "Q",
+        "type": "R",
         "name": "_1"
       },
       {
-        "name": "Edge of Ixtal",
+        "name": "Supreme Display of Talent",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "60 + (0.9 * ctx.bonus_ad)",
-          "90 + (0.9 * ctx.bonus_ad)",
-          "120 + (0.9 * ctx.bonus_ad)",
-          "150 + (0.9 * ctx.bonus_ad)",
-          "180 + (0.9 * ctx.bonus_ad)"
+          "500 + (1.25 * ctx.bonus_ad)",
+          "750 + (1.25 * ctx.bonus_ad)",
+          "1000 + (1.25 * ctx.bonus_ad)"
         ]
       }
     ]

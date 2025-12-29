@@ -11,6 +11,10 @@
       false
     ],
     [
+      "SummonersRift",
+      false
+    ],
+    [
       "Arena",
       true
     ],
@@ -23,19 +27,24 @@
       false
     ],
     [
-      "SummonersRift",
+      "NexusBlitz",
       false
     ],
     [
       "Aram",
       false
-    ],
-    [
-      "NexusBlitz",
-      false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AdaptiveForce",
+      "value": 75
+    },
+    {
+      "name": "AttackSpeed",
+      "value": 30
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

@@ -70,6 +70,24 @@
   "abilities": [
     [
       {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Dragon Strike",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "90 + (1.45 * ctx.bonus_ad)",
+          "130 + (1.45 * ctx.bonus_ad)",
+          "170 + (1.45 * ctx.bonus_ad)",
+          "210 + (1.45 * ctx.bonus_ad)",
+          "250 + (1.45 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "E",
         "name": "_1"
       },
@@ -99,24 +117,6 @@
           "200 + (1.8 * ctx.bonus_ad)",
           "325 + (1.8 * ctx.bonus_ad)",
           "450 + (1.8 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Dragon Strike",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "90 + (1.45 * ctx.bonus_ad)",
-          "130 + (1.45 * ctx.bonus_ad)",
-          "170 + (1.45 * ctx.bonus_ad)",
-          "210 + (1.45 * ctx.bonus_ad)",
-          "250 + (1.45 * ctx.bonus_ad)"
         ]
       }
     ]

@@ -70,19 +70,19 @@
   "abilities": [
     [
       {
-        "type": "E",
-        "name": "_2"
+        "type": "Q",
+        "name": "_1"
       },
       {
-        "name": "Unspeakable Horror",
-        "damage_type": "Magic",
+        "name": "Duskbringer",
+        "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "80 + ctx.ap",
-          "125 + ctx.ap",
-          "170 + ctx.ap",
-          "215 + ctx.ap",
-          "260 + ctx.ap"
+          "65 + (0.85 * ctx.bonus_ad)",
+          "110 + (0.85 * ctx.bonus_ad)",
+          "155 + (0.85 * ctx.bonus_ad)",
+          "200 + (0.85 * ctx.bonus_ad)",
+          "245 + (0.85 * ctx.bonus_ad)"
         ]
       }
     ],
@@ -99,24 +99,6 @@
           "150 + (1.2 * ctx.bonus_ad)",
           "275 + (1.2 * ctx.bonus_ad)",
           "400 + (1.2 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_2"
-      },
-      {
-        "name": "Duskbringer",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "20",
-          "30",
-          "40",
-          "50",
-          "60"
         ]
       }
     ],
@@ -140,19 +122,37 @@
     ],
     [
       {
+        "type": "E",
+        "name": "_2"
+      },
+      {
+        "name": "Unspeakable Horror",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "80 + ctx.ap",
+          "125 + ctx.ap",
+          "170 + ctx.ap",
+          "215 + ctx.ap",
+          "260 + ctx.ap"
+        ]
+      }
+    ],
+    [
+      {
         "type": "Q",
-        "name": "_1"
+        "name": "_2"
       },
       {
         "name": "Duskbringer",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "65 + (0.85 * ctx.bonus_ad)",
-          "110 + (0.85 * ctx.bonus_ad)",
-          "155 + (0.85 * ctx.bonus_ad)",
-          "200 + (0.85 * ctx.bonus_ad)",
-          "245 + (0.85 * ctx.bonus_ad)"
+          "20",
+          "30",
+          "40",
+          "50",
+          "60"
         ]
       }
     ]

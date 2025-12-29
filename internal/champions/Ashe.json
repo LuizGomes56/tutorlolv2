@@ -71,24 +71,6 @@
   "abilities": [
     [
       {
-        "type": "W",
-        "name": "_1"
-      },
-      {
-        "name": "Volley",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "60 + (1.1 * ctx.bonus_ad)",
-          "95 + (1.1 * ctx.bonus_ad)",
-          "130 + (1.1 * ctx.bonus_ad)",
-          "165 + (1.1 * ctx.bonus_ad)",
-          "200 + (1.1 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "R",
         "name": "_1"
       },
@@ -100,6 +82,24 @@
           "200 + (1.2 * ctx.ap)",
           "400 + (1.2 * ctx.ap)",
           "600 + (1.2 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Ranger's Focus",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "(0.22 * ctx.ad)",
+          "(0.235 * ctx.ad)",
+          "(0.25 * ctx.ad)",
+          "(0.265 * ctx.ad)",
+          "(0.28 * ctx.ad)"
         ]
       }
     ],
@@ -123,19 +123,19 @@
     ],
     [
       {
-        "type": "Q",
+        "type": "W",
         "name": "_1"
       },
       {
-        "name": "Ranger's Focus",
+        "name": "Volley",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "(0.22 * ctx.ad)",
-          "(0.235 * ctx.ad)",
-          "(0.25 * ctx.ad)",
-          "(0.265 * ctx.ad)",
-          "(0.28 * ctx.ad)"
+          "60 + (1.1 * ctx.bonus_ad)",
+          "95 + (1.1 * ctx.bonus_ad)",
+          "130 + (1.1 * ctx.bonus_ad)",
+          "165 + (1.1 * ctx.bonus_ad)",
+          "200 + (1.1 * ctx.bonus_ad)"
         ]
       }
     ]

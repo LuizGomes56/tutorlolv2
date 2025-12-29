@@ -11,20 +11,20 @@
       true
     ],
     [
-      "Tft",
-      false
-    ],
-    [
-      "Aram",
-      true
-    ],
-    [
       "SummonersRift",
       true
     ],
     [
       "NexusBlitz",
       true
+    ],
+    [
+      "Aram",
+      true
+    ],
+    [
+      "Tft",
+      false
     ],
     [
       "Arena",
@@ -35,7 +35,16 @@
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AttackDamage",
+      "value": 15
+    },
+    {
+      "name": "CriticalStrikeChance",
+      "value": 20
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

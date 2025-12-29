@@ -89,6 +89,24 @@
     [
       {
         "type": "W",
+        "name": "_4"
+      },
+      {
+        "name": "Ricochet",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "(0.26 * ctx.ad)",
+          "(0.27625 * ctx.ad)",
+          "(0.2925 * ctx.ad)",
+          "(0.30875 * ctx.ad)",
+          "(0.325 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
         "name": "_1"
       },
       {
@@ -142,42 +160,6 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_3"
-      },
-      {
-        "name": "Ricochet",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "(0.455 * ctx.ad)",
-          "(0.4834375 * ctx.ad)",
-          "(0.511875 * ctx.ad)",
-          "(0.5403125 * ctx.ad)",
-          "(0.56875 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_4"
-      },
-      {
-        "name": "Ricochet",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "(0.26 * ctx.ad)",
-          "(0.27625 * ctx.ad)",
-          "(0.2925 * ctx.ad)",
-          "(0.30875 * ctx.ad)",
-          "(0.325 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "Q",
         "name": "_3"
       },
@@ -191,6 +173,24 @@
           "220 + (2 * ctx.bonus_ad) + (1.2 * ctx.ap)",
           "270 + (2 * ctx.bonus_ad) + (1.2 * ctx.ap)",
           "320 + (2 * ctx.bonus_ad) + (1.2 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_3"
+      },
+      {
+        "name": "Ricochet",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "(0.455 * ctx.ad)",
+          "(0.4834375 * ctx.ad)",
+          "(0.511875 * ctx.ad)",
+          "(0.5403125 * ctx.ad)",
+          "(0.56875 * ctx.ad)"
         ]
       }
     ]

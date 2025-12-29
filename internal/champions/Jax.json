@@ -71,6 +71,24 @@
   "abilities": [
     [
       {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Leap Strike",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "65 + ctx.bonus_ad",
+          "105 + ctx.bonus_ad",
+          "145 + ctx.bonus_ad",
+          "185 + ctx.bonus_ad",
+          "225 + ctx.bonus_ad"
+        ]
+      }
+    ],
+    [
+      {
         "type": "R",
         "name": "_1"
       },
@@ -87,19 +105,19 @@
     ],
     [
       {
-        "type": "Q",
+        "type": "W",
         "name": "_1"
       },
       {
-        "name": "Leap Strike",
-        "damage_type": "Physical",
+        "name": "Empower",
+        "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "65 + ctx.bonus_ad",
-          "105 + ctx.bonus_ad",
-          "145 + ctx.bonus_ad",
-          "185 + ctx.bonus_ad",
-          "225 + ctx.bonus_ad"
+          "50 + (0.6 * ctx.ap)",
+          "85 + (0.6 * ctx.ap)",
+          "120 + (0.6 * ctx.ap)",
+          "155 + (0.6 * ctx.ap)",
+          "190 + (0.6 * ctx.ap)"
         ]
       }
     ],
@@ -152,24 +170,6 @@
           "100 + (0.7 * ctx.ap) + (0.035 * ctx.enemy_max_health)",
           "130 + (0.7 * ctx.ap) + (0.035 * ctx.enemy_max_health)",
           "160 + (0.7 * ctx.ap) + (0.035 * ctx.enemy_max_health)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_1"
-      },
-      {
-        "name": "Empower",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "50 + (0.6 * ctx.ap)",
-          "85 + (0.6 * ctx.ap)",
-          "120 + (0.6 * ctx.ap)",
-          "155 + (0.6 * ctx.ap)",
-          "190 + (0.6 * ctx.ap)"
         ]
       }
     ]

@@ -104,24 +104,6 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_3"
-      },
-      {
-        "name": "Flash Frost",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "110 + (0.7 * ctx.ap)",
-          "165 + (0.7 * ctx.ap)",
-          "220 + (0.7 * ctx.ap)",
-          "275 + (0.7 * ctx.ap)",
-          "330 + (0.7 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "E",
         "name": "_2"
       },
@@ -157,18 +139,18 @@
     [
       {
         "type": "Q",
-        "name": "_2"
+        "name": "_3"
       },
       {
         "name": "Flash Frost",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "60 + (0.45 * ctx.ap)",
-          "95 + (0.45 * ctx.ap)",
-          "130 + (0.45 * ctx.ap)",
-          "165 + (0.45 * ctx.ap)",
-          "200 + (0.45 * ctx.ap)"
+          "110 + (0.7 * ctx.ap)",
+          "165 + (0.7 * ctx.ap)",
+          "220 + (0.7 * ctx.ap)",
+          "275 + (0.7 * ctx.ap)",
+          "330 + (0.7 * ctx.ap)"
         ]
       }
     ],
@@ -187,6 +169,24 @@
           "200 + (1.1 * ctx.ap)",
           "250 + (1.1 * ctx.ap)",
           "300 + (1.1 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "Flash Frost",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "60 + (0.45 * ctx.ap)",
+          "95 + (0.45 * ctx.ap)",
+          "130 + (0.45 * ctx.ap)",
+          "165 + (0.45 * ctx.ap)",
+          "200 + (0.45 * ctx.ap)"
         ]
       }
     ]

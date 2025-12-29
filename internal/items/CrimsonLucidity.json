@@ -11,11 +11,11 @@
       false
     ],
     [
-      "Aram",
+      "NexusBlitz",
       false
     ],
     [
-      "NexusBlitz",
+      "Aram",
       false
     ],
     [
@@ -35,7 +35,16 @@
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "MoveSpeed",
+      "value": 50
+    },
+    {
+      "name": "AbilityHaste",
+      "value": 25
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

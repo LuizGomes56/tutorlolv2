@@ -71,74 +71,6 @@
     [
       {
         "type": "R",
-        "name": "_5"
-      },
-      {
-        "name": "Cannon Barrage",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "120 + (0.3 * ctx.ap)",
-          "210 + (0.3 * ctx.ap)",
-          "300 + (0.3 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Parrrley",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "10 + ctx.ad",
-          "40 + ctx.ad",
-          "70 + ctx.ad",
-          "100 + ctx.ad",
-          "130 + ctx.ad"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_1"
-      },
-      {
-        "name": "Powder Keg",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "75",
-          "105",
-          "135",
-          "165",
-          "195"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_2"
-      },
-      {
-        "name": "Cannon Barrage",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "40 + (0.1 * ctx.ap)",
-          "70 + (0.1 * ctx.ap)",
-          "100 + (0.1 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
         "name": "_3"
       },
       {
@@ -171,7 +103,7 @@
     [
       {
         "type": "R",
-        "name": "_1"
+        "name": "_5"
       },
       {
         "name": "Cannon Barrage",
@@ -181,6 +113,58 @@
           "120 + (0.3 * ctx.ap)",
           "210 + (0.3 * ctx.ap)",
           "300 + (0.3 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Powder Keg",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "75",
+          "105",
+          "135",
+          "165",
+          "195"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_6"
+      },
+      {
+        "name": "Cannon Barrage",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "840 + (2.1 * ctx.ap)",
+          "1470 + (2.1 * ctx.ap)",
+          "2100 + (2.1 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Parrrley",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "10 + ctx.ad",
+          "40 + ctx.ad",
+          "70 + ctx.ad",
+          "100 + ctx.ad",
+          "130 + ctx.ad"
         ]
       }
     ],
@@ -203,16 +187,32 @@
     [
       {
         "type": "R",
-        "name": "_6"
+        "name": "_2"
       },
       {
         "name": "Cannon Barrage",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "840 + (2.1 * ctx.ap)",
-          "1470 + (2.1 * ctx.ap)",
-          "2100 + (2.1 * ctx.ap)"
+          "40 + (0.1 * ctx.ap)",
+          "70 + (0.1 * ctx.ap)",
+          "100 + (0.1 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Cannon Barrage",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "120 + (0.3 * ctx.ap)",
+          "210 + (0.3 * ctx.ap)",
+          "300 + (0.3 * ctx.ap)"
         ]
       }
     ]

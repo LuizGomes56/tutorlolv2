@@ -5,7 +5,7 @@ use crate::{
     items::{Effect, Item, MerakiItem},
     riot::RiotCdnItem,
 };
-use tutorlolv2_gen::{Attrs, DamageType, ITEM_CACHE, ItemId};
+use tutorlolv2_gen::{Attrs, DamageType, ItemId};
 
 pub struct ItemData {
     pub meraki_data: MerakiItem,
@@ -98,15 +98,12 @@ impl ItemData {
 pub struct ItemFactory;
 
 impl ItemFactory {
-    pub const NUMBER_OF_ITEMS: usize = ITEM_CACHE.len();
     pub const GENERATOR_FUNCTIONS: [fn(ItemData) -> Box<dyn Generator<ItemData>>;
-        Self::NUMBER_OF_ITEMS] =
-        tutorlolv2_macros::expand_dir!("../internal/items", |[Name]| Name::new);
+        ItemId::VARIANTS] = tutorlolv2_macros::expand_dir!("../internal/items", |[Name]| Name::new);
 
     /// Runs all item generators, stopping the execution if one of them fails
     pub fn run_all() -> MayFail {
-        for i in 0..Self::NUMBER_OF_ITEMS as u16 {
-            let item_id = unsafe { ItemId::from_u16_unchecked(i) };
+        for item_id in ItemId::ARRAY {
             Self::run(item_id)?
                 .current_data
                 .into_file(format!("internal/items/{item_id:?}.json"))?;

@@ -8,15 +8,7 @@
   "maps": [
     [
       "SummonersRift",
-      true
-    ],
-    [
-      "NexusBlitz",
-      true
-    ],
-    [
-      "Aram",
-      true
+      false
     ],
     [
       "Tft",
@@ -28,14 +20,39 @@
     ],
     [
       "SummonersRift",
-      false
+      true
+    ],
+    [
+      "Aram",
+      true
+    ],
+    [
+      "NexusBlitz",
+      true
     ],
     [
       "Arena",
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AbilityHaste",
+      "value": 15
+    },
+    {
+      "name": "MagicResist",
+      "value": 30
+    },
+    {
+      "name": "Armor",
+      "value": 25
+    },
+    {
+      "name": "Health",
+      "value": 300
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

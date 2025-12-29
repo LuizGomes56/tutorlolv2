@@ -85,7 +85,7 @@ fn declare_item(item: &Item) -> DeclaredItem {
     };
     let melee_closures = {
         let [min, max] = get_closure(&melee, &mut melee_fn_names, "melee");
-        format!("melee_min_dmg: {min}, melee_max_dmg: {max}, }};")
+        format!("melee_min_dmg: {min}, melee_max_dmg: {max},")
     };
 
     let get_fn_call = |names: &[String]| {
@@ -235,6 +235,14 @@ pub async fn generate_items() -> GeneratorFn {
                     || is_zeroed(&melee.maximum_damage)
             };
 
+            let rest = format!(
+                "internal_id: ItemId::{name_pascal},
+                riot_id: {riot_id},
+                stats: CachedItemStats {{ {stats} }},
+                metadata: {metadata},
+                deals_damage: {deals_damage} }};"
+            );
+
             let base_declaration = format!(
                 "pub static {name_ssnake}_{riot_id}: CachedItem = CachedItem {{
                     name: {name:?},
@@ -243,24 +251,20 @@ pub async fn generate_items() -> GeneratorFn {
                     damage_type: DamageType::{damage_type},
                     attributes: Attrs::{attributes:?},
                     tier: {tier},
-                    purchasable: {purchasable},
-                    internal_id: ItemId::{name_pascal},
-                    riot_id: {riot_id},
-                    stats: CachedItemStats {{ {stats} }},
-                    metadata: {metadata},
-                    deals_damage: {deals_damage},"
+                    purchasable: {purchasable},"
             );
 
-            let html_declaration = format!("{base_declaration}{ranged_closures}{melee_closures}")
-                .rust_fmt()
-                .drop_f32s()
-                .rust_html()
-                .as_const();
+            let html_declaration =
+                format!("{base_declaration}{ranged_closures}{melee_closures}{rest}")
+                    .rust_fmt()
+                    .drop_f32s()
+                    .rust_html()
+                    .as_const();
 
             let base_declaration = format!(
                 "{EVAL_FEAT}{base_declaration}
                 ranged_damages: [{ranged_fn_names}],
-                melee_damages: [{melee_fn_names}] }};
+                melee_damages: [{melee_fn_names}], {rest}
                 {constfn_declaration}"
             );
 

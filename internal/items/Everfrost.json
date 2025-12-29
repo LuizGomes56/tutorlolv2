@@ -11,7 +11,15 @@
       false
     ],
     [
+      "Tft",
+      false
+    ],
+    [
       "Aram",
+      false
+    ],
+    [
+      "NexusBlitz",
       false
     ],
     [
@@ -19,15 +27,7 @@
       true
     ],
     [
-      "NexusBlitz",
-      false
-    ],
-    [
       "SummonersRift",
-      false
-    ],
-    [
-      "Tft",
       false
     ],
     [
@@ -35,7 +35,24 @@
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "Mana",
+      "value": 600
+    },
+    {
+      "name": "Health",
+      "value": 250
+    },
+    {
+      "name": "AbilityPower",
+      "value": 100
+    },
+    {
+      "name": "AbilityHaste",
+      "value": 25
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

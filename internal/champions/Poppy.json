@@ -72,6 +72,42 @@
     [
       {
         "type": "Q",
+        "name": "_4"
+      },
+      {
+        "name": "Hammer Shock",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "210 + (2 * ctx.bonus_ad)",
+          "320 + (2 * ctx.bonus_ad)",
+          "430 + (2 * ctx.bonus_ad)",
+          "540 + (2 * ctx.bonus_ad)",
+          "650 + (2 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Steadfast Presence",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "70 + (0.7 * ctx.ap)",
+          "110 + (0.7 * ctx.ap)",
+          "150 + (0.7 * ctx.ap)",
+          "190 + (0.7 * ctx.ap)",
+          "230 + (0.7 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
         "name": "_3"
       },
       {
@@ -141,6 +177,22 @@
     ],
     [
       {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Keeper's Verdict",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "200 + (0.9 * ctx.bonus_ad)",
+          "300 + (0.9 * ctx.bonus_ad)",
+          "400 + (0.9 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "Q",
         "name": "_1"
       },
@@ -154,22 +206,6 @@
           "135",
           "165",
           "195"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_1"
-      },
-      {
-        "name": "Keeper's Verdict",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "200 + (0.9 * ctx.bonus_ad)",
-          "300 + (0.9 * ctx.bonus_ad)",
-          "400 + (0.9 * ctx.bonus_ad)"
         ]
       }
     ],
@@ -194,24 +230,6 @@
     [
       {
         "type": "Q",
-        "name": "_4"
-      },
-      {
-        "name": "Hammer Shock",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "210 + (2 * ctx.bonus_ad)",
-          "320 + (2 * ctx.bonus_ad)",
-          "430 + (2 * ctx.bonus_ad)",
-          "540 + (2 * ctx.bonus_ad)",
-          "650 + (2 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
         "name": "_5"
       },
       {
@@ -224,24 +242,6 @@
           "160 + (2 * ctx.bonus_ad) + (0.18 * ctx.enemy_max_health)",
           "210 + (2 * ctx.bonus_ad) + (0.18 * ctx.enemy_max_health)",
           "260 + (2 * ctx.bonus_ad) + (0.18 * ctx.enemy_max_health)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_1"
-      },
-      {
-        "name": "Steadfast Presence",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "70 + (0.7 * ctx.ap)",
-          "110 + (0.7 * ctx.ap)",
-          "150 + (0.7 * ctx.ap)",
-          "190 + (0.7 * ctx.ap)",
-          "230 + (0.7 * ctx.ap)"
         ]
       }
     ]
