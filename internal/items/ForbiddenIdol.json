@@ -7,6 +7,10 @@
   "tier": 2,
   "maps": [
     [
+      "Aram",
+      true
+    ],
+    [
       "SummonersRift",
       false
     ],
@@ -16,10 +20,6 @@
     ],
     [
       "NexusBlitz",
-      true
-    ],
-    [
-      "Aram",
       true
     ],
     [
@@ -37,12 +37,12 @@
   ],
   "prettified_stats": [
     {
-      "name": "HealAndShieldPower",
-      "value": 8
-    },
-    {
       "name": "BaseManaRegen",
       "value": 50
+    },
+    {
+      "name": "HealAndShieldPower",
+      "value": 8
     }
   ],
   "damage_type": "Unknown",

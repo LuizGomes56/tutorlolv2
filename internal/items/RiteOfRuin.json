@@ -11,6 +11,14 @@
       false
     ],
     [
+      "NexusBlitz",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
       "SummonersRift",
       false
     ],
@@ -19,16 +27,8 @@
       false
     ],
     [
-      "NexusBlitz",
-      false
-    ],
-    [
       "Arena",
       true
-    ],
-    [
-      "SummonersRift",
-      false
     ],
     [
       "Tft",
@@ -37,12 +37,12 @@
   ],
   "prettified_stats": [
     {
-      "name": "AbilityHaste",
-      "value": 15
-    },
-    {
       "name": "CriticalStrikeChance",
       "value": 25
+    },
+    {
+      "name": "AbilityHaste",
+      "value": 15
     },
     {
       "name": "AbilityPower",

@@ -11,15 +11,7 @@
       false
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "NexusBlitz",
+      "Aram",
       false
     ],
     [
@@ -28,29 +20,37 @@
     ],
     [
       "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
       true
     ],
     [
-      "Aram",
+      "NexusBlitz",
       false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Health",
-      "value": 200
+      "name": "BaseHealthRegen",
+      "value": 75
     },
     {
       "name": "BaseManaRegen",
       "value": 75
     },
     {
-      "name": "BaseHealthRegen",
-      "value": 75
-    },
-    {
       "name": "GoldPer10Seconds",
       "value": 5
+    },
+    {
+      "name": "Health",
+      "value": 200
     }
   ],
   "damage_type": "Unknown",

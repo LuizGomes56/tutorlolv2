@@ -11,34 +11,34 @@
       true
     ],
     [
-      "NexusBlitz",
+      "Tft",
+      false
+    ],
+    [
+      "SummonersRift",
       true
     ],
     [
-      "Tft",
-      false
+      "Aram",
+      true
     ],
     [
       "Arena",
       false
     ],
     [
-      "SummonersRift",
+      "NexusBlitz",
       true
     ],
     [
       "SummonersRift",
       false
-    ],
-    [
-      "Aram",
-      true
     ]
   ],
   "prettified_stats": [
     {
       "name": "MagicResist",
-      "value": 45
+      "value": 30
     }
   ],
   "damage_type": "Unknown",

@@ -2,8 +2,9 @@ use crate::{
     CwdPath, EVAL_FEAT, GLOB_FEAT, Generated, GeneratorFn, MayFail, SrcFolder, Tracker,
     parallel_task, push_end,
     scripts::{
-        StringExt, generalize,
+        Simplified, StringExt,
         model::{Ability, Champion, MerakiChampionStats},
+        simplify,
     },
 };
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
@@ -18,7 +19,7 @@ struct DeclaredAbility {
     declaration: String,
     metadata: String,
     constfn: ConstFn,
-    damage: String,
+    html_damage: String,
 }
 
 fn declare_abilities(
@@ -37,39 +38,56 @@ fn declare_abilities(
                 damage,
             } = ability;
 
-            let damage = match damage.is_empty() {
-                true => String::from("zero"),
+            let match_src = format!("{letter}_level", letter = letter.to_lowercase());
+
+            let (damage, html_damage) = match damage.is_empty() {
+                true => ("zero".into(), "zero".into()),
                 false => {
-                    let mut result = String::new();
+                    let comparator = format!(
+                        "ctx.{op}",
+                        op = match letter {
+                            'P' => "level",
+                            _ => &match_src,
+                        }
+                    );
+                    let match_closure = format!("|ctx| {{ match {comparator} {{");
 
-                    let expression = damage
-                        .iter()
-                        .map(|dmg| dmg.as_closure())
-                        .collect::<Vec<_>>();
-
-                    let default_arm = generalize(&expression);
-
-                    let ctx_match = match letter {
-                        'P' => "level as u8".into(),
-                        _ => format!("{letter}_level", letter = letter.to_lowercase()),
+                    let get_arms = |src: &[String]| {
+                        src.into_iter()
+                            .enumerate()
+                            .map(|(i, value)| {
+                                let expr = value.clean();
+                                let level = i + 1;
+                                format!("{level} => {expr},")
+                            })
+                            .collect::<String>()
                     };
 
-                    result.push_str(&format!("|ctx| {{ match ctx.{ctx_match} {{"));
+                    let simplified = simplify(&damage);
 
-                    let arms = expression
-                        .into_iter()
-                        .enumerate()
-                        .map(|(i, value)| {
-                            let expr = value.add_f32s();
-                            let level = i + 1;
-                            format!("{level} => {expr}")
-                        })
-                        .collect::<Vec<_>>();
+                    let get_closure = |arm| format!("{match_closure} {arm} {simplified} }}}}");
+                    let html_closure = get_closure(get_arms(&damage)).replace("context_level", "n");
 
-                    let branches = arms.join(",");
+                    let closure = match simplified {
+                        Simplified::Progression(_) | Simplified::Independent(_) => {
+                            let body = simplified
+                                .expr()
+                                .clean()
+                                .cast_f32()
+                                .replace("context_level", &format!("{comparator} as f32"));
+                            format!("|ctx| {{ {body} }}")
+                        }
+                        _ => {
+                            let damage_f32 = damage
+                                .iter()
+                                .map(|expr| expr.cast_f32())
+                                .collect::<Vec<_>>();
 
-                    result.push_str(&format!("{branches}, {default_arm} }}}}"));
-                    result
+                            get_closure(get_arms(&damage_f32))
+                        }
+                    };
+
+                    (closure, html_closure)
                 }
             };
 
@@ -92,19 +110,17 @@ fn declare_abilities(
 
             let damage_type = format_args!("DamageType::{damage_type}");
             let attributes = format_args!("Attrs::{attributes:?}");
-            let damage = damage.replace(" as f32", "").replace(" as u8", "");
 
             let declaration = format!(
                 "static {champion_id_upper}_{discriminant}: Intrinsic = Intrinsic {{
                     name: {name:?},
                     damage_type: {damage_type},
                     attributes: {attributes},
-                    damage: {damage},
+                    damage: {html_damage},
                 }};"
             )
             .rust_fmt()
             .rust_html()
-            .drop_f32s()
             .as_const();
 
             if declaration.is_empty() {
@@ -130,7 +146,7 @@ fn declare_abilities(
                     declaration: constfn_declaration,
                     name: constfn_name,
                 },
-                damage,
+                html_damage,
             }
         })
         .collect()
@@ -286,7 +302,7 @@ pub async fn generate_champions() -> GeneratorFn {
 
             for ability in abilities {
                 let fn_name = &ability.constfn.name;
-                let damage = &ability.damage;
+                let damage = &ability.html_damage;
                 fn_names.push_str(&format!("{fn_name},"));
                 metadata.push_str(&ability.metadata);
                 closures.push_str(&format!("{fn_name}: {damage},"));

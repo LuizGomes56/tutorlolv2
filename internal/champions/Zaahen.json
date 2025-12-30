@@ -71,18 +71,36 @@
     [
       {
         "type": "Q",
-        "name": "_1"
+        "name": "_2"
       },
       {
         "name": "The Darkin Glaive",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "15 + ctx.ad + (0.2 * ctx.bonus_ad)",
-          "30 + ctx.ad + (0.3 * ctx.bonus_ad)",
-          "45 + ctx.ad + (0.4 * ctx.bonus_ad)",
-          "60 + ctx.ad + (0.5 * ctx.bonus_ad)",
-          "75 + ctx.ad + (0.6 * ctx.bonus_ad)"
+          "7.5 + (0.5 * ctx.ad) + (0.1 * ctx.bonus_ad)",
+          "15 + (0.5 * ctx.ad) + (0.15 * ctx.bonus_ad)",
+          "22.5 + (0.5 * ctx.ad) + (0.2 * ctx.bonus_ad)",
+          "30 + (0.5 * ctx.ad) + (0.25 * ctx.bonus_ad)",
+          "37.5 + (0.5 * ctx.ad) + (0.3 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_2"
+      },
+      {
+        "name": "Dreaded Return",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "80 + ctx.bonus_ad",
+          "120 + ctx.bonus_ad",
+          "160 + ctx.bonus_ad",
+          "200 + ctx.bonus_ad",
+          "240 + ctx.bonus_ad"
         ]
       }
     ],
@@ -177,36 +195,18 @@
     [
       {
         "type": "Q",
-        "name": "_2"
+        "name": "_1"
       },
       {
         "name": "The Darkin Glaive",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "7.5 + (0.5 * ctx.ad) + (0.1 * ctx.bonus_ad)",
-          "15 + (0.5 * ctx.ad) + (0.15 * ctx.bonus_ad)",
-          "22.5 + (0.5 * ctx.ad) + (0.2 * ctx.bonus_ad)",
-          "30 + (0.5 * ctx.ad) + (0.25 * ctx.bonus_ad)",
-          "37.5 + (0.5 * ctx.ad) + (0.3 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_2"
-      },
-      {
-        "name": "Dreaded Return",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "80 + ctx.bonus_ad",
-          "120 + ctx.bonus_ad",
-          "160 + ctx.bonus_ad",
-          "200 + ctx.bonus_ad",
-          "240 + ctx.bonus_ad"
+          "15 + ctx.ad + (0.2 * ctx.bonus_ad)",
+          "30 + ctx.ad + (0.3 * ctx.bonus_ad)",
+          "45 + ctx.ad + (0.4 * ctx.bonus_ad)",
+          "60 + ctx.ad + (0.5 * ctx.bonus_ad)",
+          "75 + ctx.ad + (0.6 * ctx.bonus_ad)"
         ]
       }
     ],

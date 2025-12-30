@@ -11,14 +11,6 @@
       false
     ],
     [
-      "NexusBlitz",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
       "SummonersRift",
       false
     ],
@@ -27,12 +19,20 @@
       false
     ],
     [
-      "Arena",
-      true
-    ],
-    [
       "Tft",
       false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "NexusBlitz",
+      false
+    ],
+    [
+      "Arena",
+      true
     ]
   ],
   "prettified_stats": [
@@ -41,16 +41,16 @@
       "value": 65
     },
     {
-      "name": "CriticalStrikeChance",
-      "value": 25
+      "name": "AttackSpeed",
+      "value": 30
     },
     {
       "name": "MoveSpeed",
       "value": 6
     },
     {
-      "name": "AttackSpeed",
-      "value": 30
+      "name": "CriticalStrikeChance",
+      "value": 25
     }
   ],
   "damage_type": "Unknown",

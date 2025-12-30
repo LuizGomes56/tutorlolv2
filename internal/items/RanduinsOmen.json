@@ -8,41 +8,41 @@
   "maps": [
     [
       "SummonersRift",
-      false
-    ],
-    [
-      "Arena",
-      false
+      true
     ],
     [
       "SummonersRift",
-      true
-    ],
-    [
-      "NexusBlitz",
-      true
+      false
     ],
     [
       "Aram",
       true
     ],
     [
-      "Tft",
+      "Arena",
       false
+    ],
+    [
+      "NexusBlitz",
+      true
     ],
     [
       "SummonersRift",
       true
+    ],
+    [
+      "Tft",
+      false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Armor",
-      "value": 75
-    },
-    {
       "name": "Health",
       "value": 300
+    },
+    {
+      "name": "Armor",
+      "value": 75
     }
   ],
   "damage_type": "Unknown",

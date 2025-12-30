@@ -23,12 +23,12 @@
       true
     ],
     [
-      "Tft",
-      false
-    ],
-    [
       "SummonersRift",
       true
+    ],
+    [
+      "Tft",
+      false
     ],
     [
       "NexusBlitz",
@@ -37,20 +37,20 @@
   ],
   "prettified_stats": [
     {
-      "name": "Health",
-      "value": 200
+      "name": "AbilityPower",
+      "value": 25
     },
     {
       "name": "AbilityHaste",
       "value": 20
     },
     {
-      "name": "BaseManaRegen",
-      "value": 125
+      "name": "Health",
+      "value": 200
     },
     {
-      "name": "AbilityPower",
-      "value": 25
+      "name": "BaseManaRegen",
+      "value": 125
     }
   ],
   "damage_type": "Unknown",

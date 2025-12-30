@@ -7,15 +7,15 @@
   "tier": 3,
   "maps": [
     [
-      "SummonersRift",
-      false
-    ],
-    [
       "NexusBlitz",
       true
     ],
     [
       "Tft",
+      false
+    ],
+    [
+      "SummonersRift",
       false
     ],
     [
@@ -41,12 +41,12 @@
       "value": 10
     },
     {
-      "name": "AttackDamage",
-      "value": 50
-    },
-    {
       "name": "Lethality",
       "value": 18
+    },
+    {
+      "name": "AttackDamage",
+      "value": 50
     }
   ],
   "damage_type": "Unknown",

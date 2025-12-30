@@ -7,11 +7,15 @@
   "tier": 3,
   "maps": [
     [
-      "Arena",
+      "Aram",
       false
     ],
     [
-      "Aram",
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
       false
     ],
     [
@@ -19,30 +23,26 @@
       true
     ],
     [
-      "NexusBlitz",
+      "Arena",
       false
     ],
     [
-      "SummonersRift",
+      "NexusBlitz",
       false
     ],
     [
       "Tft",
       false
-    ],
-    [
-      "SummonersRift",
-      false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Armor",
-      "value": 40
-    },
-    {
       "name": "MoveSpeed",
       "value": 50
+    },
+    {
+      "name": "Armor",
+      "value": 40
     }
   ],
   "damage_type": "Unknown",

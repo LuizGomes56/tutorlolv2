@@ -71,6 +71,24 @@
     [
       {
         "type": "W",
+        "name": "_2"
+      },
+      {
+        "name": "Brushmaker",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "10 + (0.1 * ctx.ap)",
+          "15 + (0.1 * ctx.ap)",
+          "20 + (0.1 * ctx.ap)",
+          "25 + (0.1 * ctx.ap)",
+          "30 + (0.1 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
         "name": "_1"
       },
       {
@@ -83,24 +101,6 @@
           "35 + (0.2 * ctx.ap)",
           "42.5 + (0.2 * ctx.ap)",
           "50 + (0.2 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Rootcaller",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "80 + (0.7 * ctx.ap)",
-          "125 + (0.7 * ctx.ap)",
-          "170 + (0.7 * ctx.ap)",
-          "215 + (0.7 * ctx.ap)",
-          "260 + (0.7 * ctx.ap)"
         ]
       }
     ],
@@ -124,19 +124,19 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_2"
+        "type": "Q",
+        "name": "_1"
       },
       {
-        "name": "Brushmaker",
+        "name": "Rootcaller",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "10 + (0.1 * ctx.ap)",
-          "15 + (0.1 * ctx.ap)",
-          "20 + (0.1 * ctx.ap)",
-          "25 + (0.1 * ctx.ap)",
-          "30 + (0.1 * ctx.ap)"
+          "80 + (0.7 * ctx.ap)",
+          "125 + (0.7 * ctx.ap)",
+          "170 + (0.7 * ctx.ap)",
+          "215 + (0.7 * ctx.ap)",
+          "260 + (0.7 * ctx.ap)"
         ]
       }
     ]

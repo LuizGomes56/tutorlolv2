@@ -7,7 +7,7 @@
   "tier": 3,
   "maps": [
     [
-      "SummonersRift",
+      "Arena",
       false
     ],
     [
@@ -16,33 +16,33 @@
     ],
     [
       "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
       true
-    ],
-    [
-      "NexusBlitz",
-      false
-    ],
-    [
-      "Arena",
-      false
     ],
     [
       "Aram",
       false
     ],
     [
-      "SummonersRift",
+      "NexusBlitz",
       false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "MagicPenetration",
-      "value": 7
-    },
-    {
       "name": "MoveSpeed",
       "value": 50
+    },
+    {
+      "name": "MagicPenetration",
+      "value": 7
     }
   ],
   "damage_type": "Unknown",

@@ -11,15 +11,7 @@
       true
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Arena",
+      "Tft",
       false
     ],
     [
@@ -27,22 +19,30 @@
       true
     ],
     [
+      "Arena",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
       "SummonersRift",
       true
     ],
     [
-      "Tft",
-      false
+      "SummonersRift",
+      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AbilityPower",
-      "value": 20
-    },
-    {
       "name": "AbilityHaste",
       "value": 10
+    },
+    {
+      "name": "AbilityPower",
+      "value": 20
     },
     {
       "name": "BaseManaRegen",

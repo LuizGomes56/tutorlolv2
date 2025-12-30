@@ -72,6 +72,42 @@
     [
       {
         "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "Chain Lash",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "60 + (0.8 * ctx.ap)",
+          "115 + (0.8 * ctx.ap)",
+          "170 + (0.8 * ctx.ap)",
+          "225 + (0.8 * ctx.ap)",
+          "280 + (0.8 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_5"
+      },
+      {
+        "name": "Chain Lash",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "64 + (0.72 * ctx.ap)",
+          "106 + (0.72 * ctx.ap)",
+          "148 + (0.72 * ctx.ap)",
+          "190 + (0.72 * ctx.ap)",
+          "232 + (0.72 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
         "name": "_4"
       },
       {
@@ -84,6 +120,24 @@
           "250 + (1.2 * ctx.ap)",
           "325 + (1.2 * ctx.ap)",
           "400 + (1.2 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_3"
+      },
+      {
+        "name": "Chain Lash",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "24 + (0.32 * ctx.ap)",
+          "46 + (0.32 * ctx.ap)",
+          "68 + (0.32 * ctx.ap)",
+          "90 + (0.32 * ctx.ap)",
+          "112 + (0.32 * ctx.ap)"
         ]
       }
     ],
@@ -120,60 +174,6 @@
           "80 + (0.4 * ctx.ap)",
           "100 + (0.4 * ctx.ap)",
           "120 + (0.4 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_3"
-      },
-      {
-        "name": "Chain Lash",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "24 + (0.32 * ctx.ap)",
-          "46 + (0.32 * ctx.ap)",
-          "68 + (0.32 * ctx.ap)",
-          "90 + (0.32 * ctx.ap)",
-          "112 + (0.32 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_2"
-      },
-      {
-        "name": "Chain Lash",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "60 + (0.8 * ctx.ap)",
-          "115 + (0.8 * ctx.ap)",
-          "170 + (0.8 * ctx.ap)",
-          "225 + (0.8 * ctx.ap)",
-          "280 + (0.8 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_5"
-      },
-      {
-        "name": "Chain Lash",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "64 + (0.72 * ctx.ap)",
-          "106 + (0.72 * ctx.ap)",
-          "148 + (0.72 * ctx.ap)",
-          "190 + (0.72 * ctx.ap)",
-          "232 + (0.72 * ctx.ap)"
         ]
       }
     ]

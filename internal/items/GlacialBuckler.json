@@ -7,7 +7,7 @@
   "tier": 2,
   "maps": [
     [
-      "SummonersRift",
+      "Tft",
       false
     ],
     [
@@ -15,12 +15,12 @@
       true
     ],
     [
-      "SummonersRift",
+      "NexusBlitz",
       true
     ],
     [
-      "Tft",
-      false
+      "SummonersRift",
+      true
     ],
     [
       "Arena",
@@ -28,21 +28,21 @@
     ],
     [
       "SummonersRift",
-      true
+      false
     ],
     [
-      "NexusBlitz",
+      "SummonersRift",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Mana",
-      "value": 300
-    },
-    {
       "name": "Armor",
       "value": 25
+    },
+    {
+      "name": "Mana",
+      "value": 300
     },
     {
       "name": "AbilityHaste",

@@ -7,15 +7,15 @@
   "tier": 2,
   "maps": [
     [
-      "Tft",
-      false
-    ],
-    [
-      "NexusBlitz",
+      "SummonersRift",
       true
     ],
     [
-      "Arena",
+      "SummonersRift",
+      false
+    ],
+    [
+      "Tft",
       false
     ],
     [
@@ -23,26 +23,26 @@
       true
     ],
     [
-      "SummonersRift",
+      "NexusBlitz",
       true
     ],
     [
       "SummonersRift",
+      true
+    ],
+    [
+      "Arena",
       false
-    ],
-    [
-      "SummonersRift",
-      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AttackDamage",
-      "value": 20
-    },
-    {
       "name": "ArmorPenetration",
       "value": 18
+    },
+    {
+      "name": "AttackDamage",
+      "value": 20
     }
   ],
   "damage_type": "Unknown",

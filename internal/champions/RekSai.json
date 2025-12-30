@@ -88,24 +88,6 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_2"
-      },
-      {
-        "name": "Furious Bite",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "100 + (0.8 * ctx.bonus_ad)",
-          "135 + (0.8 * ctx.bonus_ad)",
-          "170 + (0.8 * ctx.bonus_ad)",
-          "205 + (0.8 * ctx.bonus_ad)",
-          "240 + (0.8 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "R",
         "name": "_1"
       },
@@ -153,6 +135,24 @@
           "(0.4 * ctx.ad)",
           "(0.45 * ctx.ad)",
           "(0.5 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_2"
+      },
+      {
+        "name": "Furious Bite",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "100 + (0.8 * ctx.bonus_ad)",
+          "135 + (0.8 * ctx.bonus_ad)",
+          "170 + (0.8 * ctx.bonus_ad)",
+          "205 + (0.8 * ctx.bonus_ad)",
+          "240 + (0.8 * ctx.bonus_ad)"
         ]
       }
     ]

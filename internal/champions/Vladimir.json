@@ -71,6 +71,24 @@
   "abilities": [
     [
       {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Transfusion",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "80 + (0.6 * ctx.ap)",
+          "100 + (0.6 * ctx.ap)",
+          "120 + (0.6 * ctx.ap)",
+          "140 + (0.6 * ctx.ap)",
+          "160 + (0.6 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "W",
         "name": "_1"
       },
@@ -84,6 +102,24 @@
           "47.5 + (0.0375 * ctx.bonus_health)",
           "61.25 + (0.0375 * ctx.bonus_health)",
           "75 + (0.0375 * ctx.bonus_health)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_2"
+      },
+      {
+        "name": "Tides of Blood",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "30 + (0.015 * ctx.max_health) + (0.35 * ctx.ap)",
+          "45 + (0.015 * ctx.max_health) + (0.35 * ctx.ap)",
+          "60 + (0.015 * ctx.max_health) + (0.35 * ctx.ap)",
+          "75 + (0.015 * ctx.max_health) + (0.35 * ctx.ap)",
+          "90 + (0.015 * ctx.max_health) + (0.35 * ctx.ap)"
         ]
       }
     ],
@@ -138,42 +174,6 @@
           "120 + (0.06 * ctx.max_health) + (0.8 * ctx.ap)",
           "150 + (0.06 * ctx.max_health) + (0.8 * ctx.ap)",
           "180 + (0.06 * ctx.max_health) + (0.8 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_2"
-      },
-      {
-        "name": "Tides of Blood",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "30 + (0.015 * ctx.max_health) + (0.35 * ctx.ap)",
-          "45 + (0.015 * ctx.max_health) + (0.35 * ctx.ap)",
-          "60 + (0.015 * ctx.max_health) + (0.35 * ctx.ap)",
-          "75 + (0.015 * ctx.max_health) + (0.35 * ctx.ap)",
-          "90 + (0.015 * ctx.max_health) + (0.35 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Transfusion",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "80 + (0.6 * ctx.ap)",
-          "100 + (0.6 * ctx.ap)",
-          "120 + (0.6 * ctx.ap)",
-          "140 + (0.6 * ctx.ap)",
-          "160 + (0.6 * ctx.ap)"
         ]
       }
     ],

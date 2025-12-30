@@ -70,17 +70,19 @@
   "abilities": [
     [
       {
-        "type": "R",
+        "type": "Q",
         "name": "_1"
       },
       {
-        "name": "Emperor's Divide",
+        "name": "Conquering Sands",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "200 + (0.75 * ctx.ap)",
-          "400 + (0.75 * ctx.ap)",
-          "600 + (0.75 * ctx.ap)"
+          "60 + (0.35 * ctx.ap)",
+          "80 + (0.35 * ctx.ap)",
+          "100 + (0.35 * ctx.ap)",
+          "120 + (0.35 * ctx.ap)",
+          "140 + (0.35 * ctx.ap)"
         ]
       }
     ],
@@ -117,19 +119,17 @@
     ],
     [
       {
-        "type": "Q",
+        "type": "R",
         "name": "_1"
       },
       {
-        "name": "Conquering Sands",
+        "name": "Emperor's Divide",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "60 + (0.35 * ctx.ap)",
-          "80 + (0.35 * ctx.ap)",
-          "100 + (0.35 * ctx.ap)",
-          "120 + (0.35 * ctx.ap)",
-          "140 + (0.35 * ctx.ap)"
+          "200 + (0.75 * ctx.ap)",
+          "400 + (0.75 * ctx.ap)",
+          "600 + (0.75 * ctx.ap)"
         ]
       }
     ],

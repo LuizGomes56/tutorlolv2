@@ -8,14 +8,14 @@
   "maps": [
     [
       "SummonersRift",
-      false
-    ],
-    [
-      "NexusBlitz",
       true
     ],
     [
       "SummonersRift",
+      true
+    ],
+    [
+      "NexusBlitz",
       true
     ],
     [
@@ -23,30 +23,30 @@
       false
     ],
     [
-      "Aram",
-      true
+      "SummonersRift",
+      false
     ],
     [
       "Arena",
       false
     ],
     [
-      "SummonersRift",
+      "Aram",
       true
     ]
   ],
   "prettified_stats": [
-    {
-      "name": "Health",
-      "value": 550
-    },
     {
       "name": "AbilityHaste",
       "value": 15
     },
     {
       "name": "Mana",
-      "value": 500
+      "value": 600
+    },
+    {
+      "name": "Health",
+      "value": 400
     }
   ],
   "damage_type": "Unknown",

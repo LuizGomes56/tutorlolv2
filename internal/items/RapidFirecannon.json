@@ -12,26 +12,26 @@
     ],
     [
       "SummonersRift",
-      true
-    ],
-    [
-      "Aram",
-      true
+      false
     ],
     [
       "Tft",
       false
     ],
     [
+      "SummonersRift",
+      true
+    ],
+    [
+      "NexusBlitz",
+      true
+    ],
+    [
       "Arena",
       false
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "NexusBlitz",
+      "Aram",
       true
     ]
   ],
@@ -46,7 +46,7 @@
     },
     {
       "name": "AttackSpeed",
-      "value": 35
+      "value": 30
     }
   ],
   "damage_type": "Unknown",

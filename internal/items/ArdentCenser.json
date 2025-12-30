@@ -7,6 +7,22 @@
   "tier": 3,
   "maps": [
     [
+      "Tft",
+      false
+    ],
+    [
+      "Aram",
+      true
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
       "SummonersRift",
       true
     ],
@@ -15,42 +31,26 @@
       true
     ],
     [
-      "Tft",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
       "SummonersRift",
       true
-    ],
-    [
-      "Aram",
-      true
-    ],
-    [
-      "Arena",
-      false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "MoveSpeed",
-      "value": 6
+      "name": "AbilityPower",
+      "value": 40
     },
     {
-      "name": "HealAndShieldPower",
-      "value": 12
+      "name": "MoveSpeed",
+      "value": 6
     },
     {
       "name": "BaseManaRegen",
       "value": 150
     },
     {
-      "name": "AbilityPower",
-      "value": 40
+      "name": "HealAndShieldPower",
+      "value": 12
     }
   ],
   "damage_type": "Unknown",

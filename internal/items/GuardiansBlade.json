@@ -15,11 +15,11 @@
       true
     ],
     [
-      "Tft",
+      "SummonersRift",
       false
     ],
     [
-      "SummonersRift",
+      "Tft",
       false
     ],
     [
@@ -27,26 +27,26 @@
       false
     ],
     [
-      "Arena",
+      "SummonersRift",
       false
     ],
     [
-      "SummonersRift",
+      "Arena",
       false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AbilityHaste",
-      "value": 15
+      "name": "AttackDamage",
+      "value": 25
     },
     {
       "name": "Health",
       "value": 250
     },
     {
-      "name": "AttackDamage",
-      "value": 25
+      "name": "AbilityHaste",
+      "value": 15
     }
   ],
   "damage_type": "Unknown",

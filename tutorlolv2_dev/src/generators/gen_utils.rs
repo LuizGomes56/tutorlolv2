@@ -11,10 +11,9 @@ pub trait F64Ext {
 
 impl F64Ext for f64 {
     fn trim(&self) -> String {
-        if self.fract() == 0.0 {
-            format!("{:.0}", self)
-        } else {
-            self.to_string()
+        match self.fract() {
+            0.0 => format!("{:.0}", self),
+            _ => self.to_string(),
         }
     }
 }
@@ -140,9 +139,7 @@ impl RegExtractor for str {
 
         macro_rules! tuple_rep {
             ($($from:literal => $to:expr),*$(,)?) => {
-                $(
-                    push_tuple(&mut replacements, $from, $to);
-                )*
+                $(push_tuple(&mut replacements, $from, $to);)*
             };
         }
         tuple_rep! {
@@ -152,7 +149,6 @@ impl RegExtractor for str {
             "of expended Grit" => "0.0",
             "of the original damage" => "100.0",
             "per Overwhelm stack on the target" => "1.0",
-            "per Soul collected" => format!("*{ThreshStacks}"),
             "of primary target's bonus health" => EnemyBonusHealth,
             "of his bonus health" => BonusHealth,
             "Pantheon's bonus health" => BonusHealth,
@@ -164,38 +160,42 @@ impl RegExtractor for str {
             "per Feast stack" => ChogathStacks,
             "of Siphoning Strike stacks" => NasusStacks,
             "Stardust" => AurelionSolStacks,
+            "per Mark" => KindredStacks,
             "per mark" => KindredStacks,
+            "bonus movement speed" => BonusMoveSpeed,
             "bonus mana" => BonusMana,
             "bonus AD" => BonusAd,
             "bonus armor" => BonusArmor,
             "bonus magic resistance" => BonusMagicResist,
             "bonus health" => BonusHealth,
-            "bonus movement speed" => BonusMoveSpeed,
-            "armor" => Armor,
             "of the target's maximum health" => EnemyMaxHealth,
             "of target's maximum health" => EnemyMaxHealth,
-            "of Zac's maximum health" => MaxHealth,
-            "of Braum's maximum health" => MaxHealth,
-            "of her maximum health" => MaxHealth,
-            "of his maximum health" => MaxHealth,
-            "of maximum health" => MaxHealth,
-            "maximum health" => MaxHealth,
             "of the target's current health" => CurrentHealth,
             "of target's current health" => CurrentHealth,
             "target's current health" => CurrentHealth,
             "of the target's missing health" => MissingHealth,
             "of target's missing health" => MissingHealth,
             "target's missing health" => MissingHealth,
+            "of Zac's maximum health" => MaxHealth,
+            "of Braum's maximum health" => MaxHealth,
+            "of her maximum health" => MaxHealth,
+            "of his maximum health" => MaxHealth,
+            "of maximum health" => MaxHealth,
+            "maximum health" => MaxHealth,
             "maximum mana" => MaxMana,
+            "armor" => Armor,
             "AP" => Ap,
             "AD" => Ad,
-            "\u{00D7}" => "*",
+            "\u{00D7}" => "*"
         };
 
         replacements
             .into_iter()
             .fold(self.to_string(), |acc, (old, new)| {
-                acc.replace(old, &(*new).to_string())
+                let pattern = format!(r"\b{}\b", regex::escape(old));
+                let re = regex::Regex::new(&pattern).unwrap();
+                re.replace_all(&acc, &new.to_string())
+                    .replace("per Soul collected", &format!(" * {ThreshStacks}"))
             })
     }
 

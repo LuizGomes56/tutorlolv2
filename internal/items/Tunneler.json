@@ -7,6 +7,18 @@
   "tier": 2,
   "maps": [
     [
+      "SummonersRift",
+      true
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
       "Tft",
       false
     ],
@@ -20,29 +32,17 @@
     ],
     [
       "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
       false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Health",
-      "value": 250
-    },
-    {
       "name": "AttackDamage",
       "value": 15
+    },
+    {
+      "name": "Health",
+      "value": 250
     }
   ],
   "damage_type": "Unknown",

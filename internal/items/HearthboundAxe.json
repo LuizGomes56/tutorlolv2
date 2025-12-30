@@ -11,20 +11,12 @@
       false
     ],
     [
-      "SummonersRift",
-      true
-    ],
-    [
       "Aram",
       true
     ],
     [
-      "NexusBlitz",
-      true
-    ],
-    [
       "SummonersRift",
-      false
+      true
     ],
     [
       "Tft",
@@ -32,16 +24,24 @@
     ],
     [
       "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "NexusBlitz",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AttackDamage",
+      "name": "AttackSpeed",
       "value": 20
     },
     {
-      "name": "AttackSpeed",
+      "name": "AttackDamage",
       "value": 20
     }
   ],

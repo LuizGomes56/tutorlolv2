@@ -70,24 +70,6 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Aqua Prison",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "90 + (0.5 * ctx.ap)",
-          "145 + (0.5 * ctx.ap)",
-          "200 + (0.5 * ctx.ap)",
-          "255 + (0.5 * ctx.ap)",
-          "310 + (0.5 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "E",
         "name": "_2"
       },
@@ -101,6 +83,24 @@
           "120 + (0.6 * ctx.ap)",
           "150 + (0.6 * ctx.ap)",
           "180 + (0.6 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Tidecaller's Blessing",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "20 + (0.2 * ctx.ap)",
+          "30 + (0.2 * ctx.ap)",
+          "40 + (0.2 * ctx.ap)",
+          "50 + (0.2 * ctx.ap)",
+          "60 + (0.2 * ctx.ap)"
         ]
       }
     ],
@@ -122,19 +122,19 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_2"
+        "type": "Q",
+        "name": "_1"
       },
       {
-        "name": "Ebb and Flow",
+        "name": "Aqua Prison",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "48 + (0.4 * ctx.ap)",
-          "76 + (0.4 * ctx.ap)",
-          "104 + (0.4 * ctx.ap)",
-          "132 + (0.4 * ctx.ap)",
-          "160 + (0.4 * ctx.ap)"
+          "90 + (0.5 * ctx.ap)",
+          "145 + (0.5 * ctx.ap)",
+          "200 + (0.5 * ctx.ap)",
+          "255 + (0.5 * ctx.ap)",
+          "310 + (0.5 * ctx.ap)"
         ]
       }
     ],
@@ -158,19 +158,19 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "type": "W",
+        "name": "_2"
       },
       {
-        "name": "Tidecaller's Blessing",
+        "name": "Ebb and Flow",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "20 + (0.2 * ctx.ap)",
-          "30 + (0.2 * ctx.ap)",
-          "40 + (0.2 * ctx.ap)",
-          "50 + (0.2 * ctx.ap)",
-          "60 + (0.2 * ctx.ap)"
+          "48 + (0.4 * ctx.ap)",
+          "76 + (0.4 * ctx.ap)",
+          "104 + (0.4 * ctx.ap)",
+          "132 + (0.4 * ctx.ap)",
+          "160 + (0.4 * ctx.ap)"
         ]
       }
     ]

@@ -88,6 +88,22 @@
     ],
     [
       {
+        "type": "R",
+        "name": "_2"
+      },
+      {
+        "name": "Magnet Storm",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "120 + (1.1 * ctx.ap)",
+          "200 + (1.1 * ctx.ap)",
+          "280 + (1.1 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "W",
         "name": "_2"
       },
@@ -135,22 +151,6 @@
           "(0.06 * ctx.enemy_max_health) + (0.03 * 0.01 * ctx.ap)",
           "(0.065 * ctx.enemy_max_health) + (0.03 * 0.01 * ctx.ap)",
           "(0.07 * ctx.enemy_max_health) + (0.03 * 0.01 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_2"
-      },
-      {
-        "name": "Magnet Storm",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "120 + (1.1 * ctx.ap)",
-          "200 + (1.1 * ctx.ap)",
-          "280 + (1.1 * ctx.ap)"
         ]
       }
     ]

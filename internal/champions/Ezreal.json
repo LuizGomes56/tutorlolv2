@@ -88,17 +88,35 @@
     ],
     [
       {
-        "type": "R",
+        "type": "W",
         "name": "_1"
+      },
+      {
+        "name": "Essence Flux",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "80 + ctx.bonus_ad + (0.7 * ctx.ap)",
+          "135 + ctx.bonus_ad + (0.75 * ctx.ap)",
+          "190 + ctx.bonus_ad + (0.8 * ctx.ap)",
+          "245 + ctx.bonus_ad + (0.85 * ctx.ap)",
+          "300 + ctx.bonus_ad + (0.9 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_2"
       },
       {
         "name": "Trueshot Barrage",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "350 + ctx.bonus_ad + (0.9 * ctx.ap)",
-          "550 + ctx.bonus_ad + (0.9 * ctx.ap)",
-          "750 + ctx.bonus_ad + (0.9 * ctx.ap)"
+          "175 + (0.5 * ctx.bonus_ad) + (0.45 * ctx.ap)",
+          "275 + (0.5 * ctx.bonus_ad) + (0.45 * ctx.ap)",
+          "375 + (0.5 * ctx.bonus_ad) + (0.45 * ctx.ap)"
         ]
       }
     ],
@@ -123,34 +141,16 @@
     [
       {
         "type": "R",
-        "name": "_2"
+        "name": "_1"
       },
       {
         "name": "Trueshot Barrage",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "175 + (0.5 * ctx.bonus_ad) + (0.45 * ctx.ap)",
-          "275 + (0.5 * ctx.bonus_ad) + (0.45 * ctx.ap)",
-          "375 + (0.5 * ctx.bonus_ad) + (0.45 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_1"
-      },
-      {
-        "name": "Essence Flux",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "80 + ctx.bonus_ad + (0.7 * ctx.ap)",
-          "135 + ctx.bonus_ad + (0.75 * ctx.ap)",
-          "190 + ctx.bonus_ad + (0.8 * ctx.ap)",
-          "245 + ctx.bonus_ad + (0.85 * ctx.ap)",
-          "300 + ctx.bonus_ad + (0.9 * ctx.ap)"
+          "350 + ctx.bonus_ad + (0.9 * ctx.ap)",
+          "550 + ctx.bonus_ad + (0.9 * ctx.ap)",
+          "750 + ctx.bonus_ad + (0.9 * ctx.ap)"
         ]
       }
     ]

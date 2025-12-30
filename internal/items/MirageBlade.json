@@ -7,15 +7,19 @@
   "tier": 3,
   "maps": [
     [
+      "SummonersRift",
+      false
+    ],
+    [
       "Arena",
       true
     ],
     [
-      "Tft",
+      "SummonersRift",
       false
     ],
     [
-      "SummonersRift",
+      "NexusBlitz",
       false
     ],
     [
@@ -27,19 +31,11 @@
       false
     ],
     [
-      "NexusBlitz",
-      false
-    ],
-    [
-      "SummonersRift",
+      "Tft",
       false
     ]
   ],
   "prettified_stats": [
-    {
-      "name": "AdaptiveForce",
-      "value": 65
-    },
     {
       "name": "MoveSpeed",
       "value": 6
@@ -47,6 +43,10 @@
     {
       "name": "AttackSpeed",
       "value": 60
+    },
+    {
+      "name": "AdaptiveForce",
+      "value": 65
     }
   ],
   "damage_type": "Unknown",

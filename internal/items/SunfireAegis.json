@@ -8,6 +8,10 @@
   "maps": [
     [
       "SummonersRift",
+      false
+    ],
+    [
+      "Aram",
       true
     ],
     [
@@ -15,8 +19,8 @@
       false
     ],
     [
-      "Aram",
-      true
+      "Arena",
+      false
     ],
     [
       "SummonersRift",
@@ -27,12 +31,8 @@
       true
     ],
     [
-      "Arena",
-      false
-    ],
-    [
       "SummonersRift",
-      false
+      true
     ]
   ],
   "prettified_stats": [
@@ -41,12 +41,12 @@
       "value": 350
     },
     {
-      "name": "Armor",
-      "value": 50
-    },
-    {
       "name": "AbilityHaste",
       "value": 10
+    },
+    {
+      "name": "Armor",
+      "value": 50
     }
   ],
   "damage_type": "Unknown",

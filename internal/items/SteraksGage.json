@@ -7,20 +7,20 @@
   "tier": 3,
   "maps": [
     [
-      "Arena",
+      "NexusBlitz",
+      true
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "SummonersRift",
       false
     ],
     [
-      "Aram",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
+      "Arena",
+      false
     ],
     [
       "Tft",
@@ -28,21 +28,21 @@
     ],
     [
       "SummonersRift",
-      false
+      true
     ],
     [
-      "NexusBlitz",
+      "Aram",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Tenacity",
-      "value": 20
+      "name": "Health",
+      "value": 400
     },
     {
-      "name": "Health",
-      "value": 300
+      "name": "Tenacity",
+      "value": 20
     }
   ],
   "damage_type": "Unknown",

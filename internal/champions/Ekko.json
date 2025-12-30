@@ -72,6 +72,42 @@
     [
       {
         "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "Timewinder",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "40 + (0.6 * ctx.ap)",
+          "65 + (0.6 * ctx.ap)",
+          "90 + (0.6 * ctx.ap)",
+          "115 + (0.6 * ctx.ap)",
+          "140 + (0.6 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_3"
+      },
+      {
+        "name": "Timewinder",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "120 + (0.9 * ctx.ap)",
+          "160 + (0.9 * ctx.ap)",
+          "200 + (0.9 * ctx.ap)",
+          "240 + (0.9 * ctx.ap)",
+          "280 + (0.9 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
         "name": "_1"
       },
       {
@@ -107,24 +143,6 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_2"
-      },
-      {
-        "name": "Timewinder",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "40 + (0.6 * ctx.ap)",
-          "65 + (0.6 * ctx.ap)",
-          "90 + (0.6 * ctx.ap)",
-          "115 + (0.6 * ctx.ap)",
-          "140 + (0.6 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "R",
         "name": "_1"
       },
@@ -136,24 +154,6 @@
           "200 + (1.75 * ctx.ap)",
           "350 + (1.75 * ctx.ap)",
           "500 + (1.75 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_3"
-      },
-      {
-        "name": "Timewinder",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "120 + (0.9 * ctx.ap)",
-          "160 + (0.9 * ctx.ap)",
-          "200 + (0.9 * ctx.ap)",
-          "240 + (0.9 * ctx.ap)",
-          "280 + (0.9 * ctx.ap)"
         ]
       }
     ]

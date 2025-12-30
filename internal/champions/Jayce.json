@@ -90,20 +90,20 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_3"
+        "type": "E",
+        "name": "_1"
       },
       {
-        "name": "Lightning Field",
+        "name": "Thundering Blow",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "35 + (0.25 * ctx.ap)",
-          "50 + (0.25 * ctx.ap)",
-          "65 + (0.25 * ctx.ap)",
-          "80 + (0.25 * ctx.ap)",
-          "95 + (0.25 * ctx.ap)",
-          "110 + (0.25 * ctx.ap)"
+          "(0.08 * ctx.enemy_max_health) + ctx.bonus_ad",
+          "(0.10800000000000001 * ctx.enemy_max_health) + ctx.bonus_ad",
+          "(0.136 * ctx.enemy_max_health) + ctx.bonus_ad",
+          "(0.16399999999999998 * ctx.enemy_max_health) + ctx.bonus_ad",
+          "(0.192 * ctx.enemy_max_health) + ctx.bonus_ad",
+          "(0.22 * ctx.enemy_max_health) + ctx.bonus_ad"
         ]
       }
     ],
@@ -129,6 +129,25 @@
     [
       {
         "type": "W",
+        "name": "_3"
+      },
+      {
+        "name": "Lightning Field",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "35 + (0.25 * ctx.ap)",
+          "50 + (0.25 * ctx.ap)",
+          "65 + (0.25 * ctx.ap)",
+          "80 + (0.25 * ctx.ap)",
+          "95 + (0.25 * ctx.ap)",
+          "110 + (0.25 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
         "name": "_2"
       },
       {
@@ -142,25 +161,6 @@
           "320 + ctx.ap",
           "380 + ctx.ap",
           "440 + ctx.ap"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_1"
-      },
-      {
-        "name": "Thundering Blow",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "(0.08 * ctx.enemy_max_health) + ctx.bonus_ad",
-          "(0.10800000000000001 * ctx.enemy_max_health) + ctx.bonus_ad",
-          "(0.136 * ctx.enemy_max_health) + ctx.bonus_ad",
-          "(0.16399999999999998 * ctx.enemy_max_health) + ctx.bonus_ad",
-          "(0.192 * ctx.enemy_max_health) + ctx.bonus_ad",
-          "(0.22 * ctx.enemy_max_health) + ctx.bonus_ad"
         ]
       }
     ]

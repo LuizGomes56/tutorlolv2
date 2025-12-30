@@ -7,19 +7,19 @@
   "tier": 3,
   "maps": [
     [
+      "Arena",
+      true
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
       "SummonersRift",
       false
     ],
     [
       "Aram",
-      false
-    ],
-    [
-      "Arena",
-      true
-    ],
-    [
-      "Tft",
       false
     ],
     [
@@ -31,7 +31,7 @@
       false
     ],
     [
-      "SummonersRift",
+      "Tft",
       false
     ]
   ],
@@ -41,12 +41,12 @@
       "value": 50
     },
     {
-      "name": "AdaptiveForce",
-      "value": 40
-    },
-    {
       "name": "MoveSpeed",
       "value": 5
+    },
+    {
+      "name": "AdaptiveForce",
+      "value": 40
     }
   ],
   "damage_type": "Unknown",

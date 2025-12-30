@@ -8,16 +8,8 @@ pub mod data;
 pub mod enums;
 pub mod eval;
 
-macro_rules! intrinsic_constants {
-    ($($name:ident),+) => {
-        $(
-            #[allow(non_upper_case_globals, dead_code)]
-            pub(crate) const $name: f32 = 0.0;
-        )+
-    };
-}
-
-intrinsic_constants!(unrecognized, impossible, unknown);
+#[allow(non_upper_case_globals)]
+pub(crate) const impossible: f32 = 0.0;
 
 #[cfg(feature = "eval")]
 pub use bitset::*;
@@ -223,37 +215,6 @@ macro_rules! const_methods {
             const_methods!(inner $name, $repr, u16, u32, u64, u128, usize);
 
             impl $name {
-                pub const fn default() -> Self {
-                    unsafe { Self::[<from_ $repr _unchecked>](0) }
-                }
-            }
-
-            impl Default for $name {
-                fn default() -> Self {
-                    Self::default()
-                }
-            }
-
-            impl Into<&'static str> for $name {
-                fn into(self) -> &'static str {
-                    self.name()
-                }
-            }
-
-            #[cfg(feature = "eval")]
-            impl Into<&'static [<Cached $name:replace("Id", "")>]> for $name {
-                fn into(self) -> &'static [<Cached $name:replace("Id", "")>] {
-                    self.get_cache()
-                }
-            }
-
-            impl Into<&'static [Self]> for $name {
-                fn into(self) -> &'static [Self] {
-                    &Self::ARRAY
-                }
-            }
-
-            impl $name {
                 pub const ARRAY: [Self; Self::VARIANTS] = {
                     let mut i = 0;
                     let mut result = [unsafe { Self::[<from_ $repr _unchecked>](0) }; _];
@@ -285,6 +246,38 @@ macro_rules! const_methods {
 
                 pub fn [<is_ $name:snake>](value: &core::any::TypeId) -> bool {
                     *value == core::any::TypeId::of::<$name>()
+                }
+            }
+
+            impl $name {
+                pub const fn default() -> Self {
+                    unsafe { Self::[<from_ $repr _unchecked>](0) }
+                }
+            }
+
+            impl Default for $name {
+                fn default() -> Self {
+                    Self::default()
+                }
+            }
+
+            #[cfg(any(feature = "eval", feature = "glob"))]
+            impl Into<&'static str> for $name {
+                fn into(self) -> &'static str {
+                    self.name()
+                }
+            }
+
+            #[cfg(feature = "eval")]
+            impl Into<&'static [<Cached $name:replace("Id", "")>]> for $name {
+                fn into(self) -> &'static [<Cached $name:replace("Id", "")>] {
+                    self.get_cache()
+                }
+            }
+
+            impl Into<&'static [Self]> for $name {
+                fn into(self) -> &'static [Self] {
+                    &Self::ARRAY
                 }
             }
         }

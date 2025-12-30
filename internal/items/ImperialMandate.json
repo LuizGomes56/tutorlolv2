@@ -7,11 +7,11 @@
   "tier": 3,
   "maps": [
     [
-      "Aram",
-      true
+      "SummonersRift",
+      false
     ],
     [
-      "SummonersRift",
+      "Tft",
       false
     ],
     [
@@ -23,26 +23,26 @@
       false
     ],
     [
-      "SummonersRift",
+      "NexusBlitz",
       true
     ],
     [
-      "Tft",
-      false
+      "Aram",
+      true
     ],
     [
-      "NexusBlitz",
+      "SummonersRift",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AbilityPower",
-      "value": 60
-    },
-    {
       "name": "AbilityHaste",
       "value": 35
+    },
+    {
+      "name": "AbilityPower",
+      "value": 60
     },
     {
       "name": "BaseManaRegen",

@@ -11,6 +11,10 @@
       true
     ],
     [
+      "SummonersRift",
+      true
+    ],
+    [
       "Aram",
       true
     ],
@@ -19,30 +23,26 @@
       false
     ],
     [
+      "NexusBlitz",
+      true
+    ],
+    [
       "Arena",
       false
     ],
     [
       "SummonersRift",
       false
-    ],
-    [
-      "NexusBlitz",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AttackDamage",
-      "value": 50
-    },
-    {
       "name": "Lethality",
       "value": 15
+    },
+    {
+      "name": "AttackDamage",
+      "value": 50
     }
   ],
   "damage_type": "Unknown",

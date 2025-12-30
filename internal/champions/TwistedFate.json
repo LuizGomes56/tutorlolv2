@@ -73,6 +73,24 @@
     [
       {
         "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Pick a Card",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "40 + ctx.ad + ctx.ap",
+          "60 + ctx.ad + ctx.ap",
+          "80 + ctx.ad + ctx.ap",
+          "100 + ctx.ad + ctx.ap",
+          "120 + ctx.ad + ctx.ap"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
         "name": "_3"
       },
       {
@@ -103,24 +121,6 @@
           "115 + (0.2 * ctx.bonus_ad) + (0.4 * ctx.ap)",
           "140 + (0.2 * ctx.bonus_ad) + (0.4 * ctx.ap)",
           "165 + (0.2 * ctx.bonus_ad) + (0.4 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_1"
-      },
-      {
-        "name": "Pick a Card",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "40 + ctx.ad + ctx.ap",
-          "60 + ctx.ad + ctx.ap",
-          "80 + ctx.ad + ctx.ap",
-          "100 + ctx.ad + ctx.ap",
-          "120 + ctx.ad + ctx.ap"
         ]
       }
     ],

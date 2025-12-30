@@ -7,6 +7,22 @@
   "tier": 3,
   "maps": [
     [
+      "NexusBlitz",
+      false
+    ],
+    [
+      "Tft",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
       "Arena",
       true
     ],
@@ -15,34 +31,18 @@
       false
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "NexusBlitz",
-      false
-    ],
-    [
       "Aram",
-      false
-    ],
-    [
-      "Tft",
       false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "MoveSpeed",
-      "value": 8
-    },
-    {
       "name": "AdaptiveForce",
       "value": 80
+    },
+    {
+      "name": "MoveSpeed",
+      "value": 8
     },
     {
       "name": "AttackSpeed",

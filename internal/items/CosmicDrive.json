@@ -7,15 +7,15 @@
   "tier": 3,
   "maps": [
     [
-      "Aram",
-      true
-    ],
-    [
-      "Arena",
+      "Tft",
       false
     ],
     [
       "SummonersRift",
+      true
+    ],
+    [
+      "Aram",
       true
     ],
     [
@@ -31,18 +31,18 @@
       true
     ],
     [
-      "Tft",
+      "Arena",
       false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AbilityPower",
-      "value": 70
-    },
-    {
       "name": "Health",
       "value": 350
+    },
+    {
+      "name": "AbilityPower",
+      "value": 70
     },
     {
       "name": "MoveSpeed",

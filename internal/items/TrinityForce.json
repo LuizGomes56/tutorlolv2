@@ -7,12 +7,8 @@
   "tier": 3,
   "maps": [
     [
-      "SummonersRift",
+      "Arena",
       false
-    ],
-    [
-      "SummonersRift",
-      true
     ],
     [
       "NexusBlitz",
@@ -23,26 +19,30 @@
       true
     ],
     [
+      "Aram",
+      true
+    ],
+    [
       "Tft",
       false
     ],
     [
-      "Arena",
+      "SummonersRift",
       false
     ],
     [
-      "Aram",
+      "SummonersRift",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AttackSpeed",
-      "value": 25
-    },
-    {
       "name": "Health",
       "value": 333
+    },
+    {
+      "name": "AttackSpeed",
+      "value": 25
     },
     {
       "name": "AttackDamage",

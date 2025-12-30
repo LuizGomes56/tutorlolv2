@@ -11,15 +11,19 @@
       false
     ],
     [
+      "SummonersRift",
+      false
+    ],
+    [
       "Aram",
       false
     ],
     [
-      "Tft",
+      "NexusBlitz",
       false
     ],
     [
-      "NexusBlitz",
+      "Tft",
       false
     ],
     [
@@ -29,20 +33,16 @@
     [
       "SummonersRift",
       false
-    ],
-    [
-      "SummonersRift",
-      false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Armor",
-      "value": 55
-    },
-    {
       "name": "AttackSpeed",
       "value": 50
+    },
+    {
+      "name": "Armor",
+      "value": 55
     },
     {
       "name": "MoveSpeed",

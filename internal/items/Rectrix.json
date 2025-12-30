@@ -8,18 +8,10 @@
   "maps": [
     [
       "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
       false
     ],
     [
-      "Tft",
+      "Arena",
       false
     ],
     [
@@ -27,22 +19,30 @@
       true
     ],
     [
-      "NexusBlitz",
+      "SummonersRift",
       true
     ],
     [
-      "Arena",
+      "Tft",
       false
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "NexusBlitz",
+      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AttackDamage",
-      "value": 15
-    },
-    {
       "name": "MoveSpeed",
       "value": 4
+    },
+    {
+      "name": "AttackDamage",
+      "value": 15
     }
   ],
   "damage_type": "Unknown",

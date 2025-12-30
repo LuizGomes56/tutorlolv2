@@ -7,50 +7,50 @@
   "tier": 3,
   "maps": [
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
+      "Arena",
+      true
     ],
     [
       "Tft",
       false
     ],
     [
-      "Arena",
-      true
+      "SummonersRift",
+      false
+    ],
+    [
+      "Aram",
+      false
     ],
     [
       "NexusBlitz",
       false
     ],
     [
-      "Aram",
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
       false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "MagicResist",
-      "value": 65
-    },
-    {
-      "name": "Armor",
-      "value": 65
-    },
-    {
       "name": "MoveSpeed",
       "value": 10
     },
     {
+      "name": "MagicResist",
+      "value": 65
+    },
+    {
       "name": "AbilityHaste",
       "value": 15
+    },
+    {
+      "name": "Armor",
+      "value": 65
     }
   ],
   "damage_type": "Unknown",

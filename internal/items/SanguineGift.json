@@ -11,7 +11,19 @@
       false
     ],
     [
+      "SummonersRift",
+      false
+    ],
+    [
       "Aram",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "Tft",
       false
     ],
     [
@@ -19,20 +31,8 @@
       false
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
       "Arena",
       true
-    ],
-    [
-      "Tft",
-      false
     ]
   ],
   "prettified_stats": [
@@ -41,12 +41,12 @@
       "value": 20
     },
     {
-      "name": "AbilityPower",
-      "value": 80
-    },
-    {
       "name": "HealAndShieldPower",
       "value": 15
+    },
+    {
+      "name": "AbilityPower",
+      "value": 80
     }
   ],
   "damage_type": "Unknown",

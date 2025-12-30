@@ -70,53 +70,19 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_3"
-      },
-      {
-        "name": "Boomerang Throw",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "5 + (1.25 * ctx.ad)",
-          "45 + (1.25 * ctx.ad)",
-          "85 + (1.25 * ctx.ad)",
-          "125 + (1.25 * ctx.ad)",
-          "165 + (1.25 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
+        "type": "W",
         "name": "_1"
       },
       {
-        "name": "Hop",
-        "damage_type": "Physical",
+        "name": "Hyper",
+        "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "50 + (0.06 * ctx.max_health)",
-          "85 + (0.06 * ctx.max_health)",
-          "120 + (0.06 * ctx.max_health)",
-          "155 + (0.06 * ctx.max_health)",
-          "190 + (0.06 * ctx.max_health)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_2"
-      },
-      {
-        "name": "GNAR!",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "200 + (0.5 * ctx.bonus_ad) + ctx.ap",
-          "300 + (0.5 * ctx.bonus_ad) + ctx.ap",
-          "400 + (0.5 * ctx.bonus_ad) + ctx.ap"
+          "0 + (0.06 * ctx.enemy_max_health) + ctx.ap",
+          "10 + (0.08 * ctx.enemy_max_health) + ctx.ap",
+          "20 + (0.1 * ctx.enemy_max_health) + ctx.ap",
+          "30 + (0.12 * ctx.enemy_max_health) + ctx.ap",
+          "40 + (0.14 * ctx.enemy_max_health) + ctx.ap"
         ]
       }
     ],
@@ -156,19 +122,53 @@
     ],
     [
       {
-        "type": "W",
+        "type": "E",
         "name": "_1"
       },
       {
-        "name": "Hyper",
-        "damage_type": "Magic",
+        "name": "Hop",
+        "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "0 + (0.06 * ctx.enemy_max_health) + ctx.ap",
-          "10 + (0.08 * ctx.enemy_max_health) + ctx.ap",
-          "20 + (0.1 * ctx.enemy_max_health) + ctx.ap",
-          "30 + (0.12 * ctx.enemy_max_health) + ctx.ap",
-          "40 + (0.14 * ctx.enemy_max_health) + ctx.ap"
+          "50 + (0.06 * ctx.max_health)",
+          "85 + (0.06 * ctx.max_health)",
+          "120 + (0.06 * ctx.max_health)",
+          "155 + (0.06 * ctx.max_health)",
+          "190 + (0.06 * ctx.max_health)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_2"
+      },
+      {
+        "name": "GNAR!",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "200 + (0.5 * ctx.bonus_ad) + ctx.ap",
+          "300 + (0.5 * ctx.bonus_ad) + ctx.ap",
+          "400 + (0.5 * ctx.bonus_ad) + ctx.ap"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_3"
+      },
+      {
+        "name": "Boomerang Throw",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "5 + (1.25 * ctx.ad)",
+          "45 + (1.25 * ctx.ad)",
+          "85 + (1.25 * ctx.ad)",
+          "125 + (1.25 * ctx.ad)",
+          "165 + (1.25 * ctx.ad)"
         ]
       }
     ],

@@ -7,11 +7,11 @@
   "tier": 2,
   "maps": [
     [
-      "SummonersRift",
-      true
+      "Arena",
+      false
     ],
     [
-      "Aram",
+      "SummonersRift",
       true
     ],
     [
@@ -19,8 +19,8 @@
       true
     ],
     [
-      "Arena",
-      false
+      "Aram",
+      true
     ],
     [
       "SummonersRift",
@@ -37,12 +37,12 @@
   ],
   "prettified_stats": [
     {
-      "name": "AttackDamage",
-      "value": 15
-    },
-    {
       "name": "LifeSteal",
       "value": 7
+    },
+    {
+      "name": "AttackDamage",
+      "value": 15
     }
   ],
   "damage_type": "Unknown",

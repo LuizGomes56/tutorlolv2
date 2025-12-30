@@ -8,15 +8,15 @@
   "maps": [
     [
       "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
       true
     ],
     [
       "Aram",
       true
+    ],
+    [
+      "SummonersRift",
+      false
     ],
     [
       "SummonersRift",
@@ -38,7 +38,7 @@
   "prettified_stats": [
     {
       "name": "MoveSpeed",
-      "value": 45
+      "value": 30
     },
     {
       "name": "Armor",

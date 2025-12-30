@@ -11,7 +11,7 @@
       false
     ],
     [
-      "SummonersRift",
+      "Tft",
       false
     ],
     [
@@ -19,16 +19,16 @@
       false
     ],
     [
-      "Arena",
-      true
-    ],
-    [
-      "Tft",
+      "SummonersRift",
       false
     ],
     [
       "SummonersRift",
       false
+    ],
+    [
+      "Arena",
+      true
     ],
     [
       "SummonersRift",
@@ -37,16 +37,16 @@
   ],
   "prettified_stats": [
     {
-      "name": "AttackDamage",
-      "value": 55
-    },
-    {
       "name": "Health",
       "value": 400
     },
     {
       "name": "AbilityHaste",
       "value": 20
+    },
+    {
+      "name": "AttackDamage",
+      "value": 55
     },
     {
       "name": "Omnivamp",

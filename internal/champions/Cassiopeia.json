@@ -70,24 +70,6 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_2"
-      },
-      {
-        "name": "Noxious Blast",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "75 + (0.65 * ctx.ap)",
-          "110 + (0.65 * ctx.ap)",
-          "145 + (0.65 * ctx.ap)",
-          "180 + (0.65 * ctx.ap)",
-          "215 + (0.65 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "W",
         "name": "_2"
       },
@@ -106,19 +88,35 @@
     ],
     [
       {
-        "type": "W",
+        "type": "R",
         "name": "_1"
       },
       {
-        "name": "Miasma",
+        "name": "Petrifying Gaze",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "20 + (0.1 * ctx.ap)",
-          "25 + (0.1 * ctx.ap)",
-          "30 + (0.1 * ctx.ap)",
-          "35 + (0.1 * ctx.ap)",
-          "40 + (0.1 * ctx.ap)"
+          "150 + (0.5 * ctx.ap)",
+          "250 + (0.5 * ctx.ap)",
+          "350 + (0.5 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Noxious Blast",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "10.71 + (0.0929 * ctx.ap)",
+          "15.71 + (0.0929 * ctx.ap)",
+          "20.71 + (0.0929 * ctx.ap)",
+          "25.71 + (0.0929 * ctx.ap)",
+          "30.71 + (0.0929 * ctx.ap)"
         ]
       }
     ],
@@ -137,6 +135,24 @@
           "60 + (0.55 * ctx.ap)",
           "80 + (0.55 * ctx.ap)",
           "100 + (0.55 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "Noxious Blast",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "75 + (0.65 * ctx.ap)",
+          "110 + (0.65 * ctx.ap)",
+          "145 + (0.65 * ctx.ap)",
+          "180 + (0.65 * ctx.ap)",
+          "215 + (0.65 * ctx.ap)"
         ]
       }
     ],
@@ -173,35 +189,19 @@
     ],
     [
       {
-        "type": "R",
+        "type": "W",
         "name": "_1"
       },
       {
-        "name": "Petrifying Gaze",
+        "name": "Miasma",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "150 + (0.5 * ctx.ap)",
-          "250 + (0.5 * ctx.ap)",
-          "350 + (0.5 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Noxious Blast",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "10.71 + (0.0929 * ctx.ap)",
-          "15.71 + (0.0929 * ctx.ap)",
-          "20.71 + (0.0929 * ctx.ap)",
-          "25.71 + (0.0929 * ctx.ap)",
-          "30.71 + (0.0929 * ctx.ap)"
+          "20 + (0.1 * ctx.ap)",
+          "25 + (0.1 * ctx.ap)",
+          "30 + (0.1 * ctx.ap)",
+          "35 + (0.1 * ctx.ap)",
+          "40 + (0.1 * ctx.ap)"
         ]
       }
     ]

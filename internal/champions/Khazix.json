@@ -88,24 +88,6 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_2"
-      },
-      {
-        "name": "Taste Their Fear",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "80 + (1.1 * ctx.bonus_ad)",
-          "105 + (1.1 * ctx.bonus_ad)",
-          "130 + (1.1 * ctx.bonus_ad)",
-          "155 + (1.1 * ctx.bonus_ad)",
-          "180 + (1.1 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "E",
         "name": "_1"
       },
@@ -137,6 +119,24 @@
           "273 + (2.31 * ctx.bonus_ad)",
           "325.5 + (2.31 * ctx.bonus_ad)",
           "378 + (2.31 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "Taste Their Fear",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "80 + (1.1 * ctx.bonus_ad)",
+          "105 + (1.1 * ctx.bonus_ad)",
+          "130 + (1.1 * ctx.bonus_ad)",
+          "155 + (1.1 * ctx.bonus_ad)",
+          "180 + (1.1 * ctx.bonus_ad)"
         ]
       }
     ]

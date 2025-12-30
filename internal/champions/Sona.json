@@ -70,40 +70,6 @@
   "abilities": [
     [
       {
-        "type": "R",
-        "name": "_1"
-      },
-      {
-        "name": "Crescendo",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "150 + (0.5 * ctx.ap)",
-          "250 + (0.5 * ctx.ap)",
-          "350 + (0.5 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_2"
-      },
-      {
-        "name": "Hymn of Valor",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "10 + (0.1 * ctx.ap)",
-          "15",
-          "20",
-          "25",
-          "30"
-        ]
-      }
-    ],
-    [
-      {
         "type": "Q",
         "name": "_1"
       },
@@ -122,6 +88,22 @@
     ],
     [
       {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Crescendo",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "150 + (0.5 * ctx.ap)",
+          "250 + (0.5 * ctx.ap)",
+          "350 + (0.5 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "W",
         "name": "_1"
       },
@@ -135,6 +117,24 @@
           "65",
           "85",
           "105"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "Hymn of Valor",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "10 + (0.1 * ctx.ap)",
+          "15",
+          "20",
+          "25",
+          "30"
         ]
       }
     ]

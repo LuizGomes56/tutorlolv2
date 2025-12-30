@@ -70,6 +70,42 @@
   "abilities": [
     [
       {
+        "type": "Q",
+        "name": "_4"
+      },
+      {
+        "name": "Cunning Sweep",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "20 + (0.3 * ctx.bonus_ad) + (0.01 * ctx.enemy_max_health) + (0.015 * 0.01 * ctx.bonus_ad)",
+          "30 + (0.3 * ctx.bonus_ad) + (0.015 * ctx.enemy_max_health) + (0.015 * 0.01 * ctx.bonus_ad)",
+          "40 + (0.3 * ctx.bonus_ad) + (0.02 * ctx.enemy_max_health) + (0.015 * 0.01 * ctx.bonus_ad)",
+          "50 + (0.3 * ctx.bonus_ad) + (0.025 * ctx.enemy_max_health) + (0.015 * 0.01 * ctx.bonus_ad)",
+          "60 + (0.3 * ctx.bonus_ad) + (0.03 * ctx.enemy_max_health) + (0.015 * 0.01 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Repudiation",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "50 + (0.5 * ctx.bonus_ad)",
+          "75 + (0.5 * ctx.bonus_ad)",
+          "100 + (0.5 * ctx.bonus_ad)",
+          "125 + (0.5 * ctx.bonus_ad)",
+          "150 + (0.5 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "W",
         "name": "_2"
       },
@@ -122,24 +158,6 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
-      },
-      {
-        "name": "Lacerate",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "40 + (0.4 * ctx.bonus_ad)",
-          "60 + (0.45 * ctx.bonus_ad)",
-          "80 + (0.5 * ctx.bonus_ad)",
-          "100 + (0.55 * ctx.bonus_ad)",
-          "120 + (0.6 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "Q",
         "name": "_3"
       },
@@ -158,37 +176,19 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_4"
-      },
-      {
-        "name": "Cunning Sweep",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "20 + (0.3 * ctx.bonus_ad) + (0.01 * ctx.enemy_max_health) + (0.015 * 0.01 * ctx.bonus_ad)",
-          "30 + (0.3 * ctx.bonus_ad) + (0.015 * ctx.enemy_max_health) + (0.015 * 0.01 * ctx.bonus_ad)",
-          "40 + (0.3 * ctx.bonus_ad) + (0.02 * ctx.enemy_max_health) + (0.015 * 0.01 * ctx.bonus_ad)",
-          "50 + (0.3 * ctx.bonus_ad) + (0.025 * ctx.enemy_max_health) + (0.015 * 0.01 * ctx.bonus_ad)",
-          "60 + (0.3 * ctx.bonus_ad) + (0.03 * ctx.enemy_max_health) + (0.015 * 0.01 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
+        "type": "E",
         "name": "_1"
       },
       {
-        "name": "Repudiation",
+        "name": "Lacerate",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "50 + (0.5 * ctx.bonus_ad)",
-          "75 + (0.5 * ctx.bonus_ad)",
-          "100 + (0.5 * ctx.bonus_ad)",
-          "125 + (0.5 * ctx.bonus_ad)",
-          "150 + (0.5 * ctx.bonus_ad)"
+          "40 + (0.4 * ctx.bonus_ad)",
+          "60 + (0.45 * ctx.bonus_ad)",
+          "80 + (0.5 * ctx.bonus_ad)",
+          "100 + (0.55 * ctx.bonus_ad)",
+          "120 + (0.6 * ctx.bonus_ad)"
         ]
       }
     ]

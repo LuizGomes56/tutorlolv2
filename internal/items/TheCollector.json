@@ -7,14 +7,6 @@
   "tier": 3,
   "maps": [
     [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
       "Tft",
       false
     ],
@@ -23,6 +15,14 @@
       true
     ],
     [
+      "Aram",
+      true
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
       "SummonersRift",
       false
     ],
@@ -31,18 +31,18 @@
       true
     ],
     [
-      "Aram",
+      "SummonersRift",
       true
     ]
   ],
   "prettified_stats": [
     {
       "name": "AttackDamage",
-      "value": 50
+      "value": 45
     },
     {
       "name": "Lethality",
-      "value": 10
+      "value": 12
     },
     {
       "name": "CriticalStrikeChance",

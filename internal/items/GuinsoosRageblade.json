@@ -12,6 +12,14 @@
     ],
     [
       "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "SummonersRift",
       true
     ],
     [
@@ -19,20 +27,12 @@
       true
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "Tft",
-      false
-    ],
-    [
       "NexusBlitz",
       true
     ],
     [
-      "SummonersRift",
-      true
+      "Tft",
+      false
     ]
   ],
   "prettified_stats": [
@@ -41,11 +41,11 @@
       "value": 20
     },
     {
-      "name": "AttackSpeed",
+      "name": "AbilityPower",
       "value": 25
     },
     {
-      "name": "AbilityPower",
+      "name": "AttackSpeed",
       "value": 25
     }
   ],

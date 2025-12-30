@@ -12,6 +12,14 @@
     ],
     [
       "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
       true
     ],
     [
@@ -24,14 +32,6 @@
     ],
     [
       "Aram",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
       false
     ]
   ],

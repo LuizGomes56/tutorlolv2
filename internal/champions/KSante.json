@@ -71,34 +71,18 @@
     [
       {
         "type": "W",
-        "name": "_1"
+        "name": "_5"
       },
       {
         "name": "Path Maker",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "36 + (0.064 * ctx.enemy_max_health) + (0.016 * 0.01 * ctx.bonus_ctx.armor) + (0.016 * 0.01 * ctx.bonus_magic_resist)",
-          "60 + (0.064 * ctx.enemy_max_health) + (0.016 * 0.01 * ctx.bonus_ctx.armor) + (0.016 * 0.01 * ctx.bonus_magic_resist)",
-          "84 + (0.064 * ctx.enemy_max_health) + (0.016 * 0.01 * ctx.bonus_ctx.armor) + (0.016 * 0.01 * ctx.bonus_magic_resist)",
-          "108 + (0.064 * ctx.enemy_max_health) + (0.016 * 0.01 * ctx.bonus_ctx.armor) + (0.016 * 0.01 * ctx.bonus_magic_resist)",
-          "132 + (0.064 * ctx.enemy_max_health) + (0.016 * 0.01 * ctx.bonus_ctx.armor) + (0.016 * 0.01 * ctx.bonus_magic_resist)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_1"
-      },
-      {
-        "name": "All Out",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "80",
-          "115",
-          "150"
+          "45 + (0.08 * ctx.enemy_max_health) + (0.02 * 0.01 * ctx.bonus_armor) + (0.02 * 0.01 * ctx.bonus_magic_resist)",
+          "75 + (0.08 * ctx.enemy_max_health) + (0.02 * 0.01 * ctx.bonus_armor) + (0.02 * 0.01 * ctx.bonus_magic_resist)",
+          "105 + (0.08 * ctx.enemy_max_health) + (0.02 * 0.01 * ctx.bonus_armor) + (0.02 * 0.01 * ctx.bonus_magic_resist)",
+          "135 + (0.08 * ctx.enemy_max_health) + (0.02 * 0.01 * ctx.bonus_armor) + (0.02 * 0.01 * ctx.bonus_magic_resist)",
+          "165 + (0.08 * ctx.enemy_max_health) + (0.02 * 0.01 * ctx.bonus_armor) + (0.02 * 0.01 * ctx.bonus_magic_resist)"
         ]
       }
     ],
@@ -120,6 +104,56 @@
     ],
     [
       {
+        "type": "R",
+        "name": "_2"
+      },
+      {
+        "name": "All Out",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "80 + (0.05 * ctx.bonus_health)",
+          "115 + (0.05 * ctx.bonus_health)",
+          "150 + (0.05 * ctx.bonus_health)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "All Out",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "80",
+          "115",
+          "150"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_3"
+      },
+      {
+        "name": "Path Maker",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "81 + (0.14400000000000002 * ctx.enemy_max_health) + (0.036000000000000004 * 0.01 * ctx.bonus_armor) + (0.036000000000000004 * 0.01 * ctx.bonus_magic_resist)",
+          "135 + (0.14400000000000002 * ctx.enemy_max_health) + (0.036000000000000004 * 0.01 * ctx.bonus_armor) + (0.036000000000000004 * 0.01 * ctx.bonus_magic_resist)",
+          "189 + (0.14400000000000002 * ctx.enemy_max_health) + (0.036000000000000004 * 0.01 * ctx.bonus_armor) + (0.036000000000000004 * 0.01 * ctx.bonus_magic_resist)",
+          "243 + (0.14400000000000002 * ctx.enemy_max_health) + (0.036000000000000004 * 0.01 * ctx.bonus_armor) + (0.036000000000000004 * 0.01 * ctx.bonus_magic_resist)",
+          "297 + (0.14400000000000002 * ctx.enemy_max_health) + (0.036000000000000004 * 0.01 * ctx.bonus_armor) + (0.036000000000000004 * 0.01 * ctx.bonus_magic_resist)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "W",
         "name": "_2"
       },
@@ -128,11 +162,11 @@
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "4.5 + (0.008 * ctx.enemy_max_health) + (0.002 * 0.01 * ctx.bonus_ctx.armor) + (0.002 * 0.01 * ctx.bonus_magic_resist)",
-          "7.5 + (0.008 * ctx.enemy_max_health) + (0.002 * 0.01 * ctx.bonus_ctx.armor) + (0.002 * 0.01 * ctx.bonus_magic_resist)",
-          "10.5 + (0.008 * ctx.enemy_max_health) + (0.002 * 0.01 * ctx.bonus_ctx.armor) + (0.002 * 0.01 * ctx.bonus_magic_resist)",
-          "13.5 + (0.008 * ctx.enemy_max_health) + (0.002 * 0.01 * ctx.bonus_ctx.armor) + (0.002 * 0.01 * ctx.bonus_magic_resist)",
-          "16.5 + (0.008 * ctx.enemy_max_health) + (0.002 * 0.01 * ctx.bonus_ctx.armor) + (0.002 * 0.01 * ctx.bonus_magic_resist)"
+          "4.5 + (0.008 * ctx.enemy_max_health) + (0.002 * 0.01 * ctx.bonus_armor) + (0.002 * 0.01 * ctx.bonus_magic_resist)",
+          "7.5 + (0.008 * ctx.enemy_max_health) + (0.002 * 0.01 * ctx.bonus_armor) + (0.002 * 0.01 * ctx.bonus_magic_resist)",
+          "10.5 + (0.008 * ctx.enemy_max_health) + (0.002 * 0.01 * ctx.bonus_armor) + (0.002 * 0.01 * ctx.bonus_magic_resist)",
+          "13.5 + (0.008 * ctx.enemy_max_health) + (0.002 * 0.01 * ctx.bonus_armor) + (0.002 * 0.01 * ctx.bonus_magic_resist)",
+          "16.5 + (0.008 * ctx.enemy_max_health) + (0.002 * 0.01 * ctx.bonus_armor) + (0.002 * 0.01 * ctx.bonus_magic_resist)"
         ]
       }
     ],
@@ -146,11 +180,29 @@
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "70 + (0.4 * ctx.bonus_ctx.armor) + (0.4 * ctx.bonus_magic_resist)",
-          "100 + (0.4 * ctx.bonus_ctx.armor) + (0.4 * ctx.bonus_magic_resist)",
-          "130 + (0.4 * ctx.bonus_ctx.armor) + (0.4 * ctx.bonus_magic_resist)",
-          "160 + (0.4 * ctx.bonus_ctx.armor) + (0.4 * ctx.bonus_magic_resist)",
-          "190 + (0.4 * ctx.bonus_ctx.armor) + (0.4 * ctx.bonus_magic_resist)"
+          "70 + (0.4 * ctx.bonus_armor) + (0.4 * ctx.bonus_magic_resist)",
+          "100 + (0.4 * ctx.bonus_armor) + (0.4 * ctx.bonus_magic_resist)",
+          "130 + (0.4 * ctx.bonus_armor) + (0.4 * ctx.bonus_magic_resist)",
+          "160 + (0.4 * ctx.bonus_armor) + (0.4 * ctx.bonus_magic_resist)",
+          "190 + (0.4 * ctx.bonus_armor) + (0.4 * ctx.bonus_magic_resist)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Path Maker",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "36 + (0.064 * ctx.enemy_max_health) + (0.016 * 0.01 * ctx.bonus_armor) + (0.016 * 0.01 * ctx.bonus_magic_resist)",
+          "60 + (0.064 * ctx.enemy_max_health) + (0.016 * 0.01 * ctx.bonus_armor) + (0.016 * 0.01 * ctx.bonus_magic_resist)",
+          "84 + (0.064 * ctx.enemy_max_health) + (0.016 * 0.01 * ctx.bonus_armor) + (0.016 * 0.01 * ctx.bonus_magic_resist)",
+          "108 + (0.064 * ctx.enemy_max_health) + (0.016 * 0.01 * ctx.bonus_armor) + (0.016 * 0.01 * ctx.bonus_magic_resist)",
+          "132 + (0.064 * ctx.enemy_max_health) + (0.016 * 0.01 * ctx.bonus_armor) + (0.016 * 0.01 * ctx.bonus_magic_resist)"
         ]
       }
     ],
@@ -169,58 +221,6 @@
           "340",
           "420",
           "500"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_3"
-      },
-      {
-        "name": "Path Maker",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "81 + (0.14400000000000002 * ctx.enemy_max_health) + (0.036000000000000004 * 0.01 * ctx.bonus_ctx.armor) + (0.036000000000000004 * 0.01 * ctx.bonus_magic_resist)",
-          "135 + (0.14400000000000002 * ctx.enemy_max_health) + (0.036000000000000004 * 0.01 * ctx.bonus_ctx.armor) + (0.036000000000000004 * 0.01 * ctx.bonus_magic_resist)",
-          "189 + (0.14400000000000002 * ctx.enemy_max_health) + (0.036000000000000004 * 0.01 * ctx.bonus_ctx.armor) + (0.036000000000000004 * 0.01 * ctx.bonus_magic_resist)",
-          "243 + (0.14400000000000002 * ctx.enemy_max_health) + (0.036000000000000004 * 0.01 * ctx.bonus_ctx.armor) + (0.036000000000000004 * 0.01 * ctx.bonus_magic_resist)",
-          "297 + (0.14400000000000002 * ctx.enemy_max_health) + (0.036000000000000004 * 0.01 * ctx.bonus_ctx.armor) + (0.036000000000000004 * 0.01 * ctx.bonus_magic_resist)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_2"
-      },
-      {
-        "name": "All Out",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "80 + (0.05 * ctx.bonus_health)",
-          "115 + (0.05 * ctx.bonus_health)",
-          "150 + (0.05 * ctx.bonus_health)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_5"
-      },
-      {
-        "name": "Path Maker",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "45 + (0.08 * ctx.enemy_max_health) + (0.02 * 0.01 * ctx.bonus_ctx.armor) + (0.02 * 0.01 * ctx.bonus_magic_resist)",
-          "75 + (0.08 * ctx.enemy_max_health) + (0.02 * 0.01 * ctx.bonus_ctx.armor) + (0.02 * 0.01 * ctx.bonus_magic_resist)",
-          "105 + (0.08 * ctx.enemy_max_health) + (0.02 * 0.01 * ctx.bonus_ctx.armor) + (0.02 * 0.01 * ctx.bonus_magic_resist)",
-          "135 + (0.08 * ctx.enemy_max_health) + (0.02 * 0.01 * ctx.bonus_ctx.armor) + (0.02 * 0.01 * ctx.bonus_magic_resist)",
-          "165 + (0.08 * ctx.enemy_max_health) + (0.02 * 0.01 * ctx.bonus_ctx.armor) + (0.02 * 0.01 * ctx.bonus_magic_resist)"
         ]
       }
     ]

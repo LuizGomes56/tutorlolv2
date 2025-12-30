@@ -8,7 +8,7 @@
   "maps": [
     [
       "SummonersRift",
-      true
+      false
     ],
     [
       "SummonersRift",
@@ -23,11 +23,11 @@
       true
     ],
     [
-      "Tft",
-      false
+      "SummonersRift",
+      true
     ],
     [
-      "SummonersRift",
+      "Tft",
       false
     ],
     [
@@ -41,12 +41,12 @@
       "value": 40
     },
     {
-      "name": "CriticalStrikeChance",
-      "value": 25
-    },
-    {
       "name": "AttackDamage",
       "value": 35
+    },
+    {
+      "name": "CriticalStrikeChance",
+      "value": 25
     }
   ],
   "damage_type": "Unknown",

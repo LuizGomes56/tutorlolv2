@@ -11,15 +11,19 @@
       false
     ],
     [
-      "Aram",
-      false
-    ],
-    [
       "SummonersRift",
       true
     ],
     [
+      "SummonersRift",
+      false
+    ],
+    [
       "NexusBlitz",
+      false
+    ],
+    [
+      "Aram",
       false
     ],
     [
@@ -29,13 +33,13 @@
     [
       "Arena",
       false
-    ],
-    [
-      "SummonersRift",
-      false
     ]
   ],
   "prettified_stats": [
+    {
+      "name": "MagicResist",
+      "value": 35
+    },
     {
       "name": "MoveSpeed",
       "value": 50
@@ -43,10 +47,6 @@
     {
       "name": "Tenacity",
       "value": 30
-    },
-    {
-      "name": "MagicResist",
-      "value": 35
     }
   ],
   "damage_type": "Unknown",

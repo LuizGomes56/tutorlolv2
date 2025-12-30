@@ -11,18 +11,6 @@
       false
     ],
     [
-      "SummonersRift",
-      true
-    ],
-    [
-      "NexusBlitz",
-      true
-    ],
-    [
-      "Aram",
-      true
-    ],
-    [
       "Arena",
       false
     ],
@@ -33,13 +21,21 @@
     [
       "SummonersRift",
       false
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "NexusBlitz",
+      true
+    ],
+    [
+      "Aram",
+      true
     ]
   ],
   "prettified_stats": [
-    {
-      "name": "Armor",
-      "value": 45
-    },
     {
       "name": "AttackDamage",
       "value": 60
@@ -47,6 +43,10 @@
     {
       "name": "AbilityHaste",
       "value": 10
+    },
+    {
+      "name": "Armor",
+      "value": 45
     }
   ],
   "damage_type": "Unknown",

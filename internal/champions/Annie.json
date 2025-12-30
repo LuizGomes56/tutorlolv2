@@ -70,19 +70,19 @@
   "abilities": [
     [
       {
-        "type": "W",
+        "type": "Q",
         "name": "_1"
       },
       {
-        "name": "Incinerate",
+        "name": "Disintegrate",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "70 + (0.8 * ctx.ap)",
-          "115 + (0.8 * ctx.ap)",
+          "80 + (0.8 * ctx.ap)",
+          "120 + (0.8 * ctx.ap)",
           "160 + (0.8 * ctx.ap)",
-          "205 + (0.8 * ctx.ap)",
-          "250 + (0.8 * ctx.ap)"
+          "200 + (0.8 * ctx.ap)",
+          "240 + (0.8 * ctx.ap)"
         ]
       }
     ],
@@ -106,19 +106,19 @@
     ],
     [
       {
-        "type": "Q",
+        "type": "W",
         "name": "_1"
       },
       {
-        "name": "Disintegrate",
+        "name": "Incinerate",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "80 + (0.8 * ctx.ap)",
-          "120 + (0.8 * ctx.ap)",
+          "70 + (0.8 * ctx.ap)",
+          "115 + (0.8 * ctx.ap)",
           "160 + (0.8 * ctx.ap)",
-          "200 + (0.8 * ctx.ap)",
-          "240 + (0.8 * ctx.ap)"
+          "205 + (0.8 * ctx.ap)",
+          "250 + (0.8 * ctx.ap)"
         ]
       }
     ],

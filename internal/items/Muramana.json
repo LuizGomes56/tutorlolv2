@@ -7,19 +7,11 @@
   "tier": 4,
   "maps": [
     [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
       "Tft",
+      false
+    ],
+    [
+      "Arena",
       false
     ],
     [
@@ -33,20 +25,28 @@
     [
       "NexusBlitz",
       true
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      true
     ]
   ],
   "prettified_stats": [
     {
       "name": "AttackDamage",
-      "value": 40
-    },
-    {
-      "name": "Mana",
-      "value": 1000
+      "value": 35
     },
     {
       "name": "AbilityHaste",
       "value": 15
+    },
+    {
+      "name": "Mana",
+      "value": 860
     }
   ],
   "damage_type": "Unknown",

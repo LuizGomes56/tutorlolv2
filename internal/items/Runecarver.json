@@ -11,24 +11,24 @@
       false
     ],
     [
-      "Tft",
-      false
-    ],
-    [
-      "NexusBlitz",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
       "SummonersRift",
       false
     ],
     [
       "Arena",
       true
+    ],
+    [
+      "NexusBlitz",
+      false
+    ],
+    [
+      "Tft",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
     ],
     [
       "SummonersRift",
@@ -41,12 +41,12 @@
       "value": 80
     },
     {
-      "name": "AbilityHaste",
-      "value": 20
-    },
-    {
       "name": "MoveSpeed",
       "value": 4
+    },
+    {
+      "name": "AbilityHaste",
+      "value": 20
     }
   ],
   "damage_type": "Unknown",

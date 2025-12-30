@@ -10,8 +10,9 @@ use crate::{
 use regex::Regex;
 use std::collections::{BTreeMap, BTreeSet, HashMap};
 use tutorlolv2_fmt::rustfmt;
-use tutorlolv2_gen::{Attrs, ChampionId, DamageType, Position};
-use tutorlolv2_types::{AbilityId, AbilityName, DevMergeData};
+use tutorlolv2_gen::{
+    AbilityId, AbilityName, Attrs, ChampionId, DamageType, DevMergeData, Position,
+};
 
 pub const GENERATOR_FOLDER: &str = "tutorlolv2_dev/src/generators/gen_champions";
 
@@ -70,7 +71,7 @@ impl ChampionFactory {
         );
 
         if let Ok(data) = std::fs::read_to_string(&path) {
-            if data.contains("#![stable]") {
+            if data.contains("#![stable]") || data.contains("#![preserve]") {
                 return Ok(data);
             }
         }

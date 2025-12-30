@@ -7,8 +7,20 @@
   "tier": 3,
   "maps": [
     [
+      "NexusBlitz",
+      true
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
       "Aram",
       true
+    ],
+    [
+      "SummonersRift",
+      false
     ],
     [
       "Tft",
@@ -17,18 +29,6 @@
     [
       "Arena",
       false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "NexusBlitz",
-      true
     ],
     [
       "SummonersRift",
@@ -42,7 +42,7 @@
     },
     {
       "name": "AbilityPower",
-      "value": 90
+      "value": 125
     }
   ],
   "damage_type": "Unknown",

@@ -71,6 +71,24 @@
   "abilities": [
     [
       {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Savagery",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "30 + (0 * ctx.ad)",
+          "60 + (0.0375 * ctx.ad)",
+          "90 + (0.075 * ctx.ad)",
+          "120 + (0.1125 * ctx.ad)",
+          "150 + (0.15 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "W",
         "name": "_1"
       },
@@ -102,24 +120,6 @@
           "145 + (0.8 * ctx.bonus_ad)",
           "190 + (0.8 * ctx.bonus_ad)",
           "235 + (0.8 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Savagery",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "30 + (0 * ctx.ad)",
-          "60 + (0.0375 * ctx.ad)",
-          "90 + (0.075 * ctx.ad)",
-          "120 + (0.1125 * ctx.ad)",
-          "150 + (0.15 * ctx.ad)"
         ]
       }
     ]

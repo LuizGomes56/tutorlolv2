@@ -8,14 +8,6 @@
   "maps": [
     [
       "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Aram",
       true
     ],
     [
@@ -27,11 +19,19 @@
       true
     ],
     [
+      "Aram",
+      true
+    ],
+    [
       "NexusBlitz",
       true
     ],
     [
       "Tft",
+      false
+    ],
+    [
+      "SummonersRift",
       false
     ]
   ],
@@ -41,12 +41,12 @@
       "value": 30
     },
     {
-      "name": "AbilityPower",
-      "value": 75
+      "name": "AbilityHaste",
+      "value": 15
     },
     {
-      "name": "AbilityHaste",
-      "value": 20
+      "name": "AbilityPower",
+      "value": 60
     }
   ],
   "damage_type": "Unknown",

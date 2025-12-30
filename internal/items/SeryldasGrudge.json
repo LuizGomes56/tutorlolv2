@@ -7,15 +7,15 @@
   "tier": 3,
   "maps": [
     [
-      "Arena",
-      false
+      "SummonersRift",
+      true
     ],
     [
       "SummonersRift",
       false
     ],
     [
-      "SummonersRift",
+      "NexusBlitz",
       true
     ],
     [
@@ -31,11 +31,15 @@
       true
     ],
     [
-      "NexusBlitz",
-      true
+      "Arena",
+      false
     ]
   ],
   "prettified_stats": [
+    {
+      "name": "AttackDamage",
+      "value": 40
+    },
     {
       "name": "ArmorPenetration",
       "value": 40
@@ -43,10 +47,6 @@
     {
       "name": "AbilityHaste",
       "value": 10
-    },
-    {
-      "name": "AttackDamage",
-      "value": 40
     }
   ],
   "damage_type": "Unknown",

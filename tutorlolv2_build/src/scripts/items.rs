@@ -42,14 +42,14 @@ fn declare_item(item: &Item) -> DeclaredItem {
 
     let get_constfn_closure = |expr: &str| {
         (!expr.is_empty() && expr != "zero").then_some({
-            let new_expr = expr.as_closure().add_f32s();
-            let ctx_param = new_expr.ctx_param();
-            let body = new_expr.to_lowercase();
+            let ctx_param = expr.ctx_param();
+            let body = expr.to_lowercase();
             let closure = format!("|{ctx_param}| {body}");
             move |fn_name: &str| {
                 (
                     format!(
-                        "{EVAL_FEAT} pub const fn {fn_name}(ctx: &EvalContext) -> f32 {{ {body} }}"
+                        "{EVAL_FEAT} pub const fn {fn_name}(ctx: &EvalContext) -> f32 {{ {expr} }}",
+                        expr = body.clean().cast_f32()
                     ),
                     closure,
                 )
@@ -114,7 +114,7 @@ fn declare_item(item: &Item) -> DeclaredItem {
     }
 }
 
-pub fn format_stats(stats: &ItemStats) -> String {
+pub fn get_stats(stats: &ItemStats) -> String {
     let mut all_stats = Vec::new();
 
     macro_rules! insert_stats {
@@ -226,7 +226,7 @@ pub async fn generate_items() -> GeneratorFn {
                 .collect::<Vec<_>>()
                 .join(",");
 
-            let stats = format_stats(&stats);
+            let stats = get_stats(&stats);
             let deals_damage = {
                 let is_zeroed = |expr: &str| expr != "zero" && !expr.is_empty();
                 is_zeroed(&ranged.minimum_damage)

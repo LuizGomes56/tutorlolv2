@@ -12,6 +12,18 @@
     ],
     [
       "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
+      "Aram",
       true
     ],
     [
@@ -19,30 +31,18 @@
       true
     ],
     [
-      "Aram",
-      true
-    ],
-    [
       "Tft",
-      false
-    ],
-    [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
       false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AttackDamage",
-      "value": 15
-    },
-    {
       "name": "CriticalStrikeChance",
       "value": 20
+    },
+    {
+      "name": "AttackDamage",
+      "value": 15
     }
   ],
   "damage_type": "Unknown",

@@ -8,10 +8,6 @@
   "maps": [
     [
       "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
       true
     ],
     [
@@ -27,26 +23,30 @@
       false
     ],
     [
-      "Arena",
+      "SummonersRift",
       false
     ],
     [
       "SummonersRift",
       true
+    ],
+    [
+      "Arena",
+      false
     ]
   ],
   "prettified_stats": [
     {
+      "name": "MoveSpeed",
+      "value": 4
+    },
+    {
       "name": "AbilityHaste",
-      "value": 20
+      "value": 10
     },
     {
       "name": "AbilityPower",
-      "value": 80
-    },
-    {
-      "name": "MoveSpeed",
-      "value": 10
+      "value": 100
     }
   ],
   "damage_type": "Unknown",

@@ -11,15 +11,11 @@
       true
     ],
     [
-      "NexusBlitz",
-      true
-    ],
-    [
-      "Aram",
-      true
-    ],
-    [
       "SummonersRift",
+      true
+    ],
+    [
+      "NexusBlitz",
       true
     ],
     [
@@ -31,18 +27,22 @@
       false
     ],
     [
+      "Aram",
+      true
+    ],
+    [
       "SummonersRift",
       false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "MagicResist",
-      "value": 35
-    },
-    {
       "name": "Health",
       "value": 200
+    },
+    {
+      "name": "MagicResist",
+      "value": 35
     },
     {
       "name": "BaseHealthRegen",

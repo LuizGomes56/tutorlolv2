@@ -11,15 +11,11 @@
       false
     ],
     [
-      "Arena",
-      true
-    ],
-    [
       "SummonersRift",
       false
     ],
     [
-      "Aram",
+      "SummonersRift",
       false
     ],
     [
@@ -27,25 +23,29 @@
       false
     ],
     [
-      "NexusBlitz",
+      "Arena",
+      true
+    ],
+    [
+      "Aram",
       false
     ],
     [
-      "SummonersRift",
+      "NexusBlitz",
       false
     ]
   ],
   "prettified_stats": [
-    {
-      "name": "MagicResist",
-      "value": 35
-    },
     {
       "name": "AttackSpeed",
       "value": 40
     },
     {
       "name": "Armor",
+      "value": 35
+    },
+    {
+      "name": "MagicResist",
       "value": 35
     }
   ],

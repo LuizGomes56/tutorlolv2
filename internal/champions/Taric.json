@@ -79,11 +79,11 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "90 + (0.5 * ctx.ap) + (0.5 * ctx.bonus_ctx.armor)",
-          "130 + (0.5 * ctx.ap) + (0.5 * ctx.bonus_ctx.armor)",
-          "170 + (0.5 * ctx.ap) + (0.5 * ctx.bonus_ctx.armor)",
-          "210 + (0.5 * ctx.ap) + (0.5 * ctx.bonus_ctx.armor)",
-          "250 + (0.5 * ctx.ap) + (0.5 * ctx.bonus_ctx.armor)"
+          "90 + (0.5 * ctx.ap) + (0.5 * ctx.bonus_armor)",
+          "130 + (0.5 * ctx.ap) + (0.5 * ctx.bonus_armor)",
+          "170 + (0.5 * ctx.ap) + (0.5 * ctx.bonus_armor)",
+          "210 + (0.5 * ctx.ap) + (0.5 * ctx.bonus_armor)",
+          "250 + (0.5 * ctx.ap) + (0.5 * ctx.bonus_armor)"
         ]
       }
     ]

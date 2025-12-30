@@ -70,24 +70,6 @@
   "abilities": [
     [
       {
-        "type": "E",
-        "name": "_3"
-      },
-      {
-        "name": "Spirit Fire",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "100 + (1.2 * ctx.ap)",
-          "160 + (1.2 * ctx.ap)",
-          "220 + (1.2 * ctx.ap)",
-          "280 + (1.2 * ctx.ap)",
-          "340 + (1.2 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "Q",
         "name": "_1"
       },
@@ -101,6 +83,24 @@
           "75 + ctx.nasus_stacks",
           "95 + ctx.nasus_stacks",
           "115 + ctx.nasus_stacks"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_2"
+      },
+      {
+        "name": "Spirit Fire",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "10 + (0.12 * ctx.ap)",
+          "16 + (0.12 * ctx.ap)",
+          "22 + (0.12 * ctx.ap)",
+          "28 + (0.12 * ctx.ap)",
+          "34 + (0.12 * ctx.ap)"
         ]
       }
     ],
@@ -125,18 +125,18 @@
     [
       {
         "type": "E",
-        "name": "_2"
+        "name": "_3"
       },
       {
         "name": "Spirit Fire",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "10 + (0.12 * ctx.ap)",
-          "16 + (0.12 * ctx.ap)",
-          "22 + (0.12 * ctx.ap)",
-          "28 + (0.12 * ctx.ap)",
-          "34 + (0.12 * ctx.ap)"
+          "100 + (1.2 * ctx.ap)",
+          "160 + (1.2 * ctx.ap)",
+          "220 + (1.2 * ctx.ap)",
+          "280 + (1.2 * ctx.ap)",
+          "340 + (1.2 * ctx.ap)"
         ]
       }
     ],

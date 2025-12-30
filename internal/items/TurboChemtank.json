@@ -11,18 +11,6 @@
       false
     ],
     [
-      "Aram",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
       "NexusBlitz",
       false
     ],
@@ -31,18 +19,30 @@
       true
     ],
     [
+      "SummonersRift",
+      false
+    ],
+    [
       "Tft",
+      false
+    ],
+    [
+      "Aram",
+      false
+    ],
+    [
+      "SummonersRift",
       false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Health",
-      "value": 600
-    },
-    {
       "name": "AdaptiveForce",
       "value": 80
+    },
+    {
+      "name": "Health",
+      "value": 600
     }
   ],
   "damage_type": "Unknown",

@@ -7,6 +7,10 @@
   "tier": 3,
   "maps": [
     [
+      "Tft",
+      false
+    ],
+    [
       "SummonersRift",
       true
     ],
@@ -15,7 +19,7 @@
       false
     ],
     [
-      "SummonersRift",
+      "Aram",
       true
     ],
     [
@@ -27,18 +31,14 @@
       true
     ],
     [
-      "Aram",
+      "SummonersRift",
       true
-    ],
-    [
-      "Tft",
-      false
     ]
   ],
   "prettified_stats": [
     {
       "name": "AttackDamage",
-      "value": 30
+      "value": 40
     },
     {
       "name": "LifeSteal",
@@ -46,7 +46,7 @@
     },
     {
       "name": "AttackSpeed",
-      "value": 20
+      "value": 25
     }
   ],
   "damage_type": "Physical",

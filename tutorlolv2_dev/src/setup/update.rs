@@ -8,8 +8,7 @@ use crate::{
 };
 use regex::Regex;
 use std::{collections::HashMap, fs, path::Path};
-use tutorlolv2_gen::{Attrs, DamageType, GameMap, ItemId};
-use tutorlolv2_types::StatName;
+use tutorlolv2_gen::{Attrs, DamageType, GameMap, ItemId, StatName};
 
 /// Creates basic folders necessary to run the program. If one of these folders are not found,
 /// The program is likely to panic when an update is called.

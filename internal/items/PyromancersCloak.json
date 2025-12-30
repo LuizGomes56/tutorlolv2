@@ -7,11 +7,7 @@
   "tier": 3,
   "maps": [
     [
-      "Aram",
-      false
-    ],
-    [
-      "Tft",
+      "SummonersRift",
       false
     ],
     [
@@ -23,26 +19,30 @@
       false
     ],
     [
+      "SummonersRift",
+      false
+    ],
+    [
       "NexusBlitz",
       false
     ],
     [
-      "SummonersRift",
+      "Aram",
       false
     ],
     [
-      "SummonersRift",
+      "Tft",
       false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AbilityHaste",
-      "value": 15
-    },
-    {
       "name": "Health",
       "value": 400
+    },
+    {
+      "name": "AbilityHaste",
+      "value": 15
     },
     {
       "name": "AdaptiveForce",

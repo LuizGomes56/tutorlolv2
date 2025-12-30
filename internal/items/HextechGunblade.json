@@ -7,7 +7,19 @@
   "tier": 3,
   "maps": [
     [
+      "SummonersRift",
+      false
+    ],
+    [
       "Aram",
+      false
+    ],
+    [
+      "Tft",
+      false
+    ],
+    [
+      "SummonersRift",
       false
     ],
     [
@@ -15,38 +27,26 @@
       true
     ],
     [
+      "SummonersRift",
+      false
+    ],
+    [
       "NexusBlitz",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "Tft",
       false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AttackDamage",
-      "value": 45
+      "name": "AbilityPower",
+      "value": 90
     },
     {
       "name": "Omnivamp",
       "value": 15
     },
     {
-      "name": "AbilityPower",
-      "value": 90
+      "name": "AttackDamage",
+      "value": 45
     }
   ],
   "damage_type": "Unknown",

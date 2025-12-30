@@ -11,11 +11,15 @@
       false
     ],
     [
-      "SummonersRift",
-      false
+      "NexusBlitz",
+      true
     ],
     [
-      "NexusBlitz",
+      "SummonersRift",
+      true
+    ],
+    [
+      "SummonersRift",
       true
     ],
     [
@@ -23,30 +27,26 @@
       false
     ],
     [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
       "Aram",
       true
+    ],
+    [
+      "SummonersRift",
+      false
     ]
   ],
   "prettified_stats": [
     {
       "name": "Health",
-      "value": 300
+      "value": 350
     },
     {
       "name": "Armor",
-      "value": 40
+      "value": 55
     },
     {
       "name": "MoveSpeed",
-      "value": 7
+      "value": 4
     }
   ],
   "damage_type": "Unknown",

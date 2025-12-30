@@ -44,15 +44,16 @@ pub async fn generate_runes() -> GeneratorFn {
 
                 let mut constfn_declaration = String::new();
 
-                let mut get_closure = |expr: String, tag| {
-                    let closure = expr.as_closure().add_f32s();
+                let mut get_closure = |closure: String, tag| {
                     let arg = closure.ctx_param();
                     let body = closure.to_lowercase();
+                    let closure = format!("|{arg}| {body}");
                     let fn_name = format!("{name_ssnake}_{tag}").to_lowercase();
                     constfn_declaration.push_str(&format!(
-                        "{EVAL_FEAT} pub const fn {fn_name}(ctx: &EvalContext) -> f32 {{ {body} }}"
+                        "{EVAL_FEAT} pub const fn {fn_name}(ctx: &EvalContext) -> f32 {{ {expr} }}",
+                        expr = body.clean().cast_f32()
                     ));
-                    format!("|{arg}| {body}")
+                    closure
                 };
 
                 let melee_closure = get_closure(ranged, "ranged");
@@ -74,7 +75,6 @@ pub async fn generate_runes() -> GeneratorFn {
                     ranged_damage: {ranged_closure} }};"
                 )
                 .rust_fmt()
-                .drop_f32s()
                 .rust_html()
                 .as_const();
 
@@ -160,11 +160,7 @@ pub async fn generate_runes() -> GeneratorFn {
                 }};"
             );
 
-            let html_declaration = base_declaration
-                .rust_fmt()
-                .drop_f32s()
-                .rust_html()
-                .as_const();
+            let html_declaration = base_declaration.rust_fmt().rust_html().as_const();
 
             let base_declaration = format!("{EVAL_FEAT}{base_declaration}");
 

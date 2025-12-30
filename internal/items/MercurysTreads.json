@@ -8,18 +8,6 @@
   "maps": [
     [
       "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "NexusBlitz",
       true
     ],
     [
@@ -33,11 +21,23 @@
     [
       "Arena",
       false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "NexusBlitz",
+      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "MoveSpeed",
+      "name": "MagicResist",
       "value": 30
     },
     {
@@ -45,7 +45,7 @@
       "value": 30
     },
     {
-      "name": "MagicResist",
+      "name": "MoveSpeed",
       "value": 30
     }
   ],

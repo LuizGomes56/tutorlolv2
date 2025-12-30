@@ -1,6 +1,5 @@
 use serde::{Deserialize, Serialize};
-use tutorlolv2_gen::{Attrs, DamageType, GameMap, ItemId};
-use tutorlolv2_types::StatName;
+use tutorlolv2_gen::{Attrs, DamageType, GameMap, ItemId, StatName};
 
 #[derive(Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]

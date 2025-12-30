@@ -71,19 +71,35 @@
   "abilities": [
     [
       {
-        "type": "E",
-        "name": "_1"
+        "type": "W",
+        "name": "_4"
       },
       {
-        "name": "Two-Shiv Poison",
+        "name": "Jack in the Box",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "105 + (1.2 * ctx.bonus_ad) + (0.9 * ctx.ap)",
-          "142.5 + (1.2 * ctx.bonus_ad) + (0.9 * ctx.ap)",
-          "180 + (1.2 * ctx.bonus_ad) + (0.9 * ctx.ap)",
-          "217.5 + (1.2 * ctx.bonus_ad) + (0.9 * ctx.ap)",
-          "255 + (1.2 * ctx.bonus_ad) + (0.9 * ctx.ap)"
+          "10 + (0.12 * ctx.ap)",
+          "15 + (0.12 * ctx.ap)",
+          "20 + (0.12 * ctx.ap)",
+          "25 + (0.12 * ctx.ap)",
+          "30 + (0.12 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_3"
+      },
+      {
+        "name": "Hallucinate",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "150 + (0.7 * ctx.ap)",
+          "225 + (0.7 * ctx.ap)",
+          "300 + (0.7 * ctx.ap)"
         ]
       }
     ],
@@ -107,24 +123,6 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_3"
-      },
-      {
-        "name": "Jack in the Box",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "45 + (0.18 * ctx.ap)",
-          "75 + (0.18 * ctx.ap)",
-          "105 + (0.18 * ctx.ap)",
-          "135 + (0.18 * ctx.ap)",
-          "165 + (0.18 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "R",
         "name": "_2"
       },
@@ -142,70 +140,18 @@
     [
       {
         "type": "W",
-        "name": "_2"
+        "name": "_3"
       },
       {
         "name": "Jack in the Box",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "25 + (0.18 * ctx.ap)",
-          "40 + (0.18 * ctx.ap)",
-          "55 + (0.18 * ctx.ap)",
-          "70 + (0.18 * ctx.ap)",
-          "85 + (0.18 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_4"
-      },
-      {
-        "name": "Jack in the Box",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "10 + (0.12 * ctx.ap)",
-          "15 + (0.12 * ctx.ap)",
-          "20 + (0.12 * ctx.ap)",
-          "25 + (0.12 * ctx.ap)",
-          "30 + (0.12 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_5"
-      },
-      {
-        "name": "Jack in the Box",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "30 + (0.12 * ctx.ap)",
-          "50 + (0.12 * ctx.ap)",
-          "70 + (0.12 * ctx.ap)",
-          "90 + (0.12 * ctx.ap)",
-          "110 + (0.12 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_1"
-      },
-      {
-        "name": "Hallucinate",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "25 + (0.15 * ctx.ap)",
-          "50 + (0.15 * ctx.ap)",
-          "75 + (0.15 * ctx.ap)"
+          "45 + (0.18 * ctx.ap)",
+          "75 + (0.18 * ctx.ap)",
+          "105 + (0.18 * ctx.ap)",
+          "135 + (0.18 * ctx.ap)",
+          "165 + (0.18 * ctx.ap)"
         ]
       }
     ],
@@ -229,22 +175,6 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_3"
-      },
-      {
-        "name": "Hallucinate",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "150 + (0.7 * ctx.ap)",
-          "225 + (0.7 * ctx.ap)",
-          "300 + (0.7 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "E",
         "name": "_2"
       },
@@ -258,6 +188,76 @@
           "120 + (0.8 * ctx.bonus_ad) + (0.6 * ctx.ap)",
           "145 + (0.8 * ctx.bonus_ad) + (0.6 * ctx.ap)",
           "170 + (0.8 * ctx.bonus_ad) + (0.6 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_2"
+      },
+      {
+        "name": "Jack in the Box",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "25 + (0.18 * ctx.ap)",
+          "40 + (0.18 * ctx.ap)",
+          "55 + (0.18 * ctx.ap)",
+          "70 + (0.18 * ctx.ap)",
+          "85 + (0.18 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Hallucinate",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "25 + (0.15 * ctx.ap)",
+          "50 + (0.15 * ctx.ap)",
+          "75 + (0.15 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_5"
+      },
+      {
+        "name": "Jack in the Box",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "30 + (0.12 * ctx.ap)",
+          "50 + (0.12 * ctx.ap)",
+          "70 + (0.12 * ctx.ap)",
+          "90 + (0.12 * ctx.ap)",
+          "110 + (0.12 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Two-Shiv Poison",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "105 + (1.2 * ctx.bonus_ad) + (0.9 * ctx.ap)",
+          "142.5 + (1.2 * ctx.bonus_ad) + (0.9 * ctx.ap)",
+          "180 + (1.2 * ctx.bonus_ad) + (0.9 * ctx.ap)",
+          "217.5 + (1.2 * ctx.bonus_ad) + (0.9 * ctx.ap)",
+          "255 + (1.2 * ctx.bonus_ad) + (0.9 * ctx.ap)"
         ]
       }
     ]

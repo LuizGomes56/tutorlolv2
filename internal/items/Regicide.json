@@ -7,11 +7,15 @@
   "tier": 3,
   "maps": [
     [
+      "SummonersRift",
+      false
+    ],
+    [
       "Aram",
       false
     ],
     [
-      "SummonersRift",
+      "Tft",
       false
     ],
     [
@@ -29,24 +33,20 @@
     [
       "SummonersRift",
       false
-    ],
-    [
-      "Tft",
-      false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Lethality",
-      "value": 15
+      "name": "MoveSpeed",
+      "value": 8
     },
     {
       "name": "AttackDamage",
       "value": 60
     },
     {
-      "name": "MoveSpeed",
-      "value": 8
+      "name": "Lethality",
+      "value": 15
     }
   ],
   "damage_type": "Unknown",

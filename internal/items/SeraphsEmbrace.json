@@ -7,10 +7,6 @@
   "tier": 4,
   "maps": [
     [
-      "SummonersRift",
-      true
-    ],
-    [
       "Aram",
       true
     ],
@@ -19,12 +15,12 @@
       false
     ],
     [
-      "Arena",
-      false
-    ],
-    [
       "SummonersRift",
       true
+    ],
+    [
+      "Arena",
+      false
     ],
     [
       "NexusBlitz",
@@ -33,16 +29,20 @@
     [
       "SummonersRift",
       false
+    ],
+    [
+      "SummonersRift",
+      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Mana",
-      "value": 1000
-    },
-    {
       "name": "AbilityPower",
       "value": 70
+    },
+    {
+      "name": "Mana",
+      "value": 1000
     },
     {
       "name": "AbilityHaste",

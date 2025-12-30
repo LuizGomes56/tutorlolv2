@@ -71,6 +71,22 @@
   "abilities": [
     [
       {
+        "type": "R",
+        "name": "_2"
+      },
+      {
+        "name": "Subjugate",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "(0.1 * ctx.enemy_max_health) + (0.01 * 0.01 * ctx.ap)",
+          "(0.125 * ctx.enemy_max_health) + (0.01 * 0.01 * ctx.ap)",
+          "(0.15 * ctx.enemy_max_health) + (0.01 * 0.01 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "Q",
         "name": "_2"
       },
@@ -89,49 +105,19 @@
     ],
     [
       {
-        "type": "R",
+        "type": "Q",
         "name": "_1"
       },
       {
-        "name": "Subjugate",
-        "damage_type": "Magic",
+        "name": "Chomp",
+        "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "(0.2 * ctx.enemy_max_health) + (0.02 * 0.01 * ctx.ap)",
-          "(0.25 * ctx.enemy_max_health) + (0.02 * 0.01 * ctx.ap)",
-          "(0.3 * ctx.enemy_max_health) + (0.02 * 0.01 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_2"
-      },
-      {
-        "name": "Subjugate",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "(0.1 * ctx.enemy_max_health) + (0.01 * 0.01 * ctx.ap)",
-          "(0.125 * ctx.enemy_max_health) + (0.01 * 0.01 * ctx.ap)",
-          "(0.15 * ctx.enemy_max_health) + (0.01 * 0.01 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_3"
-      },
-      {
-        "name": "Subjugate",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "(0.025 * ctx.enemy_max_health) + (0.0025 * 0.01 * ctx.ap)",
-          "(0.03125 * ctx.enemy_max_health) + (0.0025 * 0.01 * ctx.ap)",
-          "(0.0375 * ctx.enemy_max_health) + (0.0025 * 0.01 * ctx.ap)"
+          "10 + (0.15 * ctx.ad)",
+          "30 + (0.25 * ctx.ad)",
+          "50 + (0.35 * ctx.ad)",
+          "70 + (0.45 * ctx.ad)",
+          "90 + (0.55 * ctx.ad)"
         ]
       }
     ],
@@ -155,19 +141,33 @@
     ],
     [
       {
-        "type": "Q",
+        "type": "R",
         "name": "_1"
       },
       {
-        "name": "Chomp",
-        "damage_type": "Physical",
+        "name": "Subjugate",
+        "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "10 + (0.15 * ctx.ad)",
-          "30 + (0.25 * ctx.ad)",
-          "50 + (0.35 * ctx.ad)",
-          "70 + (0.45 * ctx.ad)",
-          "90 + (0.55 * ctx.ad)"
+          "(0.2 * ctx.enemy_max_health) + (0.02 * 0.01 * ctx.ap)",
+          "(0.25 * ctx.enemy_max_health) + (0.02 * 0.01 * ctx.ap)",
+          "(0.3 * ctx.enemy_max_health) + (0.02 * 0.01 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_3"
+      },
+      {
+        "name": "Subjugate",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "(0.025 * ctx.enemy_max_health) + (0.0025 * 0.01 * ctx.ap)",
+          "(0.03125 * ctx.enemy_max_health) + (0.0025 * 0.01 * ctx.ap)",
+          "(0.0375 * ctx.enemy_max_health) + (0.0025 * 0.01 * ctx.ap)"
         ]
       }
     ]

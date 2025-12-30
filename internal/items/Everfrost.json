@@ -7,11 +7,23 @@
   "tier": 3,
   "maps": [
     [
+      "Arena",
+      true
+    ],
+    [
+      "Tft",
+      false
+    ],
+    [
       "SummonersRift",
       false
     ],
     [
-      "Tft",
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
       false
     ],
     [
@@ -21,18 +33,6 @@
     [
       "NexusBlitz",
       false
-    ],
-    [
-      "Arena",
-      true
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
     ]
   ],
   "prettified_stats": [
@@ -41,16 +41,16 @@
       "value": 600
     },
     {
-      "name": "Health",
-      "value": 250
+      "name": "AbilityHaste",
+      "value": 25
     },
     {
       "name": "AbilityPower",
       "value": 100
     },
     {
-      "name": "AbilityHaste",
-      "value": 25
+      "name": "Health",
+      "value": 250
     }
   ],
   "damage_type": "Unknown",

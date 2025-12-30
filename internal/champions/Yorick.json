@@ -71,6 +71,24 @@
     [
       {
         "type": "E",
+        "name": "_3"
+      },
+      {
+        "name": "Mourning Mist",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "70 + ctx.ap",
+          "105 + ctx.ap",
+          "140 + ctx.ap",
+          "175 + ctx.ap",
+          "210 + ctx.ap"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
         "name": "_1"
       },
       {
@@ -119,24 +137,6 @@
           "70 + (0.5 * ctx.ad)",
           "90 + (0.5 * ctx.ad)",
           "110 + (0.5 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_3"
-      },
-      {
-        "name": "Mourning Mist",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "70 + ctx.ap",
-          "105 + ctx.ap",
-          "140 + ctx.ap",
-          "175 + ctx.ap",
-          "210 + ctx.ap"
         ]
       }
     ]

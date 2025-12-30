@@ -90,6 +90,78 @@
     ],
     [
       {
+        "type": "E",
+        "name": "_3"
+      },
+      {
+        "name": "Toxic Shot",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "24 + (0.4 * ctx.ap)",
+          "48 + (0.4 * ctx.ap)",
+          "72 + (0.4 * ctx.ap)",
+          "96 + (0.4 * ctx.ap)",
+          "120 + (0.4 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_4"
+      },
+      {
+        "name": "Toxic Shot",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "13.05 + (0.435 * ctx.ap)",
+          "33.35 + (0.435 * ctx.ap)",
+          "53.65 + (0.435 * ctx.ap)",
+          "73.95 + (0.435 * ctx.ap)",
+          "94.25 + (0.435 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_5"
+      },
+      {
+        "name": "Toxic Shot",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "8.7 + (0.145 * ctx.ap)",
+          "17.4 + (0.145 * ctx.ap)",
+          "26.1 + (0.145 * ctx.ap)",
+          "34.8 + (0.145 * ctx.ap)",
+          "43.5 + (0.145 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_6"
+      },
+      {
+        "name": "Toxic Shot",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "34.8 + (0.58 * ctx.ap)",
+          "69.6 + (0.58 * ctx.ap)",
+          "104.4 + (0.58 * ctx.ap)",
+          "139.2 + (0.58 * ctx.ap)",
+          "174 + (0.58 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "R",
         "name": "_1"
       },
@@ -137,78 +209,6 @@
           "18 + (0.1 * ctx.ap)",
           "24 + (0.1 * ctx.ap)",
           "30 + (0.1 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_5"
-      },
-      {
-        "name": "Toxic Shot",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "8.7 + (0.145 * ctx.ap)",
-          "17.4 + (0.145 * ctx.ap)",
-          "26.1 + (0.145 * ctx.ap)",
-          "34.8 + (0.145 * ctx.ap)",
-          "43.5 + (0.145 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_3"
-      },
-      {
-        "name": "Toxic Shot",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "24 + (0.4 * ctx.ap)",
-          "48 + (0.4 * ctx.ap)",
-          "72 + (0.4 * ctx.ap)",
-          "96 + (0.4 * ctx.ap)",
-          "120 + (0.4 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_6"
-      },
-      {
-        "name": "Toxic Shot",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "34.8 + (0.58 * ctx.ap)",
-          "69.6 + (0.58 * ctx.ap)",
-          "104.4 + (0.58 * ctx.ap)",
-          "139.2 + (0.58 * ctx.ap)",
-          "174 + (0.58 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_4"
-      },
-      {
-        "name": "Toxic Shot",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "13.05 + (0.435 * ctx.ap)",
-          "33.35 + (0.435 * ctx.ap)",
-          "53.65 + (0.435 * ctx.ap)",
-          "73.95 + (0.435 * ctx.ap)",
-          "94.25 + (0.435 * ctx.ap)"
         ]
       }
     ],

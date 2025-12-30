@@ -70,19 +70,33 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "type": "R",
+        "name": "_2"
       },
       {
-        "name": "Noxian Diplomacy",
+        "name": "Shadow Assault",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "97.5 + (1.5 * ctx.bonus_ad)",
-          "127.5 + (1.5 * ctx.bonus_ad)",
-          "157.5 + (1.5 * ctx.bonus_ad)",
-          "187.5 + (1.5 * ctx.bonus_ad)",
-          "217.5 + (1.5 * ctx.bonus_ad)"
+          "180 + (2 * ctx.bonus_ad)",
+          "270 + (2 * ctx.bonus_ad)",
+          "360 + (2 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Shadow Assault",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "90 + ctx.bonus_ad",
+          "135 + ctx.bonus_ad",
+          "180 + ctx.bonus_ad"
         ]
       }
     ],
@@ -106,38 +120,6 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
-      },
-      {
-        "name": "Shadow Assault",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "90 + ctx.bonus_ad",
-          "135 + ctx.bonus_ad",
-          "180 + ctx.bonus_ad"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_2"
-      },
-      {
-        "name": "Shadow Assault",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "180 + (2 * ctx.bonus_ad)",
-          "270 + (2 * ctx.bonus_ad)",
-          "360 + (2 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "W",
         "name": "_1"
       },
@@ -151,6 +133,24 @@
           "70 + (0.4 * ctx.bonus_ad)",
           "80 + (0.4 * ctx.bonus_ad)",
           "90 + (0.4 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Noxian Diplomacy",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "97.5 + (1.5 * ctx.bonus_ad)",
+          "127.5 + (1.5 * ctx.bonus_ad)",
+          "157.5 + (1.5 * ctx.bonus_ad)",
+          "187.5 + (1.5 * ctx.bonus_ad)",
+          "217.5 + (1.5 * ctx.bonus_ad)"
         ]
       }
     ],

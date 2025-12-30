@@ -71,24 +71,6 @@
     [
       {
         "type": "Q",
-        "name": "_2"
-      },
-      {
-        "name": "Vault Breaker",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "40 + (0.6 * ctx.bonus_ad)",
-          "60 + (0.6 * ctx.bonus_ad)",
-          "80 + (0.6 * ctx.bonus_ad)",
-          "100 + (0.6 * ctx.bonus_ad)",
-          "120 + (0.6 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
         "name": "_1"
       },
       {
@@ -124,6 +106,40 @@
     ],
     [
       {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Cease and Desist",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "150 + (0.9 * ctx.bonus_ad)",
+          "250 + (0.9 * ctx.bonus_ad)",
+          "350 + (0.9 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "Vault Breaker",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "40 + (0.6 * ctx.bonus_ad)",
+          "60 + (0.6 * ctx.bonus_ad)",
+          "80 + (0.6 * ctx.bonus_ad)",
+          "100 + (0.6 * ctx.bonus_ad)",
+          "120 + (0.6 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "W",
         "name": "_1"
       },
@@ -137,22 +153,6 @@
           "(0.06 * ctx.enemy_max_health) + (0.035 * 0.01 * ctx.bonus_ad)",
           "(0.07 * ctx.enemy_max_health) + (0.035 * 0.01 * ctx.bonus_ad)",
           "(0.08 * ctx.enemy_max_health) + (0.035 * 0.01 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_1"
-      },
-      {
-        "name": "Cease and Desist",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "150 + (0.9 * ctx.bonus_ad)",
-          "250 + (0.9 * ctx.bonus_ad)",
-          "350 + (0.9 * ctx.bonus_ad)"
         ]
       }
     ]

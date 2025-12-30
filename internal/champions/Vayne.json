@@ -89,19 +89,19 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_3"
+        "type": "W",
+        "name": "_1"
       },
       {
-        "name": "Condemn",
-        "damage_type": "Physical",
+        "name": "Silver Bolts",
+        "damage_type": "True",
         "attributes": "Undefined",
         "damage": [
-          "125 + (1.25 * ctx.bonus_ad)",
-          "212.5 + (1.25 * ctx.bonus_ad)",
-          "300 + (1.25 * ctx.bonus_ad)",
-          "387.5 + (1.25 * ctx.bonus_ad)",
-          "475 + (1.25 * ctx.bonus_ad)"
+          "(0.06 * ctx.enemy_max_health)",
+          "(0.07 * ctx.enemy_max_health)",
+          "(0.08 * ctx.enemy_max_health)",
+          "(0.09 * ctx.enemy_max_health)",
+          "(0.1 * ctx.enemy_max_health)"
         ]
       }
     ],
@@ -118,24 +118,6 @@
           "35",
           "50",
           "65"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_1"
-      },
-      {
-        "name": "Condemn",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "50 + (0.5 * ctx.bonus_ad)",
-          "85 + (0.5 * ctx.bonus_ad)",
-          "120 + (0.5 * ctx.bonus_ad)",
-          "155 + (0.5 * ctx.bonus_ad)",
-          "190 + (0.5 * ctx.bonus_ad)"
         ]
       }
     ],
@@ -177,19 +159,37 @@
     ],
     [
       {
-        "type": "W",
+        "type": "E",
+        "name": "_3"
+      },
+      {
+        "name": "Condemn",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "125 + (1.25 * ctx.bonus_ad)",
+          "212.5 + (1.25 * ctx.bonus_ad)",
+          "300 + (1.25 * ctx.bonus_ad)",
+          "387.5 + (1.25 * ctx.bonus_ad)",
+          "475 + (1.25 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
         "name": "_1"
       },
       {
-        "name": "Silver Bolts",
-        "damage_type": "True",
+        "name": "Condemn",
+        "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "(0.06 * ctx.enemy_max_health)",
-          "(0.07 * ctx.enemy_max_health)",
-          "(0.08 * ctx.enemy_max_health)",
-          "(0.09 * ctx.enemy_max_health)",
-          "(0.1 * ctx.enemy_max_health)"
+          "50 + (0.5 * ctx.bonus_ad)",
+          "85 + (0.5 * ctx.bonus_ad)",
+          "120 + (0.5 * ctx.bonus_ad)",
+          "155 + (0.5 * ctx.bonus_ad)",
+          "190 + (0.5 * ctx.bonus_ad)"
         ]
       }
     ]

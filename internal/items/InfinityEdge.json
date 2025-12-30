@@ -7,15 +7,7 @@
   "tier": 2,
   "maps": [
     [
-      "Arena",
-      false
-    ],
-    [
-      "Aram",
-      true
-    ],
-    [
-      "NexusBlitz",
+      "SummonersRift",
       true
     ],
     [
@@ -27,12 +19,20 @@
       false
     ],
     [
-      "SummonersRift",
+      "Aram",
+      true
+    ],
+    [
+      "NexusBlitz",
+      true
+    ],
+    [
+      "Arena",
       false
     ],
     [
       "SummonersRift",
-      true
+      false
     ]
   ],
   "prettified_stats": [
@@ -41,12 +41,12 @@
       "value": 25
     },
     {
-      "name": "CriticalStrikeDamage",
-      "value": 40
+      "name": "AttackDamage",
+      "value": 55
     },
     {
-      "name": "AttackDamage",
-      "value": 65
+      "name": "CriticalStrikeDamage",
+      "value": 40
     }
   ],
   "damage_type": "Unknown",

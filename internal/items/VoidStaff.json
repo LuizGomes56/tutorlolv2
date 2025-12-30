@@ -7,23 +7,15 @@
   "tier": 3,
   "maps": [
     [
+      "NexusBlitz",
+      true
+    ],
+    [
       "Arena",
       false
     ],
     [
       "SummonersRift",
-      true
-    ],
-    [
-      "NexusBlitz",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Aram",
       true
     ],
     [
@@ -33,16 +25,24 @@
     [
       "SummonersRift",
       false
+    ],
+    [
+      "Aram",
+      true
+    ],
+    [
+      "SummonersRift",
+      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "MagicPenetration",
-      "value": 40
+      "name": "AbilityPower",
+      "value": 95
     },
     {
-      "name": "AbilityPower",
-      "value": 65
+      "name": "MagicPenetration",
+      "value": 40
     }
   ],
   "damage_type": "Unknown",
