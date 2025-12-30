@@ -89,24 +89,6 @@
     [
       {
         "type": "Q",
-        "name": "_2"
-      },
-      {
-        "name": "Poison Trail",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "40 + (0.85 * ctx.ap)",
-          "60 + (0.85 * ctx.ap)",
-          "80 + (0.85 * ctx.ap)",
-          "100 + (0.85 * ctx.ap)",
-          "120 + (0.85 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
         "name": "_1"
       },
       {
@@ -119,6 +101,24 @@
           "10 + (0.10625 * ctx.ap)",
           "12.5 + (0.10625 * ctx.ap)",
           "15 + (0.10625 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "Poison Trail",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "40 + (0.85 * ctx.ap)",
+          "60 + (0.85 * ctx.ap)",
+          "80 + (0.85 * ctx.ap)",
+          "100 + (0.85 * ctx.ap)",
+          "120 + (0.85 * ctx.ap)"
         ]
       }
     ]

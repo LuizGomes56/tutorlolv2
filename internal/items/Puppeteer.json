@@ -7,6 +7,14 @@
   "tier": 3,
   "maps": [
     [
+      "Tft",
+      false
+    ],
+    [
+      "Arena",
+      true
+    ],
+    [
       "SummonersRift",
       false
     ],
@@ -15,42 +23,34 @@
       false
     ],
     [
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
       "NexusBlitz",
       false
-    ],
-    [
-      "Tft",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "Arena",
-      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AttackSpeed",
-      "value": 30
+      "name": "AbilityHaste",
+      "value": 40
     },
     {
-      "name": "HealAndShieldPower",
-      "value": 15
+      "name": "AttackSpeed",
+      "value": 30
     },
     {
       "name": "BaseManaRegen",
       "value": 150
     },
     {
-      "name": "AbilityHaste",
-      "value": 40
+      "name": "HealAndShieldPower",
+      "value": 15
     }
   ],
   "damage_type": "Unknown",

@@ -8,15 +8,23 @@
   "maps": [
     [
       "SummonersRift",
-      true
+      false
     ],
     [
-      "Aram",
+      "SummonersRift",
       true
     ],
     [
       "Tft",
       false
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
+      "Aram",
+      true
     ],
     [
       "NexusBlitz",
@@ -25,24 +33,16 @@
     [
       "SummonersRift",
       true
-    ],
-    [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AttackDamage",
-      "value": 55
-    },
-    {
       "name": "Lethality",
       "value": 15
+    },
+    {
+      "name": "AttackDamage",
+      "value": 55
     }
   ],
   "damage_type": "Unknown",

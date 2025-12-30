@@ -7,6 +7,18 @@
   "tier": 3,
   "maps": [
     [
+      "NexusBlitz",
+      true
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
       "Tft",
       false
     ],
@@ -15,38 +27,26 @@
       true
     ],
     [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "Arena",
-      false
-    ],
-    [
       "Aram",
       true
     ],
     [
-      "NexusBlitz",
-      true
+      "Arena",
+      false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AttackDamage",
-      "value": 35
+      "name": "ArmorPenetration",
+      "value": 30
     },
     {
       "name": "CriticalStrikeChance",
       "value": 25
     },
     {
-      "name": "ArmorPenetration",
-      "value": 35
+      "name": "AttackDamage",
+      "value": 30
     }
   ],
   "damage_type": "Unknown",
@@ -116,7 +116,7 @@
   "builds_from_item_ids": [
     "ExecutionersCalling",
     "LastWhisper",
-    "CloakofAgility"
+    "CloakOfAgility"
   ],
   "builds_into_riot_ids": [],
   "builds_into_item_ids": [],

@@ -7,16 +7,12 @@
   "tier": 2,
   "maps": [
     [
-      "SummonersRift",
-      true
-    ],
-    [
       "Arena",
       false
     ],
     [
-      "Aram",
-      true
+      "SummonersRift",
+      false
     ],
     [
       "NexusBlitz",
@@ -32,7 +28,11 @@
     ],
     [
       "SummonersRift",
-      false
+      true
+    ],
+    [
+      "Aram",
+      true
     ]
   ],
   "prettified_stats": [
@@ -118,7 +118,7 @@
     3156
   ],
   "builds_into_item_ids": [
-    "MawofMalmortius"
+    "MawOfMalmortius"
   ],
   "ranged": {
     "minimum_damage": "zero",

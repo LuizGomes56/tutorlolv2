@@ -1,18 +1,30 @@
 {
   "riot_id": 3153,
-  "item_id": "BladeoftheRuinedKing",
+  "item_id": "BladeOfTheRuinedKing",
   "name": "Blade of the Ruined King",
   "price": 3200,
   "sell": 2240,
   "tier": 3,
   "maps": [
     [
-      "SummonersRift",
+      "Tft",
       false
     ],
     [
       "SummonersRift",
       true
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
+      "Aram",
+      true
+    ],
+    [
+      "SummonersRift",
+      false
     ],
     [
       "NexusBlitz",
@@ -21,35 +33,23 @@
     [
       "SummonersRift",
       true
-    ],
-    [
-      "Aram",
-      true
-    ],
-    [
-      "Arena",
-      false
-    ],
-    [
-      "Tft",
-      false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "LifeSteal",
-      "value": 10
-    },
-    {
       "name": "AttackDamage",
       "value": 40
+    },
+    {
+      "name": "LifeSteal",
+      "value": 10
     },
     {
       "name": "AttackSpeed",
       "value": 25
     }
   ],
-  "damage_type": "Unknown",
+  "damage_type": "Physical",
   "stats": {
     "abilityPower": {
       "flat": 0.0,

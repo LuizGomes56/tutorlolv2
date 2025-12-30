@@ -87,24 +87,6 @@
     [
       {
         "type": "Q",
-        "name": "_3"
-      },
-      {
-        "name": "Undertow",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "70 + ctx.bonus_ad",
-          "135 + ctx.bonus_ad",
-          "200 + ctx.bonus_ad",
-          "265 + ctx.bonus_ad",
-          "330 + ctx.bonus_ad"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
         "name": "_2"
       },
       {
@@ -117,24 +99,6 @@
           "40",
           "55",
           "70"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Undertow",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "60 + ctx.bonus_ad",
-          "110 + ctx.bonus_ad",
-          "160 + ctx.bonus_ad",
-          "210 + ctx.bonus_ad",
-          "260 + ctx.bonus_ad"
         ]
       }
     ],
@@ -153,6 +117,42 @@
           "160 + (0.5 * ctx.ad)",
           "205 + (0.5 * ctx.ad)",
           "250 + (0.5 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_3"
+      },
+      {
+        "name": "Undertow",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "70 + ctx.bonus_ad",
+          "135 + ctx.bonus_ad",
+          "200 + ctx.bonus_ad",
+          "265 + ctx.bonus_ad",
+          "330 + ctx.bonus_ad"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Undertow",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "60 + ctx.bonus_ad",
+          "110 + ctx.bonus_ad",
+          "160 + ctx.bonus_ad",
+          "210 + ctx.bonus_ad",
+          "260 + ctx.bonus_ad"
         ]
       }
     ]

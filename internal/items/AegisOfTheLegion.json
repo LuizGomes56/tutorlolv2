@@ -1,14 +1,22 @@
 {
   "riot_id": 3105,
-  "item_id": "AegisoftheLegion",
+  "item_id": "AegisOfTheLegion",
   "name": "Aegis of the Legion",
   "price": 1100,
   "sell": 770,
   "tier": 2,
   "maps": [
     [
+      "SummonersRift",
+      true
+    ],
+    [
       "Arena",
       false
+    ],
+    [
+      "Aram",
+      true
     ],
     [
       "SummonersRift",
@@ -24,28 +32,20 @@
     ],
     [
       "SummonersRift",
-      true
-    ],
-    [
-      "Aram",
-      true
-    ],
-    [
-      "SummonersRift",
       false
     ]
   ],
   "prettified_stats": [
-    {
-      "name": "Armor",
-      "value": 25
-    },
     {
       "name": "AbilityHaste",
       "value": 10
     },
     {
       "name": "MagicResist",
+      "value": 25
+    },
+    {
+      "name": "Armor",
       "value": 25
     }
   ],

@@ -15,6 +15,14 @@
       false
     ],
     [
+      "NexusBlitz",
+      false
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
       "Tft",
       false
     ],
@@ -23,15 +31,7 @@
       false
     ],
     [
-      "NexusBlitz",
-      false
-    ],
-    [
       "SummonersRift",
-      false
-    ],
-    [
-      "Arena",
       false
     ]
   ],
@@ -104,7 +104,7 @@
     3009
   ],
   "builds_from_item_ids": [
-    "BootsofSwiftness"
+    "BootsOfSwiftness"
   ],
   "builds_into_riot_ids": [],
   "builds_into_item_ids": [],

@@ -7,18 +7,6 @@
   "tier": 2,
   "maps": [
     [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
       "SummonersRift",
       true
     ],
@@ -27,18 +15,30 @@
       true
     ],
     [
-      "Tft",
+      "SummonersRift",
       false
+    ],
+    [
+      "SummonersRift",
+      true
     ],
     [
       "NexusBlitz",
       true
+    ],
+    [
+      "Tft",
+      false
+    ],
+    [
+      "Arena",
+      false
     ]
   ],
   "prettified_stats": [
     {
       "name": "MoveSpeed",
-      "value": 45
+      "value": 30
     },
     {
       "name": "Armor",

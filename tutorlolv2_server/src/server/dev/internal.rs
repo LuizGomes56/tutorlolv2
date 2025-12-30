@@ -7,7 +7,7 @@ use tutorlolv2_dev::{
 
 #[get("/create_generator_files")]
 pub async fn internal_create_generator_files() -> impl Responder {
-    dev_response!(ChampionFactory::run_all())
+    dev_response!(ChampionFactory::run_all().await)
 }
 
 #[get("/prettify_item_stats")]

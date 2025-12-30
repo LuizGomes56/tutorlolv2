@@ -7,12 +7,24 @@
   "tier": 2,
   "maps": [
     [
+      "Arena",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
       "NexusBlitz",
       true
     ],
     [
-      "Arena",
-      false
+      "Aram",
+      true
+    ],
+    [
+      "SummonersRift",
+      true
     ],
     [
       "Tft",
@@ -20,18 +32,6 @@
     ],
     [
       "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Aram",
       true
     ]
   ],
@@ -119,7 +119,7 @@
     "Terminus",
     "WitsEnd",
     "GuinsoosRageblade",
-    "BladeoftheRuinedKing",
+    "BladeOfTheRuinedKing",
     "KrakenSlayer"
   ],
   "ranged": {

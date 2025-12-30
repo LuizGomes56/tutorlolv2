@@ -70,60 +70,6 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_4"
-      },
-      {
-        "name": "Javelin Toss",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "70 + (0.5 * ctx.ap)",
-          "90",
-          "110",
-          "130",
-          "150"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_2"
-      },
-      {
-        "name": "Bushwhack",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "40 + (0.2 * ctx.ap)",
-          "80",
-          "120",
-          "160",
-          "200"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_3"
-      },
-      {
-        "name": "Javelin Toss",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "227.5 + (1.625 * ctx.ap)",
-          "292.5",
-          "357.5",
-          "422.5",
-          "487.5"
-        ]
-      }
-    ],
-    [
-      {
         "type": "E",
         "name": "_1"
       },
@@ -155,6 +101,60 @@
           "30",
           "40",
           "50"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_2"
+      },
+      {
+        "name": "Bushwhack",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "40 + (0.2 * ctx.ap)",
+          "80",
+          "120",
+          "160",
+          "200"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_4"
+      },
+      {
+        "name": "Javelin Toss",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "70 + (0.5 * ctx.ap)",
+          "90",
+          "110",
+          "130",
+          "150"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_3"
+      },
+      {
+        "name": "Javelin Toss",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "227.5 + (1.625 * ctx.ap)",
+          "292.5",
+          "357.5",
+          "422.5",
+          "487.5"
         ]
       }
     ]

@@ -1,26 +1,26 @@
 {
   "riot_id": 2151,
-  "item_id": "ElixirofAvarice",
+  "item_id": "ElixirOfAvarice",
   "name": "Elixir of Avarice",
   "price": 0,
   "sell": 20,
   "tier": 1,
   "maps": [
     [
+      "SummonersRift",
+      true
+    ],
+    [
       "NexusBlitz",
+      true
+    ],
+    [
+      "Aram",
       true
     ],
     [
       "Tft",
       false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
     ],
     [
       "Arena",
@@ -31,7 +31,7 @@
       false
     ],
     [
-      "Aram",
+      "SummonersRift",
       true
     ]
   ],

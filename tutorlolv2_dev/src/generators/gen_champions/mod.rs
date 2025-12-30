@@ -3,8 +3,7 @@ pub(self) use crate::{
     generators::{Generator, gen_decl::decl_champions::*, gen_utils::RegExtractor},
     model::champions::{Ability, Champion},
 };
-pub(self) use tutorlolv2_gen::{enums::*, eval::*};
-pub(self) use tutorlolv2_types::{AbilityId, AbilityName, ability_name::*};
+pub(self) use tutorlolv2_gen::{AbilityId, AbilityName, ability_name::*, enums::*, eval::*};
 
 macro_rules! dynarr {
     ($($field:expr),+) => {

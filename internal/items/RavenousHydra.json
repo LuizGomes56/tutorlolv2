@@ -7,32 +7,32 @@
   "tier": 3,
   "maps": [
     [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
+      "NexusBlitz",
       true
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "Tft",
+      false
     ],
     [
       "Aram",
       true
     ],
     [
-      "NexusBlitz",
-      true
+      "Arena",
+      false
     ],
     [
       "SummonersRift",
       true
     ],
     [
-      "Tft",
-      false
+      "SummonersRift",
+      true
     ]
   ],
   "prettified_stats": [
@@ -41,12 +41,12 @@
       "value": 65
     },
     {
-      "name": "AbilityHaste",
-      "value": 15
-    },
-    {
       "name": "LifeSteal",
       "value": 12
+    },
+    {
+      "name": "AbilityHaste",
+      "value": 15
     }
   ],
   "damage_type": "Unknown",

@@ -7,38 +7,38 @@
   "tier": 3,
   "maps": [
     [
+      "SummonersRift",
+      true
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
       "Aram",
       true
     ],
     [
-      "Tft",
+      "Arena",
       false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
     ],
     [
       "NexusBlitz",
       true
     ],
     [
-      "Arena",
+      "SummonersRift",
+      true
+    ],
+    [
+      "Tft",
       false
     ]
   ],
   "prettified_stats": [
     {
       "name": "Health",
-      "value": 350
+      "value": 300
     },
     {
       "name": "Armor",

@@ -7,7 +7,15 @@
   "tier": 2,
   "maps": [
     [
+      "Arena",
+      false
+    ],
+    [
       "SummonersRift",
+      false
+    ],
+    [
+      "Tft",
       false
     ],
     [
@@ -15,42 +23,34 @@
       false
     ],
     [
-      "SummonersRift",
+      "NexusBlitz",
       false
     ],
     [
-      "Arena",
+      "SummonersRift",
       false
     ],
     [
       "SummonersRift",
       true
-    ],
-    [
-      "NexusBlitz",
-      false
-    ],
-    [
-      "Tft",
-      false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Health",
-      "value": 100
-    },
-    {
-      "name": "GoldPer10Seconds",
-      "value": 5
+      "name": "BaseManaRegen",
+      "value": 50
     },
     {
       "name": "BaseHealthRegen",
       "value": 50
     },
     {
-      "name": "BaseManaRegen",
-      "value": 50
+      "name": "GoldPer10Seconds",
+      "value": 5
+    },
+    {
+      "name": "Health",
+      "value": 100
     }
   ],
   "damage_type": "Unknown",

@@ -11,8 +11,20 @@
       true
     ],
     [
+      "Aram",
+      true
+    ],
+    [
       "Arena",
       false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      true
     ],
     [
       "SummonersRift",
@@ -21,21 +33,13 @@
     [
       "Tft",
       false
-    ],
-    [
-      "Aram",
-      true
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
     ]
   ],
   "prettified_stats": [
+    {
+      "name": "LifeSteal",
+      "value": 10
+    },
     {
       "name": "AttackDamage",
       "value": 50
@@ -43,10 +47,6 @@
     {
       "name": "MagicResist",
       "value": 35
-    },
-    {
-      "name": "LifeSteal",
-      "value": 10
     }
   ],
   "damage_type": "Unknown",

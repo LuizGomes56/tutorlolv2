@@ -11,11 +11,7 @@
       false
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
+      "Aram",
       true
     ],
     [
@@ -23,26 +19,30 @@
       false
     ],
     [
-      "NexusBlitz",
-      true
-    ],
-    [
-      "Aram",
+      "SummonersRift",
       true
     ],
     [
       "SummonersRift",
       true
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "NexusBlitz",
+      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "MoveSpeed",
-      "value": 4
-    },
-    {
       "name": "AttackDamage",
       "value": 45
+    },
+    {
+      "name": "MoveSpeed",
+      "value": 4
     },
     {
       "name": "AttackSpeed",

@@ -1,13 +1,25 @@
 {
   "riot_id": 3190,
-  "item_id": "LocketoftheIronSolari",
+  "item_id": "LocketOfTheIronSolari",
   "name": "Locket of the Iron Solari",
   "price": 2200,
   "sell": 1540,
   "tier": 3,
   "maps": [
     [
+      "NexusBlitz",
+      true
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
       "Arena",
+      false
+    ],
+    [
+      "SummonersRift",
       false
     ],
     [
@@ -19,19 +31,7 @@
       false
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
       "Aram",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "NexusBlitz",
       true
     ]
   ],
@@ -41,16 +41,16 @@
       "value": 200
     },
     {
+      "name": "Armor",
+      "value": 25
+    },
+    {
       "name": "MagicResist",
       "value": 25
     },
     {
       "name": "AbilityHaste",
       "value": 10
-    },
-    {
-      "name": "Armor",
-      "value": 25
     }
   ],
   "damage_type": "Unknown",

@@ -23,16 +23,16 @@
       true
     ],
     [
-      "Tft",
-      false
-    ],
-    [
       "SummonersRift",
       true
     ],
     [
       "NexusBlitz",
       true
+    ],
+    [
+      "Tft",
+      false
     ]
   ],
   "prettified_stats": [
@@ -115,9 +115,9 @@
     "BerserkersGreaves",
     "PlatedSteelcaps",
     "SorcerersShoes",
-    "IonianBootsofLucidity",
+    "IonianBootsOfLucidity",
     "MercurysTreads",
-    "BootsofSwiftness"
+    "BootsOfSwiftness"
   ],
   "ranged": {
     "minimum_damage": "zero",

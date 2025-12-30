@@ -71,19 +71,19 @@
   "abilities": [
     [
       {
-        "type": "E",
+        "type": "W",
         "name": "_2"
       },
       {
-        "name": "Condemn",
-        "damage_type": "Physical",
+        "name": "Silver Bolts",
+        "damage_type": "True",
         "attributes": "Undefined",
         "damage": [
-          "75 + (0.75 * ctx.bonus_ad)",
-          "127.5 + (0.75 * ctx.bonus_ad)",
-          "180 + (0.75 * ctx.bonus_ad)",
-          "232.5 + (0.75 * ctx.bonus_ad)",
-          "285 + (0.75 * ctx.bonus_ad)"
+          "50",
+          "65",
+          "80",
+          "95",
+          "110"
         ]
       }
     ],
@@ -124,18 +124,36 @@
     [
       {
         "type": "E",
-        "name": "_1"
+        "name": "_2"
       },
       {
         "name": "Condemn",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "50 + (0.5 * ctx.bonus_ad)",
-          "85 + (0.5 * ctx.bonus_ad)",
-          "120 + (0.5 * ctx.bonus_ad)",
-          "155 + (0.5 * ctx.bonus_ad)",
-          "190 + (0.5 * ctx.bonus_ad)"
+          "75 + (0.75 * ctx.bonus_ad)",
+          "127.5 + (0.75 * ctx.bonus_ad)",
+          "180 + (0.75 * ctx.bonus_ad)",
+          "232.5 + (0.75 * ctx.bonus_ad)",
+          "285 + (0.75 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Tumble",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "(0.75 * ctx.ad) + (0.5 * ctx.ap)",
+          "(0.85 * ctx.ad) + (0.5 * ctx.ap)",
+          "(0.95 * ctx.ad) + (0.5 * ctx.ap)",
+          "(1.05 * ctx.ad) + (0.5 * ctx.ap)",
+          "(1.15 * ctx.ad) + (0.5 * ctx.ap)"
         ]
       }
     ],
@@ -159,37 +177,19 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_2"
-      },
-      {
-        "name": "Silver Bolts",
-        "damage_type": "True",
-        "attributes": "Undefined",
-        "damage": [
-          "50",
-          "65",
-          "80",
-          "95",
-          "110"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
+        "type": "E",
         "name": "_1"
       },
       {
-        "name": "Tumble",
+        "name": "Condemn",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "(0.75 * ctx.ad) + (0.5 * ctx.ap)",
-          "(0.85 * ctx.ad) + (0.5 * ctx.ap)",
-          "(0.95 * ctx.ad) + (0.5 * ctx.ap)",
-          "(1.05 * ctx.ad) + (0.5 * ctx.ap)",
-          "(1.15 * ctx.ad) + (0.5 * ctx.ap)"
+          "50 + (0.5 * ctx.bonus_ad)",
+          "85 + (0.5 * ctx.bonus_ad)",
+          "120 + (0.5 * ctx.bonus_ad)",
+          "155 + (0.5 * ctx.bonus_ad)",
+          "190 + (0.5 * ctx.bonus_ad)"
         ]
       }
     ]

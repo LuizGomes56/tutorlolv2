@@ -7,20 +7,20 @@
   "tier": 2,
   "maps": [
     [
-      "NexusBlitz",
-      true
-    ],
-    [
       "Aram",
       true
     ],
     [
-      "Arena",
-      false
+      "NexusBlitz",
+      true
     ],
     [
       "SummonersRift",
       false
+    ],
+    [
+      "SummonersRift",
+      true
     ],
     [
       "SummonersRift",
@@ -31,18 +31,18 @@
       false
     ],
     [
-      "SummonersRift",
-      true
+      "Arena",
+      false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AttackDamage",
-      "value": 20
-    },
-    {
       "name": "AbilityHaste",
       "value": 10
+    },
+    {
+      "name": "AttackDamage",
+      "value": 20
     }
   ],
   "damage_type": "Unknown",
@@ -135,7 +135,7 @@
     6696
   ],
   "builds_into_item_ids": [
-    "MawofMalmortius",
+    "MawOfMalmortius",
     "Manamune",
     "Eclipse",
     "RavenousHydra",

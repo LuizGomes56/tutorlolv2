@@ -8,20 +8,18 @@ use crate::{
     },
 };
 use regex::Regex;
-use std::{
-    collections::{BTreeMap, BTreeSet, HashMap},
-    path::Path,
-};
+use std::collections::{BTreeMap, BTreeSet, HashMap};
 use tutorlolv2_fmt::rustfmt;
-use tutorlolv2_gen::{Attrs, CHAMPION_CACHE, ChampionId, DamageType, Position};
-use tutorlolv2_types::{AbilityId, AbilityName};
+use tutorlolv2_gen::{
+    AbilityId, AbilityName, Attrs, ChampionId, DamageType, DevMergeData, Position,
+};
 
 pub const GENERATOR_FOLDER: &str = "tutorlolv2_dev/src/generators/gen_champions";
 
 pub struct ChampionData {
     pub data: MerakiChampion,
     pub hashmap: HashMap<AbilityId, Ability>,
-    pub mergevec: Vec<(AbilityId, AbilityId)>,
+    pub mergevec: Vec<DevMergeData>,
 }
 
 /// Struct that creates and runs files that implement the trait [`Generator`].
@@ -32,10 +30,9 @@ pub struct ChampionData {
 pub struct ChampionFactory;
 
 impl ChampionFactory {
-    pub const NUMBER_OF_CHAMPIONS: usize = CHAMPION_CACHE.len();
     /// Array containing all the `::new` functions of every champion generator struct
     pub const GENERATOR_FUNCTIONS: [fn(MerakiChampion) -> Box<dyn Generator<Champion>>;
-        Self::NUMBER_OF_CHAMPIONS] =
+        ChampionId::VARIANTS] =
         tutorlolv2_macros::expand_dir!("../internal/champions", |[Name]| Name::new);
 
     /// Creates a new generator file, given a [`ChampionId`]
@@ -74,7 +71,7 @@ impl ChampionFactory {
         );
 
         if let Ok(data) = std::fs::read_to_string(&path) {
-            if data.contains("#![stable]") {
+            if data.contains("#![stable]") || data.contains("#![preserve]") {
                 return Ok(data);
             }
         }
@@ -94,19 +91,28 @@ impl ChampionFactory {
 
     /// Creates the whole folder of champion generators. Fails if an error
     /// is thrown in some iteration
-    pub fn create_all() -> MayFail {
-        if !Path::new(GENERATOR_FOLDER).exists() {
-            std::fs::create_dir(GENERATOR_FOLDER).unwrap();
+    pub async fn create_all() -> MayFail {
+        if !tokio::fs::try_exists(GENERATOR_FOLDER).await? {
+            tokio::fs::create_dir(GENERATOR_FOLDER).await.unwrap();
         }
 
-        for i in 0..Self::NUMBER_OF_CHAMPIONS as u8 {
-            let champion_id = unsafe { ChampionId::from_u8_unchecked(i) };
-            let data = Self::create(champion_id)?;
-            let file_name = format!("{champion_id:?}").to_lowercase();
-            std::fs::write(
-                format!("{GENERATOR_FOLDER}/{file_name}.rs"),
-                data.as_bytes(),
-            )?;
+        let mut futures = Vec::new();
+
+        for champion_id in ChampionId::ARRAY {
+            futures.push(tokio::task::spawn(async move {
+                let data = Self::create(champion_id).unwrap();
+                let file_name = format!("{champion_id:?}").to_lowercase();
+                tokio::fs::write(
+                    format!("{GENERATOR_FOLDER}/{file_name}.rs"),
+                    data.as_bytes(),
+                )
+                .await
+                .unwrap();
+            }))
+        }
+
+        for future in futures {
+            future.await?;
         }
 
         Ok(())
@@ -114,10 +120,16 @@ impl ChampionFactory {
 
     /// Runs all generator files. It means that several `.json` files will be created
     /// in the internal cache folder
-    pub fn run_all() -> MayFail {
-        for i in 0..Self::NUMBER_OF_CHAMPIONS as u8 {
-            let champion_id = unsafe { ChampionId::from_u8_unchecked(i) };
-            Self::run(champion_id)?;
+    pub async fn run_all() -> MayFail {
+        let mut futures = Vec::new();
+        for champion_id in ChampionId::ARRAY {
+            futures.push(tokio::task::spawn_blocking(move || {
+                Self::run(champion_id).unwrap()
+            }));
+        }
+
+        for future in futures {
+            future.await.unwrap();
         }
         Ok(())
     }
@@ -286,8 +298,7 @@ impl ChampionFactory {
     /// inside all generators are likely to be correct, printing to the console the
     /// collected results
     pub fn check_all_offsets() {
-        for i in 0..Self::NUMBER_OF_CHAMPIONS as u8 {
-            let champion_id = unsafe { ChampionId::from_u8_unchecked(i) };
+        for champion_id in ChampionId::ARRAY {
             match Self::check_offsets(champion_id) {
                 Err(e) => println!("Error checking {champion_id:?} offsets: {e:?}"),
                 Ok(false) => println!("{champion_id:?} has incorrect offsets"),
@@ -651,9 +662,16 @@ impl ChampionData {
                 let mut found = false;
                 let ability_name =
                     unsafe { std::mem::transmute::<_, AbilityName>(index + MAX_MATCH) };
-                let ability_like = make(ability_name);
-                if self.hashmap.contains_key(&ability_like) {
-                    self.mergevec.push((key, ability_like));
+                let ability_id = make(ability_name);
+                let name_alias =
+                    unsafe { std::mem::transmute::<_, AbilityName>(index - MAX_MATCH) };
+                let alias = make(name_alias);
+                if self.hashmap.contains_key(&ability_id) {
+                    self.mergevec.push(DevMergeData {
+                        minimum_damage: key,
+                        maximum_damage: ability_id,
+                        alias,
+                    });
                     found = true;
                 }
 
@@ -666,11 +684,14 @@ impl ChampionData {
         // Verifies if the mergevec makes sense. It means that the generated hashmap should
         // contain all keys that are present in the mergevec. If it doesn't, the function
         // returns a fail and prints a message to the console.
-        if !self
-            .mergevec
-            .iter()
-            .all(|(a, b)| self.hashmap.contains_key(a) && self.hashmap.contains_key(b))
-        {
+        if !self.mergevec.iter().all(|value| {
+            let DevMergeData {
+                minimum_damage,
+                maximum_damage,
+                ..
+            } = value;
+            self.hashmap.contains_key(minimum_damage) && self.hashmap.contains_key(maximum_damage)
+        }) {
             println!(
                 "{name}: inconsistent data inserted in macro `merge!`.\nmerge_vec: {:?},\n`hashmap_keys: {:?}",
                 self.mergevec,

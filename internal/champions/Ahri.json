@@ -70,55 +70,17 @@
   "abilities": [
     [
       {
-        "type": "W",
-        "name": "_1"
+        "type": "R",
+        "name": "Max"
       },
       {
-        "name": "Fox-Fire",
+        "name": "Spirit Rush",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "12 + (0.12 * ctx.ap)",
-          "18 + (0.12 * ctx.ap)",
-          "24 + (0.12 * ctx.ap)",
-          "30 + (0.12 * ctx.ap)",
-          "36 + (0.12 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "Void"
-      },
-      {
-        "name": "Charm",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "80 + (0.85 * ctx.ap)",
-          "120 + (0.85 * ctx.ap)",
-          "160 + (0.85 * ctx.ap)",
-          "200 + (0.85 * ctx.ap)",
-          "240 + (0.85 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "Min"
-      },
-      {
-        "name": "Orb of Deception",
-        "damage_type": "Magic",
-        "attributes": "Area",
-        "damage": [
-          "40 + (0.5 * ctx.ap)",
-          "65 + (0.5 * ctx.ap)",
-          "90 + (0.5 * ctx.ap)",
-          "115 + (0.5 * ctx.ap)",
-          "140 + (0.5 * ctx.ap)"
+          "3 * (60 + (0.35 * ctx.ap))",
+          "3 * (90 + (0.35 * ctx.ap))",
+          "3 * (120 + (0.35 * ctx.ap))"
         ]
       }
     ],
@@ -142,17 +104,19 @@
     ],
     [
       {
-        "type": "R",
-        "name": "Max"
+        "type": "Q",
+        "name": "Min"
       },
       {
-        "name": "Spirit Rush",
+        "name": "Orb of Deception",
         "damage_type": "Magic",
-        "attributes": "Undefined",
+        "attributes": "Area",
         "damage": [
-          "3 * (60 + (0.35 * ctx.ap))",
-          "3 * (90 + (0.35 * ctx.ap))",
-          "3 * (120 + (0.35 * ctx.ap))"
+          "40 + (0.5 * ctx.ap)",
+          "65 + (0.5 * ctx.ap)",
+          "90 + (0.5 * ctx.ap)",
+          "115 + (0.5 * ctx.ap)",
+          "140 + (0.5 * ctx.ap)"
         ]
       }
     ],
@@ -176,6 +140,22 @@
     ],
     [
       {
+        "type": "R",
+        "name": "Min"
+      },
+      {
+        "name": "Spirit Rush",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "60 + (0.35 * ctx.ap)",
+          "90 + (0.35 * ctx.ap)",
+          "120 + (0.35 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "W",
         "name": "Max"
       },
@@ -194,51 +174,83 @@
     ],
     [
       {
-        "type": "R",
-        "name": "Min"
+        "type": "E",
+        "name": "Void"
       },
       {
-        "name": "Spirit Rush",
+        "name": "Charm",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "60 + (0.35 * ctx.ap)",
-          "90 + (0.35 * ctx.ap)",
-          "120 + (0.35 * ctx.ap)"
+          "80 + (0.85 * ctx.ap)",
+          "120 + (0.85 * ctx.ap)",
+          "160 + (0.85 * ctx.ap)",
+          "200 + (0.85 * ctx.ap)",
+          "240 + (0.85 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Fox-Fire",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "12 + (0.12 * ctx.ap)",
+          "18 + (0.12 * ctx.ap)",
+          "24 + (0.12 * ctx.ap)",
+          "30 + (0.12 * ctx.ap)",
+          "36 + (0.12 * ctx.ap)"
         ]
       }
     ]
   ],
   "merge_data": [
-    [
-      {
-        "type": "Q",
-        "name": "Min"
-      },
-      {
-        "type": "Q",
-        "name": "Max"
-      }
-    ],
-    [
-      {
+    {
+      "minimum_damage": {
         "type": "W",
         "name": "Min"
       },
-      {
+      "maximum_damage": {
         "type": "W",
         "name": "Max"
+      },
+      "alias": {
+        "type": "W",
+        "name": "Void"
       }
-    ],
-    [
-      {
+    },
+    {
+      "minimum_damage": {
+        "type": "Q",
+        "name": "Min"
+      },
+      "maximum_damage": {
+        "type": "Q",
+        "name": "Max"
+      },
+      "alias": {
+        "type": "Q",
+        "name": "Void"
+      }
+    },
+    {
+      "minimum_damage": {
         "type": "R",
         "name": "Min"
       },
-      {
+      "maximum_damage": {
         "type": "R",
         "name": "Max"
+      },
+      "alias": {
+        "type": "R",
+        "name": "Void"
       }
-    ]
+    }
   ]
 }

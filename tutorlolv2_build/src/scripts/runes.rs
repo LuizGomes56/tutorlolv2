@@ -44,28 +44,29 @@ pub async fn generate_runes() -> GeneratorFn {
 
                 let mut constfn_declaration = String::new();
 
-                let mut get_closure = |expr: String, tag| {
-                    let closure = expr.as_closure().add_f32s();
+                let mut get_closure = |closure: String, tag| {
                     let arg = closure.ctx_param();
                     let body = closure.to_lowercase();
+                    let closure = format!("|{arg}| {body}");
                     let fn_name = format!("{name_ssnake}_{tag}").to_lowercase();
                     constfn_declaration.push_str(&format!(
-                        "{EVAL_FEAT} pub const fn {fn_name}(ctx: &EvalContext) -> f32 {{ {body} }}"
+                        "{EVAL_FEAT} pub const fn {fn_name}(ctx: &EvalContext) -> f32 {{ {expr} }}",
+                        expr = body.clean().cast_f32()
                     ));
-                    format!("|{arg}| {body}")
+                    closure
                 };
 
                 let melee_closure = get_closure(ranged, "ranged");
                 let ranged_closure = get_closure(melee, "melee");
 
-                let mut base_declaration = format!(
-                    "{EVAL_FEAT} pub static {name_ssnake}_{riot_id}: CachedRune = CachedRune {{
+                let base_declaration = format!(
+                    "pub static {name_ssnake}_{riot_id}: CachedRune = CachedRune {{
                         name: {name:?},
                         damage_type: DamageType::{damage_type},
-                        metadata: {metadata},
                         riot_id: {riot_id},
                         internal_id: RuneId::{name_pascal},
-                        undeclared: false,"
+                        undeclared: false,
+                        metadata: {metadata},"
                 );
 
                 let html_declaration = format!(
@@ -74,18 +75,18 @@ pub async fn generate_runes() -> GeneratorFn {
                     ranged_damage: {ranged_closure} }};"
                 )
                 .rust_fmt()
-                .drop_f32s()
                 .rust_html()
                 .as_const();
 
                 let melee_constfn_name = format!("{name_ssnake}_melee").to_lowercase();
                 let ranged_constfn_name = format!("{name_ssnake}_ranged").to_lowercase();
 
-                base_declaration.push_str(&format!(
-                    "melee_damage: {melee_constfn_name},
-                    ranged_damage: {ranged_constfn_name} }};"
-                ));
-                base_declaration.push_str(&constfn_declaration);
+                let base_declaration = format!(
+                    "{EVAL_FEAT}{base_declaration}
+                    melee_damage: {melee_constfn_name},
+                    ranged_damage: {ranged_constfn_name} }};
+                    {constfn_declaration}"
+                );
 
                 let match_arm = format!(
                     "AttackType::Melee => {melee_constfn_name}(ctx),
@@ -147,17 +148,21 @@ pub async fn generate_runes() -> GeneratorFn {
             );
 
             let base_declaration = format!(
-                "{EVAL_FEAT} pub static {name_ssnake}_{riot_id}: CachedRune = CachedRune {{
+                "pub static {name_ssnake}_{riot_id}: CachedRune = CachedRune {{
                     name: {name:?},
                     damage_type: DamageType::Unknown,
-                    metadata: {metadata},
                     melee_damage: zero,
                     ranged_damage: zero,
                     riot_id: {riot_id},
                     internal_id: RuneId::{name_pascal},
-                    undeclared: true
+                    undeclared: true,
+                    metadata: {metadata},
                 }};"
             );
+
+            let html_declaration = base_declaration.rust_fmt().rust_html().as_const();
+
+            let base_declaration = format!("{EVAL_FEAT}{base_declaration}");
 
             let match_arm = format!(
                 "AttackType::Melee => zero(ctx),
@@ -168,11 +173,7 @@ pub async fn generate_runes() -> GeneratorFn {
                 name_pascal,
                 match_arm,
                 riot_id,
-                html_declaration: base_declaration
-                    .rust_fmt()
-                    .drop_f32s()
-                    .rust_html()
-                    .as_const(),
+                html_declaration,
                 base_declaration,
                 name_ssnake,
                 name,

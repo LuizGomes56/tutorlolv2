@@ -7,10 +7,6 @@
   "tier": 1,
   "maps": [
     [
-      "SummonersRift",
-      false
-    ],
-    [
       "Aram",
       false
     ],
@@ -23,6 +19,10 @@
       false
     ],
     [
+      "Arena",
+      true
+    ],
+    [
       "SummonersRift",
       false
     ],
@@ -31,15 +31,11 @@
       false
     ],
     [
-      "Arena",
-      true
+      "SummonersRift",
+      false
     ]
   ],
   "prettified_stats": [
-    {
-      "name": "Lethality",
-      "value": 11
-    },
     {
       "name": "AbilityHaste",
       "value": 10
@@ -47,6 +43,10 @@
     {
       "name": "AttackDamage",
       "value": 25
+    },
+    {
+      "name": "Lethality",
+      "value": 11
     }
   ],
   "damage_type": "Unknown",

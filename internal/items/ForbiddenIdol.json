@@ -11,10 +11,6 @@
       true
     ],
     [
-      "Tft",
-      false
-    ],
-    [
       "SummonersRift",
       false
     ],
@@ -27,12 +23,16 @@
       true
     ],
     [
-      "Arena",
+      "SummonersRift",
+      true
+    ],
+    [
+      "Tft",
       false
     ],
     [
-      "SummonersRift",
-      true
+      "Arena",
+      false
     ]
   ],
   "prettified_stats": [
@@ -128,7 +128,7 @@
     "ArdentCenser",
     "Redemption",
     "MikaelsBlessing",
-    "StaffofFlowingWater",
+    "StaffOfFlowingWater",
     "Dawncore"
   ],
   "ranged": {

@@ -1,13 +1,17 @@
 {
   "riot_id": 443061,
-  "item_id": "ForceofEntropy",
+  "item_id": "ForceOfEntropy",
   "name": "Force of Entropy",
   "price": 0,
   "sell": 400,
   "tier": 3,
   "maps": [
     [
-      "NexusBlitz",
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
       false
     ],
     [
@@ -19,11 +23,7 @@
       false
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "Tft",
+      "NexusBlitz",
       false
     ],
     [
@@ -31,7 +31,7 @@
       true
     ],
     [
-      "SummonersRift",
+      "Tft",
       false
     ]
   ],
@@ -41,12 +41,12 @@
       "value": 25
     },
     {
-      "name": "Health",
-      "value": 900
-    },
-    {
       "name": "AbilityHaste",
       "value": 30
+    },
+    {
+      "name": "Health",
+      "value": 900
     }
   ],
   "damage_type": "Unknown",

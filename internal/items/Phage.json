@@ -7,19 +7,23 @@
   "tier": 2,
   "maps": [
     [
-      "NexusBlitz",
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
       true
     ],
     [
       "SummonersRift",
-      false
+      true
     ],
     [
-      "Arena",
-      false
+      "NexusBlitz",
+      true
     ],
     [
-      "SummonersRift",
+      "Aram",
       true
     ],
     [
@@ -27,22 +31,18 @@
       false
     ],
     [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Aram",
-      true
+      "Arena",
+      false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AttackDamage",
-      "value": 15
-    },
-    {
       "name": "Health",
       "value": 200
+    },
+    {
+      "name": "AttackDamage",
+      "value": 15
     }
   ],
   "damage_type": "Unknown",

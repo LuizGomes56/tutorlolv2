@@ -1,37 +1,37 @@
 {
   "riot_id": 2010,
-  "item_id": "TotalBiscuitofEverlastingWill",
+  "item_id": "TotalBiscuitOfEverlastingWill",
   "name": "Total Biscuit of Everlasting Will",
   "price": 0,
   "sell": 5,
   "tier": 1,
   "maps": [
     [
+      "Tft",
+      false
+    ],
+    [
       "Arena",
       true
     ],
     [
-      "Tft",
+      "SummonersRift",
       false
+    ],
+    [
+      "SummonersRift",
+      true
     ],
     [
       "Aram",
       true
     ],
     [
+      "SummonersRift",
+      true
+    ],
+    [
       "NexusBlitz",
-      true
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
       true
     ]
   ],

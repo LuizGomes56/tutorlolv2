@@ -7,12 +7,8 @@
   "tier": 3,
   "maps": [
     [
-      "Aram",
-      false
-    ],
-    [
-      "Arena",
-      false
+      "NexusBlitz",
+      true
     ],
     [
       "Tft",
@@ -23,8 +19,12 @@
       false
     ],
     [
-      "NexusBlitz",
-      true
+      "Arena",
+      false
+    ],
+    [
+      "Aram",
+      false
     ],
     [
       "SummonersRift",
@@ -37,16 +37,16 @@
   ],
   "prettified_stats": [
     {
-      "name": "AttackDamage",
-      "value": 60
-    },
-    {
       "name": "AbilityHaste",
       "value": 10
     },
     {
       "name": "Lethality",
       "value": 18
+    },
+    {
+      "name": "AttackDamage",
+      "value": 50
     }
   ],
   "damage_type": "Unknown",

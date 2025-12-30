@@ -1,19 +1,11 @@
 {
   "riot_id": 2138,
-  "item_id": "ElixirofIron",
+  "item_id": "ElixirOfIron",
   "name": "Elixir of Iron",
   "price": 500,
   "sell": 200,
   "tier": 1,
   "maps": [
-    [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
     [
       "Tft",
       false
@@ -24,7 +16,7 @@
     ],
     [
       "SummonersRift",
-      true
+      false
     ],
     [
       "Aram",
@@ -32,6 +24,14 @@
     ],
     [
       "NexusBlitz",
+      true
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
+      "SummonersRift",
       true
     ]
   ],

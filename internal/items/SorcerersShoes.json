@@ -11,16 +11,16 @@
       true
     ],
     [
+      "Tft",
+      false
+    ],
+    [
       "Aram",
       true
     ],
     [
-      "NexusBlitz",
+      "SummonersRift",
       true
-    ],
-    [
-      "Tft",
-      false
     ],
     [
       "Arena",
@@ -28,21 +28,21 @@
     ],
     [
       "SummonersRift",
-      true
+      false
     ],
     [
-      "SummonersRift",
-      false
+      "NexusBlitz",
+      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "MagicPenetration",
-      "value": 12
-    },
-    {
       "name": "MoveSpeed",
       "value": 45
+    },
+    {
+      "name": "MagicPenetration",
+      "value": 12
     }
   ],
   "damage_type": "Unknown",

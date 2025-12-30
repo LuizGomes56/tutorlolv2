@@ -7,20 +7,16 @@
   "tier": 3,
   "maps": [
     [
-      "NexusBlitz",
-      false
+      "Arena",
+      true
     ],
     [
-      "Tft",
+      "NexusBlitz",
       false
     ],
     [
       "SummonersRift",
       false
-    ],
-    [
-      "Arena",
-      true
     ],
     [
       "SummonersRift",
@@ -33,24 +29,28 @@
     [
       "Aram",
       false
+    ],
+    [
+      "Tft",
+      false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Health",
-      "value": 400
-    },
-    {
-      "name": "Armor",
-      "value": 35
+      "name": "HealAndShieldPower",
+      "value": 12
     },
     {
       "name": "MagicResist",
       "value": 35
     },
     {
-      "name": "HealAndShieldPower",
-      "value": 12
+      "name": "Armor",
+      "value": 35
+    },
+    {
+      "name": "Health",
+      "value": 400
     }
   ],
   "damage_type": "Unknown",

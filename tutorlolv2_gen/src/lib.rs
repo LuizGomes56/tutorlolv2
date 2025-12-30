@@ -8,6 +8,9 @@ pub mod data;
 pub mod enums;
 pub mod eval;
 
+#[allow(non_upper_case_globals)]
+pub(crate) const impossible: f32 = 0.0;
+
 #[cfg(feature = "eval")]
 pub use bitset::*;
 pub use cache::*;
@@ -15,7 +18,7 @@ pub use data::*;
 pub use enums::{Attrs, DamageType};
 #[cfg(feature = "eval")]
 pub use eval::*;
-pub use tutorlolv2_types::{AbilityId, AbilityName, StatName};
+pub use tutorlolv2_types::*;
 
 #[cfg(feature = "glob")]
 pub const RAW_BLOCK: &str = include_str!("block.txt");
@@ -61,7 +64,8 @@ pub const L_SIML: usize = {
     #[cfg(feature = "eval")]
     match NUMBER_OF_SIMULATED_ITEMS == N {
         true => N,
-        false => panic!("Number of simulated items is outdated"),
+        false => NUMBER_OF_SIMULATED_ITEMS,
+        // false => panic!("Number of simulated items is outdated"),
     }
     #[cfg(not(feature = "eval"))]
     N
@@ -187,13 +191,13 @@ macro_rules! const_methods {
             $(
                 impl From<&$name> for $cast {
                     fn from(value: &$name) -> Self {
-                        value.offset() as _
+                        value.index() as _
                     }
                 }
 
                 impl From<$name> for $cast {
                     fn from(value: $name) -> Self {
-                        value.offset() as _
+                        value.index() as _
                     }
                 }
 
@@ -211,6 +215,41 @@ macro_rules! const_methods {
             const_methods!(inner $name, $repr, u16, u32, u64, u128, usize);
 
             impl $name {
+                pub const ARRAY: [Self; Self::VARIANTS] = {
+                    let mut i = 0;
+                    let mut result = [unsafe { Self::[<from_ $repr _unchecked>](0) }; _];
+                    while i < Self::VARIANTS {
+                        result[i] = unsafe { Self::[<from_ $repr _unchecked>](i as _) };
+                        i += 1;
+                    }
+                    result
+                };
+
+                #[cfg(feature = "eval")]
+                pub const fn get_cache(&self) -> &'static [<Cached $name:replace("Id", "")>] {
+                    [<$name:replace("Id", ""):upper _CACHE>][self.index()]
+                }
+
+                #[cfg(feature = "eval")]
+                pub const fn name(&self) -> &'static str {
+                    self.get_cache().name
+                }
+
+                #[cfg(all(not(feature = "eval"), feature = "glob"))]
+                pub const fn name(&self) -> &'static str {
+                    [<$name:replace("Id", ""):upper _ID_TO_NAME>][self.index()]
+                }
+
+                pub const fn index(&self) -> usize {
+                    *self as _
+                }
+
+                pub fn [<is_ $name:snake>](value: &core::any::TypeId) -> bool {
+                    *value == core::any::TypeId::of::<$name>()
+                }
+            }
+
+            impl $name {
                 pub const fn default() -> Self {
                     unsafe { Self::[<from_ $repr _unchecked>](0) }
                 }
@@ -222,6 +261,7 @@ macro_rules! const_methods {
                 }
             }
 
+            #[cfg(any(feature = "eval", feature = "glob"))]
             impl Into<&'static str> for $name {
                 fn into(self) -> &'static str {
                     self.name()
@@ -238,41 +278,6 @@ macro_rules! const_methods {
             impl Into<&'static [Self]> for $name {
                 fn into(self) -> &'static [Self] {
                     &Self::ARRAY
-                }
-            }
-
-            impl $name {
-                pub const ARRAY: [Self; Self::VARIANTS] = {
-                    let mut i = 0;
-                    let mut result = [unsafe { Self::[<from_ $repr _unchecked>](0) }; _];
-                    while i < Self::VARIANTS {
-                        result[i] = unsafe { Self::[<from_ $repr _unchecked>](i as _) };
-                        i += 1;
-                    }
-                    result
-                };
-
-                #[cfg(feature = "eval")]
-                pub const fn get_cache(&self) -> &'static [<Cached $name:replace("Id", "")>] {
-                    [<$name:replace("Id", ""):upper _CACHE>][self.offset()]
-                }
-
-                #[cfg(feature = "eval")]
-                pub const fn name(&self) -> &'static str {
-                    self.get_cache().name
-                }
-
-                #[cfg(all(not(feature = "eval"), feature = "glob"))]
-                pub const fn name(&self) -> &'static str {
-                    [<$name:replace("Id", ""):upper _ID_TO_NAME>][self.offset()]
-                }
-
-                pub const fn offset(&self) -> usize {
-                    *self as _
-                }
-
-                pub fn [<is_ $name:snake>](value: &core::any::TypeId) -> bool {
-                    *value == core::any::TypeId::of::<$name>()
                 }
             }
         }

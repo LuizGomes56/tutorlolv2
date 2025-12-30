@@ -7,8 +7,20 @@
   "tier": 3,
   "maps": [
     [
-      "SummonersRift",
+      "Tft",
       false
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "Aram",
+      true
     ],
     [
       "SummonersRift",
@@ -20,33 +32,21 @@
     ],
     [
       "SummonersRift",
-      true
-    ],
-    [
-      "Tft",
-      false
-    ],
-    [
-      "Aram",
-      true
-    ],
-    [
-      "Arena",
       false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Health",
-      "value": 300
+      "name": "AbilityHaste",
+      "value": 10
     },
     {
       "name": "MagicResist",
       "value": 25
     },
     {
-      "name": "AbilityHaste",
-      "value": 10
+      "name": "Health",
+      "value": 300
     },
     {
       "name": "Armor",

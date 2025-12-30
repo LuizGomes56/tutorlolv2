@@ -7,6 +7,18 @@
   "tier": 3,
   "maps": [
     [
+      "SummonersRift",
+      false
+    ],
+    [
+      "Tft",
+      false
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
       "NexusBlitz",
       true
     ],
@@ -15,20 +27,8 @@
       true
     ],
     [
-      "Tft",
-      false
-    ],
-    [
       "Arena",
       false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
     ],
     [
       "SummonersRift",
@@ -37,16 +37,16 @@
   ],
   "prettified_stats": [
     {
-      "name": "Mana",
-      "value": 500
-    },
-    {
       "name": "AttackDamage",
-      "value": 35
+      "value": 40
     },
     {
       "name": "AbilityHaste",
       "value": 15
+    },
+    {
+      "name": "Mana",
+      "value": 600
     }
   ],
   "damage_type": "Unknown",
@@ -114,7 +114,7 @@
     1036
   ],
   "builds_from_item_ids": [
-    "TearoftheGoddess",
+    "TearOfTheGoddess",
     "CaulfieldsWarhammer",
     "LongSword"
   ],

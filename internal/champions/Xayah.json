@@ -71,24 +71,6 @@
     [
       {
         "type": "E",
-        "name": "_1"
-      },
-      {
-        "name": "Bladecaller",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "27.5 + (0.3 * ctx.bonus_ad)",
-          "32.5 + (0.3 * ctx.bonus_ad)",
-          "37.5 + (0.3 * ctx.bonus_ad)",
-          "42.5 + (0.3 * ctx.bonus_ad)",
-          "47.5 + (0.3 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
         "name": "_2"
       },
       {
@@ -101,6 +83,60 @@
           "75 + (0.6 * ctx.bonus_ad)",
           "85 + (0.6 * ctx.bonus_ad)",
           "95 + (0.6 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_3"
+      },
+      {
+        "name": "Double Daggers",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "22.5 + (0.25 * ctx.bonus_ad)",
+          "30 + (0.25 * ctx.bonus_ad)",
+          "37.5 + (0.25 * ctx.bonus_ad)",
+          "45 + (0.25 * ctx.bonus_ad)",
+          "52.5 + (0.25 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "Double Daggers",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "90 + ctx.bonus_ad",
+          "120 + ctx.bonus_ad",
+          "150 + ctx.bonus_ad",
+          "180 + ctx.bonus_ad",
+          "210 + ctx.bonus_ad"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Bladecaller",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "27.5 + (0.3 * ctx.bonus_ad)",
+          "32.5 + (0.3 * ctx.bonus_ad)",
+          "37.5 + (0.3 * ctx.bonus_ad)",
+          "42.5 + (0.3 * ctx.bonus_ad)",
+          "47.5 + (0.3 * ctx.bonus_ad)"
         ]
       }
     ],
@@ -125,18 +161,18 @@
     [
       {
         "type": "Q",
-        "name": "_3"
+        "name": "_1"
       },
       {
         "name": "Double Daggers",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "22.5 + (0.25 * ctx.bonus_ad)",
-          "30 + (0.25 * ctx.bonus_ad)",
-          "37.5 + (0.25 * ctx.bonus_ad)",
-          "45 + (0.25 * ctx.bonus_ad)",
-          "52.5 + (0.25 * ctx.bonus_ad)"
+          "45 + (0.5 * ctx.bonus_ad)",
+          "60 + (0.5 * ctx.bonus_ad)",
+          "75 + (0.5 * ctx.bonus_ad)",
+          "90 + (0.5 * ctx.bonus_ad)",
+          "105 + (0.5 * ctx.bonus_ad)"
         ]
       }
     ],
@@ -153,42 +189,6 @@
           "200 + ctx.bonus_ad",
           "300 + ctx.bonus_ad",
           "400 + ctx.bonus_ad"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_2"
-      },
-      {
-        "name": "Double Daggers",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "90 + ctx.bonus_ad",
-          "120 + ctx.bonus_ad",
-          "150 + ctx.bonus_ad",
-          "180 + ctx.bonus_ad",
-          "210 + ctx.bonus_ad"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Double Daggers",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "45 + (0.5 * ctx.bonus_ad)",
-          "60 + (0.5 * ctx.bonus_ad)",
-          "75 + (0.5 * ctx.bonus_ad)",
-          "90 + (0.5 * ctx.bonus_ad)",
-          "105 + (0.5 * ctx.bonus_ad)"
         ]
       }
     ]

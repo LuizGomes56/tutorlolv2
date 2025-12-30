@@ -7,24 +7,20 @@
   "tier": 1,
   "maps": [
     [
-      "NexusBlitz",
-      false
-    ],
-    [
-      "Tft",
-      false
-    ],
-    [
       "Arena",
       false
     ],
     [
       "SummonersRift",
-      false
+      true
     ],
     [
       "SummonersRift",
-      true
+      false
+    ],
+    [
+      "NexusBlitz",
+      false
     ],
     [
       "SummonersRift",
@@ -33,12 +29,16 @@
     [
       "Aram",
       true
+    ],
+    [
+      "Tft",
+      false
     ]
   ],
   "prettified_stats": [
     {
       "name": "Health",
-      "value": 150
+      "value": 300
     }
   ],
   "damage_type": "Unknown",

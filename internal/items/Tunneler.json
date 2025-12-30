@@ -8,31 +8,31 @@
   "maps": [
     [
       "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
       true
     ],
     [
       "SummonersRift",
       true
-    ],
-    [
-      "Aram",
-      true
-    ],
-    [
-      "Tft",
-      false
     ],
     [
       "Arena",
       false
     ],
     [
+      "Tft",
+      false
+    ],
+    [
+      "Aram",
+      true
+    ],
+    [
       "NexusBlitz",
       true
+    ],
+    [
+      "SummonersRift",
+      false
     ]
   ],
   "prettified_stats": [
@@ -124,8 +124,8 @@
   ],
   "builds_into_item_ids": [
     "TitanicHydra",
-    "SpearofShojin",
-    "EdgeofNight",
+    "SpearOfShojin",
+    "EdgeOfNight",
     "Hullbreaker",
     "OverlordsBloodmail",
     "SteraksGage",

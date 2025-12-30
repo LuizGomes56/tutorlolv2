@@ -8,22 +8,10 @@
   "maps": [
     [
       "SummonersRift",
-      false
-    ],
-    [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
       true
     ],
     [
-      "Tft",
-      false
-    ],
-    [
-      "SummonersRift",
+      "NexusBlitz",
       true
     ],
     [
@@ -31,7 +19,19 @@
       true
     ],
     [
-      "NexusBlitz",
+      "Arena",
+      false
+    ],
+    [
+      "Tft",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
       true
     ]
   ],
@@ -115,7 +115,7 @@
     4642
   ],
   "builds_into_item_ids": [
-    "IonianBootsofLucidity",
+    "IonianBootsOfLucidity",
     "CaulfieldsWarhammer",
     "TheBrutalizer",
     "FiendishCodex",

@@ -1,38 +1,38 @@
 {
   "riot_id": 2150,
-  "item_id": "ElixirofSkill",
+  "item_id": "ElixirOfSkill",
   "name": "Elixir of Skill",
   "price": 0,
   "sell": 0,
   "tier": 1,
   "maps": [
     [
+      "Arena",
+      false
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
       "Aram",
       true
     ],
     [
-      "NexusBlitz",
-      true
-    ],
-    [
       "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
+      false
     ],
     [
       "Tft",
       false
     ],
     [
-      "Arena",
-      false
+      "SummonersRift",
+      true
     ],
     [
-      "SummonersRift",
-      false
+      "NexusBlitz",
+      true
     ]
   ],
   "prettified_stats": [],

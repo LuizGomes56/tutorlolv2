@@ -7,15 +7,11 @@
   "tier": 2,
   "maps": [
     [
-      "Aram",
+      "NexusBlitz",
       true
     ],
     [
       "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
       false
     ],
     [
@@ -28,16 +24,20 @@
     ],
     [
       "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
       true
     ],
     [
-      "NexusBlitz",
+      "Aram",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "CriticalStrikeChance",
+      "name": "AttackSpeed",
       "value": 15
     },
     {
@@ -45,7 +45,7 @@
       "value": 4
     },
     {
-      "name": "AttackSpeed",
+      "name": "CriticalStrikeChance",
       "value": 15
     }
   ],
@@ -113,7 +113,7 @@
     1042
   ],
   "builds_from_item_ids": [
-    "CloakofAgility",
+    "CloakOfAgility",
     "Dagger"
   ],
   "builds_into_riot_ids": [

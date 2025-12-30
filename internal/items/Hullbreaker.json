@@ -11,42 +11,42 @@
       true
     ],
     [
-      "SummonersRift",
-      true
+      "Tft",
+      false
     ],
     [
       "SummonersRift",
-      false
+      true
     ],
     [
       "Arena",
       false
     ],
     [
-      "Tft",
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
       false
     ],
     [
       "Aram",
       true
-    ],
-    [
-      "SummonersRift",
-      false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "MoveSpeed",
-      "value": 4
+      "name": "AttackDamage",
+      "value": 40
     },
     {
       "name": "Health",
       "value": 500
     },
     {
-      "name": "AttackDamage",
-      "value": 40
+      "name": "MoveSpeed",
+      "value": 4
     }
   ],
   "damage_type": "Unknown",

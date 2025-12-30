@@ -70,24 +70,6 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Lunge",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "70 + (0.9 * ctx.bonus_ad)",
-          "80 + (0.95 * ctx.bonus_ad)",
-          "90 + ctx.bonus_ad",
-          "100 + (1.05 * ctx.bonus_ad)",
-          "110 + (1.1 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "W",
         "name": "_1"
       },
@@ -119,6 +101,24 @@
           "1.8",
           "1.9",
           "2"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Lunge",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "70 + (0.9 * ctx.bonus_ad)",
+          "80 + (0.95 * ctx.bonus_ad)",
+          "90 + ctx.bonus_ad",
+          "100 + (1.05 * ctx.bonus_ad)",
+          "110 + (1.1 * ctx.bonus_ad)"
         ]
       }
     ]

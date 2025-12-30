@@ -15,6 +15,14 @@
       false
     ],
     [
+      "SummonersRift",
+      true
+    ],
+    [
+      "Aram",
+      true
+    ],
+    [
       "Arena",
       false
     ],
@@ -25,20 +33,12 @@
     [
       "SummonersRift",
       false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Aram",
-      true
     ]
   ],
   "prettified_stats": [
     {
       "name": "MagicResist",
-      "value": 45
+      "value": 30
     }
   ],
   "damage_type": "Unknown",
@@ -115,10 +115,10 @@
     8020
   ],
   "builds_into_item_ids": [
-    "ForceofNature",
+    "ForceOfNature",
     "KaenicRookern",
     "WitsEnd",
-    "JakShoTheProtean",
+    "JakshoTheProtean",
     "AbyssalMask"
   ],
   "ranged": {

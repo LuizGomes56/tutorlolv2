@@ -11,15 +11,19 @@
       true
     ],
     [
-      "NexusBlitz",
-      true
-    ],
-    [
       "SummonersRift",
       true
     ],
     [
+      "NexusBlitz",
+      true
+    ],
+    [
       "Tft",
+      false
+    ],
+    [
+      "SummonersRift",
       false
     ],
     [
@@ -29,24 +33,20 @@
     [
       "Aram",
       true
-    ],
-    [
-      "SummonersRift",
-      false
     ]
   ],
   "prettified_stats": [
-    {
-      "name": "Mana",
-      "value": 500
-    },
     {
       "name": "AbilityHaste",
       "value": 15
     },
     {
+      "name": "Mana",
+      "value": 600
+    },
+    {
       "name": "Health",
-      "value": 550
+      "value": 400
     }
   ],
   "damage_type": "Unknown",
@@ -114,7 +114,7 @@
     3067
   ],
   "builds_from_item_ids": [
-    "TearoftheGoddess",
+    "TearOfTheGoddess",
     "GiantsBelt",
     "Kindlegem"
   ],

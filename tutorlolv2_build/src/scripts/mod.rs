@@ -1,5 +1,5 @@
-use core::fmt;
 use regex::{Captures, Regex};
+use std::fmt::Display;
 use tutorlolv2_fmt::rust_html;
 
 pub mod champions;
@@ -45,127 +45,9 @@ pub static BASIC_ATTACK: &str = r#"intrinsic const BASIC_ATTACK {
     damage: |ctx| ctx.ad,
 };"#;
 
-#[derive(Debug, Clone)]
-enum Expr {
-    Num(String),
-    Var(String),
-    Op(Box<Expr>, char, Box<Expr>),
-}
-
-impl fmt::Display for Expr {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        self.fmt_with_prec(f, 0)
-    }
-}
-
-impl Expr {
-    fn fmt_with_prec(&self, f: &mut fmt::Formatter<'_>, parent_prec: u8) -> fmt::Result {
-        let (prec, left, op, right) = match self {
-            Expr::Op(left, op, right) => {
-                let prec = match op {
-                    '+' | '-' => 1,
-                    '*' | '/' => 2,
-                    _ => 0,
-                };
-                (prec, left, op, right)
-            }
-            Expr::Num(s) | Expr::Var(s) => {
-                return write!(f, "{s}");
-            }
-        };
-
-        let needs_parens = prec < parent_prec;
-
-        if needs_parens {
-            write!(f, "(")?;
-        }
-
-        left.fmt_with_prec(f, prec)?;
-        write!(f, " {op} ")?;
-        right.fmt_with_prec(f, prec + 1)?;
-
-        if needs_parens {
-            write!(f, ")")?;
-        }
-
-        Ok(())
-    }
-}
-
-fn parse_expression(tokens: &[String]) -> (Expr, usize) {
-    parse_expression_prec(tokens, 0, 0)
-}
-
-fn parse_expression_prec(tokens: &[String], min_prec: u8, mut pos: usize) -> (Expr, usize) {
-    let mut lhs = parse_primary(tokens, &mut pos);
-
-    while pos < tokens.len() {
-        let op = tokens[pos].chars().next().unwrap();
-        let prec = match op {
-            '+' | '-' => 1,
-            '*' | '/' => 2,
-            _ => break,
-        };
-
-        if prec < min_prec {
-            break;
-        }
-
-        pos += 1;
-        let (rhs, new_pos) = parse_expression_prec(tokens, prec + 1, pos);
-        pos = new_pos;
-        lhs = Expr::Op(Box::new(lhs), op, Box::new(rhs));
-    }
-
-    (lhs, pos)
-}
-
-fn parse_primary(tokens: &[String], pos: &mut usize) -> Expr {
-    let token = &tokens[*pos];
-    *pos += 1;
-    if token == "(" {
-        let (expr, new_pos) = parse_expression(&tokens[*pos..]);
-        *pos += new_pos + 1;
-        expr
-    } else if token.chars().all(|c| c.is_ascii_digit() || c == '.') {
-        Expr::Num(token.clone())
-    } else {
-        Expr::Var(token.clone())
-    }
-}
-
 pub trait StringExt: AsRef<str> {
-    fn tokenize(&self) -> Vec<String> {
-        Regex::new(r"ctx\.[a-z_]+|[A-Z_]+|\d+\.\d+|\d+|[\+\-\*/\(\)]")
-            .unwrap()
-            .find_iter(self.as_ref())
-            .map(|m| m.as_str().to_string())
-            .collect()
-    }
-
     fn rust_html(&self) -> String {
         rust_html(self.as_ref())
-    }
-
-    fn drop_f32s(&self) -> String {
-        let input = self.as_ref();
-        let re_f32 = Regex::new(r"(\d+(?:\.\d+)?)(f32)").unwrap();
-        let no_suffix = re_f32.replace_all(input, "$1");
-        let re_decimal = Regex::new(r"\d+\.\d+").unwrap();
-        re_decimal
-            .replace_all(&no_suffix, |caps: &regex::Captures| {
-                let full = &caps[0];
-                if let Some((whole, decimal)) = full.split_once('.') {
-                    if decimal.chars().all(|c| c == '0') && decimal.len() <= 10 {
-                        whole.to_string()
-                    } else {
-                        full.to_string()
-                    }
-                } else {
-                    full.to_string()
-                }
-            })
-            .to_string()
     }
 
     fn rust_fmt(&self) -> String {
@@ -241,91 +123,391 @@ pub trait StringExt: AsRef<str> {
         tutorlolv2_fmt::pascal_case(self.as_ref())
     }
 
-    fn is_math_expr(&self) -> bool {
-        let input = self.as_ref();
-        let expr = input.trim();
-        if expr.is_empty() {
-            return false;
-        }
+    fn cast_f32(&self) -> String {
+        let re = Regex::new(r"(?P<before>^|[^.\d])(?P<num>\d+)(?P<after>[^.\d]|$)").unwrap();
 
-        let expr_ns = expr
-            .chars()
-            .filter(|c| !c.is_whitespace())
-            .collect::<String>();
+        let result = re.replace_all(self.as_ref(), |caps: &Captures| {
+            let before = &caps["before"];
+            let num = &caps["num"];
+            let after = &caps["after"];
 
-        let token_re = Regex::new(r"(?:ctx\.[a-z_][a-z0-9_]*)|\d+\.\d+|\d+|[+\-*/()]").unwrap();
+            format!("{before}{num}.0{after}")
+        });
 
-        let tokens = token_re
-            .find_iter(&expr_ns)
-            .map(|m| m.as_str())
-            .collect::<Vec<&str>>();
-
-        if tokens.is_empty() {
-            return false;
-        }
-
-        if tokens.concat() != expr_ns {
-            return false;
-        }
-        if matches!(
-            tokens.last().copied(),
-            Some("+") | Some("-") | Some("*") | Some("/") | Some("(")
-        ) {
-            return false;
-        }
-        if matches!(
-            tokens.first().copied(),
-            Some("+") | Some("-") | Some("*") | Some("/") | Some(")")
-        ) {
-            return false;
-        }
-        let is_op = |t: &str| matches!(t, "+" | "-" | "*" | "/");
-        for w in tokens.windows(2) {
-            let (a, b) = (w[0], w[1]);
-            if is_op(a) && b == ")" {
-                return false;
-            }
-            if a == "(" && is_op(b) {
-                return false;
-            }
-        }
-        let mut depth = 0_i32;
-        for t in &tokens {
-            match *t {
-                "(" => depth += 1,
-                ")" => {
-                    if depth == 0 {
-                        return false;
-                    }
-                    depth -= 1;
-                }
-                _ => {}
-            }
-        }
-
-        depth == 0
-    }
-
-    fn as_closure(&self) -> String {
-        if !self.is_math_expr() {
-            return "0.0".to_string();
-        }
-        let tokens = self.tokenize();
-        let (parsed, _) = parse_expression(&tokens);
-        parsed.to_string()
-    }
-
-    fn add_f32s(&self) -> String {
-        let re_num = Regex::new(r"\b(\d+(\.\d+)?)\b").unwrap();
-        let postfixed =
-            re_num.replace_all(self.as_ref(), |caps: &Captures| format!("{}f32", &caps[1]));
-        postfixed.to_lowercase()
+        result.into_owned()
     }
 
     fn ctx_param(&self) -> &'static str {
         let expr = self.as_ref();
         if expr.contains("ctx.") { "ctx" } else { "_" }
     }
+
+    fn clean(&self) -> String {
+        let input = self.as_ref();
+        let tokens = tokenize(input);
+        match parse_expr(&tokens, 0) {
+            Some((expr, _)) => format_expr(&expr, None, false),
+            None => input.to_string(),
+        }
+    }
+
+    fn drop_f32s(&self) -> String {
+        let input = self.as_ref();
+        let re_f32 = Regex::new(r"(\d+(?:\.\d+)?)(f32)").unwrap();
+        let no_suffix = re_f32.replace_all(input, "$1");
+        let re_decimal = Regex::new(r"\d+\.\d+|\d+").unwrap();
+
+        re_decimal
+            .replace_all(&no_suffix, |caps: &regex::Captures| {
+                let full = &caps[0];
+                match full.parse::<f64>() {
+                    Ok(num) => {
+                        let rounded = (num * 1000.0).round() / 1000.0;
+                        let mut s = rounded.to_string();
+                        if s.ends_with(".0") {
+                            s.truncate(s.len() - 2);
+                        }
+                        s
+                    }
+                    Err(_) => full.to_string(),
+                }
+            })
+            .to_string()
+    }
 }
 
 impl StringExt for str {}
+
+#[derive(Debug, Clone)]
+enum Expr {
+    Term(String),
+    Binary {
+        left: Box<Expr>,
+        op: Op,
+        right: Box<Expr>,
+    },
+}
+
+#[derive(Debug, Copy, Clone, PartialEq)]
+enum Op {
+    Add,
+    Sub,
+    Mul,
+    Div,
+}
+
+impl Op {
+    fn precedence(self) -> u8 {
+        match self {
+            Op::Add | Op::Sub => 1,
+            Op::Mul | Op::Div => 2,
+        }
+    }
+
+    fn is_associative(self) -> bool {
+        matches!(self, Op::Add | Op::Mul)
+    }
+}
+
+impl Expr {
+    fn precedence(&self) -> u8 {
+        match self {
+            Expr::Term(_) => 3,
+            Expr::Binary { op, .. } => op.precedence(),
+        }
+    }
+}
+
+fn tokenize(input: &str) -> Vec<String> {
+    let mut tokens = Vec::new();
+    let mut chars = input.chars().peekable();
+    let mut prev_was_op = true;
+
+    while let Some(c) = chars.peek().copied() {
+        match c {
+            ' ' => {
+                chars.next();
+            }
+            '(' | ')' | '+' | '*' | '/' => {
+                tokens.push(c.to_string());
+                prev_was_op = true;
+                chars.next();
+            }
+            '-' => {
+                chars.next();
+                match prev_was_op {
+                    true => {
+                        let mut num = String::from("-");
+                        while let Some(nc) = chars.peek() {
+                            if !(nc.is_alphanumeric() || *nc == '.') {
+                                break;
+                            }
+                            num.push(*nc);
+                            chars.next();
+                        }
+                        tokens.push(num);
+                        prev_was_op = false;
+                    }
+                    false => {
+                        tokens.push("-".into());
+                        prev_was_op = true;
+                    }
+                }
+            }
+            _ => {
+                let mut term = String::new();
+                while let Some(nc) = chars.peek() {
+                    if !matches!(*nc, ' ' | '(' | ')' | '+' | '-' | '*' | '/') {
+                        term.push(*nc);
+                        chars.next();
+                    } else {
+                        break;
+                    }
+                }
+                tokens.push(term);
+                prev_was_op = false;
+            }
+        }
+    }
+
+    tokens
+}
+
+fn parse_expr(tokens: &[String], min_prec: u8) -> Option<(Expr, &[String])> {
+    let (mut left, mut rest) = parse_primary(tokens)?;
+
+    while let Some(op) = rest.first().and_then(parse_op) {
+        if op.precedence() < min_prec {
+            break;
+        }
+
+        let (right, next) = parse_expr(&rest[1..], op.precedence() + 1)?;
+        left = Expr::Binary {
+            left: Box::new(left),
+            op,
+            right: Box::new(right),
+        };
+        rest = next;
+    }
+
+    Some((left, rest))
+}
+
+fn parse_primary(tokens: &[String]) -> Option<(Expr, &[String])> {
+    let tok = tokens.first()?;
+
+    if tok == "(" {
+        let (expr, rest) = parse_expr(&tokens[1..], 0)?;
+        if rest.first()? == ")" {
+            return Some((expr, &rest[1..]));
+        }
+        None
+    } else {
+        Some((Expr::Term(tok.clone()), &tokens[1..]))
+    }
+}
+
+fn parse_op(tok: &String) -> Option<Op> {
+    match tok.as_str() {
+        "+" => Some(Op::Add),
+        "-" => Some(Op::Sub),
+        "*" => Some(Op::Mul),
+        "/" => Some(Op::Div),
+        _ => None,
+    }
+}
+
+fn format_expr(expr: &Expr, parent: Option<Op>, is_right: bool) -> String {
+    let out = match expr {
+        Expr::Term(t) => t.clone(),
+        Expr::Binary { left, op, right } => {
+            let l = format_expr(left, Some(*op), false);
+            let r = format_expr(right, Some(*op), true);
+            let sym = match op {
+                Op::Add => "+",
+                Op::Sub => "-",
+                Op::Mul => "*",
+                Op::Div => "/",
+            };
+            format!("{l} {sym} {r}")
+        }
+    };
+
+    if needs_parens(expr, parent, is_right) {
+        format!("({out})")
+    } else {
+        out
+    }
+}
+
+fn needs_parens(expr: &Expr, parent: Option<Op>, is_right: bool) -> bool {
+    let Some(p) = parent else { return false };
+
+    let ep = expr.precedence();
+    let pp = p.precedence();
+
+    if ep < pp {
+        return true;
+    }
+
+    if ep == pp && is_right && !p.is_associative() {
+        return true;
+    }
+
+    false
+}
+
+pub enum Simplified {
+    Unknown,
+    Impossible,
+    Progression(String),
+    Independent(String),
+    Unrecognized,
+}
+
+impl Simplified {
+    pub const fn arm(&self) -> char {
+        match self {
+            Simplified::Progression(_) => 'n',
+            _ => '_',
+        }
+    }
+
+    pub fn expr(&self) -> String {
+        match self {
+            Simplified::Unknown => "unknown".into(),
+            Simplified::Impossible => "impossible".into(),
+            Simplified::Unrecognized => "unrecognized".into(),
+            Simplified::Progression(s) => s.clean(),
+            Simplified::Independent(s) => s.clean(),
+        }
+    }
+}
+
+impl Display for Simplified {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let arm = self.arm();
+        let expr = self.expr();
+        write!(f, "{arm} => {expr}")
+    }
+}
+
+pub fn simplify(values: &[String]) -> Simplified {
+    fn normalize_expr(expr: &String) -> String {
+        let mut out = String::with_capacity(expr.len() + 8);
+        let chars: Vec<char> = expr.chars().collect();
+        let mut i = 0;
+
+        while i < chars.len() {
+            if i + 4 <= chars.len()
+                && chars[i] == 'c'
+                && chars[i + 1] == 't'
+                && chars[i + 2] == 'x'
+                && chars[i + 3] == '.'
+            {
+                let mut j = out.chars().rev().skip_while(|c| c.is_whitespace());
+                let needs_one = match j.next() {
+                    None => true,
+                    Some('*') => false,
+                    Some(c) if c.is_ascii_digit() => false,
+                    Some('.') => false,
+                    _ => true,
+                };
+                if needs_one {
+                    out.push_str("1.0 * ");
+                }
+                while i < chars.len() {
+                    let c = chars[i];
+                    out.push(c);
+                    i += 1;
+                    if !c.is_alphanumeric() && c != '_' && c != '.' {
+                        break;
+                    }
+                }
+                continue;
+            }
+            out.push(chars[i]);
+            i += 1;
+        }
+        out
+    }
+
+    let values = values.iter().map(normalize_expr).collect::<Vec<_>>();
+
+    if values.is_empty() {
+        return Simplified::Unknown;
+    }
+    if values.len() == 1 {
+        return Simplified::Unrecognized;
+    }
+
+    let num_re = Regex::new(r"([-+]?\d*\.?\d+)").unwrap();
+    let mut count = 0;
+    let template = num_re
+        .replace_all(&values[0], |_caps: &Captures| {
+            let marker = format!("[[{count}]]");
+            count += 1;
+            marker
+        })
+        .into_owned();
+
+    let mut value_matrix = Vec::<Vec<f64>>::new();
+    for s in values {
+        let nums = num_re
+            .find_iter(&s)
+            .filter_map(|m| m.as_str().parse::<f64>().ok())
+            .collect::<Vec<_>>();
+        value_matrix.push(nums);
+    }
+
+    let num_constants = value_matrix[0].len();
+    for row in &value_matrix {
+        if row.len() != num_constants {
+            return Simplified::Impossible;
+        }
+    }
+
+    let mut depends_on_n = false;
+    let mut formulas = Vec::new();
+
+    for col in 0..num_constants {
+        let v1 = value_matrix[0][col];
+        let v2 = value_matrix[1][col];
+        let diff = v2 - v1;
+
+        match diff.abs() < 0.0001 {
+            true => {
+                formulas.push(v1.to_string());
+            }
+            false => {
+                depends_on_n = true;
+                let start_offset = v1 - diff;
+
+                match start_offset.abs() < 0.0001 {
+                    true => {
+                        formulas.push(format!("({diff} * context_level)"));
+                    }
+                    false => {
+                        formulas.push(format!("({start_offset} + {diff} * context_level)"));
+                    }
+                }
+            }
+        }
+    }
+
+    let mut final_expression = template;
+    for (i, formula) in formulas.iter().enumerate() {
+        let marker = format!("[[{i}]]");
+        final_expression = final_expression.replace(&marker, formula);
+    }
+
+    let result = final_expression
+        .replace("+ -", "- ")
+        .replace("( ", "(")
+        .replace(" )", ")");
+
+    match depends_on_n {
+        true => Simplified::Progression(result),
+        false => Simplified::Independent(result),
+    }
+}

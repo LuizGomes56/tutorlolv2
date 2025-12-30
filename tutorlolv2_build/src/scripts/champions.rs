@@ -2,8 +2,9 @@ use crate::{
     CwdPath, EVAL_FEAT, GLOB_FEAT, Generated, GeneratorFn, MayFail, SrcFolder, Tracker,
     parallel_task, push_end,
     scripts::{
-        StringExt,
+        Simplified, StringExt,
         model::{Ability, Champion, MerakiChampionStats},
+        simplify,
     },
 };
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
@@ -11,14 +12,14 @@ use std::{
     cmp::Ordering,
     collections::{BTreeMap, HashMap},
 };
-use tutorlolv2_types::AbilityId;
+use tutorlolv2_types::{AbilityId, DevMergeData};
 
 struct DeclaredAbility {
     ability_id: AbilityId,
     declaration: String,
     metadata: String,
     constfn: ConstFn,
-    damage: String,
+    html_damage: String,
 }
 
 fn declare_abilities(
@@ -37,32 +38,56 @@ fn declare_abilities(
                 damage,
             } = ability;
 
-            let damage = match damage.is_empty() {
-                true => String::from("zero"),
+            let match_src = format!("{letter}_level", letter = letter.to_lowercase());
+
+            let (damage, html_damage) = match damage.is_empty() {
+                true => ("zero".into(), "zero".into()),
                 false => {
-                    let mut result = String::new();
+                    let comparator = format!(
+                        "ctx.{op}",
+                        op = match letter {
+                            'P' => "level",
+                            _ => &match_src,
+                        }
+                    );
+                    let match_closure = format!("|ctx| {{ match {comparator} {{");
 
-                    let expression = damage
-                        .iter()
-                        .map(|dmg| dmg.as_closure().add_f32s())
-                        .collect::<Vec<_>>();
-
-                    let ctx_match = match letter {
-                        'P' => "level as u8".into(),
-                        _ => format!("{letter}_level", letter = letter.to_lowercase()),
+                    let get_arms = |src: &[String]| {
+                        src.into_iter()
+                            .enumerate()
+                            .map(|(i, value)| {
+                                let expr = value.clean();
+                                let level = i + 1;
+                                format!("{level} => {expr},")
+                            })
+                            .collect::<String>()
                     };
 
-                    result.push_str(&format!("|ctx| {{ match ctx.{ctx_match} {{"));
+                    let simplified = simplify(&damage);
 
-                    let arms = expression
-                        .into_iter()
-                        .enumerate()
-                        .map(|(i, expr)| format!("{level} => {expr}", level = i + 1))
-                        .collect::<Vec<_>>()
-                        .join(",");
+                    let get_closure = |arm| format!("{match_closure} {arm} {simplified} }}}}");
+                    let html_closure = get_closure(get_arms(&damage)).replace("context_level", "n");
 
-                    result.push_str(&format!("{arms}, _ => 0.0 }}}}"));
-                    result
+                    let closure = match simplified {
+                        Simplified::Progression(_) | Simplified::Independent(_) => {
+                            let body = simplified
+                                .expr()
+                                .clean()
+                                .cast_f32()
+                                .replace("context_level", &format!("{comparator} as f32"));
+                            format!("|ctx| {{ {body} }}")
+                        }
+                        _ => {
+                            let damage_f32 = damage
+                                .iter()
+                                .map(|expr| expr.cast_f32())
+                                .collect::<Vec<_>>();
+
+                            get_closure(get_arms(&damage_f32))
+                        }
+                    };
+
+                    (closure, html_closure)
                 }
             };
 
@@ -91,12 +116,11 @@ fn declare_abilities(
                     name: {name:?},
                     damage_type: {damage_type},
                     attributes: {attributes},
-                    damage: {damage},
+                    damage: {html_damage},
                 }};"
             )
             .rust_fmt()
             .rust_html()
-            .drop_f32s()
             .as_const();
 
             if declaration.is_empty() {
@@ -122,7 +146,7 @@ fn declare_abilities(
                     declaration: constfn_declaration,
                     name: constfn_name,
                 },
-                damage,
+                html_damage,
             }
         })
         .collect()
@@ -172,10 +196,7 @@ pub fn get_stats(stats: &MerakiChampionStats) -> String {
     all_stats.join(",")
 }
 
-pub fn define_merge_indexes(
-    merge_data: Vec<(AbilityId, AbilityId)>,
-    ability_data: &[AbilityId],
-) -> String {
+pub fn define_merge_indexes(merge_data: Vec<DevMergeData>, ability_data: &[AbilityId]) -> String {
     let mut index = HashMap::with_capacity(ability_data.len());
     for (i, ability_id) in ability_data.into_iter().enumerate() {
         index.entry(ability_id).or_insert(i);
@@ -183,9 +204,23 @@ pub fn define_merge_indexes(
 
     merge_data
         .into_iter()
-        .filter_map(|(a, b)| match (index.get(&a), index.get(&b)) {
-            (Some(ia), Some(ib)) => Some(format!("({ia}, {ib})")),
-            _ => None,
+        .filter_map(|value| {
+            let DevMergeData {
+                minimum_damage,
+                maximum_damage,
+                alias,
+            } = value;
+            let alias = alias.as_literal();
+            match (index.get(&minimum_damage), index.get(&maximum_damage)) {
+                (Some(ia), Some(ib)) => Some(format!(
+                    "MergeData {{
+                        minimum_damage: {ia},
+                        maximum_damage: {ib},
+                        alias: {alias}
+                    }}"
+                )),
+                _ => None,
+            }
         })
         .collect::<Vec<_>>()
         .join(",")
@@ -266,11 +301,12 @@ pub async fn generate_champions() -> GeneratorFn {
             let mut ability_declarations = Vec::with_capacity(abilities.len());
 
             for ability in abilities {
-                fn_names.push_str(&format!("{name},", name = ability.constfn.name));
-                constfns.push(ability.constfn);
-                closures.push_str(&ability.damage);
+                let fn_name = &ability.constfn.name;
+                let damage = &ability.html_damage;
+                fn_names.push_str(&format!("{fn_name},"));
                 metadata.push_str(&ability.metadata);
-                closures.push(',');
+                closures.push_str(&format!("{fn_name}: {damage},"));
+                constfns.push(ability.constfn);
                 metadata.push(',');
                 ability_names.push(ability.ability_id);
                 ability_declarations.push((ability.ability_id, ability.declaration));
@@ -282,26 +318,29 @@ pub async fn generate_champions() -> GeneratorFn {
                 .collect::<Vec<_>>()
                 .join(",");
 
-            let mut base_declaration = format!(
-                "{EVAL_FEAT} pub static {champion_id_upper}: CachedChampion = CachedChampion {{
-                    name: {name:?},
-                    adaptative_type: AdaptativeType::{adaptative_type},
-                    attack_type: AttackType::{attack_type},
-                    positions: &[{positions}],
-                    metadata: &[{metadata}],
-                    stats: CachedChampionStats {{{stats}}},
-                    merge_data: &[{merge_data}],
-                    closures: ",
+            let rest = format!(
+                "metadata: &[{metadata}],
+                stats: CachedChampionStats {{{stats}}},
+                merge_data: &[{merge_data}]",
                 stats = get_stats(&stats),
                 merge_data = define_merge_indexes(merge_data, &ability_names),
             );
 
-            let html_declaration = format!("{base_declaration}&[{closures}], }};")
+            let base_declaration = format!(
+                "pub static {champion_id_upper}: CachedChampion = CachedChampion {{
+                    name: {name:?},
+                    adaptative_type: AdaptativeType::{adaptative_type},
+                    attack_type: AttackType::{attack_type},
+                    positions: &[{positions}],"
+            );
+
+            let html_declaration = format!("{base_declaration}{closures}{rest} }};")
                 .rust_fmt()
                 .drop_f32s()
                 .rust_html();
 
-            base_declaration.push_str(&format!("&[{fn_names}], }};"));
+            let mut base_declaration =
+                format!("{EVAL_FEAT}{base_declaration}closures: &[{fn_names}], {rest} }};");
 
             let mut match_arm_kind = Vec::with_capacity(constfns.len());
             for ConstFn {
@@ -373,6 +412,7 @@ pub async fn generate_champions() -> GeneratorFn {
         mut champion_formulas,
         mut champion_generator,
         mut champion_abilities,
+        mut ability_formulas,
     ] = std::array::from_fn(|i| {
         let (name, vtype, feature) = [
             ("CHAMPION_CACHE", "&CachedChampion", EVAL_FEAT),
@@ -380,7 +420,8 @@ pub async fn generate_champions() -> GeneratorFn {
             ("CHAMPION_ID_TO_NAME", "&str", GLOB_FEAT),
             ("CHAMPION_FORMULAS", "(u32,u32)", GLOB_FEAT),
             ("CHAMPION_GENERATOR", "(u32,u32)", GLOB_FEAT),
-            ("CHAMPION_ABILITIES", "&[(AbilityId,(u32,u32))]", GLOB_FEAT),
+            ("CHAMPION_ABILITIES", "&[AbilityId]", GLOB_FEAT),
+            ("ABILITY_FORMULAS", "&[(u32,u32)]", GLOB_FEAT),
         ][i];
         format!("{feature} pub static {name}: [{vtype}; ChampionId::VARIANTS] = [")
     });
@@ -514,17 +555,25 @@ pub async fn generate_champions() -> GeneratorFn {
         .for_each(add_offsets);
 
         for ability in ability_offsets {
+            let mut recorded_offsets = Vec::with_capacity(ability.len());
             let mut recorded_abilities = Vec::with_capacity(ability.len());
             for (ability_id, (start, end)) in ability {
                 let literal = ability_id.as_literal();
                 let new_start = start + index;
                 let new_end = end + index;
-                recorded_abilities.push(format!("({literal}, ({new_start}, {new_end}))"));
+                recorded_offsets.push(format!("({new_start}, {new_end})"));
+                recorded_abilities.push(literal);
             }
-            let result = recorded_abilities.join(",");
-            champion_abilities.push_str(&format!("&[{result}],"));
+            ability_formulas.push_str(&format!(
+                "&[{result}],",
+                result = recorded_offsets.join(",")
+            ));
+            champion_abilities.push_str(&format!(
+                "&[{result}],",
+                result = recorded_abilities.join(",")
+            ));
         }
-        push_end([&mut champion_abilities], "];");
+        push_end([&mut champion_abilities, &mut ability_formulas], "];");
 
         let content = [
             champion_id_enum,
@@ -533,6 +582,7 @@ pub async fn generate_champions() -> GeneratorFn {
             champion_generator,
             champion_abilities,
             champion_formulas,
+            ability_formulas,
             recommendations,
             champion_declarations,
             champion_name_to_id,

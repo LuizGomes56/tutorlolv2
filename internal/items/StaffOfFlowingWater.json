@@ -1,14 +1,26 @@
 {
   "riot_id": 6616,
-  "item_id": "StaffofFlowingWater",
+  "item_id": "StaffOfFlowingWater",
   "name": "Staff of Flowing Water",
   "price": 2250,
   "sell": 1575,
   "tier": 3,
   "maps": [
     [
+      "NexusBlitz",
+      true
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
       "SummonersRift",
       true
+    ],
+    [
+      "Tft",
+      false
     ],
     [
       "Arena",
@@ -21,36 +33,24 @@
     [
       "Aram",
       true
-    ],
-    [
-      "NexusBlitz",
-      true
-    ],
-    [
-      "Tft",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "BaseManaRegen",
-      "value": 125
-    },
-    {
-      "name": "AbilityHaste",
-      "value": 15
+      "name": "HealAndShieldPower",
+      "value": 10
     },
     {
       "name": "AbilityPower",
       "value": 35
     },
     {
-      "name": "HealAndShieldPower",
-      "value": 10
+      "name": "AbilityHaste",
+      "value": 15
+    },
+    {
+      "name": "BaseManaRegen",
+      "value": 125
     }
   ],
   "damage_type": "Unknown",

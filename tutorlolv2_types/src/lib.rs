@@ -134,3 +134,27 @@ pub enum StatName {
     Tenacity(u16),
     HealAndShieldPower(u16),
 }
+
+#[derive(
+    Clone,
+    Copy,
+    Debug,
+    PartialEq,
+    PartialOrd,
+    bincode::Encode,
+    bincode::Decode,
+    serde::Serialize,
+    serde::Deserialize,
+)]
+pub struct MergeData {
+    pub minimum_damage: u8,
+    pub maximum_damage: u8,
+    pub alias: AbilityId,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize)]
+pub struct DevMergeData {
+    pub minimum_damage: AbilityId,
+    pub maximum_damage: AbilityId,
+    pub alias: AbilityId,
+}

@@ -8,10 +8,6 @@
   "maps": [
     [
       "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
       true
     ],
     [
@@ -19,11 +15,15 @@
       false
     ],
     [
-      "NexusBlitz",
+      "SummonersRift",
       true
     ],
     [
-      "SummonersRift",
+      "Aram",
+      true
+    ],
+    [
+      "NexusBlitz",
       true
     ],
     [
@@ -31,22 +31,22 @@
       false
     ],
     [
-      "Aram",
-      true
+      "SummonersRift",
+      false
     ]
   ],
   "prettified_stats": [
-    {
-      "name": "AbilityPower",
-      "value": 75
-    },
     {
       "name": "MagicPenetration",
       "value": 30
     },
     {
       "name": "AbilityHaste",
-      "value": 20
+      "value": 15
+    },
+    {
+      "name": "AbilityPower",
+      "value": 60
     }
   ],
   "damage_type": "Unknown",

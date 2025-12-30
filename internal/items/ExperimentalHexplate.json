@@ -11,35 +11,31 @@
       false
     ],
     [
+      "SummonersRift",
+      false
+    ],
+    [
+      "Aram",
+      true
+    ],
+    [
       "Tft",
       false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
     ],
     [
       "NexusBlitz",
       true
     ],
     [
-      "Aram",
+      "SummonersRift",
+      true
+    ],
+    [
+      "SummonersRift",
       true
     ]
   ],
   "prettified_stats": [
-    {
-      "name": "Health",
-      "value": 450
-    },
     {
       "name": "AttackDamage",
       "value": 40
@@ -47,6 +43,10 @@
     {
       "name": "AttackSpeed",
       "value": 20
+    },
+    {
+      "name": "Health",
+      "value": 450
     }
   ],
   "damage_type": "Unknown",

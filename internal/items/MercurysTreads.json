@@ -8,22 +8,10 @@
   "maps": [
     [
       "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
       true
     ],
     [
       "Aram",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "NexusBlitz",
       true
     ],
     [
@@ -33,19 +21,31 @@
     [
       "Arena",
       false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "NexusBlitz",
+      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "MoveSpeed",
-      "value": 45
-    },
-    {
       "name": "MagicResist",
-      "value": 20
+      "value": 30
     },
     {
       "name": "Tenacity",
+      "value": 30
+    },
+    {
+      "name": "MoveSpeed",
       "value": 30
     }
   ],

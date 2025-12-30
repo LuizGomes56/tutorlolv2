@@ -11,11 +11,11 @@
       false
     ],
     [
-      "SummonersRift",
+      "Aram",
       false
     ],
     [
-      "Aram",
+      "Arena",
       false
     ],
     [
@@ -27,11 +27,11 @@
       false
     ],
     [
-      "Tft",
+      "SummonersRift",
       false
     ],
     [
-      "Arena",
+      "Tft",
       false
     ]
   ],
@@ -108,7 +108,7 @@
     3158
   ],
   "builds_from_item_ids": [
-    "IonianBootsofLucidity"
+    "IonianBootsOfLucidity"
   ],
   "builds_into_riot_ids": [],
   "builds_into_item_ids": [],

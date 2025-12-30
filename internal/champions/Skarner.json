@@ -90,6 +90,24 @@
     [
       {
         "type": "Q",
+        "name": "_5"
+      },
+      {
+        "name": "Shattered Earth",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "10 + (0.8 * ctx.bonus_ad) + (0.03 * ctx.bonus_health)",
+          "20 + (0.8 * ctx.bonus_ad) + (0.03 * ctx.bonus_health)",
+          "30 + (0.8 * ctx.bonus_ad) + (0.03 * ctx.bonus_health)",
+          "40 + (0.8 * ctx.bonus_ad) + (0.03 * ctx.bonus_health)",
+          "50 + (0.8 * ctx.bonus_ad) + (0.03 * ctx.bonus_health)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
         "name": "_4"
       },
       {
@@ -124,18 +142,18 @@
     [
       {
         "type": "Q",
-        "name": "_5"
+        "name": "_2"
       },
       {
         "name": "Shattered Earth",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "10 + (0.8 * ctx.bonus_ad) + (0.03 * ctx.bonus_health)",
-          "20 + (0.8 * ctx.bonus_ad) + (0.03 * ctx.bonus_health)",
-          "30 + (0.8 * ctx.bonus_ad) + (0.03 * ctx.bonus_health)",
-          "40 + (0.8 * ctx.bonus_ad) + (0.03 * ctx.bonus_health)",
-          "50 + (0.8 * ctx.bonus_ad) + (0.03 * ctx.bonus_health)"
+          "30 + (2.4 * ctx.bonus_ad) + (0.09 * ctx.bonus_health)",
+          "60 + (2.4 * ctx.bonus_ad) + (0.09 * ctx.bonus_health)",
+          "90 + (2.4 * ctx.bonus_ad) + (0.09 * ctx.bonus_health)",
+          "120 + (2.4 * ctx.bonus_ad) + (0.09 * ctx.bonus_health)",
+          "150 + (2.4 * ctx.bonus_ad) + (0.09 * ctx.bonus_health)"
         ]
       }
     ],
@@ -154,24 +172,6 @@
           "250",
           "300",
           "350"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_2"
-      },
-      {
-        "name": "Shattered Earth",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "30 + (2.4 * ctx.bonus_ad) + (0.09 * ctx.bonus_health)",
-          "60 + (2.4 * ctx.bonus_ad) + (0.09 * ctx.bonus_health)",
-          "90 + (2.4 * ctx.bonus_ad) + (0.09 * ctx.bonus_health)",
-          "120 + (2.4 * ctx.bonus_ad) + (0.09 * ctx.bonus_health)",
-          "150 + (2.4 * ctx.bonus_ad) + (0.09 * ctx.bonus_health)"
         ]
       }
     ],

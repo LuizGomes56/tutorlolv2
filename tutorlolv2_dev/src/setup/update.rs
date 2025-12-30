@@ -8,8 +8,7 @@ use crate::{
 };
 use regex::Regex;
 use std::{collections::HashMap, fs, path::Path};
-use tutorlolv2_gen::{Attrs, DamageType, GameMap, ItemId};
-use tutorlolv2_types::StatName;
+use tutorlolv2_gen::{Attrs, DamageType, GameMap, ItemId, StatName};
 
 /// Creates basic folders necessary to run the program. If one of these folders are not found,
 /// The program is likely to panic when an update is called.
@@ -119,8 +118,14 @@ pub fn setup_internal_items() -> MayFail {
     }
 
     for (_, item) in common_items {
-        let item_id = ItemId::from_riot_id(item.meraki_item.id)
-            .ok_or("[fail] ItemId::from_riot_id(item.meraki_item.id)")?;
+        let id = item.meraki_item.id;
+        let item_id = match ItemId::from_riot_id(id) {
+            Some(id) => id,
+            None => {
+                println!("[fail] ItemId::from_riot_id({id})");
+                continue;
+            }
+        };
 
         let ItemCache {
             meraki_item,

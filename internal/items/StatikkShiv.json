@@ -8,14 +8,14 @@
   "maps": [
     [
       "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
       true
     ],
     [
       "Arena",
+      false
+    ],
+    [
+      "SummonersRift",
       false
     ],
     [
@@ -37,16 +37,16 @@
   ],
   "prettified_stats": [
     {
-      "name": "AttackSpeed",
-      "value": 30
+      "name": "AttackDamage",
+      "value": 45
     },
     {
       "name": "MoveSpeed",
       "value": 4
     },
     {
-      "name": "AttackDamage",
-      "value": 45
+      "name": "AttackSpeed",
+      "value": 30
     }
   ],
   "damage_type": "Unknown",

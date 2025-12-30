@@ -7,7 +7,7 @@
   "tier": 2,
   "maps": [
     [
-      "SummonersRift",
+      "Aram",
       true
     ],
     [
@@ -15,7 +15,7 @@
       true
     ],
     [
-      "Tft",
+      "Arena",
       false
     ],
     [
@@ -23,12 +23,12 @@
       false
     ],
     [
-      "Aram",
-      true
+      "Tft",
+      false
     ],
     [
-      "Arena",
-      false
+      "SummonersRift",
+      true
     ],
     [
       "SummonersRift",
@@ -128,7 +128,7 @@
   ],
   "builds_into_item_ids": [
     "YoumuusGhostblade",
-    "EdgeofNight",
+    "EdgeOfNight",
     "TheCollector",
     "Hubris",
     "UmbralGlaive",

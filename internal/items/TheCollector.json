@@ -7,12 +7,8 @@
   "tier": 3,
   "maps": [
     [
-      "SummonersRift",
+      "Tft",
       false
-    ],
-    [
-      "SummonersRift",
-      true
     ],
     [
       "NexusBlitz",
@@ -23,26 +19,30 @@
       true
     ],
     [
+      "Arena",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
       "SummonersRift",
       true
     ],
     [
-      "Tft",
-      false
-    ],
-    [
-      "Arena",
-      false
+      "SummonersRift",
+      true
     ]
   ],
   "prettified_stats": [
     {
       "name": "AttackDamage",
-      "value": 50
+      "value": 45
     },
     {
       "name": "Lethality",
-      "value": 10
+      "value": 12
     },
     {
       "name": "CriticalStrikeChance",
@@ -116,7 +116,7 @@
   "builds_from_item_ids": [
     "Pickaxe",
     "SerratedDirk",
-    "CloakofAgility"
+    "CloakOfAgility"
   ],
   "builds_into_riot_ids": [],
   "builds_into_item_ids": [],

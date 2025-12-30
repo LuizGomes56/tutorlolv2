@@ -15,34 +15,34 @@
       true
     ],
     [
-      "NexusBlitz",
-      true
-    ],
-    [
       "Tft",
       false
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
+      "NexusBlitz",
       true
     ],
     [
       "Arena",
       false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Health",
-      "value": 900
-    },
-    {
       "name": "BaseHealthRegen",
       "value": 100
+    },
+    {
+      "name": "Health",
+      "value": 900
     }
   ],
   "damage_type": "Unknown",

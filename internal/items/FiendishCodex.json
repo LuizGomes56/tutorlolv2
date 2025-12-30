@@ -7,31 +7,31 @@
   "tier": 2,
   "maps": [
     [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
       "SummonersRift",
       true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Tft",
-      false
     ],
     [
       "Aram",
       true
     ],
     [
+      "Arena",
+      false
+    ],
+    [
+      "Tft",
+      false
+    ],
+    [
       "NexusBlitz",
+      true
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
       true
     ]
   ],
@@ -138,7 +138,7 @@
     "ImperialMandate",
     "CosmicDrive",
     "Riftmaker",
-    "StaffofFlowingWater",
+    "StaffOfFlowingWater",
     "BloodlettersCurse"
   ],
   "ranged": {

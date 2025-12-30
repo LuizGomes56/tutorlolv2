@@ -7,23 +7,15 @@
   "tier": 1,
   "maps": [
     [
+      "NexusBlitz",
+      true
+    ],
+    [
       "Arena",
       false
     ],
     [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
       "Tft",
-      false
-    ],
-    [
-      "SummonersRift",
       false
     ],
     [
@@ -31,7 +23,15 @@
       true
     ],
     [
-      "NexusBlitz",
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "SummonersRift",
       true
     ]
   ],
@@ -124,12 +124,12 @@
     "SteelSigil",
     "ShatteredArmguard",
     "WardensMail",
-    "LocketoftheIronSolari",
+    "LocketOfTheIronSolari",
     "SeekersArmguard",
     "GlacialBuckler",
     "ZekesConvergence",
     "BrambleVest",
-    "AegisoftheLegion"
+    "AegisOfTheLegion"
   ],
   "ranged": {
     "minimum_damage": "zero",

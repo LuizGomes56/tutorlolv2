@@ -7,43 +7,35 @@
   "tier": 3,
   "maps": [
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
       "NexusBlitz",
       true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Tft",
-      false
     ],
     [
       "Aram",
       true
     ],
     [
+      "SummonersRift",
+      false
+    ],
+    [
+      "Tft",
+      false
+    ],
+    [
       "Arena",
       false
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "SummonersRift",
+      true
     ]
   ],
   "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 10
-    },
-    {
-      "name": "Health",
-      "value": 400
-    },
     {
       "name": "MagicResist",
       "value": 25
@@ -51,6 +43,14 @@
     {
       "name": "Armor",
       "value": 25
+    },
+    {
+      "name": "AbilityHaste",
+      "value": 10
+    },
+    {
+      "name": "Health",
+      "value": 350
     }
   ],
   "damage_type": "Unknown",
@@ -117,7 +117,7 @@
     1011
   ],
   "builds_from_item_ids": [
-    "AegisoftheLegion",
+    "AegisOfTheLegion",
     "GiantsBelt"
   ],
   "builds_into_riot_ids": [],

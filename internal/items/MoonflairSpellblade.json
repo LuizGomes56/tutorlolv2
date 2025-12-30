@@ -7,11 +7,7 @@
   "tier": 3,
   "maps": [
     [
-      "Arena",
-      true
-    ],
-    [
-      "Aram",
+      "Tft",
       false
     ],
     [
@@ -19,15 +15,19 @@
       false
     ],
     [
-      "SummonersRift",
-      false
+      "Arena",
+      true
     ],
     [
       "SummonersRift",
       false
     ],
     [
-      "Tft",
+      "SummonersRift",
+      false
+    ],
+    [
+      "Aram",
       false
     ],
     [
@@ -41,12 +41,12 @@
       "value": 85
     },
     {
-      "name": "Tenacity",
-      "value": 30
-    },
-    {
       "name": "Health",
       "value": 400
+    },
+    {
+      "name": "Tenacity",
+      "value": 30
     }
   ],
   "damage_type": "Unknown",

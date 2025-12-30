@@ -145,6 +145,9 @@ pub fn rust_html(rust_code: &str) -> String {
             "else",
             "as",
             "in",
+            "unknown",
+            "impossible",
+            "unrecognized",
         ]),
     );
     h.keyword("constant", r"::[A-Z_][A-Za-z0-9_]*\b");

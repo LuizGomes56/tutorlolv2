@@ -1,6 +1,6 @@
 {
   "riot_id": 3158,
-  "item_id": "IonianBootsofLucidity",
+  "item_id": "IonianBootsOfLucidity",
   "name": "Ionian Boots of Lucidity",
   "price": 900,
   "sell": 630,
@@ -23,7 +23,7 @@
       false
     ],
     [
-      "SummonersRift",
+      "Aram",
       true
     ],
     [
@@ -31,18 +31,18 @@
       false
     ],
     [
-      "Aram",
+      "SummonersRift",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AbilityHaste",
-      "value": 10
-    },
-    {
       "name": "MoveSpeed",
       "value": 45
+    },
+    {
+      "name": "AbilityHaste",
+      "value": 10
     }
   ],
   "damage_type": "Unknown",

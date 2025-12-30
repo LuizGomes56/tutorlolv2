@@ -72,6 +72,24 @@
     [
       {
         "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "Chain Lash",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "60 + (0.8 * ctx.ap)",
+          "115 + (0.8 * ctx.ap)",
+          "170 + (0.8 * ctx.ap)",
+          "225 + (0.8 * ctx.ap)",
+          "280 + (0.8 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
         "name": "_5"
       },
       {
@@ -90,18 +108,18 @@
     [
       {
         "type": "Q",
-        "name": "_1"
+        "name": "_4"
       },
       {
         "name": "Chain Lash",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "40 + (0.4 * ctx.ap)",
-          "60 + (0.4 * ctx.ap)",
-          "80 + (0.4 * ctx.ap)",
-          "100 + (0.4 * ctx.ap)",
-          "120 + (0.4 * ctx.ap)"
+          "100 + (1.2 * ctx.ap)",
+          "175 + (1.2 * ctx.ap)",
+          "250 + (1.2 * ctx.ap)",
+          "325 + (1.2 * ctx.ap)",
+          "400 + (1.2 * ctx.ap)"
         ]
       }
     ],
@@ -144,36 +162,18 @@
     [
       {
         "type": "Q",
-        "name": "_4"
+        "name": "_1"
       },
       {
         "name": "Chain Lash",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "100 + (1.2 * ctx.ap)",
-          "175 + (1.2 * ctx.ap)",
-          "250 + (1.2 * ctx.ap)",
-          "325 + (1.2 * ctx.ap)",
-          "400 + (1.2 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_2"
-      },
-      {
-        "name": "Chain Lash",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "60 + (0.8 * ctx.ap)",
-          "115 + (0.8 * ctx.ap)",
-          "170 + (0.8 * ctx.ap)",
-          "225 + (0.8 * ctx.ap)",
-          "280 + (0.8 * ctx.ap)"
+          "40 + (0.4 * ctx.ap)",
+          "60 + (0.4 * ctx.ap)",
+          "80 + (0.4 * ctx.ap)",
+          "100 + (0.4 * ctx.ap)",
+          "120 + (0.4 * ctx.ap)"
         ]
       }
     ]

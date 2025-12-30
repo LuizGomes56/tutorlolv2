@@ -1,17 +1,25 @@
 {
   "riot_id": 3513,
-  "item_id": "EyeoftheHerald",
+  "item_id": "EyeOfTheHerald",
   "name": "Eye of the Herald",
   "price": 0,
   "sell": 0,
   "tier": 1,
   "maps": [
     [
-      "Arena",
+      "NexusBlitz",
       false
     ],
     [
-      "NexusBlitz",
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
       false
     ],
     [
@@ -19,19 +27,11 @@
       false
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
       "Tft",
+      false
+    ],
+    [
+      "Arena",
       false
     ]
   ],

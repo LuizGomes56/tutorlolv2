@@ -1,6 +1,6 @@
 {
   "riot_id": 2144,
-  "item_id": "JuiceofHaste",
+  "item_id": "JuiceOfHaste",
   "name": "Juice of Haste",
   "price": 500,
   "sell": 500,
@@ -11,11 +11,15 @@
       false
     ],
     [
-      "Tft",
+      "SummonersRift",
       false
     ],
     [
-      "SummonersRift",
+      "NexusBlitz",
+      false
+    ],
+    [
+      "Tft",
       false
     ],
     [
@@ -24,10 +28,6 @@
     ],
     [
       "SummonersRift",
-      false
-    ],
-    [
-      "NexusBlitz",
       false
     ],
     [

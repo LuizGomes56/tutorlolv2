@@ -7,23 +7,23 @@
   "tier": 3,
   "maps": [
     [
-      "SummonersRift",
-      false
+      "Arena",
+      true
     ],
     [
       "Tft",
       false
     ],
     [
-      "Arena",
-      true
-    ],
-    [
-      "Aram",
+      "SummonersRift",
       false
     ],
     [
       "SummonersRift",
+      false
+    ],
+    [
+      "Aram",
       false
     ],
     [
@@ -37,12 +37,12 @@
   ],
   "prettified_stats": [
     {
-      "name": "AttackDamage",
-      "value": 55
-    },
-    {
       "name": "AbilityHaste",
       "value": 20
+    },
+    {
+      "name": "AttackDamage",
+      "value": 55
     },
     {
       "name": "Health",

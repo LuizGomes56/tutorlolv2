@@ -7,8 +7,8 @@
   "tier": 3,
   "maps": [
     [
-      "Tft",
-      false
+      "SummonersRift",
+      true
     ],
     [
       "SummonersRift",
@@ -19,7 +19,11 @@
       true
     ],
     [
-      "SummonersRift",
+      "NexusBlitz",
+      true
+    ],
+    [
+      "Tft",
       false
     ],
     [
@@ -28,21 +32,17 @@
     ],
     [
       "SummonersRift",
-      true
-    ],
-    [
-      "NexusBlitz",
-      true
+      false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AttackDamage",
-      "value": 80
-    },
-    {
       "name": "LifeSteal",
       "value": 15
+    },
+    {
+      "name": "AttackDamage",
+      "value": 80
     }
   ],
   "damage_type": "Unknown",

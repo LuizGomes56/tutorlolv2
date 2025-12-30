@@ -71,22 +71,6 @@
   "abilities": [
     [
       {
-        "type": "R",
-        "name": "_1"
-      },
-      {
-        "name": "Curse of the Sad Mummy",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "200 + (0.8 * ctx.ap)",
-          "300 + (0.8 * ctx.ap)",
-          "400 + (0.8 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "W",
         "name": "_1"
       },
@@ -105,19 +89,17 @@
     ],
     [
       {
-        "type": "E",
+        "type": "R",
         "name": "_1"
       },
       {
-        "name": "Tantrum",
+        "name": "Curse of the Sad Mummy",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "65 + (0.5 * ctx.ap)",
-          "95 + (0.5 * ctx.ap)",
-          "125 + (0.5 * ctx.ap)",
-          "155 + (0.5 * ctx.ap)",
-          "185 + (0.5 * ctx.ap)"
+          "200 + (0.8 * ctx.ap)",
+          "300 + (0.8 * ctx.ap)",
+          "400 + (0.8 * ctx.ap)"
         ]
       }
     ],
@@ -149,11 +131,29 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "5 + (0.03 * ctx.bonus_ctx.armor) + (0.03 * ctx.bonus_magic_resist)",
-          "7 + (0.03 * ctx.bonus_ctx.armor) + (0.03 * ctx.bonus_magic_resist)",
-          "9 + (0.03 * ctx.bonus_ctx.armor) + (0.03 * ctx.bonus_magic_resist)",
-          "11 + (0.03 * ctx.bonus_ctx.armor) + (0.03 * ctx.bonus_magic_resist)",
-          "13 + (0.03 * ctx.bonus_ctx.armor) + (0.03 * ctx.bonus_magic_resist)"
+          "5 + (0.03 * ctx.bonus_armor) + (0.03 * ctx.bonus_magic_resist)",
+          "7 + (0.03 * ctx.bonus_armor) + (0.03 * ctx.bonus_magic_resist)",
+          "9 + (0.03 * ctx.bonus_armor) + (0.03 * ctx.bonus_magic_resist)",
+          "11 + (0.03 * ctx.bonus_armor) + (0.03 * ctx.bonus_magic_resist)",
+          "13 + (0.03 * ctx.bonus_armor) + (0.03 * ctx.bonus_magic_resist)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Tantrum",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "65 + (0.5 * ctx.ap)",
+          "95 + (0.5 * ctx.ap)",
+          "125 + (0.5 * ctx.ap)",
+          "155 + (0.5 * ctx.ap)",
+          "185 + (0.5 * ctx.ap)"
         ]
       }
     ]

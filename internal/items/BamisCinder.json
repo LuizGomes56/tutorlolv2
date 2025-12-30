@@ -7,11 +7,15 @@
   "tier": 2,
   "maps": [
     [
-      "SummonersRift",
+      "Aram",
       true
     ],
     [
-      "Aram",
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
       true
     ],
     [
@@ -29,20 +33,16 @@
     [
       "NexusBlitz",
       true
-    ],
-    [
-      "SummonersRift",
-      false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AbilityHaste",
-      "value": 5
-    },
-    {
       "name": "Health",
       "value": 150
+    },
+    {
+      "name": "AbilityHaste",
+      "value": 5
     }
   ],
   "damage_type": "Unknown",

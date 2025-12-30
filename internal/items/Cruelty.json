@@ -7,8 +7,8 @@
   "tier": 3,
   "maps": [
     [
-      "Arena",
-      true
+      "SummonersRift",
+      false
     ],
     [
       "SummonersRift",
@@ -19,30 +19,30 @@
       false
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
       "NexusBlitz",
       false
     ],
     [
       "Tft",
       false
+    ],
+    [
+      "Arena",
+      true
+    ],
+    [
+      "SummonersRift",
+      false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Armor",
-      "value": 30
-    },
-    {
       "name": "AbilityPower",
       "value": 80
+    },
+    {
+      "name": "Armor",
+      "value": 30
     },
     {
       "name": "MagicResist",

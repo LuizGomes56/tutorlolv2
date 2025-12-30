@@ -70,6 +70,24 @@
   "abilities": [
     [
       {
+        "type": "W",
+        "name": "_2"
+      },
+      {
+        "name": "Blade Whirl",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "40 + ctx.bonus_ad",
+          "70 + ctx.bonus_ad",
+          "100 + ctx.bonus_ad",
+          "130 + ctx.bonus_ad",
+          "160 + ctx.bonus_ad"
+        ]
+      }
+    ],
+    [
+      {
         "type": "R",
         "name": "_1"
       },
@@ -81,6 +99,40 @@
           "1.25 + (0.1125 * ctx.ad)",
           "3.75 + (0.1125 * ctx.ad)",
           "6.25 + (0.1125 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_3"
+      },
+      {
+        "name": "Inferno Trigger",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "12.5 + (1.125 * ctx.ad)",
+          "37.5 + (1.125 * ctx.ad)",
+          "62.5 + (1.125 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Wild Rush",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "50 + (0.2 * ctx.bonus_ad)",
+          "60 + (0.2 * ctx.bonus_ad)",
+          "70 + (0.2 * ctx.bonus_ad)",
+          "80 + (0.2 * ctx.bonus_ad)",
+          "90 + (0.2 * ctx.bonus_ad)"
         ]
       }
     ],
@@ -105,52 +157,18 @@
     [
       {
         "type": "W",
-        "name": "_2"
+        "name": "_1"
       },
       {
         "name": "Blade Whirl",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "40 + ctx.bonus_ad",
-          "70 + ctx.bonus_ad",
-          "100 + ctx.bonus_ad",
-          "130 + ctx.bonus_ad",
-          "160 + ctx.bonus_ad"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_1"
-      },
-      {
-        "name": "Wild Rush",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "50 + (0.2 * ctx.bonus_ad)",
-          "60 + (0.2 * ctx.bonus_ad)",
-          "70 + (0.2 * ctx.bonus_ad)",
-          "80 + (0.2 * ctx.bonus_ad)",
-          "90 + (0.2 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_3"
-      },
-      {
-        "name": "Inferno Trigger",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "12.5 + (1.125 * ctx.ad)",
-          "37.5 + (1.125 * ctx.ad)",
-          "62.5 + (1.125 * ctx.ad)"
+          "20 + (0.5 * ctx.bonus_ad)",
+          "35 + (0.5 * ctx.bonus_ad)",
+          "50 + (0.5 * ctx.bonus_ad)",
+          "65 + (0.5 * ctx.bonus_ad)",
+          "80 + (0.5 * ctx.bonus_ad)"
         ]
       }
     ],
@@ -167,24 +185,6 @@
           "50 + (4.5 * ctx.ad)",
           "150 + (4.5 * ctx.ad)",
           "250 + (4.5 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_1"
-      },
-      {
-        "name": "Blade Whirl",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "20 + (0.5 * ctx.bonus_ad)",
-          "35 + (0.5 * ctx.bonus_ad)",
-          "50 + (0.5 * ctx.bonus_ad)",
-          "65 + (0.5 * ctx.bonus_ad)",
-          "80 + (0.5 * ctx.bonus_ad)"
         ]
       }
     ],

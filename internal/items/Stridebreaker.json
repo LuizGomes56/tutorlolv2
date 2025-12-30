@@ -11,12 +11,20 @@
       false
     ],
     [
+      "SummonersRift",
+      false
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
       "Aram",
       true
     ],
     [
       "SummonersRift",
-      false
+      true
     ],
     [
       "SummonersRift",
@@ -25,24 +33,16 @@
     [
       "NexusBlitz",
       true
-    ],
-    [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
     ]
   ],
   "prettified_stats": [
     {
       "name": "AttackSpeed",
-      "value": 25
+      "value": 15
     },
     {
       "name": "Health",
-      "value": 450
+      "value": 375
     },
     {
       "name": "AttackDamage",

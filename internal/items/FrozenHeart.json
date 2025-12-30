@@ -11,11 +11,7 @@
       true
     ],
     [
-      "Arena",
-      false
-    ],
-    [
-      "Tft",
+      "SummonersRift",
       false
     ],
     [
@@ -27,26 +23,30 @@
       true
     ],
     [
+      "Arena",
+      false
+    ],
+    [
       "NexusBlitz",
       true
     ],
     [
-      "SummonersRift",
+      "Tft",
       false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Mana",
-      "value": 400
+      "name": "AbilityHaste",
+      "value": 15
     },
     {
       "name": "Armor",
-      "value": 75
+      "value": 90
     },
     {
-      "name": "AbilityHaste",
-      "value": 20
+      "name": "Mana",
+      "value": 450
     }
   ],
   "damage_type": "Unknown",

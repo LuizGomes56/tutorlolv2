@@ -82,7 +82,7 @@ macro_rules! serve_dyn {
     ($f:ident) => {
         paste::paste! {
             pub fn [<serve_dyn_ $f>]() -> impl HttpServiceFactory + 'static {
-                Files::new(concat!("/", stringify!($f)), concat!("img/", stringify!($f)))
+                Files::new(concat!("/", stringify!($f)), concat!("../img/", stringify!($f)))
                     .use_etag(false)
                     .use_last_modified(false)
             }

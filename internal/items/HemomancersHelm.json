@@ -11,10 +11,6 @@
       true
     ],
     [
-      "NexusBlitz",
-      false
-    ],
-    [
       "SummonersRift",
       false
     ],
@@ -27,11 +23,15 @@
       false
     ],
     [
-      "Tft",
+      "NexusBlitz",
       false
     ],
     [
       "SummonersRift",
+      false
+    ],
+    [
+      "Tft",
       false
     ]
   ],
@@ -41,12 +41,12 @@
       "value": 70
     },
     {
-      "name": "AbilityHaste",
-      "value": 30
-    },
-    {
       "name": "Omnivamp",
       "value": 15
+    },
+    {
+      "name": "AbilityHaste",
+      "value": 30
     }
   ],
   "damage_type": "Unknown",

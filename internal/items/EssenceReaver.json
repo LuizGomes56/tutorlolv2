@@ -11,42 +11,42 @@
       true
     ],
     [
-      "Arena",
+      "Tft",
       false
-    ],
-    [
-      "SummonersRift",
-      true
     ],
     [
       "Aram",
       true
     ],
     [
-      "NexusBlitz",
-      true
-    ],
-    [
-      "Tft",
+      "Arena",
       false
     ],
     [
       "SummonersRift",
       false
+    ],
+    [
+      "NexusBlitz",
+      true
+    ],
+    [
+      "SummonersRift",
+      true
     ]
   ],
   "prettified_stats": [
     {
       "name": "AttackDamage",
-      "value": 60
-    },
-    {
-      "name": "AbilityHaste",
-      "value": 15
+      "value": 50
     },
     {
       "name": "CriticalStrikeChance",
       "value": 25
+    },
+    {
+      "name": "AbilityHaste",
+      "value": 20
     }
   ],
   "damage_type": "Unknown",
@@ -116,7 +116,7 @@
   "builds_from_item_ids": [
     "Pickaxe",
     "CaulfieldsWarhammer",
-    "CloakofAgility"
+    "CloakOfAgility"
   ],
   "builds_into_riot_ids": [],
   "builds_into_item_ids": [],

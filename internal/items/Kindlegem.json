@@ -11,23 +11,23 @@
       false
     ],
     [
+      "SummonersRift",
+      false
+    ],
+    [
       "Arena",
       false
     ],
     [
-      "SummonersRift",
+      "Aram",
       true
     ],
     [
       "SummonersRift",
-      false
+      true
     ],
     [
       "NexusBlitz",
-      true
-    ],
-    [
-      "Aram",
       true
     ],
     [
@@ -37,12 +37,12 @@
   ],
   "prettified_stats": [
     {
-      "name": "AbilityHaste",
-      "value": 10
-    },
-    {
       "name": "Health",
       "value": 200
+    },
+    {
+      "name": "AbilityHaste",
+      "value": 10
     }
   ],
   "damage_type": "Unknown",
@@ -144,8 +144,8 @@
   "builds_into_item_ids": [
     "WintersApproach",
     "BlackCleaver",
-    "LocketoftheIronSolari",
-    "EchoesofHelia",
+    "LocketOfTheIronSolari",
+    "EchoesOfHelia",
     "ZekesConvergence",
     "SpiritVisage",
     "Redemption",

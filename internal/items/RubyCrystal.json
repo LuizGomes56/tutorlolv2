@@ -7,15 +7,19 @@
   "tier": 1,
   "maps": [
     [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
       "Aram",
+      true
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "Tft",
+      false
+    ],
+    [
+      "SummonersRift",
       true
     ],
     [
@@ -23,15 +27,11 @@
       true
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "Tft",
-      false
-    ],
-    [
       "Arena",
+      false
+    ],
+    [
+      "SummonersRift",
       false
     ]
   ],
@@ -135,11 +135,11 @@
     "GiantsBelt",
     "Tunneler",
     "SpectresCowl",
-    "ForceofNature",
-    "SpearofShojin",
+    "ForceOfNature",
+    "SpearOfShojin",
     "IcebornGauntlet",
     "BamisCinder",
-    "CatalystofAeons",
+    "CatalystOfAeons",
     "Phage",
     "SteraksGage",
     "WingedMoonplate",

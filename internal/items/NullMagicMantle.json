@@ -8,22 +8,14 @@
   "maps": [
     [
       "SummonersRift",
-      true
-    ],
-    [
-      "Tft",
-      false
-    ],
-    [
-      "NexusBlitz",
-      true
-    ],
-    [
-      "Arena",
       false
     ],
     [
       "SummonersRift",
+      true
+    ],
+    [
+      "NexusBlitz",
       true
     ],
     [
@@ -32,6 +24,14 @@
     ],
     [
       "SummonersRift",
+      true
+    ],
+    [
+      "Tft",
+      false
+    ],
+    [
+      "Arena",
       false
     ]
   ],
@@ -121,10 +121,10 @@
     "SpectresCowl",
     "MercurysTreads",
     "VerdantBarrier",
-    "LocketoftheIronSolari",
+    "LocketOfTheIronSolari",
     "Hexdrinker",
     "ZekesConvergence",
-    "AegisoftheLegion",
+    "AegisOfTheLegion",
     "QuicksilverSash"
   ],
   "ranged": {

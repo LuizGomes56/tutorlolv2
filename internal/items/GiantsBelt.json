@@ -11,6 +11,18 @@
       false
     ],
     [
+      "SummonersRift",
+      true
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "NexusBlitz",
+      true
+    ],
+    [
       "Arena",
       false
     ],
@@ -19,19 +31,7 @@
       false
     ],
     [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
       "Aram",
-      true
-    ],
-    [
-      "NexusBlitz",
       true
     ]
   ],
@@ -129,7 +129,7 @@
     "Heartsteel",
     "RylaisCrystalScepter",
     "RanduinsOmen",
-    "JakShoTheProtean",
+    "JakshoTheProtean",
     "ChempunkChainsword"
   ],
   "ranged": {

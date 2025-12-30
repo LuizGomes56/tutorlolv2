@@ -11,19 +11,19 @@
       true
     ],
     [
-      "Aram",
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
       true
     ],
     [
-      "Tft",
+      "Arena",
       false
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
+      "Aram",
       true
     ],
     [
@@ -31,18 +31,18 @@
       true
     ],
     [
-      "Arena",
+      "Tft",
       false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AttackDamage",
-      "value": 15
-    },
-    {
       "name": "CriticalStrikeChance",
       "value": 20
+    },
+    {
+      "name": "AttackDamage",
+      "value": 15
     }
   ],
   "damage_type": "Unknown",
@@ -110,7 +110,7 @@
   ],
   "builds_from_item_ids": [
     "LongSword",
-    "CloakofAgility"
+    "CloakOfAgility"
   ],
   "builds_into_riot_ids": [
     6673,

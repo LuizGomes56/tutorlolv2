@@ -106,24 +106,6 @@
     ],
     [
       {
-        "type": "E",
-        "name": "Void"
-      },
-      {
-        "name": "Heroic Swing",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "15 + (0.15 * ctx.ad) + (0.01 * ctx.attack_speed)",
-          "30 + (0.15 * ctx.ad) + (0.01 * ctx.attack_speed)",
-          "45 + (0.15 * ctx.ad) + (0.01 * ctx.attack_speed)",
-          "60 + (0.15 * ctx.ad) + (0.01 * ctx.attack_speed)",
-          "75 + (0.15 * ctx.ad) + (0.01 * ctx.attack_speed)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "P",
         "name": "Void"
       },
@@ -156,22 +138,6 @@
     [
       {
         "type": "R",
-        "name": "_2Max"
-      },
-      {
-        "name": "Comeuppance",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "(375 + (2.25 * ctx.ad)) * (1 + ctx.crit_chance / 200)",
-          "(630 + (2.7 * ctx.ad)) * (1 + ctx.crit_chance / 200)",
-          "(945 + (3.15 * ctx.ad)) * (1 + ctx.crit_chance / 200)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
         "name": "_1Min"
       },
       {
@@ -182,6 +148,24 @@
           "(25 + (0.15 * ctx.ad)) * (1 + ctx.crit_chance / 200)",
           "(30 + (0.15 * ctx.ad)) * (1 + ctx.crit_chance / 200)",
           "(35 + (0.15 * ctx.ad)) * (1 + ctx.crit_chance / 200)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "Void"
+      },
+      {
+        "name": "Heroic Swing",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "15 + (0.15 * ctx.ad) + (0.01 * ctx.attack_speed)",
+          "30 + (0.15 * ctx.ad) + (0.01 * ctx.attack_speed)",
+          "45 + (0.15 * ctx.ad) + (0.01 * ctx.attack_speed)",
+          "60 + (0.15 * ctx.ad) + (0.01 * ctx.attack_speed)",
+          "75 + (0.15 * ctx.ad) + (0.01 * ctx.attack_speed)"
         ]
       }
     ],
@@ -204,6 +188,22 @@
     [
       {
         "type": "R",
+        "name": "_2Max"
+      },
+      {
+        "name": "Comeuppance",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "(375 + (2.25 * ctx.ad)) * (1 + ctx.crit_chance / 200)",
+          "(630 + (2.7 * ctx.ad)) * (1 + ctx.crit_chance / 200)",
+          "(945 + (3.15 * ctx.ad)) * (1 + ctx.crit_chance / 200)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
         "name": "_1Max"
       },
       {
@@ -219,35 +219,47 @@
     ]
   ],
   "merge_data": [
-    [
-      {
+    {
+      "minimum_damage": {
         "type": "Q",
         "name": "Min"
       },
-      {
+      "maximum_damage": {
         "type": "Q",
         "name": "Max"
+      },
+      "alias": {
+        "type": "Q",
+        "name": "Void"
       }
-    ],
-    [
-      {
+    },
+    {
+      "minimum_damage": {
         "type": "R",
         "name": "_1Min"
       },
-      {
+      "maximum_damage": {
         "type": "R",
         "name": "_1Max"
+      },
+      "alias": {
+        "type": "R",
+        "name": "_1"
       }
-    ],
-    [
-      {
+    },
+    {
+      "minimum_damage": {
         "type": "R",
         "name": "_2Min"
       },
-      {
+      "maximum_damage": {
         "type": "R",
         "name": "_2Max"
+      },
+      "alias": {
+        "type": "R",
+        "name": "_2"
       }
-    ]
+    }
   ]
 }

@@ -71,54 +71,36 @@
     [
       {
         "type": "W",
-        "name": "_1"
+        "name": "_2"
       },
       {
         "name": "Ricochet",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "(0.7 * ctx.ad)",
-          "(0.74375 * ctx.ad)",
-          "(0.7875 * ctx.ad)",
-          "(0.83125 * ctx.ad)",
-          "(0.875 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_4"
-      },
-      {
-        "name": "Ricochet",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "(0.26 * ctx.ad)",
-          "(0.27625 * ctx.ad)",
-          "(0.2925 * ctx.ad)",
-          "(0.30875 * ctx.ad)",
-          "(0.325 * ctx.ad)"
+          "(0.4 * ctx.ad)",
+          "(0.425 * ctx.ad)",
+          "(0.45 * ctx.ad)",
+          "(0.475 * ctx.ad)",
+          "(0.5 * ctx.ad)"
         ]
       }
     ],
     [
       {
         "type": "Q",
-        "name": "_2"
+        "name": "_1"
       },
       {
         "name": "Boomerang Blade",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "24 + (0.4 * ctx.bonus_ad) + (0.24 * ctx.ap)",
-          "34 + (0.4 * ctx.bonus_ad) + (0.24 * ctx.ap)",
-          "44 + (0.4 * ctx.bonus_ad) + (0.24 * ctx.ap)",
-          "54 + (0.4 * ctx.bonus_ad) + (0.24 * ctx.ap)",
-          "64 + (0.4 * ctx.bonus_ad) + (0.24 * ctx.ap)"
+          "60 + ctx.bonus_ad + (0.6 * ctx.ap)",
+          "85 + ctx.bonus_ad + (0.6 * ctx.ap)",
+          "110 + ctx.bonus_ad + (0.6 * ctx.ap)",
+          "135 + ctx.bonus_ad + (0.6 * ctx.ap)",
+          "160 + ctx.bonus_ad + (0.6 * ctx.ap)"
         ]
       }
     ],
@@ -160,37 +142,55 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_2"
-      },
-      {
-        "name": "Ricochet",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "(0.4 * ctx.ad)",
-          "(0.425 * ctx.ad)",
-          "(0.45 * ctx.ad)",
-          "(0.475 * ctx.ad)",
-          "(0.5 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "Q",
-        "name": "_1"
+        "name": "_2"
       },
       {
         "name": "Boomerang Blade",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "60 + ctx.bonus_ad + (0.6 * ctx.ap)",
-          "85 + ctx.bonus_ad + (0.6 * ctx.ap)",
-          "110 + ctx.bonus_ad + (0.6 * ctx.ap)",
-          "135 + ctx.bonus_ad + (0.6 * ctx.ap)",
-          "160 + ctx.bonus_ad + (0.6 * ctx.ap)"
+          "24 + (0.4 * ctx.bonus_ad) + (0.24 * ctx.ap)",
+          "34 + (0.4 * ctx.bonus_ad) + (0.24 * ctx.ap)",
+          "44 + (0.4 * ctx.bonus_ad) + (0.24 * ctx.ap)",
+          "54 + (0.4 * ctx.bonus_ad) + (0.24 * ctx.ap)",
+          "64 + (0.4 * ctx.bonus_ad) + (0.24 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Ricochet",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "(0.7 * ctx.ad)",
+          "(0.74375 * ctx.ad)",
+          "(0.7875 * ctx.ad)",
+          "(0.83125 * ctx.ad)",
+          "(0.875 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_4"
+      },
+      {
+        "name": "Ricochet",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "(0.26 * ctx.ad)",
+          "(0.27625 * ctx.ad)",
+          "(0.2925 * ctx.ad)",
+          "(0.30875 * ctx.ad)",
+          "(0.325 * ctx.ad)"
         ]
       }
     ]

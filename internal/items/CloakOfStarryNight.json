@@ -1,13 +1,13 @@
 {
   "riot_id": 443059,
-  "item_id": "CloakofStarryNight",
+  "item_id": "CloakOfStarryNight",
   "name": "Cloak of Starry Night",
   "price": 0,
   "sell": 400,
   "tier": 3,
   "maps": [
     [
-      "NexusBlitz",
+      "SummonersRift",
       false
     ],
     [
@@ -23,15 +23,15 @@
       false
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
       "Aram",
+      false
+    ],
+    [
+      "NexusBlitz",
+      false
+    ],
+    [
+      "SummonersRift",
       false
     ]
   ],

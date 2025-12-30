@@ -7,10 +7,6 @@
   "tier": 3,
   "maps": [
     [
-      "Tft",
-      false
-    ],
-    [
       "SummonersRift",
       false
     ],
@@ -19,38 +15,42 @@
       true
     ],
     [
+      "Aram",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
       "NexusBlitz",
       false
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "Aram",
+      "Tft",
       false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "MoveSpeed",
-      "value": 5
+      "name": "AbilityPower",
+      "value": 60
     },
     {
       "name": "ArmorPenetration",
       "value": 22
     },
     {
-      "name": "MagicPenetration",
-      "value": 30
+      "name": "MoveSpeed",
+      "value": 5
     },
     {
-      "name": "AbilityPower",
-      "value": 60
+      "name": "MagicPenetration",
+      "value": 30
     }
   ],
   "damage_type": "Unknown",

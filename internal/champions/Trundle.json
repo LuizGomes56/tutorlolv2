@@ -72,16 +72,34 @@
     [
       {
         "type": "R",
-        "name": "_3"
+        "name": "_2"
       },
       {
         "name": "Subjugate",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "(0.025 * ctx.enemy_max_health) + (0.0025 * 0.01 * ctx.ap)",
-          "(0.03125 * ctx.enemy_max_health) + (0.0025 * 0.01 * ctx.ap)",
-          "(0.0375 * ctx.enemy_max_health) + (0.0025 * 0.01 * ctx.ap)"
+          "(0.1 * ctx.enemy_max_health) + (0.01 * 0.01 * ctx.ap)",
+          "(0.125 * ctx.enemy_max_health) + (0.01 * 0.01 * ctx.ap)",
+          "(0.15 * ctx.enemy_max_health) + (0.01 * 0.01 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "Chomp",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "10",
+          "12.5",
+          "15",
+          "17.5",
+          "20"
         ]
       }
     ],
@@ -106,18 +124,18 @@
     [
       {
         "type": "Q",
-        "name": "_2"
+        "name": "_3"
       },
       {
         "name": "Chomp",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "10",
-          "12.5",
-          "15",
-          "17.5",
-          "20"
+          "20",
+          "25",
+          "30",
+          "35",
+          "40"
         ]
       }
     ],
@@ -140,34 +158,16 @@
     [
       {
         "type": "R",
-        "name": "_2"
+        "name": "_3"
       },
       {
         "name": "Subjugate",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "(0.1 * ctx.enemy_max_health) + (0.01 * 0.01 * ctx.ap)",
-          "(0.125 * ctx.enemy_max_health) + (0.01 * 0.01 * ctx.ap)",
-          "(0.15 * ctx.enemy_max_health) + (0.01 * 0.01 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_3"
-      },
-      {
-        "name": "Chomp",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "20",
-          "25",
-          "30",
-          "35",
-          "40"
+          "(0.025 * ctx.enemy_max_health) + (0.0025 * 0.01 * ctx.ap)",
+          "(0.03125 * ctx.enemy_max_health) + (0.0025 * 0.01 * ctx.ap)",
+          "(0.0375 * ctx.enemy_max_health) + (0.0025 * 0.01 * ctx.ap)"
         ]
       }
     ]

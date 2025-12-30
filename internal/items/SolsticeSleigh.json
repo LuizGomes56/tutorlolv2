@@ -8,10 +8,10 @@
   "maps": [
     [
       "SummonersRift",
-      true
+      false
     ],
     [
-      "SummonersRift",
+      "Aram",
       false
     ],
     [
@@ -19,16 +19,16 @@
       false
     ],
     [
-      "Arena",
-      false
-    ],
-    [
       "Tft",
       false
     ],
     [
-      "Aram",
+      "Arena",
       false
+    ],
+    [
+      "SummonersRift",
+      true
     ],
     [
       "SummonersRift",
@@ -41,12 +41,12 @@
       "value": 75
     },
     {
-      "name": "GoldPer10Seconds",
-      "value": 5
-    },
-    {
       "name": "BaseManaRegen",
       "value": 75
+    },
+    {
+      "name": "GoldPer10Seconds",
+      "value": 5
     },
     {
       "name": "Health",
@@ -116,7 +116,7 @@
     3867
   ],
   "builds_from_item_ids": [
-    "BountyofWorlds"
+    "BountyOfWorlds"
   ],
   "builds_into_riot_ids": [],
   "builds_into_item_ids": [],

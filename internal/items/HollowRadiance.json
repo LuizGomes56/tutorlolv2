@@ -8,11 +8,7 @@
   "maps": [
     [
       "SummonersRift",
-      true
-    ],
-    [
-      "Aram",
-      true
+      false
     ],
     [
       "NexusBlitz",
@@ -28,7 +24,11 @@
     ],
     [
       "SummonersRift",
-      false
+      true
+    ],
+    [
+      "Aram",
+      true
     ],
     [
       "SummonersRift",
@@ -37,20 +37,16 @@
   ],
   "prettified_stats": [
     {
-      "name": "BaseHealthRegen",
-      "value": 100
-    },
-    {
       "name": "Health",
-      "value": 400
-    },
-    {
-      "name": "MagicResist",
-      "value": 40
+      "value": 450
     },
     {
       "name": "AbilityHaste",
       "value": 10
+    },
+    {
+      "name": "MagicResist",
+      "value": 40
     }
   ],
   "damage_type": "Unknown",

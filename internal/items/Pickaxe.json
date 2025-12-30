@@ -11,19 +11,11 @@
       true
     ],
     [
-      "SummonersRift",
-      true
-    ],
-    [
-      "NexusBlitz",
-      true
-    ],
-    [
-      "Aram",
-      true
-    ],
-    [
       "Tft",
+      false
+    ],
+    [
+      "SummonersRift",
       false
     ],
     [
@@ -31,8 +23,16 @@
       false
     ],
     [
+      "Aram",
+      true
+    ],
+    [
+      "NexusBlitz",
+      true
+    ],
+    [
       "SummonersRift",
-      false
+      true
     ]
   ],
   "prettified_stats": [
@@ -132,7 +132,7 @@
     "BlackCleaver",
     "Bloodthirster",
     "ImmortalShieldbow",
-    "SpearofShojin",
+    "SpearOfShojin",
     "Hullbreaker",
     "TheCollector",
     "InfinityEdge",
@@ -140,7 +140,7 @@
     "EssenceReaver",
     "StatikkShiv",
     "GuinsoosRageblade",
-    "BladeoftheRuinedKing",
+    "BladeOfTheRuinedKing",
     "SerpentsFang",
     "DeathsDance",
     "Opportunity"

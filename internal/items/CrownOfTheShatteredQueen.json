@@ -1,13 +1,21 @@
 {
   "riot_id": 444644,
-  "item_id": "CrownoftheShatteredQueen",
+  "item_id": "CrownOfTheShatteredQueen",
   "name": "Crown of the Shattered Queen",
   "price": 0,
   "sell": 400,
   "tier": 3,
   "maps": [
     [
-      "Tft",
+      "NexusBlitz",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "Aram",
       false
     ],
     [
@@ -19,19 +27,11 @@
       false
     ],
     [
-      "Aram",
-      false
-    ],
-    [
       "SummonersRift",
       false
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "NexusBlitz",
+      "Tft",
       false
     ]
   ],
@@ -45,12 +45,12 @@
       "value": 85
     },
     {
-      "name": "AbilityHaste",
-      "value": 25
-    },
-    {
       "name": "Mana",
       "value": 600
+    },
+    {
+      "name": "AbilityHaste",
+      "value": 25
     }
   ],
   "damage_type": "Unknown",

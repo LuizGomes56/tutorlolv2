@@ -1,29 +1,17 @@
 {
   "riot_id": 2142,
-  "item_id": "JuiceofPower",
+  "item_id": "JuiceOfPower",
   "name": "Juice of Power",
   "price": 500,
   "sell": 500,
   "tier": 1,
   "maps": [
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "Aram",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
       "Arena",
       true
     ],
     [
-      "SummonersRift",
+      "Tft",
       false
     ],
     [
@@ -31,7 +19,19 @@
       false
     ],
     [
-      "Tft",
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "Aram",
       false
     ]
   ],

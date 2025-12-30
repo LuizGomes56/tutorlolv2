@@ -1,19 +1,11 @@
 {
   "riot_id": 6620,
-  "item_id": "EchoesofHelia",
+  "item_id": "EchoesOfHelia",
   "name": "Echoes of Helia",
   "price": 2200,
   "sell": 1540,
   "tier": 3,
   "maps": [
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Aram",
-      true
-    ],
     [
       "Tft",
       false
@@ -27,19 +19,23 @@
       false
     ],
     [
-      "NexusBlitz",
+      "SummonersRift",
+      true
+    ],
+    [
+      "Aram",
       true
     ],
     [
       "SummonersRift",
       true
+    ],
+    [
+      "NexusBlitz",
+      true
     ]
   ],
   "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 20
-    },
     {
       "name": "AbilityPower",
       "value": 35
@@ -47,6 +43,10 @@
     {
       "name": "Health",
       "value": 200
+    },
+    {
+      "name": "AbilityHaste",
+      "value": 20
     },
     {
       "name": "BaseManaRegen",

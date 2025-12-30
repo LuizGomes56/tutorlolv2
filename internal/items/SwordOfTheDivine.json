@@ -1,21 +1,25 @@
 {
   "riot_id": 443060,
-  "item_id": "SwordoftheDivine",
+  "item_id": "SwordOfTheDivine",
   "name": "Sword of the Divine",
   "price": 0,
   "sell": 400,
   "tier": 3,
   "maps": [
     [
-      "SummonersRift",
-      false
-    ],
-    [
       "Aram",
       false
     ],
     [
+      "SummonersRift",
+      false
+    ],
+    [
       "Tft",
+      false
+    ],
+    [
+      "NexusBlitz",
       false
     ],
     [
@@ -24,10 +28,6 @@
     ],
     [
       "SummonersRift",
-      false
-    ],
-    [
-      "NexusBlitz",
       false
     ],
     [

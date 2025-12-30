@@ -1,6 +1,6 @@
 use crate::{ArrayItem, html::Html, parallel_task};
 use tutorlolv2_gen::{
-    CHAMPION_ABILITIES, CHAMPION_FORMULAS, CHAMPION_GENERATOR, ChampionId, Position,
+    ABILITY_FORMULAS, CHAMPION_FORMULAS, CHAMPION_GENERATOR, ChampionId, Position,
     RECOMMENDED_ITEMS, RECOMMENDED_RUNES,
 };
 
@@ -53,7 +53,7 @@ pub async fn champions_html() {
             .enumerate()
             .map(|(i, metadata)| {
                 let lit = metadata.kind.as_const_lit();
-                let (_, offsets) = CHAMPION_ABILITIES[champion_id as usize][i];
+                let offsets = ABILITY_FORMULAS[champion_id as usize][i];
                 let code = Html::code_block(offsets);
                 Html::code_column(&lit, &code)
             })

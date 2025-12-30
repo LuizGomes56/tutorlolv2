@@ -12,15 +12,15 @@
     ],
     [
       "SummonersRift",
+      true
+    ],
+    [
+      "Arena",
       false
     ],
     [
-      "Aram",
-      true
-    ],
-    [
       "SummonersRift",
-      true
+      false
     ],
     [
       "Tft",
@@ -31,8 +31,8 @@
       true
     ],
     [
-      "Arena",
-      false
+      "Aram",
+      true
     ]
   ],
   "prettified_stats": [
@@ -125,7 +125,7 @@
     "Thornmail",
     "KnightsVow",
     "DeadMansPlate",
-    "JakShoTheProtean"
+    "JakshoTheProtean"
   ],
   "ranged": {
     "minimum_damage": "zero",

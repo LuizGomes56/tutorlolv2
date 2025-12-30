@@ -11,23 +11,23 @@
       false
     ],
     [
-      "Arena",
-      true
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
       "Tft",
       false
     ],
     [
+      "Arena",
+      true
+    ],
+    [
+      "NexusBlitz",
+      false
+    ],
+    [
       "SummonersRift",
       false
     ],
     [
-      "NexusBlitz",
+      "SummonersRift",
       false
     ],
     [
@@ -41,12 +41,12 @@
       "value": 400
     },
     {
-      "name": "AbilityHaste",
-      "value": 30
-    },
-    {
       "name": "AdaptiveForce",
       "value": 85
+    },
+    {
+      "name": "AbilityHaste",
+      "value": 30
     }
   ],
   "damage_type": "Unknown",

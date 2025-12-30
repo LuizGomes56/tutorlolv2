@@ -42,14 +42,14 @@ fn declare_item(item: &Item) -> DeclaredItem {
 
     let get_constfn_closure = |expr: &str| {
         (!expr.is_empty() && expr != "zero").then_some({
-            let new_expr = expr.as_closure().add_f32s();
-            let ctx_param = new_expr.ctx_param();
-            let body = new_expr.to_lowercase();
+            let ctx_param = expr.ctx_param();
+            let body = expr.to_lowercase();
             let closure = format!("|{ctx_param}| {body}");
             move |fn_name: &str| {
                 (
                     format!(
-                        "{EVAL_FEAT} pub const fn {fn_name}(ctx: &EvalContext) -> f32 {{ {body} }}"
+                        "{EVAL_FEAT} pub const fn {fn_name}(ctx: &EvalContext) -> f32 {{ {expr} }}",
+                        expr = body.clean().cast_f32()
                     ),
                     closure,
                 )
@@ -79,8 +79,14 @@ fn declare_item(item: &Item) -> DeclaredItem {
         })
     };
 
-    let ranged_closures = get_closure(&ranged, &mut ranged_fn_names, "ranged").join(",");
-    let melee_closures = get_closure(&melee, &mut melee_fn_names, "melee").join(",");
+    let ranged_closures = {
+        let [min, max] = get_closure(&ranged, &mut ranged_fn_names, "ranged");
+        format!("ranged_min_dmg: {min}, ranged_max_dmg: {max},")
+    };
+    let melee_closures = {
+        let [min, max] = get_closure(&melee, &mut melee_fn_names, "melee");
+        format!("melee_min_dmg: {min}, melee_max_dmg: {max},")
+    };
 
     let get_fn_call = |names: &[String]| {
         names
@@ -108,7 +114,7 @@ fn declare_item(item: &Item) -> DeclaredItem {
     }
 }
 
-pub fn format_stats(stats: &ItemStats) -> String {
+pub fn get_stats(stats: &ItemStats) -> String {
     let mut all_stats = Vec::new();
 
     macro_rules! insert_stats {
@@ -220,7 +226,7 @@ pub async fn generate_items() -> GeneratorFn {
                 .collect::<Vec<_>>()
                 .join(",");
 
-            let stats = format_stats(&stats);
+            let stats = get_stats(&stats);
             let deals_damage = {
                 let is_zeroed = |expr: &str| expr != "zero" && !expr.is_empty();
                 is_zeroed(&ranged.minimum_damage)
@@ -229,38 +235,38 @@ pub async fn generate_items() -> GeneratorFn {
                     || is_zeroed(&melee.maximum_damage)
             };
 
-            let mut base_declaration = format!(
-                "{EVAL_FEAT} pub static {name_ssnake}_{riot_id}: CachedItem = CachedItem {{
+            let rest = format!(
+                "internal_id: ItemId::{name_pascal},
+                riot_id: {riot_id},
+                deals_damage: {deals_damage},
+                stats: CachedItemStats {{ {stats} }},
+                metadata: {metadata} }};"
+            );
+
+            let base_declaration = format!(
+                "pub static {name_ssnake}_{riot_id}: CachedItem = CachedItem {{
                     name: {name:?},
                     price: {price},
                     prettified_stats: &[{prettified_stats}],
                     damage_type: DamageType::{damage_type},
                     attributes: Attrs::{attributes:?},
                     tier: {tier},
-                    purchasable: {purchasable},
-                    internal_id: ItemId::{name_pascal},
-                    riot_id: {riot_id},
-                    stats: CachedItemStats {{ {stats} }},
-                    metadata: {metadata},
-                    deals_damage: {deals_damage},"
+                    purchasable: {purchasable},"
             );
 
-            let html_declaration = format!(
-                "{base_declaration}
-                ranged_damages: [{ranged_closures}],
-                melee_damages: [{melee_closures}], }};"
-            )
-            .rust_fmt()
-            .drop_f32s()
-            .rust_html()
-            .as_const();
+            let html_declaration =
+                format!("{base_declaration}{ranged_closures}{melee_closures}{rest}")
+                    .rust_fmt()
+                    .drop_f32s()
+                    .rust_html()
+                    .as_const();
 
-            base_declaration.push_str(&format!(
-                "ranged_damages: [{ranged_fn_names}],
-                melee_damages: [{melee_fn_names}], }};"
-            ));
-
-            base_declaration.push_str(&constfn_declaration);
+            let base_declaration = format!(
+                "{EVAL_FEAT}{base_declaration}
+                ranged_damages: [{ranged_fn_names}],
+                melee_damages: [{melee_fn_names}], {rest}
+                {constfn_declaration}"
+            );
 
             let generator =
                 CwdPath::get_generator(SrcFolder::Items, name_ssnake.to_lowercase()).await?;

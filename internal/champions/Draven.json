@@ -71,16 +71,16 @@
     [
       {
         "type": "R",
-        "name": "_3"
+        "name": "_2"
       },
       {
         "name": "Whirling Death",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "70 + (0.44 * ctx.bonus_ad)",
-          "110 + (0.52 * ctx.bonus_ad)",
-          "150 + (0.6 * ctx.bonus_ad)"
+          "350 + (2.2 * ctx.bonus_ad)",
+          "550 + (2.6 * ctx.bonus_ad)",
+          "750 + (3 * ctx.bonus_ad)"
         ]
       }
     ],
@@ -105,16 +105,16 @@
     [
       {
         "type": "R",
-        "name": "_1"
+        "name": "_4"
       },
       {
         "name": "Whirling Death",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "175 + (1.1 * ctx.bonus_ad)",
-          "275 + (1.3 * ctx.bonus_ad)",
-          "375 + (1.5 * ctx.bonus_ad)"
+          "140 + (0.88 * ctx.bonus_ad)",
+          "220 + (1.04 * ctx.bonus_ad)",
+          "300 + (1.2 * ctx.bonus_ad)"
         ]
       }
     ],
@@ -139,32 +139,32 @@
     [
       {
         "type": "R",
-        "name": "_2"
+        "name": "_3"
       },
       {
         "name": "Whirling Death",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "350 + (2.2 * ctx.bonus_ad)",
-          "550 + (2.6 * ctx.bonus_ad)",
-          "750 + (3 * ctx.bonus_ad)"
+          "70 + (0.44 * ctx.bonus_ad)",
+          "110 + (0.52 * ctx.bonus_ad)",
+          "150 + (0.6 * ctx.bonus_ad)"
         ]
       }
     ],
     [
       {
         "type": "R",
-        "name": "_4"
+        "name": "_1"
       },
       {
         "name": "Whirling Death",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "140 + (0.88 * ctx.bonus_ad)",
-          "220 + (1.04 * ctx.bonus_ad)",
-          "300 + (1.2 * ctx.bonus_ad)"
+          "175 + (1.1 * ctx.bonus_ad)",
+          "275 + (1.3 * ctx.bonus_ad)",
+          "375 + (1.5 * ctx.bonus_ad)"
         ]
       }
     ]

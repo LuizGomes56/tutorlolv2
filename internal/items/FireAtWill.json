@@ -1,6 +1,6 @@
 {
   "riot_id": 3901,
-  "item_id": "FireatWill",
+  "item_id": "FireAtWill",
   "name": "Fire at Will",
   "price": 0,
   "sell": 0,
@@ -11,7 +11,19 @@
       true
     ],
     [
+      "NexusBlitz",
+      true
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
       "Arena",
+      true
+    ],
+    [
+      "SummonersRift",
       true
     ],
     [
@@ -19,19 +31,7 @@
       true
     ],
     [
-      "SummonersRift",
-      true
-    ],
-    [
-      "NexusBlitz",
-      true
-    ],
-    [
       "Tft",
-      false
-    ],
-    [
-      "SummonersRift",
       false
     ]
   ],

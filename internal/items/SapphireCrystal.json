@@ -7,15 +7,19 @@
   "tier": 1,
   "maps": [
     [
+      "Arena",
+      false
+    ],
+    [
       "SummonersRift",
       true
     ],
     [
-      "SummonersRift",
-      false
+      "Aram",
+      true
     ],
     [
-      "Aram",
+      "NexusBlitz",
       true
     ],
     [
@@ -24,15 +28,11 @@
     ],
     [
       "SummonersRift",
-      true
-    ],
-    [
-      "NexusBlitz",
-      true
-    ],
-    [
-      "Arena",
       false
+    ],
+    [
+      "SummonersRift",
+      true
     ]
   ],
   "prettified_stats": [
@@ -108,7 +108,7 @@
     3802
   ],
   "builds_into_item_ids": [
-    "CatalystofAeons",
+    "CatalystOfAeons",
     "GlacialBuckler",
     "LostChapter"
   ],

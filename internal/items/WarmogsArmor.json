@@ -7,8 +7,8 @@
   "tier": 3,
   "maps": [
     [
-      "SummonersRift",
-      false
+      "NexusBlitz",
+      true
     ],
     [
       "SummonersRift",
@@ -19,30 +19,30 @@
       false
     ],
     [
-      "Aram",
-      true
-    ],
-    [
       "SummonersRift",
       true
     ],
     [
-      "NexusBlitz",
-      true
+      "SummonersRift",
+      false
     ],
     [
       "Tft",
       false
+    ],
+    [
+      "Aram",
+      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Health",
-      "value": 1000
+      "name": "MoveSpeed",
+      "value": 4
     },
     {
-      "name": "BaseHealthRegen",
-      "value": 100
+      "name": "Health",
+      "value": 1100
     }
   ],
   "damage_type": "Unknown",

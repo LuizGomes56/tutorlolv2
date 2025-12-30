@@ -1,6 +1,6 @@
 {
   "riot_id": 2140,
-  "item_id": "ElixirofWrath",
+  "item_id": "ElixirOfWrath",
   "name": "Elixir of Wrath",
   "price": 500,
   "sell": 200,
@@ -8,31 +8,31 @@
   "maps": [
     [
       "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
       true
     ],
     [
-      "NexusBlitz",
-      true
-    ],
-    [
-      "Aram",
-      true
+      "Arena",
+      false
     ],
     [
       "Tft",
       false
     ],
     [
-      "SummonersRift",
-      false
+      "Aram",
+      true
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "Arena",
-      false
+      "NexusBlitz",
+      true
     ]
   ],
   "prettified_stats": [],

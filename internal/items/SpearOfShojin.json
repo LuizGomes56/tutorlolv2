@@ -1,6 +1,6 @@
 {
   "riot_id": 3161,
-  "item_id": "SpearofShojin",
+  "item_id": "SpearOfShojin",
   "name": "Spear of Shojin",
   "price": 3100,
   "sell": 2170,
@@ -8,10 +8,14 @@
   "maps": [
     [
       "SummonersRift",
-      true
+      false
     ],
     [
       "Aram",
+      true
+    ],
+    [
+      "NexusBlitz",
       true
     ],
     [
@@ -24,10 +28,6 @@
     ],
     [
       "SummonersRift",
-      false
-    ],
-    [
-      "NexusBlitz",
       true
     ],
     [

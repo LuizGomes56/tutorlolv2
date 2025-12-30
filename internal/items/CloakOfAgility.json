@@ -1,6 +1,6 @@
 {
   "riot_id": 1018,
-  "item_id": "CloakofAgility",
+  "item_id": "CloakOfAgility",
   "name": "Cloak of Agility",
   "price": 600,
   "sell": 420,
@@ -11,15 +11,15 @@
       true
     ],
     [
-      "Aram",
-      true
-    ],
-    [
-      "SummonersRift",
+      "Tft",
       false
     ],
     [
       "SummonersRift",
+      true
+    ],
+    [
+      "Aram",
       true
     ],
     [
@@ -31,7 +31,7 @@
       false
     ],
     [
-      "Tft",
+      "SummonersRift",
       false
     ]
   ],

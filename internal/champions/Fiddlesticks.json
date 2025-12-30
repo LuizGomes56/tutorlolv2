@@ -71,96 +71,6 @@
     [
       {
         "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Terrify",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "(0.04 * ctx.current_health) + (0.03 * 0.01 * ctx.ap)",
-          "(0.045 * ctx.current_health) + (0.03 * 0.01 * ctx.ap)",
-          "(0.05 * ctx.current_health) + (0.03 * 0.01 * ctx.ap)",
-          "(0.055 * ctx.current_health) + (0.03 * 0.01 * ctx.ap)",
-          "(0.06 * ctx.current_health) + (0.03 * 0.01 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_3"
-      },
-      {
-        "name": "Bountiful Harvest",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "15 + (0.1125 * ctx.ap) + (0.12 * ctx.missing_health)",
-          "22.5 + (0.1125 * ctx.ap) + (0.145 * ctx.missing_health)",
-          "30 + (0.1125 * ctx.ap) + (0.17 * ctx.missing_health)",
-          "37.5 + (0.1125 * ctx.ap) + (0.195 * ctx.missing_health)",
-          "45 + (0.1125 * ctx.ap) + (0.22 * ctx.missing_health)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_2"
-      },
-      {
-        "name": "Terrify",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "40",
-          "60",
-          "80",
-          "100",
-          "120"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_1"
-      },
-      {
-        "name": "Reap",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "70 + (0.5 * ctx.ap)",
-          "105 + (0.5 * ctx.ap)",
-          "140 + (0.5 * ctx.ap)",
-          "175 + (0.5 * ctx.ap)",
-          "210 + (0.5 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_4"
-      },
-      {
-        "name": "Bountiful Harvest",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "120 + (0.9 * ctx.ap) + (0.12 * ctx.missing_health)",
-          "180 + (0.9 * ctx.ap) + (0.145 * ctx.missing_health)",
-          "240 + (0.9 * ctx.ap) + (0.17 * ctx.missing_health)",
-          "300 + (0.9 * ctx.ap) + (0.195 * ctx.missing_health)",
-          "360 + (0.9 * ctx.ap) + (0.22 * ctx.missing_health)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
         "name": "_4"
       },
       {
@@ -178,35 +88,19 @@
     ],
     [
       {
-        "type": "W",
+        "type": "Q",
         "name": "_1"
       },
       {
-        "name": "Bountiful Harvest",
+        "name": "Terrify",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "15 + (0.1125 * ctx.ap)",
-          "22.5 + (0.1125 * ctx.ap)",
-          "30 + (0.1125 * ctx.ap)",
-          "37.5 + (0.1125 * ctx.ap)",
-          "45 + (0.1125 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_1"
-      },
-      {
-        "name": "Crowstorm",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "37.5 + (0.125 * ctx.ap)",
-          "62.5 + (0.125 * ctx.ap)",
-          "87.5 + (0.125 * ctx.ap)"
+          "(0.04 * ctx.current_health) + (0.03 * 0.01 * ctx.ap)",
+          "(0.045 * ctx.current_health) + (0.03 * 0.01 * ctx.ap)",
+          "(0.05 * ctx.current_health) + (0.03 * 0.01 * ctx.ap)",
+          "(0.055 * ctx.current_health) + (0.03 * 0.01 * ctx.ap)",
+          "(0.06 * ctx.current_health) + (0.03 * 0.01 * ctx.ap)"
         ]
       }
     ],
@@ -231,6 +125,94 @@
     [
       {
         "type": "W",
+        "name": "_3"
+      },
+      {
+        "name": "Bountiful Harvest",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "15 + (0.1125 * ctx.ap) + (0.12 * ctx.missing_health)",
+          "22.5 + (0.1125 * ctx.ap) + (0.145 * ctx.missing_health)",
+          "30 + (0.1125 * ctx.ap) + (0.17 * ctx.missing_health)",
+          "37.5 + (0.1125 * ctx.ap) + (0.195 * ctx.missing_health)",
+          "45 + (0.1125 * ctx.ap) + (0.22 * ctx.missing_health)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Reap",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "70 + (0.5 * ctx.ap)",
+          "105 + (0.5 * ctx.ap)",
+          "140 + (0.5 * ctx.ap)",
+          "175 + (0.5 * ctx.ap)",
+          "210 + (0.5 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "Terrify",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "40",
+          "60",
+          "80",
+          "100",
+          "120"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_4"
+      },
+      {
+        "name": "Bountiful Harvest",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "120 + (0.9 * ctx.ap) + (0.12 * ctx.missing_health)",
+          "180 + (0.9 * ctx.ap) + (0.145 * ctx.missing_health)",
+          "240 + (0.9 * ctx.ap) + (0.17 * ctx.missing_health)",
+          "300 + (0.9 * ctx.ap) + (0.195 * ctx.missing_health)",
+          "360 + (0.9 * ctx.ap) + (0.22 * ctx.missing_health)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_2"
+      },
+      {
+        "name": "Crowstorm",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "750 + (2.5 * ctx.ap)",
+          "1250 + (2.5 * ctx.ap)",
+          "1750 + (2.5 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
         "name": "_2"
       },
       {
@@ -249,16 +231,34 @@
     [
       {
         "type": "R",
-        "name": "_2"
+        "name": "_1"
       },
       {
         "name": "Crowstorm",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "750 + (2.5 * ctx.ap)",
-          "1250 + (2.5 * ctx.ap)",
-          "1750 + (2.5 * ctx.ap)"
+          "37.5 + (0.125 * ctx.ap)",
+          "62.5 + (0.125 * ctx.ap)",
+          "87.5 + (0.125 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Bountiful Harvest",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "15 + (0.1125 * ctx.ap)",
+          "22.5 + (0.1125 * ctx.ap)",
+          "30 + (0.1125 * ctx.ap)",
+          "37.5 + (0.1125 * ctx.ap)",
+          "45 + (0.1125 * ctx.ap)"
         ]
       }
     ]

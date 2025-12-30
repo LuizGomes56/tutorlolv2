@@ -7,16 +7,16 @@
   "tier": 1,
   "maps": [
     [
-      "SummonersRift",
-      true
-    ],
-    [
-      "NexusBlitz",
-      true
-    ],
-    [
       "Tft",
       false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      true
     ],
     [
       "Arena",
@@ -27,11 +27,11 @@
       true
     ],
     [
-      "SummonersRift",
-      false
+      "Aram",
+      true
     ],
     [
-      "Aram",
+      "NexusBlitz",
       true
     ]
   ],
@@ -125,7 +125,7 @@
     "VoidStaff",
     "Morellonomicon",
     "Dawncore",
-    "RodofAges"
+    "RodOfAges"
   ],
   "ranged": {
     "minimum_damage": "zero",

@@ -1,13 +1,13 @@
 {
   "riot_id": 446691,
-  "item_id": "DuskbladeofDraktharr",
+  "item_id": "DuskbladeOfDraktharr",
   "name": "Duskblade of Draktharr",
   "price": 0,
   "sell": 400,
   "tier": 3,
   "maps": [
     [
-      "Tft",
+      "SummonersRift",
       false
     ],
     [
@@ -19,11 +19,11 @@
       false
     ],
     [
-      "NexusBlitz",
+      "Tft",
       false
     ],
     [
-      "SummonersRift",
+      "NexusBlitz",
       false
     ],
     [
@@ -37,16 +37,16 @@
   ],
   "prettified_stats": [
     {
-      "name": "Lethality",
-      "value": 20
-    },
-    {
       "name": "AbilityHaste",
       "value": 20
     },
     {
       "name": "AttackDamage",
       "value": 50
+    },
+    {
+      "name": "Lethality",
+      "value": 20
     }
   ],
   "damage_type": "Unknown",

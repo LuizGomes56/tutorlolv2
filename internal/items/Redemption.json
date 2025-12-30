@@ -8,14 +8,22 @@
   "maps": [
     [
       "SummonersRift",
-      false
+      true
     ],
     [
       "NexusBlitz",
       true
     ],
     [
+      "Tft",
+      false
+    ],
+    [
       "SummonersRift",
+      true
+    ],
+    [
+      "Aram",
       true
     ],
     [
@@ -24,25 +32,17 @@
     ],
     [
       "SummonersRift",
-      true
-    ],
-    [
-      "Tft",
       false
-    ],
-    [
-      "Aram",
-      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AbilityHaste",
-      "value": 15
+      "name": "Health",
+      "value": 300
     },
     {
-      "name": "Health",
-      "value": 200
+      "name": "AbilityHaste",
+      "value": 15
     },
     {
       "name": "BaseManaRegen",
@@ -50,7 +50,7 @@
     },
     {
       "name": "HealAndShieldPower",
-      "value": 10
+      "value": 16
     }
   ],
   "damage_type": "Unknown",

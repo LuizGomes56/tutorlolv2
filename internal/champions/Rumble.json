@@ -71,53 +71,73 @@
   "abilities": [
     [
       {
-        "type": "R",
-        "name": "_2"
+        "type": "Q",
+        "name": "_1"
       },
       {
-        "name": "The Equalizer",
+        "name": "Flamespitter",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "700 + (1.75 * ctx.ap)",
-          "1050 + (1.75 * ctx.ap)",
-          "1400 + (1.75 * ctx.ap)"
+          "5 + (0.0917 * ctx.ap) + (0.005 * ctx.enemy_max_health)",
+          "7.5 + (0.0917 * ctx.ap) + (0.00567 * ctx.enemy_max_health)",
+          "10 + (0.0917 * ctx.ap) + (0.00633 * ctx.enemy_max_health)",
+          "12.5 + (0.0917 * ctx.ap) + (0.006999999999999999 * ctx.enemy_max_health)",
+          "15 + (0.0917 * ctx.ap) + (0.00767 * ctx.enemy_max_health)"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_4"
+        "type": "Q",
+        "name": "_3"
       },
       {
-        "name": "Electro Harpoon",
+        "name": "Flamespitter",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "165 + (1.5 * ctx.ap)",
-          "240 + (1.5 * ctx.ap)",
-          "315 + (1.5 * ctx.ap)",
-          "390 + (1.5 * ctx.ap)",
-          "465 + (1.5 * ctx.ap)"
+          "60 + (1.1 * ctx.ap) + (0.06 * ctx.enemy_max_health)",
+          "90 + (1.1 * ctx.ap) + (0.068 * ctx.enemy_max_health)",
+          "120 + (1.1 * ctx.ap) + (0.076 * ctx.enemy_max_health)",
+          "150 + (1.1 * ctx.ap) + (0.084 * ctx.enemy_max_health)",
+          "180 + (1.1 * ctx.ap) + (0.092 * ctx.enemy_max_health)"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_2"
+        "type": "Q",
+        "name": "_8"
       },
       {
-        "name": "Electro Harpoon",
+        "name": "Flamespitter",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "110 + ctx.ap",
-          "160 + ctx.ap",
-          "210 + ctx.ap",
-          "260 + ctx.ap",
-          "310 + ctx.ap"
+          "63 + (1.155 * ctx.ap) + (0.063 * ctx.enemy_max_health)",
+          "94.5 + (1.155 * ctx.ap) + (0.07139999999999999 * ctx.enemy_max_health)",
+          "126 + (1.155 * ctx.ap) + (0.07980000000000001 * ctx.enemy_max_health)",
+          "157.5 + (1.155 * ctx.ap) + (0.0882 * ctx.enemy_max_health)",
+          "189 + (1.155 * ctx.ap) + (0.0966 * ctx.enemy_max_health)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_6"
+      },
+      {
+        "name": "Flamespitter",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "5.25 + (0.09625 * ctx.ap) + (0.00525 * ctx.enemy_max_health)",
+          "7.875 + (0.09625 * ctx.ap) + (0.0059499999999999996 * ctx.enemy_max_health)",
+          "10.5 + (0.09625 * ctx.ap) + (0.0066500000000000005 * ctx.enemy_max_health)",
+          "13.125 + (0.09625 * ctx.ap) + (0.00735 * ctx.enemy_max_health)",
+          "15.75 + (0.09625 * ctx.ap) + (0.00805 * ctx.enemy_max_health)"
         ]
       }
     ],
@@ -158,6 +178,60 @@
     [
       {
         "type": "Q",
+        "name": "_4"
+      },
+      {
+        "name": "Flamespitter",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "42 + (0.77 * ctx.ap) + (0.042 * ctx.enemy_max_health)",
+          "63 + (0.77 * ctx.ap) + (0.047599999999999996 * ctx.enemy_max_health)",
+          "84 + (0.77 * ctx.ap) + (0.053200000000000004 * ctx.enemy_max_health)",
+          "105 + (0.77 * ctx.ap) + (0.0588 * ctx.enemy_max_health)",
+          "126 + (0.77 * ctx.ap) + (0.0644 * ctx.enemy_max_health)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_2"
+      },
+      {
+        "name": "Electro Harpoon",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "110 + ctx.ap",
+          "160 + ctx.ap",
+          "210 + ctx.ap",
+          "260 + ctx.ap",
+          "310 + ctx.ap"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_7"
+      },
+      {
+        "name": "Flamespitter",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "90 + (1.65 * ctx.ap) + (0.09 * ctx.enemy_max_health)",
+          "135 + (1.65 * ctx.ap) + (0.102 * ctx.enemy_max_health)",
+          "180 + (1.65 * ctx.ap) + (0.114 * ctx.enemy_max_health)",
+          "225 + (1.65 * ctx.ap) + (0.126 * ctx.enemy_max_health)",
+          "270 + (1.65 * ctx.ap) + (0.138 * ctx.enemy_max_health)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
         "name": "_5"
       },
       {
@@ -175,55 +249,19 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_8"
-      },
-      {
-        "name": "Flamespitter",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "63 + (1.155 * ctx.ap) + (0.063 * ctx.enemy_max_health)",
-          "94.5 + (1.155 * ctx.ap) + (0.07139999999999999 * ctx.enemy_max_health)",
-          "126 + (1.155 * ctx.ap) + (0.07980000000000001 * ctx.enemy_max_health)",
-          "157.5 + (1.155 * ctx.ap) + (0.0882 * ctx.enemy_max_health)",
-          "189 + (1.155 * ctx.ap) + (0.0966 * ctx.enemy_max_health)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_2"
-      },
-      {
-        "name": "Flamespitter",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "3.5 + (0.06417 * ctx.ap) + (0.0034999999999999996 * ctx.enemy_max_health)",
-          "5.25 + (0.06417 * ctx.ap) + (0.0039700000000000004 * ctx.enemy_max_health)",
-          "7 + (0.06417 * ctx.ap) + (0.00443 * ctx.enemy_max_health)",
-          "8.75 + (0.06417 * ctx.ap) + (0.0049 * ctx.enemy_max_health)",
-          "10.5 + (0.06417 * ctx.ap) + (0.005370000000000001 * ctx.enemy_max_health)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
+        "type": "E",
         "name": "_4"
       },
       {
-        "name": "Flamespitter",
+        "name": "Electro Harpoon",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "42 + (0.77 * ctx.ap) + (0.042 * ctx.enemy_max_health)",
-          "63 + (0.77 * ctx.ap) + (0.047599999999999996 * ctx.enemy_max_health)",
-          "84 + (0.77 * ctx.ap) + (0.053200000000000004 * ctx.enemy_max_health)",
-          "105 + (0.77 * ctx.ap) + (0.0588 * ctx.enemy_max_health)",
-          "126 + (0.77 * ctx.ap) + (0.0644 * ctx.enemy_max_health)"
+          "165 + (1.5 * ctx.ap)",
+          "240 + (1.5 * ctx.ap)",
+          "315 + (1.5 * ctx.ap)",
+          "390 + (1.5 * ctx.ap)",
+          "465 + (1.5 * ctx.ap)"
         ]
       }
     ],
@@ -247,19 +285,35 @@
     ],
     [
       {
+        "type": "R",
+        "name": "_2"
+      },
+      {
+        "name": "The Equalizer",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "700 + (1.75 * ctx.ap)",
+          "1050 + (1.75 * ctx.ap)",
+          "1400 + (1.75 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "Q",
-        "name": "_3"
+        "name": "_2"
       },
       {
         "name": "Flamespitter",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "60 + (1.1 * ctx.ap) + (0.06 * ctx.enemy_max_health)",
-          "90 + (1.1 * ctx.ap) + (0.068 * ctx.enemy_max_health)",
-          "120 + (1.1 * ctx.ap) + (0.076 * ctx.enemy_max_health)",
-          "150 + (1.1 * ctx.ap) + (0.084 * ctx.enemy_max_health)",
-          "180 + (1.1 * ctx.ap) + (0.092 * ctx.enemy_max_health)"
+          "3.5 + (0.06417 * ctx.ap) + (0.0034999999999999996 * ctx.enemy_max_health)",
+          "5.25 + (0.06417 * ctx.ap) + (0.0039700000000000004 * ctx.enemy_max_health)",
+          "7 + (0.06417 * ctx.ap) + (0.00443 * ctx.enemy_max_health)",
+          "8.75 + (0.06417 * ctx.ap) + (0.0049 * ctx.enemy_max_health)",
+          "10.5 + (0.06417 * ctx.ap) + (0.005370000000000001 * ctx.enemy_max_health)"
         ]
       }
     ],
@@ -276,60 +330,6 @@
           "70 + (0.175 * ctx.ap)",
           "105 + (0.175 * ctx.ap)",
           "140 + (0.175 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Flamespitter",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "5 + (0.0917 * ctx.ap) + (0.005 * ctx.enemy_max_health)",
-          "7.5 + (0.0917 * ctx.ap) + (0.00567 * ctx.enemy_max_health)",
-          "10 + (0.0917 * ctx.ap) + (0.00633 * ctx.enemy_max_health)",
-          "12.5 + (0.0917 * ctx.ap) + (0.006999999999999999 * ctx.enemy_max_health)",
-          "15 + (0.0917 * ctx.ap) + (0.00767 * ctx.enemy_max_health)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_6"
-      },
-      {
-        "name": "Flamespitter",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "5.25 + (0.09625 * ctx.ap) + (0.00525 * ctx.enemy_max_health)",
-          "7.875 + (0.09625 * ctx.ap) + (0.0059499999999999996 * ctx.enemy_max_health)",
-          "10.5 + (0.09625 * ctx.ap) + (0.0066500000000000005 * ctx.enemy_max_health)",
-          "13.125 + (0.09625 * ctx.ap) + (0.00735 * ctx.enemy_max_health)",
-          "15.75 + (0.09625 * ctx.ap) + (0.00805 * ctx.enemy_max_health)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_7"
-      },
-      {
-        "name": "Flamespitter",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "90 + (1.65 * ctx.ap) + (0.09 * ctx.enemy_max_health)",
-          "135 + (1.65 * ctx.ap) + (0.102 * ctx.enemy_max_health)",
-          "180 + (1.65 * ctx.ap) + (0.114 * ctx.enemy_max_health)",
-          "225 + (1.65 * ctx.ap) + (0.126 * ctx.enemy_max_health)",
-          "270 + (1.65 * ctx.ap) + (0.138 * ctx.enemy_max_health)"
         ]
       }
     ]
