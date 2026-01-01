@@ -5,17 +5,17 @@ use actix_web::{
 };
 use rust_embed::Embed;
 
-#[derive(Embed)]
-#[folder = "../html/zstd/champions"]
-struct ChampionsDocs;
+// #[derive(Embed)]
+// #[folder = "../html/zstd/champions"]
+// struct ChampionsDocs;
 
-#[derive(Embed)]
-#[folder = "../html/zstd/items"]
-struct ItemsDocs;
+// #[derive(Embed)]
+// #[folder = "../html/zstd/items"]
+// struct ItemsDocs;
 
-#[derive(Embed)]
-#[folder = "../html/zstd/runes"]
-struct RunesDocs;
+// #[derive(Embed)]
+// #[folder = "../html/zstd/runes"]
+// struct RunesDocs;
 
 #[derive(Embed)]
 #[folder = "../img/abilities"]
@@ -74,9 +74,9 @@ serve_embed!(champions, "/champions/{path:.*}", "image/avif");
 serve_embed!(items, "/items/{path:.*}", "image/avif");
 serve_embed!(runes, "/runes/{path:.*}", "image/avif");
 serve_embed!(stats, "/stats/{path:.*}", "image/svg+xml");
-serve_embed!(@zstd champions_docs, "/champions/{path:.*}", "text/html");
-serve_embed!(@zstd items_docs, "/items/{path:.*}", "text/html");
-serve_embed!(@zstd runes_docs, "/runes/{path:.*}", "text/html");
+// serve_embed!(@zstd champions_docs, "/champions/{path:.*}", "text/html");
+// serve_embed!(@zstd items_docs, "/items/{path:.*}", "text/html");
+// serve_embed!(@zstd runes_docs, "/runes/{path:.*}", "text/html");
 
 macro_rules! serve_dyn {
     ($f:ident) => {

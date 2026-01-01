@@ -35,15 +35,21 @@ fn respond(data: impl Encode) -> Response {
 
 #[post("/realtime")]
 pub async fn realtime_handler(body: Bytes) -> Response {
+    println!("[call] realtime_handler");
     let game_data = serde_json::from_slice(&body)?;
+    let start = std::time::Instant::now();
     let data = realtime(&game_data).ok_or("Error executing fn `realtime`")?;
+    println!("[time] fn realtime took: {end:?}", end = start.elapsed());
     respond(data)
 }
 
 #[post("/calculator")]
 pub async fn calculator_handler(body: Bytes) -> Response {
+    println!("[call] calculator_handler");
     let (decoded, _) = bincode::decode_from_slice(&body, BINCODE_CONFIG)?;
+    let start = std::time::Instant::now();
     let data = calculator(decoded);
+    println!("[time] fn realtime took: {end:?}", end = start.elapsed());
     respond(data)
 }
 

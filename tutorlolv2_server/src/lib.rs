@@ -70,6 +70,7 @@ fn api_scope() -> impl HttpServiceFactory + 'static {
 }
 
 pub async fn run() -> std::io::Result<()> {
+    println!("tutorlolv2_server is starting on port 8082");
     dotenv().ok();
 
     let dsn = std::env::var("DATABASE_URL").expect("DATABASE_URL is not set");
@@ -96,12 +97,12 @@ pub async fn run() -> std::io::Result<()> {
             .service(api_scope())
             .service(
                 scope("")
-                    .service(
-                        scope("/docs")
-                            .service(serve_champions_docs)
-                            .service(serve_items_docs)
-                            .service(serve_runes_docs),
-                    )
+                    // .service(
+                    //     scope("/docs")
+                    //         .service(serve_champions_docs)
+                    //         .service(serve_items_docs)
+                    //         .service(serve_runes_docs),
+                    // )
                     .service(
                         scope("/img")
                             .wrap(DefaultHeaders::new().add((
