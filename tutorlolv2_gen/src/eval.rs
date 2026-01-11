@@ -1,3 +1,6 @@
+use bincode::{Decode, Encode};
+use serde::{Deserialize, Serialize};
+
 /// Creates the `EvalIdent` and `EvalContext` structs, associating
 /// the appropriate names and numeric types that it will hold. This struct
 /// is essential to the application since it is used to evaluate all the
@@ -9,7 +12,7 @@ macro_rules! create_eval_struct {
             /// and is used to create constant closures in the static variables of
             /// this module. For example:
             /// [`EvalIdent::QLevel`] is converted to: `ctx.q_level`
-            #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
+            #[derive(Copy, Clone, Debug, Eq, Hash, PartialEq)]
             #[repr(u8)]
             pub enum EvalIdent {
                 $($([<$value:camel>],)*)*
@@ -53,7 +56,8 @@ macro_rules! create_eval_struct {
             ///     ]
             /// }
             /// ```
-            #[derive(Default, Debug, Copy, Clone)]
+            #[derive(Clone, Copy, Debug, Decode, Default, Deserialize, Encode, PartialEq, PartialOrd, Serialize)]
+            #[repr(C)]
             pub struct EvalContext {
                 $($(pub $value: $type,)*)*
             }
@@ -72,7 +76,6 @@ macro_rules! create_eval_struct {
 }
 
 create_eval_struct!(
-    u8(q_level, w_level, e_level, r_level),
     f32(
         level,
         chogath_stacks,
@@ -123,5 +126,6 @@ create_eval_struct!(
         missing_health,
         ap,
         ad
-    )
+    ),
+    u8(q_level, w_level, e_level, r_level),
 );

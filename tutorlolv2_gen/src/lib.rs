@@ -10,13 +10,13 @@ pub mod eval;
 
 #[allow(non_upper_case_globals)]
 pub(crate) const impossible: f32 = 0.0;
+pub(crate) use core::ops::Range;
 
 #[cfg(feature = "eval")]
 pub use bitset::*;
 pub use cache::*;
 pub use data::*;
 pub use enums::{Attrs, DamageType};
-#[cfg(feature = "eval")]
 pub use eval::*;
 pub use tutorlolv2_types::*;
 
@@ -329,6 +329,11 @@ impl ChampionId {
     #[cfg(feature = "glob")]
     pub const fn recommended_runes(&self, position: Position) -> &'static [RuneId] {
         RECOMMENDED_RUNES[self.index()][position as usize]
+    }
+
+    #[cfg(feature = "glob")]
+    pub const fn idents(&self) -> &'static [EvalIdent] {
+        ABILITY_IDENTS[self.index()]
     }
 }
 

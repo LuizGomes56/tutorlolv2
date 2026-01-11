@@ -484,7 +484,7 @@ pub struct InputMinData<T> {
 }
 
 /// Returned data by the function [`crate::calculator::calculator`]
-#[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
 pub struct OutputEnemy {
     pub damages: Damages,
     pub base_stats: SimpleStats<i32>,
@@ -494,6 +494,7 @@ pub struct OutputEnemy {
     pub real_magic_resist: i32,
     pub level: u8,
     pub champion_id: ChampionId,
+    pub eval_ctx: EvalContext,
 }
 
 /// Holds values that will be multiplied by all damages, depending on their

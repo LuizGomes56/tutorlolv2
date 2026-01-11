@@ -665,6 +665,7 @@ pub fn get_calculator_enemies(
                 champion_id: e_champion_id,
                 level: e_level,
                 damages,
+                eval_ctx,
             }
         })
         .collect::<Box<[OutputEnemy]>>()
