@@ -86,7 +86,7 @@ impl ChampionFactory {
         }
 
         generated_content.push_str("self.end()}}");
-        Ok(rustfmt(&generated_content, 80))
+        Ok(rustfmt(&generated_content))
     }
 
     /// Creates the whole folder of champion generators. Fails if an error
