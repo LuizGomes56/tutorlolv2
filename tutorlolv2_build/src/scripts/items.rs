@@ -176,18 +176,18 @@ pub fn get_stats(stats: &ItemStats) -> String {
     all_stats.join(",")
 }
 
-pub async fn generate_items() -> GeneratorFn {
-    struct ItemResult {
-        riot_id: usize,
-        html_declaration: String,
-        base_declaration: String,
-        name: String,
-        name_ssnake: String,
-        name_pascal: String,
-        generator: String,
-        match_arm: String,
-    }
+struct ItemResult {
+    riot_id: usize,
+    html_declaration: String,
+    base_declaration: String,
+    name: String,
+    name_ssnake: String,
+    name_pascal: String,
+    generator: String,
+    match_arm: String,
+}
 
+pub async fn generate_items() -> GeneratorFn {
     let mut data = parallel_task(
         128,
         "internal/items",
@@ -294,7 +294,10 @@ pub async fn generate_items() -> GeneratorFn {
     .await?;
 
     data.sort_by(|a, b| a.name.cmp(&b.name));
+    build_items(data)
+}
 
+fn build_items(data: Vec<ItemResult>) -> GeneratorFn {
     let len = data.len();
     let mut item_declarations = String::new();
 

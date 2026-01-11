@@ -184,6 +184,10 @@ pub async fn generate_runes() -> GeneratorFn {
         runes
     };
 
+    build_runes(data)
+}
+
+fn build_runes(data: Vec<RuneResult>) -> GeneratorFn {
     let len = data.len();
     let mut rune_declarations = String::new();
 

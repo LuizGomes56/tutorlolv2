@@ -259,18 +259,18 @@ struct ConstFn {
     name: String,
 }
 
-pub async fn generate_champions() -> GeneratorFn {
-    struct ChampionResult {
-        champion_id_upper: String,
-        name: String,
-        positions: String,
-        base_declaration: String,
-        ability_declarations: Vec<(AbilityId, String)>,
-        generator: String,
-        html_declaration: String,
-        const_match_kind: String,
-    }
+struct ChampionResult {
+    champion_id_upper: String,
+    name: String,
+    positions: String,
+    base_declaration: String,
+    ability_declarations: Vec<(AbilityId, String)>,
+    generator: String,
+    html_declaration: String,
+    const_match_kind: String,
+}
 
+pub async fn generate_champions() -> GeneratorFn {
     let data = parallel_task(
         128,
         "internal/champions",
@@ -402,6 +402,10 @@ pub async fn generate_champions() -> GeneratorFn {
     )
     .await?;
 
+    build_champions(data).await
+}
+
+async fn build_champions(data: BTreeMap<String, ChampionResult>) -> GeneratorFn {
     let len = data.len();
     let recommendations = get_recommendations(len).await?;
 
@@ -483,7 +487,7 @@ pub async fn generate_champions() -> GeneratorFn {
             ))?
             .into_iter()
             .map(|alias| format!("{alias:?} => ChampionId::{champion_id}"))
-            .collect::<Vec<String>>()
+            .collect::<Vec<_>>()
             .join(",");
         language_arms.push(name_alias);
 

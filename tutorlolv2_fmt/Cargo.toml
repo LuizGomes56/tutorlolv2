@@ -1,6 +1,6 @@
 [package]
 name = "tutorlolv2_fmt"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2024"
 
 [dependencies]
@@ -10,3 +10,4 @@ synoptic = "2.2.9"
 brotli2 = "0.3.2"
 html5minify = "0.3.3"
 zstd = "0.13.3"
+once_cell = "1.21.3"

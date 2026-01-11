@@ -5,6 +5,7 @@
 *.ps1
 *.bat
 *.js
+*.br
 *.txt
 *.pdf
 *.html

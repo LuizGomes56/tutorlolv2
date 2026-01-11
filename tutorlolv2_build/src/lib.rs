@@ -1,3 +1,7 @@
+use crate::scripts::{
+    BASIC_ATTACK, CRITICAL_STRIKE, ONHIT_EFFECT, StringExt, TOWER_DAMAGE,
+    champions::generate_champions, items::generate_items, runes::generate_runes,
+};
 use serde::de::DeserializeOwned;
 use std::{
     fmt::Debug,
@@ -9,11 +13,6 @@ use tokio_stream::{StreamExt, wrappers::ReadDirStream};
 use tutorlolv2_fmt::encode_brotli_11;
 
 mod scripts;
-
-use crate::scripts::{
-    BASIC_ATTACK, CRITICAL_STRIKE, ONHIT_EFFECT, StringExt, TOWER_DAMAGE,
-    champions::generate_champions, items::generate_items, runes::generate_runes,
-};
 
 pub type MayFail<T = ()> = Result<T, Box<dyn std::error::Error>>;
 pub type GeneratorClosure = Box<dyn FnOnce(usize) -> Generated + Send + Sync + 'static>;
@@ -170,7 +169,7 @@ where
     _Resp: Fn(Vec<JoinHandle<(String, _Data)>>) -> _Fut2,
     _Type: DeserializeOwned,
     _Fut1: Future<Output = MayFail<_Data>> + Send + Sync + 'static,
-    _FnIn: Clone + Send + Sync + 'static + Fn(String, _Type) -> _Fut1,
+    _FnIn: Copy + Send + Sync + 'static + Fn(String, _Type) -> _Fut1,
 {
     let mut futures = Vec::new();
     let semaphore = Arc::new(Semaphore::new(permits));
@@ -180,7 +179,6 @@ where
     let mut dir_stream = ReadDirStream::new(read_dir);
 
     while let Some(Ok(entry)) = dir_stream.next().await {
-        let f = f.clone();
         let semaphore = semaphore.clone();
         futures.push(tokio::task::spawn(async move {
             let _permit = semaphore.acquire().await.unwrap();
@@ -305,22 +303,16 @@ pub async fn run() -> MayFail {
 
     let offset = tracker.offset();
     let compressed_block = encode_brotli_11(full_block.as_bytes());
+    let size = compressed_block.len();
 
     full_exports.push_str(&format!(
         "{GLOB_FEAT} pub const BLOCK_SIZE: usize = {offset};"
     ));
-    full_exports.push_str(&format!(
-        "{GLOB_FEAT} pub const BLOCK: [u8; {size}] = [{bytes}];",
-        size = compressed_block.len(),
-        bytes = compressed_block
-            .iter()
-            .map(u8::to_string)
-            .collect::<Vec<_>>()
-            .join(",")
-    ));
+    full_exports.push_str(&format!("{GLOB_FEAT} pub const BLOCK_LEN: usize = {size};"));
     full_exports.push_str("pub use champions::*; pub use items::*; pub use runes::*;");
 
     for task in [
+        CwdPath::fwrite("tutorlolv2_gen/src/block.br", compressed_block),
         CwdPath::fwrite("tutorlolv2_gen/src/block.txt", full_block),
         CwdPath::fwrite("tutorlolv2_gen/src/data.rs", full_exports.rust_fmt()),
     ] {

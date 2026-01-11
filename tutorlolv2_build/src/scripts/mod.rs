@@ -1,3 +1,4 @@
+use once_cell::sync::Lazy;
 use regex::{Captures, Regex};
 use std::fmt::Display;
 use tutorlolv2_fmt::rust_html;
@@ -6,6 +7,12 @@ pub mod champions;
 pub mod items;
 pub mod model;
 pub mod runes;
+
+static RE_CAST_F32: Lazy<Regex> =
+    Lazy::new(|| Regex::new(r"(?P<before>^|[^.\d])(?P<num>\d+)(?P<after>[^.\d]|$)").unwrap());
+static RE_DROP_F32: Lazy<Regex> = Lazy::new(|| Regex::new(r"(\d+(?:\.\d+)?)(f32)").unwrap());
+static RE_DROP_F32_DECIMAL: Lazy<Regex> = Lazy::new(|| Regex::new(r"\d+\.\d+|\d+").unwrap());
+static RE_SIMPLIFY: Lazy<Regex> = Lazy::new(|| Regex::new(r"([-+]?\d*\.?\d+)").unwrap());
 
 pub static TOWER_DAMAGE: &str = r#"intrinsic const TOWER_DAMAGE {
     damage_type: RiotFormulas::adaptative_type(
@@ -124,9 +131,7 @@ pub trait StringExt: AsRef<str> {
     }
 
     fn cast_f32(&self) -> String {
-        let re = Regex::new(r"(?P<before>^|[^.\d])(?P<num>\d+)(?P<after>[^.\d]|$)").unwrap();
-
-        let result = re.replace_all(self.as_ref(), |caps: &Captures| {
+        let result = RE_CAST_F32.replace_all(self.as_ref(), |caps: &Captures| {
             let before = &caps["before"];
             let num = &caps["num"];
             let after = &caps["after"];
@@ -138,8 +143,11 @@ pub trait StringExt: AsRef<str> {
     }
 
     fn ctx_param(&self) -> &'static str {
-        let expr = self.as_ref();
-        if expr.contains("ctx.") { "ctx" } else { "_" }
+        if self.as_ref().contains("ctx.") {
+            "ctx"
+        } else {
+            "_"
+        }
     }
 
     fn clean(&self) -> String {
@@ -153,11 +161,9 @@ pub trait StringExt: AsRef<str> {
 
     fn drop_f32s(&self) -> String {
         let input = self.as_ref();
-        let re_f32 = Regex::new(r"(\d+(?:\.\d+)?)(f32)").unwrap();
-        let no_suffix = re_f32.replace_all(input, "$1");
-        let re_decimal = Regex::new(r"\d+\.\d+|\d+").unwrap();
+        let no_suffix = RE_DROP_F32.replace_all(input, "$1");
 
-        re_decimal
+        RE_DROP_F32_DECIMAL
             .replace_all(&no_suffix, |caps: &regex::Captures| {
                 let full = &caps[0];
                 match full.parse::<f64>() {
@@ -441,9 +447,8 @@ pub fn simplify(values: &[String]) -> Simplified {
         return Simplified::Unrecognized;
     }
 
-    let num_re = Regex::new(r"([-+]?\d*\.?\d+)").unwrap();
     let mut count = 0;
-    let template = num_re
+    let template = RE_SIMPLIFY
         .replace_all(&values[0], |_caps: &Captures| {
             let marker = format!("[[{count}]]");
             count += 1;
@@ -453,7 +458,7 @@ pub fn simplify(values: &[String]) -> Simplified {
 
     let mut value_matrix = Vec::<Vec<f64>>::new();
     for s in values {
-        let nums = num_re
+        let nums = RE_SIMPLIFY
             .find_iter(&s)
             .filter_map(|m| m.as_str().parse::<f64>().ok())
             .collect::<Vec<_>>();
@@ -483,14 +488,11 @@ pub fn simplify(values: &[String]) -> Simplified {
                 depends_on_n = true;
                 let start_offset = v1 - diff;
 
-                match start_offset.abs() < 0.0001 {
-                    true => {
-                        formulas.push(format!("({diff} * context_level)"));
-                    }
-                    false => {
-                        formulas.push(format!("({start_offset} + {diff} * context_level)"));
-                    }
-                }
+                let pa = match start_offset.abs() < 0.0001 {
+                    true => format!("({diff} * context_level)"),
+                    false => format!("({start_offset} + {diff} * context_level)"),
+                };
+                formulas.push(pa);
             }
         }
     }

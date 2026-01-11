@@ -14,13 +14,13 @@ tutorlolv2 = { path = "." }
 [workspace]
 members = [
     "tutorlolv2_build",
-    "tutorlolv2_dev",
-    "tutorlolv2_fmt",
-    "tutorlolv2_gen",
-    "tutorlolv2_html",
-    "tutorlolv2_macros",
-    "tutorlolv2_server",
-    "tutorlolv2_types",
+    # "tutorlolv2_dev",
+    # "tutorlolv2_fmt",
+    # "tutorlolv2_gen",
+    # "tutorlolv2_html",
+    # "tutorlolv2_macros",
+    # "tutorlolv2_server",
+    # "tutorlolv2_types",
 ]
 
 [dependencies]

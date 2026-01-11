@@ -22,6 +22,8 @@ pub use tutorlolv2_types::*;
 
 #[cfg(feature = "glob")]
 pub const RAW_BLOCK: &str = include_str!("block.txt");
+#[cfg(feature = "glob")]
+pub const BLOCK: [u8; BLOCK_LEN] = include_bytes!("block.br");
 
 /// Verifies the following conditions
 /// - `tier >= 3`

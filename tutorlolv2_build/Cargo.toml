@@ -1,6 +1,6 @@
 [package]
 name = "tutorlolv2_build"
-version = "0.2.5"
+version = "0.2.6"
 edition = "2024"
 
 [profile.release]
@@ -21,3 +21,4 @@ serde = { version = "1.0", features = ["derive"] }
 regex = "1.11.2"
 rayon = "1.11.0"
 tokio-stream = { version = "0.1.17", features = ["fs"] }
+once_cell = "1.21.3"

@@ -1,4 +1,5 @@
 use html5minify::minify;
+use once_cell::sync::Lazy;
 use serde::Serialize;
 use serde_json::{Serializer, Value, ser::PrettyFormatter};
 use std::{
@@ -108,8 +109,7 @@ pub fn rustfmt(src: &str, width: usize) -> String {
     try_run().unwrap_or(src.to_string())
 }
 
-/// Converts Rust code contained in the input [`str`] to an HTML [`String`]
-pub fn rust_html(rust_code: &str) -> String {
+static RUST_HIGHLIGHTER: Lazy<Highlighter> = Lazy::new(|| {
     let mut h = Highlighter::new(4);
     h.bounded("comment", r"/\*", r"\*/", false);
     h.keyword("comment", r"//.*$");
@@ -227,12 +227,17 @@ pub fn rust_html(rust_code: &str) -> String {
     h.keyword("function", r"\b[a-z][a-zA-Z0-9_]*\(");
     h.keyword("function", r"\b(zero)\b");
     h.keyword("variable", r"\b[a-z][a-zA-Z0-9_]*\b");
+    h
+});
 
+/// Converts Rust code contained in the input [`str`] to an HTML [`String`]
+pub fn rust_html(rust_code: &str) -> String {
     let code = rust_code
         .lines()
         .map(str::to_string)
         .collect::<Vec<String>>();
 
+    let mut h = RUST_HIGHLIGHTER.clone();
     h.run(&code);
 
     let mut bracket_stack: Vec<u8> = Vec::new();
@@ -315,15 +320,20 @@ pub fn rust_html(rust_code: &str) -> String {
     format!("<pre>{out}</pre>")
 }
 
-/// Converts JSON code contained in the input [`str`] to an HTML [`String`]
-pub fn json_html(input: &str) -> String {
+static JSON_HIGHLIGHTER: Lazy<Highlighter> = Lazy::new(|| {
     let mut h = Highlighter::new(4);
 
     h.keyword("string", r#""(?:[^"\\]|\\.)*""#);
     h.keyword("number", r"-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?");
     h.keyword("boolean", r"\b(?:null|true|false)\b");
+    h
+});
 
+/// Converts JSON code contained in the input [`str`] to an HTML [`String`]
+pub fn json_html(input: &str) -> String {
     let lines = input.lines().map(str::to_string).collect::<Vec<String>>();
+
+    let mut h = JSON_HIGHLIGHTER.clone();
     h.run(&lines);
 
     let mut bracket_stack: Vec<u8> = Vec::new();
