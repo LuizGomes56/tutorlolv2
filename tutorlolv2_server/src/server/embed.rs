@@ -1,8 +1,5 @@
 use actix_files::Files;
-use actix_web::{
-    HttpResponse, Responder, dev::HttpServiceFactory, get, http::header::CONTENT_ENCODING,
-    web::Path,
-};
+use actix_web::{HttpResponse, Responder, dev::HttpServiceFactory, get, web::Path};
 use rust_embed::Embed;
 
 // #[derive(Embed)]
@@ -39,7 +36,7 @@ struct Stats;
 
 macro_rules! serve_embed {
     ($name:ident, $path:literal, $content_type:literal) => {
-        paste::paste! {
+        pastey::paste! {
             #[doc = "Serve files from `" $path "`"]
             #[get($path)]
             pub async fn [<serve_ $name>] (path: Path<String>) -> impl Responder {
@@ -80,7 +77,7 @@ serve_embed!(stats, "/stats/{path:.*}", "image/svg+xml");
 
 macro_rules! serve_dyn {
     ($f:ident) => {
-        paste::paste! {
+        pastey::paste! {
             pub fn [<serve_dyn_ $f>]() -> impl HttpServiceFactory + 'static {
                 Files::new(concat!("/", stringify!($f)), concat!("../img/", stringify!($f)))
                     .use_etag(false)

@@ -116,7 +116,7 @@ pub const NUMBER_OF_DAMAGING_RUNES: usize = {
 pub const NUMBER_OF_DAMAGING_ITEMS: usize = {
     let mut sum = 0;
     let mut i = 0;
-    while i < NUMBER_OF_RUNES {
+    while i < NUMBER_OF_ITEMS {
         let item = ITEM_CACHE[i];
         if !item.deals_damage {
             sum += 1;

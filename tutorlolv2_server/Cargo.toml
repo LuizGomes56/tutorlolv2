@@ -14,7 +14,7 @@ incremental = false
 
 [dependencies]
 tutorlolv2 = { path = "../" }
-paste = "1.0.15"
+pastey = "0.2.1"
 sqlx = { version = "0.8", features = [
     "runtime-tokio-rustls",
     "postgres",
