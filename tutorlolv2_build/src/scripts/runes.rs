@@ -15,9 +15,9 @@ struct RuneResult {
     match_arm: String,
 }
 
-pub async fn generate_runes() -> GeneratorFn {
+pub fn generate_runes() -> GeneratorFn {
     let data = {
-        let json = CwdPath::deserialize::<HashMap<usize, Rune>>("internal/runes.json").await?;
+        let json = CwdPath::deserialize::<HashMap<usize, Rune>>("internal/runes.json")?;
 
         let mut runes = json
             .into_par_iter()
@@ -29,10 +29,10 @@ pub async fn generate_runes() -> GeneratorFn {
                     melee,
                 } = rune;
 
-                println!("[build] Rune({name:?})");
-
                 let name_pascal = name.pascal_case();
                 let name_ssnake = name.to_ssnake();
+
+                println!("[build] RuneId::{name_pascal}");
 
                 let metadata = format!(
                     "TypeMetadata {{
@@ -106,7 +106,7 @@ pub async fn generate_runes() -> GeneratorFn {
             .collect::<Vec<_>>();
 
         let mut undeclared =
-            CwdPath::deserialize::<HashMap<String, usize>>("internal/rune_names.json").await?;
+            CwdPath::deserialize::<HashMap<String, usize>>("internal/rune_names.json")?;
 
         for (name, riot_id) in [
             ("Adaptive Force", 9990),
@@ -137,6 +137,8 @@ pub async fn generate_runes() -> GeneratorFn {
                 continue;
             }
 
+            println!("[build] RuneId::{name_pascal}");
+
             let name_ssnake = name.to_ssnake();
 
             let metadata = format!(
@@ -161,13 +163,10 @@ pub async fn generate_runes() -> GeneratorFn {
             );
 
             let html_declaration = base_declaration.rust_fmt().rust_html().as_const();
-
             let base_declaration = format!("{EVAL_FEAT}{base_declaration}");
 
-            let match_arm = format!(
-                "AttackType::Melee => zero(ctx),
-                AttackType::Ranged => zero(ctx)",
-            );
+            let match_arm =
+                "AttackType::Melee => zero(ctx), AttackType::Ranged => zero(ctx)".into();
 
             runes.push(RuneResult {
                 name_pascal,
@@ -211,8 +210,8 @@ fn build_runes(data: Vec<RuneResult>) -> GeneratorFn {
     let mut tracker = Tracker::new(&mut block);
     let mut formula_offsets = Vec::with_capacity(len);
 
-    let mut rune_id_enum_match_arms = Vec::new();
-    let mut rune_id_enum_fields = Vec::new();
+    let mut rune_id_enum_match_arms = Vec::with_capacity(len);
+    let mut rune_id_enum_fields = Vec::with_capacity(len);
     let mut const_match_arms = String::new();
 
     for RuneResult {

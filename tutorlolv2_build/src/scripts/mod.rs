@@ -14,7 +14,7 @@ static RE_DROP_F32: Lazy<Regex> = Lazy::new(|| Regex::new(r"(\d+(?:\.\d+)?)(f32)
 static RE_DROP_F32_DECIMAL: Lazy<Regex> = Lazy::new(|| Regex::new(r"\d+\.\d+|\d+").unwrap());
 static RE_SIMPLIFY: Lazy<Regex> = Lazy::new(|| Regex::new(r"([-+]?\d*\.?\d+)").unwrap());
 
-pub static TOWER_DAMAGE: &str = r#"intrinsic const TOWER_DAMAGE {
+pub static TOWER_DAMAGE: &str = r#"const intrinsic TOWER_DAMAGE {
     damage_type: RiotFormulas::adaptative_type(
         bonus_stats.attack_damage,
         current_stats.ability_power,
@@ -28,7 +28,7 @@ pub static TOWER_DAMAGE: &str = r#"intrinsic const TOWER_DAMAGE {
     }
 }"#;
 
-pub static ONHIT_EFFECT: &str = r#"intrinsic const ONHIT_EFFECT {
+pub static ONHIT_EFFECT: &str = r#"const intrinsic ONHIT_EFFECT {
     damage_type: DamageType::Mixed,
     definition: |damage, [min, max], attr| match attr {
         Attrs::OnhitMin | Attrs::AreaOnhitMin => *min += damage,
@@ -40,13 +40,13 @@ pub static ONHIT_EFFECT: &str = r#"intrinsic const ONHIT_EFFECT {
     }
 };"#;
 
-pub static CRITICAL_STRIKE: &str = r#"intrinsic const CRITICAL_STRIKE {
+pub static CRITICAL_STRIKE: &str = r#"const intrinsic CRITICAL_STRIKE {
     attributes: Attrs::OnhitMax,
     damage_type: DamageType::Physical,
     damage: |ctx| ctx.ad * ctx.crit_damage / 100.0,
 };"#;
 
-pub static BASIC_ATTACK: &str = r#"intrinsic const BASIC_ATTACK {
+pub static BASIC_ATTACK: &str = r#"const intrinsic BASIC_ATTACK {
     attributes: Attrs::OnhitMin,
     damage_type: DamageType::Physical,
     damage: |ctx| ctx.ad,
@@ -58,7 +58,7 @@ pub trait StringExt: AsRef<str> {
     }
 
     fn rust_fmt(&self) -> String {
-        tutorlolv2_fmt::rustfmt(self.as_ref(), 80)
+        tutorlolv2_fmt::rustfmt(self.as_ref())
     }
 
     fn as_const(&self) -> String {
