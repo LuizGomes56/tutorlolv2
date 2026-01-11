@@ -86,15 +86,10 @@ pub fn pascal_case(input: &str) -> String {
 /// Invokes `rustfmt` program to the input [`str`], with some defined `width`,
 /// often set to be `80`. Returns the formatted code or an empty [`String`] if
 /// it emits an error or warning
-pub fn rustfmt(src: &str, width: usize) -> String {
+pub fn rustfmt(src: &str) -> String {
     let try_run = || -> Result<String, Box<dyn std::error::Error>> {
         let mut child = Command::new("rustfmt")
-            .args(&[
-                "--emit",
-                "stdout",
-                "--config",
-                &format!("max_width={width}"),
-            ])
+            .args(&["--emit", "stdout", "--config", "max_width=80"])
             .stdin(Stdio::piped())
             .stdout(Stdio::piped())
             .spawn()?;

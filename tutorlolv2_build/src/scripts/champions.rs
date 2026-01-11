@@ -3,7 +3,7 @@ use crate::{
     parallel_task, push_end,
     scripts::{
         Simplified, StringExt,
-        model::{Ability, Champion, MerakiChampionStats},
+        model::{Ability, Champion, MerakiChampionStatMap, MerakiChampionStats},
         simplify,
     },
 };
@@ -153,7 +153,10 @@ fn declare_abilities(
 }
 
 pub fn get_stats(stats: &MerakiChampionStats) -> String {
-    let mut all_stats = Vec::new();
+    const NUMBER_OF_STATS: usize =
+        size_of::<MerakiChampionStats>() / size_of::<MerakiChampionStatMap>();
+    let mut all_stats = Vec::with_capacity(NUMBER_OF_STATS);
+
     macro_rules! insert_stats {
         (
             full => [ $($field:ident),+$(,)* ],
@@ -270,144 +273,131 @@ struct ChampionResult {
     const_match_kind: String,
 }
 
-pub async fn generate_champions() -> GeneratorFn {
-    let data = parallel_task(
-        128,
-        "internal/champions",
-        async |champion_id, champion: Champion| {
-            println!("[build] ChampionId({champion_id:?})");
+pub fn generate_champions() -> GeneratorFn {
+    let mut data = parallel_task("internal/champions", |champion_id, champion: Champion| {
+        println!("[build] ChampionId::{champion_id}");
 
-            let champion_id_upper = champion_id.to_uppercase();
+        let champion_id_upper = champion_id.to_uppercase();
 
-            let Champion {
-                adaptative_type,
-                attack_type,
-                merge_data,
-                abilities,
-                positions,
-                stats,
-                name,
-            } = champion;
+        let Champion {
+            adaptative_type,
+            attack_type,
+            merge_data,
+            abilities,
+            positions,
+            stats,
+            name,
+        } = champion;
 
-            let mut abilities = declare_abilities(&champion_id_upper, abilities);
+        let mut abilities = declare_abilities(&champion_id_upper, abilities);
 
-            sort_abilities(&mut abilities);
+        sort_abilities(&mut abilities);
 
-            let mut constfns = Vec::with_capacity(abilities.len());
-            let mut fn_names = String::new();
-            let mut closures = String::new();
-            let mut metadata = String::new();
-            let mut ability_names = Vec::with_capacity(abilities.len());
-            let mut ability_declarations = Vec::with_capacity(abilities.len());
+        let mut constfns = Vec::with_capacity(abilities.len());
+        let mut fn_names = String::new();
+        let mut closures = String::new();
+        let mut metadata = String::new();
+        let mut ability_names = Vec::with_capacity(abilities.len());
+        let mut ability_declarations = Vec::with_capacity(abilities.len());
 
-            for ability in abilities {
-                let fn_name = &ability.constfn.name;
-                let damage = &ability.html_damage;
-                fn_names.push_str(&format!("{fn_name},"));
-                metadata.push_str(&ability.metadata);
-                closures.push_str(&format!("{fn_name}: {damage},"));
-                constfns.push(ability.constfn);
-                metadata.push(',');
-                ability_names.push(ability.ability_id);
-                ability_declarations.push((ability.ability_id, ability.declaration));
-            }
+        for ability in abilities {
+            let fn_name = &ability.constfn.name;
+            let damage = &ability.html_damage;
+            fn_names.push_str(&format!("{fn_name},"));
+            metadata.push_str(&ability.metadata);
+            closures.push_str(&format!("{fn_name}: {damage},"));
+            constfns.push(ability.constfn);
+            metadata.push(',');
+            ability_names.push(ability.ability_id);
+            ability_declarations.push((ability.ability_id, ability.declaration));
+        }
 
-            let positions = positions
-                .into_iter()
-                .map(|pos| format!("Position::{pos}"))
-                .collect::<Vec<_>>()
-                .join(",");
+        let positions = positions
+            .into_iter()
+            .map(|pos| format!("Position::{pos}"))
+            .collect::<Vec<_>>()
+            .join(",");
 
-            let rest = format!(
-                "metadata: &[{metadata}],
-                stats: CachedChampionStats {{{stats}}},
-                merge_data: &[{merge_data}]",
-                stats = get_stats(&stats),
-                merge_data = define_merge_indexes(merge_data, &ability_names),
-            );
+        let rest = format!(
+            "metadata: &[{metadata}],
+            stats: CachedChampionStats {{{stats}}},
+            merge_data: &[{merge_data}]",
+            stats = get_stats(&stats),
+            merge_data = define_merge_indexes(merge_data, &ability_names),
+        );
 
-            let base_declaration = format!(
-                "pub static {champion_id_upper}: CachedChampion = CachedChampion {{
-                    name: {name:?},
-                    adaptative_type: AdaptativeType::{adaptative_type},
-                    attack_type: AttackType::{attack_type},
-                    positions: &[{positions}],"
-            );
+        let base_declaration = format!(
+            "pub static {champion_id_upper}: CachedChampion = CachedChampion {{
+                name: {name:?},
+                adaptative_type: AdaptativeType::{adaptative_type},
+                attack_type: AttackType::{attack_type},
+                positions: &[{positions}],"
+        );
 
-            let html_declaration = format!("{base_declaration}{closures}{rest} }};")
-                .rust_fmt()
-                .drop_f32s()
-                .rust_html();
+        let html_declaration = format!("{base_declaration}{closures}{rest} }};")
+            .rust_fmt()
+            .drop_f32s()
+            .rust_html();
 
-            let mut base_declaration =
-                format!("{EVAL_FEAT}{base_declaration}closures: &[{fn_names}], {rest} }};");
+        let mut base_declaration =
+            format!("{EVAL_FEAT}{base_declaration}closures: &[{fn_names}], {rest} }};");
 
-            let mut match_arm_kind = Vec::with_capacity(constfns.len());
-            for ConstFn {
-                ability_id,
-                declaration,
-                name,
-            } in constfns
-            {
-                base_declaration.push_str(&declaration);
-                match_arm_kind.push(format!("{ability_id} => {name}(ctx)"));
-            }
+        let mut match_arm_kind = Vec::with_capacity(constfns.len());
+        for ConstFn {
+            ability_id,
+            declaration,
+            name,
+        } in constfns
+        {
+            base_declaration.push_str(&declaration);
+            match_arm_kind.push(format!("{ability_id} => {name}(ctx)"));
+        }
 
-            match_arm_kind.push(format!(
-                r#"_ => panic!("Invalid AbilityId for '{champion_id}'")"#
-            ));
+        match_arm_kind.push(format!(
+            r#"_ => panic!("Invalid AbilityId for '{champion_id}'")"#
+        ));
 
-            let const_match_kind = match_arm_kind.join(",");
+        let const_match_kind = match_arm_kind.join(",");
 
-            let generator = CwdPath::get_generator(SrcFolder::Champions, &champion_id).await?;
+        let generator = CwdPath::get_generator(SrcFolder::Champions, &champion_id)?;
 
-            let combos_json = CwdPath::deserialize::<Vec<Vec<String>>>(format!(
-                "internal/scraper/combos/{champion_id}.json"
-            ))
-            .await?;
+        let combos_json = CwdPath::deserialize::<Vec<Vec<String>>>(format!(
+            "internal/scraper/combos/{champion_id}.json"
+        ))?;
 
-            let mut champion_combos = Vec::<Vec<AbilityId>>::new();
+        let mut champion_combos = Vec::<Vec<AbilityId>>::new();
 
-            for combos in combos_json {
-                let mut result = Vec::new();
-                for combo in combos {
-                    for &ability_name in &ability_names {
-                        if combo == ability_name.as_char().to_string() {
-                            result.push(ability_name);
-                        }
+        for combos in combos_json {
+            let mut result = Vec::new();
+            for combo in combos {
+                for &ability_name in &ability_names {
+                    if combo == ability_name.as_char().to_string() {
+                        result.push(ability_name);
                     }
                 }
-                champion_combos.push(result);
             }
+            champion_combos.push(result);
+        }
 
-            Ok(ChampionResult {
-                ability_declarations,
-                const_match_kind,
-                name,
-                champion_id_upper,
-                base_declaration,
-                html_declaration,
-                positions: format!("&[{positions}]"),
-                generator,
-            })
-        },
-        async |futures| {
-            let mut result = BTreeMap::new();
-            for future in futures {
-                let (file_name, data) = future.await?;
-                result.insert(file_name, data);
-            }
-            Ok(result)
-        },
-    )
-    .await?;
+        Ok(ChampionResult {
+            ability_declarations,
+            const_match_kind,
+            name,
+            champion_id_upper,
+            base_declaration,
+            html_declaration,
+            positions: format!("&[{positions}]"),
+            generator,
+        })
+    });
 
-    build_champions(data).await
+    data.sort_by(|a, b| a.0.cmp(&b.0));
+    build_champions(data)
 }
 
-async fn build_champions(data: BTreeMap<String, ChampionResult>) -> GeneratorFn {
+fn build_champions(data: Vec<(String, ChampionResult)>) -> GeneratorFn {
     let len = data.len();
-    let recommendations = get_recommendations(len).await?;
+    let recommendations = get_recommendations(len)?;
 
     let [
         mut champion_cache,
@@ -461,8 +451,7 @@ async fn build_champions(data: BTreeMap<String, ChampionResult>) -> GeneratorFn 
     );
 
     let languages_map =
-        CwdPath::deserialize::<HashMap<String, Vec<String>>>("internal/champion_languages.json")
-            .await?;
+        CwdPath::deserialize::<HashMap<String, Vec<String>>>("internal/champion_languages.json")?;
     let mut language_arms = Vec::with_capacity(data.len());
     let mut const_match_arms = String::new();
 
@@ -597,7 +586,6 @@ async fn build_champions(data: BTreeMap<String, ChampionResult>) -> GeneratorFn 
         .rust_fmt();
 
         let exports = format!("pub mod champions {{ use super::*; {content} }}");
-
         Generated { exports, block }
     };
 
@@ -606,7 +594,7 @@ async fn build_champions(data: BTreeMap<String, ChampionResult>) -> GeneratorFn 
 
 /// Creates a new string with the definition of recommended items and runes
 /// that will be exported to the frontend application
-pub async fn get_recommendations(len: usize) -> MayFail<String> {
+pub fn get_recommendations(len: usize) -> MayFail<String> {
     let enum_ids = ["ItemId", "RuneId"];
     let declaration = ["RECOMMENDED_ITEMS", "RECOMMENDED_RUNES"];
 
@@ -618,8 +606,7 @@ pub async fn get_recommendations(len: usize) -> MayFail<String> {
 
     let json = CwdPath::deserialize::<BTreeMap<String, HashMap<String, [Vec<String>; 2]>>>(
         "internal/scraper/data.json",
-    )
-    .await?;
+    )?;
 
     for (_, data) in json {
         push_end(globals.each_mut(), "[");

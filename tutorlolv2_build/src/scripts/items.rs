@@ -3,7 +3,7 @@ use crate::{
     push_end,
     scripts::{
         StringExt,
-        model::{DamageObject, Item, ItemStats},
+        model::{DamageObject, Item, ItemStats, MerakiItemStatMap},
     },
 };
 
@@ -57,8 +57,8 @@ fn declare_item(item: &Item) -> DeclaredItem {
         })
     };
 
-    let mut melee_fn_names = Vec::new();
-    let mut ranged_fn_names = Vec::new();
+    let mut melee_fn_names = Vec::with_capacity(2);
+    let mut ranged_fn_names = Vec::with_capacity(2);
 
     let mut get_closure = |obj: &DamageObject, fn_vec: &mut Vec<_>, tag| {
         let values = [&obj.minimum_damage, &obj.maximum_damage];
@@ -115,7 +115,8 @@ fn declare_item(item: &Item) -> DeclaredItem {
 }
 
 pub fn get_stats(stats: &ItemStats) -> String {
-    let mut all_stats = Vec::new();
+    const NUMBER_OF_STATS: usize = size_of::<ItemStats>() / size_of::<MerakiItemStatMap>() + 2;
+    let mut all_stats = Vec::with_capacity(NUMBER_OF_STATS);
 
     macro_rules! insert_stats {
         (
@@ -187,117 +188,103 @@ struct ItemResult {
     match_arm: String,
 }
 
-pub async fn generate_items() -> GeneratorFn {
-    let mut data = parallel_task(
-        128,
-        "internal/items",
-        async |file_name, item: Item| {
-            println!("[build] ItemId({file_name:?})");
+pub fn generate_items() -> GeneratorFn {
+    let mut data = parallel_task("internal/items", |_, item: Item| {
+        let DeclaredItem {
+            metadata,
+            match_arm,
+            ranged_closures,
+            melee_closures,
+            melee_fn_names,
+            ranged_fn_names,
+            constfn_declaration,
+        } = declare_item(&item);
 
-            let DeclaredItem {
-                metadata,
-                match_arm,
-                ranged_closures,
-                melee_closures,
-                melee_fn_names,
-                ranged_fn_names,
-                constfn_declaration,
-            } = declare_item(&item);
+        let Item {
+            riot_id,
+            name,
+            prettified_stats,
+            tier,
+            price,
+            purchasable,
+            damage_type,
+            stats,
+            ranged,
+            melee,
+            attributes,
+        } = item;
 
-            let Item {
-                riot_id,
-                name,
-                prettified_stats,
-                tier,
-                price,
-                purchasable,
-                damage_type,
-                stats,
-                ranged,
-                melee,
-                attributes,
-            } = item;
+        let name_ssnake = name.to_ssnake();
+        let name_pascal = name.pascal_case();
 
-            let name_ssnake = name.to_ssnake();
-            let name_pascal = name.pascal_case();
-            let prettified_stats = prettified_stats
-                .iter()
-                .map(|stat| format!("StatName::{stat:?}"))
-                .collect::<Vec<_>>()
-                .join(",");
+        println!("[build] ItemId::{name_pascal}");
 
-            let stats = get_stats(&stats);
-            let deals_damage = {
-                let is_zeroed = |expr: &str| expr != "zero" && !expr.is_empty();
-                is_zeroed(&ranged.minimum_damage)
-                    || is_zeroed(&ranged.maximum_damage)
-                    || is_zeroed(&melee.minimum_damage)
-                    || is_zeroed(&melee.maximum_damage)
-            };
+        let prettified_stats = prettified_stats
+            .iter()
+            .map(|stat| format!("StatName::{stat:?}"))
+            .collect::<Vec<_>>()
+            .join(",");
 
-            let rest = format!(
-                "internal_id: ItemId::{name_pascal},
+        let stats = get_stats(&stats);
+        let deals_damage = {
+            let is_zeroed = |expr: &str| expr != "zero" && !expr.is_empty();
+            is_zeroed(&ranged.minimum_damage)
+                || is_zeroed(&ranged.maximum_damage)
+                || is_zeroed(&melee.minimum_damage)
+                || is_zeroed(&melee.maximum_damage)
+        };
+
+        let rest = format!(
+            "internal_id: ItemId::{name_pascal},
                 riot_id: {riot_id},
                 deals_damage: {deals_damage},
                 stats: CachedItemStats {{ {stats} }},
                 metadata: {metadata} }};"
-            );
+        );
 
-            let base_declaration = format!(
-                "pub static {name_ssnake}_{riot_id}: CachedItem = CachedItem {{
-                    name: {name:?},
-                    price: {price},
-                    prettified_stats: &[{prettified_stats}],
-                    damage_type: DamageType::{damage_type},
-                    attributes: Attrs::{attributes:?},
-                    tier: {tier},
-                    purchasable: {purchasable},"
-            );
+        let base_declaration = format!(
+            "pub static {name_ssnake}_{riot_id}: CachedItem = CachedItem {{
+                name: {name:?},
+                price: {price},
+                prettified_stats: &[{prettified_stats}],
+                damage_type: DamageType::{damage_type},
+                attributes: Attrs::{attributes:?},
+                tier: {tier},
+                purchasable: {purchasable},"
+        );
 
-            let html_declaration =
-                format!("{base_declaration}{ranged_closures}{melee_closures}{rest}")
-                    .rust_fmt()
-                    .drop_f32s()
-                    .rust_html()
-                    .as_const();
+        let html_declaration = format!("{base_declaration}{ranged_closures}{melee_closures}{rest}")
+            .rust_fmt()
+            .drop_f32s()
+            .rust_html()
+            .as_const();
 
-            let base_declaration = format!(
-                "{EVAL_FEAT}{base_declaration}
+        let base_declaration = format!(
+            "{EVAL_FEAT}{base_declaration}
                 ranged_damages: [{ranged_fn_names}],
                 melee_damages: [{melee_fn_names}], {rest}
                 {constfn_declaration}"
-            );
+        );
 
-            let generator =
-                CwdPath::get_generator(SrcFolder::Items, name_ssnake.to_lowercase()).await?;
+        let generator = CwdPath::get_generator(SrcFolder::Items, name_ssnake.to_lowercase())?;
 
-            Ok(ItemResult {
-                riot_id,
-                match_arm,
-                html_declaration,
-                base_declaration,
-                generator,
-                name_ssnake,
-                name_pascal,
-                name,
-            })
-        },
-        async |futures| {
-            let mut result = Vec::new();
-            for future in futures {
-                let (_, data) = future.await?;
-                result.push(data);
-            }
-            Ok(result)
-        },
-    )
-    .await?;
+        Ok(ItemResult {
+            riot_id,
+            match_arm,
+            html_declaration,
+            base_declaration,
+            generator,
+            name_ssnake,
+            name_pascal,
+            name,
+        })
+    });
 
-    data.sort_by(|a, b| a.name.cmp(&b.name));
+    data.sort_by(|a, b| a.1.name.cmp(&b.1.name));
     build_items(data)
 }
 
-fn build_items(data: Vec<ItemResult>) -> GeneratorFn {
+fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
     let len = data.len();
     let mut item_declarations = String::new();
 
@@ -328,16 +315,19 @@ fn build_items(data: Vec<ItemResult>) -> GeneratorFn {
     let mut item_id_enum_fields = Vec::new();
     let mut const_match_arms = String::new();
 
-    for ItemResult {
-        riot_id,
-        match_arm,
-        html_declaration,
-        base_declaration,
-        name,
-        name_ssnake,
-        name_pascal,
-        generator,
-    } in data
+    for (
+        _,
+        ItemResult {
+            riot_id,
+            match_arm,
+            html_declaration,
+            base_declaration,
+            name,
+            name_ssnake,
+            name_pascal,
+            generator,
+        },
+    ) in data
     {
         let match_arm = format!(
             "ItemId::{name_pascal} => {{ 
