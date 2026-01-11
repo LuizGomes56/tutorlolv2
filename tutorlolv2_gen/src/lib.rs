@@ -21,9 +21,9 @@ pub use eval::*;
 pub use tutorlolv2_types::*;
 
 #[cfg(feature = "glob")]
-pub const RAW_BLOCK: &str = include_str!("block.txt");
+pub static RAW_BLOCK: &str = include_str!("block.txt");
 #[cfg(feature = "glob")]
-pub const BLOCK: &[u8] = include_bytes!("block.br");
+pub static mut BLOCK: &[u8] = include_bytes!("block.br");
 
 /// Verifies the following conditions
 /// - `tier >= 3`
@@ -126,6 +126,24 @@ pub const NUMBER_OF_DAMAGING_ITEMS: usize = {
     sum
 };
 
+/// A constant array of all items that can damage enemies, holding their internal ids,
+/// defined by the enum [`ItemId`]
+#[cfg(feature = "eval")]
+pub const DAMAGING_ITEMS_ARRAY: [ItemId; NUMBER_OF_DAMAGING_ITEMS] = {
+    let mut result = [ItemId::AbyssalMask; NUMBER_OF_DAMAGING_ITEMS];
+    let mut i = 0;
+    let mut j = 0;
+    while i < NUMBER_OF_ITEMS {
+        let item = ITEM_CACHE[i];
+        if item.deals_damage {
+            result[j] = unsafe { ItemId::from_u16_unchecked(i as _) };
+            j += 1;
+        }
+        i += 1;
+    }
+    result
+};
+
 /// A constant array of all runes that can damage enemies, holding their internal ids,
 /// defined by the enum [`RuneId`]
 #[cfg(feature = "eval")]
@@ -153,7 +171,7 @@ pub const DAMAGING_RUNES_ARRAY: [RuneId; NUMBER_OF_DAMAGING_RUNES] = {
 /// Note that comparing the name of two functions and checking if they're equal to each
 /// other is still unstable, so the comparison `lhs == zero` does not work
 #[cfg(feature = "eval")]
-pub const DAMAGING_ITEMS: ItemsBitSet = bitset_items(SIMULATED_ITEMS_ENUM);
+pub const DAMAGING_ITEMS: ItemsBitSet = bitset_items(DAMAGING_ITEMS_ARRAY);
 
 #[cfg(feature = "eval")]
 pub const DAMAGING_RUNES: RunesBitSet = bitset_runes(DAMAGING_RUNES_ARRAY);
@@ -206,7 +224,13 @@ macro_rules! const_methods {
                 impl TryFrom<$cast> for $name {
                     type Error = &'static str;
                     fn try_from(value: $cast) -> Result<Self, Self::Error> {
-                        Self::[<from_ $repr>](value as _).ok_or("Index out of bounds")
+                        Self::[<from_ $repr>](value as _)
+                            .ok_or(concat!(
+                                "Index out of bounds when casting ",
+                                stringify!($cast),
+                                " to ",
+                                stringify!($name)
+                            ))
                     }
                 }
             )+
@@ -298,19 +322,13 @@ impl ChampionId {
     }
 
     #[cfg(feature = "glob")]
-    pub const fn recommended_items(
-        champion_id: ChampionId,
-        position: Position,
-    ) -> &'static [ItemId] {
-        RECOMMENDED_ITEMS[champion_id as usize][position as usize]
+    pub const fn recommended_items(&self, position: Position) -> &'static [ItemId] {
+        RECOMMENDED_ITEMS[self.index()][position as usize]
     }
 
     #[cfg(feature = "glob")]
-    pub const fn recommended_runes(
-        champion_id: ChampionId,
-        position: Position,
-    ) -> &'static [RuneId] {
-        RECOMMENDED_RUNES[champion_id as usize][position as usize]
+    pub const fn recommended_runes(&self, position: Position) -> &'static [RuneId] {
+        RECOMMENDED_RUNES[self.index()][position as usize]
     }
 }
 
