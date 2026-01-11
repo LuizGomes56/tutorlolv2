@@ -186,6 +186,7 @@ struct ItemResult {
     name_pascal: String,
     generator: String,
     match_arm: String,
+    idents: String,
 }
 
 pub fn generate_items() -> GeneratorFn {
@@ -268,6 +269,11 @@ pub fn generate_items() -> GeneratorFn {
 
         let generator = CwdPath::get_generator(SrcFolder::Items, name_ssnake.to_lowercase())?;
 
+        let idents = (melee_closures + &ranged_closures)
+            .get_idents()
+            .into_iter()
+            .collect::<String>();
+
         Ok(ItemResult {
             riot_id,
             match_arm,
@@ -277,6 +283,7 @@ pub fn generate_items() -> GeneratorFn {
             name_ssnake,
             name_pascal,
             name,
+            idents: format!("&[{idents}]"),
         })
     });
 
@@ -294,6 +301,7 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
         mut item_formulas,
         mut item_generator,
         mut item_id_to_riot_id,
+        mut item_idents,
     ] = std::array::from_fn(|i| {
         let (name, vtype, feature) = [
             ("ITEM_CACHE", "&CachedItem", EVAL_FEAT),
@@ -301,6 +309,7 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
             ("ITEM_FORMULAS", "(u32,u32)", GLOB_FEAT),
             ("ITEM_GENERATOR", "(u32,u32)", GLOB_FEAT),
             ("ITEM_ID_TO_RIOT_ID", "u32", GLOB_FEAT),
+            ("ITEM_IDENTS", "&[EvalIdent]", GLOB_FEAT),
         ][i];
         format!("{feature} pub static {name}: [{vtype}; ItemId::VARIANTS] = [")
     });
@@ -326,6 +335,7 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
             name_ssnake,
             name_pascal,
             generator,
+            idents,
         },
     ) in data
     {
@@ -335,6 +345,7 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
             }}"
         );
 
+        item_idents.push_str(&(idents + ","));
         const_match_arms.push_str(&match_arm);
         item_id_to_riot_id.push_str(&format!("{riot_id},"));
         item_id_enum_match_arms.push({
@@ -405,6 +416,7 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
             &mut item_cache,
             &mut item_id_to_name,
             &mut item_id_to_riot_id,
+            &mut item_idents,
         ],
         "];",
     );
@@ -434,6 +446,7 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
             item_generator,
             item_cache,
             item_declarations,
+            item_idents,
             const_eval,
         ]
         .concat()

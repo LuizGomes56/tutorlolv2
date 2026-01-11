@@ -13,6 +13,7 @@ struct RuneResult {
     html_declaration: String,
     riot_id: usize,
     match_arm: String,
+    idents: String,
 }
 
 pub fn generate_runes() -> GeneratorFn {
@@ -93,6 +94,11 @@ pub fn generate_runes() -> GeneratorFn {
                     AttackType::Ranged => {ranged_constfn_name}(ctx)",
                 );
 
+                let idents = (melee_closure + &ranged_closure)
+                    .get_idents()
+                    .into_iter()
+                    .collect::<String>();
+
                 RuneResult {
                     riot_id,
                     match_arm,
@@ -101,6 +107,7 @@ pub fn generate_runes() -> GeneratorFn {
                     name,
                     name_ssnake,
                     name_pascal,
+                    idents: format!("&[{idents}]"),
                 }
             })
             .collect::<Vec<_>>();
@@ -176,6 +183,7 @@ pub fn generate_runes() -> GeneratorFn {
                 base_declaration,
                 name_ssnake,
                 name,
+                idents: "&[]".into(),
             });
         }
 
@@ -195,12 +203,14 @@ fn build_runes(data: Vec<RuneResult>) -> GeneratorFn {
         mut rune_id_to_name,
         mut rune_formulas,
         mut rune_id_to_riot_id,
+        mut rune_idents,
     ] = std::array::from_fn(|i| {
         let (name, vtype, feature) = [
             ("RUNE_CACHE", "&CachedRune", EVAL_FEAT),
             ("RUNE_ID_TO_NAME", "&str", GLOB_FEAT),
             ("RUNE_FORMULAS", "(u32,u32)", GLOB_FEAT),
             ("RUNE_ID_TO_RIOT_ID", "u32", GLOB_FEAT),
+            ("RUNE_IDENTS", "&[EvalIdent]", GLOB_FEAT),
         ][i];
         format!("{feature} pub static {name}: [{vtype}; RuneId::VARIANTS] = [")
     });
@@ -222,6 +232,7 @@ fn build_runes(data: Vec<RuneResult>) -> GeneratorFn {
         name,
         name_ssnake,
         name_pascal,
+        idents,
     } in data
     {
         let match_arm = format!(
@@ -230,6 +241,7 @@ fn build_runes(data: Vec<RuneResult>) -> GeneratorFn {
             }}"
         );
 
+        rune_idents.push_str(&(idents + ","));
         const_match_arms.push_str(&match_arm);
         rune_id_to_riot_id.push_str(&format!("{riot_id},"));
         rune_id_enum_match_arms.push(format!("{riot_id} => Some(Self::{name_pascal})"));
@@ -278,6 +290,7 @@ fn build_runes(data: Vec<RuneResult>) -> GeneratorFn {
             &mut rune_cache,
             &mut rune_id_to_name,
             &mut rune_id_to_riot_id,
+            &mut rune_idents,
         ],
         "];",
     );
@@ -311,6 +324,7 @@ fn build_runes(data: Vec<RuneResult>) -> GeneratorFn {
             rune_id_to_name,
             rune_formulas,
             rune_id_to_riot_id,
+            rune_idents,
             const_eval,
         ]
         .concat()
