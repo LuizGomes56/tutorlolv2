@@ -1,16 +1,18 @@
+use std::collections::{HashMap, HashSet};
+
 use crate::{
     CwdPath, EVAL_FEAT, GLOB_FEAT, Generated, GeneratorFn, SrcFolder, Tracker, parallel_task,
     push_end,
     scripts::{
         StringExt,
-        model::{DamageObject, Item, ItemStats, MerakiItemStatMap},
+        model::{Item, ItemStats, MerakiItemStatMap},
     },
 };
 
 struct DeclaredItem {
     metadata: String,
-    ranged_closures: String,
-    melee_closures: String,
+    ranged_closures: [String; 2],
+    melee_closures: [String; 2],
     constfn_declaration: String,
     melee_fn_names: String,
     ranged_fn_names: String,
@@ -31,76 +33,127 @@ fn declare_item(item: &Item) -> DeclaredItem {
     let name_ssnake = name.to_ssnake();
 
     let metadata = format!(
-        "TypeMetadata {{ 
-            kind: ItemId::{name}, 
-            damage_type: DamageType::{damage_type}, 
-            attributes: Attrs::{attributes:?} 
+        "TypeMetadata {{
+            kind: ItemId::{name},
+            damage_type: DamageType::{damage_type},
+            attributes: Attrs::{attributes:?}
         }}"
     );
 
+    #[derive(Clone, Hash, PartialEq, Eq)]
+    struct ExprKey {
+        body: String,
+    }
+
+    #[derive(Clone)]
+    struct ExprInfo {
+        tag: &'static str,
+        kind: &'static str,
+        key: ExprKey,
+    }
+
+    let normalize = |expr: &str| -> Option<String> {
+        (!expr.is_empty() && expr != "zero").then(|| expr.clean().to_lowercase().cast_f32())
+    };
+
+    let mut exprs = Vec::<ExprInfo>::new();
+
+    let push_expr = |tag, kind, expr: &str, vec: &mut Vec<ExprInfo>| {
+        if let Some(body) = normalize(expr) {
+            vec.push(ExprInfo {
+                tag,
+                kind,
+                key: ExprKey { body },
+            });
+        }
+    };
+
+    push_expr("melee", "min", &melee.minimum_damage, &mut exprs);
+    push_expr("melee", "max", &melee.maximum_damage, &mut exprs);
+    push_expr("ranged", "min", &ranged.minimum_damage, &mut exprs);
+    push_expr("ranged", "max", &ranged.maximum_damage, &mut exprs);
+
+    let mut groups: HashMap<ExprKey, Vec<ExprInfo>> = HashMap::new();
+
+    for e in exprs {
+        groups.entry(e.key.clone()).or_default().push(e);
+    }
+
+    let decide_fn_name = |group: &[ExprInfo]| -> String {
+        let kinds = group.iter().map(|e| e.kind).collect::<HashSet<_>>();
+        let tags = group.iter().map(|e| e.tag).collect::<HashSet<_>>();
+
+        let name = name_ssnake.to_lowercase();
+
+        let data = &group[0];
+        let kind = data.kind;
+        let tag = data.tag;
+
+        match (kinds.len(), tags.len()) {
+            (2, 2) => name.clone(),
+            (1, 2) => format!("{name}_{kind}"),
+            (2, 1) => format!("{name}_{tag}"),
+            _ => format!("{name}_{tag}_{kind}"),
+        }
+    };
+
     let mut constfn_declaration = String::new();
+    let mut fn_name_by_slot = HashMap::<(&'static str, &'static str), String>::new();
 
-    let get_constfn_closure = |expr: &str| {
-        (!expr.is_empty() && expr != "zero").then_some({
-            let ctx_param = expr.ctx_param();
-            let body = expr.to_lowercase();
-            let closure = format!("|{ctx_param}| {body}");
-            move |fn_name: &str| {
-                (
-                    format!(
-                        "{EVAL_FEAT} pub const fn {fn_name}(ctx: &EvalContext) -> f32 {{ {expr} }}",
-                        expr = body.clean().cast_f32()
-                    ),
-                    closure,
-                )
-            }
-        })
+    for (key, group) in &groups {
+        let fn_name = decide_fn_name(group);
+
+        constfn_declaration.push_str(&format!(
+            "{EVAL_FEAT} pub const fn {fn_name}(ctx: &EvalContext) -> f32 {{
+                {body}
+            }}\n",
+            body = key.body
+        ));
+
+        for e in group {
+            fn_name_by_slot.insert((e.tag, e.kind), fn_name.clone());
+        }
+    }
+
+    let resolve = |tag, kind| {
+        fn_name_by_slot
+            .get(&(tag, kind))
+            .cloned()
+            .unwrap_or_else(|| "zero".into())
     };
 
-    let mut melee_fn_names = Vec::with_capacity(2);
-    let mut ranged_fn_names = Vec::with_capacity(2);
-
-    let mut get_closure = |obj: &DamageObject, fn_vec: &mut Vec<_>, tag| {
-        let values = [&obj.minimum_damage, &obj.maximum_damage];
-        let dtypes = ["min", "max"];
-        std::array::from_fn::<_, 2, _>(|i| {
-            let (fn_name, closure) = match get_constfn_closure(values[i]) {
-                Some(f) => {
-                    let dtype = dtypes[i];
-                    let fn_name = format!("{name_ssnake}_{tag}_{dtype}").to_lowercase();
-                    let (constfn, closure) = f(&fn_name);
-                    constfn_declaration.push_str(&constfn);
-                    (fn_name, closure)
-                }
-                None => ("zero".into(), "zero".into()),
-            };
-            fn_vec.push(fn_name);
-            closure
-        })
+    let mk_closure = |expr: &str| {
+        let ctx = expr.ctx_param();
+        let body = expr.to_lowercase();
+        format!("|{ctx}| {body}")
     };
 
-    let ranged_closures = {
-        let [min, max] = get_closure(&ranged, &mut ranged_fn_names, "ranged");
-        format!("ranged_min_dmg: {min}, ranged_max_dmg: {max},")
-    };
-    let melee_closures = {
-        let [min, max] = get_closure(&melee, &mut melee_fn_names, "melee");
-        format!("melee_min_dmg: {min}, melee_max_dmg: {max},")
-    };
+    let melee_closures = [
+        mk_closure(&melee.minimum_damage),
+        mk_closure(&melee.maximum_damage),
+    ];
+
+    let ranged_closures = [
+        mk_closure(&ranged.minimum_damage),
+        mk_closure(&ranged.maximum_damage),
+    ];
+
+    let melee_fn_names = vec![resolve("melee", "min"), resolve("melee", "max")];
+    let ranged_fn_names = vec![resolve("ranged", "min"), resolve("ranged", "max")];
 
     let get_fn_call = |names: &[String]| {
         names
             .iter()
-            .map(|fn_name| format!("{fn_name}(ctx)"))
+            .map(|f| format!("{f}(ctx)"))
             .collect::<Vec<_>>()
-            .join(",")
+            .join(", ")
     };
 
     let match_arm = format!(
-        "AttackType::Melee => [{melee_fn_calls}],
-        AttackType::Ranged => [{ranged_fn_calls}]",
-        melee_fn_calls = get_fn_call(&melee_fn_names),
-        ranged_fn_calls = get_fn_call(&ranged_fn_names),
+        "AttackType::Melee => [{}],
+        AttackType::Ranged => [{}]",
+        get_fn_call(&melee_fn_names),
+        get_fn_call(&ranged_fn_names),
     );
 
     DeclaredItem {
@@ -187,6 +240,7 @@ struct ItemResult {
     generator: String,
     match_arm: String,
     idents: String,
+    html_closure: String,
 }
 
 pub fn generate_items() -> GeneratorFn {
@@ -254,11 +308,31 @@ pub fn generate_items() -> GeneratorFn {
                 purchasable: {purchasable},"
         );
 
-        let html_declaration = format!("{base_declaration}{ranged_closures}{melee_closures}{rest}")
+        let html_declaration = [
+            base_declaration.as_str(),
+            &{
+                let [melee_min, melee_max] = &melee_closures;
+                let [ranged_min, ranged_max] = &ranged_closures;
+                format!(
+                    "melee_min_dmg: {melee_min},
+                    melee_max_dmg: {melee_max},
+                    ranged_min_dmg: {ranged_min},
+                    ranged_max_dmg: {ranged_max},"
+                )
+            },
+            &rest,
+        ]
+        .concat()
+        .rust_fmt()
+        .drop_f32s()
+        .rust_html()
+        .as_const();
+
+        let html_closure = constfn_declaration
+            .replace(EVAL_FEAT, "")
             .rust_fmt()
             .drop_f32s()
-            .rust_html()
-            .as_const();
+            .rust_html();
 
         let base_declaration = format!(
             "{EVAL_FEAT}{base_declaration}
@@ -269,7 +343,7 @@ pub fn generate_items() -> GeneratorFn {
 
         let generator = CwdPath::get_generator(SrcFolder::Items, name_ssnake.to_lowercase())?;
 
-        let idents = (melee_closures + &ranged_closures)
+        let idents = constfn_declaration
             .get_idents()
             .into_iter()
             .collect::<String>();
@@ -282,6 +356,7 @@ pub fn generate_items() -> GeneratorFn {
             generator,
             name_ssnake,
             name_pascal,
+            html_closure,
             name,
             idents: format!("&[{idents}]"),
         })
@@ -302,14 +377,16 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
         mut item_generator,
         mut item_id_to_riot_id,
         mut item_idents,
+        mut item_closures,
     ] = std::array::from_fn(|i| {
         let (name, vtype, feature) = [
             ("ITEM_CACHE", "&CachedItem", EVAL_FEAT),
             ("ITEM_ID_TO_NAME", "&str", GLOB_FEAT),
-            ("ITEM_FORMULAS", "(u32,u32)", GLOB_FEAT),
-            ("ITEM_GENERATOR", "(u32,u32)", GLOB_FEAT),
+            ("ITEM_FORMULAS", "Range<usize>", GLOB_FEAT),
+            ("ITEM_GENERATOR", "Range<usize>", GLOB_FEAT),
             ("ITEM_ID_TO_RIOT_ID", "u32", GLOB_FEAT),
             ("ITEM_IDENTS", "&[EvalIdent]", GLOB_FEAT),
+            ("ITEM_CLOSURES", "Range<usize>", GLOB_FEAT),
         ][i];
         format!("{feature} pub static {name}: [{vtype}; ItemId::VARIANTS] = [")
     });
@@ -318,6 +395,7 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
 
     let mut tracker = Tracker::new(&mut block);
     let mut formula_offsets = Vec::with_capacity(len);
+    let mut closure_offsets = Vec::with_capacity(len);
     let mut generator_offsets = Vec::with_capacity(len);
 
     let mut item_id_enum_match_arms = Vec::new();
@@ -335,6 +413,7 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
             name_ssnake,
             name_pascal,
             generator,
+            html_closure,
             idents,
         },
     ) in data
@@ -366,6 +445,7 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
         item_declarations.push_str(&base_declaration);
         tracker.record_into(&generator, &mut generator_offsets);
         tracker.record_into(&html_declaration, &mut formula_offsets);
+        tracker.record_into(&html_closure, &mut closure_offsets);
     }
 
     let fields = item_id_enum_fields.join(",");
@@ -426,7 +506,7 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
             for (start, end) in list {
                 let new_start = start + index;
                 let new_end = end + index;
-                target.push_str(&format!("({new_start}, {new_end}),"));
+                target.push_str(&format!("({new_start}..{new_end}),"));
             }
             push_end([target], "];");
         };
@@ -434,6 +514,7 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
         [
             (generator_offsets, &mut item_generator),
             (formula_offsets, &mut item_formulas),
+            (closure_offsets, &mut item_closures),
         ]
         .into_iter()
         .for_each(add_offsets);
@@ -447,6 +528,7 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
             item_cache,
             item_declarations,
             item_idents,
+            item_closures,
             const_eval,
         ]
         .concat()
