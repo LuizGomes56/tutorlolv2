@@ -4,7 +4,6 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-paste = "1.0.15"
 pastey = "0.2.1"
 tokio = { version = "1.49.0", features = ["full"] }
 tutorlolv2_gen = { path = "../tutorlolv2_gen", features = [

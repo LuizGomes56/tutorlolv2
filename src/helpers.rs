@@ -575,10 +575,10 @@ pub const fn get_enemy_state(
 /// functions
 pub const fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> EvalContext {
     EvalContext {
-        q_level: self_state.ability_levels.q,
-        w_level: self_state.ability_levels.w,
-        e_level: self_state.ability_levels.e,
-        r_level: self_state.ability_levels.r,
+        q_level: self_state.ability_levels.q as _,
+        w_level: self_state.ability_levels.w as _,
+        e_level: self_state.ability_levels.e as _,
+        r_level: self_state.ability_levels.r as _,
         level: self_state.level as f32,
         chogath_stacks: 1.0,
         veigar_stacks: 1.0,

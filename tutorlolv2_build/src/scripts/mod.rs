@@ -1,6 +1,6 @@
 use once_cell::sync::Lazy;
 use regex::{Captures, Regex};
-use std::fmt::Display;
+use std::{collections::HashSet, fmt::Display};
 use tutorlolv2_fmt::rust_html;
 
 pub mod champions;
@@ -13,6 +13,7 @@ static RE_CAST_F32: Lazy<Regex> =
 static RE_DROP_F32: Lazy<Regex> = Lazy::new(|| Regex::new(r"(\d+(?:\.\d+)?)(f32)").unwrap());
 static RE_DROP_F32_DECIMAL: Lazy<Regex> = Lazy::new(|| Regex::new(r"\d+\.\d+|\d+").unwrap());
 static RE_SIMPLIFY: Lazy<Regex> = Lazy::new(|| Regex::new(r"([-+]?\d*\.?\d+)").unwrap());
+static RE_IDENTS: Lazy<Regex> = Lazy::new(|| Regex::new(r"ctx\.([a-z_][a-z0-9_]*)").unwrap());
 
 pub static TOWER_DAMAGE: &str = r#"const intrinsic TOWER_DAMAGE {
     damage_type: RiotFormulas::adaptative_type(
@@ -53,6 +54,13 @@ pub static BASIC_ATTACK: &str = r#"const intrinsic BASIC_ATTACK {
 };"#;
 
 pub trait StringExt: AsRef<str> {
+    fn get_idents(&self) -> HashSet<String> {
+        RE_IDENTS
+            .captures_iter(self.as_ref())
+            .map(|cap| format!("EvalIdent::{},", cap[1].pascal_case()))
+            .collect()
+    }
+
     fn rust_html(&self) -> String {
         rust_html(self.as_ref())
     }
