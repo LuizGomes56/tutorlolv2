@@ -104,7 +104,7 @@ fn declare_item(item: &Item) -> DeclaredItem {
         let fn_name = decide_fn_name(group);
 
         constfn_declaration.push_str(&format!(
-            "{EVAL_FEAT} pub const fn {fn_name}(ctx: &EvalContext) -> f32 {{
+            "{EVAL_FEAT} pub const fn {fn_name}(ctx: &Ctx) -> f32 {{
                 {body}
             }}\n",
             body = key.body
@@ -329,7 +329,9 @@ pub fn generate_items() -> GeneratorFn {
         .as_const();
 
         let html_closure = constfn_declaration
-            .replace(EVAL_FEAT, "")
+            .trim_start_matches(EVAL_FEAT)
+            .trim_start_matches("pub const")
+            .trim()
             .rust_fmt()
             .drop_f32s()
             .rust_html();
@@ -483,7 +485,7 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
 
     let const_eval = format!(
         "{EVAL_FEAT} pub const fn item_const_eval(
-            ctx: &EvalContext, 
+            ctx: &Ctx, 
             item_id: ItemId, 
             attack_type: AttackType
         ) -> [f32; 2] {{

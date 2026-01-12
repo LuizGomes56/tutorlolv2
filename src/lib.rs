@@ -117,8 +117,8 @@
 pub use calculator::calculator;
 pub use realtime::realtime;
 pub use tutorlolv2_gen::{
-    AdaptativeType, AttackType, Attrs, ChampionId, DamageType, EvalContext, GameMap, ItemId,
-    Position, RuneId,
+    AdaptativeType, AttackType, Attrs, ChampionId, Ctx, DamageType, GameMap, ItemId, Position,
+    RuneId,
 };
 
 pub mod model;

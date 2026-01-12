@@ -105,7 +105,7 @@ fn declare_abilities(
             .to_lowercase();
 
             let constfn_declaration = format!(
-                "{EVAL_FEAT} pub const fn {constfn_name}(ctx: &EvalContext) -> f32 {body}",
+                "{EVAL_FEAT} pub const fn {constfn_name}(ctx: &Ctx) -> f32 {body}",
                 body = damage.trim_start_matches("|ctx|")
             );
 
@@ -338,6 +338,7 @@ pub fn generate_champions() -> GeneratorFn {
                 constfn
                     .declaration
                     .trim_start_matches(EVAL_FEAT)
+                    .trim_start_matches("pub const")
                     .trim()
                     .rust_fmt()
                     .drop_f32s()
@@ -560,7 +561,7 @@ fn build_champions(data: Vec<(String, ChampionResult)>) -> GeneratorFn {
 
     let const_eval = format!(
         "{EVAL_FEAT} pub const fn ability_const_eval(
-            ctx: &EvalContext, 
+            ctx: &Ctx, 
             champion_id: ChampionId, 
             kind: AbilityId
         ) -> f32 {{

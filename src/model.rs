@@ -196,7 +196,7 @@ pub struct Enemy<'a> {
     pub champion_id: ChampionId,
     pub team: Team,
     pub position: Position,
-    pub(crate) eval_ctx: EvalContext,
+    pub(crate) eval_ctx: Ctx,
 }
 
 /// Exact number of resistence variations for jungle monsters
@@ -495,7 +495,7 @@ pub struct OutputEnemy {
     pub real_magic_resist: i32,
     pub level: u8,
     pub champion_id: ChampionId,
-    pub eval_ctx: EvalContext,
+    pub eval_ctx: Ctx,
 }
 
 /// Holds values that will be multiplied by all damages, depending on their

@@ -55,9 +55,9 @@ pub fn generate_runes() -> GeneratorFn {
                     true => {
                         let fn_name = name_ssnake.to_lowercase();
                         constfn_declaration.push_str(&format!(
-                            "{EVAL_FEAT} pub const fn {fn_name}(ctx: &EvalContext) -> f32 {{
-                            {melee_body}
-                        }}"
+                            "{EVAL_FEAT} pub const fn {fn_name}(ctx: &Ctx) -> f32 {{
+                                {melee_body}
+                            }}"
                         ));
 
                         (fn_name.clone(), fn_name)
@@ -67,13 +67,13 @@ pub fn generate_runes() -> GeneratorFn {
                         let ranged_fn = format!("{name_ssnake}_ranged").to_lowercase();
 
                         constfn_declaration.push_str(&format!(
-                            "{EVAL_FEAT} pub const fn {melee_fn}(ctx: &EvalContext) -> f32 {{
+                            "{EVAL_FEAT} pub const fn {melee_fn}(ctx: &Ctx) -> f32 {{
                                 {melee_body}
                             }}"
                         ));
 
                         constfn_declaration.push_str(&format!(
-                            "{EVAL_FEAT} pub const fn {ranged_fn}(ctx: &EvalContext) -> f32 {{
+                            "{EVAL_FEAT} pub const fn {ranged_fn}(ctx: &Ctx) -> f32 {{
                                 {ranged_body}
                             }}"
                         ));
@@ -135,7 +135,9 @@ pub fn generate_runes() -> GeneratorFn {
                     name_ssnake,
                     name_pascal,
                     html_closure: constfn_declaration
-                        .replace(EVAL_FEAT, "")
+                        .trim_start_matches(EVAL_FEAT)
+                        .trim_start_matches("pub const")
+                        .trim()
                         .rust_fmt()
                         .drop_f32s()
                         .rust_html(),
@@ -335,7 +337,7 @@ fn build_runes(data: Vec<RuneResult>) -> GeneratorFn {
 
     let const_eval = format!(
         "{EVAL_FEAT} pub const fn rune_const_eval(
-            ctx: &EvalContext, 
+            ctx: &Ctx, 
             rune_id: RuneId, 
             attack_type: AttackType
         ) -> f32 {{

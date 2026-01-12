@@ -409,7 +409,7 @@ pub const fn get_enemy_current_stats(
 
 /// Takes information about the current enemy and returns a struct that represents
 /// all the useful information we should infer from the current enemy state. This
-/// will be used to create a struct [`EvalContext`] that will be used to evaluate
+/// will be used to create a struct [`Ctx`] that will be used to evaluate
 /// the closures of the current champion. Champion and item specific bonus stats
 /// are applied in this function
 pub const fn get_enemy_state(
@@ -569,12 +569,12 @@ pub const fn get_enemy_state(
     }
 }
 
-/// Construct a new [`EvalContext`] type that can be used to evaluate any champion's
+/// Construct a new [`Ctx`] type that can be used to evaluate any champion's
 /// closures and get their intermediary damage values, before applying the reductions
 /// from armor and magic resist. See [`ConstClosure`] for more details about those
 /// functions
-pub const fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> EvalContext {
-    EvalContext {
+pub const fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> Ctx {
+    Ctx {
         q_level: self_state.ability_levels.q as _,
         w_level: self_state.ability_levels.w as _,
         e_level: self_state.ability_levels.e as _,
@@ -669,7 +669,7 @@ pub const fn ability_id_mod(
 /// `metadata` are not equal. See similar functions [`item_id_eval_damage`] and
 /// [`rune_id_eval_damage`]
 pub fn ability_id_eval_damage(
-    ctx: &EvalContext,
+    ctx: &Ctx,
     onhit: &mut RangeDamage,
     metadata: &[TypeMetadata<AbilityId>],
     closures: &[ConstClosure],
@@ -700,7 +700,7 @@ pub fn ability_id_eval_damage(
 /// or panic in debug mode. See similar function [`ability_id_eval_damage`] and
 /// [`rune_id_eval_damage`]
 pub fn item_id_eval_damage(
-    ctx: &EvalContext,
+    ctx: &Ctx,
     onhit: &mut RangeDamage,
     metadata: &[TypeMetadata<ItemId>],
     closures: &[ConstClosure],
@@ -743,7 +743,7 @@ pub fn item_id_eval_damage(
 /// to the length of `metadata`. See similar function [`ability_id_eval_damage`] and
 /// [`item_id_eval_damage`]
 pub fn rune_id_eval_damage(
-    ctx: &EvalContext,
+    ctx: &Ctx,
     onhit: &mut RangeDamage,
     metadata: &[TypeMetadata<RuneId>],
     closures: &[ConstClosure],
@@ -770,11 +770,7 @@ pub fn rune_id_eval_damage(
 }
 
 /// Evaluates the damage of basic attacks, onhit damages and critical strikes
-pub const fn eval_attacks(
-    ctx: &EvalContext,
-    mut onhit_damage: RangeDamage,
-    physical_mod: f32,
-) -> Attacks {
+pub const fn eval_attacks(ctx: &Ctx, mut onhit_damage: RangeDamage, physical_mod: f32) -> Attacks {
     let basic_attack = ctx.ad * physical_mod;
     let critical_strike = (basic_attack * ctx.crit_damage / 100.0) as i32;
     let basic_attack = basic_attack as i32;
@@ -817,7 +813,7 @@ const _: () = {
 /// Constructs a new [`Damages`] struct that holds all the damage values against some entity
 /// that could be calculated. This function will cause undefined behavior if any
 /// metadata of closures vectors do not have the same length
-pub fn get_damages(eval_ctx: &EvalContext, data: &DamageEvalData, modifiers: Modifiers) -> Damages {
+pub fn get_damages(eval_ctx: &Ctx, data: &DamageEvalData, modifiers: Modifiers) -> Damages {
     let mut onhit = RangeDamage::default();
 
     let abilities = ability_id_eval_damage(

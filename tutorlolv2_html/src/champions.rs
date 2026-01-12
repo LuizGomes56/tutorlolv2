@@ -53,7 +53,7 @@ pub async fn champions_html() {
             .enumerate()
             .map(|(i, metadata)| {
                 let lit = metadata.kind.as_const_lit();
-                let offsets = ABILITY_FORMULAS[champion_id as usize][i];
+                let offsets = ABILITY_FORMULAS[champion_id as usize][i].clone();
                 let code = Html::code_block(offsets);
                 Html::code_column(&lit, &code)
             })
@@ -67,9 +67,9 @@ pub async fn champions_html() {
         ));
         html.push_str(&item_recommendations);
         html.push_str(&rune_recommendations);
-        html.push_code_block(CHAMPION_FORMULAS[champion_id as usize]);
+        html.push_code_block(CHAMPION_FORMULAS[champion_id as usize].clone());
         html.push_str(&abilities);
-        html.push_code_block(CHAMPION_GENERATOR[champion_id as usize]);
+        html.push_code_block(CHAMPION_GENERATOR[champion_id as usize].clone());
         html.push_json(champion_id).await;
 
         html.push_str(&format!(

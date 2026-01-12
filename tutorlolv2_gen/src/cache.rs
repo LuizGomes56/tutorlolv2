@@ -1,6 +1,6 @@
 use crate::{Attrs, DamageType};
 #[cfg(feature = "eval")]
-use crate::{ItemId, RuneId, eval::EvalContext};
+use crate::{ItemId, RuneId, eval::Ctx};
 #[cfg(feature = "eval")]
 use tutorlolv2_types::*;
 
@@ -210,12 +210,12 @@ pub struct TypeMetadata<T> {
 
 /// Definition of a closure that lives in the generated static variables of
 /// cache fields, such as [`crate::CHAMPION_CACHE`], [`crate::ITEM_CACHE`], or
-/// [`crate::RUNE_CACHE`]. They all receive a [`EvalContext`], which contains
+/// [`crate::RUNE_CACHE`]. They all receive a [`Ctx`], which contains
 /// more than the necessary information to calculate the damage of some ability,
 /// item, passive, or rune, and they return an [`f32`], which represents the calculated
 /// damage. All of them must be qualified as `const`, capturing no variables
 #[cfg(feature = "eval")]
-pub type ConstClosure = fn(&EvalContext) -> f32;
+pub type ConstClosure = fn(&Ctx) -> f32;
 
 /// Generated data about some champion, held in the static variable [`crate::CHAMPION_CACHE`]
 #[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
@@ -291,7 +291,7 @@ pub struct CachedChampion {
     /// let closures = [|ctx| { ctx.ap + 50.0 }; 5];
     /// let merge_data = [(0, 2), (4, 3)];
     /// let metadata = [Q::_1Min, Q::_2, Q::_1Max, Q::_4Max, Q::_4Min];
-    /// let eval_ctx = EvalContext::default();
+    /// let eval_ctx = Ctx::default();
     /// for (i, j) in merge_data {
     ///     let min_dmg = closures[i](&eval_ctx);
     ///     let max_dmg = closures[j](&eval_ctx);
@@ -392,6 +392,6 @@ pub struct CachedItemStats {
 /// scenario, this function should never be called, to avoid wasting CPU time with
 /// a compile-time known result
 #[cfg(feature = "eval")]
-pub const fn zero(_: &EvalContext) -> f32 {
+pub const fn zero(_: &Ctx) -> f32 {
     0.0
 }

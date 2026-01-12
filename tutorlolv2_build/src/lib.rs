@@ -220,7 +220,7 @@ pub fn run() -> MayFail {
     ] {
         let (start, end) = tracker.record(&value.rust_html().as_const());
         full_exports.push_str(&format!(
-            "{GLOB_FEAT} pub static {name}: (u32, u32) = ({start}, {end});"
+            "{GLOB_FEAT} pub static {name}: Range<usize> = {start}..{end};"
         ));
     }
 

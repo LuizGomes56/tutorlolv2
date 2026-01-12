@@ -12,19 +12,19 @@ use actix_web::{
 };
 use dotenvy::dotenv;
 use server::{embed::*, games::*};
-use sqlx::{Pool, Postgres, postgres::PgPoolOptions};
+// use sqlx::{Pool, Postgres, postgres::PgPoolOptions};
 
-pub struct AppState {
-    pub db: Pool<Postgres>,
-}
+// pub struct AppState {
+//     pub db: Pool<Postgres>,
+// }
 
 fn api_scope() -> impl HttpServiceFactory + 'static {
     let api_routes = scope("/api").service(
         scope("/games")
             .service(realtime_handler)
-            .service(calculator_handler)
-            .service(create_game_handler)
-            .service(get_by_code_handler),
+            .service(calculator_handler),
+        // .service(create_game_handler),
+        // .service(get_by_code_handler),
     );
 
     #[cfg(feature = "dev")]
@@ -73,13 +73,13 @@ pub async fn run() -> std::io::Result<()> {
     println!("tutorlolv2_server is starting on port 8082");
     dotenv().ok();
 
-    let dsn = std::env::var("DATABASE_URL").expect("DATABASE_URL is not set");
     let host = std::env::var("HOST").expect("HOST is not set");
-    let pool = PgPoolOptions::new()
-        .max_connections(5)
-        .connect(&dsn)
-        .await
-        .expect("Error while attempting to connect to the database");
+    // let dsn = std::env::var("DATABASE_URL").expect("DATABASE_URL is not set");
+    // let pool = PgPoolOptions::new()
+    //     .max_connections(5)
+    //     .connect(&dsn)
+    //     .await
+    //     .expect("Error while attempting to connect to the database");
 
     HttpServer::new(move || {
         let cors = Cors::default()
@@ -93,7 +93,7 @@ pub async fn run() -> std::io::Result<()> {
         App::new()
             .wrap(cors)
             .wrap(actix_web::middleware::Logger::default())
-            .app_data(Data::new(AppState { db: pool.clone() }))
+            // .app_data(Data::new(AppState { db: pool.clone() }))
             .service(api_scope())
             .service(
                 scope("")
