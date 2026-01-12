@@ -338,6 +338,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
                 real_armor: full_state.armor_values.real as i32,
                 real_magic_resist: full_state.magic_values.real as i32,
                 level: *e_level,
+                eval_ctx,
             })
         })
         .collect::<Box<[Enemy<'_>]>>();

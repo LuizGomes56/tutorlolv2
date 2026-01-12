@@ -196,6 +196,7 @@ pub struct Enemy<'a> {
     pub champion_id: ChampionId,
     pub team: Team,
     pub position: Position,
+    pub(crate) eval_ctx: EvalContext,
 }
 
 /// Exact number of resistence variations for jungle monsters
