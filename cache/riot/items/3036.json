@@ -1,28 +1,25 @@
 {
   "colloq": ";lw",
   "depth": 3,
-  "description": "<mainText><stats><attention>35</attention> Attack Damage<br><attention>40%</attention> Armor Penetration<br><attention>25%</attention> Critical Strike Chance</stats><br><br></mainText>",
-  "effect": {
-    "Effect1Amount": "0.2"
-  },
+  "description": "<mainText><stats><attention>35</attention> Attack Damage<br><attention>35%</attention> Armor Penetration<br><attention>25%</attention> Critical Strike Chance</stats><br><br><passive>Giant Slayer</passive><br>Deal up to 15% bonus damage against champions based on their bonus Health. Maximum damage bonus reached at 1500 bonus Health.</mainText>",
   "from": [
     "3035",
     "6670"
   ],
   "gold": {
-    "base": 350,
+    "base": 550,
     "purchasable": true,
-    "sell": 2170,
-    "total": 3100
+    "sell": 2310,
+    "total": 3300
   },
   "image": {
     "full": "3036.png",
     "group": "item",
     "h": 48,
-    "sprite": "item2.png",
+    "sprite": "item3.png",
     "w": 48,
-    "x": 432,
-    "y": 336
+    "x": 0,
+    "y": 144
   },
   "maps": {
     "11": true,

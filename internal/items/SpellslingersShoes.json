@@ -3,15 +3,23 @@
   "item_id": "SpellslingersShoes",
   "name": "Spellslinger's Shoes",
   "price": 1600,
-  "sell": 1120,
+  "sell": 770,
   "tier": 3,
   "maps": [
+    [
+      "NexusBlitz",
+      false
+    ],
+    [
+      "Tft",
+      false
+    ],
     [
       "Arena",
       false
     ],
     [
-      "Tft",
+      "Aram",
       false
     ],
     [
@@ -25,26 +33,9 @@
     [
       "SummonersRift",
       true
-    ],
-    [
-      "Aram",
-      false
-    ],
-    [
-      "NexusBlitz",
-      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "MoveSpeed",
-      "value": 50
-    },
-    {
-      "name": "MagicPenetration",
-      "value": 7
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

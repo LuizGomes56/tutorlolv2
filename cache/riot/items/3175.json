@@ -1,24 +1,24 @@
 {
   "colloq": "",
   "depth": 3,
-  "description": "<mainText><stats><attention>18</attention> Magic Penetration<br><attention>7%</attention> Magic Penetration<br><attention>50</attention> Move Speed</stats><br><br></mainText>",
+  "description": "<mainText><stats><attention>18</attention> Magic Penetration<br><attention>8%</attention> Magic Penetration<br><attention>45</attention> Move Speed</stats><br><br></mainText>",
   "from": [
     "3020"
   ],
   "gold": {
-    "base": 500,
+    "base": 0,
     "purchasable": true,
-    "sell": 1120,
-    "total": 1600
+    "sell": 770,
+    "total": 1100
   },
   "image": {
     "full": "3175.png",
     "group": "item",
     "h": 48,
-    "sprite": "item3.png",
+    "sprite": "item4.png",
     "w": 48,
-    "x": 0,
-    "y": 288
+    "x": 96,
+    "y": 48
   },
   "maps": {
     "11": true,
@@ -32,7 +32,7 @@
   "name": "Spellslinger's Shoes",
   "plaintext": "",
   "stats": {
-    "FlatMovementSpeedMod": 50
+    "FlatMovementSpeedMod": 45
   },
   "tags": [
     "Boots",

@@ -70,38 +70,6 @@
   "abilities": [
     [
       {
-        "type": "R",
-        "name": "_2"
-      },
-      {
-        "name": "Final Chapter",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "18.75 + (0.0625 * ctx.ap)",
-          "31.25 + (0.0625 * ctx.ap)",
-          "43.75 + (0.0625 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_3"
-      },
-      {
-        "name": "Final Chapter",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "150 + (0.5 * ctx.ap)",
-          "250 + (0.5 * ctx.ap)",
-          "350 + (0.5 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "Q",
         "name": "_1"
       },
@@ -116,6 +84,22 @@
           "165 + (0.2 * ctx.ap)",
           "200 + (0.2 * ctx.ap)",
           "235 + (0.2 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_2"
+      },
+      {
+        "name": "Final Chapter",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "18.75 + (0.0625 * ctx.ap)",
+          "31.25 + (0.0625 * ctx.ap)",
+          "43.75 + (0.0625 * ctx.ap)"
         ]
       }
     ],
@@ -170,6 +154,22 @@
           "260 + (0.3 * ctx.ap)",
           "320 + (0.3 * ctx.ap)",
           "380 + (0.3 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_3"
+      },
+      {
+        "name": "Final Chapter",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "150 + (0.5 * ctx.ap)",
+          "250 + (0.5 * ctx.ap)",
+          "350 + (0.5 * ctx.ap)"
         ]
       }
     ]

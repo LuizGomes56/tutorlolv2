@@ -1,4 +1,20 @@
 [
-  [],
-  []
+  [
+    "ImmortalShieldbow",
+    "MortalReminder",
+    "PhantomDancer",
+    "YunTalWildarrows",
+    "KrakenSlayer",
+    "GuardianAngel"
+  ],
+  [
+    "AbsorbLife",
+    "LegendBloodline",
+    "CutDown",
+    "AbsoluteFocus",
+    "GatheringStorm",
+    "AttackSpeed",
+    "AdaptiveForce",
+    "HealthScaling"
+  ]
 ]

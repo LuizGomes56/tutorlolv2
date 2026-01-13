@@ -71,20 +71,39 @@
   "abilities": [
     [
       {
-        "type": "Q",
+        "type": "W",
         "name": "_2"
       },
       {
-        "name": "To the Skies!",
-        "damage_type": "Physical",
+        "name": "Lightning Field",
+        "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "60 + (1.35 * ctx.bonus_ad)",
-          "105 + (1.35 * ctx.bonus_ad)",
-          "150 + (1.35 * ctx.bonus_ad)",
-          "195 + (1.35 * ctx.bonus_ad)",
-          "240 + (1.35 * ctx.bonus_ad)",
-          "285 + (1.35 * ctx.bonus_ad)"
+          "140 + ctx.ap",
+          "200 + ctx.ap",
+          "260 + ctx.ap",
+          "320 + ctx.ap",
+          "380 + ctx.ap",
+          "440 + ctx.ap"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_3"
+      },
+      {
+        "name": "Lightning Field",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "35 + (0.25 * ctx.ap)",
+          "50 + (0.25 * ctx.ap)",
+          "65 + (0.25 * ctx.ap)",
+          "80 + (0.25 * ctx.ap)",
+          "95 + (0.25 * ctx.ap)",
+          "110 + (0.25 * ctx.ap)"
         ]
       }
     ],
@@ -128,39 +147,20 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_3"
-      },
-      {
-        "name": "Lightning Field",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "35 + (0.25 * ctx.ap)",
-          "50 + (0.25 * ctx.ap)",
-          "65 + (0.25 * ctx.ap)",
-          "80 + (0.25 * ctx.ap)",
-          "95 + (0.25 * ctx.ap)",
-          "110 + (0.25 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
+        "type": "Q",
         "name": "_2"
       },
       {
-        "name": "Lightning Field",
-        "damage_type": "Magic",
+        "name": "To the Skies!",
+        "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "140 + ctx.ap",
-          "200 + ctx.ap",
-          "260 + ctx.ap",
-          "320 + ctx.ap",
-          "380 + ctx.ap",
-          "440 + ctx.ap"
+          "60 + (1.35 * ctx.bonus_ad)",
+          "105 + (1.35 * ctx.bonus_ad)",
+          "150 + (1.35 * ctx.bonus_ad)",
+          "195 + (1.35 * ctx.bonus_ad)",
+          "240 + (1.35 * ctx.bonus_ad)",
+          "285 + (1.35 * ctx.bonus_ad)"
         ]
       }
     ]

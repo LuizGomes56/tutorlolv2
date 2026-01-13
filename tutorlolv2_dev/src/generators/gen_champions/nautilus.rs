@@ -1,7 +1,9 @@
 use super::*;
 
 impl Generator<Champion> for Nautilus {
-    fn generate(mut self: Box<Self>) -> MayFail<Champion> {
+    fn generate(
+        mut self: Box<Self>,
+    ) -> MayFail<Champion> {
         self.ability(Q, [(1, 0, _1)]);
         self.ability(W, [(1, 0, _1)]);
         self.ability(
@@ -15,7 +17,10 @@ impl Generator<Champion> for Nautilus {
                 (1, 2, _6),
             ],
         );
-        self.ability(R, [(0, 0, _1), (1, 0, _2)]);
+        self.ability(
+            R,
+            [(0, 0, _1), (1, 0, _2)],
+        );
         self.end()
     }
 }

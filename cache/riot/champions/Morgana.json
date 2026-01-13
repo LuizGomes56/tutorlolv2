@@ -146,6 +146,12 @@
       "id": "25080",
       "name": "Spirit Blossom Morgana",
       "num": 80
+    },
+    {
+      "chromas": false,
+      "id": "25081",
+      "name": "Prestige Veiled Lady Morgana",
+      "num": 81
     }
   ],
   "spells": [

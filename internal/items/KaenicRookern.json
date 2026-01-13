@@ -7,11 +7,15 @@
   "tier": 3,
   "maps": [
     [
-      "Arena",
+      "SummonersRift",
+      true
+    ],
+    [
+      "Tft",
       false
     ],
     [
-      "NexusBlitz",
+      "SummonersRift",
       true
     ],
     [
@@ -19,36 +23,19 @@
       true
     ],
     [
-      "SummonersRift",
+      "NexusBlitz",
+      true
+    ],
+    [
+      "Arena",
       false
     ],
     [
       "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Tft",
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Health",
-      "value": 400
-    },
-    {
-      "name": "MagicResist",
-      "value": 80
-    },
-    {
-      "name": "BaseHealthRegen",
-      "value": 100
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

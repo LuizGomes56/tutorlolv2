@@ -1,7 +1,11 @@
 [
   [
-    "ZhonyasHourglass",
-    "BansheesVeil"
+    "HextechRocketbelt",
+    "RanduinsOmen",
+    "SerpentsFang",
+    "BansheesVeil",
+    "RylaisCrystalScepter",
+    "Morellonomicon"
   ],
   [
     "SuddenImpact",
@@ -11,6 +15,6 @@
     "Scorch",
     "AdaptiveForce",
     "AdaptiveForce",
-    "Health"
+    "HealthScaling"
   ]
 ]

@@ -11,8 +11,16 @@
       false
     ],
     [
+      "NexusBlitz",
+      false
+    ],
+    [
       "Arena",
       true
+    ],
+    [
+      "SummonersRift",
+      false
     ],
     [
       "SummonersRift",
@@ -25,34 +33,9 @@
     [
       "SummonersRift",
       false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "NexusBlitz",
-      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 40
-    },
-    {
-      "name": "AttackSpeed",
-      "value": 30
-    },
-    {
-      "name": "BaseManaRegen",
-      "value": 150
-    },
-    {
-      "name": "HealAndShieldPower",
-      "value": 15
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

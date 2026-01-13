@@ -88,17 +88,19 @@
     ],
     [
       {
-        "type": "R",
+        "type": "Q",
         "name": "_1"
       },
       {
-        "name": "Living Artillery",
+        "name": "Caustic Spittle",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "200 + (1.5 * ctx.bonus_ad) + (0.7 * ctx.ap)",
-          "280 + (1.5 * ctx.bonus_ad) + (0.7 * ctx.ap)",
-          "360 + (1.5 * ctx.bonus_ad) + (0.7 * ctx.ap)"
+          "80 + (0.8 * ctx.ap)",
+          "125 + (0.8 * ctx.ap)",
+          "170 + (0.8 * ctx.ap)",
+          "215 + (0.8 * ctx.ap)",
+          "260 + (0.8 * ctx.ap)"
         ]
       }
     ],
@@ -138,19 +140,17 @@
     ],
     [
       {
-        "type": "Q",
+        "type": "R",
         "name": "_1"
       },
       {
-        "name": "Caustic Spittle",
+        "name": "Living Artillery",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "80 + (0.8 * ctx.ap)",
-          "125 + (0.8 * ctx.ap)",
-          "170 + (0.8 * ctx.ap)",
-          "215 + (0.8 * ctx.ap)",
-          "260 + (0.8 * ctx.ap)"
+          "200 + (1.5 * ctx.bonus_ad) + (0.7 * ctx.ap)",
+          "280 + (1.5 * ctx.bonus_ad) + (0.7 * ctx.ap)",
+          "360 + (1.5 * ctx.bonus_ad) + (0.7 * ctx.ap)"
         ]
       }
     ]

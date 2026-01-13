@@ -15,10 +15,10 @@
     "full": "3013.png",
     "group": "item",
     "h": 48,
-    "sprite": "item2.png",
+    "sprite": "item3.png",
     "w": 48,
-    "x": 0,
-    "y": 336
+    "x": 48,
+    "y": 96
   },
   "inStore": false,
   "into": [

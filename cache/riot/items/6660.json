@@ -16,10 +16,10 @@
     "full": "6660.png",
     "group": "item",
     "h": 48,
-    "sprite": "item5.png",
+    "sprite": "item6.png",
     "w": 48,
-    "x": 336,
-    "y": 192
+    "x": 48,
+    "y": 0
   },
   "into": [
     "3068",

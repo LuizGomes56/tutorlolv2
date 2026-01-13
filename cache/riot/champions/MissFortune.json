@@ -303,7 +303,7 @@
       "leveltip": {
         "effect": [
           "{{ cooldown }} -> {{ cooldownNL }}",
-          "{{ e2 }} -> {{ e2NL }}"
+          "{{ basedamage }} -> {{ basedamageNL }}"
         ],
         "label": [
           "Cooldown",
@@ -322,7 +322,7 @@
       ],
       "rangeBurn": "650",
       "resource": "{{ cost }} {{ abilityresourcename }}",
-      "tooltip": "Miss Fortune fires a bouncing shot, dealing <physicalDamage>{{ totaldamagetooltip }} physical damage</physicalDamage> to an enemy and to another one behind them. <br /><br />The second shot can critically strike. It always critically strikes if the first shot kills its target. {{ spellmodifierdescriptionappend }}",
+      "tooltip": "Miss Fortune fires a bouncing shot, dealing <physicalDamage>{{ totaldamagetooltip }} physical damage</physicalDamage> to an enemy and to another one behind them. <br /><br />The second shot can critically strike for <physicalDamage>{{ totaldamagecrit }} physical damage</physicalDamage>. It always critically strikes if the first shot kills its target.{{ spellmodifierdescriptionappend }}",
       "vars": []
     },
     {
@@ -721,7 +721,7 @@
       ],
       "rangeBurn": "25000",
       "resource": "{{ cost }} {{ abilityresourcename }}",
-      "tooltip": "Miss Fortune channels a barrage of bullets, firing {{ totalwaves }} waves over {{ totalchannelduration }} seconds, dealing <physicalDamage>{{ physicaldamageperwave }} physical damage</physicalDamage> per wave (total <physicalDamage>{{ totalphysicaldamage }} physical damage</physicalDamage>).<br /><br />Each wave can critically strike for %i:scaleCrit% <physicalDamage>{{ physicalcritperwave }} physical damage</physicalDamage> (total %i:scaleCrit% <physicalDamage>{{ totalphysicalcritdamage }} physical damage</physicalDamage>).{{ spellmodifierdescriptionappend }}",
+      "tooltip": "Miss Fortune channels a barrage of bullets, firing {{ basewaves }} waves over {{ basechannelduration }} seconds, dealing <physicalDamage>{{ physicaldamageperwave }} physical damage</physicalDamage> per wave (total <physicalDamage>{{ totalphysicaldamage }} physical damage</physicalDamage>).<br /><br />Each wave can critically strike for %i:scaleCrit% <physicalDamage>{{ critdamageperwave }} physical damage</physicalDamage>.{{ spellmodifierdescriptionappend }}",
       "vars": []
     }
   ],
@@ -735,8 +735,8 @@
     "attackspeedperlevel": 3,
     "crit": 0,
     "critperlevel": 0,
-    "hp": 640,
-    "hpperlevel": 103,
+    "hp": 625,
+    "hpperlevel": 100,
     "hpregen": 3.75,
     "hpregenperlevel": 0.65,
     "movespeed": 325,

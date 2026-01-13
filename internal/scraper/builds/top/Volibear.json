@@ -1,20 +1,20 @@
 [
   [
-    "IcebornGauntlet",
-    "Riftmaker",
-    "CosmicDrive",
-    "NashorsTooth",
+    "NavoriFlickerblade",
+    "ProtoplasmHarness",
     "RanduinsOmen",
-    "FrozenHeart"
+    "IcebornGauntlet",
+    "JakshoTheProtean",
+    "DuskAndDawn"
   ],
   [
-    "Triumph",
+    "ShieldBash",
+    "SecondWind",
+    "Revitalize",
     "LegendHaste",
     "LastStand",
-    "Demolish",
-    "Revitalize",
-    "AttackSpeed",
-    "AdaptiveForce",
+    "AbilityHaste",
+    "HealthScaling",
     "HealthScaling"
   ]
 ]

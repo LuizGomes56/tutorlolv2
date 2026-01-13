@@ -1,11 +1,11 @@
 [
   [
     "IcebornGauntlet",
-    "RanduinsOmen",
     "KaenicRookern",
+    "RanduinsOmen",
     "JakshoTheProtean",
-    "FrozenHeart",
-    "DeadMansPlate"
+    "ProtoplasmHarness",
+    "FrozenHeart"
   ],
   [
     "ShieldBash",
@@ -15,6 +15,6 @@
     "Scorch",
     "AdaptiveForce",
     "AdaptiveForce",
-    "HealthScaling"
+    "Health"
   ]
 ]

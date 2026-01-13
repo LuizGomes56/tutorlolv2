@@ -12,11 +12,15 @@
     ],
     [
       "SummonersRift",
-      false
+      true
     ],
     [
       "NexusBlitz",
       true
+    ],
+    [
+      "SummonersRift",
+      false
     ],
     [
       "SummonersRift",
@@ -27,24 +31,11 @@
       false
     ],
     [
-      "SummonersRift",
-      true
-    ],
-    [
       "Aram",
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackDamage",
-      "value": 25
-    },
-    {
-      "name": "MagicResist",
-      "value": 25
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

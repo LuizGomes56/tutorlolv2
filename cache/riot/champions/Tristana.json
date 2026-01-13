@@ -554,14 +554,12 @@
         "effect": [
           "{{ passivebasedamage }} -> {{ passivebasedamageNL }}",
           "{{ activebasedamage }} -> {{ activebasedamageNL }}",
-          "{{ activebadratio*100.000000 }}% -> {{ activebadrationl*100.000000 }}%",
           "{{ cooldown }} -> {{ cooldownNL }}",
           "{{ cost }} -> {{ costNL }}"
         ],
         "label": [
           "Passive Explosion Damage",
           "Base Charge Damage",
-          "Attack Damage Ratio",
           "Cooldown",
           "@AbilityResourceName@ Cost"
         ]
@@ -578,7 +576,7 @@
       ],
       "rangeBurn": "550",
       "resource": "{{ cost }} {{ abilityresourcename }}",
-      "tooltip": "<spellPassive>Passive: </spellPassive>Tristana's Attacks that kill enemies deal <magicDamage>{{ passivedamage }} magic damage</magicDamage> to surrounding enemies.<br /><br /><spellActive>Active:</spellActive> Tristana attaches a bomb to an enemy or turret that deals <physicalDamage>{{ activedamage }} physical damage</physicalDamage> to surrounding enemies after {{ activeduration }} seconds. The damage is increased by {{ critchanceamp*100 }}% Critical Strike Chance and by {{ activeperstackamp*100 }}% each time Tristana hits an Attack or Ability (max 4 stacks).<br /><br />At {{ activemaxstacks }} stacks, the bomb explodes immediately (max <physicalDamage>{{ activemaxdamage }} physical damage</physicalDamage>).{{ spellmodifierdescriptionappend }}",
+      "tooltip": "<spellPassive>Passive: </spellPassive>Tristana's Attacks that kill enemies deal <magicDamage>{{ passivedamage }} magic damage</magicDamage> to surrounding enemies.<br /><br /><spellActive>Active:</spellActive> Tristana attaches a bomb to an enemy or turret that deals <physicalDamage>{{ activedamage }} physical damage</physicalDamage> to surrounding enemies after {{ activeduration }} seconds. The damage is increased by {{ activeperstackamp*100 }}% each time Tristana hits an Attack or Ability (max 4 stacks).<br /><br />At {{ activemaxstacks }} stacks, the bomb explodes immediately (max <physicalDamage>{{ activemaxdamage }} physical damage</physicalDamage>).{{ spellmodifierdescriptionappend }}",
       "vars": []
     },
     {

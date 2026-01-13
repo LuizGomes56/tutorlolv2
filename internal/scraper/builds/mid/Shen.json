@@ -1,7 +1,8 @@
 [
   [
+    "KaenicRookern",
+    "SpiritVisage",
     "RanduinsOmen",
-    "Thornmail",
     "ForceOfNature",
     "HollowRadiance",
     "IcebornGauntlet"
@@ -12,8 +13,8 @@
     "Overgrowth",
     "BiscuitDelivery",
     "ApproachVelocity",
-    "AdaptiveForce",
+    "AttackSpeed",
     "HealthScaling",
-    "Health"
+    "HealthScaling"
   ]
 ]

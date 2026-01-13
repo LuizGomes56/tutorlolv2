@@ -1,6 +1,6 @@
 {
   "colloq": "",
-  "description": "<mainText><stats></stats><br><br><passive>Jungle Companions</passive><br>Summon a <font color='#1CA935'>Mosstomper</font> that assists you against monsters.<br><br><passive>Mosstomper's Courage</passive><br>The companion grows as you hunt monsters, empowering your <spellName>Smite</spellName>. When fully grown, it grants a <shield>shield</shield> that regenerates after killing large monsters or out of combat.</mainText>",
+  "description": "<mainText><stats></stats><br><br><passive>Jungle Companions</passive><br>Summon a <font color='#1CA935'>Jungle Pet</font> that assists you against monsters.<br><br><passive>Mosstomper's Courage</passive><br>The companion grows as you hunt monsters, empowering your <spellName>Smite</spellName>. When fully grown, it completes your Jungle Quest. </mainText>",
   "effect": {
     "Effect1Amount": "60",
     "Effect2Amount": "25",
@@ -19,7 +19,7 @@
     "h": 48,
     "sprite": "item0.png",
     "w": 48,
-    "x": 96,
+    "x": 336,
     "y": 144
   },
   "maps": {

@@ -1,11 +1,11 @@
 [
   [
-    "TitanicHydra",
     "SunfireAegis",
-    "JakshoTheProtean",
+    "HollowRadiance",
     "SpiritVisage",
-    "RanduinsOmen",
-    "ForceOfNature"
+    "JakshoTheProtean",
+    "SteraksGage",
+    "TitanicHydra"
   ],
   [
     "ShieldBash",
@@ -13,7 +13,7 @@
     "Overgrowth",
     "ManaflowBand",
     "Transcendence",
-    "AbilityHaste",
+    "AttackSpeed",
     "HealthScaling",
     "HealthScaling"
   ]

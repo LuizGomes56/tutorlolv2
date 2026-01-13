@@ -1,7 +1,9 @@
 use super::*;
 
 impl Generator<Champion> for Pantheon {
-    fn generate(mut self: Box<Self>) -> MayFail<Champion> {
+    fn generate(
+        mut self: Box<Self>,
+    ) -> MayFail<Champion> {
         self.ability(
             Q,
             [
@@ -15,7 +17,10 @@ impl Generator<Champion> for Pantheon {
         );
         self.ability(W, [(0, 0, _1)]);
         self.ability(E, [(3, 0, _1)]);
-        self.ability(R, [(3, 0, _1), (3, 1, _2)]);
+        self.ability(
+            R,
+            [(3, 0, _1), (3, 1, _2)],
+        );
         self.end()
     }
 }

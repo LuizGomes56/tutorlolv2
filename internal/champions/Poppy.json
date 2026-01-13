@@ -71,19 +71,71 @@
   "abilities": [
     [
       {
-        "type": "W",
+        "type": "E",
         "name": "_1"
       },
       {
-        "name": "Steadfast Presence",
-        "damage_type": "Magic",
+        "name": "Heroic Charge",
+        "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "70 + (0.7 * ctx.ap)",
-          "110 + (0.7 * ctx.ap)",
-          "150 + (0.7 * ctx.ap)",
-          "190 + (0.7 * ctx.ap)",
-          "230 + (0.7 * ctx.ap)"
+          "40 + (0.6 * ctx.bonus_ad)",
+          "60 + (0.6 * ctx.bonus_ad)",
+          "80 + (0.6 * ctx.bonus_ad)",
+          "100 + (0.6 * ctx.bonus_ad)",
+          "120 + (0.6 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "Hammer Shock",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "105 + ctx.bonus_ad",
+          "160 + ctx.bonus_ad",
+          "215 + ctx.bonus_ad",
+          "270 + ctx.bonus_ad",
+          "325 + ctx.bonus_ad"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_2"
+      },
+      {
+        "name": "Heroic Charge",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "80 + (1.2 * ctx.bonus_ad)",
+          "120 + (1.2 * ctx.bonus_ad)",
+          "160 + (1.2 * ctx.bonus_ad)",
+          "200 + (1.2 * ctx.bonus_ad)",
+          "240 + (1.2 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_2"
+      },
+      {
+        "name": "Keeper's Verdict",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "100 + (0.45 * ctx.bonus_ad)",
+          "150 + (0.45 * ctx.bonus_ad)",
+          "200 + (0.45 * ctx.bonus_ad)"
         ]
       }
     ],
@@ -107,19 +159,19 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_2"
+        "type": "W",
+        "name": "_1"
       },
       {
-        "name": "Heroic Charge",
-        "damage_type": "Physical",
+        "name": "Steadfast Presence",
+        "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "80 + (1.2 * ctx.bonus_ad)",
-          "120 + (1.2 * ctx.bonus_ad)",
-          "160 + (1.2 * ctx.bonus_ad)",
-          "200 + (1.2 * ctx.bonus_ad)",
-          "240 + (1.2 * ctx.bonus_ad)"
+          "70 + (0.7 * ctx.ap)",
+          "110 + (0.7 * ctx.ap)",
+          "150 + (0.7 * ctx.ap)",
+          "190 + (0.7 * ctx.ap)",
+          "230 + (0.7 * ctx.ap)"
         ]
       }
     ],
@@ -177,22 +229,6 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_2"
-      },
-      {
-        "name": "Keeper's Verdict",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "100 + (0.45 * ctx.bonus_ad)",
-          "150 + (0.45 * ctx.bonus_ad)",
-          "200 + (0.45 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "Q",
         "name": "_4"
       },
@@ -206,42 +242,6 @@
           "430 + (2 * ctx.bonus_ad)",
           "540 + (2 * ctx.bonus_ad)",
           "650 + (2 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_1"
-      },
-      {
-        "name": "Heroic Charge",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "40 + (0.6 * ctx.bonus_ad)",
-          "60 + (0.6 * ctx.bonus_ad)",
-          "80 + (0.6 * ctx.bonus_ad)",
-          "100 + (0.6 * ctx.bonus_ad)",
-          "120 + (0.6 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_2"
-      },
-      {
-        "name": "Hammer Shock",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "105 + ctx.bonus_ad",
-          "160 + ctx.bonus_ad",
-          "215 + ctx.bonus_ad",
-          "270 + ctx.bonus_ad",
-          "325 + ctx.bonus_ad"
         ]
       }
     ]

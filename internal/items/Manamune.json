@@ -8,6 +8,14 @@
   "maps": [
     [
       "SummonersRift",
+      true
+    ],
+    [
+      "NexusBlitz",
+      true
+    ],
+    [
+      "Arena",
       false
     ],
     [
@@ -16,39 +24,18 @@
     ],
     [
       "SummonersRift",
-      true
-    ],
-    [
-      "NexusBlitz",
-      true
-    ],
-    [
-      "Aram",
-      true
-    ],
-    [
-      "Arena",
       false
     ],
     [
       "SummonersRift",
       true
+    ],
+    [
+      "Aram",
+      true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackDamage",
-      "value": 40
-    },
-    {
-      "name": "AbilityHaste",
-      "value": 15
-    },
-    {
-      "name": "Mana",
-      "value": 600
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

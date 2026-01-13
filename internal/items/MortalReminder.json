@@ -3,52 +3,39 @@
   "item_id": "MortalReminder",
   "name": "Mortal Reminder",
   "price": 3300,
-  "sell": 2310,
+  "sell": 2100,
   "tier": 3,
   "maps": [
+    [
+      "Aram",
+      true
+    ],
     [
       "NexusBlitz",
       true
     ],
     [
       "SummonersRift",
-      false
+      true
     ],
     [
       "SummonersRift",
       true
     ],
     [
-      "Tft",
-      false
-    ],
-    [
       "SummonersRift",
-      true
-    ],
-    [
-      "Aram",
-      true
+      false
     ],
     [
       "Arena",
       false
+    ],
+    [
+      "Tft",
+      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "ArmorPenetration",
-      "value": 30
-    },
-    {
-      "name": "CriticalStrikeChance",
-      "value": 25
-    },
-    {
-      "name": "AttackDamage",
-      "value": 30
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

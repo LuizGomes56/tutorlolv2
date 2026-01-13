@@ -1,19 +1,19 @@
 [
   [
-    "RabadonsDeathcap",
-    "RylaisCrystalScepter",
-    "LichBane",
-    "ShurelyasBattlesong",
-    "MoonstoneRenewer"
+    "ZhonyasHourglass",
+    "NashorsTooth",
+    "BloodlettersCurse",
+    "ImperialMandate",
+    "ShurelyasBattlesong"
   ],
   [
-    "Triumph",
-    "LegendHaste",
-    "CutDown",
+    "AxiomArcanist",
+    "Transcendence",
+    "Scorch",
     "CheapShot",
     "UltimateHunter",
-    "AbilityHaste",
+    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "Health"
   ]
 ]

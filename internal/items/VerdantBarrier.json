@@ -7,19 +7,19 @@
   "tier": 2,
   "maps": [
     [
-      "NexusBlitz",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
       "SummonersRift",
       true
     ],
     [
       "Aram",
+      true
+    ],
+    [
+      "NexusBlitz",
+      true
+    ],
+    [
+      "SummonersRift",
       true
     ],
     [
@@ -35,16 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "MagicResist",
-      "value": 25
-    },
-    {
-      "name": "AbilityPower",
-      "value": 40
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

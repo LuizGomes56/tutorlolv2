@@ -3,28 +3,24 @@
   "item_id": "ArmoredAdvance",
   "name": "Armored Advance",
   "price": 1700,
-  "sell": 1190,
+  "sell": 840,
   "tier": 3,
   "maps": [
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
     [
       "Aram",
       false
     ],
     [
       "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
       true
-    ],
-    [
-      "Arena",
-      false
     ],
     [
       "NexusBlitz",
@@ -33,18 +29,13 @@
     [
       "Tft",
       false
+    ],
+    [
+      "Arena",
+      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "MoveSpeed",
-      "value": 50
-    },
-    {
-      "name": "Armor",
-      "value": 40
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

@@ -1,10 +1,11 @@
 {
   "colloq": "",
   "depth": 3,
-  "description": "<mainText><stats><attention>400</attention> Health<br><attention>25</attention> Armor<br><attention>25</attention> Magic Resist<br><attention>10</attention> Ability Haste</stats><br><br><passive>Anguish</passive><br>Every 4 seconds while in combat with champions, deal <magicDamage>magic damage</magicDamage> to nearby enemy champions and <healing>heal for 250%</healing> of the damage dealt.</mainText>",
+  "description": "<mainText><stats><attention>400</attention> Health<br><attention>50</attention> Armor<br><attention>15</attention> Ability Haste</stats><br><br><passive>Anguish</passive><br>Every 4 seconds while in combat with champions, deal <magicDamage>magic damage</magicDamage> to nearby enemy champions and <healing>heal for 250%</healing> of the damage dealt.</mainText>",
   "from": [
-    "3105",
-    "1011"
+    "1031",
+    "3067",
+    "1028"
   ],
   "gold": {
     "base": 800,
@@ -18,8 +19,8 @@
     "h": 48,
     "sprite": "item2.png",
     "w": 48,
-    "x": 288,
-    "y": 240
+    "x": 336,
+    "y": 432
   },
   "maps": {
     "11": true,
@@ -33,13 +34,11 @@
   "name": "Unending Despair",
   "plaintext": "",
   "stats": {
-    "FlatArmorMod": 25,
-    "FlatHPPoolMod": 400,
-    "FlatSpellBlockMod": 25
+    "FlatArmorMod": 50,
+    "FlatHPPoolMod": 400
   },
   "tags": [
     "Health",
-    "SpellBlock",
     "Armor",
     "CooldownReduction",
     "AbilityHaste"

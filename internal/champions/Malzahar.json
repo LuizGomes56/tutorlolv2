@@ -70,19 +70,53 @@
   "abilities": [
     [
       {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Nether Grasp",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "12.5 + (0.08 * ctx.ap)",
+          "20 + (0.08 * ctx.ap)",
+          "27.5 + (0.08 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "E",
-        "name": "_2"
+        "name": "_1"
       },
       {
         "name": "Malefic Visions",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "80 + (0.8 * ctx.ap)",
-          "115 + (0.8 * ctx.ap)",
-          "150 + (0.8 * ctx.ap)",
-          "185 + (0.8 * ctx.ap)",
-          "220 + (0.8 * ctx.ap)"
+          "5 + (0.05 * ctx.ap)",
+          "7.1875 + (0.05 * ctx.ap)",
+          "9.375 + (0.05 * ctx.ap)",
+          "11.5625 + (0.05 * ctx.ap)",
+          "13.75 + (0.05 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Call of the Void",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "70 + (0.55 * ctx.ap)",
+          "105 + (0.55 * ctx.ap)",
+          "140 + (0.55 * ctx.ap)",
+          "175 + (0.55 * ctx.ap)",
+          "210 + (0.55 * ctx.ap)"
         ]
       }
     ],
@@ -119,67 +153,19 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "type": "E",
+        "name": "_2"
       },
       {
-        "name": "Nether Grasp",
+        "name": "Malefic Visions",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "12.5 + (0.08 * ctx.ap)",
-          "20 + (0.08 * ctx.ap)",
-          "27.5 + (0.08 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Call of the Void",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "70 + (0.55 * ctx.ap)",
-          "105 + (0.55 * ctx.ap)",
-          "140 + (0.55 * ctx.ap)",
-          "175 + (0.55 * ctx.ap)",
-          "210 + (0.55 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_3"
-      },
-      {
-        "name": "Nether Grasp",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "(0.01 * ctx.enemy_max_health) + (0.0025 * 0.01 * ctx.ap)",
-          "(0.015 * ctx.enemy_max_health) + (0.0025 * 0.01 * ctx.ap)",
-          "(0.02 * ctx.enemy_max_health) + (0.0025 * 0.01 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_4"
-      },
-      {
-        "name": "Nether Grasp",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "(0.1 * ctx.enemy_max_health) + (0.025 * 0.01 * ctx.ap)",
-          "(0.15 * ctx.enemy_max_health) + (0.025 * 0.01 * ctx.ap)",
-          "(0.2 * ctx.enemy_max_health) + (0.025 * 0.01 * ctx.ap)"
+          "80 + (0.8 * ctx.ap)",
+          "115 + (0.8 * ctx.ap)",
+          "150 + (0.8 * ctx.ap)",
+          "185 + (0.8 * ctx.ap)",
+          "220 + (0.8 * ctx.ap)"
         ]
       }
     ],
@@ -216,24 +202,6 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
-      },
-      {
-        "name": "Malefic Visions",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "5 + (0.05 * ctx.ap)",
-          "7.1875 + (0.05 * ctx.ap)",
-          "9.375 + (0.05 * ctx.ap)",
-          "11.5625 + (0.05 * ctx.ap)",
-          "13.75 + (0.05 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "R",
         "name": "_2"
       },
@@ -245,6 +213,38 @@
           "125 + (0.8 * ctx.ap)",
           "200 + (0.8 * ctx.ap)",
           "275 + (0.8 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_4"
+      },
+      {
+        "name": "Nether Grasp",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "(0.1 * ctx.enemy_max_health) + (0.025 * 0.01 * ctx.ap)",
+          "(0.15 * ctx.enemy_max_health) + (0.025 * 0.01 * ctx.ap)",
+          "(0.2 * ctx.enemy_max_health) + (0.025 * 0.01 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_3"
+      },
+      {
+        "name": "Nether Grasp",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "(0.01 * ctx.enemy_max_health) + (0.0025 * 0.01 * ctx.ap)",
+          "(0.015 * ctx.enemy_max_health) + (0.0025 * 0.01 * ctx.ap)",
+          "(0.02 * ctx.enemy_max_health) + (0.0025 * 0.01 * ctx.ap)"
         ]
       }
     ]

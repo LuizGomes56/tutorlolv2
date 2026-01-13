@@ -1,4 +1,19 @@
 [
-  [],
-  []
+  [
+    "AbyssalMask",
+    "RanduinsOmen",
+    "EssenceReaver",
+    "Trailblazer",
+    "ForceOfNature"
+  ],
+  [
+    "PresenceOfMind",
+    "LegendAlacrity",
+    "CoupDeGrace",
+    "CashBack",
+    "ApproachVelocity",
+    "AttackSpeed",
+    "MoveSpeed",
+    "HealthScaling"
+  ]
 ]

@@ -1,20 +1,19 @@
 [
   [
-    "ZhonyasHourglass",
-    "LudensCompanion",
-    "Stormsurge",
-    "RylaisCrystalScepter",
-    "BansheesVeil",
-    "VoidStaff"
+    "RabadonsDeathcap",
+    "LudensEcho",
+    "Morellonomicon",
+    "CosmicDrive",
+    "HorizonFocus"
   ],
   [
-    "CheapShot",
-    "SixthSense",
-    "UltimateHunter",
     "ManaflowBand",
+    "Transcendence",
     "Scorch",
+    "PresenceOfMind",
+    "CoupDeGrace",
+    "AbilityHaste",
     "AdaptiveForce",
-    "AdaptiveForce",
-    "Health"
+    "HealthScaling"
   ]
 ]

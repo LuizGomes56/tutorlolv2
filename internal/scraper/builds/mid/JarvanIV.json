@@ -1,20 +1,20 @@
 [
   [
-    "TheCollector",
+    "AxiomArc",
     "SerpentsFang",
-    "Manamune",
-    "Eclipse",
-    "SunderedSky",
-    "YoumuusGhostblade"
+    "SeryldasGrudge",
+    "MawOfMalmortius",
+    "DeathsDance",
+    "ZhonyasHourglass"
   ],
   [
     "SuddenImpact",
     "GrislyMementos",
-    "TreasureHunter",
-    "ManaflowBand",
-    "Scorch",
+    "RelentlessHunter",
+    "LegendAlacrity",
+    "CoupDeGrace",
+    "AttackSpeed",
     "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Health"
   ]
 ]

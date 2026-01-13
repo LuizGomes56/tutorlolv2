@@ -1,13 +1,12 @@
-use std::collections::{HashMap, HashSet};
-
 use crate::{
-    CwdPath, EVAL_FEAT, GLOB_FEAT, Generated, GeneratorFn, SrcFolder, Tracker, parallel_task,
-    push_end,
+    parallel_task, push_end,
     scripts::{
-        StringExt,
         model::{Item, ItemStats, MerakiItemStatMap},
+        StringExt,
     },
+    CwdPath, Generated, GeneratorFn, SrcFolder, Tracker, EVAL_FEAT, GLOB_FEAT,
 };
+use std::collections::{HashMap, HashSet};
 
 struct DeclaredItem {
     metadata: String,
@@ -329,8 +328,7 @@ pub fn generate_items() -> GeneratorFn {
         .as_const();
 
         let html_closure = constfn_declaration
-            .trim_start_matches(EVAL_FEAT)
-            .trim_start_matches("pub const")
+            .trim_start_matches(&format!("{EVAL_FEAT} pub const"))
             .trim()
             .rust_fmt()
             .drop_f32s()
@@ -372,26 +370,19 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
     let len = data.len();
     let mut item_declarations = String::new();
 
-    let [
-        mut item_cache,
-        mut item_id_to_name,
-        mut item_formulas,
-        mut item_generator,
-        mut item_id_to_riot_id,
-        mut item_idents,
-        mut item_closures,
-    ] = std::array::from_fn(|i| {
-        let (name, vtype, feature) = [
-            ("ITEM_CACHE", "&CachedItem", EVAL_FEAT),
-            ("ITEM_ID_TO_NAME", "&str", GLOB_FEAT),
-            ("ITEM_FORMULAS", "Range<usize>", GLOB_FEAT),
-            ("ITEM_GENERATOR", "Range<usize>", GLOB_FEAT),
-            ("ITEM_ID_TO_RIOT_ID", "u32", GLOB_FEAT),
-            ("ITEM_IDENTS", "&[EvalIdent]", GLOB_FEAT),
-            ("ITEM_CLOSURES", "Range<usize>", GLOB_FEAT),
-        ][i];
-        format!("{feature} pub static {name}: [{vtype}; ItemId::VARIANTS] = [")
-    });
+    let [mut item_cache, mut item_id_to_name, mut item_formulas, mut item_generator, mut item_id_to_riot_id, mut item_idents, mut item_closures] =
+        std::array::from_fn(|i| {
+            let (name, vtype, feature) = [
+                ("ITEM_CACHE", "&CachedItem", EVAL_FEAT),
+                ("ITEM_ID_TO_NAME", "&str", GLOB_FEAT),
+                ("ITEM_FORMULAS", "Range<usize>", GLOB_FEAT),
+                ("ITEM_GENERATOR", "Range<usize>", GLOB_FEAT),
+                ("ITEM_ID_TO_RIOT_ID", "u32", GLOB_FEAT),
+                ("ITEM_IDENTS", "&[EvalIdent]", GLOB_FEAT),
+                ("ITEM_CLOSURES", "Range<usize>", GLOB_FEAT),
+            ][i];
+            format!("{feature} pub static {name}: [{vtype}; ItemId::VARIANTS] = [")
+        });
 
     let mut block = String::new();
 
@@ -420,11 +411,8 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
         },
     ) in data
     {
-        let match_arm = format!(
-            "ItemId::{name_pascal} => {{ 
-                match attack_type {{ {match_arm} }} 
-            }}"
-        );
+        let match_arm =
+            format!("ItemId::{name_pascal} => {{ match attack_type {{ {match_arm} }} }}");
 
         item_idents.push_str(&(idents + ","));
         const_match_arms.push_str(&match_arm);
@@ -455,7 +443,7 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
 
     let item_id_enum = format!(
         r#"
-        #[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
+        #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
         #[derive(bincode::Encode, bincode::Decode)]
         #[derive(serde::Serialize, serde::Deserialize)]
         #[repr(u16)]

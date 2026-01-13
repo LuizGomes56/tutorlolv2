@@ -1,11 +1,10 @@
 use crate::{
-    CwdPath, EVAL_FEAT, GLOB_FEAT, Generated, GeneratorFn, MayFail, SrcFolder, Tracker,
     parallel_task, push_end,
     scripts::{
-        Simplified, StringExt,
         model::{Ability, Champion, MerakiChampionStatMap, MerakiChampionStats},
-        simplify,
+        simplify, Simplified, StringExt,
     },
+    CwdPath, Generated, GeneratorFn, MayFail, SrcFolder, Tracker, EVAL_FEAT, GLOB_FEAT,
 };
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
 use std::{
@@ -113,7 +112,7 @@ fn declare_abilities(
             let attributes = format_args!("Attrs::{attributes:?}");
 
             let declaration = format!(
-                "static {champion_id_upper}_{discriminant}: Intrinsic = Intrinsic {{
+                "static {champion_id_upper}_{discriminant}: Ability = Ability {{
                     name: {name:?},
                     damage_type: {damage_type},
                     attributes: {attributes},
@@ -337,8 +336,7 @@ pub fn generate_champions() -> GeneratorFn {
                 ability_id,
                 constfn
                     .declaration
-                    .trim_start_matches(EVAL_FEAT)
-                    .trim_start_matches("pub const")
+                    .trim_start_matches(&format!("{EVAL_FEAT} pub const"))
                     .trim()
                     .rust_fmt()
                     .drop_f32s()
@@ -438,32 +436,22 @@ fn build_champions(data: Vec<(String, ChampionResult)>) -> GeneratorFn {
     let len = data.len();
     let recommendations = get_recommendations(len)?;
 
-    let [
-        mut champion_cache,
-        mut champion_positions,
-        mut champion_id_to_name,
-        mut champion_formulas,
-        mut champion_generator,
-        mut champion_abilities,
-        mut ability_ctx_idents_index,
-        mut ability_ctx_idents,
-        mut ability_formulas,
-        mut ability_closures,
-    ] = std::array::from_fn(|i| {
-        let (name, vtype, feature) = [
-            ("CHAMPION_CACHE", "&CachedChampion", EVAL_FEAT),
-            ("CHAMPION_POSITIONS", "&[Position]", GLOB_FEAT),
-            ("CHAMPION_ID_TO_NAME", "&str", GLOB_FEAT),
-            ("CHAMPION_FORMULAS", "Range<usize>", GLOB_FEAT),
-            ("CHAMPION_GENERATOR", "Range<usize>", GLOB_FEAT),
-            ("CHAMPION_ABILITIES", "&[AbilityId]", GLOB_FEAT),
-            ("ABILITY_IDENTS_INDEX", "&[Range<usize>]", GLOB_FEAT),
-            ("ABILITY_IDENTS", "&[EvalIdent]", GLOB_FEAT),
-            ("ABILITY_FORMULAS", "&[Range<usize>]", GLOB_FEAT),
-            ("ABILITY_CLOSURES", "&[Range<usize>]", GLOB_FEAT),
-        ][i];
-        format!("{feature} pub static {name}: [{vtype}; ChampionId::VARIANTS] = [")
-    });
+    let [mut champion_cache, mut champion_positions, mut champion_id_to_name, mut champion_formulas, mut champion_generator, mut champion_abilities, mut ability_ctx_idents_index, mut ability_ctx_idents, mut ability_formulas, mut ability_closures] =
+        std::array::from_fn(|i| {
+            let (name, vtype, feature) = [
+                ("CHAMPION_CACHE", "&CachedChampion", EVAL_FEAT),
+                ("CHAMPION_POSITIONS", "&[Position]", GLOB_FEAT),
+                ("CHAMPION_ID_TO_NAME", "&str", GLOB_FEAT),
+                ("CHAMPION_FORMULAS", "Range<usize>", GLOB_FEAT),
+                ("CHAMPION_GENERATOR", "Range<usize>", GLOB_FEAT),
+                ("CHAMPION_ABILITIES", "&[AbilityId]", GLOB_FEAT),
+                ("ABILITY_IDENTS_INDEX", "&[Range<usize>]", GLOB_FEAT),
+                ("ABILITY_IDENTS", "&[EvalIdent]", GLOB_FEAT),
+                ("ABILITY_FORMULAS", "&[Range<usize>]", GLOB_FEAT),
+                ("ABILITY_CLOSURES", "&[Range<usize>]", GLOB_FEAT),
+            ][i];
+            format!("{feature} pub static {name}: [{vtype}; ChampionId::VARIANTS] = [")
+        });
 
     let mut block = String::new();
 
@@ -489,7 +477,7 @@ fn build_champions(data: Vec<(String, ChampionResult)>) -> GeneratorFn {
                 }}
             }}
         }}
-        #[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
+        #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
         #[derive(bincode::Encode, bincode::Decode)]
         #[derive(serde::Serialize, serde::Deserialize)]
         #[repr(u8)]

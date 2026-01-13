@@ -3,20 +3,28 @@
   "item_id": "YunTalWildarrows",
   "name": "Yun Tal Wildarrows",
   "price": 3000,
-  "sell": 2100,
+  "sell": 2170,
   "tier": 3,
   "maps": [
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "NexusBlitz",
+      true
+    ],
     [
       "Tft",
       false
     ],
     [
-      "SummonersRift",
-      true
-    ],
-    [
       "Arena",
       false
+    ],
+    [
+      "SummonersRift",
+      true
     ],
     [
       "Aram",
@@ -25,30 +33,9 @@
     [
       "SummonersRift",
       true
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "NexusBlitz",
-      true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackDamage",
-      "value": 55
-    },
-    {
-      "name": "CriticalStrikeChance",
-      "value": 0
-    },
-    {
-      "name": "AttackSpeed",
-      "value": 35
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

@@ -19,7 +19,7 @@
     "sprite": "item2.png",
     "w": 48,
     "x": 432,
-    "y": 0
+    "y": 192
   },
   "inStore": false,
   "maps": {

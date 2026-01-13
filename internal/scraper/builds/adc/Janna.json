@@ -1,4 +1,19 @@
 [
-  [],
-  []
+  [
+    "ImperialMandate",
+    "BlackfireTorch",
+    "VigilantWardstone",
+    "StaffOfFlowingWater",
+    "MikaelsBlessing"
+  ],
+  [
+    "ManaflowBand",
+    "Celerity",
+    "GatheringStorm",
+    "FontOfLife",
+    "Revitalize",
+    "AdaptiveForce",
+    "MoveSpeed",
+    "HealthScaling"
+  ]
 ]

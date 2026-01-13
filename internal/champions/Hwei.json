@@ -72,16 +72,16 @@
     [
       {
         "type": "R",
-        "name": "_4"
+        "name": "_2"
       },
       {
         "name": "Spiraling Despair",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "230 + (0.95 * ctx.ap)",
-          "385 + (0.95 * ctx.ap)",
-          "540 + (0.95 * ctx.ap)"
+          "30 + (0.15 * ctx.ap)",
+          "60 + (0.15 * ctx.ap)",
+          "90 + (0.15 * ctx.ap)"
         ]
       }
     ],
@@ -104,6 +104,22 @@
     [
       {
         "type": "R",
+        "name": "_4"
+      },
+      {
+        "name": "Spiraling Despair",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "230 + (0.95 * ctx.ap)",
+          "385 + (0.95 * ctx.ap)",
+          "540 + (0.95 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
         "name": "_1"
       },
       {
@@ -114,22 +130,6 @@
           "2.5 + (0.0125 * ctx.ap)",
           "5 + (0.0125 * ctx.ap)",
           "7.5 + (0.0125 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_2"
-      },
-      {
-        "name": "Spiraling Despair",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "30 + (0.15 * ctx.ap)",
-          "60 + (0.15 * ctx.ap)",
-          "90 + (0.15 * ctx.ap)"
         ]
       }
     ]

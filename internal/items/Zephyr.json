@@ -3,56 +3,39 @@
   "item_id": "Zephyr",
   "name": "Zephyr",
   "price": 2500,
-  "sell": 1120,
+  "sell": 770,
   "tier": 3,
   "maps": [
-    [
-      "SummonersRift",
-      true
-    ],
     [
       "Tft",
       false
     ],
     [
-      "Aram",
+      "SummonersRift",
+      true
+    ],
+    [
+      "NexusBlitz",
+      true
+    ],
+    [
+      "SummonersRift",
       false
+    ],
+    [
+      "SummonersRift",
+      true
     ],
     [
       "Arena",
       false
     ],
     [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
+      "Aram",
       false
-    ],
-    [
-      "NexusBlitz",
-      true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Tenacity",
-      "value": 20
-    },
-    {
-      "name": "MoveSpeed",
-      "value": 10
-    },
-    {
-      "name": "AbilityHaste",
-      "value": 30
-    },
-    {
-      "name": "AttackSpeed",
-      "value": 50
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

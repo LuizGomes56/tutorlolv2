@@ -7,8 +7,12 @@
   "tier": 4,
   "maps": [
     [
-      "Aram",
-      true
+      "Arena",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
     ],
     [
       "Tft",
@@ -19,36 +23,19 @@
       true
     ],
     [
-      "Arena",
-      false
+      "Aram",
+      true
+    ],
+    [
+      "SummonersRift",
+      true
     ],
     [
       "NexusBlitz",
       true
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityPower",
-      "value": 70
-    },
-    {
-      "name": "Mana",
-      "value": 1000
-    },
-    {
-      "name": "AbilityHaste",
-      "value": 25
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

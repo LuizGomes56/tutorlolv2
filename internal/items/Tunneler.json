@@ -12,6 +12,10 @@
     ],
     [
       "SummonersRift",
+      false
+    ],
+    [
+      "NexusBlitz",
       true
     ],
     [
@@ -19,32 +23,19 @@
       false
     ],
     [
-      "Tft",
-      false
+      "SummonersRift",
+      true
     ],
     [
       "Aram",
       true
     ],
     [
-      "NexusBlitz",
-      true
-    ],
-    [
-      "SummonersRift",
+      "Tft",
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackDamage",
-      "value": 15
-    },
-    {
-      "name": "Health",
-      "value": 250
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

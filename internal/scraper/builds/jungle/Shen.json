@@ -1,20 +1,20 @@
 [
   [
-    "HollowRadiance",
-    "SunfireAegis",
-    "RanduinsOmen",
-    "SpiritVisage",
-    "AbyssalMask",
+    "UnendingDespair",
+    "ProtoplasmHarness",
+    "DeadMansPlate",
+    "Thornmail",
+    "WitsEnd",
     "ForceOfNature"
   ],
   [
+    "ShieldBash",
+    "Conditioning",
+    "Revitalize",
     "MagicalFootwear",
-    "BiscuitDelivery",
     "CosmicInsight",
-    "SuddenImpact",
-    "UltimateHunter",
     "AttackSpeed",
-    "MoveSpeed",
+    "AdaptiveForce",
     "HealthScaling"
   ]
 ]

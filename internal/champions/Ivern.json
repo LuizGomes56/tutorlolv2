@@ -71,24 +71,6 @@
     [
       {
         "type": "W",
-        "name": "_2"
-      },
-      {
-        "name": "Brushmaker",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "10 + (0.1 * ctx.ap)",
-          "15 + (0.1 * ctx.ap)",
-          "20 + (0.1 * ctx.ap)",
-          "25 + (0.1 * ctx.ap)",
-          "30 + (0.1 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
         "name": "_1"
       },
       {
@@ -101,24 +83,6 @@
           "35 + (0.2 * ctx.ap)",
           "42.5 + (0.2 * ctx.ap)",
           "50 + (0.2 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_1"
-      },
-      {
-        "name": "Triggerseed",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "70 + (0.8 * ctx.ap)",
-          "90 + (0.8 * ctx.ap)",
-          "110 + (0.8 * ctx.ap)",
-          "130 + (0.8 * ctx.ap)",
-          "150 + (0.8 * ctx.ap)"
         ]
       }
     ],
@@ -137,6 +101,42 @@
           "170 + (0.7 * ctx.ap)",
           "215 + (0.7 * ctx.ap)",
           "260 + (0.7 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_2"
+      },
+      {
+        "name": "Brushmaker",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "10 + (0.1 * ctx.ap)",
+          "15 + (0.1 * ctx.ap)",
+          "20 + (0.1 * ctx.ap)",
+          "25 + (0.1 * ctx.ap)",
+          "30 + (0.1 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Triggerseed",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "70 + (0.8 * ctx.ap)",
+          "90 + (0.8 * ctx.ap)",
+          "110 + (0.8 * ctx.ap)",
+          "130 + (0.8 * ctx.ap)",
+          "150 + (0.8 * ctx.ap)"
         ]
       }
     ]

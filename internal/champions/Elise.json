@@ -70,24 +70,6 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_3"
-      },
-      {
-        "name": "Neurotoxin",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "75",
-          "100",
-          "125",
-          "150",
-          "175"
-        ]
-      }
-    ],
-    [
-      {
         "type": "W",
         "name": "_1"
       },
@@ -101,6 +83,24 @@
           "140 + (0.75 * ctx.ap)",
           "180 + (0.75 * ctx.ap)",
           "220 + (0.75 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_3"
+      },
+      {
+        "name": "Neurotoxin",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "75",
+          "100",
+          "125",
+          "150",
+          "175"
         ]
       }
     ],

@@ -1,20 +1,20 @@
 [
   [
-    "BladeOfTheRuinedKing",
-    "RanduinsOmen",
-    "TitanicHydra",
+    "Terminus",
     "ExperimentalHexplate",
-    "WitsEnd",
-    "NavoriFlickerblade"
+    "TitanicHydra",
+    "RanduinsOmen",
+    "GuardianAngel",
+    "BlackCleaver"
   ],
   [
-    "PresenceOfMind",
+    "Triumph",
     "LegendAlacrity",
     "CoupDeGrace",
-    "NimbusCloak",
-    "Celerity",
+    "SuddenImpact",
+    "TreasureHunter",
     "AttackSpeed",
     "AdaptiveForce",
-    "TenacityAndSlowResist"
+    "HealthScaling"
   ]
 ]

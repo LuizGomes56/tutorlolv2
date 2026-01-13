@@ -87,22 +87,6 @@
     [
       {
         "type": "R",
-        "name": "_3"
-      },
-      {
-        "name": "The Culling",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "30 + (0.5 * ctx.ad) + (0.3 * ctx.ap)",
-          "60 + (0.5 * ctx.ad) + (0.3 * ctx.ap)",
-          "90 + (0.5 * ctx.ad) + (0.3 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
         "name": "_2"
       },
       {
@@ -153,22 +137,6 @@
     [
       {
         "type": "R",
-        "name": "_5"
-      },
-      {
-        "name": "The Culling",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "660 + (0.3 * ctx.crit_chance) + (11 * ctx.ad) + (6.6 * ctx.ap) + (0.5 * ctx.ad) + (0.3 * ctx.ap)",
-          "1320 + (0.6 * ctx.crit_chance) + (11 * ctx.ad) + (6.6 * ctx.ap) + (0.5 * ctx.ad) + (0.3 * ctx.ap)",
-          "1980 + (0.9 * ctx.crit_chance) + (11 * ctx.ad) + (6.6 * ctx.ap) + (0.5 * ctx.ad) + (0.3 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
         "name": "_4"
       },
       {
@@ -179,6 +147,38 @@
           "15 + (0.25 * ctx.ad) + (0.15 * ctx.ap)",
           "30 + (0.25 * ctx.ad) + (0.15 * ctx.ap)",
           "45 + (0.25 * ctx.ad) + (0.15 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_3"
+      },
+      {
+        "name": "The Culling",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "30 + (0.5 * ctx.ad) + (0.3 * ctx.ap)",
+          "60 + (0.5 * ctx.ad) + (0.3 * ctx.ap)",
+          "90 + (0.5 * ctx.ad) + (0.3 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_5"
+      },
+      {
+        "name": "The Culling",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "660 + (0.3 * ctx.crit_chance) + (11 * ctx.ad) + (6.6 * ctx.ap) + (0.5 * ctx.ad) + (0.3 * ctx.ap)",
+          "1320 + (0.6 * ctx.crit_chance) + (11 * ctx.ad) + (6.6 * ctx.ap) + (0.5 * ctx.ad) + (0.3 * ctx.ap)",
+          "1980 + (0.9 * ctx.crit_chance) + (11 * ctx.ad) + (6.6 * ctx.ap) + (0.5 * ctx.ad) + (0.3 * ctx.ap)"
         ]
       }
     ],

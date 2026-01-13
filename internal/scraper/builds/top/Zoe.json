@@ -1,11 +1,8 @@
 [
   [
-    "RabadonsDeathcap",
-    "HorizonFocus",
-    "Stormsurge",
     "VoidStaff",
-    "AbyssalMask",
-    "Cryptbloom"
+    "Stormsurge",
+    "BansheesVeil"
   ],
   [
     "SuddenImpact",
@@ -15,6 +12,6 @@
     "Transcendence",
     "AttackSpeed",
     "AdaptiveForce",
-    "Health"
+    "HealthScaling"
   ]
 ]

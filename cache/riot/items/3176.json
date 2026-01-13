@@ -1,25 +1,26 @@
 {
   "colloq": ";",
   "depth": 4,
-  "description": "<mainText><stats><attention>55</attention> Move Speed</stats><br><br><passive>Voidborn</passive><br>Gain Empowered Recall.<br><br><passive>Noxian Synchrony</passive><br>Gain <speed>45 Move Speed</speed> and <speed>8% total Move Speed</speed> when out of combat.</mainText>",
+  "description": "<mainText><stats><attention>55</attention> Move Speed</stats><br><br><passive>Omnipresent</passive><br>Gain a new Active: Teleport.<br><br><passive>Voidborn</passive><br>Gain Empowered Recall.<br><br><passive>Noxian Synchrony</passive><br>Gain <speed>45 Move Speed</speed> and <speed>8% total Move Speed</speed> when out of combat.</mainText>",
   "from": [
     "3013"
   ],
   "gold": {
-    "base": 500,
-    "purchasable": true,
-    "sell": 980,
-    "total": 1400
+    "base": 0,
+    "purchasable": false,
+    "sell": 630,
+    "total": 900
   },
   "image": {
     "full": "3176.png",
     "group": "item",
     "h": 48,
-    "sprite": "item3.png",
+    "sprite": "item4.png",
     "w": 48,
-    "x": 48,
-    "y": 288
+    "x": 144,
+    "y": 48
   },
+  "inStore": false,
   "maps": {
     "11": true,
     "12": false,

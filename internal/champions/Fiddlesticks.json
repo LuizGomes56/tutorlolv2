@@ -71,24 +71,6 @@
     [
       {
         "type": "Q",
-        "name": "_4"
-      },
-      {
-        "name": "Terrify",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "80",
-          "120",
-          "160",
-          "200",
-          "240"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
         "name": "_1"
       },
       {
@@ -107,60 +89,6 @@
     [
       {
         "type": "Q",
-        "name": "_3"
-      },
-      {
-        "name": "Terrify",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "(0.08 * ctx.current_health) + (0.06 * 0.01 * ctx.ap)",
-          "(0.09 * ctx.current_health) + (0.06 * 0.01 * ctx.ap)",
-          "(0.1 * ctx.current_health) + (0.06 * 0.01 * ctx.ap)",
-          "(0.11 * ctx.current_health) + (0.06 * 0.01 * ctx.ap)",
-          "(0.12 * ctx.current_health) + (0.06 * 0.01 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_3"
-      },
-      {
-        "name": "Bountiful Harvest",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "15 + (0.1125 * ctx.ap) + (0.12 * ctx.missing_health)",
-          "22.5 + (0.1125 * ctx.ap) + (0.145 * ctx.missing_health)",
-          "30 + (0.1125 * ctx.ap) + (0.17 * ctx.missing_health)",
-          "37.5 + (0.1125 * ctx.ap) + (0.195 * ctx.missing_health)",
-          "45 + (0.1125 * ctx.ap) + (0.22 * ctx.missing_health)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_1"
-      },
-      {
-        "name": "Reap",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "70 + (0.5 * ctx.ap)",
-          "105 + (0.5 * ctx.ap)",
-          "140 + (0.5 * ctx.ap)",
-          "175 + (0.5 * ctx.ap)",
-          "210 + (0.5 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
         "name": "_2"
       },
       {
@@ -173,24 +101,6 @@
           "80",
           "100",
           "120"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_4"
-      },
-      {
-        "name": "Bountiful Harvest",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "120 + (0.9 * ctx.ap) + (0.12 * ctx.missing_health)",
-          "180 + (0.9 * ctx.ap) + (0.145 * ctx.missing_health)",
-          "240 + (0.9 * ctx.ap) + (0.17 * ctx.missing_health)",
-          "300 + (0.9 * ctx.ap) + (0.195 * ctx.missing_health)",
-          "360 + (0.9 * ctx.ap) + (0.22 * ctx.missing_health)"
         ]
       }
     ],
@@ -230,6 +140,42 @@
     ],
     [
       {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Bountiful Harvest",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "15 + (0.1125 * ctx.ap)",
+          "22.5 + (0.1125 * ctx.ap)",
+          "30 + (0.1125 * ctx.ap)",
+          "37.5 + (0.1125 * ctx.ap)",
+          "45 + (0.1125 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_3"
+      },
+      {
+        "name": "Bountiful Harvest",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "15 + (0.1125 * ctx.ap) + (0.12 * ctx.missing_health)",
+          "22.5 + (0.1125 * ctx.ap) + (0.145 * ctx.missing_health)",
+          "30 + (0.1125 * ctx.ap) + (0.17 * ctx.missing_health)",
+          "37.5 + (0.1125 * ctx.ap) + (0.195 * ctx.missing_health)",
+          "45 + (0.1125 * ctx.ap) + (0.22 * ctx.missing_health)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "R",
         "name": "_1"
       },
@@ -247,18 +193,72 @@
     [
       {
         "type": "W",
-        "name": "_1"
+        "name": "_4"
       },
       {
         "name": "Bountiful Harvest",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "15 + (0.1125 * ctx.ap)",
-          "22.5 + (0.1125 * ctx.ap)",
-          "30 + (0.1125 * ctx.ap)",
-          "37.5 + (0.1125 * ctx.ap)",
-          "45 + (0.1125 * ctx.ap)"
+          "120 + (0.9 * ctx.ap) + (0.12 * ctx.missing_health)",
+          "180 + (0.9 * ctx.ap) + (0.145 * ctx.missing_health)",
+          "240 + (0.9 * ctx.ap) + (0.17 * ctx.missing_health)",
+          "300 + (0.9 * ctx.ap) + (0.195 * ctx.missing_health)",
+          "360 + (0.9 * ctx.ap) + (0.22 * ctx.missing_health)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_3"
+      },
+      {
+        "name": "Terrify",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "(0.08 * ctx.current_health) + (0.06 * 0.01 * ctx.ap)",
+          "(0.09 * ctx.current_health) + (0.06 * 0.01 * ctx.ap)",
+          "(0.1 * ctx.current_health) + (0.06 * 0.01 * ctx.ap)",
+          "(0.11 * ctx.current_health) + (0.06 * 0.01 * ctx.ap)",
+          "(0.12 * ctx.current_health) + (0.06 * 0.01 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_4"
+      },
+      {
+        "name": "Terrify",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "80",
+          "120",
+          "160",
+          "200",
+          "240"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Reap",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "70 + (0.5 * ctx.ap)",
+          "105 + (0.5 * ctx.ap)",
+          "140 + (0.5 * ctx.ap)",
+          "175 + (0.5 * ctx.ap)",
+          "210 + (0.5 * ctx.ap)"
         ]
       }
     ]

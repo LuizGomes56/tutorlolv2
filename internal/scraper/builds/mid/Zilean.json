@@ -1,10 +1,11 @@
 [
   [
     "ImperialMandate",
-    "FrozenHeart",
+    "RabadonsDeathcap",
     "ZhonyasHourglass",
     "BansheesVeil",
-    "Morellonomicon"
+    "Cryptbloom",
+    "Redemption"
   ],
   [
     "ManaflowBand",
@@ -12,7 +13,7 @@
     "Waterwalking",
     "CheapShot",
     "RelentlessHunter",
-    "AbilityHaste",
+    "AttackSpeed",
     "AdaptiveForce",
     "HealthScaling"
   ]

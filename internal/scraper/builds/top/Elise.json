@@ -1,17 +1,19 @@
 [
   [
-    "LichBane",
     "ZhonyasHourglass",
-    "LiandrysTorment"
+    "LiandrysTorment",
+    "HextechRocketbelt",
+    "Morellonomicon",
+    "HextechGunblade"
   ],
   [
     "SuddenImpact",
     "SixthSense",
-    "RelentlessHunter",
-    "ManaflowBand",
-    "Scorch",
+    "TreasureHunter",
+    "Triumph",
+    "CutDown",
     "AttackSpeed",
     "AdaptiveForce",
-    "Health"
+    "HealthScaling"
   ]
 ]

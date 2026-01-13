@@ -1,19 +1,20 @@
 [
   [
-    "Opportunity",
-    "YoumuusGhostblade",
-    "LordDominiksRegards",
-    "InfinityEdge",
-    "ImmortalShieldbow"
+    "Eclipse",
+    "Thornmail",
+    "DeathsDance",
+    "SunderedSky",
+    "ForceOfNature",
+    "ExperimentalHexplate"
   ],
   [
     "Triumph",
     "LegendAlacrity",
-    "CutDown",
-    "SuddenImpact",
-    "UltimateHunter",
+    "LastStand",
+    "Demolish",
+    "BonePlating",
     "AttackSpeed",
     "AdaptiveForce",
-    "Health"
+    "HealthScaling"
   ]
 ]

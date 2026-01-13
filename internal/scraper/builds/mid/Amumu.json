@@ -1,4 +1,20 @@
 [
-  [],
-  []
+  [
+    "RabadonsDeathcap",
+    "SunfireAegis",
+    "HollowRadiance",
+    "ZhonyasHourglass",
+    "RylaisCrystalScepter",
+    "JakshoTheProtean"
+  ],
+  [
+    "Triumph",
+    "LegendHaste",
+    "LastStand",
+    "CheapShot",
+    "UltimateHunter",
+    "AttackSpeed",
+    "AdaptiveForce",
+    "HealthScaling"
+  ]
 ]

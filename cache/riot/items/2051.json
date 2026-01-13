@@ -15,13 +15,13 @@
     "full": "2051.png",
     "group": "item",
     "h": 48,
-    "sprite": "item0.png",
+    "sprite": "item1.png",
     "w": 48,
-    "x": 48,
-    "y": 336
+    "x": 96,
+    "y": 0
   },
   "maps": {
-    "11": false,
+    "11": true,
     "12": true,
     "21": false,
     "22": false,

@@ -364,7 +364,7 @@
       ],
       "rangeBurn": "1150",
       "resource": "{{ cost }} {{ abilityresourcename }}",
-      "tooltip": "Zeri fires an electric pulse that deals <physicalDamage>{{ totaldamage }} physical damage</physicalDamage> and <status>Slows</status> the first enemy hit by {{ slowpercent*100 }}% for {{ slowduration }} seconds.<br /><br />If the pulse hits terrain, it expands into a laser that applies the effects in an area and Critically Strikes champions and monsters.{{ spellmodifierdescriptionappend }}",
+      "tooltip": "Zeri fires an electric pulse that deals <physicalDamage>{{ totaldamage }} physical damage</physicalDamage> and <status>Slows</status> the first enemy hit by {{ slowpercent*100 }}% for {{ slowduration }} seconds.<br /><br />If the pulse hits terrain, it expands into a laser that applies the effects in an area and Critically Strikes champions and monsters for <physicalDamage>{{ walldamage }} physical damage</physicalDamage>.{{ spellmodifierdescriptionappend }}",
       "vars": []
     },
     {

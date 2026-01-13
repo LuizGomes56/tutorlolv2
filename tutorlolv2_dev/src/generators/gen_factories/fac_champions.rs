@@ -7,6 +7,7 @@ use crate::{
         gen_utils::{F64Ext, RegExtractor},
     },
 };
+use rayon::iter::{IntoParallelIterator, ParallelIterator};
 use regex::Regex;
 use std::collections::{BTreeMap, BTreeSet, HashMap};
 use tutorlolv2_fmt::rustfmt;
@@ -48,15 +49,17 @@ impl ChampionFactory {
         let path = format!("{GENERATOR_FOLDER}/{file_name}.rs");
 
         let bind_function = |ability_char: char, meraki_offsets: &[MerakiOffset]| -> String {
-            let mut offsets = Vec::new();
-            for meraki_offset in meraki_offsets {
-                offsets.push(format!(
-                    "({effect_index}, {leveling_index}, {enum_binding:?})",
-                    effect_index = meraki_offset.effect,
-                    leveling_index = meraki_offset.leveling,
-                    enum_binding = meraki_offset.binding
-                ));
-            }
+            let offsets = meraki_offsets
+                .into_iter()
+                .map(|meraki_offset| {
+                    format!(
+                        "({effect_index}, {leveling_index}, {enum_binding:?})",
+                        effect_index = meraki_offset.effect,
+                        leveling_index = meraki_offset.leveling,
+                        enum_binding = meraki_offset.binding
+                    )
+                })
+                .collect::<Vec<String>>();
             format!(
                 "self.ability({ability_char}, [{offsets}]);",
                 offsets = offsets.join(","),
@@ -76,8 +79,10 @@ impl ChampionFactory {
             }
         }
 
-        let meraki_champion =
-            MerakiChampion::from_file(format!("cache/meraki/champions/{entity_id}.json"))?;
+        let meraki_champion = MerakiChampion::from_file(format!(
+            "cache/meraki/champions/{entity_id}.json"
+        ))
+        .map_err(|e| format!("Error calling MerakiChampion::from_file for {entity_id:?}: {e:?}"))?;
         for (ability_char, ability_vec) in meraki_champion.abilities.into_iter() {
             let meraki_offsets = ChampionData::get_ability_offsets(ability_vec);
             if meraki_offsets.len() > 0 {
@@ -86,51 +91,45 @@ impl ChampionFactory {
         }
 
         generated_content.push_str("self.end()}}");
-        Ok(rustfmt(&generated_content))
+
+        let formatted = rustfmt(&generated_content);
+        Ok(match formatted.is_empty() {
+            true => generated_content,
+            false => formatted,
+        })
     }
 
     /// Creates the whole folder of champion generators. Fails if an error
     /// is thrown in some iteration
-    pub async fn create_all() -> MayFail {
-        if !tokio::fs::try_exists(GENERATOR_FOLDER).await? {
-            tokio::fs::create_dir(GENERATOR_FOLDER).await.unwrap();
+    pub fn create_all() -> MayFail {
+        if !std::fs::exists(GENERATOR_FOLDER)? {
+            std::fs::create_dir(GENERATOR_FOLDER)?;
         }
 
-        let mut futures = Vec::new();
-
-        for champion_id in ChampionId::ARRAY {
-            futures.push(tokio::task::spawn(async move {
-                let data = Self::create(champion_id).unwrap();
-                let file_name = format!("{champion_id:?}").to_lowercase();
-                tokio::fs::write(
-                    format!("{GENERATOR_FOLDER}/{file_name}.rs"),
-                    data.as_bytes(),
-                )
-                .await
-                .unwrap();
-            }))
-        }
-
-        for future in futures {
-            future.await?;
-        }
+        ChampionId::ARRAY.into_par_iter().for_each(|champion_id| {
+            let Ok(data) = Self::create(champion_id) else {
+                return println!("Unable to create generator file for {champion_id:?}");
+            };
+            let file_name = format!("{champion_id:?}").to_lowercase();
+            std::fs::write(
+                format!("{GENERATOR_FOLDER}/{file_name}.rs"),
+                data.as_bytes(),
+            )
+            .unwrap();
+        });
 
         Ok(())
     }
 
     /// Runs all generator files. It means that several `.json` files will be created
     /// in the internal cache folder
-    pub async fn run_all() -> MayFail {
-        let mut futures = Vec::new();
-        for champion_id in ChampionId::ARRAY {
-            futures.push(tokio::task::spawn_blocking(move || {
-                Self::run(champion_id).unwrap()
-            }));
-        }
+    pub fn run_all() -> MayFail {
+        ChampionId::ARRAY.into_par_iter().for_each(|champion_id| {
+            if let Err(e) = Self::run(champion_id) {
+                println!("Failed to run generator file for {champion_id:?}: {e:?}");
+            }
+        });
 
-        for future in futures {
-            future.await.unwrap();
-        }
         Ok(())
     }
 

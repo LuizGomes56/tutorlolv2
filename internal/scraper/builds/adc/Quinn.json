@@ -1,19 +1,20 @@
 [
   [
-    "TheCollector",
     "MortalReminder",
-    "PhantomDancer",
-    "YoumuusGhostblade",
-    "ImmortalShieldbow"
+    "SerpentsFang",
+    "GuardianAngel",
+    "Opportunity",
+    "Bloodthirster",
+    "YunTalWildarrows"
   ],
   [
     "SuddenImpact",
     "GrislyMementos",
     "TreasureHunter",
     "Celerity",
-    "Scorch",
+    "GatheringStorm",
     "AttackSpeed",
     "AdaptiveForce",
-    "Health"
+    "HealthScaling"
   ]
 ]

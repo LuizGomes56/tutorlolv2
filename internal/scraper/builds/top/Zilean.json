@@ -1,11 +1,10 @@
 [
   [
     "HorizonFocus",
-    "FrozenHeart",
-    "BlackfireTorch",
-    "LudensCompanion",
+    "Bandlepipes",
+    "KaenicRookern",
     "Morellonomicon",
-    "ArdentCenser"
+    "LiandrysTorment"
   ],
   [
     "ManaflowBand",
@@ -13,7 +12,7 @@
     "Scorch",
     "TripleTonic",
     "CosmicInsight",
-    "AbilityHaste",
+    "AttackSpeed",
     "AdaptiveForce",
     "HealthScaling"
   ]

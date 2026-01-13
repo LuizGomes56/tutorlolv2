@@ -1,11 +1,11 @@
 [
   [
-    "AxiomArc",
     "SerpentsFang",
-    "Opportunity",
     "ProfaneHydra",
+    "VoltaicCyclosword",
+    "Bastionbreaker",
     "TheCollector",
-    "BlackCleaver"
+    "LocketOfTheIronSolari"
   ],
   [
     "SuddenImpact",
@@ -13,8 +13,8 @@
     "UltimateHunter",
     "Triumph",
     "CoupDeGrace",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AdaptiveForce",
+    "Health"
   ]
 ]

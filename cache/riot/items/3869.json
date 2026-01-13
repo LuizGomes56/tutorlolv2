@@ -1,9 +1,9 @@
 {
   "colloq": "",
   "depth": 2,
-  "description": "<mainText><stats><attention>200</attention> Health<br><attention>75%</attention> Base Health Regen<br><attention>75%</attention> Base Mana Regen<br><attention>5</attention> Gold Per 10 Seconds</stats><br><br><passive>Blessing of the Mountain</passive><br>Reduce incoming champion damage for 2 seconds after taking damage from a champion. When the effect ends, slow nearby enemies by 50% for 1.5 seconds.<br><active>Active</active> (4 charges)<br>Places an <keyword>Invisible</keyword> Stealth Ward that grants vision.</mainText>",
+  "description": "<mainText><stats><attention>200</attention> Health<br><attention>75%</attention> Base Health Regen<br><attention>75%</attention> Base Mana Regen<br><attention>9</attention> Gold Per 10 Seconds</stats><br><br><passive>Blessing of the Mountain</passive><br>Reduce incoming champion damage for 2 seconds after taking damage from a champion. When the effect ends, slow nearby enemies by 50% for 1.5 seconds.<br><active>Active</active> (4 charges)<br>Places an <keyword>Invisible</keyword> Stealth Ward that grants vision.</mainText>",
   "effect": {
-    "Effect1Amount": "5"
+    "Effect1Amount": "9"
   },
   "from": [
     "3867"
@@ -20,8 +20,8 @@
     "h": 48,
     "sprite": "item4.png",
     "w": 48,
-    "x": 48,
-    "y": 144
+    "x": 240,
+    "y": 384
   },
   "maps": {
     "11": true,

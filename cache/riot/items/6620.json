@@ -1,7 +1,7 @@
 {
   "colloq": "",
   "depth": 3,
-  "description": "<mainText><stats><attention>35</attention> Ability Power<br><attention>200</attention> Health<br><attention>20</attention> Ability Haste<br><attention>125%</attention> Base Mana Regen</stats><br><br><passive>Soul Siphon</passive><br>Damaging a champion grants a <passive>Soul Shard</passive>, up to 2. <br>Healing or Shielding an ally consumes all <passive>Soul Shards</passive> to restore <healing>Health</healing> and deal <magicDamage>magic damage</magicDamage> to the nearest enemy champion per Shard.</mainText>",
+  "description": "<mainText><stats><attention>35</attention> Ability Power<br><attention>200</attention> Health<br><attention>20</attention> Ability Haste<br><attention>125%</attention> Base Mana Regen</stats><br><br><passive>Soul Siphon</passive><br>Gain 35% of pre-mitigation damage dealt to champions as Soul Charges. Healing or Shielding an ally consumes all <passive>Soul Charges</passive> to restore <healing>Health</healing>.</mainText>",
   "from": [
     "3067",
     "4642"
@@ -18,8 +18,8 @@
     "h": 48,
     "sprite": "item5.png",
     "w": 48,
-    "x": 288,
-    "y": 96
+    "x": 0,
+    "y": 384
   },
   "maps": {
     "11": true,

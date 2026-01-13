@@ -1,20 +1,20 @@
 [
   [
-    "KrakenSlayer",
+    "NavoriFlickerblade",
+    "YunTalWildarrows",
     "MortalReminder",
-    "RapidFirecannon",
-    "BladeOfTheRuinedKing",
-    "LordDominiksRegards",
-    "Bloodthirster"
+    "VoltaicCyclosword",
+    "Bloodthirster",
+    "UmbralGlaive"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "CoupDeGrace",
-    "TasteOfBlood",
+    "SuddenImpact",
+    "DeepWard",
     "TreasureHunter",
+    "Triumph",
+    "LegendBloodline",
     "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "Health"
   ]
 ]

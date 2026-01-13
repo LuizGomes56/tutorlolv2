@@ -7,8 +7,12 @@
   "tier": 1,
   "maps": [
     [
-      "SummonersRift",
+      "Tft",
       false
+    ],
+    [
+      "SummonersRift",
+      true
     ],
     [
       "SummonersRift",
@@ -19,28 +23,19 @@
       true
     ],
     [
+      "SummonersRift",
+      false
+    ],
+    [
       "Aram",
       true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Tft",
-      false
     ],
     [
       "Arena",
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "MagicResist",
-      "value": 20
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

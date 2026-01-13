@@ -458,13 +458,11 @@
       "leveltip": {
         "effect": [
           "{{ cooldown }} -> {{ cooldownNL }}",
-          "{{ damage_flat_base }} -> {{ damage_flat_baseNL }}",
-          "{{ adratio*100.000000 }}% -> {{ adrationl*100.000000 }}%"
+          "{{ damage_flat_base }} -> {{ damage_flat_baseNL }}"
         ],
         "label": [
           "Cooldown",
-          "Damage",
-          "Attack Damage Ratio"
+          "Damage"
         ]
       },
       "maxammo": "-1",

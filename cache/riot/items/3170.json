@@ -1,24 +1,24 @@
 {
   "colloq": ";",
   "depth": 3,
-  "description": "<mainText><stats><attention>65</attention> Move Speed</stats><br><br><passive>Fleetfooted</passive><br>Reduce the effectiveness of <keyword>Slows</keyword> by 25%.<br><br><passive>Noxian Fervor</passive><br>Gain 5% of your <speed>Move Speed</speed> as Adaptive Force. </mainText>",
+  "description": "<mainText><stats><attention>65</attention> Move Speed</stats><br><br><passive>Fleetfooted</passive><br>Reduce the effectiveness of <keyword>Slows</keyword> by 40%.<br><br><passive>Noxian Fervor</passive><br>Gain 5% of your <speed>Move Speed</speed> as Adaptive Force.</mainText>",
   "from": [
     "3009"
   ],
   "gold": {
-    "base": 500,
+    "base": 0,
     "purchasable": true,
-    "sell": 1050,
-    "total": 1500
+    "sell": 700,
+    "total": 1000
   },
   "image": {
     "full": "3170.png",
     "group": "item",
     "h": 48,
-    "sprite": "item3.png",
+    "sprite": "item4.png",
     "w": 48,
-    "x": 240,
-    "y": 240
+    "x": 336,
+    "y": 0
   },
   "maps": {
     "11": true,

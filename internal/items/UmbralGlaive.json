@@ -3,11 +3,19 @@
   "item_id": "UmbralGlaive",
   "name": "Umbral Glaive",
   "price": 2500,
-  "sell": 1750,
+  "sell": 1960,
   "tier": 3,
   "maps": [
     [
+      "SummonersRift",
+      true
+    ],
+    [
       "NexusBlitz",
+      true
+    ],
+    [
+      "Aram",
       true
     ],
     [
@@ -15,40 +23,19 @@
       false
     ],
     [
-      "Aram",
-      true
-    ],
-    [
       "Arena",
       false
     ],
     [
       "SummonersRift",
+      true
+    ],
+    [
+      "SummonersRift",
       false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackDamage",
-      "value": 55
-    },
-    {
-      "name": "Lethality",
-      "value": 15
-    },
-    {
-      "name": "AbilityHaste",
-      "value": 10
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

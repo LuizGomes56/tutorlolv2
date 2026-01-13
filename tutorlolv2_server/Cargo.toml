@@ -39,4 +39,4 @@ tutorlolv2_avif = { path = "../tutorlolv2_avif", optional = true }
 
 [features]
 dev = ["tutorlolv2_dev", "tutorlolv2_avif", "tutorlolv2_html"]
-default = []
+default = ["dev"]

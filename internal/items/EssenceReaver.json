@@ -7,16 +7,8 @@
   "tier": 3,
   "maps": [
     [
-      "SummonersRift",
-      true
-    ],
-    [
       "Tft",
       false
-    ],
-    [
-      "Aram",
-      true
     ],
     [
       "Arena",
@@ -24,7 +16,15 @@
     ],
     [
       "SummonersRift",
+      true
+    ],
+    [
+      "SummonersRift",
       false
+    ],
+    [
+      "Aram",
+      true
     ],
     [
       "NexusBlitz",
@@ -35,20 +35,7 @@
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackDamage",
-      "value": 50
-    },
-    {
-      "name": "CriticalStrikeChance",
-      "value": 25
-    },
-    {
-      "name": "AbilityHaste",
-      "value": 20
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

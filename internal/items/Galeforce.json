@@ -11,11 +11,7 @@
       false
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "Aram",
+      "NexusBlitz",
       false
     ],
     [
@@ -27,32 +23,19 @@
       false
     ],
     [
-      "NexusBlitz",
+      "SummonersRift",
       false
     ],
     [
       "Arena",
       true
+    ],
+    [
+      "Aram",
+      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackDamage",
-      "value": 65
-    },
-    {
-      "name": "AttackSpeed",
-      "value": 30
-    },
-    {
-      "name": "MoveSpeed",
-      "value": 6
-    },
-    {
-      "name": "CriticalStrikeChance",
-      "value": 25
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

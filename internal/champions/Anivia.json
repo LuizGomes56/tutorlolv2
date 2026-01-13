@@ -70,40 +70,6 @@
   "abilities": [
     [
       {
-        "type": "R",
-        "name": "_1"
-      },
-      {
-        "name": "Glacial Storm",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "15 + (0.0625 * ctx.ap)",
-          "22.5 + (0.0625 * ctx.ap)",
-          "30 + (0.0625 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Flash Frost",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "50 + (0.25 * ctx.ap)",
-          "70 + (0.25 * ctx.ap)",
-          "90 + (0.25 * ctx.ap)",
-          "110 + (0.25 * ctx.ap)",
-          "130 + (0.25 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "E",
         "name": "_2"
       },
@@ -117,22 +83,6 @@
           "100 + (0.55 * ctx.ap)",
           "125 + (0.55 * ctx.ap)",
           "150 + (0.55 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_2"
-      },
-      {
-        "name": "Glacial Storm",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "45 + (0.1875 * ctx.ap)",
-          "67.5 + (0.1875 * ctx.ap)",
-          "90 + (0.1875 * ctx.ap)"
         ]
       }
     ],
@@ -156,6 +106,24 @@
     ],
     [
       {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Frostbite",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "100 + (1.1 * ctx.ap)",
+          "150 + (1.1 * ctx.ap)",
+          "200 + (1.1 * ctx.ap)",
+          "250 + (1.1 * ctx.ap)",
+          "300 + (1.1 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "Q",
         "name": "_2"
       },
@@ -174,19 +142,51 @@
     ],
     [
       {
-        "type": "E",
+        "type": "R",
         "name": "_1"
       },
       {
-        "name": "Frostbite",
+        "name": "Glacial Storm",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "100 + (1.1 * ctx.ap)",
-          "150 + (1.1 * ctx.ap)",
-          "200 + (1.1 * ctx.ap)",
-          "250 + (1.1 * ctx.ap)",
-          "300 + (1.1 * ctx.ap)"
+          "15 + (0.0625 * ctx.ap)",
+          "22.5 + (0.0625 * ctx.ap)",
+          "30 + (0.0625 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_2"
+      },
+      {
+        "name": "Glacial Storm",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "45 + (0.1875 * ctx.ap)",
+          "67.5 + (0.1875 * ctx.ap)",
+          "90 + (0.1875 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Flash Frost",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "50 + (0.25 * ctx.ap)",
+          "70 + (0.25 * ctx.ap)",
+          "90 + (0.25 * ctx.ap)",
+          "110 + (0.25 * ctx.ap)",
+          "130 + (0.25 * ctx.ap)"
         ]
       }
     ]

@@ -7,8 +7,8 @@
   "tier": 3,
   "maps": [
     [
-      "SummonersRift",
-      false
+      "Arena",
+      true
     ],
     [
       "Aram",
@@ -19,32 +19,23 @@
       false
     ],
     [
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
       "Tft",
       false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "Arena",
-      true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Health",
-      "value": 700
-    },
-    {
-      "name": "CriticalStrikeChance",
-      "value": 20
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

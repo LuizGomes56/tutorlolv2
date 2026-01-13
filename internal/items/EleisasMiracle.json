@@ -11,14 +11,6 @@
       false
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
       "Tft",
       false
     ],
@@ -33,22 +25,17 @@
     [
       "NexusBlitz",
       false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Armor",
-      "value": 50
-    },
-    {
-      "name": "MagicResist",
-      "value": 50
-    },
-    {
-      "name": "AbilityHaste",
-      "value": 25
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

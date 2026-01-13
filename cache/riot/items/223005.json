@@ -14,7 +14,7 @@
     "sprite": "item1.png",
     "w": 48,
     "x": 96,
-    "y": 96
+    "y": 288
   },
   "maps": {
     "11": false,

@@ -70,67 +70,19 @@
   "abilities": [
     [
       {
-        "type": "W",
-        "name": "_5"
-      },
-      {
-        "name": "Path Maker",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "45 + (0.08 * ctx.enemy_max_health) + (0.02 * 0.01 * ctx.bonus_armor) + (0.02 * 0.01 * ctx.bonus_magic_resist)",
-          "75 + (0.08 * ctx.enemy_max_health) + (0.02 * 0.01 * ctx.bonus_armor) + (0.02 * 0.01 * ctx.bonus_magic_resist)",
-          "105 + (0.08 * ctx.enemy_max_health) + (0.02 * 0.01 * ctx.bonus_armor) + (0.02 * 0.01 * ctx.bonus_magic_resist)",
-          "135 + (0.08 * ctx.enemy_max_health) + (0.02 * 0.01 * ctx.bonus_armor) + (0.02 * 0.01 * ctx.bonus_magic_resist)",
-          "165 + (0.08 * ctx.enemy_max_health) + (0.02 * 0.01 * ctx.bonus_armor) + (0.02 * 0.01 * ctx.bonus_magic_resist)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_3"
-      },
-      {
-        "name": "All Out",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "160 + (0.05 * ctx.bonus_health)",
-          "230 + (0.05 * ctx.bonus_health)",
-          "300 + (0.05 * ctx.bonus_health)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_2"
-      },
-      {
-        "name": "All Out",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "80 + (0.05 * ctx.bonus_health)",
-          "115 + (0.05 * ctx.bonus_health)",
-          "150 + (0.05 * ctx.bonus_health)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
+        "type": "Q",
         "name": "_1"
       },
       {
-        "name": "All Out",
+        "name": "Ntofo Strikes",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "80",
-          "115",
-          "150"
+          "70 + (0.4 * ctx.bonus_armor) + (0.4 * ctx.bonus_magic_resist)",
+          "100 + (0.4 * ctx.bonus_armor) + (0.4 * ctx.bonus_magic_resist)",
+          "130 + (0.4 * ctx.bonus_armor) + (0.4 * ctx.bonus_magic_resist)",
+          "160 + (0.4 * ctx.bonus_armor) + (0.4 * ctx.bonus_magic_resist)",
+          "190 + (0.4 * ctx.bonus_armor) + (0.4 * ctx.bonus_magic_resist)"
         ]
       }
     ],
@@ -172,19 +124,35 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "type": "W",
+        "name": "_5"
       },
       {
-        "name": "Ntofo Strikes",
+        "name": "Path Maker",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "70 + (0.4 * ctx.bonus_armor) + (0.4 * ctx.bonus_magic_resist)",
-          "100 + (0.4 * ctx.bonus_armor) + (0.4 * ctx.bonus_magic_resist)",
-          "130 + (0.4 * ctx.bonus_armor) + (0.4 * ctx.bonus_magic_resist)",
-          "160 + (0.4 * ctx.bonus_armor) + (0.4 * ctx.bonus_magic_resist)",
-          "190 + (0.4 * ctx.bonus_armor) + (0.4 * ctx.bonus_magic_resist)"
+          "45 + (0.08 * ctx.enemy_max_health) + (0.02 * 0.01 * ctx.bonus_armor) + (0.02 * 0.01 * ctx.bonus_magic_resist)",
+          "75 + (0.08 * ctx.enemy_max_health) + (0.02 * 0.01 * ctx.bonus_armor) + (0.02 * 0.01 * ctx.bonus_magic_resist)",
+          "105 + (0.08 * ctx.enemy_max_health) + (0.02 * 0.01 * ctx.bonus_armor) + (0.02 * 0.01 * ctx.bonus_magic_resist)",
+          "135 + (0.08 * ctx.enemy_max_health) + (0.02 * 0.01 * ctx.bonus_armor) + (0.02 * 0.01 * ctx.bonus_magic_resist)",
+          "165 + (0.08 * ctx.enemy_max_health) + (0.02 * 0.01 * ctx.bonus_armor) + (0.02 * 0.01 * ctx.bonus_magic_resist)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_2"
+      },
+      {
+        "name": "All Out",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "80 + (0.05 * ctx.bonus_health)",
+          "115 + (0.05 * ctx.bonus_health)",
+          "150 + (0.05 * ctx.bonus_health)"
         ]
       }
     ],
@@ -203,6 +171,38 @@
           "84 + (0.064 * ctx.enemy_max_health) + (0.016 * 0.01 * ctx.bonus_armor) + (0.016 * 0.01 * ctx.bonus_magic_resist)",
           "108 + (0.064 * ctx.enemy_max_health) + (0.016 * 0.01 * ctx.bonus_armor) + (0.016 * 0.01 * ctx.bonus_magic_resist)",
           "132 + (0.064 * ctx.enemy_max_health) + (0.016 * 0.01 * ctx.bonus_armor) + (0.016 * 0.01 * ctx.bonus_magic_resist)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "All Out",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "80",
+          "115",
+          "150"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_3"
+      },
+      {
+        "name": "All Out",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "160 + (0.05 * ctx.bonus_health)",
+          "230 + (0.05 * ctx.bonus_health)",
+          "300 + (0.05 * ctx.bonus_health)"
         ]
       }
     ],

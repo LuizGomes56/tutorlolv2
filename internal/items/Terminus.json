@@ -11,12 +11,20 @@
       true
     ],
     [
-      "Tft",
+      "Aram",
+      true
+    ],
+    [
+      "Arena",
       false
     ],
     [
       "SummonersRift",
-      true
+      false
+    ],
+    [
+      "Tft",
+      false
     ],
     [
       "NexusBlitz",
@@ -24,27 +32,10 @@
     ],
     [
       "SummonersRift",
-      false
-    ],
-    [
-      "Arena",
-      false
-    ],
-    [
-      "Aram",
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackSpeed",
-      "value": 25
-    },
-    {
-      "name": "AttackDamage",
-      "value": 30
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

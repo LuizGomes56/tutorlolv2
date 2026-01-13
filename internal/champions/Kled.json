@@ -70,19 +70,53 @@
   "abilities": [
     [
       {
-        "type": "Q",
+        "type": "E",
         "name": "_2"
+      },
+      {
+        "name": "Jousting",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "70 + (1.1 * ctx.bonus_ad)",
+          "120 + (1.1 * ctx.bonus_ad)",
+          "170 + (1.1 * ctx.bonus_ad)",
+          "220 + (1.1 * ctx.bonus_ad)",
+          "270 + (1.1 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_2"
+      },
+      {
+        "name": "Chaaaaaaaarge!!!",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "(0.04 * ctx.enemy_max_health) + (0.03 * 0.01 * ctx.bonus_ad)",
+          "(0.06 * ctx.enemy_max_health) + (0.03 * 0.01 * ctx.bonus_ad)",
+          "(0.08 * ctx.enemy_max_health) + (0.03 * 0.01 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_6"
       },
       {
         "name": "Bear Trap on a Rope",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "30 + (0.6 * ctx.bonus_ad)",
-          "55 + (0.6 * ctx.bonus_ad)",
-          "80 + (0.6 * ctx.bonus_ad)",
-          "105 + (0.6 * ctx.bonus_ad)",
-          "130 + (0.6 * ctx.bonus_ad)"
+          "60 + (1.2 * ctx.bonus_ad)",
+          "110 + (1.2 * ctx.bonus_ad)",
+          "160 + (1.2 * ctx.bonus_ad)",
+          "210 + (1.2 * ctx.bonus_ad)",
+          "260 + (1.2 * ctx.bonus_ad)"
         ]
       }
     ],
@@ -124,24 +158,6 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_2"
-      },
-      {
-        "name": "Jousting",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "70 + (1.1 * ctx.bonus_ad)",
-          "120 + (1.1 * ctx.bonus_ad)",
-          "170 + (1.1 * ctx.bonus_ad)",
-          "220 + (1.1 * ctx.bonus_ad)",
-          "270 + (1.1 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "Q",
         "name": "_4"
       },
@@ -160,51 +176,19 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
-      },
-      {
-        "name": "Chaaaaaaaarge!!!",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "(0.12 * ctx.enemy_max_health) + (0.09 * 0.01 * ctx.bonus_ad)",
-          "(0.18 * ctx.enemy_max_health) + (0.09 * 0.01 * ctx.bonus_ad)",
-          "(0.24 * ctx.enemy_max_health) + (0.09 * 0.01 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_1"
-      },
-      {
-        "name": "Jousting",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "35 + (0.55 * ctx.bonus_ad)",
-          "60 + (0.55 * ctx.bonus_ad)",
-          "85 + (0.55 * ctx.bonus_ad)",
-          "110 + (0.55 * ctx.bonus_ad)",
-          "135 + (0.55 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
+        "type": "W",
         "name": "_2"
       },
       {
-        "name": "Chaaaaaaaarge!!!",
-        "damage_type": "Magic",
+        "name": "Violent Tendencies",
+        "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "(0.04 * ctx.enemy_max_health) + (0.03 * 0.01 * ctx.bonus_ad)",
-          "(0.06 * ctx.enemy_max_health) + (0.03 * 0.01 * ctx.bonus_ad)",
-          "(0.08 * ctx.enemy_max_health) + (0.03 * 0.01 * ctx.bonus_ad)"
+          "20 + (0.045 * ctx.enemy_max_health) + (0.02 * 0.01 * ctx.bonus_ad) + (0.004 * 0.01 * ctx.bonus_health)",
+          "30 + (0.05 * ctx.enemy_max_health) + (0.02 * 0.01 * ctx.bonus_ad) + (0.004 * 0.01 * ctx.bonus_health)",
+          "40 + (0.055 * ctx.enemy_max_health) + (0.02 * 0.01 * ctx.bonus_ad) + (0.004 * 0.01 * ctx.bonus_health)",
+          "50 + (0.06 * ctx.enemy_max_health) + (0.02 * 0.01 * ctx.bonus_ad) + (0.004 * 0.01 * ctx.bonus_health)",
+          "60 + (0.065 * ctx.enemy_max_health) + (0.02 * 0.01 * ctx.bonus_ad) + (0.004 * 0.01 * ctx.bonus_health)"
         ]
       }
     ],
@@ -242,36 +226,52 @@
     [
       {
         "type": "Q",
-        "name": "_6"
+        "name": "_2"
       },
       {
         "name": "Bear Trap on a Rope",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "60 + (1.2 * ctx.bonus_ad)",
-          "110 + (1.2 * ctx.bonus_ad)",
-          "160 + (1.2 * ctx.bonus_ad)",
-          "210 + (1.2 * ctx.bonus_ad)",
-          "260 + (1.2 * ctx.bonus_ad)"
+          "30 + (0.6 * ctx.bonus_ad)",
+          "55 + (0.6 * ctx.bonus_ad)",
+          "80 + (0.6 * ctx.bonus_ad)",
+          "105 + (0.6 * ctx.bonus_ad)",
+          "130 + (0.6 * ctx.bonus_ad)"
         ]
       }
     ],
     [
       {
-        "type": "W",
-        "name": "_2"
+        "type": "E",
+        "name": "_1"
       },
       {
-        "name": "Violent Tendencies",
+        "name": "Jousting",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "20 + (0.045 * ctx.enemy_max_health) + (0.02 * 0.01 * ctx.bonus_ad) + (0.004 * 0.01 * ctx.bonus_health)",
-          "30 + (0.05 * ctx.enemy_max_health) + (0.02 * 0.01 * ctx.bonus_ad) + (0.004 * 0.01 * ctx.bonus_health)",
-          "40 + (0.055 * ctx.enemy_max_health) + (0.02 * 0.01 * ctx.bonus_ad) + (0.004 * 0.01 * ctx.bonus_health)",
-          "50 + (0.06 * ctx.enemy_max_health) + (0.02 * 0.01 * ctx.bonus_ad) + (0.004 * 0.01 * ctx.bonus_health)",
-          "60 + (0.065 * ctx.enemy_max_health) + (0.02 * 0.01 * ctx.bonus_ad) + (0.004 * 0.01 * ctx.bonus_health)"
+          "35 + (0.55 * ctx.bonus_ad)",
+          "60 + (0.55 * ctx.bonus_ad)",
+          "85 + (0.55 * ctx.bonus_ad)",
+          "110 + (0.55 * ctx.bonus_ad)",
+          "135 + (0.55 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Chaaaaaaaarge!!!",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "(0.12 * ctx.enemy_max_health) + (0.09 * 0.01 * ctx.bonus_ad)",
+          "(0.18 * ctx.enemy_max_health) + (0.09 * 0.01 * ctx.bonus_ad)",
+          "(0.24 * ctx.enemy_max_health) + (0.09 * 0.01 * ctx.bonus_ad)"
         ]
       }
     ]

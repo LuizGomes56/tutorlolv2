@@ -108,6 +108,12 @@
       "id": "111036",
       "name": "Crystalis Indomitus Nautilus",
       "num": 36
+    },
+    {
+      "chromas": false,
+      "id": "111039",
+      "name": "Petricite Nautilus",
+      "num": 39
     }
   ],
   "spells": [

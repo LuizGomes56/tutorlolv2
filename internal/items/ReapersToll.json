@@ -7,6 +7,10 @@
   "tier": 3,
   "maps": [
     [
+      "NexusBlitz",
+      false
+    ],
+    [
       "Arena",
       true
     ],
@@ -27,28 +31,11 @@
       false
     ],
     [
-      "NexusBlitz",
-      false
-    ],
-    [
       "Tft",
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackSpeed",
-      "value": 50
-    },
-    {
-      "name": "MoveSpeed",
-      "value": 5
-    },
-    {
-      "name": "AdaptiveForce",
-      "value": 40
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

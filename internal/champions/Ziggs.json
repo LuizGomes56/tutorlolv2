@@ -71,24 +71,6 @@
   "abilities": [
     [
       {
-        "type": "W",
-        "name": "_1"
-      },
-      {
-        "name": "Satchel Charge",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "70 + (0.5 * ctx.ap)",
-          "105 + (0.5 * ctx.ap)",
-          "140 + (0.5 * ctx.ap)",
-          "175 + (0.5 * ctx.ap)",
-          "210 + (0.5 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "E",
         "name": "_3"
       },
@@ -108,22 +90,6 @@
     [
       {
         "type": "R",
-        "name": "_2"
-      },
-      {
-        "name": "Mega Inferno Bomb",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "195 + (0.65 * ctx.ap)",
-          "325 + (0.65 * ctx.ap)",
-          "455 + (0.65 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
         "name": "_1"
       },
       {
@@ -134,6 +100,22 @@
           "300 + ctx.ap",
           "500 + ctx.ap",
           "700 + ctx.ap"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_2"
+      },
+      {
+        "name": "Mega Inferno Bomb",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "195 + (0.65 * ctx.ap)",
+          "325 + (0.65 * ctx.ap)",
+          "455 + (0.65 * ctx.ap)"
         ]
       }
     ],
@@ -158,6 +140,24 @@
     [
       {
         "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Hexplosive Minefield",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "30 + (0.25 * ctx.ap)",
+          "70 + (0.3 * ctx.ap)",
+          "110 + (0.35 * ctx.ap)",
+          "150 + (0.4 * ctx.ap)",
+          "190 + (0.45 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
         "name": "_2"
       },
       {
@@ -175,19 +175,19 @@
     ],
     [
       {
-        "type": "E",
+        "type": "W",
         "name": "_1"
       },
       {
-        "name": "Hexplosive Minefield",
+        "name": "Satchel Charge",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "30 + (0.25 * ctx.ap)",
-          "70 + (0.3 * ctx.ap)",
-          "110 + (0.35 * ctx.ap)",
-          "150 + (0.4 * ctx.ap)",
-          "190 + (0.45 * ctx.ap)"
+          "70 + (0.5 * ctx.ap)",
+          "105 + (0.5 * ctx.ap)",
+          "140 + (0.5 * ctx.ap)",
+          "175 + (0.5 * ctx.ap)",
+          "210 + (0.5 * ctx.ap)"
         ]
       }
     ]

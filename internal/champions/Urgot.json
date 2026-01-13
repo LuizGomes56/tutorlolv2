@@ -86,24 +86,6 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
-      },
-      {
-        "name": "Purge",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "12 + (0.2 * ctx.ad)",
-          "12 + (0.235 * ctx.ad)",
-          "12 + (0.27 * ctx.ad)",
-          "12 + (0.305 * ctx.ad)",
-          "12 + (0.34 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "Q",
         "name": "_1"
       },
@@ -135,6 +117,24 @@
           "150 + ctx.bonus_ad",
           "180 + ctx.bonus_ad",
           "210 + ctx.bonus_ad"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Purge",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "12 + (0.2 * ctx.ad)",
+          "12 + (0.235 * ctx.ad)",
+          "12 + (0.27 * ctx.ad)",
+          "12 + (0.305 * ctx.ad)",
+          "12 + (0.34 * ctx.ad)"
         ]
       }
     ]

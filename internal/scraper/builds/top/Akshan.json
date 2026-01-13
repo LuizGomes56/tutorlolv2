@@ -3,9 +3,9 @@
     "MortalReminder",
     "ImmortalShieldbow",
     "GuardianAngel",
+    "Stormrazor",
     "Bloodthirster",
-    "SerpentsFang",
-    "KrakenSlayer"
+    "HexopticsC44"
   ],
   [
     "PresenceOfMind",
@@ -15,6 +15,6 @@
     "Overgrowth",
     "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "Health"
   ]
 ]

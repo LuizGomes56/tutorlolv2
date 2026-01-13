@@ -11,7 +11,7 @@
       false
     ],
     [
-      "Tft",
+      "SummonersRift",
       false
     ],
     [
@@ -19,7 +19,7 @@
       true
     ],
     [
-      "SummonersRift",
+      "Tft",
       false
     ],
     [
@@ -35,12 +35,7 @@
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityPower",
-      "value": 45
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

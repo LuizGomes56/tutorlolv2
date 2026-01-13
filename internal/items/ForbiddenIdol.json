@@ -23,28 +23,19 @@
       true
     ],
     [
+      "Arena",
+      false
+    ],
+    [
       "SummonersRift",
       true
     ],
     [
       "Tft",
       false
-    ],
-    [
-      "Arena",
-      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "BaseManaRegen",
-      "value": 50
-    },
-    {
-      "name": "HealAndShieldPower",
-      "value": 8
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

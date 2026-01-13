@@ -1,20 +1,19 @@
 [
   [
-    "BlackCleaver",
     "DeadMansPlate",
-    "Hullbreaker",
-    "SerpentsFang",
-    "SpearOfShojin",
-    "ZekesConvergence"
+    "BladeOfTheRuinedKing",
+    "ForceOfNature",
+    "KnightsVow",
+    "Bandlepipes"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "LastStand",
-    "SecondWind",
-    "Unflinching",
-    "AttackSpeed",
+    "CheapShot",
+    "GrislyMementos",
+    "TreasureHunter",
+    "HextechFlashtraption",
+    "CosmicInsight",
     "AdaptiveForce",
-    "HealthScaling"
+    "AdaptiveForce",
+    "Health"
   ]
 ]

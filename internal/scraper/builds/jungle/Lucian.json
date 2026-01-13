@@ -1,4 +1,20 @@
 [
-  [],
-  []
+  [
+    "TheCollector",
+    "Bloodthirster",
+    "MortalReminder",
+    "KrakenSlayer",
+    "ImmortalShieldbow",
+    "BladeOfTheRuinedKing"
+  ],
+  [
+    "PresenceOfMind",
+    "LegendBloodline",
+    "CoupDeGrace",
+    "MagicalFootwear",
+    "BiscuitDelivery",
+    "AttackSpeed",
+    "AdaptiveForce",
+    "HealthScaling"
+  ]
 ]

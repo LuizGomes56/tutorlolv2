@@ -9,12 +9,13 @@ pub use model::*;
 pub use serde::{Serialize, de::DeserializeOwned};
 pub use setup::*;
 
+use rayon::iter::{IntoParallelIterator, ParallelBridge, ParallelIterator};
 use std::{collections::HashMap, path::Path};
 
 /// Alias type for [`Result`] that accepts anything that implements the trait
 /// [`std::error::Error`]. Since the application doesn't need detailed errors,
 /// this can be used to propagate almost all existing errors
-pub type MayFail<T = ()> = Result<T, Box<dyn std::error::Error>>;
+pub type MayFail<T = ()> = Result<T, Box<dyn std::error::Error + Send + Sync + 'static>>;
 
 /// Custom trait that allows to deserialize a JSON instance
 /// by providing only the file path and the desired type
@@ -107,4 +108,38 @@ impl<T> FileWrite for T where T: AsRef<[u8]> {}
 /// file path. Wrapper around the standard library [`std::fs::read`]
 pub fn read_file(path: impl AsRef<Path>) -> MayFail<Vec<u8>> {
     Ok(std::fs::read(resolve_path(path)?)?)
+}
+
+#[track_caller]
+pub fn parallel_read<P, F, T>(path: P, f: F) -> MayFail
+where
+    P: AsRef<Path>,
+    T: DeserializeOwned,
+    F: FnOnce(&str, T) -> MayFail + Send + Sync + Clone,
+{
+    std::fs::read_dir(path)
+        .map_err(|e| format!("[error] Unable to read directory path in fn [parallel_read]: {e:?}"))?
+        .filter_map(Result::ok)
+        .par_bridge()
+        .into_par_iter()
+        .for_each(|entry| {
+            let Ok(file_name) = entry.file_name().into_string() else {
+                panic!("[error] Failed to get file name for entry: {entry:?}");
+            };
+
+            println!("[parallel] Processing {file_name:?}");
+
+            let Ok(bytes) = std::fs::read(entry.path()) else {
+                panic!("[error] Failed to read file bytes for entry: {entry:?}");
+            };
+
+            let Ok(data) = serde_json::from_slice::<T>(&bytes) else {
+                panic!("[error] Failed to deserialize file bytes for entry: {entry:?}");
+            };
+
+            if let Err(e) = (f.clone())(&file_name, data) {
+                println!("[error] Can't process {file_name:?}: {e:?}");
+            }
+        });
+    Ok(())
 }

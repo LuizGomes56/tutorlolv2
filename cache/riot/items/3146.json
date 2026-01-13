@@ -1,16 +1,17 @@
 {
   "colloq": ";",
-  "depth": 2,
-  "description": "<mainText><stats><attention>80</attention> Ability Power<br><attention>40</attention> Attack Damage<br><attention>15%</attention> Omnivamp</stats><br><br><br><br><active>ACTIVE</active> (0s)<br><active>Lightning Bolt</active><br>Shocks the target enemy champion, dealing  magic damage and slowing them by 40% for 2 seconds.</mainText>",
+  "depth": 3,
+  "description": "<mainText><stats><attention>80</attention> Ability Power<br><attention>40</attention> Attack Damage<br><attention>10%</attention> Omnivamp</stats><br><br><br><br><active>ACTIVE</active> (0s)<br><active>Lightning Bolt</active><br>Shocks the target enemy champion, dealing  magic damage and slowing them by 25% for 1.5 seconds.</mainText>",
   "from": [
-    "1038",
-    "1058"
+    "1053",
+    "3145",
+    "1052"
   ],
   "gold": {
-    "base": 750,
+    "base": 600,
     "purchasable": true,
-    "sell": 2275,
-    "total": 3250
+    "sell": 2100,
+    "total": 3000
   },
   "image": {
     "full": "3146.png",
@@ -18,11 +19,11 @@
     "h": 48,
     "sprite": "item3.png",
     "w": 48,
-    "x": 240,
-    "y": 192
+    "x": 336,
+    "y": 432
   },
   "maps": {
-    "11": false,
+    "11": true,
     "12": true,
     "21": true,
     "22": false,

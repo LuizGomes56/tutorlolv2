@@ -1,6 +1,6 @@
 {
   "colloq": "",
-  "description": "<mainText><stats><attention>90</attention> Ability Power<br><attention>25</attention> Ability Haste</stats><br><br><br><li><passive>Hypershot:</passive> Damaging a champion with a non-targeted Ability at over 600 range or <status>Slowing or Immobilizing</status> them <keywordStealth>Reveals</keywordStealth> them and increases their damage taken from you.<br><br><rules>The Ability that triggers <passive>Hypershot</passive> also benefits from the damage increase. Pets and non-immobilizing traps do not trigger this effect. Only the initial placement of zone Abilities will trigger this effect. Distance is measured from the Ability cast position. </rules></mainText>",
+  "description": "<mainText><stats><attention>90</attention> Ability Power<br><attention>25</attention> Ability Haste</stats><br><br><passive>Hypershot</passive><br>Dealing Ability damage to champions at 600 range or greater <keywordStealth>Reveals</keywordStealth> them for 6 seconds. <br><br><passive>Focus</passive><br>When <passive>Hypershot</passive> is triggered, <keywordStealth>Reveal</keywordStealth> all other enemy champions within 1400 range of them for 3 seconds.</mainText>",
   "gold": {
     "base": 2500,
     "purchasable": true,
@@ -14,7 +14,7 @@
     "sprite": "item2.png",
     "w": 48,
     "x": 48,
-    "y": 0
+    "y": 192
   },
   "maps": {
     "11": false,

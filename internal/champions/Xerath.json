@@ -71,51 +71,19 @@
   "abilities": [
     [
       {
-        "type": "Q",
+        "type": "W",
         "name": "_1"
       },
       {
-        "name": "Arcanopulse",
+        "name": "Eye of Destruction",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "75 + (0.9 * ctx.ap)",
-          "115 + (0.9 * ctx.ap)",
-          "155 + (0.9 * ctx.ap)",
-          "195 + (0.9 * ctx.ap)",
-          "235 + (0.9 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_3"
-      },
-      {
-        "name": "Rite of the Arcane",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "680 + (1.8 * ctx.ap)",
-          "1100 + (2.25 * ctx.ap)",
-          "1620 + (2.7 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_1"
-      },
-      {
-        "name": "Rite of the Arcane",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "20 + (0.05 * ctx.ap)",
-          "25 + (0.05 * ctx.ap)",
-          "30 + (0.05 * ctx.ap)"
+          "50 + (0.65 * ctx.ap)",
+          "85 + (0.65 * ctx.ap)",
+          "120 + (0.65 * ctx.ap)",
+          "155 + (0.65 * ctx.ap)",
+          "190 + (0.65 * ctx.ap)"
         ]
       }
     ],
@@ -139,22 +107,6 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_2"
-      },
-      {
-        "name": "Rite of the Arcane",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "170 + (0.45 * ctx.ap)",
-          "220 + (0.45 * ctx.ap)",
-          "270 + (0.45 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "W",
         "name": "_2"
       },
@@ -173,19 +125,67 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "type": "R",
+        "name": "_3"
       },
       {
-        "name": "Eye of Destruction",
+        "name": "Rite of the Arcane",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "50 + (0.65 * ctx.ap)",
-          "85 + (0.65 * ctx.ap)",
-          "120 + (0.65 * ctx.ap)",
-          "155 + (0.65 * ctx.ap)",
-          "190 + (0.65 * ctx.ap)"
+          "680 + (1.8 * ctx.ap)",
+          "1100 + (2.25 * ctx.ap)",
+          "1620 + (2.7 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_2"
+      },
+      {
+        "name": "Rite of the Arcane",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "170 + (0.45 * ctx.ap)",
+          "220 + (0.45 * ctx.ap)",
+          "270 + (0.45 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Arcanopulse",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "75 + (0.9 * ctx.ap)",
+          "115 + (0.9 * ctx.ap)",
+          "155 + (0.9 * ctx.ap)",
+          "195 + (0.9 * ctx.ap)",
+          "235 + (0.9 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Rite of the Arcane",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "20 + (0.05 * ctx.ap)",
+          "25 + (0.05 * ctx.ap)",
+          "30 + (0.05 * ctx.ap)"
         ]
       }
     ]

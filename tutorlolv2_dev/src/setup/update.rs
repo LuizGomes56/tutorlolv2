@@ -4,10 +4,18 @@ use crate::{
         items::{Item, MerakiItem},
         riot::RiotCdnItem,
     },
+    parallel_read,
     riot::RiotCdnRune,
 };
+use once_cell::sync::Lazy;
+use rayon::iter::{IntoParallelIterator, ParallelIterator};
 use regex::Regex;
-use std::{collections::HashMap, fs, path::Path};
+use std::{
+    collections::HashMap,
+    fs,
+    path::Path,
+    sync::{Arc, Mutex},
+};
 use tutorlolv2_gen::{Attrs, DamageType, GameMap, ItemId, StatName};
 
 /// Creates basic folders necessary to run the program. If one of these folders are not found,
@@ -24,10 +32,6 @@ pub fn setup_project_folders() -> MayFail {
         "html/raw/champions",
         "html/raw/items",
         "html/raw/runes",
-        "sprite",
-        "sprite/abilities",
-        "sprite/champions",
-        "sprite/runes",
         "img",
         "img/champions",
         "img/runes",
@@ -99,17 +103,12 @@ pub fn setup_internal_items() -> MayFail {
     let common_items = meraki_items
         .into_iter()
         .filter_map(|(riot_id, meraki_item)| {
-            riot_items.remove(&riot_id).map(|riot_item| {
-                (
-                    riot_id,
-                    ItemCache {
-                        meraki_item,
-                        riot_item,
-                    },
-                )
+            riot_items.remove(&riot_id).map(|riot_item| ItemCache {
+                meraki_item,
+                riot_item,
             })
         })
-        .collect::<HashMap<_, _>>();
+        .collect::<Vec<_>>();
 
     println!("Found {} common items", common_items.len());
 
@@ -117,14 +116,10 @@ pub fn setup_internal_items() -> MayFail {
         panic!("No common items found");
     }
 
-    for (_, item) in common_items {
+    common_items.into_par_iter().for_each(|item| {
         let id = item.meraki_item.id;
-        let item_id = match ItemId::from_riot_id(id) {
-            Some(id) => id,
-            None => {
-                println!("[fail] ItemId::from_riot_id({id})");
-                continue;
-            }
+        let Some(item_id) = ItemId::from_riot_id(id) else {
+            return println!("[fail] ItemId::from_riot_id({id})");
         };
 
         let ItemCache {
@@ -164,8 +159,10 @@ pub fn setup_internal_items() -> MayFail {
             melee: Default::default(),
             purchasable: meraki_item.shop.purchasable && riot_item.gold.purchasable,
         };
-        result.into_file(format!("internal/items/{item_id:?}.json"))?;
-    }
+        result
+            .into_file(format!("internal/items/{item_id:?}.json"))
+            .unwrap();
+    });
 
     Ok(())
 }
@@ -186,88 +183,93 @@ pub fn setup_runes_json() -> MayFail {
     result.into_file("internal/rune_names.json")
 }
 
+static RE_DMGI_PARENS: Lazy<Regex> = Lazy::new(|| Regex::new(r"\{\{[^}]*\}\}").unwrap());
+
 /// Not meant to be used frequently. Just a quick check for every
 /// patch to identify if a new damaging item was added
 pub fn setup_damaging_items() -> MayFail {
-    let re = Regex::new(r"\{\{[^}]*\}\}")?;
-
-    let contains_damage_outside_template = |text: &str| -> bool {
-        let cleaned = re.replace_all(text, "");
+    let likely_damages = |text: &str| -> bool {
+        let cleaned = RE_DMGI_PARENS.replace_all(text, "");
         cleaned.contains("damage")
     };
 
-    let mut is_damaging = Vec::new();
-    let meraki_items = MerakiItem::from_dir("cache/meraki/items")?;
+    let is_damaging = Arc::new(Mutex::new(Vec::new()));
 
-    for (_, result) in meraki_items {
-        if !result.shop.purchasable {
-            continue;
-        }
-
-        let mut found_match = false;
-
-        for passive in &result.passives {
-            if contains_damage_outside_template(&passive.effects) {
-                found_match = true;
-                break;
+    parallel_read("cache/meraki/items", {
+        let is_damaging = is_damaging.clone();
+        move |_, meraki_item: MerakiItem| {
+            if !meraki_item.shop.purchasable {
+                return Ok(());
             }
-        }
 
-        if !found_match {
-            for active in &result.active {
-                if contains_damage_outside_template(&active.effects) {
+            let mut found_match = false;
+
+            for passive in &meraki_item.passives {
+                if likely_damages(&passive.effects) {
                     found_match = true;
                     break;
                 }
             }
-        }
 
-        if found_match {
-            is_damaging.push(result.id);
-        }
-    }
+            if !found_match {
+                for active in &meraki_item.active {
+                    if likely_damages(&active.effects) {
+                        found_match = true;
+                        break;
+                    }
+                }
+            }
 
+            if found_match {
+                is_damaging.lock().unwrap().push(meraki_item.id);
+            }
+
+            Ok(())
+        }
+    })?;
+
+    let mut is_damaging = Arc::try_unwrap(is_damaging)
+        .map_err(|_| "[unknown] Unable to unwrap `is_damaging` from its Arc")?
+        .into_inner()?;
     is_damaging.sort();
     is_damaging.into_file("internal/damaging_items.json")
 }
 
-pub async fn prettify_internal_items() -> MayFail {
-    for (riot_id, riot_item) in RiotCdnItem::from_dir("cache/riot/items")? {
+pub fn prettify_internal_items() -> MayFail {
+    parallel_read("cache/riot/items", |riot_id, riot_item| {
         if let Some(item_id) = ItemId::from_riot_id(riot_id.parse()?) {
-            let internal_path = format!("internal/items/{item_id:?}.json",);
+            let internal_path = format!("internal/items/{item_id:?}.json");
             let mut internal_item = Item::from_file(&internal_path)?;
             internal_item.prettified_stats = pretiffy_items(&riot_item)?;
             internal_item.into_file(internal_path)?;
         }
-    }
-    Ok(())
+        Ok(())
+    })
 }
+
+static TAGS: [&str; 4] = ["buffedStat", "nerfedStat", "attention", "ornnBonus"];
+static RE_LINE: Lazy<Regex> = Lazy::new(|| Regex::new(r"(.*?)<br>").unwrap());
+static RE_TAG: Lazy<Regex> = Lazy::new(|| {
+    let tags = TAGS.join("|");
+    Regex::new(&format!(r#"<({tags})>(.*?)<\/({tags})>"#)).unwrap()
+});
+static RE_PERCENT_PREFIX: Lazy<Regex> = Lazy::new(|| Regex::new(r"^\s*\d+\s*%?\s*").unwrap());
+static RE_TAG_STRIP: Lazy<Regex> = Lazy::new(|| Regex::new(r"<\/?[^>]+(>|$)").unwrap());
 
 /// Returns the value that will be added to key `prettified_stats` for each item.
 /// Depends on Riot API `item.json` and requires manual maintainance if a new XML tag is added
 fn pretiffy_items(data: &RiotCdnItem) -> MayFail<Vec<StatName>> {
     let mut result = HashMap::<_, _>::default();
 
-    let tag_regex = Regex::new(
-        r#"<(attention|buffedStat|nerfedStat|ornnBonus)>(.*?)<\/(attention|buffedStat|nerfedStat|ornnBonus)>"#,
-    )?;
-    let line_regex = Regex::new(r"(.*?)<br>")?;
-    let percent_prefix_regex = Regex::new(r"^\s*\d+\s*%?\s*")?;
-    let tag_strip_regex = Regex::new(r"<\/?[^>]+(>|$)")?;
-
-    let tags = ["buffedStat", "nerfedStat", "attention", "ornnBonus"];
-
-    let lines = line_regex
-        .captures_iter(&data.description)
-        .collect::<Vec<_>>();
+    let lines = RE_LINE.captures_iter(&data.description).collect::<Vec<_>>();
     let mut line_index = 0usize;
 
-    for caps in tag_regex.captures_iter(&data.description) {
+    for caps in RE_TAG.captures_iter(&data.description) {
         let t = &caps[1];
         let v = caps[2].replace('%', "");
         let mut n = None;
         if line_index < lines.len() {
-            let cleaned = tag_strip_regex
+            let cleaned = RE_TAG_STRIP
                 .replace_all(&lines[line_index][1], "")
                 .trim()
                 .to_string();
@@ -276,9 +278,9 @@ fn pretiffy_items(data: &RiotCdnItem) -> MayFail<Vec<StatName>> {
             }
             line_index += 1;
         }
-        if tags.contains(&t) {
+        if TAGS.contains(&t) {
             if let Some(n_val) = &n {
-                let j = percent_prefix_regex.replace(n_val, "").trim().to_string();
+                let j = RE_PERCENT_PREFIX.replace(n_val, "").trim().to_string();
                 if !j.is_empty() {
                     match v.parse::<usize>() {
                         Ok(num) => result.insert(j, num),

@@ -19,36 +19,23 @@
       false
     ],
     [
-      "SummonersRift",
-      true
-    ],
-    [
       "Arena",
       false
     ],
     [
+      "Tft",
+      false
+    ],
+    [
       "SummonersRift",
       true
     ],
     [
-      "Tft",
-      false
+      "SummonersRift",
+      true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Mana",
-      "value": 600
-    },
-    {
-      "name": "AbilityHaste",
-      "value": 25
-    },
-    {
-      "name": "AbilityPower",
-      "value": 85
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

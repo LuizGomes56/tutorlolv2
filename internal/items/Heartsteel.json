@@ -8,11 +8,23 @@
   "maps": [
     [
       "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "SummonersRift",
       true
     ],
     [
       "Aram",
       true
+    ],
+    [
+      "Arena",
+      false
     ],
     [
       "Tft",
@@ -21,30 +33,9 @@
     [
       "NexusBlitz",
       true
-    ],
-    [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "BaseHealthRegen",
-      "value": 100
-    },
-    {
-      "name": "Health",
-      "value": 900
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

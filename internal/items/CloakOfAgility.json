@@ -11,15 +11,11 @@
       true
     ],
     [
-      "Tft",
+      "SummonersRift",
       false
     ],
     [
       "SummonersRift",
-      true
-    ],
-    [
-      "Aram",
       true
     ],
     [
@@ -31,16 +27,15 @@
       false
     ],
     [
-      "SummonersRift",
+      "Tft",
       false
+    ],
+    [
+      "Aram",
+      true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "CriticalStrikeChance",
-      "value": 15
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

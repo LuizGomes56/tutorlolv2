@@ -1,6 +1,6 @@
 {
   "colloq": "",
-  "description": "<mainText><stats><attention>550</attention> Health<br><attention>860</attention> Mana<br><attention>15</attention> Ability Haste</stats><br><br><passive>Awe</passive><br>Gain <scaleHealth> Health</scaleHealth>.<br><br><passive>Everlasting</passive> (0s)<br><keyword>Immobilizing</keyword> or <keyword>Slowing</keyword> (Melee only) an enemy champion grants a <shield>Shield</shield> for 3 seconds. <br>The Shield is increased by 80% if more than one enemy is nearby.</mainText>",
+  "description": "<mainText><stats><attention>550</attention> Health<br><attention>1000</attention> Mana<br><attention>15</attention> Ability Haste</stats><br><br><passive>Awe</passive><br>Gain <scaleHealth> Health</scaleHealth>.<br><br><passive>Everlasting</passive> (0s)<br><keyword>Immobilizing</keyword> or <keyword>Slowing</keyword> (Melee only) an enemy champion grants a <shield>Shield</shield> for 3 seconds. <br>The Shield is increased by 80% if more than one enemy is nearby.</mainText>",
   "gold": {
     "base": 2400,
     "purchasable": false,
@@ -13,8 +13,8 @@
     "h": 48,
     "sprite": "item3.png",
     "w": 48,
-    "x": 0,
-    "y": 144
+    "x": 96,
+    "y": 384
   },
   "inStore": false,
   "maps": {
@@ -31,7 +31,7 @@
   "specialRecipe": 3119,
   "stats": {
     "FlatHPPoolMod": 550,
-    "FlatMPPoolMod": 860
+    "FlatMPPoolMod": 1000
   },
   "tags": [
     "Health",

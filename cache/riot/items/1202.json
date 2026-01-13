@@ -1,0 +1,35 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats></stats><br><br><titleLeft>Bot Lane Quest</titleLeft><br><mainText>Takedown champions, minions, towers, plates, and epic monsters to complete your quest. Earn points much faster in bot lane!<br><br><font color = '#00FF00'>Rewards</font><br>• An immediate lump sum of gold<br>• Increased gold from minion kills, champion kills, and assists<br>• Boots move to a 7th slot, freeing up your inventory for 6 items</mainText></mainText>",
+  "gold": {
+    "base": 0,
+    "purchasable": false,
+    "sell": 0,
+    "total": 0
+  },
+  "image": {
+    "full": "1202.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item0.png",
+    "w": 48,
+    "x": 144,
+    "y": 192
+  },
+  "inStore": false,
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": false
+  },
+  "name": "Bot Lane Quest",
+  "plaintext": "",
+  "stats": {},
+  "tags": [
+    "Lane"
+  ]
+}

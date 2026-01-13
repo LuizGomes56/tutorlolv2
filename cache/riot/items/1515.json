@@ -1,13 +1,6 @@
 {
   "colloq": "",
   "description": "",
-  "effect": {
-    "Effect1Amount": "50",
-    "Effect2Amount": "125",
-    "Effect3Amount": "20",
-    "Effect4Amount": "20",
-    "Effect5Amount": "0.17"
-  },
   "gold": {
     "base": 0,
     "purchasable": false,
@@ -20,8 +13,8 @@
     "h": 48,
     "sprite": "item0.png",
     "w": 48,
-    "x": 48,
-    "y": 240
+    "x": 0,
+    "y": 384
   },
   "inStore": false,
   "maps": {

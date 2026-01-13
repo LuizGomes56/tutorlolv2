@@ -7,11 +7,19 @@
   "tier": 3,
   "maps": [
     [
-      "Aram",
+      "SummonersRift",
+      false
+    ],
+    [
+      "NexusBlitz",
       false
     ],
     [
       "Tft",
+      false
+    ],
+    [
+      "Aram",
       false
     ],
     [
@@ -23,28 +31,11 @@
       true
     ],
     [
-      "NexusBlitz",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
       "SummonersRift",
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Lethality",
-      "value": 12
-    },
-    {
-      "name": "AttackDamage",
-      "value": 35
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

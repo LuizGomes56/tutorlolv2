@@ -7,15 +7,15 @@
   "tier": 3,
   "maps": [
     [
+      "Aram",
+      false
+    ],
+    [
       "SummonersRift",
       false
     ],
     [
-      "Arena",
-      true
-    ],
-    [
-      "SummonersRift",
+      "Tft",
       false
     ],
     [
@@ -27,28 +27,15 @@
       false
     ],
     [
-      "Aram",
-      false
+      "Arena",
+      true
     ],
     [
-      "Tft",
+      "SummonersRift",
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Health",
-      "value": 400
-    },
-    {
-      "name": "AbilityHaste",
-      "value": 15
-    },
-    {
-      "name": "AdaptiveForce",
-      "value": 85
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

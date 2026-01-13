@@ -521,7 +521,7 @@
       ],
       "rangeBurn": "500",
       "resource": "{{ cost }} {{ abilityresourcename }}",
-      "tooltip": "Kindred weakens an enemy, <status>Slowing</status> them by {{ totalslow }}% for {{ slowduration }} second.<br /><br />Kindred's third Attack against the target within {{ totalduration }} seconds of each other directs Wolf to pounce on the enemy, dealing <physicalDamage>{{ basebitedamage }}</physicalDamage> plus <physicalDamage>{{ percentbitedamage }} missing Health physical damage</physicalDamage>.<br /><br />Wolf's pounce critically strikes for <physicalDamage>{{ basebitedamage }}</physicalDamage> plus <physicalDamage>{{ critdamage }} missing Health physical damage</physicalDamage> instead if they are below {{ healththreshold }} Health.{{ spellmodifierdescriptionappend }}",
+      "tooltip": "Kindred weakens an enemy, <status>Slowing</status> them by {{ totalslow }}% for {{ slowduration }} second.<br /><br />Kindred's third Attack against the target within {{ totalduration }} seconds of each other directs Wolf to pounce on the enemy, dealing an additional <physicalDamage>{{ basebitedamage }}</physicalDamage> plus <physicalDamage>{{ percentbitedamage }} missing Health physical damage</physicalDamage>.{{ spellmodifierdescriptionappend }}",
       "vars": []
     },
     {

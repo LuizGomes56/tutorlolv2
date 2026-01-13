@@ -1,19 +1,20 @@
 [
   [
-    "DeadMansPlate",
-    "BloodlettersCurse",
+    "Riftmaker",
     "ForceOfNature",
-    "Shadowflame",
-    "Thornmail"
+    "RabadonsDeathcap",
+    "BloodlettersCurse",
+    "ZhonyasHourglass",
+    "RanduinsOmen"
   ],
   [
     "Triumph",
-    "LegendBloodline",
+    "LegendAlacrity",
     "LastStand",
-    "CashBack",
-    "ApproachVelocity",
+    "NimbusCloak",
+    "Celerity",
     "AdaptiveForce",
-    "AdaptiveForce",
-    "Health"
+    "MoveSpeed",
+    "HealthScaling"
   ]
 ]

@@ -1,19 +1,20 @@
 [
   [
-    "ArdentCenser",
-    "LudensCompanion",
-    "MoonstoneRenewer",
+    "WintersApproach",
+    "Dawncore",
+    "ImperialMandate",
+    "EchoesOfHelia",
     "MikaelsBlessing",
-    "ImperialMandate"
+    "SpiritVisage"
   ],
   [
     "ManaflowBand",
     "Celerity",
-    "Scorch",
-    "GrislyMementos",
-    "RelentlessHunter",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "GatheringStorm",
+    "FontOfLife",
+    "Revitalize",
+    "AttackSpeed",
+    "MoveSpeed",
+    "Health"
   ]
 ]

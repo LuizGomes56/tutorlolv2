@@ -3,19 +3,19 @@
   "item_id": "Swiftmarch",
   "name": "Swiftmarch",
   "price": 1500,
-  "sell": 1050,
+  "sell": 700,
   "tier": 3,
   "maps": [
-    [
-      "SummonersRift",
-      true
-    ],
     [
       "Aram",
       false
     ],
     [
-      "NexusBlitz",
+      "SummonersRift",
+      true
+    ],
+    [
+      "Tft",
       false
     ],
     [
@@ -23,24 +23,19 @@
       false
     ],
     [
-      "Tft",
-      false
-    ],
-    [
       "SummonersRift",
       false
     ],
     [
       "SummonersRift",
+      false
+    ],
+    [
+      "NexusBlitz",
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "MoveSpeed",
-      "value": 65
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

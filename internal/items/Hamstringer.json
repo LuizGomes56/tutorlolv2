@@ -15,11 +15,7 @@
       false
     ],
     [
-      "Arena",
-      true
-    ],
-    [
-      "Aram",
+      "Tft",
       false
     ],
     [
@@ -27,28 +23,19 @@
       false
     ],
     [
-      "Tft",
+      "NexusBlitz",
       false
     ],
     [
-      "NexusBlitz",
+      "Arena",
+      true
+    ],
+    [
+      "Aram",
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackSpeed",
-      "value": 40
-    },
-    {
-      "name": "AttackDamage",
-      "value": 45
-    },
-    {
-      "name": "CriticalStrikeChance",
-      "value": 25
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

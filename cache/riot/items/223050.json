@@ -1,6 +1,6 @@
 {
   "colloq": "",
-  "description": "<mainText><stats><attention>300</attention> Health<br><attention>25</attention> Armor<br><attention>15</attention> Ability Haste<br><attention>30</attention> Magic Resist</stats><br><br><passive>Frostfire Tempest</passive><br>Casting your Ultimate summons a storm around you. The storm deals <magicDamage>magic damage</magicDamage> per second to enemy Champions and <keyword>Slows</keyword> them.</mainText>",
+  "description": "<mainText><stats><attention>300</attention> Health<br><attention>25</attention> Armor<br><attention>15</attention> Ability Haste<br><attention>30</attention> Magic Resist</stats><br><br><passive>Frostfire Tempest</passive><br>Casting your Ultimate summons a storm around you for 5 seconds. The storm deals <magicDamage> magic damage</magicDamage> per second to enemy champions and <keyword>Slows</keyword> them by 30%.</mainText>",
   "gold": {
     "base": 2500,
     "purchasable": true,
@@ -14,7 +14,7 @@
     "sprite": "item1.png",
     "w": 48,
     "x": 336,
-    "y": 144
+    "y": 336
   },
   "maps": {
     "11": false,

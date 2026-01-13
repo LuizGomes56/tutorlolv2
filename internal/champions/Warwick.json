@@ -71,6 +71,42 @@
   "abilities": [
     [
       {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Jaws of the Beast",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "(0.06 * ctx.enemy_max_health) + (1.2 * ctx.ad) + ctx.ap",
+          "(0.07 * ctx.enemy_max_health) + (1.2 * ctx.ad) + ctx.ap",
+          "(0.08 * ctx.enemy_max_health) + (1.2 * ctx.ad) + ctx.ap",
+          "(0.09 * ctx.enemy_max_health) + (1.2 * ctx.ad) + ctx.ap",
+          "(0.1 * ctx.enemy_max_health) + (1.2 * ctx.ad) + ctx.ap"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "Jaws of the Beast",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "150 + (1.2 * ctx.ad) + ctx.ap",
+          "165 + (1.2 * ctx.ad) + ctx.ap",
+          "180 + (1.2 * ctx.ad) + ctx.ap",
+          "195 + (1.2 * ctx.ad) + ctx.ap",
+          "210 + (1.2 * ctx.ad) + ctx.ap"
+        ]
+      }
+    ],
+    [
+      {
         "type": "E",
         "name": "_1"
       },
@@ -100,42 +136,6 @@
           "175 + (1.67 * ctx.bonus_ad)",
           "350 + (1.67 * ctx.bonus_ad)",
           "525 + (1.67 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_2"
-      },
-      {
-        "name": "Jaws of the Beast",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "150 + (1.2 * ctx.ad) + ctx.ap",
-          "165 + (1.2 * ctx.ad) + ctx.ap",
-          "180 + (1.2 * ctx.ad) + ctx.ap",
-          "195 + (1.2 * ctx.ad) + ctx.ap",
-          "210 + (1.2 * ctx.ad) + ctx.ap"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Jaws of the Beast",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "(0.06 * ctx.enemy_max_health) + (1.2 * ctx.ad) + ctx.ap",
-          "(0.07 * ctx.enemy_max_health) + (1.2 * ctx.ad) + ctx.ap",
-          "(0.08 * ctx.enemy_max_health) + (1.2 * ctx.ad) + ctx.ap",
-          "(0.09 * ctx.enemy_max_health) + (1.2 * ctx.ad) + ctx.ap",
-          "(0.1 * ctx.enemy_max_health) + (1.2 * ctx.ad) + ctx.ap"
         ]
       }
     ]

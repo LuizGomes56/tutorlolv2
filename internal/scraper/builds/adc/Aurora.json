@@ -1,19 +1,20 @@
 [
   [
-    "Stormsurge",
+    "BansheesVeil",
     "LiandrysTorment",
+    "Malignance",
     "Cryptbloom",
-    "HorizonFocus",
-    "BansheesVeil"
+    "Actualizer",
+    "Riftmaker"
   ],
   [
-    "SuddenImpact",
+    "TasteOfBlood",
     "GrislyMementos",
     "UltimateHunter",
-    "PresenceOfMind",
-    "CutDown",
+    "ManaflowBand",
+    "Transcendence",
     "AttackSpeed",
     "AdaptiveForce",
-    "Health"
+    "HealthScaling"
   ]
 ]

@@ -7,12 +7,12 @@
   "tier": 3,
   "maps": [
     [
-      "Tft",
+      "NexusBlitz",
       false
     ],
     [
-      "Arena",
-      true
+      "Tft",
+      false
     ],
     [
       "SummonersRift",
@@ -31,24 +31,11 @@
       false
     ],
     [
-      "NexusBlitz",
-      false
+      "Arena",
+      true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 20
-    },
-    {
-      "name": "Health",
-      "value": 500
-    },
-    {
-      "name": "AdaptiveForce",
-      "value": 70
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

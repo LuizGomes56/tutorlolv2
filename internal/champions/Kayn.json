@@ -71,24 +71,6 @@
     [
       {
         "type": "Q",
-        "name": "_3"
-      },
-      {
-        "name": "Reaping Slash",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "115 + (0.85 * ctx.bonus_ad)",
-          "140 + (0.85 * ctx.bonus_ad)",
-          "165 + (0.85 * ctx.bonus_ad)",
-          "190 + (0.85 * ctx.bonus_ad)",
-          "215 + (0.85 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
         "name": "_2"
       },
       {
@@ -101,76 +83,6 @@
           "250 + (1.7 * ctx.bonus_ad)",
           "300 + (1.7 * ctx.bonus_ad)",
           "350 + (1.7 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_4"
-      },
-      {
-        "name": "Reaping Slash",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "230 + (1.7 * ctx.bonus_ad)",
-          "280 + (1.7 * ctx.bonus_ad)",
-          "330 + (1.7 * ctx.bonus_ad)",
-          "380 + (1.7 * ctx.bonus_ad)",
-          "430 + (1.7 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_6"
-      },
-      {
-        "name": "Reaping Slash",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "400",
-          "500",
-          "600",
-          "700",
-          "800"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_1"
-      },
-      {
-        "name": "Umbral Trespass",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "150 + (1.5 * ctx.bonus_ad)",
-          "250 + (1.5 * ctx.bonus_ad)",
-          "350 + (1.5 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Reaping Slash",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "75 + (0.85 * ctx.bonus_ad)",
-          "100 + (0.85 * ctx.bonus_ad)",
-          "125 + (0.85 * ctx.bonus_ad)",
-          "150 + (0.85 * ctx.bonus_ad)",
-          "175 + (0.85 * ctx.bonus_ad)"
         ]
       }
     ],
@@ -207,6 +119,94 @@
           "175 + (1.1 * ctx.bonus_ad)",
           "220 + (1.1 * ctx.bonus_ad)",
           "265 + (1.1 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Umbral Trespass",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "150 + (1.5 * ctx.bonus_ad)",
+          "250 + (1.5 * ctx.bonus_ad)",
+          "350 + (1.5 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_6"
+      },
+      {
+        "name": "Reaping Slash",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "400",
+          "500",
+          "600",
+          "700",
+          "800"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Reaping Slash",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "75 + (0.85 * ctx.bonus_ad)",
+          "100 + (0.85 * ctx.bonus_ad)",
+          "125 + (0.85 * ctx.bonus_ad)",
+          "150 + (0.85 * ctx.bonus_ad)",
+          "175 + (0.85 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_4"
+      },
+      {
+        "name": "Reaping Slash",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "230 + (1.7 * ctx.bonus_ad)",
+          "280 + (1.7 * ctx.bonus_ad)",
+          "330 + (1.7 * ctx.bonus_ad)",
+          "380 + (1.7 * ctx.bonus_ad)",
+          "430 + (1.7 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_3"
+      },
+      {
+        "name": "Reaping Slash",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "115 + (0.85 * ctx.bonus_ad)",
+          "140 + (0.85 * ctx.bonus_ad)",
+          "165 + (0.85 * ctx.bonus_ad)",
+          "190 + (0.85 * ctx.bonus_ad)",
+          "215 + (0.85 * ctx.bonus_ad)"
         ]
       }
     ]

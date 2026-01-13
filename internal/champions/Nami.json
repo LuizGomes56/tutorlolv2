@@ -70,19 +70,37 @@
   "abilities": [
     [
       {
-        "type": "E",
-        "name": "_2"
+        "type": "Q",
+        "name": "_1"
       },
       {
-        "name": "Tidecaller's Blessing",
+        "name": "Aqua Prison",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "60 + (0.6 * ctx.ap)",
-          "90 + (0.6 * ctx.ap)",
-          "120 + (0.6 * ctx.ap)",
-          "150 + (0.6 * ctx.ap)",
-          "180 + (0.6 * ctx.ap)"
+          "90 + (0.5 * ctx.ap)",
+          "145 + (0.5 * ctx.ap)",
+          "200 + (0.5 * ctx.ap)",
+          "255 + (0.5 * ctx.ap)",
+          "310 + (0.5 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Ebb and Flow",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "60 + (0.5 * ctx.ap)",
+          "95 + (0.5 * ctx.ap)",
+          "130 + (0.5 * ctx.ap)",
+          "165 + (0.5 * ctx.ap)",
+          "200 + (0.5 * ctx.ap)"
         ]
       }
     ],
@@ -122,42 +140,6 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Aqua Prison",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "90 + (0.5 * ctx.ap)",
-          "145 + (0.5 * ctx.ap)",
-          "200 + (0.5 * ctx.ap)",
-          "255 + (0.5 * ctx.ap)",
-          "310 + (0.5 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_1"
-      },
-      {
-        "name": "Ebb and Flow",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "60 + (0.5 * ctx.ap)",
-          "95 + (0.5 * ctx.ap)",
-          "130 + (0.5 * ctx.ap)",
-          "165 + (0.5 * ctx.ap)",
-          "200 + (0.5 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "W",
         "name": "_2"
       },
@@ -171,6 +153,24 @@
           "104 + (0.4 * ctx.ap)",
           "132 + (0.4 * ctx.ap)",
           "160 + (0.4 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_2"
+      },
+      {
+        "name": "Tidecaller's Blessing",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "60 + (0.6 * ctx.ap)",
+          "90 + (0.6 * ctx.ap)",
+          "120 + (0.6 * ctx.ap)",
+          "150 + (0.6 * ctx.ap)",
+          "180 + (0.6 * ctx.ap)"
         ]
       }
     ]

@@ -11,10 +11,10 @@
     "full": "323040.png",
     "group": "item",
     "h": 48,
-    "sprite": "item3.png",
+    "sprite": "item4.png",
     "w": 48,
-    "x": 192,
-    "y": 336
+    "x": 384,
+    "y": 96
   },
   "inStore": false,
   "maps": {
@@ -28,7 +28,7 @@
   },
   "name": "Seraph's Embrace",
   "plaintext": "",
-  "specialRecipe": 3003,
+  "specialRecipe": 323003,
   "stats": {
     "FlatMPPoolMod": 1000,
     "FlatMagicDamageMod": 70

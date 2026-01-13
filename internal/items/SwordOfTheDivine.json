@@ -7,7 +7,7 @@
   "tier": 3,
   "maps": [
     [
-      "Aram",
+      "SummonersRift",
       false
     ],
     [
@@ -19,32 +19,23 @@
       false
     ],
     [
+      "Aram",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
       "NexusBlitz",
       false
     ],
     [
       "Arena",
       true
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AdaptiveForce",
-      "value": 110
-    },
-    {
-      "name": "CriticalStrikeChance",
-      "value": 50
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

@@ -3,17 +3,9 @@
   "item_id": "InfinityEdge",
   "name": "Infinity Edge",
   "price": 3450,
-  "sell": 2415,
+  "sell": 2450,
   "tier": 2,
   "maps": [
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
     [
       "Tft",
       false
@@ -23,32 +15,27 @@
       true
     ],
     [
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
       "NexusBlitz",
       true
     ],
     [
       "Arena",
       false
-    ],
-    [
-      "SummonersRift",
-      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "CriticalStrikeChance",
-      "value": 25
-    },
-    {
-      "name": "AttackDamage",
-      "value": 55
-    },
-    {
-      "name": "CriticalStrikeDamage",
-      "value": 40
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

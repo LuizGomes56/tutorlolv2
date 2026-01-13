@@ -17,10 +17,10 @@
     "full": "3193.png",
     "group": "item",
     "h": 48,
-    "sprite": "item3.png",
+    "sprite": "item4.png",
     "w": 48,
-    "x": 336,
-    "y": 288
+    "x": 432,
+    "y": 48
   },
   "inStore": false,
   "maps": {

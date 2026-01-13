@@ -70,22 +70,6 @@
   "abilities": [
     [
       {
-        "type": "R",
-        "name": "_1"
-      },
-      {
-        "name": "Ace in the Hole",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "300 + ctx.bonus_ad",
-          "475 + ctx.bonus_ad",
-          "650 + ctx.bonus_ad"
-        ]
-      }
-    ],
-    [
-      {
         "type": "W",
         "name": "_1"
       },
@@ -99,6 +83,24 @@
           "125 + (0.3 * ctx.bonus_ad)",
           "170 + (0.3 * ctx.bonus_ad)",
           "215 + (0.3 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Piltover Peacemaker",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "50 + (1.25 * ctx.ad)",
+          "90 + (1.45 * ctx.ad)",
+          "130 + (1.65 * ctx.ad)",
+          "170 + (1.85 * ctx.ad)",
+          "210 + (2.05 * ctx.ad)"
         ]
       }
     ],
@@ -122,19 +124,17 @@
     ],
     [
       {
-        "type": "Q",
+        "type": "R",
         "name": "_1"
       },
       {
-        "name": "Piltover Peacemaker",
+        "name": "Ace in the Hole",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "50 + (1.25 * ctx.ad)",
-          "90 + (1.45 * ctx.ad)",
-          "130 + (1.65 * ctx.ad)",
-          "170 + (1.85 * ctx.ad)",
-          "210 + (2.05 * ctx.ad)"
+          "300 + ctx.bonus_ad",
+          "475 + ctx.bonus_ad",
+          "650 + ctx.bonus_ad"
         ]
       }
     ],

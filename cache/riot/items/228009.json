@@ -1,0 +1,53 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats></stats><br><br>Molds into another item each Shopping Phase.</mainText>",
+  "gold": {
+    "base": 2500,
+    "purchasable": true,
+    "sell": 1250,
+    "total": 2500
+  },
+  "image": {
+    "full": "228009.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item2.png",
+    "w": 48,
+    "x": 0,
+    "y": 432
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": false
+  },
+  "name": "Multitool",
+  "plaintext": "",
+  "stats": {},
+  "tags": [
+    "Health",
+    "SpellBlock",
+    "HealthRegen",
+    "Armor",
+    "Damage",
+    "CriticalStrike",
+    "AttackSpeed",
+    "LifeSteal",
+    "SpellDamage",
+    "Mana",
+    "ManaRegen",
+    "CooldownReduction",
+    "SpellVamp",
+    "OnHit",
+    "NonbootsMovement",
+    "Tenacity",
+    "MagicPenetration",
+    "ArmorPenetration",
+    "MagicResist",
+    "AbilityHaste"
+  ]
+}

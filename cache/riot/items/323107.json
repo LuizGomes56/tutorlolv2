@@ -1,7 +1,7 @@
 {
   "colloq": "",
   "depth": 3,
-  "description": "<mainText><stats><attention>400</attention> Health<br><attention>15</attention> Ability Haste<br><attention>100%</attention> Base Mana Regen<br><attention>10%</attention> Heal and Shield Power</stats><br><br><active>Intervention</active><br>Restore <healing>150 - 350 Health</healing> to allied units and deal <trueDamage>10% max Health true damage</trueDamage> to enemy champions after 2.5 seconds.</mainText>",
+  "description": "<mainText><stats><attention>30</attention> Ability Power<br><attention>15</attention> Ability Haste<br><attention>100%</attention> Base Mana Regen<br><attention>10%</attention> Heal and Shield Power</stats><br><br><active>Intervention</active><br>Restore <healing>150 - 350 Health</healing> to allied units and deal <trueDamage>10% max Health true damage</trueDamage> to enemy champions after 2.5 seconds.</mainText>",
   "from": [
     "3067",
     "1028",
@@ -17,10 +17,10 @@
     "full": "323107.png",
     "group": "item",
     "h": 48,
-    "sprite": "item3.png",
+    "sprite": "item4.png",
     "w": 48,
-    "x": 432,
-    "y": 336
+    "x": 144,
+    "y": 144
   },
   "maps": {
     "11": true,
@@ -34,10 +34,11 @@
   "name": "Redemption",
   "plaintext": "",
   "stats": {
-    "FlatHPPoolMod": 400
+    "FlatHPPoolMod": 400,
+    "FlatMagicDamageMod": 30
   },
   "tags": [
-    "Health",
+    "SpellDamage",
     "ManaRegen",
     "CooldownReduction",
     "AbilityHaste"

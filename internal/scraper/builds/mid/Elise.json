@@ -1,11 +1,11 @@
 [
   [
     "LichBane",
-    "LudensCompanion",
-    "LiandrysTorment",
-    "CosmicDrive",
     "BansheesVeil",
-    "RylaisCrystalScepter"
+    "LudensEcho",
+    "LiandrysTorment",
+    "Morellonomicon",
+    "HextechRocketbelt"
   ],
   [
     "SuddenImpact",
@@ -15,6 +15,6 @@
     "CoupDeGrace",
     "AttackSpeed",
     "AdaptiveForce",
-    "Health"
+    "HealthScaling"
   ]
 ]

@@ -11,14 +11,6 @@
       true
     ],
     [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
       "Aram",
       true
     ],
@@ -31,28 +23,19 @@
       false
     ],
     [
+      "Arena",
+      false
+    ],
+    [
       "NexusBlitz",
       true
+    ],
+    [
+      "SummonersRift",
+      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityPower",
-      "value": 25
-    },
-    {
-      "name": "AbilityHaste",
-      "value": 20
-    },
-    {
-      "name": "Health",
-      "value": 200
-    },
-    {
-      "name": "BaseManaRegen",
-      "value": 125
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

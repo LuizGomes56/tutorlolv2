@@ -70,22 +70,6 @@
   "abilities": [
     [
       {
-        "type": "R",
-        "name": "_1"
-      },
-      {
-        "name": "Glacial Fissure",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "150 + (0.6 * ctx.ap)",
-          "300 + (0.6 * ctx.ap)",
-          "450 + (0.6 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "Q",
         "name": "_1"
       },
@@ -117,6 +101,22 @@
           "0.45",
           "0.5",
           "0.55"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Glacial Fissure",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "150 + (0.6 * ctx.ap)",
+          "300 + (0.6 * ctx.ap)",
+          "450 + (0.6 * ctx.ap)"
         ]
       }
     ]

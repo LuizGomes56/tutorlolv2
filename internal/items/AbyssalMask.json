@@ -11,15 +11,7 @@
       false
     ],
     [
-      "Aram",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Tft",
+      "Arena",
       false
     ],
     [
@@ -31,24 +23,19 @@
       true
     ],
     [
-      "Arena",
+      "Aram",
+      true
+    ],
+    [
+      "Tft",
       false
+    ],
+    [
+      "SummonersRift",
+      true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Health",
-      "value": 350
-    },
-    {
-      "name": "AbilityHaste",
-      "value": 15
-    },
-    {
-      "name": "MagicResist",
-      "value": 50
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

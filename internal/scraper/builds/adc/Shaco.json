@@ -1,10 +1,10 @@
 [
   [
+    "Cryptbloom",
+    "LudensEcho",
     "ZhonyasHourglass",
-    "Malignance",
     "HorizonFocus",
-    "BloodlettersCurse",
-    "Stormsurge"
+    "Morellonomicon"
   ],
   [
     "ManaflowBand",
@@ -12,7 +12,7 @@
     "GatheringStorm",
     "LegendHaste",
     "CutDown",
-    "AttackSpeed",
+    "AbilityHaste",
     "AdaptiveForce",
     "HealthScaling"
   ]

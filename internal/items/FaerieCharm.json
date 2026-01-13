@@ -15,6 +15,14 @@
       true
     ],
     [
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
       "Tft",
       false
     ],
@@ -23,24 +31,11 @@
       false
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
       "Aram",
-      true
-    ],
-    [
-      "SummonersRift",
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "BaseManaRegen",
-      "value": 50
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

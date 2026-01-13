@@ -1,19 +1,20 @@
 [
   [
-    "ShurelyasBattlesong",
+    "FrozenHeart",
+    "ImperialMandate",
+    "BlackfireTorch",
     "AbyssalMask",
-    "VoidStaff",
-    "Morellonomicon",
-    "RabadonsDeathcap"
+    "ZhonyasHourglass",
+    "KnightsVow"
   ],
   [
     "ManaflowBand",
     "Transcendence",
-    "Scorch",
-    "PresenceOfMind",
-    "LegendHaste",
+    "GatheringStorm",
+    "MagicalFootwear",
+    "TripleTonic",
     "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "Health"
   ]
 ]

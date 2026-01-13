@@ -70,6 +70,42 @@
   "abilities": [
     [
       {
+        "type": "W",
+        "name": "_2"
+      },
+      {
+        "name": "Tormented Shadow",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "162 + (2.295 * ctx.ap)",
+          "310.5 + (2.295 * ctx.ap)",
+          "459 + (2.295 * ctx.ap)",
+          "607.5 + (2.295 * ctx.ap)",
+          "756 + (2.295 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_3"
+      },
+      {
+        "name": "Tormented Shadow",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "6 + (0.085 * ctx.ap)",
+          "11.5 + (0.085 * ctx.ap)",
+          "17 + (0.085 * ctx.ap)",
+          "22.5 + (0.085 * ctx.ap)",
+          "28 + (0.085 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "R",
         "name": "_1"
       },
@@ -121,24 +157,6 @@
     [
       {
         "type": "W",
-        "name": "_2"
-      },
-      {
-        "name": "Tormented Shadow",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "162 + (2.295 * ctx.ap)",
-          "310.5 + (2.295 * ctx.ap)",
-          "459 + (2.295 * ctx.ap)",
-          "607.5 + (2.295 * ctx.ap)",
-          "756 + (2.295 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
         "name": "_1"
       },
       {
@@ -169,24 +187,6 @@
           "190 + (0.9 * ctx.ap)",
           "245 + (0.9 * ctx.ap)",
           "300 + (0.9 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_3"
-      },
-      {
-        "name": "Tormented Shadow",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "6 + (0.085 * ctx.ap)",
-          "11.5 + (0.085 * ctx.ap)",
-          "17 + (0.085 * ctx.ap)",
-          "22.5 + (0.085 * ctx.ap)",
-          "28 + (0.085 * ctx.ap)"
         ]
       }
     ]

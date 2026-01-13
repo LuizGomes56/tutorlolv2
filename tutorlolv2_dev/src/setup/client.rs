@@ -21,6 +21,7 @@ use std::{
 };
 use tokio::{sync::Semaphore, task::JoinHandle};
 use tutorlolv2_fmt::pascal_case;
+use tutorlolv2_gen::ChampionId;
 
 /// Returns the directory where images will be downloaded to
 macro_rules! target_dir {
@@ -257,7 +258,7 @@ impl HttpClient {
             "cache_{old_version}",
             old_version = ENV_CONFIG.lol_version.replace(".", "_")
         );
-        std::fs::rename("cache", target)?;
+        std::fs::rename("../cache", target)?;
         setup_project_folders()?;
         Ok(unsafe { set_env_var("LOL_VERSION", &version)? })
     }
@@ -446,12 +447,10 @@ impl HttpClient {
     /// Fetches the `meta_endpoint` and scrapes the information from some champion's
     /// common ability combos and saves to a cache file
     pub async fn combo_scraper(&self) -> MayFail {
-        let champion_ids = get_file_names("cache/riot/champions")?;
-
-        for champion_id in champion_ids {
-            let path = format!("cache/scraper/combos/{champion_id}.html");
+        for champion_id in ChampionId::ARRAY {
+            let path = format!("cache/scraper/combos/{champion_id:?}.html");
             self.download(
-                format!("{}/{champion_id}/combos", ENV_CONFIG.meta_endpoint),
+                format!("{}/{champion_id:?}/combos", ENV_CONFIG.meta_endpoint),
                 &path,
             )
             .await?;
@@ -463,8 +462,8 @@ impl HttpClient {
 
                     let mut result = Vec::<Vec<String>>::new();
 
-                    let combo_section = Selector::parse("div.m-1o7d3sk")?;
-                    let combo_span = Selector::parse("span.m-1pm4585.e1o1aytf0")?;
+                    let combo_section = Selector::parse("div.m-1o7d3sk").unwrap();
+                    let combo_span = Selector::parse("span.m-1pm4585.e1o1aytf0").unwrap();
 
                     for combo_div in html.select(&combo_section) {
                         let mut combo_strings = Vec::new();
@@ -477,7 +476,7 @@ impl HttpClient {
                         result.push(combo_strings);
                     }
 
-                    result.into_file(format!("internal/scraper/combos/{champion_id}.json"))
+                    result.into_file(format!("internal/scraper/combos/{champion_id:?}.json"))
                 };
                 if let Err(e) = run_task() {
                     println!("[error] scraping combo for {champion_id:?}: {e:?}.")
@@ -492,18 +491,16 @@ impl HttpClient {
     /// json file is generated, aggregating all the collected information in a single
     /// location
     pub async fn call_scraper(&self) -> MayFail {
-        let champion_ids = get_file_names("cache/riot/champions")?;
-
-        for champion_id in champion_ids.iter() {
+        for champion_id in ChampionId::ARRAY {
             let mut futures_vec = Vec::new();
 
             for position in ["top", "jungle", "mid", "adc", "support"] {
-                let champion_id = champion_id.clone();
-                let name = champion_id.to_lowercase();
                 let client = self.clone();
 
                 futures_vec.push(tokio::spawn(async move {
-                    let path = format!("scraper/builds/{position}/{champion_id}");
+                    let name = format!("{champion_id:?}").to_lowercase();
+
+                    let path = format!("scraper/builds/{position}/{champion_id:?}");
                     let cache_path = format!("cache/{path}.html");
                     let internal_path = format!("internal/{path}.json");
 
@@ -520,10 +517,12 @@ impl HttpClient {
 
                             let document = Html::parse_document(&html);
                             let full_build =
-                                Selector::parse(".m-1q4a7cx:nth-of-type(4) > div > div img")?;
-                            let situational_build = Selector::parse(".m-s76v8c > div > div img")?;
-                            let rune_selector = Selector::parse("img.m-1nx2cdb")?;
-                            let legend_selector = Selector::parse("img.m-1u3ui07")?;
+                                Selector::parse(".m-1q4a7cx:nth-of-type(4) > div > div img")
+                                    .unwrap();
+                            let situational_build =
+                                Selector::parse(".m-s76v8c > div > div img").unwrap();
+                            let rune_selector = Selector::parse("img.m-1nx2cdb").unwrap();
+                            let legend_selector = Selector::parse("img.m-1u3ui07").unwrap();
                             let mut runes = Vec::<String>::new();
 
                             let push_alt_attr = |array: &mut Vec<String>, selector: &Selector| {
@@ -559,15 +558,15 @@ impl HttpClient {
 
         type Inner = [Vec<String>; 2];
         type Data = HashMap<&'static str, Inner>;
-        type FinalData = HashMap<String, Data>;
+        type FinalData = HashMap<ChampionId, Data>;
 
         let mut results = FinalData::new();
 
-        for champion_id in champion_ids {
+        for champion_id in ChampionId::ARRAY {
             let mut positions = HashMap::new();
             for position in ["top", "jungle", "mid", "adc", "support"] {
                 let resolved_path = resolve_path(format!(
-                    "internal/scraper/builds/{position}/{champion_id}.json"
+                    "internal/scraper/builds/{position}/{champion_id:?}.json"
                 ))?;
                 let data = Inner::from_file(resolved_path)?;
                 positions.insert(position, data);

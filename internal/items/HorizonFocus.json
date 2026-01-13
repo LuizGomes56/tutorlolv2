@@ -3,28 +3,16 @@
   "item_id": "HorizonFocus",
   "name": "Horizon Focus",
   "price": 2800,
-  "sell": 1925,
+  "sell": 1890,
   "tier": 3,
   "maps": [
     [
-      "NexusBlitz",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Aram",
-      true
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
       "Tft",
       false
+    ],
+    [
+      "NexusBlitz",
+      true
     ],
     [
       "Arena",
@@ -33,18 +21,21 @@
     [
       "SummonersRift",
       true
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "Aram",
+      true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 25
-    },
-    {
-      "name": "AbilityPower",
-      "value": 125
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

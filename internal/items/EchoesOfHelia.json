@@ -7,52 +7,35 @@
   "tier": 3,
   "maps": [
     [
-      "Tft",
-      false
+      "NexusBlitz",
+      true
+    ],
+    [
+      "SummonersRift",
+      true
     ],
     [
       "Arena",
       false
     ],
     [
+      "Aram",
+      true
+    ],
+    [
+      "Tft",
+      false
+    ],
+    [
       "SummonersRift",
       false
     ],
     [
       "SummonersRift",
       true
-    ],
-    [
-      "Aram",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "NexusBlitz",
-      true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityPower",
-      "value": 35
-    },
-    {
-      "name": "Health",
-      "value": 200
-    },
-    {
-      "name": "AbilityHaste",
-      "value": 20
-    },
-    {
-      "name": "BaseManaRegen",
-      "value": 125
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

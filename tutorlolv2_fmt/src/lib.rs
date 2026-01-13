@@ -89,7 +89,7 @@ pub fn pascal_case(input: &str) -> String {
 pub fn rustfmt(src: &str) -> String {
     let try_run = || -> Result<String, Box<dyn std::error::Error>> {
         let mut child = Command::new("rustfmt")
-            .args(&["--emit", "stdout", "--config", "max_width=80"])
+            .args(&["--emit", "stdout", "--config", "max_width=48"])
             .stdin(Stdio::piped())
             .stdout(Stdio::piped())
             .spawn()?;

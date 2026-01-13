@@ -3,25 +3,9 @@
   "item_id": "ForeverForward",
   "name": "Forever Forward",
   "price": 1400,
-  "sell": 980,
+  "sell": 630,
   "tier": 3,
   "maps": [
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "Aram",
-      false
-    ],
-    [
-      "Arena",
-      false
-    ],
-    [
-      "NexusBlitz",
-      false
-    ],
     [
       "SummonersRift",
       false
@@ -33,14 +17,25 @@
     [
       "Tft",
       false
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
+      "Aram",
+      false
+    ],
+    [
+      "NexusBlitz",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "MoveSpeed",
-      "value": 55
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -117,5 +112,5 @@
     "maximum_damage": "zero"
   },
   "attributes": "Undefined",
-  "purchasable": true
+  "purchasable": false
 }

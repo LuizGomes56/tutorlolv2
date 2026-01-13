@@ -8,14 +8,6 @@
   "maps": [
     [
       "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Aram",
       true
     ],
     [
@@ -23,7 +15,7 @@
       true
     ],
     [
-      "Arena",
+      "Tft",
       false
     ],
     [
@@ -31,20 +23,19 @@
       true
     ],
     [
-      "Tft",
+      "Arena",
+      false
+    ],
+    [
+      "Aram",
+      true
+    ],
+    [
+      "SummonersRift",
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityPower",
-      "value": 40
-    },
-    {
-      "name": "Armor",
-      "value": 25
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

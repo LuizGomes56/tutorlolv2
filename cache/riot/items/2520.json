@@ -1,0 +1,43 @@
+{
+  "colloq": "",
+  "depth": 3,
+  "description": "<mainText><stats><attention>55</attention> Attack Damage<br><attention>22</attention> Lethality<br><attention>15</attention> Ability Haste</stats><br><br><passive>Shaped Charge</passive> (0s)<br>Dealing Ability damage to a Champion or Epic Monster deals an additional <trueDamage> true damage</trueDamage>.<br><br><passive>Sabotage</passive><br>Taking down a champion within 3 seconds of damaging them grants Sabotage for 90 seconds. While you have Sabotage, your next Attack against an Epic Monster or Turret deals an additional <trueDamage> true damage</trueDamage> over 3 seconds. </mainText>",
+  "from": [
+    "2020",
+    "3134"
+  ],
+  "gold": {
+    "base": 863,
+    "purchasable": true,
+    "sell": 2240,
+    "total": 3200
+  },
+  "image": {
+    "full": "2520.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item3.png",
+    "w": 48,
+    "x": 192,
+    "y": 0
+  },
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": false
+  },
+  "name": "Bastionbreaker",
+  "plaintext": "",
+  "stats": {
+    "FlatPhysicalDamageMod": 55
+  },
+  "tags": [
+    "Damage",
+    "ArmorPenetration",
+    "AbilityHaste"
+  ]
+}

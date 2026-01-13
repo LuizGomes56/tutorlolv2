@@ -1,6 +1,7 @@
 use crate::{
-    CwdPath, EVAL_FEAT, GLOB_FEAT, Generated, GeneratorFn, Tracker, push_end,
-    scripts::{StringExt, model::Rune},
+    push_end,
+    scripts::{model::Rune, StringExt},
+    CwdPath, Generated, GeneratorFn, Tracker, EVAL_FEAT, GLOB_FEAT,
 };
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
 use std::collections::HashMap;
@@ -135,8 +136,7 @@ pub fn generate_runes() -> GeneratorFn {
                     name_ssnake,
                     name_pascal,
                     html_closure: constfn_declaration
-                        .trim_start_matches(EVAL_FEAT)
-                        .trim_start_matches("pub const")
+                        .trim_start_matches(&format!("{EVAL_FEAT} pub const"))
                         .trim()
                         .rust_fmt()
                         .drop_f32s()
@@ -233,24 +233,18 @@ fn build_runes(data: Vec<RuneResult>) -> GeneratorFn {
     let len = data.len();
     let mut rune_declarations = String::new();
 
-    let [
-        mut rune_cache,
-        mut rune_id_to_name,
-        mut rune_formulas,
-        mut rune_id_to_riot_id,
-        mut rune_idents,
-        mut rune_closures,
-    ] = std::array::from_fn(|i| {
-        let (name, vtype, feature) = [
-            ("RUNE_CACHE", "&CachedRune", EVAL_FEAT),
-            ("RUNE_ID_TO_NAME", "&str", GLOB_FEAT),
-            ("RUNE_FORMULAS", "Range<usize>", GLOB_FEAT),
-            ("RUNE_ID_TO_RIOT_ID", "u32", GLOB_FEAT),
-            ("RUNE_IDENTS", "&[EvalIdent]", GLOB_FEAT),
-            ("RUNE_CLOSURES", "Range<usize>", GLOB_FEAT),
-        ][i];
-        format!("{feature} pub static {name}: [{vtype}; RuneId::VARIANTS] = [")
-    });
+    let [mut rune_cache, mut rune_id_to_name, mut rune_formulas, mut rune_id_to_riot_id, mut rune_idents, mut rune_closures] =
+        std::array::from_fn(|i| {
+            let (name, vtype, feature) = [
+                ("RUNE_CACHE", "&CachedRune", EVAL_FEAT),
+                ("RUNE_ID_TO_NAME", "&str", GLOB_FEAT),
+                ("RUNE_FORMULAS", "Range<usize>", GLOB_FEAT),
+                ("RUNE_ID_TO_RIOT_ID", "u32", GLOB_FEAT),
+                ("RUNE_IDENTS", "&[EvalIdent]", GLOB_FEAT),
+                ("RUNE_CLOSURES", "Range<usize>", GLOB_FEAT),
+            ][i];
+            format!("{feature} pub static {name}: [{vtype}; RuneId::VARIANTS] = [")
+        });
 
     let mut block = String::new();
 
@@ -297,7 +291,7 @@ fn build_runes(data: Vec<RuneResult>) -> GeneratorFn {
 
     let rune_id_enum = format!(
         r#"
-        #[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
+        #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
         #[derive(bincode::Encode, bincode::Decode)]
         #[derive(serde::Serialize, serde::Deserialize)]
         #[repr(u8)]

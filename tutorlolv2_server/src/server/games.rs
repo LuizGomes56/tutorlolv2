@@ -49,7 +49,7 @@ pub async fn calculator_handler(body: Bytes) -> Response {
     let (decoded, _) = bincode::decode_from_slice(&body, BINCODE_CONFIG)?;
     let start = std::time::Instant::now();
     let data = calculator(decoded);
-    println!("[time] fn realtime took: {end:?}", end = start.elapsed());
+    println!("[time] fn calculator took: {end:?}", end = start.elapsed());
     respond(data)
 }
 

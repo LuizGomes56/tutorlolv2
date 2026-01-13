@@ -1,13 +1,19 @@
 [
-  [],
+  [
+    "MoonstoneRenewer",
+    "RabadonsDeathcap",
+    "LiandrysTorment",
+    "ShurelyasBattlesong",
+    "HorizonFocus"
+  ],
   [
     "ManaflowBand",
     "Transcendence",
     "Scorch",
-    "BonePlating",
-    "Revitalize",
+    "PresenceOfMind",
+    "CutDown",
     "AdaptiveForce",
     "AdaptiveForce",
-    "Health"
+    "HealthScaling"
   ]
 ]

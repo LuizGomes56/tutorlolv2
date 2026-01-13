@@ -71,22 +71,6 @@
   "abilities": [
     [
       {
-        "type": "R",
-        "name": "_1"
-      },
-      {
-        "name": "Stormbringer",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "300 + (2.5 * ctx.bonus_ad) + (1.25 * ctx.ap)",
-          "500 + (2.5 * ctx.bonus_ad) + (1.25 * ctx.ap)",
-          "700 + (2.5 * ctx.bonus_ad) + (1.25 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "W",
         "name": "_1"
       },
@@ -118,6 +102,22 @@
           "50 + (1.2 * ctx.bonus_ad)",
           "70 + (1.2 * ctx.bonus_ad)",
           "90 + (1.2 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Stormbringer",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "300 + (2.5 * ctx.bonus_ad) + (1.25 * ctx.ap)",
+          "500 + (2.5 * ctx.bonus_ad) + (1.25 * ctx.ap)",
+          "700 + (2.5 * ctx.bonus_ad) + (1.25 * ctx.ap)"
         ]
       }
     ],

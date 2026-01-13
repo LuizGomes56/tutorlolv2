@@ -1,17 +1,13 @@
 [
-  [
-    "VoidStaff",
-    "LudensCompanion",
-    "EchoesOfHelia"
-  ],
+  [],
   [
     "ManaflowBand",
     "Celerity",
-    "GatheringStorm",
+    "Scorch",
     "PresenceOfMind",
-    "LegendHaste",
+    "CutDown",
     "AdaptiveForce",
     "AdaptiveForce",
-    "HealthScaling"
+    "Health"
   ]
 ]

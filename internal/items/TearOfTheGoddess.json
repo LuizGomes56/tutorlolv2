@@ -7,11 +7,19 @@
   "tier": 1,
   "maps": [
     [
+      "Arena",
+      false
+    ],
+    [
       "SummonersRift",
       true
     ],
     [
-      "Aram",
+      "SummonersRift",
+      true
+    ],
+    [
+      "NexusBlitz",
       true
     ],
     [
@@ -19,28 +27,15 @@
       false
     ],
     [
-      "NexusBlitz",
-      true
-    ],
-    [
-      "Arena",
-      false
-    ],
-    [
       "SummonersRift",
       false
     ],
     [
-      "SummonersRift",
+      "Aram",
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Mana",
-      "value": 240
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

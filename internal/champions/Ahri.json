@@ -70,40 +70,6 @@
   "abilities": [
     [
       {
-        "type": "R",
-        "name": "Max"
-      },
-      {
-        "name": "Spirit Rush",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "3 * (60 + (0.35 * ctx.ap))",
-          "3 * (90 + (0.35 * ctx.ap))",
-          "3 * (120 + (0.35 * ctx.ap))"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "Min"
-      },
-      {
-        "name": "Fox-Fire",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "40 + (0.4 * ctx.ap)",
-          "60 + (0.4 * ctx.ap)",
-          "80 + (0.4 * ctx.ap)",
-          "100 + (0.4 * ctx.ap)",
-          "120 + (0.4 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "Q",
         "name": "Min"
       },
@@ -141,34 +107,16 @@
     [
       {
         "type": "R",
-        "name": "Min"
+        "name": "Max"
       },
       {
         "name": "Spirit Rush",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "60 + (0.35 * ctx.ap)",
-          "90 + (0.35 * ctx.ap)",
-          "120 + (0.35 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "Max"
-      },
-      {
-        "name": "Fox-Fire",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "64 + (0.64 * ctx.ap)",
-          "96 + (0.64 * ctx.ap)",
-          "128 + (0.64 * ctx.ap)",
-          "160 + (0.64 * ctx.ap)",
-          "192 + (0.64 * ctx.ap)"
+          "3 * (60 + (0.35 * ctx.ap))",
+          "3 * (90 + (0.35 * ctx.ap))",
+          "3 * (120 + (0.35 * ctx.ap))"
         ]
       }
     ],
@@ -207,34 +155,86 @@
           "36 + (0.12 * ctx.ap)"
         ]
       }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "Min"
+      },
+      {
+        "name": "Fox-Fire",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "40 + (0.4 * ctx.ap)",
+          "60 + (0.4 * ctx.ap)",
+          "80 + (0.4 * ctx.ap)",
+          "100 + (0.4 * ctx.ap)",
+          "120 + (0.4 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "Max"
+      },
+      {
+        "name": "Fox-Fire",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "64 + (0.64 * ctx.ap)",
+          "96 + (0.64 * ctx.ap)",
+          "128 + (0.64 * ctx.ap)",
+          "160 + (0.64 * ctx.ap)",
+          "192 + (0.64 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "Min"
+      },
+      {
+        "name": "Spirit Rush",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "60 + (0.35 * ctx.ap)",
+          "90 + (0.35 * ctx.ap)",
+          "120 + (0.35 * ctx.ap)"
+        ]
+      }
     ]
   ],
   "merge_data": [
     {
       "minimum_damage": {
-        "type": "W",
+        "type": "Q",
         "name": "Min"
       },
       "maximum_damage": {
-        "type": "W",
+        "type": "Q",
         "name": "Max"
       },
       "alias": {
-        "type": "W",
+        "type": "Q",
         "name": "Void"
       }
     },
     {
       "minimum_damage": {
-        "type": "Q",
+        "type": "W",
         "name": "Min"
       },
       "maximum_damage": {
-        "type": "Q",
+        "type": "W",
         "name": "Max"
       },
       "alias": {
-        "type": "Q",
+        "type": "W",
         "name": "Void"
       }
     },

@@ -1,8 +1,10 @@
 [
   [
-    "HorizonFocus",
-    "Morellonomicon",
-    "HextechRocketbelt"
+    "Malignance",
+    "HextechRocketbelt",
+    "RabadonsDeathcap",
+    "LichBane",
+    "VoidStaff"
   ],
   [
     "SuddenImpact",
@@ -10,8 +12,8 @@
     "UltimateHunter",
     "Transcendence",
     "Scorch",
-    "AttackSpeed",
     "AdaptiveForce",
-    "Health"
+    "AdaptiveForce",
+    "HealthScaling"
   ]
 ]
