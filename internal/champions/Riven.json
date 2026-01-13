@@ -71,24 +71,6 @@
     [
       {
         "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Broken Wings",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "45 + (0.65 * ctx.bonus_ad)",
-          "75 + (0.7 * ctx.bonus_ad)",
-          "105 + (0.75 * ctx.bonus_ad)",
-          "135 + (0.8 * ctx.bonus_ad)",
-          "165 + (0.85 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
         "name": "_2"
       },
       {
@@ -101,6 +83,24 @@
           "315 + (2.25 * ctx.bonus_ad)",
           "405 + (2.4 * ctx.bonus_ad)",
           "495 + (2.55 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Broken Wings",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "45 + (0.65 * ctx.bonus_ad)",
+          "75 + (0.7 * ctx.bonus_ad)",
+          "105 + (0.75 * ctx.bonus_ad)",
+          "135 + (0.8 * ctx.bonus_ad)",
+          "165 + (0.85 * ctx.bonus_ad)"
         ]
       }
     ],

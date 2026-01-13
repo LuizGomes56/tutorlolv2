@@ -11,11 +11,7 @@
       false
     ],
     [
-      "NexusBlitz",
-      false
-    ],
-    [
-      "Tft",
+      "Aram",
       false
     ],
     [
@@ -27,11 +23,15 @@
       true
     ],
     [
-      "Aram",
+      "Arena",
       false
     ],
     [
-      "Arena",
+      "NexusBlitz",
+      false
+    ],
+    [
+      "Tft",
       false
     ]
   ],

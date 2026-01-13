@@ -70,6 +70,24 @@
   "abilities": [
     [
       {
+        "type": "Q",
+        "name": "_3"
+      },
+      {
+        "name": "Javelin Toss",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "227.5 + (1.625 * ctx.ap)",
+          "292.5",
+          "357.5",
+          "422.5",
+          "487.5"
+        ]
+      }
+    ],
+    [
+      {
         "type": "W",
         "name": "_2"
       },
@@ -119,24 +137,6 @@
           "30",
           "40",
           "50"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_3"
-      },
-      {
-        "name": "Javelin Toss",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "227.5 + (1.625 * ctx.ap)",
-          "292.5",
-          "357.5",
-          "422.5",
-          "487.5"
         ]
       }
     ],

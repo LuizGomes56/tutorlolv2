@@ -89,22 +89,6 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
-      },
-      {
-        "name": "Death Mark",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "ctx.ad + (0.25 * 100.0)",
-          "ctx.ad + (0.4 * 100.0)",
-          "ctx.ad + (0.55 * 100.0)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "Q",
         "name": "_2"
       },
@@ -118,6 +102,22 @@
           "96 + (0.6 * ctx.bonus_ad)",
           "120 + (0.6 * ctx.bonus_ad)",
           "144 + (0.6 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Death Mark",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "ctx.ad + (0.25 * 100.0)",
+          "ctx.ad + (0.4 * 100.0)",
+          "ctx.ad + (0.55 * 100.0)"
         ]
       }
     ],

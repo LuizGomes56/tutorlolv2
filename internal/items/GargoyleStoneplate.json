@@ -7,11 +7,11 @@
   "tier": 3,
   "maps": [
     [
-      "Arena",
-      true
+      "Tft",
+      false
     ],
     [
-      "Tft",
+      "NexusBlitz",
       false
     ],
     [
@@ -31,8 +31,8 @@
       false
     ],
     [
-      "NexusBlitz",
-      false
+      "Arena",
+      true
     ]
   ],
   "prettified_stats": [],

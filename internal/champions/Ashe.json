@@ -89,17 +89,19 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "type": "Q",
+        "name": "_2"
       },
       {
-        "name": "Enchanted Crystal Arrow",
-        "damage_type": "Magic",
+        "name": "Ranger's Focus",
+        "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "200 + (1.2 * ctx.ap)",
-          "400 + (1.2 * ctx.ap)",
-          "600 + (1.2 * ctx.ap)"
+          "(1.1 * ctx.ad)",
+          "(1.175 * ctx.ad)",
+          "(1.25 * ctx.ad)",
+          "(1.325 * ctx.ad)",
+          "(1.4 * ctx.ad)"
         ]
       }
     ],
@@ -123,19 +125,17 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_2"
+        "type": "R",
+        "name": "_1"
       },
       {
-        "name": "Ranger's Focus",
-        "damage_type": "Physical",
+        "name": "Enchanted Crystal Arrow",
+        "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "(1.1 * ctx.ad)",
-          "(1.175 * ctx.ad)",
-          "(1.25 * ctx.ad)",
-          "(1.325 * ctx.ad)",
-          "(1.4 * ctx.ad)"
+          "200 + (1.2 * ctx.ap)",
+          "400 + (1.2 * ctx.ap)",
+          "600 + (1.2 * ctx.ap)"
         ]
       }
     ]

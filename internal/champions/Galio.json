@@ -71,42 +71,6 @@
   "abilities": [
     [
       {
-        "type": "E",
-        "name": "_1"
-      },
-      {
-        "name": "Justice Punch",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "90 + (0.9 * ctx.ap)",
-          "130 + (0.9 * ctx.ap)",
-          "170 + (0.9 * ctx.ap)",
-          "210 + (0.9 * ctx.ap)",
-          "250 + (0.9 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_4"
-      },
-      {
-        "name": "Shield of Durand",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "20 + (0.3 * ctx.ap)",
-          "30 + (0.3 * ctx.ap)",
-          "40 + (0.3 * ctx.ap)",
-          "50 + (0.3 * ctx.ap)",
-          "60 + (0.3 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "W",
         "name": "_1"
       },
@@ -178,18 +142,18 @@
     [
       {
         "type": "W",
-        "name": "_3"
+        "name": "_4"
       },
       {
         "name": "Shield of Durand",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "60 + (0.9 * ctx.ap)",
-          "90 + (0.9 * ctx.ap)",
-          "120 + (0.9 * ctx.ap)",
-          "150 + (0.9 * ctx.ap)",
-          "180 + (0.9 * ctx.ap)"
+          "20 + (0.3 * ctx.ap)",
+          "30 + (0.3 * ctx.ap)",
+          "40 + (0.3 * ctx.ap)",
+          "50 + (0.3 * ctx.ap)",
+          "60 + (0.3 * ctx.ap)"
         ]
       }
     ],
@@ -208,6 +172,42 @@
           "136 + (0.72 * ctx.ap)",
           "168 + (0.72 * ctx.ap)",
           "200 + (0.72 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Justice Punch",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "90 + (0.9 * ctx.ap)",
+          "130 + (0.9 * ctx.ap)",
+          "170 + (0.9 * ctx.ap)",
+          "210 + (0.9 * ctx.ap)",
+          "250 + (0.9 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_3"
+      },
+      {
+        "name": "Shield of Durand",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "60 + (0.9 * ctx.ap)",
+          "90 + (0.9 * ctx.ap)",
+          "120 + (0.9 * ctx.ap)",
+          "150 + (0.9 * ctx.ap)",
+          "180 + (0.9 * ctx.ap)"
         ]
       }
     ]

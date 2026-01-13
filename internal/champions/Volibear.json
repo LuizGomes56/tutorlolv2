@@ -71,24 +71,6 @@
   "abilities": [
     [
       {
-        "type": "W",
-        "name": "_1"
-      },
-      {
-        "name": "Frenzied Maul",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "5 + ctx.ad + (0.06 * ctx.bonus_health)",
-          "30 + ctx.ad + (0.06 * ctx.bonus_health)",
-          "55 + ctx.ad + (0.06 * ctx.bonus_health)",
-          "80 + ctx.ad + (0.06 * ctx.bonus_health)",
-          "105 + ctx.ad + (0.06 * ctx.bonus_health)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "Q",
         "name": "_1"
       },
@@ -107,17 +89,19 @@
     ],
     [
       {
-        "type": "R",
+        "type": "W",
         "name": "_1"
       },
       {
-        "name": "Stormbringer",
+        "name": "Frenzied Maul",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "300 + (2.5 * ctx.bonus_ad) + (1.25 * ctx.ap)",
-          "500 + (2.5 * ctx.bonus_ad) + (1.25 * ctx.ap)",
-          "700 + (2.5 * ctx.bonus_ad) + (1.25 * ctx.ap)"
+          "5 + ctx.ad + (0.06 * ctx.bonus_health)",
+          "30 + ctx.ad + (0.06 * ctx.bonus_health)",
+          "55 + ctx.ad + (0.06 * ctx.bonus_health)",
+          "80 + ctx.ad + (0.06 * ctx.bonus_health)",
+          "105 + ctx.ad + (0.06 * ctx.bonus_health)"
         ]
       }
     ],
@@ -136,6 +120,22 @@
           "140 + (0.8 * ctx.ap) + (0.13 * ctx.enemy_max_health)",
           "170 + (0.8 * ctx.ap) + (0.14 * ctx.enemy_max_health)",
           "200 + (0.8 * ctx.ap) + (0.15 * ctx.enemy_max_health)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Stormbringer",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "300 + (2.5 * ctx.bonus_ad) + (1.25 * ctx.ap)",
+          "500 + (2.5 * ctx.bonus_ad) + (1.25 * ctx.ap)",
+          "700 + (2.5 * ctx.bonus_ad) + (1.25 * ctx.ap)"
         ]
       }
     ]

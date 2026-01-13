@@ -71,19 +71,19 @@
   "abilities": [
     [
       {
-        "type": "E",
-        "name": "_3"
+        "type": "Q",
+        "name": "_1"
       },
       {
-        "name": "Hexplosive Minefield",
+        "name": "Bouncing Bomb",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "12 + (0.1 * ctx.ap)",
-          "28 + (0.12 * ctx.ap)",
-          "44 + (0.14 * ctx.ap)",
-          "60 + (0.16 * ctx.ap)",
-          "76 + (0.18 * ctx.ap)"
+          "80 + (0.6 * ctx.ap)",
+          "130 + (0.65 * ctx.ap)",
+          "180 + (0.7 * ctx.ap)",
+          "230 + (0.75 * ctx.ap)",
+          "280 + (0.8 * ctx.ap)"
         ]
       }
     ],
@@ -105,35 +105,19 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_2"
-      },
-      {
-        "name": "Mega Inferno Bomb",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "195 + (0.65 * ctx.ap)",
-          "325 + (0.65 * ctx.ap)",
-          "455 + (0.65 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
+        "type": "W",
         "name": "_1"
       },
       {
-        "name": "Bouncing Bomb",
+        "name": "Satchel Charge",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "80 + (0.6 * ctx.ap)",
-          "130 + (0.65 * ctx.ap)",
-          "180 + (0.7 * ctx.ap)",
-          "230 + (0.75 * ctx.ap)",
-          "280 + (0.8 * ctx.ap)"
+          "70 + (0.5 * ctx.ap)",
+          "105 + (0.5 * ctx.ap)",
+          "140 + (0.5 * ctx.ap)",
+          "175 + (0.5 * ctx.ap)",
+          "210 + (0.5 * ctx.ap)"
         ]
       }
     ],
@@ -158,6 +142,24 @@
     [
       {
         "type": "E",
+        "name": "_3"
+      },
+      {
+        "name": "Hexplosive Minefield",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "12 + (0.1 * ctx.ap)",
+          "28 + (0.12 * ctx.ap)",
+          "44 + (0.14 * ctx.ap)",
+          "60 + (0.16 * ctx.ap)",
+          "76 + (0.18 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
         "name": "_2"
       },
       {
@@ -175,19 +177,17 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "type": "R",
+        "name": "_2"
       },
       {
-        "name": "Satchel Charge",
+        "name": "Mega Inferno Bomb",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "70 + (0.5 * ctx.ap)",
-          "105 + (0.5 * ctx.ap)",
-          "140 + (0.5 * ctx.ap)",
-          "175 + (0.5 * ctx.ap)",
-          "210 + (0.5 * ctx.ap)"
+          "195 + (0.65 * ctx.ap)",
+          "325 + (0.65 * ctx.ap)",
+          "455 + (0.65 * ctx.ap)"
         ]
       }
     ]

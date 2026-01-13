@@ -70,22 +70,6 @@
   "abilities": [
     [
       {
-        "type": "R",
-        "name": "_1"
-      },
-      {
-        "name": "Dragon's Rage",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "175 + (2 * ctx.bonus_ad)",
-          "400 + (2 * ctx.bonus_ad)",
-          "625 + (2 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "Q",
         "name": "_2"
       },
@@ -99,6 +83,22 @@
           "105 + (1.15 * ctx.bonus_ad)",
           "130 + (1.15 * ctx.bonus_ad)",
           "155 + (1.15 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Dragon's Rage",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "175 + (2 * ctx.bonus_ad)",
+          "400 + (2 * ctx.bonus_ad)",
+          "625 + (2 * ctx.bonus_ad)"
         ]
       }
     ],

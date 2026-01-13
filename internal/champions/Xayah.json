@@ -70,6 +70,24 @@
   "abilities": [
     [
       {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Double Daggers",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "45 + (0.5 * ctx.bonus_ad)",
+          "60 + (0.5 * ctx.bonus_ad)",
+          "75 + (0.5 * ctx.bonus_ad)",
+          "90 + (0.5 * ctx.bonus_ad)",
+          "105 + (0.5 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "E",
         "name": "_2"
       },
@@ -106,24 +124,6 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Double Daggers",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "45 + (0.5 * ctx.bonus_ad)",
-          "60 + (0.5 * ctx.bonus_ad)",
-          "75 + (0.5 * ctx.bonus_ad)",
-          "90 + (0.5 * ctx.bonus_ad)",
-          "105 + (0.5 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "R",
         "name": "_1"
       },
@@ -135,24 +135,6 @@
           "200 + ctx.bonus_ad",
           "300 + ctx.bonus_ad",
           "400 + ctx.bonus_ad"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_2"
-      },
-      {
-        "name": "Double Daggers",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "90 + ctx.bonus_ad",
-          "120 + ctx.bonus_ad",
-          "150 + ctx.bonus_ad",
-          "180 + ctx.bonus_ad",
-          "210 + ctx.bonus_ad"
         ]
       }
     ],
@@ -171,6 +153,24 @@
           "75 + (0.5 * ctx.bonus_ad)",
           "90 + (0.5 * ctx.bonus_ad)",
           "105 + (0.5 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "Double Daggers",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "90 + ctx.bonus_ad",
+          "120 + ctx.bonus_ad",
+          "150 + ctx.bonus_ad",
+          "180 + ctx.bonus_ad",
+          "210 + ctx.bonus_ad"
         ]
       }
     ],

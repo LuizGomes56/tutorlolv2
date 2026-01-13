@@ -70,19 +70,17 @@
   "abilities": [
     [
       {
-        "type": "Q",
+        "type": "R",
         "name": "_1"
       },
       {
-        "name": "Winter's Bite",
+        "name": "Glacial Fissure",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "75 + (0.025 * ctx.max_health)",
-          "125 + (0.025 * ctx.max_health)",
-          "175 + (0.025 * ctx.max_health)",
-          "225 + (0.025 * ctx.max_health)",
-          "275 + (0.025 * ctx.max_health)"
+          "150 + (0.6 * ctx.ap)",
+          "300 + (0.6 * ctx.ap)",
+          "450 + (0.6 * ctx.ap)"
         ]
       }
     ],
@@ -106,17 +104,19 @@
     ],
     [
       {
-        "type": "R",
+        "type": "Q",
         "name": "_1"
       },
       {
-        "name": "Glacial Fissure",
+        "name": "Winter's Bite",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "150 + (0.6 * ctx.ap)",
-          "300 + (0.6 * ctx.ap)",
-          "450 + (0.6 * ctx.ap)"
+          "75 + (0.025 * ctx.max_health)",
+          "125 + (0.025 * ctx.max_health)",
+          "175 + (0.025 * ctx.max_health)",
+          "225 + (0.025 * ctx.max_health)",
+          "275 + (0.025 * ctx.max_health)"
         ]
       }
     ]

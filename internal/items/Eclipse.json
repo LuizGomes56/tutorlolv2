@@ -11,27 +11,27 @@
       true
     ],
     [
-      "SummonersRift",
-      true
+      "Arena",
+      false
     ],
     [
       "Tft",
       false
     ],
     [
-      "Aram",
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
       true
     ],
     [
-      "Arena",
-      false
+      "SummonersRift",
+      true
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
+      "Aram",
       true
     ]
   ],

@@ -70,19 +70,19 @@
   "abilities": [
     [
       {
-        "type": "W",
+        "type": "Q",
         "name": "_1"
       },
       {
-        "name": "Terrashape",
-        "damage_type": "Magic",
+        "name": "Edge of Ixtal",
+        "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "8 + (0.2 * ctx.bonus_ad) + (0.45 * ctx.ap)",
-          "16 + (0.2 * ctx.bonus_ad) + (0.45 * ctx.ap)",
-          "24 + (0.2 * ctx.bonus_ad) + (0.45 * ctx.ap)",
-          "32 + (0.2 * ctx.bonus_ad) + (0.45 * ctx.ap)",
-          "40 + (0.2 * ctx.bonus_ad) + (0.45 * ctx.ap)"
+          "60 + (0.9 * ctx.bonus_ad)",
+          "90 + (0.9 * ctx.bonus_ad)",
+          "120 + (0.9 * ctx.bonus_ad)",
+          "150 + (0.9 * ctx.bonus_ad)",
+          "180 + (0.9 * ctx.bonus_ad)"
         ]
       }
     ],
@@ -106,19 +106,19 @@
     ],
     [
       {
-        "type": "Q",
+        "type": "W",
         "name": "_1"
       },
       {
-        "name": "Edge of Ixtal",
-        "damage_type": "Physical",
+        "name": "Terrashape",
+        "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "60 + (0.9 * ctx.bonus_ad)",
-          "90 + (0.9 * ctx.bonus_ad)",
-          "120 + (0.9 * ctx.bonus_ad)",
-          "150 + (0.9 * ctx.bonus_ad)",
-          "180 + (0.9 * ctx.bonus_ad)"
+          "8 + (0.2 * ctx.bonus_ad) + (0.45 * ctx.ap)",
+          "16 + (0.2 * ctx.bonus_ad) + (0.45 * ctx.ap)",
+          "24 + (0.2 * ctx.bonus_ad) + (0.45 * ctx.ap)",
+          "32 + (0.2 * ctx.bonus_ad) + (0.45 * ctx.ap)",
+          "40 + (0.2 * ctx.bonus_ad) + (0.45 * ctx.ap)"
         ]
       }
     ],
@@ -143,22 +143,6 @@
     [
       {
         "type": "R",
-        "name": "_2"
-      },
-      {
-        "name": "Supreme Display of Talent",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "100 + (1.25 * ctx.bonus_ad) + (0.1 * ctx.enemy_max_health)",
-          "200 + (1.25 * ctx.bonus_ad) + (0.1 * ctx.enemy_max_health)",
-          "300 + (1.25 * ctx.bonus_ad) + (0.1 * ctx.enemy_max_health)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
         "name": "_1"
       },
       {
@@ -169,6 +153,22 @@
           "500 + (1.25 * ctx.bonus_ad)",
           "750 + (1.25 * ctx.bonus_ad)",
           "1000 + (1.25 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_2"
+      },
+      {
+        "name": "Supreme Display of Talent",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "100 + (1.25 * ctx.bonus_ad) + (0.1 * ctx.enemy_max_health)",
+          "200 + (1.25 * ctx.bonus_ad) + (0.1 * ctx.enemy_max_health)",
+          "300 + (1.25 * ctx.bonus_ad) + (0.1 * ctx.enemy_max_health)"
         ]
       }
     ]

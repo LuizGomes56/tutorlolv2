@@ -70,6 +70,24 @@
   "abilities": [
     [
       {
+        "type": "Q",
+        "name": "_4"
+      },
+      {
+        "name": "Blade of the Ruined King",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "15 + (0.7 * ctx.ad)",
+          "30 + (0.7 * ctx.ad)",
+          "45 + (0.7 * ctx.ad)",
+          "60 + (0.7 * ctx.ad)",
+          "75 + (0.7 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "R",
         "name": "_1"
       },
@@ -81,6 +99,78 @@
           "(0.12 * ctx.missing_health) + (0.05 * 0.01 * ctx.bonus_ad)",
           "(0.16 * ctx.missing_health) + (0.05 * 0.01 * ctx.bonus_ad)",
           "(0.2 * ctx.missing_health) + (0.05 * 0.01 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_6"
+      },
+      {
+        "name": "Blade of the Ruined King",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "10",
+          "15",
+          "20",
+          "25",
+          "30"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_3"
+      },
+      {
+        "name": "Blade of the Ruined King",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "30 + (0.7 * ctx.ad)",
+          "45 + (0.7 * ctx.ad)",
+          "60 + (0.7 * ctx.ad)",
+          "75 + (0.7 * ctx.ad)",
+          "90 + (0.7 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_5"
+      },
+      {
+        "name": "Blade of the Ruined King",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "(0.02 * ctx.current_health)",
+          "(0.03 * ctx.current_health)",
+          "(0.04 * ctx.current_health)",
+          "(0.05 * ctx.current_health)",
+          "(0.06 * ctx.current_health)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Blade of the Ruined King",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "60 + (1.4 * ctx.ad)",
+          "90 + (1.4 * ctx.ad)",
+          "120 + (1.4 * ctx.ad)",
+          "150 + (1.4 * ctx.ad)",
+          "180 + (1.4 * ctx.ad)"
         ]
       }
     ],
@@ -117,96 +207,6 @@
           "90 + (1.4 * ctx.ad)",
           "120 + (1.4 * ctx.ad)",
           "150 + (1.4 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_6"
-      },
-      {
-        "name": "Blade of the Ruined King",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "10",
-          "15",
-          "20",
-          "25",
-          "30"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_5"
-      },
-      {
-        "name": "Blade of the Ruined King",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "(0.02 * ctx.current_health)",
-          "(0.03 * ctx.current_health)",
-          "(0.04 * ctx.current_health)",
-          "(0.05 * ctx.current_health)",
-          "(0.06 * ctx.current_health)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_3"
-      },
-      {
-        "name": "Blade of the Ruined King",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "30 + (0.7 * ctx.ad)",
-          "45 + (0.7 * ctx.ad)",
-          "60 + (0.7 * ctx.ad)",
-          "75 + (0.7 * ctx.ad)",
-          "90 + (0.7 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Blade of the Ruined King",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "60 + (1.4 * ctx.ad)",
-          "90 + (1.4 * ctx.ad)",
-          "120 + (1.4 * ctx.ad)",
-          "150 + (1.4 * ctx.ad)",
-          "180 + (1.4 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_4"
-      },
-      {
-        "name": "Blade of the Ruined King",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "15 + (0.7 * ctx.ad)",
-          "30 + (0.7 * ctx.ad)",
-          "45 + (0.7 * ctx.ad)",
-          "60 + (0.7 * ctx.ad)",
-          "75 + (0.7 * ctx.ad)"
         ]
       }
     ]

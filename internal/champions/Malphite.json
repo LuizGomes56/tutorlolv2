@@ -90,22 +90,6 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
-      },
-      {
-        "name": "Unstoppable Force",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "200 + (0.9 * ctx.ap)",
-          "300 + (0.9 * ctx.ap)",
-          "400 + (0.9 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "Q",
         "name": "_1"
       },
@@ -119,6 +103,24 @@
           "170 + (0.6 * ctx.ap)",
           "220 + (0.6 * ctx.ap)",
           "270 + (0.6 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_2"
+      },
+      {
+        "name": "Thunderclap",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "15 + (0.3 * ctx.ap) + (0.15 * ctx.armor)",
+          "25 + (0.3 * ctx.ap) + (0.15 * ctx.armor)",
+          "35 + (0.3 * ctx.ap) + (0.15 * ctx.armor)",
+          "45 + (0.3 * ctx.ap) + (0.15 * ctx.armor)",
+          "55 + (0.3 * ctx.ap) + (0.15 * ctx.armor)"
         ]
       }
     ],
@@ -142,19 +144,17 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_2"
+        "type": "R",
+        "name": "_1"
       },
       {
-        "name": "Thunderclap",
-        "damage_type": "Physical",
+        "name": "Unstoppable Force",
+        "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "15 + (0.3 * ctx.ap) + (0.15 * ctx.armor)",
-          "25 + (0.3 * ctx.ap) + (0.15 * ctx.armor)",
-          "35 + (0.3 * ctx.ap) + (0.15 * ctx.armor)",
-          "45 + (0.3 * ctx.ap) + (0.15 * ctx.armor)",
-          "55 + (0.3 * ctx.ap) + (0.15 * ctx.armor)"
+          "200 + (0.9 * ctx.ap)",
+          "300 + (0.9 * ctx.ap)",
+          "400 + (0.9 * ctx.ap)"
         ]
       }
     ]

@@ -70,17 +70,19 @@
   "abilities": [
     [
       {
-        "type": "R",
-        "name": "_1"
+        "type": "Q",
+        "name": "_2"
       },
       {
-        "name": "GNAR!",
+        "name": "Boomerang Throw",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "300 + (0.75 * ctx.bonus_ad) + (1.5 * ctx.ap)",
-          "450 + (0.75 * ctx.bonus_ad) + (1.5 * ctx.ap)",
-          "600 + (0.75 * ctx.bonus_ad) + (1.5 * ctx.ap)"
+          "2.5 + (0.625 * ctx.ad)",
+          "22.5 + (0.625 * ctx.ad)",
+          "42.5 + (0.625 * ctx.ad)",
+          "62.5 + (0.625 * ctx.ad)",
+          "82.5 + (0.625 * ctx.ad)"
         ]
       }
     ],
@@ -105,6 +107,22 @@
     [
       {
         "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "GNAR!",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "300 + (0.75 * ctx.bonus_ad) + (1.5 * ctx.ap)",
+          "450 + (0.75 * ctx.bonus_ad) + (1.5 * ctx.ap)",
+          "600 + (0.75 * ctx.bonus_ad) + (1.5 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
         "name": "_2"
       },
       {
@@ -120,37 +138,19 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_2"
+        "type": "E",
+        "name": "_1"
       },
       {
-        "name": "Boomerang Throw",
+        "name": "Hop",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "2.5 + (0.625 * ctx.ad)",
-          "22.5 + (0.625 * ctx.ad)",
-          "42.5 + (0.625 * ctx.ad)",
-          "62.5 + (0.625 * ctx.ad)",
-          "82.5 + (0.625 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_3"
-      },
-      {
-        "name": "Boomerang Throw",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "5 + (1.25 * ctx.ad)",
-          "45 + (1.25 * ctx.ad)",
-          "85 + (1.25 * ctx.ad)",
-          "125 + (1.25 * ctx.ad)",
-          "165 + (1.25 * ctx.ad)"
+          "50 + (0.06 * ctx.max_health)",
+          "85 + (0.06 * ctx.max_health)",
+          "120 + (0.06 * ctx.max_health)",
+          "155 + (0.06 * ctx.max_health)",
+          "190 + (0.06 * ctx.max_health)"
         ]
       }
     ],
@@ -174,19 +174,19 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "type": "Q",
+        "name": "_3"
       },
       {
-        "name": "Hop",
+        "name": "Boomerang Throw",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "50 + (0.06 * ctx.max_health)",
-          "85 + (0.06 * ctx.max_health)",
-          "120 + (0.06 * ctx.max_health)",
-          "155 + (0.06 * ctx.max_health)",
-          "190 + (0.06 * ctx.max_health)"
+          "5 + (1.25 * ctx.ad)",
+          "45 + (1.25 * ctx.ad)",
+          "85 + (1.25 * ctx.ad)",
+          "125 + (1.25 * ctx.ad)",
+          "165 + (1.25 * ctx.ad)"
         ]
       }
     ]

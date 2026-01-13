@@ -70,6 +70,24 @@
   "abilities": [
     [
       {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Demacian Standard",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "80 + (0.8 * ctx.ap)",
+          "120 + (0.8 * ctx.ap)",
+          "160 + (0.8 * ctx.ap)",
+          "200 + (0.8 * ctx.ap)",
+          "240 + (0.8 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "Q",
         "name": "_1"
       },
@@ -99,24 +117,6 @@
           "200 + (1.8 * ctx.bonus_ad)",
           "325 + (1.8 * ctx.bonus_ad)",
           "450 + (1.8 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_1"
-      },
-      {
-        "name": "Demacian Standard",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "80 + (0.8 * ctx.ap)",
-          "120 + (0.8 * ctx.ap)",
-          "160 + (0.8 * ctx.ap)",
-          "200 + (0.8 * ctx.ap)",
-          "240 + (0.8 * ctx.ap)"
         ]
       }
     ]

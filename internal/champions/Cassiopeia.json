@@ -71,24 +71,6 @@
     [
       {
         "type": "Q",
-        "name": "_2"
-      },
-      {
-        "name": "Noxious Blast",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "75 + (0.65 * ctx.ap)",
-          "110 + (0.65 * ctx.ap)",
-          "145 + (0.65 * ctx.ap)",
-          "180 + (0.65 * ctx.ap)",
-          "215 + (0.65 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
         "name": "_1"
       },
       {
@@ -106,19 +88,19 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "type": "Q",
+        "name": "_2"
       },
       {
-        "name": "Twin Fang",
+        "name": "Noxious Blast",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "20 + (0.55 * ctx.ap)",
-          "40 + (0.55 * ctx.ap)",
-          "60 + (0.55 * ctx.ap)",
-          "80 + (0.55 * ctx.ap)",
-          "100 + (0.55 * ctx.ap)"
+          "75 + (0.65 * ctx.ap)",
+          "110 + (0.65 * ctx.ap)",
+          "145 + (0.65 * ctx.ap)",
+          "180 + (0.65 * ctx.ap)",
+          "215 + (0.65 * ctx.ap)"
         ]
       }
     ],
@@ -158,6 +140,42 @@
     ],
     [
       {
+        "type": "W",
+        "name": "_2"
+      },
+      {
+        "name": "Miasma",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "100 + (0.5 * ctx.ap)",
+          "125 + (0.5 * ctx.ap)",
+          "150 + (0.5 * ctx.ap)",
+          "175 + (0.5 * ctx.ap)",
+          "200 + (0.5 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Twin Fang",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "20 + (0.55 * ctx.ap)",
+          "40 + (0.55 * ctx.ap)",
+          "60 + (0.55 * ctx.ap)",
+          "80 + (0.55 * ctx.ap)",
+          "100 + (0.55 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "E",
         "name": "_2"
       },
@@ -184,24 +202,6 @@
           "112",
           "116",
           "120"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_2"
-      },
-      {
-        "name": "Miasma",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "100 + (0.5 * ctx.ap)",
-          "125 + (0.5 * ctx.ap)",
-          "150 + (0.5 * ctx.ap)",
-          "175 + (0.5 * ctx.ap)",
-          "200 + (0.5 * ctx.ap)"
         ]
       }
     ]

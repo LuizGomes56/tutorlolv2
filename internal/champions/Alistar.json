@@ -70,42 +70,6 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "Void"
-      },
-      {
-        "name": "Pulverize",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "60 + (0.8 * ctx.ap)",
-          "100 + (0.8 * ctx.ap)",
-          "140 + (0.8 * ctx.ap)",
-          "180 + (0.8 * ctx.ap)",
-          "220 + (0.8 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "Void"
-      },
-      {
-        "name": "Headbutt",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "55 + ctx.ap",
-          "110 + ctx.ap",
-          "165 + ctx.ap",
-          "220 + ctx.ap",
-          "275 + ctx.ap"
-        ]
-      }
-    ],
-    [
-      {
         "type": "E",
         "name": "Max"
       },
@@ -137,6 +101,42 @@
           "14 + (0.07 * ctx.ap)",
           "17 + (0.07 * ctx.ap)",
           "20 + (0.07 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "Void"
+      },
+      {
+        "name": "Pulverize",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "60 + (0.8 * ctx.ap)",
+          "100 + (0.8 * ctx.ap)",
+          "140 + (0.8 * ctx.ap)",
+          "180 + (0.8 * ctx.ap)",
+          "220 + (0.8 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "Void"
+      },
+      {
+        "name": "Headbutt",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "55 + ctx.ap",
+          "110 + ctx.ap",
+          "165 + ctx.ap",
+          "220 + ctx.ap",
+          "275 + ctx.ap"
         ]
       }
     ]

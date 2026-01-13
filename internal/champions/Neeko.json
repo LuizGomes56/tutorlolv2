@@ -72,18 +72,18 @@
     [
       {
         "type": "Q",
-        "name": "Max"
+        "name": "Min"
       },
       {
         "name": "Blooming Burst",
         "damage_type": "Magic",
         "attributes": "Area",
         "damage": [
-          "130 + (1.1 * ctx.ap)",
-          "230 + (1.1 * ctx.ap)",
-          "330 + (1.1 * ctx.ap)",
-          "430 + (1.1 * ctx.ap)",
-          "530 + (1.1 * ctx.ap)"
+          "35 + (0.25 * ctx.ap)",
+          "60 + (0.25 * ctx.ap)",
+          "85 + (0.25 * ctx.ap)",
+          "110 + (0.25 * ctx.ap)",
+          "135 + (0.25 * ctx.ap)"
         ]
       }
     ],
@@ -107,6 +107,40 @@
     ],
     [
       {
+        "type": "R",
+        "name": "Void"
+      },
+      {
+        "name": "Pop Blossom",
+        "damage_type": "Magic",
+        "attributes": "Area",
+        "damage": [
+          "150 + (1.2 * ctx.ap)",
+          "350 + (1.2 * ctx.ap)",
+          "550 + (1.2 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "Max"
+      },
+      {
+        "name": "Blooming Burst",
+        "damage_type": "Magic",
+        "attributes": "Area",
+        "damage": [
+          "130 + (1.1 * ctx.ap)",
+          "230 + (1.1 * ctx.ap)",
+          "330 + (1.1 * ctx.ap)",
+          "430 + (1.1 * ctx.ap)",
+          "530 + (1.1 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "Q",
         "name": "_1"
       },
@@ -120,40 +154,6 @@
           "160 + (0.6 * ctx.ap)",
           "210 + (0.6 * ctx.ap)",
           "260 + (0.6 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "Min"
-      },
-      {
-        "name": "Blooming Burst",
-        "damage_type": "Magic",
-        "attributes": "Area",
-        "damage": [
-          "35 + (0.25 * ctx.ap)",
-          "60 + (0.25 * ctx.ap)",
-          "85 + (0.25 * ctx.ap)",
-          "110 + (0.25 * ctx.ap)",
-          "135 + (0.25 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "Void"
-      },
-      {
-        "name": "Pop Blossom",
-        "damage_type": "Magic",
-        "attributes": "Area",
-        "damage": [
-          "150 + (1.2 * ctx.ap)",
-          "350 + (1.2 * ctx.ap)",
-          "550 + (1.2 * ctx.ap)"
         ]
       }
     ],

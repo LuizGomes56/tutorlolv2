@@ -72,6 +72,132 @@
   "abilities": [
     [
       {
+        "type": "Q",
+        "name": "_4"
+      },
+      {
+        "name": "Barrel Roll",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "56 + (0.56 * ctx.ap)",
+          "84 + (0.56 * ctx.ap)",
+          "112 + (0.56 * ctx.ap)",
+          "140 + (0.56 * ctx.ap)",
+          "168 + (0.56 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_3"
+      },
+      {
+        "name": "Barrel Roll",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "80 + (0.8 * ctx.ap)",
+          "120 + (0.8 * ctx.ap)",
+          "160 + (0.8 * ctx.ap)",
+          "200 + (0.8 * ctx.ap)",
+          "240 + (0.8 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_3"
+      },
+      {
+        "name": "Drunken Rage",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "320 + (0.7 * ctx.ap)",
+          "350 + (0.7 * ctx.ap)",
+          "380 + (0.7 * ctx.ap)",
+          "410 + (0.7 * ctx.ap)",
+          "440 + (0.7 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "Barrel Roll",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "84 + (0.84 * ctx.ap)",
+          "126 + (0.84 * ctx.ap)",
+          "168 + (0.84 * ctx.ap)",
+          "210 + (0.84 * ctx.ap)",
+          "252 + (0.84 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_2"
+      },
+      {
+        "name": "Drunken Rage",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "20 + (0.07 * ctx.enemy_max_health) + (0.7 * ctx.ap)",
+          "50 + (0.07 * ctx.enemy_max_health) + (0.7 * ctx.ap)",
+          "80 + (0.07 * ctx.enemy_max_health) + (0.7 * ctx.ap)",
+          "110 + (0.07 * ctx.enemy_max_health) + (0.7 * ctx.ap)",
+          "140 + (0.07 * ctx.enemy_max_health) + (0.7 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Body Slam",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "80 + (0.6 * ctx.ap)",
+          "125 + (0.6 * ctx.ap)",
+          "170 + (0.6 * ctx.ap)",
+          "215 + (0.6 * ctx.ap)",
+          "260 + (0.6 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Barrel Roll",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "120 + (1.2 * ctx.ap)",
+          "180 + (1.2 * ctx.ap)",
+          "240 + (1.2 * ctx.ap)",
+          "300 + (1.2 * ctx.ap)",
+          "360 + (1.2 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "W",
         "name": "_1"
       },
@@ -101,132 +227,6 @@
           "200 + (0.8 * ctx.ap)",
           "300 + (0.8 * ctx.ap)",
           "400 + (0.8 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Barrel Roll",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "120 + (1.2 * ctx.ap)",
-          "180 + (1.2 * ctx.ap)",
-          "240 + (1.2 * ctx.ap)",
-          "300 + (1.2 * ctx.ap)",
-          "360 + (1.2 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_1"
-      },
-      {
-        "name": "Body Slam",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "80 + (0.6 * ctx.ap)",
-          "125 + (0.6 * ctx.ap)",
-          "170 + (0.6 * ctx.ap)",
-          "215 + (0.6 * ctx.ap)",
-          "260 + (0.6 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_3"
-      },
-      {
-        "name": "Barrel Roll",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "80 + (0.8 * ctx.ap)",
-          "120 + (0.8 * ctx.ap)",
-          "160 + (0.8 * ctx.ap)",
-          "200 + (0.8 * ctx.ap)",
-          "240 + (0.8 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_4"
-      },
-      {
-        "name": "Barrel Roll",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "56 + (0.56 * ctx.ap)",
-          "84 + (0.56 * ctx.ap)",
-          "112 + (0.56 * ctx.ap)",
-          "140 + (0.56 * ctx.ap)",
-          "168 + (0.56 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_2"
-      },
-      {
-        "name": "Drunken Rage",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "20 + (0.07 * ctx.enemy_max_health) + (0.7 * ctx.ap)",
-          "50 + (0.07 * ctx.enemy_max_health) + (0.7 * ctx.ap)",
-          "80 + (0.07 * ctx.enemy_max_health) + (0.7 * ctx.ap)",
-          "110 + (0.07 * ctx.enemy_max_health) + (0.7 * ctx.ap)",
-          "140 + (0.07 * ctx.enemy_max_health) + (0.7 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_2"
-      },
-      {
-        "name": "Barrel Roll",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "84 + (0.84 * ctx.ap)",
-          "126 + (0.84 * ctx.ap)",
-          "168 + (0.84 * ctx.ap)",
-          "210 + (0.84 * ctx.ap)",
-          "252 + (0.84 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_3"
-      },
-      {
-        "name": "Drunken Rage",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "320 + (0.7 * ctx.ap)",
-          "350 + (0.7 * ctx.ap)",
-          "380 + (0.7 * ctx.ap)",
-          "410 + (0.7 * ctx.ap)",
-          "440 + (0.7 * ctx.ap)"
         ]
       }
     ]

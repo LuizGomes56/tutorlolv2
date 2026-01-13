@@ -71,16 +71,16 @@
     [
       {
         "type": "R",
-        "name": "_3"
+        "name": "_2"
       },
       {
         "name": "Unleashed Power",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "270 + (0.6 * ctx.ap)",
-          "390 + (0.6 * ctx.ap)",
-          "510 + (0.6 * ctx.ap)"
+          "630 + (1.4 * ctx.ap)",
+          "910 + (1.4 * ctx.ap)",
+          "1190 + (1.4 * ctx.ap)"
         ]
       }
     ],
@@ -123,6 +123,24 @@
     [
       {
         "type": "W",
+        "name": "_2"
+      },
+      {
+        "name": "Force of Will",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "8.4 + (0.092 * ctx.ap)",
+          "12.6 + (0.099 * ctx.ap)",
+          "16.8 + (0.106 * ctx.ap)",
+          "21 + (0.113 * ctx.ap)",
+          "25.2 + (0.12 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
         "name": "_1"
       },
       {
@@ -135,6 +153,22 @@
           "140 + (0.65 * ctx.ap)",
           "175 + (0.65 * ctx.ap)",
           "210 + (0.65 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_3"
+      },
+      {
+        "name": "Unleashed Power",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "270 + (0.6 * ctx.ap)",
+          "390 + (0.6 * ctx.ap)",
+          "510 + (0.6 * ctx.ap)"
         ]
       }
     ],
@@ -169,40 +203,6 @@
           "156.8 + (0.7559999999999999 * ctx.ap)",
           "196 + (0.763 * ctx.ap)",
           "235.2 + (0.77 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_2"
-      },
-      {
-        "name": "Unleashed Power",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "630 + (1.4 * ctx.ap)",
-          "910 + (1.4 * ctx.ap)",
-          "1190 + (1.4 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_2"
-      },
-      {
-        "name": "Force of Will",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "8.4 + (0.092 * ctx.ap)",
-          "12.6 + (0.099 * ctx.ap)",
-          "16.8 + (0.106 * ctx.ap)",
-          "21 + (0.113 * ctx.ap)",
-          "25.2 + (0.12 * ctx.ap)"
         ]
       }
     ]

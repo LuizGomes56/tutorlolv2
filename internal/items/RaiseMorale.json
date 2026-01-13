@@ -11,12 +11,12 @@
       true
     ],
     [
-      "SummonersRift",
+      "Aram",
       true
     ],
     [
-      "Tft",
-      false
+      "SummonersRift",
+      true
     ],
     [
       "SummonersRift",
@@ -31,8 +31,8 @@
       true
     ],
     [
-      "Aram",
-      true
+      "Tft",
+      false
     ]
   ],
   "prettified_stats": [],

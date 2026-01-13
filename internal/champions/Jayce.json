@@ -90,6 +90,25 @@
     ],
     [
       {
+        "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "To the Skies!",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "60 + (1.35 * ctx.bonus_ad)",
+          "105 + (1.35 * ctx.bonus_ad)",
+          "150 + (1.35 * ctx.bonus_ad)",
+          "195 + (1.35 * ctx.bonus_ad)",
+          "240 + (1.35 * ctx.bonus_ad)",
+          "285 + (1.35 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "W",
         "name": "_3"
       },
@@ -142,25 +161,6 @@
           "500",
           "600",
           "700"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_2"
-      },
-      {
-        "name": "To the Skies!",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "60 + (1.35 * ctx.bonus_ad)",
-          "105 + (1.35 * ctx.bonus_ad)",
-          "150 + (1.35 * ctx.bonus_ad)",
-          "195 + (1.35 * ctx.bonus_ad)",
-          "240 + (1.35 * ctx.bonus_ad)",
-          "285 + (1.35 * ctx.bonus_ad)"
         ]
       }
     ]

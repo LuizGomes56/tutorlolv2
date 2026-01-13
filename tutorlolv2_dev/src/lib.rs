@@ -137,7 +137,7 @@ where
                 panic!("[error] Failed to deserialize file bytes for entry: {entry:?}");
             };
 
-            if let Err(e) = (f.clone())(&file_name, data) {
+            if let Err(e) = (f.clone())(file_name.trim_end_matches(".json"), data) {
                 println!("[error] Can't process {file_name:?}: {e:?}");
             }
         });

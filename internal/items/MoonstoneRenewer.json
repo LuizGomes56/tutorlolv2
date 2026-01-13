@@ -11,28 +11,28 @@
       true
     ],
     [
-      "Aram",
-      true
-    ],
-    [
       "SummonersRift",
       true
     ],
     [
-      "Tft",
-      false
+      "Aram",
+      true
     ],
     [
       "Arena",
       false
     ],
     [
-      "NexusBlitz",
-      true
+      "Tft",
+      false
     ],
     [
       "SummonersRift",
       false
+    ],
+    [
+      "NexusBlitz",
+      true
     ]
   ],
   "prettified_stats": [],

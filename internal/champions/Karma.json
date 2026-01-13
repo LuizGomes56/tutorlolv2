@@ -72,6 +72,24 @@
   "abilities": [
     [
       {
+        "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "Inner Flame",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "60 + (0.7 * ctx.ap)",
+          "110",
+          "160",
+          "210",
+          "260"
+        ]
+      }
+    ],
+    [
+      {
         "type": "W",
         "name": "_2"
       },
@@ -103,24 +121,6 @@
           "90",
           "115",
           "140"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_2"
-      },
-      {
-        "name": "Inner Flame",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "60 + (0.7 * ctx.ap)",
-          "110",
-          "160",
-          "210",
-          "260"
         ]
       }
     ]

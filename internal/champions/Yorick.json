@@ -89,24 +89,6 @@
     [
       {
         "type": "E",
-        "name": "_3"
-      },
-      {
-        "name": "Mourning Mist",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "70 + ctx.ap",
-          "105 + ctx.ap",
-          "140 + ctx.ap",
-          "175 + ctx.ap",
-          "210 + ctx.ap"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
         "name": "_2"
       },
       {
@@ -119,6 +101,24 @@
           "(0.07 * ctx.enemy_max_health) + (0.03 * 0.01 * ctx.ap)",
           "(0.075 * ctx.enemy_max_health) + (0.03 * 0.01 * ctx.ap)",
           "(0.08 * ctx.enemy_max_health) + (0.03 * 0.01 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_3"
+      },
+      {
+        "name": "Mourning Mist",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "70 + ctx.ap",
+          "105 + ctx.ap",
+          "140 + ctx.ap",
+          "175 + ctx.ap",
+          "210 + ctx.ap"
         ]
       }
     ],

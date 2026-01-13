@@ -91,18 +91,18 @@
     [
       {
         "type": "W",
-        "name": "_1"
+        "name": "_2"
       },
       {
         "name": "Pillar of Flame",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "93.75 + (0.75 * ctx.ap)",
-          "150 + (0.75 * ctx.ap)",
-          "206.25 + (0.75 * ctx.ap)",
-          "262.5 + (0.75 * ctx.ap)",
-          "318.75 + (0.75 * ctx.ap)"
+          "75 + (0.6 * ctx.ap)",
+          "120 + (0.6 * ctx.ap)",
+          "165 + (0.6 * ctx.ap)",
+          "210 + (0.6 * ctx.ap)",
+          "255 + (0.6 * ctx.ap)"
         ]
       }
     ],
@@ -159,18 +159,18 @@
     [
       {
         "type": "W",
-        "name": "_2"
+        "name": "_1"
       },
       {
         "name": "Pillar of Flame",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "75 + (0.6 * ctx.ap)",
-          "120 + (0.6 * ctx.ap)",
-          "165 + (0.6 * ctx.ap)",
-          "210 + (0.6 * ctx.ap)",
-          "255 + (0.6 * ctx.ap)"
+          "93.75 + (0.75 * ctx.ap)",
+          "150 + (0.75 * ctx.ap)",
+          "206.25 + (0.75 * ctx.ap)",
+          "262.5 + (0.75 * ctx.ap)",
+          "318.75 + (0.75 * ctx.ap)"
         ]
       }
     ]

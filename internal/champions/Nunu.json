@@ -70,40 +70,6 @@
   "abilities": [
     [
       {
-        "type": "R",
-        "name": "_1"
-      },
-      {
-        "name": "Absolute Zero",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "625 + (3 * ctx.ap)",
-          "950 + (3 * ctx.ap)",
-          "1275 + (3 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_2"
-      },
-      {
-        "name": "Snowball Barrage",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "48 + (0.45 * ctx.ap)",
-          "72 + (0.45 * ctx.ap)",
-          "96 + (0.45 * ctx.ap)",
-          "120 + (0.45 * ctx.ap)",
-          "144 + (0.45 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "Q",
         "name": "_2"
       },
@@ -140,19 +106,19 @@
     ],
     [
       {
-        "type": "W",
+        "type": "E",
         "name": "_4"
       },
       {
-        "name": "Biggest Snowball Ever!",
+        "name": "Snowball Barrage",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "11.988 + (0.0999 * ctx.ap)",
-          "14.985 + (0.0999 * ctx.ap)",
-          "17.982 + (0.0999 * ctx.ap)",
-          "20.979 + (0.0999 * ctx.ap)",
-          "23.976 + (0.0999 * ctx.ap)"
+          "144 + (1.35 * ctx.ap)",
+          "216 + (1.35 * ctx.ap)",
+          "288 + (1.35 * ctx.ap)",
+          "360 + (1.35 * ctx.ap)",
+          "432 + (1.35 * ctx.ap)"
         ]
       }
     ],
@@ -195,18 +161,18 @@
     [
       {
         "type": "W",
-        "name": "_2"
+        "name": "_4"
       },
       {
         "name": "Biggest Snowball Ever!",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "36 + (0.3 * ctx.ap)",
-          "45 + (0.3 * ctx.ap)",
-          "54 + (0.3 * ctx.ap)",
-          "63 + (0.3 * ctx.ap)",
-          "72 + (0.3 * ctx.ap)"
+          "11.988 + (0.0999 * ctx.ap)",
+          "14.985 + (0.0999 * ctx.ap)",
+          "17.982 + (0.0999 * ctx.ap)",
+          "20.979 + (0.0999 * ctx.ap)",
+          "23.976 + (0.0999 * ctx.ap)"
         ]
       }
     ],
@@ -230,6 +196,42 @@
     ],
     [
       {
+        "type": "W",
+        "name": "_2"
+      },
+      {
+        "name": "Biggest Snowball Ever!",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "36 + (0.3 * ctx.ap)",
+          "45 + (0.3 * ctx.ap)",
+          "54 + (0.3 * ctx.ap)",
+          "63 + (0.3 * ctx.ap)",
+          "72 + (0.3 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_2"
+      },
+      {
+        "name": "Snowball Barrage",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "48 + (0.45 * ctx.ap)",
+          "72 + (0.45 * ctx.ap)",
+          "96 + (0.45 * ctx.ap)",
+          "120 + (0.45 * ctx.ap)",
+          "144 + (0.45 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "E",
         "name": "_3"
       },
@@ -248,19 +250,17 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_4"
+        "type": "R",
+        "name": "_1"
       },
       {
-        "name": "Snowball Barrage",
+        "name": "Absolute Zero",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "144 + (1.35 * ctx.ap)",
-          "216 + (1.35 * ctx.ap)",
-          "288 + (1.35 * ctx.ap)",
-          "360 + (1.35 * ctx.ap)",
-          "432 + (1.35 * ctx.ap)"
+          "625 + (3 * ctx.ap)",
+          "950 + (3 * ctx.ap)",
+          "1275 + (3 * ctx.ap)"
         ]
       }
     ]
