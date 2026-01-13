@@ -71,7 +71,7 @@
         "damageType": "PHYSICAL_DAMAGE",
         "effects": [
           {
-            "description": "Innate: Upon taking fatal damage, Sion enters stasis for 1.5 seconds to reanimate into a frenzy, restoring 100% of his maximum health but losing 2.3 : 24.4 (based on level) health every 0.264 seconds, increasing by[ 70% of the base value ][ 1.61 : 17.08 (based on level) ]per subsequent tick. Sion's health regeneration and any healing (except life steal) he receives during this time is 0% effective.",
+            "description": "Innate: Upon taking fatal damage, Sion enters stasis for 1.5 seconds to reanimate into a frenzy, restoring 100% of his maximum health but losing 2 : 19 (based on level) health every 0.264 seconds, increasing by[ 70% of the base value ][ 1.4 : 13.3 (based on level) ]per subsequent tick. Sion's health regeneration and any healing (except life steal) he receives during this time is 0% effective.",
             "leveling": []
           },
           {
@@ -247,7 +247,7 @@
             "leveling": []
           },
           {
-            "description": "Recast: Sion flails his axe in the direction he targeted at the time of cast, dealing physical damage to enemies hit and slowing them by 50% for 0.25 seconds. Decimating Smash deals 150% damage against monsters and 60% damage against minions.",
+            "description": "Recast: Sion flails his axe in the direction he targeted at the time of cast, dealing physical damage to enemies hit and slowing them by 50% for 0.25 seconds. Decimating Smash deals 165% damage against monsters and 60% damage against minions.",
             "leveling": [
               {
                 "attribute": "Maximum Minion Damage",
@@ -298,11 +298,11 @@
                       ""
                     ],
                     "values": [
-                      135.0,
-                      232.5,
-                      330.0,
-                      427.5,
-                      525.0
+                      148.5,
+                      255.75,
+                      363.0,
+                      470.25,
+                      577.5
                     ]
                   },
                   {
@@ -314,11 +314,11 @@
                       "% AD"
                     ],
                     "values": [
-                      180.0,
-                      225.0,
-                      270.0,
-                      315.0,
-                      360.0
+                      198.0,
+                      247.5,
+                      297.0,
+                      346.5,
+                      396.0
                     ]
                   }
                 ]
@@ -372,11 +372,11 @@
                       ""
                     ],
                     "values": [
-                      60.0,
-                      90.0,
-                      120.0,
-                      150.0,
-                      180.0
+                      66.0,
+                      99.0,
+                      132.0,
+                      165.0,
+                      198.0
                     ]
                   },
                   {
@@ -388,11 +388,11 @@
                       "% AD"
                     ],
                     "values": [
-                      60.0,
-                      75.0,
-                      90.0,
-                      105.0,
-                      120.0
+                      66.0,
+                      82.5,
+                      99.0,
+                      115.5,
+                      132.0
                     ]
                   }
                 ]
@@ -582,7 +582,7 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "Active: Sion bellows a shockwave in the target direction that deals magic damage to the first enemy hit, slows them for 2.5 seconds and inflicts them with 20% armor reduction for 4 seconds.",
+            "description": "Active: Sion bellows a shockwave in the target direction that deals magic damage to the first enemy hit, slows them for 2.5 seconds and inflicts them with 25% armor reduction for 4 seconds.",
             "leveling": [
               {
                 "attribute": "Magic Damage",
@@ -706,9 +706,9 @@
                       "% bonus AD"
                     ],
                     "values": [
-                      80.0,
-                      80.0,
-                      80.0
+                      120.0,
+                      120.0,
+                      120.0
                     ]
                   }
                 ]
@@ -735,9 +735,9 @@
                       "% bonus AD"
                     ],
                     "values": [
-                      40.0,
-                      40.0,
-                      40.0
+                      60.0,
+                      60.0,
+                      60.0
                     ]
                   }
                 ]
@@ -767,7 +767,7 @@
             ]
           },
           {
-            "description": "Recast: Sion stops charging, causing him to leap forward and slam the ground beneath him as if Unstoppable Onslaught had reached the end of its duration.",
+            "description": "Recast: Sion leaps forward, causing him to stop charging and slam the ground beneath him as if Unstoppable Onslaught had reached the end of its duration.",
             "leveling": []
           },
           {

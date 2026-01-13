@@ -71,7 +71,7 @@
         "damageType": null,
         "effects": [
           {
-            "description": "Innate: Enemy champions that die will leave behind a Soul Fragment for 16 seconds. Swain's ravens will collect nearby dropped Soul Fragments, as well as rip the Soul Fragments out of champions hit by Vision of Empire or Nevermove's recast. Once a raven has collected a Soul Fragment, it will fly towards Swain to grant it to him, while also granting sight of its surroundings during the travel.\nSoul Fragment: For each stack, Swain gains 15 bonus health permanently. Upon claiming the fragment, he will heal for 3% : 6% (based on level) of his maximum health.",
+            "description": "Innate: Enemy champions that die will leave behind a Soul Fragment for 16 seconds. Swain's ravens will collect nearby dropped Soul Fragments, as well as rip the Soul Fragments out of champions hit by Vision of Empire or Nevermove's recast. Once a raven has collected a Soul Fragment, it will fly towards Swain to grant it to him, while also granting sight of its surroundings during the travel.\nSoul Fragment: For each stack, Swain gains 15 bonus health permanently. Upon claiming the fragment, he will heal for 6% of his maximum health.",
             "leveling": []
           }
         ],
@@ -400,11 +400,11 @@
                       ""
                     ],
                     "values": [
-                      80.0,
-                      120.0,
-                      160.0,
-                      200.0,
-                      240.0
+                      90.0,
+                      130.0,
+                      170.0,
+                      210.0,
+                      250.0
                     ]
                   },
                   {
@@ -428,7 +428,7 @@
             ]
           },
           {
-            "description": "Recast: Swain pulls the rooted champions over 290 units and collects a Soul Fragment from each of them. If the targets would be brought past Swain, they are instead knocked back the excess distance.",
+            "description": "Recast: Swain pulls the rooted champions over 290 units and collects a Soul Fragment from each of them, revealing himself for 5 seconds. If the targets would be pulled past Swain, they rebound off of him instead, knocking them back the excess distance.",
             "leveling": []
           }
         ],
@@ -461,7 +461,7 @@
             "leveling": []
           },
           {
-            "description": "After 2 seconds, Swain gains the ability to cast Demonflare, up to 100 times, and does so automatically when Demonic Ascension expires.",
+            "description": "After 2 seconds, Swain gains the ability to cast Demonflare, up to 100 times, and does so automatically when Demonic Ascension expires if Demonflare is not on cooldown.",
             "leveling": []
           },
           {

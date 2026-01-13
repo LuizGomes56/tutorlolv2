@@ -503,7 +503,7 @@
             ]
           },
           {
-            "description": "Recast - Arcane Barrage: Xerath catapults an arcane missile that strikes the target location after a 0.627 seconds delay, briefly granting sight of the area and dealing magic damage to enemies hit. Each cast has a static cooldown of 0.5 seconds.",
+            "description": "Recast - Arcane Barrage: Xerath catapults an arcane missile that strikes the target location after a 0.627 seconds delay, briefly granting sight of the area and dealing magic damage to enemies hit. Each cast has a static cooldown of 0.5 seconds. After catapulting the first missile, Xerath will reveal himself while there are enemy champions within Rite of the Arcane's range.",
             "leveling": [
               {
                 "attribute": "Magic Damage",
@@ -566,7 +566,7 @@
             ]
           },
           {
-            "description": "Xerath will reveal himself if a missile strikes near an enemy.",
+            "description": "When there are no enemy champions nearby, Xerath will reveal himself for a couple of seconds if a missile strikes within a distance of an enemy unit.",
             "leveling": [
               {
                 "attribute": "Impact Distance to Reveal",

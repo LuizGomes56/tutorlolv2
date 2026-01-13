@@ -8,22 +8,18 @@
   "maps": [
     [
       "SummonersRift",
-      true
+      false
+    ],
+    [
+      "Tft",
+      false
     ],
     [
       "SummonersRift",
-      false
-    ],
-    [
-      "Arena",
-      false
+      true
     ],
     [
       "Aram",
-      true
-    ],
-    [
-      "SummonersRift",
       true
     ],
     [
@@ -31,11 +27,28 @@
       true
     ],
     [
-      "Tft",
+      "Arena",
       false
+    ],
+    [
+      "SummonersRift",
+      true
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "MagicResist",
+      "value": 55
+    },
+    {
+      "name": "MoveSpeed",
+      "value": 4
+    },
+    {
+      "name": "Health",
+      "value": 400
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

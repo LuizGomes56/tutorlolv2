@@ -48,11 +48,11 @@
       "perLevel": 0.0
     },
     "aramDamageTaken": {
-      "flat": 1.02,
+      "flat": 1.0,
       "perLevel": 0.0
     },
     "aramDamageDealt": {
-      "flat": 0.95,
+      "flat": 1.0,
       "perLevel": 0.0
     },
     "urfDamageTaken": {
@@ -71,11 +71,11 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "Darkness Rise: Mordekaiser gains 3% / 6% / 9% (based on level) bonus movement speed and deals[ 5 (+ 30% AP) (+ 1% : 5% (based on level) of target's maximum health) magic damage every second ][ 0.625 (+ 3.75% AP) (+ 0.13% : 0.63% (based on level) of target's maximum health) magic damage every 0.125 seconds ]to nearby enemies. Against monsters, the damage is capped at[ 40 : 200 (based on level) per second. ][ 5 : 25 (based on level) per 0.125 seconds. ]",
+            "description": "Darkness Rise: Mordekaiser gains 3% / 6% / 9% / 12% (based on level) bonus movement speed and deals[ 5 (+ 30% AP) (+ 1% : 5% (based on level) of target's maximum health) magic damage every second ][ 0.625 (+ 3.75% AP) (+ 0.13% : 0.63% (based on level) of target's maximum health) magic damage every 0.125 seconds ]to nearby enemies. Against monsters, the damage is capped at[ 40 : 200 (based on level) per second. ][ 5 : 25 (based on level) per 0.125 seconds. ]",
             "leveling": []
           },
           {
-            "description": "Innate: Mordekaiser generates a stack for each enemy champion or large monster hit by his damaging basic attacks or basic abilities, lasting for 4 seconds, refreshing on subsequent hits, and stacking up to 3 times. At 3 stacks, he gains Darkness Rise.",
+            "description": "Innate: Mordekaiser generates a stack for each enemy champion or large monster damaged by his basic attacks or basic abilities, lasting for 4 seconds, refreshing on subsequent triggers, and stacking up to 3 times. At 3 stacks, he gains Darkness Rise.",
             "leveling": []
           },
           {
@@ -194,6 +194,22 @@
                       150.0,
                       185.0,
                       220.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      120.0,
+                      120.0,
+                      120.0,
+                      120.0,
+                      120.0
                     ]
                   },
                   {
@@ -402,7 +418,7 @@
         "damageType": null,
         "effects": [
           {
-            "description": "Active: Mordekaiser aims his mace towards the target enemy champion, slowing them by 75% and revealing them over the cast time, and then banishing them with him to the Death Realm for 7 seconds. Mordekaiser also consumes the target's soul for 7 seconds, healing himself for 10% of their maximum health and reducing their current attack damage, ability power, total attack speed, maximum health, armor, magic resist, and size by 10%, in addition to gaining them for himself. If the target dies while inside the Death Realm, Mordekaiser keeps their partial stats until they respawn.",
+            "description": "Active: Mordekaiser aims his mace towards the target enemy champion, slowing them by 75% and revealing them over the cast time, and then banishing them with him to the Death Realm for 7 seconds. Mordekaiser also consumes the target's soul for 7 seconds, healing himself for 10% of their maximum health and reducing their current ability power, total attack speed, maximum health, armor, magic resistance, and size by 10% for the duration. Additionally, the target's base attack damage is reduced by 10% of their current total AD for the same duration. Mordekaiser gains the reduced stats of the target for himself for the same duration, and if the target dies while inside the Death Realm, he keeps their partial stats until they respawn.",
             "leveling": []
           },
           {
@@ -410,7 +426,7 @@
             "leveling": []
           },
           {
-            "description": "Units between realms see each other as spirits, considering each other dead and negating any interactions between each other. Only Mordekaiser and the target will enter the realm; other champions cannot follow them. Everything that occurs inside the Death Realm is hidden to units outside of it, and vice versa. All pets still inside the realm are killed at its end.",
+            "description": "Units between realms see each other as spirits, considering each other dead and negating any interactions between each other. Only Mordekaiser and the target will enter the realm; other champions cannot follow them. Everything that occurs inside the Death Realm is hidden to units outside of it, and vice versa. Most pets still inside the realm are killed at its end.",
             "leveling": []
           }
         ],

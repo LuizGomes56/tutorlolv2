@@ -7,7 +7,7 @@
   "passives": [
     {
       "effects": "Grants nearby minions (excluding super minions) {{as|35 armor}} and {{as|35 magic resistance}}.",
-      "name": null,
+      "name": "Super Mech Power Field",
       "unique": true
     }
   ],

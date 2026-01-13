@@ -71,24 +71,6 @@
   "abilities": [
     [
       {
-        "type": "E",
-        "name": "_2"
-      },
-      {
-        "name": "Unraveled Earth",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "62.5 + (0.75 * ctx.ap)",
-          "112.5 + (0.75 * ctx.ap)",
-          "162.5 + (0.75 * ctx.ap)",
-          "212.5 + (0.75 * ctx.ap)",
-          "262.5 + (0.75 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "Q",
         "name": "_1"
       },
@@ -102,6 +84,24 @@
           "93 + (0.5 * ctx.ap)",
           "111.5 + (0.5 * ctx.ap)",
           "130 + (0.5 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_3"
+      },
+      {
+        "name": "Unraveled Earth",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "25 + (0.3 * ctx.ap)",
+          "45 + (0.3 * ctx.ap)",
+          "65 + (0.3 * ctx.ap)",
+          "85 + (0.3 * ctx.ap)",
+          "105 + (0.3 * ctx.ap)"
         ]
       }
     ],
@@ -125,19 +125,19 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_3"
+        "type": "Q",
+        "name": "_4"
       },
       {
-        "name": "Unraveled Earth",
+        "name": "Threaded Volley",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "25 + (0.3 * ctx.ap)",
-          "45 + (0.3 * ctx.ap)",
-          "65 + (0.3 * ctx.ap)",
-          "85 + (0.3 * ctx.ap)",
-          "105 + (0.3 * ctx.ap)"
+          "100.8 + (0.9 * ctx.ap)",
+          "134.1 + (0.9 * ctx.ap)",
+          "167.4 + (0.9 * ctx.ap)",
+          "200.7 + (0.9 * ctx.ap)",
+          "234 + (0.9 * ctx.ap)"
         ]
       }
     ],
@@ -179,19 +179,19 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_4"
+        "type": "E",
+        "name": "_2"
       },
       {
-        "name": "Threaded Volley",
+        "name": "Unraveled Earth",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "100.8 + (0.9 * ctx.ap)",
-          "134.1 + (0.9 * ctx.ap)",
-          "167.4 + (0.9 * ctx.ap)",
-          "200.7 + (0.9 * ctx.ap)",
-          "234 + (0.9 * ctx.ap)"
+          "62.5 + (0.75 * ctx.ap)",
+          "112.5 + (0.75 * ctx.ap)",
+          "162.5 + (0.75 * ctx.ap)",
+          "212.5 + (0.75 * ctx.ap)",
+          "262.5 + (0.75 * ctx.ap)"
         ]
       }
     ]

@@ -7,12 +7,20 @@
   "tier": 3,
   "maps": [
     [
-      "Arena",
-      true
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
     ],
     [
       "Aram",
       true
+    ],
+    [
+      "NexusBlitz",
+      false
     ],
     [
       "Tft",
@@ -23,19 +31,24 @@
       false
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "NexusBlitz",
-      false
+      "Arena",
+      true
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AbilityPower",
+      "value": 300
+    },
+    {
+      "name": "Armor",
+      "value": 50
+    },
+    {
+      "name": "AbilityHaste",
+      "value": 20
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

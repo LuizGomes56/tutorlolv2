@@ -11,7 +11,15 @@
       false
     ],
     [
+      "NexusBlitz",
+      true
+    ],
+    [
       "Arena",
+      false
+    ],
+    [
+      "SummonersRift",
       false
     ],
     [
@@ -20,22 +28,19 @@
     ],
     [
       "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
       true
     ],
     [
       "SummonersRift",
-      true
-    ],
-    [
-      "NexusBlitz",
       true
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "MoveSpeed",
+      "value": 55
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

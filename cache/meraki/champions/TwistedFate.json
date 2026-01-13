@@ -365,7 +365,7 @@
             "leveling": []
           },
           {
-            "description": "Recast: Twisted Fate empowers his next basic attack within 6 seconds to have a 0.25-second cast time, deal modified magic damage, and apply an additional effect based on the card selected. This damage cannot critically strike but is increased based on critical strike chance.",
+            "description": "Recast: Twisted Fate empowers his next basic attack within 6 seconds to have a 0.25-second cast time, deal modified magic damage, and apply an additional effect based on the card selected. This attack cannot critically strike but its damage is increased based on critical strike chance.",
             "leveling": []
           },
           {

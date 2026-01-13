@@ -75,7 +75,7 @@
             "leveling": []
           },
           {
-            "description": "Talon's next basic attack against an enemy with 3 Wound stacks is empowered to consume them all to cause the target to bleed, dealing[ 80 : 280 (based on level) (+ 210% bonus AD) total physical damage over 2 seconds, ][ 5 : 17.5 (based on level) (+ 13.125% bonus AD) physical damage every 0.125 seconds over 2 seconds, ]increased to 110% damage against monsters. The target cannot gain Wound stacks during this time.",
+            "description": "Talon's next basic attack against an enemy with 3 Wound stacks is empowered to consume them all to cause the target to bleed, dealing[ 80 : 280 (based on level) (+ 210% bonus AD) total physical damage over 2 seconds ][ 5 : 17.5 (based on level) (+ 13.125% bonus AD) physical damage every 0.125 seconds over 2 seconds ]. The target cannot gain Wound stacks during this time.",
             "leveling": []
           }
         ],
@@ -108,7 +108,7 @@
         "damageType": "PHYSICAL_DAMAGE",
         "effects": [
           {
-            "description": "Active: Talon dashes toward the target enemy, stabbing the target upon arrival to deal physical damage. If cast within close range, Talon dashes to the target over the cast time instead and Noxian Diplomacy critically strikes for (150% + 40%) damage, as well as grants him 75 bonus attack range on his next basic attack within 1 second.",
+            "description": "Active: Talon dashes toward the target enemy, stabbing the target upon arrival to deal physical damage. If cast within close range, Talon dashes to the target over the cast time instead and Noxian Diplomacy critically strikes for (150% + 30%) damage, as well as grants him 75 bonus attack range on his next basic attack within 1 second.",
             "leveling": [
               {
                 "attribute": "Critical Physical Damage",

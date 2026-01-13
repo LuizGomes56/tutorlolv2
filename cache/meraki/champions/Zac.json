@@ -255,15 +255,15 @@
             "leveling": []
           },
           {
-            "description": "If the two Stretching Strikes affect different targets, both are rooted for 0.5 seconds while the secondary target is dealt the initial damage and applied the same slow. After a 0.4-second delay, Zac displaces them toward each other over 300-units, though not through terrain.",
+            "description": "If the two Stretching Strikes affect different targets, both are knocked down and rooted for 0.5 seconds while the secondary target is dealt the initial magic damage and applied the same slow. After a 0.4-second delay, Zac displaces them toward each other over 300 units, though not through terrain.",
             "leveling": []
           },
           {
-            "description": "If the two targets are near each other, they are instead slammed together through the displacement. Upon impact of each other, both targets are knocked up and stunned for 0.25 seconds and all enemies within the impact are dealt the initial magic damage and applied the same slow.",
+            "description": "If the two targets are within 700 units of each other, they are instead slammed together through the displacement. Upon impact of each other, both targets are knocked up and stunned for 0.25 seconds and all enemies within the impact are dealt the initial magic damage and applied the same slow.",
             "leveling": []
           },
           {
-            "description": "While the tether persists, Zac's next basic attack is replaced by a second Stretching Strike, empowering it to have a 0.25-second cast time and gain 25 bonus attack range. This attack cannot critically strike.",
+            "description": "While the tether persists, Zac's next basic attack is replaced by a second Stretching Strike, empowering it to have a 0.25-second cast time and gain 25 bonus attack range. This attack cannot critically strike, nor apply on-hit effects.",
             "leveling": []
           }
         ],
@@ -296,7 +296,7 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "Active: Zac explodes to deal magic damage to nearby enemies, capped against minions and monsters.",
+            "description": "Active: Zac explodes to deal magic damage to nearby enemies, the damage based on the target's max health ratio is capped at 200 against minions and monsters.",
             "leveling": [
               {
                 "attribute": "Capped Non-Champion Damage",
@@ -493,14 +493,39 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "Active: Zac bounces after the cast time, then bounces 3 additional times each second over 3 seconds, during which he also gains 20% : 50% (based on duration) bonus movement speed but becomes unable to declare basic attacks and cast Stretching Strikes and Elastic Slingshot.",
-            "leveling": []
-          },
-          {
-            "description": "An enemy can be hit by multiple bounces, but ones beyond the first deal 50% damage to them and do not apply the knock back.",
+            "description": "Active: Zac bounces after the cast time, then bounces 3 additional times each second over 3 seconds. Each bounce deals magic damage to enemies hit, knocks them back over 1 second, and slows them by 20% for the same duration. An enemy can be hit by multiple bounces, but ones beyond the first deal 50% damage to them and do not apply the knock back.",
             "leveling": [
               {
-                "attribute": "Reduced Damage",
+                "attribute": "Primary Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      140.0,
+                      210.0,
+                      280.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      40.0,
+                      40.0,
+                      40.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Reduced Magic Damage",
                 "modifiers": [
                   {
                     "units": [
@@ -560,38 +585,8 @@
             ]
           },
           {
-            "description": "Each bounce deals magic damage to enemies hit, knocks them back over 1 second, and slows them by 20% for the same duration.",
-            "leveling": [
-              {
-                "attribute": "Magic Damage",
-                "modifiers": [
-                  {
-                    "units": [
-                      "",
-                      "",
-                      ""
-                    ],
-                    "values": [
-                      140.0,
-                      210.0,
-                      280.0
-                    ]
-                  },
-                  {
-                    "units": [
-                      "% AP",
-                      "% AP",
-                      "% AP"
-                    ],
-                    "values": [
-                      40.0,
-                      40.0,
-                      40.0
-                    ]
-                  }
-                ]
-              }
-            ]
+            "description": "Zac can move while Let's Bounce! is active, gaining ghosting and 20% : 50% (based on duration) bonus movement speed, but becomes unable to declare basic attacks, Stretching Strikes, and Elastic Slingshot. He also automatically consumes all chunks within the bounce radius.",
+            "leveling": []
           }
         ],
         "name": "Let's Bounce!"

@@ -104,7 +104,7 @@
         "damageType": "PHYSICAL_DAMAGE",
         "effects": [
           {
-            "description": "Active: Vayne dashes a fixed distance in the target direction, though not through terrain, and empowers her next basic attack within 3 seconds to have an uncancelable windup and deal bonus physical damage.",
+            "description": "Active: Vayne dashes a fixed distance in the target direction, though not through terrain, and empowers her next basic attack within 3 seconds to have an uncancellable windup and deal bonus physical damage.",
             "leveling": [
               {
                 "attribute": "Bonus Physical Damage",
@@ -163,7 +163,33 @@
             "leveling": []
           },
           {
-            "description": "The third stack consumes them all to deal bonus true damage, with a minimum threshold. This damage is capped at 200 against monsters.",
+            "description": "Silver Bolts deals modified damage against monsters.",
+            "leveling": [
+              {
+                "attribute": "Monster Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      140.0,
+                      155.0,
+                      170.0,
+                      185.0,
+                      200.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "The third stack consumes them all to deal bonus true damage, with a minimum threshold.",
             "leveling": [
               {
                 "attribute": "Bonus True Damage",

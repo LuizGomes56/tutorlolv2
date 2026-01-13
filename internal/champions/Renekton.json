@@ -88,35 +88,19 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "type": "Q",
+        "name": "_2"
       },
       {
-        "name": "Ruthless Predator",
+        "name": "Cull the Meek",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "5 + (0.75 * ctx.ad)",
-          "20 + (0.75 * ctx.ad)",
-          "35 + (0.75 * ctx.ad)",
-          "50 + (0.75 * ctx.ad)",
-          "65 + (0.75 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_1"
-      },
-      {
-        "name": "Dominus",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "30 + (0.05 * ctx.bonus_ad) + (0.05 * ctx.ap)",
-          "75 + (0.05 * ctx.bonus_ad) + (0.05 * ctx.ap)",
-          "120 + (0.05 * ctx.bonus_ad) + (0.05 * ctx.ap)"
+          "60 + ctx.bonus_ad",
+          "90 + ctx.bonus_ad",
+          "120 + ctx.bonus_ad",
+          "150 + ctx.bonus_ad",
+          "180 + ctx.bonus_ad"
         ]
       }
     ],
@@ -140,37 +124,37 @@
     ],
     [
       {
-        "type": "Q",
+        "type": "W",
         "name": "_1"
       },
       {
-        "name": "Cull the Meek",
+        "name": "Ruthless Predator",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "90 + (1.4 * ctx.bonus_ad)",
-          "135 + (1.4 * ctx.bonus_ad)",
-          "180 + (1.4 * ctx.bonus_ad)",
-          "225 + (1.4 * ctx.bonus_ad)",
-          "270 + (1.4 * ctx.bonus_ad)"
+          "5 + (0.75 * ctx.ad)",
+          "20 + (0.75 * ctx.ad)",
+          "35 + (0.75 * ctx.ad)",
+          "50 + (0.75 * ctx.ad)",
+          "65 + (0.75 * ctx.ad)"
         ]
       }
     ],
     [
       {
-        "type": "Q",
+        "type": "W",
         "name": "_2"
       },
       {
-        "name": "Cull the Meek",
+        "name": "Ruthless Predator",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "60 + ctx.bonus_ad",
-          "90 + ctx.bonus_ad",
-          "120 + ctx.bonus_ad",
-          "150 + ctx.bonus_ad",
-          "180 + ctx.bonus_ad"
+          "10 + (1.5 * ctx.ad)",
+          "40 + (1.5 * ctx.ad)",
+          "70 + (1.5 * ctx.ad)",
+          "100 + (1.5 * ctx.ad)",
+          "130 + (1.5 * ctx.ad)"
         ]
       }
     ],
@@ -192,19 +176,35 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_2"
+        "type": "Q",
+        "name": "_1"
       },
       {
-        "name": "Ruthless Predator",
+        "name": "Cull the Meek",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "10 + (1.5 * ctx.ad)",
-          "40 + (1.5 * ctx.ad)",
-          "70 + (1.5 * ctx.ad)",
-          "100 + (1.5 * ctx.ad)",
-          "130 + (1.5 * ctx.ad)"
+          "90 + (1.4 * ctx.bonus_ad)",
+          "135 + (1.4 * ctx.bonus_ad)",
+          "180 + (1.4 * ctx.bonus_ad)",
+          "225 + (1.4 * ctx.bonus_ad)",
+          "270 + (1.4 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Dominus",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "30 + (0.05 * ctx.bonus_ad) + (0.05 * ctx.ap)",
+          "75 + (0.05 * ctx.bonus_ad) + (0.05 * ctx.ap)",
+          "120 + (0.05 * ctx.bonus_ad) + (0.05 * ctx.ap)"
         ]
       }
     ]

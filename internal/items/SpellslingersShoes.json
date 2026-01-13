@@ -8,19 +8,15 @@
   "maps": [
     [
       "SummonersRift",
-      false
-    ],
-    [
-      "NexusBlitz",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
       true
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "Aram",
+      false
     ],
     [
       "Tft",
@@ -31,11 +27,24 @@
       false
     ],
     [
-      "Aram",
+      "SummonersRift",
+      false
+    ],
+    [
+      "NexusBlitz",
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "MagicPenetration",
+      "value": 8
+    },
+    {
+      "name": "MoveSpeed",
+      "value": 45
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

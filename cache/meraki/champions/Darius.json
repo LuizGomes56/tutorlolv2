@@ -195,7 +195,7 @@
             ]
           },
           {
-            "description": "Against champions and large monsters hit, Darius heals for 17% : 51% (based on number of targets hit by the outer radius) of his missing health. Enemies hit by the inner radius do not refresh the duration of or gain a new stack of Hemorrhage.",
+            "description": "Against champions and large monsters hit, Darius heals for 17% : 51% (based on number of targets hit by the outer radius) of his missing health. Enemies hit by the inner radius do not refresh the duration of or gain a stack of Hemorrhage.",
             "leveling": []
           },
           {
@@ -454,7 +454,7 @@
             "leveling": []
           },
           {
-            "description": "If the target dies within 0.15 seconds after being hit by Noxian Guillotine, Darius fears nearby minions and monsters for 3 seconds, during which they are gradually slowed by up to 99% over the duration. He can also recast the ability within 20 seconds at no cost, which refreshes on further executions.",
+            "description": "If the target dies within 0.15 seconds after being hit by Noxian Guillotine, Darius fears nearby minions and monsters for 3 seconds, during which they are gradually slowed by up to 99% over the duration. He can also recast the ability within 20 seconds at no cost, which refreshes on further successful executions.",
             "leveling": []
           }
         ],

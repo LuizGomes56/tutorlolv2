@@ -21,7 +21,7 @@
     },
     "attackDamage": {
       "flat": 59.0,
-      "perLevel": 2.7
+      "perLevel": 3.2
     },
     "attackSpeed": {
       "flat": 0.668,
@@ -71,16 +71,8 @@
           "attribute": null,
           "modifiers": [
             {
-              "units": [
-                " x (0.99 ^ critical strike chance %)",
-                " x (0.99 ^ critical strike chance %)",
-                " x (0.99 ^ critical strike chance %)"
-              ],
-              "values": [
-                8.0,
-                8.0,
-                8.0
-              ]
+              "units": [],
+              "values": []
             }
           ]
         },
@@ -91,7 +83,7 @@
             "leveling": []
           },
           {
-            "description": "Quinn's basic attacks against Vulnerable targets are empowered to consume the mark to deal 10 : 95 (based on level) (+ 16% : 50% (based on level) AD) bonus physical damage.",
+            "description": "Quinn's basic attacks against Vulnerable targets are empowered to consume the mark to deal 15 : 120 (based on level) (+ 40% bonus AD) bonus physical damage.",
             "leveling": []
           },
           {
@@ -159,10 +151,10 @@
                     ],
                     "values": [
                       80.0,
+                      85.0,
                       90.0,
-                      100.0,
-                      110.0,
-                      120.0
+                      95.0,
+                      100.0
                     ]
                   },
                   {
@@ -392,7 +384,7 @@
             ]
           },
           {
-            "description": "Once Behind Enemy Lines has been learned, respawning or returning to the allied summoning platform will spawn Valor instantly.",
+            "description": "Once Behind Enemy Lines has been learned, respawning or entering any summoning platform will spawn Valor instantly.",
             "leveling": []
           },
           {
@@ -411,8 +403,38 @@
         "damageType": "PHYSICAL_DAMAGE",
         "effects": [
           {
-            "description": "Active: Quinn detaches from Valor, ending Behind Enemy Lines' effects and raining arrows down around her, dealing 70% AD physical damage to nearby enemies and marking them as Vulnerable.",
-            "leveling": []
+            "description": "Active: Quinn detaches from Valor, ending Behind Enemy Lines' effects and raining arrows down around her, dealing physical damage to nearby enemies and marking them as Vulnerable.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      60.0,
+                      90.0,
+                      120.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      35.0,
+                      35.0,
+                      35.0
+                    ]
+                  }
+                ]
+              }
+            ]
           },
           {
             "description": "Declaring a basic attack or casting Blinding Assault or Vault during Behind Enemy Lines automatically activates Skystrike.",

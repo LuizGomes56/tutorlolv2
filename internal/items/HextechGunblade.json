@@ -11,19 +11,11 @@
       false
     ],
     [
-      "Arena",
-      true
+      "NexusBlitz",
+      false
     ],
     [
       "Aram",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "NexusBlitz",
       false
     ],
     [
@@ -33,9 +25,30 @@
     [
       "SummonersRift",
       false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "Arena",
+      true
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AttackDamage",
+      "value": 45
+    },
+    {
+      "name": "Omnivamp",
+      "value": 15
+    },
+    {
+      "name": "AbilityPower",
+      "value": 90
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

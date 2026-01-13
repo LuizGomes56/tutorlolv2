@@ -1,7 +1,7 @@
 {
   "active": [],
   "buildsFrom": [
-    1037,
+    3057,
     3133,
     1018
   ],
@@ -10,8 +10,8 @@
   "tier": 3,
   "passives": [
     {
-      "effects": "Basic attacks [[on-hit]] restore {{as|15|mana}} {{as|(+ 10% '''bonus''' AD)|ad}} {{as|mana}}.",
-      "name": "Essence Drain",
+      "effects": "After using an [[Champion ability|ability]], your next basic attack within 10 seconds deals {{as|125% '''base''' AD}} {{as|(+ 50% critical strike chance)}} {{as|'''bonus''' physical damage}} [[on-hit]] and restores {{as|mana}} equal to{{ft|50% of that amount|{{as|{{ap|125*0.5}}% '''base''' AD}} {{as|(+ {{ap|50*0.5}}% critical strike chance)}}}}({{fd|1.5}} second cooldown, starts after using the empowered attack).",
+      "name": "Spellblade",
       "unique": true
     }
   ],
@@ -34,7 +34,7 @@
       "percent": 0.0
     },
     "attackDamage": {
-      "flat": 60.0,
+      "flat": 50.0,
       "percent": 0.0
     },
     "attackSpeed": {
@@ -77,7 +77,7 @@
   "shop": {
     "purchasable": true,
     "prices": {
-      "total": 2900
+      "total": 3050
     }
   }
 }

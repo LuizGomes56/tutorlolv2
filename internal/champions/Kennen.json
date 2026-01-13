@@ -71,18 +71,18 @@
     [
       {
         "type": "E",
-        "name": "_2"
+        "name": "_1"
       },
       {
         "name": "Lightning Rush",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "52 + (0.52 * ctx.ap)",
-          "78 + (0.52 * ctx.ap)",
-          "104 + (0.52 * ctx.ap)",
-          "130 + (0.52 * ctx.ap)",
-          "156 + (0.52 * ctx.ap)"
+          "80 + (0.8 * ctx.ap)",
+          "120 + (0.8 * ctx.ap)",
+          "160 + (0.8 * ctx.ap)",
+          "200 + (0.8 * ctx.ap)",
+          "240 + (0.8 * ctx.ap)"
         ]
       }
     ],
@@ -106,17 +106,19 @@
     ],
     [
       {
-        "type": "R",
+        "type": "E",
         "name": "_2"
       },
       {
-        "name": "Slicing Maelstrom",
+        "name": "Lightning Rush",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "40 + (0.225 * ctx.ap)",
-          "75 + (0.225 * ctx.ap)",
-          "110 + (0.225 * ctx.ap)"
+          "52 + (0.52 * ctx.ap)",
+          "78 + (0.52 * ctx.ap)",
+          "104 + (0.52 * ctx.ap)",
+          "130 + (0.52 * ctx.ap)",
+          "156 + (0.52 * ctx.ap)"
         ]
       }
     ],
@@ -138,19 +140,17 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "type": "R",
+        "name": "_2"
       },
       {
-        "name": "Electrical Surge",
+        "name": "Slicing Maelstrom",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "70 + (0.8 * ctx.ap)",
-          "95 + (0.8 * ctx.ap)",
-          "120 + (0.8 * ctx.ap)",
-          "145 + (0.8 * ctx.ap)",
-          "170 + (0.8 * ctx.ap)"
+          "40 + (0.225 * ctx.ap)",
+          "75 + (0.225 * ctx.ap)",
+          "110 + (0.225 * ctx.ap)"
         ]
       }
     ],
@@ -174,19 +174,19 @@
     ],
     [
       {
-        "type": "E",
+        "type": "W",
         "name": "_1"
       },
       {
-        "name": "Lightning Rush",
+        "name": "Electrical Surge",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "80 + (0.8 * ctx.ap)",
+          "70 + (0.8 * ctx.ap)",
+          "95 + (0.8 * ctx.ap)",
           "120 + (0.8 * ctx.ap)",
-          "160 + (0.8 * ctx.ap)",
-          "200 + (0.8 * ctx.ap)",
-          "240 + (0.8 * ctx.ap)"
+          "145 + (0.8 * ctx.ap)",
+          "170 + (0.8 * ctx.ap)"
         ]
       }
     ]

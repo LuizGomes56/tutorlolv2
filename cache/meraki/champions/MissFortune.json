@@ -4,8 +4,8 @@
   "adaptiveType": "PHYSICAL_DAMAGE",
   "stats": {
     "health": {
-      "flat": 640.0,
-      "perLevel": 103.0
+      "flat": 625.0,
+      "perLevel": 100.0
     },
     "mana": {
       "flat": 300.0,
@@ -20,7 +20,7 @@
       "perLevel": 1.3
     },
     "attackDamage": {
-      "flat": 53.0,
+      "flat": 55.0,
       "perLevel": 2.4
     },
     "attackSpeed": {
@@ -162,7 +162,7 @@
             ]
           },
           {
-            "description": "Double Up's bounce is affected by critical strike modifiers. If Double Up kills the primary target, the bounce will critically strike.",
+            "description": "Double Up's bounce can critically strike for[ (150% + 15%) damage. ][ 50% bonus critical damage. ]If Double Up kills the primary target, the bounce will critically strike.",
             "leveling": []
           },
           {
@@ -229,7 +229,7 @@
             "leveling": []
           },
           {
-            "description": "Passive: Miss Fortune gains bonus movement speed after 4 seconds without taking non- persistent damage. This bonus is increased after another 3 seconds, and is granted instantly whenever Strut is cast or upon respawning.",
+            "description": "Passive: Miss Fortune gains bonus movement speed after 4 seconds without taking non- persistent damage. This bonus is increased after another 3 seconds, and is granted instantly whenever Strut is cast.",
             "leveling": [
               {
                 "attribute": "Bonus Movement Speed",
@@ -409,11 +409,23 @@
         "damageType": "PHYSICAL_DAMAGE",
         "effects": [
           {
-            "description": "Active: Miss Fortune channels for up to 3 seconds, firing a number of waves of bullets in the target direction. Each wave is in a spread of 6 projectiles that deals 75% AD (+ 25% AP) physical damage to enemies hit.",
+            "description": "Active: Miss Fortune channels for up to 3 seconds, firing a number of waves of bullets in the target direction. Each wave is in a spread of 6 projectiles that deals physical damage to enemies hit.",
             "leveling": [
               {
                 "attribute": "Maximum Total Physical Damage",
                 "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      280.0,
+                      500.0,
+                      720.0
+                    ]
+                  },
                   {
                     "units": [
                       "% AD",
@@ -421,9 +433,9 @@
                       "% AD"
                     ],
                     "values": [
-                      1050.0,
-                      1200.0,
-                      1350.0
+                      840.0,
+                      960.0,
+                      1080.0
                     ]
                   },
                   {
@@ -436,6 +448,47 @@
                       350.0,
                       400.0,
                       450.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Physical Damage per Wave",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      20.0,
+                      30.0,
+                      40.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      60.0,
+                      60.0,
+                      60.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      25.0,
+                      25.0,
+                      25.0
                     ]
                   }
                 ]
@@ -477,7 +530,7 @@
             ]
           },
           {
-            "description": "Each of the waves can critically strike for (120% + 8%) damage.",
+            "description": "Each of the waves can critically strike for (130% + 9%) damage.",
             "leveling": []
           }
         ],

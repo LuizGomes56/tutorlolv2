@@ -5,7 +5,7 @@ pub(self) use crate::MayFail;
 pub(self) use tutorlolv2_gen::{enums::*, eval::*};
 
 tutorlolv2_macros::expand_dir!("../internal/items", |Name| {
-    paste::paste! {
+    pastey::paste! {
         pub mod [<Name:snake>];
     }
 });

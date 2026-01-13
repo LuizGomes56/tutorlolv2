@@ -7,7 +7,15 @@
   "tier": 3,
   "maps": [
     [
+      "NexusBlitz",
+      true
+    ],
+    [
       "SummonersRift",
+      true
+    ],
+    [
+      "Aram",
       true
     ],
     [
@@ -25,17 +33,18 @@
     [
       "SummonersRift",
       false
-    ],
-    [
-      "Aram",
-      true
-    ],
-    [
-      "NexusBlitz",
-      true
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "CriticalStrikeChance",
+      "value": 25
+    },
+    {
+      "name": "AttackDamage",
+      "value": 55
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

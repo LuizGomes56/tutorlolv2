@@ -6,7 +6,7 @@
   "tier": 1,
   "passives": [
     {
-      "effects": "Reduces all sources of incoming champion damage by 15 ''({{fd|3.75}} against [[damage over time]] abilities)''.",
+      "effects": "Reduces all sources of incoming champion damage by 15, modified to {{fd|3.75}} against [[damage over time]] abilities.",
       "name": "Undaunted",
       "unique": true
     }

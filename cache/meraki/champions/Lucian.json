@@ -21,11 +21,11 @@
     },
     "attackDamage": {
       "flat": 60.0,
-      "perLevel": 2.9
+      "perLevel": 2.5
     },
     "attackSpeed": {
       "flat": 0.638,
-      "perLevel": 3.3
+      "perLevel": 2.5
     },
     "movespeed": {
       "flat": 335.0,
@@ -126,11 +126,11 @@
                       ""
                     ],
                     "values": [
-                      85.0,
+                      80.0,
                       115.0,
-                      145.0,
-                      175.0,
-                      205.0
+                      150.0,
+                      185.0,
+                      220.0
                     ]
                   },
                   {
@@ -142,11 +142,11 @@
                       "% bonus AD"
                     ],
                     "values": [
-                      60.0,
-                      75.0,
-                      90.0,
-                      105.0,
-                      120.0
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0
                     ]
                   }
                 ]
@@ -321,90 +321,8 @@
         "damageType": "PHYSICAL_DAMAGE",
         "effects": [
           {
-            "description": "Active: Lucian channels for up to 3 seconds, rapidly firing up to 22 (+ 1 per 4% critical strike chance) shots in the target direction. Each shot deals physical damage to the first enemy hit, doubled against minions. The Culling can be recast after 0.75 seconds during the channel, and does so automatically when the channel ends.",
+            "description": "Active: Lucian channels for up to 3 seconds, rapidly firing up to 22 (+ 0 : 22 (+ 0 : 6) (based on critical strike chance)) shots in the target direction over the duration. Each shot deals physical damage to the first enemy hit, doubled against minions. The Culling can be recast after 0.75 seconds during the channel, and does so automatically when the channel ends.",
             "leveling": [
-              {
-                "attribute": "Additional Damage per 20% Crit Chance",
-                "modifiers": [
-                  {
-                    "units": [
-                      "",
-                      "",
-                      ""
-                    ],
-                    "values": [
-                      75.0,
-                      150.0,
-                      225.0
-                    ]
-                  },
-                  {
-                    "units": [
-                      "% AD",
-                      "% AD",
-                      "% AD"
-                    ],
-                    "values": [
-                      125.0,
-                      125.0,
-                      125.0
-                    ]
-                  },
-                  {
-                    "units": [
-                      "% AP",
-                      "% AP",
-                      "% AP"
-                    ],
-                    "values": [
-                      75.0,
-                      75.0,
-                      75.0
-                    ]
-                  }
-                ]
-              },
-              {
-                "attribute": "Additional Minion Damage per 20% Crit Chance",
-                "modifiers": [
-                  {
-                    "units": [
-                      "",
-                      "",
-                      ""
-                    ],
-                    "values": [
-                      150.0,
-                      300.0,
-                      450.0
-                    ]
-                  },
-                  {
-                    "units": [
-                      "% AD",
-                      "% AD",
-                      "% AD"
-                    ],
-                    "values": [
-                      250.0,
-                      250.0,
-                      250.0
-                    ]
-                  },
-                  {
-                    "units": [
-                      "% AP",
-                      "% AP",
-                      "% AP"
-                    ],
-                    "values": [
-                      150.0,
-                      150.0,
-                      150.0
-                    ]
-                  }
-                ]
-              },
               {
                 "attribute": "Minion Damage Per Shot",
                 "modifiers": [
@@ -459,160 +377,6 @@
                       15.0,
                       30.0,
                       45.0
-                    ]
-                  },
-                  {
-                    "units": [
-                      "% AD",
-                      "% AD",
-                      "% AD"
-                    ],
-                    "values": [
-                      25.0,
-                      25.0,
-                      25.0
-                    ]
-                  },
-                  {
-                    "units": [
-                      "% AP",
-                      "% AP",
-                      "% AP"
-                    ],
-                    "values": [
-                      15.0,
-                      15.0,
-                      15.0
-                    ]
-                  }
-                ]
-              },
-              {
-                "attribute": "Total Minion Damage",
-                "modifiers": [
-                  {
-                    "units": [
-                      "  ",
-                      "  ",
-                      "  "
-                    ],
-                    "values": [
-                      660.0,
-                      1320.0,
-                      1980.0
-                    ]
-                  },
-                  {
-                    "units": [
-                      "   per 4% critical strike chance",
-                      "   per 4% critical strike chance",
-                      "   per 4% critical strike chance"
-                    ],
-                    "values": [
-                      30.0,
-                      60.0,
-                      90.0
-                    ]
-                  },
-                  {
-                    "units": [
-                      "% AD",
-                      "% AD",
-                      "% AD"
-                    ],
-                    "values": [
-                      1100.0,
-                      1100.0,
-                      1100.0
-                    ]
-                  },
-                  {
-                    "units": [
-                      "% AP",
-                      "% AP",
-                      "% AP"
-                    ],
-                    "values": [
-                      660.0,
-                      660.0,
-                      660.0
-                    ]
-                  },
-                  {
-                    "units": [
-                      "% AD",
-                      "% AD",
-                      "% AD"
-                    ],
-                    "values": [
-                      50.0,
-                      50.0,
-                      50.0
-                    ]
-                  },
-                  {
-                    "units": [
-                      "% AP",
-                      "% AP",
-                      "% AP"
-                    ],
-                    "values": [
-                      30.0,
-                      30.0,
-                      30.0
-                    ]
-                  }
-                ]
-              },
-              {
-                "attribute": "Total Physical Damage",
-                "modifiers": [
-                  {
-                    "units": [
-                      "  ",
-                      "  ",
-                      "  "
-                    ],
-                    "values": [
-                      330.0,
-                      660.0,
-                      990.0
-                    ]
-                  },
-                  {
-                    "units": [
-                      "   per 4% critical strike chance",
-                      "   per 4% critical strike chance",
-                      "   per 4% critical strike chance"
-                    ],
-                    "values": [
-                      15.0,
-                      30.0,
-                      45.0
-                    ]
-                  },
-                  {
-                    "units": [
-                      "% AD",
-                      "% AD",
-                      "% AD"
-                    ],
-                    "values": [
-                      550.0,
-                      550.0,
-                      550.0
-                    ]
-                  },
-                  {
-                    "units": [
-                      "% AP",
-                      "% AP",
-                      "% AP"
-                    ],
-                    "values": [
-                      330.0,
-                      330.0,
-                      330.0
                     ]
                   },
                   {

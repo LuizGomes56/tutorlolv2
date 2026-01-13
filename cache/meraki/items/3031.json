@@ -28,7 +28,7 @@
       "percent": 0.0
     },
     "attackDamage": {
-      "flat": 65.0,
+      "flat": 75.0,
       "percent": 0.0
     },
     "attackSpeed": {
@@ -41,7 +41,7 @@
     },
     "criticalStrikeDamage": {
       "flat": 0.0,
-      "percent": 40.0
+      "percent": 30.0
     },
     "health": {
       "flat": 0.0,
@@ -71,7 +71,7 @@
   "shop": {
     "purchasable": true,
     "prices": {
-      "total": 3450
+      "total": 3500
     }
   }
 }

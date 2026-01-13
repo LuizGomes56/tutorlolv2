@@ -106,19 +106,17 @@
     ],
     [
       {
-        "type": "W",
+        "type": "R",
         "name": "_1"
       },
       {
-        "name": "Terrashape",
-        "damage_type": "Magic",
+        "name": "Supreme Display of Talent",
+        "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "8 + (0.2 * ctx.bonus_ad) + (0.45 * ctx.ap)",
-          "16 + (0.2 * ctx.bonus_ad) + (0.45 * ctx.ap)",
-          "24 + (0.2 * ctx.bonus_ad) + (0.45 * ctx.ap)",
-          "32 + (0.2 * ctx.bonus_ad) + (0.45 * ctx.ap)",
-          "40 + (0.2 * ctx.bonus_ad) + (0.45 * ctx.ap)"
+          "500 + (1.25 * ctx.bonus_ad)",
+          "750 + (1.25 * ctx.bonus_ad)",
+          "1000 + (1.25 * ctx.bonus_ad)"
         ]
       }
     ],
@@ -143,22 +141,6 @@
     [
       {
         "type": "R",
-        "name": "_1"
-      },
-      {
-        "name": "Supreme Display of Talent",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "500 + (1.25 * ctx.bonus_ad)",
-          "750 + (1.25 * ctx.bonus_ad)",
-          "1000 + (1.25 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
         "name": "_2"
       },
       {
@@ -169,6 +151,24 @@
           "100 + (1.25 * ctx.bonus_ad) + (0.1 * ctx.enemy_max_health)",
           "200 + (1.25 * ctx.bonus_ad) + (0.1 * ctx.enemy_max_health)",
           "300 + (1.25 * ctx.bonus_ad) + (0.1 * ctx.enemy_max_health)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Terrashape",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "8 + (0.2 * ctx.bonus_ad) + (0.45 * ctx.ap)",
+          "16 + (0.2 * ctx.bonus_ad) + (0.45 * ctx.ap)",
+          "24 + (0.2 * ctx.bonus_ad) + (0.45 * ctx.ap)",
+          "32 + (0.2 * ctx.bonus_ad) + (0.45 * ctx.ap)",
+          "40 + (0.2 * ctx.bonus_ad) + (0.45 * ctx.ap)"
         ]
       }
     ]

@@ -70,19 +70,19 @@
   "abilities": [
     [
       {
-        "type": "E",
-        "name": "_2"
+        "type": "Q",
+        "name": "_1"
       },
       {
-        "name": "Equinox",
+        "name": "Starcall",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "140 + (0.8 * ctx.ap)",
-          "190 + (0.8 * ctx.ap)",
-          "240 + (0.8 * ctx.ap)",
-          "290 + (0.8 * ctx.ap)",
-          "340 + (0.8 * ctx.ap)"
+          "85 + (0.35 * ctx.ap)",
+          "120 + (0.35 * ctx.ap)",
+          "155 + (0.35 * ctx.ap)",
+          "190 + (0.35 * ctx.ap)",
+          "225 + (0.35 * ctx.ap)"
         ]
       }
     ],
@@ -106,19 +106,19 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "type": "E",
+        "name": "_2"
       },
       {
-        "name": "Starcall",
+        "name": "Equinox",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "85 + (0.35 * ctx.ap)",
-          "120 + (0.35 * ctx.ap)",
-          "155 + (0.35 * ctx.ap)",
-          "190 + (0.35 * ctx.ap)",
-          "225 + (0.35 * ctx.ap)"
+          "140 + (0.8 * ctx.ap)",
+          "190 + (0.8 * ctx.ap)",
+          "240 + (0.8 * ctx.ap)",
+          "290 + (0.8 * ctx.ap)",
+          "340 + (0.8 * ctx.ap)"
         ]
       }
     ]

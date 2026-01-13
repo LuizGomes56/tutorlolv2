@@ -18,7 +18,9 @@ impl Generator<Champion> for Maokai {
             [
                 (0, 0, _1),
                 (0, 1, _2),
-                (2, 0, _3),
+                (0, 2, _3),
+                (0, 3, _4),
+                (2, 0, _5),
             ],
         );
         self.ability(R, [(1, 0, _1)]);

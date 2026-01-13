@@ -8,22 +8,22 @@
   "maps": [
     [
       "SummonersRift",
-      false
+      true
     ],
     [
       "Aram",
       false
     ],
     [
+      "Arena",
+      false
+    ],
+    [
       "SummonersRift",
       false
     ],
     [
       "SummonersRift",
-      true
-    ],
-    [
-      "Arena",
       false
     ],
     [
@@ -35,7 +35,16 @@
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "Health",
+      "value": 50
+    },
+    {
+      "name": "AbilityPower",
+      "value": 15
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

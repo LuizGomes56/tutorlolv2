@@ -79,7 +79,7 @@
             "leveling": []
           },
           {
-            "description": "Innate: Xayah's ability casts generate 3 stacks of Clean Cuts, lasting for 8 seconds, refreshing on subsequent casts, and stacking up to 5 times. Xayah's basic attacks are empowered to each consume a stack on-attack to instead shoot a Feather that deals the triggering attack's damage to the primary target and 30% / 40% / 50% (based on level) AD physical damage to other enemies hit. The secondary target damage can critically strike for (175% + 40%) damage if the triggering attack does.",
+            "description": "Innate: Xayah's ability casts generate 3 stacks of Clean Cuts, lasting for 8 seconds, refreshing on subsequent casts, and stacking up to 5 times. Xayah's basic attacks are empowered to each consume a stack on-attack to instead shoot a Feather that deals the triggering attack's damage to the primary target and 35% / 45% / 55% (based on level) AD physical damage to other enemies hit. The secondary target damage can critically strike for (200% + 30%) damage if the triggering attack does.",
             "leveling": []
           }
         ],
@@ -299,7 +299,7 @@
         "damageType": "PHYSICAL_DAMAGE",
         "effects": [
           {
-            "description": "Active: Xayah enters a frenzy for 4 seconds, gaining bonus attack speed and empowering her basic attacks to fire an additional smaller feather at the target on-hit that deals 25% damage of the triggering attack's damage.",
+            "description": "Active: Xayah enters a frenzy for 4 seconds, gaining bonus attack speed and causing her basic attacks on-attack to be empowered to fire an additional smaller feather at the target on-hit that deals 25% damage of the triggering attack's damage.",
             "leveling": [
               {
                 "attribute": "Bonus Attack Speed",
@@ -370,7 +370,7 @@
             "leveling": []
           },
           {
-            "description": "Active: Xayah recalls all planted Feathers to shoot back to her, each dealing physical damage to enemies hit, increased by 0% : 75% (based on critical strike chance). Bladecaller deals 50% damage to minions.",
+            "description": "Active: Xayah recalls all planted Feathers to shoot back to her, each dealing physical damage to enemies hit, increased by 0% : 50% (+ 0% : 15%) (based on critical strike chance). Bladecaller deals 50% damage to minions.",
             "leveling": [
               {
                 "attribute": "Minion Damage Per Feather",
@@ -384,11 +384,11 @@
                       ""
                     ],
                     "values": [
-                      27.5,
+                      25.0,
                       32.5,
-                      37.5,
-                      42.5,
-                      47.5
+                      40.0,
+                      47.5,
+                      55.0
                     ]
                   },
                   {
@@ -400,11 +400,11 @@
                       "% bonus AD"
                     ],
                     "values": [
-                      30.0,
-                      30.0,
-                      30.0,
-                      30.0,
-                      30.0
+                      20.0,
+                      20.0,
+                      20.0,
+                      20.0,
+                      20.0
                     ]
                   }
                 ]
@@ -421,11 +421,11 @@
                       ""
                     ],
                     "values": [
-                      55.0,
+                      50.0,
                       65.0,
-                      75.0,
-                      85.0,
-                      95.0
+                      80.0,
+                      95.0,
+                      110.0
                     ]
                   },
                   {
@@ -437,11 +437,11 @@
                       "% bonus AD"
                     ],
                     "values": [
-                      60.0,
-                      60.0,
-                      60.0,
-                      60.0,
-                      60.0
+                      40.0,
+                      40.0,
+                      40.0,
+                      40.0,
+                      40.0
                     ]
                   }
                 ]

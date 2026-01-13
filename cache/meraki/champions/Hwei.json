@@ -71,7 +71,7 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "Innate: Hwei's damaging abilities mark enemies hit for 4 seconds. Subsequent damaging abilities against marked targets consume the mark to create an explosion beneath them, dealing 35 : 230 (based on level) (+ 30% AP) bonus magic damage to enemies in the area after a 0.85-second delay.",
+            "description": "Innate: Hwei's damaging abilities mark enemies hit for 4 seconds. Subsequent damaging abilities against marked targets consume the mark to create an explosion beneath them, dealing 35 : 230 (based on level) (+ 35% AP) bonus magic damage to enemies in the area after a 0.85-second delay.",
             "leveling": []
           }
         ],
@@ -104,7 +104,7 @@
         "damageType": null,
         "effects": [
           {
-            "description": "Active: Hwei enters a disastrous mood, gaining access to its abilities as well as Wash Brush. He will exit the mood upon casting any of them.",
+            "description": "Toggle: Hwei enters a disastrous mood, gaining access to its abilities as well as Wash Brush. He will exit the mood upon casting any of them.",
             "leveling": []
           }
         ],
@@ -296,7 +296,7 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "Active - QE: Hwei marks a blazing path in the target direction. After 0.6 seconds, the path erupts into volcanic explosions every 0.2 seconds from the point of cast. Each explosion creates a shockwave that deals magic damage to nearby enemies.",
+            "description": "Active - QE: Hwei marks a blazing path in the target direction. After 0.6 seconds, the path erupts into volcanic explosions every 0.2 seconds from the point of cast, for a total of 7 explosions. Each explosion creates a shockwave that deals magic damage to nearby enemies.",
             "leveling": [
               {
                 "attribute": "Magic Damage",
@@ -311,10 +311,10 @@
                     ],
                     "values": [
                       20.0,
-                      40.0,
-                      60.0,
-                      80.0,
-                      100.0
+                      35.0,
+                      50.0,
+                      65.0,
+                      80.0
                     ]
                   },
                   {
@@ -353,10 +353,10 @@
                     ],
                     "values": [
                       5.0,
-                      10.0,
-                      15.0,
-                      20.0,
-                      25.0
+                      8.75,
+                      12.5,
+                      16.25,
+                      20.0
                     ]
                   },
                   {
@@ -368,11 +368,11 @@
                       "% AP"
                     ],
                     "values": [
-                      5.0,
-                      5.0,
-                      5.0,
-                      5.0,
-                      5.0
+                      6.0,
+                      6.0,
+                      6.0,
+                      6.0,
+                      6.0
                     ]
                   }
                 ]
@@ -390,10 +390,10 @@
                     ],
                     "values": [
                       50.0,
-                      100.0,
-                      150.0,
-                      200.0,
-                      250.0
+                      87.5,
+                      125.0,
+                      162.5,
+                      200.0
                     ]
                   },
                   {
@@ -405,11 +405,11 @@
                       "% AP"
                     ],
                     "values": [
-                      50.0,
-                      50.0,
-                      50.0,
-                      50.0,
-                      50.0
+                      60.0,
+                      60.0,
+                      60.0,
+                      60.0,
+                      60.0
                     ]
                   }
                 ]
@@ -427,10 +427,10 @@
                     ],
                     "values": [
                       70.0,
-                      140.0,
-                      210.0,
-                      280.0,
-                      350.0
+                      122.5,
+                      175.0,
+                      227.5,
+                      280.0
                     ]
                   },
                   {
@@ -442,11 +442,11 @@
                       "% AP"
                     ],
                     "values": [
-                      80.0,
-                      80.0,
-                      80.0,
-                      80.0,
-                      80.0
+                      90.0,
+                      90.0,
+                      90.0,
+                      90.0,
+                      90.0
                     ]
                   }
                 ]
@@ -487,7 +487,7 @@
         "damageType": null,
         "effects": [
           {
-            "description": "Active: Hwei enters a serene mood, gaining access to its abilities as well as Wash Brush. He will exit the mood upon casting any of them.",
+            "description": "Toggle: Hwei enters a serene mood, gaining access to its abilities as well as Wash Brush. He will exit the mood upon casting any of them.",
             "leveling": []
           }
         ],
@@ -512,11 +512,11 @@
                       "%"
                     ],
                     "values": [
-                      20.0,
-                      22.5,
-                      25.0,
-                      27.5,
-                      30.0
+                      30.0,
+                      32.5,
+                      35.0,
+                      37.5,
+                      40.0
                     ]
                   },
                   {
@@ -528,11 +528,11 @@
                       "% per 100 AP"
                     ],
                     "values": [
-                      2.0,
-                      2.0,
-                      2.0,
-                      2.0,
-                      2.0
+                      3.0,
+                      3.0,
+                      3.0,
+                      3.0,
+                      3.0
                     ]
                   }
                 ]
@@ -559,6 +559,10 @@
                 ]
               }
             ]
+          },
+          {
+            "description": "Hwei can move during Fleeting Current's cast time.",
+            "leveling": []
           }
         ],
         "name": "Fleeting Current"
@@ -999,7 +1003,7 @@
         "damageType": null,
         "effects": [
           {
-            "description": "Active: Hwei enters a tumultuous mood, gaining access to its abilities as well as Wash Brush. He will exit the mood upon casting any of them.",
+            "description": "Toggle: Hwei enters a tumultuous mood, gaining access to its abilities as well as Wash Brush. He will exit the mood upon casting any of them.",
             "leveling": []
           }
         ],
@@ -1061,11 +1065,11 @@
                       "% AP"
                     ],
                     "values": [
-                      60.0,
-                      60.0,
-                      60.0,
-                      60.0,
-                      60.0
+                      65.0,
+                      65.0,
+                      65.0,
+                      65.0,
+                      65.0
                     ]
                   }
                 ]
@@ -1110,11 +1114,11 @@
                       "% AP"
                     ],
                     "values": [
-                      60.0,
-                      60.0,
-                      60.0,
-                      60.0,
-                      60.0
+                      65.0,
+                      65.0,
+                      65.0,
+                      65.0,
+                      65.0
                     ]
                   }
                 ]
@@ -1180,11 +1184,11 @@
                       "% AP"
                     ],
                     "values": [
-                      60.0,
-                      60.0,
-                      60.0,
-                      60.0,
-                      60.0
+                      65.0,
+                      65.0,
+                      65.0,
+                      65.0,
+                      65.0
                     ]
                   }
                 ]
@@ -1379,7 +1383,7 @@
         "damageType": null,
         "effects": [
           {
-            "description": "Active - QR, WR, ER: Hwei exits his current mood without incurring its ability cost or cooldown.",
+            "description": "Toggle - QR, WR, ER: Hwei exits his current mood without incurring its ability cost or cooldown, toggling it off.",
             "leveling": []
           },
           {

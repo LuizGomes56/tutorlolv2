@@ -71,7 +71,7 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "Innate - Unsteady: Enemy champions and large monsters hit by Flawless Duet and Vanguard's Edge's initial barrage are marked as Unsteady for 5 seconds. The mark can be consumed by Bladesurge.",
+            "description": "Innate - Unsteady: Enemy champions and large monsters hit by Flawless Duet or Vanguard's Edge's initial barrage are marked as Unsteady for 5 seconds. The mark can be consumed by Bladesurge.",
             "leveling": []
           },
           {
@@ -212,7 +212,7 @@
         "damageType": "PHYSICAL_DAMAGE",
         "effects": [
           {
-            "description": "Active: Irelia charges for up to 1.5 seconds, during which she increases Defiant Dance's damage over the first 0.75 seconds of the channel and reduces incoming physical damage by 40% : 70% (based on level) (+ 7% per 100 AP) and incoming magic damage by 20% : 35% (based on level) (+ 3.5% per 100 AP).",
+            "description": "Active: Irelia assumes a defensive stance with her blades to charge for up to 1.5 seconds, during which she reduces incoming physical damage by 40% : 70% (based on level) (+ 7% per 100 AP) and incoming magic damage by 20% : 35% (based on level) (+ 3.5% per 100 AP). Additionally, Defiant Dance's damage increases over the first 0.75 seconds of the channel.",
             "leveling": []
           },
           {
@@ -270,11 +270,11 @@
                       "% AP"
                     ],
                     "values": [
-                      120.0,
-                      120.0,
-                      120.0,
-                      120.0,
-                      120.0
+                      150.0,
+                      150.0,
+                      150.0,
+                      150.0,
+                      150.0
                     ]
                   }
                 ]
@@ -323,11 +323,11 @@
                       "% AP"
                     ],
                     "values": [
-                      40.0,
-                      40.0,
-                      40.0,
-                      40.0,
-                      40.0
+                      50.0,
+                      50.0,
+                      50.0,
+                      50.0,
+                      50.0
                     ]
                   }
                 ]
@@ -353,10 +353,10 @@
               ],
               "values": [
                 16.0,
-                15.0,
-                14.0,
+                14.5,
                 13.0,
-                12.0
+                11.5,
+                10.0
               ]
             }
           ]
@@ -364,11 +364,11 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "Active: Irelia sends a blade to the target location for 3.5 seconds. Flawless Duet can be recast after 0.15 seconds while the blade is active, and does so automatically at the end of its duration, though not if she is unable to cast abilities.",
+            "description": "Active: Irelia sends a blade to the target location for 3.5 seconds. Flawless Duet can be recast after 0.15 seconds while the blade is active, and does so automatically at the end of its duration.",
             "leveling": []
           },
           {
-            "description": "Flawless Duet's recast can be used during Bladesurge and the cast time of Vanguard's Edge. Each of the blades' travel times are 0.264 seconds.",
+            "description": "Flawless Duet's recast can be used during Bladesurge and the cast time of Vanguard's Edge, but is not used automatically while she is affected by cast-inhibiting crowd control or a lockout that disables abilities. Each of the blades' travel times are 0.264 seconds.",
             "leveling": []
           },
           {
@@ -402,11 +402,11 @@
                       "% AP"
                     ],
                     "values": [
-                      80.0,
-                      80.0,
-                      80.0,
-                      80.0,
-                      80.0
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0
                     ]
                   }
                 ]

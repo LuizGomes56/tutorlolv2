@@ -70,60 +70,6 @@
   "abilities": [
     [
       {
-        "type": "W",
-        "name": "_1"
-      },
-      {
-        "name": "Personal Space",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "80 + (0.3 * ctx.ap)",
-          "120 + (0.3 * ctx.ap)",
-          "160 + (0.3 * ctx.ap)",
-          "200 + (0.3 * ctx.ap)",
-          "240 + (0.3 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Mistral Bolt",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "70 + (0.7 * ctx.ap)",
-          "115 + (0.7 * ctx.ap)",
-          "160 + (0.7 * ctx.ap)",
-          "205 + (0.7 * ctx.ap)",
-          "250 + (0.7 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_1"
-      },
-      {
-        "name": "Looming Darkness",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "50 + (0.4 * ctx.ap)",
-          "70 + (0.45 * ctx.ap)",
-          "90 + (0.5 * ctx.ap)",
-          "110 + (0.55 * ctx.ap)",
-          "130 + (0.6 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "R",
         "name": "_2"
       },
@@ -167,6 +113,60 @@
           "75 + (0.2 * ctx.ap)",
           "125 + (0.2 * ctx.ap)",
           "175 + (0.2 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Personal Space",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "80 + (0.3 * ctx.ap)",
+          "120 + (0.3 * ctx.ap)",
+          "160 + (0.3 * ctx.ap)",
+          "200 + (0.3 * ctx.ap)",
+          "240 + (0.3 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Looming Darkness",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "50 + (0.4 * ctx.ap)",
+          "70 + (0.45 * ctx.ap)",
+          "90 + (0.5 * ctx.ap)",
+          "110 + (0.55 * ctx.ap)",
+          "130 + (0.6 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Mistral Bolt",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "70 + (0.7 * ctx.ap)",
+          "115 + (0.7 * ctx.ap)",
+          "160 + (0.7 * ctx.ap)",
+          "205 + (0.7 * ctx.ap)",
+          "250 + (0.7 * ctx.ap)"
         ]
       }
     ]

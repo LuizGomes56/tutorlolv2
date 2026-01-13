@@ -10,8 +10,8 @@ impl Generator<Champion> for Galio {
             [
                 (0, 0, _1),
                 (0, 1, _2),
-                (2, 0, _3),
-                (2, 1, _4),
+                (3, 0, _3),
+                (3, 1, _4),
             ],
         );
         self.ability(

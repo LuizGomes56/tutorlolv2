@@ -88,24 +88,6 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_2"
-      },
-      {
-        "name": "Piltover Peacemaker",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "30 + (0.75 * ctx.ad)",
-          "54 + (0.87 * ctx.ad)",
-          "78 + (0.99 * ctx.ad)",
-          "102 + (1.11 * ctx.ad)",
-          "126 + (1.23 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "R",
         "name": "_1"
       },
@@ -135,6 +117,24 @@
           "180 + (0.8 * ctx.ap)",
           "230 + (0.8 * ctx.ap)",
           "280 + (0.8 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "Piltover Peacemaker",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "30 + (0.75 * ctx.ad)",
+          "54 + (0.87 * ctx.ad)",
+          "78 + (0.99 * ctx.ad)",
+          "102 + (1.11 * ctx.ad)",
+          "126 + (1.23 * ctx.ad)"
         ]
       }
     ],

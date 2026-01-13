@@ -7,18 +7,6 @@
   "tier": 2,
   "maps": [
     [
-      "Aram",
-      true
-    ],
-    [
-      "Tft",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
       "SummonersRift",
       true
     ],
@@ -27,7 +15,19 @@
       true
     ],
     [
+      "Aram",
+      true
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
       "Arena",
+      false
+    ],
+    [
+      "Tft",
       false
     ],
     [
@@ -35,7 +35,16 @@
       true
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AttackDamage",
+      "value": 15
+    },
+    {
+      "name": "LifeSteal",
+      "value": 7
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

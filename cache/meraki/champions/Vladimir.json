@@ -4,7 +4,7 @@
   "adaptiveType": "MAGIC_DAMAGE",
   "stats": {
     "health": {
-      "flat": 607.0,
+      "flat": 600.0,
       "perLevel": 110.0
     },
     "mana": {
@@ -12,7 +12,7 @@
       "perLevel": 0.0
     },
     "armor": {
-      "flat": 27.0,
+      "flat": 24.0,
       "perLevel": 4.5
     },
     "magicResistance": {
@@ -187,7 +187,7 @@
             "leveling": []
           },
           {
-            "description": "Casting Transfusion during the surge consumes all Crimson Rush to deal 85% increased damage and heal Vladimir for an additional 30 : 200 (based on level) (+ 5% (+ 4% per 100 AP) of his missing health). The bonus healing is reduced to[ 35% ][ 10.5 : 70 (based on level) (+ 1.75% (+ 1.4% per 100 AP) of his missing health) ]against minions.",
+            "description": "Casting Transfusion during the surge consumes all Crimson Rush to deal 85% increased damage and heal Vladimir for an additional 30 : 200 (based on level) (+ 5% (+ 4% per 100 AP) of his missing health). The additional healing is reduced to[ 35% ][ 10.5 : 70 (based on level) (+ 1.75% (+ 1.4% per 100 AP) of his missing health) ]against minions.",
             "leveling": [
               {
                 "attribute": "Increased Damage",

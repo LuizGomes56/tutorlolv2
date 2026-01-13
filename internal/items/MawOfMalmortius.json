@@ -11,19 +11,7 @@
       true
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
       "NexusBlitz",
-      true
-    ],
-    [
-      "Tft",
-      false
-    ],
-    [
-      "Aram",
       true
     ],
     [
@@ -31,11 +19,36 @@
       false
     ],
     [
+      "Tft",
+      false
+    ],
+    [
       "SummonersRift",
       true
+    ],
+    [
+      "Aram",
+      true
+    ],
+    [
+      "SummonersRift",
+      false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AttackDamage",
+      "value": 60
+    },
+    {
+      "name": "AbilityHaste",
+      "value": 15
+    },
+    {
+      "name": "MagicResist",
+      "value": 40
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

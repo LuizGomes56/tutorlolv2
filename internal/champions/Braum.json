@@ -70,6 +70,24 @@
   "abilities": [
     [
       {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Winter's Bite",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "75 + (0.025 * ctx.max_health)",
+          "125 + (0.025 * ctx.max_health)",
+          "175 + (0.025 * ctx.max_health)",
+          "225 + (0.025 * ctx.max_health)",
+          "275 + (0.025 * ctx.max_health)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "R",
         "name": "_1"
       },
@@ -99,24 +117,6 @@
           "0.45",
           "0.5",
           "0.55"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Winter's Bite",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "75 + (0.025 * ctx.max_health)",
-          "125 + (0.025 * ctx.max_health)",
-          "175 + (0.025 * ctx.max_health)",
-          "225 + (0.025 * ctx.max_health)",
-          "275 + (0.025 * ctx.max_health)"
         ]
       }
     ]

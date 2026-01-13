@@ -191,7 +191,7 @@
             "leveling": []
           },
           {
-            "description": "Passive: Whenever Lillia's abilities hit at least one enemy, she generates a stack of Prance for 6.5 seconds, refreshing on subsequent hits and stacking up to 4 times. Stacks expire by one every 1.5 seconds when the duration ends.",
+            "description": "Passive: Whenever Lillia's abilities hit at least one enemy, she generates a stack of Prance for 6.5 seconds, refreshing on subsequent hits and stacking up to 4 times. Stacks expire one by one every 1.5 seconds when the duration ends.",
             "leveling": []
           },
           {
@@ -547,9 +547,9 @@
                 ""
               ],
               "values": [
-                150.0,
-                130.0,
-                110.0
+                140.0,
+                120.0,
+                100.0
               ]
             }
           ]
@@ -561,7 +561,7 @@
             "leveling": []
           },
           {
-            "description": "An enemy champion affected by Dream Dust is required to cast this ability.",
+            "description": "An enemy champion affected by Dream Dust is required to cast this ability. Lillia can move during Lilting Lullaby's cast time.",
             "leveling": []
           },
           {
@@ -577,9 +577,9 @@
                       ""
                     ],
                     "values": [
-                      100.0,
                       150.0,
-                      200.0
+                      200.0,
+                      250.0
                     ]
                   },
                   {
@@ -589,9 +589,9 @@
                       "% AP"
                     ],
                     "values": [
-                      40.0,
-                      40.0,
-                      40.0
+                      45.0,
+                      45.0,
+                      45.0
                     ]
                   }
                 ]

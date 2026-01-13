@@ -20,7 +20,7 @@
       "perLevel": 2.05
     },
     "attackDamage": {
-      "flat": 60.0,
+      "flat": 62.0,
       "perLevel": 2.0
     },
     "attackSpeed": {
@@ -36,7 +36,7 @@
       "perLevel": 0.0
     },
     "criticalStrikeDamageModifier": {
-      "flat": 1.0,
+      "flat": 0.9,
       "perLevel": 0.0
     },
     "attackSpeedRatio": {
@@ -77,6 +77,10 @@
           {
             "description": "Innate - Steel and Spirit: Yone's basic attacks alternate between his Steel Sword and Azakana Sword on-attack. Yone begins attacking with Steel Sword, and basic attacks with Azakana Sword deal 50% AD physical damage and 50% AD magic damage.",
             "leveling": []
+          },
+          {
+            "description": "Yone's critical strikes deal only[ (180% + 27%) AD physical damage. ][ 90% of the critical damage champions usually have. ]",
+            "leveling": []
           }
         ],
         "name": "Way of the Hunter"
@@ -108,7 +112,7 @@
         "damageType": "PHYSICAL_DAMAGE",
         "effects": [
           {
-            "description": "Active: Yone thrusts his Steel Sword in a line in the target direction that deals physical damage to enemies hit, applies on-hit effects to the first enemy hit, and triggers on-attack effects once. Mortal Steel's damage based on its AD ratio can critically strike for (175% + 40%) damage.",
+            "description": "Active: Yone thrusts his Steel Sword in a line in the target direction that deals physical damage to enemies hit, applies on-hit effects to the first enemy hit, and triggers on-attack effects once. Mortal Steel's damage based on its AD ratio can critically strike for (200% + 30%) damage.",
             "leveling": [
               {
                 "attribute": "Physical Damage",
@@ -122,11 +126,11 @@
                       ""
                     ],
                     "values": [
-                      20.0,
-                      45.0,
-                      70.0,
-                      95.0,
-                      120.0
+                      25.0,
+                      50.0,
+                      75.0,
+                      100.0,
+                      125.0
                     ]
                   },
                   {
@@ -150,7 +154,7 @@
             ]
           },
           {
-            "description": "Gathering Storm Bonus: Yone dashes a fixed distance in the target direction and unleashes a whirlwind in the same direction, both dealing the same damage to enemies hit in their path and knocking them up for 0.75 seconds, but being unable to affect the same target twice.",
+            "description": "Gathering Storm Bonus: Yone dashes a fixed distance in the target direction and unleashes a whirlwind in the same direction, both applying and triggering the same effects and additionally knocking up enemies hit in their path for 0.75 seconds, but being unable to affect the same target twice.",
             "leveling": []
           },
           {

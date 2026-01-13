@@ -92,24 +92,24 @@
                 ""
               ],
               "values": [
-                20.0,
-                19.25,
-                18.5,
-                17.75,
-                17.0,
-                16.25,
-                15.5,
-                14.75,
-                14.0,
-                13.25,
-                12.5,
-                11.75,
-                11.0,
-                10.25,
-                9.5,
-                8.75,
-                8.0,
-                7.25
+                18.0,
+                17.352941176470587,
+                16.705882352941178,
+                16.058823529411764,
+                15.411764705882351,
+                14.764705882352942,
+                14.117647058823527,
+                13.470588235294118,
+                12.823529411764708,
+                12.176470588235292,
+                11.529411764705882,
+                10.882352941176473,
+                10.235294117647058,
+                9.588235294117649,
+                8.941176470588236,
+                8.294117647058822,
+                7.647058823529411,
+                7.0
               ]
             }
           ]
@@ -121,7 +121,7 @@
             "leveling": []
           },
           {
-            "description": "Innate: Periodically, Illaoi spawns a Tentacle on the nearest terrain perpendicular to her location, if no other Tentacles are already nearby it. Tentacles fully spawn after a 2 second delay and are untargetable in the meantime.",
+            "description": "Innate: Periodically, Illaoi spawns a Tentacle on the nearest terrain, if no other Tentacle is around it. Tentacles fully spawn after a 2 second delay and are untargetable in the meantime.",
             "leveling": []
           },
           {
@@ -129,7 +129,7 @@
             "leveling": []
           },
           {
-            "description": "Tentacles are commanded to attack by Illaoi's abilities, dealing 9 : 162 (based on level) (+ 105% AD) (+ 40% AP) physical damage to all enemies struck, increased by 0% : 30% (based on Tentacle Smash's rank).Enemies struck by multiple slams within 0.5 seconds of another, take 50% damage for the second and 25% damage for all other additional slams.",
+            "description": "Tentacles are commanded to attack by Illaoi's abilities, dealing 9 : 162 (based on level) (+ 110% AD) (+ 40% AP) physical damage to all enemies struck, increased by 0% : 30% (based on Tentacle Smash's rank).Each enemy individually reduces the slam damage by 50% for every slam they were hit by in the last 0.66 seconds, capped at 75% less damage.",
             "leveling": []
           }
         ],
@@ -163,6 +163,10 @@
         "effects": [
           {
             "description": "Active: Illaoi slams down a Tentacle in the target direction.",
+            "leveling": []
+          },
+          {
+            "description": "Illaoi reveals herself during the cast if there is an enemy champion nearby.",
             "leveling": []
           },
           {
@@ -221,11 +225,11 @@
         "damageType": "PHYSICAL_DAMAGE",
         "effects": [
           {
-            "description": "Active: Illaoi's next basic attack within 6 seconds gains 225 bonus range and causes her to leap to the target's location if they're beyond her normal basic attack range.",
+            "description": "Active: Illaoi empowers her next basic attack within 6 seconds to gain 225 bonus range and cause her to leap to the target's location if they are beyond her normal basic attack range.",
             "leveling": []
           },
           {
-            "description": "Harsh Lesson can be activated during Illaoi's other abilities, other than while pulling a Spirit.",
+            "description": "Harsh Lesson can be activated during Illaoi's other abilities.",
             "leveling": []
           },
           {
@@ -233,10 +237,10 @@
             "leveling": []
           },
           {
-            "description": "The attack deals bonus physical damage, with a minimum threshold, and capped at 300 against non-champions, and commands all Tentacles in range to attack the target. The minimum bonus damage can also be applied against turrets.",
+            "description": "The attack deals additional physical damage, with a minimum threshold, and capped at 300 against non-champions, and commands all Tentacles in range to attack the target. The minimum additional damage can also be applied against turrets.",
             "leveling": [
               {
-                "attribute": "Bonus Physical Damage",
+                "attribute": "Additional Physical Damage",
                 "modifiers": [
                   {
                     "units": [
@@ -263,11 +267,11 @@
                       "% per 100 AD"
                     ],
                     "values": [
-                      4.0,
-                      4.0,
-                      4.0,
-                      4.0,
-                      4.0
+                      3.5,
+                      3.5,
+                      3.5,
+                      3.5,
+                      3.5
                     ]
                   }
                 ]
@@ -329,11 +333,11 @@
             "leveling": []
           },
           {
-            "description": "Enemies made a Vessel also spawn a Tentacle near themselves. Tentacles can spawn 250 units closer to each other than when spawned by Illaoi.",
+            "description": "Enemies made a Vessel continuously spawn a Tentacle near themselves, when possible. Tentacles can spawn 300 units closer to each other than when spawned by Illaoi.",
             "leveling": []
           },
           {
-            "description": "Illaoi is unable to act while firing the projectile and while the target's Spirit is being pulled. Vessels can dispel their mark by scoring a takedown against Illaoi. Test of Spirit cannot be cast again until the Spirit dies.",
+            "description": "Illaoi is unable to act while firing the projectile and while the target's Spirit is being pulled. She also reveals herself while firing the projectile if there is an enemy champion nearby. Vessels can dispel their mark by scoring a takedown against Illaoi. Test of Spirit cannot be cast again until the Spirit dies.",
             "leveling": []
           },
           {
@@ -379,7 +383,7 @@
             ]
           },
           {
-            "description": "When the Spirit is killed or the target leaves tether range, the tether is severed, marking the target as a Vessel for 3 seconds and slowing them by 80% for 1.5 seconds once the tether returns back to them. Each Tentacle autonomously attacks the closest Vessel or Spirit, prioritizing the latter, once every 4.5 / 4 / 3.5 (based on level) seconds.",
+            "description": "When the Spirit is killed or the target leaves tether range, the tether is severed, marking the target as a Vessel for 4 seconds and slowing them by 80% for 1.5 seconds once the tether returns back to them. Each Tentacle autonomously attacks the closest Vessel or Spirit, prioritizing the latter, once every 4.5 / 4 / 3.5 (based on level) seconds.",
             "leveling": []
           }
         ],
@@ -442,7 +446,11 @@
             ]
           },
           {
-            "description": "For the duration, Harsh Lesson's cooldown is halved, all Tentacles awakened by Illaoi are untargetable, will not show their hitboxes, nor go dormant, and will take half the amount of time to make an attack. This however does not affect the Tentacle attack from Tentacle Smash.",
+            "description": "For the duration, Harsh Lesson's cooldown is halved, all Tentacles awakened by Illaoi are untargetable, will not show their hitboxes, nor go dormant, and will take 0.5 seconds to make an attack; however they will then incur a lockout of 0.5 seconds before being able to start a new attack.",
+            "leveling": []
+          },
+          {
+            "description": "This does not affect the Tentacle attack from Tentacle Smash.",
             "leveling": []
           }
         ],

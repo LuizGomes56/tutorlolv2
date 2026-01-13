@@ -140,12 +140,12 @@
                       ""
                     ],
                     "values": [
-                      5.5,
-                      11.0,
-                      16.5,
-                      22.0,
-                      27.5,
-                      33.0
+                      4.5,
+                      9.0,
+                      13.5,
+                      18.0,
+                      22.5,
+                      27.0
                     ]
                   }
                 ]
@@ -168,7 +168,7 @@
             "leveling": []
           },
           {
-            "description": "The empowered attack will consume the marks from all targets, dealing 15 (+ 20% bonus AD) bonus physical damage to the main target for each mark consumed. If Calibrum is the current off-hand weapon, the main weapon is used for the attack instead.",
+            "description": "The empowered attack will consume the marks from all targets, dealing 15 (+ 10% bonus AD) bonus physical damage to the main target for each mark consumed. If Calibrum is the current off-hand weapon, the main weapon is used for the attack instead.",
             "leveling": []
           }
         ],
@@ -209,7 +209,7 @@
             "leveling": []
           },
           {
-            "description": "Critical strikes instead spray 6 missiles in a 50% wider cone. Secondary targets hit count as being critically struck but do not take any additional damage.",
+            "description": "Critical strikes instead spray 6 missiles in a 50% wider cone. Secondary targets hit count as being critically struck.",
             "leveling": []
           }
         ],
@@ -363,11 +363,11 @@
             "leveling": []
           },
           {
-            "description": "Aphelios cannot cast Phase nor Moonlight Vigil during Onslaught, but he is still able to move. He cannot perform attacks while unable to declare basic attacks.",
+            "description": "Aphelios cannot cast Phase nor Moonlight Vigil during Onslaught, but he is still able to move.",
             "leveling": []
           },
           {
-            "description": "Attacks alternate between Severum and his current off-hand weapon, each dealing 10 : 40 (based on level) (+ 22% : 40% (based on level) bonus AD) physical damage, affected by critical strike modifiers, and applying on-hit effects, with on-hit damage reduced to 25% effectiveness.",
+            "description": "Attacks alternate between Severum and his current off-hand weapon, each dealing 19% : 40% (based on level) AD physical damage, affected by critical strike modifiers, and applying on-hit effects, with on-hit damage reduced to 25% effectiveness. Aphelios cannot perform attacks while affected by disarming crowd control or a lockout that disables basic attacks.",
             "leveling": []
           }
         ],
@@ -424,7 +424,7 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "Binding Eclipse also empowers in-flight Gravitum projectiles to instantly affect their targets upon applying the slow successively.",
+            "description": "An enemy affected by Gravitum, or an in-flight Gravitum projectile, is required to cast this ability. In-flight projectiles will be empowered to apply Binding Eclipse's effects to their targets.",
             "leveling": []
           },
           {
@@ -485,7 +485,7 @@
         "damageType": "PHYSICAL_DAMAGE",
         "effects": [
           {
-            "description": "Active: Aphelios unleashes a wave of energy in a cone in the target direction, dealing 25 : 65 (based on level) (+ 56% : 80% (based on level) bonus AD) (+ 70% AP) physical damage to all enemies hit and locking onto each of them. After 0.25 seconds, Aphelios then fires a volley of attacks at each locked-on target from his current off-hand weapon, dealing 100% AD physical damage and applying on-hit effects. The damage is affected by critical strike modifiers. There is no range limit for locked-on targets.",
+            "description": "Active: Aphelios unleashes a wave of energy in a cone in the target direction, dealing 20 : 110 (based on level) (+ 10% : 16% (based on level) bonus AD) (+ 70% AP) physical damage to all enemies hit and locking onto each of them. After 0.25 seconds, Aphelios then fires a volley of attacks at each locked-on target from his current off-hand weapon, dealing 100% AD physical damage and applying on-hit effects. The damage is affected by critical strike modifiers. There is no range limit for locked-on targets.",
             "leveling": []
           }
         ],
@@ -550,7 +550,7 @@
             "leveling": []
           },
           {
-            "description": "The sentry grants sight of its surroundings and autonomously attacks the nearest visible enemy in range with a replica of Aphelios' current off-hand weapon, dealing 35 : 125 (based on level) (+ 42% : 60% (based on level) bonus AD) (+ 50% AP) physical damage per hit. The sentry can critically strike for (175% + 40%) damage and benefits from both Aphelios' attack speed and critical strike chance at 100% effectiveness.",
+            "description": "The sentry grants sight of its surroundings and autonomously attacks the nearest visible enemy in range with a replica of Aphelios' current off-hand weapon, dealing 35 : 125 (based on level) (+ 30% : 42% (based on level) bonus AD) (+ 50% AP) physical damage per hit. The sentry can critically strike for (200% + 30%) damage and benefits from both Aphelios' attack speed and critical strike chance at 100% effectiveness.",
             "leveling": []
           }
         ],
@@ -583,7 +583,7 @@
         "damageType": null,
         "effects": [
           {
-            "description": "Active: Aphelios switches between his main weapon and off-hand weapon over 0.25 seconds.",
+            "description": "Toggle: Aphelios switches between his main weapon and off-hand weapon over 0.25 seconds.",
             "leveling": []
           }
         ],
@@ -633,7 +633,7 @@
             "leveling": []
           },
           {
-            "description": "After 0.3 seconds of the illumination, attacks based on Aphelios' current main weapon will launch from the sky against each locked-on target, dealing 100% AD physical damage and applying on-hit effects. These attacks can critically strike for (120% + 40%) damage. There is no range limit for locked-on targets.\n Calibrum: Applies an empowered mark that deals 50 / 80 / 110 (based on level) bonus physical damage per mark consumed.\n Severum: Heals Aphelios for 250 / 350 / 450 (based on level) if at least one enemy champion is hit.\n Gravitum: Increases the initial slow to 99% and empowers Binding Eclipse to root targets affected by the enhanced slow for 1.35 seconds.\n Infernum: The initial blast deals 50 / 100 / 150 (based on level) (+ 25% bonus AD) bonus physical damage.[ The attack instead deals 110% AD physical damage against locked-on targets, and causes an explosion of bolts in a 400-radius circle that deals 74.25% / 99% (based on level) AD physical damage to targets hit. ][ Performs Infernum's attacks and Infernum's bolts in a 400-radius circle: primary targets are dealt Infernum's primary damage; secondary targets are dealt 90% of Infernum's regular bolt damage; both are modified by Moonlight Vigil's critical damage modifier. ]Enemy champions will take damage from overlapping areas.\n Crescendum: Generates 5 additional spectral Chakrams that return to Aphelios from the first enemy champion hit, for a total of 6, on top of those from other targets hit.",
+            "description": "After 0.3 seconds of the illumination, attacks based on Aphelios' current main weapon will launch from the sky against each locked-on target, dealing 100% AD physical damage and applying on-hit effects. These attacks can critically strike for 100% : 130% (+ 0% : 9%) (based on critical strike chance) damage. There is no range limit for locked-on targets.\n Calibrum: Applies an empowered mark that deals 50 / 80 / 110 (based on level) bonus physical damage per mark consumed.\n Severum: Heals Aphelios for 250 / 350 / 450 (based on level) if at least one enemy champion is hit.\n Gravitum: Increases the initial slow to 99% and empowers Binding Eclipse to root targets affected by the enhanced slow for 1.35 seconds.\n Infernum: The initial blast deals 50 / 100 / 150 (based on level) (+ 25% bonus AD) bonus physical damage.[ The attack instead deals 110% AD physical damage against locked-on targets, and causes an explosion of bolts in a 400-radius circle that deals 74.25% / 99% (based on level) AD physical damage to targets hit. ][ Performs Infernum's attacks and Infernum's bolts in a 400-radius circle: primary targets are dealt Infernum's primary damage; secondary targets are dealt 90% of Infernum's regular bolt damage; both are modified by Moonlight Vigil's critical damage modifier. ]Enemy champions will take damage from overlapping areas.\n Crescendum: Generates 5 additional spectral Chakrams that return to Aphelios from the first enemy champion hit, for a total of 6, on top of those from other targets hit.",
             "leveling": []
           }
         ],

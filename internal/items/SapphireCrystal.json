@@ -8,6 +8,10 @@
   "maps": [
     [
       "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
       true
     ],
     [
@@ -15,19 +19,15 @@
       true
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
       "NexusBlitz",
       true
     ],
     [
-      "Arena",
+      "Tft",
       false
     ],
     [
-      "Tft",
+      "Arena",
       false
     ],
     [
@@ -35,7 +35,12 @@
       true
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "Mana",
+      "value": 300
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

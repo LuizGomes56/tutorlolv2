@@ -11,11 +11,19 @@
       true
     ],
     [
+      "Tft",
+      false
+    ],
+    [
       "SummonersRift",
       false
     ],
     [
       "SummonersRift",
+      true
+    ],
+    [
+      "NexusBlitz",
       true
     ],
     [
@@ -23,19 +31,24 @@
       false
     ],
     [
-      "NexusBlitz",
-      true
-    ],
-    [
-      "Tft",
-      false
-    ],
-    [
       "SummonersRift",
       true
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AttackDamage",
+      "value": 45
+    },
+    {
+      "name": "ArmorPenetration",
+      "value": 35
+    },
+    {
+      "name": "AbilityHaste",
+      "value": 15
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

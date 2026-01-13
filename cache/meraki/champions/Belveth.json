@@ -112,7 +112,7 @@
         "damageType": "PHYSICAL_DAMAGE",
         "effects": [
           {
-            "description": "Active: Bel'Veth dashes in the designated direction, though not through terrain, dealing physical damage to enemies she passes through. Against the first target, Void Surge can critically strike for (175% + 40%) damage and applies on-hit effects, with on-hit damage reduced to 75% effectiveness, and life steal at 100% effectiveness.",
+            "description": "Active: Bel'Veth dashes in the designated direction, though not through terrain, dealing physical damage to enemies she passes through. Against the first target, Void Surge can critically strike for (200% + 30%) damage and applies on-hit effects, with on-hit damage reduced to 75% effectiveness, and life steal.",
             "leveling": [
               {
                 "attribute": "Physical Damage",
@@ -387,7 +387,7 @@
         "damageType": "PHYSICAL_DAMAGE",
         "effects": [
           {
-            "description": "Active: Bel'Veth enters a defensive stance for 1.5 seconds, during which she is unable to move, but gains damage reduction and 20% (+ 100% life steal) life steal.",
+            "description": "Active: Bel'Veth enters a frenzy for 1.5 seconds, during which she is unable to move, but gains damage reduction and 20% (+ 100% life steal) life steal.",
             "leveling": [
               {
                 "attribute": "Damage Reduction",
@@ -421,7 +421,7 @@
             "leveling": []
           },
           {
-            "description": "Royal Maelstrom deals 150% damage to monsters, applies life steal at 100% effectiveness, and is affected by critical strike modifiers. Bel'Veth cannot perform slashes while unable to declare basic attacks.",
+            "description": "Royal Maelstrom deals 150% damage to monsters, applies life steal, and is affected by critical strike modifiers.",
             "leveling": [
               {
                 "attribute": "Maximum Monster Damage per hit",
@@ -504,7 +504,7 @@
             "leveling": []
           },
           {
-            "description": "While active, she rapidly slashes at the nearest enemy with the lowest current health percentage for up to 6 (+ 1 per 33.3% bonus attack speed) times over the duration. Each slash deals physical damage, increased by 0% : 300% (based on target's missing health), triggers on-attack effects, and applies on-hit effects and spell effects, with on-hit and spell effect damage reduced to 8% : 32% (based on target's missing health) effectiveness.",
+            "description": "While active, she rapidly slashes at the nearest enemy with the lowest current health percentage for up to 6 (+ 1 per 33.3% bonus attack speed) times over the duration. Each slash deals physical damage, increased by 0% : 300% (based on target's missing health), triggers on-attack effects, and applies on-hit effects and spell effects, with on-hit and spell effect damage reduced to 8% : 32% (based on target's missing health) effectiveness. Bel'Veth cannot perform slashes while she is affected by cast-inhibiting crowd control.",
             "leveling": [
               {
                 "attribute": "Maximum Physical Damage per hit",

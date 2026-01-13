@@ -6,7 +6,7 @@
   "tier": 3,
   "passives": [
     {
-      "effects": "Upon casting your [[champion ability|ultimate]], you ''Transcend'' for 9 seconds. While ''Transcended'', increase your {{as|'''maximum''' health by {{fd|12.5}}%}} and cause you and all allies within {{tip|cr|icononly=true}} 1200 units to {{tip|heal}} for {{as|{{fd|2.5}}% of your '''maximum''' health}} upon you ''Transcending'' and every 3 seconds thereafter, for a total healing of {{as|{{ap|2.5*4}}% of your '''maximum''' health}}.",
+      "effects": "Upon casting your [[champion ability|ultimate]], you ''Transcend'' for 9 seconds. While ''Transcended'', increase your {{as|'''maximum''' health by {{fd|12.5}}%}} and cause you and all allies within {{tip|cr|icononly=true}} 1200 units to {{tip|heal}} for {{as|{{fd|3}}% of your '''maximum''' health}} upon you ''Transcending'' and every 3 seconds thereafter, for a total healing of {{as|{{ap|3*4}}% of your '''maximum''' health}}.",
       "name": "Guiding Light",
       "unique": true
     }

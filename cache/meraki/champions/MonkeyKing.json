@@ -71,7 +71,7 @@
         "damageType": null,
         "effects": [
           {
-            "description": "Innate: Wukong gains 6 : 10 (based on level) bonus armor and regenerates an additional[ 0.35% of his maximum health every 5 seconds. ][ 0.035% of his maximum health every 0.5 seconds. ]Whenever Wukong or his clone damage an enemy champion or monster, he generates a stack of Strength of Stone for 5 seconds, refreshing on subsequent hits and stacking up to 5 times. Stacks expire by one every second when the duration ends.",
+            "description": "Innate: Wukong gains 6 : 10 (based on level) bonus armor and regenerates an additional[ 0.35% of his maximum health every 5 seconds. ][ 0.035% of his maximum health every 0.5 seconds. ]Whenever Wukong or his clone damage an enemy champion or monster, he generates a stack of Strength of Stone for 5 seconds, refreshing on subsequent hits and stacking up to 5 times. Stacks expire one by one every second when the duration ends.",
             "leveling": []
           },
           {
@@ -159,11 +159,11 @@
                       "% bonus AD"
                     ],
                     "values": [
-                      55.0,
-                      55.0,
-                      55.0,
-                      55.0,
-                      55.0
+                      50.0,
+                      50.0,
+                      50.0,
+                      50.0,
+                      50.0
                     ]
                   }
                 ]
@@ -217,11 +217,11 @@
                 ""
               ],
               "values": [
+                22.0,
+                21.0,
                 20.0,
                 19.0,
-                18.0,
-                17.0,
-                16.0
+                18.0
               ]
             }
           ]
@@ -251,11 +251,11 @@
                       "%"
                     ],
                     "values": [
+                      30.0,
                       35.0,
                       40.0,
                       45.0,
-                      50.0,
-                      55.0
+                      50.0
                     ]
                   }
                 ]
@@ -263,7 +263,7 @@
             ]
           },
           {
-            "description": "The clone is untargetable to allies and can basic attack autonomously, prioritizing the last enemy Wukong damaged. It can also gain the effects of Crushing Blow, Nimbus Strike's bonus attack speed, and casts Cyclone whenever Wukong does.",
+            "description": "The clone is untargetable to allies and can basic attack autonomously, prioritizing the last enemy Wukong damaged. It can also gain the effects of Crushing Blow and Nimbus Strike's bonus attack speed, and casts Cyclone whenever Wukong does.",
             "leveling": []
           }
         ],
@@ -311,10 +311,10 @@
                     ],
                     "values": [
                       80.0,
-                      110.0,
-                      140.0,
-                      170.0,
-                      200.0
+                      120.0,
+                      160.0,
+                      200.0,
+                      240.0
                     ]
                   },
                   {

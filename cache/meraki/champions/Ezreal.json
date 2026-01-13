@@ -21,7 +21,7 @@
     },
     "attackDamage": {
       "flat": 60.0,
-      "perLevel": 2.75
+      "perLevel": 3.25
     },
     "attackSpeed": {
       "flat": 0.625,

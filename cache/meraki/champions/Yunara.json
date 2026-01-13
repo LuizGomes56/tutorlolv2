@@ -4,7 +4,7 @@
   "adaptiveType": "PHYSICAL_DAMAGE",
   "stats": {
     "health": {
-      "flat": 600.0,
+      "flat": 590.0,
       "perLevel": 110.0
     },
     "mana": {
@@ -20,7 +20,7 @@
       "perLevel": 1.3
     },
     "attackDamage": {
-      "flat": 56.0,
+      "flat": 55.0,
       "perLevel": 2.5
     },
     "attackSpeed": {
@@ -52,15 +52,15 @@
       "perLevel": 0.0
     },
     "aramDamageDealt": {
-      "flat": 0.0,
+      "flat": 1.0,
       "perLevel": 0.0
     },
     "urfDamageTaken": {
-      "flat": 0.0,
+      "flat": 1.0,
       "perLevel": 0.0
     },
     "urfDamageDealt": {
-      "flat": 0.0,
+      "flat": 1.0,
       "perLevel": 0.0
     }
   },
@@ -84,7 +84,7 @@
         "damageType": "OTHER_DAMAGE",
         "effects": [
           {
-            "description": "Active: Yunara unleashes for 5 seconds: gaining bonus attack speed, dealing additional bonus magic damage on-hit, and augmenting her basic attacks to fly faster, have a 40% lower windup time, and spread to each enemy near the target, dealing 30% AD physical damage.Each spread attack applies on-hit effects, with on-hit damage reduced to 30% effectiveness, and will critically strike if the triggering attack does. Spread attacks deal 250% damage against minions below 30% maximum health.",
+            "description": "Active: Yunara unleashes for 5 seconds: gaining bonus attack speed, dealing additional bonus magic damage on-hit, and augmenting her basic attacks to have increased missile speed, a 40% lower windup time, and an uncancellable windup. Her basic attacks are also empowered to spread to each enemy near the target, dealing 30% AD physical damage.Each spread attack applies life steal and on-hit effects, with on-hit damage reduced to 30% effectiveness, and will critically strike for (200% + 30%) damage if the triggering attack does. Spread attacks deal 250% damage against minions below 30% maximum health.",
             "leveling": [
               {
                 "attribute": "Active Bonus Magic Damage",
@@ -172,11 +172,11 @@
                       "%"
                     ],
                     "values": [
-                      25.0,
-                      35.0,
-                      45.0,
-                      55.0,
-                      65.0
+                      20.0,
+                      30.0,
+                      40.0,
+                      50.0,
+                      60.0
                     ]
                   }
                 ]
@@ -258,11 +258,11 @@
             ]
           },
           {
-            "description": "Cultivation of Spirit resets Yunara's basic attack timer. Targets do not have to be visible to be hit by this ability.",
+            "description": "Cultivation of Spirit resets Yunara's basic attack timer. Targets do not have to be visible to be hit by the spread attacks.",
             "leveling": []
           },
           {
-            "description": "Passive: Yunara's basic attacks deal bonus magic damage on-hit. While this ability is inactive, her basic attacks on-attack generate a stack of Unleash for 6 seconds, increased to 2 stacks against champions. The stacks refresh on subsequent attacks, stack up to 8 times, and expire by one every 0.5 seconds after the duration.",
+            "description": "Passive: Yunara's basic attacks deal bonus magic damage on-hit. While this ability is inactive, her basic attacks on-attack generate a stack of Unleash for 6 seconds, increased to 2 stacks against champions. The stacks refresh on subsequent attacks, stack up to 8 times, and expire one by one every 0.5 seconds after the duration.",
             "leveling": [
               {
                 "attribute": "Passive Bonus Magic Damage",
@@ -333,7 +333,7 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "Active: Yunara launches a spinning prayer bead in the target direction that briefly grants sight of its surroundings as it travels. The bead slows down significantly while colliding with an enemy, lingering as it travels and resetting its remaining duration; upon reaching maximum range, it will expand and linger in place for 1 second regardless of enemies hit.The initial hit against each enemy before the bead's expansion deals magic damage and slows them by 99% decaying over 1.5 seconds. While lingering, the bead deals magic damage to nearby enemies every 0.25 seconds.",
+            "description": "Active: Yunara launches a spinning prayer bead in the target direction that briefly grants sight of its surroundings as it travels. The bead slows down significantly while colliding with an enemy, lingering as it travels and resetting its remaining duration; upon reaching maximum range, it will expand and linger in place for 1 second regardless of enemies hit.The initial hit against each enemy before the bead's expansion deals magic damage and slows them by 99% decaying over 1.5 seconds. While lingering, the bead deals 60% of impact damage as magic damage to nearby enemies every 0.25 seconds.",
             "leveling": [
               {
                 "attribute": "Initial Magic Damage",
@@ -347,20 +347,20 @@
                       ""
                     ],
                     "values": [
-                      5.0,
-                      30.0,
                       55.0,
-                      80.0,
-                      105.0
+                      95.0,
+                      135.0,
+                      175.0,
+                      215.0
                     ]
                   },
                   {
                     "units": [
-                      "% AD",
-                      "% AD",
-                      "% AD",
-                      "% AD",
-                      "% AD"
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
                     ],
                     "values": [
                       85.0,
@@ -400,27 +400,27 @@
                       ""
                     ],
                     "values": [
-                      1.25,
-                      5.0,
-                      8.75,
-                      12.5,
-                      16.25
+                      8.25,
+                      14.25,
+                      20.25,
+                      26.25,
+                      32.25
                     ]
                   },
                   {
                     "units": [
-                      "% AD",
-                      "% AD",
-                      "% AD",
-                      "% AD",
-                      "% AD"
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
                     ],
                     "values": [
-                      10.0,
-                      10.0,
-                      10.0,
-                      10.0,
-                      10.0
+                      12.75,
+                      12.75,
+                      12.75,
+                      12.75,
+                      12.75
                     ]
                   },
                   {
@@ -432,11 +432,11 @@
                       "% AP"
                     ],
                     "values": [
-                      6.25,
-                      6.25,
-                      6.25,
-                      6.25,
-                      6.25
+                      7.5,
+                      7.5,
+                      7.5,
+                      7.5,
+                      7.5
                     ]
                   }
                 ]
@@ -453,27 +453,27 @@
                       ""
                     ],
                     "values": [
-                      5.0,
-                      20.0,
-                      35.0,
-                      50.0,
-                      65.0
+                      33.0,
+                      57.0,
+                      81.0,
+                      105.0,
+                      129.0
                     ]
                   },
                   {
                     "units": [
-                      "% AD",
-                      "% AD",
-                      "% AD",
-                      "% AD",
-                      "% AD"
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
                     ],
                     "values": [
-                      40.0,
-                      40.0,
-                      40.0,
-                      40.0,
-                      40.0
+                      51.0,
+                      51.0,
+                      51.0,
+                      51.0,
+                      51.0
                     ]
                   },
                   {
@@ -485,11 +485,11 @@
                       "% AP"
                     ],
                     "values": [
-                      25.0,
-                      25.0,
-                      25.0,
-                      25.0,
-                      25.0
+                      30.0,
+                      30.0,
+                      30.0,
+                      30.0,
+                      30.0
                     ]
                   }
                 ]
@@ -528,7 +528,7 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "Active: Yunara fires a beam of spirit magic in the target direction that deals 50 / 200 / 350 (based on Transcend One's Self's Rank) (+ 175% AD) (+ 75% AP) magic damage to enemies hit and slows them by 99% decaying over 1 second, as well as granting sight of the surrounding area.",
+            "description": "Active: Yunara fires a beam of spirit magic in the target direction that deals 160 / 320 / 480 (based on Transcend One's Self's Rank) (+ 120% bonus AD) (+ 75% AP) magic damage to enemies hit and slows them by 99% decaying over 1 second, as well as granting sight of the surrounding area.",
             "leveling": []
           },
           {
@@ -553,11 +553,11 @@
                 ""
               ],
               "values": [
-                7.5,
-                7.5,
-                7.5,
-                7.5,
-                7.5
+                9.0,
+                9.0,
+                9.0,
+                9.0,
+                9.0
               ]
             }
           ]
@@ -565,7 +565,7 @@
         "damageType": null,
         "effects": [
           {
-            "description": "Active: Yunara becomes ghosted and gains bonus movement speed decaying over a few seconds. The movement speed is 50% more effective while facing a nearby visible enemy champion.",
+            "description": "Active: Yunara becomes ghosted and gains bonus movement speed for 1.5 seconds. The movement speed is 50% more effective while facing a nearby visible enemy champion.",
             "leveling": [
               {
                 "attribute": "Bonus Move Speed",
@@ -579,32 +579,11 @@
                       "%"
                     ],
                     "values": [
-                      50.0,
-                      55.0,
-                      60.0,
-                      65.0,
-                      70.0
-                    ]
-                  }
-                ]
-              },
-              {
-                "attribute": "Duration",
-                "modifiers": [
-                  {
-                    "units": [
-                      " seconds",
-                      " seconds",
-                      " seconds",
-                      " seconds",
-                      " seconds"
-                    ],
-                    "values": [
-                      1.5,
-                      1.75,
-                      2.0,
-                      2.25,
-                      2.5
+                      30.0,
+                      35.0,
+                      40.0,
+                      45.0,
+                      50.0
                     ]
                   }
                 ]
@@ -621,11 +600,11 @@
                       "%"
                     ],
                     "values": [
-                      75.0,
-                      82.5,
-                      90.0,
-                      97.5,
-                      105.0
+                      45.0,
+                      52.5,
+                      60.0,
+                      67.5,
+                      75.0
                     ]
                   }
                 ]
@@ -648,11 +627,11 @@
                 ""
               ],
               "values": [
-                7.5,
-                7.5,
-                7.5,
-                7.5,
-                7.5
+                9.0,
+                9.0,
+                9.0,
+                9.0,
+                9.0
               ]
             }
           ]
@@ -705,9 +684,9 @@
                       ""
                     ],
                     "values": [
-                      50.0,
-                      200.0,
-                      350.0
+                      160.0,
+                      320.0,
+                      480.0
                     ]
                   }
                 ]

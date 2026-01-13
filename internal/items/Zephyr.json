@@ -7,6 +7,10 @@
   "tier": 3,
   "maps": [
     [
+      "NexusBlitz",
+      true
+    ],
+    [
       "SummonersRift",
       true
     ],
@@ -27,15 +31,24 @@
       false
     ],
     [
-      "NexusBlitz",
-      true
-    ],
-    [
       "SummonersRift",
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AttackSpeed",
+      "value": 40
+    },
+    {
+      "name": "MoveSpeed",
+      "value": 45
+    },
+    {
+      "name": "LifeSteal",
+      "value": 5
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

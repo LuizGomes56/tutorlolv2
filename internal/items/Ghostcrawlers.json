@@ -15,15 +15,7 @@
       false
     ],
     [
-      "Arena",
-      true
-    ],
-    [
       "SummonersRift",
-      false
-    ],
-    [
-      "NexusBlitz",
       false
     ],
     [
@@ -31,11 +23,24 @@
       false
     ],
     [
+      "NexusBlitz",
+      false
+    ],
+    [
       "Tft",
       false
+    ],
+    [
+      "Arena",
+      true
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "MoveSpeed",
+      "value": 70
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

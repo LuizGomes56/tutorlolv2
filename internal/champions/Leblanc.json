@@ -8,7 +8,7 @@
   "stats": {
     "health": {
       "flat": 598.0,
-      "perLevel": 111.0
+      "perLevel": 108.0
     },
     "mana": {
       "flat": 400.0,
@@ -16,7 +16,7 @@
     },
     "armor": {
       "flat": 22.0,
-      "perLevel": 4.7
+      "perLevel": 4.2
     },
     "magicResistance": {
       "flat": 30.0,
@@ -70,6 +70,176 @@
   "abilities": [
     [
       {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Ethereal Chains",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "50 + (0.4 * ctx.ap)",
+          "70 + (0.4 * ctx.ap)",
+          "90 + (0.4 * ctx.ap)",
+          "110 + (0.4 * ctx.ap)",
+          "130 + (0.4 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "Sigil of Malice",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "130 + (0.8 * ctx.ap)",
+          "180 + (0.8 * ctx.ap)",
+          "230 + (0.8 * ctx.ap)",
+          "280 + (0.8 * ctx.ap)",
+          "330 + (0.8 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_5"
+      },
+      {
+        "name": "Mimic",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "140 + (0.8 * ctx.ap)",
+          "280 + (0.8 * ctx.ap)",
+          "420 + (0.8 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_3"
+      },
+      {
+        "name": "Mimic",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "140 + (0.85 * ctx.ap)",
+          "280 + (0.85 * ctx.ap)",
+          "420 + (0.85 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Mimic",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "150 + (0.8 * ctx.ap)",
+          "300 + (0.8 * ctx.ap)",
+          "450 + (0.8 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Sigil of Malice",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "65 + (0.4 * ctx.ap)",
+          "90 + (0.4 * ctx.ap)",
+          "115 + (0.4 * ctx.ap)",
+          "140 + (0.4 * ctx.ap)",
+          "165 + (0.4 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_3"
+      },
+      {
+        "name": "Ethereal Chains",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "130 + (1.25 * ctx.ap)",
+          "190 + (1.25 * ctx.ap)",
+          "250 + (1.25 * ctx.ap)",
+          "310 + (1.25 * ctx.ap)",
+          "370 + (1.25 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Distortion",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "75 + (0.8 * ctx.ap)",
+          "115 + (0.8 * ctx.ap)",
+          "155 + (0.8 * ctx.ap)",
+          "195 + (0.8 * ctx.ap)",
+          "235 + (0.8 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_4"
+      },
+      {
+        "name": "Mimic",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "210 + (1.25 * ctx.ap)",
+          "420 + (1.25 * ctx.ap)",
+          "630 + (1.25 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_2"
+      },
+      {
+        "name": "Mimic",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "70 + (0.4 * ctx.ap)",
+          "140 + (0.4 * ctx.ap)",
+          "210 + (0.4 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "R",
         "name": "_6"
       },
@@ -103,160 +273,6 @@
     [
       {
         "type": "E",
-        "name": "_1"
-      },
-      {
-        "name": "Ethereal Chains",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "50 + (0.4 * ctx.ap)",
-          "70 + (0.4 * ctx.ap)",
-          "90 + (0.4 * ctx.ap)",
-          "110 + (0.4 * ctx.ap)",
-          "130 + (0.4 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_3"
-      },
-      {
-        "name": "Mimic",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "140 + (0.85 * ctx.ap)",
-          "280 + (0.85 * ctx.ap)",
-          "420 + (0.85 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Sigil of Malice",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "65 + (0.4 * ctx.ap)",
-          "90 + (0.4 * ctx.ap)",
-          "115 + (0.4 * ctx.ap)",
-          "140 + (0.4 * ctx.ap)",
-          "165 + (0.4 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_1"
-      },
-      {
-        "name": "Distortion",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "75 + (0.7 * ctx.ap)",
-          "115 + (0.7 * ctx.ap)",
-          "155 + (0.7 * ctx.ap)",
-          "195 + (0.7 * ctx.ap)",
-          "235 + (0.7 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_2"
-      },
-      {
-        "name": "Sigil of Malice",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "130 + (0.8 * ctx.ap)",
-          "180 + (0.8 * ctx.ap)",
-          "230 + (0.8 * ctx.ap)",
-          "280 + (0.8 * ctx.ap)",
-          "330 + (0.8 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_1"
-      },
-      {
-        "name": "Mimic",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "150 + (0.75 * ctx.ap)",
-          "300 + (0.75 * ctx.ap)",
-          "450 + (0.75 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_3"
-      },
-      {
-        "name": "Ethereal Chains",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "130 + (1.25 * ctx.ap)",
-          "190 + (1.25 * ctx.ap)",
-          "250 + (1.25 * ctx.ap)",
-          "310 + (1.25 * ctx.ap)",
-          "370 + (1.25 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_4"
-      },
-      {
-        "name": "Mimic",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "210 + (1.25 * ctx.ap)",
-          "420 + (1.25 * ctx.ap)",
-          "630 + (1.25 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_5"
-      },
-      {
-        "name": "Mimic",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "140 + (0.8 * ctx.ap)",
-          "280 + (0.8 * ctx.ap)",
-          "420 + (0.8 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
         "name": "_2"
       },
       {
@@ -269,22 +285,6 @@
           "160 + (0.85 * ctx.ap)",
           "200 + (0.85 * ctx.ap)",
           "240 + (0.85 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_2"
-      },
-      {
-        "name": "Mimic",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "70 + (0.4 * ctx.ap)",
-          "140 + (0.4 * ctx.ap)",
-          "210 + (0.4 * ctx.ap)"
         ]
       }
     ]

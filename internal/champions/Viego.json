@@ -28,7 +28,7 @@
     },
     "attackSpeed": {
       "flat": 0.658,
-      "perLevel": 2.5
+      "perLevel": 2.25
     },
     "movespeed": {
       "flat": 345.0,
@@ -70,19 +70,19 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_4"
+        "type": "W",
+        "name": "_1"
       },
       {
-        "name": "Blade of the Ruined King",
-        "damage_type": "Physical",
+        "name": "Spectral Maw",
+        "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "15 + (0.7 * ctx.ad)",
-          "30 + (0.7 * ctx.ad)",
-          "45 + (0.7 * ctx.ad)",
-          "60 + (0.7 * ctx.ad)",
-          "75 + (0.7 * ctx.ad)"
+          "80 + ctx.ap",
+          "135 + ctx.ap",
+          "190 + ctx.ap",
+          "245 + ctx.ap",
+          "300 + ctx.ap"
         ]
       }
     ],
@@ -99,42 +99,6 @@
           "(0.12 * ctx.missing_health) + (0.05 * 0.01 * ctx.bonus_ad)",
           "(0.16 * ctx.missing_health) + (0.05 * 0.01 * ctx.bonus_ad)",
           "(0.2 * ctx.missing_health) + (0.05 * 0.01 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_6"
-      },
-      {
-        "name": "Blade of the Ruined King",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "10",
-          "15",
-          "20",
-          "25",
-          "30"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_3"
-      },
-      {
-        "name": "Blade of the Ruined King",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "30 + (0.7 * ctx.ad)",
-          "45 + (0.7 * ctx.ad)",
-          "60 + (0.7 * ctx.ad)",
-          "75 + (0.7 * ctx.ad)",
-          "90 + (0.7 * ctx.ad)"
         ]
       }
     ],
@@ -166,47 +130,29 @@
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "60 + (1.4 * ctx.ad)",
-          "90 + (1.4 * ctx.ad)",
-          "120 + (1.4 * ctx.ad)",
-          "150 + (1.4 * ctx.ad)",
-          "180 + (1.4 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_1"
-      },
-      {
-        "name": "Spectral Maw",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "80 + ctx.ap",
-          "135 + ctx.ap",
-          "190 + ctx.ap",
-          "245 + ctx.ap",
-          "300 + ctx.ap"
+          "25 + (0.7 * ctx.ad)",
+          "40 + (0.7 * ctx.ad)",
+          "55 + (0.7 * ctx.ad)",
+          "70 + (0.7 * ctx.ad)",
+          "85 + (0.7 * ctx.ad)"
         ]
       }
     ],
     [
       {
         "type": "Q",
-        "name": "_2"
+        "name": "_6"
       },
       {
         "name": "Blade of the Ruined King",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "30 + (1.4 * ctx.ad)",
-          "60 + (1.4 * ctx.ad)",
-          "90 + (1.4 * ctx.ad)",
-          "120 + (1.4 * ctx.ad)",
-          "150 + (1.4 * ctx.ad)"
+          "10",
+          "15",
+          "20",
+          "25",
+          "30"
         ]
       }
     ]

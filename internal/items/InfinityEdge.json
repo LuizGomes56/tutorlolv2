@@ -8,10 +8,10 @@
   "maps": [
     [
       "SummonersRift",
-      true
+      false
     ],
     [
-      "NexusBlitz",
+      "SummonersRift",
       true
     ],
     [
@@ -20,10 +20,10 @@
     ],
     [
       "SummonersRift",
-      false
+      true
     ],
     [
-      "SummonersRift",
+      "NexusBlitz",
       true
     ],
     [
@@ -35,7 +35,20 @@
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "CriticalStrikeChance",
+      "value": 25
+    },
+    {
+      "name": "CriticalStrikeDamage",
+      "value": 30
+    },
+    {
+      "name": "AttackDamage",
+      "value": 75
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

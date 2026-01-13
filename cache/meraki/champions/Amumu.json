@@ -387,7 +387,7 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "Active: Amumu entangles nearby enemies in bandages, dealing magic damage as well as knocking down and stunning them for 1.5 seconds.",
+            "description": "Active: Amumu entangles nearby enemies in bandages, dealing magic damage as well as knocking them down and stunning them for 1.5 seconds.",
             "leveling": [
               {
                 "attribute": "Magic Damage",

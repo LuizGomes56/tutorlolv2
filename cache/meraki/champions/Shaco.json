@@ -75,7 +75,7 @@
             "leveling": []
           },
           {
-            "description": "Innate: Shaco's basic attacks are empowered to deal 20 : 35 (based on level) (+ 30% bonus AD) bonus physical damage when hitting an enemy from behind. Backstab is affected by critical strike modifiers.",
+            "description": "Innate: Shaco's basic attacks are empowered to deal 20 : 35 (based on level) (+ 20% bonus AD) bonus physical damage when hitting an enemy from behind. This damage is affected by critical strike modifiers.",
             "leveling": []
           }
         ],
@@ -96,11 +96,11 @@
                 ""
               ],
               "values": [
+                13.0,
+                12.5,
                 12.0,
                 11.5,
-                11.0,
-                10.5,
-                10.0
+                11.0
               ]
             }
           ]
@@ -164,11 +164,11 @@
                       "% bonus AD"
                     ],
                     "values": [
-                      65.0,
-                      65.0,
-                      65.0,
-                      65.0,
-                      65.0
+                      60.0,
+                      60.0,
+                      60.0,
+                      60.0,
+                      60.0
                     ]
                   }
                 ]
@@ -176,7 +176,7 @@
             ]
           },
           {
-            "description": "Backstab Bonus: The attack will critically strike for (155% + 40%) damage, increased to (175% + 40%) if a critical strike was rolled.",
+            "description": "Backstab Bonus: The attack will critically strike for (160% + 18%) damage, increased to (200% + 30%) if a critical strike was rolled.",
             "leveling": []
           },
           {

@@ -85,18 +85,16 @@
           "modifiers": [
             {
               "units": [
-                "",
-                "",
-                "",
-                "",
-                ""
+                " (based on Rampage stacks)",
+                " (based on Rampage stacks)",
+                " (based on Rampage stacks)",
+                " (based on Rampage stacks)"
               ],
               "values": [
                 4.0,
-                4.0,
-                4.0,
-                4.0,
-                4.0
+                3.25,
+                2.5,
+                1.75
               ]
             }
           ]
@@ -183,7 +181,7 @@
             ]
           },
           {
-            "description": "If this damages an enemy, Hecarim gains a stack of Rampage for 8 seconds, refreshing on subsequent damage and stacking up to 3 times. Each stack increases Rampage's damage by 3% (+ 4% per 100 bonus AD) and reduces its base cooldown by 0.75 seconds, up to a 9% (+ 12% per 100 bonus AD) damage increase and a 2.25-second reduction of the base cooldown at maximum stacks. Stacks expire by one every 1 second when the duration ends.",
+            "description": "If this damages an enemy, Hecarim gains a stack of Rampage for 8 seconds, refreshing on subsequent damage and stacking up to 3 times. Each stack increases Rampage's damage by 3% (+ 4% per 100 bonus AD) and reduces its base cooldown by 0.75 seconds, up to a 9% (+ 12% per 100 bonus AD) damage increase and a 2.25-second reduction of the base cooldown at maximum stacks. Stacks expire one by one every 1 second when the duration ends.",
             "leveling": []
           }
         ],
@@ -375,7 +373,7 @@
             "leveling": []
           },
           {
-            "description": "Devastating Charge can critically strike for (75% + 40%) AD bonus physical damage.",
+            "description": "Devastating Charge can critically strike for (100% + 30%) AD bonus physical damage.",
             "leveling": []
           },
           {
@@ -383,7 +381,7 @@
             "leveling": []
           },
           {
-            "description": "During this time, Hecarim empowers his next basic attack to gain 50 : 250 (based on distance traveled) bonus range and cause him to dash in the target's direction, revealing them for 1 second. If the target remains nearby during the dash, the ghosting and bonus movement speed ends prematurely and Hecarim knocks them back 150 : 350 (based on distance traveled) units, though not through terrain, stuns them for 0.25 seconds, and deals them modified physical damage, increased by 0% : 100% (based on distance traveled).",
+            "description": "During this time, Hecarim's next basic attack is replaced by a Devastating Charge, empowering it to gain 50 : 250 (based on distance traveled) bonus range and cause him to dash in the target's direction, revealing them for 1 second. If the target remains nearby during the dash, the ghosting and bonus movement speed ends prematurely and Hecarim knocks them back 150 : 350 (based on distance traveled) units, though not through terrain, stuns them for 0.25 seconds, and deals them modified physical damage, increased by 0% : 100% (based on distance traveled).",
             "leveling": [
               {
                 "attribute": "Maximum Physical Damage",

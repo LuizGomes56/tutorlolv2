@@ -1,0 +1,703 @@
+{
+  "name": "Zaahen",
+  "attackType": "MELEE",
+  "adaptiveType": "PHYSICAL_DAMAGE",
+  "stats": {
+    "health": {
+      "flat": 640.0,
+      "perLevel": 114.0
+    },
+    "mana": {
+      "flat": 350.0,
+      "perLevel": 55.0
+    },
+    "armor": {
+      "flat": 36.0,
+      "perLevel": 5.0
+    },
+    "magicResistance": {
+      "flat": 32.0,
+      "perLevel": 2.05
+    },
+    "attackDamage": {
+      "flat": 63.0,
+      "perLevel": 4.0
+    },
+    "attackSpeed": {
+      "flat": 0.625,
+      "perLevel": 2.5
+    },
+    "movespeed": {
+      "flat": 345.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "criticalStrikeDamageModifier": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "attackSpeedRatio": {
+      "flat": 0.625,
+      "perLevel": 0.0
+    },
+    "attackRange": {
+      "flat": 175.0,
+      "perLevel": 0.0
+    },
+    "aramDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "aramDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageTaken": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    },
+    "urfDamageDealt": {
+      "flat": 1.0,
+      "perLevel": 0.0
+    }
+  },
+  "abilities": {
+    "P": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                " (based on level)",
+                " (based on level)",
+                " (based on level)",
+                " (based on level)"
+              ],
+              "values": [
+                300.0,
+                240.0,
+                180.0,
+                120.0
+              ]
+            }
+          ]
+        },
+        "damageType": null,
+        "effects": [
+          {
+            "description": "Determination: For each stack, Zaahen gains bonus attack damage equal to 1.5% : 2.8% (based on level) AD. At maximum stacks, this is doubled to 36% : 67.2% (based on level) AD.Periodically, if Zaahen would take lethal damage while at maximum stacks of Determination, he refreshes its duration and enters resurrection for 4 seconds: becoming invulnerable, untargetable, and unable to act. Additionally, he restores[ 30% / 45% / 60% / 75% (based on level) of his maximum health ][ 0.94% / 1.41% / 1.88% / 2.34% (based on level) of his maximum health every 0.125 seconds ]over the duration. Afterwards, he revives himself and refreshes the duration of Determination.",
+            "leveling": []
+          },
+          {
+            "description": "Innate: Zaahen generates a stack of Determination for each enemy champion damaged by his basic attacks and abilities, lasting for 5 seconds, refreshing on subsequent triggers, and stacking up to 12 times. After the duration, the stacks expire by 1 / 2 / 3 / 4 / 5 (based on seconds elapsed) every 0.5 seconds.",
+            "leveling": []
+          }
+        ],
+        "name": "Cultivation of War"
+      }
+    ],
+    "Q": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                10.0,
+                9.0,
+                8.0,
+                7.0,
+                6.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Zaahen empowers his next basic attack within 4 seconds to have an uncancellable windup and gain 25 bonus range. On-attack, he strikes the target twice and heals himself. The strikes deal modified physical damage and the heal is reduced to 50% against non-champions.Each strike applies on-hit effects and can critically strike for[ (50% + 15%) ][ 50% bonus critical damage ]AD bonus physical damage.",
+            "leveling": [
+              {
+                "attribute": "Champion Healing",
+                "modifiers": [
+                  {
+                    "units": [
+                      "% of his maximum health",
+                      "% of his maximum health",
+                      "% of his maximum health",
+                      "% of his maximum health",
+                      "% of his maximum health"
+                    ],
+                    "values": [
+                      5.0,
+                      6.0,
+                      7.0,
+                      8.0,
+                      9.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Non-Champion Healing",
+                "modifiers": [
+                  {
+                    "units": [
+                      "% of his maximum health",
+                      "% of his maximum health",
+                      "% of his maximum health",
+                      "% of his maximum health",
+                      "% of his maximum health"
+                    ],
+                    "values": [
+                      2.5,
+                      3.0,
+                      3.5,
+                      4.0,
+                      4.5
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Physical Damage per Hit",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      7.5,
+                      15.0,
+                      22.5,
+                      30.0,
+                      37.5
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      50.0,
+                      50.0,
+                      50.0,
+                      50.0,
+                      50.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      10.0,
+                      12.5,
+                      15.0,
+                      17.5,
+                      20.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      15.0,
+                      30.0,
+                      45.0,
+                      60.0,
+                      75.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      20.0,
+                      25.0,
+                      30.0,
+                      35.0,
+                      40.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "After 1.5 seconds of using the empowered attack, The Darkin Glaive can be recast within the next 4 seconds at no additional cost, modifying it with a new effect.",
+            "leveling": []
+          },
+          {
+            "description": "Both casts of The Darkin Glaive reset Zaahen's basic attack timer.",
+            "leveling": []
+          },
+          {
+            "description": "Recast: Zaahen empowers his next basic attack within 4 seconds to have an uncancellable windup, gain 25 bonus range, deal bonus physical damage and knock up the target for 0.75 seconds.",
+            "leveling": [
+              {
+                "attribute": "Bonus Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      25.0,
+                      50.0,
+                      75.0,
+                      100.0,
+                      125.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      20.0,
+                      25.0,
+                      30.0,
+                      35.0,
+                      40.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "The Darkin Glaive deals 175% damage against monsters.",
+            "leveling": []
+          }
+        ],
+        "name": "The Darkin Glaive"
+      }
+    ],
+    "W": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                16.0,
+                15.0,
+                14.0,
+                13.0,
+                12.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Zaahen extends his glaive in the target direction, dealing physical damage to enemies hit. Upon reaching maximum range, all enemies hit are dealt the same physical damage, stunned for 0.25 seconds, and pulled 225 units toward Zaahen.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      40.0,
+                      60.0,
+                      80.0,
+                      100.0,
+                      120.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      50.0,
+                      50.0,
+                      50.0,
+                      50.0,
+                      50.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      80.0,
+                      120.0,
+                      160.0,
+                      200.0,
+                      240.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Dreaded Return"
+      }
+    ],
+    "E": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                10.0,
+                9.5,
+                9.0,
+                8.5,
+                8.0
+              ]
+            }
+          ]
+        },
+        "damageType": "OTHER_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Zaahen dashes to the target location. Upon arrival, he flourishes his glaive to deal physical damage to nearby enemies.",
+            "leveling": [
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      40.0,
+                      60.0,
+                      80.0,
+                      100.0,
+                      120.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      50.0,
+                      50.0,
+                      50.0,
+                      50.0,
+                      50.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Aureate Rush deals 50 bonus physical damage against monsters.",
+            "leveling": []
+          },
+          {
+            "description": "Enemies hit by the outer edge are dealt 150% increased physical damage and bonus magic damage, with the latter capped at 400 against monsters.",
+            "leveling": [
+              {
+                "attribute": "Bonus Magic Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "% of the target's maximum health",
+                      "% of the target's maximum health",
+                      "% of the target's maximum health",
+                      "% of the target's maximum health",
+                      "% of the target's maximum health"
+                    ],
+                    "values": [
+                      4.0,
+                      4.5,
+                      5.0,
+                      5.5,
+                      6.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Increased Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      60.0,
+                      90.0,
+                      120.0,
+                      150.0,
+                      180.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      75.0,
+                      75.0,
+                      75.0,
+                      75.0,
+                      75.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "name": "Aureate Rush"
+      }
+    ],
+    "R": [
+      {
+        "cooldown": {
+          "attribute": null,
+          "modifiers": [
+            {
+              "units": [
+                "",
+                "",
+                ""
+              ],
+              "values": [
+                110.0,
+                95.0,
+                80.0
+              ]
+            }
+          ]
+        },
+        "damageType": "PHYSICAL_DAMAGE",
+        "effects": [
+          {
+            "description": "Active: Zaahen gains crowd control immunity over the cast time, then launches with displacement immunity into the air to the target location. He then slams his glaive down after a 0.6-second delay, unleashing a shockwave that deals physical damage to nearby enemies and heals him for each champion hit.",
+            "leveling": [
+              {
+                "attribute": "Healing per Champion hit",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      82.5,
+                      132.0,
+                      181.5
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      66.0,
+                      66.0,
+                      66.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      250.0,
+                      400.0,
+                      550.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      200.0,
+                      200.0,
+                      200.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Passive: Zaahen gains armor penetration.",
+            "leveling": [
+              {
+                "attribute": "Armor Penetration",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      10.0,
+                      20.0,
+                      30.0
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Zaahen is unable to act and gains 50% damage reduction from the start of the cast time. He retains these effects as well as the displacement immunity during the delay before the slam and for up-to an additional 0.25 seconds afterwards.",
+            "leveling": []
+          }
+        ],
+        "name": "Grim Deliverance"
+      }
+    ]
+  },
+  "positions": [
+    "TOP"
+  ]
+}

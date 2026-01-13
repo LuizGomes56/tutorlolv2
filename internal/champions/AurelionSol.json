@@ -70,52 +70,19 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_3"
-      },
-      {
-        "name": "Breath of Light",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "146.25 + (1.7875 * ctx.ap)",
-          "195 + (1.7875 * ctx.ap)",
-          "243.75 + (1.7875 * ctx.ap)",
-          "292.5 + (1.7875 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_2"
-      },
-      {
-        "name": "Falling Star",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "150 + (0.75 * ctx.ap)",
-          "250 + (0.75 * ctx.ap)",
-          "350 + (0.75 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "E",
-        "name": "_1"
+        "name": "_2"
       },
       {
         "name": "Singularity",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "2.5 + (0.03 * ctx.ap)",
-          "3.75 + (0.03 * ctx.ap)",
-          "5 + (0.03 * ctx.ap)",
-          "6.25 + (0.03 * ctx.ap)",
-          "7.5 + (0.03 * ctx.ap)"
+          "50 + (0.6 * ctx.ap)",
+          "75 + (0.6 * ctx.ap)",
+          "100 + (0.6 * ctx.ap)",
+          "125 + (0.6 * ctx.ap)",
+          "150 + (0.6 * ctx.ap)"
         ]
       }
     ],
@@ -134,6 +101,41 @@
           "4.6875 + (0.034375 * ctx.ap)",
           "5.625 + (0.034375 * ctx.ap)",
           "6.5625 + (0.034375 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_3"
+      },
+      {
+        "name": "Breath of Light",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "146.25 + (1.7875 * ctx.ap)",
+          "195 + (1.7875 * ctx.ap)",
+          "243.75 + (1.7875 * ctx.ap)",
+          "292.5 + (1.7875 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Singularity",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "2.5 + (0.03 * ctx.ap)",
+          "3.75 + (0.03 * ctx.ap)",
+          "5 + (0.03 * ctx.ap)",
+          "6.25 + (0.03 * ctx.ap)",
+          "7.5 + (0.03 * ctx.ap)"
         ]
       }
     ],
@@ -175,19 +177,17 @@
     ],
     [
       {
-        "type": "E",
+        "type": "R",
         "name": "_2"
       },
       {
-        "name": "Singularity",
+        "name": "Falling Star",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "50 + (0.6 * ctx.ap)",
-          "75 + (0.6 * ctx.ap)",
-          "100 + (0.6 * ctx.ap)",
-          "125 + (0.6 * ctx.ap)",
-          "150 + (0.6 * ctx.ap)"
+          "150 + (0.75 * ctx.ap)",
+          "250 + (0.75 * ctx.ap)",
+          "350 + (0.75 * ctx.ap)"
         ]
       }
     ]

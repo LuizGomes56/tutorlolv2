@@ -7,19 +7,11 @@
   "tier": 3,
   "maps": [
     [
-      "Arena",
+      "SummonersRift",
       false
     ],
     [
       "NexusBlitz",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Aram",
       true
     ],
     [
@@ -31,11 +23,32 @@
       true
     ],
     [
-      "SummonersRift",
+      "Aram",
+      true
+    ],
+    [
+      "Arena",
       false
+    ],
+    [
+      "SummonersRift",
+      true
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "MagicResist",
+      "value": 45
+    },
+    {
+      "name": "Armor",
+      "value": 45
+    },
+    {
+      "name": "Health",
+      "value": 350
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

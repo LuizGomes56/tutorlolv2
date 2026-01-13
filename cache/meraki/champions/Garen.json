@@ -339,11 +339,11 @@
                       "% AD"
                     ],
                     "values": [
-                      36.0,
-                      39.0,
-                      42.0,
-                      45.0,
-                      48.0
+                      38.0,
+                      41.0,
+                      44.0,
+                      47.0,
+                      50.0
                     ]
                   }
                 ]
@@ -355,7 +355,7 @@
             "leveling": []
           },
           {
-            "description": "Judgment can critically strike for[ (140% + 32%) damage. ][ 80% total critical damage. ]",
+            "description": "Judgment can critically strike for[ (130% + 9%) damage. ][ 30% bonus critical damage. ]",
             "leveling": []
           },
           {
@@ -389,11 +389,11 @@
                       "% AD"
                     ],
                     "values": [
-                      45.0,
-                      48.75,
-                      52.5,
-                      56.25,
-                      60.0
+                      47.5,
+                      51.25,
+                      55.0,
+                      58.75,
+                      62.5
                     ]
                   }
                 ]

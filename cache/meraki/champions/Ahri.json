@@ -224,10 +224,10 @@
             "leveling": []
           },
           {
-            "description": "After 0.25 seconds of the cast, each flame targets a visible enemy based on priority, or after 0.4 seconds, simply targets the closest visible enemy in range. Each flame deals magic damage, with subsequent flames against a target dealing 30% damage.",
+            "description": "After 0.25 seconds of the cast, each flame targets a visible enemy based on priority, or after 0.4 seconds, simply targets the closest visible enemy in range. Each flame deals magic damage, with subsequent flames against a target dealing 40% damage.",
             "leveling": [
               {
-                "attribute": "Initial Flame Magic Damage",
+                "attribute": "Primary Magic Damage",
                 "modifiers": [
                   {
                     "units": [
@@ -264,7 +264,7 @@
                 ]
               },
               {
-                "attribute": "Subsequent Flame Magic Damage",
+                "attribute": "Subsequent Magic Damage",
                 "modifiers": [
                   {
                     "units": [
@@ -275,11 +275,11 @@
                       ""
                     ],
                     "values": [
-                      12.0,
-                      18.0,
+                      16.0,
                       24.0,
-                      30.0,
-                      36.0
+                      32.0,
+                      40.0,
+                      48.0
                     ]
                   },
                   {
@@ -291,11 +291,11 @@
                       "% AP"
                     ],
                     "values": [
-                      12.0,
-                      12.0,
-                      12.0,
-                      12.0,
-                      12.0
+                      16.0,
+                      16.0,
+                      16.0,
+                      16.0,
+                      16.0
                     ]
                   }
                 ]
@@ -312,11 +312,11 @@
                       ""
                     ],
                     "values": [
-                      64.0,
-                      96.0,
-                      128.0,
-                      160.0,
-                      192.0
+                      72.0,
+                      108.0,
+                      144.0,
+                      180.0,
+                      216.0
                     ]
                   },
                   {
@@ -328,11 +328,11 @@
                       "% AP"
                     ],
                     "values": [
-                      64.0,
-                      64.0,
-                      64.0,
-                      64.0,
-                      64.0
+                      72.0,
+                      72.0,
+                      72.0,
+                      72.0,
+                      72.0
                     ]
                   }
                 ]
@@ -347,7 +347,7 @@
             "description": "Fox-Fire's damage is doubled against minions below 20% maximum health.",
             "leveling": [
               {
-                "attribute": "Increased Initial Flame Minion Damage",
+                "attribute": "Primary Minion Damage",
                 "modifiers": [
                   {
                     "units": [
@@ -384,7 +384,7 @@
                 ]
               },
               {
-                "attribute": "Increased Subsequent Flame Minion Damage",
+                "attribute": "Subsequent Minion Damage",
                 "modifiers": [
                   {
                     "units": [
@@ -395,11 +395,11 @@
                       ""
                     ],
                     "values": [
-                      24.0,
-                      36.0,
+                      32.0,
                       48.0,
-                      60.0,
-                      72.0
+                      64.0,
+                      80.0,
+                      96.0
                     ]
                   },
                   {
@@ -411,11 +411,11 @@
                       "% AP"
                     ],
                     "values": [
-                      24.0,
-                      24.0,
-                      24.0,
-                      24.0,
-                      24.0
+                      32.0,
+                      32.0,
+                      32.0,
+                      32.0,
+                      32.0
                     ]
                   }
                 ]
@@ -552,9 +552,9 @@
                       ""
                     ],
                     "values": [
-                      60.0,
-                      90.0,
-                      120.0
+                      75.0,
+                      125.0,
+                      175.0
                     ]
                   },
                   {

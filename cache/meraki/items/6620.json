@@ -9,7 +9,7 @@
   "tier": 3,
   "passives": [
     {
-      "effects": "Damaging an enemy champion with a basic attack or [[ability damage]] grants a ''Soul Shard'', up to 2. {{tip|Heal|Healing}} or {{tip|shield|shielding}} an allied champion (''excluding yourself'') consumes all ''Soul Shards'' to heal them for 65 per shard and deal {{as|50 magic damage}} per shard to the nearest enemy champion within 1100 units of the ally.",
+      "effects": "Gain 35% of {{tt|pre-mitigation damage|Damage calculated before modifiers}} dealt to champions as ''Soul Charges'', up to {{pp|80 to 250}}. {{tip|Healing}} or {{tip|shielding}} an allied champion ''(excluding yourself)'' consumes all charges to heal them equal to the consumed amount.",
       "name": "Soul Siphon",
       "unique": true
     }

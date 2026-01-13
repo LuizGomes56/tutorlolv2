@@ -1,0 +1,83 @@
+{
+  "active": [],
+  "buildsFrom": [
+    3067,
+    1029,
+    1033
+  ],
+  "buildsInto": [],
+  "name": "Bandlepipes",
+  "tier": 3,
+  "passives": [
+    {
+      "effects": "{{tip|Slow|Slowing}} or {{tip|immobilize|immobilizing}} an enemy champion empowers you with ''Fanfare'' for {{rd|8|4}} seconds, granting you {{as|20 '''bonus''' movement speed}}. While empowered, you and nearby allied champions also gain {{as|{{rd|30|20}}% '''bonus''' attack speed}}.",
+      "name": "Fanfare",
+      "unique": true
+    }
+  ],
+  "id": 2524,
+  "stats": {
+    "abilityPower": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 20.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 200.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 20.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "shop": {
+    "purchasable": true,
+    "prices": {
+      "total": 2000
+    }
+  }
+}

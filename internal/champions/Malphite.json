@@ -17,7 +17,7 @@
       "perLevel": 60.0
     },
     "armor": {
-      "flat": 37.0,
+      "flat": 40.0,
       "perLevel": 4.95
     },
     "magicResistance": {
@@ -72,19 +72,19 @@
   "abilities": [
     [
       {
-        "type": "E",
+        "type": "W",
         "name": "_1"
       },
       {
-        "name": "Ground Slam",
-        "damage_type": "Magic",
+        "name": "Thunderclap",
+        "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "70 + (0.6 * ctx.ap) + (0.4 * ctx.armor)",
-          "110 + (0.6 * ctx.ap) + (0.4 * ctx.armor)",
-          "150 + (0.6 * ctx.ap) + (0.4 * ctx.armor)",
-          "190 + (0.6 * ctx.ap) + (0.4 * ctx.armor)",
-          "230 + (0.6 * ctx.ap) + (0.4 * ctx.armor)"
+          "30 + (0.2 * ctx.ap) + (0.15 * ctx.armor)",
+          "40 + (0.2 * ctx.ap) + (0.15 * ctx.armor)",
+          "50 + (0.2 * ctx.ap) + (0.15 * ctx.armor)",
+          "60 + (0.2 * ctx.ap) + (0.15 * ctx.armor)",
+          "70 + (0.2 * ctx.ap) + (0.15 * ctx.armor)"
         ]
       }
     ],
@@ -126,19 +126,19 @@
     ],
     [
       {
-        "type": "W",
+        "type": "E",
         "name": "_1"
       },
       {
-        "name": "Thunderclap",
-        "damage_type": "Physical",
+        "name": "Ground Slam",
+        "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "30 + (0.2 * ctx.ap) + (0.15 * ctx.armor)",
-          "40 + (0.2 * ctx.ap) + (0.15 * ctx.armor)",
-          "50 + (0.2 * ctx.ap) + (0.15 * ctx.armor)",
-          "60 + (0.2 * ctx.ap) + (0.15 * ctx.armor)",
-          "70 + (0.2 * ctx.ap) + (0.15 * ctx.armor)"
+          "80 + (0.6 * ctx.ap) + (0.4 * ctx.armor)",
+          "120 + (0.6 * ctx.ap) + (0.4 * ctx.armor)",
+          "160 + (0.6 * ctx.ap) + (0.4 * ctx.armor)",
+          "200 + (0.6 * ctx.ap) + (0.4 * ctx.armor)",
+          "240 + (0.6 * ctx.ap) + (0.4 * ctx.armor)"
         ]
       }
     ],

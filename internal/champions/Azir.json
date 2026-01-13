@@ -88,24 +88,6 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Conquering Sands",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "60 + (0.35 * ctx.ap)",
-          "80 + (0.35 * ctx.ap)",
-          "100 + (0.35 * ctx.ap)",
-          "120 + (0.35 * ctx.ap)",
-          "140 + (0.35 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "W",
         "name": "_1"
       },
@@ -132,6 +114,24 @@
           "39.705882352941174",
           "42.35294117647059",
           "45"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Conquering Sands",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "60 + (0.35 * ctx.ap)",
+          "80 + (0.35 * ctx.ap)",
+          "100 + (0.35 * ctx.ap)",
+          "120 + (0.35 * ctx.ap)",
+          "140 + (0.35 * ctx.ap)"
         ]
       }
     ],

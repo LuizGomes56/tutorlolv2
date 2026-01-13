@@ -5,7 +5,10 @@ impl Generator<Champion> for Nautilus {
         mut self: Box<Self>,
     ) -> MayFail<Champion> {
         self.ability(Q, [(1, 0, _1)]);
-        self.ability(W, [(1, 0, _1)]);
+        self.ability(
+            W,
+            [(1, 0, _1), (1, 1, _2)],
+        );
         self.ability(
             E,
             [
@@ -13,8 +16,6 @@ impl Generator<Champion> for Nautilus {
                 (0, 1, _2),
                 (0, 2, _3),
                 (1, 0, _4),
-                (1, 1, _5),
-                (1, 2, _6),
             ],
         );
         self.ability(

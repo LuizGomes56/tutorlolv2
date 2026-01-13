@@ -7,11 +7,7 @@
   "tier": 3,
   "maps": [
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
+      "NexusBlitz",
       false
     ],
     [
@@ -23,19 +19,32 @@
       false
     ],
     [
-      "NexusBlitz",
-      false
+      "Arena",
+      true
     ],
     [
       "Tft",
       false
     ],
     [
-      "Arena",
-      true
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AdaptiveForce",
+      "value": 110
+    },
+    {
+      "name": "CriticalStrikeChance",
+      "value": 50
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

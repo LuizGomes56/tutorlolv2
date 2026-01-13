@@ -25,7 +25,7 @@
     },
     "attackSpeed": {
       "flat": 0.625,
-      "perLevel": 2.0
+      "perLevel": 2.6
     },
     "movespeed": {
       "flat": 330.0,
@@ -36,7 +36,7 @@
       "perLevel": 0.0
     },
     "criticalStrikeDamageModifier": {
-      "flat": 1.0,
+      "flat": 0.9,
       "perLevel": 0.0
     },
     "attackSpeedRatio": {
@@ -71,15 +71,15 @@
         "damageType": null,
         "effects": [
           {
-            "description": "Enemies that die near Senna may spawn a Mist Wraith from their corpse. A Mist Wraith lasts 8 seconds and Senna can basic attack or hit it with Piercing Darkness or Dawning Shadow to kill them instantly, granting her 8 and collecting their Mist.\nEnemy champions and large monsters will spawn a Mist Wraith.\nEpic monsters will spawn 2 Mist Wraiths.\n Minions and lesser monsters that Senna kills have a 10% chance to spawn a Mist Wraith.\nLarge minions that Senna does not kill will always spawn a Mist Wraith, while lesser minions and lesser monsters that Senna does not kill have a 28% chance to spawn one.\nLesser minions executed by an allied champion's Support Quest item have a 8.4% chance to spawn a Mist Wraith.",
+            "description": "Innate - Relic Cannon: Senna's basic attacks on-hit deal 20% AD bonus physical damage and grant her 10% / 15% / 20% (based on level) of the target's movement speed as bonus movement speed for 0.5 seconds. The damage applies life steal at 100% effectiveness.",
             "leveling": []
           },
           {
-            "description": "Innate - Relic Cannon: Senna's basic attacks on-hit deal 20% AD bonus physical damage and grant her 10% / 15% / 20% (based on level) of the target's movement speed as bonus movement speed for 0.5 seconds. This damage applies life steal at 100% effectiveness.",
+            "description": "Innate - Weakened Soul: Senna's basic attacks on-hit and abilities mark enemy champions hit for 4 seconds. Subsequent attacks or ability hits against marked targets will consume the mark to grant Senna a stack of Mist and deal bonus physical damage equal to 1% : 10% (based on level) of the target's current health, rendering the target immune to being marked again for a few seconds. This damage applies life steal at 100% effectiveness.",
             "leveling": []
           },
           {
-            "description": "Innate - Weakened Soul: Senna's basic attacks on-hit and ability hits against enemy champions apply a stack of Mist for 4 seconds, modified to 0.75 seconds if Senna starts winding up a basic attack on them, and limited to once per target per cast. Subsequent hits will collect Mist and deal bonus physical damage equal to 1% : 10% (based on level) of target's current health, rendering the target immune to further Mist infliction for a few seconds. This damage applies life steal at 100% effectiveness.",
+            "description": "Innate: Enemies that die near Senna may spawn a Mist Wraith from their corpse. A Mist Wraith lasts 8 seconds and Senna can basic attack or hit it with Piercing Darkness or Dawning Shadow to kill it instantly, granting her 8 and a stack of Mist.\nEnemy champions and large monsters will spawn a Mist Wraith.\nEpic monsters will spawn 2 Mist Wraiths.\n Minions and lesser monsters that Senna kills have a 10% chance to spawn a Mist Wraith.\nLarge minions that Senna does not kill will always spawn a Mist Wraith, while lesser minions and lesser monsters that Senna does not kill have a 28% chance to spawn one.\nLesser minions executed by an allied champion's Support Quest item have a 8.4% chance to spawn a Mist Wraith.",
             "leveling": []
           },
           {
@@ -116,61 +116,8 @@
         "damageType": "PHYSICAL_DAMAGE",
         "effects": [
           {
-            "description": "Active: Senna fires a spectral laser in the direction of the target unit, healing herself and allied champions hit, and dealing physical damage to enemies hit in a thinner line. Enemies hit are slowed by 15% (+ 15% per 100 bonus AD) (+ 10% per 100 AP) for a duration. The damage dealt to enemy champions applies life steal at 100% effectiveness.",
+            "description": "Active: Senna fires a beam in the direction of the target unit. The beam consists of a wider ray of light, and a narrower ray of shadow at the center.The shadow ray deals physical damage to enemies hit and slows them by 15% (+ 15% per 100 bonus AD) (+ 10% per 100 AP) for a duration. The damage dealt to enemy champions applies life steal at 100% effectiveness.",
             "leveling": [
-              {
-                "attribute": "Healing",
-                "modifiers": [
-                  {
-                    "units": [
-                      "",
-                      "",
-                      "",
-                      "",
-                      ""
-                    ],
-                    "values": [
-                      40.0,
-                      55.0,
-                      70.0,
-                      85.0,
-                      100.0
-                    ]
-                  },
-                  {
-                    "units": [
-                      "% bonus AD",
-                      "% bonus AD",
-                      "% bonus AD",
-                      "% bonus AD",
-                      "% bonus AD"
-                    ],
-                    "values": [
-                      40.0,
-                      40.0,
-                      40.0,
-                      40.0,
-                      40.0
-                    ]
-                  },
-                  {
-                    "units": [
-                      "% AP",
-                      "% AP",
-                      "% AP",
-                      "% AP",
-                      "% AP"
-                    ],
-                    "values": [
-                      50.0,
-                      50.0,
-                      50.0,
-                      50.0,
-                      50.0
-                    ]
-                  }
-                ]
-              },
               {
                 "attribute": "Physical Damage",
                 "modifiers": [
@@ -232,12 +179,70 @@
             ]
           },
           {
+            "description": "Piercing Darkness is considered to trigger a single basic attack against turrets, wards, jungle plants, Mist Wraiths and any other attack-interactive units hit. It also applies on-hit effects against champions and turrets hit.",
+            "leveling": []
+          },
+          {
             "description": "Piercing Darkness' current cooldown is reduced by 1 second on-hit.",
             "leveling": []
           },
           {
-            "description": "Upon being hit, enemy turrets, wards, jungle plants, Mist Wraiths and any other attack-interactive units are considered basic attacked once, while champions and turrets* are applied on-hit effects.",
-            "leveling": []
+            "description": "The light ray heals Senna and allied champions hit.",
+            "leveling": [
+              {
+                "attribute": "Healing",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      40.0,
+                      60.0,
+                      80.0,
+                      100.0,
+                      120.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      40.0,
+                      40.0,
+                      40.0,
+                      40.0,
+                      40.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      50.0,
+                      50.0,
+                      50.0,
+                      50.0,
+                      50.0
+                    ]
+                  }
+                ]
+              }
+            ]
           }
         ],
         "name": "Piercing Darkness"
@@ -366,7 +371,7 @@
         "damageType": null,
         "effects": [
           {
-            "description": "Active: Senna surrounds herself with an aura of mist and gains camouflage for a duration. If Senna breaks the camouflage, she regains it after 1.75 seconds without performing actions that break stealth.",
+            "description": "Active: Senna shrouds herself in an aura of Black Mist and gains camouflage for a duration. If Senna breaks the camouflage, she regains it after 1.75 seconds without performing actions that break stealth.",
             "leveling": [
               {
                 "attribute": "Effect Duration",
@@ -400,7 +405,11 @@
             "leveling": []
           },
           {
-            "description": "Wraith Form: Gain camouflage. Enemies will have obscured vision of camouflaged Wraiths moving outside of the mist. Wraith Form can be regained if lost by breaking the camouflage after 1.75 seconds without performing actions that break stealth. Wraith Form ends immediately upon Senna's death.",
+            "description": "Senna can move during Curse of the Black Mist's cast time.",
+            "leveling": []
+          },
+          {
+            "description": "Wraith Form: Gain camouflage. Enemies are granted obscured vision of camouflaged Wraiths moving outside the mist within their line of sight. Wraith Form can be regained if lost by breaking the camouflage after 1.75 seconds without performing actions that break stealth. Wraith Form ends immediately upon Senna's death.",
             "leveling": []
           }
         ],
@@ -429,7 +438,57 @@
         "damageType": "PHYSICAL_DAMAGE",
         "effects": [
           {
-            "description": "Active: Senna fires two waves of spectral light in the target direction, granting sight of the area briefly along the path. The center wave deals physical damage to enemy champions hit and reveals them for 3 seconds, as well as hits all Mist Wraiths.",
+            "description": "Active: Senna fires a massive beam in the target direction. The beam consists of a broad wave of light, and a narrow wave of shadow at the center.",
+            "leveling": []
+          },
+          {
+            "description": "The light wave grants a shield to Senna and allied champions hit for 3 seconds, and grants sight of the area along the path for 2 seconds.",
+            "leveling": [
+              {
+                "attribute": "Shield Strength",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      120.0,
+                      160.0,
+                      200.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      50.0,
+                      50.0,
+                      50.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      " per Mist",
+                      " per Mist",
+                      " per Mist"
+                    ],
+                    "values": [
+                      1.5,
+                      1.5,
+                      1.5
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "The shadow wave deals physical damage to enemy champions hit and reveals them for 3 seconds, as well as hits all Mist Wraiths.",
             "leveling": [
               {
                 "attribute": "Physical Damage",
@@ -468,52 +527,6 @@
                       70.0,
                       70.0,
                       70.0
-                    ]
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "description": "The broad wave grants a shield to Senna and allied champions hit for 3 seconds.",
-            "leveling": [
-              {
-                "attribute": "Shield Strength",
-                "modifiers": [
-                  {
-                    "units": [
-                      "",
-                      "",
-                      ""
-                    ],
-                    "values": [
-                      120.0,
-                      160.0,
-                      200.0
-                    ]
-                  },
-                  {
-                    "units": [
-                      "% AP",
-                      "% AP",
-                      "% AP"
-                    ],
-                    "values": [
-                      50.0,
-                      50.0,
-                      50.0
-                    ]
-                  },
-                  {
-                    "units": [
-                      " per Mist collected",
-                      " per Mist collected",
-                      " per Mist collected"
-                    ],
-                    "values": [
-                      1.5,
-                      1.5,
-                      1.5
                     ]
                   }
                 ]

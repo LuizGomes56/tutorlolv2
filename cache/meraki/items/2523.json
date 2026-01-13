@@ -1,0 +1,88 @@
+{
+  "active": [],
+  "buildsFrom": [
+    1037,
+    6670,
+    1036
+  ],
+  "buildsInto": [],
+  "name": "Hexoptics C44",
+  "tier": 3,
+  "passives": [
+    {
+      "effects": "Deal {{pp|0 to 10 for 11|0 to 700|key=%|type=distance to target|formula=1% per 70 units away, up to a maximum of 10%.}} increased {{tip|basic damage}}.",
+      "name": "Magnification",
+      "unique": true
+    },
+    {
+      "effects": "Scoring a {{tip|takedown}} against an enemy champion within 3 seconds of damaging them grants you {{sti|100 '''bonus''' attack range}} for 6 seconds.",
+      "name": "Arcane Aim",
+      "unique": true
+    }
+  ],
+  "id": 2523,
+  "stats": {
+    "abilityPower": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 50.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 25.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "shop": {
+    "purchasable": true,
+    "prices": {
+      "total": 2800
+    }
+  }
+}

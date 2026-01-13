@@ -202,7 +202,7 @@
         "damageType": null,
         "effects": [
           {
-            "description": "Active: Bard conjures a shrine at the target location that gathers power over 5 seconds and grants sight of its surroundings for 1 second. Shrines last until they are consumed by champions moving over them. Up to 3 shrines may be active at a time.",
+            "description": "Active: Bard conjures a shrine at the target location that grants sight of its surroundings for 1 second and gathers power over 5 seconds. Up to 3 shrines may be active at a time. Shrines may last indefinitely until being consumed by a champion moving over them.",
             "leveling": []
           },
           {
@@ -210,7 +210,7 @@
             "leveling": []
           },
           {
-            "description": "If the champion was an ally or Bard himself, they are healed for an amount based on the shrine's power and gain bonus movement speed decaying over 1.5 seconds. The bonus movement speed can stack with subsequent shrines triggered.",
+            "description": "If the champion is an ally or Bard himself, they are healed for an amount based on the shrine's power and gain bonus movement speed decaying over 1.5 seconds. The bonus movement speed can stack with subsequent shrines triggered. If the champion is an enemy, the shrine is destroyed.",
             "leveling": [
               {
                 "attribute": "Bonus Movement Speed",
@@ -240,11 +240,11 @@
                       "% per 100 AP"
                     ],
                     "values": [
-                      5.0,
-                      5.0,
-                      5.0,
-                      5.0,
-                      5.0
+                      6.0,
+                      6.0,
+                      6.0,
+                      6.0,
+                      6.0
                     ]
                   }
                 ]
@@ -277,11 +277,11 @@
                       "% AP"
                     ],
                     "values": [
-                      60.0,
-                      60.0,
-                      60.0,
-                      60.0,
-                      60.0
+                      70.0,
+                      70.0,
+                      70.0,
+                      70.0,
+                      70.0
                     ]
                   }
                 ]
@@ -314,11 +314,11 @@
                       "% AP"
                     ],
                     "values": [
-                      30.0,
-                      30.0,
-                      30.0,
-                      30.0,
-                      30.0
+                      40.0,
+                      40.0,
+                      40.0,
+                      40.0,
+                      40.0
                     ]
                   }
                 ]

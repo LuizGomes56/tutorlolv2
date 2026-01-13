@@ -191,7 +191,7 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "Active: Nautilus grants himself a shield for 6 seconds, and while it holds, his basic attacks are empowered to apply Pain of Wrath to the target and surrounding non-structure enemies.",
+            "description": "Active: Nautilus grants himself a shield for 6 seconds, and while it holds, his basic attacks are empowered to apply Pain of Wrath to the target and enemies near them.",
             "leveling": [
               {
                 "attribute": "Shield Strength",
@@ -236,7 +236,44 @@
             "description": "Pain of Wrath: The target takes magic damage over time, half dealt immediately and the other half dealt after 1.25 seconds.",
             "leveling": [
               {
-                "attribute": "Magic Damage",
+                "attribute": "Magic Damage per Instance",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      15.0,
+                      20.0,
+                      25.0,
+                      30.0,
+                      35.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      20.0,
+                      20.0,
+                      20.0,
+                      20.0,
+                      20.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Magic Damage",
                 "modifiers": [
                   {
                     "units": [
@@ -445,10 +482,10 @@
             ]
           },
           {
-            "description": "Riptide deals 150% damage against monsters.",
+            "description": "The first hit against monsters deals bonus magic damage.",
             "leveling": [
               {
-                "attribute": "Maximum Total Monster Damage",
+                "attribute": "Monster Bonus Damage",
                 "modifiers": [
                   {
                     "units": [
@@ -459,11 +496,11 @@
                       ""
                     ],
                     "values": [
+                      125.0,
                       165.0,
-                      270.0,
-                      375.0,
-                      480.0,
-                      585.0
+                      205.0,
+                      245.0,
+                      285.0
                     ]
                   },
                   {
@@ -475,85 +512,11 @@
                       "% AP"
                     ],
                     "values": [
-                      150.0,
-                      150.0,
-                      150.0,
-                      150.0,
-                      150.0
-                    ]
-                  }
-                ]
-              },
-              {
-                "attribute": "Monster Damage",
-                "modifiers": [
-                  {
-                    "units": [
-                      "",
-                      "",
-                      "",
-                      "",
-                      ""
-                    ],
-                    "values": [
-                      82.5,
-                      135.0,
-                      187.5,
-                      240.0,
-                      292.5
-                    ]
-                  },
-                  {
-                    "units": [
-                      "% AP",
-                      "% AP",
-                      "% AP",
-                      "% AP",
-                      "% AP"
-                    ],
-                    "values": [
-                      75.0,
-                      75.0,
-                      75.0,
-                      75.0,
-                      75.0
-                    ]
-                  }
-                ]
-              },
-              {
-                "attribute": "Reduced Monster Damage",
-                "modifiers": [
-                  {
-                    "units": [
-                      "",
-                      "",
-                      "",
-                      "",
-                      ""
-                    ],
-                    "values": [
-                      41.25,
-                      67.5,
-                      93.75,
-                      120.0,
-                      146.25
-                    ]
-                  },
-                  {
-                    "units": [
-                      "% AP",
-                      "% AP",
-                      "% AP",
-                      "% AP",
-                      "% AP"
-                    ],
-                    "values": [
-                      37.5,
-                      37.5,
-                      37.5,
-                      37.5,
-                      37.5
+                      50.0,
+                      50.0,
+                      50.0,
+                      50.0,
+                      50.0
                     ]
                   }
                 ]

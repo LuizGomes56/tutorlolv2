@@ -71,22 +71,6 @@
   "abilities": [
     [
       {
-        "type": "R",
-        "name": "_1"
-      },
-      {
-        "name": "Encore",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "150 + (0.4 * ctx.ap)",
-          "200 + (0.4 * ctx.ap)",
-          "250 + (0.4 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "Q",
         "name": "_2"
       },
@@ -123,6 +107,24 @@
     ],
     [
       {
+        "type": "E",
+        "name": "_2"
+      },
+      {
+        "name": "Beat Drop",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "49 + (0.35 * ctx.ap)",
+          "70 + (0.35 * ctx.ap)",
+          "91 + (0.35 * ctx.ap)",
+          "112 + (0.35 * ctx.ap)",
+          "133 + (0.35 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "Q",
         "name": "_1"
       },
@@ -141,19 +143,17 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_2"
+        "type": "R",
+        "name": "_1"
       },
       {
-        "name": "Beat Drop",
+        "name": "Encore",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "49 + (0.35 * ctx.ap)",
-          "70 + (0.35 * ctx.ap)",
-          "91 + (0.35 * ctx.ap)",
-          "112 + (0.35 * ctx.ap)",
-          "133 + (0.35 * ctx.ap)"
+          "150 + (0.4 * ctx.ap)",
+          "200 + (0.4 * ctx.ap)",
+          "250 + (0.4 * ctx.ap)"
         ]
       }
     ]

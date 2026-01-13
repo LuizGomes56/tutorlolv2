@@ -70,37 +70,17 @@
   "abilities": [
     [
       {
-        "type": "Q",
+        "type": "R",
         "name": "_1"
       },
       {
-        "name": "Burst Fire",
-        "damage_type": "Physical",
+        "name": "Lightning Crash",
+        "damage_type": "Unknown",
         "attributes": "Undefined",
         "damage": [
-          "2.14 + (0.14859999999999998 * ctx.ad)",
-          "2.43 + (0.1543 * ctx.ad)",
-          "2.71 + (0.16 * ctx.ad)",
-          "3 + (0.16570000000000001 * ctx.ad)",
-          "3.29 + (0.1714 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_1"
-      },
-      {
-        "name": "Ultrashock Laser",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "30 + (1.3 * ctx.ad) + (0.25 * ctx.ap)",
-          "70 + (1.3 * ctx.ad) + (0.25 * ctx.ap)",
-          "110 + (1.3 * ctx.ad) + (0.25 * ctx.ap)",
-          "150 + (1.3 * ctx.ad) + (0.25 * ctx.ap)",
-          "190 + (1.3 * ctx.ad) + (0.25 * ctx.ap)"
+          "200 + ctx.bonus_ad + (1.1 * ctx.ap)",
+          "300 + ctx.bonus_ad + (1.1 * ctx.ap)",
+          "400 + ctx.bonus_ad + (1.1 * ctx.ap)"
         ]
       }
     ],
@@ -124,19 +104,19 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_2"
+        "type": "W",
+        "name": "_1"
       },
       {
-        "name": "Spark Surge",
-        "damage_type": "Unknown",
+        "name": "Ultrashock Laser",
+        "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "0.8",
-          "0.85",
-          "0.9",
-          "0.95",
-          "1"
+          "30 + (1.3 * ctx.ad) + (0.25 * ctx.ap)",
+          "70 + (1.3 * ctx.ad) + (0.25 * ctx.ap)",
+          "110 + (1.3 * ctx.ad) + (0.25 * ctx.ap)",
+          "150 + (1.3 * ctx.ad) + (0.25 * ctx.ap)",
+          "190 + (1.3 * ctx.ad) + (0.25 * ctx.ap)"
         ]
       }
     ],
@@ -160,17 +140,37 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "type": "E",
+        "name": "_2"
       },
       {
-        "name": "Lightning Crash",
+        "name": "Spark Surge",
         "damage_type": "Unknown",
         "attributes": "Undefined",
         "damage": [
-          "200 + ctx.bonus_ad + (1.1 * ctx.ap)",
-          "300 + ctx.bonus_ad + (1.1 * ctx.ap)",
-          "400 + ctx.bonus_ad + (1.1 * ctx.ap)"
+          "0.8",
+          "0.85",
+          "0.9",
+          "0.95",
+          "1"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Burst Fire",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "2.14 + (0.14859999999999998 * ctx.ad)",
+          "2.43 + (0.1543 * ctx.ad)",
+          "2.71 + (0.16 * ctx.ad)",
+          "3 + (0.16570000000000001 * ctx.ad)",
+          "3.29 + (0.1714 * ctx.ad)"
         ]
       }
     ]

@@ -70,42 +70,6 @@
   "abilities": [
     [
       {
-        "type": "E",
-        "name": "Max"
-      },
-      {
-        "name": "Trample",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "80 + (0.7 * ctx.ap)",
-          "110 + (0.7 * ctx.ap)",
-          "140 + (0.7 * ctx.ap)",
-          "170 + (0.7 * ctx.ap)",
-          "200 + (0.7 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "Min"
-      },
-      {
-        "name": "Trample",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "8 + (0.07 * ctx.ap)",
-          "11 + (0.07 * ctx.ap)",
-          "14 + (0.07 * ctx.ap)",
-          "17 + (0.07 * ctx.ap)",
-          "20 + (0.07 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "Q",
         "name": "Void"
       },
@@ -137,6 +101,42 @@
           "165 + ctx.ap",
           "220 + ctx.ap",
           "275 + ctx.ap"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "Max"
+      },
+      {
+        "name": "Trample",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "80 + (0.7 * ctx.ap)",
+          "110 + (0.7 * ctx.ap)",
+          "140 + (0.7 * ctx.ap)",
+          "170 + (0.7 * ctx.ap)",
+          "200 + (0.7 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "Min"
+      },
+      {
+        "name": "Trample",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "8 + (0.07 * ctx.ap)",
+          "11 + (0.07 * ctx.ap)",
+          "14 + (0.07 * ctx.ap)",
+          "17 + (0.07 * ctx.ap)",
+          "20 + (0.07 * ctx.ap)"
         ]
       }
     ]

@@ -70,6 +70,24 @@
   "abilities": [
     [
       {
+        "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "Queen's Wrath",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "(0.3 * ctx.ad)",
+          "(0.35 * ctx.ad)",
+          "(0.4 * ctx.ad)",
+          "(0.45 * ctx.ad)",
+          "(0.5 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "E",
         "name": "_1"
       },
@@ -83,24 +101,6 @@
           "136 + (0.64 * ctx.bonus_ad)",
           "164 + (0.64 * ctx.bonus_ad)",
           "192 + (0.64 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_2"
-      },
-      {
-        "name": "Furious Bite",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "100 + (0.8 * ctx.bonus_ad)",
-          "135 + (0.8 * ctx.bonus_ad)",
-          "170 + (0.8 * ctx.bonus_ad)",
-          "205 + (0.8 * ctx.bonus_ad)",
-          "240 + (0.8 * ctx.bonus_ad)"
         ]
       }
     ],
@@ -124,6 +124,24 @@
     ],
     [
       {
+        "type": "E",
+        "name": "_2"
+      },
+      {
+        "name": "Furious Bite",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "100 + (0.8 * ctx.bonus_ad)",
+          "135 + (0.8 * ctx.bonus_ad)",
+          "170 + (0.8 * ctx.bonus_ad)",
+          "205 + (0.8 * ctx.bonus_ad)",
+          "240 + (0.8 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "R",
         "name": "_1"
       },
@@ -135,24 +153,6 @@
           "150 + ctx.bonus_ad + (0.15 * ctx.enemy_max_health)",
           "250 + ctx.bonus_ad + (0.2 * ctx.enemy_max_health)",
           "350 + ctx.bonus_ad + (0.25 * ctx.enemy_max_health)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_2"
-      },
-      {
-        "name": "Queen's Wrath",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "(0.3 * ctx.ad)",
-          "(0.35 * ctx.ad)",
-          "(0.4 * ctx.ad)",
-          "(0.45 * ctx.ad)",
-          "(0.5 * ctx.ad)"
         ]
       }
     ]

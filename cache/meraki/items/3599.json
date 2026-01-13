@@ -1,7 +1,7 @@
 {
   "active": [
     {
-      "effects": "Consumes this item to initiate a {{fd|3.5}}-second [[Channel#Casting Times|cast time]] and a 3-second {{tip|channel}} afterwards from the user and the target allied champion, both becoming bound allies. The target is unable to act for 6 seconds after the channel's duration. Afterwards, the target becomes an ''Oathsworn''.",
+      "effects": "Consumes this item to initiate a {{fd|3.5}}-second [[cast time]] and a 3-second {{tip|channel}} afterwards from the user and the target allied champion, both becoming bound allies. The target is unable to act for 6 seconds after the channel's duration. Afterwards, the target becomes an ''Oathsworn''.",
       "name": "Oathsworn Bond",
       "unique": true
     }

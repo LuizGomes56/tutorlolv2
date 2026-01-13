@@ -121,22 +121,6 @@
     [
       {
         "type": "R",
-        "name": "_3"
-      },
-      {
-        "name": "Whirling Death",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "70 + (0.44 * ctx.bonus_ad)",
-          "110 + (0.52 * ctx.bonus_ad)",
-          "150 + (0.6 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
         "name": "_4"
       },
       {
@@ -147,6 +131,22 @@
           "140 + (0.88 * ctx.bonus_ad)",
           "220 + (1.04 * ctx.bonus_ad)",
           "300 + (1.2 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_3"
+      },
+      {
+        "name": "Whirling Death",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "70 + (0.44 * ctx.bonus_ad)",
+          "110 + (0.52 * ctx.bonus_ad)",
+          "150 + (0.6 * ctx.bonus_ad)"
         ]
       }
     ],

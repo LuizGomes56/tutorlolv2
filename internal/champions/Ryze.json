@@ -88,24 +88,6 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Overload",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "75 + (0.55 * ctx.ap) + (0.02 * ctx.bonus_mana)",
-          "95 + (0.55 * ctx.ap) + (0.02 * ctx.bonus_mana)",
-          "115 + (0.55 * ctx.ap) + (0.02 * ctx.bonus_mana)",
-          "135 + (0.55 * ctx.ap) + (0.02 * ctx.bonus_mana)",
-          "155 + (0.55 * ctx.ap) + (0.02 * ctx.bonus_mana)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "R",
         "name": "_1"
       },
@@ -135,6 +117,24 @@
           "120 + (0.7 * ctx.ap) + (0.04 * ctx.bonus_mana)",
           "150 + (0.7 * ctx.ap) + (0.04 * ctx.bonus_mana)",
           "180 + (0.7 * ctx.ap) + (0.04 * ctx.bonus_mana)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Overload",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "75 + (0.55 * ctx.ap) + (0.02 * ctx.bonus_mana)",
+          "95 + (0.55 * ctx.ap) + (0.02 * ctx.bonus_mana)",
+          "115 + (0.55 * ctx.ap) + (0.02 * ctx.bonus_mana)",
+          "135 + (0.55 * ctx.ap) + (0.02 * ctx.bonus_mana)",
+          "155 + (0.55 * ctx.ap) + (0.02 * ctx.bonus_mana)"
         ]
       }
     ]

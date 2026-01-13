@@ -71,7 +71,7 @@
         "damageType": null,
         "effects": [
           {
-            "description": "At maximum Rage, Gnar's abilities switch to Mega Gnar's abilities for 4 seconds and until transforming back to his Mini Gnar form. Casting any of them during this time also causes Gnar to transform into Mega Gnar instantly, else he will transform automatically after the 4 seconds have elapsed.",
+            "description": "At maximum Rage, Gnar's abilities switch to Mega Gnar's abilities, for 4 seconds and until transforming back to his Mini Gnar form, with the exception of Hop, which switches after the transformation. Casting any of them during this time also causes Gnar to transform into Mega Gnar instantly, else he will transform automatically after the 4 seconds have elapsed.",
             "leveling": []
           },
           {
@@ -104,10 +104,10 @@
                 ""
               ],
               "values": [
-                20.0,
-                17.5,
-                15.0,
-                12.5,
+                16.0,
+                14.5,
+                13.0,
+                11.5,
                 10.0
               ]
             }
@@ -239,10 +239,10 @@
                 ""
               ],
               "values": [
-                20.0,
-                17.5,
-                15.0,
-                12.5,
+                16.0,
+                14.5,
+                13.0,
+                11.5,
                 10.0
               ]
             }
@@ -525,11 +525,7 @@
             "leveling": []
           },
           {
-            "description": "If Gnar lands on a unit he will bounce 500 units further in the same direction.",
-            "leveling": []
-          },
-          {
-            "description": "Landing on an enemy deals them physical damage and slows them by 80% for 0.5 seconds.",
+            "description": "If Gnar lands on a unit he will bounce 500 units further in the same direction. Landing on an enemy deals them physical damage and slows them by 80% for 0.5 seconds.",
             "leveling": [
               {
                 "attribute": "Physical Damage",
@@ -569,6 +565,10 @@
                 ]
               }
             ]
+          },
+          {
+            "description": "If Hop is used to transform, it will not grant bonus attack speed. Instead, after bouncing Gnar will send out a shockwave as per Crunch where he lands.",
+            "leveling": []
           }
         ],
         "name": "Hop"
@@ -598,7 +598,7 @@
         "damageType": "PHYSICAL_DAMAGE",
         "effects": [
           {
-            "description": "Active: Gnar leaps to the target location and deals physical damage to nearby enemies upon impact. After a 0.25-second delay, Gnar sends out a shockwave, dealing the same damage to additional enemies in a larger radius.",
+            "description": "Active: Gnar leaps to the target location and deals physical damage to nearby enemies upon impact and slows them by 80% for 0.5 seconds. After a 0.25-second delay, Gnar sends out a shockwave, dealing the same damage to additional enemies in a larger radius.",
             "leveling": [
               {
                 "attribute": "Physical Damage",
@@ -638,14 +638,6 @@
                 ]
               }
             ]
-          },
-          {
-            "description": "Enemies Gnar lands directly on top of are affected by Hop's slow.",
-            "leveling": []
-          },
-          {
-            "description": "If Crunch is used to transform, Gnar will still be able to bounce as per Hop. The shockwave will occur where Gnar lands.",
-            "leveling": []
           }
         ],
         "name": "Crunch"

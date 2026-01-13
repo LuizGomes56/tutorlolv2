@@ -70,17 +70,19 @@
   "abilities": [
     [
       {
-        "type": "R",
+        "type": "Q",
         "name": "_1"
       },
       {
-        "name": "Demacian Justice",
-        "damage_type": "True",
+        "name": "Decisive Strike",
+        "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "150 + (0.25 * ctx.missing_health)",
-          "250 + (0.3 * ctx.missing_health)",
-          "350 + (0.35 * ctx.missing_health)"
+          "30 + (0.5 * ctx.ad)",
+          "60 + (0.5 * ctx.ad)",
+          "90 + (0.5 * ctx.ad)",
+          "120 + (0.5 * ctx.ad)",
+          "150 + (0.5 * ctx.ad)"
         ]
       }
     ],
@@ -104,19 +106,35 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "type": "E",
+        "name": "_2"
       },
       {
-        "name": "Decisive Strike",
+        "name": "Judgment",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "30 + (0.5 * ctx.ad)",
-          "60 + (0.5 * ctx.ad)",
-          "90 + (0.5 * ctx.ad)",
-          "120 + (0.5 * ctx.ad)",
-          "150 + (0.5 * ctx.ad)"
+          "5 + (0.45 * ctx.ad)",
+          "8.75 + (0.4875 * ctx.ad)",
+          "12.5 + (0.525 * ctx.ad)",
+          "16.25 + (0.5625 * ctx.ad)",
+          "20 + (0.6 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Demacian Justice",
+        "damage_type": "True",
+        "attributes": "Undefined",
+        "damage": [
+          "150 + (0.25 * ctx.missing_health)",
+          "250 + (0.3 * ctx.missing_health)",
+          "350 + (0.35 * ctx.missing_health)"
         ]
       }
     ],
@@ -135,24 +153,6 @@
           "10 + (0.42 * ctx.ad)",
           "13 + (0.45 * ctx.ad)",
           "16 + (0.48 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_2"
-      },
-      {
-        "name": "Judgment",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "5 + (0.45 * ctx.ad)",
-          "8.75 + (0.4875 * ctx.ad)",
-          "12.5 + (0.525 * ctx.ad)",
-          "16.25 + (0.5625 * ctx.ad)",
-          "20 + (0.6 * ctx.ad)"
         ]
       }
     ]

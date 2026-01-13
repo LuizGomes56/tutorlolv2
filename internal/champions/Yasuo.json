@@ -72,42 +72,6 @@
   "abilities": [
     [
       {
-        "type": "E",
-        "name": "_4"
-      },
-      {
-        "name": "Sweeping Blade",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "140 + (0.4 * ctx.bonus_ad) + (1.2 * ctx.ap)",
-          "170 + (0.4 * ctx.bonus_ad) + (1.2 * ctx.ap)",
-          "200 + (0.4 * ctx.bonus_ad) + (1.2 * ctx.ap)",
-          "230 + (0.4 * ctx.bonus_ad) + (1.2 * ctx.ap)",
-          "260 + (0.4 * ctx.bonus_ad) + (1.2 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_1"
-      },
-      {
-        "name": "Sweeping Blade",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "70 + (0.2 * ctx.bonus_ad) + (0.6 * ctx.ap)",
-          "85 + (0.2 * ctx.bonus_ad) + (0.6 * ctx.ap)",
-          "100 + (0.2 * ctx.bonus_ad) + (0.6 * ctx.ap)",
-          "115 + (0.2 * ctx.bonus_ad) + (0.6 * ctx.ap)",
-          "130 + (0.2 * ctx.bonus_ad) + (0.6 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "R",
         "name": "_1"
       },
@@ -173,6 +137,42 @@
           "25 + (0.05 * ctx.bonus_ad) + (0.15 * ctx.ap)",
           "28.75 + (0.05 * ctx.bonus_ad) + (0.15 * ctx.ap)",
           "32.5 + (0.05 * ctx.bonus_ad) + (0.15 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Sweeping Blade",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "70 + (0.2 * ctx.bonus_ad) + (0.6 * ctx.ap)",
+          "85 + (0.2 * ctx.bonus_ad) + (0.6 * ctx.ap)",
+          "100 + (0.2 * ctx.bonus_ad) + (0.6 * ctx.ap)",
+          "115 + (0.2 * ctx.bonus_ad) + (0.6 * ctx.ap)",
+          "130 + (0.2 * ctx.bonus_ad) + (0.6 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_4"
+      },
+      {
+        "name": "Sweeping Blade",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "140 + (0.4 * ctx.bonus_ad) + (1.2 * ctx.ap)",
+          "170 + (0.4 * ctx.bonus_ad) + (1.2 * ctx.ap)",
+          "200 + (0.4 * ctx.bonus_ad) + (1.2 * ctx.ap)",
+          "230 + (0.4 * ctx.bonus_ad) + (1.2 * ctx.ap)",
+          "260 + (0.4 * ctx.bonus_ad) + (1.2 * ctx.ap)"
         ]
       }
     ]

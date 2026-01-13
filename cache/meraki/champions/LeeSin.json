@@ -13,7 +13,7 @@
     },
     "armor": {
       "flat": 36.0,
-      "perLevel": 4.9
+      "perLevel": 4.5
     },
     "magicResistance": {
       "flat": 32.0,
@@ -71,11 +71,7 @@
         "damageType": null,
         "effects": [
           {
-            "description": "Innate: After casting an ability, Lee Sin's next 2 basic attacks within 3 seconds gain 40% bonus attack speed and restore energy.",
-            "leveling": []
-          },
-          {
-            "description": "The first attack restores 20 / 30 / 40 (based on level) energy and the second attack restores[ 10 / 15 / 20 (based on level) energy. ][ half of the previous amount. ]",
+            "description": "Innate: After casting an ability, Lee Sin's next 2 basic attacks on-hit within 3 seconds gain 40% bonus attack speed and restore energy.The first attack restores 20 / 30 / 40 (based on level) energy and the second attack restores[ 10 / 15 / 20 (based on level) energy. ][ half of the previous amount. ]",
             "leveling": []
           }
         ],
@@ -122,11 +118,11 @@
                       ""
                     ],
                     "values": [
-                      55.0,
-                      80.0,
-                      105.0,
-                      130.0,
-                      155.0
+                      60.0,
+                      90.0,
+                      120.0,
+                      150.0,
+                      180.0
                     ]
                   },
                   {
@@ -138,11 +134,11 @@
                       "% bonus AD"
                     ],
                     "values": [
-                      115.0,
-                      115.0,
-                      115.0,
-                      115.0,
-                      115.0
+                      95.0,
+                      95.0,
+                      95.0,
+                      95.0,
+                      95.0
                     ]
                   }
                 ]
@@ -175,11 +171,11 @@
                       ""
                     ],
                     "values": [
-                      110.0,
-                      160.0,
-                      210.0,
-                      260.0,
-                      310.0
+                      120.0,
+                      180.0,
+                      240.0,
+                      300.0,
+                      360.0
                     ]
                   },
                   {
@@ -191,11 +187,11 @@
                       "% bonus AD"
                     ],
                     "values": [
-                      230.0,
-                      230.0,
-                      230.0,
-                      230.0,
-                      230.0
+                      190.0,
+                      190.0,
+                      190.0,
+                      190.0,
+                      190.0
                     ]
                   }
                 ]
@@ -212,11 +208,11 @@
                       ""
                     ],
                     "values": [
-                      55.0,
-                      80.0,
-                      105.0,
-                      130.0,
-                      155.0
+                      60.0,
+                      90.0,
+                      120.0,
+                      150.0,
+                      180.0
                     ]
                   },
                   {
@@ -228,11 +224,11 @@
                       "% bonus AD"
                     ],
                     "values": [
-                      115.0,
-                      115.0,
-                      115.0,
-                      115.0,
-                      115.0
+                      95.0,
+                      95.0,
+                      95.0,
+                      95.0,
+                      95.0
                     ]
                   }
                 ]

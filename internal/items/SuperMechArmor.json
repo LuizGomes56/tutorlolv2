@@ -8,10 +8,22 @@
   "maps": [
     [
       "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
       true
     ],
     [
-      "Arena",
+      "SummonersRift",
+      true
+    ],
+    [
+      "Aram",
+      true
+    ],
+    [
+      "NexusBlitz",
       true
     ],
     [
@@ -19,19 +31,7 @@
       false
     ],
     [
-      "Aram",
-      true
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "NexusBlitz",
-      true
-    ],
-    [
-      "SummonersRift",
+      "Arena",
       true
     ]
   ],

@@ -17,7 +17,6 @@ impl Generator<Champion> for Gwen {
                 (1, 3, _8),
             ],
         );
-        self.ability(E, [(0, 1, _1)]);
         self.ability(
             R,
             [

@@ -7,8 +7,8 @@
   "tier": 3,
   "maps": [
     [
-      "SummonersRift",
-      false
+      "Arena",
+      true
     ],
     [
       "NexusBlitz",
@@ -23,19 +23,32 @@
       false
     ],
     [
-      "Arena",
-      true
-    ],
-    [
       "SummonersRift",
       false
     ],
     [
       "Aram",
       false
+    ],
+    [
+      "SummonersRift",
+      false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AdaptiveForce",
+      "value": 65
+    },
+    {
+      "name": "AttackSpeed",
+      "value": 60
+    },
+    {
+      "name": "MoveSpeed",
+      "value": 6
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

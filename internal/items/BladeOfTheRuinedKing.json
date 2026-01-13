@@ -7,6 +7,22 @@
   "tier": 3,
   "maps": [
     [
+      "Arena",
+      false
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "NexusBlitz",
+      true
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
       "SummonersRift",
       true
     ],
@@ -15,28 +31,25 @@
       true
     ],
     [
-      "NexusBlitz",
-      true
-    ],
-    [
       "Tft",
       false
-    ],
-    [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
     ]
   ],
-  "prettified_stats": [],
-  "damage_type": "Unknown",
+  "prettified_stats": [
+    {
+      "name": "AttackSpeed",
+      "value": 25
+    },
+    {
+      "name": "LifeSteal",
+      "value": 10
+    },
+    {
+      "name": "AttackDamage",
+      "value": 40
+    }
+  ],
+  "damage_type": "Physical",
   "stats": {
     "abilityPower": {
       "flat": 0.0,
@@ -108,11 +121,11 @@
   "builds_into_riot_ids": [],
   "builds_into_item_ids": [],
   "ranged": {
-    "minimum_damage": "zero",
+    "minimum_damage": "ctx.enemy_current_health - ((0.06 * ctx.enemy_current_health * (1 - 0.06 * ctx.physical_multiplier) - ctx.ad + ctx.ad * (1 - 0.06 * ctx.physical_multiplier)) / 0.06)",
     "maximum_damage": "zero"
   },
   "melee": {
-    "minimum_damage": "zero",
+    "minimum_damage": "ctx.enemy_current_health - ((0.09 * ctx.enemy_current_health * (1 - 0.09 * ctx.physical_multiplier) - ctx.ad + ctx.ad * (1 - 0.09 * ctx.physical_multiplier)) / 0.09)",
     "maximum_damage": "zero"
   },
   "attributes": "Undefined",

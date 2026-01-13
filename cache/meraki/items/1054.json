@@ -6,7 +6,7 @@
   "tier": 1,
   "passives": [
     {
-      "effects": "After taking damage from a [[champion]], gain '''bonus''' [[health regeneration]] per second equal to {{pp|0 to 5.625 for 11|round=3|type='''missing''' health|color=health|key1=%|0 to 75|formula=0.375 bonus health regeneration for every 1% missing health}} for 8 seconds. Reduced to{{ft|66% effectiveness|{{pp|0*0.66 to 5.625*0.66 for 11|round=4|type='''missing''' health|color=health|key1=%|0 to 75|formula=0.2475 bonus health regeneration for every 1% missing health}}}}if owned by {{tip|ranged}} champions or when triggered by [[area of effect]], [[damage over time]], or [[damage|proc]].",
+      "effects": "After taking damage from a [[champion]], gain '''bonus''' [[health regeneration]] per second equal to {{as|{{rd|0 to 5 for 11|0 to 3.75 for 11|levels=0 to 75|key1=%|formula1=0.066 health regen for every 1% missing health|formula2=0.05 health regen for every 1% missing health|type='''current missing''' health|pp=true}}|health}} for 8 seconds, refreshing on subsequent champion damage taken. [[Area of effect]], [[damage over time]], or [[damage|proc]] damage taken trigger this effect with the {{tip|ranged}} values.",
       "name": "Enduring Focus",
       "unique": true
     },

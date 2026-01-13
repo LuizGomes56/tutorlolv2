@@ -25,7 +25,7 @@
     },
     "attackSpeed": {
       "flat": 0.697,
-      "perLevel": 2.25
+      "perLevel": 1.25
     },
     "movespeed": {
       "flat": 340.0,
@@ -108,7 +108,7 @@
         "damageType": "PHYSICAL_DAMAGE",
         "effects": [
           {
-            "description": "Active: Nilah cracks her whip-blade in a line in the target direction that deals physical damage to enemies hit, increased by 0% : 100% (based on critical strike chance). Formless Blade can hit structures and applies life steal at 100% effectiveness to one target.",
+            "description": "Active: Nilah cracks her whip-blade in a line in the target direction that deals physical damage to enemies hit, increased by 0% : 70% (+ 0% : 21%) (based on critical strike chance). Formless Blade can hit structures and applies life steal at 100% effectiveness to one target.",
             "leveling": [
               {
                 "attribute": "Maximum Physical Damage",
@@ -122,11 +122,11 @@
                       ""
                     ],
                     "values": [
-                      10.0,
+                      0.0,
                       20.0,
-                      30.0,
                       40.0,
-                      50.0
+                      60.0,
+                      80.0
                     ]
                   },
                   {
@@ -138,11 +138,11 @@
                       "% AD"
                     ],
                     "values": [
-                      180.0,
-                      190.0,
                       200.0,
-                      210.0,
-                      220.0
+                      200.0,
+                      200.0,
+                      200.0,
+                      200.0
                     ]
                   }
                 ]
@@ -159,11 +159,11 @@
                       ""
                     ],
                     "values": [
-                      5.0,
+                      0.0,
                       10.0,
-                      15.0,
                       20.0,
-                      25.0
+                      30.0,
+                      40.0
                     ]
                   },
                   {
@@ -175,11 +175,11 @@
                       "% AD"
                     ],
                     "values": [
-                      90.0,
-                      95.0,
                       100.0,
-                      105.0,
-                      110.0
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0
                     ]
                   }
                 ]
@@ -187,7 +187,7 @@
             ]
           },
           {
-            "description": "If Formless Blade hits an enemy, Nilah empowers herself for 4 seconds: gaining 125 bonus attack range and 10% : 60% (based on level) bonus attack speed, and causing her basic attacks to strike in a cone that deals 100% AD physical damage to enemies hit. Against secondary non-champion targets, this is reduced to 33% AD for minions and 10% AD for monsters, and additionally executes minions left below 20 health. On-hit effects are applied only to the primary target.",
+            "description": "If Formless Blade hits an enemy, Nilah empowers herself for 4 seconds: gaining 125 bonus attack range and 10% : 60% (based on level) bonus attack speed, and causing her basic attacks to strike in a cone that deals 100% AD physical damage to enemies hit. Against secondary non-champion targets, this is reduced to 33% AD for minions, and additionally executes minions left below 20 health. On-hit effects are applied only to the primary target.",
             "leveling": []
           },
           {
@@ -195,7 +195,7 @@
             "leveling": []
           },
           {
-            "description": "Passive: Nilah gains 0% : 33% (based on critical strike chance) armor penetration. Her basic attacks and Formless Blade heal her for 0% : 20% (based on critical strike chance) of the post-mitigation damage dealt to champions, converting each heal instance beyond maximum health into a shield that lasts 6 seconds.",
+            "description": "Passive: Nilah gains 0% : 30% (based on critical strike chance) armor penetration. Her basic attacks and Formless Blade heal her for 0% : 20% (based on critical strike chance) of the post-mitigation damage dealt to champions, converting each heal instance beyond maximum health into a shield that lasts 6 seconds.",
             "leveling": []
           }
         ],

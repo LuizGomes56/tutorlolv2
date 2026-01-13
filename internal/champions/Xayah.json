@@ -70,19 +70,17 @@
   "abilities": [
     [
       {
-        "type": "Q",
+        "type": "R",
         "name": "_1"
       },
       {
-        "name": "Double Daggers",
+        "name": "Featherstorm",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "45 + (0.5 * ctx.bonus_ad)",
-          "60 + (0.5 * ctx.bonus_ad)",
-          "75 + (0.5 * ctx.bonus_ad)",
-          "90 + (0.5 * ctx.bonus_ad)",
-          "105 + (0.5 * ctx.bonus_ad)"
+          "200 + ctx.bonus_ad",
+          "300 + ctx.bonus_ad",
+          "400 + ctx.bonus_ad"
         ]
       }
     ],
@@ -106,6 +104,24 @@
     ],
     [
       {
+        "type": "Q",
+        "name": "_3"
+      },
+      {
+        "name": "Double Daggers",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "22.5 + (0.25 * ctx.bonus_ad)",
+          "30 + (0.25 * ctx.bonus_ad)",
+          "37.5 + (0.25 * ctx.bonus_ad)",
+          "45 + (0.25 * ctx.bonus_ad)",
+          "52.5 + (0.25 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "E",
         "name": "_1"
       },
@@ -124,17 +140,19 @@
     ],
     [
       {
-        "type": "R",
+        "type": "Q",
         "name": "_1"
       },
       {
-        "name": "Featherstorm",
+        "name": "Double Daggers",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "200 + ctx.bonus_ad",
-          "300 + ctx.bonus_ad",
-          "400 + ctx.bonus_ad"
+          "45 + (0.5 * ctx.bonus_ad)",
+          "60 + (0.5 * ctx.bonus_ad)",
+          "75 + (0.5 * ctx.bonus_ad)",
+          "90 + (0.5 * ctx.bonus_ad)",
+          "105 + (0.5 * ctx.bonus_ad)"
         ]
       }
     ],
@@ -171,24 +189,6 @@
           "150 + ctx.bonus_ad",
           "180 + ctx.bonus_ad",
           "210 + ctx.bonus_ad"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_3"
-      },
-      {
-        "name": "Double Daggers",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "22.5 + (0.25 * ctx.bonus_ad)",
-          "30 + (0.25 * ctx.bonus_ad)",
-          "37.5 + (0.25 * ctx.bonus_ad)",
-          "45 + (0.25 * ctx.bonus_ad)",
-          "52.5 + (0.25 * ctx.bonus_ad)"
         ]
       }
     ]

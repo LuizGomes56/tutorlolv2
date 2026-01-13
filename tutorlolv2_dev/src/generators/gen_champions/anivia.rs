@@ -18,7 +18,7 @@ impl Generator<Champion> for Anivia {
         );
         self.ability(
             R,
-            [(0, 0, _1), (3, 0, _2)],
+            [(0, 0, _1), (4, 0, _2)],
         );
         self.end()
     }

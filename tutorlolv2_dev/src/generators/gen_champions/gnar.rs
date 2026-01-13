@@ -18,7 +18,7 @@ impl Generator<Champion> for Gnar {
         );
         self.ability(
             E,
-            [(4, 0, _1), (0, 0, _2)],
+            [(3, 0, _1), (0, 0, _2)],
         );
         self.ability(
             R,

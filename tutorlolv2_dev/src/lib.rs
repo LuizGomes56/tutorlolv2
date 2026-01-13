@@ -9,7 +9,7 @@ pub use model::*;
 pub use serde::{Serialize, de::DeserializeOwned};
 pub use setup::*;
 
-use rayon::iter::{IntoParallelIterator, ParallelBridge, ParallelIterator};
+use rayon::iter::{FromParallelIterator, IntoParallelIterator, ParallelBridge, ParallelIterator};
 use std::{collections::HashMap, path::Path};
 
 /// Alias type for [`Result`] that accepts anything that implements the trait
@@ -111,18 +111,20 @@ pub fn read_file(path: impl AsRef<Path>) -> MayFail<Vec<u8>> {
 }
 
 #[track_caller]
-pub fn parallel_read<P, F, T>(path: P, f: F) -> MayFail
+pub fn parallel_read<P, F, T, R, C>(path: P, f: F) -> MayFail<C>
 where
     P: AsRef<Path>,
     T: DeserializeOwned,
-    F: FnOnce(&str, T) -> MayFail + Send + Sync + Clone,
+    F: FnOnce(&str, T) -> MayFail<R> + Send + Sync + Clone,
+    R: Send,
+    C: FromParallelIterator<R>,
 {
-    std::fs::read_dir(path)
+    let result = std::fs::read_dir(path)
         .map_err(|e| format!("[error] Unable to read directory path in fn [parallel_read]: {e:?}"))?
         .filter_map(Result::ok)
         .par_bridge()
         .into_par_iter()
-        .for_each(|entry| {
+        .filter_map(|entry| {
             let Ok(file_name) = entry.file_name().into_string() else {
                 panic!("[error] Failed to get file name for entry: {entry:?}");
             };
@@ -137,9 +139,15 @@ where
                 panic!("[error] Failed to deserialize file bytes for entry: {entry:?}");
             };
 
-            if let Err(e) = (f.clone())(file_name.trim_end_matches(".json"), data) {
-                println!("[error] Can't process {file_name:?}: {e:?}");
+            match (f.clone())(file_name.trim_end_matches(".json"), data) {
+                Ok(data) => Some(data),
+                Err(e) => {
+                    println!("[error] Can't process {file_name:?}: {e:?}");
+                    None
+                }
             }
-        });
-    Ok(())
+        })
+        .collect::<C>();
+
+    Ok(result)
 }

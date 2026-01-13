@@ -11,10 +11,6 @@
       false
     ],
     [
-      "NexusBlitz",
-      false
-    ],
-    [
       "SummonersRift",
       false
     ],
@@ -27,15 +23,32 @@
       false
     ],
     [
-      "Arena",
-      true
-    ],
-    [
       "SummonersRift",
       false
+    ],
+    [
+      "NexusBlitz",
+      false
+    ],
+    [
+      "Arena",
+      true
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AbilityPower",
+      "value": 90
+    },
+    {
+      "name": "Health",
+      "value": 300
+    },
+    {
+      "name": "AbilityHaste",
+      "value": 25
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

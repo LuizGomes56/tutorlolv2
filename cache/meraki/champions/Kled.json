@@ -71,7 +71,11 @@
         "damageType": null,
         "effects": [
           {
-            "description": "Being reduced below 0 health causes Skaarl to flee, forcing Kled to be Dismounted, with all damage in excess of Skaarl's health being ignored. Upon dismounting, Kled lunges in the direction of the allied Nexus over 0.75 seconds, though not through terrain, while cleansing himself of all crowd control and becoming unable to act, untargetable, and immune to crowd control for 0.5 seconds. Dismounting resets the cooldown and charges of Pocket Pistol.",
+            "description": "Being reduced below 0 health causes Skaarl to flee, forcing Kled to be Dismounted, with all damage in excess of Skaarl's health being ignored. Upon dismounting, Kled lunges in the direction of the allied Nexus, though not through terrain, while cleansing himself of all crowd control and becoming unable to act, untargetable, and immune to crowd control for 0.5 seconds. Dismounting resets the cooldown and charges of Pocket Pistol.",
+            "leveling": []
+          },
+          {
+            "description": "For more details, check the Dismounted part of the ability.",
             "leveling": []
           },
           {
@@ -102,7 +106,7 @@
             "leveling": []
           },
           {
-            "description": "Kled gains 70 : 155 (based on level) bonus movement speed while facing and after attacking nearby visible enemy champions, but his basic attacks against them are reduced to 85% / 90% / 95% / 100% (based on level) AD physical damage. He also gains bonus armor and bonus magic resistance equal to 4 (+ 1% of bonus health), increased by 30% for each nearby enemy champion, up to a maximum of 10 (+ 2.5% bonus health) resistances. Additionally, he gains the ability to restore Skaarl's Courage to mount again.",
+            "description": "Kled gains 70 : 155 (based on level) bonus movement speed while facing and after attacking nearby visible enemy champions, but his basic attacks against them are reduced to 85% / 90% / 95% / 100% (based on level) AD physical damage. He also gains bonus armor and bonus magic resistance equal to 4 (+ 1% of bonus health), increased by 30% for each nearby visible enemy champion, up to a maximum of 10 (+ 2.5% bonus health) resistances. Additionally, he gains the ability to restore Skaarl's Courage to mount again.",
             "leveling": []
           },
           {
@@ -110,7 +114,7 @@
             "leveling": []
           },
           {
-            "description": "While at the allied fountain, 25 Courage is generated every 0.25 seconds. If reuniting outside of base, Skaarl gets Frayed Nerves, which prevents Kled from gaining Courage from outside of base for 30 seconds. Dismounting inside of base removes Frayed Nerves.",
+            "description": "While at the allied fountain, 25 Courage is generated every 0.25 seconds. If reuniting outside of the fountain, Skaarl gets Frayed Nerves, which prevents Kled from gaining Courage for 30 seconds. Being within the fountain while Dismounted removes Frayed Nerves.",
             "leveling": []
           }
         ],
@@ -579,7 +583,7 @@
             "leveling": []
           },
           {
-            "description": "Violent Tendencies: Kled gains 150% bonus attack speed on his next 4 basic attacks within 4 seconds. The fourth attack deals bonus physical damage. The damage based on the target's health is capped at 200 against monsters.Violent Tendencies' current cooldown is reduced by 0.5 seconds on-hit, increased to 1.5 against champions.",
+            "description": "Violent Tendencies: Kled gains 150% bonus attack speed on his next 4 basic attacks within 4 seconds. The fourth attack is empowered to deal bonus physical damage. The damage based on the target's health is capped at 200 against monsters.Violent Tendencies' current cooldown is reduced by 0.5 seconds on-hit, increased to 1.5 against champions.",
             "leveling": [
               {
                 "attribute": "Bonus Physical Damage",
@@ -742,7 +746,7 @@
             "leveling": []
           },
           {
-            "description": "Upon hitting an enemy champion or large monster, Skaarl dashes a fixed 200 units through them, marking them for 3 seconds, during which they are revealed. After the dash ends, the duo gain 50% bonus movement speed for 1 second. Jousting can be recast after 0.5 seconds of the first dash ending while the target is marked.",
+            "description": "Upon hitting an enemy champion or large monster, Skaarl dashes a fixed 350 units through them, marking them for 3 seconds, during which they are revealed. After the dash ends, the duo gain 50% bonus movement speed for 1 second. Jousting can be recast after 0.5 seconds of the first dash ending while the target is marked.",
             "leveling": []
           }
         ],
@@ -757,7 +761,7 @@
             "leveling": []
           }
         ],
-        "name": "Unmounted Jousting"
+        "name": "Dismounted Jousting"
       }
     ],
     "R": [
@@ -853,7 +857,7 @@
             "leveling": []
           },
           {
-            "description": "While charging, the duo gain bonus movement speed and a shield for every 0.25 seconds of traveling, up to 950 total movement speed over 3 seconds and 10% : 100% (based on time traveling) of the maximum shield amount over 2.25 seconds respectively. The shield lasts for 2 seconds upon finishing the charge. The duo trails a directional draft in their wake, lasting 9 seconds. Allied units other than lane minions and Voidmites following the draft gain Mr. Kled's Wild Ride.",
+            "description": "While charging, the duo gain a shield for every 0.25 seconds of traveling, up to 10% : 100% of the maximum shield amount over 2.25 seconds. The shield lasts for 1.75 : 2 seconds upon finishing the charge. Additionally, the duo trails a directional draft in their wake, lasting 9 seconds. Allied units other than lane minions following the draft gain Mr. Kled's Wild Ride. After 0.5 seconds of charging, the duo gain bonus movement speed every 0.25 seconds, up to 950 total movement speed over 3 seconds.",
             "leveling": [
               {
                 "attribute": "Maximum Shield",
@@ -927,7 +931,7 @@
             "leveling": []
           }
         ],
-        "name": "Unmounted Chaaaaaaaarge!!!"
+        "name": "Dismounted Chaaaaaaaarge!!!"
       }
     ]
   },

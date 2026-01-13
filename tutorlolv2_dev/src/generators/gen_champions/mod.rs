@@ -25,7 +25,7 @@ macro_rules! offset {
 offset![P, Q, W, E, R];
 
 tutorlolv2_macros::expand_dir!("../internal/champions", |Name| {
-    paste::paste! {
+    pastey::paste! {
         pub mod [<Name:lower>];
     }
 });

@@ -73,7 +73,7 @@
     },
     "movespeed": {
       "flat": 0.0,
-      "percent": 8.0
+      "percent": 4.0
     },
     "omnivamp": {
       "flat": 0.0,

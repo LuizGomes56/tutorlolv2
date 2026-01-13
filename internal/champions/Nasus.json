@@ -7,7 +7,7 @@
   ],
   "stats": {
     "health": {
-      "flat": 631.0,
+      "flat": 650.0,
       "perLevel": 104.0
     },
     "mana": {
@@ -70,42 +70,6 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Siphoning Strike",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "35 + ctx.nasus_stacks",
-          "55 + ctx.nasus_stacks",
-          "75 + ctx.nasus_stacks",
-          "95 + ctx.nasus_stacks",
-          "115 + ctx.nasus_stacks"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_3"
-      },
-      {
-        "name": "Spirit Fire",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "100 + (1.2 * ctx.ap)",
-          "160 + (1.2 * ctx.ap)",
-          "220 + (1.2 * ctx.ap)",
-          "280 + (1.2 * ctx.ap)",
-          "340 + (1.2 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "E",
         "name": "_2"
       },
@@ -142,6 +106,24 @@
     ],
     [
       {
+        "type": "E",
+        "name": "_3"
+      },
+      {
+        "name": "Spirit Fire",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "100 + (1.2 * ctx.ap)",
+          "160 + (1.2 * ctx.ap)",
+          "220 + (1.2 * ctx.ap)",
+          "280 + (1.2 * ctx.ap)",
+          "340 + (1.2 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "R",
         "name": "_1"
       },
@@ -153,6 +135,24 @@
           "(0.015 * ctx.enemy_max_health) + (0.005 * 0.01 * ctx.ap)",
           "(0.02 * ctx.enemy_max_health) + (0.005 * 0.01 * ctx.ap)",
           "(0.025 * ctx.enemy_max_health) + (0.005 * 0.01 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Siphoning Strike",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "40 + ctx.nasus_stacks",
+          "60 + ctx.nasus_stacks",
+          "80 + ctx.nasus_stacks",
+          "100 + ctx.nasus_stacks",
+          "120 + ctx.nasus_stacks"
         ]
       }
     ],

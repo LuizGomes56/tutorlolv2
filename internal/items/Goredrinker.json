@@ -7,10 +7,6 @@
   "tier": 3,
   "maps": [
     [
-      "Tft",
-      false
-    ],
-    [
       "Arena",
       true
     ],
@@ -19,7 +15,7 @@
       false
     ],
     [
-      "SummonersRift",
+      "Tft",
       false
     ],
     [
@@ -33,9 +29,30 @@
     [
       "SummonersRift",
       false
+    ],
+    [
+      "SummonersRift",
+      false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AbilityHaste",
+      "value": 20
+    },
+    {
+      "name": "Omnivamp",
+      "value": 10
+    },
+    {
+      "name": "AttackDamage",
+      "value": 55
+    },
+    {
+      "name": "Health",
+      "value": 400
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

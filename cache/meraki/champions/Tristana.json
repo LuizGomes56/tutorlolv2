@@ -21,7 +21,7 @@
     },
     "attackDamage": {
       "flat": 60.0,
-      "perLevel": 2.5
+      "perLevel": 2.9
     },
     "attackSpeed": {
       "flat": 0.656,
@@ -269,10 +269,10 @@
                     ],
                     "values": [
                       60.0,
-                      70.0,
-                      80.0,
-                      90.0,
-                      100.0
+                      85.0,
+                      110.0,
+                      135.0,
+                      160.0
                     ]
                   },
                   {
@@ -284,11 +284,11 @@
                       "% bonus AD"
                     ],
                     "values": [
-                      100.0,
-                      110.0,
-                      120.0,
-                      130.0,
-                      140.0
+                      80.0,
+                      80.0,
+                      80.0,
+                      80.0,
+                      80.0
                     ]
                   },
                   {
@@ -358,7 +358,7 @@
             ]
           },
           {
-            "description": "Tristana's basic attacks on-hit and abilities against the target increase Explosive Charge's damage by 25%, stacking up to 4 times for a maximum 100% increase, upon which the charge also detonates instantly. The charge's total damage is additionally increased by 0% : 75% (based on critical strike chance) (+ 0% : 40% (based on critical strike chance).",
+            "description": "Tristana's basic attacks on-hit and abilities against the target increase Explosive Charge's damage by 25%, stacking up to 4 times for a maximum 100% increase, upon which the charge also detonates instantly. The charge's total damage is additionally increased by 0% : 40% (+ 0% : 12%) (based on critical strike chance).",
             "leveling": [
               {
                 "attribute": "Bonus Damage Per Stack",
@@ -373,10 +373,10 @@
                     ],
                     "values": [
                       15.0,
-                      17.5,
-                      20.0,
-                      22.5,
-                      25.0
+                      21.25,
+                      27.5,
+                      33.75,
+                      40.0
                     ]
                   },
                   {
@@ -388,11 +388,11 @@
                       "% bonus AD"
                     ],
                     "values": [
-                      25.0,
-                      27.5,
-                      30.0,
-                      32.5,
-                      35.0
+                      20.0,
+                      20.0,
+                      20.0,
+                      20.0,
+                      20.0
                     ]
                   },
                   {
@@ -426,10 +426,10 @@
                     ],
                     "values": [
                       60.0,
-                      70.0,
-                      80.0,
-                      90.0,
-                      100.0
+                      85.0,
+                      110.0,
+                      135.0,
+                      160.0
                     ]
                   },
                   {
@@ -441,11 +441,11 @@
                       "% bonus AD"
                     ],
                     "values": [
-                      100.0,
-                      110.0,
-                      120.0,
-                      130.0,
-                      140.0
+                      80.0,
+                      80.0,
+                      80.0,
+                      80.0,
+                      80.0
                     ]
                   },
                   {
@@ -479,10 +479,10 @@
                     ],
                     "values": [
                       120.0,
-                      140.0,
-                      160.0,
-                      180.0,
-                      200.0
+                      170.0,
+                      220.0,
+                      270.0,
+                      320.0
                     ]
                   },
                   {
@@ -494,11 +494,11 @@
                       "% bonus AD"
                     ],
                     "values": [
-                      200.0,
-                      220.0,
-                      240.0,
-                      260.0,
-                      280.0
+                      160.0,
+                      160.0,
+                      160.0,
+                      160.0,
+                      160.0
                     ]
                   },
                   {

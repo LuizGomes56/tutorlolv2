@@ -7,20 +7,12 @@
   "tier": 3,
   "maps": [
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "Tft",
-      false
-    ],
-    [
       "Aram",
       false
     ],
     [
-      "SummonersRift",
-      false
+      "Arena",
+      true
     ],
     [
       "SummonersRift",
@@ -31,11 +23,32 @@
       false
     ],
     [
-      "Arena",
-      true
+      "Tft",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AttackDamage",
+      "value": 55
+    },
+    {
+      "name": "MoveSpeed",
+      "value": 15
+    },
+    {
+      "name": "AttackSpeed",
+      "value": 45
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

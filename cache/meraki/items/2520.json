@@ -1,0 +1,87 @@
+{
+  "active": [],
+  "buildsFrom": [
+    2020,
+    3134
+  ],
+  "buildsInto": [],
+  "name": "Bastionbreaker",
+  "tier": 3,
+  "passives": [
+    {
+      "effects": "Scoring a {{tip|takedown}} against an enemy champion within 3 seconds of damaging them grants you ''Sabotage'' for 90 seconds, empowering your next basic attack against a {{tip|turret}} or epic {{tip|monster}} to consume the effect to deal {{as|{{rd|300|240}} {{as|(+ {{rd|25|20}} per 1 lethality)}} '''bonus''' true damage}} over 3 seconds.",
+      "name": "Sabotage",
+      "unique": true
+    },
+    {
+      "effects": "Your next instance of [[ability damage]] to a champion or epic monster with a [[champion ability]] deals {{as|{{rd|30|15}} {{as|(+ {{rd|{{fd|1.5}}|{{fd|0.75}}}} per 1 lethality)}} '''bonus''' true damage}}.",
+      "name": "Shaped Charge",
+      "unique": true
+    }
+  ],
+  "id": 2520,
+  "stats": {
+    "abilityPower": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 55.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "shop": {
+    "purchasable": true,
+    "prices": {
+      "total": 3200
+    }
+  }
+}

@@ -9,7 +9,7 @@
   "tier": 3,
   "passives": [
     {
-      "effects": "After 2 seconds of having applied ''Squall'', strike the target with lightning, dealing {{as|125|magic damage}} {{as|(+ 10% AP)}} {{as|magic damage}} to them. If the target dies before being struck, they emit an electric field instantly that shocks all enemy champions near them, dealing them the same damage.",
+      "effects": "After 2 seconds of having applied ''Squall'', strike the target with lightning, dealing {{as|125|magic damage}} {{as|(+ 10% AP)}} {{as|magic damage}} to them. If the target dies before being struck, they emit an electric field instantly that shocks all enemy champions in a {{tip|cr|icononly=true}} 600 radius, dealing them the same damage.",
       "name": "Squall",
       "unique": true
     },

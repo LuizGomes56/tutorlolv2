@@ -10,7 +10,7 @@
   "tier": 3,
   "passives": [
     {
-      "effects": "Taking {{as|magic damage}} from champions grants a stack of ''Steadfast'' for 7 seconds, stacking up to 8 times with the duration refreshing on subsequent {{as|magic damage}} from them and whenever dealing damage to them. Becoming {{tip|immobilize|immobilized}} by an enemy champion grants 2 stacks and also refreshes the duration. Each incoming basic attack, ability per {{tip|cast instance}}, or item effect can only grant 1 stack of ''Steadfast'' from their damage every 1 second. At '''maximum''' stacks, gain {{as|70 '''bonus''' magic resistance}} and {{as|6% '''bonus''' movement speed}}.",
+      "effects": "Taking {{as|magic damage}} from champions generates a stack of ''Steadfast'' for 7 seconds, stacking up to 8 times with the duration refreshing on subsequent {{as|magic damage}} from them and whenever dealing damage to them. Becoming {{tip|immobilize|immobilized}} by an enemy champion generates 2 stacks and also refreshes the duration. Once per {{tip|cast instance}}, each incoming basic attack, ability, or item effect can only generate 1 stack of ''Steadfast'' from their damage every 1 second. At '''maximum''' stacks, gain {{as|70 '''bonus''' magic resistance}} and {{as|6% '''bonus''' movement speed}}.",
       "name": "Steadfast",
       "unique": true
     }

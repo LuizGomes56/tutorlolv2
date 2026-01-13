@@ -89,36 +89,18 @@
     [
       {
         "type": "W",
-        "name": "_4"
+        "name": "_3"
       },
       {
         "name": "Ricochet",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "(0.26 * ctx.ad)",
-          "(0.27625 * ctx.ad)",
-          "(0.2925 * ctx.ad)",
-          "(0.30875 * ctx.ad)",
-          "(0.325 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_3"
-      },
-      {
-        "name": "Boomerang Blade",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "120 + (2 * ctx.bonus_ad) + (1.2 * ctx.ap)",
-          "170 + (2 * ctx.bonus_ad) + (1.2 * ctx.ap)",
-          "220 + (2 * ctx.bonus_ad) + (1.2 * ctx.ap)",
-          "270 + (2 * ctx.bonus_ad) + (1.2 * ctx.ap)",
-          "320 + (2 * ctx.bonus_ad) + (1.2 * ctx.ap)"
+          "(0.455 * ctx.ad)",
+          "(0.4834375 * ctx.ad)",
+          "(0.511875 * ctx.ad)",
+          "(0.5403125 * ctx.ad)",
+          "(0.56875 * ctx.ad)"
         ]
       }
     ],
@@ -137,6 +119,24 @@
           "(0.7875 * ctx.ad)",
           "(0.83125 * ctx.ad)",
           "(0.875 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_4"
+      },
+      {
+        "name": "Ricochet",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "(0.26 * ctx.ad)",
+          "(0.27625 * ctx.ad)",
+          "(0.2925 * ctx.ad)",
+          "(0.30875 * ctx.ad)",
+          "(0.325 * ctx.ad)"
         ]
       }
     ],
@@ -178,19 +178,19 @@
     ],
     [
       {
-        "type": "W",
+        "type": "Q",
         "name": "_3"
       },
       {
-        "name": "Ricochet",
+        "name": "Boomerang Blade",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "(0.455 * ctx.ad)",
-          "(0.4834375 * ctx.ad)",
-          "(0.511875 * ctx.ad)",
-          "(0.5403125 * ctx.ad)",
-          "(0.56875 * ctx.ad)"
+          "120 + (2 * ctx.bonus_ad) + (1.2 * ctx.ap)",
+          "170 + (2 * ctx.bonus_ad) + (1.2 * ctx.ap)",
+          "220 + (2 * ctx.bonus_ad) + (1.2 * ctx.ap)",
+          "270 + (2 * ctx.bonus_ad) + (1.2 * ctx.ap)",
+          "320 + (2 * ctx.bonus_ad) + (1.2 * ctx.ap)"
         ]
       }
     ]

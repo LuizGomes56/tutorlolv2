@@ -293,10 +293,6 @@
             ]
           },
           {
-            "description": "Gaining Tough It Out's attack speed buff resets Olaf's basic attack timer.",
-            "leveling": []
-          },
-          {
             "description": "He also grants himself a shield for 2.5 seconds for an amount that is capped at 70% missing health.",
             "leveling": [
               {
@@ -337,6 +333,10 @@
                 ]
               }
             ]
+          },
+          {
+            "description": "Tough It Out resets Olaf's basic attack timer if it was not already active.",
+            "leveling": []
           }
         ],
         "name": "Tough It Out"

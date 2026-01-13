@@ -6,7 +6,11 @@ impl Generator<Champion> for Singed {
     ) -> MayFail<Champion> {
         self.ability(
             Q,
-            [(2, 0, _1), (2, 1, _2)],
+            [
+                (2, 0, _1),
+                (2, 1, _2),
+                (2, 2, _3),
+            ],
         );
         self.ability(E, [(0, 0, _1)]);
         self.end()

@@ -75,7 +75,7 @@
             "leveling": []
           },
           {
-            "description": "Level 1 - Zealous: Kayle's basic attacks on-attack generate a stack of Zeal for 5 seconds, refreshing on subsequent attacks and stacking up to 5 times. For each stack, she gains 6% (+ 1% per 100 AP) bonus attack speed, up to a maximum of 30% (+ 5% per 100 AP). At max stacks, she becomes Exalted, gaining 10% bonus movement speed.",
+            "description": "Level 1 - Zealous: Kayle's basic attacks on-attack generate a stack of Zeal for 5 seconds, refreshing on subsequent attacks and stacking up to 5 times. For each stack, she gains 6% bonus attack speed, up to a maximum of 30%. At max stacks, she becomes Exalted, gaining 10% bonus movement speed.",
             "leveling": []
           },
           {
@@ -120,7 +120,7 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "Active: Kayle conjures a portal in front of her that faces the target direction, from which a celestial sword launches forward.",
+            "description": "Active: Kayle conjures a portal in front of her that faces the target direction, from which, after 0.25 seconds, a celestial sword launches forward.",
             "leveling": [
               {
                 "attribute": "Magic Damage",
@@ -187,11 +187,11 @@
                       "%"
                     ],
                     "values": [
-                      26.0,
-                      32.0,
-                      38.0,
-                      44.0,
-                      50.0
+                      25.0,
+                      30.0,
+                      35.0,
+                      40.0,
+                      45.0
                     ]
                   }
                 ]
@@ -312,6 +312,10 @@
           },
           {
             "description": "If cast without a valid target, or self-cast, Celestial Blessing will automatically target the closest allied champion in range, prioritizing the one with the lowest health.",
+            "leveling": []
+          },
+          {
+            "description": "Kayle can move during Celestial Blessing's cast time.",
             "leveling": []
           }
         ],
@@ -477,7 +481,7 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "Active: Kayle grants herself or a target allied champion invulnerability for 2.5 seconds and conjures swords of fire.",
+            "description": "Active: Kayle grants herself or a target allied champion invulnerability for 2.5 seconds from the start of the cast time, and conjures flaming swords around herself.",
             "leveling": []
           },
           {
@@ -525,6 +529,10 @@
                 ]
               }
             ]
+          },
+          {
+            "description": "Kayle can move during Divine Judgment's cast time.",
+            "leveling": []
           }
         ],
         "name": "Divine Judgment"

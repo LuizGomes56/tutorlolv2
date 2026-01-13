@@ -11,10 +11,6 @@
       true
     ],
     [
-      "SummonersRift",
-      true
-    ],
-    [
       "NexusBlitz",
       true
     ],
@@ -28,14 +24,35 @@
     ],
     [
       "SummonersRift",
-      false
+      true
     ],
     [
       "SummonersRift",
       true
+    ],
+    [
+      "SummonersRift",
+      false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "MagicResist",
+      "value": 40
+    },
+    {
+      "name": "AbilityHaste",
+      "value": 10
+    },
+    {
+      "name": "Health",
+      "value": 400
+    },
+    {
+      "name": "BaseHealthRegen",
+      "value": 100
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

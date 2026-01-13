@@ -115,7 +115,7 @@
             "description": "Active: Ekko throws a temporal grenade in the target direction that deals magic damage to enemies hit.",
             "leveling": [
               {
-                "attribute": "Magic Damage",
+                "attribute": "First Hit Magic Damage",
                 "modifiers": [
                   {
                     "units": [
@@ -157,7 +157,7 @@
             "description": "Afterwards, the grenade contracts and homes back to Ekko at an increased speed, dealing magic damage to enemies hit.",
             "leveling": [
               {
-                "attribute": "Magic Damage",
+                "attribute": "Second Hit Magic Damage",
                 "modifiers": [
                   {
                     "units": [
@@ -289,10 +289,10 @@
             }
           ]
         },
-        "damageType": null,
+        "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "Active: Ekko creates an afterimage of himself that, after 2 seconds, bats a device to the target location and grants sight of the area for 2.5 seconds. After travelling over 1.25 seconds, the device expands into a chronosphere that is visible for 1.5 seconds and which slows enemies within by 40%.",
+            "description": "Active: Ekko creates an afterimage of himself that, after 2 seconds, bats a device to the target location and grants sight of the area for 2.5 seconds. After travelling over 1.25 seconds, the device expands into a chronosphere that lasts for 1.5 seconds and which slows enemies within by 40%.",
             "leveling": []
           },
           {
@@ -300,7 +300,7 @@
             "leveling": []
           },
           {
-            "description": "If Ekko enters the sphere within 2 seconds of its creation, it detonates to grant him a shield for 2 seconds and stun enemies within for 2.25 seconds.",
+            "description": "If Ekko enters the sphere before it expires, it detonates to grant him a shield for 2 seconds and stun enemies within for 2.25 seconds.",
             "leveling": [
               {
                 "attribute": "Shield Strength",

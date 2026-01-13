@@ -117,7 +117,7 @@
         "damageType": null,
         "effects": [
           {
-            "description": "After 1 second, enemy champions can destroy Seeds by stepping on them.",
+            "description": "After 1 second, enemy champions can destroy Seeds by moving on top of them.",
             "leveling": []
           },
           {
@@ -200,7 +200,7 @@
             ]
           },
           {
-            "description": "If Deadly Spine hits a Seed, it sprouts into a Thorn Spitter that remains for 8 seconds.",
+            "description": "If Deadly Spine hits a Seed, it sprouts into a Thorn Spitter that lasts for 8 seconds.",
             "leveling": []
           }
         ],
@@ -238,11 +238,11 @@
                 ""
               ],
               "values": [
-                12.0,
-                12.0,
-                12.0,
-                12.0,
-                12.0
+                11.0,
+                11.0,
+                11.0,
+                11.0,
+                11.0
               ]
             }
           ]
@@ -313,7 +313,7 @@
             ]
           },
           {
-            "description": "If Grasping Roots hits a Seed, it sprouts into a Vine Lasher, which remains on the battlefield for 8 seconds.",
+            "description": "If Grasping Roots hits a Seed, it sprouts into a Vine Lasher that lasts for 8 seconds.",
             "leveling": []
           }
         ],
@@ -354,9 +354,9 @@
                       ""
                     ],
                     "values": [
-                      180.0,
-                      265.0,
-                      350.0
+                      200.0,
+                      300.0,
+                      400.0
                     ]
                   },
                   {

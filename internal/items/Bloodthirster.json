@@ -8,14 +8,14 @@
   "maps": [
     [
       "SummonersRift",
-      true
+      false
     ],
     [
       "SummonersRift",
       true
     ],
     [
-      "NexusBlitz",
+      "SummonersRift",
       true
     ],
     [
@@ -23,19 +23,28 @@
       true
     ],
     [
-      "SummonersRift",
+      "Arena",
       false
+    ],
+    [
+      "NexusBlitz",
+      true
     ],
     [
       "Tft",
       false
-    ],
-    [
-      "Arena",
-      false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AttackDamage",
+      "value": 80
+    },
+    {
+      "name": "LifeSteal",
+      "value": 15
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

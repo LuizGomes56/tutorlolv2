@@ -14,6 +14,7 @@ impl Generator<Champion> for XinZhao {
                 (0, 0, _1),
                 (0, 1, _2),
                 (0, 2, _3),
+                (0, 3, _4),
             ],
         );
         self.ability(E, [(0, 0, _1)]);

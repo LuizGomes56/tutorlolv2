@@ -1,7 +1,7 @@
 {
   "active": [
     {
-      "effects": "Summon a black hole at the target location after a {{fd|0.5}}-second delay that lasts for 2 {{as|(+ {{fd|0.1}} per 100 '''bonus''' health)}} seconds. Enemies within are dealt {{as|{{pp|30 to 100}}|magic damage}} {{as|(+ {{fd|6.5}}% of user's '''maximum''' health)}} {{as|magic damage}} every second, {{tip|slow|slowed}} by 35%, and {{tip|kinematics|dragged}} inward until they reach the horizon at the center. Additionally, for each enemy champion inside the black hole, generate 1 stack of ''Accretion'' per second.",
+      "effects": "Summon a black hole at the target location after a {{fd|0.5}}-second delay that lasts for 2 {{as|(+ {{fd|0.1}} per 100 '''bonus''' health)}} seconds. Enemies within are dealt {{as|{{pp|30 to 100}}|magic damage}} {{as|(+ {{fd|5}}% of user's '''maximum''' health)}} {{as|magic damage}} every second, {{tip|slow|slowed}} by 30%, and {{tip|kinematics|dragged}} inward until they reach the horizon at the center. Additionally, for each enemy champion inside the black hole, generate 1 stack of ''Accretion'' per second.",
       "name": "Dark Star",
       "unique": true
     }

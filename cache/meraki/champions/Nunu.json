@@ -441,7 +441,7 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "Active: Willump cleanses himself from all slows and channels for up to 10 seconds, becoming ghosted and slow-immune and creating a rolling snowball. Willump automatically navigates his movement in the direction of the cursor and can steer the snowball with a slow turn rate that increases over time, resetting upon changing direction. The duo have their movement speed reduced by 50% for the first 1 second, but after a delay they start gaining 14 movement speed every 0.25 seconds, up to a cap.",
+            "description": "Active: Willump cleanses himself from all slows and channels for up to 10 seconds, becoming ghosted and slow-immune and creating a rolling snowball. Willump automatically navigates his movement in the direction of the cursor and can steer the snowball at an increasing speed over time, which resets upon changing direction. The duo have their movement speed reduced by 50% for the first 1 second, but after a delay they start gaining 14 movement speed every 0.25 seconds, up to a cap.",
             "leveling": []
           },
           {
@@ -449,7 +449,7 @@
             "leveling": []
           },
           {
-            "description": "The snowball explodes upon hitting an enemy champion, large pet, medium / large monster or terrain, dealing magic damage to nearby enemies, increased by 0% : 400% (based on charge time), knocking them up for 0.5 : 0.75 (based on charge time) seconds and subsequently stunning them for 0 : 0.5 (based on charge time) seconds.",
+            "description": "The snowball explodes upon hitting an enemy champion, large pet, medium or large monster, or terrain, dealing magic damage to nearby enemies, increased by 0% : 400% (based on charge time), knocking them up for 0.5 : 0.75 (based on charge time) seconds and subsequently stunning them for 0 : 0.75 (based on charge time) seconds. If the snowball explodes while still being steered, it will stun Willump for 0.132 seconds seconds.",
             "leveling": [
               {
                 "attribute": "Maximum Magic Damage",
@@ -528,14 +528,14 @@
             ]
           },
           {
-            "description": "The snowball increases in size and power over the first 5 seconds. Biggest Snowball Ever! can be recast after 0.5 seconds during the channel, and does so automatically after the channel or if interrupted.",
+            "description": "The snowball increases in size and power linearly over the duration. Its size changes from small to medium after 2.5 seconds, then to large after 5 seconds into the charge. Biggest Snowball Ever! can be recast after 0.5 seconds during the channel, and does so automatically after the channel or if interrupted.",
             "leveling": []
           },
           {
             "description": "The snowball rolls over enemy minions and small monsters hit, dealing 33.3% of the damage as magic damage.",
             "leveling": [
               {
-                "attribute": "Maximum Reduced Damage",
+                "attribute": "Maximum Minion/Monster Roll Damage",
                 "modifiers": [
                   {
                     "units": [
@@ -572,7 +572,7 @@
                 ]
               },
               {
-                "attribute": "Minimum Reduced Damage",
+                "attribute": "Minimum Minion/Monster Roll Damage",
                 "modifiers": [
                   {
                     "units": [

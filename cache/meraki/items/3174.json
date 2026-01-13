@@ -8,12 +8,12 @@
   "tier": 3,
   "passives": [
     {
-      "effects": "Reduces incoming [[damage]] from all [[basic attack]]s by 10% (''excluding [[turret]] attacks'').",
+      "effects": "Reduces all incoming {{tip|basic damage}} by 10% (''excluding from [[turret]] attacks'').",
       "name": "Plating",
       "unique": true
     },
     {
-      "effects": "Taking {{as|physical damage}} from champions grants you a {{tip|shield}} that absorbs {{pp|10 to 120|color=pd}} {{as|(+ 4% '''maximum''' health)}} {{as|physical damage}} for 4 seconds.",
+      "effects": "Taking {{as|physical damage}} from champions grants you a {{tip|shield}} that absorbs {{pp|10 to 120|color=pd}} {{as|(+ 10% '''maximum''' health)}} {{as|physical damage}} for 5 seconds.",
       "name": "Noxian Endurance",
       "unique": true
     }
@@ -25,7 +25,7 @@
       "percent": 0.0
     },
     "armor": {
-      "flat": 40.0,
+      "flat": 35.0,
       "percent": 0.0
     },
     "armorPenetration": {
@@ -69,7 +69,7 @@
       "percent": 0.0
     },
     "movespeed": {
-      "flat": 50.0,
+      "flat": 45.0,
       "percent": 0.0
     },
     "omnivamp": {
@@ -80,7 +80,7 @@
   "shop": {
     "purchasable": true,
     "prices": {
-      "total": 1700
+      "total": 1200
     }
   }
 }

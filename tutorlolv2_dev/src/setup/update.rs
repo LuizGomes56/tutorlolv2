@@ -193,13 +193,10 @@ pub fn setup_damaging_items() -> MayFail {
         cleaned.contains("damage")
     };
 
-    let is_damaging = Arc::new(Mutex::new(Vec::new()));
-
-    parallel_read("cache/meraki/items", {
-        let is_damaging = is_damaging.clone();
+    let is_damaging: Vec<_> = parallel_read("cache/meraki/items", {
         move |_, meraki_item: MerakiItem| {
             if !meraki_item.shop.purchasable {
-                return Ok(());
+                return Ok(None);
             }
 
             let mut found_match = false;
@@ -220,17 +217,11 @@ pub fn setup_damaging_items() -> MayFail {
                 }
             }
 
-            if found_match {
-                is_damaging.lock().unwrap().push(meraki_item.id);
-            }
-
-            Ok(())
+            Ok(found_match.then_some(meraki_item.id))
         }
     })?;
 
-    let mut is_damaging = Arc::try_unwrap(is_damaging)
-        .map_err(|_| "[unknown] Unable to unwrap `is_damaging` from its Arc")?
-        .into_inner()?;
+    let mut is_damaging = is_damaging.into_iter().flatten().collect::<Vec<_>>();
     is_damaging.sort();
     is_damaging.into_file("internal/damaging_items.json")
 }

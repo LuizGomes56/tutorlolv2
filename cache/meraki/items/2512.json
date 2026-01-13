@@ -1,0 +1,87 @@
+{
+  "active": [],
+  "buildsFrom": [
+    3086,
+    3144
+  ],
+  "buildsInto": [],
+  "name": "Fiendhunter Bolts",
+  "tier": 3,
+  "passives": [
+    {
+      "effects": "After casting your ultimate ability, your next 3 basic attacks within 8 seconds gain {{as|50% '''bonus''' attack speed}} and will {{tip|critically strike}} for{{ft|{{as|{{critical damage|50|50}}|critical damage}} '''bonus''' damage.|{{sti|{{as|75% '''total''' critical damage}}}}.}}If an attack would have already critically struck, it instead critically strikes for{{ft|{{as|{{critical damage|100|100}}|critical damage}} '''bonus''' damage|{{sti|{{as|100% '''total''' critical damage}}}}}}and deals {{as|'''bonus''' true damage}} equal to 10% of the triggering {{as|attack's damage}}.",
+      "name": "Opening Barrage",
+      "unique": true
+    },
+    {
+      "effects": "Gain 30 [[Haste#Ultimate haste|ultimate haste]].",
+      "name": "Night Vigil",
+      "unique": true
+    }
+  ],
+  "id": 2512,
+  "stats": {
+    "abilityPower": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 40.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 25.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 4.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "shop": {
+    "purchasable": true,
+    "prices": {
+      "total": 2650
+    }
+  }
+}

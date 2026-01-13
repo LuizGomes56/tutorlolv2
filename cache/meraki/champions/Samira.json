@@ -71,15 +71,19 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "Innate: Samira's basic attacks against targets within 200 units of her use her blade, becoming non-projectile. Blade attacks post-hit, Blade Whirl, Wild Rush, and the slash and explosives of Flair deal 2 : 19 (based on level) (+ 3.5% : 10.5% (based on level) AD) bonus magic damage, increased by 0% : 100% (based on target's missing health).",
+            "description": "If the target is further away from Samira's attack range, initiating an attack against the immobilized target while within valid range of them will first cause her to dash toward them up to her attack range, then automatically cast the bolts.",
             "leveling": []
           },
           {
-            "description": "Innate: Samira's damaging basic attacks and abilities against at least one enemy champion different from the previous damaging hit made against champions generate a stack of Style for 6 seconds, refreshing on subsequent hits and stacking up to 6 times.",
+            "description": "Innate: Samira's basic attacks against targets within 200 units of her use her blade, becoming non-projectile. Blade attacks, Blade Whirl, Wild Rush, and the slash and explosives of Flair deal 2 : 19 (based on level) (+ 3.5% : 10.5% (based on level) AD) bonus magic damage, increased by 0% : 100% (based on target's missing health).",
             "leveling": []
           },
           {
-            "description": "Samira's basic attack against an immobilized target is empowered to have an uncancellable windup and deal the attack's damage over 6 strikes in 0.5 seconds. If the target is a monster or is airborne, the attack also knocks them up for 0.5 seconds. Samira will dash into her attack range of the target if they are nearby.",
+            "description": "Innate: Samira's damaging basic attacks and abilities against at least one enemy champion unique from the previous damaging hit made against champions generate a stack of Style for 6 seconds, refreshing on subsequent unique or non-unique hits and stacking up to 6 times.",
+            "leveling": []
+          },
+          {
+            "description": "Samira's basic attack against an immobilized target is empowered to have an uncancellable windup and fire 6 bolts over 0.5 seconds, each dealing 17% AD physical damage and applying life steal. If the target is a monster or is airborne, the attack also knocks them up for 0.5 seconds.",
             "leveling": []
           },
           {
@@ -134,11 +138,11 @@
                       ""
                     ],
                     "values": [
+                      0.0,
                       5.0,
                       10.0,
                       15.0,
-                      20.0,
-                      25.0
+                      20.0
                     ]
                   },
                   {
@@ -150,11 +154,11 @@
                       "% AD"
                     ],
                     "values": [
-                      95.0,
-                      102.5,
                       110.0,
-                      117.5,
-                      125.0
+                      110.0,
+                      110.0,
+                      110.0,
+                      110.0
                     ]
                   }
                 ]
@@ -162,7 +166,7 @@
             ]
           },
           {
-            "description": "Flair can critically strike for (125% + 40%) damage and will apply life steal at 80% effectiveness.",
+            "description": "Flair can critically strike for (150% + 15%) damage and will apply life steal at 80% effectiveness.",
             "leveling": []
           },
           {
@@ -431,9 +435,9 @@
                       ""
                     ],
                     "values": [
-                      1.25,
-                      3.75,
-                      6.25
+                      5.0,
+                      10.0,
+                      15.0
                     ]
                   },
                   {
@@ -443,9 +447,9 @@
                       "% AD"
                     ],
                     "values": [
-                      11.25,
-                      11.25,
-                      11.25
+                      7.5,
+                      7.5,
+                      7.5
                     ]
                   }
                 ]
@@ -460,9 +464,9 @@
                       ""
                     ],
                     "values": [
-                      5.0,
-                      15.0,
-                      25.0
+                      20.0,
+                      40.0,
+                      60.0
                     ]
                   },
                   {
@@ -472,9 +476,9 @@
                       "% AD"
                     ],
                     "values": [
-                      45.0,
-                      45.0,
-                      45.0
+                      30.0,
+                      30.0,
+                      30.0
                     ]
                   }
                 ]
@@ -489,9 +493,9 @@
                       ""
                     ],
                     "values": [
-                      12.5,
-                      37.5,
-                      62.5
+                      50.0,
+                      100.0,
+                      150.0
                     ]
                   },
                   {
@@ -501,9 +505,9 @@
                       "% AD"
                     ],
                     "values": [
-                      112.5,
-                      112.5,
-                      112.5
+                      75.0,
+                      75.0,
+                      75.0
                     ]
                   }
                 ]
@@ -518,9 +522,9 @@
                       ""
                     ],
                     "values": [
-                      50.0,
-                      150.0,
-                      250.0
+                      200.0,
+                      400.0,
+                      600.0
                     ]
                   },
                   {
@@ -530,9 +534,9 @@
                       "% AD"
                     ],
                     "values": [
-                      450.0,
-                      450.0,
-                      450.0
+                      300.0,
+                      300.0,
+                      300.0
                     ]
                   }
                 ]
@@ -540,7 +544,7 @@
             ]
           },
           {
-            "description": "Samira cannot basic attack nor cast Flair and Blade Whirl during Inferno Trigger, but she can still move. Inferno Trigger will end prematurely by all forms of cast-inhibiting crowd control as well as disarm. Inferno Trigger cannot be cast while Samira is disarmed.",
+            "description": "Samira cannot basic attack nor cast Flair and Blade Whirl during Inferno Trigger, but she can still move. Inferno Trigger will end prematurely if Samira is affected by any form of cast-inhibiting crowd control as well as disarm. Inferno Trigger cannot be cast while Samira is disarmed.",
             "leveling": []
           }
         ],

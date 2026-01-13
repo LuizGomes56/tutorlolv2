@@ -5,11 +5,11 @@
   "stats": {
     "health": {
       "flat": 570.0,
-      "perLevel": 90.0
+      "perLevel": 95.0
     },
     "mana": {
       "flat": 360.0,
-      "perLevel": 25.0
+      "perLevel": 40.0
     },
     "armor": {
       "flat": 26.0,
@@ -112,7 +112,7 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "Active: Seraphine hurls a soundwave to the target location that quickly expands in a radius upon arrival, dealing magic damage to enemies within the area.",
+            "description": "Active: Seraphine hurls a soundwave to the target location that upon arrival expands in a radius over 0.4 seconds, dealing magic damage to enemies within the area.",
             "leveling": [
               {
                 "attribute": "Magic Damage",
@@ -154,10 +154,10 @@
             ]
           },
           {
-            "description": "Against champions, the damage is increased by 0% : 75% (based on target's missing health).",
+            "description": "Against champions and monsters, the damage is increased by 0% : 75% (based on target's missing health).",
             "leveling": [
               {
-                "attribute": "Maximum Champion Damage",
+                "attribute": "Maximum Enhanced Damage",
                 "modifiers": [
                   {
                     "units": [
@@ -267,10 +267,10 @@
             ]
           },
           {
-            "description": "If Seraphine already had a shield at the time of cast, Surround Sound will pulse after the duration, healing herself and nearby allied champions, increased for each ally.",
+            "description": "If Seraphine already had a shield at the time of cast, Surround Sound will pulse after the duration, healing herself and nearby allied champions.",
             "leveling": [
               {
-                "attribute": "Heal Per Ally",
+                "attribute": "Heal",
                 "modifiers": [
                   {
                     "units": [
@@ -281,11 +281,11 @@
                       "% of target's missing health"
                     ],
                     "values": [
-                      3.0,
-                      3.5,
-                      4.0,
-                      4.5,
-                      5.0
+                      8.0,
+                      10.0,
+                      12.0,
+                      14.0,
+                      16.0
                     ]
                   }
                 ]
@@ -293,7 +293,7 @@
             ]
           },
           {
-            "description": "Surround Sound's shield and bonus movement speed can stack up to 2 times.",
+            "description": "Surround Sound's shield and bonus movement speed can stack up to 2 times. Seraphine can move during Surround Sound's cast time.",
             "leveling": []
           }
         ],

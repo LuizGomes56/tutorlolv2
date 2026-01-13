@@ -71,7 +71,7 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "Innate: Smolder generates a stack of Dragon Practice each time he hits an enemy champion with an ability, or whenever Super Scorcher Breath kills a minion or monster. His basic abilities deal bonus magic damage based on stacks.\n Super Scorcher Breath: Deals bonus magic damage equal to 40% : 70% (+ 0% : 16%) (based on critical strike chance) of Dragon Practice stacks.\n Achooo!: Explosions deal bonus magic damage equal to 55% of Dragon Practice stacks.\n Flap, Flap, Flap: Attacks each deal bonus magic damage equal to 12% of Dragon Practice stacks.",
+            "description": "Innate: Smolder generates a stack of Dragon Practice each time he hits an enemy champion with an ability, or whenever Super Scorcher Breath kills a minion or monster. His basic abilities deal bonus magic damage based on stacks.\n Super Scorcher Breath: Deals bonus magic damage equal to 40% : 60% (+ 0% : 6%) (based on critical strike chance) of Dragon Practice stacks.\n Achooo!: Explosions deal bonus magic damage equal to 55% of Dragon Practice stacks.\n Flap, Flap, Flap: Attacks each deal bonus magic damage equal to 12% of Dragon Practice stacks.",
             "leveling": []
           }
         ],
@@ -104,82 +104,8 @@
         "damageType": "OTHER_DAMAGE",
         "effects": [
           {
-            "description": "Active: Smolder spits a fireball at the target enemy that deals physical damage, increased by 0% : 75% (+ 0% : 40%) (based on critical strike chance); applies on-hit effects; applies life steal at 50% effectiveness; and triggers on-attack effects. If Super Scorcher Breath kills at least one target, Smolder restores 15 mana.",
+            "description": "Active: Smolder spits a fireball at the target enemy that deals physical damage, increased by 0% : 50% (+ 0% : 15%) (based on critical strike chance); applies on-hit effects; applies life steal at 50% effectiveness; and triggers on-attack effects. If Super Scorcher Breath kills at least one target, Smolder restores 15 mana.",
             "leveling": [
-              {
-                "attribute": "Maximum Damage with Infinity Edge",
-                "modifiers": [
-                  {
-                    "units": [
-                      "",
-                      "",
-                      "",
-                      "",
-                      ""
-                    ],
-                    "values": [
-                      139.75,
-                      172.0,
-                      204.25,
-                      236.5,
-                      268.75
-                    ]
-                  },
-                  {
-                    "units": [
-                      "% bonus AD",
-                      "% bonus AD",
-                      "% bonus AD",
-                      "% bonus AD",
-                      "% bonus AD"
-                    ],
-                    "values": [
-                      279.5,
-                      279.5,
-                      279.5,
-                      279.5,
-                      279.5
-                    ]
-                  }
-                ]
-              },
-              {
-                "attribute": "Maximum Physical Damage",
-                "modifiers": [
-                  {
-                    "units": [
-                      "",
-                      "",
-                      "",
-                      "",
-                      ""
-                    ],
-                    "values": [
-                      113.75,
-                      140.0,
-                      166.25,
-                      192.5,
-                      218.75
-                    ]
-                  },
-                  {
-                    "units": [
-                      "% bonus AD",
-                      "% bonus AD",
-                      "% bonus AD",
-                      "% bonus AD",
-                      "% bonus AD"
-                    ],
-                    "values": [
-                      227.5,
-                      227.5,
-                      227.5,
-                      227.5,
-                      227.5
-                    ]
-                  }
-                ]
-              },
               {
                 "attribute": "Physical Damage",
                 "modifiers": [
@@ -230,80 +156,6 @@
           {
             "description": "Tier 2 - 125 stacks: The fireball sends forth 2 (+ 0.8 per 100 Dragon Practice stacks) bolts of fire in an arc upon collision that explode at maximum range, dealing 50% of the same damage to enemies hit. The bolts benefit from life steal at 50% effectiveness and apply on-hit effects.",
             "leveling": [
-              {
-                "attribute": "Maximum Physical Damage",
-                "modifiers": [
-                  {
-                    "units": [
-                      "",
-                      "",
-                      "",
-                      "",
-                      ""
-                    ],
-                    "values": [
-                      56.875,
-                      70.0,
-                      83.125,
-                      96.25,
-                      109.375
-                    ]
-                  },
-                  {
-                    "units": [
-                      "% bonus AD",
-                      "% bonus AD",
-                      "% bonus AD",
-                      "% bonus AD",
-                      "% bonus AD"
-                    ],
-                    "values": [
-                      113.75,
-                      113.75,
-                      113.75,
-                      113.75,
-                      113.75
-                    ]
-                  }
-                ]
-              },
-              {
-                "attribute": "Maximum Physical Damage with Infinity Edge",
-                "modifiers": [
-                  {
-                    "units": [
-                      "",
-                      "",
-                      "",
-                      "",
-                      ""
-                    ],
-                    "values": [
-                      69.875,
-                      86.0,
-                      102.125,
-                      118.25,
-                      134.375
-                    ]
-                  },
-                  {
-                    "units": [
-                      "% bonus AD",
-                      "% bonus AD",
-                      "% bonus AD",
-                      "% bonus AD",
-                      "% bonus AD"
-                    ],
-                    "values": [
-                      139.75,
-                      139.75,
-                      139.75,
-                      139.75,
-                      139.75
-                    ]
-                  }
-                ]
-              },
               {
                 "attribute": "Physical Damage",
                 "modifiers": [
@@ -633,7 +485,7 @@
             ]
           },
           {
-            "description": "Flap, Flap, Flap ends immediately if Smolder casts one of his abilities or becomes immobilized.",
+            "description": "Flap, Flap, Flap ends immediately if Smolder casts another ability or becomes immobilized.",
             "leveling": []
           }
         ],

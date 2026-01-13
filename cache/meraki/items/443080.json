@@ -6,7 +6,7 @@
   "tier": 3,
   "passives": [
     {
-      "effects": "Gain 15% of your teammate's {{as|attack damage}}, {{as|ability power}}, {{as|'''total''' attack speed}}, {{as|'''maximum''' health}}, {{as|armor}}, {{as|magic resistance}}, and {{as|ability haste}}, increased to 30% if they also have '''Twin Mask''' and are alive.",
+      "effects": "Gain 20% of your teammate's {{as|attack damage}}, {{as|ability power}}, {{as|'''total''' attack speed}}, {{as|'''maximum''' health}}, {{as|armor}}, {{as|magic resistance}}, and {{as|ability haste}}, increased to 35% if they also have '''Twin Mask''' and are alive.",
       "name": "Unanimity",
       "unique": true
     }

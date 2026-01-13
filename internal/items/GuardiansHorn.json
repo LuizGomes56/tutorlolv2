@@ -7,6 +7,10 @@
   "tier": 1,
   "maps": [
     [
+      "Tft",
+      false
+    ],
+    [
       "Aram",
       true
     ],
@@ -29,13 +33,14 @@
     [
       "NexusBlitz",
       false
-    ],
-    [
-      "Tft",
-      false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "Health",
+      "value": 300
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

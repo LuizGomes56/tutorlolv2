@@ -9,10 +9,7 @@ impl Generator<Champion> for Sett {
             [(0, 0, _1), (0, 1, _2)],
         );
         self.ability(W, [(1, 0, _1)]);
-        self.ability(
-            E,
-            [(0, 0, _1), (0, 1, _2)],
-        );
+        self.ability(E, [(0, 0, _1)]);
         self.ability(
             R,
             [(1, 0, _1), (1, 1, _2)],

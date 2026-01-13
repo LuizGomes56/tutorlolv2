@@ -6,7 +6,7 @@
   "tier": 3,
   "passives": [
     {
-      "effects": "If you have at least {{as|130 '''bonus''' attack damage}} and {{as|180 ability power}}, enter either the ''Material World'' or the ''Spirit World'', determined randomly, at the start of the combat phase in each round:<br><br>• '''Material World''': Increase your {{as|attack damage}} by 20% and gain {{as|{{pp|50 to 150|key=%}} '''bonus''' attack speed}}.<br>• '''Spirit World''': Increase your {{as|ability power}} by 20% and gain {{as|{{pp|30 to 120}} ability haste}}.",
+      "effects": "If you have at least {{as|130 '''bonus''' attack damage}} and {{as|180 ability power}}, enter either the ''Material World'' or the ''Spirit World'', determined randomly, at the start of the combat phase in each round:<br><br>• '''Material World''': Increase your {{as|attack damage}} by 25% and gain {{as|{{pp|50 to 150|key=%}} '''bonus''' attack speed}}.<br>• '''Spirit World''': Increase your {{as|ability power}} by 25% and gain {{as|{{pp|30 to 120}} ability haste}}.",
       "name": "The Path Between",
       "unique": true
     }

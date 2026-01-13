@@ -11,7 +11,11 @@
       true
     ],
     [
-      "NexusBlitz",
+      "SummonersRift",
+      true
+    ],
+    [
+      "SummonersRift",
       true
     ],
     [
@@ -19,23 +23,32 @@
       false
     ],
     [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
+      "Arena",
       false
     ],
     [
-      "Arena",
+      "NexusBlitz",
+      true
+    ],
+    [
+      "SummonersRift",
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AbilityHaste",
+      "value": 10
+    },
+    {
+      "name": "AbilityPower",
+      "value": 40
+    },
+    {
+      "name": "Mana",
+      "value": 300
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

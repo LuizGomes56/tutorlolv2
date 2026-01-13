@@ -9,7 +9,10 @@ impl Generator<Champion> for MissFortune {
             E,
             [(0, 0, _1), (0, 1, _2)],
         );
-        self.ability(R, [(0, 0, _1)]);
+        self.ability(
+            R,
+            [(0, 0, _1), (0, 1, _2)],
+        );
         self.end()
     }
 }

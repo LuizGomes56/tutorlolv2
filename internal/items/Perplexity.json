@@ -11,7 +11,19 @@
       false
     ],
     [
+      "SummonersRift",
+      false
+    ],
+    [
+      "Aram",
+      false
+    ],
+    [
       "NexusBlitz",
+      false
+    ],
+    [
+      "SummonersRift",
       false
     ],
     [
@@ -21,21 +33,26 @@
     [
       "SummonersRift",
       false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "Aram",
-      false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "ArmorPenetration",
+      "value": 22
+    },
+    {
+      "name": "MoveSpeed",
+      "value": 5
+    },
+    {
+      "name": "MagicPenetration",
+      "value": 30
+    },
+    {
+      "name": "AbilityPower",
+      "value": 60
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

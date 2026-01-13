@@ -89,6 +89,42 @@
     [
       {
         "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Howling Gale",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "10 + (0.1 * ctx.ap)",
+          "15 + (0.1 * ctx.ap)",
+          "20 + (0.1 * ctx.ap)",
+          "25 + (0.1 * ctx.ap)",
+          "30 + (0.1 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "Howling Gale",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "85 + (0.8 * ctx.ap)",
+          "135 + (0.8 * ctx.ap)",
+          "185 + (0.8 * ctx.ap)",
+          "235 + (0.8 * ctx.ap)",
+          "285 + (0.8 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
         "name": "_3"
       },
       {
@@ -119,42 +155,6 @@
           "115 + (0.5 * ctx.ap) + (0.3 * ctx.bonus_move_speed)",
           "145 + (0.5 * ctx.ap) + (0.3 * ctx.bonus_move_speed)",
           "175 + (0.5 * ctx.ap) + (0.3 * ctx.bonus_move_speed)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_2"
-      },
-      {
-        "name": "Howling Gale",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "85 + (0.8 * ctx.ap)",
-          "135 + (0.8 * ctx.ap)",
-          "185 + (0.8 * ctx.ap)",
-          "235 + (0.8 * ctx.ap)",
-          "285 + (0.8 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Howling Gale",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "10 + (0.1 * ctx.ap)",
-          "15 + (0.1 * ctx.ap)",
-          "20 + (0.1 * ctx.ap)",
-          "25 + (0.1 * ctx.ap)",
-          "30 + (0.1 * ctx.ap)"
         ]
       }
     ]
