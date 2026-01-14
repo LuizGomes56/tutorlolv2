@@ -314,6 +314,17 @@ const_methods!(ChampionId, u8);
 const_methods!(ItemId, u16);
 const_methods!(RuneId, u8);
 
+#[cfg(feature = "eval")]
+impl TryFrom<&str> for ChampionId {
+    type Error = &'static str;
+    fn try_from(value: &str) -> Result<Self, Self::Error> {
+        CHAMPION_NAME_TO_ID
+            .get(value)
+            .ok_or("Failed to convert value to ChampionId enum")
+            .copied()
+    }
+}
+
 impl ChampionId {
     /// Counts how many damaging abilities a champion has
     #[cfg(feature = "eval")]

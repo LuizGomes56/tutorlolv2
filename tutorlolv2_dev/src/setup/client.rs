@@ -14,6 +14,7 @@ use scraper::{Html, Selector};
 use serde::{Deserialize, Serialize, de::DeserializeOwned};
 use serde_json::Value;
 use std::{
+    borrow::Cow,
     collections::HashMap,
     fmt::Display,
     io::{BufRead, BufReader, Write},
@@ -22,35 +23,38 @@ use std::{
 };
 use tokio::{sync::Semaphore, task::JoinHandle};
 use tutorlolv2_fmt::pascal_case;
-use tutorlolv2_gen::ChampionId;
-
-/// Returns the directory where images will be downloaded to
-macro_rules! target_dir {
-    () => {
-        "raw_img"
-    };
-    ($first:literal) => {
-        concat!(target_dir!(), "/", $first)
-    };
-}
+use tutorlolv2_gen::{ChampionId, Position};
 
 enum SaveTo<'a> {
-    /// ChampionId
-    Champion(&'a str),
-    /// ChampionId, P | Q | W | E | R
-    Ability(&'a str, char),
-    /// ItemId
-    Item(&'a str),
-    /// ChampionId, Skin Number
-    Centered(&'a str, usize),
-    /// ChampionId, Skin Number
-    Splash(&'a str, usize),
-    /// RuneId
-    Runes(usize),
-    RiotDir(Tag),
-    MerakiDir(Tag),
-    RiotCache(Tag, &'a str),
+    ImgChampion(ChampionId),
+    ImgAbility(ChampionId, char),
+    ImgItem(&'a str),
+    ImgCentered(ChampionId, usize),
+    ImgSplash(ChampionId, usize),
+    ImgRunes(usize),
     MerakiCache(Tag, &'a str),
+    MerakiChampions,
+    MerakiItems,
+    RiotChampions,
+    RiotItems,
+    RiotRunes,
+    RiotLangDir(&'a str),
+    RiotRawChampions(&'a str),
+    RiotCache(Tag, &'a str),
+    RiotItemsDir,
+    RiotChampionsDir,
+    ScraperBuilds(Position, ChampionId),
+    ScraperCombos(ChampionId),
+    Internal(Tag, &'a str),
+    InternalScraperBuilds(Position, &'a str),
+    InternalScraperCombos(ChampionId),
+    InternalScraperData,
+    InternalChampionLanguages,
+    InternalDamagingItems,
+    InternalLanguages,
+    InternalMaps,
+    InternalRuneNames,
+    InternalRunes,
 }
 
 enum Tag {
@@ -73,16 +77,41 @@ impl<'a> SaveTo<'a> {
     pub fn path(&self) -> String {
         let img = "raw_img";
         match self {
-            SaveTo::Champion(s) => format!("{img}/champions/{s}.png"),
-            SaveTo::Ability(s, c) => format!("{img}/abilities/{s}{c}.png"),
-            SaveTo::Item(s) => format!("{img}/items/{s}.png"),
-            SaveTo::Centered(s, n) => format!("{img}/centered/{s}_{n}.jpg"),
-            SaveTo::Splash(s, n) => format!("{img}/splash/{s}_{n}.jpg"),
-            SaveTo::Runes(n) => format!("{img}/runes/{n}.png"),
+            SaveTo::ImgChampion(s) => format!("{img}/champions/{s:?}.png"),
+            SaveTo::ImgAbility(s, c) => format!("{img}/abilities/{s:?}{c}.png"),
+            SaveTo::ImgItem(s) => format!("{img}/items/{s}.png"),
+            SaveTo::ImgCentered(s, n) => format!("{img}/centered/{s:?}_{n}.jpg"),
+            SaveTo::ImgSplash(s, n) => format!("{img}/splash/{s:?}_{n}.jpg"),
+            SaveTo::ImgRunes(n) => format!("{img}/runes/{n}.png"),
             SaveTo::RiotCache(s, f) => format!("cache/riot/{s}/{f}.json"),
+            SaveTo::RiotItems => "cache/riot/items.json".into(),
+            SaveTo::RiotChampions => "cache/riot/champions.json".into(),
+            SaveTo::RiotItemsDir => "cache/riot/items".into(),
+            SaveTo::RiotChampionsDir => "cache/riot/champions".into(),
+            SaveTo::RiotRunes => "cache/riot/runes.json".into(),
+            SaveTo::RiotLangDir(s) => format!("cache/riot/champions_lang/{s}.json"),
+            SaveTo::RiotRawChampions(s) => format!("cache/riot/raw_champions/{s:?}.json"),
             SaveTo::MerakiCache(s, f) => format!("cache/meraki/{s}/{f}.json"),
-            SaveTo::RiotDir(s) => format!("cache/riot/{s}.json"),
-            SaveTo::MerakiDir(s) => format!("cache/items/{s}.json"),
+            SaveTo::MerakiItems => "cache/meraki/items.json".into(),
+            SaveTo::MerakiChampions => "cache/meraki/champions.json".into(),
+            SaveTo::ScraperBuilds(position, s) => {
+                format!("cache/scraper/builds/{position:?}/{s:?}.html")
+            }
+            SaveTo::ScraperCombos(s) => format!("cache/scraper/combos/{s:?}.html"),
+            SaveTo::Internal(tag, s) => format!("internal/{tag}/{s}.json"),
+            SaveTo::InternalScraperBuilds(position, s) => {
+                format!("internal/scraper/builds/{position:?}/{s}.json")
+            }
+            SaveTo::InternalScraperCombos(champion_id) => {
+                format!("internal/scraper/combos/{champion_id:?}.json")
+            }
+            SaveTo::InternalScraperData => "internal/scraper/data.json".into(),
+            SaveTo::InternalChampionLanguages => "internal/champion_languages.json".into(),
+            SaveTo::InternalDamagingItems => "internal/damaging_items.json".into(),
+            SaveTo::InternalLanguages => "internal/languages.json".into(),
+            SaveTo::InternalMaps => "internal/maps.json".into(),
+            SaveTo::InternalRuneNames => "internal/rune_names.json".into(),
+            SaveTo::InternalRunes => "internal/runes.json".into(),
         }
     }
 }
@@ -176,56 +205,133 @@ impl HttpClient {
         }
     }
 
-    /// Creates the base url of the Data Dragon API, using the environment variables
-    pub fn ddragon_url() -> String {
-        format!(
-            "{}/cdn/{}",
-            ENV_CONFIG.dd_dragon_endpoint, ENV_CONFIG.lol_version
-        )
+    async fn parallel_task<T, F, Fut>(&self, limit: usize, dir: SaveTo<'_>, f: F) -> MayFail
+    where
+        T: DeserializeOwned,
+        F: FnOnce(Self, String, T) -> Fut + 'static + Copy + Send + Sync,
+        Fut: Future<Output = MayFail> + Send,
+    {
+        let entries = std::fs::read_dir(dir.path())?.filter_map(Result::ok);
+        let (lower, upper) = entries.size_hint();
+        let mut futures = Vec::with_capacity(upper.unwrap_or(lower));
+        let semaphore = Arc::new(Semaphore::new(limit));
+
+        for entry in entries {
+            let semaphore = semaphore.clone();
+            let client = self.clone();
+            let task = tokio::task::spawn(async move {
+                let _permit = semaphore.acquire().await.unwrap();
+                if let Err(e) = async || -> MayFail {
+                    let path = entry.path();
+                    let name = path.file_stem().ok_or("Can't recover system file name")?;
+                    let enumv = name.to_string_lossy();
+                    let bytes = tokio::fs::read(&path).await?;
+                    let value = serde_json::from_slice::<T>(&bytes)?;
+                    f(client, enumv.into(), value).await
+                }()
+                .await
+                {
+                    println!("[error] Joining parallel future: {e:?}");
+                }
+            });
+            futures.push(task);
+        }
+
+        for future in futures {
+            if let Err(e) = future.await {
+                println!("Failed to join future: {e:?}")
+            }
+        }
+
+        Ok(())
     }
 
     /// Downloads the images of champions, their abilities and passives.
     /// Skips images that have already been downloaded
     pub async fn download_general_img(&self) -> MayFail {
-        let riot_champions = RiotCdnChampion::from_dir("cache/riot/champions")?;
+        println!("Called fn [download_general_img]");
+        self.parallel_task(
+            4,
+            SaveTo::RiotChampionsDir,
+            async move |client, fname, champion: RiotCdnChampion| {
+                let name = fname.as_str();
+                let champion_id = ChampionId::try_from(name)
+                    .or(serde_json::from_str(name))
+                    .map_err(|e| {
+                        format!("Failed to convert {name} to ChampionId enum, e: {e:?}")
+                    })?;
 
-        for (champion_id, champion) in riot_champions {
-            let mut futures = Vec::new();
+                client
+                    .download(
+                        DDragon::Champion(&champion.image.full).url(),
+                        SaveTo::ImgChampion(champion_id).path(),
+                    )
+                    .await?;
 
-            let _ = self
-                .download(
-                    DDragon::Champion(&champion.image.full).url(),
-                    SaveTo::Champion(&champion_id).path(),
-                )
-                .await;
+                client
+                    .download(
+                        DDragon::Passive(&champion.passive.image.full).url(),
+                        SaveTo::ImgAbility(champion_id, 'P').path(),
+                    )
+                    .await?;
 
-            let _ = self
-                .download(
-                    DDragon::Passive(&champion.passive.image.full).url(),
-                    SaveTo::Ability(&champion_id, 'P').path(),
-                )
-                .await;
-
-            for (index, spell) in champion.spells.into_iter().enumerate() {
-                let champion_id = champion_id.clone();
-                let client = self.clone();
-                futures.push(tokio::spawn(async move {
-                    let _ = client
+                for (index, spell) in champion.spells.into_iter().enumerate() {
+                    client
                         .download(
                             DDragon::Spell(&spell.image.full).url(),
-                            SaveTo::Ability(&champion_id, ['Q', 'W', 'E', 'R'][index]).path(),
+                            SaveTo::ImgAbility(champion_id, ['Q', 'W', 'E', 'R'][index]).path(),
                         )
-                        .await;
-                }));
-            }
+                        .await?;
+                }
 
-            for future in futures {
-                if let Err(e) = future.await {
-                    println!("[error] requesting {champion_id} images: {e}");
-                };
-            }
-        }
-        Ok(())
+                Ok(())
+            },
+        )
+        .await
+
+        // let riot_champions = RiotCdnChampion::from_dir("cache/riot/champions")?;
+
+        // for (champion_id, champion) in riot_champions {
+        //     let champion_id = ChampionId::try_from(champion_id.as_str()).map_err(|e| {
+        //         println!("Failed to convert {champion_id} to ChampionId enum, e: {e:?}");
+        //         e
+        //     })?;
+        //     let mut futures = Vec::new();
+
+        //     let _ = self
+        //         .download(
+        //             DDragon::Champion(&champion.image.full).url(),
+        //             SaveTo::ImgChampion(champion_id).path(),
+        //         )
+        //         .await;
+
+        //     let _ = self
+        //         .download(
+        //             DDragon::Passive(&champion.passive.image.full).url(),
+        //             SaveTo::ImgAbility(champion_id, 'P').path(),
+        //         )
+        //         .await;
+
+        //     for (index, spell) in champion.spells.into_iter().enumerate() {
+        //         let champion_id = champion_id.clone();
+        //         let client = self.clone();
+        //         futures.push(tokio::spawn(async move {
+        //             let _ = client
+        //                 .download(
+        //                     DDragon::Spell(&spell.image.full).url(),
+        //                     SaveTo::ImgAbility(champion_id, ['Q', 'W', 'E', 'R'][index]).path(),
+        //                 )
+        //                 .await;
+        //         }));
+        //     }
+
+        //     for future in futures {
+        //         if let Err(e) = future.await {
+        //             println!("[error] requesting {champion_id:?} images: {e}");
+        //         };
+        //     }
+        // }
+        // Ok(())
     }
 
     /// Downloads the images of all items in the cached data. Skips the ones
@@ -238,7 +344,10 @@ impl HttpClient {
             let client = self.clone();
             futures.push(tokio::spawn(async move {
                 let _ = client
-                    .download(DDragon::Item(&item_id).url(), SaveTo::Item(&item_id).path())
+                    .download(
+                        DDragon::Item(&item_id).url(),
+                        SaveTo::ImgItem(&item_id).path(),
+                    )
                     .await;
             }));
         }
@@ -254,21 +363,22 @@ impl HttpClient {
     /// every skin available in the current patch. Skips the ones that emit an error
     pub async fn download_arts_img(&self) -> MayFail {
         let riot_champions = RiotCdnChampion::from_dir("cache/riot/champions")?;
-        for (champion_id, champion) in riot_champions {
+        for (champion_id_str, champion) in riot_champions {
             let mut futures = Vec::new();
             for skin in champion.skins.into_iter() {
-                let champion_id = champion_id.clone();
+                let champion_id_str = champion_id_str.clone();
+                let champion_id = champion_id_str.as_str().try_into()?;
                 let client = self.clone();
                 futures.push(tokio::spawn(async move {
                     for i in [false, true] {
                         let (url, save_to) = match i {
                             false => (
-                                DDragon::Splash(&champion_id, skin.num).url(),
-                                SaveTo::Splash(&champion_id, skin.num).path(),
+                                DDragon::Splash(&champion_id_str, skin.num).url(),
+                                SaveTo::ImgSplash(champion_id, skin.num).path(),
                             ),
                             true => (
-                                DDragon::Centered(&champion_id, skin.num).url(),
-                                SaveTo::Centered(&champion_id, skin.num).path(),
+                                DDragon::Centered(&champion_id_str, skin.num).url(),
+                                SaveTo::ImgCentered(champion_id, skin.num).path(),
                             ),
                         };
                         let _ = client.download(url, save_to).await;
@@ -277,7 +387,7 @@ impl HttpClient {
             }
             for future in futures {
                 if let Err(e) = future.await {
-                    println!("[error] requesting {champion_id} images: {e}");
+                    println!("[error] requesting {champion_id_str} images: {e}");
                 }
             }
         }
@@ -299,7 +409,7 @@ impl HttpClient {
         }
         for (rune_id, rune_icon) in icon_map {
             let url = DDragon::Rune(&rune_icon).url();
-            let save_to = SaveTo::Runes(rune_id).path();
+            let save_to = SaveTo::ImgRunes(rune_id).path();
             let client = self.clone();
             futures.push(tokio::spawn(async move {
                 let _ = client.download(url, save_to).await;
@@ -328,7 +438,11 @@ impl HttpClient {
     /// Creates the riot endpoint using the environment variables.
     /// This is mainly used to download champion json files
     pub fn riot_endpoint(endpoint: &str, language: &str) -> String {
-        format!("{}/data/{language}/{endpoint}.json", Self::ddragon_url())
+        let path = format_args!(
+            "{}/cdn/{}",
+            ENV_CONFIG.dd_dragon_endpoint, ENV_CONFIG.lol_version
+        );
+        format!("{path}/data/{language}/{endpoint}.json")
     }
 
     /// Fetches League of Legends current version and updates it directly
@@ -361,7 +475,7 @@ impl HttpClient {
     pub async fn update_riot_cache(&self) -> MayFail {
         self.download(
             Self::riot_endpoint("champion", &ENV_CONFIG.lol_language),
-            SaveTo::RiotDir(Tag::Champions).path(),
+            SaveTo::RiotChampions.path(),
         )
         .await?;
 
@@ -370,7 +484,7 @@ impl HttpClient {
         let champion_ids = champions_json
             .data
             .keys()
-            .map(|k| k.to_string())
+            .map(ToString::to_string)
             .collect::<Vec<String>>();
 
         let mut champions_futures = Vec::<JoinHandle<_>>::new();

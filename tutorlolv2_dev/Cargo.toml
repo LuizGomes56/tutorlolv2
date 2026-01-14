@@ -15,4 +15,4 @@ regex = "1.11.2"
 pastey = "0.2.1"
 reqwest = { version = "0.12.1", features = ["json"] }
 rayon = "1.11.0"
-tokio = { version = "1.49.0", default-features = false }
+tokio = { version = "1.49.0", default-features = false, features = ["fs"] }

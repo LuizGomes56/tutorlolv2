@@ -396,7 +396,7 @@ impl ChampionData {
     /// Searchs through the whole [`MerakiAbility`] struct and returns metadata
     /// about the offsets in such vector that likely contain a damaging ability
     pub fn get_ability_offsets(abilities: Vec<MerakiAbility>) -> Vec<MerakiOffset> {
-        let mut macro_offsets = Vec::<MerakiOffset>::new();
+        let mut fn_args = Vec::<MerakiOffset>::new();
         let mut bindings = 1;
 
         for ability in abilities.into_iter() {
@@ -423,13 +423,13 @@ impl ChampionData {
                             serde_json::from_str::<AbilityName>(&enum_match).unwrap()
                         },
                     };
-                    macro_offsets.push(offset);
+                    fn_args.push(offset);
                     bindings += 1;
                 }
             }
         }
 
-        macro_offsets
+        fn_args
     }
 
     /// Receives a slice of [`Modifiers`] and returns a [`Vec<String>`] containing

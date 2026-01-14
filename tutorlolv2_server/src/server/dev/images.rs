@@ -6,8 +6,8 @@ macro_rules! download_image {
         HttpResponse::Ok().body($msg)
     }};
     ($call:ident) => {{
-        let _ = HTTP_CLIENT.$call().await;
-        download_image!(@inner format!("Executed fn[{}]", stringify!($call)))
+        HTTP_CLIENT.$call().await.unwrap();
+        download_image!(@inner format!("Executed download fn[{}]", stringify!($call)))
     }};
 }
 
@@ -47,34 +47,40 @@ pub async fn download_all() -> impl Responder {
     download_image!(@inner "Started process")
 }
 
-pub async fn convert_folder(source: &str, folder: &str) -> Result<(), Box<dyn std::error::Error>> {
-    match tutorlolv2_avif::convert_folder_avif(&format!("{source}/{folder}")).await {
-        Ok(_) => println!("Convertion of '{folder}' finished"),
-        Err(e) => eprintln!("Error converting '{folder}': {e:#?}"),
+#[cfg(feature = "avif")]
+pub mod avif {
+    pub async fn convert_folder(
+        source: &str,
+        folder: &str,
+    ) -> Result<(), Box<dyn std::error::Error>> {
+        match tutorlolv2_avif::convert_folder_avif(&format!("{source}/{folder}")).await {
+            Ok(_) => println!("Convertion of '{folder}' finished"),
+            Err(e) => eprintln!("Error converting '{folder}': {e:#?}"),
+        }
+        Ok(())
     }
-    Ok(())
-}
 
-pub const IMG_FOLDERS: [&str; 8] = [
-    "abilities",
-    "centered",
-    "champions",
-    "items",
-    "other",
-    "runes",
-    "splash",
-    "stats",
-];
+    pub const IMG_FOLDERS: [&str; 8] = [
+        "abilities",
+        "centered",
+        "champions",
+        "items",
+        "other",
+        "runes",
+        "splash",
+        "stats",
+    ];
 
-pub async fn img_convert_avif<const N: usize>(folders: [&'static str; N]) {
-    for folder in folders {
-        println!("Converting folder: {folder}");
-        let _ = convert_folder("raw_img", folder).await;
+    pub async fn img_convert_avif<const N: usize>(folders: [&'static str; N]) {
+        for folder in folders {
+            println!("Converting folder: {folder}");
+            let _ = convert_folder("raw_img", folder).await;
+        }
     }
-}
 
-#[get("/compress")]
-pub async fn compress_images() -> impl Responder {
-    img_convert_avif(IMG_FOLDERS).await;
-    HttpResponse::Ok().body("Executed fn[compress_images]")
+    #[get("/compress")]
+    pub async fn compress_images() -> impl Responder {
+        img_convert_avif(IMG_FOLDERS).await;
+        HttpResponse::Ok().body("Executed fn[compress_images]")
+    }
 }
