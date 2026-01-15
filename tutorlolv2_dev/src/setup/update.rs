@@ -1,5 +1,6 @@
 use crate::{
     JsonRead, JsonWrite, MayFail,
+    client::{SaveTo, Tag},
     model::{
         items::{Item, MerakiItem},
         riot::RiotCdnItem,
@@ -16,6 +17,7 @@ use std::{
     path::Path,
     sync::{Arc, Mutex},
 };
+use tutorlolv2_fmt::pascal_case;
 use tutorlolv2_gen::{Attrs, DamageType, GameMap, ItemId, StatName};
 
 /// Creates basic folders necessary to run the program. If one of these folders are not found,
@@ -89,82 +91,41 @@ pub fn setup_project_folders() -> MayFail {
 /// Replaces the content found in the files to a shorter and adapted version,
 /// initializes items as default, and Damaging stats must be added separately.
 pub fn setup_internal_items() -> MayFail {
-    let meraki_items = MerakiItem::from_dir("cache/meraki/items")?;
-    let mut riot_items = RiotCdnItem::from_dir("cache/riot/items")?;
+    parallel_read(
+        SaveTo::RiotItemsDir.path(),
+        move |fname, riot_cdn_item: RiotCdnItem| {
+            let meraki_item =
+                MerakiItem::from_file(SaveTo::MerakiCache(Tag::Items, &fname).path()).ok();
+            let riot_id = fname.parse()?;
 
-    println!("[ok] Found {} riot items", riot_items.len());
-    println!("[ok] Found {} meraki items", meraki_items.len());
+            let (stats, tier, builds_from_riot_ids, builds_into_riot_ids) = meraki_item
+                .and_then(|item| Some((item.stats, item.tier, item.builds_from, item.builds_into)))
+                .unwrap_or_default();
 
-    struct ItemCache {
-        meraki_item: MerakiItem,
-        riot_item: RiotCdnItem,
-    }
+            let name = riot_cdn_item.name;
+            let file_name = pascal_case(&name);
 
-    let common_items = meraki_items
-        .into_iter()
-        .filter_map(|(riot_id, meraki_item)| {
-            riot_items.remove(&riot_id).map(|riot_item| ItemCache {
-                meraki_item,
-                riot_item,
-            })
-        })
-        .collect::<Vec<_>>();
+            let result = Item {
+                maps: riot_cdn_item
+                    .maps
+                    .into_iter()
+                    .map(|(map_id, is_available)| (GameMap::from_u8(map_id), is_available))
+                    .collect(),
+                sell: riot_cdn_item.gold.sell,
+                purchasable: riot_cdn_item.gold.purchasable,
+                price: riot_cdn_item.gold.total,
+                riot_id,
+                name,
+                stats,
+                tier,
+                builds_from_riot_ids,
+                builds_into_riot_ids,
+                ..Default::default()
+            };
 
-    println!("Found {} common items", common_items.len());
-
-    if common_items.is_empty() {
-        panic!("No common items found");
-    }
-
-    common_items.into_par_iter().for_each(|item| {
-        let id = item.meraki_item.id;
-        let Some(item_id) = ItemId::from_riot_id(id) else {
-            return println!("[fail] ItemId::from_riot_id({id})");
-        };
-
-        let ItemCache {
-            meraki_item,
-            riot_item,
-        } = item;
-
-        let result = Item {
-            item_id,
-            maps: riot_item
-                .maps
-                .into_iter()
-                .map(|(map_id, is_available)| (GameMap::from_u8(map_id), is_available))
-                .collect(),
-            sell: riot_item.gold.sell,
-            riot_id: item_id.to_riot_id(),
-            builds_from_item_ids: meraki_item
-                .builds_from
-                .iter()
-                .filter_map(|v| ItemId::from_riot_id(*v))
-                .collect(),
-            builds_from_riot_ids: meraki_item.builds_from,
-            builds_into_item_ids: meraki_item
-                .builds_into
-                .iter()
-                .filter_map(|v| ItemId::from_riot_id(*v))
-                .collect(),
-            builds_into_riot_ids: meraki_item.builds_into,
-            prettified_stats: Vec::new(),
-            name: meraki_item.name,
-            price: meraki_item.shop.prices.total,
-            damage_type: DamageType::Unknown,
-            attributes: Attrs::Undefined,
-            stats: meraki_item.stats,
-            tier: meraki_item.tier,
-            ranged: Default::default(),
-            melee: Default::default(),
-            purchasable: meraki_item.shop.purchasable && riot_item.gold.purchasable,
-        };
-        result
-            .into_file(format!("internal/items/{item_id:?}.json"))
-            .unwrap();
-    });
-
-    Ok(())
+            result.into_file(SaveTo::Internal(Tag::Items, &file_name).path())
+        },
+    )
 }
 
 /// Reads the cached runes json extracted from Riot's API and generates a new file containing

@@ -1,10 +1,15 @@
 use crate::{
     JsonRead, JsonWrite, MayFail,
+    client::{SaveTo, Tag},
     gen_utils::RegExtractor,
     generators::{Generator, gen_decl::decl_items::*},
     items::{Effect, Item, MerakiItem},
+    parallel_read,
     riot::RiotCdnItem,
 };
+use rayon::iter::{IntoParallelIterator, ParallelIterator};
+use serde_json::Value;
+use tutorlolv2_fmt::to_ssnake;
 use tutorlolv2_gen::{Attrs, DamageType, ItemId};
 
 pub struct ItemData {
@@ -97,6 +102,8 @@ impl ItemData {
 
 pub struct ItemFactory;
 
+pub const GENERATOR_FOLDER: &str = "tutorlolv2_dev/src/generators/gen_items";
+
 impl ItemFactory {
     pub const GENERATOR_FUNCTIONS: [fn(ItemData) -> Box<dyn Generator<ItemData>>;
         ItemId::VARIANTS] = tutorlolv2_macros::expand_dir!("../internal/items", |[Name]| Name::new);
@@ -121,5 +128,67 @@ impl ItemFactory {
         let function = Self::GENERATOR_FUNCTIONS[item_id as usize];
         let generator = function(ItemData::new(meraki_data, riot_data, current_data));
         Ok(generator.generate()?)
+    }
+
+    pub fn create_from_raw(entity_id: &str) -> MayFail<String> {
+        let file_name = entity_id.to_lowercase();
+        let path = format!("{GENERATOR_FOLDER}/{file_name}.rs");
+
+        if let Ok(data) = std::fs::read_to_string(&path) {
+            if data.contains("#![stable]") || data.contains("#![preserve]") {
+                return Ok(data);
+            }
+        }
+
+        Ok(format!(
+            "use super::*;
+
+            impl Generator<ItemData> for {entity_id} {{
+                fn generate(self: Box<Self>) -> MayFail<ItemData> {{
+                    /* No implementation */
+                    self.end()
+                }}
+            }}"
+        ))
+    }
+
+    pub fn create(item_id: ItemId) -> MayFail<String> {
+        Self::create_from_raw(&format!("{item_id:?}"))
+    }
+
+    pub fn create_all_raw() -> MayFail {
+        parallel_read(SaveTo::InternalDir(Tag::Items).path(), |name, _: Value| {
+            let entity_id = to_ssnake(name).to_lowercase();
+            match Self::create_from_raw(&entity_id) {
+                Ok(data) => Ok(std::fs::write(
+                    format!("{GENERATOR_FOLDER}/{entity_id}.rs"),
+                    data,
+                )?),
+                Err(e) => Err(format!(
+                    "Error trying to create generator file for entity ItemId::{name:?}, {e:?}"
+                )
+                .into()),
+            }
+        })
+    }
+
+    pub fn create_all() -> MayFail {
+        if !std::fs::exists(GENERATOR_FOLDER)? {
+            std::fs::create_dir(GENERATOR_FOLDER)?;
+        }
+
+        ItemId::ARRAY.into_par_iter().for_each(|champion_id| {
+            let Ok(data) = Self::create(champion_id) else {
+                return println!("Unable to create generator file for {champion_id:?}");
+            };
+            let file_name = format!("{champion_id:?}").to_lowercase();
+            std::fs::write(
+                format!("{GENERATOR_FOLDER}/{file_name}.rs"),
+                data.as_bytes(),
+            )
+            .unwrap();
+        });
+
+        Ok(())
     }
 }

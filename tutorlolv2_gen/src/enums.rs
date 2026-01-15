@@ -60,10 +60,11 @@ const_enum! {
     /// instance damages onhit only for the `maximum`, `minimum` or both damage kinds.
     /// [`Attrs::Undefined`] is set to be the default variant, representing no extra data. This
     /// is also used to determine if some ability has area damage
-    #[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
+    #[derive(Clone, Copy, Debug, Default, Eq, Ord, PartialEq, PartialOrd)]
     #[derive(bincode::Encode, bincode::Decode)]
     #[derive(serde::Serialize, serde::Deserialize)]
     pub enum Attrs {
+        #[default]
         Undefined,
         Onhit,
         OnhitMin,

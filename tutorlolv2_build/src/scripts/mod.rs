@@ -75,63 +75,7 @@ pub trait StringExt: AsRef<str> {
     }
 
     fn to_ssnake(&self) -> String {
-        fn is_boundary(c: char) -> bool {
-            c.is_ascii_whitespace() || (c.is_ascii_punctuation() && c != '\'')
-        }
-        fn is_ignorable(c: char) -> bool {
-            c == '\''
-        }
-        let value = self.as_ref();
-        let mut out = String::with_capacity(value.len() * 2);
-        let mut chars = value.chars().peekable();
-        let mut prev_was_alpha = false;
-        let mut prev_was_upper = false;
-        let mut prev_was_digit = false;
-        while let Some(c) = chars.next() {
-            if is_ignorable(c) {
-                continue;
-            }
-            if is_boundary(c) {
-                if !out.is_empty() && !out.ends_with('_') {
-                    out.push('_');
-                }
-                prev_was_alpha = false;
-                prev_was_upper = false;
-                prev_was_digit = false;
-                continue;
-            }
-            let is_upper = c.is_ascii_uppercase();
-            let is_alpha = c.is_ascii_alphabetic();
-            let is_digit = c.is_ascii_digit();
-            let next_is_lower = chars
-                .peek()
-                .map(|n| n.is_ascii_lowercase())
-                .unwrap_or(false);
-            let need_us = if out.is_empty() || out.ends_with('_') {
-                false
-            } else if is_upper {
-                (prev_was_alpha && !prev_was_upper)
-                    || prev_was_digit
-                    || (prev_was_upper && next_is_lower)
-            } else if is_alpha {
-                prev_was_digit
-            } else if is_digit {
-                prev_was_alpha
-            } else {
-                false
-            };
-            if need_us && !out.ends_with('_') {
-                out.push('_');
-            }
-            out.push(c.to_ascii_uppercase());
-            prev_was_alpha = is_alpha;
-            prev_was_upper = is_upper;
-            prev_was_digit = is_digit;
-        }
-        if out.ends_with('_') {
-            out.pop();
-        }
-        out
+        tutorlolv2_fmt::to_ssnake(self.as_ref())
     }
 
     fn pascal_case(&self) -> String {

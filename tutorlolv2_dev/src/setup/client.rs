@@ -25,7 +25,7 @@ use tokio::{sync::Semaphore, task::JoinHandle};
 use tutorlolv2_fmt::pascal_case;
 use tutorlolv2_gen::{ChampionId, Position};
 
-enum SaveTo<'a> {
+pub enum SaveTo<'a> {
     ImgChampion(ChampionId),
     ImgAbility(ChampionId, char),
     ImgItem(&'a str),
@@ -37,15 +37,16 @@ enum SaveTo<'a> {
     MerakiItems,
     RiotChampions,
     RiotItems,
+    RiotItemsDir,
+    RiotChampionsDir,
     RiotRunes,
     RiotLangDir(&'a str),
     RiotRawChampions(&'a str),
     RiotCache(Tag, &'a str),
-    RiotItemsDir,
-    RiotChampionsDir,
     ScraperBuilds(Position, ChampionId),
     ScraperCombos(ChampionId),
     Internal(Tag, &'a str),
+    InternalDir(Tag),
     InternalScraperBuilds(Position, &'a str),
     InternalScraperCombos(ChampionId),
     InternalScraperData,
@@ -57,7 +58,7 @@ enum SaveTo<'a> {
     InternalRunes,
 }
 
-enum Tag {
+pub enum Tag {
     Items,
     Champions,
     Runes,
@@ -99,6 +100,7 @@ impl<'a> SaveTo<'a> {
             }
             SaveTo::ScraperCombos(s) => format!("cache/scraper/combos/{s:?}.html"),
             SaveTo::Internal(tag, s) => format!("internal/{tag}/{s}.json"),
+            SaveTo::InternalDir(tag) => format!("internal/{tag}"),
             SaveTo::InternalScraperBuilds(position, s) => {
                 format!("internal/scraper/builds/{position:?}/{s}.json")
             }
@@ -116,7 +118,7 @@ impl<'a> SaveTo<'a> {
     }
 }
 
-enum DDragon<'a> {
+pub enum DDragon<'a> {
     Champion(&'a str),
     Passive(&'a str),
     Spell(&'a str),
@@ -256,7 +258,7 @@ impl HttpClient {
             async move |client, fname, champion: RiotCdnChampion| {
                 let name = fname.as_str();
                 let champion_id = ChampionId::try_from(name)
-                    .or(serde_json::from_str(name))
+                    .or(serde_json::from_str(&format!("{name:?}")))
                     .map_err(|e| {
                         format!("Failed to convert {name} to ChampionId enum, e: {e:?}")
                     })?;
