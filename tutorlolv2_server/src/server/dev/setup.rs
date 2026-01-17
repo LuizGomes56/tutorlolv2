@@ -1,6 +1,6 @@
 use crate::dev_response;
 #[cfg(feature = "avif")]
-use crate::server::dev::images::{IMG_FOLDERS, img_convert_avif};
+use crate::server::dev::images::avif::{IMG_FOLDERS, img_convert_avif};
 use actix_web::{HttpResponse, Responder, get};
 use tokio::spawn;
 use tutorlolv2_dev::{

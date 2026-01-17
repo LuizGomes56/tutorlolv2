@@ -15,6 +15,6 @@ fn run_items_generator() {
 
 #[test]
 fn update_items() {
-    run_items_generator();
+    run_setup_items();
     run_generate_items();
 }

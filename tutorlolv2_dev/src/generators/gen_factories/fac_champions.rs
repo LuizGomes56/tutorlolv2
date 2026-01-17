@@ -10,7 +10,7 @@ use crate::{
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
 use regex::Regex;
 use std::collections::{BTreeMap, BTreeSet, HashMap};
-use tutorlolv2_fmt::rustfmt;
+use tutorlolv2_fmt::{rustfmt, to_ssnake};
 use tutorlolv2_gen::{
     AbilityId, AbilityName, Attrs, ChampionId, DamageType, DevMergeData, Position,
 };
@@ -45,7 +45,7 @@ impl ChampionFactory {
     /// cache file is read to generate the new file with fairly accurate offsets
     /// and good function bindings
     pub fn create_from_raw(entity_id: &str) -> MayFail<String> {
-        let file_name = entity_id.to_lowercase();
+        let file_name = to_ssnake(entity_id).to_lowercase();
         let path = format!("{GENERATOR_FOLDER}/{file_name}.rs");
 
         let bind_function = |ability_char: char, meraki_offsets: &[MerakiOffset]| -> String {

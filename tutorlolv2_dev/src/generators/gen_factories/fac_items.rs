@@ -9,7 +9,7 @@ use crate::{
 };
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
 use serde_json::Value;
-use tutorlolv2_fmt::to_ssnake;
+use tutorlolv2_fmt::{pascal_case, rustfmt, to_ssnake};
 use tutorlolv2_gen::{Attrs, DamageType, ItemId};
 
 pub struct ItemData {
@@ -110,11 +110,13 @@ impl ItemFactory {
 
     /// Runs all item generators, stopping the execution if one of them fails
     pub fn run_all() -> MayFail {
-        for item_id in ItemId::ARRAY {
-            Self::run(item_id)?
+        ItemId::ARRAY.into_par_iter().for_each(|item_id| {
+            Self::run(item_id)
+                .unwrap()
                 .current_data
-                .into_file(format!("internal/items/{item_id:?}.json"))?;
-        }
+                .into_file(format!("internal/items/{item_id:?}.json"))
+                .unwrap();
+        });
         Ok(())
     }
 
@@ -131,7 +133,7 @@ impl ItemFactory {
     }
 
     pub fn create_from_raw(entity_id: &str) -> MayFail<String> {
-        let file_name = entity_id.to_lowercase();
+        let file_name = to_ssnake(entity_id).to_lowercase();
         let path = format!("{GENERATOR_FOLDER}/{file_name}.rs");
 
         if let Ok(data) = std::fs::read_to_string(&path) {
@@ -140,16 +142,24 @@ impl ItemFactory {
             }
         }
 
-        Ok(format!(
+        let struct_id = pascal_case(entity_id);
+
+        let generated_content = format!(
             "use super::*;
 
-            impl Generator<ItemData> for {entity_id} {{
+            impl Generator<ItemData> for {struct_id} {{
                 fn generate(self: Box<Self>) -> MayFail<ItemData> {{
                     /* No implementation */
                     self.end()
                 }}
             }}"
-        ))
+        );
+
+        let formatted = rustfmt(&generated_content);
+        Ok(match formatted.is_empty() {
+            true => generated_content,
+            false => formatted,
+        })
     }
 
     pub fn create(item_id: ItemId) -> MayFail<String> {

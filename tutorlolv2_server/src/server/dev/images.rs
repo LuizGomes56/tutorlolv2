@@ -49,6 +49,8 @@ pub async fn download_all() -> impl Responder {
 
 #[cfg(feature = "avif")]
 pub mod avif {
+    use super::*;
+
     pub async fn convert_folder(
         source: &str,
         folder: &str,

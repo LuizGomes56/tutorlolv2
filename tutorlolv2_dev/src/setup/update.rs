@@ -102,7 +102,15 @@ pub fn setup_internal_items() -> MayFail {
                 .and_then(|item| Some((item.stats, item.tier, item.builds_from, item.builds_into)))
                 .unwrap_or_default();
 
-            let name = riot_cdn_item.name;
+            let name = {
+                let rname = riot_cdn_item.name;
+                if rname.is_empty() || rname.starts_with("<") {
+                    format!("Unknown_{riot_id}")
+                } else {
+                    rname
+                }
+            };
+
             let file_name = pascal_case(&name);
 
             let result = Item {
