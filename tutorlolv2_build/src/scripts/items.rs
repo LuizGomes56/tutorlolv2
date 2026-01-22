@@ -1,10 +1,10 @@
 use crate::{
-    parallel_task, push_end,
+    CwdPath, EVAL_FEAT, GLOB_FEAT, Generated, GeneratorFn, SrcFolder, Tracker, parallel_task,
+    push_end,
     scripts::{
-        model::{Item, ItemStats, MerakiItemStatMap},
         StringExt,
+        model::{Item, ItemStats, MerakiItemStatMap},
     },
-    CwdPath, Generated, GeneratorFn, SrcFolder, Tracker, EVAL_FEAT, GLOB_FEAT,
 };
 use std::collections::{HashMap, HashSet};
 
@@ -341,7 +341,8 @@ pub fn generate_items() -> GeneratorFn {
                 {constfn_declaration}"
         );
 
-        let generator = CwdPath::get_generator(SrcFolder::Items, name_ssnake.to_lowercase())?;
+        let generator =
+            CwdPath::get_generator(SrcFolder::Items, name_pascal.to_ssnake().to_lowercase())?;
 
         let idents = constfn_declaration
             .get_idents()
@@ -370,19 +371,26 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
     let len = data.len();
     let mut item_declarations = String::new();
 
-    let [mut item_cache, mut item_id_to_name, mut item_formulas, mut item_generator, mut item_id_to_riot_id, mut item_idents, mut item_closures] =
-        std::array::from_fn(|i| {
-            let (name, vtype, feature) = [
-                ("ITEM_CACHE", "&CachedItem", EVAL_FEAT),
-                ("ITEM_ID_TO_NAME", "&str", GLOB_FEAT),
-                ("ITEM_FORMULAS", "Range<usize>", GLOB_FEAT),
-                ("ITEM_GENERATOR", "Range<usize>", GLOB_FEAT),
-                ("ITEM_ID_TO_RIOT_ID", "u32", GLOB_FEAT),
-                ("ITEM_IDENTS", "&[EvalIdent]", GLOB_FEAT),
-                ("ITEM_CLOSURES", "Range<usize>", GLOB_FEAT),
-            ][i];
-            format!("{feature} pub static {name}: [{vtype}; ItemId::VARIANTS] = [")
-        });
+    let [
+        mut item_cache,
+        mut item_id_to_name,
+        mut item_formulas,
+        mut item_generator,
+        mut item_id_to_riot_id,
+        mut item_idents,
+        mut item_closures,
+    ] = std::array::from_fn(|i| {
+        let (name, vtype, feature) = [
+            ("ITEM_CACHE", "&CachedItem", EVAL_FEAT),
+            ("ITEM_ID_TO_NAME", "&str", GLOB_FEAT),
+            ("ITEM_FORMULAS", "Range<usize>", GLOB_FEAT),
+            ("ITEM_GENERATOR", "Range<usize>", GLOB_FEAT),
+            ("ITEM_ID_TO_RIOT_ID", "u32", GLOB_FEAT),
+            ("ITEM_IDENTS", "&[EvalIdent]", GLOB_FEAT),
+            ("ITEM_CLOSURES", "Range<usize>", GLOB_FEAT),
+        ][i];
+        format!("{feature} pub static {name}: [{vtype}; ItemId::VARIANTS] = [")
+    });
 
     let mut block = String::new();
 
