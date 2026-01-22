@@ -1,21 +1,21 @@
 {
-  "riot_id": 221058,
+  "riot_id": 1058,
   "name": "Needlessly Large Rod",
-  "price": 500,
-  "sell": 0,
-  "tier": 0,
+  "price": 1200,
+  "sell": 840,
+  "tier": 1,
   "maps": [
     [
       "SummonersRift",
-      false
+      true
     ],
     [
       "Aram",
-      false
+      true
     ],
     [
       "NexusBlitz",
-      false
+      true
     ],
     [
       "Tft",
@@ -23,7 +23,7 @@
     ],
     [
       "Arena",
-      true
+      false
     ]
   ],
   "prettified_stats": [
@@ -35,7 +35,7 @@
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
-      "flat": 0.0,
+      "flat": 65.0,
       "percent": 0.0
     },
     "armor": {
@@ -92,7 +92,14 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_into_riot_ids": [],
+  "builds_into_riot_ids": [
+    3128,
+    3102,
+    3157,
+    4645,
+    4403,
+    3089
+  ],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"
@@ -102,5 +109,5 @@
     "maximum_damage": "zero"
   },
   "attributes": "Undefined",
-  "purchasable": false
+  "purchasable": true
 }

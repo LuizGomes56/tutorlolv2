@@ -1,17 +1,17 @@
 {
-  "riot_id": 222141,
+  "riot_id": 2141,
   "name": "Cappa Juice",
-  "price": 500,
-  "sell": 500,
-  "tier": 0,
+  "price": 300,
+  "sell": 300,
+  "tier": 1,
   "maps": [
     [
       "SummonersRift",
-      false
+      true
     ],
     [
       "Aram",
-      false
+      true
     ],
     [
       "NexusBlitz",
@@ -23,7 +23,7 @@
     ],
     [
       "Arena",
-      true
+      false
     ]
   ],
   "prettified_stats": [],

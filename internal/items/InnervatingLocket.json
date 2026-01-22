@@ -1,9 +1,9 @@
 {
-  "riot_id": 447104,
+  "riot_id": 4402,
   "name": "Innervating Locket",
-  "price": 1000,
-  "sell": 400,
-  "tier": 3,
+  "price": 2950,
+  "sell": 2065,
+  "tier": 0,
   "maps": [
     [
       "SummonersRift",
@@ -15,7 +15,7 @@
     ],
     [
       "NexusBlitz",
-      false
+      true
     ],
     [
       "Tft",
@@ -23,7 +23,7 @@
     ],
     [
       "Arena",
-      true
+      false
     ]
   ],
   "prettified_stats": [
@@ -43,7 +43,7 @@
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
-      "flat": 70.0,
+      "flat": 0.0,
       "percent": 0.0
     },
     "armor": {
@@ -75,7 +75,7 @@
       "percent": 0.0
     },
     "health": {
-      "flat": 200.0,
+      "flat": 0.0,
       "percent": 0.0
     },
     "lifesteal": {

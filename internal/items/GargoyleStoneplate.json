@@ -1,8 +1,8 @@
 {
-  "riot_id": 663193,
+  "riot_id": 3193,
   "name": "Gargoyle Stoneplate",
-  "price": 2500,
-  "sell": 1000,
+  "price": 3150,
+  "sell": 2205,
   "tier": 0,
   "maps": [
     [
@@ -114,5 +114,5 @@
     "maximum_damage": "zero"
   },
   "attributes": "Undefined",
-  "purchasable": true
+  "purchasable": false
 }

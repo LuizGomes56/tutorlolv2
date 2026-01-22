@@ -1,9 +1,9 @@
 {
-  "riot_id": 323040,
+  "riot_id": 3040,
   "name": "Seraph's Embrace",
   "price": 2900,
   "sell": 2030,
-  "tier": 0,
+  "tier": 4,
   "maps": [
     [
       "SummonersRift",
@@ -11,11 +11,11 @@
     ],
     [
       "Aram",
-      false
+      true
     ],
     [
       "NexusBlitz",
-      false
+      true
     ],
     [
       "Tft",
@@ -43,7 +43,7 @@
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
-      "flat": 0.0,
+      "flat": 70.0,
       "percent": 0.0
     },
     "armor": {
@@ -87,7 +87,7 @@
       "percent": 0.0
     },
     "mana": {
-      "flat": 0.0,
+      "flat": 1000.0,
       "percent": 0.0
     },
     "movespeed": {

@@ -1,9 +1,9 @@
 {
-  "riot_id": 323075,
+  "riot_id": 3075,
   "name": "Thornmail",
-  "price": 2650,
-  "sell": 1855,
-  "tier": 0,
+  "price": 2450,
+  "sell": 1715,
+  "tier": 3,
   "maps": [
     [
       "SummonersRift",
@@ -11,11 +11,11 @@
     ],
     [
       "Aram",
-      false
+      true
     ],
     [
       "NexusBlitz",
-      false
+      true
     ],
     [
       "Tft",
@@ -43,7 +43,7 @@
       "percent": 0.0
     },
     "armor": {
-      "flat": 0.0,
+      "flat": 75.0,
       "percent": 0.0
     },
     "armorPenetration": {
@@ -71,7 +71,7 @@
       "percent": 0.0
     },
     "health": {
-      "flat": 0.0,
+      "flat": 150.0,
       "percent": 0.0
     },
     "lifesteal": {
@@ -95,7 +95,11 @@
       "percent": 0.0
     }
   },
-  "builds_from_riot_ids": [],
+  "builds_from_riot_ids": [
+    3076,
+    1031,
+    1028
+  ],
   "builds_into_riot_ids": [],
   "ranged": {
     "minimum_damage": "zero",

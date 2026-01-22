@@ -1,21 +1,21 @@
 {
-  "riot_id": 667666,
+  "riot_id": 6676,
   "name": "The Collector",
   "price": 3000,
   "sell": 2100,
-  "tier": 0,
+  "tier": 3,
   "maps": [
     [
       "SummonersRift",
-      false
+      true
     ],
     [
       "Aram",
-      false
+      true
     ],
     [
       "NexusBlitz",
-      false
+      true
     ],
     [
       "Tft",
@@ -59,7 +59,7 @@
       "percent": 0.0
     },
     "attackDamage": {
-      "flat": 0.0,
+      "flat": 50.0,
       "percent": 0.0
     },
     "attackSpeed": {
@@ -68,7 +68,7 @@
     },
     "criticalStrikeChance": {
       "flat": 0.0,
-      "percent": 0.0
+      "percent": 25.0
     },
     "criticalStrikeDamage": {
       "flat": 0.0,
@@ -99,7 +99,11 @@
       "percent": 0.0
     }
   },
-  "builds_from_riot_ids": [],
+  "builds_from_riot_ids": [
+    1037,
+    3134,
+    1018
+  ],
   "builds_into_riot_ids": [],
   "ranged": {
     "minimum_damage": "zero",

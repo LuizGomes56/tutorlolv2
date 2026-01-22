@@ -1,8 +1,8 @@
 {
-  "riot_id": 664644,
+  "riot_id": 4644,
   "name": "Crown of the Shattered Queen",
-  "price": 2500,
-  "sell": 1000,
+  "price": 2865,
+  "sell": 2006,
   "tier": 0,
   "maps": [
     [
@@ -114,5 +114,5 @@
     "maximum_damage": "zero"
   },
   "attributes": "Undefined",
-  "purchasable": true
+  "purchasable": false
 }

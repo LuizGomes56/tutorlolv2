@@ -1,8 +1,8 @@
 {
-  "riot_id": 664403,
+  "riot_id": 4403,
   "name": "The Golden Spatula",
-  "price": 2500,
-  "sell": 1750,
+  "price": 7187,
+  "sell": 5031,
   "tier": 0,
   "maps": [
     [
@@ -15,7 +15,7 @@
     ],
     [
       "NexusBlitz",
-      false
+      true
     ],
     [
       "Tft",
@@ -146,5 +146,5 @@
     "maximum_damage": "zero"
   },
   "attributes": "Undefined",
-  "purchasable": false
+  "purchasable": true
 }

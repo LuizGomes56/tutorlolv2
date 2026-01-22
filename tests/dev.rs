@@ -1,4 +1,5 @@
 use tutorlolv2::ChampionId;
+use tutorlolv2_dev::gen_factories::{fac_champions::ChampionFactory, fac_items::ItemFactory};
 
 #[test]
 fn run_setup_items() {
@@ -8,27 +9,27 @@ fn run_setup_items() {
 
 #[test]
 fn run_generate_items() {
-    tutorlolv2_dev::gen_factories::fac_items::ItemFactory::create_all_raw().unwrap();
+    ItemFactory::create_all_raw().unwrap();
 }
 
 #[test]
 fn run_items_generator() {
-    tutorlolv2_dev::gen_factories::fac_items::ItemFactory::run_all().unwrap();
+    ItemFactory::run_all().unwrap();
 }
 
 #[test]
 fn run_generate_champions() {
-    tutorlolv2_dev::gen_factories::fac_champions::ChampionFactory::create_all().unwrap();
+    ChampionFactory::create_all().unwrap();
 }
 
 #[test]
 fn run_champions_generator() {
-    tutorlolv2_dev::gen_factories::fac_champions::ChampionFactory::run_all().unwrap();
+    ChampionFactory::run_all().unwrap();
 }
 
 #[test]
 fn run_ch_generator() {
-    tutorlolv2_dev::gen_factories::fac_champions::ChampionFactory::run(ChampionId::Akshan).unwrap();
+    ChampionFactory::run(ChampionId::Akshan).unwrap();
 }
 
 #[test]

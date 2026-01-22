@@ -176,24 +176,6 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_7"
-      },
-      {
-        "name": "Breath of Light",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "(0.6 * ctx.enemy_max_health) + ((3.1% ctx.aurelion_sol_stacks) + (0.3 * ctx.ap)",
-          "(0.7 * ctx.enemy_max_health) + ((3.1% ctx.aurelion_sol_stacks) + (0.3 * ctx.ap)",
-          "(0.8 * ctx.enemy_max_health) + ((3.1% ctx.aurelion_sol_stacks) + (0.3 * ctx.ap)",
-          "(0.9 * ctx.enemy_max_health) + ((3.1% ctx.aurelion_sol_stacks) + (0.3 * ctx.ap)",
-          "ctx.enemy_max_health + ((3.1% ctx.aurelion_sol_stacks) + (0.3 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "W",
         "name": "_1"
       },

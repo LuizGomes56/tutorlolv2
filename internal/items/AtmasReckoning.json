@@ -1,21 +1,21 @@
 {
-  "riot_id": 663039,
+  "riot_id": 3039,
   "name": "Atma's Reckoning",
-  "price": 2500,
-  "sell": 1250,
+  "price": 2900,
+  "sell": 2030,
   "tier": 0,
   "maps": [
     [
       "SummonersRift",
-      true
+      false
     ],
     [
       "Aram",
-      false
+      true
     ],
     [
       "NexusBlitz",
-      false
+      true
     ],
     [
       "Tft",

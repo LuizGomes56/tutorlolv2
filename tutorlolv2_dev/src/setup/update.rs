@@ -109,7 +109,7 @@ pub fn setup_internal_items() -> MayFail {
                 }
             };
 
-            let item = Item {
+            let mut item = Item {
                 maps: riot_cdn_item
                     .maps
                     .into_iter()
@@ -128,6 +128,15 @@ pub fn setup_internal_items() -> MayFail {
                 builds_into_riot_ids,
                 ..Default::default()
             };
+
+            match riot_id {
+                220000..230000 => item.name += " [Arena]",
+                320000..330000 => item.name += " [U-32]",
+                440000..450000 => item.name += " [U-44]",
+                660000..670000 => item.name += " [U-66]",
+                990000..1000000 => item.name += " [U-99]",
+                _ => {}
+            }
 
             let internal_fname = pascal_case(&item.name);
             let generator_fname = to_ssnake(&internal_fname).to_lowercase();

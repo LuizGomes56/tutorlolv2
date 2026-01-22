@@ -1,21 +1,21 @@
 {
-  "riot_id": 322526,
+  "riot_id": 2526,
   "name": "Whispering Circlet",
   "price": 2250,
   "sell": 1575,
-  "tier": 0,
+  "tier": 3,
   "maps": [
     [
       "SummonersRift",
-      true
+      false
     ],
     [
       "Aram",
-      false
+      true
     ],
     [
       "NexusBlitz",
-      false
+      true
     ],
     [
       "Tft",
@@ -79,7 +79,7 @@
       "percent": 0.0
     },
     "health": {
-      "flat": 0.0,
+      "flat": 200.0,
       "percent": 0.0
     },
     "lifesteal": {
@@ -91,7 +91,7 @@
       "percent": 0.0
     },
     "mana": {
-      "flat": 0.0,
+      "flat": 300.0,
       "percent": 0.0
     },
     "movespeed": {
@@ -103,8 +103,14 @@
       "percent": 0.0
     }
   },
-  "builds_from_riot_ids": [],
-  "builds_into_riot_ids": [],
+  "builds_from_riot_ids": [
+    3114,
+    1028,
+    3070
+  ],
+  "builds_into_riot_ids": [
+    2530
+  ],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

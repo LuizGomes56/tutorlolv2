@@ -1,9 +1,9 @@
 {
-  "riot_id": 222022,
+  "riot_id": 2022,
   "name": "Glowing Mote",
   "price": 250,
   "sell": 175,
-  "tier": 0,
+  "tier": 1,
   "maps": [
     [
       "SummonersRift",
@@ -11,11 +11,11 @@
     ],
     [
       "Aram",
-      false
+      true
     ],
     [
       "NexusBlitz",
-      false
+      true
     ],
     [
       "Tft",
@@ -92,7 +92,18 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_into_riot_ids": [],
+  "builds_into_riot_ids": [
+    3158,
+    3133,
+    2020,
+    3108,
+    6660,
+    3024,
+    3057,
+    3067,
+    3802,
+    4642
+  ],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"
@@ -102,5 +113,5 @@
     "maximum_damage": "zero"
   },
   "attributes": "Undefined",
-  "purchasable": false
+  "purchasable": true
 }
