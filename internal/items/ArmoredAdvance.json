@@ -6,10 +6,6 @@
   "tier": 3,
   "maps": [
     [
-      "Arena",
-      false
-    ],
-    [
       "SummonersRift",
       false
     ],
@@ -18,23 +14,28 @@
       false
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
       "NexusBlitz",
       false
     ],
     [
-      "SummonersRift",
-      true
+      "Tft",
+      false
     ],
     [
-      "Tft",
+      "Arena",
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "Armor",
+      "value": 35
+    },
+    {
+      "name": "MoveSpeed",
+      "value": 45
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

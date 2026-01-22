@@ -6,11 +6,15 @@
   "tier": 3,
   "maps": [
     [
-      "NexusBlitz",
+      "SummonersRift",
       true
     ],
     [
-      "SummonersRift",
+      "Aram",
+      true
+    ],
+    [
+      "NexusBlitz",
       true
     ],
     [
@@ -18,23 +22,24 @@
       false
     ],
     [
-      "Aram",
-      true
-    ],
-    [
       "Arena",
       false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AttackDamage",
+      "value": 40
+    },
+    {
+      "name": "AttackSpeed",
+      "value": 25
+    },
+    {
+      "name": "LifeSteal",
+      "value": 10
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

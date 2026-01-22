@@ -6,8 +6,8 @@
   "tier": 2,
   "maps": [
     [
-      "Arena",
-      false
+      "SummonersRift",
+      true
     ],
     [
       "Aram",
@@ -18,23 +18,24 @@
       true
     ],
     [
-      "SummonersRift",
+      "Tft",
       false
     ],
     [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Tft",
+      "Arena",
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AttackDamage",
+      "value": 15
+    },
+    {
+      "name": "MoveSpeed",
+      "value": 4
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

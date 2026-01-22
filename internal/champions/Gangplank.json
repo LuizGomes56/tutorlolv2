@@ -70,6 +70,42 @@
   "abilities": [
     [
       {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Parrrley",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "10 + ctx.ad",
+          "40 + ctx.ad",
+          "70 + ctx.ad",
+          "100 + ctx.ad",
+          "130 + ctx.ad"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Powder Keg",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "75",
+          "95",
+          "115",
+          "135",
+          "155"
+        ]
+      }
+    ],
+    [
+      {
         "type": "R",
         "name": "_1"
       },
@@ -97,24 +133,6 @@
           "40 + (0.1 * ctx.ap)",
           "70 + (0.1 * ctx.ap)",
           "100 + (0.1 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Parrrley",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "10 + ctx.ad",
-          "40 + ctx.ad",
-          "70 + ctx.ad",
-          "100 + ctx.ad",
-          "130 + ctx.ad"
         ]
       }
     ],
@@ -153,16 +171,16 @@
     [
       {
         "type": "R",
-        "name": "_7"
+        "name": "_5"
       },
       {
         "name": "Cannon Barrage",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "720 + (1.8 * ctx.ap)",
-          "1260 + (1.8 * ctx.ap)",
-          "1800 + (1.8 * ctx.ap)"
+          "120 + (0.3 * ctx.ap)",
+          "210 + (0.3 * ctx.ap)",
+          "300 + (0.3 * ctx.ap)"
         ]
       }
     ],
@@ -185,34 +203,16 @@
     [
       {
         "type": "R",
-        "name": "_5"
+        "name": "_7"
       },
       {
         "name": "Cannon Barrage",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "120 + (0.3 * ctx.ap)",
-          "210 + (0.3 * ctx.ap)",
-          "300 + (0.3 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_1"
-      },
-      {
-        "name": "Powder Keg",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "75",
-          "105",
-          "135",
-          "165",
-          "195"
+          "720 + (1.8 * ctx.ap)",
+          "1260 + (1.8 * ctx.ap)",
+          "1800 + (1.8 * ctx.ap)"
         ]
       }
     ]

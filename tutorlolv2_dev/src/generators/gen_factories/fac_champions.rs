@@ -8,6 +8,7 @@ use crate::{
         gen_utils::{F64Ext, RegExtractor},
     },
 };
+use once_cell::sync::Lazy;
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
 use regex::Regex;
 use std::collections::{BTreeMap, BTreeSet, HashMap};
@@ -18,8 +19,8 @@ use tutorlolv2_gen::{
 
 pub struct ChampionData {
     pub data: MerakiChampion,
-    pub hashmap: HashMap<AbilityId, Ability>,
-    pub mergevec: Vec<DevMergeData>,
+    pub map: BTreeMap<AbilityId, Ability>,
+    pub mergevec: BTreeSet<DevMergeData>,
 }
 
 /// Struct that creates and runs files that implement the trait [`Generator`].
@@ -28,6 +29,12 @@ pub struct ChampionData {
 /// the cached data from meraki analytics api and parse strings to generate the
 /// final json file containing only the useful information we could extract from it
 pub struct ChampionFactory;
+
+static RE_MACRO: Lazy<Regex> =
+    Lazy::new(|| Regex::new(r"(?s)ability(\s*\[\s*([A-Za-z])\s*,(.*?)\])").expect("MACRO_RE"));
+
+static RE_TUPLE: Lazy<Regex> =
+    Lazy::new(|| Regex::new(r"\(\s*(\d+)\s*,\s*(\d+)\s*,").expect("TUPLE_RE"));
 
 impl ChampionFactory {
     /// Array containing all the `::new` functions of every champion generator struct
@@ -92,7 +99,7 @@ impl ChampionFactory {
 
         generated_content.push_str("self.end()}}");
 
-        let formatted = rustfmt(&generated_content);
+        let formatted = rustfmt(&generated_content, None);
         Ok(match formatted.is_empty() {
             true => generated_content,
             false => formatted,
@@ -161,12 +168,9 @@ impl ChampionFactory {
     /// Receives the raw string of some generator file generates a HashMap with
     /// the extracted offsets being used in that file
     pub fn parse_offsets(src: &str) -> MayFail<HashMap<char, Vec<(usize, usize)>>> {
-        let macro_re = Regex::new(r"(?s)ability(\s*\[\s*([A-Za-z])\s*,(.*?)\]")?;
-        let tuple_re = Regex::new(r"\(\s*(\d+)\s*,\s*(\d+)\s*,")?;
-
         let mut out = HashMap::<char, Vec<(usize, usize)>>::new();
 
-        for caps in macro_re.captures_iter(src) {
+        for caps in RE_MACRO.captures_iter(src) {
             let ability = caps[1].chars().next().ok_or("First capture has no chars")?;
 
             if !matches!(ability, 'Q' | 'W' | 'E' | 'R') {
@@ -176,7 +180,7 @@ impl ChampionFactory {
             let body = &caps[2];
 
             let mut tuples = Vec::new();
-            for t in tuple_re.captures_iter(body) {
+            for t in RE_TUPLE.captures_iter(body) {
                 let e = t[1].parse::<usize>()?;
                 let l = t[2].parse::<usize>()?;
                 tuples.push((e, l));
@@ -353,8 +357,8 @@ impl ChampionData {
     pub fn new(data: MerakiChampion) -> Self {
         Self {
             data,
-            hashmap: HashMap::new(),
-            mergevec: Vec::new(),
+            map: BTreeMap::new(),
+            mergevec: BTreeSet::new(),
         }
     }
 
@@ -372,8 +376,8 @@ impl ChampionData {
                 .map(|pos| Position::from_raw(&pos).unwrap_or_default())
                 .collect(),
             stats: self.data.stats,
-            abilities: self.hashmap.into_iter().collect(),
-            merge_data: self.mergevec,
+            abilities: self.map.into_iter().collect(),
+            merge_data: self.mergevec.into_iter().collect(),
         }
     }
 
@@ -501,26 +505,26 @@ impl ChampionData {
         offsets
     }
 
-    /// Inserts a new ability into [`Self::hashmap`].
+    /// Inserts a new ability into [`Self::map`].
     pub fn insert(&mut self, key: impl Into<AbilityId>, ability: Ability) {
-        self.hashmap.insert(key.into(), ability);
+        self.map.insert(key.into(), ability);
     }
 
-    /// Returns a mutable reference to some key in [`Self::hashmap`],
+    /// Returns a mutable reference to some key in [`Self::map`],
     /// with custom error message
     pub fn get_mut(&mut self, key: impl Into<AbilityId>) -> MayFail<&mut Ability> {
         let field = key.into();
         Ok(self
-            .hashmap
+            .map
             .get_mut(&field)
             .ok_or("[get_mut] Failed to find field: {key:?}".to_string())?)
     }
 
-    /// Returns a reference to some key in [`Self::hashmap`], with custom error message
+    /// Returns a reference to some key in [`Self::map`], with custom error message
     pub fn get(&self, key: impl Into<AbilityId>) -> MayFail<&Ability> {
         let field = key.into();
         Ok(self
-            .hashmap
+            .map
             .get(&field)
             .ok_or(format!("[get] Failed to find field: {field:?}"))?)
     }
@@ -545,7 +549,7 @@ impl ChampionData {
     }
 
     /// Adds the attribute to all abilities in the provided array. If any ability in that
-    /// array does not exist in [`Self::hashmap`], this function will fail.
+    /// array does not exist in [`Self::map`], this function will fail.
     /// If there's an ability with a different [`AbilityId`] kind, you may want to use the
     /// macro [`dynarr`]
     pub fn attr<const N: usize>(&mut self, attr: Attrs, set: [impl Into<AbilityId>; N]) -> MayFail {
@@ -578,7 +582,7 @@ impl ChampionData {
                 if let Some(effects) = meraki_ability.effects.get(effect_index) {
                     if let Some(level_entry) = effects.leveling.get(leveling_index) {
                         let modifiers = &level_entry.modifiers;
-                        self.hashmap.insert(
+                        self.map.insert(
                             *keyname,
                             meraki_ability.format(Self::extract_ability(&modifiers)),
                         );
@@ -631,7 +635,7 @@ impl ChampionData {
 
         // Verifies if any ability found has unknown damage and emits a warning
         // to the console so it can be fixed by the next time the generator runs
-        self.hashmap
+        self.map
             .iter()
             .filter(|(_, value)| value.damage_type == DamageType::Unknown)
             .for_each(|(key, _)| {
@@ -644,7 +648,7 @@ impl ChampionData {
         // added to the mergevec, so it can be displayed in the tables as
         // `minimum damage - maximum damage`. If it doesn't find a maximum match,
         // a warning is emitted to the console and the key is skipped.
-        let keys = self.hashmap.keys().cloned().collect::<Vec<_>>();
+        let keys = self.map.keys().cloned().collect::<Vec<_>>();
         for key in keys {
             let index = key.ability_name() as u8;
 
@@ -666,8 +670,8 @@ impl ChampionData {
                 let name_alias =
                     unsafe { std::mem::transmute::<_, AbilityName>(index - MAX_MATCH) };
                 let alias = make(name_alias);
-                if self.hashmap.contains_key(&ability_id) {
-                    self.mergevec.push(DevMergeData {
+                if self.map.contains_key(&ability_id) {
+                    self.mergevec.insert(DevMergeData {
                         minimum_damage: key,
                         maximum_damage: ability_id,
                         alias,
@@ -690,12 +694,12 @@ impl ChampionData {
                 maximum_damage,
                 ..
             } = value;
-            self.hashmap.contains_key(minimum_damage) && self.hashmap.contains_key(maximum_damage)
+            self.map.contains_key(minimum_damage) && self.map.contains_key(maximum_damage)
         }) {
             println!(
                 "{name}: inconsistent data inserted in macro `merge!`.\nmerge_vec: {:?},\n`hashmap_keys: {:?}",
                 self.mergevec,
-                self.hashmap.keys().collect::<Vec<_>>()
+                self.map.keys().collect::<Vec<_>>()
             );
             return Err("Found inconsistent merge vec".into());
         }
@@ -745,12 +749,11 @@ impl ChampionData {
             });
         }
 
-        self.hashmap
-            .insert(AbilityId::P(name), passive.format(damage));
+        self.map.insert(AbilityId::P(name), passive.format(damage));
     }
 
     /// Takes in two fields and returns a mutable reference to a new cloned value, that was
-    /// already inserted to [`Self::hashmap`]. The first enum is from where it is being cloned,
+    /// already inserted to [`Self::map`]. The first enum is from where it is being cloned,
     /// and the second one is the new name it will have, and will be identical.
     pub fn clone_to(
         &mut self,
@@ -763,7 +766,7 @@ impl ChampionData {
         self.get_mut(into_key)
     }
 
-    /// Associates some damage type to a key in [`Self::hashmap`]. If that key is missing,
+    /// Associates some damage type to a key in [`Self::map`]. If that key is missing,
     /// this function will fail
     pub fn damage_type(&mut self, key: impl Into<AbilityId>, damage_type: DamageType) -> MayFail {
         self.get_mut(key.into())?.damage_type = damage_type;

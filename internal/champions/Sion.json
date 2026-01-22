@@ -71,72 +71,18 @@
     [
       {
         "type": "Q",
-        "name": "_6"
-      },
-      {
-        "name": "Decimating Smash",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "24 + (0.24 * ctx.ad)",
-          "36 + (0.3 * ctx.ad)",
-          "48 + (0.36 * ctx.ad)",
-          "60 + (0.42 * ctx.ad)",
-          "72 + (0.48 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_4"
-      },
-      {
-        "name": "Decimating Smash",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "54 + (0.72 * ctx.ad)",
-          "93 + (0.9 * ctx.ad)",
-          "132 + (1.08 * ctx.ad)",
-          "171 + (1.26 * ctx.ad)",
-          "210 + (1.44 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
         "name": "_1"
       },
       {
-        "name": "Soul Furnace",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "40 + (0.4 * ctx.ap) + (0.14 * ctx.enemy_max_health)",
-          "65 + (0.4 * ctx.ap) + (0.14 * ctx.enemy_max_health)",
-          "90 + (0.4 * ctx.ap) + (0.14 * ctx.enemy_max_health)",
-          "115 + (0.4 * ctx.ap) + (0.14 * ctx.enemy_max_health)",
-          "140 + (0.4 * ctx.ap) + (0.14 * ctx.enemy_max_health)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_5"
-      },
-      {
         "name": "Decimating Smash",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "135 + (1.8 * ctx.ad)",
-          "232.5 + (2.25 * ctx.ad)",
-          "330 + (2.7 * ctx.ad)",
-          "427.5 + (3.15 * ctx.ad)",
-          "525 + (3.6 * ctx.ad)"
+          "1.25",
+          "1.5833000000000002",
+          "1.75",
+          "1.85",
+          "1.9166999999999998"
         ]
       }
     ],
@@ -155,40 +101,6 @@
           "220 + (1.8 * ctx.ad)",
           "285 + (2.1 * ctx.ad)",
           "350 + (2.4 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_1"
-      },
-      {
-        "name": "Roar of the Slayer",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "65 + (0.55 * ctx.ap)",
-          "100 + (0.55 * ctx.ap)",
-          "135 + (0.55 * ctx.ap)",
-          "170 + (0.55 * ctx.ap)",
-          "205 + (0.55 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_2"
-      },
-      {
-        "name": "Unstoppable Onslaught",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "150 + (0.4 * ctx.bonus_ad)",
-          "300 + (0.4 * ctx.bonus_ad)",
-          "450 + (0.4 * ctx.bonus_ad)"
         ]
       }
     ],
@@ -213,34 +125,54 @@
     [
       {
         "type": "Q",
-        "name": "_1"
+        "name": "_4"
       },
       {
         "name": "Decimating Smash",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "1.25",
-          "1.5833000000000002",
-          "1.75",
-          "1.85",
-          "1.9166999999999998"
+          "54 + (0.72 * ctx.ad)",
+          "93 + (0.9 * ctx.ad)",
+          "132 + (1.08 * ctx.ad)",
+          "171 + (1.26 * ctx.ad)",
+          "210 + (1.44 * ctx.ad)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "type": "Q",
+        "name": "_5"
       },
       {
-        "name": "Unstoppable Onslaught",
+        "name": "Decimating Smash",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "400 + (0.8 * ctx.bonus_ad)",
-          "800 + (0.8 * ctx.bonus_ad)",
-          "1200 + (0.8 * ctx.bonus_ad)"
+          "148.5 + (1.98 * ctx.ad)",
+          "255.75 + (2.475 * ctx.ad)",
+          "363 + (2.97 * ctx.ad)",
+          "470.25 + (3.465 * ctx.ad)",
+          "577.5 + (3.96 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_6"
+      },
+      {
+        "name": "Decimating Smash",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "24 + (0.24 * ctx.ad)",
+          "36 + (0.3 * ctx.ad)",
+          "48 + (0.36 * ctx.ad)",
+          "60 + (0.42 * ctx.ad)",
+          "72 + (0.48 * ctx.ad)"
         ]
       }
     ],
@@ -254,11 +186,79 @@
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "60 + (0.6 * ctx.ad)",
-          "90 + (0.75 * ctx.ad)",
-          "120 + (0.9 * ctx.ad)",
-          "150 + (1.05 * ctx.ad)",
-          "180 + (1.2 * ctx.ad)"
+          "66 + (0.66 * ctx.ad)",
+          "99 + (0.825 * ctx.ad)",
+          "132 + (0.99 * ctx.ad)",
+          "165 + (1.155 * ctx.ad)",
+          "198 + (1.32 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Soul Furnace",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "40 + (0.4 * ctx.ap) + (0.14 * ctx.enemy_max_health)",
+          "65 + (0.4 * ctx.ap) + (0.14 * ctx.enemy_max_health)",
+          "90 + (0.4 * ctx.ap) + (0.14 * ctx.enemy_max_health)",
+          "115 + (0.4 * ctx.ap) + (0.14 * ctx.enemy_max_health)",
+          "140 + (0.4 * ctx.ap) + (0.14 * ctx.enemy_max_health)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Roar of the Slayer",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "65 + (0.55 * ctx.ap)",
+          "100 + (0.55 * ctx.ap)",
+          "135 + (0.55 * ctx.ap)",
+          "170 + (0.55 * ctx.ap)",
+          "205 + (0.55 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Unstoppable Onslaught",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "400 + (1.2 * ctx.bonus_ad)",
+          "800 + (1.2 * ctx.bonus_ad)",
+          "1200 + (1.2 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_2"
+      },
+      {
+        "name": "Unstoppable Onslaught",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "150 + (0.6 * ctx.bonus_ad)",
+          "300 + (0.6 * ctx.bonus_ad)",
+          "450 + (0.6 * ctx.bonus_ad)"
         ]
       }
     ]

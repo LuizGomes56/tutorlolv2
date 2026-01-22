@@ -1,9 +1,7 @@
 use super::*;
 
 impl Generator<Champion> for Teemo {
-    fn generate(
-        mut self: Box<Self>,
-    ) -> MayFail<Champion> {
+    fn generate(mut self: Box<Self>) -> MayFail<Champion> {
         self.ability(Q, [(0, 1, _1)]);
         self.ability(
             E,
@@ -16,10 +14,7 @@ impl Generator<Champion> for Teemo {
                 (1, 2, _6),
             ],
         );
-        self.ability(
-            R,
-            [(5, 0, _1), (5, 1, _2)],
-        );
+        self.ability(R, [(5, 0, _1), (5, 1, _2)]);
         self.end()
     }
 }

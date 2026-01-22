@@ -6,15 +6,11 @@
   "tier": 0,
   "maps": [
     [
-      "Tft",
-      false
-    ],
-    [
       "SummonersRift",
       false
     ],
     [
-      "SummonersRift",
+      "Aram",
       false
     ],
     [
@@ -22,19 +18,24 @@
       true
     ],
     [
-      "Aram",
+      "Tft",
       false
     ],
     [
       "Arena",
       false
-    ],
-    [
-      "SummonersRift",
-      false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AbilityHaste",
+      "value": 10
+    },
+    {
+      "name": "AbilityPower",
+      "value": 120
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

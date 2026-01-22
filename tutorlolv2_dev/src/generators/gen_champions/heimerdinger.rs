@@ -1,9 +1,7 @@
 use super::*;
 
 impl Generator<Champion> for Heimerdinger {
-    fn generate(
-        mut self: Box<Self>,
-    ) -> MayFail<Champion> {
+    fn generate(mut self: Box<Self>) -> MayFail<Champion> {
         self.ability(
             W,
             [

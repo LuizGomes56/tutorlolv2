@@ -6,7 +6,7 @@
   "tier": 0,
   "maps": [
     [
-      "Arena",
+      "SummonersRift",
       false
     ],
     [
@@ -22,19 +22,28 @@
       false
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
+      "Arena",
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AbilityHaste",
+      "value": 10
+    },
+    {
+      "name": "AbilityPower",
+      "value": 35
+    },
+    {
+      "name": "HealAndShieldPower",
+      "value": 10
+    },
+    {
+      "name": "Health",
+      "value": 150
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

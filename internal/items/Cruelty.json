@@ -7,6 +7,10 @@
   "maps": [
     [
       "SummonersRift",
+      true
+    ],
+    [
+      "Aram",
       false
     ],
     [
@@ -20,21 +24,22 @@
     [
       "Arena",
       false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Aram",
-      false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AbilityPower",
+      "value": 60
+    },
+    {
+      "name": "Armor",
+      "value": 25
+    },
+    {
+      "name": "MagicResist",
+      "value": 25
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

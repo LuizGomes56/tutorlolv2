@@ -70,6 +70,24 @@
   "abilities": [
     [
       {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Volcanic Rupture",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "20 + (1.1 * ctx.ad)",
+          "45 + (1.1 * ctx.ad)",
+          "70 + (1.1 * ctx.ad)",
+          "95 + (1.1 * ctx.ad)",
+          "120 + (1.1 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "W",
         "name": "_1"
       },
@@ -88,37 +106,55 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "type": "W",
+        "name": "_2"
       },
       {
-        "name": "Searing Charge",
-        "damage_type": "Physical",
+        "name": "Bellows Breath",
+        "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "80 + (0.4 * ctx.bonus_armor) + (0.4 * ctx.bonus_magic_resist)",
-          "125 + (0.4 * ctx.bonus_armor) + (0.4 * ctx.bonus_magic_resist)",
-          "170 + (0.4 * ctx.bonus_armor) + (0.4 * ctx.bonus_magic_resist)",
-          "215 + (0.4 * ctx.bonus_armor) + (0.4 * ctx.bonus_magic_resist)",
-          "260 + (0.4 * ctx.bonus_armor) + (0.4 * ctx.bonus_magic_resist)"
+          "52",
+          "64",
+          "76",
+          "88",
+          "100"
         ]
       }
     ],
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "type": "W",
+        "name": "_3"
       },
       {
-        "name": "Volcanic Rupture",
-        "damage_type": "Physical",
+        "name": "Bellows Breath",
+        "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "20 + (1.1 * ctx.ad)",
-          "45 + (1.1 * ctx.ad)",
-          "70 + (1.1 * ctx.ad)",
-          "95 + (1.1 * ctx.ad)",
-          "120 + (1.1 * ctx.ad)"
+          "80",
+          "130",
+          "180",
+          "230",
+          "280"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_4"
+      },
+      {
+        "name": "Bellows Breath",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "260",
+          "320",
+          "380",
+          "440",
+          "500"
         ]
       }
     ],
@@ -143,24 +179,6 @@
     [
       {
         "type": "W",
-        "name": "_4"
-      },
-      {
-        "name": "Bellows Breath",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "155",
-          "180",
-          "205",
-          "230",
-          "255"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
         "name": "_6"
       },
       {
@@ -178,19 +196,19 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_2"
+        "type": "E",
+        "name": "_1"
       },
       {
-        "name": "Bellows Breath",
-        "damage_type": "Magic",
+        "name": "Searing Charge",
+        "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "31",
-          "36",
-          "41",
-          "46",
-          "51"
+          "80 + (0.4 * ctx.bonus_armor) + (0.4 * ctx.bonus_magic_resist)",
+          "125 + (0.4 * ctx.bonus_armor) + (0.4 * ctx.bonus_magic_resist)",
+          "170 + (0.4 * ctx.bonus_armor) + (0.4 * ctx.bonus_magic_resist)",
+          "215 + (0.4 * ctx.bonus_armor) + (0.4 * ctx.bonus_magic_resist)",
+          "260 + (0.4 * ctx.bonus_armor) + (0.4 * ctx.bonus_magic_resist)"
         ]
       }
     ],
@@ -207,24 +225,6 @@
           "125 + (0.2 * ctx.ap)",
           "175 + (0.2 * ctx.ap)",
           "225 + (0.2 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_3"
-      },
-      {
-        "name": "Bellows Breath",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "80",
-          "130",
-          "180",
-          "230",
-          "280"
         ]
       }
     ],

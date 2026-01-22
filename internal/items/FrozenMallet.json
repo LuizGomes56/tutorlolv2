@@ -6,22 +6,6 @@
   "tier": 0,
   "maps": [
     [
-      "Arena",
-      false
-    ],
-    [
-      "Tft",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
       "SummonersRift",
       false
     ],
@@ -32,9 +16,26 @@
     [
       "NexusBlitz",
       false
+    ],
+    [
+      "Tft",
+      false
+    ],
+    [
+      "Arena",
+      false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AttackSpeed",
+      "value": 60
+    },
+    {
+      "name": "Health",
+      "value": 600
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

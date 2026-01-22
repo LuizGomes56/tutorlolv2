@@ -70,76 +70,6 @@
   "abilities": [
     [
       {
-        "type": "W",
-        "name": "_1"
-      },
-      {
-        "name": "Allure",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "250 + (0.6 * ctx.ap)",
-          "300 + (0.6 * ctx.ap)",
-          "350 + (0.6 * ctx.ap)",
-          "400 + (0.6 * ctx.ap)",
-          "450 + (0.6 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_6"
-      },
-      {
-        "name": "Hate Spike",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "145 + (1.75 * ctx.ap)",
-          "195 + (1.75 * ctx.ap)",
-          "245 + (1.75 * ctx.ap)",
-          "295 + (1.75 * ctx.ap)",
-          "345 + (1.75 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_4"
-      },
-      {
-        "name": "Hate Spike",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "25 + (0.25 * ctx.ap)",
-          "30 + (0.25 * ctx.ap)",
-          "35 + (0.25 * ctx.ap)",
-          "40 + (0.25 * ctx.ap)",
-          "45 + (0.25 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_1"
-      },
-      {
-        "name": "Last Caress",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "125 + (0.75 * ctx.ap)",
-          "250 + (0.75 * ctx.ap)",
-          "375 + (0.75 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "Q",
         "name": "_1"
       },
@@ -153,6 +83,24 @@
           "35 + (0.25 * ctx.ap)",
           "40 + (0.25 * ctx.ap)",
           "45 + (0.25 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "Hate Spike",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "15 + (0.25 * ctx.ap)",
+          "25 + (0.25 * ctx.ap)",
+          "35 + (0.25 * ctx.ap)",
+          "45 + (0.25 * ctx.ap)",
+          "55 + (0.25 * ctx.ap)"
         ]
       }
     ],
@@ -177,6 +125,24 @@
     [
       {
         "type": "Q",
+        "name": "_4"
+      },
+      {
+        "name": "Hate Spike",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "25 + (0.25 * ctx.ap)",
+          "30 + (0.25 * ctx.ap)",
+          "35 + (0.25 * ctx.ap)",
+          "40 + (0.25 * ctx.ap)",
+          "45 + (0.25 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
         "name": "_5"
       },
       {
@@ -195,34 +161,36 @@
     [
       {
         "type": "Q",
-        "name": "_2"
+        "name": "_6"
       },
       {
         "name": "Hate Spike",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "15 + (0.25 * ctx.ap)",
-          "25 + (0.25 * ctx.ap)",
-          "35 + (0.25 * ctx.ap)",
-          "45 + (0.25 * ctx.ap)",
-          "55 + (0.25 * ctx.ap)"
+          "145 + (1.75 * ctx.ap)",
+          "195 + (1.75 * ctx.ap)",
+          "245 + (1.75 * ctx.ap)",
+          "295 + (1.75 * ctx.ap)",
+          "345 + (1.75 * ctx.ap)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_2"
+        "type": "W",
+        "name": "_1"
       },
       {
-        "name": "Last Caress",
+        "name": "Allure",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "300 + (1.8 * ctx.ap)",
-          "600 + (1.8 * ctx.ap)",
-          "900 + (1.8 * ctx.ap)"
+          "250 + (0.6 * ctx.ap)",
+          "300 + (0.6 * ctx.ap)",
+          "350 + (0.6 * ctx.ap)",
+          "400 + (0.6 * ctx.ap)",
+          "450 + (0.6 * ctx.ap)"
         ]
       }
     ],
@@ -241,6 +209,38 @@
           "120 + (0.03 * ctx.enemy_max_health) + (0.015 * 0.01 * ctx.ap)",
           "150 + (0.03 * ctx.enemy_max_health) + (0.015 * 0.01 * ctx.ap)",
           "180 + (0.03 * ctx.enemy_max_health) + (0.015 * 0.01 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Last Caress",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "125 + (0.75 * ctx.ap)",
+          "250 + (0.75 * ctx.ap)",
+          "375 + (0.75 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_2"
+      },
+      {
+        "name": "Last Caress",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "300 + (1.8 * ctx.ap)",
+          "600 + (1.8 * ctx.ap)",
+          "900 + (1.8 * ctx.ap)"
         ]
       }
     ]

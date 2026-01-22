@@ -6,7 +6,15 @@
   "tier": 2,
   "maps": [
     [
+      "SummonersRift",
+      false
+    ],
+    [
       "Aram",
+      true
+    ],
+    [
+      "NexusBlitz",
       true
     ],
     [
@@ -16,25 +24,22 @@
     [
       "Arena",
       false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "NexusBlitz",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "BaseHealthRegen",
+      "value": 100
+    },
+    {
+      "name": "Health",
+      "value": 200
+    },
+    {
+      "name": "MagicResist",
+      "value": 35
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

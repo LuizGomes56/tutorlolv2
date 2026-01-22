@@ -1,7 +1,13 @@
 use proc_macro::TokenStream;
-use proc_macro2::{Group, Ident, Span, TokenStream as TokenStream2, TokenTree};
+use proc_macro2::{Delimiter, Group, Ident, Span, TokenStream as TokenStream2, TokenTree};
 use quote::{ToTokens, quote};
-use std::{fs, path::PathBuf};
+use std::{
+    collections::HashMap,
+    fs,
+    path::PathBuf,
+    sync::{Arc, Mutex, OnceLock},
+    time::SystemTime,
+};
 use syn::{LitStr, Token, parse::Parse, parse_macro_input, spanned::Spanned};
 
 struct ExpandDirArgs {
@@ -99,44 +105,35 @@ pub fn expand_dir(input: TokenStream) -> TokenStream {
 
     let tpl = unwrap_outer_group(template);
 
+    // ✅ Compila o template uma única vez:
+    let compiled = match compile_template(tpl, &ph_ident) {
+        Ok(c) => c,
+        Err(e) => return e.to_compile_error().into(),
+    };
+
     let mut pieces: Vec<TokenStream2> = Vec::with_capacity(files.len());
 
     for (stem, path) in files {
         let id = Ident::new(&stem, Span::call_site());
 
-        // lê JSON
-        let bytes = match fs::read(&path) {
-            Ok(b) => b,
-            Err(e) => {
-                return syn::Error::new(
-                    dir.span(),
-                    format!("failed to read json file {}: {e}", path.display()),
-                )
-                .to_compile_error()
-                .into();
+        // ✅ Só carrega JSON se o template realmente precisar
+        let json: Option<Arc<serde_json::Value>> = if compiled.needs_json {
+            match load_json_cached(&path, dir.span()) {
+                Ok(v) => Some(v),
+                Err(e) => return e.to_compile_error().into(),
             }
+        } else {
+            None
         };
 
-        let json: serde_json::Value = match serde_json::from_slice(&bytes) {
-            Ok(v) => v,
-            Err(e) => {
-                return syn::Error::new(
-                    dir.span(),
-                    format!("invalid json in {}: {e}", path.display()),
-                )
-                .to_compile_error()
-                .into();
-            }
-        };
-
-        // 1) expande diretivas %...% (usando o JSON desse arquivo)
-        let expanded = match expand_directives(tpl.clone(), &ph_ident, &stem, &json) {
+        // Renderiza o template compilado (substitui %...%).
+        let rendered = match render_compiled(&compiled, &ph_ident, &stem, json.as_deref()) {
             Ok(ts) => ts,
             Err(e) => return e.to_compile_error().into(),
         };
 
-        // 2) substitui o placeholder IDENT fora das diretivas (comportamento antigo)
-        let final_ts = subst_ident(expanded, &ph_ident, &id);
+        // Mantém comportamento antigo: substitui placeholder IDENT fora de diretivas.
+        let final_ts = subst_ident(rendered, &ph_ident, &id);
 
         pieces.push(final_ts);
     }
@@ -158,79 +155,292 @@ fn unwrap_outer_group(ts: TokenStream2) -> TokenStream2 {
     ts
 }
 
-fn expand_directives(
-    ts: TokenStream2,
+// ---------- TEMPLATE COMPILATION (parse %...% uma vez) ----------
+
+enum Node {
+    TT(TokenTree),
+    Group {
+        delim: Delimiter,
+        span: Span,
+        children: Vec<Node>,
+    },
+    Directive {
+        span: Span,
+        expr: syn::Expr,
+        needs_json: bool,
+    },
+}
+
+struct CompiledTemplate {
+    nodes: Vec<Node>,
+    needs_json: bool,
+    root_ident: Ident,
+}
+
+fn compile_template(ts: TokenStream2, root_ident: &Ident) -> syn::Result<CompiledTemplate> {
+    fn compile_nodes(ts: TokenStream2, root_ident: &Ident) -> syn::Result<Vec<Node>> {
+        let mut out = Vec::new();
+        let mut it = ts.into_iter().peekable();
+
+        while let Some(tt) = it.next() {
+            match tt {
+                TokenTree::Group(g) => {
+                    let children = compile_nodes(g.stream(), root_ident)?;
+                    out.push(Node::Group {
+                        delim: g.delimiter(),
+                        span: g.span(),
+                        children,
+                    });
+                }
+
+                TokenTree::Punct(p) if p.as_char() == '%' => {
+                    let start_span = p.span();
+                    let mut inner = TokenStream2::new();
+                    let mut closed = false;
+
+                    while let Some(nxt) = it.next() {
+                        if let TokenTree::Punct(p2) = &nxt {
+                            if p2.as_char() == '%' {
+                                closed = true;
+                                break;
+                            }
+                        }
+                        inner.extend([nxt]);
+                    }
+
+                    if !closed {
+                        return Err(syn::Error::new(start_span, "unterminated %...% directive"));
+                    }
+
+                    let expr: syn::Expr = syn::parse2(inner)?;
+                    let needs_json = expr_contains_field_access(&expr);
+
+                    out.push(Node::Directive {
+                        span: start_span,
+                        expr,
+                        needs_json,
+                    });
+                }
+
+                other => out.push(Node::TT(other)),
+            }
+        }
+
+        Ok(out)
+    }
+
+    let nodes = compile_nodes(ts, root_ident)?;
+    let needs_json = nodes_need_json(&nodes);
+
+    Ok(CompiledTemplate {
+        nodes,
+        needs_json,
+        root_ident: root_ident.clone(),
+    })
+}
+
+fn nodes_need_json(nodes: &[Node]) -> bool {
+    nodes.iter().any(|n| match n {
+        Node::Directive { needs_json, .. } => *needs_json,
+        Node::Group { children, .. } => nodes_need_json(children),
+        _ => false,
+    })
+}
+
+/// Heurística simples e barata: qualquer Expr::Field implica potencial acesso a JSON.
+fn expr_contains_field_access(expr: &syn::Expr) -> bool {
+    use syn::Expr;
+    match expr {
+        Expr::Field(f) => expr_contains_field_access(&f.base) || true,
+        Expr::Call(c) => {
+            expr_contains_field_access(&c.func) || c.args.iter().any(expr_contains_field_access)
+        }
+        Expr::Paren(p) => expr_contains_field_access(&p.expr),
+        Expr::Path(_) => false,
+        Expr::Lit(_) => false,
+        Expr::Unary(u) => expr_contains_field_access(&u.expr),
+        Expr::Binary(b) => {
+            expr_contains_field_access(&b.left) || expr_contains_field_access(&b.right)
+        }
+        Expr::MethodCall(m) => {
+            expr_contains_field_access(&m.receiver) || m.args.iter().any(expr_contains_field_access)
+        }
+        Expr::Index(i) => {
+            expr_contains_field_access(&i.expr) || expr_contains_field_access(&i.index)
+        }
+        Expr::Reference(r) => expr_contains_field_access(&r.expr),
+        Expr::Cast(c) => expr_contains_field_access(&c.expr),
+        Expr::Block(b) => b.block.stmts.iter().any(|s| match s {
+            syn::Stmt::Local(syn::Local { init: Some(i), .. }) => {
+                expr_contains_field_access(&i.expr)
+            }
+            syn::Stmt::Expr(e, _) => expr_contains_field_access(e),
+            syn::Stmt::Local(_) => false,
+            syn::Stmt::Item(_) => false,
+            syn::Stmt::Macro(_) => false,
+        }),
+        _ => {
+            // Para casos raros, não otimiza agressivamente.
+            // Se aparecer algo exótico, assume que não tem field access.
+            false
+        }
+    }
+}
+
+// ---------- RENDER (aplica diretivas) ----------
+
+fn render_compiled(
+    compiled: &CompiledTemplate,
     root_ident: &Ident,
     stem: &str,
-    json: &serde_json::Value,
+    json: Option<&serde_json::Value>,
+) -> syn::Result<TokenStream2> {
+    render_nodes(&compiled.nodes, root_ident, stem, json)
+}
+
+fn render_nodes(
+    nodes: &[Node],
+    root_ident: &Ident,
+    stem: &str,
+    json: Option<&serde_json::Value>,
 ) -> syn::Result<TokenStream2> {
     let mut out = TokenStream2::new();
-    let mut it = ts.into_iter().peekable();
 
-    while let Some(tt) = it.next() {
-        match tt {
-            TokenTree::Group(g) => {
-                let inner = expand_directives(g.stream(), root_ident, stem, json)?;
-                let mut ng = Group::new(g.delimiter(), inner);
-                ng.set_span(g.span());
-                out.extend([TokenTree::Group(ng)]);
+    for n in nodes {
+        match n {
+            Node::TT(tt) => out.extend([tt.clone()]),
+
+            Node::Group {
+                delim,
+                span,
+                children,
+            } => {
+                let inner = render_nodes(children, root_ident, stem, json)?;
+                let mut g = Group::new(*delim, inner);
+                g.set_span(*span);
+                out.extend([TokenTree::Group(g)]);
             }
 
-            TokenTree::Punct(p) if p.as_char() == '%' => {
-                let start_span = p.span();
-                let mut inner = TokenStream2::new();
-                let mut closed = false;
-
-                while let Some(nxt) = it.next() {
-                    if let TokenTree::Punct(p2) = &nxt {
-                        if p2.as_char() == '%' {
-                            closed = true;
-                            break;
-                        }
-                    }
-                    inner.extend([nxt]);
+            Node::Directive {
+                span,
+                expr,
+                needs_json,
+            } => {
+                if *needs_json && json.is_none() {
+                    return Err(syn::Error::new(
+                        *span,
+                        "directive requires JSON fields (File.x), but JSON was not loaded",
+                    ));
                 }
 
-                if !closed {
-                    return Err(syn::Error::new(start_span, "unterminated %...% directive"));
-                }
+                let rendered = eval_expr_to_string(expr, root_ident, stem, json)
+                    .map_err(|msg| syn::Error::new(expr.span(), msg))?;
 
-                let rendered = eval_directive(inner, root_ident, stem, json)?;
-                let injected: TokenStream2 = rendered.parse().map_err(|e| {
-                    syn::Error::new(
-                        start_span,
-                        format!(
-                            "directive produced invalid Rust tokens: {e} (output: {rendered:?})"
-                        ),
-                    )
-                })?;
-
+                // ✅ Fast path: se é ident comum, evita parse de TokenStream
+                let injected = inject_tokens_from_string(&rendered, *span)?;
                 out.extend(injected);
             }
-
-            other => out.extend([other]),
         }
     }
 
     Ok(out)
 }
 
-fn eval_directive(
-    inner: TokenStream2,
-    root_ident: &Ident,
-    stem: &str,
-    json: &serde_json::Value,
-) -> syn::Result<String> {
-    let expr: syn::Expr = syn::parse2(inner)?;
-    eval_expr_to_string(&expr, root_ident, stem, json)
-        .map_err(|msg| syn::Error::new(expr.span(), msg))
+fn inject_tokens_from_string(s: &str, span: Span) -> syn::Result<TokenStream2> {
+    // 1) Ident (mais comum: snake/pascal)
+    if syn::parse_str::<syn::Ident>(s).is_ok() {
+        let ident = if is_keyword(s) {
+            Ident::new_raw(s, span)
+        } else {
+            Ident::new(s, span)
+        };
+        return Ok(ident.to_token_stream());
+    }
+
+    // 2) Inteiro literal (caso útil)
+    if syn::parse_str::<syn::LitInt>(s).is_ok() {
+        let ts: TokenStream2 = s.parse().map_err(|e| {
+            syn::Error::new(
+                span,
+                format!("failed to parse integer literal as tokens: {e}"),
+            )
+        })?;
+        return Ok(ts);
+    }
+
+    // 3) Fallback: parse tokens arbitrários
+    let ts: TokenStream2 = s.parse().map_err(|e| {
+        syn::Error::new(
+            span,
+            format!("directive produced invalid Rust tokens: {e} (output: {s:?})"),
+        )
+    })?;
+    Ok(ts)
 }
+
+fn is_keyword(s: &str) -> bool {
+    matches!(
+        s,
+        "as" | "break"
+            | "const"
+            | "continue"
+            | "crate"
+            | "else"
+            | "enum"
+            | "extern"
+            | "false"
+            | "fn"
+            | "for"
+            | "if"
+            | "impl"
+            | "in"
+            | "let"
+            | "loop"
+            | "match"
+            | "mod"
+            | "move"
+            | "mut"
+            | "pub"
+            | "ref"
+            | "return"
+            | "self"
+            | "Self"
+            | "static"
+            | "struct"
+            | "super"
+            | "trait"
+            | "true"
+            | "type"
+            | "unsafe"
+            | "use"
+            | "where"
+            | "while"
+            | "async"
+            | "await"
+            | "dyn"
+            | "abstract"
+            | "become"
+            | "box"
+            | "do"
+            | "final"
+            | "macro"
+            | "override"
+            | "priv"
+            | "try"
+            | "typeof"
+            | "unsized"
+            | "virtual"
+            | "yield"
+    )
+}
+
+// ---------- EVAL (suporta snake(pascal(...)) etc) ----------
 
 fn eval_expr_to_string(
     expr: &syn::Expr,
     root_ident: &Ident,
     stem: &str,
-    json: &serde_json::Value,
+    json: Option<&serde_json::Value>,
 ) -> Result<String, String> {
     use syn::Expr;
 
@@ -266,11 +476,12 @@ fn eval_expr_to_string(
 
         // File.x.y  (acesso JSON)
         Expr::Field(_) => {
-            let v = resolve_json_path(expr, root_ident, stem, json)?;
+            let json = json.ok_or_else(|| "JSON not loaded".to_string())?;
+            let v = resolve_json_path(expr, root_ident, json)?;
             Ok(json_value_to_string(v)?)
         }
 
-        // File (sozinho) -> retorna o stem do arquivo (útil em alguns casos)
+        // File (sozinho) -> stem do arquivo
         Expr::Path(p) => {
             if p.path.segments.len() == 1 && p.path.segments[0].ident == *root_ident {
                 Ok(stem.to_string())
@@ -283,17 +494,14 @@ fn eval_expr_to_string(
     }
 }
 
-/// Resolve File.a.b.c no JSON do arquivo.
-/// Regras:
-/// - a raiz precisa ser exatamente o `root_ident` (ex.: File)
-/// - cada `.campo` vira uma chave no JSON
+/// Resolve File.a.b.c no JSON.
+/// - raiz deve ser `root_ident` (ex.: File)
+/// - cada `.campo` vira chave no JSON
 fn resolve_json_path<'a>(
     expr: &syn::Expr,
     root_ident: &Ident,
-    _stem: &str,
     json: &'a serde_json::Value,
 ) -> Result<&'a serde_json::Value, String> {
-    // Extrai a cadeia de campos: File.name.x...
     let mut keys: Vec<String> = Vec::new();
     let mut cur = expr;
 
@@ -330,11 +538,7 @@ fn resolve_json_path<'a>(
     Ok(v)
 }
 
-/// Converte o valor para String.
-/// Se for objeto e existir a chave "Value", usa ela.
-/// - String -> sem aspas
-/// - Number/Bool -> to_string()
-/// - Object/Array -> JSON compact (to_string()) (não ideal p/ ident)
+/// Se for objeto e tiver "Value", usa ela.
 fn json_value_to_string(v: &serde_json::Value) -> Result<String, String> {
     let v = if let serde_json::Value::Object(map) = v {
         map.get("Value").unwrap_or(v)
@@ -350,6 +554,46 @@ fn json_value_to_string(v: &serde_json::Value) -> Result<String, String> {
         other => Ok(other.to_string()),
     }
 }
+
+// ---------- JSON CACHE ----------
+
+static JSON_CACHE: OnceLock<Mutex<HashMap<PathBuf, (SystemTime, Arc<serde_json::Value>)>>> =
+    OnceLock::new();
+
+fn load_json_cached(path: &PathBuf, span: Span) -> syn::Result<Arc<serde_json::Value>> {
+    let meta = fs::metadata(path)
+        .map_err(|e| syn::Error::new(span, format!("failed to stat {}: {e}", path.display())))?;
+
+    let mtime = meta.modified().unwrap_or(SystemTime::UNIX_EPOCH);
+
+    let cache = JSON_CACHE.get_or_init(|| Mutex::new(HashMap::new()));
+
+    // fast hit
+    {
+        let map = cache.lock().unwrap();
+        if let Some((cached_mtime, v)) = map.get(path) {
+            if *cached_mtime == mtime {
+                return Ok(v.clone());
+            }
+        }
+    }
+
+    // reload
+    let bytes = fs::read(path)
+        .map_err(|e| syn::Error::new(span, format!("failed to read {}: {e}", path.display())))?;
+
+    let v: serde_json::Value = serde_json::from_slice(&bytes)
+        .map_err(|e| syn::Error::new(span, format!("invalid json in {}: {e}", path.display())))?;
+
+    let v = Arc::new(v);
+
+    let mut map = cache.lock().unwrap();
+    map.insert(path.clone(), (mtime, v.clone()));
+
+    Ok(v)
+}
+
+// ---------- SUBST (comportamento antigo) ----------
 
 fn subst_ident(ts: TokenStream2, from: &Ident, to: &Ident) -> TokenStream2 {
     ts.into_iter()

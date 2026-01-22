@@ -6,35 +6,32 @@
   "tier": 1,
   "maps": [
     [
-      "Tft",
-      false
-    ],
-    [
-      "NexusBlitz",
-      true
-    ],
-    [
       "SummonersRift",
       true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Arena",
-      false
     ],
     [
       "Aram",
       true
     ],
     [
-      "SummonersRift",
+      "NexusBlitz",
+      true
+    ],
+    [
+      "Tft",
+      false
+    ],
+    [
+      "Arena",
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "BaseManaRegen",
+      "value": 50
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

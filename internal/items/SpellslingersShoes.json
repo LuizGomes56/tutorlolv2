@@ -6,14 +6,6 @@
   "tier": 3,
   "maps": [
     [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
       "SummonersRift",
       false
     ],
@@ -22,19 +14,28 @@
       false
     ],
     [
+      "NexusBlitz",
+      false
+    ],
+    [
       "Tft",
       false
     ],
     [
-      "SummonersRift",
-      true
-    ],
-    [
-      "NexusBlitz",
+      "Arena",
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "MagicPenetration",
+      "value": 8
+    },
+    {
+      "name": "MoveSpeed",
+      "value": 45
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

@@ -7,7 +7,7 @@
   "maps": [
     [
       "SummonersRift",
-      true
+      false
     ],
     [
       "Aram",
@@ -18,23 +18,28 @@
       true
     ],
     [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
       "Tft",
+      false
+    ],
+    [
+      "Arena",
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AbilityHaste",
+      "value": 15
+    },
+    {
+      "name": "AttackDamage",
+      "value": 60
+    },
+    {
+      "name": "MagicResist",
+      "value": 40
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

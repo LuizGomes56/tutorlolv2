@@ -14,27 +14,24 @@
       false
     ],
     [
-      "Arena",
-      true
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
       "NexusBlitz",
       false
     ],
     [
       "Tft",
       false
+    ],
+    [
+      "Arena",
+      true
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AbilityPower",
+      "value": 120
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

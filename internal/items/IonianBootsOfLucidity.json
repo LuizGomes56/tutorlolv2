@@ -10,12 +10,12 @@
       true
     ],
     [
-      "NexusBlitz",
+      "Aram",
       true
     ],
     [
-      "SummonersRift",
-      false
+      "NexusBlitz",
+      true
     ],
     [
       "Tft",
@@ -24,17 +24,18 @@
     [
       "Arena",
       false
-    ],
-    [
-      "Aram",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AbilityHaste",
+      "value": 10
+    },
+    {
+      "name": "MoveSpeed",
+      "value": 45
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

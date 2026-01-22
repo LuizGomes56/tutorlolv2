@@ -6,10 +6,6 @@
   "tier": 0,
   "maps": [
     [
-      "Tft",
-      false
-    ],
-    [
       "SummonersRift",
       false
     ],
@@ -18,23 +14,24 @@
       false
     ],
     [
-      "SummonersRift",
-      true
+      "NexusBlitz",
+      false
+    ],
+    [
+      "Tft",
+      false
     ],
     [
       "Arena",
       false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "NexusBlitz",
-      false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "Mana",
+      "value": 240
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

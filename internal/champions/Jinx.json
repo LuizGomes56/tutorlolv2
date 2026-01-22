@@ -70,33 +70,19 @@
   "abilities": [
     [
       {
-        "type": "R",
-        "name": "_4"
-      },
-      {
-        "name": "Super Mega Death Rocket!",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "20 + (0.12 * ctx.bonus_ad) + (0.25 * ctx.missing_health)",
-          "35 + (0.12 * ctx.bonus_ad) + (0.3 * ctx.missing_health)",
-          "50 + (0.12 * ctx.bonus_ad) + (0.35 * ctx.missing_health)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
+        "type": "W",
         "name": "_1"
       },
       {
-        "name": "Super Mega Death Rocket!",
+        "name": "Zap!",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "160 + (0.96 * ctx.bonus_ad) + (0.2 * ctx.missing_health)",
-          "280 + (0.96 * ctx.bonus_ad) + (0.24 * ctx.missing_health)",
-          "400 + (0.96 * ctx.bonus_ad) + (0.28 * ctx.missing_health)"
+          "10 + (1.4 * ctx.ad)",
+          "60 + (1.4 * ctx.ad)",
+          "110 + (1.4 * ctx.ad)",
+          "160 + (1.4 * ctx.ad)",
+          "210 + (1.4 * ctx.ad)"
         ]
       }
     ],
@@ -121,34 +107,16 @@
     [
       {
         "type": "R",
-        "name": "_3"
+        "name": "_1"
       },
       {
         "name": "Super Mega Death Rocket!",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "200 + (1.2 * ctx.bonus_ad) + (0.25 * ctx.missing_health)",
-          "350 + (1.2 * ctx.bonus_ad) + (0.3 * ctx.missing_health)",
-          "500 + (1.2 * ctx.bonus_ad) + (0.35 * ctx.missing_health)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_1"
-      },
-      {
-        "name": "Zap!",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "10 + (1.4 * ctx.ad)",
-          "60 + (1.4 * ctx.ad)",
-          "110 + (1.4 * ctx.ad)",
-          "160 + (1.4 * ctx.ad)",
-          "210 + (1.4 * ctx.ad)"
+          "160 + (0.96 * ctx.bonus_ad) + (0.2 * ctx.missing_health)",
+          "280 + (0.96 * ctx.bonus_ad) + (0.24 * ctx.missing_health)",
+          "400 + (0.96 * ctx.bonus_ad) + (0.28 * ctx.missing_health)"
         ]
       }
     ],
@@ -165,6 +133,38 @@
           "16 + (0.096 * ctx.bonus_ad) + (0.2 * ctx.missing_health)",
           "28 + (0.096 * ctx.bonus_ad) + (0.24 * ctx.missing_health)",
           "40 + (0.096 * ctx.bonus_ad) + (0.28 * ctx.missing_health)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_3"
+      },
+      {
+        "name": "Super Mega Death Rocket!",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "200 + (1.2 * ctx.bonus_ad) + (0.25 * ctx.missing_health)",
+          "350 + (1.2 * ctx.bonus_ad) + (0.3 * ctx.missing_health)",
+          "500 + (1.2 * ctx.bonus_ad) + (0.35 * ctx.missing_health)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_4"
+      },
+      {
+        "name": "Super Mega Death Rocket!",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "20 + (0.12 * ctx.bonus_ad) + (0.25 * ctx.missing_health)",
+          "35 + (0.12 * ctx.bonus_ad) + (0.3 * ctx.missing_health)",
+          "50 + (0.12 * ctx.bonus_ad) + (0.35 * ctx.missing_health)"
         ]
       }
     ]

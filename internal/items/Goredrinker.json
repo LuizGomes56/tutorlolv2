@@ -10,6 +10,10 @@
       false
     ],
     [
+      "Aram",
+      false
+    ],
+    [
       "NexusBlitz",
       false
     ],
@@ -20,21 +24,26 @@
     [
       "Arena",
       false
-    ],
-    [
-      "Aram",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AbilityHaste",
+      "value": 20
+    },
+    {
+      "name": "AttackDamage",
+      "value": 55
+    },
+    {
+      "name": "Health",
+      "value": 400
+    },
+    {
+      "name": "Omnivamp",
+      "value": 8
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

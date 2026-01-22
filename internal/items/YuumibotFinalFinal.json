@@ -7,14 +7,6 @@
   "maps": [
     [
       "SummonersRift",
-      true
-    ],
-    [
-      "Tft",
-      false
-    ],
-    [
-      "SummonersRift",
       false
     ],
     [
@@ -22,11 +14,11 @@
       false
     ],
     [
-      "SummonersRift",
+      "NexusBlitz",
       false
     ],
     [
-      "NexusBlitz",
+      "Tft",
       false
     ],
     [

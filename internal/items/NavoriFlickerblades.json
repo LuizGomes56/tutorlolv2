@@ -10,19 +10,7 @@
       false
     ],
     [
-      "Arena",
-      true
-    ],
-    [
       "Aram",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "Tft",
       false
     ],
     [
@@ -30,8 +18,12 @@
       false
     ],
     [
-      "SummonersRift",
+      "Tft",
       false
+    ],
+    [
+      "Arena",
+      true
     ]
   ],
   "prettified_stats": [],

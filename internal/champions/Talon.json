@@ -71,6 +71,24 @@
     [
       {
         "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Noxian Diplomacy",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "97.5 + (1.5 * ctx.bonus_ad)",
+          "127.5 + (1.5 * ctx.bonus_ad)",
+          "157.5 + (1.5 * ctx.bonus_ad)",
+          "187.5 + (1.5 * ctx.bonus_ad)",
+          "217.5 + (1.5 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
         "name": "_2"
       },
       {
@@ -83,6 +101,24 @@
           "105 + ctx.bonus_ad",
           "125 + ctx.bonus_ad",
           "145 + ctx.bonus_ad"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Rake",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "50 + (0.4 * ctx.bonus_ad)",
+          "60 + (0.4 * ctx.bonus_ad)",
+          "70 + (0.4 * ctx.bonus_ad)",
+          "80 + (0.4 * ctx.bonus_ad)",
+          "90 + (0.4 * ctx.bonus_ad)"
         ]
       }
     ],
@@ -124,24 +160,6 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Noxian Diplomacy",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "97.5 + (1.5 * ctx.bonus_ad)",
-          "127.5 + (1.5 * ctx.bonus_ad)",
-          "157.5 + (1.5 * ctx.bonus_ad)",
-          "187.5 + (1.5 * ctx.bonus_ad)",
-          "217.5 + (1.5 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "R",
         "name": "_1"
       },
@@ -169,24 +187,6 @@
           "180 + (2 * ctx.bonus_ad)",
           "270 + (2 * ctx.bonus_ad)",
           "360 + (2 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_1"
-      },
-      {
-        "name": "Rake",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "50 + (0.4 * ctx.bonus_ad)",
-          "60 + (0.4 * ctx.bonus_ad)",
-          "70 + (0.4 * ctx.bonus_ad)",
-          "80 + (0.4 * ctx.bonus_ad)",
-          "90 + (0.4 * ctx.bonus_ad)"
         ]
       }
     ]

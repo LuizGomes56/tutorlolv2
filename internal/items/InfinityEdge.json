@@ -6,19 +6,7 @@
   "tier": 2,
   "maps": [
     [
-      "NexusBlitz",
-      true
-    ],
-    [
       "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Tft",
       false
     ],
     [
@@ -26,7 +14,11 @@
       true
     ],
     [
-      "SummonersRift",
+      "NexusBlitz",
+      true
+    ],
+    [
+      "Tft",
       false
     ],
     [
@@ -34,7 +26,20 @@
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AttackDamage",
+      "value": 75
+    },
+    {
+      "name": "CriticalStrikeChance",
+      "value": 25
+    },
+    {
+      "name": "CriticalStrikeDamage",
+      "value": 30
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

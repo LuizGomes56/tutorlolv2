@@ -14,27 +14,32 @@
       false
     ],
     [
+      "NexusBlitz",
+      false
+    ],
+    [
       "Tft",
       false
     ],
     [
       "Arena",
       true
-    ],
-    [
-      "NexusBlitz",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "Armor",
+      "value": 50
+    },
+    {
+      "name": "Health",
+      "value": 800
+    },
+    {
+      "name": "MagicResist",
+      "value": 100
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

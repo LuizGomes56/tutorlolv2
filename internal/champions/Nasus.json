@@ -70,19 +70,19 @@
   "abilities": [
     [
       {
-        "type": "E",
-        "name": "_2"
+        "type": "Q",
+        "name": "_1"
       },
       {
-        "name": "Spirit Fire",
-        "damage_type": "Magic",
+        "name": "Siphoning Strike",
+        "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "10 + (0.12 * ctx.ap)",
-          "16 + (0.12 * ctx.ap)",
-          "22 + (0.12 * ctx.ap)",
-          "28 + (0.12 * ctx.ap)",
-          "34 + (0.12 * ctx.ap)"
+          "40 + ctx.nasus_stacks",
+          "60 + ctx.nasus_stacks",
+          "80 + ctx.nasus_stacks",
+          "100 + ctx.nasus_stacks",
+          "120 + ctx.nasus_stacks"
         ]
       }
     ],
@@ -101,6 +101,24 @@
           "110 + (0.6 * ctx.ap)",
           "140 + (0.6 * ctx.ap)",
           "170 + (0.6 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_2"
+      },
+      {
+        "name": "Spirit Fire",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "10 + (0.12 * ctx.ap)",
+          "16 + (0.12 * ctx.ap)",
+          "22 + (0.12 * ctx.ap)",
+          "28 + (0.12 * ctx.ap)",
+          "34 + (0.12 * ctx.ap)"
         ]
       }
     ],
@@ -135,24 +153,6 @@
           "(0.015 * ctx.enemy_max_health) + (0.005 * 0.01 * ctx.ap)",
           "(0.02 * ctx.enemy_max_health) + (0.005 * 0.01 * ctx.ap)",
           "(0.025 * ctx.enemy_max_health) + (0.005 * 0.01 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Siphoning Strike",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "40 + ctx.nasus_stacks",
-          "60 + ctx.nasus_stacks",
-          "80 + ctx.nasus_stacks",
-          "100 + ctx.nasus_stacks",
-          "120 + ctx.nasus_stacks"
         ]
       }
     ],

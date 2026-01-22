@@ -25,7 +25,7 @@
     },
     "attackDamage": {
       "flat": 63.0,
-      "perLevel": 3.0
+      "perLevel": 5.0
     },
     "attackSpeed": {
       "flat": 0.625,
@@ -72,6 +72,60 @@
     [
       {
         "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "Shattered Earth",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "30 + (2.7 * ctx.bonus_ad) + (0.09 * ctx.bonus_health)",
+          "60 + (2.7 * ctx.bonus_ad) + (0.09 * ctx.bonus_health)",
+          "90 + (2.7 * ctx.bonus_ad) + (0.09 * ctx.bonus_health)",
+          "120 + (2.7 * ctx.bonus_ad) + (0.09 * ctx.bonus_health)",
+          "150 + (2.7 * ctx.bonus_ad) + (0.09 * ctx.bonus_health)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_3"
+      },
+      {
+        "name": "Shattered Earth",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "150",
+          "200",
+          "250",
+          "300",
+          "350"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_4"
+      },
+      {
+        "name": "Shattered Earth",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "0.2",
+          "0.25",
+          "0.3",
+          "0.35",
+          "0.4"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
         "name": "_5"
       },
       {
@@ -79,11 +133,11 @@
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "10 + (0.8 * ctx.bonus_ad) + (0.03 * ctx.bonus_health)",
-          "20 + (0.8 * ctx.bonus_ad) + (0.03 * ctx.bonus_health)",
-          "30 + (0.8 * ctx.bonus_ad) + (0.03 * ctx.bonus_health)",
-          "40 + (0.8 * ctx.bonus_ad) + (0.03 * ctx.bonus_health)",
-          "50 + (0.8 * ctx.bonus_ad) + (0.03 * ctx.bonus_health)"
+          "10 + (0.9 * ctx.bonus_ad) + (0.03 * ctx.bonus_health)",
+          "20 + (0.9 * ctx.bonus_ad) + (0.03 * ctx.bonus_health)",
+          "30 + (0.9 * ctx.bonus_ad) + (0.03 * ctx.bonus_health)",
+          "40 + (0.9 * ctx.bonus_ad) + (0.03 * ctx.bonus_health)",
+          "50 + (0.9 * ctx.bonus_ad) + (0.03 * ctx.bonus_health)"
         ]
       }
     ],
@@ -115,47 +169,11 @@
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "30 + (0.06 * ctx.max_health)",
-          "60 + (0.06 * ctx.max_health)",
-          "90 + (0.06 * ctx.max_health)",
-          "120 + (0.06 * ctx.max_health)",
-          "150 + (0.06 * ctx.max_health)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_2"
-      },
-      {
-        "name": "Shattered Earth",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "30 + (2.4 * ctx.bonus_ad) + (0.09 * ctx.bonus_health)",
-          "60 + (2.4 * ctx.bonus_ad) + (0.09 * ctx.bonus_health)",
-          "90 + (2.4 * ctx.bonus_ad) + (0.09 * ctx.bonus_health)",
-          "120 + (2.4 * ctx.bonus_ad) + (0.09 * ctx.bonus_health)",
-          "150 + (2.4 * ctx.bonus_ad) + (0.09 * ctx.bonus_health)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_3"
-      },
-      {
-        "name": "Shattered Earth",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "150",
-          "200",
-          "250",
-          "300",
-          "350"
+          "30 + (1.2 * ctx.bonus_ad) + (0.06 * ctx.max_health)",
+          "60 + (1.2 * ctx.bonus_ad) + (0.06 * ctx.max_health)",
+          "90 + (1.2 * ctx.bonus_ad) + (0.06 * ctx.max_health)",
+          "120 + (1.2 * ctx.bonus_ad) + (0.06 * ctx.max_health)",
+          "150 + (1.2 * ctx.bonus_ad) + (0.06 * ctx.max_health)"
         ]
       }
     ],
@@ -172,24 +190,6 @@
           "150 + ctx.ap",
           "250 + ctx.ap",
           "350 + ctx.ap"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_4"
-      },
-      {
-        "name": "Shattered Earth",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "0.2",
-          "0.25",
-          "0.3",
-          "0.35",
-          "0.4"
         ]
       }
     ]

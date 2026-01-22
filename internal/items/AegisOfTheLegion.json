@@ -6,19 +6,11 @@
   "tier": 2,
   "maps": [
     [
+      "SummonersRift",
+      false
+    ],
+    [
       "Aram",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
       false
     ],
     [
@@ -34,7 +26,20 @@
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AbilityHaste",
+      "value": 10
+    },
+    {
+      "name": "Armor",
+      "value": 25
+    },
+    {
+      "name": "MagicResist",
+      "value": 25
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

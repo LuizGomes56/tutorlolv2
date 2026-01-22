@@ -6,11 +6,15 @@
   "tier": 0,
   "maps": [
     [
-      "NexusBlitz",
+      "SummonersRift",
       false
     ],
     [
-      "Arena",
+      "Aram",
+      false
+    ],
+    [
+      "NexusBlitz",
       false
     ],
     [
@@ -18,23 +22,28 @@
       false
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "Aram",
+      "Arena",
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AbilityPower",
+      "value": 7
+    },
+    {
+      "name": "BaseHealthRegen",
+      "value": 50
+    },
+    {
+      "name": "GoldPer10Seconds",
+      "value": 2
+    },
+    {
+      "name": "Health",
+      "value": 50
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

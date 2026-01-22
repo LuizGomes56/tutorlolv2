@@ -7,22 +7,14 @@
   "maps": [
     [
       "SummonersRift",
-      false
+      true
+    ],
+    [
+      "Aram",
+      true
     ],
     [
       "NexusBlitz",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
       true
     ],
     [
@@ -30,11 +22,24 @@
       false
     ],
     [
-      "Aram",
-      true
+      "Arena",
+      false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AttackDamage",
+      "value": 50
+    },
+    {
+      "name": "AttackSpeed",
+      "value": 40
+    },
+    {
+      "name": "CriticalStrikeChance",
+      "value": 0
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

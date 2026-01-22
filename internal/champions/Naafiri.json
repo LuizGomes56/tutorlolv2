@@ -70,17 +70,127 @@
   "abilities": [
     [
       {
-        "type": "R",
+        "type": "Q",
         "name": "_1"
       },
       {
-        "name": "Hounds' Pursuit",
+        "name": "Darkin Daggers",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "150 + (1.2 * ctx.bonus_ad)",
-          "250 + (1.2 * ctx.bonus_ad)",
-          "350 + (1.2 * ctx.bonus_ad)"
+          "3.5 + (0.08 * ctx.bonus_ad)",
+          "6 + (0.08 * ctx.bonus_ad)",
+          "8.5 + (0.08 * ctx.bonus_ad)",
+          "11 + (0.08 * ctx.bonus_ad)",
+          "13.5 + (0.08 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "Darkin Daggers",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "35 + (0.2 * ctx.bonus_ad)",
+          "40 + (0.2 * ctx.bonus_ad)",
+          "45 + (0.2 * ctx.bonus_ad)",
+          "50 + (0.2 * ctx.bonus_ad)",
+          "55 + (0.2 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_3"
+      },
+      {
+        "name": "Darkin Daggers",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "35 + (0.8 * ctx.bonus_ad)",
+          "60 + (0.8 * ctx.bonus_ad)",
+          "85 + (0.8 * ctx.bonus_ad)",
+          "110 + (0.8 * ctx.bonus_ad)",
+          "135 + (0.8 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_4"
+      },
+      {
+        "name": "Darkin Daggers",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "70 + ctx.bonus_ad",
+          "100 + ctx.bonus_ad",
+          "130 + ctx.bonus_ad",
+          "160 + ctx.bonus_ad",
+          "190 + ctx.bonus_ad"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_5"
+      },
+      {
+        "name": "Darkin Daggers",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "60 + (1.4 * ctx.bonus_ad)",
+          "90 + (1.4 * ctx.bonus_ad)",
+          "120 + (1.4 * ctx.bonus_ad)",
+          "150 + (1.4 * ctx.bonus_ad)",
+          "180 + (1.4 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_6"
+      },
+      {
+        "name": "Darkin Daggers",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "130 + (2.4 * ctx.bonus_ad)",
+          "190 + (2.4 * ctx.bonus_ad)",
+          "250 + (2.4 * ctx.bonus_ad)",
+          "310 + (2.4 * ctx.bonus_ad)",
+          "370 + (2.4 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_7"
+      },
+      {
+        "name": "Darkin Daggers",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "30 + (0.4 * ctx.bonus_ad)",
+          "45 + (0.4 * ctx.bonus_ad)",
+          "60 + (0.4 * ctx.bonus_ad)",
+          "75 + (0.4 * ctx.bonus_ad)",
+          "90 + (0.4 * ctx.bonus_ad)"
         ]
       }
     ],
@@ -122,107 +232,19 @@
     ],
     [
       {
-        "type": "R",
+        "type": "E",
         "name": "_2"
       },
       {
-        "name": "Hounds' Pursuit",
+        "name": "Eviscerate",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "15 + (0.12 * ctx.bonus_ad)",
-          "25 + (0.12 * ctx.bonus_ad)",
-          "35 + (0.12 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_3"
-      },
-      {
-        "name": "Darkin Daggers",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "35 + (0.8 * ctx.bonus_ad)",
           "60 + (0.8 * ctx.bonus_ad)",
           "85 + (0.8 * ctx.bonus_ad)",
           "110 + (0.8 * ctx.bonus_ad)",
-          "135 + (0.8 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_6"
-      },
-      {
-        "name": "Darkin Daggers",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "130 + (2.4 * ctx.bonus_ad)",
-          "190 + (2.4 * ctx.bonus_ad)",
-          "250 + (2.4 * ctx.bonus_ad)",
-          "310 + (2.4 * ctx.bonus_ad)",
-          "370 + (2.4 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Darkin Daggers",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "3.5 + (0.08 * ctx.bonus_ad)",
-          "6 + (0.08 * ctx.bonus_ad)",
-          "8.5 + (0.08 * ctx.bonus_ad)",
-          "11 + (0.08 * ctx.bonus_ad)",
-          "13.5 + (0.08 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_5"
-      },
-      {
-        "name": "Darkin Daggers",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "60 + (1.4 * ctx.bonus_ad)",
-          "90 + (1.4 * ctx.bonus_ad)",
-          "120 + (1.4 * ctx.bonus_ad)",
-          "150 + (1.4 * ctx.bonus_ad)",
-          "180 + (1.4 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_4"
-      },
-      {
-        "name": "Darkin Daggers",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "70 + ctx.bonus_ad",
-          "100 + ctx.bonus_ad",
-          "130 + ctx.bonus_ad",
-          "160 + ctx.bonus_ad",
-          "190 + ctx.bonus_ad"
+          "135 + (0.8 * ctx.bonus_ad)",
+          "160 + (0.8 * ctx.bonus_ad)"
         ]
       }
     ],
@@ -246,55 +268,33 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_7"
+        "type": "R",
+        "name": "_1"
       },
       {
-        "name": "Darkin Daggers",
+        "name": "Hounds' Pursuit",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "30 + (0.4 * ctx.bonus_ad)",
-          "45 + (0.4 * ctx.bonus_ad)",
-          "60 + (0.4 * ctx.bonus_ad)",
-          "75 + (0.4 * ctx.bonus_ad)",
-          "90 + (0.4 * ctx.bonus_ad)"
+          "150 + (1.2 * ctx.bonus_ad)",
+          "250 + (1.2 * ctx.bonus_ad)",
+          "350 + (1.2 * ctx.bonus_ad)"
         ]
       }
     ],
     [
       {
-        "type": "E",
+        "type": "R",
         "name": "_2"
       },
       {
-        "name": "Eviscerate",
+        "name": "Hounds' Pursuit",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "60 + (0.8 * ctx.bonus_ad)",
-          "85 + (0.8 * ctx.bonus_ad)",
-          "110 + (0.8 * ctx.bonus_ad)",
-          "135 + (0.8 * ctx.bonus_ad)",
-          "160 + (0.8 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_2"
-      },
-      {
-        "name": "Darkin Daggers",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "35 + (0.2 * ctx.bonus_ad)",
-          "40 + (0.2 * ctx.bonus_ad)",
-          "45 + (0.2 * ctx.bonus_ad)",
-          "50 + (0.2 * ctx.bonus_ad)",
-          "55 + (0.2 * ctx.bonus_ad)"
+          "15 + (0.12 * ctx.bonus_ad)",
+          "25 + (0.12 * ctx.bonus_ad)",
+          "35 + (0.12 * ctx.bonus_ad)"
         ]
       }
     ]

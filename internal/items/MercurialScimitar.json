@@ -7,22 +7,10 @@
   "maps": [
     [
       "SummonersRift",
-      false
-    ],
-    [
-      "Tft",
-      false
-    ],
-    [
-      "SummonersRift",
       true
     ],
     [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
+      "Aram",
       true
     ],
     [
@@ -30,11 +18,28 @@
       true
     ],
     [
-      "Aram",
-      true
+      "Tft",
+      false
+    ],
+    [
+      "Arena",
+      false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AttackDamage",
+      "value": 50
+    },
+    {
+      "name": "LifeSteal",
+      "value": 10
+    },
+    {
+      "name": "MagicResist",
+      "value": 35
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

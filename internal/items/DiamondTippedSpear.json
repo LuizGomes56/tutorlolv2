@@ -10,11 +10,7 @@
       false
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
+      "Aram",
       false
     ],
     [
@@ -28,13 +24,18 @@
     [
       "Arena",
       true
-    ],
-    [
-      "Aram",
-      false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AdaptiveForce",
+      "value": 75
+    },
+    {
+      "name": "AttackSpeed",
+      "value": 30
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

@@ -70,19 +70,37 @@
   "abilities": [
     [
       {
-        "type": "E",
+        "type": "Q",
         "name": "_1"
       },
       {
-        "name": "Lightning Rush",
+        "name": "Thundering Shuriken",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "80 + (0.8 * ctx.ap)",
+          "75 + (0.75 * ctx.ap)",
+          "125 + (0.75 * ctx.ap)",
+          "175 + (0.75 * ctx.ap)",
+          "225 + (0.75 * ctx.ap)",
+          "275 + (0.75 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Electrical Surge",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "70 + (0.8 * ctx.ap)",
+          "95 + (0.8 * ctx.ap)",
           "120 + (0.8 * ctx.ap)",
-          "160 + (0.8 * ctx.ap)",
-          "200 + (0.8 * ctx.ap)",
-          "240 + (0.8 * ctx.ap)"
+          "145 + (0.8 * ctx.ap)",
+          "170 + (0.8 * ctx.ap)"
         ]
       }
     ],
@@ -101,6 +119,24 @@
           "55 + ctx.bonus_ad + (0.35 * ctx.ap)",
           "65 + (1.1 * ctx.bonus_ad) + (0.35 * ctx.ap)",
           "75 + (1.2 * ctx.bonus_ad) + (0.35 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Lightning Rush",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "80 + (0.8 * ctx.ap)",
+          "120 + (0.8 * ctx.ap)",
+          "160 + (0.8 * ctx.ap)",
+          "200 + (0.8 * ctx.ap)",
+          "240 + (0.8 * ctx.ap)"
         ]
       }
     ],
@@ -151,42 +187,6 @@
           "40 + (0.225 * ctx.ap)",
           "75 + (0.225 * ctx.ap)",
           "110 + (0.225 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Thundering Shuriken",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "75 + (0.75 * ctx.ap)",
-          "125 + (0.75 * ctx.ap)",
-          "175 + (0.75 * ctx.ap)",
-          "225 + (0.75 * ctx.ap)",
-          "275 + (0.75 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_1"
-      },
-      {
-        "name": "Electrical Surge",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "70 + (0.8 * ctx.ap)",
-          "95 + (0.8 * ctx.ap)",
-          "120 + (0.8 * ctx.ap)",
-          "145 + (0.8 * ctx.ap)",
-          "170 + (0.8 * ctx.ap)"
         ]
       }
     ]

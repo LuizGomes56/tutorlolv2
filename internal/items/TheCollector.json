@@ -6,11 +6,7 @@
   "tier": 0,
   "maps": [
     [
-      "NexusBlitz",
-      false
-    ],
-    [
-      "Arena",
+      "SummonersRift",
       false
     ],
     [
@@ -18,7 +14,7 @@
       false
     ],
     [
-      "SummonersRift",
+      "NexusBlitz",
       false
     ],
     [
@@ -26,15 +22,24 @@
       false
     ],
     [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
+      "Arena",
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AttackDamage",
+      "value": 50
+    },
+    {
+      "name": "CriticalStrikeChance",
+      "value": 25
+    },
+    {
+      "name": "Lethality",
+      "value": 10
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

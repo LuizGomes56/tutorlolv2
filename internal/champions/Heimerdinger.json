@@ -73,6 +73,24 @@
     [
       {
         "type": "W",
+        "name": "_2"
+      },
+      {
+        "name": "Hextech Micro-Rockets",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "160 + (1.99 * ctx.ap)",
+          "245",
+          "330",
+          "415",
+          "500"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
         "name": "_3"
       },
       {
@@ -85,24 +103,6 @@
           "170",
           "215",
           "260"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_6"
-      },
-      {
-        "name": "Hextech Micro-Rockets",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "120 + (1.44 * ctx.ap)",
-          "180",
-          "240",
-          "300",
-          "360"
         ]
       }
     ],
@@ -145,6 +145,24 @@
     [
       {
         "type": "W",
+        "name": "_6"
+      },
+      {
+        "name": "Hextech Micro-Rockets",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "120 + (1.44 * ctx.ap)",
+          "180",
+          "240",
+          "300",
+          "360"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
         "name": "_7"
       },
       {
@@ -175,24 +193,6 @@
           "90",
           "115",
           "140"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_2"
-      },
-      {
-        "name": "Hextech Micro-Rockets",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "160 + (1.99 * ctx.ap)",
-          "245",
-          "330",
-          "415",
-          "500"
         ]
       }
     ],

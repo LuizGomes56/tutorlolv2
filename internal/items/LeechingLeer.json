@@ -7,22 +7,14 @@
   "maps": [
     [
       "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
       false
-    ],
-    [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
     ],
     [
       "Aram",
+      true
+    ],
+    [
+      "NexusBlitz",
       true
     ],
     [
@@ -30,11 +22,24 @@
       false
     ],
     [
-      "NexusBlitz",
-      true
+      "Arena",
+      false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AbilityPower",
+      "value": 20
+    },
+    {
+      "name": "Health",
+      "value": 250
+    },
+    {
+      "name": "Omnivamp",
+      "value": 5
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

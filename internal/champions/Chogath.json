@@ -70,35 +70,19 @@
   "abilities": [
     [
       {
-        "type": "E",
-        "name": "_2"
-      },
-      {
-        "name": "Vorpal Spikes",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "0.3",
-          "0.35",
-          "0.4",
-          "0.45",
-          "0.5"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
+        "type": "Q",
         "name": "_1"
       },
       {
-        "name": "Feast",
-        "damage_type": "True",
+        "name": "Rupture",
+        "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "300 + (0.5 * ctx.ap) + (0.1 * ctx.bonus_health)",
-          "475 + (0.5 * ctx.ap) + (0.1 * ctx.bonus_health)",
-          "650 + (0.5 * ctx.ap) + (0.1 * ctx.bonus_health)"
+          "80 + ctx.ap",
+          "135 + ctx.ap",
+          "190 + ctx.ap",
+          "245 + ctx.ap",
+          "300 + ctx.ap"
         ]
       }
     ],
@@ -140,6 +124,76 @@
     ],
     [
       {
+        "type": "E",
+        "name": "_2"
+      },
+      {
+        "name": "Vorpal Spikes",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "100 + (0.3 * ctx.ap)",
+          "150 + (0.3 * ctx.ap)",
+          "200 + (0.3 * ctx.ap)",
+          "250 + (0.3 * ctx.ap)",
+          "300 + (0.3 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_3"
+      },
+      {
+        "name": "Vorpal Spikes",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "60 + (0.9 * ctx.ap) + (0.075 * ctx.enemy_max_health) + (0.015 * ctx.chogath_stacks)",
+          "120 + (0.9 * ctx.ap) + (0.0855 * ctx.enemy_max_health) + (0.015 * ctx.chogath_stacks)",
+          "180 + (0.9 * ctx.ap) + (0.096 * ctx.enemy_max_health) + (0.015 * ctx.chogath_stacks)",
+          "240 + (0.9 * ctx.ap) + (0.1065 * ctx.enemy_max_health) + (0.015 * ctx.chogath_stacks)",
+          "300 + (0.9 * ctx.ap) + (0.11699999999999999 * ctx.enemy_max_health) + (0.015 * ctx.chogath_stacks)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_4"
+      },
+      {
+        "name": "Vorpal Spikes",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "300 + (0.9 * ctx.ap)",
+          "450 + (0.9 * ctx.ap)",
+          "600 + (0.9 * ctx.ap)",
+          "750 + (0.9 * ctx.ap)",
+          "900 + (0.9 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Feast",
+        "damage_type": "True",
+        "attributes": "Undefined",
+        "damage": [
+          "300 + (0.5 * ctx.ap) + (0.1 * ctx.bonus_health)",
+          "475 + (0.5 * ctx.ap) + (0.1 * ctx.bonus_health)",
+          "650 + (0.5 * ctx.ap) + (0.1 * ctx.bonus_health)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "R",
         "name": "_2"
       },
@@ -151,24 +205,6 @@
           "1200 + (0.5 * ctx.ap) + (0.1 * ctx.bonus_health)",
           "1200 + (0.5 * ctx.ap) + (0.1 * ctx.bonus_health)",
           "1200 + (0.5 * ctx.ap) + (0.1 * ctx.bonus_health)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Rupture",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "80 + ctx.ap",
-          "135 + ctx.ap",
-          "190 + ctx.ap",
-          "245 + ctx.ap",
-          "300 + ctx.ap"
         ]
       }
     ]

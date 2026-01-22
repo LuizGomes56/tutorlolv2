@@ -24,17 +24,22 @@
     [
       "Arena",
       false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AttackSpeed",
+      "value": 50
+    },
+    {
+      "name": "MagicResist",
+      "value": 45
+    },
+    {
+      "name": "Tenacity",
+      "value": 20
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

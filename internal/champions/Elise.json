@@ -70,19 +70,19 @@
   "abilities": [
     [
       {
-        "type": "W",
-        "name": "_1"
+        "type": "Q",
+        "name": "_3"
       },
       {
-        "name": "Volatile Spiderling",
+        "name": "Neurotoxin",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "60 + (0.75 * ctx.ap)",
-          "100 + (0.75 * ctx.ap)",
-          "140 + (0.75 * ctx.ap)",
-          "180 + (0.75 * ctx.ap)",
-          "220 + (0.75 * ctx.ap)"
+          "65 + (0.9 * ctx.ap)",
+          "85 + (0.9 * ctx.ap)",
+          "105 + (0.9 * ctx.ap)",
+          "125 + (0.9 * ctx.ap)",
+          "145 + (0.9 * ctx.ap)"
         ]
       }
     ],
@@ -106,19 +106,19 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_3"
+        "type": "W",
+        "name": "_1"
       },
       {
-        "name": "Neurotoxin",
+        "name": "Volatile Spiderling",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "75",
-          "100",
-          "125",
-          "150",
-          "175"
+          "60 + (0.75 * ctx.ap)",
+          "100 + (0.75 * ctx.ap)",
+          "140 + (0.75 * ctx.ap)",
+          "180 + (0.75 * ctx.ap)",
+          "220 + (0.75 * ctx.ap)"
         ]
       }
     ]

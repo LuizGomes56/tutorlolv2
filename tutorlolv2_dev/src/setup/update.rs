@@ -11,7 +11,11 @@ use crate::{
 };
 use once_cell::sync::Lazy;
 use regex::Regex;
-use std::{collections::HashMap, fs, path::Path};
+use std::{
+    collections::{BTreeMap, BTreeSet, HashMap},
+    fs,
+    path::Path,
+};
 use tutorlolv2_fmt::{pascal_case, to_ssnake};
 use tutorlolv2_gen::{GameMap, ItemId, StatName};
 
@@ -110,6 +114,8 @@ pub fn setup_internal_items() -> MayFail {
                     .maps
                     .into_iter()
                     .map(|(map_id, is_available)| (GameMap::from_u8(map_id), is_available))
+                    .collect::<BTreeMap<_, _>>()
+                    .into_iter()
                     .collect(),
                 sell: riot_cdn_item.gold.sell,
                 purchasable: riot_cdn_item.gold.purchasable,
@@ -135,7 +141,7 @@ pub fn setup_internal_items() -> MayFail {
                 generator_file,
             )?;
 
-            Ok(())
+            MayFail::Ok(())
         },
     )
 }
@@ -264,5 +270,9 @@ fn pretiffy_items(data: &RiotCdnItem) -> MayFail<Vec<StatName>> {
         .collect::<Vec<_>>()
         .join(",");
 
-    Ok(serde_json::from_str::<Vec<StatName>>(&format!("[{json}]"))?)
+    Ok(
+        serde_json::from_str::<BTreeSet<StatName>>(&format!("[{json}]"))?
+            .into_iter()
+            .collect(),
+    )
 }

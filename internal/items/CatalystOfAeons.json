@@ -14,10 +14,6 @@
       true
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
       "NexusBlitz",
       true
     ],
@@ -28,13 +24,18 @@
     [
       "Arena",
       false
-    ],
-    [
-      "SummonersRift",
-      true
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "Health",
+      "value": 300
+    },
+    {
+      "name": "Mana",
+      "value": 375
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

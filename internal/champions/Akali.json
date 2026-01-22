@@ -71,76 +71,6 @@
   "abilities": [
     [
       {
-        "type": "R",
-        "name": "_2Max"
-      },
-      {
-        "name": "Perfect Execution",
-        "damage_type": "Magic",
-        "attributes": "Area",
-        "damage": [
-          "70 + (0.3 * ctx.ap)",
-          "140 + (0.3 * ctx.ap)",
-          "210 + (0.3 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "Void"
-      },
-      {
-        "name": "Five Point Strike",
-        "damage_type": "Magic",
-        "attributes": "Area",
-        "damage": [
-          "45 + (0.65 * ctx.ad) + (0.6 * ctx.ap)",
-          "70 + (0.65 * ctx.ad) + (0.6 * ctx.ap)",
-          "95 + (0.65 * ctx.ad) + (0.6 * ctx.ap)",
-          "120 + (0.65 * ctx.ad) + (0.6 * ctx.ap)",
-          "145 + (0.65 * ctx.ad) + (0.6 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "Max"
-      },
-      {
-        "name": "Shuriken Flip",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "70 + ctx.ad + (1.1 * ctx.ap)",
-          "140 + ctx.ad + (1.1 * ctx.ap)",
-          "210 + ctx.ad + (1.1 * ctx.ap)",
-          "280 + ctx.ad + (1.1 * ctx.ap)",
-          "350 + ctx.ad + (1.1 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_1Min"
-      },
-      {
-        "name": "Shuriken Flip",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "21 + (0.3 * ctx.ad) + (0.33 * ctx.ap)",
-          "42 + (0.3 * ctx.ad) + (0.33 * ctx.ap)",
-          "63 + (0.3 * ctx.ad) + (0.33 * ctx.ap)",
-          "84 + (0.3 * ctx.ad) + (0.33 * ctx.ap)",
-          "105 + (0.3 * ctx.ad) + (0.33 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "P",
         "name": "Void"
       },
@@ -167,6 +97,78 @@
           "164.7058823529412 + (0.6 * ctx.bonus_ad) + (0.55 * ctx.ap)",
           "173.35294117647058 + (0.6 * ctx.bonus_ad) + (0.55 * ctx.ap)",
           "182 + (0.6 * ctx.bonus_ad) + (0.55 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "Void"
+      },
+      {
+        "name": "Five Point Strike",
+        "damage_type": "Magic",
+        "attributes": "Area",
+        "damage": [
+          "45 + (0.65 * ctx.ad) + (0.6 * ctx.ap)",
+          "70 + (0.65 * ctx.ad) + (0.6 * ctx.ap)",
+          "95 + (0.65 * ctx.ad) + (0.6 * ctx.ap)",
+          "120 + (0.65 * ctx.ad) + (0.6 * ctx.ap)",
+          "145 + (0.65 * ctx.ad) + (0.6 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1Min"
+      },
+      {
+        "name": "Shuriken Flip",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "21 + (0.3 * ctx.ad) + (0.33 * ctx.ap)",
+          "42 + (0.3 * ctx.ad) + (0.33 * ctx.ap)",
+          "63 + (0.3 * ctx.ad) + (0.33 * ctx.ap)",
+          "84 + (0.3 * ctx.ad) + (0.33 * ctx.ap)",
+          "105 + (0.3 * ctx.ad) + (0.33 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "Max"
+      },
+      {
+        "name": "Shuriken Flip",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "70 + ctx.ad + (1.1 * ctx.ap)",
+          "140 + ctx.ad + (1.1 * ctx.ap)",
+          "210 + ctx.ad + (1.1 * ctx.ap)",
+          "280 + ctx.ad + (1.1 * ctx.ap)",
+          "350 + ctx.ad + (1.1 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1Max"
+      },
+      {
+        "name": "Shuriken Flip",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "49 + (0.7 * ctx.ad) + (0.77 * ctx.ap)",
+          "98 + (0.7 * ctx.ad) + (0.77 * ctx.ap)",
+          "147 + (0.7 * ctx.ad) + (0.77 * ctx.ap)",
+          "196 + (0.7 * ctx.ad) + (0.77 * ctx.ap)",
+          "245 + (0.7 * ctx.ad) + (0.77 * ctx.ap)"
         ]
       }
     ],
@@ -204,19 +206,17 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_1Max"
+        "type": "R",
+        "name": "_2Max"
       },
       {
-        "name": "Shuriken Flip",
+        "name": "Perfect Execution",
         "damage_type": "Magic",
-        "attributes": "Undefined",
+        "attributes": "Area",
         "damage": [
-          "49 + (0.7 * ctx.ad) + (0.77 * ctx.ap)",
-          "98 + (0.7 * ctx.ad) + (0.77 * ctx.ap)",
-          "147 + (0.7 * ctx.ad) + (0.77 * ctx.ap)",
-          "196 + (0.7 * ctx.ad) + (0.77 * ctx.ap)",
-          "245 + (0.7 * ctx.ad) + (0.77 * ctx.ap)"
+          "70 + (0.3 * ctx.ap)",
+          "140 + (0.3 * ctx.ap)",
+          "210 + (0.3 * ctx.ap)"
         ]
       }
     ]

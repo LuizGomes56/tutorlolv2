@@ -89,24 +89,6 @@
     [
       {
         "type": "W",
-        "name": "_2"
-      },
-      {
-        "name": "Wolf's Frenzy",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "37.5 + (0.3 * ctx.bonus_ad) + (0.3 * ctx.ap) + (0.0225 * ctx.current_health) + (0.015 * ctx.kindred_stacks)",
-          "45 + (0.3 * ctx.bonus_ad) + (0.3 * ctx.ap) + (0.0225 * ctx.current_health) + (0.015 * ctx.kindred_stacks)",
-          "52.5 + (0.3 * ctx.bonus_ad) + (0.3 * ctx.ap) + (0.0225 * ctx.current_health) + (0.015 * ctx.kindred_stacks)",
-          "60 + (0.3 * ctx.bonus_ad) + (0.3 * ctx.ap) + (0.0225 * ctx.current_health) + (0.015 * ctx.kindred_stacks)",
-          "67.5 + (0.3 * ctx.bonus_ad) + (0.3 * ctx.ap) + (0.0225 * ctx.current_health) + (0.015 * ctx.kindred_stacks)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
         "name": "_1"
       },
       {
@@ -119,6 +101,24 @@
           "35 + (0.2 * ctx.bonus_ad) + (0.2 * ctx.ap) + (0.015 * ctx.current_health) + (0.01 * ctx.kindred_stacks)",
           "40 + (0.2 * ctx.bonus_ad) + (0.2 * ctx.ap) + (0.015 * ctx.current_health) + (0.01 * ctx.kindred_stacks)",
           "45 + (0.2 * ctx.bonus_ad) + (0.2 * ctx.ap) + (0.015 * ctx.current_health) + (0.01 * ctx.kindred_stacks)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_2"
+      },
+      {
+        "name": "Wolf's Frenzy",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "37.5 + (0.3 * ctx.bonus_ad) + (0.3 * ctx.ap) + (0.0225 * ctx.current_health) + (0.015 * ctx.kindred_stacks)",
+          "45 + (0.3 * ctx.bonus_ad) + (0.3 * ctx.ap) + (0.0225 * ctx.current_health) + (0.015 * ctx.kindred_stacks)",
+          "52.5 + (0.3 * ctx.bonus_ad) + (0.3 * ctx.ap) + (0.0225 * ctx.current_health) + (0.015 * ctx.kindred_stacks)",
+          "60 + (0.3 * ctx.bonus_ad) + (0.3 * ctx.ap) + (0.0225 * ctx.current_health) + (0.015 * ctx.kindred_stacks)",
+          "67.5 + (0.3 * ctx.bonus_ad) + (0.3 * ctx.ap) + (0.0225 * ctx.current_health) + (0.015 * ctx.kindred_stacks)"
         ]
       }
     ]

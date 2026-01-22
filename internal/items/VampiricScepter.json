@@ -14,15 +14,7 @@
       false
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
       "NexusBlitz",
-      false
-    ],
-    [
-      "SummonersRift",
       false
     ],
     [
@@ -34,7 +26,16 @@
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AttackDamage",
+      "value": 15
+    },
+    {
+      "name": "LifeSteal",
+      "value": 7
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

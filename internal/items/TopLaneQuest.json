@@ -1,16 +1,16 @@
 {
-  "riot_id": 1221,
+  "riot_id": 1222,
   "name": "Top Lane Quest",
   "price": 0,
   "sell": 0,
   "tier": 0,
   "maps": [
     [
-      "Tft",
+      "SummonersRift",
       false
     ],
     [
-      "SummonersRift",
+      "Aram",
       false
     ],
     [
@@ -18,15 +18,7 @@
       false
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "Aram",
+      "Tft",
       false
     ],
     [

@@ -143,24 +143,6 @@
     [
       {
         "type": "Q",
-        "name": "_6"
-      },
-      {
-        "name": "Glitterlance",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "63 + (0.525 * ctx.ap)",
-          "99.75 + (0.525 * ctx.ap)",
-          "136.5 + (0.525 * ctx.ap)",
-          "173.25 + (0.525 * ctx.ap)",
-          "210 + (0.525 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
         "name": "_5"
       },
       {
@@ -173,6 +155,24 @@
           "195 + (0.75 * ctx.ap)",
           "247.5 + (0.75 * ctx.ap)",
           "300 + (0.75 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_6"
+      },
+      {
+        "name": "Glitterlance",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "63 + (0.525 * ctx.ap)",
+          "99.75 + (0.525 * ctx.ap)",
+          "136.5 + (0.525 * ctx.ap)",
+          "173.25 + (0.525 * ctx.ap)",
+          "210 + (0.525 * ctx.ap)"
         ]
       }
     ],

@@ -14,10 +14,6 @@
       false
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
       "NexusBlitz",
       false
     ],
@@ -26,15 +22,24 @@
       false
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
       "Arena",
       true
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "Armor",
+      "value": 55
+    },
+    {
+      "name": "AttackSpeed",
+      "value": 50
+    },
+    {
+      "name": "MoveSpeed",
+      "value": 5
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

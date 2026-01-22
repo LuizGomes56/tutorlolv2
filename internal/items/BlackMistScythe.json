@@ -10,18 +10,6 @@
       false
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "Tft",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
       "Aram",
       false
     ],
@@ -30,11 +18,32 @@
       false
     ],
     [
+      "Tft",
+      false
+    ],
+    [
       "Arena",
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AttackDamage",
+      "value": 20
+    },
+    {
+      "name": "BaseManaRegen",
+      "value": 100
+    },
+    {
+      "name": "GoldPer10Seconds",
+      "value": 3
+    },
+    {
+      "name": "Health",
+      "value": 75
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

@@ -6,19 +6,11 @@
   "tier": 3,
   "maps": [
     [
+      "SummonersRift",
+      true
+    ],
+    [
       "Aram",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Tft",
-      false
-    ],
-    [
-      "SummonersRift",
       true
     ],
     [
@@ -26,15 +18,24 @@
       true
     ],
     [
-      "Arena",
+      "Tft",
       false
     ],
     [
-      "SummonersRift",
+      "Arena",
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "Armor",
+      "value": 75
+    },
+    {
+      "name": "Health",
+      "value": 350
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

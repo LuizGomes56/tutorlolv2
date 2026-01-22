@@ -14,27 +14,24 @@
       true
     ],
     [
-      "Tft",
-      false
-    ],
-    [
       "NexusBlitz",
       true
     ],
     [
+      "Tft",
+      false
+    ],
+    [
       "Arena",
       false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AttackDamage",
+      "value": 20
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

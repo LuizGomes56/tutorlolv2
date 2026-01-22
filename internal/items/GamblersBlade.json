@@ -6,22 +6,6 @@
   "tier": 0,
   "maps": [
     [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "Tft",
-      false
-    ],
-    [
       "SummonersRift",
       false
     ],
@@ -32,9 +16,38 @@
     [
       "NexusBlitz",
       false
+    ],
+    [
+      "Tft",
+      false
+    ],
+    [
+      "Arena",
+      false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AbilityHaste",
+      "value": 10
+    },
+    {
+      "name": "AdaptiveForce",
+      "value": 55
+    },
+    {
+      "name": "Lethality",
+      "value": 15
+    },
+    {
+      "name": "MagicPenetration",
+      "value": 15
+    },
+    {
+      "name": "MoveSpeed",
+      "value": 15
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

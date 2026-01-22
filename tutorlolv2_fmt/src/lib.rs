@@ -145,10 +145,15 @@ pub fn to_ssnake(value: &str) -> String {
 /// Invokes `rustfmt` program to the input [`str`], with some defined `width`,
 /// often set to be `80`. Returns the formatted code or an empty [`String`] if
 /// it emits an error or warning
-pub fn rustfmt(src: &str) -> String {
+pub fn rustfmt(src: &str, width: Option<usize>) -> String {
     let try_run = || -> Result<String, Box<dyn std::error::Error>> {
         let mut child = Command::new("rustfmt")
-            .args(&["--emit", "stdout", "--config", "max_width=48"])
+            .args(&[
+                "--emit",
+                "stdout",
+                "--config",
+                &format!("max_width={w}", w = width.unwrap_or(80)),
+            ])
             .stdin(Stdio::piped())
             .stdout(Stdio::piped())
             .spawn()?;

@@ -150,7 +150,7 @@ impl ItemFactory {
             }}"
         );
 
-        let formatted = rustfmt(&generated_content);
+        let formatted = rustfmt(&generated_content, None);
         Ok(match formatted.is_empty() {
             true => generated_content,
             false => formatted,

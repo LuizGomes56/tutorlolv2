@@ -90,25 +90,6 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
-      },
-      {
-        "name": "Thundering Blow",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "200",
-          "300",
-          "400",
-          "500",
-          "600",
-          "700"
-        ]
-      }
-    ],
-    [
-      {
         "type": "W",
         "name": "_3"
       },
@@ -128,6 +109,44 @@
     ],
     [
       {
+        "type": "W",
+        "name": "_4"
+      },
+      {
+        "name": "Lightning Field",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "140 + ctx.ap",
+          "200 + ctx.ap",
+          "260 + ctx.ap",
+          "320 + ctx.ap",
+          "380 + ctx.ap",
+          "440 + ctx.ap"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Thundering Blow",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "200",
+          "300",
+          "400",
+          "500",
+          "600",
+          "700"
+        ]
+      }
+    ],
+    [
+      {
         "type": "E",
         "name": "_2"
       },
@@ -142,25 +161,6 @@
           "(0.16399999999999998 * ctx.enemy_max_health) + ctx.bonus_ad",
           "(0.192 * ctx.enemy_max_health) + ctx.bonus_ad",
           "(0.22 * ctx.enemy_max_health) + ctx.bonus_ad"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_2"
-      },
-      {
-        "name": "Lightning Field",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "140 + ctx.ap",
-          "200 + ctx.ap",
-          "260 + ctx.ap",
-          "320 + ctx.ap",
-          "380 + ctx.ap",
-          "440 + ctx.ap"
         ]
       }
     ]

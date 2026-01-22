@@ -70,6 +70,24 @@
   "abilities": [
     [
       {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Shield of Daybreak",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "10 + (0.3 * ctx.ap)",
+          "35 + (0.3 * ctx.ap)",
+          "60 + (0.3 * ctx.ap)",
+          "85 + (0.3 * ctx.ap)",
+          "110 + (0.3 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "W",
         "name": "_1"
       },
@@ -101,24 +119,6 @@
           "115 + (0.4 * ctx.ap)",
           "145 + (0.4 * ctx.ap)",
           "175 + (0.4 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Shield of Daybreak",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "10 + (0.3 * ctx.ap)",
-          "35 + (0.3 * ctx.ap)",
-          "60 + (0.3 * ctx.ap)",
-          "85 + (0.3 * ctx.ap)",
-          "110 + (0.3 * ctx.ap)"
         ]
       }
     ],

@@ -10,31 +10,32 @@
       true
     ],
     [
-      "Tft",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
       "Aram",
       true
     ],
     [
-      "Arena",
+      "NexusBlitz",
+      true
+    ],
+    [
+      "Tft",
       false
     ],
     [
-      "NexusBlitz",
-      true
+      "Arena",
+      false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AbilityHaste",
+      "value": 10
+    },
+    {
+      "name": "Health",
+      "value": 200
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

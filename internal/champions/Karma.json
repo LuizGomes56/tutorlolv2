@@ -91,24 +91,6 @@
     [
       {
         "type": "W",
-        "name": "_2"
-      },
-      {
-        "name": "Focused Resolve",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "80 + (0.9 * ctx.ap)",
-          "130",
-          "180",
-          "230",
-          "280"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
         "name": "_1"
       },
       {
@@ -121,6 +103,24 @@
           "90",
           "115",
           "140"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_2"
+      },
+      {
+        "name": "Focused Resolve",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "80 + (0.9 * ctx.ap)",
+          "130",
+          "180",
+          "230",
+          "280"
         ]
       }
     ]

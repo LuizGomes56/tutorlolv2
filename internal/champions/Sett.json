@@ -70,51 +70,19 @@
   "abilities": [
     [
       {
-        "type": "R",
-        "name": "_2"
-      },
-      {
-        "name": "The Show Stopper",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "50 + (0.3 * ctx.bonus_ad) + (0.1 * ctx.enemy_bonus_health)",
-          "75 + (0.3 * ctx.bonus_ad) + (0.125 * ctx.enemy_bonus_health)",
-          "100 + (0.3 * ctx.bonus_ad) + (0.15 * ctx.enemy_bonus_health)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
+        "type": "Q",
         "name": "_1"
       },
       {
-        "name": "Facebreaker",
+        "name": "Knuckle Down",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "150 + (0.6 * ctx.ad)",
-          "170 + (0.6 * ctx.ad)",
-          "190 + (0.6 * ctx.ad)",
-          "210 + (0.6 * ctx.ad)",
-          "230 + (0.6 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_1"
-      },
-      {
-        "name": "The Show Stopper",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "200 + (1.2 * ctx.bonus_ad) + (0.4 * ctx.enemy_bonus_health)",
-          "300 + (1.2 * ctx.bonus_ad) + (0.5 * ctx.enemy_bonus_health)",
-          "400 + (1.2 * ctx.bonus_ad) + (0.6 * ctx.enemy_bonus_health)"
+          "10 + (0.01 * ctx.enemy_max_health) + (1 / 1.5 / 2 / 2.5 / 3% 0.01 * ctx.ad)",
+          "20 + (0.01 * ctx.enemy_max_health) + (1 / 1.5 / 2 / 2.5 / 3% 0.01 * ctx.ad)",
+          "30 + (0.01 * ctx.enemy_max_health) + (1 / 1.5 / 2 / 2.5 / 3% 0.01 * ctx.ad)",
+          "40 + (0.01 * ctx.enemy_max_health) + (1 / 1.5 / 2 / 2.5 / 3% 0.01 * ctx.ad)",
+          "50 + (0.01 * ctx.enemy_max_health) + (1 / 1.5 / 2 / 2.5 / 3% 0.01 * ctx.ad)"
         ]
       }
     ],
@@ -133,24 +101,6 @@
           "60 + (0.02 * ctx.enemy_max_health) + (2 / 3 / 4 / 5 / 6% 0.01 * ctx.ad)",
           "80 + (0.02 * ctx.enemy_max_health) + (2 / 3 / 4 / 5 / 6% 0.01 * ctx.ad)",
           "100 + (0.02 * ctx.enemy_max_health) + (2 / 3 / 4 / 5 / 6% 0.01 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Knuckle Down",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "10 + (0.01 * ctx.enemy_max_health) + (1 / 1.5 / 2 / 2.5 / 3% 0.01 * ctx.ad)",
-          "20 + (0.01 * ctx.enemy_max_health) + (1 / 1.5 / 2 / 2.5 / 3% 0.01 * ctx.ad)",
-          "30 + (0.01 * ctx.enemy_max_health) + (1 / 1.5 / 2 / 2.5 / 3% 0.01 * ctx.ad)",
-          "40 + (0.01 * ctx.enemy_max_health) + (1 / 1.5 / 2 / 2.5 / 3% 0.01 * ctx.ad)",
-          "50 + (0.01 * ctx.enemy_max_health) + (1 / 1.5 / 2 / 2.5 / 3% 0.01 * ctx.ad)"
         ]
       }
     ],
@@ -175,7 +125,7 @@
     [
       {
         "type": "E",
-        "name": "_2"
+        "name": "_1"
       },
       {
         "name": "Facebreaker",
@@ -187,6 +137,38 @@
           "90 + (0.6 * ctx.ad)",
           "110 + (0.6 * ctx.ad)",
           "130 + (0.6 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "The Show Stopper",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "200 + (1.2 * ctx.bonus_ad) + (0.4 * ctx.enemy_bonus_health)",
+          "300 + (1.2 * ctx.bonus_ad) + (0.5 * ctx.enemy_bonus_health)",
+          "400 + (1.2 * ctx.bonus_ad) + (0.6 * ctx.enemy_bonus_health)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_2"
+      },
+      {
+        "name": "The Show Stopper",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "50 + (0.3 * ctx.bonus_ad) + (0.1 * ctx.enemy_bonus_health)",
+          "75 + (0.3 * ctx.bonus_ad) + (0.125 * ctx.enemy_bonus_health)",
+          "100 + (0.3 * ctx.bonus_ad) + (0.15 * ctx.enemy_bonus_health)"
         ]
       }
     ]

@@ -9,11 +9,11 @@
   "stats": {
     "health": {
       "flat": 570.0,
-      "perLevel": 90.0
+      "perLevel": 95.0
     },
     "mana": {
       "flat": 360.0,
-      "perLevel": 25.0
+      "perLevel": 40.0
     },
     "armor": {
       "flat": 26.0,
@@ -72,6 +72,24 @@
     [
       {
         "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "High Note",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "60 + (0.5 * ctx.ap)",
+          "85 + (0.5 * ctx.ap)",
+          "110 + (0.5 * ctx.ap)",
+          "135 + (0.5 * ctx.ap)",
+          "160 + (0.5 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
         "name": "_2"
       },
       {
@@ -120,24 +138,6 @@
           "91 + (0.35 * ctx.ap)",
           "112 + (0.35 * ctx.ap)",
           "133 + (0.35 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "High Note",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "60 + (0.5 * ctx.ap)",
-          "85 + (0.5 * ctx.ap)",
-          "110 + (0.5 * ctx.ap)",
-          "135 + (0.5 * ctx.ap)",
-          "160 + (0.5 * ctx.ap)"
         ]
       }
     ],

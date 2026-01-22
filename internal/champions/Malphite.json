@@ -72,24 +72,6 @@
   "abilities": [
     [
       {
-        "type": "W",
-        "name": "_1"
-      },
-      {
-        "name": "Thunderclap",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "30 + (0.2 * ctx.ap) + (0.15 * ctx.armor)",
-          "40 + (0.2 * ctx.ap) + (0.15 * ctx.armor)",
-          "50 + (0.2 * ctx.ap) + (0.15 * ctx.armor)",
-          "60 + (0.2 * ctx.ap) + (0.15 * ctx.armor)",
-          "70 + (0.2 * ctx.ap) + (0.15 * ctx.armor)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "Q",
         "name": "_1"
       },
@@ -103,6 +85,24 @@
           "170 + (0.6 * ctx.ap)",
           "220 + (0.6 * ctx.ap)",
           "270 + (0.6 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Thunderclap",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "30 + (0.2 * ctx.ap) + (0.15 * ctx.armor)",
+          "40 + (0.2 * ctx.ap) + (0.15 * ctx.armor)",
+          "50 + (0.2 * ctx.ap) + (0.15 * ctx.armor)",
+          "60 + (0.2 * ctx.ap) + (0.15 * ctx.armor)",
+          "70 + (0.2 * ctx.ap) + (0.15 * ctx.armor)"
         ]
       }
     ],

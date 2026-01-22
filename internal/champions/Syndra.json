@@ -8,7 +8,7 @@
   "stats": {
     "health": {
       "flat": 563.0,
-      "perLevel": 104.0
+      "perLevel": 100.0
     },
     "mana": {
       "flat": 480.0,
@@ -16,7 +16,7 @@
     },
     "armor": {
       "flat": 25.0,
-      "perLevel": 4.6
+      "perLevel": 4.0
     },
     "magicResistance": {
       "flat": 30.0,
@@ -70,76 +70,6 @@
   "abilities": [
     [
       {
-        "type": "W",
-        "name": "_3"
-      },
-      {
-        "name": "Force of Will",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "78.4 + (0.742 * ctx.ap)",
-          "117.6 + (0.7490000000000001 * ctx.ap)",
-          "156.8 + (0.7559999999999999 * ctx.ap)",
-          "196 + (0.763 * ctx.ap)",
-          "235.2 + (0.77 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_3"
-      },
-      {
-        "name": "Unleashed Power",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "270 + (0.6 * ctx.ap)",
-          "390 + (0.6 * ctx.ap)",
-          "510 + (0.6 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_2"
-      },
-      {
-        "name": "Force of Will",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "8.4 + (0.092 * ctx.ap)",
-          "12.6 + (0.099 * ctx.ap)",
-          "16.8 + (0.106 * ctx.ap)",
-          "21 + (0.113 * ctx.ap)",
-          "25.2 + (0.12 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_1"
-      },
-      {
-        "name": "Scatter the Weak",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "60 + (0.6 * ctx.ap)",
-          "95 + (0.6 * ctx.ap)",
-          "130 + (0.6 * ctx.ap)",
-          "165 + (0.6 * ctx.ap)",
-          "200 + (0.6 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "Q",
         "name": "_1"
       },
@@ -148,11 +78,11 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "75 + (0.6 * ctx.ap)",
-          "110 + (0.6 * ctx.ap)",
-          "145 + (0.6 * ctx.ap)",
-          "180 + (0.6 * ctx.ap)",
-          "215 + (0.6 * ctx.ap)"
+          "80 + (0.65 * ctx.ap)",
+          "115 + (0.65 * ctx.ap)",
+          "150 + (0.65 * ctx.ap)",
+          "185 + (0.65 * ctx.ap)",
+          "220 + (0.65 * ctx.ap)"
         ]
       }
     ],
@@ -176,6 +106,76 @@
     ],
     [
       {
+        "type": "W",
+        "name": "_2"
+      },
+      {
+        "name": "Force of Will",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "8.4 + (0.092 * ctx.ap)",
+          "12.6 + (0.099 * ctx.ap)",
+          "16.8 + (0.106 * ctx.ap)",
+          "21 + (0.113 * ctx.ap)",
+          "25.2 + (0.12 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_3"
+      },
+      {
+        "name": "Force of Will",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "78.4 + (0.742 * ctx.ap)",
+          "117.6 + (0.7490000000000001 * ctx.ap)",
+          "156.8 + (0.7559999999999999 * ctx.ap)",
+          "196 + (0.763 * ctx.ap)",
+          "235.2 + (0.77 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Scatter the Weak",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "60 + (0.6 * ctx.ap)",
+          "95 + (0.6 * ctx.ap)",
+          "130 + (0.6 * ctx.ap)",
+          "165 + (0.6 * ctx.ap)",
+          "200 + (0.6 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Unleashed Power",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "90 + (0.2 * ctx.ap)",
+          "130 + (0.2 * ctx.ap)",
+          "170 + (0.2 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "R",
         "name": "_2"
       },
@@ -193,16 +193,16 @@
     [
       {
         "type": "R",
-        "name": "_1"
+        "name": "_3"
       },
       {
         "name": "Unleashed Power",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "90 + (0.2 * ctx.ap)",
-          "130 + (0.2 * ctx.ap)",
-          "170 + (0.2 * ctx.ap)"
+          "270 + (0.6 * ctx.ap)",
+          "390 + (0.6 * ctx.ap)",
+          "510 + (0.6 * ctx.ap)"
         ]
       }
     ]

@@ -10,31 +10,40 @@
       false
     ],
     [
-      "Tft",
+      "Aram",
       false
-    ],
-    [
-      "SummonersRift",
-      true
     ],
     [
       "NexusBlitz",
       false
     ],
     [
+      "Tft",
+      false
+    ],
+    [
       "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "Aram",
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AbilityHaste",
+      "value": 15
+    },
+    {
+      "name": "AbilityPower",
+      "value": 30
+    },
+    {
+      "name": "BaseManaRegen",
+      "value": 100
+    },
+    {
+      "name": "HealAndShieldPower",
+      "value": 10
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

@@ -71,6 +71,24 @@
   "abilities": [
     [
       {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Baleful Strike",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "80 + (0.5 * ctx.ap)",
+          "120 + (0.55 * ctx.ap)",
+          "160 + (0.6 * ctx.ap)",
+          "200 + (0.65 * ctx.ap)",
+          "240 + (0.7 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "W",
         "name": "_1"
       },
@@ -79,11 +97,11 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "85 + (0.6 * ctx.ap)",
-          "140 + (0.7 * ctx.ap)",
-          "195 + (0.8 * ctx.ap)",
-          "250 + (0.9 * ctx.ap)",
-          "305 + ctx.ap"
+          "85 + (0.7 * ctx.ap)",
+          "140 + (0.8 * ctx.ap)",
+          "195 + (0.9 * ctx.ap)",
+          "250 + ctx.ap",
+          "305 + (1.1 * ctx.ap)"
         ]
       }
     ],
@@ -100,24 +118,6 @@
           "350 + (1.3 * ctx.ap)",
           "500 + (1.4 * ctx.ap)",
           "650 + (1.5 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Baleful Strike",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "80 + (0.5 * ctx.ap)",
-          "120 + (0.55 * ctx.ap)",
-          "160 + (0.6 * ctx.ap)",
-          "200 + (0.65 * ctx.ap)",
-          "240 + (0.7 * ctx.ap)"
         ]
       }
     ],

@@ -6,35 +6,36 @@
   "tier": 2,
   "maps": [
     [
-      "NexusBlitz",
+      "SummonersRift",
       true
-    ],
-    [
-      "Arena",
-      false
     ],
     [
       "Aram",
       true
     ],
     [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
+      "NexusBlitz",
       true
     ],
     [
       "Tft",
       false
+    ],
+    [
+      "Arena",
+      false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AttackDamage",
+      "value": 25
+    },
+    {
+      "name": "MagicResist",
+      "value": 25
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

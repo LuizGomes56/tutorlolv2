@@ -16,7 +16,7 @@
     },
     "armor": {
       "flat": 38.0,
-      "perLevel": 4.7
+      "perLevel": 4.2
     },
     "magicResistance": {
       "flat": 32.0,
@@ -71,6 +71,24 @@
     [
       {
         "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Duskbringer",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "65 + (0.85 * ctx.bonus_ad)",
+          "110 + (0.85 * ctx.bonus_ad)",
+          "155 + (0.85 * ctx.bonus_ad)",
+          "200 + (0.85 * ctx.bonus_ad)",
+          "245 + (0.85 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
         "name": "_2"
       },
       {
@@ -78,11 +96,11 @@
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "20",
-          "30",
-          "40",
-          "50",
-          "60"
+          "15",
+          "25",
+          "35",
+          "45",
+          "55"
         ]
       }
     ],
@@ -135,24 +153,6 @@
           "150 + (1.2 * ctx.bonus_ad)",
           "275 + (1.2 * ctx.bonus_ad)",
           "400 + (1.2 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Duskbringer",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "65 + (0.85 * ctx.bonus_ad)",
-          "110 + (0.85 * ctx.bonus_ad)",
-          "155 + (0.85 * ctx.bonus_ad)",
-          "200 + (0.85 * ctx.bonus_ad)",
-          "245 + (0.85 * ctx.bonus_ad)"
         ]
       }
     ]

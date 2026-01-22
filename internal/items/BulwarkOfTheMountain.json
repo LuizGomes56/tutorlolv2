@@ -10,19 +10,7 @@
       false
     ],
     [
-      "Tft",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
       "Aram",
-      false
-    ],
-    [
-      "SummonersRift",
       false
     ],
     [
@@ -30,11 +18,32 @@
       false
     ],
     [
+      "Tft",
+      false
+    ],
+    [
       "Arena",
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AbilityPower",
+      "value": 20
+    },
+    {
+      "name": "BaseHealthRegen",
+      "value": 100
+    },
+    {
+      "name": "GoldPer10Seconds",
+      "value": 3
+    },
+    {
+      "name": "Health",
+      "value": 250
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

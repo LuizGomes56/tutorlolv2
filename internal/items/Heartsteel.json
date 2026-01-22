@@ -6,7 +6,7 @@
   "tier": 3,
   "maps": [
     [
-      "Tft",
+      "SummonersRift",
       false
     ],
     [
@@ -14,27 +14,28 @@
       true
     ],
     [
-      "SummonersRift",
+      "NexusBlitz",
       true
     ],
     [
-      "SummonersRift",
+      "Tft",
       false
-    ],
-    [
-      "SummonersRift",
-      true
     ],
     [
       "Arena",
       false
-    ],
-    [
-      "NexusBlitz",
-      true
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "BaseHealthRegen",
+      "value": 100
+    },
+    {
+      "name": "Health",
+      "value": 900
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

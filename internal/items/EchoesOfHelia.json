@@ -6,11 +6,11 @@
   "tier": 3,
   "maps": [
     [
-      "Arena",
+      "SummonersRift",
       false
     ],
     [
-      "SummonersRift",
+      "Aram",
       true
     ],
     [
@@ -22,19 +22,28 @@
       false
     ],
     [
-      "Aram",
-      true
-    ],
-    [
-      "SummonersRift",
+      "Arena",
       false
-    ],
-    [
-      "SummonersRift",
-      true
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AbilityHaste",
+      "value": 20
+    },
+    {
+      "name": "AbilityPower",
+      "value": 35
+    },
+    {
+      "name": "BaseManaRegen",
+      "value": 125
+    },
+    {
+      "name": "Health",
+      "value": 200
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

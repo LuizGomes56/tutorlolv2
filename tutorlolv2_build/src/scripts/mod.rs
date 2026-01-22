@@ -66,7 +66,7 @@ pub trait StringExt: AsRef<str> {
     }
 
     fn rust_fmt(&self) -> String {
-        tutorlolv2_fmt::rustfmt(self.as_ref())
+        tutorlolv2_fmt::rustfmt(self.as_ref(), Some(48))
     }
 
     fn as_const(&self) -> String {

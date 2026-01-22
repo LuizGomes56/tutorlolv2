@@ -70,6 +70,42 @@
   "abilities": [
     [
       {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Corrosive Charge",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "25 + (0.7 * ctx.ad)",
+          "70 + (0.7 * ctx.ad)",
+          "115 + (0.7 * ctx.ad)",
+          "160 + (0.7 * ctx.ad)",
+          "205 + (0.7 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Purge",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "12 + (0.2 * ctx.ad)",
+          "12 + (0.235 * ctx.ad)",
+          "12 + (0.27 * ctx.ad)",
+          "12 + (0.305 * ctx.ad)",
+          "12 + (0.34 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "E",
         "name": "_1"
       },
@@ -99,42 +135,6 @@
           "100 + (0.5 * ctx.bonus_ad)",
           "225 + (0.5 * ctx.bonus_ad)",
           "350 + (0.5 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_1"
-      },
-      {
-        "name": "Purge",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "12 + (0.2 * ctx.ad)",
-          "12 + (0.235 * ctx.ad)",
-          "12 + (0.27 * ctx.ad)",
-          "12 + (0.305 * ctx.ad)",
-          "12 + (0.34 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Corrosive Charge",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "25 + (0.7 * ctx.ad)",
-          "70 + (0.7 * ctx.ad)",
-          "115 + (0.7 * ctx.ad)",
-          "160 + (0.7 * ctx.ad)",
-          "205 + (0.7 * ctx.ad)"
         ]
       }
     ]

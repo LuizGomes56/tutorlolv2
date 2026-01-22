@@ -7,10 +7,10 @@
   "maps": [
     [
       "SummonersRift",
-      false
+      true
     ],
     [
-      "SummonersRift",
+      "Aram",
       true
     ],
     [
@@ -22,19 +22,16 @@
       false
     ],
     [
-      "Aram",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
       "Arena",
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "MoveSpeed",
+      "value": 25
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

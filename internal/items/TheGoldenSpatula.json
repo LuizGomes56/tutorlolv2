@@ -6,14 +6,6 @@
   "tier": 0,
   "maps": [
     [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
       "SummonersRift",
       false
     ],
@@ -22,19 +14,68 @@
       false
     ],
     [
-      "Tft",
-      false
-    ],
-    [
       "NexusBlitz",
       false
     ],
     [
-      "SummonersRift",
-      true
+      "Tft",
+      false
+    ],
+    [
+      "Arena",
+      false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AbilityHaste",
+      "value": 20
+    },
+    {
+      "name": "AbilityPower",
+      "value": 125
+    },
+    {
+      "name": "Armor",
+      "value": 10
+    },
+    {
+      "name": "AttackDamage",
+      "value": 90
+    },
+    {
+      "name": "AttackSpeed",
+      "value": 30
+    },
+    {
+      "name": "BaseHealthRegen",
+      "value": 100
+    },
+    {
+      "name": "BaseManaRegen",
+      "value": 100
+    },
+    {
+      "name": "CriticalStrikeChance",
+      "value": 25
+    },
+    {
+      "name": "Health",
+      "value": 250
+    },
+    {
+      "name": "LifeSteal",
+      "value": 10
+    },
+    {
+      "name": "MagicResist",
+      "value": 10
+    },
+    {
+      "name": "Mana",
+      "value": 250
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

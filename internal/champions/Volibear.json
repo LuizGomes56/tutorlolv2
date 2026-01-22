@@ -16,7 +16,7 @@
       "perLevel": 70.0
     },
     "armor": {
-      "flat": 31.0,
+      "flat": 35.0,
       "perLevel": 5.2
     },
     "magicResistance": {
@@ -24,7 +24,7 @@
       "perLevel": 2.05
     },
     "attackDamage": {
-      "flat": 60.0,
+      "flat": 65.0,
       "perLevel": 3.5
     },
     "attackSpeed": {
@@ -71,6 +71,24 @@
   "abilities": [
     [
       {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Thundering Smash",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "10 + (1.2 * ctx.bonus_ad)",
+          "30 + (1.2 * ctx.bonus_ad)",
+          "50 + (1.2 * ctx.bonus_ad)",
+          "70 + (1.2 * ctx.bonus_ad)",
+          "90 + (1.2 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "W",
         "name": "_1"
       },
@@ -79,11 +97,11 @@
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "5 + ctx.ad + (0.06 * ctx.bonus_health)",
-          "30 + ctx.ad + (0.06 * ctx.bonus_health)",
-          "55 + ctx.ad + (0.06 * ctx.bonus_health)",
-          "80 + ctx.ad + (0.06 * ctx.bonus_health)",
-          "105 + ctx.ad + (0.06 * ctx.bonus_health)"
+          "5 + (1.1 * ctx.ad) + (0.06 * ctx.bonus_health)",
+          "30 + (1.1 * ctx.ad) + (0.06 * ctx.bonus_health)",
+          "55 + (1.1 * ctx.ad) + (0.06 * ctx.bonus_health)",
+          "80 + (1.1 * ctx.ad) + (0.06 * ctx.bonus_health)",
+          "105 + (1.1 * ctx.ad) + (0.06 * ctx.bonus_health)"
         ]
       }
     ],
@@ -97,11 +115,29 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "80 + (0.8 * ctx.ap) + (0.11 * ctx.enemy_max_health)",
-          "110 + (0.8 * ctx.ap) + (0.12 * ctx.enemy_max_health)",
-          "140 + (0.8 * ctx.ap) + (0.13 * ctx.enemy_max_health)",
-          "170 + (0.8 * ctx.ap) + (0.14 * ctx.enemy_max_health)",
-          "200 + (0.8 * ctx.ap) + (0.15 * ctx.enemy_max_health)"
+          "80 + (0.7 * ctx.ap) + (0.11 * ctx.enemy_max_health)",
+          "110 + (0.7 * ctx.ap) + (0.12 * ctx.enemy_max_health)",
+          "140 + (0.7 * ctx.ap) + (0.13 * ctx.enemy_max_health)",
+          "170 + (0.7 * ctx.ap) + (0.14 * ctx.enemy_max_health)",
+          "200 + (0.7 * ctx.ap) + (0.15 * ctx.enemy_max_health)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_2"
+      },
+      {
+        "name": "Sky Splitter",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "190 + (0.7 * ctx.ap)",
+          "305 + (0.7 * ctx.ap)",
+          "420 + (0.7 * ctx.ap)",
+          "535 + (0.7 * ctx.ap)",
+          "650 + (0.7 * ctx.ap)"
         ]
       }
     ],
@@ -118,24 +154,6 @@
           "300 + (2.5 * ctx.bonus_ad) + (1.25 * ctx.ap)",
           "500 + (2.5 * ctx.bonus_ad) + (1.25 * ctx.ap)",
           "700 + (2.5 * ctx.bonus_ad) + (1.25 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Thundering Smash",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "10 + (1.2 * ctx.bonus_ad)",
-          "30 + (1.2 * ctx.bonus_ad)",
-          "50 + (1.2 * ctx.bonus_ad)",
-          "70 + (1.2 * ctx.bonus_ad)",
-          "90 + (1.2 * ctx.bonus_ad)"
         ]
       }
     ]

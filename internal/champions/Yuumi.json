@@ -71,25 +71,6 @@
     [
       {
         "type": "Q",
-        "name": "_2"
-      },
-      {
-        "name": "Prowling Projectile",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "80 + (0.3 * ctx.ap)",
-          "140 + (0.3 * ctx.ap)",
-          "200 + (0.3 * ctx.ap)",
-          "260 + (0.3 * ctx.ap)",
-          "320 + (0.3 * ctx.ap)",
-          "380 + (0.3 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
         "name": "_1"
       },
       {
@@ -103,6 +84,25 @@
           "165 + (0.2 * ctx.ap)",
           "200 + (0.2 * ctx.ap)",
           "235 + (0.2 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "Prowling Projectile",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "80 + (0.3 * ctx.ap)",
+          "135 + (0.3 * ctx.ap)",
+          "190 + (0.3 * ctx.ap)",
+          "245 + (0.3 * ctx.ap)",
+          "300 + (0.3 * ctx.ap)",
+          "355 + (0.3 * ctx.ap)"
         ]
       }
     ],
