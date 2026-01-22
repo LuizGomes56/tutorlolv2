@@ -1,27 +1,10 @@
 {
   "riot_id": 443069,
-  "item_id": "Hamstringer",
   "name": "Hamstringer",
-  "price": 0,
+  "price": 1000,
   "sell": 400,
   "tier": 3,
   "maps": [
-    [
-      "Arena",
-      true
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "NexusBlitz",
-      false
-    ],
-    [
-      "Aram",
-      false
-    ],
     [
       "SummonersRift",
       false
@@ -33,22 +16,25 @@
     [
       "Tft",
       false
+    ],
+    [
+      "Arena",
+      true
+    ],
+    [
+      "Aram",
+      false
+    ],
+    [
+      "NexusBlitz",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "CriticalStrikeChance",
-      "value": 25
-    },
-    {
-      "name": "AttackDamage",
-      "value": 45
-    },
-    {
-      "name": "AttackSpeed",
-      "value": 40
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -109,9 +95,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

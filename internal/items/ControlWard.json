@@ -1,17 +1,16 @@
 {
   "riot_id": 2055,
-  "item_id": "ControlWard",
   "name": "Control Ward",
   "price": 75,
   "sell": 30,
   "tier": 1,
   "maps": [
     [
-      "Aram",
+      "Arena",
       false
     ],
     [
-      "Arena",
+      "SummonersRift",
       false
     ],
     [
@@ -23,15 +22,15 @@
       true
     ],
     [
-      "Tft",
-      false
-    ],
-    [
-      "SummonersRift",
+      "Aram",
       false
     ],
     [
       "NexusBlitz",
+      false
+    ],
+    [
+      "Tft",
       false
     ]
   ],
@@ -96,9 +95,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

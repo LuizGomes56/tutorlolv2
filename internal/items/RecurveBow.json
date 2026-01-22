@@ -1,14 +1,13 @@
 {
-  "riot_id": 1043,
-  "item_id": "RecurveBow",
+  "riot_id": 221043,
   "name": "Recurve Bow",
-  "price": 700,
-  "sell": 490,
-  "tier": 2,
+  "price": 500,
+  "sell": 350,
+  "tier": 0,
   "maps": [
     [
-      "NexusBlitz",
-      true
+      "SummonersRift",
+      false
     ],
     [
       "Tft",
@@ -19,28 +18,23 @@
       false
     ],
     [
-      "Aram",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
       "Arena",
       false
     ],
     [
+      "NexusBlitz",
+      false
+    ],
+    [
+      "Aram",
+      false
+    ],
+    [
       "SummonersRift",
-      true
+      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackSpeed",
-      "value": 15
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -64,7 +58,7 @@
       "percent": 0.0
     },
     "attackSpeed": {
-      "flat": 15.0,
+      "flat": 0.0,
       "percent": 0.0
     },
     "criticalStrikeChance": {
@@ -100,28 +94,8 @@
       "percent": 0.0
     }
   },
-  "builds_from_riot_ids": [
-    1042
-  ],
-  "builds_from_item_ids": [
-    "Dagger"
-  ],
-  "builds_into_riot_ids": [
-    3115,
-    3302,
-    3091,
-    3124,
-    3153,
-    6672
-  ],
-  "builds_into_item_ids": [
-    "NashorsTooth",
-    "Terminus",
-    "WitsEnd",
-    "GuinsoosRageblade",
-    "BladeOfTheRuinedKing",
-    "KrakenSlayer"
-  ],
+  "builds_from_riot_ids": [],
+  "builds_into_riot_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"
@@ -131,5 +105,5 @@
     "maximum_damage": "zero"
   },
   "attributes": "Undefined",
-  "purchasable": true
+  "purchasable": false
 }

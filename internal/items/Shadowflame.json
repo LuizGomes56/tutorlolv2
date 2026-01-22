@@ -1,30 +1,13 @@
 {
   "riot_id": 4645,
-  "item_id": "Shadowflame",
   "name": "Shadowflame",
   "price": 3200,
   "sell": 2240,
   "tier": 3,
   "maps": [
     [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
       "Tft",
       false
-    ],
-    [
-      "SummonersRift",
-      true
     ],
     [
       "Aram",
@@ -33,18 +16,25 @@
     [
       "NexusBlitz",
       true
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "Arena",
+      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityPower",
-      "value": 110
-    },
-    {
-      "name": "MagicPenetration",
-      "value": 15
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -108,12 +98,7 @@
     3145,
     1058
   ],
-  "builds_from_item_ids": [
-    "HextechAlternator",
-    "NeedlesslyLargeRod"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

@@ -1,11 +1,14 @@
 {
   "riot_id": 220001,
-  "item_id": "LegendaryFighterItem",
   "name": "Legendary Fighter Item",
   "price": 2000,
   "sell": 2000,
   "tier": 1,
   "maps": [
+    [
+      "Aram",
+      false
+    ],
     [
       "SummonersRift",
       false
@@ -19,20 +22,16 @@
       false
     ],
     [
-      "SummonersRift",
-      false
+      "Arena",
+      true
     ],
     [
-      "Aram",
+      "SummonersRift",
       false
     ],
     [
       "NexusBlitz",
       false
-    ],
-    [
-      "Arena",
-      true
     ]
   ],
   "prettified_stats": [],
@@ -96,9 +95,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

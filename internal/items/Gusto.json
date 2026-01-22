@@ -1,30 +1,25 @@
 {
   "riot_id": 1509,
-  "item_id": "Gusto",
   "name": "Gusto",
   "price": 0,
   "sell": 0,
   "tier": 1,
   "maps": [
     [
+      "Tft",
+      false
+    ],
+    [
       "Arena",
       true
     ],
     [
       "SummonersRift",
-      false
-    ],
-    [
-      "Tft",
-      false
+      true
     ],
     [
       "SummonersRift",
-      true
-    ],
-    [
-      "NexusBlitz",
-      true
+      false
     ],
     [
       "SummonersRift",
@@ -32,6 +27,10 @@
     ],
     [
       "Aram",
+      true
+    ],
+    [
+      "NexusBlitz",
       true
     ]
   ],
@@ -96,9 +95,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

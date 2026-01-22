@@ -1,15 +1,10 @@
 {
   "riot_id": 3877,
-  "item_id": "Bloodsong",
   "name": "Bloodsong",
   "price": 400,
   "sell": 160,
   "tier": 3,
   "maps": [
-    [
-      "Aram",
-      false
-    ],
     [
       "NexusBlitz",
       false
@@ -19,7 +14,7 @@
       false
     ],
     [
-      "SummonersRift",
+      "Aram",
       false
     ],
     [
@@ -28,31 +23,18 @@
     ],
     [
       "SummonersRift",
-      true
+      false
     ],
     [
       "SummonersRift",
       false
+    ],
+    [
+      "SummonersRift",
+      true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "BaseHealthRegen",
-      "value": 75
-    },
-    {
-      "name": "BaseManaRegen",
-      "value": 75
-    },
-    {
-      "name": "GoldPer10Seconds",
-      "value": 9
-    },
-    {
-      "name": "Health",
-      "value": 200
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -115,11 +97,7 @@
   "builds_from_riot_ids": [
     3867
   ],
-  "builds_from_item_ids": [
-    "BountyOfWorlds"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

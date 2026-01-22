@@ -1,6 +1,5 @@
 {
   "riot_id": 4401,
-  "item_id": "ForceOfNature",
   "name": "Force of Nature",
   "price": 2800,
   "sell": 1960,
@@ -15,11 +14,11 @@
       false
     ],
     [
-      "SummonersRift",
+      "Aram",
       true
     ],
     [
-      "Aram",
+      "SummonersRift",
       true
     ],
     [
@@ -35,20 +34,7 @@
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "MagicResist",
-      "value": 55
-    },
-    {
-      "name": "MoveSpeed",
-      "value": 4
-    },
-    {
-      "name": "Health",
-      "value": 400
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -113,13 +99,7 @@
     1028,
     3066
   ],
-  "builds_from_item_ids": [
-    "NegatronCloak",
-    "RubyCrystal",
-    "WingedMoonplate"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

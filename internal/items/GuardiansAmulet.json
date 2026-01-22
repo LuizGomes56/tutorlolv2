@@ -1,17 +1,24 @@
 {
   "riot_id": 2049,
-  "item_id": "GuardiansAmulet",
   "name": "Guardian's Amulet",
   "price": 500,
   "sell": 250,
   "tier": 1,
   "maps": [
     [
-      "Arena",
-      true
+      "SummonersRift",
+      false
+    ],
+    [
+      "Tft",
+      false
     ],
     [
       "NexusBlitz",
+      false
+    ],
+    [
+      "SummonersRift",
       false
     ],
     [
@@ -23,32 +30,11 @@
       false
     ],
     [
-      "Tft",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
+      "Arena",
+      true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 20
-    },
-    {
-      "name": "HealAndShieldPower",
-      "value": 15
-    },
-    {
-      "name": "AbilityPower",
-      "value": 20
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -109,9 +95,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

@@ -1,6 +1,5 @@
 {
   "riot_id": 6333,
-  "item_id": "DeathsDance",
   "name": "Death's Dance",
   "price": 3300,
   "sell": 2310,
@@ -15,15 +14,7 @@
       true
     ],
     [
-      "Tft",
-      false
-    ],
-    [
       "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
       false
     ],
     [
@@ -33,22 +24,17 @@
     [
       "NexusBlitz",
       true
+    ],
+    [
+      "Tft",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 15
-    },
-    {
-      "name": "AttackDamage",
-      "value": 60
-    },
-    {
-      "name": "Armor",
-      "value": 50
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -113,13 +99,7 @@
     1037,
     3133
   ],
-  "builds_from_item_ids": [
-    "SteelSigil",
-    "Pickaxe",
-    "CaulfieldsWarhammer"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

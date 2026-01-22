@@ -1,29 +1,24 @@
 {
-  "riot_id": 446671,
-  "item_id": "Galeforce",
+  "riot_id": 6671,
   "name": "Galeforce",
-  "price": 0,
-  "sell": 400,
-  "tier": 3,
+  "price": 3500,
+  "sell": 2450,
+  "tier": 0,
   "maps": [
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "Arena",
+      false
+    ],
     [
       "Aram",
       false
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
       "NexusBlitz",
-      false
-    ],
-    [
-      "Arena",
-      true
-    ],
-    [
-      "SummonersRift",
       false
     ],
     [
@@ -33,26 +28,13 @@
     [
       "SummonersRift",
       false
+    ],
+    [
+      "SummonersRift",
+      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "CriticalStrikeChance",
-      "value": 25
-    },
-    {
-      "name": "AttackSpeed",
-      "value": 30
-    },
-    {
-      "name": "AttackDamage",
-      "value": 65
-    },
-    {
-      "name": "MoveSpeed",
-      "value": 6
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -72,16 +54,16 @@
       "percent": 0.0
     },
     "attackDamage": {
-      "flat": 65.0,
+      "flat": 0.0,
       "percent": 0.0
     },
     "attackSpeed": {
-      "flat": 30.0,
+      "flat": 0.0,
       "percent": 0.0
     },
     "criticalStrikeChance": {
       "flat": 0.0,
-      "percent": 25.0
+      "percent": 0.0
     },
     "criticalStrikeDamage": {
       "flat": 0.0,
@@ -105,7 +87,7 @@
     },
     "movespeed": {
       "flat": 0.0,
-      "percent": 12.0
+      "percent": 0.0
     },
     "omnivamp": {
       "flat": 0.0,
@@ -113,9 +95,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"
@@ -125,5 +105,5 @@
     "maximum_damage": "zero"
   },
   "attributes": "Undefined",
-  "purchasable": true
+  "purchasable": false
 }

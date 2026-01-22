@@ -1,25 +1,20 @@
 {
-  "riot_id": 1026,
-  "item_id": "BlastingWand",
+  "riot_id": 221026,
   "name": "Blasting Wand",
-  "price": 850,
-  "sell": 595,
-  "tier": 1,
+  "price": 500,
+  "sell": 350,
+  "tier": 0,
   "maps": [
     [
-      "SummonersRift",
-      true
-    ],
-    [
-      "NexusBlitz",
-      true
-    ],
-    [
-      "Tft",
+      "Aram",
       false
     ],
     [
       "Arena",
+      true
+    ],
+    [
+      "SummonersRift",
       false
     ],
     [
@@ -27,24 +22,23 @@
       false
     ],
     [
-      "Aram",
-      true
+      "SummonersRift",
+      false
     ],
     [
-      "SummonersRift",
-      true
+      "NexusBlitz",
+      false
+    ],
+    [
+      "Tft",
+      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityPower",
-      "value": 45
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
-      "flat": 45.0,
+      "flat": 0.0,
       "percent": 0.0
     },
     "armor": {
@@ -101,32 +95,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
-  "builds_into_riot_ids": [
-    3115,
-    326657,
-    3100,
-    3118,
-    4628,
-    3116,
-    3135,
-    3165,
-    326621,
-    4637,
-    6621,
-    6657
-  ],
-  "builds_into_item_ids": [
-    "NashorsTooth",
-    "LichBane",
-    "Malignance",
-    "HorizonFocus",
-    "RylaisCrystalScepter",
-    "VoidStaff",
-    "Morellonomicon",
-    "Dawncore",
-    "RodOfAges"
-  ],
+  "builds_into_riot_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"
@@ -136,5 +105,5 @@
     "maximum_damage": "zero"
   },
   "attributes": "Undefined",
-  "purchasable": true
+  "purchasable": false
 }

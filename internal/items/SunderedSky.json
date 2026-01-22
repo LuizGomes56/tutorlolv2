@@ -1,14 +1,25 @@
 {
   "riot_id": 6610,
-  "item_id": "SunderedSky",
   "name": "Sundered Sky",
   "price": 3100,
   "sell": 2170,
   "tier": 3,
   "maps": [
     [
+      "Aram",
+      true
+    ],
+    [
+      "NexusBlitz",
+      true
+    ],
+    [
       "Arena",
       false
+    ],
+    [
+      "SummonersRift",
+      true
     ],
     [
       "SummonersRift",
@@ -19,36 +30,11 @@
       false
     ],
     [
-      "NexusBlitz",
-      true
-    ],
-    [
       "SummonersRift",
       false
-    ],
-    [
-      "Aram",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 10
-    },
-    {
-      "name": "AttackDamage",
-      "value": 45
-    },
-    {
-      "name": "Health",
-      "value": 400
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -68,7 +54,7 @@
       "percent": 0.0
     },
     "attackDamage": {
-      "flat": 40.0,
+      "flat": 45.0,
       "percent": 0.0
     },
     "attackSpeed": {
@@ -113,13 +99,7 @@
     3133,
     1028
   ],
-  "builds_from_item_ids": [
-    "Tunneler",
-    "CaulfieldsWarhammer",
-    "RubyCrystal"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

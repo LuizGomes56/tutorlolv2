@@ -1,17 +1,24 @@
 {
   "riot_id": 6673,
-  "item_id": "ImmortalShieldbow",
   "name": "Immortal Shieldbow",
   "price": 3000,
   "sell": 2100,
   "tier": 3,
   "maps": [
     [
-      "NexusBlitz",
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
       true
     ],
     [
       "SummonersRift",
+      true
+    ],
+    [
+      "NexusBlitz",
       true
     ],
     [
@@ -19,32 +26,15 @@
       true
     ],
     [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Arena",
-      false
-    ],
-    [
       "Tft",
       false
     ],
     [
-      "SummonersRift",
+      "Arena",
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "CriticalStrikeChance",
-      "value": 25
-    },
-    {
-      "name": "AttackDamage",
-      "value": 55
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -108,12 +98,7 @@
     1037,
     6670
   ],
-  "builds_from_item_ids": [
-    "Pickaxe",
-    "Noonquiver"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

@@ -1,21 +1,12 @@
 {
   "riot_id": 447115,
-  "item_id": "Regicide",
   "name": "Regicide",
-  "price": 0,
+  "price": 1000,
   "sell": 400,
   "tier": 3,
   "maps": [
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "Aram",
+      "NexusBlitz",
       false
     ],
     [
@@ -27,28 +18,23 @@
       false
     ],
     [
-      "NexusBlitz",
+      "Aram",
       false
     ],
     [
       "Arena",
       true
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackDamage",
-      "value": 60
-    },
-    {
-      "name": "Lethality",
-      "value": 15
-    },
-    {
-      "name": "MoveSpeed",
-      "value": 8
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -109,9 +95,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

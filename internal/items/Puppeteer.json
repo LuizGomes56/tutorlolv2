@@ -1,8 +1,7 @@
 {
   "riot_id": 447123,
-  "item_id": "Puppeteer",
   "name": "Puppeteer",
-  "price": 0,
+  "price": 1000,
   "sell": 400,
   "tier": 3,
   "maps": [
@@ -11,7 +10,7 @@
       false
     ],
     [
-      "NexusBlitz",
+      "Aram",
       false
     ],
     [
@@ -23,36 +22,19 @@
       false
     ],
     [
-      "Arena",
-      true
-    ],
-    [
-      "Aram",
-      false
-    ],
-    [
       "SummonersRift",
       false
+    ],
+    [
+      "NexusBlitz",
+      false
+    ],
+    [
+      "Arena",
+      true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackSpeed",
-      "value": 30
-    },
-    {
-      "name": "BaseManaRegen",
-      "value": 150
-    },
-    {
-      "name": "HealAndShieldPower",
-      "value": 15
-    },
-    {
-      "name": "AbilityHaste",
-      "value": 40
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -113,9 +95,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

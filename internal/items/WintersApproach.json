@@ -1,13 +1,20 @@
 {
-  "riot_id": 3119,
-  "item_id": "WintersApproach",
+  "riot_id": 323119,
   "name": "Winter's Approach",
   "price": 2400,
   "sell": 1680,
-  "tier": 3,
+  "tier": 0,
   "maps": [
     [
       "Tft",
+      false
+    ],
+    [
+      "Aram",
+      false
+    ],
+    [
+      "SummonersRift",
       false
     ],
     [
@@ -23,32 +30,11 @@
       true
     ],
     [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Aram",
-      true
-    ],
-    [
       "NexusBlitz",
-      true
+      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Mana",
-      "value": 500
-    },
-    {
-      "name": "AbilityHaste",
-      "value": 15
-    },
-    {
-      "name": "Health",
-      "value": 550
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -84,7 +70,7 @@
       "percent": 0.0
     },
     "health": {
-      "flat": 550.0,
+      "flat": 0.0,
       "percent": 0.0
     },
     "lifesteal": {
@@ -96,7 +82,7 @@
       "percent": 0.0
     },
     "mana": {
-      "flat": 500.0,
+      "flat": 0.0,
       "percent": 0.0
     },
     "movespeed": {
@@ -108,18 +94,8 @@
       "percent": 0.0
     }
   },
-  "builds_from_riot_ids": [
-    3070,
-    1011,
-    3067
-  ],
-  "builds_from_item_ids": [
-    "TearOfTheGoddess",
-    "GiantsBelt",
-    "Kindlegem"
-  ],
+  "builds_from_riot_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

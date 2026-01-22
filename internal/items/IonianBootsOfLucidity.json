@@ -1,25 +1,16 @@
 {
   "riot_id": 3158,
-  "item_id": "IonianBootsOfLucidity",
   "name": "Ionian Boots of Lucidity",
   "price": 900,
   "sell": 630,
   "tier": 2,
   "maps": [
     [
-      "Aram",
+      "SummonersRift",
       true
-    ],
-    [
-      "Arena",
-      false
     ],
     [
       "NexusBlitz",
-      true
-    ],
-    [
-      "SummonersRift",
       true
     ],
     [
@@ -31,20 +22,19 @@
       false
     ],
     [
+      "Arena",
+      false
+    ],
+    [
+      "Aram",
+      true
+    ],
+    [
       "SummonersRift",
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 10
-    },
-    {
-      "name": "MoveSpeed",
-      "value": 45
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -108,15 +98,8 @@
     1001,
     2022
   ],
-  "builds_from_item_ids": [
-    "Boots",
-    "GlowingMote"
-  ],
   "builds_into_riot_ids": [
     3171
-  ],
-  "builds_into_item_ids": [
-    "CrimsonLucidity"
   ],
   "ranged": {
     "minimum_damage": "zero",

@@ -1,19 +1,10 @@
 {
   "riot_id": 3144,
-  "item_id": "ScoutsSlingshot",
   "name": "Scout's Slingshot",
   "price": 600,
   "sell": 420,
   "tier": 2,
   "maps": [
-    [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
     [
       "SummonersRift",
       true
@@ -24,7 +15,7 @@
     ],
     [
       "SummonersRift",
-      true
+      false
     ],
     [
       "Tft",
@@ -33,14 +24,17 @@
     [
       "NexusBlitz",
       true
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "Arena",
+      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackSpeed",
-      "value": 20
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -104,21 +98,14 @@
     1042,
     1042
   ],
-  "builds_from_item_ids": [
-    "Dagger",
-    "Dagger"
-  ],
   "builds_into_riot_ids": [
     3032,
+    3097,
+    3095,
+    2512,
     3087,
     3085,
     3094
-  ],
-  "builds_into_item_ids": [
-    "YunTalWildarrows",
-    "StatikkShiv",
-    "RunaansHurricane",
-    "RapidFirecannon"
   ],
   "ranged": {
     "minimum_damage": "zero",

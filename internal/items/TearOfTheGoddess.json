@@ -1,25 +1,24 @@
 {
-  "riot_id": 3070,
-  "item_id": "TearOfTheGoddess",
+  "riot_id": 323070,
   "name": "Tear of the Goddess",
   "price": 400,
   "sell": 280,
-  "tier": 1,
+  "tier": 0,
   "maps": [
-    [
-      "SummonersRift",
-      true
-    ],
     [
       "Tft",
       false
     ],
     [
-      "Aram",
-      true
+      "SummonersRift",
+      false
     ],
     [
-      "NexusBlitz",
+      "Aram",
+      false
+    ],
+    [
+      "SummonersRift",
       true
     ],
     [
@@ -28,19 +27,14 @@
     ],
     [
       "SummonersRift",
-      true
+      false
     ],
     [
-      "SummonersRift",
+      "NexusBlitz",
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Mana",
-      "value": 240
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -88,7 +82,7 @@
       "percent": 0.0
     },
     "mana": {
-      "flat": 240.0,
+      "flat": 0.0,
       "percent": 0.0
     },
     "movespeed": {
@@ -101,17 +95,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
-  "builds_into_riot_ids": [
-    3003,
-    3004,
-    3119
-  ],
-  "builds_into_item_ids": [
-    "ArchangelsStaff",
-    "Manamune",
-    "WintersApproach"
-  ],
+  "builds_into_riot_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

@@ -1,21 +1,16 @@
 {
-  "riot_id": 2141,
-  "item_id": "CappaJuice",
+  "riot_id": 222141,
   "name": "Cappa Juice",
-  "price": 300,
-  "sell": 300,
-  "tier": 1,
+  "price": 500,
+  "sell": 500,
+  "tier": 0,
   "maps": [
     [
-      "SummonersRift",
+      "Tft",
       false
     ],
     [
-      "Aram",
-      true
-    ],
-    [
-      "SummonersRift",
+      "Arena",
       true
     ],
     [
@@ -23,15 +18,19 @@
       false
     ],
     [
-      "Arena",
-      false
-    ],
-    [
-      "Tft",
+      "SummonersRift",
       false
     ],
     [
       "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "Aram",
       false
     ]
   ],
@@ -96,9 +95,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

@@ -1,6 +1,5 @@
 {
   "riot_id": 4638,
-  "item_id": "WatchfulWardstone",
   "name": "Watchful Wardstone",
   "price": 1100,
   "sell": 770,
@@ -8,14 +7,6 @@
   "maps": [
     [
       "Aram",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "Tft",
       false
     ],
     [
@@ -33,26 +24,17 @@
     [
       "SummonersRift",
       false
+    ],
+    [
+      "Tft",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Armor",
-      "value": 10
-    },
-    {
-      "name": "MagicResist",
-      "value": 15
-    },
-    {
-      "name": "Health",
-      "value": 150
-    },
-    {
-      "name": "AbilityHaste",
-      "value": 10
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -113,12 +95,8 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [
     4643
-  ],
-  "builds_into_item_ids": [
-    "VigilantWardstone"
   ],
   "ranged": {
     "minimum_damage": "zero",

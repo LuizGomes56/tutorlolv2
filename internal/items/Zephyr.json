@@ -1,18 +1,13 @@
 {
-  "riot_id": 3172,
-  "item_id": "Zephyr",
+  "riot_id": 663172,
   "name": "Zephyr",
   "price": 2500,
-  "sell": 770,
-  "tier": 3,
+  "sell": 1250,
+  "tier": 0,
   "maps": [
     [
-      "NexusBlitz",
-      true
-    ],
-    [
       "SummonersRift",
-      true
+      false
     ],
     [
       "Aram",
@@ -27,28 +22,19 @@
       false
     ],
     [
-      "Arena",
+      "SummonersRift",
       false
     ],
     [
-      "SummonersRift",
+      "NexusBlitz",
+      false
+    ],
+    [
+      "Arena",
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackSpeed",
-      "value": 40
-    },
-    {
-      "name": "MoveSpeed",
-      "value": 45
-    },
-    {
-      "name": "LifeSteal",
-      "value": 5
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -72,7 +58,7 @@
       "percent": 0.0
     },
     "attackSpeed": {
-      "flat": 50.0,
+      "flat": 0.0,
       "percent": 0.0
     },
     "criticalStrikeChance": {
@@ -101,21 +87,15 @@
     },
     "movespeed": {
       "flat": 0.0,
-      "percent": 10.0
+      "percent": 0.0
     },
     "omnivamp": {
       "flat": 0.0,
       "percent": 0.0
     }
   },
-  "builds_from_riot_ids": [
-    3006
-  ],
-  "builds_from_item_ids": [
-    "BerserkersGreaves"
-  ],
+  "builds_from_riot_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

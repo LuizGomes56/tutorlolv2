@@ -1,21 +1,24 @@
 {
   "riot_id": 4015,
-  "item_id": "Perplexity",
   "name": "Perplexity",
   "price": 2500,
   "sell": 1250,
   "tier": 3,
   "maps": [
     [
+      "Aram",
+      false
+    ],
+    [
+      "Arena",
+      true
+    ],
+    [
       "Tft",
       false
     ],
     [
       "SummonersRift",
-      false
-    ],
-    [
-      "Aram",
       false
     ],
     [
@@ -27,32 +30,11 @@
       false
     ],
     [
-      "Arena",
-      true
-    ],
-    [
       "SummonersRift",
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "ArmorPenetration",
-      "value": 22
-    },
-    {
-      "name": "MoveSpeed",
-      "value": 5
-    },
-    {
-      "name": "MagicPenetration",
-      "value": 30
-    },
-    {
-      "name": "AbilityPower",
-      "value": 60
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -113,9 +95,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

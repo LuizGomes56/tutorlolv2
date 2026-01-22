@@ -1,13 +1,16 @@
 {
-  "riot_id": 3109,
-  "item_id": "KnightsVow",
+  "riot_id": 323109,
   "name": "Knight's Vow",
-  "price": 2300,
-  "sell": 1610,
-  "tier": 3,
+  "price": 2900,
+  "sell": 2030,
+  "tier": 0,
   "maps": [
     [
-      "Tft",
+      "Aram",
+      false
+    ],
+    [
+      "NexusBlitz",
       false
     ],
     [
@@ -16,43 +19,22 @@
     ],
     [
       "SummonersRift",
-      true
-    ],
-    [
-      "Aram",
-      true
+      false
     ],
     [
       "SummonersRift",
       false
     ],
     [
-      "NexusBlitz",
+      "SummonersRift",
       true
     ],
     [
-      "SummonersRift",
-      true
+      "Tft",
+      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Health",
-      "value": 200
-    },
-    {
-      "name": "AbilityHaste",
-      "value": 10
-    },
-    {
-      "name": "BaseHealthRegen",
-      "value": 100
-    },
-    {
-      "name": "Armor",
-      "value": 40
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -60,7 +42,7 @@
       "percent": 0.0
     },
     "armor": {
-      "flat": 40.0,
+      "flat": 0.0,
       "percent": 0.0
     },
     "armorPenetration": {
@@ -88,7 +70,7 @@
       "percent": 0.0
     },
     "health": {
-      "flat": 200.0,
+      "flat": 0.0,
       "percent": 0.0
     },
     "lifesteal": {
@@ -112,18 +94,8 @@
       "percent": 0.0
     }
   },
-  "builds_from_riot_ids": [
-    3067,
-    1031,
-    1006
-  ],
-  "builds_from_item_ids": [
-    "Kindlegem",
-    "ChainVest",
-    "RejuvenationBead"
-  ],
+  "builds_from_riot_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

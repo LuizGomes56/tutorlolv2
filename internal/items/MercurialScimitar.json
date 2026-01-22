@@ -1,15 +1,10 @@
 {
   "riot_id": 3139,
-  "item_id": "MercurialScimitar",
   "name": "Mercurial Scimitar",
   "price": 3200,
   "sell": 2240,
   "tier": 3,
   "maps": [
-    [
-      "Aram",
-      true
-    ],
     [
       "SummonersRift",
       false
@@ -17,6 +12,10 @@
     [
       "Tft",
       false
+    ],
+    [
+      "SummonersRift",
+      true
     ],
     [
       "Arena",
@@ -27,28 +26,15 @@
       true
     ],
     [
-      "SummonersRift",
+      "NexusBlitz",
       true
     ],
     [
-      "NexusBlitz",
+      "Aram",
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackDamage",
-      "value": 50
-    },
-    {
-      "name": "MagicResist",
-      "value": 35
-    },
-    {
-      "name": "LifeSteal",
-      "value": 10
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -68,7 +54,7 @@
       "percent": 0.0
     },
     "attackDamage": {
-      "flat": 40.0,
+      "flat": 50.0,
       "percent": 0.0
     },
     "attackSpeed": {
@@ -92,7 +78,7 @@
       "percent": 10.0
     },
     "magicResistance": {
-      "flat": 40.0,
+      "flat": 35.0,
       "percent": 0.0
     },
     "mana": {
@@ -113,13 +99,7 @@
     1037,
     1053
   ],
-  "builds_from_item_ids": [
-    "QuicksilverSash",
-    "Pickaxe",
-    "VampiricScepter"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

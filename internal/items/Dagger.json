@@ -1,23 +1,10 @@
 {
   "riot_id": 1042,
-  "item_id": "Dagger",
   "name": "Dagger",
   "price": 250,
   "sell": 175,
   "tier": 1,
   "maps": [
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
     [
       "Aram",
       true
@@ -27,20 +14,27 @@
       true
     ],
     [
+      "Arena",
+      false
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
       "Tft",
       false
     ],
     [
-      "Arena",
-      false
+      "SummonersRift",
+      true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackSpeed",
-      "value": 10
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -101,30 +95,19 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [
     6631,
-    3046,
     1043,
+    3046,
     3051,
     6675,
     6677,
     3144,
     3086,
     3006,
+    2510,
     3073,
     3131
-  ],
-  "builds_into_item_ids": [
-    "Stridebreaker",
-    "PhantomDancer",
-    "RecurveBow",
-    "HearthboundAxe",
-    "NavoriFlickerblade",
-    "ScoutsSlingshot",
-    "Zeal",
-    "BerserkersGreaves",
-    "ExperimentalHexplate"
   ],
   "ranged": {
     "minimum_damage": "zero",

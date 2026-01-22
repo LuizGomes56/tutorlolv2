@@ -1,13 +1,12 @@
 {
   "riot_id": 4643,
-  "item_id": "VigilantWardstone",
   "name": "Vigilant Wardstone",
   "price": 2300,
   "sell": 1610,
   "tier": 2,
   "maps": [
     [
-      "SummonersRift",
+      "Arena",
       false
     ],
     [
@@ -15,11 +14,7 @@
       false
     ],
     [
-      "Tft",
-      false
-    ],
-    [
-      "Arena",
+      "SummonersRift",
       false
     ],
     [
@@ -33,26 +28,13 @@
     [
       "SummonersRift",
       false
+    ],
+    [
+      "Tft",
+      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 20
-    },
-    {
-      "name": "Health",
-      "value": 250
-    },
-    {
-      "name": "MagicResist",
-      "value": 30
-    },
-    {
-      "name": "Armor",
-      "value": 25
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -115,11 +97,7 @@
   "builds_from_riot_ids": [
     4638
   ],
-  "builds_from_item_ids": [
-    "WatchfulWardstone"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

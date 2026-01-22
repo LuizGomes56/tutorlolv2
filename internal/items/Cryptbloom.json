@@ -1,11 +1,18 @@
 {
   "riot_id": 3137,
-  "item_id": "Cryptbloom",
   "name": "Cryptbloom",
   "price": 3000,
   "sell": 2100,
   "tier": 3,
   "maps": [
+    [
+      "NexusBlitz",
+      true
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
     [
       "Tft",
       false
@@ -15,40 +22,19 @@
       false
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
       "Aram",
       true
     ],
     [
-      "NexusBlitz",
+      "SummonersRift",
       true
+    ],
+    [
+      "SummonersRift",
+      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "MagicPenetration",
-      "value": 30
-    },
-    {
-      "name": "AbilityHaste",
-      "value": 20
-    },
-    {
-      "name": "AbilityPower",
-      "value": 75
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -113,13 +99,7 @@
     3108,
     3108
   ],
-  "builds_from_item_ids": [
-    "BlightingJewel",
-    "FiendishCodex",
-    "FiendishCodex"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

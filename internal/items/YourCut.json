@@ -1,21 +1,16 @@
 {
   "riot_id": 3400,
-  "item_id": "YourCut",
   "name": "Your Cut",
   "price": 0,
   "sell": 0,
   "tier": 1,
   "maps": [
     [
-      "Aram",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
       "Arena",
+      true
+    ],
+    [
+      "Aram",
       true
     ],
     [
@@ -24,10 +19,14 @@
     ],
     [
       "SummonersRift",
-      false
+      true
     ],
     [
       "Tft",
+      false
+    ],
+    [
+      "SummonersRift",
       false
     ],
     [
@@ -96,9 +95,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

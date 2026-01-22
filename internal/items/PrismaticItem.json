@@ -1,38 +1,37 @@
 {
   "riot_id": 220007,
-  "item_id": "PrismaticItem",
   "name": "Prismatic Item",
   "price": 4000,
   "sell": 4000,
   "tier": 1,
   "maps": [
     [
+      "Aram",
+      false
+    ],
+    [
       "NexusBlitz",
       false
     ],
     [
-      "Arena",
-      true
-    ],
-    [
       "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "Aram",
       false
     ],
     [
       "Tft",
       false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "Arena",
+      true
     ]
   ],
   "prettified_stats": [],
@@ -96,9 +95,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

@@ -1,5 +1,5 @@
 use proc_macro::TokenStream;
-use proc_macro2::{Delimiter, Group, Ident, Span, TokenStream as TokenStream2, TokenTree};
+use proc_macro2::{Group, Ident, Span, TokenStream as TokenStream2, TokenTree};
 use quote::{ToTokens, quote};
 use std::{fs, path::PathBuf};
 use syn::{LitStr, Token, parse::Parse, parse_macro_input, spanned::Spanned};
@@ -158,8 +158,6 @@ fn unwrap_outer_group(ts: TokenStream2) -> TokenStream2 {
     ts
 }
 
-/// Expande sequências % ... % dentro do template, avaliando contra o JSON.
-/// Ex.: `%snake(File.name)%`
 fn expand_directives(
     ts: TokenStream2,
     root_ident: &Ident,
@@ -179,7 +177,6 @@ fn expand_directives(
             }
 
             TokenTree::Punct(p) if p.as_char() == '%' => {
-                // captura até o próximo '%'
                 let start_span = p.span();
                 let mut inner = TokenStream2::new();
                 let mut closed = false;
@@ -218,8 +215,6 @@ fn expand_directives(
     Ok(out)
 }
 
-/// Avalia o conteúdo entre %...% como `syn::Expr`.
-/// Atualmente suporta: snake(<expr>), e <expr> pode ser File.x.y (com unwrap de "Value").
 fn eval_directive(
     inner: TokenStream2,
     root_ident: &Ident,
@@ -250,9 +245,7 @@ fn eval_expr_to_string(
             }
         }
 
-        // snake(File.name)
         Expr::Call(call) => {
-            // função precisa ser um ident simples
             let func = match &*call.func {
                 Expr::Path(p) if p.path.segments.len() == 1 => p.path.segments[0].ident.to_string(),
                 _ => return Err("only simple function calls like snake(...) are supported".into()),
@@ -266,6 +259,7 @@ fn eval_expr_to_string(
 
             match func.as_str() {
                 "snake" => Ok(tutorlolv2_fmt::to_ssnake(&arg).to_lowercase()),
+                "pascal" => Ok(tutorlolv2_fmt::pascal_case(&arg)),
                 _ => Err(format!("unknown directive function: {func}")),
             }
         }

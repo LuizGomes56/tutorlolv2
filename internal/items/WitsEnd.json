@@ -1,14 +1,25 @@
 {
   "riot_id": 3091,
-  "item_id": "WitsEnd",
   "name": "Wit's End",
   "price": 2800,
   "sell": 1960,
   "tier": 3,
   "maps": [
     [
+      "SummonersRift",
+      true
+    ],
+    [
+      "Aram",
+      true
+    ],
+    [
       "NexusBlitz",
       true
+    ],
+    [
+      "Tft",
+      false
     ],
     [
       "Arena",
@@ -19,36 +30,11 @@
       false
     ],
     [
-      "Aram",
-      true
-    ],
-    [
-      "Tft",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
       "SummonersRift",
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackSpeed",
-      "value": 50
-    },
-    {
-      "name": "MagicResist",
-      "value": 45
-    },
-    {
-      "name": "Tenacity",
-      "value": 20
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -113,13 +99,7 @@
     1057,
     1043
   ],
-  "builds_from_item_ids": [
-    "RecurveBow",
-    "NegatronCloak",
-    "RecurveBow"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

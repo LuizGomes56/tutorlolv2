@@ -1,46 +1,40 @@
 {
-  "riot_id": 1011,
-  "item_id": "GiantsBelt",
+  "riot_id": 221011,
   "name": "Giant's Belt",
-  "price": 900,
-  "sell": 630,
-  "tier": 2,
+  "price": 500,
+  "sell": 350,
+  "tier": 0,
   "maps": [
+    [
+      "Tft",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "Aram",
+      false
+    ],
     [
       "Arena",
       false
     ],
     [
       "NexusBlitz",
-      true
-    ],
-    [
-      "Aram",
-      true
-    ],
-    [
-      "SummonersRift",
       false
     ],
     [
       "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Tft",
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Health",
-      "value": 300
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -76,7 +70,7 @@
       "percent": 0.0
     },
     "health": {
-      "flat": 350.0,
+      "flat": 0.0,
       "percent": 0.0
     },
     "lifesteal": {
@@ -100,38 +94,8 @@
       "percent": 0.0
     }
   },
-  "builds_from_riot_ids": [
-    1028
-  ],
-  "builds_from_item_ids": [
-    "RubyCrystal"
-  ],
-  "builds_into_riot_ids": [
-    3119,
-    8001,
-    3748,
-    3083,
-    2502,
-    3084,
-    3116,
-    3143,
-    323119,
-    6665,
-    4637,
-    6609,
-    6667
-  ],
-  "builds_into_item_ids": [
-    "WintersApproach",
-    "TitanicHydra",
-    "WarmogsArmor",
-    "UnendingDespair",
-    "Heartsteel",
-    "RylaisCrystalScepter",
-    "RanduinsOmen",
-    "JakshoTheProtean",
-    "ChempunkChainsword"
-  ],
+  "builds_from_riot_ids": [],
+  "builds_into_riot_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"
@@ -141,5 +105,5 @@
     "maximum_damage": "zero"
   },
   "attributes": "Undefined",
-  "purchasable": true
+  "purchasable": false
 }

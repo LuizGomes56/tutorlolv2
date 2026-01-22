@@ -5,5 +5,5 @@ pub(self) use crate::MayFail;
 pub(self) use tutorlolv2_gen::{enums::*, eval::*};
 
 tutorlolv2_macros::expand_dir!("../internal/items", |File| {
-    pub mod %snake(File.name)%;
+    pub mod %snake(pascal(File.name))%;
 });

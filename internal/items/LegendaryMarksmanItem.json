@@ -1,25 +1,12 @@
 {
   "riot_id": 220002,
-  "item_id": "LegendaryMarksmanItem",
   "name": "Legendary Marksman Item",
   "price": 2000,
   "sell": 2000,
   "tier": 1,
   "maps": [
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
       "Aram",
-      false
-    ],
-    [
-      "SummonersRift",
       false
     ],
     [
@@ -31,8 +18,20 @@
       false
     ],
     [
+      "SummonersRift",
+      false
+    ],
+    [
       "Arena",
       true
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
     ]
   ],
   "prettified_stats": [],
@@ -96,9 +95,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

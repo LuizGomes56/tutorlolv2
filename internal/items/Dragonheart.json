@@ -1,8 +1,7 @@
 {
   "riot_id": 447106,
-  "item_id": "Dragonheart",
   "name": "Dragonheart",
-  "price": 0,
+  "price": 1000,
   "sell": 400,
   "tier": 3,
   "maps": [
@@ -11,19 +10,11 @@
       true
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
       "Aram",
       false
     ],
     [
-      "Tft",
+      "NexusBlitz",
       false
     ],
     [
@@ -31,7 +22,15 @@
       false
     ],
     [
-      "NexusBlitz",
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "Tft",
       false
     ]
   ],
@@ -96,9 +95,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

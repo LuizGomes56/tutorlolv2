@@ -1,11 +1,30 @@
 {
-  "riot_id": 1038,
-  "item_id": "BFSword",
+  "riot_id": 221038,
   "name": "B. F. Sword",
   "price": 1300,
   "sell": 910,
-  "tier": 1,
+  "tier": 0,
   "maps": [
+    [
+      "NexusBlitz",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "Aram",
+      false
+    ],
+    [
+      "Tft",
+      false
+    ],
     [
       "Arena",
       false
@@ -13,34 +32,9 @@
     [
       "SummonersRift",
       false
-    ],
-    [
-      "NexusBlitz",
-      true
-    ],
-    [
-      "Tft",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Aram",
-      true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackDamage",
-      "value": 40
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -60,7 +54,7 @@
       "percent": 0.0
     },
     "attackDamage": {
-      "flat": 40.0,
+      "flat": 0.0,
       "percent": 0.0
     },
     "attackSpeed": {
@@ -101,22 +95,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
-  "builds_into_riot_ids": [
-    3032,
-    3146,
-    3072,
-    3026,
-    3031,
-    4403,
-    6671
-  ],
-  "builds_into_item_ids": [
-    "YunTalWildarrows",
-    "Bloodthirster",
-    "GuardianAngel",
-    "InfinityEdge"
-  ],
+  "builds_into_riot_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

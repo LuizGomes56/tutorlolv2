@@ -123,8 +123,8 @@ pub fn setup_internal_items() -> MayFail {
                 ..Default::default()
             };
 
-            let generator_fname = to_ssnake(&item.name).to_lowercase();
             let internal_fname = pascal_case(&item.name);
+            let generator_fname = to_ssnake(&internal_fname).to_lowercase();
 
             item.into_file(SaveTo::Internal(Tag::Items, &internal_fname).path())?;
 

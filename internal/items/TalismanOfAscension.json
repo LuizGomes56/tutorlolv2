@@ -1,11 +1,18 @@
 {
   "riot_id": 443064,
-  "item_id": "TalismanOfAscension",
-  "name": "Talisman of Ascension",
-  "price": 0,
+  "name": "Talisman Of Ascension",
+  "price": 1000,
   "sell": 400,
   "tier": 3,
   "maps": [
+    [
+      "Tft",
+      false
+    ],
+    [
+      "Aram",
+      false
+    ],
     [
       "Arena",
       true
@@ -15,23 +22,15 @@
       false
     ],
     [
-      "Tft",
-      false
-    ],
-    [
       "SummonersRift",
       false
     ],
     [
-      "Aram",
+      "SummonersRift",
       false
     ],
     [
       "NexusBlitz",
-      false
-    ],
-    [
-      "SummonersRift",
       false
     ]
   ],
@@ -96,9 +95,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

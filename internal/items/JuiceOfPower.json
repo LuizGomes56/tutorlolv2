@@ -1,17 +1,20 @@
 {
   "riot_id": 2142,
-  "item_id": "JuiceOfPower",
   "name": "Juice of Power",
   "price": 500,
   "sell": 500,
   "tier": 1,
   "maps": [
     [
-      "Tft",
+      "Aram",
       false
     ],
     [
-      "Aram",
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
       false
     ],
     [
@@ -19,16 +22,12 @@
       false
     ],
     [
-      "SummonersRift",
+      "Tft",
       false
     ],
     [
       "Arena",
       true
-    ],
-    [
-      "SummonersRift",
-      false
     ],
     [
       "SummonersRift",
@@ -96,9 +95,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

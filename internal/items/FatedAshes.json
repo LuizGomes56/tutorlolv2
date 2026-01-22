@@ -1,29 +1,28 @@
 {
   "riot_id": 2508,
-  "item_id": "FatedAshes",
   "name": "Fated Ashes",
   "price": 900,
   "sell": 630,
   "tier": 2,
   "maps": [
     [
-      "NexusBlitz",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
       "Aram",
       true
     ],
     [
-      "Tft",
-      false
+      "SummonersRift",
+      true
     ],
     [
       "SummonersRift",
+      true
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "Tft",
       false
     ],
     [
@@ -31,16 +30,11 @@
       false
     ],
     [
-      "SummonersRift",
+      "NexusBlitz",
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityPower",
-      "value": 30
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -103,16 +97,9 @@
   "builds_from_riot_ids": [
     1052
   ],
-  "builds_from_item_ids": [
-    "AmplifyingTome"
-  ],
   "builds_into_riot_ids": [
     6653,
     2503
-  ],
-  "builds_into_item_ids": [
-    "LiandrysTorment",
-    "BlackfireTorch"
   ],
   "ranged": {
     "minimum_damage": "zero",

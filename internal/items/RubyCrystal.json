@@ -1,25 +1,24 @@
 {
   "riot_id": 1028,
-  "item_id": "RubyCrystal",
   "name": "Ruby Crystal",
   "price": 400,
   "sell": 280,
   "tier": 1,
   "maps": [
     [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
       "Tft",
       false
     ],
     [
-      "NexusBlitz",
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "Aram",
       true
     ],
     [
@@ -31,16 +30,11 @@
       false
     ],
     [
-      "Aram",
+      "NexusBlitz",
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Health",
-      "value": 150
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -101,14 +95,15 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [
     323075,
     323107,
     1011,
     323222,
+    4635,
     6035,
-    323050,
+    3801,
+    2526,
     2021,
     3211,
     4401,
@@ -117,6 +112,7 @@
     6662,
     6660,
     3803,
+    2502,
     3012,
     3044,
     3053,
@@ -126,30 +122,9 @@
     326617,
     3147,
     3152,
+    322526,
     3742,
-    3801,
-    4635,
     6610
-  ],
-  "builds_into_item_ids": [
-    "GiantsBelt",
-    "Tunneler",
-    "SpectresCowl",
-    "ForceOfNature",
-    "SpearOfShojin",
-    "IcebornGauntlet",
-    "BamisCinder",
-    "CatalystOfAeons",
-    "Phage",
-    "SteraksGage",
-    "WingedMoonplate",
-    "Kindlegem",
-    "Thornmail",
-    "HauntingGuise",
-    "HextechRocketbelt",
-    "DeadMansPlate",
-    "CrystallineBracer",
-    "SunderedSky"
   ],
   "ranged": {
     "minimum_damage": "zero",

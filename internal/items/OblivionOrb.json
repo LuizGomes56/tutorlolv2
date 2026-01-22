@@ -1,6 +1,5 @@
 {
   "riot_id": 3916,
-  "item_id": "OblivionOrb",
   "name": "Oblivion Orb",
   "price": 800,
   "sell": 560,
@@ -8,10 +7,6 @@
   "maps": [
     [
       "SummonersRift",
-      true
-    ],
-    [
-      "Aram",
       true
     ],
     [
@@ -27,6 +22,10 @@
       false
     ],
     [
+      "Aram",
+      true
+    ],
+    [
       "Tft",
       false
     ],
@@ -35,12 +34,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityPower",
-      "value": 25
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -103,16 +97,10 @@
   "builds_from_riot_ids": [
     1052
   ],
-  "builds_from_item_ids": [
-    "AmplifyingTome"
-  ],
   "builds_into_riot_ids": [
     223011,
     3011,
     3165
-  ],
-  "builds_into_item_ids": [
-    "Morellonomicon"
   ],
   "ranged": {
     "minimum_damage": "zero",

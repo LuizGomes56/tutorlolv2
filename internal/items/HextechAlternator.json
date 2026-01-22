@@ -1,46 +1,40 @@
 {
   "riot_id": 3145,
-  "item_id": "HextechAlternator",
   "name": "Hextech Alternator",
   "price": 1100,
   "sell": 770,
   "tier": 2,
   "maps": [
     [
-      "Tft",
-      false
+      "NexusBlitz",
+      true
     ],
     [
       "SummonersRift",
       false
     ],
     [
-      "NexusBlitz",
+      "SummonersRift",
       true
     ],
     [
-      "Arena",
-      false
+      "SummonersRift",
+      true
     ],
     [
       "Aram",
       true
     ],
     [
-      "SummonersRift",
-      true
+      "Tft",
+      false
     ],
     [
-      "SummonersRift",
-      true
+      "Arena",
+      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityPower",
-      "value": 45
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -104,22 +98,13 @@
     1052,
     1052
   ],
-  "builds_from_item_ids": [
-    "AmplifyingTome",
-    "AmplifyingTome"
-  ],
   "builds_into_riot_ids": [
+    3146,
     4646,
     4645,
     3152,
     4636,
     6655
-  ],
-  "builds_into_item_ids": [
-    "Stormsurge",
-    "Shadowflame",
-    "HextechRocketbelt",
-    "LudensCompanion"
   ],
   "ranged": {
     "minimum_damage": "zero",

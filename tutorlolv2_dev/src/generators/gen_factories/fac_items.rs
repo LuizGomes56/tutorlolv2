@@ -9,7 +9,7 @@ use crate::{
 };
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
 use serde_json::Value;
-use tutorlolv2_fmt::{pascal_case, rustfmt, to_ssnake};
+use tutorlolv2_fmt::{rustfmt, to_ssnake};
 use tutorlolv2_gen::{Attrs, DamageType, ItemId};
 
 pub struct ItemData {
@@ -105,7 +105,8 @@ pub struct ItemFactory;
 impl ItemFactory {
     pub const GENERATOR_FOLDER: &str = "tutorlolv2_dev/src/generators/gen_items";
     pub const GENERATOR_FUNCTIONS: [fn(ItemData) -> Box<dyn Generator<ItemData>>;
-        ItemId::VARIANTS] = tutorlolv2_macros::expand_dir!("../internal/items", |[Name]| Name::new);
+        ItemId::VARIANTS] =
+        tutorlolv2_macros::expand_dir!("../internal/items", |[File]| %pascal(File.name)%::new);
 
     /// Runs all item generators, stopping the execution if one of them fails
     pub fn run_all() -> MayFail {
@@ -131,19 +132,17 @@ impl ItemFactory {
         Ok(generator.generate()?)
     }
 
-    pub fn create_from_raw(file_name: &str) -> MayFail<String> {
-        if let Ok(data) = std::fs::read_to_string(SaveTo::Generator(Tag::Items, file_name).path()) {
+    pub fn create_from_raw(entity_id: &str) -> MayFail<String> {
+        if let Ok(data) = std::fs::read_to_string(SaveTo::Generator(Tag::Items, entity_id).path()) {
             if data.contains("#![stable]") || data.contains("#![preserve]") {
                 return Ok(data);
             }
         }
 
-        let struct_id = pascal_case(file_name);
-
         let generated_content = format!(
             "use super::*;
 
-            impl Generator<ItemData> for {struct_id} {{
+            impl Generator<ItemData> for {entity_id} {{
                 fn generate(self: Box<Self>) -> MayFail<ItemData> {{
                     /* No implementation */
                     self.end()

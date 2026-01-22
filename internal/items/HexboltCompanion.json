@@ -1,11 +1,18 @@
 {
   "riot_id": 443081,
-  "item_id": "HexboltCompanion",
   "name": "Hexbolt Companion",
-  "price": 0,
+  "price": 1000,
   "sell": 400,
   "tier": 3,
   "maps": [
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
     [
       "SummonersRift",
       false
@@ -15,11 +22,7 @@
       false
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
+      "NexusBlitz",
       false
     ],
     [
@@ -27,24 +30,11 @@
       false
     ],
     [
-      "NexusBlitz",
-      false
-    ],
-    [
       "Arena",
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Health",
-      "value": 500
-    },
-    {
-      "name": "AttackSpeed",
-      "value": 75
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -105,9 +95,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

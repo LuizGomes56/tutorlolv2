@@ -1,11 +1,14 @@
 {
   "riot_id": 220003,
-  "item_id": "LegendaryAssassinItem",
   "name": "Legendary Assassin Item",
   "price": 2000,
   "sell": 2000,
   "tier": 1,
   "maps": [
+    [
+      "Tft",
+      false
+    ],
     [
       "SummonersRift",
       false
@@ -19,20 +22,16 @@
       false
     ],
     [
-      "Tft",
-      false
-    ],
-    [
-      "Arena",
-      true
-    ],
-    [
       "Aram",
       false
     ],
     [
       "SummonersRift",
       false
+    ],
+    [
+      "Arena",
+      true
     ]
   ],
   "prettified_stats": [],
@@ -96,9 +95,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

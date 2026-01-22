@@ -1,29 +1,16 @@
 {
   "riot_id": 3871,
-  "item_id": "ZazZaksRealmspike",
   "name": "Zaz'Zak's Realmspike",
   "price": 400,
   "sell": 160,
   "tier": 3,
   "maps": [
     [
-      "NexusBlitz",
-      false
-    ],
-    [
-      "Arena",
-      false
-    ],
-    [
-      "Aram",
-      false
-    ],
-    [
-      "Tft",
-      false
-    ],
-    [
       "SummonersRift",
+      false
+    ],
+    [
+      "NexusBlitz",
       false
     ],
     [
@@ -33,26 +20,21 @@
     [
       "SummonersRift",
       false
+    ],
+    [
+      "Tft",
+      false
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
+      "Aram",
+      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "GoldPer10Seconds",
-      "value": 9
-    },
-    {
-      "name": "BaseHealthRegen",
-      "value": 75
-    },
-    {
-      "name": "BaseManaRegen",
-      "value": 75
-    },
-    {
-      "name": "Health",
-      "value": 200
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -115,11 +97,7 @@
   "builds_from_riot_ids": [
     3867
   ],
-  "builds_from_item_ids": [
-    "BountyOfWorlds"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

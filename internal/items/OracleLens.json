@@ -1,6 +1,5 @@
 {
   "riot_id": 3364,
-  "item_id": "OracleLens",
   "name": "Oracle Lens",
   "price": 0,
   "sell": 0,
@@ -11,19 +10,15 @@
       false
     ],
     [
-      "Arena",
-      false
-    ],
-    [
       "Tft",
       false
     ],
     [
-      "Aram",
+      "Arena",
       false
     ],
     [
-      "SummonersRift",
+      "Aram",
       false
     ],
     [
@@ -33,6 +28,10 @@
     [
       "NexusBlitz",
       true
+    ],
+    [
+      "SummonersRift",
+      false
     ]
   ],
   "prettified_stats": [],
@@ -96,9 +95,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

@@ -1,17 +1,16 @@
 {
-  "riot_id": 444644,
-  "item_id": "CrownOfTheShatteredQueen",
+  "riot_id": 664644,
   "name": "Crown of the Shattered Queen",
-  "price": 0,
-  "sell": 400,
-  "tier": 3,
+  "price": 2500,
+  "sell": 1000,
+  "tier": 0,
   "maps": [
     [
-      "Arena",
-      true
+      "Tft",
+      false
     ],
     [
-      "SummonersRift",
+      "Arena",
       false
     ],
     [
@@ -23,7 +22,7 @@
       false
     ],
     [
-      "Tft",
+      "Aram",
       false
     ],
     [
@@ -31,32 +30,15 @@
       false
     ],
     [
-      "Aram",
-      false
+      "SummonersRift",
+      true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityPower",
-      "value": 85
-    },
-    {
-      "name": "Mana",
-      "value": 600
-    },
-    {
-      "name": "Health",
-      "value": 350
-    },
-    {
-      "name": "AbilityHaste",
-      "value": 25
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
-      "flat": 85.0,
+      "flat": 0.0,
       "percent": 0.0
     },
     "armor": {
@@ -88,7 +70,7 @@
       "percent": 0.0
     },
     "health": {
-      "flat": 300.0,
+      "flat": 0.0,
       "percent": 0.0
     },
     "lifesteal": {
@@ -100,7 +82,7 @@
       "percent": 0.0
     },
     "mana": {
-      "flat": 600.0,
+      "flat": 0.0,
       "percent": 0.0
     },
     "movespeed": {
@@ -113,9 +95,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

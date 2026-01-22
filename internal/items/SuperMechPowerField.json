@@ -1,6 +1,5 @@
 {
   "riot_id": 1512,
-  "item_id": "SuperMechPowerField",
   "name": "Super Mech Power Field",
   "price": 0,
   "sell": 0,
@@ -11,27 +10,27 @@
       true
     ],
     [
-      "SummonersRift",
-      false
+      "Aram",
+      true
     ],
     [
       "NexusBlitz",
       true
     ],
     [
-      "Tft",
-      false
-    ],
-    [
-      "Aram",
+      "Arena",
       true
     ],
     [
       "SummonersRift",
-      true
+      false
     ],
     [
-      "Arena",
+      "Tft",
+      false
+    ],
+    [
+      "SummonersRift",
       true
     ]
   ],
@@ -96,9 +95,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

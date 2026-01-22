@@ -1,29 +1,28 @@
 {
-  "riot_id": 1053,
-  "item_id": "VampiricScepter",
+  "riot_id": 221053,
   "name": "Vampiric Scepter",
-  "price": 900,
-  "sell": 630,
-  "tier": 2,
+  "price": 500,
+  "sell": 350,
+  "tier": 0,
   "maps": [
     [
       "SummonersRift",
-      true
-    ],
-    [
-      "NexusBlitz",
-      true
+      false
     ],
     [
       "Aram",
-      true
+      false
     ],
     [
       "SummonersRift",
       false
     ],
     [
-      "Arena",
+      "NexusBlitz",
+      false
+    ],
+    [
+      "SummonersRift",
       false
     ],
     [
@@ -31,20 +30,11 @@
       false
     ],
     [
-      "SummonersRift",
-      true
+      "Arena",
+      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackDamage",
-      "value": 15
-    },
-    {
-      "name": "LifeSteal",
-      "value": 7
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -64,7 +54,7 @@
       "percent": 0.0
     },
     "attackDamage": {
-      "flat": 15.0,
+      "flat": 0.0,
       "percent": 0.0
     },
     "attackSpeed": {
@@ -85,7 +75,7 @@
     },
     "lifesteal": {
       "flat": 0.0,
-      "percent": 7.0
+      "percent": 0.0
     },
     "magicResistance": {
       "flat": 0.0,
@@ -104,25 +94,8 @@
       "percent": 0.0
     }
   },
-  "builds_from_riot_ids": [
-    1036
-  ],
-  "builds_from_item_ids": [
-    "LongSword"
-  ],
-  "builds_into_riot_ids": [
-    3139,
-    3072,
-    3074,
-    3153,
-    4403
-  ],
-  "builds_into_item_ids": [
-    "MercurialScimitar",
-    "Bloodthirster",
-    "RavenousHydra",
-    "BladeOfTheRuinedKing"
-  ],
+  "builds_from_riot_ids": [],
+  "builds_into_riot_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"
@@ -132,5 +105,5 @@
     "maximum_damage": "zero"
   },
   "attributes": "Undefined",
-  "purchasable": true
+  "purchasable": false
 }

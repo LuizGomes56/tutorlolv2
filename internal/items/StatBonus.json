@@ -1,25 +1,24 @@
 {
-  "riot_id": 220000,
-  "item_id": "StatBonus",
+  "riot_id": 6032,
   "name": "Stat Bonus",
   "price": 750,
   "sell": 375,
-  "tier": 1,
+  "tier": 0,
   "maps": [
     [
       "SummonersRift",
       false
     ],
     [
-      "SummonersRift",
+      "Tft",
       false
     ],
     [
       "Arena",
-      true
+      false
     ],
     [
-      "NexusBlitz",
+      "SummonersRift",
       false
     ],
     [
@@ -28,10 +27,10 @@
     ],
     [
       "Aram",
-      false
+      true
     ],
     [
-      "Tft",
+      "NexusBlitz",
       false
     ]
   ],
@@ -96,9 +95,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

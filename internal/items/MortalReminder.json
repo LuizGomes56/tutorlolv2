@@ -1,8 +1,7 @@
 {
   "riot_id": 3033,
-  "item_id": "MortalReminder",
   "name": "Mortal Reminder",
-  "price": 3300,
+  "price": 3000,
   "sell": 2100,
   "tier": 3,
   "maps": [
@@ -11,19 +10,7 @@
       true
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
       "NexusBlitz",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
       true
     ],
     [
@@ -31,24 +18,23 @@
       false
     ],
     [
+      "SummonersRift",
+      true
+    ],
+    [
       "Arena",
       false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackDamage",
-      "value": 35
-    },
-    {
-      "name": "ArmorPenetration",
-      "value": 30
-    },
-    {
-      "name": "CriticalStrikeChance",
-      "value": 25
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -61,7 +47,7 @@
     },
     "armorPenetration": {
       "flat": 0.0,
-      "percent": 35.0
+      "percent": 30.0
     },
     "magicPenetration": {
       "flat": 0.0,
@@ -113,13 +99,7 @@
     3035,
     1018
   ],
-  "builds_from_item_ids": [
-    "ExecutionersCalling",
-    "LastWhisper",
-    "CloakOfAgility"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

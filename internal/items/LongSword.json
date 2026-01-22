@@ -1,18 +1,21 @@
 {
   "riot_id": 1036,
-  "item_id": "LongSword",
   "name": "Long Sword",
   "price": 350,
   "sell": 245,
   "tier": 1,
   "maps": [
     [
-      "Aram",
+      "SummonersRift",
+      false
+    ],
+    [
+      "NexusBlitz",
       true
     ],
     [
       "SummonersRift",
-      false
+      true
     ],
     [
       "SummonersRift",
@@ -23,24 +26,15 @@
       false
     ],
     [
-      "NexusBlitz",
+      "Aram",
       true
     ],
     [
       "Arena",
       false
-    ],
-    [
-      "SummonersRift",
-      true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackDamage",
-      "value": 10
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -101,53 +95,31 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [
     3032,
-    2015,
     6670,
     1053,
     3133,
     3004,
+    2015,
     2019,
     2021,
     6692,
     3123,
     3051,
+    6671,
     323004,
     3155,
     3035,
     3077,
+    2523,
     3044,
     4003,
     3134,
     3142,
-    6671,
     6690,
     6699,
     6701
-  ],
-  "builds_into_item_ids": [
-    "YunTalWildarrows",
-    "Noonquiver",
-    "VampiricScepter",
-    "CaulfieldsWarhammer",
-    "Manamune",
-    "SteelSigil",
-    "Tunneler",
-    "Eclipse",
-    "ExecutionersCalling",
-    "HearthboundAxe",
-    "Hexdrinker",
-    "LastWhisper",
-    "Tiamat",
-    "Phage",
-    "Lifeline",
-    "SerratedDirk",
-    "YoumuusGhostblade",
-    "Rectrix",
-    "VoltaicCyclosword",
-    "Opportunity"
   ],
   "ranged": {
     "minimum_damage": "zero",

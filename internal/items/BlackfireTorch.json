@@ -1,13 +1,12 @@
 {
   "riot_id": 2503,
-  "item_id": "BlackfireTorch",
   "name": "Blackfire Torch",
   "price": 2800,
   "sell": 1960,
   "tier": 3,
   "maps": [
     [
-      "SummonersRift",
+      "Tft",
       false
     ],
     [
@@ -19,36 +18,23 @@
       true
     ],
     [
-      "Aram",
-      true
+      "SummonersRift",
+      false
     ],
     [
       "SummonersRift",
       true
     ],
     [
-      "NexusBlitz",
+      "Aram",
       true
     ],
     [
-      "Tft",
-      false
+      "NexusBlitz",
+      true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Mana",
-      "value": 600
-    },
-    {
-      "name": "AbilityHaste",
-      "value": 20
-    },
-    {
-      "name": "AbilityPower",
-      "value": 80
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -112,12 +98,7 @@
     3802,
     2508
   ],
-  "builds_from_item_ids": [
-    "LostChapter",
-    "FatedAshes"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

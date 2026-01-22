@@ -1,27 +1,10 @@
 {
   "riot_id": 3020,
-  "item_id": "SorcerersShoes",
   "name": "Sorcerer's Shoes",
   "price": 1100,
   "sell": 770,
   "tier": 2,
   "maps": [
-    [
-      "Aram",
-      true
-    ],
-    [
-      "NexusBlitz",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Tft",
-      false
-    ],
     [
       "Arena",
       false
@@ -33,18 +16,25 @@
     [
       "SummonersRift",
       true
+    ],
+    [
+      "Tft",
+      false
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "Aram",
+      true
+    ],
+    [
+      "NexusBlitz",
+      true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "MagicPenetration",
-      "value": 12
-    },
-    {
-      "name": "MoveSpeed",
-      "value": 45
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -107,14 +97,8 @@
   "builds_from_riot_ids": [
     1001
   ],
-  "builds_from_item_ids": [
-    "Boots"
-  ],
   "builds_into_riot_ids": [
     3175
-  ],
-  "builds_into_item_ids": [
-    "SpellslingersShoes"
   ],
   "ranged": {
     "minimum_damage": "zero",

@@ -1,11 +1,18 @@
 {
   "riot_id": 1001,
-  "item_id": "Boots",
   "name": "Boots",
   "price": 300,
   "sell": 210,
   "tier": 1,
   "maps": [
+    [
+      "Tft",
+      false
+    ],
+    [
+      "Arena",
+      false
+    ],
     [
       "SummonersRift",
       true
@@ -15,32 +22,19 @@
       true
     ],
     [
-      "Tft",
+      "SummonersRift",
       false
     ],
     [
       "SummonersRift",
       true
-    ],
-    [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
     ],
     [
       "NexusBlitz",
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "MoveSpeed",
-      "value": 25
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -101,7 +95,6 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [
     3117,
     3158,
@@ -112,15 +105,6 @@
     3009,
     3010,
     3020
-  ],
-  "builds_into_item_ids": [
-    "IonianBootsOfLucidity",
-    "PlatedSteelcaps",
-    "MercurysTreads",
-    "BerserkersGreaves",
-    "BootsOfSwiftness",
-    "SymbioticSoles",
-    "SorcerersShoes"
   ],
   "ranged": {
     "minimum_damage": "zero",

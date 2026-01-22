@@ -1,11 +1,18 @@
 {
   "riot_id": 2143,
-  "item_id": "JuiceOfVitality",
   "name": "Juice of Vitality",
   "price": 500,
   "sell": 500,
   "tier": 1,
   "maps": [
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "Aram",
+      false
+    ],
     [
       "NexusBlitz",
       false
@@ -24,14 +31,6 @@
     ],
     [
       "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "Aram",
       false
     ]
   ],
@@ -96,9 +95,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

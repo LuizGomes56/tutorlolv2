@@ -1,30 +1,13 @@
 {
   "riot_id": 447105,
-  "item_id": "EmpyreanPromise",
   "name": "Empyrean Promise",
-  "price": 0,
+  "price": 1000,
   "sell": 400,
   "tier": 3,
   "maps": [
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
       "Arena",
       true
-    ],
-    [
-      "NexusBlitz",
-      false
-    ],
-    [
-      "Aram",
-      false
     ],
     [
       "Tft",
@@ -33,26 +16,25 @@
     [
       "SummonersRift",
       false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "Aram",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "NexusBlitz",
+      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityPower",
-      "value": 70
-    },
-    {
-      "name": "HealAndShieldPower",
-      "value": 18
-    },
-    {
-      "name": "AbilityHaste",
-      "value": 30
-    },
-    {
-      "name": "BaseManaRegen",
-      "value": 125
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -113,9 +95,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

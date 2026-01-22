@@ -1,54 +1,40 @@
 {
-  "riot_id": 3110,
-  "item_id": "FrozenHeart",
+  "riot_id": 323110,
   "name": "Frozen Heart",
-  "price": 2500,
-  "sell": 1750,
-  "tier": 3,
+  "price": 2700,
+  "sell": 1890,
+  "tier": 0,
   "maps": [
     [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Aram",
-      true
+      "Arena",
+      false
     ],
     [
       "NexusBlitz",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
+      false
     ],
     [
       "SummonersRift",
       false
+    ],
+    [
+      "Aram",
+      false
+    ],
+    [
+      "SummonersRift",
+      true
     ],
     [
       "Tft",
       false
     ],
     [
-      "Arena",
+      "SummonersRift",
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Armor",
-      "value": 75
-    },
-    {
-      "name": "AbilityHaste",
-      "value": 20
-    },
-    {
-      "name": "Mana",
-      "value": 400
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -56,7 +42,7 @@
       "percent": 0.0
     },
     "armor": {
-      "flat": 75.0,
+      "flat": 0.0,
       "percent": 0.0
     },
     "armorPenetration": {
@@ -96,7 +82,7 @@
       "percent": 0.0
     },
     "mana": {
-      "flat": 400.0,
+      "flat": 0.0,
       "percent": 0.0
     },
     "movespeed": {
@@ -108,16 +94,8 @@
       "percent": 0.0
     }
   },
-  "builds_from_riot_ids": [
-    3082,
-    3024
-  ],
-  "builds_from_item_ids": [
-    "WardensMail",
-    "GlacialBuckler"
-  ],
+  "builds_from_riot_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

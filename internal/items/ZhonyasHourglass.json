@@ -1,22 +1,25 @@
 {
   "riot_id": 3157,
-  "item_id": "ZhonyasHourglass",
   "name": "Zhonya's Hourglass",
   "price": 3250,
   "sell": 2275,
   "tier": 3,
   "maps": [
     [
-      "Arena",
-      false
-    ],
-    [
       "SummonersRift",
-      false
+      true
     ],
     [
       "SummonersRift",
       true
+    ],
+    [
+      "Tft",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
     ],
     [
       "NexusBlitz",
@@ -27,24 +30,11 @@
       true
     ],
     [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Tft",
+      "Arena",
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Armor",
-      "value": 50
-    },
-    {
-      "name": "AbilityPower",
-      "value": 105
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -108,12 +98,7 @@
     1058,
     2420
   ],
-  "builds_from_item_ids": [
-    "NeedlesslyLargeRod",
-    "SeekersArmguard"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

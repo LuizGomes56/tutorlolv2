@@ -1,55 +1,41 @@
 {
   "riot_id": 3153,
-  "item_id": "BladeOfTheRuinedKing",
-  "name": "Blade of the Ruined King",
+  "name": "Blade of The Ruined King",
   "price": 3200,
   "sell": 2240,
   "tier": 3,
   "maps": [
-    [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
     [
       "NexusBlitz",
       true
     ],
     [
       "SummonersRift",
-      false
+      true
     ],
     [
-      "SummonersRift",
-      true
+      "Tft",
+      false
     ],
     [
       "Aram",
       true
     ],
     [
-      "Tft",
+      "Arena",
       false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackSpeed",
-      "value": 25
-    },
-    {
-      "name": "LifeSteal",
-      "value": 10
-    },
-    {
-      "name": "AttackDamage",
-      "value": 40
-    }
-  ],
-  "damage_type": "Physical",
+  "prettified_stats": [],
+  "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
       "flat": 0.0,
@@ -113,19 +99,13 @@
     1043,
     1037
   ],
-  "builds_from_item_ids": [
-    "VampiricScepter",
-    "RecurveBow",
-    "Pickaxe"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
-    "minimum_damage": "ctx.enemy_current_health - ((0.06 * ctx.enemy_current_health * (1 - 0.06 * ctx.physical_multiplier) - ctx.ad + ctx.ad * (1 - 0.06 * ctx.physical_multiplier)) / 0.06)",
+    "minimum_damage": "zero",
     "maximum_damage": "zero"
   },
   "melee": {
-    "minimum_damage": "ctx.enemy_current_health - ((0.09 * ctx.enemy_current_health * (1 - 0.09 * ctx.physical_multiplier) - ctx.ad + ctx.ad * (1 - 0.09 * ctx.physical_multiplier)) / 0.09)",
+    "minimum_damage": "zero",
     "maximum_damage": "zero"
   },
   "attributes": "Undefined",

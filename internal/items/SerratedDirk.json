@@ -1,11 +1,18 @@
 {
   "riot_id": 3134,
-  "item_id": "SerratedDirk",
   "name": "Serrated Dirk",
   "price": 1000,
   "sell": 700,
   "tier": 2,
   "maps": [
+    [
+      "NexusBlitz",
+      true
+    ],
+    [
+      "Aram",
+      true
+    ],
     [
       "Arena",
       false
@@ -19,32 +26,15 @@
       false
     ],
     [
-      "NexusBlitz",
-      true
+      "Tft",
+      false
     ],
     [
       "SummonersRift",
       true
-    ],
-    [
-      "Aram",
-      true
-    ],
-    [
-      "Tft",
-      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackDamage",
-      "value": 20
-    },
-    {
-      "name": "Lethality",
-      "value": 10
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -108,14 +98,11 @@
     1036,
     1036
   ],
-  "builds_from_item_ids": [
-    "LongSword",
-    "LongSword"
-  ],
   "builds_into_riot_ids": [
     3142,
-    126697,
     6693,
+    126697,
+    2520,
     6691,
     3814,
     4004,
@@ -124,16 +111,8 @@
     3131,
     3179,
     6695,
+    667666,
     6701
-  ],
-  "builds_into_item_ids": [
-    "YoumuusGhostblade",
-    "EdgeOfNight",
-    "TheCollector",
-    "Hubris",
-    "UmbralGlaive",
-    "SerpentsFang",
-    "Opportunity"
   ],
   "ranged": {
     "minimum_damage": "zero",

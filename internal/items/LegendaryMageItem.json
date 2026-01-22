@@ -1,26 +1,13 @@
 {
   "riot_id": 220004,
-  "item_id": "LegendaryMageItem",
   "name": "Legendary Mage Item",
   "price": 2000,
   "sell": 2000,
   "tier": 1,
   "maps": [
     [
-      "SummonersRift",
-      false
-    ],
-    [
       "Aram",
       false
-    ],
-    [
-      "NexusBlitz",
-      false
-    ],
-    [
-      "Arena",
-      true
     ],
     [
       "Tft",
@@ -31,7 +18,19 @@
       false
     ],
     [
+      "Arena",
+      true
+    ],
+    [
       "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "NexusBlitz",
       false
     ]
   ],
@@ -96,9 +95,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

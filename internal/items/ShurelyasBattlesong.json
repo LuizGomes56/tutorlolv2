@@ -1,62 +1,44 @@
 {
-  "riot_id": 2065,
-  "item_id": "ShurelyasBattlesong",
+  "riot_id": 322065,
   "name": "Shurelya's Battlesong",
-  "price": 2200,
-  "sell": 1540,
-  "tier": 3,
+  "price": 2600,
+  "sell": 1820,
+  "tier": 0,
   "maps": [
     [
       "SummonersRift",
-      true
+      false
     ],
     [
       "Aram",
-      true
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "Tft",
+      false
     ],
     [
       "Arena",
       false
     ],
     [
+      "SummonersRift",
+      true
+    ],
+    [
       "NexusBlitz",
-      true
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Tft",
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "BaseManaRegen",
-      "value": 150
-    },
-    {
-      "name": "AbilityPower",
-      "value": 55
-    },
-    {
-      "name": "AbilityHaste",
-      "value": 15
-    },
-    {
-      "name": "MoveSpeed",
-      "value": 6
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
-      "flat": 50.0,
+      "flat": 0.0,
       "percent": 0.0
     },
     "armor": {
@@ -105,23 +87,15 @@
     },
     "movespeed": {
       "flat": 0.0,
-      "percent": 4.0
+      "percent": 0.0
     },
     "omnivamp": {
       "flat": 0.0,
       "percent": 0.0
     }
   },
-  "builds_from_riot_ids": [
-    3113,
-    4642
-  ],
-  "builds_from_item_ids": [
-    "AetherWisp",
-    "BandleglassMirror"
-  ],
+  "builds_from_riot_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

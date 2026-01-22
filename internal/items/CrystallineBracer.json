@@ -1,29 +1,28 @@
 {
   "riot_id": 3801,
-  "item_id": "CrystallineBracer",
   "name": "Crystalline Bracer",
   "price": 800,
   "sell": 560,
   "tier": 2,
   "maps": [
     [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
       "Aram",
       true
     ],
     [
+      "Tft",
+      false
+    ],
+    [
       "NexusBlitz",
+      true
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "SummonersRift",
       true
     ],
     [
@@ -31,20 +30,11 @@
       false
     ],
     [
-      "Tft",
+      "SummonersRift",
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Health",
-      "value": 200
-    },
-    {
-      "name": "BaseHealthRegen",
-      "value": 100
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -108,17 +98,9 @@
     1028,
     1006
   ],
-  "builds_from_item_ids": [
-    "RubyCrystal",
-    "RejuvenationBead"
-  ],
   "builds_into_riot_ids": [
     3083,
     3084
-  ],
-  "builds_into_item_ids": [
-    "WarmogsArmor",
-    "Heartsteel"
   ],
   "ranged": {
     "minimum_damage": "zero",

@@ -1,23 +1,10 @@
 {
   "riot_id": 3078,
-  "item_id": "TrinityForce",
   "name": "Trinity Force",
   "price": 3333,
   "sell": 2333,
   "tier": 3,
   "maps": [
-    [
-      "Aram",
-      true
-    ],
-    [
-      "NexusBlitz",
-      true
-    ],
-    [
-      "Tft",
-      false
-    ],
     [
       "Arena",
       false
@@ -27,32 +14,27 @@
       false
     ],
     [
-      "SummonersRift",
+      "Aram",
       true
     ],
     [
       "SummonersRift",
       true
+    ],
+    [
+      "NexusBlitz",
+      true
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "Tft",
+      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackDamage",
-      "value": 36
-    },
-    {
-      "name": "AttackSpeed",
-      "value": 30
-    },
-    {
-      "name": "Health",
-      "value": 333
-    },
-    {
-      "name": "AbilityHaste",
-      "value": 15
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -117,13 +99,7 @@
     3044,
     3051
   ],
-  "builds_from_item_ids": [
-    "Sheen",
-    "Phage",
-    "HearthboundAxe"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

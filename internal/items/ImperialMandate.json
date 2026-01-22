@@ -1,21 +1,16 @@
 {
   "riot_id": 4005,
-  "item_id": "ImperialMandate",
   "name": "Imperial Mandate",
   "price": 2250,
   "sell": 1575,
   "tier": 3,
   "maps": [
     [
-      "SummonersRift",
+      "Tft",
       false
     ],
     [
       "Aram",
-      true
-    ],
-    [
-      "NexusBlitz",
       true
     ],
     [
@@ -24,31 +19,22 @@
     ],
     [
       "SummonersRift",
-      true
+      false
     ],
     [
       "SummonersRift",
       true
     ],
     [
-      "Tft",
-      false
+      "NexusBlitz",
+      true
+    ],
+    [
+      "SummonersRift",
+      true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 20
-    },
-    {
-      "name": "BaseManaRegen",
-      "value": 125
-    },
-    {
-      "name": "AbilityPower",
-      "value": 60
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -112,12 +98,7 @@
     3108,
     4642
   ],
-  "builds_from_item_ids": [
-    "FiendishCodex",
-    "BandleglassMirror"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

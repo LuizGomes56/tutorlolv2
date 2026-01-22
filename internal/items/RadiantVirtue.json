@@ -1,23 +1,10 @@
 {
-  "riot_id": 446667,
-  "item_id": "RadiantVirtue",
+  "riot_id": 6667,
   "name": "Radiant Virtue",
-  "price": 0,
-  "sell": 400,
-  "tier": 3,
+  "price": 2600,
+  "sell": 1820,
+  "tier": 0,
   "maps": [
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
     [
       "Aram",
       false
@@ -32,27 +19,22 @@
     ],
     [
       "Arena",
-      true
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Health",
-      "value": 400
-    },
-    {
-      "name": "MagicResist",
-      "value": 35
-    },
-    {
-      "name": "HealAndShieldPower",
-      "value": 12
-    },
-    {
-      "name": "Armor",
-      "value": 35
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -60,7 +42,7 @@
       "percent": 0.0
     },
     "armor": {
-      "flat": 35.0,
+      "flat": 0.0,
       "percent": 0.0
     },
     "armorPenetration": {
@@ -88,7 +70,7 @@
       "percent": 0.0
     },
     "health": {
-      "flat": 400.0,
+      "flat": 0.0,
       "percent": 0.0
     },
     "lifesteal": {
@@ -96,7 +78,7 @@
       "percent": 0.0
     },
     "magicResistance": {
-      "flat": 35.0,
+      "flat": 0.0,
       "percent": 0.0
     },
     "mana": {
@@ -113,9 +95,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"
@@ -125,5 +105,5 @@
     "maximum_damage": "zero"
   },
   "attributes": "Undefined",
-  "purchasable": true
+  "purchasable": false
 }

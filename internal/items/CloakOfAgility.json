@@ -1,6 +1,5 @@
 {
   "riot_id": 1018,
-  "item_id": "CloakOfAgility",
   "name": "Cloak of Agility",
   "price": 600,
   "sell": 420,
@@ -8,14 +7,6 @@
   "maps": [
     [
       "SummonersRift",
-      false
-    ],
-    [
-      "Aram",
-      true
-    ],
-    [
-      "NexusBlitz",
       true
     ],
     [
@@ -28,19 +19,22 @@
     ],
     [
       "SummonersRift",
-      true
+      false
     ],
     [
       "SummonersRift",
       true
+    ],
+    [
+      "Aram",
+      true
+    ],
+    [
+      "NexusBlitz",
+      true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "CriticalStrikeChance",
-      "value": 15
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -101,23 +95,18 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [
     6670,
+    3097,
+    123430,
     3086,
     3095,
+    3039,
     6676,
     3031,
     3033,
-    3508
-  ],
-  "builds_into_item_ids": [
-    "Noonquiver",
-    "Zeal",
-    "TheCollector",
-    "InfinityEdge",
-    "MortalReminder",
-    "EssenceReaver"
+    3508,
+    667666
   ],
   "ranged": {
     "minimum_damage": "zero",

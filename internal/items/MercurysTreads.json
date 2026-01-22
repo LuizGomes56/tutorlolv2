@@ -1,14 +1,29 @@
 {
   "riot_id": 3111,
-  "item_id": "MercurysTreads",
   "name": "Mercury's Treads",
   "price": 1250,
   "sell": 875,
   "tier": 2,
   "maps": [
     [
+      "NexusBlitz",
+      true
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "Tft",
+      false
+    ],
+    [
       "SummonersRift",
       true
+    ],
+    [
+      "Arena",
+      false
     ],
     [
       "Aram",
@@ -16,39 +31,10 @@
     ],
     [
       "SummonersRift",
-      false
-    ],
-    [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
       true
-    ],
-    [
-      "NexusBlitz",
-      true
-    ],
-    [
-      "Tft",
-      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "MoveSpeed",
-      "value": 45
-    },
-    {
-      "name": "MagicResist",
-      "value": 20
-    },
-    {
-      "name": "Tenacity",
-      "value": 30
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -112,15 +98,8 @@
     1001,
     1033
   ],
-  "builds_from_item_ids": [
-    "Boots",
-    "NullMagicMantle"
-  ],
   "builds_into_riot_ids": [
     3173
-  ],
-  "builds_into_item_ids": [
-    "ChainlacedCrushers"
   ],
   "ranged": {
     "minimum_damage": "zero",

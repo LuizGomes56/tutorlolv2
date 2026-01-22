@@ -1,11 +1,14 @@
 {
   "riot_id": 3123,
-  "item_id": "ExecutionersCalling",
   "name": "Executioner's Calling",
   "price": 800,
   "sell": 560,
   "tier": 2,
   "maps": [
+    [
+      "Tft",
+      false
+    ],
     [
       "Arena",
       false
@@ -15,32 +18,23 @@
       true
     ],
     [
-      "Tft",
-      false
+      "SummonersRift",
+      true
     ],
     [
       "SummonersRift",
       true
+    ],
+    [
+      "SummonersRift",
+      false
     ],
     [
       "NexusBlitz",
       true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
-      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackDamage",
-      "value": 15
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -103,16 +97,9 @@
   "builds_from_riot_ids": [
     1036
   ],
-  "builds_from_item_ids": [
-    "LongSword"
-  ],
   "builds_into_riot_ids": [
     3033,
     6609
-  ],
-  "builds_into_item_ids": [
-    "MortalReminder",
-    "ChempunkChainsword"
   ],
   "ranged": {
     "minimum_damage": "zero",

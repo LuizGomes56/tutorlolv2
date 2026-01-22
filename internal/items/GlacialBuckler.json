@@ -1,11 +1,26 @@
 {
   "riot_id": 3024,
-  "item_id": "GlacialBuckler",
   "name": "Glacial Buckler",
   "price": 900,
   "sell": 630,
   "tier": 2,
   "maps": [
+    [
+      "Aram",
+      true
+    ],
+    [
+      "NexusBlitz",
+      true
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
     [
       "SummonersRift",
       true
@@ -15,40 +30,11 @@
       false
     ],
     [
-      "NexusBlitz",
-      true
-    ],
-    [
-      "Aram",
-      true
-    ],
-    [
-      "Arena",
-      false
-    ],
-    [
       "SummonersRift",
       true
-    ],
-    [
-      "SummonersRift",
-      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Mana",
-      "value": 300
-    },
-    {
-      "name": "Armor",
-      "value": 25
-    },
-    {
-      "name": "AbilityHaste",
-      "value": 10
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -113,17 +99,9 @@
     1027,
     2022
   ],
-  "builds_from_item_ids": [
-    "ClothArmor",
-    "SapphireCrystal",
-    "GlowingMote"
-  ],
   "builds_into_riot_ids": [
     3110,
     323110
-  ],
-  "builds_into_item_ids": [
-    "FrozenHeart"
   ],
   "ranged": {
     "minimum_damage": "zero",

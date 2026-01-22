@@ -1,6 +1,5 @@
 {
   "riot_id": 6664,
-  "item_id": "HollowRadiance",
   "name": "Hollow Radiance",
   "price": 2800,
   "sell": 1960,
@@ -11,6 +10,10 @@
       true
     ],
     [
+      "Arena",
+      false
+    ],
+    [
       "NexusBlitz",
       true
     ],
@@ -19,40 +22,19 @@
       false
     ],
     [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
       "SummonersRift",
       true
     ],
     [
       "SummonersRift",
       false
+    ],
+    [
+      "SummonersRift",
+      true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "MagicResist",
-      "value": 40
-    },
-    {
-      "name": "AbilityHaste",
-      "value": 10
-    },
-    {
-      "name": "Health",
-      "value": 400
-    },
-    {
-      "name": "BaseHealthRegen",
-      "value": 100
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -116,12 +98,7 @@
     6660,
     3211
   ],
-  "builds_from_item_ids": [
-    "BamisCinder",
-    "SpectresCowl"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

@@ -1,19 +1,10 @@
 {
   "riot_id": 2146,
-  "item_id": "EnhancedLuckyDice",
   "name": "Enhanced Lucky Dice",
   "price": 0,
   "sell": 0,
   "tier": 1,
   "maps": [
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
     [
       "Arena",
       true
@@ -23,7 +14,11 @@
       false
     ],
     [
-      "Aram",
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
       false
     ],
     [
@@ -32,6 +27,10 @@
     ],
     [
       "Tft",
+      false
+    ],
+    [
+      "Aram",
       false
     ]
   ],
@@ -96,9 +95,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

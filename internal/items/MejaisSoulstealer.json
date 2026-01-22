@@ -1,29 +1,16 @@
 {
   "riot_id": 3041,
-  "item_id": "MejaisSoulstealer",
   "name": "Mejai's Soulstealer",
   "price": 1500,
   "sell": 1050,
   "tier": 2,
   "maps": [
     [
-      "SummonersRift",
-      true
-    ],
-    [
-      "NexusBlitz",
-      false
-    ],
-    [
-      "SummonersRift",
+      "Arena",
       false
     ],
     [
       "Aram",
-      false
-    ],
-    [
-      "Arena",
       false
     ],
     [
@@ -32,19 +19,22 @@
     ],
     [
       "SummonersRift",
+      true
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "NexusBlitz",
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityPower",
-      "value": 20
-    },
-    {
-      "name": "Health",
-      "value": 100
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -107,11 +97,7 @@
   "builds_from_riot_ids": [
     1082
   ],
-  "builds_from_item_ids": [
-    "DarkSeal"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

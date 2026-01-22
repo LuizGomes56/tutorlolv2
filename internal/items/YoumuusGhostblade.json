@@ -1,6 +1,5 @@
 {
   "riot_id": 3142,
-  "item_id": "YoumuusGhostblade",
   "name": "Youmuu's Ghostblade",
   "price": 2800,
   "sell": 1960,
@@ -8,47 +7,34 @@
   "maps": [
     [
       "SummonersRift",
-      false
+      true
     ],
     [
       "SummonersRift",
       true
+    ],
+    [
+      "Tft",
+      false
     ],
     [
       "NexusBlitz",
       true
     ],
     [
-      "Aram",
-      true
-    ],
-    [
       "SummonersRift",
-      true
+      false
     ],
     [
       "Arena",
       false
     ],
     [
-      "Tft",
-      false
+      "Aram",
+      true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackDamage",
-      "value": 55
-    },
-    {
-      "name": "MoveSpeed",
-      "value": 4
-    },
-    {
-      "name": "Lethality",
-      "value": 18
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -113,13 +99,7 @@
     6690,
     1036
   ],
-  "builds_from_item_ids": [
-    "SerratedDirk",
-    "Rectrix",
-    "LongSword"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

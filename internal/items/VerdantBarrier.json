@@ -1,17 +1,12 @@
 {
   "riot_id": 4632,
-  "item_id": "VerdantBarrier",
   "name": "Verdant Barrier",
   "price": 1600,
   "sell": 1120,
   "tier": 2,
   "maps": [
     [
-      "Aram",
-      true
-    ],
-    [
-      "NexusBlitz",
+      "SummonersRift",
       true
     ],
     [
@@ -23,28 +18,23 @@
       true
     ],
     [
+      "NexusBlitz",
+      true
+    ],
+    [
+      "Aram",
+      true
+    ],
+    [
       "Arena",
       false
     ],
     [
       "SummonersRift",
       false
-    ],
-    [
-      "SummonersRift",
-      true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "MagicResist",
-      "value": 25
-    },
-    {
-      "name": "AbilityPower",
-      "value": 40
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -109,16 +99,8 @@
     1033,
     1052
   ],
-  "builds_from_item_ids": [
-    "AmplifyingTome",
-    "NullMagicMantle",
-    "AmplifyingTome"
-  ],
   "builds_into_riot_ids": [
     3102
-  ],
-  "builds_into_item_ids": [
-    "BansheesVeil"
   ],
   "ranged": {
     "minimum_damage": "zero",

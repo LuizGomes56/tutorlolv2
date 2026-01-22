@@ -1,17 +1,24 @@
 {
   "riot_id": 3066,
-  "item_id": "WingedMoonplate",
   "name": "Winged Moonplate",
   "price": 800,
   "sell": 560,
   "tier": 2,
   "maps": [
     [
-      "Aram",
-      true
+      "Tft",
+      false
     ],
     [
       "NexusBlitz",
+      true
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
       true
     ],
     [
@@ -20,31 +27,14 @@
     ],
     [
       "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
       true
     ],
     [
-      "Tft",
-      false
-    ],
-    [
-      "SummonersRift",
+      "Aram",
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "MoveSpeed",
-      "value": 4
-    },
-    {
-      "name": "Health",
-      "value": 200
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -107,21 +97,12 @@
   "builds_from_riot_ids": [
     1028
   ],
-  "builds_from_item_ids": [
-    "RubyCrystal"
-  ],
   "builds_into_riot_ids": [
-    4401,
     3181,
+    4401,
     3002,
     323002,
     3742
-  ],
-  "builds_into_item_ids": [
-    "ForceOfNature",
-    "Hullbreaker",
-    "Trailblazer",
-    "DeadMansPlate"
   ],
   "ranged": {
     "minimum_damage": "zero",

@@ -1,6 +1,5 @@
 {
   "riot_id": 2003,
-  "item_id": "HealthPotion",
   "name": "Health Potion",
   "price": 50,
   "sell": 20,
@@ -8,7 +7,7 @@
   "maps": [
     [
       "SummonersRift",
-      false
+      true
     ],
     [
       "Arena",
@@ -19,8 +18,8 @@
       true
     ],
     [
-      "Aram",
-      true
+      "SummonersRift",
+      false
     ],
     [
       "Tft",
@@ -28,11 +27,11 @@
     ],
     [
       "SummonersRift",
-      true
+      false
     ],
     [
-      "SummonersRift",
-      false
+      "Aram",
+      true
     ]
   ],
   "prettified_stats": [],
@@ -96,9 +95,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

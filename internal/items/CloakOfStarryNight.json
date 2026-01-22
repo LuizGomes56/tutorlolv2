@@ -1,14 +1,17 @@
 {
-  "riot_id": 443059,
-  "item_id": "CloakOfStarryNight",
+  "riot_id": 663059,
   "name": "Cloak of Starry Night",
-  "price": 0,
-  "sell": 400,
-  "tier": 3,
+  "price": 2500,
+  "sell": 1000,
+  "tier": 0,
   "maps": [
     [
       "SummonersRift",
       false
+    ],
+    [
+      "SummonersRift",
+      true
     ],
     [
       "SummonersRift",
@@ -24,27 +27,14 @@
     ],
     [
       "Arena",
-      true
+      false
     ],
     [
       "NexusBlitz",
       false
-    ],
-    [
-      "SummonersRift",
-      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Health",
-      "value": 300
-    },
-    {
-      "name": "MagicResist",
-      "value": 100
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -80,7 +70,7 @@
       "percent": 0.0
     },
     "health": {
-      "flat": 300.0,
+      "flat": 0.0,
       "percent": 0.0
     },
     "lifesteal": {
@@ -88,7 +78,7 @@
       "percent": 0.0
     },
     "magicResistance": {
-      "flat": 100.0,
+      "flat": 0.0,
       "percent": 0.0
     },
     "mana": {
@@ -105,9 +95,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

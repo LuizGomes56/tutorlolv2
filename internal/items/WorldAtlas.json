@@ -1,21 +1,16 @@
 {
   "riot_id": 3865,
-  "item_id": "WorldAtlas",
   "name": "World Atlas",
   "price": 400,
   "sell": 160,
   "tier": 1,
   "maps": [
     [
-      "Arena",
-      false
-    ],
-    [
       "SummonersRift",
       false
     ],
     [
-      "Aram",
+      "NexusBlitz",
       false
     ],
     [
@@ -27,7 +22,11 @@
       true
     ],
     [
-      "NexusBlitz",
+      "Aram",
+      false
+    ],
+    [
+      "Arena",
       false
     ],
     [
@@ -96,9 +95,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

@@ -1,22 +1,13 @@
 {
   "riot_id": 2151,
-  "item_id": "ElixirOfAvarice",
   "name": "Elixir of Avarice",
-  "price": 0,
+  "price": 50,
   "sell": 20,
   "tier": 1,
   "maps": [
     [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
+      "Aram",
       true
-    ],
-    [
-      "SummonersRift",
-      false
     ],
     [
       "Tft",
@@ -24,11 +15,19 @@
     ],
     [
       "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
       true
     ],
     [
-      "Aram",
+      "SummonersRift",
       true
+    ],
+    [
+      "Arena",
+      false
     ],
     [
       "NexusBlitz",
@@ -96,9 +95,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

@@ -1,6 +1,5 @@
 {
   "riot_id": 6665,
-  "item_id": "JakshoTheProtean",
   "name": "Jak'Sho, The Protean",
   "price": 3200,
   "sell": 2240,
@@ -8,14 +7,10 @@
   "maps": [
     [
       "SummonersRift",
-      false
-    ],
-    [
-      "NexusBlitz",
       true
     ],
     [
-      "Tft",
+      "SummonersRift",
       false
     ],
     [
@@ -27,28 +22,19 @@
       true
     ],
     [
-      "Arena",
+      "Tft",
       false
     ],
     [
-      "SummonersRift",
+      "NexusBlitz",
       true
+    ],
+    [
+      "Arena",
+      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "MagicResist",
-      "value": 45
-    },
-    {
-      "name": "Armor",
-      "value": 45
-    },
-    {
-      "name": "Health",
-      "value": 350
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -113,13 +99,7 @@
     1031,
     1057
   ],
-  "builds_from_item_ids": [
-    "GiantsBelt",
-    "ChainVest",
-    "NegatronCloak"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

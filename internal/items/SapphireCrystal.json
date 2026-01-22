@@ -1,15 +1,10 @@
 {
   "riot_id": 1027,
-  "item_id": "SapphireCrystal",
   "name": "Sapphire Crystal",
   "price": 300,
   "sell": 210,
   "tier": 1,
   "maps": [
-    [
-      "SummonersRift",
-      false
-    ],
     [
       "SummonersRift",
       true
@@ -19,28 +14,27 @@
       true
     ],
     [
-      "NexusBlitz",
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
       true
     ],
     [
-      "Tft",
-      false
+      "NexusBlitz",
+      true
     ],
     [
       "Arena",
       false
     ],
     [
-      "SummonersRift",
-      true
+      "Tft",
+      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Mana",
-      "value": 300
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -101,16 +95,10 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [
     3803,
     3024,
     3802
-  ],
-  "builds_into_item_ids": [
-    "CatalystOfAeons",
-    "GlacialBuckler",
-    "LostChapter"
   ],
   "ranged": {
     "minimum_damage": "zero",

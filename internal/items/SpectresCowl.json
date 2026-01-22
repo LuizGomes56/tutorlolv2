@@ -1,26 +1,17 @@
 {
   "riot_id": 3211,
-  "item_id": "SpectresCowl",
   "name": "Spectre's Cowl",
   "price": 1250,
   "sell": 875,
   "tier": 2,
   "maps": [
     [
-      "Tft",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
       "Aram",
       true
+    ],
+    [
+      "Tft",
+      false
     ],
     [
       "Arena",
@@ -31,24 +22,19 @@
       false
     ],
     [
+      "SummonersRift",
+      true
+    ],
+    [
       "NexusBlitz",
+      true
+    ],
+    [
+      "SummonersRift",
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Health",
-      "value": 200
-    },
-    {
-      "name": "MagicResist",
-      "value": 35
-    },
-    {
-      "name": "BaseHealthRegen",
-      "value": 100
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -113,20 +99,10 @@
     1033,
     1006
   ],
-  "builds_from_item_ids": [
-    "RubyCrystal",
-    "NullMagicMantle",
-    "RejuvenationBead"
-  ],
   "builds_into_riot_ids": [
     2504,
     3065,
     6664
-  ],
-  "builds_into_item_ids": [
-    "KaenicRookern",
-    "SpiritVisage",
-    "HollowRadiance"
   ],
   "ranged": {
     "minimum_damage": "zero",

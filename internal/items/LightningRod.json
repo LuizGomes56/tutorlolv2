@@ -1,21 +1,12 @@
 {
   "riot_id": 447119,
-  "item_id": "LightningRod",
   "name": "Lightning Rod",
-  "price": 0,
+  "price": 1000,
   "sell": 400,
   "tier": 3,
   "maps": [
     [
       "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "Aram",
       false
     ],
     [
@@ -31,28 +22,19 @@
       true
     ],
     [
+      "Aram",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
       "SummonersRift",
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "MoveSpeed",
-      "value": 8
-    },
-    {
-      "name": "MagicResist",
-      "value": 30
-    },
-    {
-      "name": "Armor",
-      "value": 30
-    },
-    {
-      "name": "Health",
-      "value": 500
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -76,7 +58,7 @@
       "percent": 0.0
     },
     "attackSpeed": {
-      "flat": 30.0,
+      "flat": 0.0,
       "percent": 0.0
     },
     "criticalStrikeChance": {
@@ -113,9 +95,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

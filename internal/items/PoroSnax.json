@@ -1,6 +1,5 @@
 {
   "riot_id": 2052,
-  "item_id": "PoroSnax",
   "name": "Poro-Snax",
   "price": 0,
   "sell": 0,
@@ -8,6 +7,18 @@
   "maps": [
     [
       "SummonersRift",
+      false
+    ],
+    [
+      "NexusBlitz",
+      true
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "Arena",
       true
     ],
     [
@@ -21,18 +32,6 @@
     [
       "Aram",
       true
-    ],
-    [
-      "NexusBlitz",
-      true
-    ],
-    [
-      "Arena",
-      true
-    ],
-    [
-      "SummonersRift",
-      false
     ]
   ],
   "prettified_stats": [],
@@ -96,9 +95,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

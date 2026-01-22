@@ -1,11 +1,18 @@
 {
   "riot_id": 6675,
-  "item_id": "NavoriFlickerblade",
   "name": "Navori Flickerblade",
   "price": 2650,
   "sell": 1855,
   "tier": 3,
   "maps": [
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
     [
       "SummonersRift",
       true
@@ -15,40 +22,19 @@
       true
     ],
     [
-      "Arena",
-      false
-    ],
-    [
       "Aram",
-      true
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
       true
     ],
     [
       "Tft",
       false
+    ],
+    [
+      "Arena",
+      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackSpeed",
-      "value": 40
-    },
-    {
-      "name": "CriticalStrikeChance",
-      "value": 25
-    },
-    {
-      "name": "MoveSpeed",
-      "value": 4
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -113,13 +99,7 @@
     3086,
     1042
   ],
-  "builds_from_item_ids": [
-    "Dagger",
-    "Zeal",
-    "Dagger"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

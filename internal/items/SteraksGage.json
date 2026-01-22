@@ -1,18 +1,13 @@
 {
   "riot_id": 3053,
-  "item_id": "SteraksGage",
   "name": "Sterak's Gage",
   "price": 3200,
   "sell": 2240,
   "tier": 3,
   "maps": [
     [
-      "SummonersRift",
+      "Tft",
       false
-    ],
-    [
-      "SummonersRift",
-      true
     ],
     [
       "Aram",
@@ -24,27 +19,22 @@
     ],
     [
       "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "SummonersRift",
       true
     ],
     [
       "NexusBlitz",
       true
-    ],
-    [
-      "Tft",
-      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Health",
-      "value": 400
-    },
-    {
-      "name": "Tenacity",
-      "value": 20
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -109,13 +99,7 @@
     2021,
     1028
   ],
-  "builds_from_item_ids": [
-    "Pickaxe",
-    "Tunneler",
-    "RubyCrystal"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

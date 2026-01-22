@@ -1,11 +1,14 @@
 {
   "riot_id": 2152,
-  "item_id": "ElixirOfForce",
   "name": "Elixir of Force",
-  "price": 0,
+  "price": 50,
   "sell": 20,
   "tier": 1,
   "maps": [
+    [
+      "SummonersRift",
+      true
+    ],
     [
       "SummonersRift",
       false
@@ -13,6 +16,10 @@
     [
       "SummonersRift",
       true
+    ],
+    [
+      "Tft",
+      false
     ],
     [
       "Aram",
@@ -23,16 +30,8 @@
       true
     ],
     [
-      "Tft",
-      false
-    ],
-    [
       "Arena",
       false
-    ],
-    [
-      "SummonersRift",
-      true
     ]
   ],
   "prettified_stats": [],
@@ -96,9 +95,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

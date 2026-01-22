@@ -1,18 +1,25 @@
 {
   "riot_id": 3082,
-  "item_id": "WardensMail",
   "name": "Warden's Mail",
   "price": 1000,
   "sell": 700,
   "tier": 2,
   "maps": [
     [
-      "NexusBlitz",
+      "Aram",
+      true
+    ],
+    [
+      "SummonersRift",
       true
     ],
     [
       "Tft",
       false
+    ],
+    [
+      "SummonersRift",
+      true
     ],
     [
       "Arena",
@@ -23,24 +30,11 @@
       false
     ],
     [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Aram",
+      "NexusBlitz",
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Armor",
-      "value": 40
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -104,18 +98,10 @@
     1029,
     1029
   ],
-  "builds_from_item_ids": [
-    "ClothArmor",
-    "ClothArmor"
-  ],
   "builds_into_riot_ids": [
     3110,
     323110,
     3143
-  ],
-  "builds_into_item_ids": [
-    "FrozenHeart",
-    "RanduinsOmen"
   ],
   "ranged": {
     "minimum_damage": "zero",

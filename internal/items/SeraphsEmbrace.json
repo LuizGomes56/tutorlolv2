@@ -1,10 +1,9 @@
 {
-  "riot_id": 3040,
-  "item_id": "SeraphsEmbrace",
+  "riot_id": 323040,
   "name": "Seraph's Embrace",
   "price": 2900,
   "sell": 2030,
-  "tier": 4,
+  "tier": 0,
   "maps": [
     [
       "SummonersRift",
@@ -12,19 +11,7 @@
     ],
     [
       "Aram",
-      true
-    ],
-    [
-      "NexusBlitz",
-      true
-    ],
-    [
-      "SummonersRift",
       false
-    ],
-    [
-      "SummonersRift",
-      true
     ],
     [
       "Tft",
@@ -33,26 +20,25 @@
     [
       "Arena",
       false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "NexusBlitz",
+      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Mana",
-      "value": 1000
-    },
-    {
-      "name": "AbilityHaste",
-      "value": 25
-    },
-    {
-      "name": "AbilityPower",
-      "value": 70
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
-      "flat": 70.0,
+      "flat": 0.0,
       "percent": 0.0
     },
     "armor": {
@@ -96,7 +82,7 @@
       "percent": 0.0
     },
     "mana": {
-      "flat": 1000.0,
+      "flat": 0.0,
       "percent": 0.0
     },
     "movespeed": {
@@ -109,9 +95,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

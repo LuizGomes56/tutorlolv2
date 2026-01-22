@@ -1,6 +1,5 @@
 {
   "riot_id": 3330,
-  "item_id": "ScarecrowEffigy",
   "name": "Scarecrow Effigy",
   "price": 0,
   "sell": 0,
@@ -11,15 +10,11 @@
       true
     ],
     [
-      "NexusBlitz",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
       "Aram",
+      true
+    ],
+    [
+      "NexusBlitz",
       true
     ],
     [
@@ -27,11 +22,15 @@
       false
     ],
     [
+      "Arena",
+      true
+    ],
+    [
       "SummonersRift",
       false
     ],
     [
-      "Arena",
+      "SummonersRift",
       true
     ]
   ],
@@ -96,9 +95,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

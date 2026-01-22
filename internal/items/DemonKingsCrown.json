@@ -1,18 +1,17 @@
 {
-  "riot_id": 443056,
-  "item_id": "DemonKingsCrown",
+  "riot_id": 663056,
   "name": "Demon King's Crown",
-  "price": 0,
-  "sell": 400,
-  "tier": 3,
+  "price": 2500,
+  "sell": 1000,
+  "tier": 0,
   "maps": [
     [
       "Tft",
       false
     ],
     [
-      "Aram",
-      false
+      "SummonersRift",
+      true
     ],
     [
       "SummonersRift",
@@ -20,14 +19,14 @@
     ],
     [
       "Arena",
-      true
-    ],
-    [
-      "NexusBlitz",
       false
     ],
     [
-      "SummonersRift",
+      "Aram",
+      false
+    ],
+    [
+      "NexusBlitz",
       false
     ],
     [
@@ -96,9 +95,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

@@ -1,33 +1,32 @@
 {
-  "riot_id": 2022,
-  "item_id": "GlowingMote",
+  "riot_id": 222022,
   "name": "Glowing Mote",
   "price": 250,
   "sell": 175,
-  "tier": 1,
+  "tier": 0,
   "maps": [
+    [
+      "Arena",
+      false
+    ],
+    [
+      "Aram",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "SummonersRift",
+      false
+    ],
     [
       "SummonersRift",
       false
     ],
     [
       "NexusBlitz",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Aram",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Arena",
       false
     ],
     [
@@ -35,12 +34,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 5
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -101,31 +95,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
-  "builds_into_riot_ids": [
-    3158,
-    3133,
-    2020,
-    3108,
-    6660,
-    3024,
-    3057,
-    3067,
-    3802,
-    4642
-  ],
-  "builds_into_item_ids": [
-    "IonianBootsOfLucidity",
-    "CaulfieldsWarhammer",
-    "TheBrutalizer",
-    "FiendishCodex",
-    "BamisCinder",
-    "GlacialBuckler",
-    "Sheen",
-    "Kindlegem",
-    "LostChapter",
-    "BandleglassMirror"
-  ],
+  "builds_into_riot_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"
@@ -135,5 +105,5 @@
     "maximum_damage": "zero"
   },
   "attributes": "Undefined",
-  "purchasable": true
+  "purchasable": false
 }

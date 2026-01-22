@@ -1,13 +1,20 @@
 {
-  "riot_id": 446691,
-  "item_id": "DuskbladeOfDraktharr",
+  "riot_id": 6691,
   "name": "Duskblade of Draktharr",
-  "price": 0,
-  "sell": 400,
-  "tier": 3,
+  "price": 2950,
+  "sell": 2065,
+  "tier": 0,
   "maps": [
     [
+      "Arena",
+      false
+    ],
+    [
       "Aram",
+      false
+    ],
+    [
+      "SummonersRift",
       false
     ],
     [
@@ -19,36 +26,15 @@
       false
     ],
     [
-      "Arena",
-      true
-    ],
-    [
       "SummonersRift",
       false
     ],
     [
       "NexusBlitz",
       false
-    ],
-    [
-      "SummonersRift",
-      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 20
-    },
-    {
-      "name": "AttackDamage",
-      "value": 50
-    },
-    {
-      "name": "Lethality",
-      "value": 20
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -68,7 +54,7 @@
       "percent": 0.0
     },
     "attackDamage": {
-      "flat": 50.0,
+      "flat": 0.0,
       "percent": 0.0
     },
     "attackSpeed": {
@@ -109,9 +95,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"
@@ -121,5 +105,5 @@
     "maximum_damage": "zero"
   },
   "attributes": "Undefined",
-  "purchasable": true
+  "purchasable": false
 }

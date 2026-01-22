@@ -1,6 +1,5 @@
 {
   "riot_id": 4642,
-  "item_id": "BandleglassMirror",
   "name": "Bandleglass Mirror",
   "price": 900,
   "sell": 630,
@@ -12,10 +11,10 @@
     ],
     [
       "SummonersRift",
-      false
+      true
     ],
     [
-      "SummonersRift",
+      "Aram",
       true
     ],
     [
@@ -23,32 +22,19 @@
       false
     ],
     [
-      "NexusBlitz",
-      true
-    ],
-    [
       "Arena",
       false
     ],
     [
-      "Aram",
+      "NexusBlitz",
       true
+    ],
+    [
+      "SummonersRift",
+      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "BaseManaRegen",
-      "value": 100
-    },
-    {
-      "name": "AbilityPower",
-      "value": 20
-    },
-    {
-      "name": "AbilityHaste",
-      "value": 10
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -113,11 +99,6 @@
     1052,
     2022
   ],
-  "builds_from_item_ids": [
-    "FaerieCharm",
-    "AmplifyingTome",
-    "GlowingMote"
-  ],
   "builds_into_riot_ids": [
     322065,
     2065,
@@ -127,12 +108,6 @@
     326620,
     4005,
     6617
-  ],
-  "builds_into_item_ids": [
-    "ShurelyasBattlesong",
-    "EchoesOfHelia",
-    "ImperialMandate",
-    "MoonstoneRenewer"
   ],
   "ranged": {
     "minimum_damage": "zero",

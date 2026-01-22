@@ -1,6 +1,5 @@
 {
   "riot_id": 6670,
-  "item_id": "Noonquiver",
   "name": "Noonquiver",
   "price": 1300,
   "sell": 910,
@@ -11,11 +10,7 @@
       true
     ],
     [
-      "Aram",
-      true
-    ],
-    [
-      "NexusBlitz",
+      "SummonersRift",
       true
     ],
     [
@@ -23,28 +18,23 @@
       false
     ],
     [
+      "Arena",
+      false
+    ],
+    [
       "SummonersRift",
+      false
+    ],
+    [
+      "Aram",
       true
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "Arena",
-      false
+      "NexusBlitz",
+      true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackDamage",
-      "value": 15
-    },
-    {
-      "name": "CriticalStrikeChance",
-      "value": 20
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
@@ -108,18 +98,10 @@
     1036,
     1018
   ],
-  "builds_from_item_ids": [
-    "LongSword",
-    "CloakOfAgility"
-  ],
   "builds_into_riot_ids": [
     6673,
-    3095,
+    2523,
     3036
-  ],
-  "builds_into_item_ids": [
-    "ImmortalShieldbow",
-    "LordDominiksRegards"
   ],
   "ranged": {
     "minimum_damage": "zero",
