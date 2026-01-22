@@ -1,6 +1,7 @@
 use crate::{
     JsonRead, JsonWrite, MayFail,
     client::{SaveTo, Tag},
+    gen_factories::fac_items::ItemFactory,
     model::{
         items::{Item, MerakiItem},
         riot::RiotCdnItem,
@@ -9,16 +10,10 @@ use crate::{
     riot::RiotCdnRune,
 };
 use once_cell::sync::Lazy;
-use rayon::iter::{IntoParallelIterator, ParallelIterator};
 use regex::Regex;
-use std::{
-    collections::HashMap,
-    fs,
-    path::Path,
-    sync::{Arc, Mutex},
-};
-use tutorlolv2_fmt::pascal_case;
-use tutorlolv2_gen::{Attrs, DamageType, GameMap, ItemId, StatName};
+use std::{collections::HashMap, fs, path::Path};
+use tutorlolv2_fmt::{pascal_case, to_ssnake};
+use tutorlolv2_gen::{GameMap, ItemId, StatName};
 
 /// Creates basic folders necessary to run the program. If one of these folders are not found,
 /// The program is likely to panic when an update is called.
@@ -104,16 +99,13 @@ pub fn setup_internal_items() -> MayFail {
 
             let name = {
                 let rname = riot_cdn_item.name;
-                if rname.is_empty() || rname.starts_with("<") {
-                    format!("Unknown_{riot_id}")
-                } else {
-                    rname
+                match rname.is_empty() || rname.starts_with("<") {
+                    true => format!("Unknown_{riot_id}"),
+                    false => rname,
                 }
             };
 
-            let file_name = pascal_case(&name);
-
-            let result = Item {
+            let item = Item {
                 maps: riot_cdn_item
                     .maps
                     .into_iter()
@@ -131,7 +123,19 @@ pub fn setup_internal_items() -> MayFail {
                 ..Default::default()
             };
 
-            result.into_file(SaveTo::Internal(Tag::Items, &file_name).path())
+            let generator_fname = to_ssnake(&item.name).to_lowercase();
+            let internal_fname = pascal_case(&item.name);
+
+            item.into_file(SaveTo::Internal(Tag::Items, &internal_fname).path())?;
+
+            let generator_file = ItemFactory::create_from_raw(&internal_fname)?;
+
+            fs::write(
+                SaveTo::Generator(Tag::Items, &generator_fname).path(),
+                generator_file,
+            )?;
+
+            Ok(())
         },
     )
 }

@@ -102,9 +102,8 @@ impl ItemData {
 
 pub struct ItemFactory;
 
-pub const GENERATOR_FOLDER: &str = "tutorlolv2_dev/src/generators/gen_items";
-
 impl ItemFactory {
+    pub const GENERATOR_FOLDER: &str = "tutorlolv2_dev/src/generators/gen_items";
     pub const GENERATOR_FUNCTIONS: [fn(ItemData) -> Box<dyn Generator<ItemData>>;
         ItemId::VARIANTS] = tutorlolv2_macros::expand_dir!("../internal/items", |[Name]| Name::new);
 
@@ -132,17 +131,14 @@ impl ItemFactory {
         Ok(generator.generate()?)
     }
 
-    pub fn create_from_raw(entity_id: &str) -> MayFail<String> {
-        let file_name = to_ssnake(entity_id).to_lowercase();
-        let path = format!("{GENERATOR_FOLDER}/{file_name}.rs");
-
-        if let Ok(data) = std::fs::read_to_string(&path) {
+    pub fn create_from_raw(file_name: &str) -> MayFail<String> {
+        if let Ok(data) = std::fs::read_to_string(SaveTo::Generator(Tag::Items, file_name).path()) {
             if data.contains("#![stable]") || data.contains("#![preserve]") {
                 return Ok(data);
             }
         }
 
-        let struct_id = pascal_case(entity_id);
+        let struct_id = pascal_case(file_name);
 
         let generated_content = format!(
             "use super::*;
@@ -169,9 +165,9 @@ impl ItemFactory {
     pub fn create_all_raw() -> MayFail {
         parallel_read(SaveTo::InternalDir(Tag::Items).path(), |name, _: Value| {
             let entity_id = to_ssnake(name).to_lowercase();
-            match Self::create_from_raw(&entity_id) {
+            match Self::create_from_raw(name) {
                 Ok(data) => Ok(std::fs::write(
-                    format!("{GENERATOR_FOLDER}/{entity_id}.rs"),
+                    SaveTo::Generator(Tag::Items, &entity_id).path(),
                     data,
                 )?),
                 Err(e) => Err(format!(
@@ -183,8 +179,9 @@ impl ItemFactory {
     }
 
     pub fn create_all() -> MayFail {
-        if !std::fs::exists(GENERATOR_FOLDER)? {
-            std::fs::create_dir(GENERATOR_FOLDER)?;
+        let dir = SaveTo::GeneratorDir(Tag::Items).path();
+        if !std::fs::exists(&dir)? {
+            std::fs::create_dir(dir)?;
         }
 
         ItemId::ARRAY.into_par_iter().for_each(|champion_id| {
@@ -193,7 +190,7 @@ impl ItemFactory {
             };
             let file_name = format!("{champion_id:?}").to_lowercase();
             std::fs::write(
-                format!("{GENERATOR_FOLDER}/{file_name}.rs"),
+                SaveTo::Generator(Tag::Items, &file_name).path(),
                 data.as_bytes(),
             )
             .unwrap();

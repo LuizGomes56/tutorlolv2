@@ -14,7 +14,6 @@ use scraper::{Html, Selector};
 use serde::{Deserialize, Serialize, de::DeserializeOwned};
 use serde_json::Value;
 use std::{
-    borrow::Cow,
     collections::HashMap,
     fmt::Display,
     io::{BufRead, BufReader, Write},
@@ -26,6 +25,8 @@ use tutorlolv2_fmt::pascal_case;
 use tutorlolv2_gen::{ChampionId, Position};
 
 pub enum SaveTo<'a> {
+    GeneratorDir(Tag),
+    Generator(Tag, &'a str),
     ImgChampion(ChampionId),
     ImgAbility(ChampionId, char),
     ImgItem(&'a str),
@@ -58,6 +59,7 @@ pub enum SaveTo<'a> {
     InternalRunes,
 }
 
+#[derive(Clone, Copy)]
 pub enum Tag {
     Items,
     Champions,
@@ -78,6 +80,11 @@ impl<'a> SaveTo<'a> {
     pub fn path(&self) -> String {
         let img = "raw_img";
         match self {
+            SaveTo::GeneratorDir(tag) => format!("tutorlolv2_dev/src/generators/gen_{tag}"),
+            SaveTo::Generator(tag, s) => {
+                let path = Self::GeneratorDir(*tag).path();
+                format!("{path}/{s}.rs")
+            }
             SaveTo::ImgChampion(s) => format!("{img}/champions/{s:?}.png"),
             SaveTo::ImgAbility(s, c) => format!("{img}/abilities/{s:?}{c}.png"),
             SaveTo::ImgItem(s) => format!("{img}/items/{s}.png"),

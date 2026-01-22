@@ -1,6 +1,7 @@
 use crate::{
     JsonRead, JsonWrite, MayFail,
     champions::{Ability, Champion, MerakiAbility, MerakiChampion, Modifiers},
+    client::{SaveTo, Tag},
     generators::{
         Generator,
         gen_decl::decl_champions::*,
@@ -14,8 +15,6 @@ use tutorlolv2_fmt::{rustfmt, to_ssnake};
 use tutorlolv2_gen::{
     AbilityId, AbilityName, Attrs, ChampionId, DamageType, DevMergeData, Position,
 };
-
-pub const GENERATOR_FOLDER: &str = "tutorlolv2_dev/src/generators/gen_champions";
 
 pub struct ChampionData {
     pub data: MerakiChampion,
@@ -46,7 +45,6 @@ impl ChampionFactory {
     /// and good function bindings
     pub fn create_from_raw(entity_id: &str) -> MayFail<String> {
         let file_name = to_ssnake(entity_id).to_lowercase();
-        let path = format!("{GENERATOR_FOLDER}/{file_name}.rs");
 
         let bind_function = |ability_char: char, meraki_offsets: &[MerakiOffset]| -> String {
             let offsets = meraki_offsets
@@ -73,7 +71,9 @@ impl ChampionFactory {
                 fn generate(mut self: Box<Self>) -> MayFail<Champion> {{"
         );
 
-        if let Ok(data) = std::fs::read_to_string(&path) {
+        if let Ok(data) =
+            std::fs::read_to_string(SaveTo::Generator(Tag::Champions, &file_name).path())
+        {
             if data.contains("#![stable]") || data.contains("#![preserve]") {
                 return Ok(data);
             }
@@ -102,8 +102,9 @@ impl ChampionFactory {
     /// Creates the whole folder of champion generators. Fails if an error
     /// is thrown in some iteration
     pub fn create_all() -> MayFail {
-        if !std::fs::exists(GENERATOR_FOLDER)? {
-            std::fs::create_dir(GENERATOR_FOLDER)?;
+        let dir = SaveTo::GeneratorDir(Tag::Champions).path();
+        if !std::fs::exists(&dir)? {
+            std::fs::create_dir(dir)?;
         }
 
         ChampionId::ARRAY.into_par_iter().for_each(|champion_id| {
@@ -112,7 +113,7 @@ impl ChampionFactory {
             };
             let file_name = format!("{champion_id:?}").to_lowercase();
             std::fs::write(
-                format!("{GENERATOR_FOLDER}/{file_name}.rs"),
+                SaveTo::Generator(Tag::Champions, &file_name).path(),
                 data.as_bytes(),
             )
             .unwrap();
@@ -330,7 +331,7 @@ impl ChampionFactory {
             );
         }
 
-        let old_content = std::fs::read_to_string(format!("{GENERATOR_FOLDER}/{name}.rs"))?;
+        let old_content = std::fs::read_to_string(SaveTo::Generator(Tag::Champions, name).path())?;
 
         if !Self::compare_offsets(&old_content, &new_offsets)? {
             return Ok(false);
