@@ -7,7 +7,7 @@
   "maps": [
     [
       "SummonersRift",
-      false
+      true
     ],
     [
       "Aram",
@@ -40,7 +40,7 @@
       "value": 50
     }
   ],
-  "damage_type": "Unknown",
+  "damage_type": "Magic",
   "stats": {
     "abilityPower": {
       "flat": 80.0,
@@ -106,13 +106,13 @@
   ],
   "builds_into_riot_ids": [],
   "ranged": {
-    "minimum_damage": "zero",
+    "minimum_damage": "15 + (0.15 * ctx.ap)",
     "maximum_damage": "zero"
   },
   "melee": {
-    "minimum_damage": "zero",
+    "minimum_damage": "15 + (0.15 * ctx.ap)",
     "maximum_damage": "zero"
   },
-  "attributes": "Undefined",
+  "attributes": "Onhit",
   "purchasable": true
 }

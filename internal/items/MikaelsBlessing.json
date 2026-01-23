@@ -37,11 +37,11 @@
     },
     {
       "name": "HealAndShieldPower",
-      "value": 15
+      "value": 12
     },
     {
       "name": "Health",
-      "value": 400
+      "value": 250
     }
   ],
   "damage_type": "Unknown",

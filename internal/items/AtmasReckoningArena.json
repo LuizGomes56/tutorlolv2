@@ -26,7 +26,16 @@
       true
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "CriticalStrikeChance",
+      "value": 20
+    },
+    {
+      "name": "Health",
+      "value": 700
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

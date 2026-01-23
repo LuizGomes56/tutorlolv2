@@ -26,7 +26,16 @@
       true
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AbilityPower",
+      "value": 80
+    },
+    {
+      "name": "MagicResist",
+      "value": 40
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

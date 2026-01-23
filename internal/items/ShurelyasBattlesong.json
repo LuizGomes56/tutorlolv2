@@ -33,15 +33,15 @@
     },
     {
       "name": "AbilityPower",
-      "value": 65
+      "value": 50
     },
     {
       "name": "BaseManaRegen",
-      "value": 150
+      "value": 125
     },
     {
       "name": "MoveSpeed",
-      "value": 6
+      "value": 4
     }
   ],
   "damage_type": "Unknown",

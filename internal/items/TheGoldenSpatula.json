@@ -33,19 +33,19 @@
     },
     {
       "name": "AbilityPower",
-      "value": 125
+      "value": 120
     },
     {
       "name": "Armor",
-      "value": 10
+      "value": 30
     },
     {
       "name": "AttackDamage",
-      "value": 90
+      "value": 70
     },
     {
       "name": "AttackSpeed",
-      "value": 30
+      "value": 50
     },
     {
       "name": "BaseHealthRegen",
@@ -57,7 +57,7 @@
     },
     {
       "name": "CriticalStrikeChance",
-      "value": 25
+      "value": 30
     },
     {
       "name": "Health",
@@ -69,11 +69,15 @@
     },
     {
       "name": "MagicResist",
-      "value": 10
+      "value": 30
     },
     {
       "name": "Mana",
       "value": 250
+    },
+    {
+      "name": "MoveSpeed",
+      "value": 10
     }
   ],
   "damage_type": "Unknown",

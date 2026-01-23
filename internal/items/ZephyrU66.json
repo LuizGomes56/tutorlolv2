@@ -26,7 +26,24 @@
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AbilityHaste",
+      "value": 25
+    },
+    {
+      "name": "AttackSpeed",
+      "value": 40
+    },
+    {
+      "name": "MoveSpeed",
+      "value": 8
+    },
+    {
+      "name": "Tenacity",
+      "value": 20
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

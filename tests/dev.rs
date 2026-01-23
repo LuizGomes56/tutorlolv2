@@ -2,9 +2,14 @@ use tutorlolv2::ChampionId;
 use tutorlolv2_dev::gen_factories::{fac_champions::ChampionFactory, fac_items::ItemFactory};
 
 #[test]
+fn prettify_items() {
+    tutorlolv2_dev::setup::update::prettify_internal_items().unwrap();
+}
+
+#[test]
 fn run_setup_items() {
     tutorlolv2_dev::setup::update::setup_internal_items().unwrap();
-    tutorlolv2_dev::setup::update::prettify_internal_items().unwrap();
+    prettify_items();
 }
 
 #[test]

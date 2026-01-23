@@ -26,7 +26,16 @@
       true
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AttackDamage",
+      "value": 55
+    },
+    {
+      "name": "Lethality",
+      "value": 21
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

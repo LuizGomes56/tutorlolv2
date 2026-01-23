@@ -7,7 +7,7 @@
   "maps": [
     [
       "SummonersRift",
-      false
+      true
     ],
     [
       "Aram",
@@ -26,7 +26,20 @@
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AbilityHaste",
+      "value": 25
+    },
+    {
+      "name": "AbilityPower",
+      "value": 70
+    },
+    {
+      "name": "Mana",
+      "value": 1000
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

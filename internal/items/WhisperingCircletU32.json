@@ -7,7 +7,7 @@
   "maps": [
     [
       "SummonersRift",
-      true
+      false
     ],
     [
       "Aram",
@@ -26,7 +26,24 @@
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "BaseManaRegen",
+      "value": 75
+    },
+    {
+      "name": "HealAndShieldPower",
+      "value": 8
+    },
+    {
+      "name": "Health",
+      "value": 200
+    },
+    {
+      "name": "Mana",
+      "value": 300
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

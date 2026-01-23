@@ -133,7 +133,7 @@ pub const fn get_item_bonus_stats(
 
         match item_id {
             ItemId::RabadonsDeathcap => stats.ability_power *= 1.3,
-            ItemId::WoogletsWitchcap => stats.ability_power *= 1.5,
+            ItemId::WoogletsWitchcapArena => stats.ability_power *= 1.5,
             ItemId::WarmogsArmor => stats.health *= 1.12,
             ItemId::ElixirOfIron => stats.health += 300.0,
             ItemId::JuiceOfVitality => stats.health += 300.0 + 0.1 * stats.health,
@@ -388,7 +388,7 @@ pub const fn assign_item_exceptions(data: ItemExceptionData, exceptions: &[Value
         if let Some(item_id) = item_exception.get_item_id() {
             match item_id {
                 ItemId::DarkSeal => current_player_stats.ability_power += (stacks << 2) as f32,
-                ItemId::Dragonheart => {
+                ItemId::DragonheartU44 => {
                     let modifier = 1.0 + 0.04 * stacks as f32;
                     current_player_stats.ability_power *= modifier;
                     current_player_stats.attack_speed *= modifier;
@@ -402,7 +402,7 @@ pub const fn assign_item_exceptions(data: ItemExceptionData, exceptions: &[Value
                     current_player_stats.magic_resist *= modifier;
                     current_player_bonus_stats.magic_resist *= modifier;
                 }
-                ItemId::DemonKingsCrown => {
+                ItemId::DemonKingsCrownU44 | ItemId::DemonKingsCrownU66 => {
                     let modifier = 1.0 + 0.01 * stacks as f32;
                     current_player_stats.ability_power *= modifier;
                     current_player_stats.attack_speed *= modifier;

@@ -1,8 +1,9 @@
 use super::*;
 
+// #![stable]
+
 impl Generator<ItemData> for BladeOfTheRuinedKingArena {
     fn generate(self: Box<Self>) -> MayFail<ItemData> {
-        /* No implementation */
-        self.end()
+        ItemFactory::run(ItemId::BladeOfTheRuinedKing)
     }
 }

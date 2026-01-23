@@ -40,7 +40,7 @@
       "value": 10
     }
   ],
-  "damage_type": "Unknown",
+  "damage_type": "Physical",
   "stats": {
     "abilityPower": {
       "flat": 0.0,
@@ -106,11 +106,11 @@
   ],
   "builds_into_riot_ids": [],
   "ranged": {
-    "minimum_damage": "zero",
+    "minimum_damage": "ctx.enemy_current_health - ((0.06 * ctx.enemy_current_health * (1 - 0.06 * ctx.physical_multiplier) - ctx.ad + ctx.ad * (1 - 0.06 * ctx.physical_multiplier)) / 0.06)",
     "maximum_damage": "zero"
   },
   "melee": {
-    "minimum_damage": "zero",
+    "minimum_damage": "ctx.enemy_current_health - ((0.09 * ctx.enemy_current_health * (1 - 0.09 * ctx.physical_multiplier) - ctx.ad + ctx.ad * (1 - 0.09 * ctx.physical_multiplier)) / 0.09)",
     "maximum_damage": "zero"
   },
   "attributes": "Undefined",

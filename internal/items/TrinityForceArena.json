@@ -26,7 +26,24 @@
       true
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AbilityHaste",
+      "value": 20
+    },
+    {
+      "name": "AttackDamage",
+      "value": 35
+    },
+    {
+      "name": "AttackSpeed",
+      "value": 25
+    },
+    {
+      "name": "Health",
+      "value": 333
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

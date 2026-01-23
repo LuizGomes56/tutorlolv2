@@ -14,6 +14,10 @@ tutorlolv2_macros::expand_dir!("../internal/items", |Name| {
         pub fn end(self) -> MayFail<ItemData> {
             Ok(self.0)
         }
+
+        pub fn into_inner(self) -> ItemData {
+            self.0
+        }
     }
 
     impl ::core::ops::Deref for Name {

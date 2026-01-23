@@ -7,7 +7,7 @@
   "maps": [
     [
       "SummonersRift",
-      true
+      false
     ],
     [
       "Aram",
@@ -26,7 +26,20 @@
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AttackDamage",
+      "value": 50
+    },
+    {
+      "name": "CriticalStrikeChance",
+      "value": 25
+    },
+    {
+      "name": "Lethality",
+      "value": 10
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

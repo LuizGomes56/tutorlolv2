@@ -7,7 +7,7 @@
   "maps": [
     [
       "SummonersRift",
-      false
+      true
     ],
     [
       "Aram",
@@ -29,11 +29,11 @@
   "prettified_stats": [
     {
       "name": "AttackDamage",
-      "value": 40
+      "value": 30
     },
     {
       "name": "Health",
-      "value": 400
+      "value": 550
     }
   ],
   "damage_type": "Unknown",

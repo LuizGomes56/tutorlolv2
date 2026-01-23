@@ -29,15 +29,15 @@
   "prettified_stats": [
     {
       "name": "AbilityPower",
-      "value": 90
+      "value": 80
     },
     {
       "name": "AttackDamage",
-      "value": 45
+      "value": 40
     },
     {
       "name": "Omnivamp",
-      "value": 15
+      "value": 10
     }
   ],
   "damage_type": "Unknown",

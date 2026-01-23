@@ -29,7 +29,7 @@
   "prettified_stats": [
     {
       "name": "AbilityHaste",
-      "value": 25
+      "value": 20
     },
     {
       "name": "Armor",
@@ -37,7 +37,7 @@
     },
     {
       "name": "Mana",
-      "value": 500
+      "value": 400
     }
   ],
   "damage_type": "Unknown",

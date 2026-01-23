@@ -447,13 +447,13 @@ pub const fn get_enemy_state(
                 ItemId::WintersApproach | ItemId::Fimbulwinter => {
                     e_current_stats.health += 0.15 * bonus_mana
                 }
-                ItemId::Dragonheart => {
+                ItemId::DragonheartU44 => {
                     let modifier = 1.0 + 0.04 * stacks as f32;
                     e_current_stats.health *= modifier;
                     e_current_stats.armor *= modifier;
                     e_current_stats.magic_resist *= modifier
                 }
-                ItemId::DemonKingsCrown => {
+                ItemId::DemonKingsCrownU44 | ItemId::DemonKingsCrownU66 => {
                     let modifier = 1.0 + 0.01 * stacks as f32;
                     e_current_stats.health *= modifier;
                     e_current_stats.armor *= modifier;

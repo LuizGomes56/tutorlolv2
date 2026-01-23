@@ -26,7 +26,12 @@
       true
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AbilityPower",
+      "value": 45
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

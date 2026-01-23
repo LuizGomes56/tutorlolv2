@@ -13,14 +13,18 @@ use tutorlolv2_fmt::{rustfmt, to_ssnake};
 use tutorlolv2_gen::{Attrs, DamageType, ItemId};
 
 pub struct ItemData {
-    pub meraki_data: MerakiItem,
+    pub meraki_data: Option<MerakiItem>,
     pub riot_data: RiotCdnItem,
     pub current_data: Item,
 }
 
 impl ItemData {
     /// Creates a new struct that serves as argument for the item generator functions
-    pub const fn new(meraki_data: MerakiItem, riot_data: RiotCdnItem, current_data: Item) -> Self {
+    pub const fn new(
+        meraki_data: Option<MerakiItem>,
+        riot_data: RiotCdnItem,
+        current_data: Item,
+    ) -> Self {
         Self {
             meraki_data,
             riot_data,
@@ -28,13 +32,21 @@ impl ItemData {
         }
     }
 
+    fn meraki_data(&self) -> MayFail<&MerakiItem> {
+        let riot_id = self.current_data.riot_id;
+        let item_name = &self.current_data.name;
+        self.meraki_data
+            .as_ref()
+            .ok_or(format!("No meraki_data for item {item_name} ({riot_id})").into())
+    }
+
     /// Returns the damage of the `passive` or `active` effect in the field `field`
     fn effect_damage(&self, from: &[Effect], offset: usize, field: &str) -> MayFail<String> {
+        let name = &self.meraki_data()?.name;
         Ok(from
             .get(offset)
             .ok_or(format!(
-                "[{name}]: meraki_data.{field}[{offset}] does not exist",
-                name = self.meraki_data.name,
+                "[{name}]: meraki_data.{field}[{offset}] does not exist"
             ))?
             .effects
             .get_damage())
@@ -42,12 +54,12 @@ impl ItemData {
 
     /// Returns the damage of the `passive` effect in the field `passives`
     pub fn passive(&self, offset: usize) -> MayFail<String> {
-        self.effect_damage(&self.meraki_data.passives, offset, "passives")
+        self.effect_damage(&self.meraki_data()?.passives, offset, "passives")
     }
 
     /// Returns the damage of the `active` effect in the field `active`
     pub fn active(&self, offset: usize) -> MayFail<String> {
-        self.effect_damage(&self.meraki_data.active, offset, "active")
+        self.effect_damage(&self.meraki_data()?.active, offset, "active")
     }
 
     /// Sets some attribute for the current item
@@ -114,7 +126,7 @@ impl ItemFactory {
             Self::run(item_id)
                 .unwrap()
                 .current_data
-                .into_file(format!("internal/items/{item_id:?}.json"))
+                .into_file(SaveTo::Internal(Tag::Items, &format!("{item_id:?}")).path())
                 .unwrap();
         });
         Ok(())
@@ -122,10 +134,12 @@ impl ItemFactory {
 
     /// Runs some item generator, taking its generated data and saving to an internal folder
     pub fn run(item_id: ItemId) -> MayFail<ItemData> {
-        let riot_id = item_id.to_riot_id();
-        let meraki_data = MerakiItem::from_file(format!("cache/meraki/items/{riot_id}.json"))?;
-        let riot_data = RiotCdnItem::from_file(format!("cache/riot/items/{riot_id}.json"))?;
-        let current_data = Item::from_file(format!("internal/items/{item_id:?}.json"))?;
+        let riot_id = &item_id.to_riot_id().to_string();
+        let meraki_data =
+            MerakiItem::from_file(SaveTo::MerakiCache(Tag::Items, riot_id).path()).ok();
+        let riot_data = RiotCdnItem::from_file(SaveTo::RiotCache(Tag::Items, riot_id).path())?;
+        let current_data =
+            Item::from_file(SaveTo::Internal(Tag::Items, &format!("{item_id:?}")).path())?;
 
         let function = Self::GENERATOR_FUNCTIONS[item_id as usize];
         let generator = function(ItemData::new(meraki_data, riot_data, current_data));

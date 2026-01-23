@@ -26,7 +26,16 @@
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AdaptiveForce",
+      "value": 90
+    },
+    {
+      "name": "CriticalStrikeChance",
+      "value": 50
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

@@ -26,7 +26,24 @@
       true
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AbilityHaste",
+      "value": 20
+    },
+    {
+      "name": "AbilityPower",
+      "value": 90
+    },
+    {
+      "name": "MagicPenetration",
+      "value": 12
+    },
+    {
+      "name": "Mana",
+      "value": 600
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

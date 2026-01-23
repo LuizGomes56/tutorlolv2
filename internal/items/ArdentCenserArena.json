@@ -26,7 +26,24 @@
       true
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AbilityPower",
+      "value": 40
+    },
+    {
+      "name": "BaseManaRegen",
+      "value": 150
+    },
+    {
+      "name": "HealAndShieldPower",
+      "value": 12
+    },
+    {
+      "name": "MoveSpeed",
+      "value": 6
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

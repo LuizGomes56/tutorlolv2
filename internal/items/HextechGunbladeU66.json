@@ -7,7 +7,7 @@
   "maps": [
     [
       "SummonersRift",
-      false
+      true
     ],
     [
       "Aram",
@@ -26,7 +26,20 @@
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AbilityPower",
+      "value": 90
+    },
+    {
+      "name": "AttackDamage",
+      "value": 45
+    },
+    {
+      "name": "Omnivamp",
+      "value": 15
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

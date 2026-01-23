@@ -425,18 +425,7 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
         item_idents.push_str(&(idents + ","));
         const_match_arms.push_str(&match_arm);
         item_id_to_riot_id.push_str(&format!("{riot_id},"));
-        item_id_enum_match_arms.push({
-            let str_id = riot_id.to_string();
-            let mut branches = Vec::with_capacity(3);
-            if !(str_id.starts_with("22") || str_id.starts_with("44")) {
-                branches.push(format!("44{riot_id}"));
-                branches.push(format!("22{riot_id}"));
-            }
-            branches.push(str_id);
-            branches.reverse();
-            let branches = branches.join("|");
-            format!("{branches} => Some(Self::{name_pascal})")
-        });
+        item_id_enum_match_arms.push(format!("{riot_id} => Some(Self::{name_pascal})"));
         item_id_enum_fields.push(name_pascal);
         item_id_to_name.push_str(&format!("{name:?},"));
         item_cache.push_str(&format!("&{name_ssnake}_{riot_id},"));

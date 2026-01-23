@@ -26,7 +26,20 @@
       true
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "MagicResist",
+      "value": 30
+    },
+    {
+      "name": "MoveSpeed",
+      "value": 30
+    },
+    {
+      "name": "Tenacity",
+      "value": 30
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

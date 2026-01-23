@@ -29,15 +29,19 @@
   "prettified_stats": [
     {
       "name": "AbilityHaste",
-      "value": 20
+      "value": 10
     },
     {
-      "name": "AbilityPower",
-      "value": 70
+      "name": "AttackDamage",
+      "value": 30
     },
     {
       "name": "Health",
-      "value": 200
+      "value": 400
+    },
+    {
+      "name": "Mana",
+      "value": 300
     }
   ],
   "damage_type": "Unknown",

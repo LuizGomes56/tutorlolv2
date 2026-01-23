@@ -26,7 +26,16 @@
       true
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "MagicPenetration",
+      "value": 20
+    },
+    {
+      "name": "MoveSpeed",
+      "value": 55
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

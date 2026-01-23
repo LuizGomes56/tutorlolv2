@@ -26,7 +26,24 @@
       true
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AbilityHaste",
+      "value": 15
+    },
+    {
+      "name": "Armor",
+      "value": 65
+    },
+    {
+      "name": "MagicResist",
+      "value": 65
+    },
+    {
+      "name": "MoveSpeed",
+      "value": 10
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

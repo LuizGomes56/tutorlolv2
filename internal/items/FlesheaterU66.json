@@ -26,7 +26,16 @@
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "name": "AdaptiveForce",
+      "value": 55
+    },
+    {
+      "name": "Health",
+      "value": 500
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

@@ -33,15 +33,15 @@
     },
     {
       "name": "Armor",
-      "value": 30
+      "value": 25
     },
     {
       "name": "Health",
-      "value": 250
+      "value": 200
     },
     {
       "name": "MagicResist",
-      "value": 30
+      "value": 25
     }
   ],
   "damage_type": "Unknown",

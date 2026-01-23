@@ -1,5 +1,5 @@
 {
-  "riot_id": 1518,
+  "riot_id": 1519,
   "name": "Structure Bounty",
   "price": 0,
   "sell": 0,
@@ -7,7 +7,7 @@
   "maps": [
     [
       "SummonersRift",
-      true
+      false
     ],
     [
       "Aram",

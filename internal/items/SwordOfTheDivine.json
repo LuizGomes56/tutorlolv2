@@ -28,12 +28,16 @@
   ],
   "prettified_stats": [
     {
-      "name": "AdaptiveForce",
-      "value": 90
+      "name": "AttackDamage",
+      "value": 30
     },
     {
-      "name": "CriticalStrikeChance",
-      "value": 50
+      "name": "AttackSpeed",
+      "value": 25
+    },
+    {
+      "name": "Lethality",
+      "value": 18
     }
   ],
   "damage_type": "Unknown",
