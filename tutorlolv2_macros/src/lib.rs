@@ -79,7 +79,6 @@ pub fn expand_dir(input: TokenStream) -> TokenStream {
         }
     };
 
-    // (stem, full_path)
     let mut files: Vec<(String, PathBuf)> = Vec::new();
     for ent in entries.flatten() {
         let path = ent.path();
@@ -96,8 +95,6 @@ pub fn expand_dir(input: TokenStream) -> TokenStream {
             .into();
     }
 
-    files.sort_by(|a, b| a.0.cmp(&b.0));
-
     let (ph_ident, is_array) = match &placeholder {
         Placeholder::Simple(id) => (id.clone(), false),
         Placeholder::Array(id) => (id.clone(), true),
@@ -105,7 +102,6 @@ pub fn expand_dir(input: TokenStream) -> TokenStream {
 
     let tpl = unwrap_outer_group(template);
 
-    // ✅ Compila o template uma única vez:
     let compiled = match compile_template(tpl, &ph_ident) {
         Ok(c) => c,
         Err(e) => return e.to_compile_error().into(),
@@ -116,7 +112,6 @@ pub fn expand_dir(input: TokenStream) -> TokenStream {
     for (stem, path) in files {
         let id = Ident::new(&stem, Span::call_site());
 
-        // ✅ Só carrega JSON se o template realmente precisar
         let json: Option<Arc<serde_json::Value>> = if compiled.needs_json {
             match load_json_cached(&path, dir.span()) {
                 Ok(v) => Some(v),
@@ -126,15 +121,12 @@ pub fn expand_dir(input: TokenStream) -> TokenStream {
             None
         };
 
-        // Renderiza o template compilado (substitui %...%).
         let rendered = match render_compiled(&compiled, &ph_ident, &stem, json.as_deref()) {
             Ok(ts) => ts,
             Err(e) => return e.to_compile_error().into(),
         };
 
-        // Mantém comportamento antigo: substitui placeholder IDENT fora de diretivas.
         let final_ts = subst_ident(rendered, &ph_ident, &id);
-
         pieces.push(final_ts);
     }
 
@@ -154,8 +146,6 @@ fn unwrap_outer_group(ts: TokenStream2) -> TokenStream2 {
     }
     ts
 }
-
-// ---------- TEMPLATE COMPILATION (parse %...% uma vez) ----------
 
 enum Node {
     TT(TokenTree),
@@ -247,7 +237,6 @@ fn nodes_need_json(nodes: &[Node]) -> bool {
     })
 }
 
-/// Heurística simples e barata: qualquer Expr::Field implica potencial acesso a JSON.
 fn expr_contains_field_access(expr: &syn::Expr) -> bool {
     use syn::Expr;
     match expr {
@@ -279,15 +268,9 @@ fn expr_contains_field_access(expr: &syn::Expr) -> bool {
             syn::Stmt::Item(_) => false,
             syn::Stmt::Macro(_) => false,
         }),
-        _ => {
-            // Para casos raros, não otimiza agressivamente.
-            // Se aparecer algo exótico, assume que não tem field access.
-            false
-        }
+        _ => false,
     }
 }
-
-// ---------- RENDER (aplica diretivas) ----------
 
 fn render_compiled(
     compiled: &CompiledTemplate,
@@ -336,7 +319,6 @@ fn render_nodes(
                 let rendered = eval_expr_to_string(expr, root_ident, stem, json)
                     .map_err(|msg| syn::Error::new(expr.span(), msg))?;
 
-                // ✅ Fast path: se é ident comum, evita parse de TokenStream
                 let injected = inject_tokens_from_string(&rendered, *span)?;
                 out.extend(injected);
             }
@@ -347,7 +329,6 @@ fn render_nodes(
 }
 
 fn inject_tokens_from_string(s: &str, span: Span) -> syn::Result<TokenStream2> {
-    // 1) Ident (mais comum: snake/pascal)
     if syn::parse_str::<syn::Ident>(s).is_ok() {
         let ident = if is_keyword(s) {
             Ident::new_raw(s, span)
@@ -357,7 +338,6 @@ fn inject_tokens_from_string(s: &str, span: Span) -> syn::Result<TokenStream2> {
         return Ok(ident.to_token_stream());
     }
 
-    // 2) Inteiro literal (caso útil)
     if syn::parse_str::<syn::LitInt>(s).is_ok() {
         let ts: TokenStream2 = s.parse().map_err(|e| {
             syn::Error::new(
@@ -368,7 +348,6 @@ fn inject_tokens_from_string(s: &str, span: Span) -> syn::Result<TokenStream2> {
         return Ok(ts);
     }
 
-    // 3) Fallback: parse tokens arbitrários
     let ts: TokenStream2 = s.parse().map_err(|e| {
         syn::Error::new(
             span,
@@ -434,8 +413,6 @@ fn is_keyword(s: &str) -> bool {
     )
 }
 
-// ---------- EVAL (suporta snake(pascal(...)) etc) ----------
-
 fn eval_expr_to_string(
     expr: &syn::Expr,
     root_ident: &Ident,
@@ -474,14 +451,12 @@ fn eval_expr_to_string(
             }
         }
 
-        // File.x.y  (acesso JSON)
         Expr::Field(_) => {
             let json = json.ok_or_else(|| "JSON not loaded".to_string())?;
             let v = resolve_json_path(expr, root_ident, json)?;
             Ok(json_value_to_string(v)?)
         }
 
-        // File (sozinho) -> stem do arquivo
         Expr::Path(p) => {
             if p.path.segments.len() == 1 && p.path.segments[0].ident == *root_ident {
                 Ok(stem.to_string())
@@ -494,9 +469,6 @@ fn eval_expr_to_string(
     }
 }
 
-/// Resolve File.a.b.c no JSON.
-/// - raiz deve ser `root_ident` (ex.: File)
-/// - cada `.campo` vira chave no JSON
 fn resolve_json_path<'a>(
     expr: &syn::Expr,
     root_ident: &Ident,
@@ -538,7 +510,6 @@ fn resolve_json_path<'a>(
     Ok(v)
 }
 
-/// Se for objeto e tiver "Value", usa ela.
 fn json_value_to_string(v: &serde_json::Value) -> Result<String, String> {
     let v = if let serde_json::Value::Object(map) = v {
         map.get("Value").unwrap_or(v)
@@ -555,8 +526,6 @@ fn json_value_to_string(v: &serde_json::Value) -> Result<String, String> {
     }
 }
 
-// ---------- JSON CACHE ----------
-
 static JSON_CACHE: OnceLock<Mutex<HashMap<PathBuf, (SystemTime, Arc<serde_json::Value>)>>> =
     OnceLock::new();
 
@@ -568,7 +537,6 @@ fn load_json_cached(path: &PathBuf, span: Span) -> syn::Result<Arc<serde_json::V
 
     let cache = JSON_CACHE.get_or_init(|| Mutex::new(HashMap::new()));
 
-    // fast hit
     {
         let map = cache.lock().unwrap();
         if let Some((cached_mtime, v)) = map.get(path) {
@@ -578,7 +546,6 @@ fn load_json_cached(path: &PathBuf, span: Span) -> syn::Result<Arc<serde_json::V
         }
     }
 
-    // reload
     let bytes = fs::read(path)
         .map_err(|e| syn::Error::new(span, format!("failed to read {}: {e}", path.display())))?;
 
@@ -592,8 +559,6 @@ fn load_json_cached(path: &PathBuf, span: Span) -> syn::Result<Arc<serde_json::V
 
     Ok(v)
 }
-
-// ---------- SUBST (comportamento antigo) ----------
 
 fn subst_ident(ts: TokenStream2, from: &Ident, to: &Ident) -> TokenStream2 {
     ts.into_iter()

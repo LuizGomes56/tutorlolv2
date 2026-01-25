@@ -1,4 +1,4 @@
-use tutorlolv2::ChampionId;
+use tutorlolv2::{ChampionId, ItemId};
 use tutorlolv2_dev::gen_factories::{fac_champions::ChampionFactory, fac_items::ItemFactory};
 
 #[test]
@@ -35,6 +35,11 @@ fn run_champions_generator() {
 #[test]
 fn run_ch_generator() {
     ChampionFactory::run(ChampionId::Akshan).unwrap();
+}
+
+#[test]
+fn run_item_generator() {
+    ItemFactory::run(ItemId::BladeOfTheRuinedKingArena).unwrap();
 }
 
 #[test]
