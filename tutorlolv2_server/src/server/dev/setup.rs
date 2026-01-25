@@ -47,7 +47,7 @@ pub async fn setup_project() -> impl Responder {
         }
 
         #[cfg(feature = "avif")]
-        let _ = spawn(img_convert_avif(IMG_FOLDERS)).await;
+        let _ = spawn(img_convert_avif(IMG_FOLDERS));
     })
     .await
     .expect("Could not finish setup tasks");

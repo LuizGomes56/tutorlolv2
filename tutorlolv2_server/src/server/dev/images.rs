@@ -82,7 +82,7 @@ pub mod avif {
 
     #[get("/compress")]
     pub async fn compress_images() -> impl Responder {
-        img_convert_avif(IMG_FOLDERS).await;
+        img_convert_avif(IMG_FOLDERS);
         HttpResponse::Ok().body("Executed fn[compress_images]")
     }
 }
