@@ -1,21 +1,21 @@
 {
-  "riot_id": 3153,
-  "name": "Blade of The Ruined King",
-  "price": 3200,
-  "sell": 2240,
-  "tier": 3,
+  "riot_id": 9183,
+  "name": "Blade-o-rang",
+  "price": 0,
+  "sell": 0,
+  "tier": 0,
   "maps": [
     [
       "SummonersRift",
-      true
+      false
     ],
     [
       "Aram",
-      true
+      false
     ],
     [
       "NexusBlitz",
-      true
+      false
     ],
     [
       "Tft",
@@ -24,23 +24,18 @@
     [
       "Arena",
       false
+    ],
+    [
+      "UnknownMap33",
+      true
+    ],
+    [
+      "UnknownMap35",
+      false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackDamage",
-      "value": 40
-    },
-    {
-      "name": "AttackSpeed",
-      "value": 25
-    },
-    {
-      "name": "LifeSteal",
-      "value": 10
-    }
-  ],
-  "damage_type": "Physical",
+  "prettified_stats": [],
+  "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
       "flat": 0.0,
@@ -59,11 +54,11 @@
       "percent": 0.0
     },
     "attackDamage": {
-      "flat": 40.0,
+      "flat": 0.0,
       "percent": 0.0
     },
     "attackSpeed": {
-      "flat": 25.0,
+      "flat": 0.0,
       "percent": 0.0
     },
     "criticalStrikeChance": {
@@ -80,7 +75,7 @@
     },
     "lifesteal": {
       "flat": 0.0,
-      "percent": 10.0
+      "percent": 0.0
     },
     "magicResistance": {
       "flat": 0.0,
@@ -99,18 +94,14 @@
       "percent": 0.0
     }
   },
-  "builds_from_riot_ids": [
-    1053,
-    1043,
-    1037
-  ],
+  "builds_from_riot_ids": [],
   "builds_into_riot_ids": [],
   "ranged": {
-    "minimum_damage": "ctx.enemy_current_health - ((0.06 * ctx.enemy_current_health * (1 - 0.06 * ctx.physical_multiplier) - ctx.ad + ctx.ad * (1 - 0.06 * ctx.physical_multiplier)) / 0.06)",
+    "minimum_damage": "zero",
     "maximum_damage": "zero"
   },
   "melee": {
-    "minimum_damage": "ctx.enemy_current_health - ((0.09 * ctx.enemy_current_health * (1 - 0.09 * ctx.physical_multiplier) - ctx.ad + ctx.ad * (1 - 0.09 * ctx.physical_multiplier)) / 0.09)",
+    "minimum_damage": "zero",
     "maximum_damage": "zero"
   },
   "attributes": "Undefined",

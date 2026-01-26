@@ -2,6 +2,16 @@ use tutorlolv2::{ChampionId, ItemId};
 use tutorlolv2_dev::gen_factories::{fac_champions::ChampionFactory, fac_items::ItemFactory};
 
 #[test]
+fn update() {
+    tutorlolv2_dev::setup::update::setup_project_folders().unwrap();
+    ItemFactory::run_all().unwrap();
+    ChampionFactory::create_all().unwrap();
+    ChampionFactory::run_all().unwrap();
+    tutorlolv2_dev::setup::update::setup_internal_items().unwrap();
+    tutorlolv2_dev::setup::update::prettify_internal_items().unwrap();
+}
+
+#[test]
 fn prettify_items() {
     tutorlolv2_dev::setup::update::prettify_internal_items().unwrap();
 }

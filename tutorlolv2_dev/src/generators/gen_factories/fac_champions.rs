@@ -12,7 +12,7 @@ use once_cell::sync::Lazy;
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
 use regex::Regex;
 use std::collections::{BTreeMap, BTreeSet, HashMap};
-use tutorlolv2_fmt::{rustfmt, to_ssnake};
+use tutorlolv2_fmt::rustfmt;
 use tutorlolv2_gen::{
     AbilityId, AbilityName, Attrs, ChampionId, DamageType, DevMergeData, Position,
 };
@@ -51,7 +51,12 @@ impl ChampionFactory {
     /// cache file is read to generate the new file with fairly accurate offsets
     /// and good function bindings
     pub fn create_from_raw(entity_id: &str) -> MayFail<String> {
-        let file_name = to_ssnake(entity_id).to_lowercase();
+        if let Ok(data) = std::fs::read_to_string(
+            SaveTo::Generator(Tag::Champions, &entity_id.to_lowercase()).path(),
+        ) && (data.contains("#![stable]") || data.contains("#![preserve]"))
+        {
+            return Ok(data);
+        }
 
         let bind_function = |ability_char: char, meraki_offsets: &[MerakiOffset]| -> String {
             let offsets = meraki_offsets
@@ -77,14 +82,6 @@ impl ChampionFactory {
             impl Generator<Champion> for {entity_id} {{
                 fn generate(mut self: Box<Self>) -> MayFail<Champion> {{"
         );
-
-        if let Ok(data) =
-            std::fs::read_to_string(SaveTo::Generator(Tag::Champions, &file_name).path())
-        {
-            if data.contains("#![stable]") || data.contains("#![preserve]") {
-                return Ok(data);
-            }
-        }
 
         let meraki_champion = MerakiChampion::from_file(format!(
             "cache/meraki/champions/{entity_id}.json"

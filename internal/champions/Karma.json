@@ -73,7 +73,7 @@
     [
       {
         "type": "Q",
-        "name": "_2"
+        "name": "_1"
       },
       {
         "name": "Inner Flame",
@@ -85,42 +85,6 @@
           "160",
           "210",
           "260"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_1"
-      },
-      {
-        "name": "Focused Resolve",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "40 + (0.45 * ctx.ap)",
-          "65",
-          "90",
-          "115",
-          "140"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_2"
-      },
-      {
-        "name": "Focused Resolve",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "80 + (0.9 * ctx.ap)",
-          "130",
-          "180",
-          "230",
-          "280"
         ]
       }
     ]

@@ -24,6 +24,14 @@
     [
       "Arena",
       false
+    ],
+    [
+      "UnknownMap33",
+      true
+    ],
+    [
+      "UnknownMap35",
+      false
     ]
   ],
   "prettified_stats": [],

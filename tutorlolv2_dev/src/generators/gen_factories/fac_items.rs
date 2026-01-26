@@ -146,10 +146,11 @@ impl ItemFactory {
     }
 
     pub fn create_from_raw(entity_id: &str) -> MayFail<String> {
-        if let Ok(data) = std::fs::read_to_string(SaveTo::Generator(Tag::Items, entity_id).path()) {
-            if data.contains("#![stable]") || data.contains("#![preserve]") {
-                return Ok(data);
-            }
+        if let Ok(data) = std::fs::read_to_string(
+            SaveTo::Generator(Tag::Items, &to_ssnake(entity_id).to_lowercase()).path(),
+        ) && (data.contains("#![stable]") || data.contains("#![preserve]"))
+        {
+            return Ok(data);
         }
 
         let generated_content = format!(

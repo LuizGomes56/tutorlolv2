@@ -24,6 +24,14 @@
     [
       "Arena",
       false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
+      true
     ]
   ],
   "prettified_stats": [
@@ -40,7 +48,7 @@
       "value": 10
     }
   ],
-  "damage_type": "Physical",
+  "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
       "flat": 0.0,
@@ -106,11 +114,11 @@
   ],
   "builds_into_riot_ids": [],
   "ranged": {
-    "minimum_damage": "ctx.enemy_current_health - ((0.06 * ctx.enemy_current_health * (1 - 0.06 * ctx.physical_multiplier) - ctx.ad + ctx.ad * (1 - 0.06 * ctx.physical_multiplier)) / 0.06)",
+    "minimum_damage": "zero",
     "maximum_damage": "zero"
   },
   "melee": {
-    "minimum_damage": "ctx.enemy_current_health - ((0.09 * ctx.enemy_current_health * (1 - 0.09 * ctx.physical_multiplier) - ctx.ad + ctx.ad * (1 - 0.09 * ctx.physical_multiplier)) / 0.09)",
+    "minimum_damage": "zero",
     "maximum_damage": "zero"
   },
   "attributes": "Undefined",

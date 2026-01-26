@@ -140,7 +140,6 @@ impl Position {
 )]
 #[repr(u8)]
 pub enum GameMap {
-    #[default]
     SummonersRift,
     Tutorial,
     TwistedTreeline,
@@ -155,6 +154,10 @@ pub enum GameMap {
     Tft,
     Arena,
     Urf,
+    #[default]
+    Unknown,
+    UnknownMap33,
+    UnknownMap35,
 }
 
 #[cfg(feature = "eval")]
@@ -166,6 +169,7 @@ impl GameMap {
             3 => GameMap::Tutorial,
             4 | 10 => GameMap::TwistedTreeline,
             8 => GameMap::Dominion,
+            11 => GameMap::SummonersRift,
             12 | 14 => GameMap::Aram,
             13 => GameMap::Invasion,
             16 => GameMap::DarkStar,
@@ -176,8 +180,10 @@ impl GameMap {
             22 => GameMap::Tft,
             30 => GameMap::Arena,
             // Unknown
+            33 => GameMap::UnknownMap33,
+            35 => GameMap::UnknownMap35,
             0xFF => GameMap::Urf,
-            /* 1 | 2 | 11 | */ _ => GameMap::SummonersRift,
+            _ => GameMap::Unknown,
         }
     }
 }
