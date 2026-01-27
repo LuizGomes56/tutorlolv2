@@ -78,6 +78,7 @@ pub enum AdaptativeType {
     Debug,
     Default,
     Eq,
+    Hash,
     Ord,
     PartialEq,
     PartialOrd,
@@ -97,6 +98,14 @@ pub enum Position {
 }
 
 impl Position {
+    pub const ARRAY: [Self; 5] = [
+        Position::Top,
+        Position::Jungle,
+        Position::Middle,
+        Position::Bottom,
+        Position::Support,
+    ];
+
     pub const fn from_u8(value: u8) -> Option<Self> {
         match value {
             0..5 => Some(unsafe { Self::from_u8_unchecked(value) }),

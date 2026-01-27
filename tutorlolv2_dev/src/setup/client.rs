@@ -5,7 +5,7 @@ use crate::{
     init::ENV_CONFIG,
     items::MerakiItem,
     model::riot::{RiotCdnChampion, RiotCdnRune},
-    read_file, resolve_path,
+    read_file,
     riot::RiotCdnStandard,
     update::setup_project_folders,
 };
@@ -36,6 +36,7 @@ pub enum SaveTo<'a> {
     MerakiCache(Tag, &'a str),
     MerakiChampions,
     MerakiItems,
+    MerakiDir(Tag),
     RiotChampions,
     RiotItems,
     RiotItemsDir,
@@ -48,7 +49,7 @@ pub enum SaveTo<'a> {
     ScraperCombos(ChampionId),
     Internal(Tag, &'a str),
     InternalDir(Tag),
-    InternalScraperBuilds(Position, &'a str),
+    InternalScraperBuilds(Position, ChampionId),
     InternalScraperCombos(ChampionId),
     InternalScraperData,
     InternalChampionLanguages,
@@ -99,6 +100,7 @@ impl<'a> SaveTo<'a> {
             SaveTo::RiotRunes => "cache/riot/runes.json".into(),
             SaveTo::RiotLangDir(s) => format!("cache/riot/champions_lang/{s}.json"),
             SaveTo::RiotRawChampions(s) => format!("cache/riot/raw_champions/{s:?}.json"),
+            SaveTo::MerakiDir(t) => format!("cache/meraki/{t}"),
             SaveTo::MerakiCache(s, f) => format!("cache/meraki/{s}/{f}.json"),
             SaveTo::MerakiItems => "cache/meraki/items.json".into(),
             SaveTo::MerakiChampions => "cache/meraki/champions.json".into(),
@@ -109,7 +111,7 @@ impl<'a> SaveTo<'a> {
             SaveTo::Internal(tag, s) => format!("internal/{tag}/{s}.json"),
             SaveTo::InternalDir(tag) => format!("internal/{tag}"),
             SaveTo::InternalScraperBuilds(position, s) => {
-                format!("internal/scraper/builds/{position:?}/{s}.json")
+                format!("internal/scraper/builds/{position:?}/{s:?}.json")
             }
             SaveTo::InternalScraperCombos(champion_id) => {
                 format!("internal/scraper/combos/{champion_id:?}.json")
@@ -267,7 +269,7 @@ impl HttpClient {
                 let champion_id = ChampionId::try_from(name)
                     .or(serde_json::from_str(&format!("{name:?}")))
                     .map_err(|e| {
-                        format!("Failed to convert {name} to ChampionId enum, e: {e:?}")
+                        format!("Failed to convert {name} to ChampionId enum, error: {e:?}")
                     })?;
 
                 client
@@ -347,7 +349,7 @@ impl HttpClient {
     /// that have already been downloaded, and does not skip the ones that
     /// throw an error
     pub async fn download_items_img(&self) -> MayFail {
-        let riot_items = get_file_names("cache/riot/items")?;
+        let riot_items = get_file_names(SaveTo::RiotItemsDir.path())?;
         let mut futures = Vec::new();
         for item_id in riot_items {
             let client = self.clone();
@@ -371,7 +373,7 @@ impl HttpClient {
     /// Downloads the images of splash and centered arts for all champions and
     /// every skin available in the current patch. Skips the ones that emit an error
     pub async fn download_arts_img(&self) -> MayFail {
-        let riot_champions = RiotCdnChampion::from_dir("cache/riot/champions")?;
+        let riot_champions = RiotCdnChampion::from_dir(SaveTo::RiotChampionsDir.path())?;
         for (champion_id_str, champion) in riot_champions {
             let mut futures = Vec::new();
             for skin in champion.skins.into_iter() {
@@ -405,7 +407,7 @@ impl HttpClient {
 
     /// Downloads the images of every rune, rune-tree and icon
     pub async fn download_runes_img(&self) -> MayFail {
-        let riot_runes = Vec::<RiotCdnRune>::from_file("cache/riot/runes.json")?;
+        let riot_runes = Vec::<RiotCdnRune>::from_file(SaveTo::RiotRunes.path())?;
         let mut futures = Vec::new();
         let mut icon_map = Vec::<(usize, String)>::new();
         for value in riot_runes {
@@ -445,8 +447,10 @@ impl HttpClient {
     }
 
     /// Creates the riot endpoint using the environment variables.
-    /// This is mainly used to download champion json files
-    pub fn riot_endpoint(endpoint: &str, language: &str) -> String {
+    /// This is mainly used to download champion json files.
+    /// Language defaults to `ENV_CONFIG.lol_language`
+    pub fn riot_endpoint(endpoint: &str, language: Option<&str>) -> String {
+        let language = language.unwrap_or(&ENV_CONFIG.lol_language);
         let path = format_args!(
             "{}/cdn/{}",
             ENV_CONFIG.dd_dragon_endpoint, ENV_CONFIG.lol_version
@@ -483,12 +487,12 @@ impl HttpClient {
     /// Runs a maximum of 32 tokio threads at the same time
     pub async fn update_riot_cache(&self) -> MayFail {
         self.download(
-            Self::riot_endpoint("champion", &ENV_CONFIG.lol_language),
+            Self::riot_endpoint("champion", None),
             SaveTo::RiotChampions.path(),
         )
         .await?;
 
-        let champions_json = RiotCdnStandard::<Value>::from_file("cache/riot/champions.json")?;
+        let champions_json = RiotCdnStandard::<Value>::from_file(SaveTo::RiotChampions.path())?;
 
         let champion_ids = champions_json
             .data
@@ -505,14 +509,11 @@ impl HttpClient {
 
             champions_futures.push(tokio::spawn(async move {
                 let _permit = semaphore.acquire().await.unwrap();
-                let save_to = format!("cache/riot/raw_champions/{champion_id}.json");
+                let save_to = SaveTo::RiotRawChampions(&champion_id).path();
 
                 client
                     .download(
-                        Self::riot_endpoint(
-                            &format!("champion/{champion_id}"),
-                            &ENV_CONFIG.lol_language,
-                        ),
+                        Self::riot_endpoint(&format!("champion/{champion_id}"), None),
                         &save_to,
                     )
                     .await
@@ -524,7 +525,7 @@ impl HttpClient {
                     .data
                     .get(&champion_id)
                     .unwrap()
-                    .into_file(format!("cache/riot/champions/{champion_id}.json"))
+                    .into_file(SaveTo::RiotCache(Tag::Champions, &champion_id).path())
                     .unwrap();
             }));
         }
@@ -535,12 +536,10 @@ impl HttpClient {
             }
         }
 
-        let items_path = "cache/riot/items.json";
-        self.download(
-            Self::riot_endpoint("item", &ENV_CONFIG.lol_language),
-            items_path,
-        )
-        .await?;
+        let items_path = SaveTo::RiotItems.path();
+
+        self.download(Self::riot_endpoint("item", None), &items_path)
+            .await?;
 
         let items_json = RiotCdnStandard::<Value>::from_file(items_path)?;
 
@@ -549,7 +548,7 @@ impl HttpClient {
         for (item_id, item_data) in items_json.data.clone() {
             items_futures.push(tokio::task::spawn_blocking(move || {
                 item_data
-                    .into_file(format!("cache/riot/items/{item_id}.json"))
+                    .into_file(SaveTo::RiotCache(Tag::Items, &item_id).path())
                     .unwrap();
             }));
         }
@@ -561,13 +560,13 @@ impl HttpClient {
         }
 
         self.download(
-            Self::riot_endpoint("runesReforged", &ENV_CONFIG.lol_language),
-            "cache/riot/runes.json",
+            Self::riot_endpoint("runesReforged", None),
+            SaveTo::RiotRunes.path(),
         )
         .await?;
 
         self.update_language_cache().await?;
-        let languages = Vec::<String>::from_file("internal/languages.json")?;
+        let languages = Vec::<String>::from_file(SaveTo::InternalLanguages.path())?;
 
         let mut languages_data = HashMap::<String, Vec<String>>::from_iter(
             champion_ids
@@ -583,12 +582,14 @@ impl HttpClient {
         }
 
         for language in languages {
-            let language = language.clone();
+            let champion_file = SaveTo::RiotLangDir(&language).path();
             let client = self.clone();
             languages_future.push(tokio::spawn(async move {
-                let champion_file = format!("cache/riot/champions_lang/{language}.json");
                 client
-                    .download(Self::riot_endpoint("champion", &language), &champion_file)
+                    .download(
+                        Self::riot_endpoint("champion", Some(&language)),
+                        &champion_file,
+                    )
                     .await
                     .unwrap();
 
@@ -619,7 +620,7 @@ impl HttpClient {
             }
         }
 
-        languages_data.into_file("internal/champion_languages.json")
+        languages_data.into_file(SaveTo::InternalChampionLanguages.path())
     }
 
     /// Fetches the available languages in league of legends and saves them to
@@ -627,36 +628,36 @@ impl HttpClient {
     pub async fn update_language_cache(&self) -> MayFail {
         self.download(
             format!("{}/cdn/languages.json", ENV_CONFIG.dd_dragon_endpoint),
-            "internal/languages.json",
+            SaveTo::InternalLanguages.path(),
         )
         .await
     }
 
     /// Fetches some endpoint of the merakianalytics api, orders the data
     /// before saving to the appropriate cache folder
-    pub async fn update_meraki_cache(&self, endpoint: &str) -> MayFail {
-        let save_to = format!("cache/meraki/{endpoint}.json");
+    pub async fn update_meraki_cache(&self, tag: Tag) -> MayFail {
+        let save_to = &SaveTo::MerakiDir(tag).path();
         self.download(
-            format!("{}/{endpoint}.json", ENV_CONFIG.meraki_endpoint),
-            &save_to,
+            format!("{}/{tag}.json", ENV_CONFIG.meraki_endpoint),
+            save_to,
         )
         .await?;
 
         fn save_and_order<T: DeserializeOwned + Serialize>(
             path: impl AsRef<Path>,
-            endpoint: &str,
+            tag: Tag,
         ) -> MayFail
         where
             HashMap<String, T>: OrderJson<T>,
         {
             let data = HashMap::<String, T>::from_file(path)?;
-            save_cache(data, endpoint)
+            save_cache(data, tag)
         }
 
-        match endpoint {
-            "champions" => save_and_order::<MerakiChampion>(save_to, endpoint),
-            "items" => save_and_order::<MerakiItem>(save_to, endpoint),
-            _ => panic!("Called update_meraki_cache with invalid endpoint"),
+        match tag {
+            Tag::Champions => save_and_order::<MerakiChampion>(save_to, tag),
+            Tag::Items => save_and_order::<MerakiItem>(save_to, tag),
+            _ => panic!("Called update_meraki_cache with invalid tag"),
         }
     }
 
@@ -664,7 +665,7 @@ impl HttpClient {
     /// common ability combos and saves to a cache file
     pub async fn combo_scraper(&self) -> MayFail {
         for champion_id in ChampionId::ARRAY {
-            let path = format!("cache/scraper/combos/{champion_id:?}.html");
+            let path = SaveTo::ScraperCombos(champion_id).path();
             self.download(
                 format!("{}/{champion_id:?}/combos", ENV_CONFIG.meta_endpoint),
                 &path,
@@ -692,7 +693,7 @@ impl HttpClient {
                         result.push(combo_strings);
                     }
 
-                    result.into_file(format!("internal/scraper/combos/{champion_id:?}.json"))
+                    result.into_file(SaveTo::InternalScraperCombos(champion_id).path())
                 };
                 if let Err(e) = run_task() {
                     println!("[error] scraping combo for {champion_id:?}: {e:?}.")
@@ -710,19 +711,26 @@ impl HttpClient {
         for champion_id in ChampionId::ARRAY {
             let mut futures_vec = Vec::new();
 
-            for position in ["top", "jungle", "mid", "adc", "support"] {
+            for position in Position::ARRAY {
                 let client = self.clone();
 
                 futures_vec.push(tokio::spawn(async move {
                     let name = format!("{champion_id:?}").to_lowercase();
 
-                    let path = format!("scraper/builds/{position}/{champion_id:?}");
-                    let cache_path = format!("cache/{path}.html");
-                    let internal_path = format!("internal/{path}.json");
+                    let cache_path = SaveTo::ScraperBuilds(position, champion_id).path();
+                    let internal_path = SaveTo::InternalScraperBuilds(position, champion_id).path();
+
+                    let pos = match position {
+                        Position::Top => "top",
+                        Position::Jungle => "jungle",
+                        Position::Middle => "mid",
+                        Position::Bottom => "adc",
+                        Position::Support => "support",
+                    };
 
                     let _ = client
                         .download(
-                            format!("{}/{name}/build/{position}", ENV_CONFIG.meta_endpoint),
+                            format!("{}/{name}/build/{pos}", ENV_CONFIG.meta_endpoint),
                             &cache_path,
                         )
                         .await;
@@ -773,24 +781,22 @@ impl HttpClient {
         }
 
         type Inner = [Vec<String>; 2];
-        type Data = HashMap<&'static str, Inner>;
+        type Data = HashMap<Position, Inner>;
         type FinalData = HashMap<ChampionId, Data>;
 
         let mut results = FinalData::new();
 
         for champion_id in ChampionId::ARRAY {
             let mut positions = HashMap::new();
-            for position in ["top", "jungle", "mid", "adc", "support"] {
-                let resolved_path = resolve_path(format!(
-                    "internal/scraper/builds/{position}/{champion_id:?}.json"
-                ))?;
-                let data = Inner::from_file(resolved_path)?;
+            for position in Position::ARRAY {
+                let path = SaveTo::InternalScraperBuilds(position, champion_id).path();
+                let data = Inner::from_file(path)?;
                 positions.insert(position, data);
             }
             results.insert(champion_id, positions);
         }
 
-        results.into_file("internal/scraper/data.json")
+        results.into_file(SaveTo::InternalScraperData.path())
     }
 }
 
@@ -866,9 +872,9 @@ impl OrderJson<MerakiItem> for HashMap<String, MerakiItem> {
 
 /// Reads every key in something that implements trait [`OrderJson`], orders the data
 /// and saves to the cache folder
-pub fn save_cache<T: Serialize>(result: impl OrderJson<T>, endpoint: &str) -> MayFail {
+pub fn save_cache<T: Serialize>(result: impl OrderJson<T>, tag: Tag) -> MayFail {
     for (key, value) in result.into_iter_ord() {
-        value.into_file(format!("cache/meraki/{endpoint}/{key}.json"))?;
+        value.into_file(SaveTo::MerakiCache(tag, &key).path())?;
     }
     Ok(())
 }

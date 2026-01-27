@@ -10,8 +10,7 @@
 //! Check the module [`tutorlolv2::riot`] for more information about the
 //! types extracted from the json file in port 2999
 
-use crate::model::*;
-use crate::{helpers::*, riot::*};
+use crate::{helpers::*, model::*, riot::*};
 use alloc::boxed::Box;
 use core::mem::MaybeUninit;
 use tutorlolv2_gen::*;
