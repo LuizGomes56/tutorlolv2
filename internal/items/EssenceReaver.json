@@ -1,8 +1,9 @@
 {
+  "version": "16.2.1",
   "riot_id": 3508,
   "name": "Essence Reaver",
-  "price": 2900,
-  "sell": 2030,
+  "price": 3050,
+  "sell": 2135,
   "tier": 3,
   "maps": [
     [
@@ -34,20 +35,7 @@
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 20
-    },
-    {
-      "name": "AttackDamage",
-      "value": 55
-    },
-    {
-      "name": "CriticalStrikeChance",
-      "value": 25
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

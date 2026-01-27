@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 323107,
   "name": "Redemption [U-32]",
   "price": 2800,
@@ -34,24 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 15
-    },
-    {
-      "name": "AbilityPower",
-      "value": 30
-    },
-    {
-      "name": "BaseManaRegen",
-      "value": 100
-    },
-    {
-      "name": "HealAndShieldPower",
-      "value": 10
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

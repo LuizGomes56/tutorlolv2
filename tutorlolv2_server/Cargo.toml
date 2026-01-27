@@ -39,5 +39,5 @@ tutorlolv2_avif = { path = "../tutorlolv2_avif", optional = true }
 
 [features]
 dev = ["tutorlolv2_dev", "tutorlolv2_html"]
-avif = ["tutorlolv2_avif"]
+avif = ["dev", "tutorlolv2_avif"]
 default = ["dev"]

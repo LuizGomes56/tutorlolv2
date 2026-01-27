@@ -99,7 +99,7 @@ impl<'a> SaveTo<'a> {
             SaveTo::RiotChampionsDir => "cache/riot/champions".into(),
             SaveTo::RiotRunes => "cache/riot/runes.json".into(),
             SaveTo::RiotLangDir(s) => format!("cache/riot/champions_lang/{s}.json"),
-            SaveTo::RiotRawChampions(s) => format!("cache/riot/raw_champions/{s:?}.json"),
+            SaveTo::RiotRawChampions(s) => format!("cache/riot/raw_champions/{s}.json"),
             SaveTo::MerakiDir(t) => format!("cache/meraki/{t}"),
             SaveTo::MerakiCache(s, f) => format!("cache/meraki/{s}/{f}.json"),
             SaveTo::MerakiItems => "cache/meraki/items.json".into(),
@@ -195,12 +195,12 @@ impl HttpClient {
     pub async fn download(&self, url: impl AsRef<str>, save_to: impl AsRef<Path>) -> MayFail {
         let url = url.as_ref();
         let save_to = save_to.as_ref();
-        match save_to.exists() {
-            true => {
+        match save_to.try_exists() {
+            Ok(true) => {
                 println!("[exists] {save_to:?}");
                 Ok(())
             }
-            false => {
+            Ok(false) => {
                 println!("[download] {url}");
                 match self.get(url).send().await {
                     Ok(response) => {
@@ -212,6 +212,10 @@ impl HttpClient {
                         Err(e.to_string().into())
                     }
                 }
+            }
+            Err(e) => {
+                println!("[error] Unknown error on method Path::try_exists() for {save_to:?}: {e}");
+                Err(e.to_string().into())
             }
         }
     }
@@ -737,7 +741,7 @@ impl HttpClient {
 
                     tokio::task::spawn_blocking(move || {
                         let run_task = || -> MayFail {
-                            let html = String::from_utf8(read_file(&cache_path)?)?;
+                            let html = std::fs::read_to_string(&cache_path)?;
 
                             let document = Html::parse_document(&html);
                             let full_build =

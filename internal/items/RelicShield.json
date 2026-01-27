@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 3858,
   "name": "Relic Shield",
   "price": 400,
@@ -34,24 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityPower",
-      "value": 7
-    },
-    {
-      "name": "BaseHealthRegen",
-      "value": 50
-    },
-    {
-      "name": "GoldPer10Seconds",
-      "value": 2
-    },
-    {
-      "name": "Health",
-      "value": 50
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

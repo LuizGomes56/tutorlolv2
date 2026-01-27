@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 222530,
   "name": "Diadem of Songs [Arena]",
   "price": 2500,
@@ -34,24 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "BaseManaRegen",
-      "value": 100
-    },
-    {
-      "name": "HealAndShieldPower",
-      "value": 8
-    },
-    {
-      "name": "Health",
-      "value": 200
-    },
-    {
-      "name": "Mana",
-      "value": 1000
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

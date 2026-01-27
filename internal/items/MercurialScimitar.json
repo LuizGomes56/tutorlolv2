@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 3139,
   "name": "Mercurial Scimitar",
   "price": 3200,
@@ -34,20 +35,7 @@
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackDamage",
-      "value": 50
-    },
-    {
-      "name": "LifeSteal",
-      "value": 10
-    },
-    {
-      "name": "MagicResist",
-      "value": 35
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

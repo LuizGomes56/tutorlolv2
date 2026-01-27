@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 994403,
   "name": "Golden Spatula [U-99]",
   "price": 2500,
@@ -34,60 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 20
-    },
-    {
-      "name": "AbilityPower",
-      "value": 110
-    },
-    {
-      "name": "Armor",
-      "value": 20
-    },
-    {
-      "name": "AttackDamage",
-      "value": 90
-    },
-    {
-      "name": "AttackSpeed",
-      "value": 40
-    },
-    {
-      "name": "BaseHealthRegen",
-      "value": 50
-    },
-    {
-      "name": "BaseManaRegen",
-      "value": 100
-    },
-    {
-      "name": "CriticalStrikeChance",
-      "value": 15
-    },
-    {
-      "name": "Health",
-      "value": 200
-    },
-    {
-      "name": "LifeSteal",
-      "value": 10
-    },
-    {
-      "name": "MagicResist",
-      "value": 20
-    },
-    {
-      "name": "Mana",
-      "value": 200
-    },
-    {
-      "name": "MoveSpeed",
-      "value": 10
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

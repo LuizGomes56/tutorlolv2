@@ -1,20 +1,20 @@
 [
   [
-    "NavoriFlickerblade",
-    "ProtoplasmHarness",
+    "FrozenHeart",
+    "Riftmaker",
     "RanduinsOmen",
-    "IcebornGauntlet",
-    "JakshoTheProtean",
-    "DuskAndDawn"
+    "Bandlepipes",
+    "NashorsTooth",
+    "DeadMansPlate"
   ],
   [
-    "ShieldBash",
-    "SecondWind",
-    "Revitalize",
+    "Triumph",
     "LegendHaste",
     "LastStand",
-    "AbilityHaste",
-    "HealthScaling",
+    "Demolish",
+    "Revitalize",
+    "AttackSpeed",
+    "AdaptiveForce",
     "HealthScaling"
   ]
 ]

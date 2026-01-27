@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 3075,
   "name": "Thornmail",
   "price": 2450,
@@ -34,16 +35,7 @@
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Armor",
-      "value": 75
-    },
-    {
-      "name": "Health",
-      "value": 150
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

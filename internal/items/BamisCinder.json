@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 6660,
   "name": "Bami's Cinder",
   "price": 900,
@@ -34,16 +35,7 @@
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 5
-    },
-    {
-      "name": "Health",
-      "value": 150
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

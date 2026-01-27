@@ -1,5 +1,5 @@
 use crate::{
-    JsonRead, JsonWrite, MayFail,
+    ENV_CONFIG, JsonRead, JsonWrite, MayFail,
     client::{SaveTo, Tag},
     gen_utils::RegExtractor,
     generators::{Generator, gen_decl::decl_items::*},
@@ -121,13 +121,40 @@ impl ItemFactory {
 
     /// Runs all item generators, stopping the execution if one of them fails
     pub fn run_all() -> MayFail {
-        ItemId::ARRAY.into_par_iter().for_each(|item_id| {
-            Self::run(item_id)
-                .unwrap()
-                .current_data
-                .into_file(SaveTo::Internal(Tag::Items, &format!("{item_id:?}")).path())
-                .unwrap();
-        });
+        ItemId::ARRAY
+            .into_par_iter()
+            .for_each(|item_id| match Self::run(item_id) {
+                Ok(data) => data
+                    .current_data
+                    .into_file(SaveTo::Internal(Tag::Items, &format!("{item_id:?}")).path())
+                    .unwrap(),
+                Err(e) => panic!("Unable to run generator for {item_id:?}, Error: {e}"),
+            });
+        Ok(())
+    }
+
+    pub fn clean() -> MayFail {
+        for item_id in ItemId::ARRAY {
+            let fname = format!("{item_id:?}");
+            let generator_path = Self::generator_path(&fname);
+            let path = SaveTo::Internal(Tag::Items, &fname).path();
+            let json = Value::from_file(&path)?;
+
+            if let Some(version) = json.get("version")
+                && let Some(version) = version.as_str()
+                && version != ENV_CONFIG.lol_version
+            {
+                if let Ok(data) = Self::read_gen(&fname)
+                    && Self::is_stable(&data)
+                {
+                    println!("ItemId::{item_id:?} is stable but no longer available");
+                    continue;
+                }
+            }
+
+            std::fs::remove_file(path)?;
+            std::fs::remove_file(generator_path)?;
+        }
         Ok(())
     }
 
@@ -145,10 +172,21 @@ impl ItemFactory {
         Ok(generator.generate()?)
     }
 
+    pub fn is_stable(data: &str) -> bool {
+        data.contains("#![stable]") || data.contains("#![preserve]")
+    }
+
+    pub fn generator_path(entity_id: &str) -> String {
+        SaveTo::Generator(Tag::Items, &to_ssnake(entity_id).to_lowercase()).path()
+    }
+
+    pub fn read_gen(entity_id: &str) -> std::io::Result<String> {
+        std::fs::read_to_string(Self::generator_path(entity_id))
+    }
+
     pub fn create_from_raw(entity_id: &str) -> MayFail<String> {
-        if let Ok(data) = std::fs::read_to_string(
-            SaveTo::Generator(Tag::Items, &to_ssnake(entity_id).to_lowercase()).path(),
-        ) && (data.contains("#![stable]") || data.contains("#![preserve]"))
+        if let Ok(data) = Self::read_gen(entity_id)
+            && Self::is_stable(&data)
         {
             return Ok(data);
         }

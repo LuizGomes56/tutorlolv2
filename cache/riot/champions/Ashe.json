@@ -711,7 +711,7 @@
     "armor": 26,
     "armorperlevel": 4.6,
     "attackdamage": 59,
-    "attackdamageperlevel": 3,
+    "attackdamageperlevel": 3.5,
     "attackrange": 600,
     "attackspeed": 0.658,
     "attackspeedperlevel": 3,

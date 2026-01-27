@@ -1,20 +1,19 @@
 [
   [
-    "RylaisCrystalScepter",
+    "LudensEcho",
     "Shadowflame",
-    "Morellonomicon",
-    "BansheesVeil",
+    "DuskAndDawn",
     "RabadonsDeathcap",
-    "LiandrysTorment"
+    "VoidStaff"
   ],
   [
-    "CashBack",
-    "TripleTonic",
-    "JackOfAllTrades",
-    "Transcendence",
-    "Scorch",
+    "PresenceOfMind",
+    "LegendAlacrity",
+    "CutDown",
+    "ManaflowBand",
+    "GatheringStorm",
     "AttackSpeed",
     "AdaptiveForce",
-    "Health"
+    "HealthScaling"
   ]
 ]

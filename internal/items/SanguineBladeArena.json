@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 228006,
   "name": "Sanguine Blade [Arena]",
   "price": 3000,
@@ -34,24 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 15
-    },
-    {
-      "name": "AttackDamage",
-      "value": 130
-    },
-    {
-      "name": "AttackSpeed",
-      "value": 40
-    },
-    {
-      "name": "LifeSteal",
-      "value": 30
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

@@ -1,6 +1,6 @@
 {
   "colloq": "",
-  "description": "<mainText><stats><attention>40%</attention> Attack Speed<br><attention>25%</attention> Critical Strike Chance<br><attention>4%</attention> Move Speed</stats><br><br><passive>Night Vigil</passive><br>Gain 30 Ultimate Ability Haste.<br><br><passive>Opening Barrage</passive><br>After casting your Ultimate, your next 3 basic attacks gain <attackSpeed>50% Attack Speed</attackSpeed> and Critically Strike for 75% of your normal Critical Strike damage for 8 seconds. If an attack would already Critically Strike, instead it deals <trueDamage>10% bonus true damage</trueDamage>.</mainText>",
+  "description": "<mainText><stats><attention>40%</attention> Attack Speed<br><attention>25%</attention> Critical Strike Chance<br><attention>4%</attention> Move Speed</stats><br><br><passive>Night Vigil</passive><br>Gain 30 Ultimate Ability Haste.<br><br><passive>Opening Barrage</passive> (0s)<br>After casting your Ultimate, your next 3 basic attacks within 8 seconds gain <attackSpeed>50% Attack Speed</attackSpeed> and Critically Strike for 75% of your normal Critical Strike damage. If an attack would already Critically Strike, it deals normal Critical Strike damage and also deals <trueDamage>10% bonus true damage</trueDamage>.</mainText>",
   "gold": {
     "base": 2500,
     "purchasable": true,
@@ -13,7 +13,7 @@
     "h": 48,
     "sprite": "item1.png",
     "w": 48,
-    "x": 0,
+    "x": 144,
     "y": 240
   },
   "maps": {

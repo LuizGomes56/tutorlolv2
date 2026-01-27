@@ -1,19 +1,20 @@
 [
   [
+    "BlackCleaver",
+    "Heartsteel",
     "DeadMansPlate",
-    "BladeOfTheRuinedKing",
-    "ForceOfNature",
-    "KnightsVow",
-    "Bandlepipes"
+    "SpearOfShojin",
+    "WarmogsArmor",
+    "ChempunkChainsword"
   ],
   [
-    "CheapShot",
-    "GrislyMementos",
-    "TreasureHunter",
-    "HextechFlashtraption",
-    "CosmicInsight",
+    "Triumph",
+    "LegendAlacrity",
+    "LastStand",
+    "SecondWind",
+    "Unflinching",
+    "AttackSpeed",
     "AdaptiveForce",
-    "AdaptiveForce",
-    "Health"
+    "HealthScaling"
   ]
 ]

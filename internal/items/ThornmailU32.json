@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 323075,
   "name": "Thornmail [U-32]",
   "price": 2650,
@@ -34,16 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Armor",
-      "value": 85
-    },
-    {
-      "name": "Health",
-      "value": 200
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

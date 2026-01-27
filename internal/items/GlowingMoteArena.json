@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 222022,
   "name": "Glowing Mote [Arena]",
   "price": 250,
@@ -34,12 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 5
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

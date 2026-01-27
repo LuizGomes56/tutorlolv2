@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 221053,
   "name": "Vampiric Scepter [Arena]",
   "price": 500,
@@ -34,16 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackDamage",
-      "value": 15
-    },
-    {
-      "name": "LifeSteal",
-      "value": 7
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

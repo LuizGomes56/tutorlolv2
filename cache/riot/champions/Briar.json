@@ -54,6 +54,12 @@
       "id": "233010",
       "name": "Primordian Briar",
       "num": 10
+    },
+    {
+      "chromas": true,
+      "id": "233020",
+      "name": "Battle Academia Briar",
+      "num": 20
     }
   ],
   "spells": [

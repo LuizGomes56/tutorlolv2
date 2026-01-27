@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 3123,
   "name": "Executioner's Calling",
   "price": 800,
@@ -34,12 +35,7 @@
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackDamage",
-      "value": 15
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

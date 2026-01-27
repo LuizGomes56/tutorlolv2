@@ -1,20 +1,20 @@
 [
   [
+    "BladeOfTheRuinedKing",
     "MortalReminder",
-    "JakshoTheProtean",
-    "MercurialScimitar",
-    "DeadMansPlate",
-    "KaenicRookern",
+    "BlackCleaver",
+    "Hullbreaker",
+    "MawOfMalmortius",
     "Bloodthirster"
   ],
   [
-    "Triumph",
-    "LegendBloodline",
+    "PresenceOfMind",
+    "LegendAlacrity",
     "CutDown",
-    "MagicalFootwear",
+    "BiscuitDelivery",
     "ApproachVelocity",
     "AttackSpeed",
-    "MoveSpeed",
-    "TenacityAndSlowResist"
+    "AdaptiveForce",
+    "Health"
   ]
 ]

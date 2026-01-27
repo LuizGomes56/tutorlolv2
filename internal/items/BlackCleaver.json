@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 3071,
   "name": "Black Cleaver",
   "price": 3000,
@@ -34,20 +35,7 @@
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 20
-    },
-    {
-      "name": "AttackDamage",
-      "value": 40
-    },
-    {
-      "name": "Health",
-      "value": 400
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

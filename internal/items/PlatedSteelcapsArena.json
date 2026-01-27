@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 223047,
   "name": "Plated Steelcaps [Arena]",
   "price": 500,
@@ -34,16 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Armor",
-      "value": 25
-    },
-    {
-      "name": "MoveSpeed",
-      "value": 30
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

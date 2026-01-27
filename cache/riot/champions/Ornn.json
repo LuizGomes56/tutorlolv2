@@ -73,6 +73,12 @@
       "id": "516020",
       "name": "Choo-Choo Ornn",
       "num": 20
+    },
+    {
+      "chromas": true,
+      "id": "516029",
+      "name": "Aegis Frame Ornn",
+      "num": 29
     }
   ],
   "spells": [

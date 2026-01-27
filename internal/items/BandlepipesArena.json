@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 222524,
   "name": "Bandlepipes [Arena]",
   "price": 2500,
@@ -34,24 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 10
-    },
-    {
-      "name": "Armor",
-      "value": 25
-    },
-    {
-      "name": "Health",
-      "value": 200
-    },
-    {
-      "name": "MagicResist",
-      "value": 25
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 3128,
   "name": "Deathfire Grasp",
   "price": 2900,
@@ -34,16 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 10
-    },
-    {
-      "name": "AbilityPower",
-      "value": 120
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

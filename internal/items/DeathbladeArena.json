@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 228003,
   "name": "Deathblade [Arena]",
   "price": 9000,
@@ -34,24 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackDamage",
-      "value": 150
-    },
-    {
-      "name": "CriticalStrikeChance",
-      "value": 20
-    },
-    {
-      "name": "CriticalStrikeDamage",
-      "value": 45
-    },
-    {
-      "name": "Lethality",
-      "value": 20
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 663172,
   "name": "Zephyr [U-66]",
   "price": 2500,
@@ -34,24 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 25
-    },
-    {
-      "name": "AttackSpeed",
-      "value": 40
-    },
-    {
-      "name": "MoveSpeed",
-      "value": 8
-    },
-    {
-      "name": "Tenacity",
-      "value": 20
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

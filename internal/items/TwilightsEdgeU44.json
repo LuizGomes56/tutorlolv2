@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 447121,
   "name": "Twilight's Edge [U-44]",
   "price": 1000,
@@ -34,16 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityPower",
-      "value": 100
-    },
-    {
-      "name": "AttackDamage",
-      "value": 70
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

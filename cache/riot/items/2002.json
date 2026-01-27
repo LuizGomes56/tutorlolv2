@@ -13,7 +13,7 @@
     "h": 48,
     "sprite": "item0.png",
     "w": 48,
-    "x": 0,
+    "x": 48,
     "y": 432
   },
   "inStore": false,

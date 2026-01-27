@@ -1,18 +1,19 @@
 [
   [
+    "Morellonomicon",
     "VoidStaff",
-    "LiandrysTorment",
-    "BloodlettersCurse",
-    "BansheesVeil"
+    "BlackfireTorch",
+    "KaenicRookern",
+    "BloodlettersCurse"
   ],
   [
     "Triumph",
     "LegendHaste",
-    "LastStand",
-    "Celerity",
-    "Waterwalking",
+    "CoupDeGrace",
+    "AbsoluteFocus",
+    "GatheringStorm",
     "AdaptiveForce",
     "AdaptiveForce",
-    "Health"
+    "HealthScaling"
   ]
 ]

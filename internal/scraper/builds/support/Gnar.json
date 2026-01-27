@@ -1,19 +1,20 @@
 [
   [
-    "ZekesConvergence",
-    "Redemption",
-    "FrozenHeart",
-    "ForceOfNature",
-    "AbyssalMask"
+    "Thornmail",
+    "Heartsteel",
+    "WitsEnd",
+    "RanduinsOmen",
+    "JakshoTheProtean",
+    "KnightsVow"
   ],
   [
-    "NimbusCloak",
-    "Celerity",
-    "Scorch",
-    "FontOfLife",
-    "Revitalize",
+    "Triumph",
+    "LegendAlacrity",
+    "LastStand",
+    "BonePlating",
+    "Overgrowth",
     "AttackSpeed",
     "AdaptiveForce",
-    "Health"
+    "HealthScaling"
   ]
 ]

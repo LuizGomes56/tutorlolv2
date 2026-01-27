@@ -1,20 +1,19 @@
 [
   [
-    "NashorsTooth",
-    "Shadowflame",
+    "HextechRocketbelt",
+    "Riftmaker",
+    "GuinsoosRageblade",
     "BansheesVeil",
-    "ArchangelsStaff",
-    "VoidStaff",
-    "BloodlettersCurse"
+    "BladeOfTheRuinedKing"
   ],
   [
-    "TasteOfBlood",
-    "GrislyMementos",
-    "TreasureHunter",
-    "ManaflowBand",
-    "Scorch",
+    "PresenceOfMind",
+    "LegendAlacrity",
+    "CutDown",
+    "Celerity",
+    "GatheringStorm",
     "AttackSpeed",
-    "AdaptiveForce",
-    "HealthScaling"
+    "MoveSpeed",
+    "TenacityAndSlowResist"
   ]
 ]

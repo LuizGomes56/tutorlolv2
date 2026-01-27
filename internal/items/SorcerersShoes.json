@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 3020,
   "name": "Sorcerer's Shoes",
   "price": 1100,
@@ -34,16 +35,7 @@
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "MagicPenetration",
-      "value": 12
-    },
-    {
-      "name": "MoveSpeed",
-      "value": 45
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

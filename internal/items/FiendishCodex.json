@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 3108,
   "name": "Fiendish Codex",
   "price": 850,
@@ -34,16 +35,7 @@
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 10
-    },
-    {
-      "name": "AbilityPower",
-      "value": 25
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

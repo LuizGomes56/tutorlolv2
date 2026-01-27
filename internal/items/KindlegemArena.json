@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 223067,
   "name": "Kindlegem [Arena]",
   "price": 500,
@@ -34,16 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 10
-    },
-    {
-      "name": "Health",
-      "value": 200
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

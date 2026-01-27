@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 6673,
   "name": "Immortal Shieldbow",
   "price": 3000,
@@ -34,16 +35,7 @@
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackDamage",
-      "value": 55
-    },
-    {
-      "name": "CriticalStrikeChance",
-      "value": 25
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

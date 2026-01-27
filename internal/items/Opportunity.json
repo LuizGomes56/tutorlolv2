@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 6701,
   "name": "Opportunity",
   "price": 2700,
@@ -34,16 +35,7 @@
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackDamage",
-      "value": 55
-    },
-    {
-      "name": "Lethality",
-      "value": 18
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

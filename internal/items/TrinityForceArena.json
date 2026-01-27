@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 223078,
   "name": "Trinity Force [Arena]",
   "price": 2500,
@@ -34,24 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 20
-    },
-    {
-      "name": "AttackDamage",
-      "value": 35
-    },
-    {
-      "name": "AttackSpeed",
-      "value": 25
-    },
-    {
-      "name": "Health",
-      "value": 333
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

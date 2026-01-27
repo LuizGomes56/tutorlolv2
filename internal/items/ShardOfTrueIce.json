@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 3853,
   "name": "Shard of True Ice",
   "price": 400,
@@ -34,24 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityPower",
-      "value": 40
-    },
-    {
-      "name": "BaseManaRegen",
-      "value": 100
-    },
-    {
-      "name": "GoldPer10Seconds",
-      "value": 3
-    },
-    {
-      "name": "Health",
-      "value": 75
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 667101,
   "name": "Gambler's Blade [U-66]",
   "price": 2500,
@@ -34,28 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 10
-    },
-    {
-      "name": "AdaptiveForce",
-      "value": 55
-    },
-    {
-      "name": "Lethality",
-      "value": 15
-    },
-    {
-      "name": "MagicPenetration",
-      "value": 15
-    },
-    {
-      "name": "MoveSpeed",
-      "value": 15
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

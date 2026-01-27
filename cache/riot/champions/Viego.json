@@ -78,6 +78,12 @@
       "id": "234037",
       "name": "Worlds 2024 Viego",
       "num": 37
+    },
+    {
+      "chromas": false,
+      "id": "234043",
+      "name": "Revenant Reign Viego",
+      "num": 43
     }
   ],
   "spells": [
@@ -631,7 +637,7 @@
     "attackdamageperlevel": 3.5,
     "attackrange": 200,
     "attackspeed": 0.658,
-    "attackspeedperlevel": 2.25,
+    "attackspeedperlevel": 2.75,
     "crit": 0,
     "critperlevel": 0,
     "hp": 630,

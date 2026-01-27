@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 443063,
   "name": "Eleisa's Miracle [U-44]",
   "price": 1000,
@@ -34,20 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 25
-    },
-    {
-      "name": "Armor",
-      "value": 50
-    },
-    {
-      "name": "MagicResist",
-      "value": 50
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

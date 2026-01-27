@@ -2,10 +2,10 @@
   [
     "RylaisCrystalScepter",
     "ArchangelsStaff",
-    "HorizonFocus",
-    "RabadonsDeathcap",
-    "Stormsurge",
-    "Malignance"
+    "Morellonomicon",
+    "Malignance",
+    "ZhonyasHourglass",
+    "VoidStaff"
   ],
   [
     "ManaflowBand",
@@ -13,8 +13,8 @@
     "Scorch",
     "PresenceOfMind",
     "CutDown",
-    "AttackSpeed",
     "AdaptiveForce",
-    "Health"
+    "AdaptiveForce",
+    "HealthScaling"
   ]
 ]

@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 4017,
   "name": "Hellfire Hatchet",
   "price": 2500,
@@ -34,16 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackDamage",
-      "value": 35
-    },
-    {
-      "name": "Lethality",
-      "value": 12
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

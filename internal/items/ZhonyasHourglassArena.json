@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 223157,
   "name": "Zhonya's Hourglass [Arena]",
   "price": 2500,
@@ -34,16 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityPower",
-      "value": 80
-    },
-    {
-      "name": "Armor",
-      "value": 50
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 323050,
   "name": "Zeke's Convergence [U-32]",
   "price": 2300,
@@ -34,24 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 10
-    },
-    {
-      "name": "Armor",
-      "value": 30
-    },
-    {
-      "name": "Health",
-      "value": 350
-    },
-    {
-      "name": "MagicResist",
-      "value": 30
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

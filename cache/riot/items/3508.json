@@ -1,17 +1,17 @@
 {
   "colloq": "",
   "depth": 3,
-  "description": "<mainText><stats><attention>55</attention> Attack Damage<br><attention>20</attention> Ability Haste<br><attention>25%</attention> Critical Strike Chance</stats><br><br><passive>Spellblade</passive><br>After using an Ability, your next Attack deals <physicalDamage>bonus physical damage</physicalDamage> and grants <scaleMana>Mana</scaleMana> <OnHit>On-Hit</OnHit>.</mainText>",
+  "description": "<mainText><stats><attention>50</attention> Attack Damage<br><attention>20</attention> Ability Haste<br><attention>25%</attention> Critical Strike Chance</stats><br><br><passive>Spellblade</passive><br>After using an Ability, your next Attack deals <physicalDamage>bonus physical damage</physicalDamage> and grants <scaleMana>Mana</scaleMana> <OnHit>On-Hit</OnHit>.</mainText>",
   "from": [
     "3057",
     "3133",
     "1018"
   ],
   "gold": {
-    "base": 350,
+    "base": 500,
     "purchasable": true,
-    "sell": 2030,
-    "total": 2900
+    "sell": 2135,
+    "total": 3050
   },
   "image": {
     "full": "3508.png",
@@ -19,7 +19,7 @@
     "h": 48,
     "sprite": "item4.png",
     "w": 48,
-    "x": 0,
+    "x": 144,
     "y": 288
   },
   "maps": {
@@ -35,7 +35,7 @@
   "plaintext": "",
   "stats": {
     "FlatCritChanceMod": 0.25,
-    "FlatPhysicalDamageMod": 55
+    "FlatPhysicalDamageMod": 50
   },
   "tags": [
     "Damage",

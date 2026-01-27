@@ -1,11 +1,11 @@
 [
   [
     "WintersApproach",
+    "Bandlepipes",
+    "ArchangelsStaff",
+    "LudensEcho",
     "Dawncore",
-    "ImperialMandate",
-    "EchoesOfHelia",
-    "MikaelsBlessing",
-    "SpiritVisage"
+    "ImperialMandate"
   ],
   [
     "ManaflowBand",
@@ -13,8 +13,8 @@
     "GatheringStorm",
     "FontOfLife",
     "Revitalize",
-    "AttackSpeed",
+    "AdaptiveForce",
     "MoveSpeed",
-    "Health"
+    "HealthScaling"
   ]
 ]

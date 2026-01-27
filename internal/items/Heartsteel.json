@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 3084,
   "name": "Heartsteel",
   "price": 3000,
@@ -34,16 +35,7 @@
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "BaseHealthRegen",
-      "value": 100
-    },
-    {
-      "name": "Health",
-      "value": 900
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

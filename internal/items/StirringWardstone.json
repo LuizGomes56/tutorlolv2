@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 4641,
   "name": "Stirring Wardstone",
   "price": 350,
@@ -34,16 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "BaseManaRegen",
-      "value": 25
-    },
-    {
-      "name": "Health",
-      "value": 80
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

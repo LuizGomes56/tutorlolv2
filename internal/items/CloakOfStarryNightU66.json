@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 663059,
   "name": "Cloak of Starry Night [U-66]",
   "price": 2500,
@@ -34,16 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Health",
-      "value": 250
-    },
-    {
-      "name": "MagicResist",
-      "value": 60
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 6671,
   "name": "Galeforce",
   "price": 3500,
@@ -34,24 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackDamage",
-      "value": 50
-    },
-    {
-      "name": "AttackSpeed",
-      "value": 15
-    },
-    {
-      "name": "CriticalStrikeChance",
-      "value": 20
-    },
-    {
-      "name": "MoveSpeed",
-      "value": 7
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

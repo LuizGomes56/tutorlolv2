@@ -1,20 +1,20 @@
 [
   [
-    "MortalReminder",
     "BladeOfTheRuinedKing",
+    "RapidFirecannon",
     "LordDominiksRegards",
-    "KaenicRookern",
-    "ImmortalShieldbow",
-    "RanduinsOmen"
+    "HexopticsC44",
+    "GuardianAngel",
+    "NavoriFlickerblade"
   ],
   [
     "Triumph",
     "LegendAlacrity",
     "CoupDeGrace",
     "SuddenImpact",
-    "RelentlessHunter",
+    "TreasureHunter",
     "AttackSpeed",
     "AdaptiveForce",
-    "Health"
+    "HealthScaling"
   ]
 ]

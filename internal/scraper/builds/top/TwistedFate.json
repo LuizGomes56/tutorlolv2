@@ -1,20 +1,19 @@
 [
   [
-    "BladeOfTheRuinedKing",
-    "WitsEnd",
+    "RapidFirecannon",
     "Bloodthirster",
-    "DeadMansPlate",
-    "InfinityEdge",
-    "Hullbreaker"
+    "Stormrazor",
+    "DuskAndDawn",
+    "ExperimentalHexplate"
   ],
   [
     "Triumph",
     "LegendAlacrity",
-    "CutDown",
+    "CoupDeGrace",
     "BonePlating",
     "Overgrowth",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AdaptiveForce",
+    "Health"
   ]
 ]

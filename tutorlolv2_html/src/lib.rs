@@ -49,6 +49,10 @@ where
 
     let path = Path::new("__html");
 
+    if !path.exists() {
+        tokio::fs::create_dir_all(path).await.unwrap();
+    }
+
     for &value in T::ARRAY {
         let semaphore = semaphore.clone();
         futures.push(tokio::task::spawn(async move {
@@ -56,7 +60,14 @@ where
             let html = f(value).await;
             let folder = path.join(value.folder());
 
+            if !folder.exists() {
+                tokio::fs::create_dir_all(&folder).await.unwrap();
+            }
+
             let target = folder.join(value.file()).with_extension("html");
+
+            println!("[write] {target:?}");
+
             tokio::fs::write(target, html.into_inner()).await.unwrap();
         }));
     }

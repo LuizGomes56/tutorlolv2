@@ -12,6 +12,8 @@ bincode = "2.0.1"
 tutorlolv2 = { path = "." }
 tutorlolv2_dev = { path = "tutorlolv2_dev" }
 tutorlolv2_gen = { path = "tutorlolv2_gen", features = ["eval", "glob", "dev"] }
+tutorlolv2_html = { path = "tutorlolv2_html" }
+tokio = { version = "1.49.0", features = ["full"] }
 
 # [workspace]
 # members = [

@@ -1,5 +1,5 @@
 use crate::{
-    JsonRead, JsonWrite, MayFail,
+    ENV_CONFIG, JsonRead, JsonWrite, MayFail,
     client::{SaveTo, Tag},
     gen_factories::fac_items::ItemFactory,
     model::{
@@ -110,6 +110,7 @@ pub fn setup_internal_items() -> MayFail {
             };
 
             let mut item = Item {
+                version: ENV_CONFIG.lol_version.clone(),
                 maps: riot_cdn_item
                     .maps
                     .into_iter()
@@ -150,7 +151,7 @@ pub fn setup_internal_items() -> MayFail {
                 generator_file,
             )?;
 
-            MayFail::Ok(())
+            Ok(())
         },
     )
 }

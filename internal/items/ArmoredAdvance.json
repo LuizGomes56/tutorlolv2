@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 3174,
   "name": "Armored Advance",
   "price": 1200,
@@ -34,16 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Armor",
-      "value": 35
-    },
-    {
-      "name": "MoveSpeed",
-      "value": 45
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

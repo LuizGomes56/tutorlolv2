@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 223040,
   "name": "Seraph's Embrace [Arena]",
   "price": 2500,
@@ -34,20 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 25
-    },
-    {
-      "name": "AbilityPower",
-      "value": 60
-    },
-    {
-      "name": "Mana",
-      "value": 1200
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

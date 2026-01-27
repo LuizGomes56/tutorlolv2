@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 3082,
   "name": "Warden's Mail",
   "price": 1000,
@@ -34,12 +35,7 @@
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Armor",
-      "value": 40
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

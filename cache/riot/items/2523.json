@@ -1,7 +1,7 @@
 {
   "colloq": "",
   "depth": 3,
-  "description": "<mainText><stats><attention>50</attention> Attack Damage<br><attention>25%</attention> Critical Strike Chance</stats><br><br><passive>Magnification</passive><br>Deal up to 10% increased damage with Attacks, based on how far away the enemy is (max damage at 700 range).<br><br><passive>Arcane Aim</passive><br>When a champion that you damaged within 3 seconds dies, gain 100 additional attack range for 6 seconds. </mainText>",
+  "description": "<mainText><stats><attention>55</attention> Attack Damage<br><attention>25%</attention> Critical Strike Chance</stats><br><br><passive>Magnification</passive><br>Deal up to 10% increased damage with Attacks, based on how far away the enemy is (max damage at 600 range).<br><br><passive>Arcane Aim</passive><br>When a champion that you damaged within 3 seconds dies, gain 100 additional attack range for 6 seconds. </mainText>",
   "from": [
     "1037",
     "6670",
@@ -19,7 +19,7 @@
     "h": 48,
     "sprite": "item3.png",
     "w": 48,
-    "x": 288,
+    "x": 432,
     "y": 0
   },
   "maps": {
@@ -35,7 +35,7 @@
   "plaintext": "",
   "stats": {
     "FlatCritChanceMod": 0.25,
-    "FlatPhysicalDamageMod": 50
+    "FlatPhysicalDamageMod": 55
   },
   "tags": [
     "Damage",

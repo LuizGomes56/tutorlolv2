@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 3175,
   "name": "Spellslinger's Shoes",
   "price": 1100,
@@ -34,16 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "MagicPenetration",
-      "value": 8
-    },
-    {
-      "name": "MoveSpeed",
-      "value": 45
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

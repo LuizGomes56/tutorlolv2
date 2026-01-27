@@ -1,17 +1,20 @@
 [
   [
-    "VoidStaff",
-    "Stormsurge",
-    "BansheesVeil"
+    "ZhonyasHourglass",
+    "BansheesVeil",
+    "HorizonFocus",
+    "CosmicDrive",
+    "Cryptbloom",
+    "HextechGunblade"
   ],
   [
     "SuddenImpact",
     "GrislyMementos",
-    "RelentlessHunter",
+    "TreasureHunter",
     "NimbusCloak",
-    "Transcendence",
+    "Celerity",
     "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "Health"
   ]
 ]

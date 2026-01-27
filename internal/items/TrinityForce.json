@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 3078,
   "name": "Trinity Force",
   "price": 3333,
@@ -34,24 +35,7 @@
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 15
-    },
-    {
-      "name": "AttackDamage",
-      "value": 36
-    },
-    {
-      "name": "AttackSpeed",
-      "value": 30
-    },
-    {
-      "name": "Health",
-      "value": 333
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

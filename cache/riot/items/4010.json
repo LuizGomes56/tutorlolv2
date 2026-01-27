@@ -11,10 +11,10 @@
     "full": "4010.png",
     "group": "item",
     "h": 48,
-    "sprite": "item4.png",
+    "sprite": "item5.png",
     "w": 48,
-    "x": 336,
-    "y": 432
+    "x": 0,
+    "y": 0
   },
   "maps": {
     "11": false,

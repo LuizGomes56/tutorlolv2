@@ -1,20 +1,20 @@
 [
   [
-    "MortalReminder",
-    "HexopticsC44",
-    "MercurialScimitar",
     "PhantomDancer",
-    "MawOfMalmortius",
-    "RunaansHurricane"
+    "MortalReminder",
+    "RunaansHurricane",
+    "TheCollector",
+    "MercurialScimitar",
+    "HexopticsC44"
   ],
   [
-    "AbsorbLife",
+    "Triumph",
     "LegendBloodline",
     "CutDown",
-    "AbsoluteFocus",
-    "GatheringStorm",
+    "CashBack",
+    "TripleTonic",
     "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "Health"
   ]
 ]

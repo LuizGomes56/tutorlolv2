@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 663058,
   "name": "Shield of Molten Stone [U-66]",
   "price": 2500,
@@ -34,16 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Armor",
-      "value": 80
-    },
-    {
-      "name": "Health",
-      "value": 250
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

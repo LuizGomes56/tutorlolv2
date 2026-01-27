@@ -1,20 +1,20 @@
 [
   [
+    "LiandrysTorment",
+    "Bandlepipes",
+    "ProtoplasmHarness",
     "ShurelyasBattlesong",
-    "Trailblazer",
-    "HextechRocketbelt",
-    "BloodlettersCurse",
-    "VigilantWardstone",
-    "ImperialMandate"
+    "RanduinsOmen",
+    "FrozenHeart"
   ],
   [
-    "HextechFlashtraption",
-    "BiscuitDelivery",
-    "ApproachVelocity",
+    "Triumph",
+    "LegendAlacrity",
+    "LastStand",
     "NimbusCloak",
     "Celerity",
     "AdaptiveForce",
     "MoveSpeed",
-    "Health"
+    "HealthScaling"
   ]
 ]

@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 3085,
   "name": "Runaan's Hurricane",
   "price": 2650,
@@ -34,20 +35,7 @@
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackSpeed",
-      "value": 40
-    },
-    {
-      "name": "CriticalStrikeChance",
-      "value": 25
-    },
-    {
-      "name": "MoveSpeed",
-      "value": 4
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 4644,
   "name": "Crown of the Shattered Queen",
   "price": 2865,
@@ -34,24 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 20
-    },
-    {
-      "name": "AbilityPower",
-      "value": 85
-    },
-    {
-      "name": "Health",
-      "value": 250
-    },
-    {
-      "name": "Mana",
-      "value": 600
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

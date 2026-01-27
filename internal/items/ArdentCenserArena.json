@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 223504,
   "name": "Ardent Censer [Arena]",
   "price": 2500,
@@ -34,24 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityPower",
-      "value": 40
-    },
-    {
-      "name": "BaseManaRegen",
-      "value": 150
-    },
-    {
-      "name": "HealAndShieldPower",
-      "value": 12
-    },
-    {
-      "name": "MoveSpeed",
-      "value": 6
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

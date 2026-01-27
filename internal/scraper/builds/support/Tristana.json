@@ -1,20 +1,20 @@
 [
   [
     "NavoriFlickerblade",
-    "YunTalWildarrows",
     "MortalReminder",
-    "VoltaicCyclosword",
-    "Bloodthirster",
-    "UmbralGlaive"
+    "RunaansHurricane",
+    "Stormrazor",
+    "PhantomDancer",
+    "Bloodthirster"
   ],
   [
-    "SuddenImpact",
-    "DeepWard",
-    "TreasureHunter",
     "Triumph",
-    "LegendBloodline",
+    "LegendAlacrity",
+    "CoupDeGrace",
+    "TasteOfBlood",
+    "TreasureHunter",
     "AttackSpeed",
     "AdaptiveForce",
-    "Health"
+    "HealthScaling"
   ]
 ]

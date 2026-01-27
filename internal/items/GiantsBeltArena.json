@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 221011,
   "name": "Giant's Belt [Arena]",
   "price": 500,
@@ -34,12 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Health",
-      "value": 300
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

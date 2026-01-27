@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 224004,
   "name": "Spectral Cutlass [Arena]",
   "price": 2500,
@@ -34,16 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackDamage",
-      "value": 55
-    },
-    {
-      "name": "Lethality",
-      "value": 21
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

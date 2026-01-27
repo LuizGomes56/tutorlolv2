@@ -6,7 +6,7 @@ use tokio::spawn;
 use tutorlolv2_dev::{
     HTTP_CLIENT,
     gen_factories::{fac_champions::ChampionFactory, fac_items::ItemFactory},
-    setup::update::*,
+    setup::{client::Tag, update::*},
 };
 
 #[get("/project")]
@@ -16,8 +16,8 @@ pub async fn setup_project() -> impl Responder {
     spawn(async move {
         for future in [
             spawn(async move { HTTP_CLIENT.update_riot_cache().await }),
-            spawn(async move { HTTP_CLIENT.update_meraki_cache("champions").await }),
-            spawn(async move { HTTP_CLIENT.update_meraki_cache("items").await }),
+            spawn(async move { HTTP_CLIENT.update_meraki_cache(Tag::Champions).await }),
+            spawn(async move { HTTP_CLIENT.update_meraki_cache(Tag::Items).await }),
         ] {
             let _ = future.await;
         }

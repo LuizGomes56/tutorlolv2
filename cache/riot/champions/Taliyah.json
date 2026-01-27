@@ -208,12 +208,14 @@
         "effect": [
           "{{ basedamage }} -> {{ basedamageNL }}",
           "{{ slowpercent*100.000000 }}% -> {{ slowpercentnl*100.000000 }}%",
+          "{{ monsterbonusflatdamage }} -> {{ monsterbonusflatdamageNL }}",
           "{{ cooldown }} -> {{ cooldownNL }}",
           "{{ cost }} -> {{ costNL }}"
         ],
         "label": [
           "Damage",
           "Slow",
+          "Monster Damage",
           "Cooldown",
           "@AbilityResourceName@ Cost"
         ]

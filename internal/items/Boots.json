@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 1001,
   "name": "Boots",
   "price": 300,
@@ -34,12 +35,7 @@
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "MoveSpeed",
-      "value": 25
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

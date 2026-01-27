@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 224637,
   "name": "Demonic Embrace [Arena]",
   "price": 2500,
@@ -34,16 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityPower",
-      "value": 75
-    },
-    {
-      "name": "Health",
-      "value": 350
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

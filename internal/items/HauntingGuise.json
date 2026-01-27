@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 3147,
   "name": "Haunting Guise",
   "price": 1300,
@@ -34,16 +35,7 @@
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityPower",
-      "value": 30
-    },
-    {
-      "name": "Health",
-      "value": 200
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

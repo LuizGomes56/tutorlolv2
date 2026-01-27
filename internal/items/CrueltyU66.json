@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 667109,
   "name": "Cruelty [U-66]",
   "price": 2500,
@@ -34,20 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityPower",
-      "value": 60
-    },
-    {
-      "name": "Armor",
-      "value": 25
-    },
-    {
-      "name": "MagicResist",
-      "value": 25
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

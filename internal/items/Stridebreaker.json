@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 6631,
   "name": "Stridebreaker",
   "price": 3300,
@@ -34,20 +35,7 @@
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackDamage",
-      "value": 40
-    },
-    {
-      "name": "AttackSpeed",
-      "value": 25
-    },
-    {
-      "name": "Health",
-      "value": 450
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 6670,
   "name": "Noonquiver",
   "price": 1300,
@@ -34,16 +35,7 @@
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackDamage",
-      "value": 15
-    },
-    {
-      "name": "CriticalStrikeChance",
-      "value": 20
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

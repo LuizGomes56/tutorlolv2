@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 2501,
   "name": "Overlord's Bloodmail",
   "price": 3300,
@@ -34,16 +35,7 @@
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackDamage",
-      "value": 30
-    },
-    {
-      "name": "Health",
-      "value": 550
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

@@ -37,7 +37,7 @@ impl Html {
 
     pub async fn json(enumv: &impl ArrayItem) -> String {
         let file = format!("{enumv:?}");
-        let path = Path::new("../internal")
+        let path = Path::new("internal")
             .join(enumv.folder())
             .join(file)
             .with_extension("json");

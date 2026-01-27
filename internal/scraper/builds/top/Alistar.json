@@ -1,11 +1,10 @@
 [
   [
     "Shadowflame",
-    "HollowRadiance",
-    "LichBane",
-    "Riftmaker",
-    "RanduinsOmen",
-    "KaenicRookern"
+    "CosmicDrive",
+    "SunfireAegis",
+    "ZhonyasHourglass",
+    "BansheesVeil"
   ],
   [
     "SuddenImpact",
@@ -15,6 +14,6 @@
     "Scorch",
     "AdaptiveForce",
     "AdaptiveForce",
-    "Health"
+    "HealthScaling"
   ]
 ]

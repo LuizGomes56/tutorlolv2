@@ -1,15 +1,18 @@
 [
   [
-    "Riftmaker",
-    "Thornmail"
+    "ForceOfNature",
+    "FrozenHeart",
+    "SpiritVisage",
+    "BlackfireTorch",
+    "UnendingDespair"
   ],
   [
-    "Triumph",
+    "PresenceOfMind",
     "LegendHaste",
     "LastStand",
-    "MagicalFootwear",
-    "ApproachVelocity",
-    "AbilityHaste",
+    "Conditioning",
+    "Overgrowth",
+    "AdaptiveForce",
     "AdaptiveForce",
     "HealthScaling"
   ]

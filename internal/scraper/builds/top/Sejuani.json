@@ -1,20 +1,20 @@
 [
   [
-    "Thornmail",
-    "KaenicRookern",
-    "FrozenHeart",
-    "AbyssalMask",
+    "UnendingDespair",
     "Bandlepipes",
-    "Redemption"
+    "WintersApproach",
+    "AbyssalMask",
+    "RylaisCrystalScepter",
+    "RanduinsOmen"
   ],
   [
+    "Demolish",
+    "SecondWind",
+    "Overgrowth",
     "ManaflowBand",
-    "Transcendence",
     "Scorch",
-    "LegendHaste",
-    "CutDown",
-    "AbilityHaste",
-    "AdaptiveForce",
-    "Health"
+    "AttackSpeed",
+    "HealthScaling",
+    "HealthScaling"
   ]
 ]

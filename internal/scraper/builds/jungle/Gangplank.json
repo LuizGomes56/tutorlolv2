@@ -1,19 +1,18 @@
 [
   [
+    "Bastionbreaker",
     "MortalReminder",
-    "SerpentsFang",
-    "GuardianAngel",
-    "Malignance",
-    "Hullbreaker",
-    "AxiomArc"
+    "Bloodthirster",
+    "ImmortalShieldbow",
+    "SerpentsFang"
   ],
   [
-    "Demolish",
-    "SecondWind",
-    "Overgrowth",
-    "Transcendence",
-    "Scorch",
-    "AttackSpeed",
+    "CashBack",
+    "TripleTonic",
+    "CosmicInsight",
+    "LegendHaste",
+    "CutDown",
+    "AdaptiveForce",
     "AdaptiveForce",
     "Health"
   ]

@@ -1,10 +1,10 @@
 [
   [
-    "BlackCleaver",
-    "EndlessHunger",
+    "SpearOfShojin",
+    "MawOfMalmortius",
+    "SeryldasGrudge",
     "SerpentsFang",
     "SunderedSky",
-    "SteraksGage",
     "VoltaicCyclosword"
   ],
   [
@@ -15,6 +15,6 @@
     "CosmicInsight",
     "AdaptiveForce",
     "AdaptiveForce",
-    "Health"
+    "HealthScaling"
   ]
 ]

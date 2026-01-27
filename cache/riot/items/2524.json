@@ -8,10 +8,10 @@
     "1033"
   ],
   "gold": {
-    "base": 500,
+    "base": 800,
     "purchasable": true,
-    "sell": 1400,
-    "total": 2000
+    "sell": 1610,
+    "total": 2300
   },
   "image": {
     "full": "2524.png",
@@ -19,8 +19,8 @@
     "h": 48,
     "sprite": "item3.png",
     "w": 48,
-    "x": 336,
-    "y": 0
+    "x": 0,
+    "y": 48
   },
   "maps": {
     "11": true,

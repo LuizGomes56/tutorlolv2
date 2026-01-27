@@ -1,20 +1,19 @@
 [
   [
-    "Redemption",
-    "AbyssalMask",
-    "LichBane",
     "RapidFirecannon",
-    "LocketOfTheIronSolari",
-    "JakshoTheProtean"
+    "DuskAndDawn",
+    "GuinsoosRageblade",
+    "BladeOfTheRuinedKing",
+    "KaenicRookern"
   ],
   [
     "CheapShot",
-    "GrislyMementos",
-    "TreasureHunter",
-    "CashBack",
-    "CosmicInsight",
+    "DeepWard",
+    "RelentlessHunter",
+    "Celerity",
+    "Scorch",
     "AttackSpeed",
-    "HealthScaling",
-    "HealthScaling"
+    "AdaptiveForce",
+    "Health"
   ]
 ]

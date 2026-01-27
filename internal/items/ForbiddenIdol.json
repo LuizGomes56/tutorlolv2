@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 3114,
   "name": "Forbidden Idol",
   "price": 600,
@@ -34,16 +35,7 @@
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "BaseManaRegen",
-      "value": 50
-    },
-    {
-      "name": "HealAndShieldPower",
-      "value": 8
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

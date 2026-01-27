@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 6655,
   "name": "Luden's Echo",
   "price": 2750,
@@ -34,20 +35,7 @@
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 10
-    },
-    {
-      "name": "AbilityPower",
-      "value": 100
-    },
-    {
-      "name": "Mana",
-      "value": 600
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

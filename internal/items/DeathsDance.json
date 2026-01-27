@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 6333,
   "name": "Death's Dance",
   "price": 3300,
@@ -34,20 +35,7 @@
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 15
-    },
-    {
-      "name": "Armor",
-      "value": 50
-    },
-    {
-      "name": "AttackDamage",
-      "value": 60
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

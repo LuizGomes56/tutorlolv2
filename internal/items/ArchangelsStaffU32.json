@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 323003,
   "name": "Archangel's Staff [U-32]",
   "price": 2900,
@@ -34,20 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 25
-    },
-    {
-      "name": "AbilityPower",
-      "value": 70
-    },
-    {
-      "name": "Mana",
-      "value": 600
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

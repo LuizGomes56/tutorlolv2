@@ -1,11 +1,11 @@
 [
   [
-    "Redemption",
-    "KnightsVow",
-    "FrozenHeart",
+    "ProtoplasmHarness",
     "ZekesConvergence",
-    "RanduinsOmen",
-    "KaenicRookern"
+    "Heartsteel",
+    "KnightsVow",
+    "KaenicRookern",
+    "MikaelsBlessing"
   ],
   [
     "FontOfLife",
@@ -14,7 +14,7 @@
     "CheapShot",
     "UltimateHunter",
     "AttackSpeed",
-    "AdaptiveForce",
+    "HealthScaling",
     "HealthScaling"
   ]
 ]

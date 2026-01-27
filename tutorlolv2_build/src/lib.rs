@@ -143,8 +143,12 @@ where
                 .ok_or("Invalid file name")
                 .unwrap();
 
-            let data = std::fs::read(&path).unwrap();
-            let json = serde_json::from_slice(&data).unwrap();
+            let data = std::fs::read(&path)
+                .inspect_err(|e| eprintln!("Failed to read for {path:?}: {e:?}"))
+                .unwrap();
+            let json = serde_json::from_slice(&data)
+                .inspect_err(|e| eprintln!("Failed to deserialize for {path:?}: {e:?}"))
+                .unwrap();
             let result = f(name, json).unwrap();
 
             (name.to_owned(), result)

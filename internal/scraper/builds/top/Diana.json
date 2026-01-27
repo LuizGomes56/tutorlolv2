@@ -1,17 +1,19 @@
 [
   [
-    "VoidStaff",
-    "NashorsTooth",
-    "LichBane",
-    "Morellonomicon"
+    "LiandrysTorment",
+    "Morellonomicon",
+    "BloodlettersCurse",
+    "UnendingDespair",
+    "SpiritVisage",
+    "JakshoTheProtean"
   ],
   [
-    "SuddenImpact",
-    "GrislyMementos",
-    "TreasureHunter",
-    "ManaflowBand",
-    "Scorch",
-    "AdaptiveForce",
+    "Triumph",
+    "LegendAlacrity",
+    "CoupDeGrace",
+    "MagicalFootwear",
+    "CosmicInsight",
+    "AttackSpeed",
     "AdaptiveForce",
     "HealthScaling"
   ]

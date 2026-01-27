@@ -16,6 +16,11 @@ fn update() {
     tutorlolv2_dev::setup::update::prettify_internal_items().unwrap();
 }
 
+#[tokio::test]
+async fn generate_html() {
+    tutorlolv2_html::run().await;
+}
+
 #[test]
 fn prettify_items() {
     tutorlolv2_dev::setup::update::prettify_internal_items().unwrap();

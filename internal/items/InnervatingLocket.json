@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 4402,
   "name": "Innervating Locket",
   "price": 2950,
@@ -34,24 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 10
-    },
-    {
-      "name": "AttackDamage",
-      "value": 30
-    },
-    {
-      "name": "Health",
-      "value": 400
-    },
-    {
-      "name": "Mana",
-      "value": 300
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

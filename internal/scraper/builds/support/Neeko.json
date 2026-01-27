@@ -1,10 +1,10 @@
 [
   [
-    "Bandlepipes",
-    "Stormsurge",
-    "Redemption",
     "AbyssalMask",
-    "BansheesVeil",
+    "Stormsurge",
+    "Bandlepipes",
+    "Redemption",
+    "Shadowflame",
     "ShurelyasBattlesong"
   ],
   [
@@ -15,6 +15,6 @@
     "CosmicInsight",
     "AdaptiveForce",
     "AdaptiveForce",
-    "Health"
+    "HealthScaling"
   ]
 ]

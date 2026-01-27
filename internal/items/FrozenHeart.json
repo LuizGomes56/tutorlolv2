@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 3110,
   "name": "Frozen Heart",
   "price": 2500,
@@ -34,20 +35,7 @@
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 20
-    },
-    {
-      "name": "Armor",
-      "value": 75
-    },
-    {
-      "name": "Mana",
-      "value": 400
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

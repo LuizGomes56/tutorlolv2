@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 2421,
   "name": "Shattered Armguard",
   "price": 1600,
@@ -34,16 +35,7 @@
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityPower",
-      "value": 40
-    },
-    {
-      "name": "Armor",
-      "value": 25
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

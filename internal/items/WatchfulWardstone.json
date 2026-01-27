@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 4638,
   "name": "Watchful Wardstone",
   "price": 1100,
@@ -34,24 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 10
-    },
-    {
-      "name": "Armor",
-      "value": 10
-    },
-    {
-      "name": "Health",
-      "value": 150
-    },
-    {
-      "name": "MagicResist",
-      "value": 15
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

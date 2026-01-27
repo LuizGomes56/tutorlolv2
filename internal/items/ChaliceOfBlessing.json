@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 3012,
   "name": "Chalice of Blessing",
   "price": 900,
@@ -34,16 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "BaseManaRegen",
-      "value": 50
-    },
-    {
-      "name": "Health",
-      "value": 200
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

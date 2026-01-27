@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 226616,
   "name": "Staff of Flowing Water [Arena]",
   "price": 2500,
@@ -34,24 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 15
-    },
-    {
-      "name": "AbilityPower",
-      "value": 65
-    },
-    {
-      "name": "BaseManaRegen",
-      "value": 150
-    },
-    {
-      "name": "HealAndShieldPower",
-      "value": 14
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

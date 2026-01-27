@@ -1,6 +1,6 @@
 {
   "colloq": "",
-  "description": "<mainText><stats><attention>200</attention> Health<br><attention>10</attention> Ability Haste<br><attention>25</attention> Armor<br><attention>25</attention> Magic Resist</stats><br><br><passive>Fanfare</passive><br><keyword>Slowing</keyword> or <keyword>Immobilizing</keyword> an enemy champion grants Fanfare for  seconds. Fanfare grants you <speed>20 Move Speed</speed>. While you have Fanfare, nearby allies, including yourself, gain <attackSpeed> Attack Speed</attackSpeed>.</mainText>",
+  "description": "<mainText><stats><attention>200</attention> Health<br><attention>10</attention> Ability Haste<br><attention>25</attention> Armor<br><attention>25</attention> Magic Resist</stats><br><br><passive>Fanfare</passive><br><keyword>Slowing</keyword> or <keyword>Immobilizing</keyword> an enemy champion grants Fanfare for  seconds. Fanfare grants you <speed>35 Move Speed</speed>. While you have Fanfare, nearby allies, including yourself, gain <attackSpeed> Attack Speed</attackSpeed>.</mainText>",
   "gold": {
     "base": 2500,
     "purchasable": true,
@@ -13,7 +13,7 @@
     "h": 48,
     "sprite": "item1.png",
     "w": 48,
-    "x": 192,
+    "x": 336,
     "y": 240
   },
   "maps": {

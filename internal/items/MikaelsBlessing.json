@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 3222,
   "name": "Mikael's Blessing",
   "price": 2300,
@@ -34,24 +35,7 @@
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 15
-    },
-    {
-      "name": "BaseManaRegen",
-      "value": 100
-    },
-    {
-      "name": "HealAndShieldPower",
-      "value": 12
-    },
-    {
-      "name": "Health",
-      "value": 250
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

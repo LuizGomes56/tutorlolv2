@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 2021,
   "name": "Tunneler",
   "price": 1150,
@@ -34,16 +35,7 @@
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackDamage",
-      "value": 15
-    },
-    {
-      "name": "Health",
-      "value": 250
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

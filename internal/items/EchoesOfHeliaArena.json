@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 226620,
   "name": "Echoes of Helia [Arena]",
   "price": 2500,
@@ -34,24 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 30
-    },
-    {
-      "name": "AbilityPower",
-      "value": 40
-    },
-    {
-      "name": "BaseManaRegen",
-      "value": 150
-    },
-    {
-      "name": "Health",
-      "value": 300
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

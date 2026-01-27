@@ -1,20 +1,20 @@
 [
   [
-    "Stormsurge",
-    "LiandrysTorment",
     "Malignance",
-    "ImperialMandate",
+    "ShurelyasBattlesong",
+    "DuskAndDawn",
+    "ZhonyasHourglass",
     "VoidStaff",
-    "Morellonomicon"
+    "BansheesVeil"
   ],
   [
     "SuddenImpact",
     "GrislyMementos",
-    "UltimateHunter",
-    "PresenceOfMind",
-    "CutDown",
+    "RelentlessHunter",
+    "AbsoluteFocus",
+    "GatheringStorm",
     "AttackSpeed",
     "AdaptiveForce",
-    "Health"
+    "HealthScaling"
   ]
 ]

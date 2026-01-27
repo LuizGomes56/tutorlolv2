@@ -1,20 +1,20 @@
 [
   [
-    "ArchangelsStaff",
-    "Shadowflame",
+    "MoonstoneRenewer",
+    "ArdentCenser",
     "ShurelyasBattlesong",
-    "ZhonyasHourglass",
-    "HorizonFocus",
-    "RabadonsDeathcap"
+    "ImperialMandate",
+    "StaffOfFlowingWater",
+    "Bandlepipes"
   ],
   [
     "ManaflowBand",
     "Transcendence",
-    "Scorch",
-    "PresenceOfMind",
-    "CoupDeGrace",
-    "AttackSpeed",
+    "GatheringStorm",
+    "Conditioning",
+    "Revitalize",
     "AdaptiveForce",
-    "HealthScaling"
+    "AdaptiveForce",
+    "Health"
   ]
 ]

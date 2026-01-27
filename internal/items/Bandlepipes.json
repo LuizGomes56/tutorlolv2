@@ -1,8 +1,9 @@
 {
+  "version": "16.2.1",
   "riot_id": 2524,
   "name": "Bandlepipes",
-  "price": 2000,
-  "sell": 1400,
+  "price": 2300,
+  "sell": 1610,
   "tier": 3,
   "maps": [
     [
@@ -34,24 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 15
-    },
-    {
-      "name": "Armor",
-      "value": 20
-    },
-    {
-      "name": "Health",
-      "value": 200
-    },
-    {
-      "name": "MagicResist",
-      "value": 20
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

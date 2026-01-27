@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 6676,
   "name": "The Collector",
   "price": 3000,
@@ -34,20 +35,7 @@
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackDamage",
-      "value": 50
-    },
-    {
-      "name": "CriticalStrikeChance",
-      "value": 25
-    },
-    {
-      "name": "Lethality",
-      "value": 10
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

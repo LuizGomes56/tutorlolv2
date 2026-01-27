@@ -1,18 +1,17 @@
 [
   [
-    "Bloodthirster",
-    "PhantomDancer",
-    "MercurialScimitar",
-    "MortalReminder",
     "GuardianAngel",
-    "RapidFirecannon"
+    "RapidFirecannon",
+    "MortalReminder",
+    "EssenceReaver",
+    "ImmortalShieldbow"
   ],
   [
     "Triumph",
     "LegendAlacrity",
     "CoupDeGrace",
-    "CashBack",
-    "TripleTonic",
+    "AbsoluteFocus",
+    "GatheringStorm",
     "AttackSpeed",
     "AdaptiveForce",
     "Health"

@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 3161,
   "name": "Spear of Shojin",
   "price": 3100,
@@ -34,16 +35,7 @@
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackDamage",
-      "value": 45
-    },
-    {
-      "name": "Health",
-      "value": 450
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

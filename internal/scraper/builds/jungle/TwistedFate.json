@@ -1,20 +1,20 @@
 [
   [
-    "GuardianAngel",
     "RapidFirecannon",
-    "YunTalWildarrows",
     "WitsEnd",
-    "Hullbreaker",
-    "ChempunkChainsword"
+    "PhantomDancer",
+    "SerpentsFang",
+    "InfinityEdge",
+    "Terminus"
   ],
   [
     "Triumph",
     "LegendAlacrity",
-    "LastStand",
+    "CutDown",
     "CheapShot",
     "UltimateHunter",
     "AttackSpeed",
-    "AdaptiveForce",
-    "HealthScaling"
+    "MoveSpeed",
+    "TenacityAndSlowResist"
   ]
 ]

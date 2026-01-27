@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 3133,
   "name": "Caulfield's Warhammer",
   "price": 1050,
@@ -34,16 +35,7 @@
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 10
-    },
-    {
-      "name": "AttackDamage",
-      "value": 20
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

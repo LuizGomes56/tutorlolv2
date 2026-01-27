@@ -1,19 +1,20 @@
 [
   [
-    "VoidStaff",
-    "DuskAndDawn",
-    "LiandrysTorment",
-    "BansheesVeil",
-    "Morellonomicon"
+    "Stormsurge",
+    "Cryptbloom",
+    "BloodlettersCurse",
+    "AbyssalMask",
+    "Morellonomicon",
+    "RanduinsOmen"
   ],
   [
     "SuddenImpact",
     "GrislyMementos",
-    "UltimateHunter",
-    "MagicalFootwear",
+    "TreasureHunter",
+    "CashBack",
     "CosmicInsight",
     "AttackSpeed",
     "AdaptiveForce",
-    "Health"
+    "HealthScaling"
   ]
 ]

@@ -225,7 +225,7 @@
           "{{ bonusas }}% -> {{ bonusasNL }}%"
         ],
         "label": [
-          "Bonus Damage",
+          "Bonus Damage:",
           "Cooldown",
           "Attack Speed"
         ]

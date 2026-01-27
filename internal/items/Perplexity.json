@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 4015,
   "name": "Perplexity",
   "price": 2500,
@@ -34,24 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityPower",
-      "value": 60
-    },
-    {
-      "name": "ArmorPenetration",
-      "value": 22
-    },
-    {
-      "name": "MagicPenetration",
-      "value": 30
-    },
-    {
-      "name": "MoveSpeed",
-      "value": 5
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

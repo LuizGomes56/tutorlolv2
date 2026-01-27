@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 3855,
   "name": "Runesteel Spaulders",
   "price": 400,
@@ -34,24 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackDamage",
-      "value": 6
-    },
-    {
-      "name": "BaseHealthRegen",
-      "value": 75
-    },
-    {
-      "name": "GoldPer10Seconds",
-      "value": 3
-    },
-    {
-      "name": "Health",
-      "value": 100
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

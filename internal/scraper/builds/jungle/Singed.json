@@ -1,20 +1,17 @@
 [
   [
-    "Riftmaker",
-    "ForceOfNature",
-    "RabadonsDeathcap",
-    "BloodlettersCurse",
-    "ZhonyasHourglass",
-    "RanduinsOmen"
+    "DeadMansPlate",
+    "JakshoTheProtean",
+    "BloodlettersCurse"
   ],
   [
-    "Triumph",
+    "AbsorbLife",
     "LegendAlacrity",
     "LastStand",
-    "NimbusCloak",
     "Celerity",
-    "AdaptiveForce",
+    "GatheringStorm",
+    "AttackSpeed",
     "MoveSpeed",
-    "HealthScaling"
+    "TenacityAndSlowResist"
   ]
 ]

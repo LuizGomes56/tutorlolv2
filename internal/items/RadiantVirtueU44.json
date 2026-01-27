@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 446667,
   "name": "Radiant Virtue [U-44]",
   "price": 1000,
@@ -34,24 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "Armor",
-      "value": 35
-    },
-    {
-      "name": "HealAndShieldPower",
-      "value": 12
-    },
-    {
-      "name": "Health",
-      "value": 400
-    },
-    {
-      "name": "MagicResist",
-      "value": 35
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

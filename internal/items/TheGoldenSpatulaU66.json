@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 664403,
   "name": "The Golden Spatula [U-66]",
   "price": 2500,
@@ -34,56 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 20
-    },
-    {
-      "name": "AbilityPower",
-      "value": 125
-    },
-    {
-      "name": "Armor",
-      "value": 10
-    },
-    {
-      "name": "AttackDamage",
-      "value": 90
-    },
-    {
-      "name": "AttackSpeed",
-      "value": 30
-    },
-    {
-      "name": "BaseHealthRegen",
-      "value": 100
-    },
-    {
-      "name": "BaseManaRegen",
-      "value": 100
-    },
-    {
-      "name": "CriticalStrikeChance",
-      "value": 25
-    },
-    {
-      "name": "Health",
-      "value": 250
-    },
-    {
-      "name": "LifeSteal",
-      "value": 10
-    },
-    {
-      "name": "MagicResist",
-      "value": 10
-    },
-    {
-      "name": "Mana",
-      "value": 250
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

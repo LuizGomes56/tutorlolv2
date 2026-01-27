@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 664011,
   "name": "Sword of Blossoming Dawn [U-66]",
   "price": 2500,
@@ -34,24 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 10
-    },
-    {
-      "name": "AbilityPower",
-      "value": 35
-    },
-    {
-      "name": "HealAndShieldPower",
-      "value": 10
-    },
-    {
-      "name": "Health",
-      "value": 150
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

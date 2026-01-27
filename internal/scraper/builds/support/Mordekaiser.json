@@ -1,20 +1,20 @@
 [
   [
+    "Riftmaker",
+    "HollowRadiance",
     "ExperimentalHexplate",
     "SpiritVisage",
-    "Thornmail",
-    "ZhonyasHourglass",
-    "RanduinsOmen",
+    "NashorsTooth",
     "JakshoTheProtean"
   ],
   [
     "Triumph",
-    "LegendHaste",
-    "LastStand",
+    "LegendAlacrity",
+    "CoupDeGrace",
     "BonePlating",
-    "Revitalize",
+    "Overgrowth",
     "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "Health"
   ]
 ]

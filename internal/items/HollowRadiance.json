@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 6664,
   "name": "Hollow Radiance",
   "price": 2800,
@@ -34,24 +35,7 @@
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 10
-    },
-    {
-      "name": "BaseHealthRegen",
-      "value": 100
-    },
-    {
-      "name": "Health",
-      "value": 400
-    },
-    {
-      "name": "MagicResist",
-      "value": 40
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

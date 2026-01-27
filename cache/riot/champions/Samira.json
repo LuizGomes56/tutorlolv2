@@ -72,6 +72,12 @@
       "id": "360033",
       "name": "Masque of the Black Rose Samira",
       "num": 33
+    },
+    {
+      "chromas": false,
+      "id": "360035",
+      "name": "Battle Professor Samira",
+      "num": 35
     }
   ],
   "spells": [

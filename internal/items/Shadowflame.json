@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 4645,
   "name": "Shadowflame",
   "price": 3200,
@@ -34,16 +35,7 @@
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityPower",
-      "value": 110
-    },
-    {
-      "name": "MagicPenetration",
-      "value": 15
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

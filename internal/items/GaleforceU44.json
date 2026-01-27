@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 446671,
   "name": "Galeforce [U-44]",
   "price": 1000,
@@ -34,24 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackDamage",
-      "value": 65
-    },
-    {
-      "name": "AttackSpeed",
-      "value": 30
-    },
-    {
-      "name": "CriticalStrikeChance",
-      "value": 25
-    },
-    {
-      "name": "MoveSpeed",
-      "value": 6
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

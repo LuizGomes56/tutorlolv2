@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 223046,
   "name": "Phantom Dancer [Arena]",
   "price": 2500,
@@ -34,20 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackSpeed",
-      "value": 60
-    },
-    {
-      "name": "CriticalStrikeChance",
-      "value": 25
-    },
-    {
-      "name": "MoveSpeed",
-      "value": 8
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

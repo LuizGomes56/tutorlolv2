@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 223072,
   "name": "Bloodthirster [Arena]",
   "price": 2500,
@@ -34,16 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AttackDamage",
-      "value": 70
-    },
-    {
-      "name": "LifeSteal",
-      "value": 18
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

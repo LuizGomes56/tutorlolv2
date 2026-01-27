@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 223033,
   "name": "Mortal Reminder [Arena]",
   "price": 2500,
@@ -34,20 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "ArmorPenetration",
-      "value": 30
-    },
-    {
-      "name": "AttackDamage",
-      "value": 30
-    },
-    {
-      "name": "CriticalStrikeChance",
-      "value": 25
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

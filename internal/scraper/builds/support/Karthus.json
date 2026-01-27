@@ -1,11 +1,11 @@
 [
   [
     "LiandrysTorment",
-    "Cryptbloom",
-    "Actualizer",
-    "Malignance",
+    "RylaisCrystalScepter",
     "Stormsurge",
-    "VoidStaff"
+    "ZhonyasHourglass",
+    "BloodlettersCurse",
+    "Morellonomicon"
   ],
   [
     "CheapShot",
@@ -15,6 +15,6 @@
     "LastStand",
     "AdaptiveForce",
     "AdaptiveForce",
-    "Health"
+    "HealthScaling"
   ]
 ]

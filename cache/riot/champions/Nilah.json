@@ -611,7 +611,7 @@
     "attackdamageperlevel": 2,
     "attackrange": 225,
     "attackspeed": 0.697,
-    "attackspeedperlevel": 2,
+    "attackspeedperlevel": 1.25,
     "crit": 0,
     "critperlevel": 0,
     "hp": 570,

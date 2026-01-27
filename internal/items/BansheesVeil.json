@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 3102,
   "name": "Banshee's Veil",
   "price": 3000,
@@ -34,16 +35,7 @@
       true
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityPower",
-      "value": 105
-    },
-    {
-      "name": "MagicResist",
-      "value": 40
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

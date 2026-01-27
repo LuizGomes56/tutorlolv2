@@ -1,4 +1,5 @@
 {
+  "version": "16.2.1",
   "riot_id": 223152,
   "name": "Hextech Rocketbelt [Arena]",
   "price": 2500,
@@ -34,20 +35,7 @@
       false
     ]
   ],
-  "prettified_stats": [
-    {
-      "name": "AbilityHaste",
-      "value": 20
-    },
-    {
-      "name": "AbilityPower",
-      "value": 95
-    },
-    {
-      "name": "Health",
-      "value": 400
-    }
-  ],
+  "prettified_stats": [],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

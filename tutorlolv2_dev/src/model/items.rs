@@ -78,6 +78,7 @@ impl Default for DamageObject {
 
 #[derive(Default, Deserialize, Serialize)]
 pub struct Item {
+    pub version: String,
     pub riot_id: u32,
     pub name: String,
     pub price: u32,

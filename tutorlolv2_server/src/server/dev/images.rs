@@ -55,7 +55,7 @@ pub mod avif {
         source: &str,
         folder: &str,
     ) -> Result<(), Box<dyn std::error::Error>> {
-        match tutorlolv2_avif::convert_folder_avif(&format!("{source}/{folder}")).await {
+        match tutorlolv2_avif::convert_folder_avif(&format!("{source}/{folder}")) {
             Ok(_) => println!("Convertion of '{folder}' finished"),
             Err(e) => eprintln!("Error converting '{folder}': {e:#?}"),
         }

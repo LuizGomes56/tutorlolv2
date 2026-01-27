@@ -1,11 +1,11 @@
 [
   [
-    "SerpentsFang",
-    "Stridebreaker",
+    "TheCollector",
     "Eclipse",
-    "BlackCleaver",
-    "SunderedSky",
-    "ChempunkChainsword"
+    "YoumuusGhostblade",
+    "EdgeOfNight",
+    "Opportunity",
+    "Bastionbreaker"
   ],
   [
     "SuddenImpact",
@@ -13,8 +13,8 @@
     "RelentlessHunter",
     "MagicalFootwear",
     "CosmicInsight",
+    "AttackSpeed",
     "AdaptiveForce",
-    "AdaptiveForce",
-    "Health"
+    "HealthScaling"
   ]
 ]
