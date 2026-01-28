@@ -1,7 +1,7 @@
 use crate::{ArrayItem, html::Html, parallel_task};
 use tutorlolv2_gen::{
-    ABILITY_FORMULAS, CHAMPION_FORMULAS, CHAMPION_GENERATOR, ChampionId, Position,
-    RECOMMENDED_ITEMS, RECOMMENDED_RUNES,
+    ABILITY_CLOSURES, ABILITY_FORMULAS, CHAMPION_FORMULAS, CHAMPION_GENERATOR, ChampionId,
+    Position, RECOMMENDED_ITEMS, RECOMMENDED_RUNES,
 };
 
 fn get_recommendations<T: ArrayItem, const N: usize, const M: usize>(
@@ -53,9 +53,9 @@ pub async fn champions_html() {
             .enumerate()
             .map(|(i, metadata)| {
                 let lit = metadata.kind.as_const_lit();
-                let offsets = ABILITY_FORMULAS[champion_id as usize][i].clone();
-                let code = Html::code_block(offsets);
-                Html::code_column(&lit, &code)
+                let full_code = Html::code_block(ABILITY_FORMULAS[champion_id as usize][i].clone());
+                let part_code = Html::code_block(ABILITY_CLOSURES[champion_id as usize][i].clone());
+                Html::code_column(&lit, &full_code) + &Html::code_column(&lit, &part_code)
             })
             .collect::<String>();
 

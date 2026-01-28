@@ -1,3 +1,5 @@
+use core::{convert::Infallible, str::FromStr};
+
 /// Creates an enum and associates constants that represents each of its
 /// variants, using the same name and ignores `upper_case` lints
 macro_rules! const_enum {
@@ -76,15 +78,22 @@ const_enum! {
     }
 }
 
+impl FromStr for DamageType {
+    type Err = Infallible;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "PHYSICAL_DAMAGE" => Ok(DamageType::Physical),
+            "MAGIC_DAMAGE" => Ok(DamageType::Magic),
+            "MIXED_DAMAGE" => Ok(DamageType::Mixed),
+            "TRUE_DAMAGE" => Ok(DamageType::True),
+            "ADAPTATIVE_DAMAGE" => Ok(DamageType::Adaptative),
+            _ => Ok(DamageType::Unknown),
+        }
+    }
+}
+
 impl<T: AsRef<str>> From<T> for DamageType {
     fn from(s: T) -> Self {
-        match s.as_ref() {
-            "PHYSICAL_DAMAGE" => DamageType::Physical,
-            "MAGIC_DAMAGE" => DamageType::Magic,
-            "MIXED_DAMAGE" => DamageType::Mixed,
-            "TRUE_DAMAGE" => DamageType::True,
-            "ADAPTATIVE_DAMAGE" => DamageType::Adaptative,
-            _ => DamageType::Unknown,
-        }
+        unsafe { Self::from_str(s.as_ref()).unwrap_unchecked() }
     }
 }

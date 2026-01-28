@@ -1,7 +1,9 @@
 use crate::ArrayItem;
 use core::ops::{Deref, DerefMut};
 use std::{ops::Range, path::Path};
-use tutorlolv2_gen::{ChampionId, ITEM_ID_TO_RIOT_ID, ItemId, RAW_BLOCK, RUNE_ID_TO_RIOT_ID};
+use tutorlolv2_gen::{
+    ChampionId, EvalIdent, ITEM_ID_TO_RIOT_ID, ItemId, RAW_BLOCK, RUNE_ID_TO_RIOT_ID,
+};
 
 pub struct Html {
     inner: String,
@@ -47,6 +49,10 @@ impl Html {
 
     pub fn code_column(tag: &str, code: &str) -> String {
         format!(r#"<div class="column"><h2>{tag}</h2>{code}</div>"#)
+    }
+
+    pub fn push_idents(&mut self, _idents: &[EvalIdent]) {
+        todo!()
     }
 
     pub fn push_code_block(&mut self, offsets: Range<usize>) {
