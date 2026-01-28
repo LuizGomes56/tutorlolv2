@@ -35,7 +35,17 @@
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "AdaptiveForce": 80
+    },
+    {
+      "AttackSpeed": 50
+    },
+    {
+      "MoveSpeed": 8
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

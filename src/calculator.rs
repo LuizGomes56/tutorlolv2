@@ -545,6 +545,7 @@ pub fn calculator(game: InputGame) -> OutputGame {
     let current_player_items = get_damaging_items(&current_player_raw_items);
 
     let self_state = SelfState {
+        stacks: stacks as _,
         current_stats: champion_stats,
         bonus_stats: current_player_bonus_stats,
         base_stats: current_player_base_stats,
@@ -595,7 +596,7 @@ pub fn calculator(game: InputGame) -> OutputGame {
 }
 
 pub fn get_calculator_enemies(
-    enemy_players: Box<[InputMinData<SimpleStats<i32>>]>,
+    enemy_players: Box<[InputMinData<EnemyStats<i32>>]>,
     self_state: &SelfState,
     eval_data: &DamageEvalData,
     modifiers: Modifiers,
@@ -609,14 +610,15 @@ pub fn get_calculator_enemies(
                 infer_stats: e_infer_stats,
                 items: e_items,
                 stacks: e_stacks,
-                stats: e_raw_stats_i32,
+                stats: e_stats_i32,
                 level: e_level,
                 champion_id: e_champion_id,
                 is_mega_gnar: e_is_mega_gnar,
                 item_exceptions: e_item_exceptions,
             } = player;
 
-            let e_stats = SimpleStats::from_i32(&e_raw_stats_i32);
+            let e_stats = EnemyStats::from_i32(&e_stats_i32);
+
             let e_base_stats = base_stats_sf32(e_champion_id, e_level, e_is_mega_gnar);
             let mut full_state = get_enemy_state(
                 EnemyState {
@@ -657,7 +659,7 @@ pub fn get_calculator_enemies(
             let damages = get_damages(&eval_ctx, eval_data, modifiers);
 
             OutputEnemy {
-                current_stats: SimpleStats::from_f32(&full_state.current_stats),
+                current_stats: EnemyStats::from_f32(&full_state.current_stats),
                 bonus_stats: SimpleStats::from_f32(&full_state.bonus_stats),
                 base_stats: SimpleStats::from_f32(&e_base_stats),
                 real_magic_resist: full_state.magic_values.real as _,

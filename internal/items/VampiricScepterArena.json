@@ -35,7 +35,14 @@
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "AttackDamage": 15
+    },
+    {
+      "LifeSteal": 7
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

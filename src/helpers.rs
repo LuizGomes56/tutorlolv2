@@ -33,6 +33,12 @@ pub const FIRE_DRAGON_MULTIPLIER: f32 = 0.03;
 /// Despite the usual maximum level being 18, in
 /// URF you can reach up to this constant's value
 pub const URF_MAX_LEVEL: usize = 30;
+/// Item [`ItemId::PlatedSteelcaps`] gives 12% damage reduction for basic attacks
+pub const STEEL_CAPS_PROTECTION: f32 = 0.88;
+/// Item [`ItemId::RanduinsOmen`] gives 30% damage reduction against critical hits
+pub const RANDUIN_CRIT_PROTECTION: f32 = 0.7;
+/// Items with Rocksolid passive give 20% damage reduction in some cases
+pub const ROCKSOLID_PROTECTION: f32 = 0.8;
 
 /// Formula to get the bonus damage of the rune [`RuneId::LastStand`], where
 /// missing health is a ratio of the current health and the maximum health.
@@ -548,7 +554,13 @@ pub const fn get_enemy_state(
     }
 
     EnemyFullState {
-        current_stats: e_current_stats,
+        current_stats: EnemyStats {
+            enemy_armor: e_current_stats.armor,
+            enemy_health: e_current_stats.health,
+            enemy_magic_resist: e_current_stats.magic_resist,
+            enemy_max_health: e_current_stats.health,
+            enemy_missing_health: 1.0,
+        },
         bonus_stats: e_bonus_stats,
         modifiers: e_modifiers,
         armor_values,
@@ -574,68 +586,137 @@ pub const fn get_enemy_state(
 /// from armor and magic resist. See [`ConstClosure`] for more details about those
 /// functions
 pub const fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> Ctx {
+    let SelfState {
+        stacks,
+        ability_levels,
+        current_stats:
+            Stats {
+                ability_power,
+                armor,
+                armor_penetration_flat,
+                armor_penetration_percent,
+                attack_damage,
+                attack_speed,
+                crit_chance,
+                crit_damage,
+                current_health,
+                magic_penetration_flat,
+                magic_penetration_percent,
+                magic_resist,
+                health: max_health,
+                mana: max_mana,
+                current_mana,
+                ..
+            },
+        bonus_stats: s_bonus_stats,
+        base_stats: s_base_stats,
+        level: s_level,
+        adaptative_type,
+    } = *self_state;
+    let EnemyFullState {
+        current_stats:
+            EnemyStats {
+                enemy_armor,
+                enemy_health,
+                enemy_magic_resist,
+                enemy_max_health,
+                enemy_missing_health,
+            },
+        bonus_stats:
+            SimpleStats {
+                health: enemy_bonus_health,
+                armor: enemy_bonus_armor,
+                magic_resist: enemy_bonus_magic_resist,
+            },
+        armor_values,
+        magic_values,
+        steelcaps,
+        rocksolid,
+        randuin,
+        ..
+    } = *e_state;
     Ctx {
-        q_level: self_state.ability_levels.q as _,
-        w_level: self_state.ability_levels.w as _,
-        e_level: self_state.ability_levels.e as _,
-        r_level: self_state.ability_levels.r as _,
-        level: self_state.level as f32,
-        chogath_stacks: 1.0,
-        veigar_stacks: 1.0,
-        nasus_stacks: 1.0,
-        smolder_stacks: 1.0,
-        aurelion_sol_stacks: 1.0,
-        thresh_stacks: 1.0,
-        kindred_stacks: 1.0,
-        belveth_stacks: 1.0,
-        adaptative_damage: match self_state.adaptative_type {
-            AdaptativeType::Physical => e_state.armor_values.modifier,
-            AdaptativeType::Magic => e_state.magic_values.modifier,
-        },
-        physical_multiplier: e_state.armor_values.modifier,
-        magic_multiplier: e_state.magic_values.modifier,
-        // #![manual_impl]
-        steelcaps_effect: if e_state.steelcaps { 0.88 } else { 1.0 },
-        // #![manual_impl]
-        randuin_effect: if e_state.randuin { 0.7 } else { 1.0 },
-        // #![manual_impl]
-        rocksolid_effect: if e_state.rocksolid { 0.8 } else { 1.0 },
-        enemy_bonus_health: e_state.bonus_stats.health,
-        enemy_armor: e_state.current_stats.armor,
-        enemy_max_health: e_state.current_stats.health,
-        enemy_health: e_state.current_stats.health,
-        enemy_current_health: e_state.current_stats.health,
-        enemy_missing_health: e_state.current_stats.health,
-        enemy_magic_resist: e_state.current_stats.magic_resist,
-        base_health: self_state.base_stats.health,
-        base_ad: self_state.base_stats.attack_damage,
-        base_armor: self_state.base_stats.armor,
-        base_magic_resist: self_state.base_stats.magic_resist,
-        base_mana: self_state.base_stats.mana,
-        bonus_ad: self_state.bonus_stats.attack_damage,
-        bonus_armor: self_state.bonus_stats.armor,
-        bonus_magic_resist: self_state.bonus_stats.magic_resist,
-        bonus_health: self_state.bonus_stats.health,
-        bonus_mana: self_state.bonus_stats.mana,
+        q_level: ability_levels.q as _,
+        w_level: ability_levels.w as _,
+        e_level: ability_levels.e as _,
+        r_level: ability_levels.r as _,
+        level: s_level as _,
+        physical_multiplier: armor_values.modifier,
+        magic_multiplier: magic_values.modifier,
+        enemy_bonus_health,
+        enemy_bonus_armor,
+        enemy_bonus_magic_resist,
+        enemy_armor,
+        enemy_health,
+        enemy_max_health,
+        enemy_missing_health,
+        enemy_magic_resist,
+        base_health: s_base_stats.health,
+        base_ad: s_base_stats.attack_damage,
+        base_armor: s_base_stats.armor,
+        base_magic_resist: s_base_stats.magic_resist,
+        base_mana: s_base_stats.mana,
+        bonus_ad: s_bonus_stats.attack_damage,
+        bonus_armor: s_bonus_stats.armor,
+        bonus_magic_resist: s_bonus_stats.magic_resist,
+        bonus_health: s_bonus_stats.health,
+        bonus_mana: s_bonus_stats.mana,
         // #![unsupported]
         bonus_move_speed: 1.0,
-        armor_penetration_flat: self_state.current_stats.armor_penetration_flat,
-        armor_penetration_percent: self_state.current_stats.armor_penetration_percent,
-        magic_penetration_flat: self_state.current_stats.magic_penetration_flat,
-        magic_penetration_percent: self_state.current_stats.magic_penetration_percent,
-        max_mana: self_state.current_stats.mana,
-        current_mana: self_state.current_stats.current_mana,
-        max_health: self_state.current_stats.health,
-        current_health: self_state.current_stats.current_health,
-        armor: self_state.current_stats.armor,
-        magic_resist: self_state.current_stats.magic_resist,
-        crit_chance: self_state.current_stats.crit_chance,
-        crit_damage: self_state.current_stats.crit_damage,
-        attack_speed: self_state.current_stats.attack_speed,
-        missing_health: 1.0
-            - (self_state.current_stats.current_health / self_state.current_stats.health.max(1.0)),
-        ap: self_state.current_stats.ability_power,
-        ad: self_state.current_stats.attack_damage,
+        armor_penetration_flat,
+        armor_penetration_percent,
+        magic_penetration_flat,
+        magic_penetration_percent,
+        max_mana,
+        current_mana,
+        max_health,
+        current_health,
+        armor,
+        magic_resist,
+        crit_chance,
+        crit_damage,
+        attack_speed,
+        missing_health: 1.0 - (current_health / max_health.max(1.0)),
+        ap: ability_power,
+        ad: attack_damage,
+        adaptative_damage: match adaptative_type {
+            AdaptativeType::Physical => armor_values.modifier,
+            AdaptativeType::Magic => magic_values.modifier,
+        },
+        steelcaps_effect: match steelcaps {
+            true => STEEL_CAPS_PROTECTION,
+            false => 1.0,
+        },
+        randuin_effect: match randuin {
+            true => RANDUIN_CRIT_PROTECTION,
+            false => 1.0,
+        },
+        rocksolid_effect: match rocksolid {
+            true => ROCKSOLID_PROTECTION,
+            false => 1.0,
+        },
+        chogath_stacks: stacks,
+        nasus_stacks: stacks,
+        smolder_stacks: stacks,
+        aurelion_sol_stacks: stacks,
+        thresh_stacks: stacks,
+        kindred_stacks: stacks,
+    }
+}
+
+pub const fn get_stacks(champion_id: ChampionId, game_time: f32) -> f32 {
+    const AVERAGE_GAME_TIME: u32 = 60 * 30;
+    pub const fn time(game_time: f32, stacks_at_30m: u32) -> f32 {
+        (AVERAGE_GAME_TIME / stacks_at_30m) as f32 / game_time
+    }
+    match champion_id {
+        ChampionId::Chogath => time(game_time, 12),
+        ChampionId::Nasus => time(game_time, 450),
+        ChampionId::Smolder => time(game_time, 120),
+        ChampionId::AurelionSol => time(game_time, 190),
+        ChampionId::Thresh => time(game_time, 150),
+        ChampionId::Kindred => time(game_time, 5),
+        _ => 1.0,
     }
 }
 

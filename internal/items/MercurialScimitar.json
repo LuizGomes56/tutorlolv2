@@ -35,7 +35,17 @@
       true
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "AttackDamage": 50
+    },
+    {
+      "LifeSteal": 10
+    },
+    {
+      "MagicResist": 35
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

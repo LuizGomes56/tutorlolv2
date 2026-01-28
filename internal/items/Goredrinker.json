@@ -35,7 +35,20 @@
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "AbilityHaste": 20
+    },
+    {
+      "AttackDamage": 55
+    },
+    {
+      "Health": 400
+    },
+    {
+      "Omnivamp": 8
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

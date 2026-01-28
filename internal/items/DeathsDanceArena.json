@@ -35,7 +35,17 @@
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "AbilityHaste": 10
+    },
+    {
+      "Armor": 45
+    },
+    {
+      "AttackDamage": 60
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

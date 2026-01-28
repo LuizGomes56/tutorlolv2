@@ -12,7 +12,7 @@ macro_rules! create_eval_struct {
             /// and is used to create constant closures in the static variables of
             /// this module. For example:
             /// [`EvalIdent::QLevel`] is converted to: `ctx.q_level`
-            #[derive(Copy, Clone, Debug, Eq, Hash, PartialEq)]
+            #[derive(Copy, Clone, Debug, Eq, Hash, PartialEq, Ord, PartialOrd, Encode, Decode, Serialize, Deserialize)]
             #[repr(u8)]
             pub enum EvalIdent {
                 $([<$value:camel>],)*
@@ -43,26 +43,19 @@ macro_rules! create_eval_struct {
 }
 
 create_eval_struct!(
+    q_level,
+    w_level,
+    e_level,
+    r_level,
     level,
-    chogath_stacks,
-    veigar_stacks,
-    nasus_stacks,
-    smolder_stacks,
-    aurelion_sol_stacks,
-    thresh_stacks,
-    kindred_stacks,
-    belveth_stacks,
-    adaptative_damage,
     physical_multiplier,
     magic_multiplier,
-    steelcaps_effect,
-    randuin_effect,
-    rocksolid_effect,
     enemy_bonus_health,
+    enemy_bonus_armor,
+    enemy_bonus_magic_resist,
     enemy_armor,
-    enemy_max_health,
     enemy_health,
-    enemy_current_health,
+    enemy_max_health,
     enemy_missing_health,
     enemy_magic_resist,
     base_health,
@@ -92,8 +85,14 @@ create_eval_struct!(
     missing_health,
     ap,
     ad,
-    q_level,
-    w_level,
-    e_level,
-    r_level,
+    adaptative_damage,
+    steelcaps_effect,
+    randuin_effect,
+    rocksolid_effect,
+    chogath_stacks,
+    nasus_stacks,
+    smolder_stacks,
+    aurelion_sol_stacks,
+    thresh_stacks,
+    kindred_stacks,
 );

@@ -35,7 +35,17 @@
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "AbilityHaste": 30
+    },
+    {
+      "AdaptiveForce": 85
+    },
+    {
+      "Health": 400
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

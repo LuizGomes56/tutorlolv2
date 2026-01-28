@@ -35,7 +35,17 @@
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "AttackSpeed": 50
+    },
+    {
+      "MagicResist": 40
+    },
+    {
+      "Tenacity": 20
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

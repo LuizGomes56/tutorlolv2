@@ -8,12 +8,13 @@ fn setup_folders() {
 
 #[test]
 fn update() {
+    dotenvy::dotenv().unwrap();
     tutorlolv2_dev::setup::update::setup_project_folders().unwrap();
-    ItemFactory::run_all().unwrap();
     ChampionFactory::create_all().unwrap();
     ChampionFactory::run_all().unwrap();
     tutorlolv2_dev::setup::update::setup_internal_items().unwrap();
     tutorlolv2_dev::setup::update::prettify_internal_items().unwrap();
+    ItemFactory::run_all().unwrap();
 }
 
 #[tokio::test]
@@ -28,6 +29,7 @@ fn prettify_items() {
 
 #[test]
 fn run_setup_items() {
+    dotenvy::dotenv().unwrap();
     tutorlolv2_dev::setup::update::setup_internal_items().unwrap();
     prettify_items();
 }
@@ -59,7 +61,8 @@ fn run_ch_generator() {
 
 #[test]
 fn run_item_generator() {
-    ItemFactory::run(ItemId::BladeOfTheRuinedKingArena).unwrap();
+    let data = ItemFactory::run(ItemId::BladeOfTheRuinedKingArena).unwrap();
+    println!("Data: {}", data.current_data.ranged.minimum_damage);
 }
 
 #[test]

@@ -11,7 +11,10 @@ use crate::{
 use once_cell::sync::Lazy;
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
 use regex::Regex;
-use std::collections::{BTreeMap, BTreeSet, HashMap};
+use std::{
+    collections::{BTreeMap, BTreeSet, HashMap},
+    str::FromStr,
+};
 use tutorlolv2_fmt::rustfmt;
 use tutorlolv2_gen::{
     AbilityId, AbilityName, Attrs, ChampionId, DamageType, DevMergeData, Position,
@@ -370,7 +373,7 @@ impl ChampionData {
                 .data
                 .positions
                 .into_iter()
-                .map(|pos| Position::from_raw(&pos).unwrap_or_default())
+                .map(|pos| Position::from_str(&pos).unwrap_or_default())
                 .collect(),
             stats: self.data.stats,
             abilities: self.map.into_iter().collect(),

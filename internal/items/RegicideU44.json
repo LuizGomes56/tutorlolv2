@@ -35,7 +35,17 @@
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "AttackDamage": 60
+    },
+    {
+      "Lethality": 15
+    },
+    {
+      "MoveSpeed": 8
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

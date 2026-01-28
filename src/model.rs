@@ -148,6 +148,7 @@ pub struct EnemyState<'a> {
 /// player. This struct should be the same used for all champions
 #[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
 pub struct SelfState {
+    pub stacks: f32,
     pub ability_levels: AbilityLevels,
     pub current_stats: Stats<f32>,
     pub bonus_stats: BasicStats<f32>,
@@ -162,7 +163,7 @@ pub struct SelfState {
 /// target. Each enemy champion should have their own instance of this struct
 #[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
 pub struct EnemyFullState {
-    pub current_stats: SimpleStats<f32>,
+    pub current_stats: EnemyStats<f32>,
     pub bonus_stats: SimpleStats<f32>,
     pub modifiers: DamageModifiers,
     pub armor_values: ResistValue,
@@ -189,14 +190,14 @@ pub struct Enemy<'a> {
     pub siml_items: [Damages; L_SIML],
     pub base_stats: SimpleStats<i32>,
     pub bonus_stats: SimpleStats<i32>,
-    pub current_stats: SimpleStats<i32>,
+    pub current_stats: EnemyStats<i32>,
     pub real_armor: i32,
     pub real_magic_resist: i32,
     pub level: u8,
     pub champion_id: ChampionId,
     pub team: Team,
     pub position: Position,
-    pub(crate) eval_ctx: Ctx,
+    pub eval_ctx: Ctx,
 }
 
 /// Exact number of resistence variations for jungle monsters
@@ -204,35 +205,6 @@ pub const L_MSTR: usize = 7;
 
 /// Number of different plates a tower can have. Each tower can have `0..=5` plates
 pub const L_TWRD: usize = 6;
-
-/// Holds all champion stats provided by Riot's API.
-/// Generic parameter `T` is intended to be a numeric type,
-/// like [`f32`], [`f64`], or [`i32`]
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Ord, PartialEq, PartialOrd, Encode, Decode)]
-#[serde(rename_all = "camelCase")]
-#[derive(Serialize)]
-pub struct Stats<T> {
-    pub ability_power: T,
-    pub armor: T,
-    #[serde(rename = "physicalLethality")]
-    pub armor_penetration_flat: T,
-    pub armor_penetration_percent: T,
-    pub attack_damage: T,
-    pub attack_range: T,
-    pub attack_speed: T,
-    pub crit_chance: T,
-    pub crit_damage: T,
-    pub current_health: T,
-    pub magic_penetration_flat: T,
-    pub magic_penetration_percent: T,
-    pub magic_resist: T,
-    #[serde(rename = "maxHealth")]
-    pub health: T,
-    #[serde(rename = "resourceMax")]
-    pub mana: T,
-    #[serde(rename = "resourceValue")]
-    pub current_mana: T,
-}
 
 impl Stats<f32> {
     /// Returns a new struct [`Stats`] with the same original values except the ones
@@ -295,19 +267,6 @@ impl RangeDamage {
     }
 }
 
-/// Struct holding the core champion stats of a player, where `T` is a
-/// numeric type
-#[derive(
-    Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize,
-)]
-pub struct BasicStats<T> {
-    pub armor: T,
-    pub health: T,
-    pub attack_damage: T,
-    pub magic_resist: T,
-    pub mana: T,
-}
-
 /// Holds the damage of the basic attack, critical strike damage, and onhits
 #[derive(
     Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize,
@@ -352,20 +311,6 @@ impl ResistShred {
             magic_penetration_percent: magic_penetration_percent.clamp(0.0, 100.0),
         }
     }
-}
-
-/// Holds the most simple stats that need to be used to calculate
-/// the damage against this enemy. Note that it is similar to struct
-/// [`BasicStats`], but without the `attack_damage` and `mana` fields,
-/// which are fields that do not quantify any damage reduction the enemy
-/// champion may take. Generic parameter `T` is supposed to be a numeric type
-#[derive(
-    Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize,
-)]
-pub struct SimpleStats<T> {
-    pub armor: T,
-    pub health: T,
-    pub magic_resist: T,
 }
 
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
@@ -453,7 +398,7 @@ pub struct Dragons {
 #[derive(Clone, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
 pub struct InputGame {
     pub active_player: InputActivePlayer,
-    pub enemy_players: Box<[InputMinData<SimpleStats<i32>>]>,
+    pub enemy_players: Box<[InputMinData<EnemyStats<i32>>]>,
     pub dragons: Dragons,
 }
 
@@ -490,7 +435,7 @@ pub struct OutputEnemy {
     pub damages: Damages,
     pub base_stats: SimpleStats<i32>,
     pub bonus_stats: SimpleStats<i32>,
-    pub current_stats: SimpleStats<i32>,
+    pub current_stats: EnemyStats<i32>,
     pub real_armor: i32,
     pub real_magic_resist: i32,
     pub level: u8,
@@ -696,7 +641,15 @@ impl RiotFormulas {
 /// in which all of its fields are numeric types with simple and
 /// deterministic castings from between [`f32`] and [`i32`]
 macro_rules! impl_cast_from {
-    ($stru:ident, $($fields:ident),*) => {
+    ($(#[$meta:meta])* $stru:ident, $($(#[$fmeta:meta])* $fields:ident),*) => {
+        $(#[$meta])*
+        pub struct $stru<T> {
+            $(
+                $(#[$fmeta])*
+                pub $fields: T
+            ),*
+        }
+
         impl $stru<f32> {
             pub const fn from_i32(value: &$stru<i32>) -> Self {
                 $stru {
@@ -739,12 +692,54 @@ macro_rules! impl_cast_from {
     };
 }
 
-impl_cast_from!(SimpleStats, health, armor, magic_resist);
-impl_cast_from!(BasicStats, armor, health, attack_damage, magic_resist, mana);
 impl_cast_from!(
+    #[derive(
+        Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize,
+    )]
+    EnemyStats,
+    enemy_armor,
+    enemy_health,
+    enemy_magic_resist,
+    enemy_max_health,
+    enemy_missing_health
+);
+impl_cast_from!(
+    /// Holds the most simple stats that need to be used to calculate
+    /// the damage against this enemy. Note that it is similar to struct
+    /// [`BasicStats`], but without the `attack_damage` and `mana` fields,
+    /// which are fields that do not quantify any damage reduction the enemy
+    /// champion may take. Generic parameter `T` is supposed to be a numeric type
+    #[derive(
+        Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize,
+    )]
+    SimpleStats,
+    health, armor, magic_resist
+);
+impl_cast_from!(
+    /// Struct holding the core champion stats of a player, where `T` is a
+    /// numeric type
+    #[derive(
+        Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize,
+    )]
+    BasicStats,
+    armor,
+    health,
+    attack_damage,
+    magic_resist,
+    mana
+);
+impl_cast_from!(
+    /// Holds all champion stats provided by Riot's API.
+    /// Generic parameter `T` is intended to be a numeric type,
+    /// like [`f32`], [`f64`], or [`i32`]
+    #[derive(
+        Clone, Copy, Debug, Deserialize, Eq, Ord, PartialEq, PartialOrd, Serialize, Encode, Decode,
+    )]
+    #[serde(rename_all = "camelCase")]
     Stats,
     ability_power,
     armor,
+    #[serde(rename = "physicalLethality")]
     armor_penetration_flat,
     armor_penetration_percent,
     attack_damage,
@@ -756,8 +751,11 @@ impl_cast_from!(
     magic_penetration_flat,
     magic_penetration_percent,
     magic_resist,
+    #[serde(rename = "maxHealth")]
     health,
+    #[serde(rename = "resourceMax")]
     mana,
+    #[serde(rename = "resourceValue")]
     current_mana
 );
 

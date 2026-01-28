@@ -1,6 +1,7 @@
 use crate::{Attrs, DamageType};
 #[cfg(feature = "eval")]
 use crate::{ItemId, RuneId, eval::Ctx};
+use core::str::FromStr;
 #[cfg(feature = "eval")]
 use tutorlolv2_types::*;
 
@@ -12,6 +13,7 @@ use tutorlolv2_types::*;
     Copy,
     Debug,
     Eq,
+    Hash,
     Ord,
     PartialEq,
     PartialOrd,
@@ -54,6 +56,7 @@ impl<T: AsRef<str>> From<T> for AdaptativeType {
     Copy,
     Debug,
     Eq,
+    Hash,
     Ord,
     PartialEq,
     PartialOrd,
@@ -98,7 +101,8 @@ pub enum Position {
 }
 
 impl Position {
-    pub const ARRAY: [Self; 5] = [
+    pub const VARIANTS: u8 = 5;
+    pub const ARRAY: [Self; Self::VARIANTS as _] = [
         Position::Top,
         Position::Jungle,
         Position::Middle,
@@ -108,7 +112,7 @@ impl Position {
 
     pub const fn from_u8(value: u8) -> Option<Self> {
         match value {
-            0..5 => Some(unsafe { Self::from_u8_unchecked(value) }),
+            0..Self::VARIANTS => Some(unsafe { Self::from_u8_unchecked(value) }),
             _ => None,
         }
     }
@@ -116,16 +120,19 @@ impl Position {
     pub const unsafe fn from_u8_unchecked(value: u8) -> Self {
         unsafe { core::mem::transmute(value) }
     }
+}
 
-    /// Converts a raw string into a [`Position`].
-    pub fn from_raw(raw: &str) -> Option<Self> {
-        match raw {
-            "TOP" => Some(Position::Top),
-            "JUNGLE" => Some(Position::Jungle),
-            "MIDDLE" => Some(Position::Middle),
-            "BOTTOM" => Some(Position::Bottom),
-            "SUPPORT" => Some(Position::Support),
-            _ => None,
+impl FromStr for Position {
+    type Err = &'static str;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "TOP" => Ok(Position::Top),
+            "JUNGLE" => Ok(Position::Jungle),
+            "MIDDLE" => Ok(Position::Middle),
+            "BOTTOM" => Ok(Position::Bottom),
+            "SUPPORT" => Ok(Position::Support),
+            _ => Err("No matches when calling Position::from_str"),
         }
     }
 }
@@ -139,6 +146,7 @@ impl Position {
     Debug,
     Default,
     Eq,
+    Hash,
     Ord,
     PartialEq,
     PartialOrd,

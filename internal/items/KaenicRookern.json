@@ -35,7 +35,17 @@
       true
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "BaseHealthRegen": 100
+    },
+    {
+      "Health": 400
+    },
+    {
+      "MagicResist": 80
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

@@ -11,9 +11,9 @@ impl Generator<ItemData> for BladeOfTheRuinedKing {
 
         let damage = |scaling| {
             format!(
-                "{EnemyCurrentHealth} - ({numerator} / {scaling})",
+                "{EnemyHealth} - ({numerator} / {scaling})",
                 numerator = format_args!(
-                    "({scaling} * {EnemyCurrentHealth} * {modifier} - {Ad} + {Ad} * {modifier})",
+                    "({scaling} * {EnemyHealth} * {modifier} - {Ad} + {Ad} * {modifier})",
                     modifier = format_args!("(1 - {scaling} * {PhysicalMultiplier})"),
                 ),
             )

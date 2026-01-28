@@ -35,7 +35,17 @@
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "AbilityPower": 90
+    },
+    {
+      "AttackDamage": 45
+    },
+    {
+      "Omnivamp": 15
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

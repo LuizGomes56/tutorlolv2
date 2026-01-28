@@ -35,7 +35,14 @@
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "AttackSpeed": 60
+    },
+    {
+      "Health": 600
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

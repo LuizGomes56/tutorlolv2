@@ -35,7 +35,17 @@
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "BaseManaRegen": 100
+    },
+    {
+      "HealAndShieldPower": 16
+    },
+    {
+      "Health": 400
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

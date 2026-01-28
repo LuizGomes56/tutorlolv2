@@ -35,7 +35,20 @@
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "AbilityPower": 60
+    },
+    {
+      "ArmorPenetration": 22
+    },
+    {
+      "MagicPenetration": 30
+    },
+    {
+      "MoveSpeed": 5
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

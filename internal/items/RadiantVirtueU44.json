@@ -35,7 +35,20 @@
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "Armor": 35
+    },
+    {
+      "HealAndShieldPower": 12
+    },
+    {
+      "Health": 400
+    },
+    {
+      "MagicResist": 35
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

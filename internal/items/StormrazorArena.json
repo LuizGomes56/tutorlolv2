@@ -35,7 +35,17 @@
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "AttackDamage": 50
+    },
+    {
+      "AttackSpeed": 20
+    },
+    {
+      "CriticalStrikeChance": 25
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

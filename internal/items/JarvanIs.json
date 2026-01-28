@@ -35,7 +35,29 @@
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "AbilityHaste": 10
+    },
+    {
+      "Armor": 25
+    },
+    {
+      "AttackSpeed": 25
+    },
+    {
+      "MagicPenetration": 12
+    },
+    {
+      "MagicResist": 20
+    },
+    {
+      "MoveSpeed": 100
+    },
+    {
+      "Tenacity": 30
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

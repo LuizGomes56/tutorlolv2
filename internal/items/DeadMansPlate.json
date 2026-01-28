@@ -35,7 +35,17 @@
       true
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "Armor": 55
+    },
+    {
+      "Health": 350
+    },
+    {
+      "MoveSpeed": 4
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

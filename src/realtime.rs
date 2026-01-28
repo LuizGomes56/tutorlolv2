@@ -12,7 +12,7 @@
 
 use crate::{helpers::*, model::*, riot::*};
 use alloc::boxed::Box;
-use core::mem::MaybeUninit;
+use core::{mem::MaybeUninit, str::FromStr};
 use tutorlolv2_gen::*;
 
 /// Contains the metadata of all items that have their stats compared to choose
@@ -35,6 +35,17 @@ pub const SIMULATED_ITEMS_METADATA: [TypeMetadata<ItemId>; L_SIML] = {
         i += 1;
     }
     unsafe { siml_items.assume_init() }
+};
+
+/// Ensure that all champions have at least one position, so the unchecked
+/// access does not cause a panic or undefined behavior
+const _: () = {
+    let mut i = 0;
+    while i < ChampionId::VARIANTS {
+        let champion_id = ChampionId::ARRAY[i];
+        assert!(champion_id.get_cache().positions.len() > 0);
+        i += 1;
+    }
 };
 
 /// Receives a reference to the current player's game, defined by the struct [`RiotRealtime`]
@@ -161,7 +172,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
     let enemy_earth_dragons = dragons.enemy_earth_dragons;
     let simulated_stats = get_simulated_stats(&current_player_stats, dragons);
     let ability_levels = abilities.get_ability_levels();
-    let current_player_position = Position::from_raw(current_player.position)
+    let current_player_position = Position::from_str(current_player.position)
         .unwrap_or(unsafe { *current_player_cache.positions.get_unchecked(0) });
     let current_player_cache_attack_type = current_player_cache.attack_type;
 
@@ -176,6 +187,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
         adaptative_type,
         ability_levels,
         level: *level,
+        stacks: get_stacks(current_player_champion_id, *game_time),
     };
 
     const LAST_STAND: u32 = RuneId::LastStand.to_riot_id();
@@ -244,7 +256,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
 
             let e_champion_id = *CHAMPION_NAME_TO_ID.get(e_champion_name)?;
             let e_cache = unsafe { CHAMPION_CACHE.get_unchecked(e_champion_id as usize) };
-            let e_position = Position::from_raw(e_raw_position)
+            let e_position = Position::from_str(e_raw_position)
                 .unwrap_or(unsafe { *e_cache.positions.get_unchecked(0) });
             let team = Team::from(*e_team);
 

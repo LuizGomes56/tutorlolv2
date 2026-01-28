@@ -35,7 +35,14 @@
       true
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "AbilityPower": 25
+    },
+    {
+      "MagicPenetration": 13
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

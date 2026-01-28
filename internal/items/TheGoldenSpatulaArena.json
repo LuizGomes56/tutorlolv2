@@ -35,7 +35,47 @@
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "AbilityHaste": 20
+    },
+    {
+      "AbilityPower": 125
+    },
+    {
+      "Armor": 30
+    },
+    {
+      "AttackDamage": 90
+    },
+    {
+      "AttackSpeed": 60
+    },
+    {
+      "BaseHealthRegen": 100
+    },
+    {
+      "BaseManaRegen": 100
+    },
+    {
+      "CriticalStrikeChance": 25
+    },
+    {
+      "Health": 250
+    },
+    {
+      "MagicResist": 30
+    },
+    {
+      "Mana": 250
+    },
+    {
+      "MoveSpeed": 10
+    },
+    {
+      "Omnivamp": 10
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

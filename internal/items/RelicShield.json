@@ -35,7 +35,20 @@
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "AbilityPower": 7
+    },
+    {
+      "BaseHealthRegen": 50
+    },
+    {
+      "GoldPer10Seconds": 2
+    },
+    {
+      "Health": 50
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

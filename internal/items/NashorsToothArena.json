@@ -35,8 +35,18 @@
       false
     ]
   ],
-  "prettified_stats": [],
-  "damage_type": "Unknown",
+  "prettified_stats": [
+    {
+      "AbilityHaste": 10
+    },
+    {
+      "AbilityPower": 70
+    },
+    {
+      "AttackSpeed": 45
+    }
+  ],
+  "damage_type": "Magic",
   "stats": {
     "abilityPower": {
       "flat": 0.0,
@@ -98,11 +108,11 @@
   "builds_from_riot_ids": [],
   "builds_into_riot_ids": [],
   "ranged": {
-    "minimum_damage": "zero",
+    "minimum_damage": "15 + (0.15 * ctx.ap)",
     "maximum_damage": "zero"
   },
   "melee": {
-    "minimum_damage": "zero",
+    "minimum_damage": "15 + (0.15 * ctx.ap)",
     "maximum_damage": "zero"
   },
   "attributes": "Undefined",

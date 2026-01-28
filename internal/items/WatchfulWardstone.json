@@ -35,7 +35,20 @@
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "AbilityHaste": 10
+    },
+    {
+      "Armor": 10
+    },
+    {
+      "Health": 150
+    },
+    {
+      "MagicResist": 15
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

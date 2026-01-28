@@ -42,7 +42,7 @@ const_enum! {
     /// or [`DamageType::Magic`] depending on how much bonus armor or ability power the current player
     /// has.
     /// - [`DamageType::Unknown`] is the default value when no damage type is set
-    #[derive(Clone, Copy, Debug, Default, Eq, Ord, PartialEq, PartialOrd)]
+    #[derive(Clone, Copy, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
     #[derive(bincode::Encode, bincode::Decode)]
     #[derive(serde::Serialize, serde::Deserialize)]
     pub enum DamageType {
@@ -62,7 +62,7 @@ const_enum! {
     /// instance damages onhit only for the `maximum`, `minimum` or both damage kinds.
     /// [`Attrs::Undefined`] is set to be the default variant, representing no extra data. This
     /// is also used to determine if some ability has area damage
-    #[derive(Clone, Copy, Debug, Default, Eq, Ord, PartialEq, PartialOrd)]
+    #[derive(Clone, Copy, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
     #[derive(bincode::Encode, bincode::Decode)]
     #[derive(serde::Serialize, serde::Deserialize)]
     pub enum Attrs {

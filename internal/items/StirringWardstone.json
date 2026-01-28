@@ -35,7 +35,14 @@
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "BaseManaRegen": 25
+    },
+    {
+      "Health": 80
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

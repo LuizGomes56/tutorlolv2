@@ -228,25 +228,4 @@ impl ItemFactory {
             }
         })
     }
-
-    pub fn create_all() -> MayFail {
-        let dir = SaveTo::GeneratorDir(Tag::Items).path();
-        if !std::fs::exists(&dir)? {
-            std::fs::create_dir(dir)?;
-        }
-
-        ItemId::ARRAY.into_par_iter().for_each(|champion_id| {
-            let Ok(data) = Self::create(champion_id) else {
-                return println!("Unable to create generator file for {champion_id:?}");
-            };
-            let file_name = format!("{champion_id:?}").to_lowercase();
-            std::fs::write(
-                SaveTo::Generator(Tag::Items, &file_name).path(),
-                data.as_bytes(),
-            )
-            .unwrap();
-        });
-
-        Ok(())
-    }
 }

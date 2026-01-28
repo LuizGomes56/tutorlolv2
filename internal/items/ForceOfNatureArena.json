@@ -35,7 +35,17 @@
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "Health": 400
+    },
+    {
+      "MagicResist": 50
+    },
+    {
+      "MoveSpeed": 4
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

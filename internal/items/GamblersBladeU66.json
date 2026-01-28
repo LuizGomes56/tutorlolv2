@@ -35,7 +35,23 @@
       false
     ]
   ],
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "AbilityHaste": 10
+    },
+    {
+      "AdaptiveForce": 55
+    },
+    {
+      "Lethality": 15
+    },
+    {
+      "MagicPenetration": 15
+    },
+    {
+      "MoveSpeed": 15
+    }
+  ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {

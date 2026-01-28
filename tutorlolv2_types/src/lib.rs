@@ -109,7 +109,6 @@ impl AbilityId {
     serde::Serialize,
     serde::Deserialize,
 )]
-#[serde(tag = "name", content = "value")]
 pub enum StatName {
     AbilityHaste(u16),
     AbilityPower(u16),
