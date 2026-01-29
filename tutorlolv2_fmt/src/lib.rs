@@ -165,7 +165,12 @@ pub fn rustfmt(src: &str, width: Option<usize>) -> String {
         let output = child.wait_with_output()?;
         Ok(String::from_utf8_lossy(&output.stdout).into_owned())
     };
-    try_run().unwrap_or(src.to_string())
+    try_run().unwrap_or_else(|e| {
+        let prev = src.to_string();
+        println!("Failed to call rustfmt: {e:?}");
+        std::fs::write("rustfmt.txt", &prev).unwrap();
+        prev
+    })
 }
 
 static RUST_HIGHLIGHTER: Lazy<Highlighter> = Lazy::new(|| {

@@ -164,6 +164,7 @@ enum Node {
 struct CompiledTemplate {
     nodes: Vec<Node>,
     needs_json: bool,
+    #[allow(dead_code)]
     root_ident: Ident,
 }
 

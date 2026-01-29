@@ -3,14 +3,14 @@ use crate::{
     client::{SaveTo, Tag},
     gen_utils::RegExtractor,
     generators::{Generator, gen_decl::decl_items::*},
-    items::{Effect, Item, MerakiItem},
+    items::{Effect, Item, ItemStats, MerakiItem},
     parallel_read,
     riot::RiotCdnItem,
 };
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
 use serde_json::Value;
 use tutorlolv2_fmt::{rustfmt, to_ssnake};
-use tutorlolv2_gen::{Attrs, DamageType, ItemId};
+use tutorlolv2_gen::{Attrs, DamageType, ItemId, StatName};
 
 pub struct ItemData {
     pub meraki_data: Option<MerakiItem>,
@@ -29,6 +29,50 @@ impl ItemData {
             meraki_data,
             riot_data,
             current_data,
+        }
+    }
+
+    pub fn infer_stats_ifdef(&mut self) {
+        let data = &mut self.current_data;
+        let ItemStats {
+            ability_power,
+            armor,
+            armor_penetration,
+            magic_penetration,
+            attack_damage,
+            attack_speed,
+            critical_strike_chance,
+            critical_strike_damage,
+            health,
+            lifesteal,
+            magic_resistance,
+            mana,
+            movespeed,
+            omnivamp,
+        } = &mut data.stats;
+        const fn assign(stat: &mut f64, value: u16) {
+            *stat = value as _;
+        }
+        for s in &data.prettified_stats {
+            match *s {
+                StatName::AdaptiveForce(_) => { /* Unknown */ }
+                StatName::AbilityPower(v) => assign(&mut ability_power.flat, v),
+                StatName::Armor(v) => assign(&mut armor.flat, v),
+                StatName::ArmorPenetration(v) => assign(&mut armor_penetration.percent, v),
+                StatName::AttackDamage(v) => assign(&mut attack_damage.flat, v),
+                StatName::AttackSpeed(v) => assign(&mut attack_speed.flat, v),
+                StatName::CriticalStrikeChance(v) => assign(&mut critical_strike_chance.flat, v),
+                StatName::CriticalStrikeDamage(v) => assign(&mut critical_strike_damage.flat, v),
+                StatName::Health(v) => assign(&mut health.flat, v),
+                StatName::Lethality(v) => assign(&mut armor_penetration.flat, v),
+                StatName::LifeSteal(v) => assign(&mut lifesteal.flat, v),
+                StatName::MagicPenetration(v) => assign(&mut magic_penetration.flat, v),
+                StatName::MagicResist(v) => assign(&mut magic_resistance.flat, v),
+                StatName::Mana(v) => assign(&mut mana.flat, v),
+                StatName::MoveSpeed(v) => assign(&mut movespeed.flat, v),
+                StatName::Omnivamp(v) => assign(&mut omnivamp.flat, v),
+                _ => {}
+            }
         }
     }
 

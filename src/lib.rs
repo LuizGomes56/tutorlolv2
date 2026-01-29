@@ -15,10 +15,10 @@
 //! There are two main functions that are exported: [`realtime`] and [`calculator`].
 //!
 //! - [`realtime`] Receives deserialized data that comes directly from port 2999 of
-//! the user's local machine livegame and returns the damage of every found item, rune,
-//! and ability of the current player, against every enemy in the other team, and other
-//! useful information about the game. You can enable feature `livegame` and use
-//! `serde_json` to call that function directly.
+//!   the user's local machine livegame and returns the damage of every found item, rune,
+//!   and ability of the current player, against every enemy in the other team, and other
+//!   useful information about the game. You can enable feature `livegame` and use
+//!   `serde_json` to call that function directly.
 //!
 //!     ```rs
 //!
@@ -73,11 +73,11 @@
 //!     See the documentation for function [`realtime()`] for more details
 //!
 //! - [`calculator`] Receives data similar to function [`realtime`], but with the
-//! library's own data types, and containing only the information needed to calculate
-//! the current player and enemies state, and to achieve a more precise calculation,
-//! accounting for item, rune, and champion exceptions. You have to provide the inputs
-//! on your own since it is unrelated to Riot's API, and there's no public endpoint where
-//! you can get data that fits this function's input.
+//!   library's own data types, and containing only the information needed to calculate
+//!   the current player and enemies state, and to achieve a more precise calculation,
+//!   accounting for item, rune, and champion exceptions. You have to provide the inputs
+//!   on your own since it is unrelated to Riot's API, and there's no public endpoint where
+//!   you can get data that fits this function's input.
 //!
 //! If you want to calculate the game information on your own, you can still use
 //! this library to help you on this task, and avoid having to manually implement
@@ -89,30 +89,30 @@
 //!
 //! ### features
 //! - `livegame` Enables serde's `Deserialize` traits to all types in the module [`riot`],
-//! which allows you to get the data directly from Riot's API, deserialize it and call
-//! the function [`realtime()`] afterwards (see the provided examples)
+//!   which allows you to get the data directly from Riot's API, deserialize it and call
+//!   the function [`realtime()`] afterwards (see the provided examples)
 //! - `serde` Includes feature `livegame` and adds the traits `Serialize` and `Deserialize`
-//! to every eligible struct. Notethat several structs have lifetime annotations, and some
-//! have static lifetimes. Those do not implement `Deserialize`, so if you want to transform
-//! it into a JSON file, you will not be able to get it back unless you create your own
-//! derived data type to make it happen
+//!   to every eligible struct. Notethat several structs have lifetime annotations, and some
+//!   have static lifetimes. Those do not implement `Deserialize`, so if you want to transform
+//!   it into a JSON file, you will not be able to get it back unless you create your own
+//!   derived data type to make it happen
 //! - `bincode` Adds the traits `Encode` and `Decode` to every eligible struct. Structs
-//! with lifetime annotations try to implement `BorrowDecode`, if no static lifetimes are
-//! involved
+//!   with lifetime annotations try to implement `BorrowDecode`, if no static lifetimes are
+//!   involved
 //! - `no_std` is always on
 //!
 //! ### Warnings
 //! - Since this library is entirely static, it needs to be recompiled if anything
-//! in League of Legends gets updated. If a champion receives a rework, a new ability, or
-//! a damage adjustment, this library have to be updated to a new version. Check the github
-//! repository if you want to download it into your machine to not depend on its updates from
-//! `crates.io`
+//!   in League of Legends gets updated. If a champion receives a rework, a new ability, or
+//!   a damage adjustment, this library have to be updated to a new version. Check the github
+//!   repository if you want to download it into your machine to not depend on its updates from
+//!   `crates.io`
 //! - Riot's API is not guaranteed to be stable, so if anything changes, this entire library
-//! may break
+//!   may break
 //! - It is recommended to add a panic handler to every non-constant function called from
-//! this library, since they assume that the input data is always valid, that the
-//! generated function prototypes are correct, and that oversized inputs might trigger
-//! an stack overflow error
+//!   this library, since they assume that the input data is always valid, that the
+//!   generated function prototypes are correct, and that oversized inputs might trigger
+//!   an stack overflow error
 
 pub use calculator::calculator;
 pub use realtime::realtime;

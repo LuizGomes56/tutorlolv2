@@ -308,10 +308,10 @@ pub const fn assign_rune_exceptions(data: RuneExceptionData, exceptions: &[Value
                     let formula: f32 = (stacks as f32) * (1.8 + 2.2 / 17.0 * (level - 1) as f32);
                     match adaptative_type {
                         AdaptativeType::Physical => {
-                            current_player_stats.attack_damage += (0.6 * formula) as f32;
+                            current_player_stats.attack_damage += 0.6 * formula;
                         }
                         AdaptativeType::Magic => {
-                            current_player_stats.ability_power += formula as f32;
+                            current_player_stats.ability_power += formula;
                         }
                     }
                 }
@@ -429,11 +429,11 @@ pub const fn assign_item_exceptions(data: ItemExceptionData, exceptions: &[Value
                 ItemId::BloodlettersCurse => {
                     current_player_stats.magic_penetration_percent = RiotFormulas::percent_value(&[
                         current_player_stats.magic_penetration_percent,
-                        (7.5 * stacks as f32) as f32,
+                        (7.5 * stacks as f32),
                     ])
                 }
                 ItemId::Hubris => {
-                    let bonus = (15 + stacks << 1) as f32;
+                    let bonus = (15 + (stacks << 1)) as f32;
 
                     current_player_stats.attack_damage += bonus;
                     current_player_bonus_stats.attack_damage += bonus;

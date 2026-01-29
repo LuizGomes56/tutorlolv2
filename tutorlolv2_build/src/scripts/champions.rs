@@ -4,7 +4,7 @@ use crate::{
     scripts::{
         Simplified, StringExt,
         model::{Ability, Champion, MerakiChampionStatMap, MerakiChampionStats},
-        simplify,
+        rustfmt_batch, simplify,
     },
 };
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
@@ -119,10 +119,7 @@ fn declare_abilities(
                     attributes: {attributes},
                     damage: {html_damage},
                 }};"
-            )
-            .rust_fmt()
-            .rust_html()
-            .as_const();
+            );
 
             if declaration.is_empty() {
                 panic!("[{champion_id_upper}] Empty declaration for {ability_id:?}");
@@ -339,9 +336,7 @@ pub fn generate_champions() -> GeneratorFn {
                     .declaration
                     .trim_start_matches(&format!("{EVAL_FEAT} pub const"))
                     .trim()
-                    .rust_fmt()
-                    .drop_f32s()
-                    .rust_html(),
+                    .to_string(),
             ));
             constfns.push(constfn);
         }
@@ -368,10 +363,7 @@ pub fn generate_champions() -> GeneratorFn {
                 positions: &[{positions}],"
         );
 
-        let html_declaration = format!("{base_declaration}{closures}{rest} }};")
-            .rust_fmt()
-            .drop_f32s()
-            .rust_html();
+        let html_declaration = format!("{base_declaration}{closures}{rest} }};");
 
         let mut base_declaration =
             format!("{EVAL_FEAT}{base_declaration}closures: &[{fn_names}], {rest} }};");
@@ -472,6 +464,17 @@ fn build_champions(data: Vec<(String, ChampionResult)>) -> GeneratorFn {
     let mut ability_offsets = Vec::with_capacity(len);
     let mut damage_offsets = Vec::with_capacity(len);
 
+    struct FmtArgs {
+        html_index: usize,
+        damage_start: usize,
+        damage_ids: Vec<AbilityId>,
+        ability_start: usize,
+        ability_ids: Vec<AbilityId>,
+    }
+
+    let mut rustfmt_inputs = Vec::<String>::new();
+    let mut fmt_args = Vec::<FmtArgs>::with_capacity(len);
+
     let mut champion_declarations = String::new();
 
     let mut champion_id_enum = format!(
@@ -481,10 +484,9 @@ fn build_champions(data: Vec<(String, ChampionResult)>) -> GeneratorFn {
                 unsafe {{ core::mem::transmute(id) }}
             }}
             pub const fn from_u8(id: u8) -> Option<Self> {{
-                if id < Self::VARIANTS as u8 {{
-                    Some(unsafe {{ Self::from_u8_unchecked(id) }})
-                }} else {{
-                    None
+                match id < Self::VARIANTS as u8 {{
+                    true => Some(unsafe {{ Self::from_u8_unchecked(id) }}),
+                    false => None
                 }}
             }}
         }}
@@ -549,6 +551,39 @@ fn build_champions(data: Vec<(String, ChampionResult)>) -> GeneratorFn {
         ability_ctx_idents_index.push_str(&(ability_idents_index + ","));
 
         tracker.record_into(&generator, &mut generator_offsets);
+
+        let html_idx = rustfmt_inputs.len();
+        rustfmt_inputs.push(html_declaration);
+
+        let damage_start = rustfmt_inputs.len();
+        let mut damage_ids = Vec::with_capacity(damage_def.len());
+        for (ability_id, value) in damage_def {
+            damage_ids.push(ability_id);
+            rustfmt_inputs.push(value);
+        }
+
+        let ability_start = rustfmt_inputs.len();
+        let mut ability_ids = Vec::with_capacity(ability_declarations.len());
+        for (ability_id, value) in ability_declarations {
+            ability_ids.push(ability_id);
+            rustfmt_inputs.push(value);
+        }
+
+        fmt_args.push(FmtArgs {
+            html_index: html_idx,
+            damage_start,
+            damage_ids,
+            ability_start,
+            ability_ids,
+        });
+    }
+
+    let formatted = rustfmt_batch(&rustfmt_inputs);
+
+    for i in 0..len {
+        let plan = &fmt_args[i];
+
+        let html_declaration = formatted[plan.html_index].drop_f32s().rust_html();
         tracker.record_into(&html_declaration, &mut formula_offsets);
 
         let mut declare_offsets = |list: Vec<(AbilityId, String)>, into: &mut Vec<_>| {
@@ -559,8 +594,28 @@ fn build_champions(data: Vec<(String, ChampionResult)>) -> GeneratorFn {
             into.push(offsets);
         };
 
-        declare_offsets(ability_declarations, &mut ability_offsets);
+        let damage_def = plan
+            .damage_ids
+            .iter()
+            .enumerate()
+            .map(|(j, ability_id)| {
+                let index = plan.damage_start + j;
+                (*ability_id, formatted[index].drop_f32s().rust_html())
+            })
+            .collect::<Vec<_>>();
+
+        let ability_declarations = plan
+            .ability_ids
+            .iter()
+            .enumerate()
+            .map(|(j, ability_id)| {
+                let index = plan.ability_start + j;
+                (*ability_id, formatted[index].rust_html().as_const())
+            })
+            .collect::<Vec<_>>();
+
         declare_offsets(damage_def, &mut damage_offsets);
+        declare_offsets(ability_declarations, &mut ability_offsets);
     }
 
     let const_eval = format!(
@@ -664,8 +719,7 @@ fn build_champions(data: Vec<(String, ChampionResult)>) -> GeneratorFn {
             recommendations,
             const_eval,
         ]
-        .concat()
-        .rust_fmt();
+        .concat();
 
         let exports = format!("pub mod champions {{ use super::*; {content} }}");
         Generated { exports, block }

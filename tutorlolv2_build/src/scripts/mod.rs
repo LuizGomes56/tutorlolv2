@@ -465,3 +465,50 @@ pub fn simplify(values: &[String]) -> Simplified {
         false => Simplified::Independent(result),
     }
 }
+
+pub fn rustfmt_batch(snips: &[String]) -> Vec<String> {
+    if snips.is_empty() {
+        return Vec::new();
+    }
+
+    let mut input = String::new();
+    input.push_str("// @generated\n\n");
+
+    for (i, s) in snips.iter().enumerate() {
+        input.push_str(&format!("//__SNIP_{i:06}__"));
+        input.push('\n');
+        input.push_str(s);
+        if !s.ends_with('\n') {
+            input.push('\n');
+        }
+        input.push('\n');
+    }
+
+    let formatted = input.rust_fmt();
+
+    let mut out = vec![String::new(); snips.len()];
+    let mut cur = None;
+
+    for line in formatted.lines() {
+        if let Some(num) = line
+            .strip_prefix("//__SNIP_")
+            .and_then(|s| s.strip_suffix("__"))
+        {
+            cur = num.parse::<usize>().ok();
+            continue;
+        }
+
+        if let Some(i) = cur {
+            out[i].push_str(line);
+            out[i].push('\n');
+        }
+    }
+
+    for s in &mut out {
+        while s.ends_with("\n\n") {
+            s.pop();
+        }
+    }
+
+    out
+}

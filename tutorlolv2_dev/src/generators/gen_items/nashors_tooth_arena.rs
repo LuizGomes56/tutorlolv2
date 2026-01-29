@@ -8,7 +8,7 @@ impl Generator<ItemData> for NashorsToothArena {
         self.current_data.melee = nashor.current_data.melee;
         self.current_data.ranged = nashor.current_data.ranged;
         self.damage_type(nashor.current_data.damage_type);
-        // self.stats = self.infer_stats();
+        self.infer_stats_ifdef();
         self.end()
     }
 }

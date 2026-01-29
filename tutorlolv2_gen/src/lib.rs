@@ -369,3 +369,23 @@ macro_rules! riot_id_array {
 }
 
 riot_id_array!(ItemId, RuneId);
+
+#[cfg(feature = "eval")]
+pub const ZEROED_STATS: CachedItemStats = CachedItemStats {
+    ability_power: 0.0,
+    armor: 0.0,
+    armor_penetration_percent: 0.0,
+    armor_penetration_flat: 0.0,
+    magic_penetration_percent: 0.0,
+    magic_penetration_flat: 0.0,
+    attack_damage: 0.0,
+    attack_speed: 0.0,
+    crit_chance: 0.0,
+    crit_damage: 0.0,
+    health: 0.0,
+    lifesteal: 0.0,
+    magic_resist: 0.0,
+    mana: 0.0,
+    movespeed: 0.0,
+    omnivamp: 0.0,
+};

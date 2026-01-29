@@ -760,7 +760,6 @@ pub fn ability_id_eval_damage(
     debug_assert_eq!(len, closures.len());
 
     (0..len)
-        .into_iter()
         .map(|i| {
             let TypeMetadata {
                 kind,
@@ -834,7 +833,6 @@ pub fn rune_id_eval_damage(
     debug_assert_eq!(len, closures.len());
 
     (0..len)
-        .into_iter()
         .map(|i| {
             let TypeMetadata {
                 damage_type,
@@ -898,27 +896,27 @@ pub fn get_damages(eval_ctx: &Ctx, data: &DamageEvalData, modifiers: Modifiers) 
     let mut onhit = RangeDamage::default();
 
     let abilities = ability_id_eval_damage(
-        &eval_ctx,
+        eval_ctx,
         &mut onhit,
-        &data.abilities.metadata,
-        &data.abilities.closures,
+        data.abilities.metadata,
+        data.abilities.closures,
         modifiers,
     );
     let items = item_id_eval_damage(
-        &eval_ctx,
+        eval_ctx,
         &mut onhit,
         &data.items.metadata,
         &data.items.closures,
         modifiers,
     );
     let runes = rune_id_eval_damage(
-        &eval_ctx,
+        eval_ctx,
         &mut onhit,
         &data.runes.metadata,
         &data.runes.closures,
         modifiers,
     );
-    let attacks = eval_attacks(&eval_ctx, onhit, modifiers.damages.physical_mod);
+    let attacks = eval_attacks(eval_ctx, onhit, modifiers.damages.physical_mod);
 
     Damages {
         abilities,
@@ -955,8 +953,8 @@ pub fn get_monster_damages(
             shred,
             true,
         );
-        let eval_ctx = get_eval_ctx(&self_state, &full_state);
-        let damages = get_damages(&eval_ctx, &eval_data, Modifiers::default());
+        let eval_ctx = get_eval_ctx(self_state, &full_state);
+        let damages = get_damages(&eval_ctx, eval_data, Modifiers::default());
         MonsterDamage {
             attacks: damages.attacks,
             abilities: damages.abilities,

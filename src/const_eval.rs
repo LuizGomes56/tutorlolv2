@@ -111,8 +111,12 @@ pub const fn const_item_id_eval_damage<const N: usize>(
     while i < N {
         let item_id = item_ids[i];
         let CachedItem {
-            attributes,
-            damage_type,
+            metadata:
+                TypeMetadata {
+                    damage_type,
+                    attributes,
+                    ..
+                },
             ..
         } = ITEM_CACHE[item_id as usize];
         let modifier = modifiers.damages.modifier(*damage_type);

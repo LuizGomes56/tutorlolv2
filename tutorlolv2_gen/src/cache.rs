@@ -1,7 +1,9 @@
 use crate::{Attrs, DamageType};
 #[cfg(feature = "eval")]
 use crate::{ItemId, RuneId, eval::Ctx};
+use bincode::{Decode, Encode};
 use core::str::FromStr;
+use serde::{Deserialize, Serialize};
 #[cfg(feature = "eval")]
 use tutorlolv2_types::*;
 
@@ -9,18 +11,7 @@ use tutorlolv2_types::*;
 /// often have some damage penalty for items and runes, which are considered
 /// by branching over this enum
 #[derive(
-    Clone,
-    Copy,
-    Debug,
-    Eq,
-    Hash,
-    Ord,
-    PartialEq,
-    PartialOrd,
-    bincode::Encode,
-    bincode::Decode,
-    serde::Serialize,
-    serde::Deserialize,
+    Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize,
 )]
 #[repr(u8)]
 pub enum AttackType {
@@ -52,18 +43,7 @@ impl<T: AsRef<str>> From<T> for AdaptativeType {
 /// stats to either `Attack Damage` or `Ability Power`. Check the enum [`StatName`]
 /// for more details about all the possibilities
 #[derive(
-    Clone,
-    Copy,
-    Debug,
-    Eq,
-    Hash,
-    Ord,
-    PartialEq,
-    PartialOrd,
-    bincode::Encode,
-    bincode::Decode,
-    serde::Serialize,
-    serde::Deserialize,
+    Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize,
 )]
 #[repr(u8)]
 pub enum AdaptativeType {
@@ -85,10 +65,10 @@ pub enum AdaptativeType {
     Ord,
     PartialEq,
     PartialOrd,
-    bincode::Encode,
-    bincode::Decode,
-    serde::Serialize,
-    serde::Deserialize,
+    Encode,
+    Decode,
+    Serialize,
+    Deserialize,
 )]
 #[repr(u8)]
 pub enum Position {
@@ -150,10 +130,10 @@ impl FromStr for Position {
     Ord,
     PartialEq,
     PartialOrd,
-    bincode::Encode,
-    bincode::Decode,
-    serde::Serialize,
-    serde::Deserialize,
+    Encode,
+    Decode,
+    Serialize,
+    Deserialize,
 )]
 #[repr(u8)]
 pub enum GameMap {
@@ -207,17 +187,7 @@ impl GameMap {
 
 /// A generic metadata holder for [`AbilityId`], [`ItemId`], or [`RuneId`].
 /// Contains its damage type, attributes, and which instance of the enum the value is.
-#[derive(
-    Clone,
-    Copy,
-    Debug,
-    PartialEq,
-    PartialOrd,
-    bincode::Encode,
-    bincode::Decode,
-    serde::Serialize,
-    serde::Deserialize,
-)]
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
 pub struct TypeMetadata<T> {
     /// Represents a variety of values:
     /// - [`AbilityId`] Which ability key it represents, and its name
@@ -327,14 +297,14 @@ pub struct CachedChampion {
     pub merge_data: &'static [MergeData],
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, bincode::Encode, serde::Serialize)]
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Serialize)]
 #[cfg(feature = "eval")]
 pub struct CachedChampionStatsMap {
     pub flat: f32,
     pub per_level: f32,
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, bincode::Encode, serde::Serialize)]
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Serialize)]
 #[cfg(feature = "eval")]
 pub struct CachedChampionStats {
     pub health: CachedChampionStatsMap,
@@ -362,15 +332,12 @@ pub struct CachedItem {
     pub tier: u8,
     pub price: u16,
     pub prettified_stats: &'static [StatName],
-    pub damage_type: DamageType,
     pub stats: CachedItemStats,
     pub metadata: TypeMetadata<ItemId>,
     pub ranged_damages: [ConstClosure; 2],
     pub melee_damages: [ConstClosure; 2],
-    pub attributes: Attrs,
     pub deals_damage: bool,
     pub purchasable: bool,
-    pub internal_id: ItemId,
     pub riot_id: u32,
 }
 
@@ -388,7 +355,7 @@ pub struct CachedRune {
     pub undeclared: bool,
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, bincode::Encode, serde::Serialize)]
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Serialize)]
 #[cfg(feature = "eval")]
 pub struct CachedItemStats {
     pub ability_power: f32,

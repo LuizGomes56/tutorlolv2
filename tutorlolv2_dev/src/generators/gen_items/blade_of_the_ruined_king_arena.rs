@@ -8,7 +8,7 @@ impl Generator<ItemData> for BladeOfTheRuinedKingArena {
         self.current_data.melee = bork.current_data.melee;
         self.current_data.ranged = bork.current_data.ranged;
         self.damage_type(bork.current_data.damage_type);
-        // self.stats = self.infer_stats();
+        self.infer_stats_ifdef();
         self.end()
     }
 }

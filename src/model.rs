@@ -3,10 +3,10 @@
 //!
 //! ### Features
 //! - `bincode` - implements `Encode` `Decode` or `BorrowDecode` traits
-//! to all eligible structs and enums
+//!   to all eligible structs and enums
 //! - `serde` - implements `Serialize` `Deserialize` traits to all eligible
-//! structs and enums. Structs that have `'static` lifetimes do not implement
-//! `Deserialize`
+//!   structs and enums. Structs that have `'static` lifetimes do not implement
+//!   `Deserialize`
 
 use alloc::boxed::Box;
 use bincode::{BorrowDecode, Decode, Encode};
@@ -305,9 +305,9 @@ impl ResistShred {
             ..
         } = *stats;
         Self {
-            armor_penetration_flat: armor_penetration_flat,
+            armor_penetration_flat,
             armor_penetration_percent: armor_penetration_percent.clamp(0.0, 100.0),
-            magic_penetration_flat: magic_penetration_flat,
+            magic_penetration_flat,
             magic_penetration_percent: magic_penetration_percent.clamp(0.0, 100.0),
         }
     }
