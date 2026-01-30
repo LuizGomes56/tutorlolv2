@@ -1,20 +1,19 @@
 [
   [
-    "SteraksGage",
-    "SunderedSky",
+    "Bandlepipes",
     "Heartsteel",
-    "DeadMansPlate",
-    "ForceOfNature",
-    "RanduinsOmen"
+    "Hullbreaker",
+    "RanduinsOmen",
+    "SteraksGage",
+    "SunderedSky"
   ],
   [
-    "Demolish",
+    "AdaptiveForce",
     "BonePlating",
-    "Overgrowth",
-    "PresenceOfMind",
+    "Demolish",
+    "HealthScaling",
     "LastStand",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Overgrowth",
+    "PresenceOfMind"
   ]
 ]

@@ -1,20 +1,20 @@
 [
   [
+    "BloodlettersCurse",
     "DuskAndDawn",
     "HorizonFocus",
-    "BloodlettersCurse",
     "JakshoTheProtean",
-    "TitanicHydra",
-    "Morellonomicon"
+    "Morellonomicon",
+    "TitanicHydra"
   ],
   [
-    "Triumph",
-    "LegendHaste",
-    "CutDown",
-    "MagicalFootwear",
-    "JackOfAllTrades",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "CutDown",
+    "HealthScaling",
+    "JackOfAllTrades",
+    "LegendHaste",
+    "MagicalFootwear",
+    "Triumph"
   ]
 ]

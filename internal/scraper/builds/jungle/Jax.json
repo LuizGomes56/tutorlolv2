@@ -1,20 +1,20 @@
 [
   [
-    "WitsEnd",
     "BladeOfTheRuinedKing",
-    "RanduinsOmen",
     "FrozenHeart",
+    "GuardianAngel",
     "HextechGunblade",
-    "GuardianAngel"
+    "RanduinsOmen",
+    "WitsEnd"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "LastStand",
-    "MagicalFootwear",
-    "CosmicInsight",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "CosmicInsight",
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity",
+    "MagicalFootwear",
+    "Triumph"
   ]
 ]

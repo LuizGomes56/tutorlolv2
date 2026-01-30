@@ -53,11 +53,11 @@ pub fn setup_project_folders() -> MayFail {
         "cache/scraper",
         "cache/scraper/combos",
         "cache/scraper/builds",
-        "cache/scraper/builds/top",
-        "cache/scraper/builds/jungle",
-        "cache/scraper/builds/mid",
-        "cache/scraper/builds/adc",
-        "cache/scraper/builds/support",
+        "cache/scraper/builds/Top",
+        "cache/scraper/builds/Jungle",
+        "cache/scraper/builds/Middle",
+        "cache/scraper/builds/Bottom",
+        "cache/scraper/builds/Support",
         "cache/meraki",
         "cache/meraki/champions",
         "cache/meraki/items",
@@ -72,11 +72,11 @@ pub fn setup_project_folders() -> MayFail {
         "internal/scraper",
         "internal/scraper/combos",
         "internal/scraper/builds",
-        "internal/scraper/builds/top",
-        "internal/scraper/builds/jungle",
-        "internal/scraper/builds/mid",
-        "internal/scraper/builds/adc",
-        "internal/scraper/builds/support",
+        "internal/scraper/builds/Top",
+        "internal/scraper/builds/Jungle",
+        "internal/scraper/builds/Middle",
+        "internal/scraper/builds/Bottom",
+        "internal/scraper/builds/Support",
     ] {
         let path = Path::new(dir);
 
@@ -160,7 +160,7 @@ pub fn setup_internal_items() -> MayFail {
 /// only the names of each rune, and their ids
 pub fn setup_runes_json() -> MayFail {
     let map = Vec::<RiotCdnRune>::from_file("cache/riot/runes.json")?;
-    let mut result = HashMap::<String, usize>::new();
+    let mut result = BTreeMap::<String, usize>::new();
 
     for tree in map.into_iter() {
         for slot in tree.slots.into_iter() {
@@ -218,7 +218,7 @@ pub fn setup_damaging_items() -> MayFail {
 pub fn prettify_internal_items() -> MayFail {
     parallel_read("cache/riot/items", |riot_id, riot_item| {
         if let Some(item_id) = ItemId::from_riot_id(riot_id.parse()?) {
-            let internal_path = format!("internal/items/{item_id:?}.json");
+            let internal_path = SaveTo::Internal(Tag::Items, &format!("{item_id:?}")).path();
             let mut internal_item = Item::from_file(&internal_path)?;
             internal_item.prettified_stats = pretiffy_items(&riot_item)?;
             internal_item.into_file(internal_path)?;

@@ -1,20 +1,20 @@
 [
   [
-    "LocketOfTheIronSolari",
-    "CosmicDrive",
     "ArchangelsStaff",
+    "CosmicDrive",
+    "FrozenHeart",
+    "LocketOfTheIronSolari",
     "MikaelsBlessing",
-    "Morellonomicon",
-    "KnightsVow"
+    "Morellonomicon"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "Waterwalking",
-    "CheapShot",
-    "RelentlessHunter",
     "AbilityHaste",
     "AdaptiveForce",
-    "HealthScaling"
+    "CheapShot",
+    "HealthScaling",
+    "ManaflowBand",
+    "RelentlessHunter",
+    "Transcendence",
+    "Waterwalking"
   ]
 ]

@@ -1,20 +1,20 @@
 [
   [
-    "WarmogsArmor",
-    "DeadMansPlate",
+    "BlackCleaver",
     "BladeOfTheRuinedKing",
+    "DeadMansPlate",
+    "ForceOfNature",
     "Heartsteel",
-    "ChempunkChainsword",
-    "GuardianAngel"
+    "RanduinsOmen"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "LastStand",
-    "SecondWind",
-    "Unflinching",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity",
+    "SecondWind",
+    "Triumph",
+    "Unflinching"
   ]
 ]

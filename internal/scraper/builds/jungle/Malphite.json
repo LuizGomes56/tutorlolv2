@@ -1,20 +1,20 @@
 [
   [
-    "RanduinsOmen",
+    "ForceOfNature",
     "IcebornGauntlet",
     "Malignance",
     "ProtoplasmHarness",
-    "ZekesConvergence",
-    "ForceOfNature"
+    "RanduinsOmen",
+    "ZekesConvergence"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "CoupDeGrace",
-    "MagicalFootwear",
-    "CosmicInsight",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "CosmicInsight",
+    "CoupDeGrace",
+    "HealthScaling",
+    "LegendAlacrity",
+    "MagicalFootwear",
+    "Triumph"
   ]
 ]

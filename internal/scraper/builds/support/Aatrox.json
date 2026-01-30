@@ -1,20 +1,19 @@
 [
   [
-    "VoltaicCyclosword",
-    "EndlessHunger",
     "BlackCleaver",
-    "UmbralGlaive",
     "DeathsDance",
-    "SteraksGage"
+    "EndlessHunger",
+    "SteraksGage",
+    "UmbralGlaive",
+    "VoltaicCyclosword"
   ],
   [
-    "Triumph",
-    "LegendHaste",
-    "LastStand",
+    "AdaptiveForce",
     "BonePlating",
+    "HealthScaling",
+    "LastStand",
+    "LegendHaste",
     "Revitalize",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Triumph"
   ]
 ]

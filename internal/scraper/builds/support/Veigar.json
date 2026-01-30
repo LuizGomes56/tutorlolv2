@@ -1,20 +1,19 @@
 [
   [
-    "ZhonyasHourglass",
     "ArchangelsStaff",
-    "VoidStaff",
     "BansheesVeil",
     "Morellonomicon",
-    "RylaisCrystalScepter"
+    "RylaisCrystalScepter",
+    "VoidStaff",
+    "ZhonyasHourglass"
   ],
   [
+    "AdaptiveForce",
+    "CheapShot",
+    "GatheringStorm",
+    "HealthScaling",
     "ManaflowBand",
     "Transcendence",
-    "GatheringStorm",
-    "CheapShot",
-    "UltimateHunter",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "UltimateHunter"
   ]
 ]

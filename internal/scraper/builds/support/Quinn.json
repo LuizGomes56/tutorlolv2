@@ -1,19 +1,20 @@
 [
   [
+    "Hubris",
     "MortalReminder",
-    "LordDominiksRegards",
-    "ProfaneHydra",
-    "Opportunity",
-    "SerpentsFang"
+    "SerpentsFang",
+    "Stormrazor",
+    "TheCollector",
+    "UmbralGlaive"
   ],
   [
-    "SuddenImpact",
-    "GrislyMementos",
-    "TreasureHunter",
     "AbsoluteFocus",
-    "GatheringStorm",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "GatheringStorm",
+    "GrislyMementos",
+    "HealthScaling",
+    "SuddenImpact",
+    "TreasureHunter"
   ]
 ]

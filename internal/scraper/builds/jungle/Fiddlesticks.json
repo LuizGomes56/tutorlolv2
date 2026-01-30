@@ -1,20 +1,19 @@
 [
   [
-    "VoidStaff",
+    "BansheesVeil",
+    "BloodlettersCurse",
     "HextechRocketbelt",
     "Morellonomicon",
-    "BansheesVeil",
     "RylaisCrystalScepter",
-    "BloodlettersCurse"
+    "VoidStaff"
   ],
   [
+    "AdaptiveForce",
+    "AxiomArcanist",
     "CheapShot",
     "GrislyMementos",
-    "UltimateHunter",
-    "AxiomArcanist",
+    "HealthScaling",
     "Transcendence",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "UltimateHunter"
   ]
 ]

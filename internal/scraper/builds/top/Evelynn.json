@@ -1,18 +1,16 @@
 [
   [
-    "Shadowflame",
-    "ZhonyasHourglass",
-    "HextechRocketbelt",
-    "LudensEcho"
+    "Stormsurge",
+    "VoidStaff",
+    "ZhonyasHourglass"
   ],
   [
-    "SuddenImpact",
-    "GrislyMementos",
-    "RelentlessHunter",
     "AbsoluteFocus",
+    "AdaptiveForce",
     "GatheringStorm",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "GrislyMementos",
+    "HealthScaling",
+    "RelentlessHunter",
+    "SuddenImpact"
   ]
 ]

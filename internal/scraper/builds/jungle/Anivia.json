@@ -1,19 +1,19 @@
 [
   [
-    "Malignance",
+    "Actualizer",
     "BlackfireTorch",
+    "Malignance",
     "RylaisCrystalScepter",
-    "VoidStaff",
-    "Actualizer"
+    "VoidStaff"
   ],
   [
+    "AdaptiveForce",
+    "AttackSpeed",
     "CheapShot",
     "GrislyMementos",
-    "RelentlessHunter",
+    "HealthScaling",
     "ManaflowBand",
-    "Scorch",
-    "AttackSpeed",
-    "AdaptiveForce",
-    "HealthScaling"
+    "RelentlessHunter",
+    "Scorch"
   ]
 ]

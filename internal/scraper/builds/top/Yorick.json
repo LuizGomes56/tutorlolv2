@@ -1,20 +1,20 @@
 [
   [
-    "Hullbreaker",
-    "SpiritVisage",
     "BlackCleaver",
+    "ChempunkChainsword",
+    "Hullbreaker",
+    "JakshoTheProtean",
     "RanduinsOmen",
-    "DeathsDance",
-    "JakshoTheProtean"
+    "SpiritVisage"
   ],
   [
-    "Demolish",
-    "BonePlating",
-    "Overgrowth",
-    "PresenceOfMind",
-    "LegendBloodline",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "BonePlating",
+    "Demolish",
+    "HealthScaling",
+    "LegendBloodline",
+    "Overgrowth",
+    "PresenceOfMind"
   ]
 ]

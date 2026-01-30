@@ -1,20 +1,19 @@
 [
   [
+    "DeadMansPlate",
+    "JakshoTheProtean",
     "LiandrysTorment",
-    "Bandlepipes",
     "ProtoplasmHarness",
-    "ShurelyasBattlesong",
     "RanduinsOmen",
-    "FrozenHeart"
+    "ShurelyasBattlesong"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "LastStand",
-    "NimbusCloak",
-    "Celerity",
     "AdaptiveForce",
-    "MoveSpeed",
-    "HealthScaling"
+    "GatheringStorm",
+    "HealthScaling",
+    "LastStand",
+    "LegendHaste",
+    "NimbusCloak",
+    "Triumph"
   ]
 ]

@@ -1,20 +1,19 @@
 [
   [
+    "Bandlepipes",
+    "BansheesVeil",
     "BlackfireTorch",
     "BloodlettersCurse",
     "Malignance",
-    "Shadowflame",
-    "Bandlepipes",
-    "BansheesVeil"
+    "Shadowflame"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "Scorch",
+    "AdaptiveForce",
     "BiscuitDelivery",
     "CosmicInsight",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "HealthScaling",
+    "ManaflowBand",
+    "Scorch",
+    "Transcendence"
   ]
 ]

@@ -1,20 +1,20 @@
 [
   [
-    "InfinityEdge",
     "BladeOfTheRuinedKing",
-    "MortalReminder",
+    "DeadMansPlate",
+    "InfinityEdge",
     "LocketOfTheIronSolari",
-    "RanduinsOmen",
-    "DeadMansPlate"
+    "MortalReminder",
+    "RanduinsOmen"
   ],
   [
-    "Triumph",
-    "LegendBloodline",
-    "LastStand",
-    "MagicalFootwear",
-    "CosmicInsight",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "CosmicInsight",
+    "HealthScaling",
+    "LastStand",
+    "LegendBloodline",
+    "MagicalFootwear",
+    "Triumph"
   ]
 ]

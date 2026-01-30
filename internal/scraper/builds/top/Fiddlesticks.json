@@ -1,18 +1,19 @@
 [
   [
-    "VoidStaff",
     "BansheesVeil",
     "BloodlettersCurse",
-    "RabadonsDeathcap"
+    "Cryptbloom",
+    "Malignance",
+    "RylaisCrystalScepter",
+    "Stormsurge"
   ],
   [
+    "AdaptiveForce",
+    "ApproachVelocity",
+    "HealthScaling",
     "ManaflowBand",
-    "Transcendence",
     "Scorch",
-    "TasteOfBlood",
-    "UltimateHunter",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "Health"
+    "Transcendence",
+    "TripleTonic"
   ]
 ]

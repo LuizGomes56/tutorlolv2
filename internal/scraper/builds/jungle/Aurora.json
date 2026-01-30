@@ -1,20 +1,18 @@
 [
   [
+    "DuskAndDawn",
     "LiandrysTorment",
-    "Malignance",
-    "VoidStaff",
-    "Actualizer",
-    "Cryptbloom",
-    "BlackfireTorch"
+    "RabadonsDeathcap",
+    "VoidStaff"
   ],
   [
-    "TasteOfBlood",
-    "GrislyMementos",
-    "UltimateHunter",
-    "ManaflowBand",
-    "Transcendence",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "GrislyMementos",
+    "HealthScaling",
+    "ManaflowBand",
+    "TasteOfBlood",
+    "Transcendence",
+    "UltimateHunter"
   ]
 ]

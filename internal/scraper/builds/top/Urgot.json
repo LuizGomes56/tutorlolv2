@@ -1,20 +1,19 @@
 [
   [
-    "DeadMansPlate",
-    "RanduinsOmen",
-    "KaenicRookern",
-    "ForceOfNature",
     "ChempunkChainsword",
-    "Hullbreaker"
+    "DeadMansPlate",
+    "ForceOfNature",
+    "Hullbreaker",
+    "KaenicRookern",
+    "RanduinsOmen"
   ],
   [
-    "Triumph",
-    "LegendHaste",
-    "LastStand",
+    "AdaptiveForce",
     "BonePlating",
+    "HealthScaling",
+    "LastStand",
+    "LegendHaste",
     "Overgrowth",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Triumph"
   ]
 ]

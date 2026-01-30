@@ -1,20 +1,19 @@
 [
   [
-    "UnendingDespair",
     "Heartsteel",
     "JakshoTheProtean",
-    "ProtoplasmHarness",
     "KaenicRookern",
+    "ProtoplasmHarness",
+    "UnendingDespair",
     "WarmogsArmor"
   ],
   [
-    "FontOfLife",
-    "SecondWind",
-    "Overgrowth",
-    "Triumph",
-    "LegendHaste",
     "AbilityHaste",
+    "FontOfLife",
     "HealthScaling",
-    "HealthScaling"
+    "LegendHaste",
+    "Overgrowth",
+    "SecondWind",
+    "Triumph"
   ]
 ]

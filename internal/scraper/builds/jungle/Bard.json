@@ -1,20 +1,20 @@
 [
   [
-    "StatikkShiv",
-    "GuinsoosRageblade",
-    "RapidFirecannon",
-    "KrakenSlayer",
-    "LudensEcho",
-    "Morellonomicon"
+    "BladeOfTheRuinedKing",
+    "DeadMansPlate",
+    "ForceOfNature",
+    "HextechGunblade",
+    "Shadowflame",
+    "StatikkShiv"
   ],
   [
+    "AdaptiveForce",
+    "AttackSpeed",
+    "Celerity",
     "CheapShot",
     "DeepWard",
+    "Health",
     "RelentlessHunter",
-    "Celerity",
-    "Scorch",
-    "AttackSpeed",
-    "AdaptiveForce",
-    "Health"
+    "Scorch"
   ]
 ]

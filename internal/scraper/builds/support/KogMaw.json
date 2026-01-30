@@ -1,20 +1,19 @@
 [
   [
-    "RylaisCrystalScepter",
     "ArchangelsStaff",
+    "BlackfireTorch",
+    "HorizonFocus",
     "Morellonomicon",
-    "Malignance",
-    "ZhonyasHourglass",
-    "VoidStaff"
+    "RylaisCrystalScepter",
+    "ZhonyasHourglass"
   ],
   [
-    "ManaflowBand",
     "AbsoluteFocus",
-    "Scorch",
-    "PresenceOfMind",
+    "AdaptiveForce",
     "CutDown",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Health",
+    "ManaflowBand",
+    "PresenceOfMind",
+    "Scorch"
   ]
 ]

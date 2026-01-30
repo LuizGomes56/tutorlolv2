@@ -1,20 +1,20 @@
 [
   [
-    "SteraksGage",
-    "MawOfMalmortius",
-    "SunderedSky",
-    "EndlessHunger",
     "ChempunkChainsword",
-    "Hullbreaker"
+    "EndlessHunger",
+    "MawOfMalmortius",
+    "RanduinsOmen",
+    "SteraksGage",
+    "SunderedSky"
   ],
   [
-    "ShieldBash",
-    "BonePlating",
-    "Unflinching",
-    "MagicalFootwear",
-    "BiscuitDelivery",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "BiscuitDelivery",
+    "BonePlating",
+    "HealthScaling",
+    "MagicalFootwear",
+    "ShieldBash",
+    "Unflinching"
   ]
 ]

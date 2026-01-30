@@ -1,20 +1,20 @@
 [
   [
-    "UnendingDespair",
     "ForceOfNature",
+    "FrozenHeart",
+    "HollowRadiance",
     "KaenicRookern",
     "RanduinsOmen",
-    "HollowRadiance",
-    "ZhonyasHourglass"
+    "UnendingDespair"
   ],
   [
-    "CheapShot",
-    "GrislyMementos",
-    "UltimateHunter",
+    "AdaptiveForce",
     "AxiomArcanist",
     "Celerity",
-    "AdaptiveForce",
+    "CheapShot",
+    "GrislyMementos",
+    "HealthScaling",
     "MoveSpeed",
-    "HealthScaling"
+    "UltimateHunter"
   ]
 ]

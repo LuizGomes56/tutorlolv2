@@ -1,20 +1,20 @@
 [
   [
-    "DeadMansPlate",
-    "Trailblazer",
+    "ChempunkChainsword",
     "ForceOfNature",
-    "Redemption",
     "LichBane",
-    "HextechRocketbelt"
+    "LocketOfTheIronSolari",
+    "Trailblazer",
+    "ZhonyasHourglass"
   ],
   [
-    "CashBack",
-    "BiscuitDelivery",
-    "JackOfAllTrades",
-    "NimbusCloak",
-    "Celerity",
     "AttackSpeed",
+    "BiscuitDelivery",
+    "CashBack",
+    "Celerity",
+    "Health",
+    "JackOfAllTrades",
     "MoveSpeed",
-    "Health"
+    "NimbusCloak"
   ]
 ]

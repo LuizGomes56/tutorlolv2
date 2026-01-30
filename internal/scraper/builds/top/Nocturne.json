@@ -1,20 +1,20 @@
 [
   [
-    "ExperimentalHexplate",
-    "ZekesConvergence",
+    "BlackCleaver",
     "BladeOfTheRuinedKing",
-    "AxiomArc",
+    "ExperimentalHexplate",
+    "JakshoTheProtean",
     "SerpentsFang",
-    "Thornmail"
+    "ZekesConvergence"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "CutDown",
-    "BiscuitDelivery",
-    "JackOfAllTrades",
-    "AttackSpeed",
     "AdaptiveForce",
-    "Health"
+    "AttackSpeed",
+    "BiscuitDelivery",
+    "CutDown",
+    "Health",
+    "JackOfAllTrades",
+    "LegendAlacrity",
+    "PresenceOfMind"
   ]
 ]

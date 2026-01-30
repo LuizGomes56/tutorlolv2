@@ -1,20 +1,20 @@
 [
   [
     "Bandlepipes",
-    "SpiritVisage",
-    "SpearOfShojin",
     "BladeOfTheRuinedKing",
-    "Thornmail",
-    "Terminus"
+    "LocketOfTheIronSolari",
+    "SpearOfShojin",
+    "SpiritVisage",
+    "Thornmail"
   ],
   [
-    "PresenceOfMind",
-    "LegendHaste",
-    "LastStand",
-    "ManaflowBand",
-    "Transcendence",
     "AbilityHaste",
     "AdaptiveForce",
-    "Health"
+    "Health",
+    "LastStand",
+    "LegendHaste",
+    "ManaflowBand",
+    "PresenceOfMind",
+    "Transcendence"
   ]
 ]

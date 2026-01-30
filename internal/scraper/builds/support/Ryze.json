@@ -1,20 +1,20 @@
 [
   [
-    "FrozenHeart",
     "LudensEcho",
-    "WintersApproach",
-    "LiandrysTorment",
     "Morellonomicon",
-    "BloodlettersCurse"
+    "RabadonsDeathcap",
+    "VoidStaff",
+    "WintersApproach",
+    "ZhonyasHourglass"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "GatheringStorm",
-    "BonePlating",
-    "Overgrowth",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "BonePlating",
+    "GatheringStorm",
+    "HealthScaling",
+    "ManaflowBand",
+    "Overgrowth",
+    "Transcendence"
   ]
 ]

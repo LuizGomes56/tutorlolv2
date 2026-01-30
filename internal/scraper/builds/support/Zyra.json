@@ -1,20 +1,19 @@
 [
   [
     "BlackfireTorch",
-    "Malignance",
-    "Shadowflame",
     "BloodlettersCurse",
     "Cryptbloom",
+    "Malignance",
+    "Shadowflame",
     "VoidStaff"
   ],
   [
+    "AdaptiveForce",
+    "HealthScaling",
     "ManaflowBand",
-    "Transcendence",
+    "RelentlessHunter",
     "Scorch",
     "TasteOfBlood",
-    "RelentlessHunter",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Transcendence"
   ]
 ]

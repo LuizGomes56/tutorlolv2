@@ -1,20 +1,20 @@
 [
   [
+    "ImperialMandate",
     "LiandrysTorment",
-    "Stormsurge",
-    "ZhonyasHourglass",
     "LudensEcho",
-    "RylaisCrystalScepter",
-    "Morellonomicon"
+    "Morellonomicon",
+    "RabadonsDeathcap",
+    "RylaisCrystalScepter"
   ],
   [
-    "TasteOfBlood",
-    "GrislyMementos",
-    "UltimateHunter",
-    "ManaflowBand",
-    "Transcendence",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "GrislyMementos",
+    "HealthScaling",
+    "ManaflowBand",
+    "TasteOfBlood",
+    "Transcendence",
+    "UltimateHunter"
   ]
 ]

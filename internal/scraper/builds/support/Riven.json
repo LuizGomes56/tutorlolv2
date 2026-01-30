@@ -1,20 +1,19 @@
 [
   [
-    "DeathsDance",
-    "MawOfMalmortius",
+    "BlackCleaver",
     "EndlessHunger",
+    "MawOfMalmortius",
     "ProfaneHydra",
     "SerpentsFang",
-    "SeryldasGrudge"
+    "UmbralGlaive"
   ],
   [
-    "Triumph",
-    "LegendHaste",
-    "LastStand",
+    "AdaptiveForce",
     "CashBack",
+    "HealthScaling",
     "JackOfAllTrades",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "LastStand",
+    "LegendHaste",
+    "Triumph"
   ]
 ]

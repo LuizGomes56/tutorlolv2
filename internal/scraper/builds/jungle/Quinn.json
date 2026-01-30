@@ -1,20 +1,20 @@
 [
   [
+    "Bastionbreaker",
     "BladeOfTheRuinedKing",
+    "KrakenSlayer",
     "MortalReminder",
-    "StatikkShiv",
-    "ProfaneHydra",
-    "YoumuusGhostblade",
-    "GuardianAngel"
+    "Stormrazor",
+    "YoumuusGhostblade"
   ],
   [
-    "SuddenImpact",
-    "GrislyMementos",
-    "TreasureHunter",
     "AbsoluteFocus",
-    "GatheringStorm",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "GatheringStorm",
+    "GrislyMementos",
+    "HealthScaling",
+    "SuddenImpact",
+    "TreasureHunter"
   ]
 ]

@@ -1,20 +1,19 @@
 [
   [
-    "ArdentCenser",
     "ArchangelsStaff",
+    "ArdentCenser",
     "MikaelsBlessing",
-    "StaffOfFlowingWater",
     "Morellonomicon",
-    "ShurelyasBattlesong"
+    "ShurelyasBattlesong",
+    "StaffOfFlowingWater"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "GatheringStorm",
+    "AdaptiveForce",
     "Conditioning",
+    "GatheringStorm",
+    "HealthScaling",
+    "ManaflowBand",
     "Revitalize",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Transcendence"
   ]
 ]

@@ -1,20 +1,19 @@
 [
   [
-    "KaenicRookern",
-    "UnendingDespair",
+    "ForceOfNature",
     "FrozenHeart",
+    "KaenicRookern",
     "KnightsVow",
-    "WarmogsArmor",
-    "AbyssalMask"
+    "UnendingDespair",
+    "WarmogsArmor"
   ],
   [
-    "Demolish",
-    "BonePlating",
-    "Overgrowth",
-    "MagicalFootwear",
-    "BiscuitDelivery",
     "AttackSpeed",
+    "BiscuitDelivery",
+    "BonePlating",
+    "Demolish",
     "HealthScaling",
-    "HealthScaling"
+    "MagicalFootwear",
+    "Overgrowth"
   ]
 ]

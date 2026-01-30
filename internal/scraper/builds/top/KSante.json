@@ -1,20 +1,19 @@
 [
   [
-    "UnendingDespair",
-    "KaenicRookern",
-    "SpiritVisage",
     "ForceOfNature",
     "FrozenHeart",
+    "KaenicRookern",
+    "SpiritVisage",
+    "UnendingDespair",
     "ZekesConvergence"
   ],
   [
-    "ShieldBash",
-    "SecondWind",
-    "Overgrowth",
+    "AttackSpeed",
     "BiscuitDelivery",
     "CosmicInsight",
-    "AttackSpeed",
     "HealthScaling",
-    "HealthScaling"
+    "Overgrowth",
+    "SecondWind",
+    "ShieldBash"
   ]
 ]

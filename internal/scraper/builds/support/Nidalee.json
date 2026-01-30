@@ -2,19 +2,19 @@
   [
     "ArdentCenser",
     "MikaelsBlessing",
-    "StaffOfFlowingWater",
     "Morellonomicon",
     "RabadonsDeathcap",
-    "FrozenHeart"
+    "ShurelyasBattlesong",
+    "StaffOfFlowingWater"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "GatheringStorm",
-    "BonePlating",
-    "Revitalize",
     "AbilityHaste",
     "AdaptiveForce",
-    "HealthScaling"
+    "BonePlating",
+    "GatheringStorm",
+    "HealthScaling",
+    "ManaflowBand",
+    "Revitalize",
+    "Transcendence"
   ]
 ]

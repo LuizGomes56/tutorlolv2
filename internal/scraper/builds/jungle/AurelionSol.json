@@ -1,19 +1,18 @@
 [
   [
-    "BloodlettersCurse",
-    "Shadowflame",
-    "RabadonsDeathcap",
     "ArchangelsStaff",
-    "Morellonomicon"
+    "BloodlettersCurse",
+    "Morellonomicon",
+    "RabadonsDeathcap",
+    "Shadowflame"
   ],
   [
+    "AdaptiveForce",
     "CheapShot",
-    "DeepWard",
-    "UltimateHunter",
-    "PresenceOfMind",
     "CoupDeGrace",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "DeepWard",
+    "HealthScaling",
+    "PresenceOfMind",
+    "UltimateHunter"
   ]
 ]

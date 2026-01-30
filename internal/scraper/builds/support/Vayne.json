@@ -1,18 +1,19 @@
 [
   [
-    "SerpentsFang",
     "Bastionbreaker",
+    "ExperimentalHexplate",
+    "FiendhunterBolts",
+    "SerpentsFang",
     "Stormrazor",
     "YoumuusGhostblade"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
+    "AdaptiveForce",
     "CutDown",
+    "Health",
+    "LegendAlacrity",
     "SuddenImpact",
     "TreasureHunter",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "Health"
+    "Triumph"
   ]
 ]

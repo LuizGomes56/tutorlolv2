@@ -1,20 +1,19 @@
 [
   [
-    "AxiomArc",
-    "VoltaicCyclosword",
-    "Hubris",
     "Bastionbreaker",
+    "DeathsDance",
+    "Eclipse",
+    "TheCollector",
     "UmbralGlaive",
-    "DeathsDance"
+    "VoltaicCyclosword"
   ],
   [
-    "SuddenImpact",
-    "SixthSense",
-    "TreasureHunter",
-    "MagicalFootwear",
+    "AdaptiveForce",
     "CosmicInsight",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "HealthScaling",
+    "MagicalFootwear",
+    "SixthSense",
+    "SuddenImpact",
+    "TreasureHunter"
   ]
 ]

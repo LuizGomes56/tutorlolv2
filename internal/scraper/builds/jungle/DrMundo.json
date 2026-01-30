@@ -1,20 +1,19 @@
 [
   [
-    "TitanicHydra",
-    "RanduinsOmen",
+    "JakshoTheProtean",
     "ProtoplasmHarness",
+    "RanduinsOmen",
+    "TitanicHydra",
     "UnendingDespair",
-    "WarmogsArmor",
-    "JakshoTheProtean"
+    "WarmogsArmor"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "CoupDeGrace",
-    "MagicalFootwear",
     "ApproachVelocity",
     "AttackSpeed",
+    "CoupDeGrace",
     "HealthScaling",
-    "HealthScaling"
+    "LegendAlacrity",
+    "MagicalFootwear",
+    "Triumph"
   ]
 ]

@@ -1,20 +1,17 @@
 [
   [
-    "LordDominiksRegards",
-    "Hubris",
+    "Bloodthirster",
     "ImmortalShieldbow",
-    "RapidFirecannon",
-    "BladeOfTheRuinedKing",
-    "GuardianAngel"
+    "MortalReminder"
   ],
   [
-    "PresenceOfMind",
-    "LegendAlacrity",
-    "CutDown",
-    "BiscuitDelivery",
-    "CosmicInsight",
-    "AttackSpeed",
     "AdaptiveForce",
-    "Health"
+    "AttackSpeed",
+    "CosmicInsight",
+    "CutDown",
+    "HealthScaling",
+    "LegendAlacrity",
+    "MagicalFootwear",
+    "Triumph"
   ]
 ]

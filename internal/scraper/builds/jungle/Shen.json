@@ -1,20 +1,20 @@
 [
   [
-    "DeadMansPlate",
-    "ProtoplasmHarness",
-    "RanduinsOmen",
     "AbyssalMask",
-    "UnendingDespair",
-    "HollowRadiance"
+    "DeadMansPlate",
+    "HollowRadiance",
+    "KaenicRookern",
+    "RanduinsOmen",
+    "UnendingDespair"
   ],
   [
-    "Triumph",
-    "LegendHaste",
-    "LastStand",
-    "ShieldBash",
-    "Revitalize",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "CheapShot",
+    "CoupDeGrace",
+    "HealthScaling",
+    "LegendHaste",
+    "Triumph",
+    "UltimateHunter"
   ]
 ]

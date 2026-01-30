@@ -1,20 +1,20 @@
 [
   [
-    "LordDominiksRegards",
-    "MortalReminder",
     "BlackCleaver",
-    "EndlessHunger",
     "Bloodthirster",
-    "ImmortalShieldbow"
+    "EndlessHunger",
+    "ImmortalShieldbow",
+    "LordDominiksRegards",
+    "MortalReminder"
   ],
   [
-    "PresenceOfMind",
-    "LegendHaste",
-    "CoupDeGrace",
-    "Transcendence",
-    "GatheringStorm",
     "AbilityHaste",
     "AdaptiveForce",
-    "Health"
+    "CoupDeGrace",
+    "GatheringStorm",
+    "Health",
+    "LegendHaste",
+    "PresenceOfMind",
+    "Transcendence"
   ]
 ]

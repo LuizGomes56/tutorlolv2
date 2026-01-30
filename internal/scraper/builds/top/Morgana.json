@@ -1,20 +1,19 @@
 [
   [
     "BloodlettersCurse",
-    "RabadonsDeathcap",
-    "Shadowflame",
-    "ArchangelsStaff",
     "Cryptbloom",
-    "Morellonomicon"
+    "Malignance",
+    "Morellonomicon",
+    "RabadonsDeathcap",
+    "Shadowflame"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "Scorch",
+    "AdaptiveForce",
     "CheapShot",
-    "UltimateHunter",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "HealthScaling",
+    "ManaflowBand",
+    "Scorch",
+    "Transcendence",
+    "UltimateHunter"
   ]
 ]

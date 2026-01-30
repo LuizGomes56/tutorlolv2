@@ -1,20 +1,20 @@
 [
   [
-    "UnendingDespair",
+    "JakshoTheProtean",
+    "LiandrysTorment",
     "ProtoplasmHarness",
     "Riftmaker",
-    "JakshoTheProtean",
-    "ZhonyasHourglass",
-    "LiandrysTorment"
+    "UnendingDespair",
+    "ZhonyasHourglass"
   ],
   [
-    "Triumph",
-    "LegendHaste",
-    "LastStand",
-    "MagicalFootwear",
-    "CosmicInsight",
     "AbilityHaste",
     "AdaptiveForce",
-    "HealthScaling"
+    "CosmicInsight",
+    "HealthScaling",
+    "LastStand",
+    "LegendHaste",
+    "MagicalFootwear",
+    "Triumph"
   ]
 ]

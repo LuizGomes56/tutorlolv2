@@ -1,20 +1,19 @@
 [
   [
     "BansheesVeil",
-    "RylaisCrystalScepter",
+    "BloodlettersCurse",
     "Cryptbloom",
     "LiandrysTorment",
     "Morellonomicon",
-    "BloodlettersCurse"
+    "RylaisCrystalScepter"
   ],
   [
+    "AdaptiveForce",
     "CheapShot",
-    "GrislyMementos",
-    "TreasureHunter",
-    "MagicalFootwear",
     "CosmicInsight",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "GrislyMementos",
+    "HealthScaling",
+    "MagicalFootwear",
+    "TreasureHunter"
   ]
 ]

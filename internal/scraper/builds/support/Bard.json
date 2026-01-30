@@ -1,20 +1,20 @@
 [
   [
-    "Redemption",
-    "ProtoplasmHarness",
+    "FrozenHeart",
     "KaenicRookern",
-    "WitsEnd",
-    "RanduinsOmen",
-    "FrozenHeart"
+    "ProtoplasmHarness",
+    "Redemption",
+    "ShurelyasBattlesong",
+    "WitsEnd"
   ],
   [
+    "AdaptiveForce",
+    "AttackSpeed",
+    "Celerity",
     "CheapShot",
     "DeepWard",
+    "Health",
     "RelentlessHunter",
-    "Celerity",
-    "Scorch",
-    "AttackSpeed",
-    "AdaptiveForce",
-    "Health"
+    "Scorch"
   ]
 ]

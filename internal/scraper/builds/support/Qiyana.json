@@ -1,20 +1,19 @@
 [
   [
-    "SerpentsFang",
-    "YoumuusGhostblade",
-    "ProfaneHydra",
-    "Opportunity",
     "Bastionbreaker",
-    "MortalReminder"
+    "Hubris",
+    "Opportunity",
+    "ProfaneHydra",
+    "SerpentsFang",
+    "YoumuusGhostblade"
   ],
   [
-    "SuddenImpact",
+    "AdaptiveForce",
     "GrislyMementos",
-    "TreasureHunter",
-    "PresenceOfMind",
+    "HealthScaling",
     "LastStand",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "PresenceOfMind",
+    "SuddenImpact",
+    "TreasureHunter"
   ]
 ]

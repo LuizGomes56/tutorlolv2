@@ -1,20 +1,20 @@
 [
   [
-    "EndlessHunger",
     "ArchangelsStaff",
-    "RavenousHydra",
+    "EndlessHunger",
+    "FrozenHeart",
     "MawOfMalmortius",
-    "ProfaneHydra",
+    "RavenousHydra",
     "VoltaicCyclosword"
   ],
   [
-    "PresenceOfMind",
-    "LegendBloodline",
-    "CoupDeGrace",
-    "MagicalFootwear",
-    "BiscuitDelivery",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "BiscuitDelivery",
+    "CoupDeGrace",
+    "HealthScaling",
+    "LegendBloodline",
+    "MagicalFootwear",
+    "PresenceOfMind"
   ]
 ]

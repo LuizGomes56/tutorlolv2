@@ -1,20 +1,19 @@
 [
   [
-    "SteraksGage",
-    "SunderedSky",
+    "JakshoTheProtean",
     "KaenicRookern",
     "SpearOfShojin",
-    "ZhonyasHourglass",
-    "JakshoTheProtean"
+    "SteraksGage",
+    "SunderedSky",
+    "ZhonyasHourglass"
   ],
   [
-    "PresenceOfMind",
-    "LegendHaste",
-    "LastStand",
-    "Demolish",
+    "AdaptiveForce",
     "BonePlating",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Demolish",
+    "HealthScaling",
+    "LastStand",
+    "LegendHaste",
+    "PresenceOfMind"
   ]
 ]

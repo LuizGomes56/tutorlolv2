@@ -1,19 +1,20 @@
 [
   [
+    "BansheesVeil",
+    "Cryptbloom",
     "LiandrysTorment",
-    "ShurelyasBattlesong",
-    "Morellonomicon",
-    "SpiritVisage",
-    "BansheesVeil"
+    "Redemption",
+    "Shadowflame",
+    "ZhonyasHourglass"
   ],
   [
-    "ManaflowBand",
+    "AbilityHaste",
     "AbsoluteFocus",
+    "AdaptiveForce",
+    "Health",
+    "ManaflowBand",
     "Scorch",
     "SixthSense",
-    "UltimateHunter",
-    "AbilityHaste",
-    "AdaptiveForce",
-    "Health"
+    "UltimateHunter"
   ]
 ]

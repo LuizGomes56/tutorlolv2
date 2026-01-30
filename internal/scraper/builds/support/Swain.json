@@ -1,20 +1,19 @@
 [
   [
-    "Malignance",
-    "UnendingDespair",
-    "WintersApproach",
-    "Morellonomicon",
     "Bandlepipes",
-    "FrozenHeart"
+    "FrozenHeart",
+    "Malignance",
+    "Morellonomicon",
+    "UnendingDespair",
+    "WintersApproach"
   ],
   [
-    "PresenceOfMind",
-    "LegendHaste",
-    "LastStand",
+    "AdaptiveForce",
     "Conditioning",
+    "HealthScaling",
+    "LastStand",
+    "LegendHaste",
     "Overgrowth",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "PresenceOfMind"
   ]
 ]

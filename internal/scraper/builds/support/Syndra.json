@@ -1,20 +1,20 @@
 [
   [
-    "RabadonsDeathcap",
-    "ZhonyasHourglass",
-    "CosmicDrive",
-    "Morellonomicon",
     "ArchangelsStaff",
-    "Cryptbloom"
+    "CosmicDrive",
+    "Cryptbloom",
+    "Morellonomicon",
+    "Stormsurge",
+    "ZhonyasHourglass"
   ],
   [
-    "MagicalFootwear",
+    "AdaptiveForce",
+    "AttackSpeed",
     "BiscuitDelivery",
     "CosmicInsight",
+    "HealthScaling",
+    "MagicalFootwear",
     "ManaflowBand",
-    "Transcendence",
-    "AttackSpeed",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Transcendence"
   ]
 ]

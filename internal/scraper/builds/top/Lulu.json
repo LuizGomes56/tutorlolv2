@@ -1,19 +1,20 @@
 [
   [
     "Bandlepipes",
-    "ArdentCenser",
+    "LichBane",
+    "MikaelsBlessing",
+    "NashorsTooth",
     "Redemption",
-    "Morellonomicon",
-    "MikaelsBlessing"
+    "ShurelyasBattlesong"
   ],
   [
+    "AdaptiveForce",
+    "AttackSpeed",
     "CheapShot",
     "DeepWard",
-    "UltimateHunter",
+    "Health",
     "ManaflowBand",
     "Scorch",
-    "AttackSpeed",
-    "AdaptiveForce",
-    "Health"
+    "UltimateHunter"
   ]
 ]

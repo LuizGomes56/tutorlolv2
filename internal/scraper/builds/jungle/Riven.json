@@ -1,20 +1,20 @@
 [
   [
-    "MawOfMalmortius",
     "BlackCleaver",
+    "Eclipse",
     "GuardianAngel",
-    "SerpentsFang",
+    "MawOfMalmortius",
     "MortalReminder",
-    "Eclipse"
+    "SerpentsFang"
   ],
   [
-    "Triumph",
-    "LegendHaste",
-    "LastStand",
-    "CashBack",
-    "JackOfAllTrades",
     "AbilityHaste",
     "AdaptiveForce",
-    "HealthScaling"
+    "CashBack",
+    "HealthScaling",
+    "JackOfAllTrades",
+    "LastStand",
+    "LegendHaste",
+    "Triumph"
   ]
 ]

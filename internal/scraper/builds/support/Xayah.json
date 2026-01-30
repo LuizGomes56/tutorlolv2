@@ -1,19 +1,19 @@
 [
   [
-    "YunTalWildarrows",
+    "GuardianAngel",
+    "MawOfMalmortius",
     "MortalReminder",
     "TheCollector",
-    "GuardianAngel",
-    "MawOfMalmortius"
+    "YunTalWildarrows"
   ],
   [
-    "PresenceOfMind",
-    "LegendBloodline",
-    "CoupDeGrace",
-    "MagicalFootwear",
-    "BiscuitDelivery",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "BiscuitDelivery",
+    "CoupDeGrace",
+    "HealthScaling",
+    "LegendBloodline",
+    "MagicalFootwear",
+    "PresenceOfMind"
   ]
 ]

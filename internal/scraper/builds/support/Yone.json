@@ -1,20 +1,20 @@
 [
   [
     "ExperimentalHexplate",
-    "MortalReminder",
     "FiendhunterBolts",
     "KrakenSlayer",
-    "YunTalWildarrows",
-    "WitsEnd"
+    "MortalReminder",
+    "WitsEnd",
+    "YunTalWildarrows"
   ],
   [
     "AbsorbLife",
-    "LegendAlacrity",
-    "LastStand",
-    "SecondWind",
-    "Overgrowth",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity",
+    "Overgrowth",
+    "SecondWind"
   ]
 ]

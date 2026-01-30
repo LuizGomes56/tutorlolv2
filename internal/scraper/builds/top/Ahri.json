@@ -1,20 +1,20 @@
 [
   [
-    "ZhonyasHourglass",
-    "Stormsurge",
+    "BansheesVeil",
+    "Cryptbloom",
     "LiandrysTorment",
-    "LudensEcho",
     "LichBane",
-    "Cryptbloom"
+    "LudensEcho",
+    "Stormsurge"
   ],
   [
-    "TasteOfBlood",
-    "GrislyMementos",
-    "UltimateHunter",
-    "ManaflowBand",
-    "Transcendence",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "GrislyMementos",
+    "HealthScaling",
+    "ManaflowBand",
+    "TasteOfBlood",
+    "Transcendence",
+    "UltimateHunter"
   ]
 ]

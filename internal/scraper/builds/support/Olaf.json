@@ -1,19 +1,20 @@
 [
   [
-    "SunderedSky",
-    "SteraksGage",
     "Bandlepipes",
+    "DeadMansPlate",
+    "GuardianAngel",
     "MawOfMalmortius",
-    "OverlordsBloodmail"
+    "OverlordsBloodmail",
+    "SunderedSky"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "LastStand",
-    "BiscuitDelivery",
+    "AdaptiveForce",
     "ApproachVelocity",
     "AttackSpeed",
-    "AdaptiveForce",
-    "HealthScaling"
+    "BiscuitDelivery",
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity",
+    "Triumph"
   ]
 ]

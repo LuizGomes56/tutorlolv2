@@ -1,20 +1,20 @@
 [
   [
-    "BladeOfTheRuinedKing",
-    "WitsEnd",
     "Bandlepipes",
-    "RanduinsOmen",
+    "BladeOfTheRuinedKing",
     "DeathsDance",
-    "Bastionbreaker"
+    "RanduinsOmen",
+    "SteraksGage",
+    "WitsEnd"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "LastStand",
-    "Demolish",
-    "BonePlating",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "BonePlating",
+    "Demolish",
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity",
+    "Triumph"
   ]
 ]

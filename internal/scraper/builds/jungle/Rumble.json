@@ -1,20 +1,20 @@
 [
   [
-    "Riftmaker",
-    "Shadowflame",
-    "RanduinsOmen",
-    "JakshoTheProtean",
-    "AbyssalMask",
-    "BansheesVeil"
+    "BansheesVeil",
+    "BloodlettersCurse",
+    "HextechRocketbelt",
+    "Morellonomicon",
+    "RylaisCrystalScepter",
+    "Stormsurge"
   ],
   [
-    "Triumph",
-    "LegendHaste",
-    "CutDown",
-    "HextechFlashtraption",
-    "ApproachVelocity",
     "AbilityHaste",
     "AdaptiveForce",
-    "HealthScaling"
+    "CheapShot",
+    "GatheringStorm",
+    "GrislyMementos",
+    "HealthScaling",
+    "Transcendence",
+    "UltimateHunter"
   ]
 ]

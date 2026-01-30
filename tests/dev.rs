@@ -1,9 +1,20 @@
 use tutorlolv2::{ChampionId, ItemId};
-use tutorlolv2_dev::gen_factories::{fac_champions::ChampionFactory, fac_items::ItemFactory};
+use tutorlolv2_dev::{
+    HTTP_CLIENT,
+    gen_factories::{fac_champions::ChampionFactory, fac_items::ItemFactory},
+};
 
 #[test]
 fn setup_folders() {
     tutorlolv2_dev::setup::update::setup_project_folders().unwrap();
+}
+
+#[tokio::test]
+async fn scraper() {
+    dotenvy::dotenv().unwrap();
+    if let Err(e) = HTTP_CLIENT.call_scraper().await {
+        println!("[!error] {e}");
+    }
 }
 
 #[test]

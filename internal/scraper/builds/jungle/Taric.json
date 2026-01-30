@@ -1,19 +1,19 @@
 [
   [
     "ArdentCenser",
+    "KnightsVow",
     "LocketOfTheIronSolari",
     "ShurelyasBattlesong",
-    "SpiritVisage",
-    "KnightsVow"
+    "SpiritVisage"
   ],
   [
-    "MagicalFootwear",
-    "TripleTonic",
-    "CosmicInsight",
-    "Conditioning",
-    "Revitalize",
     "AttackSpeed",
+    "Conditioning",
+    "CosmicInsight",
+    "MagicalFootwear",
     "MoveSpeed",
-    "TenacityAndSlowResist"
+    "Revitalize",
+    "TenacityAndSlowResist",
+    "TripleTonic"
   ]
 ]

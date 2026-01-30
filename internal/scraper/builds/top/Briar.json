@@ -1,20 +1,19 @@
 [
   [
     "EndlessHunger",
-    "SunderedSky",
-    "TitanicHydra",
-    "SteraksGage",
+    "MawOfMalmortius",
     "OverlordsBloodmail",
-    "MawOfMalmortius"
+    "SteraksGage",
+    "SunderedSky",
+    "TitanicHydra"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
+    "AdaptiveForce",
     "CoupDeGrace",
+    "HealthScaling",
+    "LegendAlacrity",
     "SuddenImpact",
     "TreasureHunter",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Triumph"
   ]
 ]

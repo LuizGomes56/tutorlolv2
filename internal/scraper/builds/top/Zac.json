@@ -1,20 +1,19 @@
 [
   [
-    "ProtoplasmHarness",
+    "AbyssalMask",
+    "HextechRocketbelt",
     "JakshoTheProtean",
     "LiandrysTorment",
-    "HextechRocketbelt",
-    "Riftmaker",
-    "AbyssalMask"
+    "ProtoplasmHarness",
+    "Riftmaker"
   ],
   [
-    "Demolish",
-    "SecondWind",
-    "Revitalize",
-    "LegendHaste",
-    "LastStand",
     "AttackSpeed",
+    "Demolish",
     "HealthScaling",
-    "HealthScaling"
+    "LastStand",
+    "LegendHaste",
+    "Revitalize",
+    "SecondWind"
   ]
 ]

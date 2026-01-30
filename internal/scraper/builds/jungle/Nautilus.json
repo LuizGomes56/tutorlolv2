@@ -1,20 +1,19 @@
 [
   [
-    "KaenicRookern",
     "Bandlepipes",
+    "FrozenHeart",
     "JakshoTheProtean",
+    "KaenicRookern",
     "ProtoplasmHarness",
-    "RanduinsOmen",
-    "IcebornGauntlet"
+    "RanduinsOmen"
   ],
   [
-    "ShieldBash",
-    "Conditioning",
-    "Revitalize",
-    "Triumph",
-    "LegendHaste",
     "AttackSpeed",
+    "Conditioning",
     "HealthScaling",
-    "HealthScaling"
+    "LegendHaste",
+    "Revitalize",
+    "ShieldBash",
+    "Triumph"
   ]
 ]

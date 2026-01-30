@@ -1,20 +1,20 @@
 [
   [
     "BladeOfTheRuinedKing",
-    "RapidFirecannon",
-    "LordDominiksRegards",
-    "HexopticsC44",
+    "FiendhunterBolts",
     "GuardianAngel",
-    "NavoriFlickerblade"
+    "MortalReminder",
+    "RapidFirecannon",
+    "StatikkShiv"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
+    "AdaptiveForce",
+    "AttackSpeed",
     "CoupDeGrace",
+    "HealthScaling",
+    "LegendAlacrity",
     "SuddenImpact",
     "TreasureHunter",
-    "AttackSpeed",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Triumph"
   ]
 ]

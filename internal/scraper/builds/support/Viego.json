@@ -1,20 +1,19 @@
 [
   [
-    "BladeOfTheRuinedKing",
     "LordDominiksRegards",
     "MortalReminder",
-    "GuardianAngel",
+    "SerpentsFang",
     "SunderedSky",
-    "UmbralGlaive"
+    "TitanicHydra"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "CoupDeGrace",
-    "SuddenImpact",
-    "TreasureHunter",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "Celerity",
+    "DeepWard",
+    "HealthScaling",
+    "Scorch",
+    "SuddenImpact",
+    "TreasureHunter"
   ]
 ]

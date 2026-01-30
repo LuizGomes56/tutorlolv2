@@ -1,20 +1,19 @@
 [
   [
-    "MikaelsBlessing",
-    "WarmogsArmor",
-    "LocketOfTheIronSolari",
     "EchoesOfHelia",
+    "LocketOfTheIronSolari",
+    "MikaelsBlessing",
     "ShurelyasBattlesong",
-    "StaffOfFlowingWater"
+    "StaffOfFlowingWater",
+    "WarmogsArmor"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "Scorch",
+    "AdaptiveForce",
     "BonePlating",
+    "HealthScaling",
+    "ManaflowBand",
     "Revitalize",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Scorch",
+    "Transcendence"
   ]
 ]

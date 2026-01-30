@@ -1,20 +1,20 @@
 [
   [
+    "Bastionbreaker",
+    "GuardianAngel",
+    "ImmortalShieldbow",
     "MortalReminder",
     "SerpentsFang",
-    "GuardianAngel",
-    "Bastionbreaker",
-    "Stormrazor",
-    "ImmortalShieldbow"
+    "Stormrazor"
   ],
   [
-    "SuddenImpact",
-    "GrislyMementos",
-    "TreasureHunter",
     "AbsoluteFocus",
-    "GatheringStorm",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "GatheringStorm",
+    "GrislyMementos",
+    "HealthScaling",
+    "SuddenImpact",
+    "TreasureHunter"
   ]
 ]

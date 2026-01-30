@@ -1,20 +1,20 @@
 [
   [
-    "LocketOfTheIronSolari",
-    "MikaelsBlessing",
+    "AbyssalMask",
     "KnightsVow",
+    "MikaelsBlessing",
     "ProtoplasmHarness",
-    "ZekesConvergence",
-    "AbyssalMask"
+    "Thornmail",
+    "ZekesConvergence"
   ],
   [
-    "ManaflowBand",
     "AbsoluteFocus",
-    "Scorch",
-    "BonePlating",
-    "Unflinching",
     "AttackSpeed",
+    "BonePlating",
+    "HealthScaling",
+    "ManaflowBand",
     "MoveSpeed",
-    "HealthScaling"
+    "Scorch",
+    "Unflinching"
   ]
 ]

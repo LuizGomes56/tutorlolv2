@@ -1,20 +1,20 @@
 [
   [
     "BladeOfTheRuinedKing",
-    "WitsEnd",
+    "EssenceReaver",
+    "GuardianAngel",
     "MortalReminder",
-    "RavenousHydra",
-    "MercurialScimitar",
-    "RapidFirecannon"
+    "TrinityForce",
+    "WitsEnd"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
+    "AdaptiveForce",
+    "AttackSpeed",
     "CoupDeGrace",
+    "HealthScaling",
+    "LegendAlacrity",
     "SuddenImpact",
     "TreasureHunter",
-    "AttackSpeed",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Triumph"
   ]
 ]

@@ -1,20 +1,20 @@
 [
   [
-    "VoidStaff",
-    "Shadowflame",
-    "Stormsurge",
+    "Actualizer",
     "BansheesVeil",
+    "Cryptbloom",
     "LudensEcho",
-    "Morellonomicon"
+    "Stormsurge",
+    "ZhonyasHourglass"
   ],
   [
-    "MagicalFootwear",
-    "BiscuitDelivery",
-    "CosmicInsight",
-    "ManaflowBand",
-    "Transcendence",
     "AbilityHaste",
     "AdaptiveForce",
-    "HealthScaling"
+    "BiscuitDelivery",
+    "CosmicInsight",
+    "HealthScaling",
+    "MagicalFootwear",
+    "ManaflowBand",
+    "Transcendence"
   ]
 ]

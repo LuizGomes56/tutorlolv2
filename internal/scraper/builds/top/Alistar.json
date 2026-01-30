@@ -1,19 +1,19 @@
 [
   [
-    "Shadowflame",
     "CosmicDrive",
+    "LiandrysTorment",
+    "SpiritVisage",
     "SunfireAegis",
-    "ZhonyasHourglass",
-    "BansheesVeil"
+    "Thornmail",
+    "ZhonyasHourglass"
   ],
   [
-    "SuddenImpact",
-    "GrislyMementos",
-    "TreasureHunter",
     "AbsoluteFocus",
+    "AdaptiveForce",
+    "GrislyMementos",
+    "HealthScaling",
     "Scorch",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "SuddenImpact",
+    "TreasureHunter"
   ]
 ]

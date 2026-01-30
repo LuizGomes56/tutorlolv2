@@ -1,20 +1,19 @@
 [
   [
-    "ZhonyasHourglass",
-    "Thornmail",
-    "LudensEcho",
     "FrozenHeart",
+    "KaenicRookern",
+    "LudensEcho",
     "SunfireAegis",
-    "LocketOfTheIronSolari"
+    "Thornmail",
+    "ZhonyasHourglass"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "Scorch",
+    "AdaptiveForce",
     "CheapShot",
-    "UltimateHunter",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "HealthScaling",
+    "ManaflowBand",
+    "Scorch",
+    "Transcendence",
+    "UltimateHunter"
   ]
 ]

@@ -1,18 +1,17 @@
 [
   [
-    "VoidStaff",
-    "LiandrysTorment",
+    "BansheesVeil",
+    "Cryptbloom",
     "Morellonomicon",
-    "LichBane"
+    "RabadonsDeathcap"
   ],
   [
-    "SuddenImpact",
-    "GrislyMementos",
-    "RelentlessHunter",
-    "Transcendence",
+    "AdaptiveForce",
     "GatheringStorm",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "GrislyMementos",
+    "HealthScaling",
+    "RelentlessHunter",
+    "SuddenImpact",
+    "Transcendence"
   ]
 ]

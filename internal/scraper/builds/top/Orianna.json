@@ -1,20 +1,20 @@
 [
   [
+    "Actualizer",
+    "BloodlettersCurse",
     "Morellonomicon",
     "Shadowflame",
-    "ZhonyasHourglass",
-    "LudensEcho",
     "VoidStaff",
-    "Actualizer"
+    "ZhonyasHourglass"
   ],
   [
-    "ManaflowBand",
-    "Celerity",
-    "Scorch",
-    "MagicalFootwear",
-    "BiscuitDelivery",
-    "AttackSpeed",
     "AdaptiveForce",
-    "Health"
+    "AttackSpeed",
+    "BiscuitDelivery",
+    "Celerity",
+    "Health",
+    "MagicalFootwear",
+    "ManaflowBand",
+    "Scorch"
   ]
 ]

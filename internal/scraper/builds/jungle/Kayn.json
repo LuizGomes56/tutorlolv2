@@ -1,20 +1,19 @@
 [
   [
-    "SpearOfShojin",
     "EndlessHunger",
     "GuardianAngel",
+    "MawOfMalmortius",
     "RanduinsOmen",
-    "Thornmail",
-    "MawOfMalmortius"
+    "SpearOfShojin",
+    "Thornmail"
   ],
   [
-    "Triumph",
-    "LegendHaste",
-    "LastStand",
+    "AdaptiveForce",
     "AxiomArcanist",
+    "HealthScaling",
+    "LastStand",
+    "LegendHaste",
     "Transcendence",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Triumph"
   ]
 ]

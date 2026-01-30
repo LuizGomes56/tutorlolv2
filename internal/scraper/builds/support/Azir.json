@@ -1,19 +1,20 @@
 [
   [
-    "LudensEcho",
-    "Shadowflame",
     "DuskAndDawn",
+    "LudensEcho",
+    "Morellonomicon",
     "RabadonsDeathcap",
+    "Shadowflame",
     "VoidStaff"
   ],
   [
-    "PresenceOfMind",
-    "LegendAlacrity",
-    "CutDown",
-    "ManaflowBand",
-    "GatheringStorm",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "CutDown",
+    "GatheringStorm",
+    "HealthScaling",
+    "LegendAlacrity",
+    "ManaflowBand",
+    "PresenceOfMind"
   ]
 ]

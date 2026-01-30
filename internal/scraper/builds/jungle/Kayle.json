@@ -1,18 +1,18 @@
 [
   [
-    "LichBane",
     "DuskAndDawn",
-    "Riftmaker",
-    "GuinsoosRageblade"
+    "GuinsoosRageblade",
+    "LichBane",
+    "Riftmaker"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "CoupDeGrace",
-    "Celerity",
-    "GatheringStorm",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "Celerity",
+    "CoupDeGrace",
+    "GatheringStorm",
+    "HealthScaling",
+    "LegendAlacrity",
+    "Triumph"
   ]
 ]

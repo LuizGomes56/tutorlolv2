@@ -1,20 +1,19 @@
 [
   [
-    "MawOfMalmortius",
-    "SeryldasGrudge",
     "Manamune",
-    "SerpentsFang",
+    "MawOfMalmortius",
     "RanduinsOmen",
+    "SerpentsFang",
+    "SeryldasGrudge",
     "SpiritVisage"
   ],
   [
-    "NimbusCloak",
+    "AdaptiveForce",
     "Celerity",
-    "Waterwalking",
-    "Triumph",
+    "HealthScaling",
     "LegendHaste",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "NimbusCloak",
+    "Triumph",
+    "Waterwalking"
   ]
 ]

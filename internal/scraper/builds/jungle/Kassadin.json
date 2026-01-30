@@ -1,20 +1,19 @@
 [
   [
-    "LichBane",
-    "ZhonyasHourglass",
-    "Shadowflame",
-    "WintersApproach",
+    "Actualizer",
+    "DuskAndDawn",
     "LudensEcho",
-    "FrozenHeart"
+    "RabadonsDeathcap",
+    "Shadowflame",
+    "VoidStaff"
   ],
   [
-    "SuddenImpact",
-    "GrislyMementos",
-    "UltimateHunter",
-    "PresenceOfMind",
-    "LastStand",
     "AdaptiveForce",
+    "GrislyMementos",
     "HealthScaling",
-    "HealthScaling"
+    "LastStand",
+    "PresenceOfMind",
+    "SuddenImpact",
+    "UltimateHunter"
   ]
 ]

@@ -1,20 +1,19 @@
 [
   [
-    "SpearOfShojin",
-    "InfinityEdge",
-    "ForceOfNature",
     "BlackCleaver",
+    "ForceOfNature",
+    "InfinityEdge",
+    "LordDominiksRegards",
     "SerpentsFang",
-    "LordDominiksRegards"
+    "SpearOfShojin"
   ],
   [
-    "Triumph",
-    "LegendHaste",
-    "LastStand",
+    "AdaptiveForce",
     "AxiomArcanist",
     "Celerity",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "HealthScaling",
+    "LastStand",
+    "LegendHaste",
+    "Triumph"
   ]
 ]

@@ -1,20 +1,20 @@
 [
   [
-    "TitanicHydra",
-    "Thornmail",
-    "TrinityForce",
+    "HollowRadiance",
     "InfinityEdge",
+    "MortalReminder",
     "Stridebreaker",
-    "Heartsteel"
+    "Thornmail",
+    "TitanicHydra"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "CoupDeGrace",
-    "Conditioning",
-    "Overgrowth",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "Conditioning",
+    "CoupDeGrace",
+    "HealthScaling",
+    "LegendAlacrity",
+    "Overgrowth",
+    "Triumph"
   ]
 ]

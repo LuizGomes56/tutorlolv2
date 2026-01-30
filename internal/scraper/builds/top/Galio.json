@@ -1,20 +1,19 @@
 [
   [
-    "Thornmail",
-    "KaenicRookern",
-    "RanduinsOmen",
-    "LiandrysTorment",
+    "AbyssalMask",
     "BloodlettersCurse",
-    "HextechRocketbelt"
+    "HextechRocketbelt",
+    "KaenicRookern",
+    "LiandrysTorment",
+    "RanduinsOmen"
   ],
   [
+    "AdaptiveForce",
+    "Health",
     "ManaflowBand",
-    "Transcendence",
     "Scorch",
     "SecondWind",
-    "Unflinching",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "Health"
+    "Transcendence",
+    "Unflinching"
   ]
 ]

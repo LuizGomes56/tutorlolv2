@@ -1,20 +1,20 @@
 [
   [
+    "Bandlepipes",
+    "BloodlettersCurse",
     "DeadMansPlate",
     "ForceOfNature",
-    "BloodlettersCurse",
-    "ZhonyasHourglass",
-    "Bandlepipes",
-    "RanduinsOmen"
+    "RanduinsOmen",
+    "ZhonyasHourglass"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "LastStand",
-    "NimbusCloak",
-    "Celerity",
     "AdaptiveForce",
+    "Celerity",
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity",
     "MoveSpeed",
-    "HealthScaling"
+    "NimbusCloak",
+    "Triumph"
   ]
 ]

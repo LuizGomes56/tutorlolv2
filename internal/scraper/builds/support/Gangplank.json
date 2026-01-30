@@ -1,20 +1,19 @@
 [
   [
+    "BlackfireTorch",
+    "ImmortalShieldbow",
+    "LiandrysTorment",
     "Malignance",
     "MortalReminder",
-    "Shadowflame",
-    "LiandrysTorment",
-    "AxiomArc",
-    "ImmortalShieldbow"
+    "RabadonsDeathcap"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "Scorch",
-    "SecondWind",
-    "Unflinching",
     "AdaptiveForce",
-    "AdaptiveForce",
-    "Health"
+    "CashBack",
+    "CosmicInsight",
+    "CutDown",
+    "Health",
+    "LegendHaste",
+    "TripleTonic"
   ]
 ]

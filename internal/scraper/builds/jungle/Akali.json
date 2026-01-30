@@ -1,18 +1,19 @@
 [
   [
-    "Stormsurge",
-    "LichBane",
+    "BansheesVeil",
     "LiandrysTorment",
-    "RanduinsOmen"
+    "LichBane",
+    "Morellonomicon",
+    "RanduinsOmen",
+    "Stormsurge"
   ],
   [
-    "SuddenImpact",
+    "AdaptiveForce",
     "GrislyMementos",
-    "UltimateHunter",
+    "HealthScaling",
     "NimbusCloak",
     "Scorch",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "SuddenImpact",
+    "UltimateHunter"
   ]
 ]

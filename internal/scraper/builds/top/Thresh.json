@@ -1,20 +1,20 @@
 [
   [
-    "TitanicHydra",
-    "Thornmail",
     "ForceOfNature",
-    "RanduinsOmen",
+    "KaenicRookern",
     "ProtoplasmHarness",
-    "KaenicRookern"
+    "Terminus",
+    "TitanicHydra",
+    "WitsEnd"
   ],
   [
-    "Demolish",
-    "BonePlating",
-    "Overgrowth",
-    "PresenceOfMind",
-    "LegendAlacrity",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "BonePlating",
+    "Demolish",
+    "HealthScaling",
+    "LegendAlacrity",
+    "Overgrowth",
+    "PresenceOfMind"
   ]
 ]

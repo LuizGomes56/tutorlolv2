@@ -1,20 +1,19 @@
 [
   [
-    "WintersApproach",
-    "FrozenHeart",
-    "VoidStaff",
+    "AbyssalMask",
     "Actualizer",
+    "FrozenHeart",
     "Manamune",
-    "AbyssalMask"
+    "VoidStaff",
+    "WintersApproach"
   ],
   [
-    "CashBack",
-    "TripleTonic",
-    "CosmicInsight",
-    "SuddenImpact",
-    "UltimateHunter",
     "AdaptiveForce",
+    "CashBack",
+    "CosmicInsight",
     "HealthScaling",
-    "HealthScaling"
+    "SuddenImpact",
+    "TripleTonic",
+    "UltimateHunter"
   ]
 ]

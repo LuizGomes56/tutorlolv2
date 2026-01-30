@@ -1,19 +1,18 @@
 [
   [
-    "UnendingDespair",
-    "ZhonyasHourglass",
-    "KaenicRookern",
     "JakshoTheProtean",
-    "Stormsurge"
+    "KaenicRookern",
+    "Stormsurge",
+    "UnendingDespair",
+    "ZhonyasHourglass"
   ],
   [
-    "ShieldBash",
+    "AdaptiveForce",
     "BonePlating",
-    "Overgrowth",
+    "HealthScaling",
     "NimbusCloak",
-    "Transcendence",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Overgrowth",
+    "ShieldBash",
+    "Transcendence"
   ]
 ]

@@ -1,20 +1,19 @@
 [
   [
     "LiandrysTorment",
-    "ZhonyasHourglass",
+    "LudensEcho",
+    "Morellonomicon",
     "RabadonsDeathcap",
     "ShurelyasBattlesong",
-    "LudensEcho",
-    "HextechRocketbelt"
+    "ZhonyasHourglass"
   ],
   [
-    "CheapShot",
-    "GrislyMementos",
-    "RelentlessHunter",
-    "ManaflowBand",
     "AbsoluteFocus",
     "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "CheapShot",
+    "GrislyMementos",
+    "HealthScaling",
+    "ManaflowBand",
+    "RelentlessHunter"
   ]
 ]

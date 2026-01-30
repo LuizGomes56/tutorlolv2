@@ -1,20 +1,20 @@
 [
   [
-    "KaenicRookern",
+    "FrozenHeart",
     "IcebornGauntlet",
-    "RanduinsOmen",
-    "UnendingDespair",
     "JakshoTheProtean",
-    "FrozenHeart"
+    "KaenicRookern",
+    "RanduinsOmen",
+    "UnendingDespair"
   ],
   [
-    "NimbusCloak",
-    "Celerity",
-    "Waterwalking",
-    "HextechFlashtraption",
-    "CosmicInsight",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "Celerity",
+    "CosmicInsight",
+    "HealthScaling",
+    "HextechFlashtraption",
+    "NimbusCloak",
+    "Waterwalking"
   ]
 ]

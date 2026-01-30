@@ -1,20 +1,19 @@
 [
   [
-    "UnendingDespair",
-    "Riftmaker",
-    "KaenicRookern",
     "ForceOfNature",
     "FrozenHeart",
-    "Thornmail"
+    "KaenicRookern",
+    "Riftmaker",
+    "Thornmail",
+    "UnendingDespair"
   ],
   [
-    "Triumph",
-    "LegendHaste",
-    "LastStand",
-    "MagicalFootwear",
+    "AdaptiveForce",
     "ApproachVelocity",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "HealthScaling",
+    "LastStand",
+    "LegendHaste",
+    "MagicalFootwear",
+    "Triumph"
   ]
 ]

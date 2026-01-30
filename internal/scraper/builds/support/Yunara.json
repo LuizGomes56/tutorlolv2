@@ -1,19 +1,19 @@
 [
   [
-    "ImmortalShieldbow",
-    "RunaansHurricane",
-    "MortalReminder",
     "BladeOfTheRuinedKing",
-    "Bloodthirster"
+    "ImmortalShieldbow",
+    "MortalReminder",
+    "PhantomDancer",
+    "RunaansHurricane"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "CutDown",
-    "MagicalFootwear",
-    "BiscuitDelivery",
-    "AttackSpeed",
     "AdaptiveForce",
-    "Health"
+    "AttackSpeed",
+    "BiscuitDelivery",
+    "CutDown",
+    "Health",
+    "LegendAlacrity",
+    "MagicalFootwear",
+    "Triumph"
   ]
 ]

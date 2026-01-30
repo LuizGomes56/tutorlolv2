@@ -1,20 +1,20 @@
 [
   [
-    "Shadowflame",
-    "RabadonsDeathcap",
-    "Morellonomicon",
     "ArchangelsStaff",
-    "Stormsurge",
-    "BansheesVeil"
+    "BansheesVeil",
+    "KaenicRookern",
+    "Morellonomicon",
+    "RabadonsDeathcap",
+    "Shadowflame"
   ],
   [
-    "TasteOfBlood",
-    "GrislyMementos",
-    "TreasureHunter",
-    "ManaflowBand",
-    "Transcendence",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "GrislyMementos",
+    "HealthScaling",
+    "ManaflowBand",
+    "TasteOfBlood",
+    "Transcendence",
+    "TreasureHunter"
   ]
 ]

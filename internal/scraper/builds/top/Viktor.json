@@ -1,19 +1,20 @@
 [
   [
-    "VoidStaff",
-    "LichBane",
     "BansheesVeil",
     "Cryptbloom",
-    "BloodlettersCurse"
+    "LichBane",
+    "Morellonomicon",
+    "RylaisCrystalScepter",
+    "Shadowflame"
   ],
   [
+    "AdaptiveForce",
+    "AttackSpeed",
+    "BonePlating",
+    "HealthScaling",
     "ManaflowBand",
-    "Transcendence",
     "Scorch",
     "ShieldBash",
-    "BonePlating",
-    "AttackSpeed",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Transcendence"
   ]
 ]

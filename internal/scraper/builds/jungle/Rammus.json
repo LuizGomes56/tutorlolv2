@@ -1,20 +1,19 @@
 [
   [
+    "Bandlepipes",
     "DeadMansPlate",
-    "RanduinsOmen",
-    "KaenicRookern",
     "ForceOfNature",
     "FrozenHeart",
-    "Bandlepipes"
+    "KaenicRookern",
+    "UnendingDespair"
   ],
   [
-    "FontOfLife",
-    "Conditioning",
-    "Unflinching",
-    "Triumph",
-    "LegendAlacrity",
     "AttackSpeed",
+    "Conditioning",
+    "FontOfLife",
     "HealthScaling",
-    "HealthScaling"
+    "LegendAlacrity",
+    "Triumph",
+    "Unflinching"
   ]
 ]

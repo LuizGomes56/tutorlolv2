@@ -1,20 +1,19 @@
 [
   [
     "FrozenHeart",
-    "Redemption",
-    "Thornmail",
-    "MoonstoneRenewer",
+    "KaenicRookern",
     "MikaelsBlessing",
-    "KaenicRookern"
+    "MoonstoneRenewer",
+    "Redemption",
+    "Thornmail"
   ],
   [
-    "MagicalFootwear",
-    "BiscuitDelivery",
-    "CosmicInsight",
-    "Conditioning",
-    "Revitalize",
     "AttackSpeed",
+    "BiscuitDelivery",
+    "Conditioning",
+    "CosmicInsight",
     "HealthScaling",
-    "HealthScaling"
+    "MagicalFootwear",
+    "Revitalize"
   ]
 ]

@@ -1,17 +1,17 @@
 [
   [
-    "RabadonsDeathcap",
     "BladeOfTheRuinedKing",
-    "Morellonomicon"
+    "MikaelsBlessing",
+    "RabadonsDeathcap"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "Scorch",
-    "FontOfLife",
-    "Revitalize",
     "AbilityHaste",
     "AdaptiveForce",
-    "HealthScaling"
+    "FontOfLife",
+    "HealthScaling",
+    "ManaflowBand",
+    "Revitalize",
+    "Scorch",
+    "Transcendence"
   ]
 ]

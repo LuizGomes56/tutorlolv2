@@ -1,20 +1,19 @@
 [
   [
-    "ZhonyasHourglass",
+    "BansheesVeil",
+    "HorizonFocus",
     "Malignance",
     "Morellonomicon",
-    "HorizonFocus",
-    "BansheesVeil",
-    "VoidStaff"
+    "VoidStaff",
+    "ZhonyasHourglass"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "Scorch",
+    "AdaptiveForce",
     "CheapShot",
-    "UltimateHunter",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "HealthScaling",
+    "ManaflowBand",
+    "Scorch",
+    "Transcendence",
+    "UltimateHunter"
   ]
 ]

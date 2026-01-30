@@ -1,20 +1,19 @@
 [
   [
+    "BloodlettersCurse",
     "HorizonFocus",
-    "ZhonyasHourglass",
-    "Shadowflame",
-    "LiandrysTorment",
-    "VoidStaff",
-    "Morellonomicon"
+    "RylaisCrystalScepter",
+    "Stormsurge",
+    "ZhonyasHourglass"
   ],
   [
-    "NimbusCloak",
-    "Transcendence",
-    "GatheringStorm",
-    "LegendHaste",
-    "LastStand",
     "AbilityHaste",
     "AdaptiveForce",
-    "HealthScaling"
+    "GatheringStorm",
+    "HealthScaling",
+    "LastStand",
+    "LegendHaste",
+    "NimbusCloak",
+    "Transcendence"
   ]
 ]

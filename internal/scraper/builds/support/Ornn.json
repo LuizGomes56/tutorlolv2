@@ -1,18 +1,18 @@
 [
   [
-    "SunfireAegis",
     "Heartsteel",
-    "Thornmail",
-    "KaenicRookern"
+    "KaenicRookern",
+    "SunfireAegis",
+    "Thornmail"
   ],
   [
-    "Demolish",
-    "Conditioning",
-    "Overgrowth",
-    "MagicalFootwear",
-    "CosmicInsight",
     "AttackSpeed",
+    "Conditioning",
+    "CosmicInsight",
+    "Demolish",
+    "MagicalFootwear",
     "MoveSpeed",
+    "Overgrowth",
     "TenacityAndSlowResist"
   ]
 ]

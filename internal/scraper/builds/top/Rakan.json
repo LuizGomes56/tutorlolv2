@@ -1,19 +1,18 @@
 [
   [
-    "RabadonsDeathcap",
     "LichBane",
-    "VoidStaff",
     "Morellonomicon",
-    "SunfireAegis"
+    "RabadonsDeathcap",
+    "SunfireAegis",
+    "VoidStaff"
   ],
   [
-    "SuddenImpact",
-    "GrislyMementos",
-    "UltimateHunter",
-    "ManaflowBand",
     "AbsoluteFocus",
     "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "GrislyMementos",
+    "HealthScaling",
+    "ManaflowBand",
+    "SuddenImpact",
+    "UltimateHunter"
   ]
 ]

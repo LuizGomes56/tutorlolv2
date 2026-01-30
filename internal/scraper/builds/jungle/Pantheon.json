@@ -1,20 +1,20 @@
 [
   [
-    "DeathsDance",
-    "MawOfMalmortius",
-    "SerpentsFang",
     "ChempunkChainsword",
+    "DeathsDance",
     "Eclipse",
-    "RanduinsOmen"
+    "MawOfMalmortius",
+    "RanduinsOmen",
+    "SerpentsFang"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "CoupDeGrace",
-    "MagicalFootwear",
-    "CosmicInsight",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "CosmicInsight",
+    "CoupDeGrace",
+    "HealthScaling",
+    "LegendAlacrity",
+    "MagicalFootwear",
+    "Triumph"
   ]
 ]

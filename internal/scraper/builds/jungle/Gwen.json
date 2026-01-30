@@ -1,20 +1,20 @@
 [
   [
-    "Shadowflame",
-    "VoidStaff",
     "BansheesVeil",
     "HextechGunblade",
     "Morellonomicon",
-    "RanduinsOmen"
+    "RanduinsOmen",
+    "Shadowflame",
+    "VoidStaff"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "LastStand",
-    "MagicalFootwear",
-    "CosmicInsight",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "CosmicInsight",
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity",
+    "MagicalFootwear",
+    "Triumph"
   ]
 ]

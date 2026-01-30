@@ -1,20 +1,19 @@
 [
   [
-    "UnendingDespair",
-    "RanduinsOmen",
-    "WarmogsArmor",
-    "Heartsteel",
     "FrozenHeart",
-    "SpiritVisage"
+    "Heartsteel",
+    "RanduinsOmen",
+    "SpiritVisage",
+    "UnendingDespair",
+    "WarmogsArmor"
   ],
   [
-    "Demolish",
-    "Conditioning",
-    "Overgrowth",
-    "Triumph",
-    "LegendHaste",
     "AttackSpeed",
+    "Conditioning",
+    "Demolish",
     "HealthScaling",
-    "HealthScaling"
+    "LegendHaste",
+    "Overgrowth",
+    "Triumph"
   ]
 ]

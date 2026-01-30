@@ -1,20 +1,19 @@
 [
   [
-    "RanduinsOmen",
-    "ZekesConvergence",
+    "Bandlepipes",
     "DeadMansPlate",
-    "SunfireAegis",
     "ForceOfNature",
-    "FrozenHeart"
+    "FrozenHeart",
+    "SunfireAegis",
+    "ZekesConvergence"
   ],
   [
-    "FontOfLife",
-    "Conditioning",
-    "Unflinching",
-    "Triumph",
-    "LegendAlacrity",
     "AttackSpeed",
+    "Conditioning",
+    "FontOfLife",
     "HealthScaling",
-    "HealthScaling"
+    "LegendAlacrity",
+    "Triumph",
+    "Unflinching"
   ]
 ]

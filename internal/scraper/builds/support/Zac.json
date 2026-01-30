@@ -1,20 +1,20 @@
 [
   [
     "Bandlepipes",
-    "ProtoplasmHarness",
-    "ZekesConvergence",
-    "RanduinsOmen",
     "LiandrysTorment",
-    "LocketOfTheIronSolari"
+    "LocketOfTheIronSolari",
+    "ProtoplasmHarness",
+    "RanduinsOmen",
+    "ZekesConvergence"
   ],
   [
-    "FontOfLife",
-    "Conditioning",
-    "Revitalize",
-    "Triumph",
-    "LegendHaste",
     "AbilityHaste",
     "AdaptiveForce",
-    "HealthScaling"
+    "Conditioning",
+    "FontOfLife",
+    "HealthScaling",
+    "LegendHaste",
+    "Revitalize",
+    "Triumph"
   ]
 ]

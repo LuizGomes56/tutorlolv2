@@ -1,20 +1,20 @@
 [
   [
+    "BloodlettersCurse",
+    "JakshoTheProtean",
     "LiandrysTorment",
     "Morellonomicon",
-    "BloodlettersCurse",
-    "UnendingDespair",
-    "SpiritVisage",
-    "JakshoTheProtean"
+    "NashorsTooth",
+    "UnendingDespair"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "CoupDeGrace",
-    "MagicalFootwear",
-    "CosmicInsight",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "CoupDeGrace",
+    "HealthScaling",
+    "LegendAlacrity",
+    "SuddenImpact",
+    "TreasureHunter",
+    "Triumph"
   ]
 ]

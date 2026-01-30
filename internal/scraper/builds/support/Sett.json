@@ -1,20 +1,20 @@
 [
   [
+    "Bandlepipes",
     "BlackCleaver",
-    "Heartsteel",
     "DeadMansPlate",
+    "Heartsteel",
     "SpearOfShojin",
-    "WarmogsArmor",
-    "ChempunkChainsword"
+    "WarmogsArmor"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "LastStand",
-    "SecondWind",
-    "Unflinching",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity",
+    "SecondWind",
+    "Triumph",
+    "Unflinching"
   ]
 ]

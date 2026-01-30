@@ -1,20 +1,20 @@
 [
   [
-    "StaffOfFlowingWater",
+    "Bandlepipes",
     "EchoesOfHelia",
     "MikaelsBlessing",
     "RylaisCrystalScepter",
-    "ZhonyasHourglass",
-    "Bandlepipes"
+    "StaffOfFlowingWater",
+    "ZhonyasHourglass"
   ],
   [
-    "NimbusCloak",
-    "Transcendence",
-    "Waterwalking",
+    "AbilityHaste",
     "CashBack",
     "CosmicInsight",
-    "AbilityHaste",
+    "HealthScaling",
     "MoveSpeed",
-    "HealthScaling"
+    "NimbusCloak",
+    "Transcendence",
+    "Waterwalking"
   ]
 ]

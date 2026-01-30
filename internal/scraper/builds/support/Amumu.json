@@ -1,20 +1,19 @@
 [
   [
-    "Bandlepipes",
-    "SunfireAegis",
-    "LiandrysTorment",
+    "FrozenHeart",
     "KnightsVow",
+    "LiandrysTorment",
     "ProtoplasmHarness",
-    "FrozenHeart"
+    "SunfireAegis",
+    "ZekesConvergence"
   ],
   [
-    "FontOfLife",
+    "AdaptiveForce",
     "BonePlating",
-    "Unflinching",
     "CheapShot",
+    "FontOfLife",
+    "HealthScaling",
     "UltimateHunter",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Unflinching"
   ]
 ]

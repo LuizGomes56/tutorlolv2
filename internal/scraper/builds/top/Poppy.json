@@ -1,20 +1,19 @@
 [
   [
-    "SpiritVisage",
+    "HollowRadiance",
     "IcebornGauntlet",
-    "KaenicRookern",
     "JakshoTheProtean",
+    "KaenicRookern",
     "RanduinsOmen",
-    "FrozenHeart"
+    "SpiritVisage"
   ],
   [
-    "ShieldBash",
-    "SecondWind",
+    "AdaptiveForce",
+    "Health",
+    "LastStand",
     "Overgrowth",
     "PresenceOfMind",
-    "LastStand",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "Health"
+    "SecondWind",
+    "ShieldBash"
   ]
 ]

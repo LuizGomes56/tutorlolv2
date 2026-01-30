@@ -1,20 +1,20 @@
 [
   [
-    "WitsEnd",
-    "RunaansHurricane",
-    "Bloodthirster",
+    "GuardianAngel",
     "MercurialScimitar",
-    "KrakenSlayer",
-    "GuardianAngel"
+    "MortalReminder",
+    "RanduinsOmen",
+    "RunaansHurricane",
+    "WitsEnd"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
+    "AdaptiveForce",
+    "AttackSpeed",
+    "Health",
     "LastStand",
+    "LegendAlacrity",
     "SuddenImpact",
     "TreasureHunter",
-    "AttackSpeed",
-    "AdaptiveForce",
-    "Health"
+    "Triumph"
   ]
 ]

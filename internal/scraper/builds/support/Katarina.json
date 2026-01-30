@@ -1,19 +1,18 @@
 [
   [
-    "RabadonsDeathcap",
     "HextechGunblade",
-    "RylaisCrystalScepter",
+    "NashorsTooth",
+    "RabadonsDeathcap",
     "Stormsurge",
     "VoidStaff"
   ],
   [
-    "SuddenImpact",
-    "GrislyMementos",
-    "RelentlessHunter",
-    "Triumph",
+    "AdaptiveForce",
     "CoupDeGrace",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "GrislyMementos",
+    "HealthScaling",
+    "RelentlessHunter",
+    "SuddenImpact",
+    "Triumph"
   ]
 ]

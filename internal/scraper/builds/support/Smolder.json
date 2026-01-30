@@ -1,20 +1,19 @@
 [
   [
+    "ChempunkChainsword",
+    "LiandrysTorment",
+    "LordDominiksRegards",
     "Manamune",
     "MortalReminder",
-    "LordDominiksRegards",
-    "SeryldasGrudge",
-    "ChempunkChainsword",
-    "TheCollector"
+    "SeryldasGrudge"
   ],
   [
-    "ManaflowBand",
     "AbsoluteFocus",
-    "Scorch",
-    "MagicalFootwear",
+    "AdaptiveForce",
     "BiscuitDelivery",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "Health"
+    "Health",
+    "MagicalFootwear",
+    "ManaflowBand",
+    "Scorch"
   ]
 ]

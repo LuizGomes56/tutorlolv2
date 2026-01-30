@@ -1,20 +1,20 @@
 [
   [
-    "WintersApproach",
-    "MikaelsBlessing",
     "KnightsVow",
-    "Thornmail",
+    "MikaelsBlessing",
+    "RanduinsOmen",
     "SpiritVisage",
-    "RanduinsOmen"
+    "Thornmail",
+    "WintersApproach"
   ],
   [
-    "ManaflowBand",
-    "Celerity",
-    "Scorch",
-    "BiscuitDelivery",
-    "CosmicInsight",
     "AbilityHaste",
+    "BiscuitDelivery",
+    "Celerity",
+    "CosmicInsight",
+    "Health",
+    "ManaflowBand",
     "MoveSpeed",
-    "Health"
+    "Scorch"
   ]
 ]

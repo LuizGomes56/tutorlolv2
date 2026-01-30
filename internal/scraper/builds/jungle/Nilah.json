@@ -1,20 +1,20 @@
 [
   [
-    "MortalReminder",
     "Bloodthirster",
-    "FiendhunterBolts",
-    "MercurialScimitar",
     "EssenceReaver",
-    "GuardianAngel"
+    "FiendhunterBolts",
+    "GuardianAngel",
+    "MercurialScimitar",
+    "MortalReminder"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "LastStand",
-    "MagicalFootwear",
-    "CosmicInsight",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "CosmicInsight",
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity",
+    "MagicalFootwear",
+    "Triumph"
   ]
 ]

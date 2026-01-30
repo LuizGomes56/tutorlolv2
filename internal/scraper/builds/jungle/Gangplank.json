@@ -1,19 +1,19 @@
 [
   [
-    "Bastionbreaker",
-    "MortalReminder",
     "Bloodthirster",
+    "GuardianAngel",
     "ImmortalShieldbow",
+    "Malignance",
+    "MortalReminder",
     "SerpentsFang"
   ],
   [
+    "AdaptiveForce",
     "CashBack",
-    "TripleTonic",
     "CosmicInsight",
-    "LegendHaste",
     "CutDown",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "Health"
+    "Health",
+    "LegendHaste",
+    "TripleTonic"
   ]
 ]

@@ -1,20 +1,20 @@
 [
   [
-    "LiandrysTorment",
-    "UnendingDespair",
     "BloodlettersCurse",
+    "LiandrysTorment",
+    "Morellonomicon",
     "NashorsTooth",
-    "VoidStaff",
-    "Morellonomicon"
+    "UnendingDespair",
+    "VoidStaff"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "CoupDeGrace",
-    "MagicalFootwear",
-    "CosmicInsight",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "CosmicInsight",
+    "CoupDeGrace",
+    "HealthScaling",
+    "LegendAlacrity",
+    "MagicalFootwear",
+    "Triumph"
   ]
 ]

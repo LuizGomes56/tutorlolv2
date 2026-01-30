@@ -1,20 +1,20 @@
 [
   [
-    "KrakenSlayer",
     "DeadMansPlate",
+    "EndlessHunger",
     "ExperimentalHexplate",
-    "ZekesConvergence",
-    "ProtoplasmHarness",
-    "JakshoTheProtean"
+    "KrakenSlayer",
+    "RavenousHydra",
+    "ZekesConvergence"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "LastStand",
-    "Celerity",
-    "Waterwalking",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "Celerity",
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity",
+    "Triumph",
+    "Waterwalking"
   ]
 ]

@@ -1,19 +1,19 @@
 [
   [
-    "RapidFirecannon",
+    "BladeOfTheRuinedKing",
     "DuskAndDawn",
     "GuinsoosRageblade",
-    "BladeOfTheRuinedKing",
-    "KaenicRookern"
+    "KaenicRookern",
+    "RapidFirecannon"
   ],
   [
+    "AdaptiveForce",
+    "AttackSpeed",
+    "Celerity",
     "CheapShot",
     "DeepWard",
+    "Health",
     "RelentlessHunter",
-    "Celerity",
-    "Scorch",
-    "AttackSpeed",
-    "AdaptiveForce",
-    "Health"
+    "Scorch"
   ]
 ]

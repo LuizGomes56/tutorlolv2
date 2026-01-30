@@ -1,20 +1,19 @@
 [
   [
-    "SunderedSky",
+    "GuardianAngel",
     "MawOfMalmortius",
-    "SteraksGage",
     "SerpentsFang",
     "SpiritVisage",
-    "GuardianAngel"
+    "SteraksGage",
+    "SunderedSky"
   ],
   [
-    "Triumph",
-    "LegendHaste",
-    "LastStand",
+    "AdaptiveForce",
     "BonePlating",
+    "HealthScaling",
+    "LastStand",
+    "LegendHaste",
     "Revitalize",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Triumph"
   ]
 ]

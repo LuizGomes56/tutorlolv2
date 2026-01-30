@@ -1,20 +1,20 @@
 [
   [
-    "ZhonyasHourglass",
-    "RylaisCrystalScepter",
-    "HextechGunblade",
-    "GuinsoosRageblade",
     "BansheesVeil",
-    "Morellonomicon"
+    "GuinsoosRageblade",
+    "HextechGunblade",
+    "Morellonomicon",
+    "RylaisCrystalScepter",
+    "ZhonyasHourglass"
   ],
   [
     "AbsorbLife",
-    "LegendAlacrity",
-    "LastStand",
+    "AdaptiveForce",
+    "AttackSpeed",
     "Celerity",
     "GatheringStorm",
-    "AttackSpeed",
-    "AdaptiveForce",
-    "HealthScaling"
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity"
   ]
 ]

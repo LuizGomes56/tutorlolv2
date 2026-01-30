@@ -1,20 +1,20 @@
 [
   [
-    "RapidFirecannon",
-    "WitsEnd",
-    "PhantomDancer",
-    "SerpentsFang",
     "InfinityEdge",
-    "Terminus"
+    "PhantomDancer",
+    "RapidFirecannon",
+    "SerpentsFang",
+    "Terminus",
+    "WitsEnd"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "CutDown",
-    "CheapShot",
-    "UltimateHunter",
     "AttackSpeed",
+    "CheapShot",
+    "CutDown",
+    "LegendAlacrity",
     "MoveSpeed",
-    "TenacityAndSlowResist"
+    "TenacityAndSlowResist",
+    "Triumph",
+    "UltimateHunter"
   ]
 ]

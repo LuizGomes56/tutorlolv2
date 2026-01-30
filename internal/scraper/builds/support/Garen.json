@@ -2,19 +2,18 @@
   [
     "DeadMansPlate",
     "InfinityEdge",
-    "SpearOfShojin",
     "LordDominiksRegards",
-    "Thornmail",
-    "TheCollector"
+    "SpearOfShojin",
+    "Stormrazor",
+    "Thornmail"
   ],
   [
-    "Triumph",
-    "LegendHaste",
-    "LastStand",
+    "AdaptiveForce",
     "AxiomArcanist",
     "Celerity",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "HealthScaling",
+    "LastStand",
+    "LegendHaste",
+    "Triumph"
   ]
 ]

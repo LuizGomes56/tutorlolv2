@@ -1,20 +1,19 @@
 [
   [
-    "DuskAndDawn",
+    "HextechGunblade",
+    "KaenicRookern",
     "RabadonsDeathcap",
-    "LichBane",
-    "Malignance",
-    "BansheesVeil",
-    "Morellonomicon"
+    "RylaisCrystalScepter",
+    "ZhonyasHourglass"
   ],
   [
-    "PresenceOfMind",
-    "LegendAlacrity",
-    "LastStand",
-    "BonePlating",
-    "Unflinching",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "CosmicInsight",
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity",
+    "MagicalFootwear",
+    "Triumph"
   ]
 ]

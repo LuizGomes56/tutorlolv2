@@ -1,20 +1,20 @@
 [
   [
     "AxiomArc",
-    "GuardianAngel",
-    "UmbralGlaive",
+    "Bandlepipes",
+    "ChempunkChainsword",
     "EdgeOfNight",
-    "SteraksGage",
-    "KrakenSlayer"
+    "FiendhunterBolts",
+    "Manamune"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "LastStand",
-    "GrislyMementos",
-    "UltimateHunter",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "GrislyMementos",
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity",
+    "Triumph",
+    "UltimateHunter"
   ]
 ]

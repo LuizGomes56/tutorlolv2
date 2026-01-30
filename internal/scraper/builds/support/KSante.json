@@ -1,20 +1,19 @@
 [
   [
+    "ForceOfNature",
+    "FrozenHeart",
+    "KaenicRookern",
     "LocketOfTheIronSolari",
     "ProtoplasmHarness",
-    "FrozenHeart",
-    "RanduinsOmen",
-    "KaenicRookern",
-    "SerpentsFang"
+    "RanduinsOmen"
   ],
   [
-    "ShieldBash",
+    "AttackSpeed",
     "BonePlating",
-    "Unflinching",
+    "HealthScaling",
+    "ShieldBash",
     "SuddenImpact",
     "UltimateHunter",
-    "AttackSpeed",
-    "HealthScaling",
-    "HealthScaling"
+    "Unflinching"
   ]
 ]

@@ -1,19 +1,19 @@
 [
   [
-    "RapidFirecannon",
     "Bloodthirster",
-    "Stormrazor",
     "DuskAndDawn",
-    "ExperimentalHexplate"
+    "RanduinsOmen",
+    "RapidFirecannon",
+    "Stormrazor",
+    "ZhonyasHourglass"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "CoupDeGrace",
+    "AdaptiveForce",
     "BonePlating",
+    "CoupDeGrace",
+    "Health",
+    "LegendAlacrity",
     "Overgrowth",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "Health"
+    "Triumph"
   ]
 ]

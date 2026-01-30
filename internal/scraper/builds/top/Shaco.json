@@ -1,20 +1,20 @@
 [
   [
-    "Shadowflame",
-    "Malignance",
-    "RabadonsDeathcap",
     "BloodlettersCurse",
-    "VoidStaff",
-    "CosmicDrive"
+    "HorizonFocus",
+    "Malignance",
+    "Morellonomicon",
+    "Shadowflame",
+    "VoidStaff"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "GatheringStorm",
-    "LegendHaste",
-    "CutDown",
     "AbilityHaste",
     "AdaptiveForce",
-    "HealthScaling"
+    "CutDown",
+    "GatheringStorm",
+    "HealthScaling",
+    "LegendHaste",
+    "ManaflowBand",
+    "Transcendence"
   ]
 ]

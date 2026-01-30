@@ -1,20 +1,19 @@
 [
   [
     "DeathsDance",
-    "RanduinsOmen",
-    "HextechGunblade",
     "EndlessHunger",
     "GuinsoosRageblade",
-    "ForceOfNature"
+    "HextechGunblade",
+    "RanduinsOmen",
+    "WitsEnd"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
+    "AdaptiveForce",
     "CoupDeGrace",
-    "SuddenImpact",
+    "HealthScaling",
+    "LegendAlacrity",
     "RelentlessHunter",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "SuddenImpact",
+    "Triumph"
   ]
 ]

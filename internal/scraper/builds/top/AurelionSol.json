@@ -1,20 +1,19 @@
 [
   [
-    "BloodlettersCurse",
-    "ZhonyasHourglass",
+    "ArchangelsStaff",
     "BansheesVeil",
+    "BloodlettersCurse",
     "Shadowflame",
     "VoidStaff",
-    "Riftmaker"
+    "ZhonyasHourglass"
   ],
   [
-    "ManaflowBand",
     "AbsoluteFocus",
-    "Scorch",
+    "AdaptiveForce",
     "BonePlating",
+    "HealthScaling",
+    "ManaflowBand",
     "Overgrowth",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Scorch"
   ]
 ]

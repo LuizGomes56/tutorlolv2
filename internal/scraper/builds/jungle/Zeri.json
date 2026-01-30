@@ -1,17 +1,18 @@
 [
   [
-    "FrozenHeart",
+    "ImmortalShieldbow",
     "LordDominiksRegards",
-    "GuardianAngel"
+    "MercurialScimitar",
+    "MortalReminder"
   ],
   [
-    "CashBack",
-    "TripleTonic",
-    "CosmicInsight",
-    "Triumph",
-    "LegendAlacrity",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "CashBack",
+    "CosmicInsight",
+    "CutDown",
+    "HealthScaling",
+    "LegendAlacrity",
+    "Triumph"
   ]
 ]

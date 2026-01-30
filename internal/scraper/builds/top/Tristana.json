@@ -1,20 +1,20 @@
 [
   [
-    "HexopticsC44",
-    "MortalReminder",
     "BladeOfTheRuinedKing",
-    "RapidFirecannon",
+    "HexopticsC44",
     "KrakenSlayer",
-    "MawOfMalmortius"
+    "MawOfMalmortius",
+    "MortalReminder",
+    "RapidFirecannon"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
+    "AdaptiveForce",
+    "AttackSpeed",
     "CoupDeGrace",
+    "Health",
+    "LegendAlacrity",
     "TasteOfBlood",
     "TreasureHunter",
-    "AttackSpeed",
-    "AdaptiveForce",
-    "Health"
+    "Triumph"
   ]
 ]

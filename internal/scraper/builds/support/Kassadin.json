@@ -1,19 +1,19 @@
 [
   [
-    "RabadonsDeathcap",
-    "ZhonyasHourglass",
+    "BansheesVeil",
+    "LichBane",
     "LudensEcho",
     "Morellonomicon",
-    "LiandrysTorment"
+    "Stormsurge",
+    "WintersApproach"
   ],
   [
-    "SuddenImpact",
-    "GrislyMementos",
-    "UltimateHunter",
-    "SecondWind",
-    "Overgrowth",
     "AdaptiveForce",
+    "GrislyMementos",
     "HealthScaling",
-    "HealthScaling"
+    "Overgrowth",
+    "SecondWind",
+    "SuddenImpact",
+    "UltimateHunter"
   ]
 ]

@@ -1,20 +1,20 @@
 [
   [
-    "FiendhunterBolts",
+    "DeathsDance",
     "EssenceReaver",
-    "SerpentsFang",
-    "MortalReminder",
+    "FiendhunterBolts",
     "MawOfMalmortius",
-    "DeathsDance"
+    "MortalReminder",
+    "SerpentsFang"
   ],
   [
-    "SuddenImpact",
-    "GrislyMementos",
-    "UltimateHunter",
-    "Transcendence",
-    "Scorch",
-    "AttackSpeed",
     "AdaptiveForce",
-    "Health"
+    "AttackSpeed",
+    "GrislyMementos",
+    "Health",
+    "Scorch",
+    "SuddenImpact",
+    "Transcendence",
+    "UltimateHunter"
   ]
 ]

@@ -1,20 +1,20 @@
 [
   [
-    "RunaansHurricane",
+    "Bloodthirster",
+    "GuardianAngel",
     "HexopticsC44",
     "MortalReminder",
-    "BladeOfTheRuinedKing",
-    "WitsEnd",
-    "Bloodthirster"
+    "RunaansHurricane",
+    "SerpentsFang"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "CutDown",
-    "AxiomArcanist",
-    "GatheringStorm",
-    "AttackSpeed",
     "AdaptiveForce",
-    "Health"
+    "AttackSpeed",
+    "AxiomArcanist",
+    "CutDown",
+    "GatheringStorm",
+    "Health",
+    "LegendAlacrity",
+    "Triumph"
   ]
 ]

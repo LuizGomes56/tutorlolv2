@@ -1,20 +1,20 @@
 [
   [
-    "EndlessHunger",
-    "TrinityForce",
+    "GuardianAngel",
+    "Hullbreaker",
     "RavenousHydra",
-    "SunderedSky",
     "SteraksGage",
-    "GuardianAngel"
+    "SunderedSky",
+    "TrinityForce"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "LastStand",
-    "BonePlating",
-    "Unflinching",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "BonePlating",
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity",
+    "Triumph",
+    "Unflinching"
   ]
 ]

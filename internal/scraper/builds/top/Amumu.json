@@ -1,20 +1,19 @@
 [
   [
-    "WintersApproach",
-    "Malignance",
-    "Riftmaker",
-    "JakshoTheProtean",
     "Heartsteel",
-    "RanduinsOmen"
+    "JakshoTheProtean",
+    "Malignance",
+    "RanduinsOmen",
+    "Riftmaker",
+    "WintersApproach"
   ],
   [
-    "Triumph",
-    "LegendHaste",
-    "LastStand",
+    "AdaptiveForce",
     "CheapShot",
-    "UltimateHunter",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "HealthScaling",
+    "LastStand",
+    "LegendHaste",
+    "Triumph",
+    "UltimateHunter"
   ]
 ]

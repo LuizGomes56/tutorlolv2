@@ -1,20 +1,19 @@
 [
   [
-    "RylaisCrystalScepter",
-    "Shadowflame",
-    "RabadonsDeathcap",
-    "HextechRocketbelt",
     "Bandlepipes",
-    "StaffOfFlowingWater"
+    "Cryptbloom",
+    "HextechRocketbelt",
+    "RabadonsDeathcap",
+    "RylaisCrystalScepter",
+    "Shadowflame"
   ],
   [
-    "NimbusCloak",
     "AbsoluteFocus",
+    "AdaptiveForce",
+    "HealthScaling",
+    "NimbusCloak",
     "Scorch",
     "TasteOfBlood",
-    "UltimateHunter",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "Health"
+    "UltimateHunter"
   ]
 ]

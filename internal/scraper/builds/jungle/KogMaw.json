@@ -1,4 +1,19 @@
 [
-  [],
-  []
+  [
+    "Bloodthirster",
+    "NavoriFlickerblade",
+    "RunaansHurricane",
+    "Terminus",
+    "WitsEnd"
+  ],
+  [
+    "AdaptiveForce",
+    "AttackSpeed",
+    "Conditioning",
+    "CutDown",
+    "HealthScaling",
+    "LegendAlacrity",
+    "Overgrowth",
+    "Triumph"
+  ]
 ]

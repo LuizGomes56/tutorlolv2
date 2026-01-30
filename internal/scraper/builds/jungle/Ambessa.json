@@ -1,20 +1,19 @@
 [
   [
-    "SpearOfShojin",
+    "EdgeOfNight",
     "MawOfMalmortius",
-    "SeryldasGrudge",
     "SerpentsFang",
-    "SunderedSky",
-    "VoltaicCyclosword"
+    "SeryldasGrudge",
+    "SpearOfShojin",
+    "SunderedSky"
   ],
   [
-    "Triumph",
-    "LegendHaste",
-    "LastStand",
-    "MagicalFootwear",
+    "AdaptiveForce",
     "CosmicInsight",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "HealthScaling",
+    "LastStand",
+    "LegendHaste",
+    "MagicalFootwear",
+    "Triumph"
   ]
 ]

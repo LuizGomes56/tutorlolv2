@@ -1,20 +1,18 @@
 [
   [
-    "KaenicRookern",
-    "ProtoplasmHarness",
+    "Bandlepipes",
+    "FrozenHeart",
     "Heartsteel",
-    "RanduinsOmen",
-    "DeadMansPlate",
-    "LiandrysTorment"
+    "LiandrysTorment",
+    "ProtoplasmHarness"
   ],
   [
-    "ShieldBash",
-    "SecondWind",
-    "Overgrowth",
-    "ManaflowBand",
-    "Scorch",
     "AbilityHaste",
+    "BonePlating",
     "HealthScaling",
-    "HealthScaling"
+    "LegendHaste",
+    "ShieldBash",
+    "Triumph",
+    "Unflinching"
   ]
 ]

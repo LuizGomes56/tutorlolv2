@@ -1,20 +1,20 @@
 [
   [
-    "EchoesOfHelia",
+    "ArdentCenser",
+    "Bandlepipes",
     "KnightsVow",
     "MikaelsBlessing",
     "RylaisCrystalScepter",
-    "Bandlepipes",
     "StaffOfFlowingWater"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "GatheringStorm",
-    "FontOfLife",
-    "Revitalize",
     "AbilityHaste",
     "AdaptiveForce",
-    "HealthScaling"
+    "FontOfLife",
+    "GatheringStorm",
+    "HealthScaling",
+    "ManaflowBand",
+    "Revitalize",
+    "Transcendence"
   ]
 ]

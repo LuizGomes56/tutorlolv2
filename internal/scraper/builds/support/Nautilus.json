@@ -1,20 +1,19 @@
 [
   [
+    "FrozenHeart",
+    "KaenicRookern",
+    "MikaelsBlessing",
     "ProtoplasmHarness",
     "Redemption",
-    "KaenicRookern",
-    "ZekesConvergence",
-    "MikaelsBlessing",
-    "FrozenHeart"
+    "ZekesConvergence"
   ],
   [
-    "ShieldBash",
-    "BonePlating",
-    "Unflinching",
-    "BiscuitDelivery",
-    "CosmicInsight",
     "AbilityHaste",
+    "BiscuitDelivery",
+    "BonePlating",
+    "CosmicInsight",
     "HealthScaling",
-    "HealthScaling"
+    "ShieldBash",
+    "Unflinching"
   ]
 ]

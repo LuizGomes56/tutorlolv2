@@ -1,20 +1,20 @@
 [
   [
-    "Terminus",
-    "JakshoTheProtean",
+    "DuskAndDawn",
+    "GuardianAngel",
+    "KrakenSlayer",
+    "NashorsTooth",
     "RanduinsOmen",
-    "HexopticsC44",
-    "StatikkShiv",
-    "TitanicHydra"
+    "WitsEnd"
   ],
   [
-    "Triumph",
-    "LegendBloodline",
-    "LastStand",
-    "Conditioning",
-    "Overgrowth",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "Conditioning",
+    "HealthScaling",
+    "LastStand",
+    "LegendBloodline",
+    "Overgrowth",
+    "Triumph"
   ]
 ]

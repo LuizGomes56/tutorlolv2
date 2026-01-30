@@ -1,20 +1,19 @@
 [
   [
-    "Thornmail",
-    "OverlordsBloodmail",
-    "Hullbreaker",
     "ChempunkChainsword",
-    "SpearOfShojin",
-    "ForceOfNature"
+    "ForceOfNature",
+    "Hullbreaker",
+    "OverlordsBloodmail",
+    "RanduinsOmen",
+    "TitanicHydra"
   ],
   [
-    "Triumph",
-    "LegendHaste",
-    "LastStand",
+    "AdaptiveForce",
     "BonePlating",
+    "HealthScaling",
+    "LastStand",
+    "LegendHaste",
     "Overgrowth",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Triumph"
   ]
 ]

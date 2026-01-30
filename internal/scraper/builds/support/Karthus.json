@@ -1,20 +1,19 @@
 [
   [
     "LiandrysTorment",
+    "Morellonomicon",
     "RylaisCrystalScepter",
     "Stormsurge",
-    "ZhonyasHourglass",
-    "BloodlettersCurse",
-    "Morellonomicon"
+    "VoidStaff",
+    "ZhonyasHourglass"
   ],
   [
+    "AdaptiveForce",
     "CheapShot",
     "GrislyMementos",
-    "UltimateHunter",
-    "PresenceOfMind",
+    "HealthScaling",
     "LastStand",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "PresenceOfMind",
+    "UltimateHunter"
   ]
 ]

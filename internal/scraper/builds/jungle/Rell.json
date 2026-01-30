@@ -1,20 +1,18 @@
 [
   [
-    "LiandrysTorment",
+    "JakshoTheProtean",
     "KaenicRookern",
-    "Heartsteel",
+    "KnightsVow",
     "ProtoplasmHarness",
-    "Bandlepipes",
-    "FrozenHeart"
+    "Riftmaker"
   ],
   [
-    "ShieldBash",
-    "BonePlating",
-    "Unflinching",
-    "Triumph",
-    "LegendHaste",
     "AbilityHaste",
+    "BonePlating",
     "HealthScaling",
-    "HealthScaling"
+    "LegendHaste",
+    "ShieldBash",
+    "Triumph",
+    "Unflinching"
   ]
 ]

@@ -1,20 +1,19 @@
 [
   [
-    "ProtoplasmHarness",
+    "FrozenHeart",
+    "KaenicRookern",
     "KnightsVow",
+    "ProtoplasmHarness",
     "SpiritVisage",
-    "UnendingDespair",
-    "AbyssalMask",
-    "KaenicRookern"
+    "UnendingDespair"
   ],
   [
-    "FontOfLife",
-    "BonePlating",
-    "Unflinching",
-    "BiscuitDelivery",
-    "CosmicInsight",
     "AdaptiveForce",
+    "BiscuitDelivery",
+    "BonePlating",
+    "CosmicInsight",
+    "FontOfLife",
     "HealthScaling",
-    "HealthScaling"
+    "Unflinching"
   ]
 ]

@@ -1,20 +1,20 @@
 [
   [
+    "DeathsDance",
+    "ExperimentalHexplate",
     "FiendhunterBolts",
-    "KrakenSlayer",
-    "BladeOfTheRuinedKing",
-    "Stormrazor",
-    "GuinsoosRageblade",
-    "MortalReminder"
+    "MortalReminder",
+    "Terminus",
+    "WitsEnd"
   ],
   [
-    "SuddenImpact",
-    "GrislyMementos",
-    "TreasureHunter",
-    "Triumph",
-    "LegendAlacrity",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "GrislyMementos",
+    "HealthScaling",
+    "LegendAlacrity",
+    "SuddenImpact",
+    "TreasureHunter",
+    "Triumph"
   ]
 ]

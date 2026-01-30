@@ -1,19 +1,19 @@
 [
   [
-    "WitsEnd",
+    "Bloodthirster",
     "KrakenSlayer",
     "MortalReminder",
     "RanduinsOmen",
-    "Bloodthirster"
+    "WitsEnd"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
+    "AdaptiveForce",
+    "AttackSpeed",
+    "Health",
     "LastStand",
+    "LegendAlacrity",
     "SuddenImpact",
     "TreasureHunter",
-    "AttackSpeed",
-    "AdaptiveForce",
-    "Health"
+    "Triumph"
   ]
 ]

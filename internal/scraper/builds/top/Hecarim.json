@@ -1,20 +1,19 @@
 [
   [
-    "BlackCleaver",
-    "DeadMansPlate",
+    "ChempunkChainsword",
+    "DeathsDance",
+    "Eclipse",
     "SpiritVisage",
-    "MawOfMalmortius",
-    "FrozenHeart",
-    "KaenicRookern"
+    "UnendingDespair"
   ],
   [
-    "Triumph",
-    "LegendHaste",
-    "LastStand",
-    "NimbusCloak",
-    "Celerity",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "Celerity",
+    "HealthScaling",
+    "LastStand",
+    "LegendHaste",
+    "NimbusCloak",
+    "Triumph"
   ]
 ]

@@ -1,20 +1,20 @@
 [
   [
-    "LiandrysTorment",
-    "Shadowflame",
-    "Morellonomicon",
     "HextechRocketbelt",
-    "Stormsurge",
-    "SpiritVisage"
+    "LiandrysTorment",
+    "Morellonomicon",
+    "Shadowflame",
+    "SpiritVisage",
+    "Stormsurge"
   ],
   [
-    "NimbusCloak",
-    "Transcendence",
-    "GatheringStorm",
-    "LegendHaste",
-    "LastStand",
     "AbilityHaste",
     "AdaptiveForce",
-    "HealthScaling"
+    "GatheringStorm",
+    "HealthScaling",
+    "LastStand",
+    "LegendHaste",
+    "NimbusCloak",
+    "Transcendence"
   ]
 ]

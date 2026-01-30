@@ -1,20 +1,20 @@
 [
   [
-    "TheCollector",
+    "Bandlepipes",
     "Eclipse",
-    "YoumuusGhostblade",
     "EdgeOfNight",
-    "Opportunity",
-    "Bastionbreaker"
+    "SpearOfShojin",
+    "TheCollector",
+    "YoumuusGhostblade"
   ],
   [
-    "SuddenImpact",
-    "GrislyMementos",
-    "RelentlessHunter",
-    "MagicalFootwear",
-    "CosmicInsight",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "CosmicInsight",
+    "GrislyMementos",
+    "HealthScaling",
+    "MagicalFootwear",
+    "RelentlessHunter",
+    "SuddenImpact"
   ]
 ]

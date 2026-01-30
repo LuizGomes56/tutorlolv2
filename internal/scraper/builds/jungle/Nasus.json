@@ -1,20 +1,20 @@
 [
   [
-    "Thornmail",
     "Bandlepipes",
     "DeadMansPlate",
-    "FrozenHeart",
     "ForceOfNature",
-    "KaenicRookern"
+    "FrozenHeart",
+    "KaenicRookern",
+    "Thornmail"
   ],
   [
-    "Triumph",
-    "LegendHaste",
-    "CutDown",
-    "MagicalFootwear",
-    "ApproachVelocity",
     "AbilityHaste",
+    "ApproachVelocity",
+    "CutDown",
     "HealthScaling",
-    "TenacityAndSlowResist"
+    "LegendHaste",
+    "MagicalFootwear",
+    "TenacityAndSlowResist",
+    "Triumph"
   ]
 ]

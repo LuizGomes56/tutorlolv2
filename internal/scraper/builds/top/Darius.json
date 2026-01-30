@@ -1,20 +1,20 @@
 [
   [
-    "RanduinsOmen",
-    "SpearOfShojin",
-    "Thornmail",
     "JakshoTheProtean",
     "KaenicRookern",
-    "SpiritVisage"
+    "RanduinsOmen",
+    "SpearOfShojin",
+    "SpiritVisage",
+    "Thornmail"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "LastStand",
+    "AdaptiveForce",
+    "AttackSpeed",
     "AxiomArcanist",
     "Celerity",
-    "AttackSpeed",
-    "AdaptiveForce",
-    "HealthScaling"
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity",
+    "Triumph"
   ]
 ]

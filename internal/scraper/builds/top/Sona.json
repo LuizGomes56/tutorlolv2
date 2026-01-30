@@ -1,13 +1,13 @@
 [
   [],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "GatheringStorm",
-    "GrislyMementos",
-    "TreasureHunter",
     "AbilityHaste",
     "AdaptiveForce",
-    "HealthScaling"
+    "GatheringStorm",
+    "GrislyMementos",
+    "HealthScaling",
+    "ManaflowBand",
+    "Transcendence",
+    "TreasureHunter"
   ]
 ]

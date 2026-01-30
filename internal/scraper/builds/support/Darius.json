@@ -1,20 +1,20 @@
 [
   [
-    "SteraksGage",
-    "YoumuusGhostblade",
+    "Bandlepipes",
+    "ForceOfNature",
+    "RanduinsOmen",
     "SpearOfShojin",
     "Thornmail",
-    "RanduinsOmen",
-    "Bandlepipes"
+    "YoumuusGhostblade"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "LastStand",
+    "AdaptiveForce",
+    "AttackSpeed",
     "AxiomArcanist",
     "Celerity",
-    "AttackSpeed",
-    "AdaptiveForce",
-    "HealthScaling"
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity",
+    "Triumph"
   ]
 ]

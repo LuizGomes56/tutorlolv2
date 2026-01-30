@@ -1,18 +1,18 @@
 [
   [
-    "TitanicHydra",
-    "OverlordsBloodmail",
-    "UnendingDespair",
-    "ProtoplasmHarness"
+    "Bandlepipes",
+    "ProtoplasmHarness",
+    "RanduinsOmen",
+    "TitanicHydra"
   ],
   [
-    "Demolish",
-    "SecondWind",
-    "Overgrowth",
-    "Triumph",
-    "LastStand",
-    "AttackSpeed",
+    "AbilityHaste",
+    "Health",
     "HealthScaling",
-    "HealthScaling"
+    "NimbusCloak",
+    "Overgrowth",
+    "Scorch",
+    "SecondWind",
+    "Transcendence"
   ]
 ]

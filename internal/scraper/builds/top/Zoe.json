@@ -1,20 +1,20 @@
 [
   [
-    "ZhonyasHourglass",
-    "BansheesVeil",
-    "HorizonFocus",
     "CosmicDrive",
-    "Cryptbloom",
-    "HextechGunblade"
+    "HextechGunblade",
+    "HextechRocketbelt",
+    "HorizonFocus",
+    "RabadonsDeathcap",
+    "ZhonyasHourglass"
   ],
   [
-    "SuddenImpact",
-    "GrislyMementos",
-    "TreasureHunter",
-    "NimbusCloak",
-    "Celerity",
-    "AttackSpeed",
     "AdaptiveForce",
-    "Health"
+    "AttackSpeed",
+    "GrislyMementos",
+    "Health",
+    "NimbusCloak",
+    "RelentlessHunter",
+    "Scorch",
+    "TasteOfBlood"
   ]
 ]

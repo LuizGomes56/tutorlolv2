@@ -1,19 +1,19 @@
 [
   [
-    "RabadonsDeathcap",
-    "VoidStaff",
     "BansheesVeil",
-    "Morellonomicon",
-    "Malignance"
+    "CosmicDrive",
+    "DuskAndDawn",
+    "Malignance",
+    "NashorsTooth"
   ],
   [
-    "TasteOfBlood",
-    "GrislyMementos",
-    "UltimateHunter",
     "AbsoluteFocus",
-    "Scorch",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "GrislyMementos",
+    "HealthScaling",
+    "Scorch",
+    "TasteOfBlood",
+    "UltimateHunter"
   ]
 ]

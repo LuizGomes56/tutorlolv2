@@ -1,20 +1,20 @@
 [
   [
-    "ShurelyasBattlesong",
-    "MikaelsBlessing",
-    "ImperialMandate",
     "EchoesOfHelia",
-    "StaffOfFlowingWater",
-    "Morellonomicon"
+    "ImperialMandate",
+    "MikaelsBlessing",
+    "Morellonomicon",
+    "ShurelyasBattlesong",
+    "StaffOfFlowingWater"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "GatheringStorm",
-    "FontOfLife",
-    "Revitalize",
     "AbilityHaste",
     "AdaptiveForce",
-    "Health"
+    "FontOfLife",
+    "GatheringStorm",
+    "Health",
+    "ManaflowBand",
+    "Revitalize",
+    "Transcendence"
   ]
 ]

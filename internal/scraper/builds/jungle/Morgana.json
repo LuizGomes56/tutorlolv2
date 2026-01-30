@@ -1,20 +1,19 @@
 [
   [
+    "BansheesVeil",
     "BloodlettersCurse",
+    "Cryptbloom",
     "HorizonFocus",
     "Morellonomicon",
-    "Shadowflame",
-    "Cryptbloom",
-    "BansheesVeil"
+    "Shadowflame"
   ],
   [
+    "AdaptiveForce",
     "CheapShot",
-    "GrislyMementos",
-    "TreasureHunter",
-    "MagicalFootwear",
     "CosmicInsight",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "GrislyMementos",
+    "HealthScaling",
+    "MagicalFootwear",
+    "TreasureHunter"
   ]
 ]

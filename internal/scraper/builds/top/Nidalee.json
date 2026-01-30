@@ -1,19 +1,20 @@
 [
   [
-    "Hullbreaker",
-    "SteraksGage",
+    "BladeOfTheRuinedKing",
+    "ChempunkChainsword",
+    "EndlessHunger",
+    "HextechGunblade",
     "RanduinsOmen",
-    "AbyssalMask",
-    "FrozenHeart"
+    "SteraksGage"
   ],
   [
-    "Demolish",
-    "Conditioning",
-    "Revitalize",
-    "PresenceOfMind",
-    "LastStand",
-    "AttackSpeed",
     "AdaptiveForce",
-    "Health"
+    "AttackSpeed",
+    "BonePlating",
+    "Demolish",
+    "HealthScaling",
+    "Overgrowth",
+    "SuddenImpact",
+    "TreasureHunter"
   ]
 ]

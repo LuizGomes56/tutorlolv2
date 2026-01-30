@@ -1,19 +1,20 @@
 [
   [
-    "ProtoplasmHarness",
-    "SpiritVisage",
-    "Redemption",
-    "ForceOfNature",
-    "BlackCleaver"
+    "AxiomArc",
+    "LordDominiksRegards",
+    "MortalReminder",
+    "ProfaneHydra",
+    "TheCollector",
+    "YoumuusGhostblade"
   ],
   [
-    "NimbusCloak",
-    "Celerity",
-    "Scorch",
-    "FontOfLife",
-    "BonePlating",
     "AdaptiveForce",
-    "MoveSpeed",
-    "Health"
+    "AttackSpeed",
+    "CutDown",
+    "GrislyMementos",
+    "HealthScaling",
+    "LegendAlacrity",
+    "RelentlessHunter",
+    "SuddenImpact"
   ]
 ]

@@ -1,20 +1,19 @@
 [
   [
-    "Thornmail",
-    "FrozenHeart",
-    "RanduinsOmen",
     "Bandlepipes",
+    "FrozenHeart",
     "JakshoTheProtean",
-    "KnightsVow"
+    "KaenicRookern",
+    "RanduinsOmen",
+    "UnendingDespair"
   ],
   [
-    "Demolish",
-    "SecondWind",
-    "Overgrowth",
-    "ManaflowBand",
-    "Transcendence",
     "AttackSpeed",
+    "Demolish",
     "HealthScaling",
-    "HealthScaling"
+    "ManaflowBand",
+    "Overgrowth",
+    "SecondWind",
+    "Transcendence"
   ]
 ]

@@ -1,20 +1,19 @@
 [
   [
-    "ZhonyasHourglass",
+    "Actualizer",
+    "FrozenHeart",
     "RabadonsDeathcap",
     "Riftmaker",
-    "BlackfireTorch",
-    "FrozenHeart",
-    "WintersApproach"
+    "WintersApproach",
+    "ZhonyasHourglass"
   ],
   [
-    "PresenceOfMind",
-    "LegendHaste",
+    "AdaptiveForce",
+    "HealthScaling",
     "LastStand",
+    "LegendHaste",
     "ManaflowBand",
-    "Transcendence",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "PresenceOfMind",
+    "Transcendence"
   ]
 ]

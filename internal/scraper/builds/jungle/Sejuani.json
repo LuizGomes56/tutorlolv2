@@ -1,20 +1,19 @@
 [
   [
-    "KaenicRookern",
+    "Bandlepipes",
+    "FrozenHeart",
+    "HollowRadiance",
     "ProtoplasmHarness",
     "RanduinsOmen",
-    "SunfireAegis",
-    "Bandlepipes",
-    "WarmogsArmor"
+    "SunfireAegis"
   ],
   [
-    "FontOfLife",
-    "Conditioning",
-    "Overgrowth",
-    "Triumph",
-    "LegendAlacrity",
     "AttackSpeed",
+    "Conditioning",
+    "FontOfLife",
     "HealthScaling",
-    "HealthScaling"
+    "LegendAlacrity",
+    "Overgrowth",
+    "Triumph"
   ]
 ]

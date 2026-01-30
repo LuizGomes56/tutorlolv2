@@ -14,7 +14,7 @@ use scraper::{Html, Selector};
 use serde::{Deserialize, Serialize, de::DeserializeOwned};
 use serde_json::Value;
 use std::{
-    collections::HashMap,
+    collections::{BTreeMap, BTreeSet, HashMap},
     fmt::Display,
     io::{BufRead, BufReader, Write},
     path::Path,
@@ -572,10 +572,10 @@ impl HttpClient {
         self.update_language_cache().await?;
         let languages = Vec::<String>::from_file(SaveTo::InternalLanguages.path())?;
 
-        let mut languages_data = HashMap::<String, Vec<String>>::from_iter(
+        let mut languages_data = BTreeMap::<String, BTreeSet<String>>::from_iter(
             champion_ids
                 .into_iter()
-                .map(|champion_id| (champion_id, Vec::new())),
+                .map(|champion_id| (champion_id, BTreeSet::new())),
         );
 
         let mut languages_future = Vec::new();
@@ -612,12 +612,10 @@ impl HttpClient {
                 for (champion_id, champion_name) in data.into_iter() {
                     match languages_data.get_mut(&champion_id) {
                         Some(v) => {
-                            if !v.contains(&champion_name) {
-                                v.push(champion_name)
-                            }
+                            v.insert(champion_name);
                         }
                         None => {
-                            let _ = languages_data.insert(champion_id, vec![champion_name]);
+                            languages_data.insert(champion_id, BTreeSet::from([champion_name]));
                         }
                     };
                 }
@@ -732,16 +730,20 @@ impl HttpClient {
                         Position::Support => "support",
                     };
 
-                    let _ = client
+                    if let Err(e) = client
                         .download(
                             format!("{}/{name}/build/{pos}", ENV_CONFIG.meta_endpoint),
                             &cache_path,
                         )
-                        .await;
+                        .await
+                    {
+                        println!("[error] downloading {name} {pos} build: {e:?}");
+                    }
 
                     tokio::task::spawn_blocking(move || {
                         let run_task = || -> MayFail {
-                            let html = std::fs::read_to_string(&cache_path)?;
+                            let html = std::fs::read_to_string(&cache_path)
+                                .map_err(|e| format!("Failed to read file: {cache_path}: {e:?}"))?;
 
                             let document = Html::parse_document(&html);
                             let full_build =
@@ -751,17 +753,18 @@ impl HttpClient {
                                 Selector::parse(".m-s76v8c > div > div img").unwrap();
                             let rune_selector = Selector::parse("img.m-1nx2cdb").unwrap();
                             let legend_selector = Selector::parse("img.m-1u3ui07").unwrap();
-                            let mut runes = Vec::<String>::new();
+                            let mut runes = BTreeSet::<String>::new();
 
-                            let push_alt_attr = |array: &mut Vec<String>, selector: &Selector| {
-                                for img in document.select(selector) {
-                                    if let Some(alt) = img.value().attr("alt") {
-                                        array.push(pascal_case(alt));
+                            let push_alt_attr =
+                                |array: &mut BTreeSet<String>, selector: &Selector| {
+                                    for img in document.select(selector) {
+                                        if let Some(alt) = img.value().attr("alt") {
+                                            array.insert(pascal_case(alt));
+                                        }
                                     }
-                                }
-                            };
+                                };
 
-                            let mut items = Vec::<String>::new();
+                            let mut items = BTreeSet::<String>::new();
 
                             push_alt_attr(&mut runes, &rune_selector);
                             push_alt_attr(&mut runes, &legend_selector);
@@ -773,7 +776,9 @@ impl HttpClient {
                         if let Err(e) = run_task() {
                             println!("[error] processing HTML from {champion_id:?}: {e:#?}")
                         }
-                    });
+                    })
+                    .await
+                    .unwrap();
                 }));
             }
 
@@ -784,14 +789,14 @@ impl HttpClient {
             }
         }
 
-        type Inner = [Vec<String>; 2];
-        type Data = HashMap<Position, Inner>;
-        type FinalData = HashMap<ChampionId, Data>;
+        type Inner = [BTreeSet<String>; 2];
+        type Data = BTreeMap<Position, Inner>;
+        type FinalData = BTreeMap<ChampionId, Data>;
 
         let mut results = FinalData::new();
 
         for champion_id in ChampionId::ARRAY {
-            let mut positions = HashMap::new();
+            let mut positions = BTreeMap::new();
             for position in Position::ARRAY {
                 let path = SaveTo::InternalScraperBuilds(position, champion_id).path();
                 let data = Inner::from_file(path)?;

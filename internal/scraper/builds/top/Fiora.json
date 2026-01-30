@@ -1,20 +1,19 @@
 [
   [
+    "ChempunkChainsword",
+    "Eclipse",
+    "EndlessHunger",
     "Hullbreaker",
     "MawOfMalmortius",
-    "EndlessHunger",
-    "SteraksGage",
-    "Eclipse",
-    "ChempunkChainsword"
+    "SteraksGage"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "LastStand",
+    "AdaptiveForce",
     "BiscuitDelivery",
+    "Health",
     "JackOfAllTrades",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "Health"
+    "LastStand",
+    "LegendAlacrity",
+    "Triumph"
   ]
 ]

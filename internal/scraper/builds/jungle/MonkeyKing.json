@@ -1,20 +1,20 @@
 [
   [
-    "MawOfMalmortius",
-    "SteraksGage",
     "ChempunkChainsword",
     "EndlessHunger",
+    "MawOfMalmortius",
+    "RanduinsOmen",
     "SerpentsFang",
-    "RanduinsOmen"
+    "SteraksGage"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "LastStand",
-    "MagicalFootwear",
-    "CosmicInsight",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "CosmicInsight",
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity",
+    "MagicalFootwear",
+    "Triumph"
   ]
 ]

@@ -1,20 +1,19 @@
 [
   [
     "DeadMansPlate",
+    "ForceOfNature",
     "OverlordsBloodmail",
-    "RanduinsOmen",
-    "UnendingDespair",
     "ProtoplasmHarness",
-    "ForceOfNature"
+    "RanduinsOmen",
+    "UnendingDespair"
   ],
   [
-    "Demolish",
-    "SecondWind",
-    "Overgrowth",
-    "MagicalFootwear",
     "ApproachVelocity",
     "AttackSpeed",
+    "Demolish",
     "HealthScaling",
-    "HealthScaling"
+    "MagicalFootwear",
+    "Overgrowth",
+    "SecondWind"
   ]
 ]

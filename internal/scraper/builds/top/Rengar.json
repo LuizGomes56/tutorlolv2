@@ -1,20 +1,19 @@
 [
   [
+    "ImmortalShieldbow",
     "MortalReminder",
+    "Opportunity",
     "SerpentsFang",
     "TheCollector",
-    "ImmortalShieldbow",
-    "Opportunity",
-    "GuardianAngel"
+    "YoumuusGhostblade"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
+    "AdaptiveForce",
     "CutDown",
+    "Health",
+    "LegendAlacrity",
     "SuddenImpact",
-    "UltimateHunter",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "Health"
+    "Triumph",
+    "UltimateHunter"
   ]
 ]

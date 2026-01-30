@@ -1,19 +1,19 @@
 [
   [
     "InfinityEdge",
-    "MortalReminder",
     "MawOfMalmortius",
-    "YoumuusGhostblade",
-    "SerpentsFang"
+    "MortalReminder",
+    "SerpentsFang",
+    "Stormrazor",
+    "YoumuusGhostblade"
   ],
   [
-    "TasteOfBlood",
-    "GrislyMementos",
-    "TreasureHunter",
-    "PresenceOfMind",
+    "AdaptiveForce",
     "CoupDeGrace",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "GrislyMementos",
+    "HealthScaling",
+    "PresenceOfMind",
+    "TasteOfBlood",
+    "TreasureHunter"
   ]
 ]

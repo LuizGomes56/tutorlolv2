@@ -1,18 +1,19 @@
 [
   [
-    "Cryptbloom",
-    "CosmicDrive",
     "BansheesVeil",
-    "VoidStaff"
+    "BloodlettersCurse",
+    "Cryptbloom",
+    "Shadowflame",
+    "ZhonyasHourglass"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "Scorch",
-    "PresenceOfMind",
-    "LegendHaste",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "HealthScaling",
+    "LegendHaste",
+    "ManaflowBand",
+    "PresenceOfMind",
+    "Scorch",
+    "Transcendence"
   ]
 ]

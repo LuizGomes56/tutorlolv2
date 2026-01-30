@@ -1,20 +1,19 @@
 [
   [
-    "Opportunity",
     "Bastionbreaker",
-    "MawOfMalmortius",
     "Eclipse",
-    "SpearOfShojin",
-    "MortalReminder"
+    "MawOfMalmortius",
+    "MortalReminder",
+    "Opportunity",
+    "SpearOfShojin"
   ],
   [
-    "ManaflowBand",
     "AbsoluteFocus",
-    "GatheringStorm",
-    "MagicalFootwear",
+    "AdaptiveForce",
     "BiscuitDelivery",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "GatheringStorm",
+    "HealthScaling",
+    "MagicalFootwear",
+    "ManaflowBand"
   ]
 ]

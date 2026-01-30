@@ -1,20 +1,19 @@
 [
   [
-    "FrozenHeart",
-    "Riftmaker",
-    "Morellonomicon",
     "BloodlettersCurse",
+    "ForceOfNature",
+    "FrozenHeart",
+    "Morellonomicon",
     "RanduinsOmen",
-    "CosmicDrive"
+    "Riftmaker"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "Scorch",
+    "AdaptiveForce",
     "BonePlating",
+    "HealthScaling",
+    "ManaflowBand",
     "Overgrowth",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Scorch",
+    "Transcendence"
   ]
 ]

@@ -1,20 +1,19 @@
 [
   [
-    "FrozenHeart",
-    "Thornmail",
-    "RanduinsOmen",
     "DeadMansPlate",
+    "ForceOfNature",
+    "FrozenHeart",
     "JakshoTheProtean",
-    "DuskAndDawn"
+    "RanduinsOmen",
+    "Thornmail"
   ],
   [
-    "ShieldBash",
-    "SecondWind",
-    "Revitalize",
+    "AdaptiveForce",
     "AxiomArcanist",
     "Celerity",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "HealthScaling",
+    "Revitalize",
+    "SecondWind",
+    "ShieldBash"
   ]
 ]

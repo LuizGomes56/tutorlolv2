@@ -1,20 +1,18 @@
 [
   [
-    "Morellonomicon",
-    "LichBane",
-    "HextechRocketbelt",
-    "BansheesVeil",
     "DuskAndDawn",
-    "RabadonsDeathcap"
+    "HextechRocketbelt",
+    "LichBane",
+    "RabadonsDeathcap",
+    "VoidStaff"
   ],
   [
-    "SuddenImpact",
+    "AdaptiveForce",
     "GrislyMementos",
-    "TreasureHunter",
+    "HealthScaling",
     "ManaflowBand",
     "Scorch",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "SuddenImpact",
+    "TreasureHunter"
   ]
 ]

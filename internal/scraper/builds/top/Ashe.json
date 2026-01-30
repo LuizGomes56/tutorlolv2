@@ -1,20 +1,20 @@
 [
   [
     "BladeOfTheRuinedKing",
-    "MortalReminder",
-    "BlackCleaver",
     "Hullbreaker",
+    "LordDominiksRegards",
     "MawOfMalmortius",
-    "Bloodthirster"
+    "MercurialScimitar",
+    "MortalReminder"
   ],
   [
-    "PresenceOfMind",
-    "LegendAlacrity",
-    "CutDown",
-    "BiscuitDelivery",
+    "AdaptiveForce",
     "ApproachVelocity",
     "AttackSpeed",
-    "AdaptiveForce",
-    "Health"
+    "BiscuitDelivery",
+    "CutDown",
+    "Health",
+    "LegendAlacrity",
+    "PresenceOfMind"
   ]
 ]

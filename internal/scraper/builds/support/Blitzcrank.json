@@ -1,20 +1,19 @@
 [
   [
     "FrozenHeart",
-    "Thornmail",
     "KnightsVow",
-    "ShurelyasBattlesong",
+    "MikaelsBlessing",
     "ProtoplasmHarness",
-    "MikaelsBlessing"
+    "ShurelyasBattlesong",
+    "Thornmail"
   ],
   [
-    "HextechFlashtraption",
-    "BiscuitDelivery",
-    "CosmicInsight",
-    "NimbusCloak",
-    "Celerity",
     "AbilityHaste",
+    "BiscuitDelivery",
+    "Celerity",
+    "CosmicInsight",
     "HealthScaling",
-    "HealthScaling"
+    "HextechFlashtraption",
+    "NimbusCloak"
   ]
 ]

@@ -1,20 +1,20 @@
 [
   [
-    "Stormrazor",
-    "SerpentsFang",
     "Bandlepipes",
     "GuardianAngel",
-    "IcebornGauntlet",
-    "MoonstoneRenewer"
+    "HextechGunblade",
+    "MoonstoneRenewer",
+    "SerpentsFang",
+    "Stormrazor"
   ],
   [
-    "PresenceOfMind",
-    "LegendAlacrity",
-    "CutDown",
-    "BonePlating",
-    "Revitalize",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "BonePlating",
+    "CutDown",
+    "HealthScaling",
+    "LegendAlacrity",
+    "PresenceOfMind",
+    "Revitalize"
   ]
 ]

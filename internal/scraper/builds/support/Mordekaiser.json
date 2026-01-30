@@ -1,20 +1,20 @@
 [
   [
-    "Riftmaker",
-    "HollowRadiance",
+    "DuskAndDawn",
     "ExperimentalHexplate",
+    "HollowRadiance",
+    "JakshoTheProtean",
     "SpiritVisage",
-    "NashorsTooth",
-    "JakshoTheProtean"
+    "Thornmail"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "CoupDeGrace",
-    "BonePlating",
-    "Overgrowth",
-    "AttackSpeed",
     "AdaptiveForce",
-    "Health"
+    "AttackSpeed",
+    "BonePlating",
+    "HealthScaling",
+    "LastStand",
+    "LegendHaste",
+    "Revitalize",
+    "Triumph"
   ]
 ]

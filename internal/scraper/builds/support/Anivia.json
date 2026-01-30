@@ -1,20 +1,19 @@
 [
   [
-    "LiandrysTorment",
     "Bandlepipes",
+    "LiandrysTorment",
     "Malignance",
-    "WintersApproach",
     "RabadonsDeathcap",
-    "RylaisCrystalScepter"
+    "RylaisCrystalScepter",
+    "WintersApproach"
   ],
   [
+    "AdaptiveForce",
     "CheapShot",
-    "GrislyMementos",
-    "RelentlessHunter",
-    "PresenceOfMind",
     "CoupDeGrace",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "GrislyMementos",
+    "HealthScaling",
+    "PresenceOfMind",
+    "RelentlessHunter"
   ]
 ]

@@ -1,19 +1,19 @@
 [
   [
-    "ImmortalShieldbow",
-    "RunaansHurricane",
     "GuardianAngel",
-    "YoumuusGhostblade",
-    "PhantomDancer"
+    "ImmortalShieldbow",
+    "MortalReminder",
+    "RunaansHurricane",
+    "YoumuusGhostblade"
   ],
   [
-    "AbsorbLife",
-    "LegendBloodline",
-    "CutDown",
     "AbsoluteFocus",
-    "GatheringStorm",
-    "AttackSpeed",
+    "AbsorbLife",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "CutDown",
+    "GatheringStorm",
+    "HealthScaling",
+    "LegendBloodline"
   ]
 ]

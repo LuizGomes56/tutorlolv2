@@ -1,20 +1,20 @@
 [
   [
     "BlackCleaver",
-    "LiandrysTorment",
-    "JakshoTheProtean",
-    "Thornmail",
     "DeathsDance",
-    "KaenicRookern"
+    "Hullbreaker",
+    "JakshoTheProtean",
+    "LiandrysTorment",
+    "SpiritVisage"
   ],
   [
-    "Triumph",
-    "LegendBloodline",
-    "LastStand",
-    "MagicalFootwear",
+    "AdaptiveForce",
     "ApproachVelocity",
     "AttackSpeed",
-    "AdaptiveForce",
-    "HealthScaling"
+    "HealthScaling",
+    "LastStand",
+    "LegendBloodline",
+    "MagicalFootwear",
+    "Triumph"
   ]
 ]

@@ -1,19 +1,19 @@
 [
   [
-    "MortalReminder",
     "DeathsDance",
+    "MercurialScimitar",
+    "MortalReminder",
     "PhantomDancer",
-    "YunTalWildarrows",
-    "MercurialScimitar"
+    "YunTalWildarrows"
   ],
   [
-    "Triumph",
-    "LegendBloodline",
+    "AdaptiveForce",
+    "AttackSpeed",
+    "HealthScaling",
     "LastStand",
+    "LegendBloodline",
     "SuddenImpact",
     "TreasureHunter",
-    "AttackSpeed",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Triumph"
   ]
 ]

@@ -1,19 +1,20 @@
 [
   [
-    "MortalReminder",
-    "GuardianAngel",
-    "ImmortalShieldbow",
+    "Bloodthirster",
     "FiendhunterBolts",
-    "FrozenHeart"
+    "ImmortalShieldbow",
+    "MawOfMalmortius",
+    "MortalReminder",
+    "PhantomDancer"
   ],
   [
-    "PresenceOfMind",
-    "LegendAlacrity",
-    "CutDown",
     "AbsoluteFocus",
-    "GatheringStorm",
-    "AttackSpeed",
     "AdaptiveForce",
-    "Health"
+    "AttackSpeed",
+    "CutDown",
+    "GatheringStorm",
+    "Health",
+    "LegendAlacrity",
+    "PresenceOfMind"
   ]
 ]

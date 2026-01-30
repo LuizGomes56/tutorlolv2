@@ -1,20 +1,20 @@
 [
   [
-    "MortalReminder",
-    "RapidFirecannon",
-    "WitsEnd",
+    "FiendhunterBolts",
     "HexopticsC44",
     "ImmortalShieldbow",
-    "FiendhunterBolts"
+    "MortalReminder",
+    "RapidFirecannon",
+    "WitsEnd"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
+    "AdaptiveForce",
+    "AttackSpeed",
     "CoupDeGrace",
+    "HealthScaling",
+    "LegendAlacrity",
     "SuddenImpact",
     "TreasureHunter",
-    "AttackSpeed",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Triumph"
   ]
 ]

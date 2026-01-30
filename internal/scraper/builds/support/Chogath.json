@@ -1,20 +1,20 @@
 [
   [
+    "Bandlepipes",
     "FrozenHeart",
-    "UnendingDespair",
-    "ProtoplasmHarness",
     "JakshoTheProtean",
-    "WarmogsArmor",
-    "Bandlepipes"
+    "ProtoplasmHarness",
+    "UnendingDespair",
+    "WarmogsArmor"
   ],
   [
-    "CheapShot",
-    "SixthSense",
-    "UltimateHunter",
-    "Demolish",
-    "BonePlating",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "BonePlating",
+    "CheapShot",
+    "Demolish",
+    "HealthScaling",
+    "SixthSense",
+    "UltimateHunter"
   ]
 ]

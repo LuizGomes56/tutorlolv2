@@ -1,19 +1,20 @@
 [
   [
-    "UnendingDespair",
-    "ForceOfNature",
+    "DeadMansPlate",
+    "LocketOfTheIronSolari",
+    "Morellonomicon",
+    "RanduinsOmen",
     "Thornmail",
-    "SpiritVisage",
-    "JakshoTheProtean"
+    "UnendingDespair"
   ],
   [
-    "NimbusCloak",
-    "Transcendence",
-    "Waterwalking",
-    "MagicalFootwear",
-    "CosmicInsight",
     "AbilityHaste",
     "AdaptiveForce",
-    "HealthScaling"
+    "CosmicInsight",
+    "HealthScaling",
+    "MagicalFootwear",
+    "NimbusCloak",
+    "Transcendence",
+    "Waterwalking"
   ]
 ]

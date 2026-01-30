@@ -1,20 +1,19 @@
 [
   [
-    "VoltaicCyclosword",
-    "Opportunity",
-    "MawOfMalmortius",
     "Bastionbreaker",
     "FrozenHeart",
-    "GuardianAngel"
+    "MawOfMalmortius",
+    "Opportunity",
+    "SerpentsFang",
+    "VoltaicCyclosword"
   ],
   [
+    "AdaptiveForce",
+    "BonePlating",
     "CheapShot",
+    "HealthScaling",
     "SixthSense",
     "UltimateHunter",
-    "BonePlating",
-    "Unflinching",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Unflinching"
   ]
 ]

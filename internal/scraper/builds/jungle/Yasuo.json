@@ -1,20 +1,20 @@
 [
   [
-    "MortalReminder",
-    "WitsEnd",
-    "LordDominiksRegards",
     "Bloodthirster",
+    "FiendhunterBolts",
     "KrakenSlayer",
-    "KaenicRookern"
+    "LordDominiksRegards",
+    "MortalReminder",
+    "WitsEnd"
   ],
   [
     "AbsorbLife",
-    "LegendAlacrity",
-    "LastStand",
-    "SecondWind",
-    "Overgrowth",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity",
+    "Overgrowth",
+    "SecondWind"
   ]
 ]

@@ -1,20 +1,20 @@
 [
   [
-    "SteraksGage",
     "BlackCleaver",
-    "SerpentsFang",
     "FrozenHeart",
-    "UnendingDespair",
-    "MawOfMalmortius"
+    "MawOfMalmortius",
+    "SerpentsFang",
+    "SteraksGage",
+    "TitanicHydra"
   ],
   [
-    "ShieldBash",
-    "SecondWind",
-    "Overgrowth",
-    "Triumph",
-    "LegendAlacrity",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "HealthScaling",
+    "LegendAlacrity",
+    "Overgrowth",
+    "SecondWind",
+    "ShieldBash",
+    "Triumph"
   ]
 ]

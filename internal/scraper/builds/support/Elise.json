@@ -1,20 +1,19 @@
 [
   [
-    "HextechRocketbelt",
-    "VoidStaff",
-    "Morellonomicon",
     "BansheesVeil",
     "Cryptbloom",
-    "CosmicDrive"
+    "HextechRocketbelt",
+    "LiandrysTorment",
+    "Morellonomicon",
+    "VoidStaff"
   ],
   [
-    "SuddenImpact",
-    "DeepWard",
-    "RelentlessHunter",
-    "Triumph",
+    "AdaptiveForce",
     "CoupDeGrace",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "Health"
+    "DeepWard",
+    "Health",
+    "RelentlessHunter",
+    "SuddenImpact",
+    "Triumph"
   ]
 ]

@@ -1,20 +1,19 @@
 [
   [
-    "KnightsVow",
-    "ProtoplasmHarness",
     "FrozenHeart",
-    "Redemption",
+    "KnightsVow",
     "MikaelsBlessing",
-    "RanduinsOmen"
+    "ProtoplasmHarness",
+    "RanduinsOmen",
+    "Redemption"
   ],
   [
-    "FontOfLife",
-    "BonePlating",
-    "Unflinching",
-    "HextechFlashtraption",
-    "CosmicInsight",
     "AbilityHaste",
+    "BonePlating",
+    "CosmicInsight",
+    "FontOfLife",
     "HealthScaling",
-    "HealthScaling"
+    "HextechFlashtraption",
+    "Unflinching"
   ]
 ]

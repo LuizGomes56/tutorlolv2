@@ -1,17 +1,20 @@
 [
   [
-    "SerpentsFang",
-    "DuskAndDawn",
-    "YoumuusGhostblade"
+    "DeathsDance",
+    "Eclipse",
+    "EdgeOfNight",
+    "ImmortalShieldbow",
+    "MortalReminder",
+    "SerpentsFang"
   ],
   [
+    "AdaptiveForce",
+    "AttackSpeed",
+    "GrislyMementos",
+    "HealthScaling",
+    "LegendAlacrity",
+    "RelentlessHunter",
     "SuddenImpact",
-    "SixthSense",
-    "TreasureHunter",
-    "ShieldBash",
-    "BonePlating",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "Health"
+    "Triumph"
   ]
 ]

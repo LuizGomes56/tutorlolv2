@@ -1,20 +1,20 @@
 [
   [
-    "BlackfireTorch",
-    "ZhonyasHourglass",
-    "RylaisCrystalScepter",
     "ArchangelsStaff",
+    "BlackfireTorch",
     "Morellonomicon",
-    "DuskAndDawn"
+    "RylaisCrystalScepter",
+    "Stormsurge",
+    "ZhonyasHourglass"
   ],
   [
+    "AdaptiveForce",
+    "AttackSpeed",
+    "BonePlating",
+    "HealthScaling",
     "ManaflowBand",
-    "Transcendence",
     "Scorch",
     "ShieldBash",
-    "BonePlating",
-    "AttackSpeed",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Transcendence"
   ]
 ]

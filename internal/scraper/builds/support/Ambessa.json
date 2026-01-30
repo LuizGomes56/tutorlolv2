@@ -1,20 +1,19 @@
 [
   [
     "BlackCleaver",
-    "VoltaicCyclosword",
-    "DeathsDance",
     "EndlessHunger",
     "MawOfMalmortius",
-    "SpiritVisage"
+    "SpiritVisage",
+    "SunderedSky",
+    "VoltaicCyclosword"
   ],
   [
-    "Triumph",
-    "LegendHaste",
+    "AdaptiveForce",
+    "Health",
     "LastStand",
-    "SecondWind",
+    "LegendHaste",
     "Overgrowth",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "Health"
+    "SecondWind",
+    "Triumph"
   ]
 ]

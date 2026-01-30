@@ -1,20 +1,19 @@
 [
   [
+    "MawOfMalmortius",
+    "Opportunity",
+    "SerpentsFang",
     "Stridebreaker",
-    "SteraksGage",
-    "BladeOfTheRuinedKing",
-    "YoumuusGhostblade",
-    "ProfaneHydra",
-    "Bandlepipes"
+    "SunderedSky",
+    "YoumuusGhostblade"
   ],
   [
-    "Triumph",
-    "LegendHaste",
+    "AdaptiveForce",
+    "BonePlating",
+    "HealthScaling",
     "LastStand",
-    "CheapShot",
-    "UltimateHunter",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "LegendAlacrity",
+    "Triumph",
+    "Unflinching"
   ]
 ]

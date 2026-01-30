@@ -1,20 +1,20 @@
 [
   [
+    "BlackCleaver",
+    "GuardianAngel",
     "MawOfMalmortius",
     "OverlordsBloodmail",
-    "Stridebreaker",
-    "GuardianAngel",
     "SpiritVisage",
-    "BlackCleaver"
+    "Stridebreaker"
   ],
   [
-    "Triumph",
-    "LegendHaste",
-    "CoupDeGrace",
-    "BonePlating",
-    "Revitalize",
-    "AttackSpeed",
     "AdaptiveForce",
-    "Health"
+    "AttackSpeed",
+    "BonePlating",
+    "CoupDeGrace",
+    "Health",
+    "LegendHaste",
+    "Revitalize",
+    "Triumph"
   ]
 ]

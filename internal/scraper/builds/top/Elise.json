@@ -1,18 +1,19 @@
 [
   [
-    "Stormsurge",
-    "Riftmaker",
+    "BansheesVeil",
     "LiandrysTorment",
-    "MercurialScimitar"
+    "NashorsTooth",
+    "Riftmaker",
+    "VoidStaff"
   ],
   [
     "AbsorbLife",
-    "LegendAlacrity",
+    "AdaptiveForce",
+    "AttackSpeed",
     "CutDown",
+    "LegendAlacrity",
     "ManaflowBand",
     "Scorch",
-    "AttackSpeed",
-    "AdaptiveForce",
     "TenacityAndSlowResist"
   ]
 ]

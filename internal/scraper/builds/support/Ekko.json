@@ -1,18 +1,17 @@
 [
   [
-    "ZhonyasHourglass",
     "HextechRocketbelt",
+    "Morellonomicon",
     "Stormsurge",
-    "Morellonomicon"
+    "ZhonyasHourglass"
   ],
   [
-    "SuddenImpact",
+    "AdaptiveForce",
     "DeepWard",
-    "RelentlessHunter",
-    "Transcendence",
     "GatheringStorm",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "Health"
+    "Health",
+    "RelentlessHunter",
+    "SuddenImpact",
+    "Transcendence"
   ]
 ]

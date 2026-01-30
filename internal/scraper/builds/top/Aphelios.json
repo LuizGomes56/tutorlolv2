@@ -1,20 +1,20 @@
 [
   [
-    "PhantomDancer",
-    "MortalReminder",
-    "RunaansHurricane",
-    "TheCollector",
+    "GuardianAngel",
     "MercurialScimitar",
-    "HexopticsC44"
+    "MortalReminder",
+    "PhantomDancer",
+    "RunaansHurricane",
+    "Stormrazor"
   ],
   [
-    "Triumph",
-    "LegendBloodline",
-    "CutDown",
-    "CashBack",
-    "TripleTonic",
-    "AttackSpeed",
     "AdaptiveForce",
-    "Health"
+    "AttackSpeed",
+    "CashBack",
+    "CutDown",
+    "Health",
+    "LegendBloodline",
+    "TripleTonic",
+    "Triumph"
   ]
 ]

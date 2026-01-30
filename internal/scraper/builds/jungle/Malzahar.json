@@ -1,19 +1,18 @@
 [
   [
+    "BloodlettersCurse",
     "Malignance",
-    "RabadonsDeathcap",
     "Morellonomicon",
-    "VoidStaff",
-    "BloodlettersCurse"
+    "RabadonsDeathcap",
+    "VoidStaff"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "Scorch",
-    "MagicalFootwear",
+    "AdaptiveForce",
     "CosmicInsight",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "HealthScaling",
+    "MagicalFootwear",
+    "ManaflowBand",
+    "Scorch",
+    "Transcendence"
   ]
 ]

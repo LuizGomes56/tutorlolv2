@@ -1,20 +1,19 @@
 [
   [
-    "Shadowflame",
     "Cryptbloom",
-    "LudensEcho",
     "HorizonFocus",
-    "ZhonyasHourglass",
-    "Malignance"
+    "ImperialMandate",
+    "LudensEcho",
+    "Malignance",
+    "ZhonyasHourglass"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "Scorch",
+    "AdaptiveForce",
     "CheapShot",
-    "UltimateHunter",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "HealthScaling",
+    "ManaflowBand",
+    "Scorch",
+    "Transcendence",
+    "UltimateHunter"
   ]
 ]

@@ -1,20 +1,20 @@
 [
   [
-    "HorizonFocus",
     "BansheesVeil",
-    "ZhonyasHourglass",
+    "Cryptbloom",
+    "Manamune",
     "Morellonomicon",
-    "NashorsTooth",
-    "VoidStaff"
+    "VoidStaff",
+    "ZhonyasHourglass"
   ],
   [
-    "SuddenImpact",
-    "SixthSense",
-    "TreasureHunter",
-    "Transcendence",
-    "GatheringStorm",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "GatheringStorm",
+    "HealthScaling",
+    "SixthSense",
+    "SuddenImpact",
+    "Transcendence",
+    "TreasureHunter"
   ]
 ]

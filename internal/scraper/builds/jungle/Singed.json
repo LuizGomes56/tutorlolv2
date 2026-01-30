@@ -1,17 +1,19 @@
 [
   [
-    "DeadMansPlate",
+    "Bandlepipes",
+    "BloodlettersCurse",
     "JakshoTheProtean",
-    "BloodlettersCurse"
+    "ProtoplasmHarness",
+    "Riftmaker"
   ],
   [
-    "AbsorbLife",
-    "LegendAlacrity",
-    "LastStand",
+    "AdaptiveForce",
     "Celerity",
-    "GatheringStorm",
-    "AttackSpeed",
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity",
     "MoveSpeed",
-    "TenacityAndSlowResist"
+    "NimbusCloak",
+    "Triumph"
   ]
 ]

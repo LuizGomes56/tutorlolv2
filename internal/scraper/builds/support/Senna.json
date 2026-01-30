@@ -1,20 +1,20 @@
 [
   [
-    "BlackCleaver",
-    "RapidFirecannon",
-    "Bandlepipes",
     "ArdentCenser",
+    "Bandlepipes",
+    "BlackCleaver",
     "MikaelsBlessing",
+    "RapidFirecannon",
     "SerpentsFang"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "Scorch",
-    "FontOfLife",
-    "Revitalize",
-    "AttackSpeed",
     "AdaptiveForce",
-    "Health"
+    "AttackSpeed",
+    "FontOfLife",
+    "Health",
+    "ManaflowBand",
+    "Revitalize",
+    "Scorch",
+    "Transcendence"
   ]
 ]

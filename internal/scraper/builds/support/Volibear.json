@@ -1,20 +1,20 @@
 [
   [
-    "NavoriFlickerblade",
     "DeadMansPlate",
     "DuskAndDawn",
-    "RodOfAges",
-    "JakshoTheProtean",
-    "NashorsTooth"
+    "FrozenHeart",
+    "NashorsTooth",
+    "NavoriFlickerblade",
+    "WarmogsArmor"
   ],
   [
-    "ShieldBash",
-    "SecondWind",
-    "Revitalize",
-    "PresenceOfMind",
-    "LegendHaste",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "HealthScaling",
+    "LegendHaste",
+    "PresenceOfMind",
+    "Revitalize",
+    "SecondWind",
+    "ShieldBash"
   ]
 ]

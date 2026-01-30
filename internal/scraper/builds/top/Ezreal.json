@@ -2,19 +2,19 @@
   [
     "ArchangelsStaff",
     "EndlessHunger",
+    "GuardianAngel",
     "HextechGunblade",
     "MawOfMalmortius",
-    "Terminus",
-    "GuardianAngel"
+    "SerpentsFang"
   ],
   [
-    "PresenceOfMind",
-    "LegendBloodline",
-    "CoupDeGrace",
-    "MagicalFootwear",
-    "BiscuitDelivery",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "BiscuitDelivery",
+    "CoupDeGrace",
+    "HealthScaling",
+    "LegendBloodline",
+    "MagicalFootwear",
+    "PresenceOfMind"
   ]
 ]

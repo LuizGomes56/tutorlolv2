@@ -2,17 +2,18 @@
   [
     "Bloodthirster",
     "EndlessHunger",
-    "MortalReminder",
-    "DeathsDance"
+    "HexopticsC44",
+    "MercurialScimitar",
+    "MortalReminder"
   ],
   [
-    "Triumph",
-    "LegendBloodline",
-    "LastStand",
-    "BonePlating",
-    "Revitalize",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "HealthScaling",
+    "LastStand",
+    "LegendBloodline",
+    "TasteOfBlood",
+    "TreasureHunter",
+    "Triumph"
   ]
 ]

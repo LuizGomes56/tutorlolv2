@@ -1,20 +1,19 @@
 [
   [
-    "ProfaneHydra",
-    "SerpentsFang",
+    "DeathsDance",
     "Hubris",
     "MawOfMalmortius",
     "MortalReminder",
-    "DeathsDance"
+    "ProfaneHydra",
+    "SerpentsFang"
   ],
   [
-    "SuddenImpact",
-    "GrislyMementos",
-    "TreasureHunter",
-    "Triumph",
+    "AdaptiveForce",
     "CoupDeGrace",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "GrislyMementos",
+    "HealthScaling",
+    "SuddenImpact",
+    "TreasureHunter",
+    "Triumph"
   ]
 ]

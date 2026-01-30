@@ -1,20 +1,19 @@
 [
   [
-    "SpearOfShojin",
-    "MawOfMalmortius",
-    "SerpentsFang",
     "BladeOfTheRuinedKing",
     "ChempunkChainsword",
-    "EndlessHunger"
+    "GuardianAngel",
+    "MawOfMalmortius",
+    "SerpentsFang",
+    "SpearOfShojin"
   ],
   [
-    "PresenceOfMind",
-    "LegendHaste",
+    "AdaptiveForce",
+    "HealthScaling",
     "LastStand",
-    "Transcendence",
+    "LegendHaste",
+    "PresenceOfMind",
     "Scorch",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Transcendence"
   ]
 ]

@@ -1,20 +1,19 @@
 [
   [
-    "Bandlepipes",
-    "TitanicHydra",
-    "LocketOfTheIronSolari",
     "DeadMansPlate",
-    "UnendingDespair",
-    "WarmogsArmor"
+    "LocketOfTheIronSolari",
+    "ProtoplasmHarness",
+    "RanduinsOmen",
+    "TitanicHydra",
+    "UnendingDespair"
   ],
   [
-    "ShieldBash",
-    "SecondWind",
-    "Revitalize",
-    "CheapShot",
-    "UltimateHunter",
     "AttackSpeed",
+    "CheapShot",
     "HealthScaling",
-    "HealthScaling"
+    "Revitalize",
+    "SecondWind",
+    "ShieldBash",
+    "UltimateHunter"
   ]
 ]

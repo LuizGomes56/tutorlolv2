@@ -1,20 +1,19 @@
 [
   [
-    "MawOfMalmortius",
-    "SteraksGage",
-    "SerpentsFang",
     "BlackCleaver",
-    "VoltaicCyclosword",
-    "ChempunkChainsword"
+    "ChempunkChainsword",
+    "MawOfMalmortius",
+    "SerpentsFang",
+    "SteraksGage",
+    "VoltaicCyclosword"
   ],
   [
-    "ShieldBash",
-    "SecondWind",
-    "Overgrowth",
-    "MagicalFootwear",
+    "AdaptiveForce",
     "BiscuitDelivery",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "Health"
+    "Health",
+    "MagicalFootwear",
+    "Overgrowth",
+    "SecondWind",
+    "ShieldBash"
   ]
 ]

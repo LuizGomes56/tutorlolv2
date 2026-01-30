@@ -1,20 +1,20 @@
 [
   [
-    "WitsEnd",
-    "KrakenSlayer",
     "FiendhunterBolts",
-    "RanduinsOmen",
+    "KrakenSlayer",
     "MercurialScimitar",
-    "TrinityForce"
+    "RanduinsOmen",
+    "TrinityForce",
+    "WitsEnd"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "CoupDeGrace",
-    "Conditioning",
-    "Overgrowth",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "Conditioning",
+    "CoupDeGrace",
+    "HealthScaling",
+    "LegendAlacrity",
+    "Overgrowth",
+    "Triumph"
   ]
 ]

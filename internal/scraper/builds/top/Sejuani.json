@@ -1,20 +1,19 @@
 [
   [
-    "UnendingDespair",
-    "Bandlepipes",
-    "WintersApproach",
     "AbyssalMask",
-    "RylaisCrystalScepter",
-    "RanduinsOmen"
+    "Bandlepipes",
+    "KaenicRookern",
+    "RanduinsOmen",
+    "UnendingDespair",
+    "WintersApproach"
   ],
   [
-    "Demolish",
-    "SecondWind",
-    "Overgrowth",
-    "ManaflowBand",
-    "Scorch",
     "AttackSpeed",
+    "Demolish",
     "HealthScaling",
-    "HealthScaling"
+    "ManaflowBand",
+    "Overgrowth",
+    "Scorch",
+    "SecondWind"
   ]
 ]

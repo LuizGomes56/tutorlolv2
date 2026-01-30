@@ -1,20 +1,20 @@
 [
   [
-    "TheCollector",
-    "MortalReminder",
     "Bloodthirster",
-    "YunTalWildarrows",
+    "Hubris",
+    "MercurialScimitar",
+    "MortalReminder",
     "PhantomDancer",
-    "MercurialScimitar"
+    "YunTalWildarrows"
   ],
   [
-    "PresenceOfMind",
-    "LegendBloodline",
-    "CoupDeGrace",
     "AbsoluteFocus",
-    "GatheringStorm",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "CoupDeGrace",
+    "GatheringStorm",
+    "HealthScaling",
+    "LegendBloodline",
+    "PresenceOfMind"
   ]
 ]

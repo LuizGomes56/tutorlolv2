@@ -1,20 +1,20 @@
 [
   [
-    "MortalReminder",
+    "BlackCleaver",
     "LordDominiksRegards",
-    "SpearOfShojin",
-    "RapidFirecannon",
     "MawOfMalmortius",
-    "BlackCleaver"
+    "MortalReminder",
+    "RapidFirecannon",
+    "SpearOfShojin"
   ],
   [
-    "PresenceOfMind",
-    "LegendAlacrity",
-    "CutDown",
-    "CashBack",
-    "TripleTonic",
-    "AttackSpeed",
     "AdaptiveForce",
-    "Health"
+    "AttackSpeed",
+    "CashBack",
+    "CutDown",
+    "Health",
+    "LegendAlacrity",
+    "PresenceOfMind",
+    "TripleTonic"
   ]
 ]

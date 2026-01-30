@@ -1,20 +1,19 @@
 [
   [
+    "CosmicDrive",
+    "Morellonomicon",
+    "Riftmaker",
     "RodOfAges",
     "Shadowflame",
-    "Riftmaker",
-    "VoidStaff",
-    "Morellonomicon",
-    "CosmicDrive"
+    "ZhonyasHourglass"
   ],
   [
-    "PresenceOfMind",
-    "LegendHaste",
+    "AdaptiveForce",
+    "HealthScaling",
     "LastStand",
+    "LegendHaste",
     "ManaflowBand",
-    "Transcendence",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "PresenceOfMind",
+    "Transcendence"
   ]
 ]

@@ -1,20 +1,20 @@
 [
   [
-    "RapidFirecannon",
-    "Hubris",
+    "ChempunkChainsword",
     "HexopticsC44",
+    "Hubris",
     "MortalReminder",
-    "RunaansHurricane",
+    "RapidFirecannon",
     "YoumuusGhostblade"
   ],
   [
-    "PresenceOfMind",
-    "LegendAlacrity",
-    "LastStand",
     "AbsoluteFocus",
-    "GatheringStorm",
-    "AttackSpeed",
     "AdaptiveForce",
-    "Health"
+    "AttackSpeed",
+    "GatheringStorm",
+    "Health",
+    "LastStand",
+    "LegendAlacrity",
+    "PresenceOfMind"
   ]
 ]

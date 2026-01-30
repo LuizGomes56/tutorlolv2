@@ -1,20 +1,20 @@
 [
   [
-    "Stormsurge",
-    "Malignance",
-    "ZhonyasHourglass",
-    "Shadowflame",
     "ExperimentalHexplate",
-    "BansheesVeil"
+    "HorizonFocus",
+    "Malignance",
+    "RabadonsDeathcap",
+    "Shadowflame",
+    "ZhonyasHourglass"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
+    "AdaptiveForce",
+    "AttackSpeed",
     "CoupDeGrace",
+    "HealthScaling",
+    "LegendAlacrity",
     "TasteOfBlood",
     "TreasureHunter",
-    "AttackSpeed",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Triumph"
   ]
 ]

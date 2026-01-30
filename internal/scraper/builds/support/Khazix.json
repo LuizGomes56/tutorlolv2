@@ -1,20 +1,19 @@
 [
   [
-    "Opportunity",
-    "Bastionbreaker",
-    "TheCollector",
-    "SerpentsFang",
     "AxiomArc",
-    "Manamune"
+    "Bastionbreaker",
+    "Manamune",
+    "SerpentsFang",
+    "SeryldasGrudge",
+    "TheCollector"
   ],
   [
-    "SuddenImpact",
-    "GrislyMementos",
-    "TreasureHunter",
     "AbsoluteFocus",
+    "AdaptiveForce",
     "GatheringStorm",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "GrislyMementos",
+    "HealthScaling",
+    "SuddenImpact",
+    "TreasureHunter"
   ]
 ]

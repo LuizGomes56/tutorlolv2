@@ -1,19 +1,20 @@
 [
   [
-    "UnendingDespair",
-    "LiandrysTorment",
-    "ProtoplasmHarness",
-    "RanduinsOmen",
-    "ForceOfNature"
+    "AbyssalMask",
+    "JakshoTheProtean",
+    "KaenicRookern",
+    "SpiritVisage",
+    "SunfireAegis",
+    "Thornmail"
   ],
   [
-    "ShieldBash",
-    "SecondWind",
-    "Revitalize",
-    "ManaflowBand",
-    "Transcendence",
     "AttackSpeed",
     "HealthScaling",
-    "HealthScaling"
+    "LegendHaste",
+    "Revitalize",
+    "SecondWind",
+    "ShieldBash",
+    "TenacityAndSlowResist",
+    "Triumph"
   ]
 ]

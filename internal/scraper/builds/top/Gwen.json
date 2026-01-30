@@ -1,20 +1,20 @@
 [
   [
-    "Shadowflame",
-    "VoidStaff",
-    "Morellonomicon",
-    "HextechGunblade",
     "BansheesVeil",
-    "CosmicDrive"
+    "CosmicDrive",
+    "HextechGunblade",
+    "Morellonomicon",
+    "Shadowflame",
+    "VoidStaff"
   ],
   [
-    "PresenceOfMind",
-    "LegendAlacrity",
-    "LastStand",
-    "BonePlating",
-    "Unflinching",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "BonePlating",
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity",
+    "PresenceOfMind",
+    "Unflinching"
   ]
 ]

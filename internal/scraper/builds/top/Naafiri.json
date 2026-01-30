@@ -1,20 +1,19 @@
 [
   [
-    "Bastionbreaker",
-    "SerpentsFang",
     "AxiomArc",
-    "EndlessHunger",
+    "Bastionbreaker",
     "DeathsDance",
-    "Eclipse"
+    "EndlessHunger",
+    "MawOfMalmortius",
+    "SerpentsFang"
   ],
   [
-    "SuddenImpact",
-    "SixthSense",
-    "TreasureHunter",
-    "Transcendence",
+    "AdaptiveForce",
+    "HealthScaling",
     "Scorch",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "SixthSense",
+    "SuddenImpact",
+    "Transcendence",
+    "TreasureHunter"
   ]
 ]

@@ -1,20 +1,19 @@
 [
   [
+    "GuardianAngel",
     "HexopticsC44",
-    "YunTalWildarrows",
+    "Hubris",
     "MortalReminder",
-    "ImmortalShieldbow",
-    "PhantomDancer",
-    "Hubris"
+    "Stormrazor"
   ],
   [
-    "PresenceOfMind",
-    "LegendBloodline",
-    "CoupDeGrace",
     "AbsoluteFocus",
-    "GatheringStorm",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "CoupDeGrace",
+    "GatheringStorm",
+    "HealthScaling",
+    "LegendBloodline",
+    "PresenceOfMind"
   ]
 ]

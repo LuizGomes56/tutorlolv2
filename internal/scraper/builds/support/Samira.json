@@ -1,20 +1,20 @@
 [
   [
-    "ImmortalShieldbow",
-    "Bloodthirster",
-    "MortalReminder",
     "BlackCleaver",
-    "FiendhunterBolts",
-    "MawOfMalmortius"
+    "EndlessHunger",
+    "ImmortalShieldbow",
+    "MawOfMalmortius",
+    "MortalReminder",
+    "SerpentsFang"
   ],
   [
-    "Triumph",
-    "LegendBloodline",
+    "AdaptiveForce",
+    "AttackSpeed",
+    "HealthScaling",
     "LastStand",
+    "LegendBloodline",
     "TasteOfBlood",
     "TreasureHunter",
-    "AttackSpeed",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Triumph"
   ]
 ]

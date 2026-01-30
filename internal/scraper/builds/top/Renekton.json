@@ -1,20 +1,19 @@
 [
   [
-    "SpearOfShojin",
-    "MawOfMalmortius",
     "EndlessHunger",
-    "GuardianAngel",
-    "Stridebreaker",
-    "RanduinsOmen"
+    "MawOfMalmortius",
+    "RanduinsOmen",
+    "SpearOfShojin",
+    "SpiritVisage",
+    "Stridebreaker"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "LastStand",
+    "AdaptiveForce",
     "BonePlating",
-    "Unflinching",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity",
+    "Triumph",
+    "Unflinching"
   ]
 ]

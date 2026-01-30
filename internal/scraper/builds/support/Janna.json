@@ -1,20 +1,20 @@
 [
   [
     "ArdentCenser",
-    "MikaelsBlessing",
     "Bandlepipes",
-    "ImperialMandate",
     "EchoesOfHelia",
-    "LocketOfTheIronSolari"
+    "ImperialMandate",
+    "MikaelsBlessing",
+    "StaffOfFlowingWater"
   ],
   [
-    "ManaflowBand",
-    "Celerity",
-    "GatheringStorm",
-    "FontOfLife",
-    "Revitalize",
     "AdaptiveForce",
+    "Celerity",
+    "FontOfLife",
+    "GatheringStorm",
+    "HealthScaling",
+    "ManaflowBand",
     "MoveSpeed",
-    "HealthScaling"
+    "Revitalize"
   ]
 ]

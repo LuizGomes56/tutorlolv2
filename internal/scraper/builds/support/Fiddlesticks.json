@@ -1,20 +1,19 @@
 [
   [
-    "Shadowflame",
-    "Morellonomicon",
-    "HextechRocketbelt",
     "BansheesVeil",
     "BloodlettersCurse",
-    "VoidStaff"
+    "HextechRocketbelt",
+    "RabadonsDeathcap",
+    "RylaisCrystalScepter",
+    "Shadowflame"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "Scorch",
+    "AdaptiveForce",
     "CheapShot",
-    "UltimateHunter",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "HealthScaling",
+    "ManaflowBand",
+    "Scorch",
+    "Transcendence",
+    "UltimateHunter"
   ]
 ]

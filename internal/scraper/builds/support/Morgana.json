@@ -1,20 +1,19 @@
 [
   [
     "BlackfireTorch",
-    "ImperialMandate",
-    "Redemption",
-    "RabadonsDeathcap",
     "BloodlettersCurse",
-    "Shadowflame"
+    "HorizonFocus",
+    "ImperialMandate",
+    "RabadonsDeathcap",
+    "Redemption"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "Scorch",
+    "AdaptiveForce",
     "CheapShot",
-    "UltimateHunter",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "HealthScaling",
+    "ManaflowBand",
+    "Scorch",
+    "Transcendence",
+    "UltimateHunter"
   ]
 ]

@@ -1,19 +1,20 @@
 [
   [
-    "YoumuusGhostblade",
-    "Bastionbreaker",
-    "MortalReminder",
     "GuardianAngel",
-    "MawOfMalmortius"
+    "MawOfMalmortius",
+    "RanduinsOmen",
+    "SpearOfShojin",
+    "Stridebreaker",
+    "TitanicHydra"
   ],
   [
-    "MagicalFootwear",
-    "TripleTonic",
-    "JackOfAllTrades",
-    "SuddenImpact",
-    "TreasureHunter",
-    "AttackSpeed",
     "AdaptiveForce",
-    "TenacityAndSlowResist"
+    "AttackSpeed",
+    "BiscuitDelivery",
+    "CosmicInsight",
+    "CoupDeGrace",
+    "HealthScaling",
+    "LegendAlacrity",
+    "PresenceOfMind"
   ]
 ]

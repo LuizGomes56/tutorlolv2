@@ -1,20 +1,20 @@
 [
   [
-    "MoonstoneRenewer",
-    "Redemption",
-    "NashorsTooth",
     "Bandlepipes",
+    "DuskAndDawn",
+    "MoonstoneRenewer",
     "Morellonomicon",
-    "Dawncore"
+    "NashorsTooth",
+    "Redemption"
   ],
   [
-    "Triumph",
-    "LegendHaste",
-    "CutDown",
-    "CheapShot",
-    "UltimateHunter",
     "AbilityHaste",
     "AdaptiveForce",
-    "HealthScaling"
+    "CheapShot",
+    "CutDown",
+    "HealthScaling",
+    "LegendHaste",
+    "Triumph",
+    "UltimateHunter"
   ]
 ]

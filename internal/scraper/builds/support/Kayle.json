@@ -1,17 +1,17 @@
 [
   [
-    "ZekesConvergence",
     "ArdentCenser",
-    "ShurelyasBattlesong"
+    "ShurelyasBattlesong",
+    "ZekesConvergence"
   ],
   [
-    "Demolish",
-    "BonePlating",
-    "Revitalize",
-    "MagicalFootwear",
-    "BiscuitDelivery",
     "AbilityHaste",
+    "BiscuitDelivery",
+    "BonePlating",
+    "Demolish",
+    "Health",
     "HealthScaling",
-    "Health"
+    "MagicalFootwear",
+    "Revitalize"
   ]
 ]

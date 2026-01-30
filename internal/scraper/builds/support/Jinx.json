@@ -1,19 +1,20 @@
 [
   [
-    "PhantomDancer",
     "Bloodthirster",
     "HexopticsC44",
     "MortalReminder",
-    "RapidFirecannon"
+    "PhantomDancer",
+    "RapidFirecannon",
+    "TheCollector"
   ],
   [
-    "PresenceOfMind",
-    "LegendBloodline",
-    "CoupDeGrace",
     "AbsoluteFocus",
-    "GatheringStorm",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "CoupDeGrace",
+    "GatheringStorm",
+    "HealthScaling",
+    "LegendBloodline",
+    "PresenceOfMind"
   ]
 ]

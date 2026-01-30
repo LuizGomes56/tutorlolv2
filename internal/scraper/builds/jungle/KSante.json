@@ -1,20 +1,19 @@
 [
   [
-    "Thornmail",
-    "SpiritVisage",
-    "ProtoplasmHarness",
-    "SunfireAegis",
     "FrozenHeart",
-    "HollowRadiance"
+    "HollowRadiance",
+    "ProtoplasmHarness",
+    "SpiritVisage",
+    "SunfireAegis",
+    "Thornmail"
   ],
   [
-    "ShieldBash",
-    "SecondWind",
-    "Overgrowth",
-    "Triumph",
-    "LastStand",
     "AttackSpeed",
     "HealthScaling",
-    "HealthScaling"
+    "LastStand",
+    "Overgrowth",
+    "SecondWind",
+    "ShieldBash",
+    "Triumph"
   ]
 ]

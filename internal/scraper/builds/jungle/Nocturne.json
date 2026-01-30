@@ -1,20 +1,20 @@
 [
   [
-    "SteraksGage",
-    "MawOfMalmortius",
     "AxiomArc",
-    "SerpentsFang",
     "Eclipse",
-    "RanduinsOmen"
+    "MawOfMalmortius",
+    "RanduinsOmen",
+    "SerpentsFang",
+    "SteraksGage"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "LastStand",
-    "GrislyMementos",
-    "UltimateHunter",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "GrislyMementos",
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity",
+    "Triumph",
+    "UltimateHunter"
   ]
 ]

@@ -1,20 +1,19 @@
 [
   [
-    "Shadowflame",
     "BansheesVeil",
-    "VoidStaff",
-    "Morellonomicon",
+    "Cryptbloom",
     "HorizonFocus",
-    "Cryptbloom"
+    "Morellonomicon",
+    "Shadowflame",
+    "VoidStaff"
   ],
   [
-    "SuddenImpact",
-    "GrislyMementos",
-    "RelentlessHunter",
-    "Transcendence",
+    "AdaptiveForce",
     "GatheringStorm",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "GrislyMementos",
+    "HealthScaling",
+    "RelentlessHunter",
+    "SuddenImpact",
+    "Transcendence"
   ]
 ]

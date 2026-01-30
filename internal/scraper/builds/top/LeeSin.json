@@ -1,20 +1,20 @@
 [
   [
     "BlackCleaver",
-    "SunderedSky",
-    "SteraksGage",
     "Eclipse",
+    "RanduinsOmen",
     "SpiritVisage",
-    "SpearOfShojin"
+    "SteraksGage",
+    "SunderedSky"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "LastStand",
-    "ShieldBash",
-    "Revitalize",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity",
+    "Revitalize",
+    "ShieldBash",
+    "Triumph"
   ]
 ]

@@ -1,20 +1,20 @@
 [
   [
+    "LordDominiksRegards",
+    "MawOfMalmortius",
     "MortalReminder",
     "RanduinsOmen",
     "SunderedSky",
-    "VoltaicCyclosword",
-    "MawOfMalmortius",
-    "SerpentsFang"
+    "VoltaicCyclosword"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "LastStand",
-    "Demolish",
-    "BonePlating",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "BonePlating",
+    "Demolish",
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity",
+    "Triumph"
   ]
 ]

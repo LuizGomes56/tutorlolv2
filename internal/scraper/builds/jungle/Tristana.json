@@ -1,20 +1,20 @@
 [
   [
-    "YunTalWildarrows",
+    "BladeOfTheRuinedKing",
+    "EdgeOfNight",
+    "HexopticsC44",
     "KrakenSlayer",
     "MortalReminder",
-    "MawOfMalmortius",
-    "PhantomDancer",
-    "GuardianAngel"
+    "TheCollector"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
+    "AdaptiveForce",
+    "AttackSpeed",
     "CoupDeGrace",
+    "HealthScaling",
+    "LegendAlacrity",
     "TasteOfBlood",
     "TreasureHunter",
-    "AttackSpeed",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Triumph"
   ]
 ]

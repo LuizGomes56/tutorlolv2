@@ -1,20 +1,20 @@
 [
   [
-    "OverlordsBloodmail",
-    "RanduinsOmen",
-    "JakshoTheProtean",
+    "BlackCleaver",
     "DeathsDance",
     "Hullbreaker",
-    "UnendingDespair"
+    "JakshoTheProtean",
+    "OverlordsBloodmail",
+    "Thornmail"
   ],
   [
-    "Demolish",
-    "SecondWind",
-    "Overgrowth",
-    "MagicalFootwear",
-    "BiscuitDelivery",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "BiscuitDelivery",
+    "Demolish",
+    "HealthScaling",
+    "MagicalFootwear",
+    "Overgrowth",
+    "SecondWind"
   ]
 ]

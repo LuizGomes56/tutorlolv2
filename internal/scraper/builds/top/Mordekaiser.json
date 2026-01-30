@@ -1,20 +1,20 @@
 [
   [
+    "DuskAndDawn",
     "ExperimentalHexplate",
-    "ZhonyasHourglass",
+    "HextechGunblade",
     "JakshoTheProtean",
     "RanduinsOmen",
-    "DuskAndDawn",
-    "HextechGunblade"
+    "ZhonyasHourglass"
   ],
   [
-    "Triumph",
-    "LegendHaste",
-    "LastStand",
-    "BonePlating",
-    "Revitalize",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "BonePlating",
+    "HealthScaling",
+    "LastStand",
+    "LegendHaste",
+    "Revitalize",
+    "Triumph"
   ]
 ]

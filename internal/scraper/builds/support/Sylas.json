@@ -1,20 +1,19 @@
 [
   [
-    "Stormsurge",
-    "Riftmaker",
-    "Morellonomicon",
-    "LichBane",
+    "BloodlettersCurse",
     "CosmicDrive",
-    "BloodlettersCurse"
+    "LichBane",
+    "Morellonomicon",
+    "Riftmaker",
+    "Stormsurge"
   ],
   [
-    "SuddenImpact",
+    "AdaptiveForce",
     "GrislyMementos",
+    "HealthScaling",
     "RelentlessHunter",
-    "Transcendence",
     "Scorch",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "SuddenImpact",
+    "Transcendence"
   ]
 ]

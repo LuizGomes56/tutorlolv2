@@ -1,20 +1,20 @@
 [
   [
-    "RunaansHurricane",
-    "PhantomDancer",
-    "MortalReminder",
-    "Bloodthirster",
     "GuardianAngel",
-    "BladeOfTheRuinedKing"
+    "ImmortalShieldbow",
+    "LordDominiksRegards",
+    "MercurialScimitar",
+    "PhantomDancer",
+    "RunaansHurricane"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "CutDown",
-    "MagicalFootwear",
-    "BiscuitDelivery",
-    "AttackSpeed",
     "AdaptiveForce",
-    "Health"
+    "AttackSpeed",
+    "CashBack",
+    "CutDown",
+    "Health",
+    "LegendAlacrity",
+    "TripleTonic",
+    "Triumph"
   ]
 ]

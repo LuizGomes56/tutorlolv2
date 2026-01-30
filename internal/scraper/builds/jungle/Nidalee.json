@@ -1,20 +1,20 @@
 [
   [
     "BansheesVeil",
-    "Stormsurge",
+    "Cryptbloom",
+    "HextechRocketbelt",
     "HorizonFocus",
     "LiandrysTorment",
-    "Cryptbloom",
-    "HextechRocketbelt"
+    "Stormsurge"
   ],
   [
-    "SuddenImpact",
-    "GrislyMementos",
-    "TreasureHunter",
-    "Transcendence",
-    "Waterwalking",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "GrislyMementos",
+    "HealthScaling",
+    "SuddenImpact",
+    "Transcendence",
+    "TreasureHunter",
+    "Waterwalking"
   ]
 ]

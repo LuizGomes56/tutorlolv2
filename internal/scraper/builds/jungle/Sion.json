@@ -1,20 +1,20 @@
 [
   [
-    "Opportunity",
+    "Bastionbreaker",
     "DeadMansPlate",
-    "InfinityEdge",
+    "EdgeOfNight",
     "MortalReminder",
-    "KaenicRookern",
-    "TitanicHydra"
+    "Opportunity",
+    "SerpentsFang"
   ],
   [
-    "ManaflowBand",
     "AbsoluteFocus",
-    "GatheringStorm",
-    "Demolish",
-    "Conditioning",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "Conditioning",
+    "Demolish",
+    "GatheringStorm",
+    "HealthScaling",
+    "ManaflowBand"
   ]
 ]

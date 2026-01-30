@@ -1,20 +1,19 @@
 [
   [
-    "HorizonFocus",
-    "Morellonomicon",
     "ArchangelsStaff",
-    "RylaisCrystalScepter",
+    "HorizonFocus",
     "RabadonsDeathcap",
-    "Stormsurge"
+    "RylaisCrystalScepter",
+    "VoidStaff",
+    "ZhonyasHourglass"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "Scorch",
-    "PresenceOfMind",
+    "AdaptiveForce",
     "CoupDeGrace",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "HealthScaling",
+    "ManaflowBand",
+    "PresenceOfMind",
+    "Scorch",
+    "Transcendence"
   ]
 ]

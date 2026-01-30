@@ -1,20 +1,20 @@
 [
   [
+    "ChempunkChainsword",
     "EchoesOfHelia",
+    "LocketOfTheIronSolari",
     "Manamune",
     "SerpentsFang",
-    "UmbralGlaive",
-    "ChempunkChainsword",
-    "LocketOfTheIronSolari"
+    "UmbralGlaive"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "Scorch",
-    "CheapShot",
-    "UltimateHunter",
     "AbilityHaste",
     "AdaptiveForce",
-    "HealthScaling"
+    "CheapShot",
+    "HealthScaling",
+    "ManaflowBand",
+    "Scorch",
+    "Transcendence",
+    "UltimateHunter"
   ]
 ]

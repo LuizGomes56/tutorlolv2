@@ -1,20 +1,20 @@
 [
   [
-    "KaenicRookern",
-    "RanduinsOmen",
     "FrozenHeart",
+    "KaenicRookern",
     "ProtoplasmHarness",
+    "RanduinsOmen",
     "UnendingDespair",
     "ZhonyasHourglass"
   ],
   [
-    "Triumph",
-    "LegendHaste",
-    "LastStand",
-    "CheapShot",
-    "UltimateHunter",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "CheapShot",
+    "HealthScaling",
+    "LastStand",
+    "LegendHaste",
+    "Triumph",
+    "UltimateHunter"
   ]
 ]

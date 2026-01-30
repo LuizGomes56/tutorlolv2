@@ -1,20 +1,19 @@
 [
   [
-    "CosmicDrive",
-    "VoidStaff",
-    "BloodlettersCurse",
     "BansheesVeil",
+    "BloodlettersCurse",
+    "CosmicDrive",
     "DuskAndDawn",
-    "Morellonomicon"
+    "Morellonomicon",
+    "VoidStaff"
   ],
   [
-    "Triumph",
-    "LegendHaste",
-    "LastStand",
-    "MagicalFootwear",
+    "AdaptiveForce",
     "CosmicInsight",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "HealthScaling",
+    "LastStand",
+    "LegendHaste",
+    "MagicalFootwear",
+    "Triumph"
   ]
 ]

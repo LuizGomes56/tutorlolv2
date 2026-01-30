@@ -1,20 +1,20 @@
 [
   [
-    "KrakenSlayer",
-    "SteraksGage",
     "EndlessHunger",
     "FrozenHeart",
-    "SunderedSky",
-    "RanduinsOmen"
+    "KrakenSlayer",
+    "RanduinsOmen",
+    "SteraksGage",
+    "SunderedSky"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "LastStand",
-    "BiscuitDelivery",
-    "JackOfAllTrades",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "BiscuitDelivery",
+    "HealthScaling",
+    "JackOfAllTrades",
+    "LastStand",
+    "LegendAlacrity",
+    "Triumph"
   ]
 ]

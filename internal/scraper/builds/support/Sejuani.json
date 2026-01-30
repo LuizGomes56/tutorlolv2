@@ -1,20 +1,19 @@
 [
   [
-    "ProtoplasmHarness",
-    "ZekesConvergence",
     "Heartsteel",
-    "KnightsVow",
     "KaenicRookern",
-    "MikaelsBlessing"
+    "MikaelsBlessing",
+    "RanduinsOmen",
+    "Thornmail",
+    "ZekesConvergence"
   ],
   [
-    "FontOfLife",
-    "Conditioning",
-    "Overgrowth",
-    "CheapShot",
-    "UltimateHunter",
     "AttackSpeed",
+    "CheapShot",
+    "Conditioning",
+    "FontOfLife",
     "HealthScaling",
-    "HealthScaling"
+    "Overgrowth",
+    "UltimateHunter"
   ]
 ]

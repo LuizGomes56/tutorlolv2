@@ -1,20 +1,20 @@
 [
   [
-    "Stormsurge",
     "BansheesVeil",
+    "Cryptbloom",
     "HextechRocketbelt",
-    "NashorsTooth",
     "Morellonomicon",
-    "Cryptbloom"
+    "NashorsTooth",
+    "Stormsurge"
   ],
   [
-    "SuddenImpact",
-    "GrislyMementos",
-    "TreasureHunter",
-    "MagicalFootwear",
-    "CosmicInsight",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "CosmicInsight",
+    "GrislyMementos",
+    "HealthScaling",
+    "MagicalFootwear",
+    "SuddenImpact",
+    "TreasureHunter"
   ]
 ]

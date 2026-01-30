@@ -2,19 +2,19 @@
   [
     "EndlessHunger",
     "MawOfMalmortius",
-    "SpiritVisage",
     "OverlordsBloodmail",
-    "Stridebreaker",
-    "RanduinsOmen"
+    "RanduinsOmen",
+    "SpiritVisage",
+    "Stridebreaker"
   ],
   [
-    "Triumph",
-    "LegendHaste",
-    "CoupDeGrace",
-    "MagicalFootwear",
-    "CosmicInsight",
-    "AttackSpeed",
     "AdaptiveForce",
-    "Health"
+    "AttackSpeed",
+    "CosmicInsight",
+    "CoupDeGrace",
+    "Health",
+    "LegendHaste",
+    "MagicalFootwear",
+    "Triumph"
   ]
 ]

@@ -1,20 +1,19 @@
 [
   [
-    "LichBane",
-    "CosmicDrive",
     "BloodlettersCurse",
+    "CosmicDrive",
+    "LichBane",
     "Morellonomicon",
-    "Stormsurge",
-    "KaenicRookern"
+    "WintersApproach",
+    "ZhonyasHourglass"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "Scorch",
+    "AdaptiveForce",
     "BiscuitDelivery",
     "CosmicInsight",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "HealthScaling",
+    "ManaflowBand",
+    "Scorch",
+    "Transcendence"
   ]
 ]

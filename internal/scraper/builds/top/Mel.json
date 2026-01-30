@@ -1,20 +1,19 @@
 [
   [
-    "ZhonyasHourglass",
-    "Cryptbloom",
+    "BansheesVeil",
+    "HorizonFocus",
     "LiandrysTorment",
     "Morellonomicon",
-    "BansheesVeil",
-    "LudensEcho"
+    "ZhonyasHourglass"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "Scorch",
-    "PresenceOfMind",
-    "CoupDeGrace",
     "AbilityHaste",
     "AdaptiveForce",
-    "HealthScaling"
+    "CoupDeGrace",
+    "HealthScaling",
+    "ManaflowBand",
+    "PresenceOfMind",
+    "Scorch",
+    "Transcendence"
   ]
 ]

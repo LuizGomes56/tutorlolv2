@@ -1,20 +1,20 @@
 [
   [
-    "MortalReminder",
+    "Bandlepipes",
     "BlackCleaver",
     "GuardianAngel",
+    "MortalReminder",
     "PhantomDancer",
-    "YunTalWildarrows",
-    "Bandlepipes"
+    "YunTalWildarrows"
   ],
   [
-    "PresenceOfMind",
-    "LegendAlacrity",
-    "CutDown",
-    "NimbusCloak",
-    "Celerity",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "Celerity",
+    "CutDown",
+    "HealthScaling",
+    "LegendAlacrity",
+    "NimbusCloak",
+    "PresenceOfMind"
   ]
 ]

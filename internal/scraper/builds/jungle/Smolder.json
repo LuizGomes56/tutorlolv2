@@ -1,20 +1,20 @@
 [
   [
-    "LordDominiksRegards",
-    "MortalReminder",
-    "Bloodthirster",
+    "EndlessHunger",
+    "GuardianAngel",
     "ImmortalShieldbow",
-    "Stormrazor",
-    "Manamune"
+    "InfinityEdge",
+    "MortalReminder",
+    "SeryldasGrudge"
   ],
   [
-    "PresenceOfMind",
-    "LegendHaste",
-    "CoupDeGrace",
-    "Transcendence",
-    "GatheringStorm",
-    "AttackSpeed",
     "AdaptiveForce",
-    "Health"
+    "AttackSpeed",
+    "CoupDeGrace",
+    "GatheringStorm",
+    "Health",
+    "LegendHaste",
+    "PresenceOfMind",
+    "Transcendence"
   ]
 ]

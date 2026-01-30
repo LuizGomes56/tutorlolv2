@@ -1,19 +1,20 @@
 [
   [
+    "GuardianAngel",
     "HexopticsC44",
+    "ImmortalShieldbow",
     "MortalReminder",
-    "MawOfMalmortius",
-    "Stormrazor",
-    "GuardianAngel"
+    "SerpentsFang",
+    "Stormrazor"
   ],
   [
-    "PresenceOfMind",
-    "LegendBloodline",
-    "CoupDeGrace",
     "AbsoluteFocus",
-    "GatheringStorm",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "CoupDeGrace",
+    "GatheringStorm",
+    "HealthScaling",
+    "LegendBloodline",
+    "PresenceOfMind"
   ]
 ]

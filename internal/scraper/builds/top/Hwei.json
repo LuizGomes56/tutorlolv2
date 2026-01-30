@@ -1,20 +1,20 @@
 [
   [
     "BloodlettersCurse",
-    "Morellonomicon",
-    "HorizonFocus",
-    "VoidStaff",
     "Cryptbloom",
-    "LudensEcho"
+    "HorizonFocus",
+    "LudensEcho",
+    "Morellonomicon",
+    "VoidStaff"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "Scorch",
-    "LegendHaste",
-    "CutDown",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "CutDown",
+    "HealthScaling",
+    "LegendHaste",
+    "ManaflowBand",
+    "Scorch",
+    "Transcendence"
   ]
 ]

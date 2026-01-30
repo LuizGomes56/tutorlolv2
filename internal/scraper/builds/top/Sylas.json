@@ -1,20 +1,19 @@
 [
   [
-    "CosmicDrive",
     "BloodlettersCurse",
-    "VoidStaff",
+    "CosmicDrive",
+    "Cryptbloom",
     "DuskAndDawn",
-    "HextechGunblade",
-    "Morellonomicon"
+    "Morellonomicon",
+    "VoidStaff"
   ],
   [
-    "PresenceOfMind",
-    "LegendHaste",
+    "AdaptiveForce",
+    "HealthScaling",
     "LastStand",
+    "LegendHaste",
+    "PresenceOfMind",
     "SecondWind",
-    "Unflinching",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Unflinching"
   ]
 ]

@@ -1,20 +1,19 @@
 [
   [
-    "HorizonFocus",
-    "TheCollector",
-    "ZhonyasHourglass",
-    "LudensEcho",
     "BloodlettersCurse",
-    "BansheesVeil"
+    "HorizonFocus",
+    "ImperialMandate",
+    "LudensEcho",
+    "TheCollector",
+    "ZhonyasHourglass"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "Scorch",
+    "AdaptiveForce",
     "CheapShot",
-    "UltimateHunter",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "Health"
+    "Health",
+    "ManaflowBand",
+    "Scorch",
+    "Transcendence",
+    "UltimateHunter"
   ]
 ]

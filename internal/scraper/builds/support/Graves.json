@@ -1,19 +1,20 @@
 [
   [
-    "LiandrysTorment",
     "BlackfireTorch",
+    "LiandrysTorment",
+    "RabadonsDeathcap",
     "RylaisCrystalScepter",
-    "ZhonyasHourglass",
-    "Bandlepipes"
+    "Stormsurge",
+    "ZhonyasHourglass"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "Scorch",
-    "CheapShot",
-    "SixthSense",
     "AbilityHaste",
     "AdaptiveForce",
-    "Health"
+    "CheapShot",
+    "Health",
+    "ManaflowBand",
+    "Scorch",
+    "SixthSense",
+    "Transcendence"
   ]
 ]
